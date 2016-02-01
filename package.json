@@ -1,0 +1,15 @@
+{
+  "name": "binary-visual-bot",
+  "version": "0.0.0",
+  "description": "Visual automation for binary.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Amin Marashi",
+  "license": "MIT",
+  "dependencies": {
+    "binary-live-api": "~12.0.0",
+    "blockly": "git+https://git@github.com/google/blockly.git"
+  }
+}

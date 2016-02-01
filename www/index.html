@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Generating JavaScript</title>
+  <script src="../node_modules/binary-live-api/lib/binary-live-api.js"></script>
+  <script src="../node_modules/blockly/blockly_compressed.js"></script>
+  <script src="../node_modules/blockly/blocks_compressed.js"></script>
+  <script src="../node_modules/blockly/javascript_compressed.js"></script>
+  <script src="../node_modules/blockly/msg/js/en.js"></script>
+  <script src="binary-live-api/src/LiveApi.js"></script>
+  <script src="binary-live-api/src/LiveEvents.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/blocks/binary.js"></script>
+  <script src="js/generators/binary.js"></script>
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <p>
+    <button onclick="showCode()">Show JavaScript</button>
+    <button onclick="runCode()">Run JavaScript</button>
+  </p>
+
+  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
+  <xml id="toolbox" style="display: none">
+    <category name="Logic">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+    </category>
+    <category name="Loops">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <block type="math_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+    </category>
+    <category name="Math">
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="math_single"></block>
+    </category>
+    <category name="Text">
+      <block type="text"></block>
+      <block type="text_length"></block>
+      <block type="text_print"></block>
+    </category>
+    <category name="Binary">
+			<category name="Operators">
+				<block type="binary_main"></block>
+				<block type="binary_account"></block>
+				<block type="binary_trade"></block>
+			</category>
+			<category name="Symbols">
+			</category>
+    </category>
+  </xml>
+
+  <xml id="startBlocks" style="display: none">
+    <block type="binary_main" inline="false" x="20" y="20">
+			<field name="token">token</field>
+      <statement name="login">
+        <block type="text_print" inline="false">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Authenticated</field>
+            </block>
+          </value>
+				</block>
+      </statement>
+		</block>
+  </xml>
+
+  <script>
+    var workspace = Blockly.inject('blocklyDiv',
+        {media: '../node_modules/blockly/media/',
+         toolbox: document.getElementById('toolbox')});
+    Blockly.Xml.domToWorkspace(workspace,
+        document.getElementById('startBlocks'));
+
+    function showCode() {
+      // Generate JavaScript code and display it.
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      alert(code);
+    }
+
+    function runCode() {
+      // Generate JavaScript code and run it.
+      window.LoopTrap = 1000;
+      Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      try {
+        eval(code);
+      } catch (e) {
+        alert(e);
+      }
+    }
+  </script>
+
+</body>
+</html>
+
