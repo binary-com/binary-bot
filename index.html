@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Generating JavaScript</title>
-  <script src="node_modules/binary-live-api/lib/binary-live-api.js"></script>
+	<script src="https://npmcdn.com/binary-live-api@11.3.0/lib/binary-live-api.js"></script>
   <script src="node_modules/blockly/blockly_compressed.js"></script>
   <script src="node_modules/blockly/blocks_compressed.js"></script>
   <script src="node_modules/blockly/javascript_compressed.js"></script>
   <script src="node_modules/blockly/msg/js/en.js"></script>
+  <script src="www/js/config.js"></script>
   <script src="www/js/main.js"></script>
   <script src="www/js/blocks/binary.js"></script>
   <script src="www/js/generators/binary.js"></script>
@@ -32,7 +33,7 @@
 
   <xml id="toolbox" style="display: none">
     <category name="Logic">
-      <block type="controls_if"></block>
+      <block type="logic_ternary"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
       <block type="logic_negate"></block>
@@ -61,26 +62,68 @@
     <category name="Binary">
 			<category name="Operators">
 				<block type="binary_main"></block>
-				<block type="binary_account"></block>
 				<block type="binary_trade"></block>
 			</category>
-			<category name="Symbols">
+			<category name="Inputs">
+				<category name="TradeTypes">
+					<block type="binary_trade_type_updown"></block>
+					<block type="binary_trade_type_match"></block>
+					<block type="binary_trade_type_oddness"></block>
+					<block type="binary_trade_type_underover"></block>
+				</category>
+				<block type="binary_account"></block>
+				<block type="binary_market"></block>
+				<block type="binary_underlying"></block>
+				<block type="binary_payout_type"></block>
 			</category>
     </category>
   </xml>
 
   <xml id="startBlocks" style="display: none">
-    <block type="binary_main" inline="false" x="20" y="20">
-			<field name="token">token</field>
-      <statement name="login">
-        <block type="text_print" inline="false">
-          <value name="TEXT">
-            <block type="text">
-              <field name="TEXT">Authenticated</field>
-            </block>
-          </value>
+		<block type="controls_repeat_ext" x="4" y="7">
+			<value name="TIMES">
+				<block type="math_number">
+					<field name="NUM">1</field>
 				</block>
-      </statement>
+			</value>
+			<statement name="DO">
+				<block type="binary_main" inline="false">
+					<value name="ACCOUNT">
+						<block type="binary_account">
+							<field name="ACCOUNT">X6PLvU3nx6JBaXo</field>
+						</block>
+					</value>
+					<statement name="TRADE">
+						<block type="binary_trade">
+							<value name="MARKET">
+								<block type="binary_market">
+									<field name="MARKET">forex</field>
+								</block>
+							</value>
+							<value name="UNDERLYING">
+								<block type="binary_underlying">
+									<field name="UNDERLYING">R_100</field>
+								</block>
+							</value>
+							<value name="TRADETYPE">
+								<block type="binary_trade_type_updown">
+									<field name="TRADETYPEUPDOWN">CALL</field>
+								</block>
+							</value>
+							<value name="TICKSCOUNT">
+								<block type="math_number">
+									<field name="NUM">1</field>
+								</block>
+							</value>
+							<value name="PAYOUTTYPE">
+								<block type="binary_payout_type">
+									<field name="PAYOUTTYPE">payout</field>
+								</block>
+							</value>
+						</block>
+					</statement>
+				</block>
+			</statement>
 		</block>
   </xml>
 
@@ -91,11 +134,19 @@
     Blockly.Xml.domToWorkspace(workspace,
         document.getElementById('startBlocks'));
 
+    function showXml() {
+			var xmlDom = Blockly.Xml.workspaceToDom(workspace);
+			var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+			console.log(xmlText);
+    }
+
     function showCode() {
+			showXml();
       // Generate JavaScript code and display it.
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       var code = Blockly.JavaScript.workspaceToCode(workspace);
       alert(code);
+			
     }
 
     function runCode() {

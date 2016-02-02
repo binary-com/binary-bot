@@ -1,38 +1,143 @@
-Blockly.Blocks['binary_main'] = {
-  init: function() {
-		this.appendDummyInput()
-				.appendField('Binary');
-		this.appendValueInput('account')
-        .setCheck("Account")
-				.appendField('Account: ');
-    this.appendStatementInput("trade")
-				.appendField('Trade: ');
-    this.setColour(330);
-    this.setTooltip('Enter the token to authenticate');
-    this.setHelpUrl('https://www.binary.com/user/api_tokenws');
-  }
-};
+(function(){
+	var help_url = 'https://www.binary.com/user/api_tokenws';
+	Blockly.Blocks['binary_main'] = {
+		init: function() {
+			this.setPreviousStatement(true);
+			this.appendDummyInput()
+					.appendField('Binary');
+			this.appendValueInput('ACCOUNT')
+					.setCheck(["Account", 'logic_ternary'])
+					.appendField('Account: ');
+			this.appendStatementInput("TRADE")
+					.appendField('Trade: ');
+			this.setColour(330);
+			this.setTooltip('Enter the token to authenticate');
+			this.setHelpUrl(help_url);
+		}
+	};
 
-Blockly.Blocks['binary_account'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown([["VRTC1197409", "X6PLvU3nx6JBaXo"], ["FakeToken", "faketokenishere12"]]), "account");
-    this.setColour(210);
-    this.setTooltip('');
-    this.setHelpUrl('http://www.example.com/');
-		this.setOutput(true, 'Account');
-  }
-};
+	Blockly.Blocks['binary_account'] = {
+		init: function() {
+			this.appendValueInput("ACCOUNTIN");
+			this.appendDummyInput()
+					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['ACCOUNT']), "ACCOUNT");
+			this.setColour(210);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+			this.setOutput(true, 'Account');
+		}
+	};
 
 
-Blockly.Blocks['binary_trade'] = {
-  init: function() {
-    this.appendDummyInput()
-				.appendField('Markets: ')
-				.appendField(new Blockly.FieldDropdown([["Random 100", "R_100"], ["Random 50", "R_50"], ["Bear", "RDBEAR"], ["Bull", "RDBULL"]]), "market");
-		this.setPreviousStatement(true, null);
-    this.setColour(120);
-    this.setTooltip('');
-    this.setHelpUrl('http://www.example.com/');
-  }
-};
+	Blockly.Blocks['binary_market'] = {
+		init: function() {
+			this.appendValueInput("MARKETIN");
+			this.appendDummyInput()
+					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['MARKET']), "MARKET");
+			this.setColour(120);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+			this.setOutput(true, 'Market');
+		}
+	};
+
+	Blockly.Blocks['binary_underlying'] = {
+		init: function() {
+			this.appendValueInput("UNDERLYINGIN");
+			this.appendDummyInput()
+					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['UNDERLYING']), "UNDERLYING");
+			this.setColour(120);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+			this.setOutput(true, 'Underlying');
+		}
+	};
+
+	Blockly.Blocks['binary_trade_type_updown'] = {
+		init: function() {
+			this.appendValueInput("TRADETYPEUPDOWNIN");
+			this.appendDummyInput()
+					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['TRADETYPEUPDOWN']), "TRADETYPEUPDOWN");
+			this.setOutput(true);
+			this.setColour(20);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+			this.setOutput(true, 'TradeTypeUpdown');
+		}
+	};
+
+	Blockly.Blocks['binary_trade_type_match'] = {
+		init: function() {
+			this.appendValueInput("TRADETYPEMATCHIN");
+			this.appendDummyInput()
+					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['TRADETYPEMATCH']), "TRADETYPEMATCH");
+			this.setOutput(true);
+			this.setColour(20);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+			this.setOutput(true, 'TradeTypeMatch');
+		}
+	};
+
+	Blockly.Blocks['binary_trade_type_oddness'] = {
+		init: function() {
+			this.appendValueInput("TRADETYPEODDNESSIN");
+			this.appendDummyInput()
+					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['TRADETYPEODDNESS']), "TRADETYPEODDNESS");
+			this.setOutput(true);
+			this.setColour(20);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+			this.setOutput(true, 'TradeTypeOdness');
+		}
+	};
+
+	Blockly.Blocks['binary_trade_type_underover'] = {
+		init: function() {
+			this.appendValueInput("TRADETYPEUNDEROVERIN");
+			this.appendDummyInput()
+					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['TRADETYPEUNDEROVER']), "TRADETYPEUNDEROVER");
+			this.setOutput(true);
+			this.setColour(20);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+			this.setOutput(true, 'TradeTypeUnderover');
+		}
+	};
+
+	Blockly.Blocks['binary_payout_type'] = {
+		init: function() {
+			this.appendValueInput("PAYOUTTYPEIN");
+			this.appendDummyInput()
+					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['PAYOUTTYPE']), "PAYOUTTYPE");
+			this.setColour(120);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+			this.setOutput(true, 'PayoutType');
+		}
+	};
+
+	Blockly.Blocks['binary_trade'] = {
+		init: function() {
+			this.appendValueInput("MARKET")
+					.setCheck("Market")
+					.appendField("Market:");
+			this.appendValueInput("UNDERLYING")
+					.setCheck("Underlying")
+					.appendField("Underlying:");
+			this.appendValueInput("TRADETYPE")
+					.setCheck(["TradeTypeUpdown", "TradeTypeMatch", "TradeTypeOdness", "TradeTypeUnderover"])
+					.appendField('Trade Type: ');
+			this.appendValueInput("TICKSCOUNT")
+					.setCheck("Number")
+					.appendField('Ticks Count: ');
+			this.appendValueInput("PAYOUTTYPE")
+					.setCheck("PayoutType")
+					.appendField('Payout Type: ');
+			this.setPreviousStatement(true);
+			this.setColour(65);
+			this.setTooltip('');
+			this.setHelpUrl(help_url);
+		}
+	};
+})();
