@@ -6,7 +6,7 @@
 			this.appendDummyInput()
 					.appendField('Binary');
 			this.appendValueInput('ACCOUNT')
-					.setCheck(["Account", 'logic_ternary'])
+					.setCheck("Account")
 					.appendField('Account: ');
 			this.appendStatementInput("TRADE")
 					.appendField('Trade: ');
@@ -21,7 +21,7 @@
 			this.appendValueInput("ACCOUNTIN");
 			this.appendDummyInput()
 					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['ACCOUNT']), "ACCOUNT");
-			this.setColour(210);
+			this.setColour(40);
 			this.setTooltip('');
 			this.setHelpUrl(help_url);
 			this.setOutput(true, 'Account');
@@ -34,7 +34,7 @@
 			this.appendValueInput("MARKETIN");
 			this.appendDummyInput()
 					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['MARKET']), "MARKET");
-			this.setColour(120);
+			this.setColour(140);
 			this.setTooltip('');
 			this.setHelpUrl(help_url);
 			this.setOutput(true, 'Market');
@@ -46,7 +46,7 @@
 			this.appendValueInput("UNDERLYINGIN");
 			this.appendDummyInput()
 					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['UNDERLYING']), "UNDERLYING");
-			this.setColour(120);
+			this.setColour(140);
 			this.setTooltip('');
 			this.setHelpUrl(help_url);
 			this.setOutput(true, 'Underlying');
@@ -110,7 +110,7 @@
 			this.appendValueInput("PAYOUTTYPEIN");
 			this.appendDummyInput()
 					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['PAYOUTTYPE']), "PAYOUTTYPE");
-			this.setColour(120);
+			this.setColour(140);
 			this.setTooltip('');
 			this.setHelpUrl(help_url);
 			this.setOutput(true, 'PayoutType');
