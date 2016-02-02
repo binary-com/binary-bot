@@ -89,8 +89,32 @@
 			<statement name="DO">
 				<block type="binary_main" inline="false">
 					<value name="ACCOUNT">
-						<block type="binary_account">
-							<field name="ACCOUNT">X6PLvU3nx6JBaXo</field>
+						<block type="logic_ternary">
+							<value name="IF">
+								<block type="logic_compare">
+									<field name="OP">EQ</field>
+									<value name="A">
+										<block type="math_number">
+											<field name="NUM">0</field>
+										</block>
+									</value>
+									<value name="B">
+										<block type="math_number">
+											<field name="NUM">1</field>
+										</block>
+									</value>
+								</block>
+							</value>
+							<value name="THEN">
+								<block type="binary_account">
+									<field name="ACCOUNT">X6PLvU3nx6JBaXo</field>
+								</block>
+							</value>
+							<value name="ELSE">
+								<block type="binary_account">
+									<field name="ACCOUNT">X6PLvU3nx6JBaXo</field>
+								</block>
+							</value>
 						</block>
 					</value>
 					<statement name="TRADE">
