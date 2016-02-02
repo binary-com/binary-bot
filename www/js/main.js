@@ -20,7 +20,7 @@
 
 	binary_visual.getPriceForProposal = function getPriceForProposal(options){
 		api.subscribeToPriceForContractProposal(options).then(function(value){
-			console.log('Proposal Accepted\nID:', value.proposal.id);
+			console.log('Proposal Accepted!\nID:', value.proposal.id);
 		}, function(reason){
 			console.log('Error: ' + reason.message);
 		});
