@@ -29,7 +29,7 @@
     <button onclick="runCode()">Run JavaScript</button>
   </p>
 
-  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+  <div id="blocklyDiv" style="height: 600px; width: 100%;"></div>
 
   <xml id="toolbox" style="display: none">
     <category name="Logic">
@@ -53,6 +53,7 @@
       <block type="math_number"></block>
       <block type="math_arithmetic"></block>
       <block type="math_single"></block>
+      <block type="math_random_int"></block>
     </category>
     <category name="Text">
       <block type="text"></block>
@@ -83,7 +84,7 @@
 		<block type="controls_repeat_ext" x="4" y="7">
 			<value name="TIMES">
 				<block type="math_number">
-					<field name="NUM">1</field>
+					<field name="NUM">5</field>
 				</block>
 			</value>
 			<statement name="DO">
@@ -92,15 +93,24 @@
 						<block type="logic_ternary">
 							<value name="IF">
 								<block type="logic_compare">
-									<field name="OP">EQ</field>
+									<field name="OP">LT</field>
 									<value name="A">
-										<block type="math_number">
-											<field name="NUM">0</field>
+										<block type="math_random_int">
+											<value name="FROM">
+												<block type="math_number">
+													<field name="NUM">1</field>
+												</block>
+											</value>
+											<value name="TO">
+												<block type="math_number">
+													<field name="NUM">5</field>
+												</block>
+											</value>
 										</block>
 									</value>
 									<value name="B">
 										<block type="math_number">
-											<field name="NUM">1</field>
+											<field name="NUM">3</field>
 										</block>
 									</value>
 								</block>
@@ -112,7 +122,7 @@
 							</value>
 							<value name="ELSE">
 								<block type="binary_account">
-									<field name="ACCOUNT">X6PLvU3nx6JBaXo</field>
+									<field name="ACCOUNT">faketokenishere12</field>
 								</block>
 							</value>
 						</block>

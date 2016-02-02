@@ -7,10 +7,20 @@
 		}   
 	};
 
+	function math_random_int(a, b) {
+		if (a > b) {
+			// Swap a and b to ensure a is smaller.
+			var c = a;
+			a = b;
+			b = c;
+		}
+		return Math.floor(Math.random() * (b - a + 1) + a);
+	}
+
 	Blockly.JavaScript['binary_main'] = function binary_main(block) {
-		var value_account = eval(Blockly.JavaScript.valueToCode(block, 'ACCOUNT', Blockly.JavaScript.ORDER_ATOMIC));
+		var value_account = Blockly.JavaScript.valueToCode(block, 'ACCOUNT', Blockly.JavaScript.ORDER_ATOMIC);
 		var statements_trade = Blockly.JavaScript.statementToCode(block, 'TRADE');
-		var code = 'binary_visual.login("'+value_account+'", '+authorize.toString().replace('CALLBACK', statements_trade)+');';
+		var code = 'binary_visual.login('+value_account+', '+authorize.toString().replace('CALLBACK', statements_trade)+');';
 		return code;
 	};
 
