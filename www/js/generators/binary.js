@@ -141,7 +141,15 @@
 		var value_ticks_count = Blockly.JavaScript.valueToCode(block, 'TICKSCOUNT', Blockly.JavaScript.ORDER_ATOMIC);
 		var value_payout_type = Blockly.JavaScript.valueToCode(block, 'PAYOUTTYPE', Blockly.JavaScript.ORDER_ATOMIC);
 		// TODO: Assemble JavaScript into code variable.
-		var code = 'console.log('+value_market+', '+value_underlying+', '+value_trade_type+', '+value_ticks_count+', '+value_payout_type+');';
+
+		binary_visual.addTick = function addTick(tick){
+			console.log(tick);
+		};
+
+		binary_visual.proposal = {"subscribe":1,"proposal":1,"symbol":eval(value_underlying),"contract_type":eval(value_trade_type),"duration":eval(value_ticks_count).toString(),"basis":"payout","currency":"USD","amount":5,"duration_unit":"t","passthrough":{"market":eval(value_market)}};
+
+		var code = 'binary_visual.startTrade({symbol: '+value_underlying+'}, binary_visual.addTick);'
+		+'binary_visual.getPriceForProposal(binary_visual.proposal);';
 		return code;
 	};
 })();

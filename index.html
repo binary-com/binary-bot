@@ -131,7 +131,7 @@
 						<block type="binary_trade">
 							<value name="MARKET">
 								<block type="binary_market">
-									<field name="MARKET">forex</field>
+									<field name="MARKET">random</field>
 								</block>
 							</value>
 							<value name="UNDERLYING">
@@ -146,7 +146,7 @@
 							</value>
 							<value name="TICKSCOUNT">
 								<block type="math_number">
-									<field name="NUM">1</field>
+									<field name="NUM">5</field>
 								</block>
 							</value>
 							<value name="PAYOUTTYPE">
@@ -171,7 +171,6 @@
     function showXml() {
 			var xmlDom = Blockly.Xml.workspaceToDom(workspace);
 			var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-			console.log(xmlText);
     }
 
     function showCode() {
