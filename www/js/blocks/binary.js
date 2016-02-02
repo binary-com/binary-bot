@@ -71,6 +71,9 @@
 			this.appendValueInput("TRADETYPEMATCHIN");
 			this.appendDummyInput()
 					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['TRADETYPEMATCH']), "TRADETYPEMATCH");
+			this.appendValueInput("DIGIT")
+					.setCheck("Number")
+					.appendField("Digit:");
 			this.setOutput(true);
 			this.setColour(20);
 			this.setTooltip('');
@@ -97,6 +100,9 @@
 			this.appendValueInput("TRADETYPEUNDEROVERIN");
 			this.appendDummyInput()
 					.appendField(new Blockly.FieldDropdown(binary_visual.config.options['TRADETYPEUNDEROVER']), "TRADETYPEUNDEROVER");
+			this.appendValueInput("DIGIT")
+					.setCheck("Number")
+					.appendField("Digit:");
 			this.setOutput(true);
 			this.setColour(20);
 			this.setTooltip('');

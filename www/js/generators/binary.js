@@ -89,11 +89,15 @@
 	Blockly.JavaScript['binary_trade_type_match'] = function binary_trade_type_match(block) {
 		var caps_name = 'TRADETYPEMATCH';
 		var index = eval(Blockly.JavaScript.valueToCode(block, caps_name + 'IN', Blockly.JavaScript.ORDER_ATOMIC));
+		var digit = parseInt(eval(Blockly.JavaScript.valueToCode(block, 'DIGIT', Blockly.JavaScript.ORDER_ATOMIC)));
 		var item = chooseByIndex(caps_name, index);
 		var dropdown_trade_type_match = block.getFieldValue(caps_name);
 		// TODO: Assemble JavaScript into code variable.
 		var code = dropdown_trade_type_match;
 		code = (item === null)? code: item;
+		if ( !isNaN(digit) ) {
+			code = code + digit;
+		}
 		code = '\'' + code + '\'';
 		return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -113,11 +117,15 @@
 	Blockly.JavaScript['binary_trade_type_underover'] = function binary_trade_type_underover(block) {
 		var caps_name = 'TRADETYPEUNDEROVER';
 		var index = eval(Blockly.JavaScript.valueToCode(block, caps_name + 'IN', Blockly.JavaScript.ORDER_ATOMIC));
+		var digit = parseInt(eval(Blockly.JavaScript.valueToCode(block, 'DIGIT', Blockly.JavaScript.ORDER_ATOMIC)));
 		var item = chooseByIndex(caps_name, index);
 		var dropdown_trade_type_underover = block.getFieldValue(caps_name);
 		// TODO: Assemble JavaScript into code variable.
 		var code = dropdown_trade_type_underover;
 		code = (item === null)? code: item;
+		if ( !isNaN(digit) ) {
+			code = code + digit;
+		}
 		code = '\'' + code + '\'';
 		return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -147,6 +155,13 @@
 		};
 
 		binary_visual.proposal = {"subscribe":1,"proposal":1,"symbol":eval(value_underlying),"contract_type":eval(value_trade_type),"duration":eval(value_ticks_count).toString(),"basis":"payout","currency":"USD","amount":5,"duration_unit":"t","passthrough":{"market":eval(value_market)}};
+
+		var trade_type = eval(value_trade_type);
+		var digit = parseInt(trade_type.slice(-1));
+		if ( !isNaN(digit) ) {
+			binary_visual.proposal.barrier = digit;		
+			binary_visual.proposal.contract_type = trade_type.substring(0, trade_type.length-1);
+		}
 
 		var code = 'binary_visual.startTrade({symbol: '+value_underlying+'}, binary_visual.addTick);'
 		+'binary_visual.getPriceForProposal(binary_visual.proposal);';

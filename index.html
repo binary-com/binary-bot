@@ -16,6 +16,7 @@
 </head>
 <body>
   <p>
+    <button onclick="showXml()">Show XML</button>
     <button onclick="showCode()">Show JavaScript</button>
     <button onclick="runCode()">Run JavaScript</button>
   </p>
@@ -131,8 +132,13 @@
 								</block>
 							</value>
 							<value name="TRADETYPE">
-								<block type="binary_trade_type_updown">
-									<field name="TRADETYPEUPDOWN">CALL</field>
+								<block type="binary_trade_type_match">
+									<field name="TRADETYPEMATCH">DIGITDIFF</field>
+									<value name="DIGIT">
+										<block type="math_number">
+											<field name="NUM">4</field>
+										</block>
+									</value>
 								</block>
 							</value>
 							<value name="TICKSCOUNT">
@@ -171,10 +177,10 @@
     function showXml() {
 			var xmlDom = Blockly.Xml.workspaceToDom(workspace);
 			var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+			alert(xmlText);
     }
 
     function showCode() {
-			showXml();
       // Generate JavaScript code and display it.
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       var code = Blockly.JavaScript.workspaceToCode(workspace);
