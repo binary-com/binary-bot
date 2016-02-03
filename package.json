@@ -1,5 +1,5 @@
 {
-  "name": "binary-visual-bot",
+  "name": "binary-bot",
   "version": "0.0.0",
   "description": "Visual automation for binary.com",
   "main": "index.js",

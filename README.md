@@ -1,2 +1,2 @@
-# binary-visual-bot
+# binary-bot
 Visual automation for binary.com
