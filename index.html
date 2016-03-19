@@ -53,110 +53,146 @@
       <block type="text_print"></block>
     </category>
     <category name="Binary">
-			<category name="Operators">
-				<block type="binary_main"></block>
-				<block type="binary_trade"></block>
-			</category>
-			<category name="Inputs">
-				<category name="TradeTypes">
-					<block type="binary_trade_type_updown"></block>
-					<block type="binary_trade_type_match"></block>
-					<block type="binary_trade_type_oddness"></block>
-					<block type="binary_trade_type_underover"></block>
+      <block type="login"></block>
+			<block type="account"></block>
+			<category name="Markets">
+				<category name="Random">
+					<block type="r_100"></block>
 				</category>
-				<block type="binary_account"></block>
-				<block type="binary_market"></block>
-				<block type="binary_underlying"></block>
-				<block type="binary_payout_type"></block>
+			</category>
+			<category name="Conditions">
+				<block type="updown"></block>
+			</category>
+			<category name="Options">
+				<block type="durationunit"></block>
+				<block type="payouttype"></block>
+				<block type="currency"></block>
 			</category>
     </category>
   </xml>
 
-  <xml id="startBlocks" style="display: none">
-		<block type="controls_repeat_ext" x="4" y="7">
-			<value name="TIMES">
-				<block type="math_number">
-					<field name="NUM">5</field>
-				</block>
-			</value>
-			<statement name="DO">
-				<block type="binary_main" inline="false">
-					<value name="ACCOUNT">
-						<block type="logic_ternary">
-							<value name="IF">
-								<block type="logic_compare">
-									<field name="OP">LT</field>
-									<value name="A">
-										<block type="math_random_int">
-											<value name="FROM">
-												<block type="math_number">
-													<field name="NUM">1</field>
-												</block>
-											</value>
-											<value name="TO">
-												<block type="math_number">
-													<field name="NUM">5</field>
-												</block>
-											</value>
-										</block>
-									</value>
-									<value name="B">
-										<block type="math_number">
-											<field name="NUM">3</field>
-										</block>
-									</value>
-								</block>
-							</value>
-							<value name="THEN">
-								<block type="binary_account">
-									<field name="ACCOUNT">X6PLvU3nx6JBaXo</field>
-								</block>
-							</value>
-							<value name="ELSE">
-								<block type="binary_account">
-									<field name="ACCOUNT">faketokenishere12</field>
-								</block>
-							</value>
-						</block>
-					</value>
-					<statement name="TRADE">
-						<block type="binary_trade">
-							<value name="MARKET">
-								<block type="binary_market">
-									<field name="MARKET">random</field>
-								</block>
-							</value>
-							<value name="UNDERLYING">
-								<block type="binary_underlying">
-									<field name="UNDERLYING">R_100</field>
-								</block>
-							</value>
-							<value name="TRADETYPE">
-								<block type="binary_trade_type_match">
-									<field name="TRADETYPEMATCH">DIGITDIFF</field>
-									<value name="DIGIT">
-										<block type="math_number">
-											<field name="NUM">4</field>
-										</block>
-									</value>
-								</block>
-							</value>
-							<value name="TICKSCOUNT">
-								<block type="math_number">
-									<field name="NUM">5</field>
-								</block>
-							</value>
-							<value name="PAYOUTTYPE">
-								<block type="binary_payout_type">
-									<field name="PAYOUTTYPE">payout</field>
-								</block>
-							</value>
-						</block>
-					</statement>
-				</block>
-			</statement>
-		</block>
-  </xml>
+	<xml id="startBlocks" style="display: none">
+	<block type="login" id="0O_ggpWb#!XAx#C:KeL?" x="24" y="32">
+	<value name="ACCOUNT">
+	<block type="account" id="2xiFn+qJ*kb/E0t8{_|R">
+	<field name="ACCOUNT_LIST">X6PLvU3nx6JBaXo</field>
+	<value name="ACCOUNT">
+	<block type="math_arithmetic" id="itzN{3571.c~SnBDjRl{">
+	<field name="OP">ADD</field>
+	<value name="A">
+	<block type="math_number" id="QqV/2NOQ:`T/!n`)?`+I">
+	<field name="NUM">1</field>
+	</block>
+	</value>
+	<value name="B">
+	<block type="math_number" id="MEJWpOC+`Ht9v1b8ZTc/">
+	<field name="NUM">0</field>
+	</block>
+	</value>
+	</block>
+	</value>
+	</block>
+	</value>
+	<statement name="SUBMARKET">
+	<block type="r_100" id="ysK5gF2w**?@v+(h;YGF">
+	<statement name="CONDITION">
+	<block type="updown" id="qkfnuNEVzQms)n{R5g|n">
+	<value name="DURATION">
+	<block type="math_arithmetic" id="K:fHtbuQ--^lvF?CA,EE">
+	<field name="OP">ADD</field>
+	<value name="A">
+	<block type="math_number" id="=Jti;Cl@2uJ~P(M(4G!7">
+	<field name="NUM">1</field>
+	</block>
+	</value>
+	<value name="B">
+	<block type="math_number" id="0Vj5Bbp=+{j6yWEwfmEn">
+	<field name="NUM">4</field>
+	</block>
+	</value>
+	</block>
+	</value>
+	<value name="DURATIONUNIT">
+	<block type="durationunit" id="2^i@%:jGQx1+x3*@V1xD">
+	<field name="DURATIONUNIT_LIST">t</field>
+	<value name="DURATIONUNIT">
+	<block type="math_arithmetic" id="+G5Bz)Pgg:|4h89Egyz~">
+	<field name="OP">ADD</field>
+	<value name="A">
+	<block type="math_number" id="(9RDUTWWxv*-pSQ^K[?{">
+	<field name="NUM">1</field>
+	</block>
+	</value>
+	<value name="B">
+	<block type="math_number" id="N=Rr[-zaZUO~.Gm)x:QI">
+	<field name="NUM">4</field>
+	</block>
+	</value>
+	</block>
+	</value>
+	</block>
+	</value>
+	<value name="PAYOUTTYPE">
+	<block type="payouttype" id="_M;ZJrbO;a+db7Wqi!Yy">
+	<field name="PAYOUTTYPE_LIST">payout</field>
+	<value name="PAYOUTTYPE">
+	<block type="math_arithmetic" id="Isa+%`]O)|8phq2z.qXL">
+	<field name="OP">ADD</field>
+	<value name="A">
+	<block type="math_number" id="r_[N3f}[qB?rZ,UBd|{r">
+	<field name="NUM">1</field>
+	</block>
+	</value>
+	<value name="B">
+	<block type="math_number" id="|_iRv9Q+CvU}FgRd|K|Y">
+	<field name="NUM">0</field>
+	</block>
+	</value>
+	</block>
+	</value>
+	</block>
+	</value>
+	<value name="CURRENCY">
+	<block type="currency" id="EW7%N_hz#`V@Cwe=,Gj2">
+	<field name="CURRENCY_LIST">USD</field>
+	<value name="CURRENCY">
+	<block type="math_arithmetic" id="*L{O]hK`{]z[*5!7eFX+">
+	<field name="OP">ADD</field>
+	<value name="A">
+	<block type="math_number" id="Mxx`vA5`7u25=3`Rcjr@">
+	<field name="NUM">1</field>
+	</block>
+	</value>
+	<value name="B">
+	<block type="math_number" id="oeDBZgB`+Ky/YlJeKsp@">
+	<field name="NUM">0</field>
+	</block>
+	</value>
+	</block>
+	</value>
+	</block>
+	</value>
+	<value name="AMOUNT">
+	<block type="math_arithmetic" id="rc=A3S4re@l3cc{+4?+}">
+	<field name="OP">ADD</field>
+	<value name="A">
+	<block type="math_number" id="@V(3V58Nke!z8r1}@q){">
+	<field name="NUM">5</field>
+	</block>
+	</value>
+	<value name="B">
+	<block type="math_number" id="%YfN:yXiirhgVZb~aSQ=">
+	<field name="NUM">4</field>
+	</block>
+	</value>
+	</block>
+	</value>
+	</block>
+	</statement>
+	</block>
+	</statement>
+	</block>
+	</xml>
 
 	<script src="https://npmcdn.com/binary-live-api@11.3.0/lib/binary-live-api.js"></script>
   <script src="node_modules/blockly/blockly_compressed.js"></script>
@@ -164,9 +200,24 @@
   <script src="node_modules/blockly/javascript_compressed.js"></script>
   <script src="node_modules/blockly/msg/js/en.js"></script>
   <script src="www/js/config.js"></script>
+  <script src="www/js/utils.js"></script>
+  <script src="www/js/conditions.js"></script>
+  <script src="www/js/markets.js"></script>
+  <script src="www/js/blockly/definitions/trade.js"></script>
+  <script src="www/js/blockly/definitions/account.js"></script>
+  <script src="www/js/blockly/definitions/submarkets/random/r_100.js"></script>
+  <script src="www/js/blockly/definitions/conditions/updown.js"></script>
+  <script src="www/js/blockly/definitions/options/durationunit.js"></script>
+  <script src="www/js/blockly/definitions/options/payouttype.js"></script>
+  <script src="www/js/blockly/definitions/options/currency.js"></script>
+  <script src="www/js/blockly/code_generators/trade.js"></script>
+  <script src="www/js/blockly/code_generators/account.js"></script>
+  <script src="www/js/blockly/code_generators/submarkets/random/r_100.js"></script>
+  <script src="www/js/blockly/code_generators/conditions/updown.js"></script>
+  <script src="www/js/blockly/code_generators/options/durationunit.js"></script>
+  <script src="www/js/blockly/code_generators/options/payouttype.js"></script>
+  <script src="www/js/blockly/code_generators/options/currency.js"></script>
   <script src="www/js/main.js"></script>
-  <script src="www/js/blocks/binary.js"></script>
-  <script src="www/js/generators/binary.js"></script>
   <script>
     var workspace = Blockly.inject('blocklyDiv',
         {media: 'node_modules/blockly/media/',

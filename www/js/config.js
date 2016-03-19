@@ -1,12 +1,12 @@
-binary_visual = {};
-binary_visual.config = {};
-binary_visual.config.options = { 
-	ACCOUNT: [["VRTC1197409", "X6PLvU3nx6JBaXo"], ["FakeToken", "faketokenishere12"]],
-	MARKET: [["Forex", "forex"], ["Random", "random"]],
-	UNDERLYING: [["Random 100", "R_100"], ["Random 50", "R_50"], ["Bear", "RDBEAR"], ["Bull", "RDBULL"]],
-	TRADETYPEUPDOWN: [["Up", "CALL"], ["Down", "PUT"]],
-	TRADETYPEMATCH: [["Match", "DIGITMATCH"], ["Differs", "DIGITDIFF"]],
-	TRADETYPEODDNESS: [["Digit Even", "DIGITEVEN"], ["Digit Odd", "DIGITODD"]],
-	TRADETYPEUNDEROVER: [["Under", "DIGITUNDER"], ["Over", "DIGITOVER"]],
+Bot = {};
+Bot.config = {};
+Bot.config.lists = { 
+	ACCOUNT: [['VRTC1197409', 'X6PLvU3nx6JBaXo'], ['FakeAccount', 'faketokenishere12']],
+	DURATIONUNIT: [["ticks", "t"], ["seconds", "s"], ["minutes", "m"], ["hours", "h"], ["days", "d"]],
 	PAYOUTTYPE: [["Payout", "payout"], ["Stake", "stake"]],
+	CURRENCY: [["USD", "USD"], ["EUR", "EUR"], ["GBP", "GBP"], ["AUD", "AUD"]],
 }; 
+
+Bot.config.opposites = {
+	UPDOWN: ['CALL', 'PUT'],
+};
