@@ -359,10 +359,19 @@
 			</statement>
 		</block>
 		<block type="procedures_defnoreturn" id="KMdlA-n6Fy1}j!eO1zfw" x="541" y="18">
+			<mutation>
+				<arg name="tick"></arg>
+				<arg name="direction"></arg>
+			</mutation>
 			<field name="NAME">decide when to purchase with each tick</field>
 			<comment pinned="false" h="80" w="160">This block is called when a new tick is received, a purchase block is usually added to this block</comment>
 		</block>
 		<block type="procedures_defnoreturn" id="8B5!KMgiUka!,.i6BQSk" x="545" y="308">
+			<mutation>
+				<arg name="statement"></arg>
+				<arg name="result"></arg>
+				<arg name="details"></arg>
+			</mutation>
 			<field name="NAME">decide what to do after the contract is finished</field>
 			<comment pinned="false" h="80" w="160">This block is called when a contract is finished, one can decide to trade again by adding a trade block to this block</comment>
 		</block>

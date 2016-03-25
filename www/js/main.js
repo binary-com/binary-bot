@@ -9,12 +9,22 @@
 	Bot.server = {}; 
 
 	window.addEventListener('contract:finished', function(e){
-		Bot.finish(e.detail);
+		var details = [
+			e.detail.statement, 
+			e.detail.barrier, 
+			e.detail.type, 
+			e.detail.result, 
+			e.detail.entrySpot, 
+			new Date(parseInt(e.detail.entrySpotTime + '000')).toLocaleTimeString(),
+			e.detail.exitSpot, 
+			new Date(parseInt(e.detail.exitSpotTime + '000')).toLocaleTimeString(),
+		];
+		Bot.finish(e.detail.statement, e.detail.result, details);
 	});
 
 	window.addEventListener('tick:updated', function(e){
 		if ( !Bot.server.strategyFinished ) {
-			Bot.strategy(e.detail);
+			Bot.strategy(e.detail.tick, e.detail.direction);
 		}
 	});
 
@@ -25,6 +35,7 @@
 				if (contract.contract_id == contractId) {
 					log('contract added: ' + contract.contract_id);
 					Bot.server.contractService.addContract({
+						statement: contract.transaction_id,
 						startTime: contract.date_start + 1,
 						duration: parseInt(proposalContract.echo_req.duration),
 						type: contract.contract_type,
