@@ -1,8 +1,7 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#mps5ta
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#dj932r
 Blockly.Blocks['durationunit'] = {
 	init: function() {
-		this.appendValueInput("DURATIONUNIT")
-			.setCheck("Number")
+		this.appendDummyInput()
 			.appendField(new Blockly.FieldDropdown(Bot.config.lists.DURATIONUNIT), "DURATIONUNIT_LIST");
 		this.setInputsInline(true);
 		this.setOutput(true, "DurationUnit");

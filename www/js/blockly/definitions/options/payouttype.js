@@ -1,8 +1,7 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#sgcrb6
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#ojhmbr
 Blockly.Blocks['payouttype'] = {
 	init: function() {
-		this.appendValueInput("PAYOUTTYPE")
-			.setCheck("Number")
+		this.appendDummyInput()
 			.appendField(new Blockly.FieldDropdown(Bot.config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
 		this.setInputsInline(true);
 		this.setOutput(true, "PayoutType");

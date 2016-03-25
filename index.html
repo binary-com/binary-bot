@@ -283,134 +283,89 @@
   </xml>
 
 	<xml id="startBlocks" style="display: none">
-	<block type="procedures_defnoreturn" id="KMdlA-n6Fy1}j!eO1zfw" x="541" y="18">
-		<field name="NAME">decide when to purchase with each tick</field>
-		<comment pinned="false" h="80" w="160">This block is called when a new tick is received, a purchase block is usually added to this block</comment>
-	</block>
-	<block type="procedures_defnoreturn" id="KMdlA-n6Fy1}j!eO1zfw" x="545" y="308">
-		<field name="NAME">decide what to do after the contract is finished</field>
-		<comment pinned="false" h="80" w="160">This block is called when a contract is finished, one can decide to trade again by adding a trade block to this block</comment>
-	</block>
-	<block type="trade" id="0O_ggpWb#!XAx#C:KeL?" x="24" y="32">
-	<value name="ACCOUNT">
-	<block type="account" id="2xiFn+qJ*kb/E0t8{_|R">
-	<field name="ACCOUNT_LIST">X6PLvU3nx6JBaXo</field>
-	<value name="ACCOUNT">
-	<block type="math_arithmetic" id="itzN{3571.c~SnBDjRl{">
-	<field name="OP">ADD</field>
-	<value name="A">
-	<block type="math_number" id="QqV/2NOQ:`T/!n`)?`+I">
-	<field name="NUM">1</field>
-	</block>
-	</value>
-	<value name="B">
-	<block type="math_number" id="MEJWpOC+`Ht9v1b8ZTc/">
-	<field name="NUM">0</field>
-	</block>
-	</value>
-	</block>
-	</value>
-	</block>
-	</value>
-	<statement name="SUBMARKET">
-	<block type="r_100" id="ysK5gF2w**?@v+(h;YGF">
-	<statement name="CONDITION">
-	<block type="updown" id="qkfnuNEVzQms)n{R5g|n">
-	<value name="DURATION">
-	<block type="math_arithmetic" id="K:fHtbuQ--^lvF?CA,EE">
-	<field name="OP">ADD</field>
-	<value name="A">
-	<block type="math_number" id="=Jti;Cl@2uJ~P(M(4G!7">
-	<field name="NUM">1</field>
-	</block>
-	</value>
-	<value name="B">
-	<block type="math_number" id="0Vj5Bbp=+{j6yWEwfmEn">
-	<field name="NUM">4</field>
-	</block>
-	</value>
-	</block>
-	</value>
-	<value name="DURATIONUNIT">
-	<block type="durationunit" id="2^i@%:jGQx1+x3*@V1xD">
-	<field name="DURATIONUNIT_LIST">t</field>
-	<value name="DURATIONUNIT">
-	<block type="math_arithmetic" id="+G5Bz)Pgg:|4h89Egyz~">
-	<field name="OP">ADD</field>
-	<value name="A">
-	<block type="math_number" id="(9RDUTWWxv*-pSQ^K[?{">
-	<field name="NUM">1</field>
-	</block>
-	</value>
-	<value name="B">
-	<block type="math_number" id="N=Rr[-zaZUO~.Gm)x:QI">
-	<field name="NUM">4</field>
-	</block>
-	</value>
-	</block>
-	</value>
-	</block>
-	</value>
-	<value name="PAYOUTTYPE">
-	<block type="payouttype" id="_M;ZJrbO;a+db7Wqi!Yy">
-	<field name="PAYOUTTYPE_LIST">payout</field>
-	<value name="PAYOUTTYPE">
-	<block type="math_arithmetic" id="Isa+%`]O)|8phq2z.qXL">
-	<field name="OP">ADD</field>
-	<value name="A">
-	<block type="math_number" id="r_[N3f}[qB?rZ,UBd|{r">
-	<field name="NUM">1</field>
-	</block>
-	</value>
-	<value name="B">
-	<block type="math_number" id="|_iRv9Q+CvU}FgRd|K|Y">
-	<field name="NUM">0</field>
-	</block>
-	</value>
-	</block>
-	</value>
-	</block>
-	</value>
-	<value name="CURRENCY">
-	<block type="currency" id="EW7%N_hz#`V@Cwe=,Gj2">
-	<field name="CURRENCY_LIST">USD</field>
-	<value name="CURRENCY">
-	<block type="math_arithmetic" id="*L{O]hK`{]z[*5!7eFX+">
-	<field name="OP">ADD</field>
-	<value name="A">
-	<block type="math_number" id="Mxx`vA5`7u25=3`Rcjr@">
-	<field name="NUM">1</field>
-	</block>
-	</value>
-	<value name="B">
-	<block type="math_number" id="oeDBZgB`+Ky/YlJeKsp@">
-	<field name="NUM">0</field>
-	</block>
-	</value>
-	</block>
-	</value>
-	</block>
-	</value>
-	<value name="AMOUNT">
-	<block type="math_arithmetic" id="rc=A3S4re@l3cc{+4?+}">
-	<field name="OP">ADD</field>
-	<value name="A">
-	<block type="math_number" id="@V(3V58Nke!z8r1}@q){">
-	<field name="NUM">5</field>
-	</block>
-	</value>
-	<value name="B">
-	<block type="math_number" id="%YfN:yXiirhgVZb~aSQ=">
-	<field name="NUM">4</field>
-	</block>
-	</value>
-	</block>
-	</value>
-	</block>
-	</statement>
-	</block>
-	</statement>
-	</block>
+		<block type="trade" id="0O_ggpWb#!XAx#C:KeL?" x="24" y="32">
+			<value name="ACCOUNT">
+				<block type="account" id="2xiFn+qJ*kb/E0t8{_|R">
+					<field name="ACCOUNT_LIST">X6PLvU3nx6JBaXo</field>
+					<value name="ACCOUNT">
+						<block type="math_arithmetic" id="itzN{3571.c~SnBDjRl{">
+							<field name="OP">ADD</field>
+							<value name="A">
+								<block type="math_number" id="QqV/2NOQ:`T/!n`)?`+I">
+									<field name="NUM">1</field>
+								</block>
+							</value>
+							<value name="B">
+								<block type="math_number" id="MEJWpOC+`Ht9v1b8ZTc/">
+									<field name="NUM">0</field>
+								</block>
+							</value>
+						</block>
+					</value>
+				</block>
+			</value>
+			<statement name="SUBMARKET">
+				<block type="r_100" id="ysK5gF2w**?@v+(h;YGF">
+					<statement name="CONDITION">
+						<block type="updown" id="qkfnuNEVzQms)n{R5g|n">
+							<value name="DURATION">
+								<block type="math_arithmetic" id="K:fHtbuQ--^lvF?CA,EE">
+									<field name="OP">ADD</field>
+									<value name="A">
+										<block type="math_number" id="=Jti;Cl@2uJ~P(M(4G!7">
+											<field name="NUM">1</field>
+										</block>
+									</value>
+									<value name="B">
+										<block type="math_number" id="0Vj5Bbp=+{j6yWEwfmEn">
+											<field name="NUM">4</field>
+										</block>
+									</value>
+								</block>
+							</value>
+							<value name="DURATIONUNIT">
+								<block type="durationunit" id="2^i@%:jGQx1+x3*@V1xD">
+									<field name="DURATIONUNIT_LIST">t</field>
+								</block>
+							</value>
+							<value name="PAYOUTTYPE">
+								<block type="payouttype" id="_M;ZJrbO;a+db7Wqi!Yy">
+									<field name="PAYOUTTYPE_LIST">payout</field>
+								</block>
+							</value>
+							<value name="CURRENCY">
+								<block type="currency" id="EW7%N_hz#`V@Cwe=,Gj2">
+									<field name="CURRENCY_LIST">USD</field>
+								</block>
+							</value>
+							<value name="AMOUNT">
+								<block type="math_arithmetic" id="rc=A3S4re@l3cc{+4?+}">
+									<field name="OP">ADD</field>
+									<value name="A">
+										<block type="math_number" id="@V(3V58Nke!z8r1}@q){">
+											<field name="NUM">5</field>
+										</block>
+									</value>
+									<value name="B">
+										<block type="math_number" id="%YfN:yXiirhgVZb~aSQ=">
+											<field name="NUM">4</field>
+										</block>
+									</value>
+								</block>
+							</value>
+						</block>
+					</statement>
+				</block>
+			</statement>
+		</block>
+		<block type="procedures_defnoreturn" id="KMdlA-n6Fy1}j!eO1zfw" x="541" y="18">
+			<field name="NAME">decide when to purchase with each tick</field>
+			<comment pinned="false" h="80" w="160">This block is called when a new tick is received, a purchase block is usually added to this block</comment>
+		</block>
+		<block type="procedures_defnoreturn" id="8B5!KMgiUka!,.i6BQSk" x="545" y="308">
+			<field name="NAME">decide what to do after the contract is finished</field>
+			<comment pinned="false" h="80" w="160">This block is called when a contract is finished, one can decide to trade again by adding a trade block to this block</comment>
+		</block>
 	</xml>
 
 	<script src="node_modules/binary-live-api/lib/binary-live-api.js"></script>
