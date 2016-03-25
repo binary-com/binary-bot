@@ -1,13 +1,15 @@
-Blockly.Blocks['login'] = {
+Blockly.Blocks['trade'] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField("Login");
+			.appendField("Trade");
 		this.appendValueInput("ACCOUNT")
 			.setCheck("Account")
-			.appendField("Account:");
+			.appendField("With Account:");
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
 			.appendField("Submarket");
+		this.setPreviousStatement(true);
+		this.setNextStatement(true);
 		this.setInputsInline(false);
 		this.setColour(60);
 	}

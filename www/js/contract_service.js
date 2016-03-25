@@ -116,8 +116,8 @@ var ContractService = function ContractService() {
 					price: tick.quote
 				});
 				historyData.shift();
+				updateTick();
 			}
-			updateTick();
 		};
 
 		var updateHistoryArray = function updateHistoryArray(historyArray, history) {

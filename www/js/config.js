@@ -5,6 +5,7 @@ Bot.config.lists = {
 	DURATIONUNIT: [["ticks", "t"], ["seconds", "s"], ["minutes", "m"], ["hours", "h"], ["days", "d"]],
 	PAYOUTTYPE: [["Payout", "payout"], ["Stake", "stake"]],
 	CURRENCY: [["USD", "USD"], ["EUR", "EUR"], ["GBP", "GBP"], ["AUD", "AUD"]],
+	UPDOWN: [['Up', '1'], ['Down', '2']],
 }; 
 
 Bot.config.opposites = {
