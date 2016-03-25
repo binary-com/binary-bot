@@ -11,3 +11,5 @@ Bot.config.lists = {
 Bot.config.opposites = {
 	UPDOWN: ['CALL', 'PUT'],
 };
+
+Bot.config.r_markets = ['r_25', 'r_50', 'r_75', 'r_100'];
