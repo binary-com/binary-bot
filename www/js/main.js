@@ -11,15 +11,13 @@
 	window.addEventListener('contract:finished', function(e){
 		var details = [
 			e.detail.statement, 
-			e.detail.barrier, 
 			e.detail.type, 
-			e.detail.result, 
 			e.detail.entrySpot, 
 			new Date(parseInt(e.detail.entrySpotTime + '000')).toLocaleTimeString(),
 			e.detail.exitSpot, 
 			new Date(parseInt(e.detail.exitSpotTime + '000')).toLocaleTimeString(),
 		];
-		Bot.finish(e.detail.statement, e.detail.result, details);
+		Bot.finish(e.detail.result, details);
 	});
 
 	window.addEventListener('tick:updated', function(e){

@@ -265,10 +265,24 @@
 			<block type="purchase"></block>
 			<category name="Markets" colour="345">
 				<category name="Random" colour="345">
-					<block type="r_100"></block>
-					<block type="r_25"></block>
-					<block type="r_50"></block>
-					<block type="r_75"></block>
+					<category name="Indices" colour="345">
+						<block type="r_100"></block>
+						<block type="r_25"></block>
+						<block type="r_50"></block>
+						<block type="r_75"></block>
+					</category>
+					<category name="Quotidians" colour="345">
+						<block type="rdbear"></block>
+						<block type="rdbull"></block>
+						<block type="rdmoon"></block>
+						<block type="rdsun"></block>
+					</category>
+					<category name="Nocturnes" colour="345">
+						<block type="rdmars"></block>
+						<block type="rdvenus"></block>
+						<block type="rdyang"></block>
+						<block type="rdyin"></block>
+					</category>
 				</category>
 			</category>
 			<category name="Conditions" colour="15">
@@ -368,7 +382,6 @@
 		</block>
 		<block type="procedures_defnoreturn" id="8B5!KMgiUka!,.i6BQSk" x="545" y="308">
 			<mutation>
-				<arg name="statement"></arg>
 				<arg name="result"></arg>
 				<arg name="details"></arg>
 			</mutation>
@@ -390,7 +403,7 @@
   <script src="www/js/blockly/definitions/trade.js"></script>
   <script src="www/js/blockly/definitions/account.js"></script>
   <script src="www/js/blockly/definitions/purchase.js"></script>
-  <script src="www/js/blockly/definitions/submarkets/random/r.js"></script>
+  <script src="www/js/blockly/definitions/submarkets/random/updown_markets.js"></script>
   <script src="www/js/blockly/definitions/conditions/updown.js"></script>
   <script src="www/js/blockly/definitions/options/durationunit.js"></script>
   <script src="www/js/blockly/definitions/options/payouttype.js"></script>
@@ -398,7 +411,7 @@
   <script src="www/js/blockly/code_generators/trade.js"></script>
   <script src="www/js/blockly/code_generators/account.js"></script>
   <script src="www/js/blockly/code_generators/purchase.js"></script>
-  <script src="www/js/blockly/code_generators/submarkets/random/r.js"></script>
+  <script src="www/js/blockly/code_generators/submarkets/random/updown_markets.js"></script>
   <script src="www/js/blockly/code_generators/conditions/updown.js"></script>
   <script src="www/js/blockly/code_generators/options/durationunit.js"></script>
   <script src="www/js/blockly/code_generators/options/payouttype.js"></script>
