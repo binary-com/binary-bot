@@ -10,6 +10,10 @@ Bot.config.updown_markets.forEach(function(market, index){
 			this.setInputsInline(true);
 			this.setPreviousStatement(true, "Submarket");
 			this.setColour(345);
+		},
+		onchange: function(ev){
+			var condition_type = this.childBlocks_[0].type;
+			Bot.server.purchase_choices = Bot.config.opposites[condition_type + '_names'];
 		}
 	};
 });

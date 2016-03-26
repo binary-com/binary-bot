@@ -19,6 +19,7 @@
     <button onclick="showXml()">Show XML</button>
     <button onclick="showCode()">Show JavaScript</button>
     <button onclick="runCode()">Run JavaScript</button>
+    <button onclick="addAccount()">Add Token</button>
   </p>
 
   <div id="blocklyDiv" style="height: 600px; width: 100%;"></div>
@@ -300,7 +301,7 @@
 		<block type="trade" id="0O_ggpWb#!XAx#C:KeL?" x="24" y="32">
 			<value name="ACCOUNT">
 				<block type="account" id="2xiFn+qJ*kb/E0t8{_|R">
-					<field name="ACCOUNT_LIST">X6PLvU3nx6JBaXo</field>
+					<field name="ACCOUNT_LIST"></field>
 					<value name="ACCOUNT">
 						<block type="math_arithmetic" id="itzN{3571.c~SnBDjRl{">
 							<field name="OP">ADD</field>
@@ -450,6 +451,11 @@
       } catch (e) {
         alert(e);
       }
+    }
+
+    function addAccount() {
+			var token = prompt('Please enter your token', '');
+			Bot.server.addAccount(token);
     }
   </script>
 

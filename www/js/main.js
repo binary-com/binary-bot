@@ -26,6 +26,28 @@
 		}
 	});
 
+	Bot.server.accounts = [['Select a token', '']];
+	Bot.server.purchase_choices = [['Click to select', '']];
+
+	Bot.server.addAccount = function addAccount(token){
+		var api = new LiveApi();
+		api.authorize(token).then(function(response){
+			Bot.server.accounts.push([response.authorize.loginid, token]);
+			api.disconnect()
+		}, function(reason){
+			api.disconnect()
+			alert(reason.message);
+		});
+	};
+
+	Bot.server.getAccounts = function getAccounts(){
+		return Bot.server.accounts;
+	};
+
+	Bot.server.getPurchaseChoices = function getPurchaseChoices(){
+		return Bot.server.purchase_choices;
+	};
+
 	Bot.server.portfolio = function portfolio(proposalContract, purchaseContract){
 		Bot.server.api.getPortfolio().then(function(portfolio){
 			var contractId = purchaseContract.buy.contract_id;
@@ -108,19 +130,16 @@
 			Bot.server.api.disconnect();
 		}
 		Bot.server.api = new LiveApi();
-		Bot.server.api.events.on('authorize', function (authorize) {
-			if ( authorize.hasOwnProperty('error') ) {
-				showError(authorize.error.message);
-			} else {
-				Bot.server.contractService = ContractService();	
-				Bot.contracts = [];
-				Bot.server.strategyFinished = true;
-				Bot.strategy = strategy;
-				Bot.finish = finish;
-				Bot.server.observeTicks();
-				callback();
-			}
+		Bot.server.api.authorize(token).then(function(authorize){
+			Bot.server.contractService = ContractService();	
+			Bot.contracts = [];
+			Bot.server.strategyFinished = true;
+			Bot.strategy = strategy;
+			Bot.finish = finish;
+			Bot.server.observeTicks();
+			callback();
+		}, function(reason){
+			showError(reason.message);
 		});
-		Bot.server.api.authorize(token);
 	};
 })();

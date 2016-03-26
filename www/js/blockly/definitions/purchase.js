@@ -6,7 +6,7 @@ Blockly.Blocks['purchase'] = {
 			.appendField("Purchase");
 		this.appendValueInput("PURCHASE")
 			.setCheck("Number")
-			.appendField(new Blockly.FieldDropdown(Bot.config.lists.PURCHASE), "PURCHASE_LIST");
+			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
 		this.setInputsInline(true);
 		this.setPreviousStatement(true);
 		this.setColour(180);
