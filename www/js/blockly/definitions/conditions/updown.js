@@ -6,9 +6,6 @@ Blockly.Blocks['updown'] = {
 		this.appendValueInput("DURATION")
 			.setCheck("Number")
 			.appendField("Duration:");
-		this.appendValueInput("DURATIONUNIT")
-			.setCheck("DurationUnit")
-			.appendField("Duration Unit:");
 		this.appendValueInput("PAYOUTTYPE")
 			.setCheck("PayoutType")
 			.appendField("Payout Type:");

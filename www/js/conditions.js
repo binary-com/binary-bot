@@ -8,7 +8,7 @@ Bot.conditions.updown = function updown(parameters){
 			'contract_type': option,
 			'currency': parameters.currency,
 			'duration': parameters.duration,
-			'duration_unit': parameters.durationunit,
+			'duration_unit': 't',
 		});
 	});
 
