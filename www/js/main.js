@@ -1,15 +1,19 @@
 (function() {
 	var showError = function showError(message){
+		Bot.notify(message, 'error');
 		console.log('Error: ' + message);
 	};
-	var log = function log(message) {
+	var log = function log(message, notify_type) {
+		if ( notify_type !== undefined ) {
+			Bot.notify(message, notify_type);
+		}
 		console.log(message);
 	}
 	var LiveApi = window['binary-live-api'].LiveApi;
 	Bot.server = {}; 
 
 	window.addEventListener('contract:finished', function(e){
-		var details = [
+		var detail_list = [
 			e.detail.statement, 
 			e.detail.type, 
 			e.detail.entrySpot, 
@@ -17,10 +21,11 @@
 			e.detail.exitSpot, 
 			new Date(parseInt(e.detail.exitSpotTime + '000')).toLocaleTimeString(),
 		];
-		if ( e.details.type.indexOf('DIGIT') > -1 ) {
-			details.push(e.details.barrier);
+		if ( e.detail.type.indexOf('DIGIT') > -1 ) {
+			detail_list.push(e.detail.barrier);
 		}
-		Bot.finish(e.detail.result, details);
+		Bot.finish(e.detail.result, detail_list);
+		log('Purchase was finished, result is: ' + e.detail.result, (e.detail.result === 'win')? 'success': 'error');
 	});
 
 	window.addEventListener('tick:updated', function(e){
@@ -29,21 +34,26 @@
 		}
 	});
 
-	Bot.server.accounts = [['No token added yet', '']];
+	Bot.server.accounts = [['Please add a token first', '']];
 	Bot.server.purchase_choices = [['Click to select', '']];
 
 	Bot.server.addAccount = function addAccount(token){
-		var api = new LiveApi();
-		api.authorize(token).then(function(response){
-			if ( Bot.server.accounts[0][1] === '' ) {
-				Bot.server.accounts = [];
-			}
-			Bot.server.accounts.push([response.authorize.loginid, token]);
-			api.disconnect()
-		}, function(reason){
-			api.disconnect()
-			alert(reason.message);
-		});
+		if ( token === '' ) {
+			showError('Token cannot be empty');
+		} else {
+			var api = new LiveApi();
+			api.authorize(token).then(function(response){
+				if ( Bot.server.accounts[0][1] === '' ) {
+					Bot.server.accounts = [];
+				}
+				Bot.server.accounts.push([response.authorize.loginid, token]);
+				api.disconnect()
+				log('Your token was added successfully', 'success');
+			}, function(reason){
+				api.disconnect()
+				showError('Authentication using token: ' + token + 'failed!');
+			});
+		}
 	};
 
 	Bot.server.getAccounts = function getAccounts(){
@@ -59,7 +69,7 @@
 			var contractId = purchaseContract.buy.contract_id;
 			portfolio.portfolio.contracts.forEach(function (contract) {
 				if (contract.contract_id == contractId) {
-					log('contract added: ' + contract.contract_id);
+					log('Processing the contract: ' + contract.contract_id);
 					Bot.server.contractService.addContract({
 						statement: contract.transaction_id,
 						startTime: contract.date_start + 1,
@@ -76,11 +86,11 @@
 
 	Bot.server.purchase = function purchase(index){
 		Bot.server.strategyFinished = true;
-		log('purchase called');
+		log('purchase was called');
 		index -= 1;
 		if ( Bot.contracts.length !== 0 && index >= 0 && index < Bot.contracts.length ) {
 			var proposalContract = Bot.contracts[index];
-			log('purchasing contract: ' + proposalContract.proposal.longcode);
+			log('purchasing contract: ' + proposalContract.proposal.longcode, 'info');
 			Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
 				Bot.server.portfolio(proposalContract, purchaseContract);
 			}, function(reason){
@@ -95,7 +105,7 @@
 			"count": Bot.server.contractService.getCapacity(),
 			"subscribe": 1,
 		}).then(function(value){
-			log('Request for history');
+			log('Request sent for history');
 		}, function(reason){
 			showError(reason.message);
 		});
@@ -124,6 +134,7 @@
 			log('contract added: ' + value.proposal.longcode);
 			if ( Bot.contracts.length === 1 ) {
 				Bot.server.strategyFinished = false;
+				log('Contracts are ready', 'success'); 
 			}
 			Bot.contracts.push(value);
 		}, function(reason){
@@ -132,6 +143,10 @@
 	};
 
 	Bot.server.init = function init(token, callback, strategy, finish){
+		if ( token === '' ) {
+			showError('No token is available to authenticate');
+			return;
+		}
 		if ( Bot.server.hasOwnProperty('api') ) {
 			Bot.server.api.disconnect();
 		}
@@ -145,7 +160,7 @@
 			Bot.server.observeTicks();
 			callback();
 		}, function(reason){
-			showError(reason.message);
+			showError('Authentication using token: ' + token + 'failed!');
 		});
 	};
 })();

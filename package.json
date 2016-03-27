@@ -10,6 +10,9 @@
   "license": "MIT",
   "dependencies": {
     "binary-live-api": "~12.0.0",
-    "blockly": "git+https://git@github.com/google/blockly.git"
-  }
+    "blockly": "git+https://git@github.com/google/blockly.git",
+    "jquery": "^2.2.2",
+    "notifyjs": "git+https://git@github.com/notifyjs/notifyjs.git"
+  },
+  "devDependencies": {}
 }

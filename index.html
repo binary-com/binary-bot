@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Generating JavaScript</title>
+	<link href="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.css" rel="stylesheet" />
   <style>
     body {
       background-color: #fff;
@@ -388,6 +389,9 @@
 	</xml>
 
 	<script src="node_modules/binary-live-api/lib/binary-live-api.js"></script>
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/notifyjs-browser/dist/notify.js"></script>
+	<script src="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.js"></script>
   <script src="node_modules/blockly/blockly_compressed.js"></script>
   <script src="node_modules/blockly/blocks_compressed.js"></script>
   <script src="node_modules/blockly/javascript_compressed.js"></script>
@@ -448,9 +452,10 @@
     }
 
     function addAccount() {
-			var token = prompt('Please enter your token', '');
+			var token = prompt('Please enter your token here:', '');
 			Bot.server.addAccount(token);
     }
+		Bot.notify = $.notify;
   </script>
 
 </body>
