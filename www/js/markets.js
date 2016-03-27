@@ -1,6 +1,6 @@
 Bot.markets = {};
 Bot.markets.random = {};
-Bot.config.updown_markets.forEach(function(market){
+Bot.config.ticktrade_markets.forEach(function(market){
 	Bot.markets.random[market] = function(options){
 		Bot.server.symbol = market.toUpperCase();
 

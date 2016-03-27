@@ -17,6 +17,9 @@
 			e.detail.exitSpot, 
 			new Date(parseInt(e.detail.exitSpotTime + '000')).toLocaleTimeString(),
 		];
+		if ( e.details.type.indexOf('DIGIT') > -1 ) {
+			details.push(e.details.barrier);
+		}
 		Bot.finish(e.detail.result, details);
 	});
 
@@ -26,12 +29,15 @@
 		}
 	});
 
-	Bot.server.accounts = [['Select a token', '']];
+	Bot.server.accounts = [['No token added yet', '']];
 	Bot.server.purchase_choices = [['Click to select', '']];
 
 	Bot.server.addAccount = function addAccount(token){
 		var api = new LiveApi();
 		api.authorize(token).then(function(response){
+			if ( Bot.server.accounts[0][1] === '' ) {
+				Bot.server.accounts = [];
+			}
 			Bot.server.accounts.push([response.authorize.loginid, token]);
 			api.disconnect()
 		}, function(reason){

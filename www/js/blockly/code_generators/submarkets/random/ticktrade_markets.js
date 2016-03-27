@@ -1,4 +1,4 @@
-Bot.config.updown_markets.forEach(function(market){
+Bot.config.ticktrade_markets.forEach(function(market){
 	Blockly.JavaScript[market] = function(block) {
 		var condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
 		var code = 'Bot.markets.random.' + market + '('+condition+')';
