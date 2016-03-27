@@ -48,9 +48,9 @@
 				}
 				Bot.server.accounts.push([response.authorize.loginid, token]);
 				api.disconnect()
-				var account_block = Bot.workspace.getBlockById('trade').getInputTargetBlock('ACCOUNT');
+				var account_block = Bot.workspace.getBlockById('trade');
 				if ( account_block !== null ) {
-					account_block.getField('ACCOUNT_LIST').setText(response.authorize.loginid);
+					account_block.getField('ACCOUNT_LIST').setValue(token);
 				}
 				log('Your token was added successfully', 'success');
 			}, function(reason){

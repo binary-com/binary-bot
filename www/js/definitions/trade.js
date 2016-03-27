@@ -3,14 +3,15 @@ Blockly.Blocks['trade'] = {
 		this.appendDummyInput()
 			.appendField("Trade");
 		this.appendValueInput("ACCOUNT")
-			.setCheck("Account")
-			.appendField("With Account:");
+			.setCheck("Number")
+			.appendField("With Account:")
+			.appendField(new Blockly.FieldDropdown(Bot.server.getAccounts), "ACCOUNT_LIST");
+		this.setInputsInline(true);
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
 			.appendField("Submarket");
 		this.setPreviousStatement(true);
 		this.setNextStatement(true);
-		this.setInputsInline(false);
 		this.setColour(60);
 	}
 };

@@ -260,8 +260,6 @@
 		<category name="Variable" id="Variables" colour="330" custom="VARIABLE"></category>
 		<category name="Functions" id="Functions" colour="290" custom="PROCEDURE"></category>
     <category name="Binary" colour="60">
-			<block type="account"></block>
-			<block type="purchase"></block>
 			<category name="Markets" colour="345">
 				<category name="Random" colour="345">
 					<category name="Indices" colour="345">
@@ -295,31 +293,15 @@
 				<block type="payouttype"></block>
 				<block type="currency"></block>
 			</category>
+			<category name="Tools" colour="180">
+				<block type="purchase"></block>
+			</category>
     </category>
   </xml>
 
 	<xml id="startBlocks" style="display: none">
 		<block type="trade" id="trade" x="24" y="32">
-			<value name="ACCOUNT">
-				<block type="account">
-					<field name="ACCOUNT_LIST"></field>
-					<value name="ACCOUNT">
-						<block type="math_arithmetic">
-							<field name="OP">ADD</field>
-							<value name="A">
-								<block type="math_number">
-									<field name="NUM">1</field>
-								</block>
-							</value>
-							<value name="B">
-								<block type="math_number">
-									<field name="NUM">0</field>
-								</block>
-							</value>
-						</block>
-					</value>
-				</block>
-			</value>
+			<field name="ACCOUNT_LIST"></field>
 			<statement name="SUBMARKET">
 				<block type="r_100">
 					<statement name="CONDITION">
@@ -400,20 +382,18 @@
   <script src="www/js/utils.js"></script>
   <script src="www/js/conditions.js"></script>
   <script src="www/js/markets.js"></script>
-  <script src="www/js/blockly/definitions/trade.js"></script>
-  <script src="www/js/blockly/definitions/account.js"></script>
-  <script src="www/js/blockly/definitions/purchase.js"></script>
-  <script src="www/js/blockly/definitions/submarkets/random/ticktrade_markets.js"></script>
-  <script src="www/js/blockly/definitions/conditions/ticktrades.js"></script>
-  <script src="www/js/blockly/definitions/options/payouttype.js"></script>
-  <script src="www/js/blockly/definitions/options/currency.js"></script>
-  <script src="www/js/blockly/code_generators/trade.js"></script>
-  <script src="www/js/blockly/code_generators/account.js"></script>
-  <script src="www/js/blockly/code_generators/purchase.js"></script>
-  <script src="www/js/blockly/code_generators/submarkets/random/ticktrade_markets.js"></script>
-  <script src="www/js/blockly/code_generators/conditions/ticktrades.js"></script>
-  <script src="www/js/blockly/code_generators/options/payouttype.js"></script>
-  <script src="www/js/blockly/code_generators/options/currency.js"></script>
+  <script src="www/js/definitions/trade.js"></script>
+  <script src="www/js/definitions/purchase.js"></script>
+  <script src="www/js/definitions/submarkets/random/ticktrade_markets.js"></script>
+  <script src="www/js/definitions/conditions/ticktrades.js"></script>
+  <script src="www/js/definitions/options/payouttype.js"></script>
+  <script src="www/js/definitions/options/currency.js"></script>
+  <script src="www/js/code_generators/trade.js"></script>
+  <script src="www/js/code_generators/purchase.js"></script>
+  <script src="www/js/code_generators/submarkets/random/ticktrade_markets.js"></script>
+  <script src="www/js/code_generators/conditions/ticktrades.js"></script>
+  <script src="www/js/code_generators/options/payouttype.js"></script>
+  <script src="www/js/code_generators/options/currency.js"></script>
   <script src="www/js/main.js"></script>
   <script>
     var workspace = Blockly.inject('blocklyDiv',
