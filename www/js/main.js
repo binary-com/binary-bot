@@ -48,13 +48,14 @@
 				}
 				Bot.server.accounts.push([response.authorize.loginid, token]);
 				api.disconnect()
-				if ( Bot.ui.hasOwnProperty('account_dropdown') ){
-					Bot.ui.account_dropdown.setValue(token);
+				var account_block = Bot.workspace.getBlockById('trade').getInputTargetBlock('ACCOUNT');
+				if ( account_block !== null ) {
+					account_block.getField('ACCOUNT_LIST').setText(response.authorize.loginid);
 				}
 				log('Your token was added successfully', 'success');
 			}, function(reason){
 				api.disconnect()
-				showError('Authentication using token: ' + token + 'failed!');
+				showError('Authentication using token: ' + token + ' failed!');
 			});
 		}
 	};

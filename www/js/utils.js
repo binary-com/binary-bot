@@ -1,4 +1,3 @@
-Bot.ui = {};
 Bot.utils = {};
 Bot.utils.chooseByIndex = function chooseByIndex(caps_name, index, list){
 	var list = ( typeof list === 'undefined' ) ? Bot.config.lists[caps_name] : list;
