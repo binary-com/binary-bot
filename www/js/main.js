@@ -48,6 +48,9 @@
 				}
 				Bot.server.accounts.push([response.authorize.loginid, token]);
 				api.disconnect()
+				if ( Bot.ui.hasOwnProperty('account_dropdown') ){
+					Bot.ui.account_dropdown.setValue(token);
+				}
 				log('Your token was added successfully', 'success');
 			}, function(reason){
 				api.disconnect()

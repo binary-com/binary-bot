@@ -19,6 +19,10 @@ Bot.config.ticktrade_markets.forEach(function(market, index){
 				opposites.forEach(function(option, index){
 					Bot.server.purchase_choices.push([option[Object.keys(option)[0]], (index + 1).toString()]);
 				});
+				if ( Bot.ui.hasOwnProperty('purchase_dropdown') ) {
+					Bot.ui.purchase_dropdown.setValue('2');
+					Bot.ui.purchase_dropdown.setValue('1');
+				}
 			}
 		}
 	};
