@@ -8,4 +8,4 @@ var tokenList = Bot.utils.storageManager.getTokenList();
 if ( tokenList.length !== 0 ) {
 	Bot.workspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenList[0].token);
 }
-
+Bot.utils.addPurchaseOptions();

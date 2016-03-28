@@ -13,6 +13,37 @@ Bot.utils.chooseByIndex = function chooseByIndex(caps_name, index, list){
 	}
 };
 
+Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
+	var firstOption = {};
+	var strategy = Blockly.getMainWorkspace().getBlockById('strategy');
+	var trade = Blockly.getMainWorkspace().getBlockById('trade');
+	if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type !== null) {
+		var condition_type = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
+		var opposites = Bot.config.opposites[condition_type.toUpperCase()];
+		Bot.server.purchase_choices = [];
+		opposites.forEach(function(option, index){
+			if ( index === 0 ) {
+				firstOption = {
+					condition: Object.keys(option)[0],
+					name: option[Object.keys(option)[0]],
+				};
+			}
+			Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+		});
+		if ( strategy !== null ) {
+			var purchases = [];
+			strategy.getDescendants().forEach(function(block){
+				if ( block.type === 'purchase' ) {
+					purchases.push(block);
+				}
+			});
+			purchases.forEach(function(purchase){
+				purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
+			});
+		}
+	}
+};
+
 var StorageManager = function StorageManager(){
 	var getTokenList = function getTokenList(){
 		if ( !localStorage.hasOwnProperty('tokenList') ) {

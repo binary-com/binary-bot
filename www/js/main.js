@@ -24,8 +24,8 @@
 		if ( e.detail.type.indexOf('DIGIT') > -1 || e.detail.type.indexOf('ASIAN') > -1) {
 			detail_list.push(e.detail.barrier);
 		}
-		Bot.finish(e.detail.result, detail_list);
 		log('Purchase was finished, result is: ' + e.detail.result, (e.detail.result === 'win')? 'success': 'error');
+		Bot.finish(e.detail.result, detail_list);
 	});
 
 	window.addEventListener('tick:updated', function(e){
@@ -98,12 +98,11 @@
 		});
 	};
 
-	Bot.server.purchase = function purchase(index){
+	Bot.server.purchase = function purchase(option){
 		Bot.server.strategyFinished = true;
 		log('purchase was called');
-		index -= 1;
-		if ( Bot.contracts.length !== 0 && index >= 0 && index < Bot.contracts.length ) {
-			var proposalContract = Bot.contracts[index];
+		if ( Bot.contracts.length !== 0 ) {
+			var proposalContract = (option === Bot.contracts[1].echo_req.contract_type)? Bot.contracts[1] : Bot.contracts[0];
 			log('purchasing contract: ' + proposalContract.proposal.longcode, 'info');
 			Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
 				Bot.server.portfolio(proposalContract, purchaseContract);
