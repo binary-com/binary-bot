@@ -306,7 +306,7 @@
 			<statement name="SUBMARKET">
 				<block type="r_100">
 					<statement name="CONDITION">
-						<block type="updown">
+						<block type="asian">
 							<value name="DURATION">
 								<block type="math_arithmetic">
 									<field name="OP">ADD</field>
@@ -359,6 +359,11 @@
 			</mutation>
 			<field name="NAME">decide when to purchase with each tick</field>
 			<comment pinned="false" h="80" w="160">This block is called when a new tick is received, a purchase block is usually added to this block</comment>
+			<statement name="STACK">
+				<block type="purchase" id="4-iE}aS)|5;ceIbjS9CU">
+					<field name="PURCHASE_LIST">1</field>
+				</block>
+			</statement>
 		</block>
 		<block type="procedures_defnoreturn" id="finish" x="545" y="308">
 			<mutation>
@@ -367,6 +372,18 @@
 			</mutation>
 			<field name="NAME">decide what to do after the contract is finished</field>
 			<comment pinned="false" h="80" w="160">This block is called when a contract is finished, one can decide to trade again by adding a trade block to this block</comment>
+			<statement name="STACK">
+				<block type="text_print" id="1E!RxT0N%;FMq*FC/Yik">
+					<value name="TEXT">
+						<shadow type="text" id=",*wpu;y1}=BA*gG-;[ob">
+							<field name="TEXT">abc</field>
+						</shadow>
+						<block type="variables_get" id="]7H*^I{k!@5[b6wBI~qG">
+							<field name="VAR">details</field>
+						</block>
+					</value>
+				</block>
+			</statement>
 		</block>
 	</xml>
 

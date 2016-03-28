@@ -21,7 +21,7 @@
 			e.detail.exitSpot, 
 			new Date(parseInt(e.detail.exitSpotTime + '000')).toLocaleTimeString(),
 		];
-		if ( e.detail.type.indexOf('DIGIT') > -1 ) {
+		if ( e.detail.type.indexOf('DIGIT') > -1 || e.detail.type.indexOf('ASIAN') > -1) {
 			detail_list.push(e.detail.barrier);
 		}
 		Bot.finish(e.detail.result, detail_list);

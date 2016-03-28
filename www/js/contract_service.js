@@ -79,9 +79,21 @@ var ContractService = function ContractService() {
 			DIGITOVER: function condition(barrier, price) {
 				return utils.lastDigit(price) > parseInt(barrier);
 			},
+			ASIANU: function condition(barrier, price) {
+				return parseFloat(price) > parseFloat(barrier);
+			},
+			ASIAND: function condition(barrier, price) {
+				return parseFloat(price) < parseFloat(barrier);
+			},
 		},
 		digitTrade: function digitTrade(contract) {
 			if (contract.type.indexOf('DIGIT') === 0) {
+				return true;
+			}
+			return false;
+		},
+		asianTrade: function asianTrade(contract) {
+			if (contract.type.indexOf('ASIAN') === 0) {
 				return true;
 			}
 			return false;
@@ -255,7 +267,7 @@ var ContractService = function ContractService() {
 		var addSpots = function addSpots(index, tickTime, tickPrice) {
 			if (isEntrySpot(tickTime) || betweenExistingSpots(tickTime)) {
 				if (isEntrySpot(tickTime)) {
-					utils.setObjValue(contract, 'barrier', tickPrice, !utils.digitTrade(contract));
+					utils.setObjValue(contract, 'barrier', tickPrice, !utils.digitTrade(contract) && !utils.asianTrade(contract));
 					utils.setObjValue(contract, 'entrySpotTime', tickTime, !hasEntrySpot());
 				} else if (isExitSpot(tickTime, index)) {
 					utils.setObjValue(contract, 'exitSpotTime', tickTime, !hasExitSpot());
@@ -270,6 +282,18 @@ var ContractService = function ContractService() {
 		var addRegions = function addRegions(lastTime, lastPrice) {
 			if (hasEntrySpot()) {
 				if (betweenExistingSpots(lastTime)) {
+					if (utils.asianTrade(contract)) {
+						console.log(contract.barrier, lastPrice);
+						if ( typeof contract.seenTicksCount === 'undefined' ){
+							contract.seenTicksCount = 0;	
+						}
+						if ( contract.seenTicksCount === 0 ) {
+							contract.barrier = parseFloat(lastPrice);
+						} else {
+							contract.barrier = ( parseFloat(lastPrice) + parseFloat(contract.barrier) * contract.seenTicksCount ) / ( contract.seenTicksCount + 1 )
+						}
+						contract.seenTicksCount += 1;
+					}	
 					if (utils.conditions[contract.type](contract.barrier, lastPrice)) {
 						contract.result = 'win';
 					} else {
@@ -342,7 +366,7 @@ var ContractService = function ContractService() {
 
 	var addContract = function addContract(_contract) {
 		if (_contract) {
-			if (utils.digitTrade(_contract)) {
+			if (utils.digitTrade(_contract) || utils.asianTrade(_contract)) {
 				_contract.duration -= 1;
 			}
 			contractCtrls.push(ContractCtrl(_contract));
