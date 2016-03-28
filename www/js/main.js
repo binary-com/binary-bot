@@ -175,7 +175,7 @@
 			callback();
 		}, function(reason){
 			Bot.utils.storageManager.removeToken(token);
-			showError('Authentication using token: ' + token + 'failed!');
+			showError('Authentication using token: ' + token + ' failed!');
 		});
 	};
 })();
