@@ -283,7 +283,6 @@ var ContractService = function ContractService() {
 			if (hasEntrySpot()) {
 				if (betweenExistingSpots(lastTime)) {
 					if (utils.asianTrade(contract)) {
-						console.log(contract.barrier, lastPrice);
 						if ( typeof contract.seenTicksCount === 'undefined' ){
 							contract.seenTicksCount = 0;	
 						}
@@ -307,6 +306,9 @@ var ContractService = function ContractService() {
 							}
 						});
 						if ( broadcastable ) {
+							if (utils.asianTrade(contract)) {
+							contract.barrier = contract.barrier.toFixed(3);
+							}
 							utils.broadcast("contract:finished", contract);
 						}
 					}
