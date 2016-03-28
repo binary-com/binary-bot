@@ -34,7 +34,15 @@
 		}
 	});
 
-	Bot.server.accounts = [['Please add a token first', '']];
+	var tokenList = Bot.utils.storageManager.getTokenList();
+	if ( tokenList.length === 0 ) {
+		Bot.server.accounts = [['Please add a token first', '']];
+	} else {
+		Bot.server.accounts = [];
+		tokenList.forEach(function(tokenInfo){
+			Bot.server.accounts.push([tokenInfo.account_name, tokenInfo.token]);
+		});
+	}
 	Bot.server.purchase_choices = [['Click to select', '']];
 
 	Bot.server.addAccount = function addAccount(token){
@@ -48,6 +56,7 @@
 				}
 				Bot.server.accounts.push([response.authorize.loginid, token]);
 				api.disconnect()
+				Bot.utils.storageManager.addToken(token, response.authorize.loginid);
 				var account_block = Bot.workspace.getBlockById('trade');
 				if ( account_block !== null ) {
 					account_block.getField('ACCOUNT_LIST').setValue(token);
@@ -55,6 +64,7 @@
 				log('Your token was added successfully', 'success');
 			}, function(reason){
 				api.disconnect()
+				Bot.utils.storageManager.removeToken(token);
 				showError('Authentication using token: ' + token + ' failed!');
 			});
 		}
@@ -164,6 +174,7 @@
 			Bot.server.observeTicks();
 			callback();
 		}, function(reason){
+			Bot.utils.storageManager.removeToken(token);
 			showError('Authentication using token: ' + token + 'failed!');
 		});
 	};

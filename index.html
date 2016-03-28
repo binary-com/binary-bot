@@ -434,12 +434,8 @@
 			var token = prompt('Please enter your token here:', '');
 			Bot.server.addAccount(token);
     }
-		Bot.notify = $.notify;
-		Blockly.getMainWorkspace().getBlockById('trade').setDeletable(false);
-		Blockly.getMainWorkspace().getBlockById('strategy').setDeletable(false);
-		Blockly.getMainWorkspace().getBlockById('finish').setDeletable(false);
-		Bot.workspace = workspace;
   </script>
+  <script src="www/js/after.js"></script>
 
 </body>
 </html>
