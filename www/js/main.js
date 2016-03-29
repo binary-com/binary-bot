@@ -57,7 +57,7 @@
 				Bot.server.accounts.push([response.authorize.loginid, token]);
 				api.disconnect()
 				Bot.utils.storageManager.addToken(token, response.authorize.loginid);
-				var account_block = Bot.workspace.getBlockById('trade');
+				var account_block = Blockly.getMainWorkspace().getBlockById('trade');
 				if ( account_block !== null ) {
 					account_block.getField('ACCOUNT_LIST').setValue(token);
 				}

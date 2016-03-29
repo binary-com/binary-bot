@@ -13,6 +13,33 @@ var showXml = function showXml() {
 
 var saveXml = function saveXml() {
 	var xmlDom = Blockly.Xml.workspaceToDom(workspace);
+	Array.prototype.slice.apply(xmlDom.getElementsByTagName('field')).forEach(function(field){
+		if ( field.getAttribute('name') === 'ACCOUNT_LIST' ) {
+			field.childNodes[0].nodeValue = '';
+		}
+	});
+	Array.prototype.slice.apply(xmlDom.getElementsByTagName('block')).forEach(function(block){
+		switch(block.getAttribute('type')){
+			case 'trade':
+				block.setAttribute('id', 'trade');
+				break;
+			case 'procedures_defnoreturn':
+				Array.prototype.slice.apply(block.childNodes).forEach(function(childNode){
+					if ( childNode.getAttribute('name') === 'NAME' ) {
+						if ( childNode.childNodes[0].nodeValue.indexOf('each tick') > -1 ) {
+							block.setAttribute('id', 'strategy');
+						} else if ( childNode.childNodes[0].nodeValue.indexOf('finished') > -1 ) {
+							block.setAttribute('id', 'finish');
+						}
+					}
+				});
+				break;
+			default:
+				block.removeAttribute('id');
+				break;
+		}
+	});
+	xmlDom.getElementsByTagName('field')[0].childNodes[0].nodeValue = ''
 	var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
 	var filename = 'binary-bot' + parseInt(new Date()
 		.getTime() / 1000) + '.xml';
@@ -78,8 +105,8 @@ var readFile = function readFile(f) {
 				Bot.utils.addPurchaseOptions();
 				var tokenList = Bot.utils.storageManager.getTokenList();
 				if ( tokenList.length !== 0 ) {
-					Bot.workspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenList[0].token);
-					Bot.workspace.getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
+					Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenList[0].token);
+					Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
 				}
 				$.notify('Blocks are loaded successfully', 'success');
 			} catch(e){
