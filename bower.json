@@ -1,0 +1,22 @@
+{
+  "name": "binary-bot",
+  "description": "Visual automation for binary.com",
+  "main": "index.html",
+  "authors": [
+    "Amin Marashi"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/binary-com/binary-bot",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "file-saver.js": "^1.20150507.2"
+  }
+}

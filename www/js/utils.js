@@ -17,7 +17,7 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 	var firstOption = {};
 	var strategy = Blockly.getMainWorkspace().getBlockById('strategy');
 	var trade = Blockly.getMainWorkspace().getBlockById('trade');
-	if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type !== null) {
+	if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
 		var condition_type = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
 		var opposites = Bot.config.opposites[condition_type.toUpperCase()];
 		Bot.server.purchase_choices = [];
@@ -39,6 +39,7 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 			});
 			purchases.forEach(function(purchase){
 				purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
+				purchase.getField('PURCHASE_LIST').setText(firstOption.name);
 			});
 		}
 	}

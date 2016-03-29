@@ -156,6 +156,7 @@
 	};
 
 	Bot.server.init = function init(token, callback, strategy, finish){
+		log('Processing the trade...', 'info');
 		if ( token === '' ) {
 			showError('No token is available to authenticate');
 			return;
@@ -164,7 +165,8 @@
 			Bot.server.api.disconnect();
 		}
 		Bot.server.api = new LiveApi();
-		Bot.server.api.authorize(token).then(function(authorize){
+		Bot.server.api.authorize(token).then(function(response){
+			log('Authenticated using token: ' + token, 'success');
 			Bot.server.contractService = ContractService();	
 			Bot.contracts = [];
 			Bot.server.strategyFinished = true;

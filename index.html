@@ -16,12 +16,16 @@
   </style>
 </head>
 <body>
-  <p>
-    <button onclick="runCode()">Run</button>
-    <button onclick="addAccount()">Add Token</button>
-  </p>
+	<div id="drop_zone">
+		<p>
+			<button onclick="runCode()">Run</button>
+			<button onclick="addAccount()">Add Token</button>
+			<button onclick="saveXml()">Save Blocks</button>
+			<input type="file" id="files" name="files[]"/ multiple>
+		</p>
 
-  <div id="blocklyDiv" style="height: 600px; width: 100%;"></div>
+		<div id="blocklyDiv" style="height: 600px; width: 100%;"></div>
+	</div>
 
   <xml id="toolbox" style="display: none">
     <category name="Logic" colour="210">
@@ -302,88 +306,22 @@
 
 	<xml id="startBlocks" style="display: none">
 		<block type="trade" id="trade" x="24" y="32">
-			<field name="ACCOUNT_LIST"></field>
-			<statement name="SUBMARKET">
-				<block type="r_100">
-					<statement name="CONDITION">
-						<block type="asian">
-							<value name="DURATION">
-								<block type="math_arithmetic">
-									<field name="OP">ADD</field>
-									<value name="A">
-										<block type="math_number">
-											<field name="NUM">1</field>
-										</block>
-									</value>
-									<value name="B">
-										<block type="math_number">
-											<field name="NUM">4</field>
-										</block>
-									</value>
-								</block>
-							</value>
-							<value name="PAYOUTTYPE">
-								<block type="payouttype">
-									<field name="PAYOUTTYPE_LIST">payout</field>
-								</block>
-							</value>
-							<value name="CURRENCY">
-								<block type="currency">
-									<field name="CURRENCY_LIST">USD</field>
-								</block>
-							</value>
-							<value name="AMOUNT">
-								<block type="math_arithmetic">
-									<field name="OP">ADD</field>
-									<value name="A">
-										<block type="math_number">
-											<field name="NUM">5</field>
-										</block>
-									</value>
-									<value name="B">
-										<block type="math_number" id="%YfN:yXiirhgVZb~aSQ=">
-											<field name="NUM">4</field>
-										</block>
-									</value>
-								</block>
-							</value>
-						</block>
-					</statement>
-				</block>
-			</statement>
 		</block>
-		<block type="procedures_defnoreturn" id="strategy" x="541" y="18">
+		<block type="procedures_defnoreturn" id="strategy" x="550" y="10">
 			<mutation>
 				<arg name="tick"></arg>
 				<arg name="direction"></arg>
 			</mutation>
 			<field name="NAME">decide when to purchase with each tick</field>
 			<comment pinned="false" h="80" w="160">This block is called when a new tick is received, a purchase block is usually added to this block</comment>
-			<statement name="STACK">
-				<block type="purchase" id="4-iE}aS)|5;ceIbjS9CU">
-					<field name="PURCHASE_LIST"></field>
-				</block>
-			</statement>
 		</block>
-		<block type="procedures_defnoreturn" id="finish" x="545" y="308">
+		<block type="procedures_defnoreturn" id="finish" x="550" y="210">
 			<mutation>
 				<arg name="result"></arg>
 				<arg name="details"></arg>
 			</mutation>
 			<field name="NAME">decide what to do after the contract is finished</field>
 			<comment pinned="false" h="80" w="160">This block is called when a contract is finished, one can decide to trade again by adding a trade block to this block</comment>
-			<statement name="STACK">
-				<block type="text_print" id="1E!RxT0N%;FMq*FC/Yik">
-					<value name="TEXT">
-						<shadow type="text" id=",*wpu;y1}=BA*gG-;[ob">
-							<field name="TEXT">abc</field>
-						</shadow>
-						<block type="variables_get" id="]7H*^I{k!@5[b6wBI~qG">
-							<field name="VAR">details</field>
-						</block>
-					</value>
-				</block>
-			</statement>
 		</block>
 	</xml>
 
@@ -395,6 +333,7 @@
   <script src="node_modules/blockly/blocks_compressed.js"></script>
   <script src="node_modules/blockly/javascript_compressed.js"></script>
   <script src="node_modules/blockly/msg/js/en.js"></script>
+  <script src="bower_components/file-saver.js/FileSaver.js"></script>
   <script src="www/js/contract_service.js"></script>
   <script src="www/js/config.js"></script>
   <script src="www/js/utils.js"></script>
@@ -415,45 +354,7 @@
   <script src="www/js/code_generators/options/payouttype.js"></script>
   <script src="www/js/code_generators/options/currency.js"></script>
   <script src="www/js/main.js"></script>
-  <script>
-    var workspace = Blockly.inject('blocklyDiv',
-        {media: 'node_modules/blockly/media/',
-         toolbox: document.getElementById('toolbox')});
-    Blockly.Xml.domToWorkspace(workspace,
-        document.getElementById('startBlocks'));
-
-    function showXml() {
-			var xmlDom = Blockly.Xml.workspaceToDom(workspace);
-			var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-			alert(xmlText);
-    }
-
-    function showCode() {
-      // Generate JavaScript code and display it.
-      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-      var code = Blockly.JavaScript.workspaceToCode(workspace);
-      alert(code);
-			
-    }
-
-    function runCode() {
-      // Generate JavaScript code and run it.
-      window.LoopTrap = 1000;
-      Blockly.JavaScript.INFINITE_LOOP_TRAP =
-          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-      var code = Blockly.JavaScript.workspaceToCode(workspace);
-      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-      try {
-        eval(code);
-      } catch (e) {
-        alert(e);
-      }
-    }
-
-    function addAccount() {
-			var token = prompt('Please enter your token here:', '');
-			Bot.server.addAccount(token);
-    }
+	<script src="www/js/init.js"></script>
   </script>
   <script src="www/js/after.js"></script>
 
