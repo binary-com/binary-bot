@@ -48,7 +48,7 @@
 	Bot.server.addAccount = function addAccount(token){
 		if ( token === '' ) {
 			showError('Token cannot be empty');
-		} else {
+		} else if ( token !== null ) {
 			var api = new LiveApi();
 			api.authorize(token).then(function(response){
 				if ( Bot.server.accounts[0][1] === '' ) {

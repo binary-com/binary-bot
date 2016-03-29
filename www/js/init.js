@@ -71,9 +71,9 @@ var readFile = function readFile(f) {
 	reader = new FileReader();
 	reader.onload = (function (theFile) {
 		return function (e) {
-			Blockly.mainWorkspace.clear();
-			var xml = Blockly.Xml.textToDom(e.target.result);
 			try {
+				Blockly.mainWorkspace.clear();
+				var xml = Blockly.Xml.textToDom(e.target.result);
 				Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 				Bot.utils.addPurchaseOptions();
 				var tokenList = Bot.utils.storageManager.getTokenList();
