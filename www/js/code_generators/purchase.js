@@ -1,4 +1,7 @@
 Blockly.JavaScript['purchase'] = function(block) {
+	if ( this.parentBlock_ === null ) {
+		return '';
+	}
 	var purchase_list = block.getFieldValue('PURCHASE_LIST');
 	var index = eval(Blockly.JavaScript.valueToCode(block, 'PURCHASE', Blockly.JavaScript.ORDER_ATOMIC));
 	var selectedByIndex = Bot.utils.chooseByIndex('PURCHASE', index, Bot.server.purchase_choices);

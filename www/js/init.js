@@ -51,23 +51,27 @@ var saveXml = function saveXml() {
 
 var showCode = function showCode() {
 	// Generate JavaScript code and display it.
-	Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-	var code = Blockly.JavaScript.workspaceToCode(workspace);
-	alert(code);
+	try {
+		Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+		var code = Blockly.JavaScript.workspaceToCode(workspace);
+		alert(code);
+	} catch(e) {
+		Bot.utils.showError(e.message);
+	}
 
 };
 
 var runCode = function runCode() {
 	// Generate JavaScript code and run it.
-	window.LoopTrap = 1000;
-	Blockly.JavaScript.INFINITE_LOOP_TRAP =
-		'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-	var code = Blockly.JavaScript.workspaceToCode(workspace);
-	Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 	try {
+		window.LoopTrap = 1000;
+		Blockly.JavaScript.INFINITE_LOOP_TRAP =
+			'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+		var code = Blockly.JavaScript.workspaceToCode(workspace);
+		Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 		eval(code);
 	} catch (e) {
-		$.notify(e, 'error');
+		Bot.utils.showError(e.message);
 	}
 };
 
@@ -90,7 +94,7 @@ var handleFileSelect = function handleFileSelect(e) {
 	if (file.type.match('text/xml')) {
 		readFile(file);
 	} else {
-		$.notify('File: ' + file.name + ' is not supported.', 'info');
+		Bot.utils.log('File: ' + file.name + ' is not supported.', 'info');
 	}
 };
 
@@ -108,9 +112,9 @@ var readFile = function readFile(f) {
 					Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenList[0].token);
 					Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
 				}
-				$.notify('Blocks are loaded successfully', 'success');
+				Bot.utils.log('Blocks are loaded successfully', 'success');
 			} catch(e){
-				$.notify(e.message, 'error');
+				Bot.utils.showError(e.message);
 			}
 		};
 	})(f);

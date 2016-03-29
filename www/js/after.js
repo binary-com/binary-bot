@@ -1,4 +1,3 @@
-Bot.notify = $.notify;
 Blockly.getMainWorkspace().getBlockById('trade').setDeletable(false);
 Blockly.getMainWorkspace().getBlockById('strategy').setDeletable(false);
 Blockly.getMainWorkspace().getBlockById('strategy').getInput('STACK').setCheck('Purchase');

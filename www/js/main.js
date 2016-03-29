@@ -1,14 +1,6 @@
 (function() {
-	var showError = function showError(message){
-		Bot.notify(message, 'error');
-		console.log('Error: ' + message);
-	};
-	var log = function log(message, notify_type) {
-		if ( notify_type !== undefined ) {
-			Bot.notify(message, notify_type);
-		}
-		console.log(message);
-	}
+	var showError = Bot.utils.showError;
+	var log = Bot.utils.log;
 	var LiveApi = window['binary-live-api'].LiveApi;
 	Bot.server = {}; 
 

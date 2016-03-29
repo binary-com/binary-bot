@@ -1,4 +1,14 @@
 Bot.utils = {};
+Bot.utils.showError = function showError(message){
+	$.notify(message, 'error');
+	console.log('Error: ' + message);
+};
+Bot.utils.log = function log(message, notify_type) {
+	if ( notify_type !== undefined ) {
+		$.notify(message, notify_type);
+	}
+	console.log(message);
+}
 Bot.utils.chooseByIndex = function chooseByIndex(caps_name, index, list){
 	var list = ( typeof list === 'undefined' ) ? Bot.config.lists[caps_name] : list;
 	var index = parseInt(index);
