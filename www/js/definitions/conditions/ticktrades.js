@@ -1,4 +1,4 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#s2hdag
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#cur8so
 
 Object.keys(Bot.config.opposites).forEach(function(opposites){
 	Blockly.Blocks[opposites.toLowerCase()] = {
@@ -15,12 +15,12 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 			this.appendValueInput("DURATION")
 				.setCheck("Number")
 				.appendField("Ticks:");
-			this.appendValueInput("PAYOUTTYPE")
-				.setCheck("PayoutType")
-				.appendField("Payout Type:");
-			this.appendValueInput("CURRENCY")
-				.setCheck("Currency")
-				.appendField("Currency:");
+			this.appendDummyInput()
+				.appendField("Payout:")
+				.appendField(new Blockly.FieldDropdown(Bot.config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
+			this.appendDummyInput()
+				.appendField("Currency:")
+				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CURRENCY), "CURRENCY_LIST");
 			this.appendValueInput("AMOUNT")
 				.setCheck("Number")
 				.appendField("Amount:");

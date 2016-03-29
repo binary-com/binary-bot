@@ -18,10 +18,10 @@
 <body>
 	<div id="drop_zone">
 		<p>
-			<button onclick="runCode()">Run</button>
 			<button onclick="addAccount()">Add Token</button>
-			<button onclick="saveXml()">Save Blocks</button>
 			<input type="file" id="files" accept=".xml">
+			<button onclick="runCode()">Run</button>
+			<button onclick="saveXml()">Save Blocks</button>
 		</p>
 
 		<div id="blocklyDiv" style="height: 600px; width: 100%;"></div>
@@ -293,10 +293,6 @@
 				<block type="evenodd"></block>
 				<block type="overunder"></block>
 			</category>
-			<category name="Options" colour="300">
-				<block type="payouttype"></block>
-				<block type="currency"></block>
-			</category>
 			<category name="Tools" colour="180">
 				<block type="purchase"></block>
 				<block type="trade_again"></block>
@@ -344,15 +340,11 @@
   <script src="www/js/definitions/purchase.js"></script>
   <script src="www/js/definitions/submarkets/random/ticktrade_markets.js"></script>
   <script src="www/js/definitions/conditions/ticktrades.js"></script>
-  <script src="www/js/definitions/options/payouttype.js"></script>
-  <script src="www/js/definitions/options/currency.js"></script>
   <script src="www/js/code_generators/trade.js"></script>
   <script src="www/js/code_generators/trade_again.js"></script>
   <script src="www/js/code_generators/purchase.js"></script>
   <script src="www/js/code_generators/submarkets/random/ticktrade_markets.js"></script>
   <script src="www/js/code_generators/conditions/ticktrades.js"></script>
-  <script src="www/js/code_generators/options/payouttype.js"></script>
-  <script src="www/js/code_generators/options/currency.js"></script>
   <script src="www/js/main.js"></script>
 	<script src="www/js/init.js"></script>
   </script>
