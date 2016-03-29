@@ -26,37 +26,43 @@
 		}
 	});
 
-	var tokenList = Bot.utils.storageManager.getTokenList();
-	if ( tokenList.length === 0 ) {
-		Bot.server.accounts = [['Please add a token first', '']];
-	} else {
-		Bot.server.accounts = [];
-		tokenList.forEach(function(tokenInfo){
-			Bot.server.accounts.push([tokenInfo.account_name, tokenInfo.token]);
-		});
-	}
+	Bot.server.accounts = [['Please add a token first', '']];
 	Bot.server.purchase_choices = [['Click to select', '']];
 
+	var findToken = function findToken(token){
+		var index = -1;
+		Bot.server.accounts.forEach(function(tokenInfo, i){
+			if ( tokenInfo[1] === token ) {
+				index = i;
+			}	
+		});	
+		return index;
+	};
+
+	var removeToken = function removeToken(token){
+		var index = findToken(token);
+		Bot.utils.storageManager.removeToken(token);
+		Bot.utils.updateTokenList();
+	};
+
 	Bot.server.addAccount = function addAccount(token){
+		var index = findToken(token);
+		if ( index >= 0 ) {
+			log('Token already added.', 'info');
+			return;
+		}
 		if ( token === '' ) {
 			showError('Token cannot be empty');
 		} else if ( token !== null ) {
 			var api = new LiveApi();
 			api.authorize(token).then(function(response){
-				if ( Bot.server.accounts[0][1] === '' ) {
-					Bot.server.accounts = [];
-				}
-				Bot.server.accounts.push([response.authorize.loginid, token]);
-				api.disconnect()
+				api.disconnect();
 				Bot.utils.storageManager.addToken(token, response.authorize.loginid);
-				var account_block = Blockly.getMainWorkspace().getBlockById('trade');
-				if ( account_block !== null ) {
-					account_block.getField('ACCOUNT_LIST').setValue(token);
-				}
+				Bot.utils.updateTokenList(token);
 				log('Your token was added successfully', 'success');
 			}, function(reason){
-				api.disconnect()
-				Bot.utils.storageManager.removeToken(token);
+				api.disconnect();
+				removeToken(token);
 				showError('Authentication using token: ' + token + ' failed!');
 			});
 		}
@@ -167,7 +173,7 @@
 			Bot.server.observeTicks();
 			callback();
 		}, function(reason){
-			Bot.utils.storageManager.removeToken(token);
+			removeToken(token);
 			showError('Authentication using token: ' + token + ' failed!');
 		});
 	};

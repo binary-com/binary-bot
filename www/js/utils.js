@@ -35,35 +35,27 @@ Bot.utils.findTopParentBlock = function findTopParentBlock(block) {
 	return block;
 };
 
-Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
-	var firstOption = {};
-	var strategy = Blockly.getMainWorkspace().getBlockById('strategy');
-	var trade = Blockly.getMainWorkspace().getBlockById('trade');
-	if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
-		var condition_type = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
-		var opposites = Bot.config.opposites[condition_type.toUpperCase()];
-		Bot.server.purchase_choices = [];
-		opposites.forEach(function(option, index){
-			if ( index === 0 ) {
-				firstOption = {
-					condition: Object.keys(option)[0],
-					name: option[Object.keys(option)[0]],
-				};
-			}
-			Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+Bot.utils.updateTokenList = function updateTokenList(tokenToAdd){
+	var tokenList = Bot.utils.storageManager.getTokenList();
+	if ( tokenList.length === 0 ) {
+		Bot.server.accounts = [['Please add a token first', '']];
+		Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue('');
+		Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText('Please add a token first');
+	} else {
+		Bot.server.accounts = [];
+		tokenList.forEach(function(tokenInfo){
+			Bot.server.accounts.push([tokenInfo.account_name, tokenInfo.token]);
 		});
-		if ( strategy !== null ) {
-			var purchases = [];
-			strategy.getDescendants().forEach(function(block){
-				if ( block.type === 'purchase' ) {
-					purchases.push(block);
-				}
-			});
-			purchases.forEach(function(purchase){
-				purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
-				purchase.getField('PURCHASE_LIST').setText(firstOption.name);
-			});
+		var tokenInfoToAdd = tokenList[0];
+		if ( tokenToAdd !== undefined ) {
+			var tokenInfoIndex = Bot.utils.storageManager.findToken(tokenToAdd);
+			if (tokenInfoIndex >= 0){
+				console.log('token added');
+				tokenInfoToAdd = tokenList[tokenInfoIndex];
+			}
 		}
+		Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenInfoToAdd.token);
+		Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenInfoToAdd.account_name);
 	}
 };
 
@@ -111,8 +103,41 @@ var StorageManager = function StorageManager(){
 			}
 		},
 		getTokenList: getTokenList,
-		findtoken: findToken,
+		findToken: findToken,
 	};	
 };
 
 Bot.utils.storageManager = StorageManager();
+
+Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
+	var firstOption = {};
+	var strategy = Blockly.getMainWorkspace().getBlockById('strategy');
+	var trade = Blockly.getMainWorkspace().getBlockById('trade');
+	if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
+		var condition_type = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
+		var opposites = Bot.config.opposites[condition_type.toUpperCase()];
+		Bot.server.purchase_choices = [];
+		opposites.forEach(function(option, index){
+			if ( index === 0 ) {
+				firstOption = {
+					condition: Object.keys(option)[0],
+					name: option[Object.keys(option)[0]],
+				};
+			}
+			Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+		});
+		if ( strategy !== null ) {
+			var purchases = [];
+			strategy.getDescendants().forEach(function(block){
+				if ( block.type === 'purchase' ) {
+					purchases.push(block);
+				}
+			});
+			purchases.forEach(function(purchase){
+				purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
+				purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+			});
+		}
+	}
+};
+
