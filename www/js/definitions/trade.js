@@ -10,7 +10,7 @@ Blockly.Blocks['trade'] = {
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
 			.appendField("Submarket");
-		this.setPreviousStatement(true);
+		this.setPreviousStatement(true, null);
 		this.setColour(60);
 	}, 
 };
