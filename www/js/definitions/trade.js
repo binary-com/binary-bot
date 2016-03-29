@@ -10,7 +10,15 @@ Blockly.Blocks['trade'] = {
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
 			.appendField("Submarket");
-		this.setPreviousStatement(true, null);
+		this.setPreviousStatement(true, 'Trade');
 		this.setColour(60);
 	}, 
+	onchange: function(ev){
+		var topParent = Bot.utils.findTopParentBlock(this);
+		if ( topParent !== null ) { 
+			if ( Bot.config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.id === 'strategy' || topParent.id === 'finish' ) {
+				this.unplug();
+			} 
+		} 
+	},
 };

@@ -13,6 +13,18 @@ Bot.utils.chooseByIndex = function chooseByIndex(caps_name, index, list){
 	}
 };
 
+Bot.utils.findTopParentBlock = function findTopParentBlock(block) {
+	var pblock = block.parentBlock_;
+	if ( pblock === null ) {
+		return null;
+	}
+	while ( pblock !== null ) {
+		block = pblock;
+		pblock = block.parentBlock_;
+	}
+	return block;
+};
+
 Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 	var firstOption = {};
 	var strategy = Blockly.getMainWorkspace().getBlockById('strategy');

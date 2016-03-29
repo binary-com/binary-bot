@@ -6,5 +6,11 @@ Blockly.Blocks['trade_again'] = {
 			.appendField("Trade Again");
 		this.setPreviousStatement(true, 'TradeAgain');
 		this.setColour(180);
-	}
+	},
+	onchange: function(ev) {
+		var topParent = Bot.utils.findTopParentBlock(this);
+		if ( topParent !== null && topParent.id !== 'finish' ) {
+			this.unplug();
+		}
+	},
 };

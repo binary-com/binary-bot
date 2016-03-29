@@ -12,8 +12,14 @@ Bot.config.ticktrade_markets.forEach(function(market, index){
 			this.setColour(345);
 		},
 		onchange: function(ev){
-			if ( ev.hasOwnProperty('newInputName') && ( ev.newInputName === 'CONDITION' || ev.newInputName === 'SUBMARKET') ) {
-				Bot.utils.addPurchaseOptions();
+			if ( this.parentBlock_ !== null) {
+				if ( this.parentBlock_.type !== 'trade' ) {
+					this.unplug();
+				} else {
+					if ( ev.hasOwnProperty('newInputName') && ( ev.newInputName === 'CONDITION' || ev.newInputName === 'SUBMARKET') ) {
+						Bot.utils.addPurchaseOptions();
+					}
+				}
 			}
 		}
 	};

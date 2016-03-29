@@ -10,5 +10,11 @@ Blockly.Blocks['purchase'] = {
 		this.setInputsInline(true);
 		this.setPreviousStatement(true, 'Purchase');
 		this.setColour(180);
-	}
+	},
+	onchange: function(ev) {
+		var topParent = Bot.utils.findTopParentBlock(this);
+		if ( topParent !== null && topParent.id !== 'strategy' ) {
+			this.unplug();
+		}
+	},
 };
