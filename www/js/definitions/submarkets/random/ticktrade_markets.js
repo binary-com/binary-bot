@@ -10,6 +10,8 @@ Bot.config.ticktrade_markets.forEach(function(market, index){
 			this.setInputsInline(true);
 			this.setPreviousStatement(true, "Submarket");
 			this.setColour(345);
+			this.setTooltip('Chooses the market ' + Bot.config.ticktrade_market_names[index] + ' for the trade block');
+			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){
 			Bot.utils.unplugErrors.submarket(this, ev);

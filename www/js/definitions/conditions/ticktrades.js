@@ -32,6 +32,8 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, "Condition");
 			this.setColour(15);
+			this.setTooltip('Provides the contract conditions ' + option_names[0] + '/' + option_names[1] + ' for the chosen submarket');
+			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){
 			Bot.utils.unplugErrors.condition(this, ev);

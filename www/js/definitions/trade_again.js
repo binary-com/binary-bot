@@ -6,6 +6,8 @@ Blockly.Blocks['trade_again'] = {
 			.appendField("Trade Again");
 		this.setPreviousStatement(true, 'TradeAgain');
 		this.setColour(180);
+		this.setTooltip('Runs the trade block again');
+		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
 		Bot.utils.unplugErrors.trage_again(this, ev);

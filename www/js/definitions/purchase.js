@@ -10,6 +10,8 @@ Blockly.Blocks['purchase'] = {
 		this.setInputsInline(true);
 		this.setPreviousStatement(true, 'Purchase');
 		this.setColour(180);
+		this.setTooltip('Purchases a chosen contract. Accepts index to choose between the contracts.');
+		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
 		Bot.utils.unplugErrors.purchase(this, ev);
