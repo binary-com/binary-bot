@@ -111,6 +111,16 @@
 		}
 	};
 
+	Bot.server.checkTick = function checkTick(){
+		setTimeout(function(){
+			if ( !Bot.server.tickWasRecieved ) {
+				showError('No ticks was received in 5 seconds');
+				log('restarting the trade...', 'info');
+				Bot.server.init.apply(this, Bot.server.tradeConfig);
+			}
+		}, 5000);
+	};
+
 	Bot.server.requestHistory = function requestHistory(){
 		Bot.server.api.getTickHistory(Bot.server.symbol,{
 			"end": "latest",
@@ -118,6 +128,8 @@
 			"subscribe": 1,
 		}).then(function(value){
 			log('Request sent for history');
+			Bot.server.tickWasRecieved = false;
+			Bot.server.checkTick();
 		}, function(reason){
 			showError(reason.message);
 		});
@@ -126,8 +138,9 @@
 	Bot.server.observeTicks = function observeTicks(){
 
 		Bot.server.api.events.on('tick', function (feed) {
-			log('tick received at: ' + feed.tick.epoch);
 			if (feed && feed.echo_req.ticks_history === Bot.server.symbol) {
+				log('tick received at: ' + feed.tick.epoch);
+				Bot.server.tickWasRecieved = true;
 				Bot.server.contractService.addTick(feed.tick);
 			}
 		});
@@ -154,18 +167,24 @@
 		});
 	};
 
+	Bot.server.stop = function stop(){
+		if ( Bot.server.hasOwnProperty('api') ) {
+			console.log('API is disconnected');
+			Bot.server.api.disconnect();
+		}
+	};
+
 	Bot.server.init = function init(token, callback, strategy, finish){
-		log('Authenticating...', 'info');
 		if ( token === '' ) {
 			showError('No token is available to authenticate');
 			return;
 		}
-		if ( Bot.server.hasOwnProperty('api') ) {
-			Bot.server.api.disconnect();
-		}
+		Bot.server.stop();
 		Bot.server.api = new LiveApi();
+		log('Authenticating...', 'info');
 		Bot.server.api.authorize(token).then(function(response){
 			log('Authenticated using token: ' + token, 'success');
+			Bot.server.tradeConfig = [token, callback, strategy, finish];
 			Bot.server.contractService = ContractService();	
 			Bot.contracts = [];
 			Bot.server.strategyFinished = true;

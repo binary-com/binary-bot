@@ -75,6 +75,10 @@ var runCode = function runCode() {
 	}
 };
 
+var stopCode = function stopCode() {
+	Bot.server.stop();
+};
+
 var addAccount = function addAccount() {
 	var token = prompt('Please enter your token here:', '');
 	Bot.server.addAccount(token);
