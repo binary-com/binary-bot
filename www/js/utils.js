@@ -1,11 +1,17 @@
 Bot.utils = {};
 Bot.utils.showError = function showError(message){
-	$.notify(message, 'error');
+	$.notify(message, {
+		position: 'bottom right',
+		className: 'error',
+	});
 	console.log('Error: ' + message);
 };
 Bot.utils.log = function log(message, notify_type) {
 	if ( notify_type !== undefined ) {
-		$.notify(message, notify_type);
+		$.notify(message, {
+			position: 'bottom right',
+			className: notify_type,
+		});
 	}
 	console.log(message);
 }
