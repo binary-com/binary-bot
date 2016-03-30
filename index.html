@@ -1,34 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="www/css/gh-fork-ribbon.min.css"/>
   <meta charset="utf-8">
   <title>Blockly Demo: Generating JavaScript</title>
 	<link href="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.css" rel="stylesheet" />
-  <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-  </style>
+	<link href="www/css/main.css" rel="stylesheet" />
 </head>
-<body>
-	<div id="drop_zone">
-		<a class="github-fork-ribbon" href="https://github.com/binary-com/binary-bot/" target="_blank" title="Fork me on GitHub">Binary Bot on GitHub</a>
-		<p>
-			<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
-			<button title="Save the blocks as a XML file" onclick="saveXml()">Save Blocks</button>
-			<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
-			<button title="Run the blocks" onclick="runCode()">Run</button>
-			<button title="Stop the blocks" onclick="stopCode()">Stop</button>
-		</p>
-
-		<div id="blocklyDiv" style="height: 600px; width: 100%;"></div>
+<body id="drop_zone">
+	<div class="toolbox">
+		<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
+		<button title="Save the blocks as a XML file" onclick="saveXml()">Save Blocks</button>
+		<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
+		<button title="Run the blocks" onclick="runCode()">Run</button>
+		<button title="Stop the blocks" onclick="stopCode()">Stop</button>
 	</div>
+	<div class="help"><a href="https://github.com/binary-com/binary-bot/" target="_blank" title="Go to this project on GitHub">GitHub</a></div>
+	<div id="blocklyDiv"></div>
 
   <xml id="toolbox" style="display: none">
     <category name="Logic" colour="210">

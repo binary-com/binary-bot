@@ -1,0 +1,32 @@
+html, body {
+		height: 100%;
+		margin: 0px;
+}
+body {
+
+	backgroun-color: #fff;
+	font-family: sans-serif;
+}
+h1 {
+	font-weight: normal;
+	font-size: 140%;
+}
+#drop_zone{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+}
+.toolbox {
+}
+.toolbox * {
+	margin: 2px;
+	float: left;
+}
+#blocklyDiv{
+	height: 100%;
+	width: 100%;
+}
+.help{
+	float: right;
+	margin: 2px;
+}
