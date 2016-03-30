@@ -109,11 +109,11 @@ var ContractService = function ContractService() {
 			var previousTick = historyData.slice(-2)[0].price;
 			var difference;
 			if ( lastTick > previousTick ) {
-				difference = 'UP';	
+				difference = 'up';	
 			} else if ( lastTick < previousTick ) {
-				difference = 'DOWN';	
+				difference = 'down';	
 			} else {
-				difference = 'NO';	
+				difference = '';	
 			}
 			utils.broadcast('tick:updated', {
 				tick: lastTick,
