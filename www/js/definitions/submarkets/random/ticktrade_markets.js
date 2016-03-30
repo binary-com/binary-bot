@@ -12,16 +12,7 @@ Bot.config.ticktrade_markets.forEach(function(market, index){
 			this.setColour(345);
 		},
 		onchange: function(ev){
-			if ( this.childBlocks_.length > 0 && Bot.config.conditions.indexOf(this.childBlocks_[0].type) < 0 ) {
-				Array.prototype.slice.apply(this.childBlocks_).forEach(function(child){
-					child.unplug();
-				});
-			}
-			if ( this.parentBlock_ !== null) {
-				if ( this.parentBlock_.type !== 'trade' ) {
-					this.unplug();
-				}
-			}
+			Bot.utils.unplugErrors.submarket(this, ev);
 		}
 	};
 });

@@ -34,11 +34,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 			this.setColour(15);
 		},
 		onchange: function(ev){
-			if ( this.parentBlock_ !== null ) { 
-				if ( Bot.config.ticktrade_markets.indexOf(this.parentBlock_.type) < 0 ) {
-					this.unplug();
-				} 
-			} 
+			Bot.utils.unplugErrors.condition(this, ev);
 		},
 	};
 });

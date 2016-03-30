@@ -8,9 +8,6 @@ Blockly.Blocks['trade_again'] = {
 		this.setColour(180);
 	},
 	onchange: function(ev) {
-		var topParent = Bot.utils.findTopParentBlock(this);
-		if ( topParent !== null && topParent.id !== 'finish' ) {
-			this.unplug();
-		}
+		Bot.utils.unplugErrors.trage_again(this, ev);
 	},
 };

@@ -12,9 +12,6 @@ Blockly.Blocks['purchase'] = {
 		this.setColour(180);
 	},
 	onchange: function(ev) {
-		var topParent = Bot.utils.findTopParentBlock(this);
-		if ( topParent !== null && topParent.id !== 'strategy' ) {
-			this.unplug();
-		}
+		Bot.utils.unplugErrors.purchase(this, ev);
 	},
 };

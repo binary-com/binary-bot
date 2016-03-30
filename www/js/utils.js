@@ -50,7 +50,6 @@ Bot.utils.updateTokenList = function updateTokenList(tokenToAdd){
 		if ( tokenToAdd !== undefined ) {
 			var tokenInfoIndex = Bot.utils.storageManager.findToken(tokenToAdd);
 			if (tokenInfoIndex >= 0){
-				console.log('token added');
 				tokenInfoToAdd = tokenList[tokenInfoIndex];
 			}
 		}
@@ -98,16 +97,16 @@ var StorageManager = function StorageManager(){
 				setTokenList(tokenList);
 			}
 		},
-		removeToken: function removeToken(token){
-			var tokenList = getTokenList();
-			var index = findToken(token);
-			if ( index > -1 ) {
-				tokenList.splice(index, 1);
-				setTokenList(tokenList);
-			}
-		},
-		getTokenList: getTokenList,
-		findToken: findToken,
+			removeToken: function removeToken(token){
+				var tokenList = getTokenList();
+				var index = findToken(token);
+				if ( index > -1 ) {
+					tokenList.splice(index, 1);
+					setTokenList(tokenList);
+				}
+			},
+			getTokenList: getTokenList,
+			findToken: findToken,
 	};	
 };
 
@@ -126,12 +125,12 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 			if ( index === 0 ) {
 				firstOption = {
 					condition: Object.keys(option)[0],
-					name: option[Object.keys(option)[0]],
+			name: option[Object.keys(option)[0]],
 				};
 			} else {
 				secondOption = {
 					condition: Object.keys(option)[0],
-					name: option[Object.keys(option)[0]],
+			name: option[Object.keys(option)[0]],
 				};
 			}
 			Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
@@ -157,3 +156,63 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 	}
 };
 
+Bot.utils.unplugErrors = {
+	trade: function trade(_trade, ev){
+		if ( _trade.childBlocks_.length > 0 && Bot.config.ticktrade_markets.indexOf(_trade.childBlocks_[0].type) < 0 ) {
+			Bot.utils.log('The trade block can only accept submarket blocks', 'warning');
+			Array.prototype.slice.apply(_trade.childBlocks_).forEach(function(child){
+				child.unplug();
+			});
+		} else if ( _trade.childBlocks_.length > 0 ){
+			Bot.utils.unplugErrors.submarket(_trade.childBlocks_[0], ev);
+			if ( ev.hasOwnProperty('newInputName') ) {
+				Bot.utils.addPurchaseOptions();
+			}
+		}
+		var topParent = Bot.utils.findTopParentBlock(_trade);
+		if ( topParent !== null ) {
+			if ( Bot.config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.id === 'strategy' || topParent.id === 'finish' ) {
+				Bot.utils.log('The trade block cannot be inside binary blocks', 'warning');
+				_trade.unplug();
+			}
+		}
+	},
+	submarket: function submarket(_submarket, ev){
+		if ( _submarket.childBlocks_.length > 0 && Bot.config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0 ) {
+			Bot.utils.log('Submarket blocks can only accept condition blocks', 'warning');
+			Array.prototype.slice.apply(_submarket.childBlocks_).forEach(function(child){
+				child.unplug();
+			});
+		} else if ( _submarket.childBlocks_.length > 0 ){
+			Bot.utils.unplugErrors.condition(_submarket.childBlocks_[0], ev);
+		}
+		if ( _submarket.parentBlock_ !== null) {
+			if ( _submarket.parentBlock_.type !== 'trade' ) {
+				Bot.utils.log('Submarket blocks have to be added to the trade block', 'warning');
+				_submarket.unplug();
+			}
+		}
+	},
+	condition: function condition(_condition, ev){
+		if ( _condition.parentBlock_ !== null ) {
+			if ( Bot.config.ticktrade_markets.indexOf(_condition.parentBlock_.type) < 0 ) {
+				Bot.utils.log('Condition blocks have to be added to submarket blocks', 'warning');
+				_condition.unplug();
+			}
+		}
+	},
+	purchase: function purchase(_purchase, ev) {
+    var topParent = Bot.utils.findTopParentBlock(_purchase);
+    if ( topParent !== null && topParent.id !== 'strategy' ) {
+			Bot.utils.log('Purchase blocks have to be added inside the strategy block', 'warning');
+      _purchase.unplug();
+    }
+	},
+	trage_again: function trade_again(_trade_again, ev) {
+    var topParent = Bot.utils.findTopParentBlock(_trade_again);
+    if ( topParent !== null && topParent.id !== 'finish' ) {
+			Bot.utils.log('Purchase blocks have to be added inside the finish block', 'warning');
+      _trade_again.unplug();
+    }
+	},
+};
