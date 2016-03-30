@@ -81,7 +81,7 @@
 			var contractId = purchaseContract.buy.contract_id;
 			portfolio.portfolio.contracts.forEach(function (contract) {
 				if (contract.contract_id == contractId) {
-					log('Processing the contract: ' + contract.contract_id);
+					log('Waiting for the purchased contract to finish', 'info');
 					Bot.server.contractService.addContract({
 						statement: contract.transaction_id,
 						startTime: contract.date_start + 1,
@@ -103,6 +103,7 @@
 			var proposalContract = (option === Bot.contracts[1].echo_req.contract_type)? Bot.contracts[1] : Bot.contracts[0];
 			log('purchasing contract: ' + proposalContract.proposal.longcode, 'info');
 			Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
+				log('Contract was purchased successfully', 'success');
 				Bot.server.portfolio(proposalContract, purchaseContract);
 			}, function(reason){
 				showError(reason.message);
@@ -154,7 +155,7 @@
 	};
 
 	Bot.server.init = function init(token, callback, strategy, finish){
-		log('Processing the trade...', 'info');
+		log('Authenticating...', 'info');
 		if ( token === '' ) {
 			showError('No token is available to authenticate');
 			return;
