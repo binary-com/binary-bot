@@ -54,8 +54,12 @@ Bot.utils.updateTokenList = function updateTokenList(tokenToAdd){
 				tokenInfoToAdd = tokenList[tokenInfoIndex];
 			}
 		}
-		Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenInfoToAdd.token);
-		Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenInfoToAdd.account_name);
+		if ( Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').getValue() !== tokenInfoToAdd.token ) {
+			Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenInfoToAdd.token);
+		}
+		if ( Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').getText() !== tokenInfoToAdd.account_name ) {
+			Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenInfoToAdd.account_name);
+		}
 	}
 };
 
@@ -111,6 +115,7 @@ Bot.utils.storageManager = StorageManager();
 
 Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 	var firstOption = {};
+	var secondOption = {};
 	var strategy = Blockly.getMainWorkspace().getBlockById('strategy');
 	var trade = Blockly.getMainWorkspace().getBlockById('trade');
 	if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
@@ -120,6 +125,11 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 		opposites.forEach(function(option, index){
 			if ( index === 0 ) {
 				firstOption = {
+					condition: Object.keys(option)[0],
+					name: option[Object.keys(option)[0]],
+				};
+			} else {
+				secondOption = {
 					condition: Object.keys(option)[0],
 					name: option[Object.keys(option)[0]],
 				};
@@ -134,8 +144,14 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 				}
 			});
 			purchases.forEach(function(purchase){
-				purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
-				purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+				var value = purchase.getField('PURCHASE_LIST').getValue();
+				if ( value !== firstOption.condition && value !== secondOption.condition ) {
+					purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
+				}
+				var text = purchase.getField('PURCHASE_LIST').getText();
+				if ( text !== firstOption.name && text !== secondOption.name ) {
+					purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+				}
 			});
 		}
 	}

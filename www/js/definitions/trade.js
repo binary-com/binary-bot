@@ -19,6 +19,8 @@ Blockly.Blocks['trade'] = {
 			Array.prototype.slice.apply(this.childBlocks_).forEach(function(child){
 				child.unplug();
 			});
+		} else if ( ev.hasOwnProperty('newInputName') ) {
+			Bot.utils.addPurchaseOptions();	
 		}
 		var topParent = Bot.utils.findTopParentBlock(this);
 		if ( topParent !== null ) { 
