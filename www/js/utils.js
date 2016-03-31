@@ -210,14 +210,14 @@ Bot.utils.unplugErrors = {
 	},
 	purchase: function purchase(_purchase, ev) {
     var topParent = Bot.utils.findTopParentBlock(_purchase);
-    if ( topParent !== null && topParent.id !== 'strategy' ) {
+    if ( topParent !== null && ( topParent.id === 'finish' || topParent.id === 'trade' ) ) {
 			Bot.utils.log('Purchase blocks have to be added inside the strategy block', 'warning');
       _purchase.unplug();
     }
 	},
 	trage_again: function trade_again(_trade_again, ev) {
     var topParent = Bot.utils.findTopParentBlock(_trade_again);
-    if ( topParent !== null && topParent.id !== 'finish' ) {
+    if ( topParent !== null && ( topParent.id === 'strategy' || topParent.id === 'trade' ) ) {
 			Bot.utils.log('Purchase blocks have to be added inside the finish block', 'warning');
       _trade_again.unplug();
     }
