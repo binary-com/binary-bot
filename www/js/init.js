@@ -8,7 +8,7 @@ Blockly.Xml.domToWorkspace(workspace,
 var showXml = function showXml() {
 	var xmlDom = Blockly.Xml.workspaceToDom(workspace);
 	var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-	console.log(xmlText);
+	Bot.utils.log(xmlText);
 };
 
 var saveXml = function saveXml() {
@@ -53,7 +53,7 @@ var showCode = function showCode() {
 	try {
 		Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 		var code = Blockly.JavaScript.workspaceToCode(workspace);
-		console.log(code);
+		Bot.utils.log(code);
 	} catch(e) {
 		Bot.utils.showError(e.message);
 	}

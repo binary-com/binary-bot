@@ -8,24 +8,22 @@
 		var payout = (e.detail.result !== 'win' )? 0 : e.detail.payout;
 		var detail_list = [
 			e.detail.statement, 
-			e.detail.askPrice, 
-			payout, 
-			payout - e.detail.askPrice,
+			+e.detail.askPrice, 
+			+payout, 
+			+(payout - e.detail.askPrice).toFixed(2),
 			e.detail.type, 
-			e.detail.entrySpot, 
+			+e.detail.entrySpot, 
 			new Date(parseInt(e.detail.entrySpotTime + '000')).toLocaleTimeString(),
-			e.detail.exitSpot, 
+			+e.detail.exitSpot, 
 			new Date(parseInt(e.detail.exitSpotTime + '000')).toLocaleTimeString(),
+			+e.detail.barrier,
 		];
-		if ( e.detail.type.indexOf('DIGIT') > -1 || e.detail.type.indexOf('ASIAN') > -1) {
-			detail_list.push(e.detail.barrier);
-		}
 		log('Purchase was finished, result is: ' + e.detail.result, (e.detail.result === 'win')? 'success': 'error');
 		Bot.finish(e.detail.result, detail_list);
 	});
 
 	window.addEventListener('tick:updated', function(e){
-		if ( !Bot.server.strategyFinished ) {
+		if ( Bot.server.contracts.length === 2 ) {
 			Bot.strategy(e.detail.tick, e.detail.direction);
 		}
 	});
@@ -103,18 +101,15 @@
 	};
 
 	Bot.server.purchase = function purchase(option){
-		Bot.server.strategyFinished = true;
-		log('purchase was called');
-		if ( Bot.server.contracts.length !== 0 ) {
-			var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
-			log('purchasing contract: ' + proposalContract.proposal.longcode, 'info');
-			Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
-				log('Contract was purchased successfully', 'success');
-				Bot.server.portfolio(proposalContract, purchaseContract);
-			}, function(reason){
-				showError(reason.message);
-			});
-		}
+		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
+		Bot.server.contracts = [];
+		log('purchasing contract: ' + proposalContract.proposal.longcode, 'info');
+		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
+			log('Contract was purchased successfully', 'success');
+			Bot.server.portfolio(proposalContract, purchaseContract);
+		}, function(reason){
+			showError(reason.message);
+		});
 	};
 
 	Bot.server.checkTick = function checkTick(){
@@ -152,7 +147,6 @@
 	Bot.server.observeBalance = function observeBalance(){
 		Bot.server.api.events.on('balance', function (response) {
 			Bot.server.balance = response.balance.balance + response.balance.currency;
-			log('balance updated: ' + Bot.server.balance);
 		});
 
 		Bot.server.api.subscribeToBalance().then(function(response){
@@ -186,7 +180,6 @@
 		Bot.server.api.getPriceProposalForContract(options).then(function(value){
 			log('contract added: ' + value.proposal.longcode);
 			if ( Bot.server.contracts.length === 1 ) {
-				Bot.server.strategyFinished = false;
 				log('Contracts are ready', 'success'); 
 			}
 			Bot.server.contracts.push(value);
@@ -215,7 +208,6 @@
 			Bot.server.tradeConfig = [token, callback, strategy, finish];
 			Bot.server.contractService = ContractService();	
 			Bot.server.contracts = [];
-			Bot.server.strategyFinished = true;
 			Bot.strategy = strategy;
 			Bot.finish = finish;
 			Bot.server.observeTicks();

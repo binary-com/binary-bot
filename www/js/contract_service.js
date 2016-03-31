@@ -307,7 +307,7 @@ var ContractService = function ContractService() {
 						});
 						if ( broadcastable ) {
 							if (utils.asianTrade(contract)) {
-							contract.barrier = contract.barrier.toFixed(3);
+							contract.barrier = +parseFloat(contract.barrier).toFixed(3);
 							}
 							utils.broadcast("contract:finished", contract);
 						}
