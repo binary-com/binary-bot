@@ -39,7 +39,6 @@ var saveXml = function saveXml() {
 				break;
 		}
 	});
-	xmlDom.getElementsByTagName('field')[0].childNodes[0].nodeValue = ''
 	var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
 	var filename = 'binary-bot' + parseInt(new Date()
 		.getTime() / 1000) + '.xml';
