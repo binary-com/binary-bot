@@ -3,11 +3,8 @@
 Blockly.Blocks['purchase'] = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField("Purchase");
-		this.appendValueInput("PURCHASE")
-			.setCheck("Number")
+			.appendField("Purchase")
 			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
-		this.setInputsInline(true);
 		this.setPreviousStatement(true, 'Purchase');
 		this.setColour(180);
 		this.setTooltip('Purchases a chosen contract. Accepts index to choose between the contracts.');

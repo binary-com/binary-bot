@@ -150,11 +150,12 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 			});
 			purchases.forEach(function(purchase){
 				var value = purchase.getField('PURCHASE_LIST').getValue();
-				if ( value !== firstOption.condition && value !== secondOption.condition ) {
+				if ( value === firstOption.condition ) {
+					purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+				} else if ( value === secondOption.condition ) {
+					purchase.getField('PURCHASE_LIST').setText(secondOption.name);
+				} else {
 					purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
-				}
-				var text = purchase.getField('PURCHASE_LIST').getText();
-				if ( text !== firstOption.name && text !== secondOption.name ) {
 					purchase.getField('PURCHASE_LIST').setText(firstOption.name);
 				}
 			});

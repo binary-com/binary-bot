@@ -7,6 +7,8 @@
 	window.addEventListener('contract:finished', function(e){
 		var detail_list = [
 			e.detail.statement, 
+			e.detail.askPrice, 
+			e.detail.payout, 
 			e.detail.type, 
 			e.detail.entrySpot, 
 			new Date(parseInt(e.detail.entrySpotTime + '000')).toLocaleTimeString(),
@@ -87,7 +89,9 @@
 						startTime: contract.date_start + 1,
 						duration: parseInt(proposalContract.echo_req.duration),
 						type: contract.contract_type,
-						barrier: proposalContract.echo_req.barrier
+						barrier: proposalContract.echo_req.barrier,
+						askPrice: parseFloat(proposalContract.proposal.ask_price),
+						payout: proposalContract.proposal.payout,
 					});
 				}
 			});

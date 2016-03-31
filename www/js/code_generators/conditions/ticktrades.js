@@ -22,7 +22,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 			'duration: ' + duration + ',\n'+
 			'payouttype: \'' + payouttype + '\',\n'+
 			'currency: \'' + currency + '\',\n'+
-			'amount: ' + amount + ',\n'+
+			'amount: (' + amount + ').toFixed(2),\n'+
 			((Bot.config.opposites_have_barrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
 		'})';
 		return code;
