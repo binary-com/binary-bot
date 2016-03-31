@@ -1,4 +1,4 @@
-(function() {
+(function(){
 	var showError = Bot.utils.showError;
 	var log = Bot.utils.log;
 	var LiveApi = window['binary-live-api'].LiveApi;
@@ -25,6 +25,8 @@
 	window.addEventListener('tick:updated', function(e){
 		if ( Bot.server.contracts.length === 2 ) {
 			Bot.strategy(e.detail.tick, e.detail.direction);
+		} else if ( !Bot.server.purchaseBegan ) {
+			log('Skipped strategy because at least one of the contracts is not ready yet', 'info');
 		}
 	});
 
@@ -103,8 +105,9 @@
 	Bot.server.purchase = function purchase(option){
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
 		Bot.server.contracts = [];
-		log('purchasing contract: ' + proposalContract.proposal.longcode, 'info');
+		log(proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
+			Bot.server.purchaseBegan = true;
 			log('Contract was purchased successfully', 'success');
 			Bot.server.portfolio(proposalContract, purchaseContract);
 		}, function(reason){
@@ -180,7 +183,7 @@
 		Bot.server.api.getPriceProposalForContract(options).then(function(value){
 			log('contract added: ' + value.proposal.longcode);
 			if ( Bot.server.contracts.length === 1 ) {
-				log('Contracts are ready', 'success'); 
+				log('Contracts are ready to be purchased by the strategy', 'success'); 
 			}
 			Bot.server.contracts.push(value);
 		}, function(reason){
@@ -210,6 +213,7 @@
 			Bot.server.contracts = [];
 			Bot.strategy = strategy;
 			Bot.finish = finish;
+			Bot.server.purchaseBegan = false;
 			Bot.server.observeTicks();
 			Bot.server.observeBalance();
 			callback();
