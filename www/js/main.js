@@ -5,10 +5,12 @@
 	Bot.server = {}; 
 
 	window.addEventListener('contract:finished', function(e){
+		var payout = (e.detail.result !== 'win' )? 0 : e.detail.payout;
 		var detail_list = [
 			e.detail.statement, 
 			e.detail.askPrice, 
-			e.detail.payout, 
+			payout, 
+			payout - e.detail.askPrice,
 			e.detail.type, 
 			e.detail.entrySpot, 
 			new Date(parseInt(e.detail.entrySpotTime + '000')).toLocaleTimeString(),
@@ -103,8 +105,8 @@
 	Bot.server.purchase = function purchase(option){
 		Bot.server.strategyFinished = true;
 		log('purchase was called');
-		if ( Bot.contracts.length !== 0 ) {
-			var proposalContract = (option === Bot.contracts[1].echo_req.contract_type)? Bot.contracts[1] : Bot.contracts[0];
+		if ( Bot.server.contracts.length !== 0 ) {
+			var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
 			log('purchasing contract: ' + proposalContract.proposal.longcode, 'info');
 			Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
 				log('Contract was purchased successfully', 'success');
@@ -139,6 +141,28 @@
 		});
 	};
 
+	Bot.server.getBalance = function getBalance(balance_type){
+		if ( !isNaN(parseFloat(Bot.server.balance)) ) {
+			return (balance_type === 'NUM')? parseFloat(Bot.server.balance) : Bot.server.balance ;
+		} else {
+			return 0;
+		}
+	};
+
+	Bot.server.observeBalance = function observeBalance(){
+		Bot.server.api.events.on('balance', function (response) {
+			Bot.server.balance = response.balance.balance + response.balance.currency;
+			log('balance updated: ' + Bot.server.balance);
+		});
+
+		Bot.server.api.subscribeToBalance().then(function(response){
+			Bot.server.balance = response.balance.balance + response.balance.currency;
+		}, function(reason){
+			showError('Could not subscribe to balance');
+		});
+
+	};
+
 	Bot.server.observeTicks = function observeTicks(){
 
 		Bot.server.api.events.on('tick', function (feed) {
@@ -161,11 +185,11 @@
 	Bot.server.submitProposal = function submitProposal(options){
 		Bot.server.api.getPriceProposalForContract(options).then(function(value){
 			log('contract added: ' + value.proposal.longcode);
-			if ( Bot.contracts.length === 1 ) {
+			if ( Bot.server.contracts.length === 1 ) {
 				Bot.server.strategyFinished = false;
 				log('Contracts are ready', 'success'); 
 			}
-			Bot.contracts.push(value);
+			Bot.server.contracts.push(value);
 		}, function(reason){
 			showError(reason.message);
 		});
@@ -173,7 +197,7 @@
 
 	Bot.server.stop = function stop(){
 		if ( Bot.server.hasOwnProperty('api') ) {
-			console.log('API is disconnected');
+			log('API is disconnected');
 			Bot.server.api.disconnect();
 		}
 	};
@@ -190,11 +214,12 @@
 			log('Authenticated using token: ' + token, 'success');
 			Bot.server.tradeConfig = [token, callback, strategy, finish];
 			Bot.server.contractService = ContractService();	
-			Bot.contracts = [];
+			Bot.server.contracts = [];
 			Bot.server.strategyFinished = true;
 			Bot.strategy = strategy;
 			Bot.finish = finish;
 			Bot.server.observeTicks();
+			Bot.server.observeBalance();
 			callback();
 		}, function(reason){
 			removeToken(token);

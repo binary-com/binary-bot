@@ -3,7 +3,7 @@ Bot.config = {};
 Bot.config.lists = { 
 	PAYOUTTYPE: [["Payout", "payout"], ["Stake", "stake"]],
 	CURRENCY: [["USD", "USD"], ["EUR", "EUR"], ["GBP", "GBP"], ["AUD", "AUD"]],
-	DETAILS: [['statement', '1'], ['ask price', '2'], ['payout', '3'], ['contract type', '4'], ['entry spot', '5'], ['entry value', '6'], ['exit spot', '7'], ['exit value', '8'], ['barrier', '9'], ],
+	DETAILS: [['statement', '1'], ['ask price', '2'], ['payout', '3'], ['profit', '4'], ['contract type', '5'], ['entry spot', '6'], ['entry value', '7'], ['exit spot', '8'], ['exit value', '9'], ['barrier', '10'], ],
 }; 
 
 Bot.config.opposites = {

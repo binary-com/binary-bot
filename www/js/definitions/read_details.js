@@ -1,4 +1,4 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#84ju6t
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#x6s6zt
 
 Blockly.Blocks['read_details'] = {
   init: function() {
