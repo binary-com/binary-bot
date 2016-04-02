@@ -141,7 +141,7 @@
 
 	Bot.server.getBalance = function getBalance(balance_type){
 		if ( !isNaN(parseFloat(Bot.server.balance)) ) {
-			return (balance_type === 'NUM')? parseFloat(Bot.server.balance) : Bot.server.balance ;
+			return (balance_type === 'NUM')? parseFloat(Bot.server.balance) : Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance) ;
 		} else {
 			return 0;
 		}
@@ -149,11 +149,13 @@
 
 	Bot.server.observeBalance = function observeBalance(){
 		Bot.server.api.events.on('balance', function (response) {
-			Bot.server.balance = response.balance.balance + response.balance.currency;
+			Bot.server.balance = response.balance.balance;
+			Bot.server.balance_currency = response.balance.currency;
 		});
 
 		Bot.server.api.subscribeToBalance().then(function(response){
-			Bot.server.balance = response.balance.balance + response.balance.currency;
+			Bot.server.balance = response.balance.balance;
+			Bot.server.balance_currency = response.balance.currency;
 		}, function(reason){
 			showError('Could not subscribe to balance');
 		});
