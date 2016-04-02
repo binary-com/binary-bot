@@ -121,7 +121,6 @@ Bot.utils.storageManager = StorageManager();
 Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 	var firstOption = {};
 	var secondOption = {};
-	var strategy = Blockly.getMainWorkspace().getBlockById('strategy');
 	var trade = Blockly.getMainWorkspace().getBlockById('trade');
 	if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
 		var condition_type = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
@@ -141,25 +140,23 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 			}
 			Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
 		});
-		if ( strategy !== null ) {
-			var purchases = [];
-			strategy.getDescendants().forEach(function(block){
-				if ( block.type === 'purchase' ) {
-					purchases.push(block);
-				}
-			});
-			purchases.forEach(function(purchase){
-				var value = purchase.getField('PURCHASE_LIST').getValue();
-				if ( value === firstOption.condition ) {
-					purchase.getField('PURCHASE_LIST').setText(firstOption.name);
-				} else if ( value === secondOption.condition ) {
-					purchase.getField('PURCHASE_LIST').setText(secondOption.name);
-				} else {
-					purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
-					purchase.getField('PURCHASE_LIST').setText(firstOption.name);
-				}
-			});
-		}
+		var purchases = [];
+		Blockly.getMainWorkspace().getAllBlocks().forEach(function(block){
+			if ( block.type === 'purchase' ) {
+				purchases.push(block);
+			}
+		});
+		purchases.forEach(function(purchase){
+			var value = purchase.getField('PURCHASE_LIST').getValue();
+			if ( value === firstOption.condition ) {
+				purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+			} else if ( value === secondOption.condition ) {
+				purchase.getField('PURCHASE_LIST').setText(secondOption.name);
+			} else {
+				purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
+				purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+			}
+		});
 	}
 };
 
