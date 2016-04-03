@@ -10,15 +10,22 @@
 </head>
 <body id="drop_zone">
 	<div class="toolbox">
-		<div class="block-file-management">
-			<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
-			<button title="Save the blocks as a XML file" onclick="saveXml()">Save Blocks</button>
-			<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
-			<button title="Run the blocks" onclick="runCode()">Run</button>
-			<button title="Stop the blocks" onclick="stopCode()">Stop</button>
-		</div>
+			<div class="intro-file-management">
+				<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
+				<button title="Save the blocks as a XML file" onclick="saveXml()">Save Blocks</button>
+			</div>
+			<div class="intro-token">
+				<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
+			</div>
+			<div class="intro-run-stop">
+				<button title="Run the blocks" onclick="runCode()">Run</button>
+				<button title="Stop the blocks" onclick="stopCode()">Stop</button>
+			</div>
 	</div>
-	<div class="help"><a href="https://github.com/binary-com/binary-bot/" target="_blank" title="Go to this project on GitHub">GitHub</a></div>
+	<div class="help">
+		<button onclick="Bot.startTour()">Tour</button>
+		<a href="https://github.com/binary-com/binary-bot/" target="_blank" title="Go to this project on GitHub">GitHub</a>
+	</div>
 	<div id="blocklyDiv"></div>
 
   <xml id="toolbox" style="display: none">
