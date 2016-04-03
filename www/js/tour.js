@@ -22,7 +22,8 @@
 	};
 
 	Bot.tour.addStep('intro_main', {
-		text: 'Welcome to the quick tour of the binary bot',
+		title: 'Welcome!',
+		text: 'Welcome to the binary bot, a blockly based automation tool for binary.com trades',
 		attachTo: '#blocklyDiv',
 		buttons: [
 			{
@@ -44,8 +45,8 @@
 	});
 
 	Bot.tour.addStep('intro_workspace', {
-		title: 'workspace',
-		text: 'The blocks you put in here <br/>will create a binary bot code.',
+		title: 'Workspace',
+		text: 'The blocks you put in here will create a binary bot code which you can then execute using the run button.',
 		attachTo: '#blocklyDiv',
 		buttons: [
 			{
@@ -71,10 +72,12 @@
 		buttons: [
 			{
 				text: 'Back',
+				classes: 'shepherd-button-example-primary',
 				action: Bot.tour.back
 			},
 			{
 				text: 'Next',
+				classes: 'shepherd-button-example-primary',
 				action: Bot.tour.next
 			}
 		],
@@ -95,10 +98,12 @@
 		buttons: [
 			{
 				text: 'Back',
+				classes: 'shepherd-button-example-primary',
 				action: Bot.tour.back
 			},
 			{
 				text: 'Next',
+				classes: 'shepherd-button-example-primary',
 				action: Bot.tour.next
 			}
 		],
@@ -119,10 +124,12 @@
 		buttons: [
 			{
 				text: 'Back',
+				classes: 'shepherd-button-example-primary',
 				action: Bot.tour.back
 			},
 			{
 				text: 'Next',
+				classes: 'shepherd-button-example-primary',
 				action: Bot.tour.next
 			}
 		],
@@ -143,6 +150,7 @@
 		buttons: [
 			{
 				text: 'Back',
+				classes: 'shepherd-button-example-primary',
 				action: Bot.tour.back
 			},
 			{

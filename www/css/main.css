@@ -30,3 +30,24 @@ h1 {
 	float: right;
 	margin: 2px;
 }
+.shepherd-content,header {
+	background-color: #55a892 !important;
+	color: white !important;
+}
+.shepherd-button-example-primary {
+	background-color: #b3eecf !important;
+	color: black !important;
+}
+
+.shepherd-element.shepherd-element-attached-top .shepherd-content::before {
+	border-bottom-color: #55a892 !important;
+}
+.shepherd-element.shepherd-element-attached-bottom .shepherd-content::before {
+	border-bottom-color: #55a892 !important;
+}
+.shepherd-element.shepherd-element-attached-left .shepherd-content::before {
+	border-right-color: #55a892 !important;
+}
+.shepherd-element.shepherd-element-attached-right .shepherd-content::before {
+	border-right-color: #55a892 !important;
+}
