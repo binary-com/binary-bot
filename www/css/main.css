@@ -39,15 +39,9 @@ h1 {
 	color: black !important;
 }
 
-.shepherd-element.shepherd-element-attached-top .shepherd-content::before {
+.shepherd-element.shepherd-element-attached-center.shepherd-element-attached-top .shepherd-content::before, .shepherd-element.shepherd-element-attached-center.shepherd-element-attached-bottom .shepherd-content::before {
 	border-bottom-color: #55a892 !important;
 }
-.shepherd-element.shepherd-element-attached-bottom .shepherd-content::before {
-	border-bottom-color: #55a892 !important;
-}
-.shepherd-element.shepherd-element-attached-left .shepherd-content::before {
-	border-right-color: #55a892 !important;
-}
-.shepherd-element.shepherd-element-attached-right .shepherd-content::before {
+.shepherd-element.shepherd-element-attached-middle.shepherd-element-attached-left .shepherd-content::before, .shepherd-element.shepherd-element-attached-middle.shepherd-element-attached-right .shepherd-content::before {
 	border-right-color: #55a892 !important;
 }
