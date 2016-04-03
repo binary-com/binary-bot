@@ -1,5 +1,5 @@
 (function(){
-	Bot.tour = new Shepherd.Tour({
+	Bot.intro = new Shepherd.Tour({
 		defaults: {
 			classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
 			scrollTo: false,
@@ -21,7 +21,7 @@
 		});
 	};
 
-	Bot.tour.addStep('intro_main', {
+	Bot.intro.addStep('intro_main', {
 		title: 'Welcome!',
 		text: 'Welcome to the binary bot, a blockly based automation tool for binary.com trades',
 		attachTo: '#blocklyDiv',
@@ -29,12 +29,12 @@
 			{
 				text: 'Skip',
 				classes: 'shepherd-button-secondary',
-				action: Bot.tour.cancel
+				action: Bot.intro.cancel
 			},
 			{
 				text: 'Next',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.next
+				action: Bot.intro.next
 			}
 		],
 		when: {
@@ -44,7 +44,7 @@
 		},
 	});
 
-	Bot.tour.addStep('intro_workspace', {
+	Bot.intro.addStep('intro_workspace', {
 		title: 'Workspace',
 		text: 'The blocks you put in here will create a binary bot code which you can then execute using the run button.',
 		attachTo: '#blocklyDiv',
@@ -52,7 +52,7 @@
 			{
 				text: 'Next',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.next
+				action: Bot.intro.next
 			}
 		],
 		when: {
@@ -65,7 +65,7 @@
 		},
 	});
 
-	Bot.tour.addStep('intro_toolbox', {
+	Bot.intro.addStep('intro_toolbox', {
 		title: 'Toolbox',
 		text: 'You can add blocks from here to the workspace',
 		attachTo: '.blocklyToolboxDiv right',
@@ -73,12 +73,12 @@
 			{
 				text: 'Back',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.back
+				action: Bot.intro.back
 			},
 			{
 				text: 'Next',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.next
+				action: Bot.intro.next
 			}
 		],
 		when: {
@@ -91,7 +91,7 @@
 		},
 	});
 
-	Bot.tour.addStep('intro_file_management', {
+	Bot.intro.addStep('intro_file_management', {
 		title: 'Load/Save Xml',
 		text: 'Use these buttons to load and save blocks',
 		attachTo: '.intro-file-management bottom',
@@ -99,12 +99,12 @@
 			{
 				text: 'Back',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.back
+				action: Bot.intro.back
 			},
 			{
 				text: 'Next',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.next
+				action: Bot.intro.next
 			}
 		],
 		when: {
@@ -117,7 +117,7 @@
 		},
 	});
 
-	Bot.tour.addStep('intro_token', {
+	Bot.intro.addStep('intro_token', {
 		title: 'Token',
 		text: 'Click to add a token, at least one token is needed. Get your token from <a href="https://www.binary.com/user/api_tokenws" target="_blank">here</a>',
 		attachTo: '.intro-token bottom',
@@ -125,12 +125,12 @@
 			{
 				text: 'Back',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.back
+				action: Bot.intro.back
 			},
 			{
 				text: 'Next',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.next
+				action: Bot.intro.next
 			}
 		],
 		when: {
@@ -143,7 +143,7 @@
 		},
 	});
 
-	Bot.tour.addStep('intro_run_stop', {
+	Bot.intro.addStep('intro_run_stop', {
 		title: 'Run/Stop Blocks',
 		text: 'Use these buttons to run or stop your blocks',
 		attachTo: '.intro-run-stop bottom',
@@ -151,12 +151,12 @@
 			{
 				text: 'Back',
 				classes: 'shepherd-button-example-primary',
-				action: Bot.tour.back
+				action: Bot.intro.back
 			},
 			{
 				text: 'Exit',
 				classes: 'shepherd-button-secondary',
-				action: Bot.tour.next
+				action: Bot.intro.next
 			}
 		],
 		when: {
@@ -169,18 +169,18 @@
 		},
 	});
 
-	Bot.tour.on('cancel', function(){
+	Bot.intro.on('cancel', function(){
 		setOpacityForAll(1);
 	});
 
-	Bot.tour.on('complete', function(){
+	Bot.intro.on('complete', function(){
 		setOpacityForAll(1);
-		localStorage.tourCompleted = 'true';
+		localStorage.introCompleted = 'true';
 	});
-	Bot.startTour = function startTour(){
-		Bot.tour.start();
+	Bot.startIntro = function startIntro(){
+		Bot.intro.start();
 	};
-	if ( !localStorage.hasOwnProperty('tourCompleted') ) {
-		Bot.tour.start();
+	if ( !localStorage.hasOwnProperty('introCompleted') ) {
+		Bot.intro.start();
 	}
 })();
