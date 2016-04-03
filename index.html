@@ -4,15 +4,19 @@
   <meta charset="utf-8">
   <title>Blockly Demo: Generating JavaScript</title>
 	<link href="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.css" rel="stylesheet" />
+	<link href="node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css" rel="stylesheet" />
+	<link href="www/css/tour.css" rel="stylesheet" />
 	<link href="www/css/main.css" rel="stylesheet" />
 </head>
 <body id="drop_zone">
 	<div class="toolbox">
-		<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
-		<button title="Save the blocks as a XML file" onclick="saveXml()">Save Blocks</button>
-		<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
-		<button title="Run the blocks" onclick="runCode()">Run</button>
-		<button title="Stop the blocks" onclick="stopCode()">Stop</button>
+		<div class="block-file-management">
+			<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
+			<button title="Save the blocks as a XML file" onclick="saveXml()">Save Blocks</button>
+			<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
+			<button title="Run the blocks" onclick="runCode()">Run</button>
+			<button title="Stop the blocks" onclick="stopCode()">Stop</button>
+		</div>
 	</div>
 	<div class="help"><a href="https://github.com/binary-com/binary-bot/" target="_blank" title="Go to this project on GitHub">GitHub</a></div>
 	<div id="blocklyDiv"></div>
@@ -316,6 +320,8 @@
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/notifyjs-browser/dist/notify.js"></script>
 	<script src="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.js"></script>
+	<script src="node_modules/tether/dist/js/tether.min.js"></script>
+	<script src="node_modules/tether-shepherd/dist/js/shepherd.min.js"></script>
   <script src="node_modules/blockly/blockly_compressed.js"></script>
   <script src="node_modules/blockly/blocks_compressed.js"></script>
   <script src="node_modules/blockly/javascript_compressed.js"></script>
@@ -343,9 +349,9 @@
   <script src="www/js/code_generators/submarkets/random/ticktrade_markets.js"></script>
   <script src="www/js/code_generators/conditions/ticktrades.js"></script>
   <script src="www/js/main.js"></script>
-	<script src="www/js/init.js"></script>
-  </script>
+	<script src="www/js/init.js"></script></script>
   <script src="www/js/after.js"></script>
+  <script src="www/js/tour.js"></script>
 
 </body>
 </html>
