@@ -22,7 +22,7 @@
 	};
 
 	Bot.intro.addStep('intro_main', {
-		title: 'Welcome!',
+		title: 'Introduction',
 		text: 'Welcome to the binary bot, a blockly based automation tool for binary.com trades',
 		attachTo: '#blocklyDiv',
 		buttons: [
@@ -178,9 +178,13 @@
 		localStorage.introCompleted = 'true';
 	});
 	Bot.startIntro = function startIntro(){
-		Bot.intro.start();
+		if ( !Shepherd.activeTour ) {
+			Bot.intro.start();
+		}
 	};
 	if ( !localStorage.hasOwnProperty('introCompleted') ) {
-		Bot.intro.start();
+		if ( !Shepherd.activeTour ) {
+			Bot.intro.start();
+		}
 	}
 })();

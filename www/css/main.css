@@ -45,3 +45,6 @@ h1 {
 .shepherd-element.shepherd-element-attached-middle.shepherd-element-attached-left .shepherd-content::before, .shepherd-element.shepherd-element-attached-middle.shepherd-element-attached-right .shepherd-content::before {
 	border-right-color: #55a892 !important;
 }
+.shepherd-content textarea{
+	width: 350px;
+}
