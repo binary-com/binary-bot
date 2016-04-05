@@ -54,8 +54,8 @@ Bot.utils = (function Utils(){
 		var tokenList = storageManager.getTokenList();
 		if ( tokenList.length === 0 ) {
 			Bot.server.accounts = [['Please add a token first', '']];
-			Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue('');
-			Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText('Please add a token first');
+			Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue('');
+			Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText('Please add a token first');
 		} else {
 			Bot.server.accounts = [];
 			tokenList.forEach(function(tokenInfo){
@@ -68,11 +68,11 @@ Bot.utils = (function Utils(){
 					tokenInfoToAdd = tokenList[tokenInfoIndex];
 				}
 			}
-			if ( Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').getValue() !== tokenInfoToAdd.token ) {
-				Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenInfoToAdd.token);
+			if ( Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').getValue() !== tokenInfoToAdd.token ) {
+				Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenInfoToAdd.token);
 			}
-			if ( Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').getText() !== tokenInfoToAdd.account_name ) {
-				Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenInfoToAdd.account_name);
+			if ( Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').getText() !== tokenInfoToAdd.account_name ) {
+				Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenInfoToAdd.account_name);
 			}
 		}
 	};
@@ -84,7 +84,7 @@ Bot.utils = (function Utils(){
 	var addPurchaseOptions = function addPurchaseOptions(){
 		var firstOption = {};
 		var secondOption = {};
-		var trade = Blockly.getMainWorkspace().getBlockById('trade');
+		var trade = Blockly.mainWorkspace.getBlockById('trade');
 		if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
 			var condition_type = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
 			var opposites = Bot.config.opposites[condition_type.toUpperCase()];
@@ -104,7 +104,7 @@ Bot.utils = (function Utils(){
 				Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
 			});
 			var purchases = [];
-			Blockly.getMainWorkspace().getAllBlocks().forEach(function(block){
+			Blockly.mainWorkspace.getAllBlocks().forEach(function(block){
 				if ( block.type === 'purchase' ) {
 					purchases.push(block);
 				}

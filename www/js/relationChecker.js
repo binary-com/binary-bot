@@ -19,19 +19,19 @@ Bot.RelationChecker = function RelationChecker(){
 
 	var trade = function trade(_trade, ev){
 		if ( ev.type === 'create' ) {
-			if ( Bot.config.ticktrade_markets.indexOf(Blockly.getMainWorkspace().getBlockById(ev.blockId).type) >= 0 ){
+			if ( Bot.config.ticktrade_markets.indexOf(Blockly.mainWorkspace.getBlockById(ev.blockId).type) >= 0 ){
 				Bot.utils.broadcast('tour:submarket_created');
 			}
-			if ( Bot.config.conditions.indexOf(Blockly.getMainWorkspace().getBlockById(ev.blockId).type) >= 0){
+			if ( Bot.config.conditions.indexOf(Blockly.mainWorkspace.getBlockById(ev.blockId).type) >= 0){
 				Bot.utils.broadcast('tour:condition_created');
 			}
-			if ( Blockly.getMainWorkspace().getBlockById(ev.blockId).type === 'math_number' ){
+			if ( Blockly.mainWorkspace.getBlockById(ev.blockId).type === 'math_number' ){
 				Bot.utils.broadcast('tour:number');
 			}
-			if ( Blockly.getMainWorkspace().getBlockById(ev.blockId).type === 'purchase' ){
+			if ( Blockly.mainWorkspace.getBlockById(ev.blockId).type === 'purchase' ){
 				Bot.utils.broadcast('tour:purchase_created');
 			}
-			if ( Blockly.getMainWorkspace().getBlockById(ev.blockId).type === 'trade_again' ){
+			if ( Blockly.mainWorkspace.getBlockById(ev.blockId).type === 'trade_again' ){
 				Bot.utils.broadcast('tour:trade_again_created');
 			}
 		}
