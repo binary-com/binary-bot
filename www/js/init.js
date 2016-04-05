@@ -110,7 +110,7 @@ var readFile = function readFile(f) {
 				var xml = Blockly.Xml.textToDom(e.target.result);
 				Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 				Bot.utils.addPurchaseOptions();
-				var tokenList = Bot.utils.storageManager.getTokenList();
+				var tokenList = Bot.utils.getStorageManager().getTokenList();
 				if ( tokenList.length !== 0 ) {
 					Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenList[0].token);
 					Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
