@@ -13,7 +13,6 @@
     "blockly": "git+https://git@github.com/google/blockly.git",
     "bower": "^1.7.7",
     "jquery": "^2.2.2",
-    "notifyjs": "git+https://git@github.com/notifyjs/notifyjs.git",
-    "tether-shepherd": "^1.7.0"
+    "notifyjs": "git+https://git@github.com/notifyjs/notifyjs.git"
   }
 }

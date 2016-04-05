@@ -1,3 +1,7 @@
+var broadcast = function broadcast(eventName, data) {
+	window.dispatchEvent(new CustomEvent(eventName, {detail: data}));
+};
+
 var ContractService = function ContractService() {
 
 	var capacity = 600;

@@ -4,11 +4,12 @@
   <meta charset="utf-8">
   <title>Blockly Demo: Generating JavaScript</title>
 	<link href="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.css" rel="stylesheet" />
-	<link href="node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css" rel="stylesheet" />
-	<link href="www/css/tour.css" rel="stylesheet" />
 	<link href="www/css/main.css" rel="stylesheet" />
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="bower_components/Tourist.js/tourist.css" type="text/css" media="screen">
 </head>
 <body id="drop_zone">
+	<div id="center"></div>
 	<div class="toolbox">
 			<div class="intro-file-management">
 				<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
@@ -23,8 +24,12 @@
 			</div>
 	</div>
 	<div class="help">
-		<button onclick="Bot.startTutor()">Tutorial</button>
-		<button onclick="Bot.startIntro()">Intro</button>
+		Tours:
+		<select id="tours">
+			<option value="welcome">Welcome!</option>
+			<option value="introduction">Introduction</option>
+		</select>
+		<button onclick="Bot.startTutorial()">Go!</button>
 		<a href="https://github.com/binary-com/binary-bot/" target="_blank" title="Go to this project on GitHub">GitHub</a>
 	</div>
 	<div id="blocklyDiv"></div>
@@ -335,8 +340,13 @@
   <script src="node_modules/blockly/javascript_compressed.js"></script>
   <script src="node_modules/blockly/msg/js/en.js"></script>
   <script src="bower_components/file-saver.js/FileSaver.js"></script>
+  <script src="bower_components/underscore/underscore-min.js"></script>
+  <script src="bower_components/backbone/backbone-min.js"></script>
+  <script src="bower_components/Tourist.js/tourist.min.js"></script>
   <script src="www/js/contract_service.js"></script>
   <script src="www/js/config.js"></script>
+  <script src="www/js/relationChecker.js"></script>
+  <script src="www/js/storageManager.js"></script>
   <script src="www/js/utils.js"></script>
   <script src="www/js/conditions.js"></script>
   <script src="www/js/markets.js"></script>
@@ -358,9 +368,9 @@
   <script src="www/js/code_generators/conditions/ticktrades.js"></script>
   <script src="www/js/main.js"></script>
 	<script src="www/js/init.js"></script></script>
+  <script src="www/js/welcome.js"></script>
+  <script src="www/js/introduction.js"></script>
   <script src="www/js/after.js"></script>
-  <script src="www/js/intro.js"></script>
-  <script src="www/js/tutor.js"></script>
 
 </body>
 </html>

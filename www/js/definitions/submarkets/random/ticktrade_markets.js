@@ -14,7 +14,7 @@ Bot.config.ticktrade_markets.forEach(function(market, index){
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){
-			Bot.utils.unplugErrors.submarket(this, ev);
+			Bot.utils.getRelationChecker().submarket(this, ev);
 		}
 	};
 });

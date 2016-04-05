@@ -9,3 +9,7 @@ finish.getInput('STACK').setCheck('TradeAgain');
 finish.setTooltip('Aka finish block, this block decides what to do when a purchased contract is finished');
 Bot.utils.updateTokenList();
 Bot.utils.addPurchaseOptions();
+Bot.welcome.welcome();
+Bot.startTutorial = function startTutorial(){
+	Bot[$('#tours').val()].start();	
+};

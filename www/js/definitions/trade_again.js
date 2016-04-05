@@ -10,6 +10,6 @@ Blockly.Blocks['trade_again'] = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
-		Bot.utils.unplugErrors.trage_again(this, ev);
+		Bot.utils.getRelationChecker().trage_again(this, ev);
 	},
 };
