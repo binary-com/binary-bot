@@ -11,6 +11,5 @@ Bot.utils.updateTokenList();
 Bot.utils.addPurchaseOptions();
 Bot.welcome.welcome();
 Bot.startTutorial = function startTutorial(){
-	Blockly.mainWorkspace.clear();
 	Bot[$('#tours').val()].start();	
 };
