@@ -36,7 +36,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){
-			Bot.utils.unplugErrors.condition(this, ev);
+			Bot.utils.getRelationChecker().condition(this, ev);
 		},
 	};
 });

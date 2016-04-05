@@ -11,6 +11,7 @@
   "dependencies": {
     "binary-live-api": "~12.0.0",
     "blockly": "git+https://git@github.com/google/blockly.git",
+    "bootstrap": "^3.3.6",
     "bower": "^1.7.7",
     "jquery": "^2.2.2",
     "notifyjs": "git+https://git@github.com/notifyjs/notifyjs.git"

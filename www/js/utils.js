@@ -1,12 +1,17 @@
-Bot.utils = {};
-Bot.utils.showError = function showError(message){
+var Utils = function Utils(_event){
+	this._event = _event;
+	this.relationChecker = new RelationChecker();
+	this.storageManager = new StorageManager();
+};
+Utils.prototype.showError = function showError(message){
 	$.notify(message, {
 		position: 'bottom right',
 		className: 'error',
 	});
 	console.log('Error: ' + message);
 };
-Bot.utils.log = function log(message, notify_type) {
+
+Utils.prototype.log = function log(message, notify_type) {
 	if ( notify_type !== undefined ) {
 		$.notify(message, {
 			position: 'bottom right',
@@ -14,10 +19,15 @@ Bot.utils.log = function log(message, notify_type) {
 		});
 	}
 	console.log(message);
-}
-Bot.utils.chooseByIndex = function chooseByIndex(caps_name, index, list){
-	var list = ( typeof list === 'undefined' ) ? Bot.config.lists[caps_name] : list;
-	var index = parseInt(index);
+};
+
+Utils.prototype.broadcast = function broadcast(eventName, data) {
+	window.dispatchEvent(new CustomEvent(eventName, {detail: data}));
+};
+
+Utils.prototype.chooseByIndex = function chooseByIndex(caps_name, index, list){
+	list = ( typeof list === 'undefined' ) ? Bot.config.lists[caps_name] : list;
+	index = parseInt(index);
 	if ( isNaN(index) ){
 		return null;
 	}
@@ -29,7 +39,7 @@ Bot.utils.chooseByIndex = function chooseByIndex(caps_name, index, list){
 	}
 };
 
-Bot.utils.findTopParentBlock = function findTopParentBlock(block) {
+Utils.prototype.findTopParentBlock = function findTopParentBlock(block) {
 	var pblock = block.parentBlock_;
 	if ( pblock === null ) {
 		return null;
@@ -41,8 +51,8 @@ Bot.utils.findTopParentBlock = function findTopParentBlock(block) {
 	return block;
 };
 
-Bot.utils.updateTokenList = function updateTokenList(tokenToAdd){
-	var tokenList = Bot.utils.storageManager.getTokenList();
+Utils.prototype.updateTokenList = function updateTokenList(tokenToAdd){
+	var tokenList = this.storageManager.getTokenList();
 	if ( tokenList.length === 0 ) {
 		Bot.server.accounts = [['Please add a token first', '']];
 		Blockly.getMainWorkspace().getBlockById('trade').getField('ACCOUNT_LIST').setValue('');
@@ -54,7 +64,7 @@ Bot.utils.updateTokenList = function updateTokenList(tokenToAdd){
 		});
 		var tokenInfoToAdd = tokenList[0];
 		if ( tokenToAdd !== undefined ) {
-			var tokenInfoIndex = Bot.utils.storageManager.findToken(tokenToAdd);
+			var tokenInfoIndex = this.storageManager.findToken(tokenToAdd);
 			if (tokenInfoIndex >= 0){
 				tokenInfoToAdd = tokenList[tokenInfoIndex];
 			}
@@ -68,57 +78,11 @@ Bot.utils.updateTokenList = function updateTokenList(tokenToAdd){
 	}
 };
 
-var StorageManager = function StorageManager(){
-	var getTokenList = function getTokenList(){
-		if ( !localStorage.hasOwnProperty('tokenList') ) {
-			localStorage.tokenList = JSON.stringify([]);
-		} 	
-		return JSON.parse(localStorage.tokenList);
-	};
-
-	var findToken = function findToken(token){
-		var tokenList = getTokenList();
-		var index = -1;
-		tokenList.forEach(function(tokenInfo, i){
-			if ( tokenInfo.token === token ) {
-				index = i;
-			}
-		});
-		return index;
-	};
-
-	var setTokenList = function setTokenList(tokenList){
-		localStorage.tokenList = JSON.stringify(tokenList);
-	};
-
-	return {
-		addToken: function addToken(token, account_name){
-			var tokenList = getTokenList();
-			var index = findToken(token);
-			if ( index < 0 ) {
-				tokenList.push({
-					account_name: account_name,
-					token: token
-				});
-				setTokenList(tokenList);
-			}
-		},
-			removeToken: function removeToken(token){
-				var tokenList = getTokenList();
-				var index = findToken(token);
-				if ( index > -1 ) {
-					tokenList.splice(index, 1);
-					setTokenList(tokenList);
-				}
-			},
-			getTokenList: getTokenList,
-			findToken: findToken,
-	};	
+Utils.prototype.getStorageManager = function getStorageManager(){
+	return this.storageManager;
 };
 
-Bot.utils.storageManager = StorageManager();
-
-Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
+Utils.prototype.addPurchaseOptions = function addPurchaseOptions(){
 	var firstOption = {};
 	var secondOption = {};
 	var trade = Blockly.getMainWorkspace().getBlockById('trade');
@@ -160,63 +124,7 @@ Bot.utils.addPurchaseOptions = function addPurchaseOptions(){
 	}
 };
 
-Bot.utils.unplugErrors = {
-	trade: function trade(_trade, ev){
-		if ( _trade.childBlocks_.length > 0 && Bot.config.ticktrade_markets.indexOf(_trade.childBlocks_[0].type) < 0 ) {
-			Bot.utils.log('The trade block can only accept submarket blocks', 'warning');
-			Array.prototype.slice.apply(_trade.childBlocks_).forEach(function(child){
-				child.unplug();
-			});
-		} else if ( _trade.childBlocks_.length > 0 ){
-			Bot.utils.unplugErrors.submarket(_trade.childBlocks_[0], ev);
-			if ( ev.hasOwnProperty('newInputName') ) {
-				Bot.utils.addPurchaseOptions();
-			}
-		}
-		var topParent = Bot.utils.findTopParentBlock(_trade);
-		if ( topParent !== null ) {
-			if ( Bot.config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.id === 'strategy' || topParent.id === 'finish' ) {
-				Bot.utils.log('The trade block cannot be inside binary blocks', 'warning');
-				_trade.unplug();
-			}
-		}
-	},
-	submarket: function submarket(_submarket, ev){
-		if ( _submarket.childBlocks_.length > 0 && Bot.config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0 ) {
-			Bot.utils.log('Submarket blocks can only accept condition blocks', 'warning');
-			Array.prototype.slice.apply(_submarket.childBlocks_).forEach(function(child){
-				child.unplug();
-			});
-		} else if ( _submarket.childBlocks_.length > 0 ){
-			Bot.utils.unplugErrors.condition(_submarket.childBlocks_[0], ev);
-		}
-		if ( _submarket.parentBlock_ !== null) {
-			if ( _submarket.parentBlock_.type !== 'trade' ) {
-				Bot.utils.log('Submarket blocks have to be added to the trade block', 'warning');
-				_submarket.unplug();
-			}
-		}
-	},
-	condition: function condition(_condition, ev){
-		if ( _condition.parentBlock_ !== null ) {
-			if ( Bot.config.ticktrade_markets.indexOf(_condition.parentBlock_.type) < 0 ) {
-				Bot.utils.log('Condition blocks have to be added to submarket blocks', 'warning');
-				_condition.unplug();
-			}
-		}
-	},
-	purchase: function purchase(_purchase, ev) {
-    var topParent = Bot.utils.findTopParentBlock(_purchase);
-    if ( topParent !== null && ( topParent.id === 'finish' || topParent.id === 'trade' ) ) {
-			Bot.utils.log('Purchase blocks have to be added inside the strategy block', 'warning');
-      _purchase.unplug();
-    }
-	},
-	trage_again: function trade_again(_trade_again, ev) {
-    var topParent = Bot.utils.findTopParentBlock(_trade_again);
-    if ( topParent !== null && ( topParent.id === 'strategy' || topParent.id === 'trade' ) ) {
-			Bot.utils.log('Purchase blocks have to be added inside the finish block', 'warning');
-      _trade_again.unplug();
-    }
-	},
+Utils.prototype.getRelationChecker = function getRelationChecker(){
+	return this.relationChecker;
 };
+Bot.utils = new Utils(window);

@@ -45,7 +45,7 @@
 
 	var removeToken = function removeToken(token){
 		var index = findToken(token);
-		Bot.utils.storageManager.removeToken(token);
+		Bot.utils.getStorageManager().removeToken(token);
 		Bot.utils.updateTokenList();
 	};
 
@@ -61,7 +61,7 @@
 			var api = new LiveApi();
 			api.authorize(token).then(function(response){
 				api.disconnect();
-				Bot.utils.storageManager.addToken(token, response.authorize.loginid);
+				Bot.utils.getStorageManager().addToken(token, response.authorize.loginid);
 				Bot.utils.updateTokenList(token);
 				log('Your token was added successfully', 'success');
 			}, function(reason){

@@ -27,6 +27,6 @@ Blockly.Blocks['trade'] = {
 				}
 			});
 		}
-		Bot.utils.unplugErrors.trade(this, ev);
+		Bot.utils.getRelationChecker().trade(this, ev);
 	},
 };

@@ -30,3 +30,10 @@ h1 {
 	float: right;
 	margin: 2px;
 }
+#center {
+	position: fixed;
+	width: 1px;
+	height: 1px;
+	top: 50%;
+	left: 50%;
+}
