@@ -1,0 +1,87 @@
+html, body {
+		height: 100%;
+		margin: 0px;
+}
+body {
+
+	backgroun-color: #fff;
+	font-family: sans-serif;
+}
+h1 {
+	font-weight: normal;
+	font-size: 140%;
+}
+#drop_zone{
+	height: 100%;
+	width: 100%;
+}
+.toolbox {
+}
+.toolbox * {
+	margin: 2px;
+	float: left;
+}
+#blocklyDiv{
+	height: 100%;
+	width: 100%;
+	right: 100px;
+	bottom: 0px;
+}
+.help{
+	float: right;
+	margin: 2px;
+}
+#center {
+	position: fixed;
+	width: 1px;
+	height: 1px;
+	top: 50%;
+	left: 50%;
+}
+#outputPanel {
+	width: 200px;
+	position: fixed;
+	right: -185px;
+	top: 20%;
+	z-index: 9999;
+	height: 320px;
+}
+#outputPanel .results{
+	background-color: #DDDDDD;
+	margin-left: 15px;
+	display: none;
+	padding: 3px;
+}
+#outputPanel .showPanel{
+	cursor: pointer;
+	background-color: green;
+	width: 15px;
+	height: 30px;
+	position: absolute;
+	left: 0px;
+	top: 50%;
+	text-align: center;
+}
+#outputPanel .hidePanel{
+	cursor: pointer;
+	background-color: green;
+	width: 15px;
+	height: 30px;
+	position: absolute;
+	left: 0px;
+	top: 50%;
+	text-align: center;
+	display: none;
+}
+#outputPanel .hidePanel p{
+	color: white;
+	margin-top: 4px;
+}
+#outputPanel .showPanel p{
+	color: white;
+	margin-top: 4px;
+}
+#outputPanel #ticksDisplay{
+	margin-left: 6px;
+	height: 6em;
+}

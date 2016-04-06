@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Binary Bot</title>
+	<link href="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.css" rel="stylesheet" />
+	<link href="www/css/bot.css" rel="stylesheet" />
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="bower_components/Tourist.js/tourist.css" type="text/css" media="screen">
+</head>
+<body id="drop_zone">
+	<div id="center"></div>
+	<div class="toolbox">
+			<div class="intro-file-management">
+				<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
+				<button title="Save the blocks as a XML file" onclick="saveXml()">Save Blocks</button>
+			</div>
+			<div class="intro-token">
+				<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
+			</div>
+			<div class="intro-run-stop">
+				<button title="Run the blocks" onclick="runCode()">Run</button>
+				<button title="Stop the blocks" onclick="stopCode()">Stop</button>
+			</div>
+	</div>
+	<div class="help">
+		Tours:
+		<select id="tours">
+			<option value="welcome">Welcome!</option>
+			<option value="introduction">Introduction</option>
+		</select>
+		<button onclick="Bot.startTutorial()">Go!</button>
+	</div>
+	<div id="outputPanel">
+		<div class="hidePanel"><p>&gt;</p></div>
+		<div class="showPanel"><p>&lt;</p></div>
+		<div class="results">
+			<p>Number of runs: <span id="numOfRuns"></span></p>
+			<p>Stake: <span id="stake"></span></p>
+			<p>Payout: <span id="payout"></span></p>
+			<p>Total Profit: <span id="totalProfit"></span></p>
+			<p>Last Profit: <span id="lastProfit"></span></p>
+			<p>Last Result: <span id="lastResult"></span></p>
+			<p>Balance: <span id="balance"></span></p>
+			Ticks:
+			<div id="ticksDisplay"></div>
+		</div>
+	</div>
+	<div id="blocklyDiv"></div>
+
+  <xml id="toolbox" style="display: none">
+    <category name="Logic" colour="210">
+			<block type="controls_if"></block>
+			<block type="logic_compare"></block>
+			<block type="logic_operation"></block>
+			<block type="logic_negate"></block>
+			<block type="logic_boolean"></block>
+			<block type="logic_null"></block>
+			<block type="logic_ternary"></block>
+    </category>
+    <category name="Math" colour="230">
+			<block type="math_number">
+			<field name="NUM">1</field>
+			</block>
+			<block type="math_arithmetic">
+			<value name="A">
+			<shadow type="math_number">
+			<field name="NUM">1</field>
+			</shadow>
+			</value>
+			<value name="B">
+			<shadow type="math_number">
+			<field name="NUM">1</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_single">
+			<value name="NUM">
+			<shadow type="math_number">
+			<field name="NUM">9</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_trig">
+			<value name="NUM">
+			<shadow type="math_number">
+			<field name="NUM">45</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_constant"></block>
+			<block type="math_number_property">
+			<value name="NUMBER_TO_CHECK">
+			<shadow type="math_number">
+			<field name="NUM">0</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_change">
+			<value name="DELTA">
+			<shadow type="math_number">
+			<field name="NUM">1</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_round">
+			<value name="NUM">
+			<shadow type="math_number">
+			<field name="NUM">3.1</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_on_list"></block>
+			<block type="math_modulo">
+			<value name="DIVIDEND">
+			<shadow type="math_number">
+			<field name="NUM">64</field>
+			</shadow>
+			</value>
+			<value name="DIVISOR">
+			<shadow type="math_number">
+			<field name="NUM">10</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_constrain">
+			<value name="VALUE">
+			<shadow type="math_number">
+			<field name="NUM">50</field>
+			</shadow>
+			</value>
+			<value name="LOW">
+			<shadow type="math_number">
+			<field name="NUM">1</field>
+			</shadow>
+			</value>
+			<value name="HIGH">
+			<shadow type="math_number">
+			<field name="NUM">100</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_random_int">
+			<value name="FROM">
+			<shadow type="math_number">
+			<field name="NUM">1</field>
+			</shadow>
+			</value>
+			<value name="TO">
+			<shadow type="math_number">
+			<field name="NUM">100</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="math_random_float"></block>
+
+    </category>
+    <category name="Text" colour="160">
+			<block type="text"></block>
+			<block type="text_join"></block>
+			<block type="text_append">
+			<value name="TEXT">
+			<shadow type="text"></shadow>
+			</value>
+			</block>
+			<block type="text_length">
+			<value name="VALUE">
+			<shadow type="text">
+			<field name="TEXT">abc</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="text_isEmpty">
+			<value name="VALUE">
+			<shadow type="text">
+			<field name="TEXT"></field>
+			</shadow>
+			</value>
+			</block>
+			<block type="text_indexOf">
+			<value name="VALUE">
+			<block type="variables_get">
+			<field name="VAR">text</field>
+			</block>
+			</value>
+			<value name="FIND">
+			<shadow type="text">
+			<field name="TEXT">abc</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="text_charAt">
+			<value name="VALUE">
+			<block type="variables_get">
+			<field name="VAR">text</field>
+			</block>
+			</value>
+			</block>
+			<block type="text_getSubstring">
+			<value name="STRING">
+			<block type="variables_get">
+			<field name="VAR">text</field>
+			</block>
+			</value>
+			</block>
+			<block type="text_changeCase">
+			<value name="TEXT">
+			<shadow type="text">
+			<field name="TEXT">abc</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="text_trim">
+			<value name="TEXT">
+			<shadow type="text">
+			<field name="TEXT">abc</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="text_print">
+			<value name="TEXT">
+			<shadow type="text">
+			<field name="TEXT">abc</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="text_prompt_ext">
+			<value name="TEXT">
+			<shadow type="text">
+			<field name="TEXT">abc</field>
+			</shadow>
+			</value>
+			</block>
+    </category>
+		<category name="List" colour="260">
+			<block type="lists_create_with">
+			<mutation items="0"></mutation>
+			</block>
+			<block type="lists_create_with"></block>
+			<block type="lists_repeat">
+			<value name="NUM">
+			<shadow type="math_number">
+			<field name="NUM">5</field>
+			</shadow>
+			</value>
+			</block>
+			<block type="lists_length"></block>
+			<block type="lists_isEmpty"></block>
+			<block type="lists_indexOf">
+			<value name="VALUE">
+			<block type="variables_get">
+			<field name="VAR">list</field>
+			</block>
+			</value>
+			</block>
+			<block type="lists_getIndex">
+			<value name="VALUE">
+			<block type="variables_get">
+			<field name="VAR">list</field>
+			</block>
+			</value>
+			</block>
+			<block type="lists_setIndex">
+			<value name="LIST">
+			<block type="variables_get">
+			<field name="VAR">list</field>
+			</block>
+			</value>
+			</block>
+			<block type="lists_getSublist">
+			<value name="LIST">
+			<block type="variables_get">
+			<field name="VAR">list</field>
+			</block>
+			</value>
+			</block>
+			<block type="lists_split">
+			<value name="DELIM">
+			<shadow type="text">
+			<field name="TEXT">,</field>
+			</shadow>
+			</value>
+			</block>
+		</category>
+		<category name="Variable" id="Variables" colour="330" custom="VARIABLE"></category>
+		<category name="Functions" id="Functions" colour="290" custom="PROCEDURE"></category>
+    <category name="Binary" colour="60">
+			<category name="Random Market" colour="345">
+				<category name="Indices" colour="345">
+					<block type="r_100"></block>
+					<block type="r_25"></block>
+					<block type="r_50"></block>
+					<block type="r_75"></block>
+				</category>
+				<category name="Quotidians" colour="345">
+					<block type="rdbear"></block>
+					<block type="rdbull"></block>
+					<block type="rdmoon"></block>
+					<block type="rdsun"></block>
+				</category>
+				<category name="Nocturnes" colour="345">
+					<block type="rdmars"></block>
+					<block type="rdvenus"></block>
+					<block type="rdyang"></block>
+					<block type="rdyin"></block>
+				</category>
+			</category>
+			<category name="Conditions" colour="15">
+				<block type="updown"></block>
+				<block type="asian"></block>
+				<block type="matchesdiffers"></block>
+				<block type="evenodd"></block>
+				<block type="overunder"></block>
+			</category>
+			<category name="Tools" colour="180">
+				<block type="purchase"></block>
+				<block type="trade_again"></block>
+				<block type="read_details"></block>
+				<block type="balance"></block>
+				<block type="total_profit"></block>
+				<block type="notify"></block>
+			</category>
+    </category>
+  </xml>
+
+	<xml id="startBlocks" style="display: none">
+		<block type="trade" id="trade" x="24" y="32">
+		</block>
+		<block type="procedures_defnoreturn" id="strategy" x="550" y="10">
+			<mutation>
+				<arg name="tick"></arg>
+				<arg name="direction"></arg>
+			</mutation>
+			<field name="NAME">decide when to purchase with each tick</field>
+			<comment pinned="false" h="80" w="160">This block is called when a new tick is received, a purchase block is usually added to this block</comment>
+		</block>
+		<block type="procedures_defnoreturn" id="finish" x="550" y="210">
+			<mutation>
+				<arg name="result"></arg>
+				<arg name="details"></arg>
+			</mutation>
+			<field name="NAME">decide what to do after the contract is finished</field>
+			<comment pinned="false" h="80" w="160">This block is called when a contract is finished, one can decide to trade again by adding a trade block to this block</comment>
+		</block>
+	</xml>
+
+	<script src="node_modules/binary-live-api/lib/binary-live-api.js"></script>
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/notifyjs-browser/dist/notify.js"></script>
+	<script src="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.js"></script>
+  <script src="node_modules/blockly/blockly_compressed.js"></script>
+  <script src="node_modules/blockly/blocks_compressed.js"></script>
+  <script src="node_modules/blockly/javascript_compressed.js"></script>
+  <script src="node_modules/blockly/msg/js/en.js"></script>
+  <script src="bower_components/file-saver.js/FileSaver.js"></script>
+  <script src="bower_components/underscore/underscore-min.js"></script>
+  <script src="bower_components/backbone/backbone-min.js"></script>
+  <script src="bower_components/Tourist.js/tourist.min.js"></script>
+  <script src="www/js/global.js"></script>
+  <script src="www/js/contract_service.js"></script>
+  <script src="www/js/config.js"></script>
+  <script src="www/js/relationChecker.js"></script>
+  <script src="www/js/storageManager.js"></script>
+  <script src="www/js/utils.js"></script>
+  <script src="www/js/conditions.js"></script>
+  <script src="www/js/markets.js"></script>
+  <script src="www/js/definitions/total_profit.js"></script>
+  <script src="www/js/definitions/balance.js"></script>
+  <script src="www/js/definitions/notify.js"></script>
+  <script src="www/js/definitions/read_details.js"></script>
+  <script src="www/js/definitions/trade.js"></script>
+  <script src="www/js/definitions/trade_again.js"></script>
+  <script src="www/js/definitions/purchase.js"></script>
+  <script src="www/js/definitions/submarkets/random/ticktrade_markets.js"></script>
+  <script src="www/js/definitions/conditions/ticktrades.js"></script>
+  <script src="www/js/code_generators/total_profit.js"></script>
+  <script src="www/js/code_generators/balance.js"></script>
+  <script src="www/js/code_generators/notify.js"></script>
+  <script src="www/js/code_generators/read_details.js"></script>
+  <script src="www/js/code_generators/trade.js"></script>
+  <script src="www/js/code_generators/trade_again.js"></script>
+  <script src="www/js/code_generators/purchase.js"></script>
+  <script src="www/js/code_generators/submarkets/random/ticktrade_markets.js"></script>
+  <script src="www/js/code_generators/conditions/ticktrades.js"></script>
+  <script src="www/js/main.js"></script>
+	<script src="www/js/init.js"></script></script>
+  <script src="www/js/welcome.js"></script>
+  <script src="www/js/introduction.js"></script>
+  <script src="www/js/after.js"></script>
+
+</body>
+</html>
+
