@@ -5,12 +5,17 @@
 	Bot.server = {}; 
 
 	window.addEventListener('contract:finished', function(e){
-		var payout = (e.detail.result !== 'win' )? 0 : e.detail.payout;
+		Bot.addResult(e.detail.result);
+		var payout = (e.detail.result !== 'win' )? 0 : +e.detail.payout;
+		Bot.globals.lastProfit = +(payout - +e.detail.askPrice).toFixed(2);
+		Bot.globals.totalProfit = +(+Bot.globals.totalProfit + +Bot.globals.lastProfit).toFixed(2);
+		Bot.globals.lastResult = e.detail.result;
+		Bot.updateGlobals();
 		var detail_list = [
 			e.detail.statement, 
 			+e.detail.askPrice, 
 			+payout, 
-			+(payout - e.detail.askPrice).toFixed(2),
+			Bot.globals.lastProfit,
 			e.detail.type, 
 			+e.detail.entrySpot, 
 			new Date(parseInt(e.detail.entrySpotTime + '000')).toLocaleTimeString(),
@@ -22,7 +27,15 @@
 		Bot.finish(e.detail.result, detail_list);
 	});
 
+	window.addEventListener('contract:updated', function(e){
+		Bot.addResult(e.detail.result);
+	});
+
 	window.addEventListener('tick:updated', function(e){
+		Bot.addTick({
+			tick: e.detail.tick,
+			label: '<span> ' + e.detail.direction + '</span>',
+		});
 		if ( Bot.server.contracts.length === 2 ) {
 			Bot.strategy(e.detail.tick, e.detail.direction);
 		} else if ( !Bot.server.purchaseBegan ) {
@@ -139,6 +152,10 @@
 		});
 	};
 
+	Bot.server.getTotalProfit = function getTotalProfit(){
+		return +Bot.globals.totalProfit;
+	};
+
 	Bot.server.getBalance = function getBalance(balance_type){
 		if ( !isNaN(parseFloat(Bot.server.balance)) ) {
 			return (balance_type === 'NUM')? parseFloat(Bot.server.balance) : Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance) ;
@@ -151,11 +168,13 @@
 		Bot.server.api.events.on('balance', function (response) {
 			Bot.server.balance = response.balance.balance;
 			Bot.server.balance_currency = response.balance.currency;
+			Bot.globals.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
 		});
 
 		Bot.server.api.subscribeToBalance().then(function(response){
 			Bot.server.balance = response.balance.balance;
 			Bot.server.balance_currency = response.balance.currency;
+			Bot.globals.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
 		}, function(reason){
 			showError('Could not subscribe to balance');
 		});
@@ -167,6 +186,10 @@
 		Bot.server.api.events.on('tick', function (feed) {
 			if (feed && feed.echo_req.ticks_history === Bot.server.symbol) {
 				log('tick received at: ' + feed.tick.epoch);
+				if ( !Bot.server.tickWasRecieved ) {
+					Bot.globals.numOfRuns++;
+					Bot.updateGlobals();
+				}
 				Bot.server.tickWasRecieved = true;
 				Bot.server.contractService.addTick(feed.tick);
 			}
@@ -183,6 +206,9 @@
 
 	Bot.server.submitProposal = function submitProposal(options){
 		Bot.server.api.getPriceProposalForContract(options).then(function(value){
+			Bot.globals.stake = +(+value.proposal.ask_price).toFixed(2);
+			Bot.globals.payout = +(+value.proposal.payout).toFixed(2);
+			Bot.updateGlobals();
 			log('contract added: ' + value.proposal.longcode);
 			if ( Bot.server.contracts.length === 1 ) {
 				log('Contracts are ready to be purchased by the strategy', 'success'); 

@@ -32,6 +32,21 @@
 		<button onclick="Bot.startTutorial()">Go!</button>
 		<a href="https://github.com/binary-com/binary-bot/" target="_blank" title="Go to this project on GitHub">GitHub</a>
 	</div>
+	<div id="outputPanel">
+		<div class="hidePanel"><p>&gt;</p></div>
+		<div class="showPanel"><p>&lt;</p></div>
+		<div class="results">
+			<p>Number of runs: <span id="numOfRuns"></span></p>
+			<p>Stake: <span id="stake"></span></p>
+			<p>Payout: <span id="payout"></span></p>
+			<p>Total Profit: <span id="totalProfit"></span></p>
+			<p>Last Profit: <span id="lastProfit"></span></p>
+			<p>Last Result: <span id="lastResult"></span></p>
+			<p>Balance: <span id="balance"></span></p>
+			Ticks:
+			<div id="ticksDisplay"></div>
+		</div>
+	</div>
 	<div id="blocklyDiv"></div>
 
   <xml id="toolbox" style="display: none">
@@ -303,6 +318,7 @@
 				<block type="trade_again"></block>
 				<block type="read_details"></block>
 				<block type="balance"></block>
+				<block type="total_profit"></block>
 				<block type="notify"></block>
 			</category>
     </category>
@@ -341,6 +357,7 @@
   <script src="bower_components/underscore/underscore-min.js"></script>
   <script src="bower_components/backbone/backbone-min.js"></script>
   <script src="bower_components/Tourist.js/tourist.min.js"></script>
+  <script src="www/js/global.js"></script>
   <script src="www/js/contract_service.js"></script>
   <script src="www/js/config.js"></script>
   <script src="www/js/relationChecker.js"></script>
@@ -348,6 +365,7 @@
   <script src="www/js/utils.js"></script>
   <script src="www/js/conditions.js"></script>
   <script src="www/js/markets.js"></script>
+  <script src="www/js/definitions/total_profit.js"></script>
   <script src="www/js/definitions/balance.js"></script>
   <script src="www/js/definitions/notify.js"></script>
   <script src="www/js/definitions/read_details.js"></script>
@@ -356,6 +374,7 @@
   <script src="www/js/definitions/purchase.js"></script>
   <script src="www/js/definitions/submarkets/random/ticktrade_markets.js"></script>
   <script src="www/js/definitions/conditions/ticktrades.js"></script>
+  <script src="www/js/code_generators/total_profit.js"></script>
   <script src="www/js/code_generators/balance.js"></script>
   <script src="www/js/code_generators/notify.js"></script>
   <script src="www/js/code_generators/read_details.js"></script>

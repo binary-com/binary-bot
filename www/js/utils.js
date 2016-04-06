@@ -10,10 +10,10 @@ Bot.utils = (function Utils(){
 		console.log('Error: ' + message);
 	};
 
-	var log = function log(message, notify_type) {
+	var log = function log(message, notify_type, position) {
 		if ( notify_type !== undefined ) {
 			$.notify(message, {
-				position: 'bottom right',
+				position: (position === undefined)? 'bottom right': position,
 				className: notify_type,
 			});
 		}

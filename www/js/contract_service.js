@@ -315,6 +315,8 @@ var ContractService = function ContractService() {
 							}
 							utils.broadcast("contract:finished", contract);
 						}
+					} else {
+						utils.broadcast("contract:updated", contract);
 					}
 				}
 			}
