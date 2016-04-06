@@ -37,7 +37,7 @@ Bot.introduction = (function Introduction(){
 			},
 		},
 		{
-			content: '<p>To start pick a <b>submarket</b> block from random markets.</p>',
+			content: '<p>To start pick a <b>submarket</b> block from random markets. Some steps like this one don\'t have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a submarket from left should lead you to the next step.)</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
