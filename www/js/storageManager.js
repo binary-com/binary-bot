@@ -40,6 +40,9 @@ Bot.StorageManager = function StorageManager(){
 			setTokenList(tokenList);
 		}
 	};
+	var removeAllTokens = function removeAllTokens(){
+		delete localStorage.tokenList;
+	};
 	var isDone = function isDone(varName){
 		return localStorage.hasOwnProperty(varName);
 	};
@@ -55,6 +58,7 @@ Bot.StorageManager = function StorageManager(){
 		setTokenList: setTokenList,			
 		addToken: addToken,			
 		removeToken: removeToken,			
+		removeAllTokens: removeAllTokens,			
 		isDone: isDone,			
 		setDone: setDone,			
 		setNotDone: setNotDone,			

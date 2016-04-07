@@ -61,6 +61,11 @@
 		Bot.utils.getStorageManager().removeToken(token);
 		Bot.utils.updateTokenList();
 	};
+	Bot.server.logout = function logout(){
+		Bot.utils.getStorageManager().removeAllTokens();
+		Bot.utils.updateTokenList();
+		log('Logged you out!', 'success');
+	};
 
 	Bot.server.addAccount = function addAccount(token){
 		var index = findToken(token);

@@ -31,6 +31,10 @@ h1 {
 	float: right;
 	margin: 2px;
 }
+.logout{
+	float: right;
+	margin: 2px;
+}
 #center {
 	position: fixed;
 	width: 1px;
