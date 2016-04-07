@@ -321,35 +321,36 @@
 				<block type="total_profit"></block>
 				<block type="notify"></block>
 			</category>
+			<category name="Strategy" colour="330">
+				 <block type="variables_get">
+					 <field name="VAR">tick</field>
+				 </block>
+				 <block type="variables_get">
+					 <field name="VAR">direction</field>
+				 </block>
+			</category>
+			<category name="Finish" colour="330">
+				 <block type="variables_get">
+					 <field name="VAR">result</field>
+				 </block>
+				 <block type="variables_get">
+					 <field name="VAR">details</field>
+				 </block>
+			</category>
     </category>
   </xml>
 
 	<xml id="startBlocks" style="display: none">
-		<block type="trade" id="trade" x="24" y="32">
-		</block>
-		<block type="procedures_defnoreturn" id="strategy" x="550" y="10">
-			<mutation>
-				<arg name="tick"></arg>
-				<arg name="direction"></arg>
-			</mutation>
-			<field name="NAME">decide when to purchase with each tick</field>
-			<comment pinned="false" h="80" w="160">This block is called when a new tick is received, a purchase block is usually added to this block</comment>
-		</block>
-		<block type="procedures_defnoreturn" id="finish" x="550" y="210">
-			<mutation>
-				<arg name="result"></arg>
-				<arg name="details"></arg>
-			</mutation>
-			<field name="NAME">decide what to do after the contract is finished</field>
-			<comment pinned="false" h="80" w="160">This block is called when a contract is finished, one can decide to trade again by adding a trade block to this block</comment>
-		</block>
+		<block type="trade" id="trade" x="10" y="10"></block>
+		<block type="on_strategy" id="strategy" x="400" y="10"></block>
+		<block type="on_contract_finished" id="finish" x="400" y="210"></block>
 	</xml>
 
 	<script src="node_modules/binary-live-api/lib/binary-live-api.js"></script>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/notifyjs-browser/dist/notify.js"></script>
 	<script src="node_modules/notifyjs-browser/dist/styles/metro/notify-metro.js"></script>
-  <script src="node_modules/blockly/blockly_compressed.js"></script>
+  <script src="node_modules/blockly/blockly_uncompressed.js"></script>
   <script src="node_modules/blockly/blocks_compressed.js"></script>
   <script src="node_modules/blockly/javascript_compressed.js"></script>
   <script src="node_modules/blockly/msg/js/en.js"></script>
@@ -365,6 +366,8 @@
   <script src="www/js/utils.js"></script>
   <script src="www/js/conditions.js"></script>
   <script src="www/js/markets.js"></script>
+  <script src="www/js/definitions/strategy.js"></script>
+  <script src="www/js/definitions/finish.js"></script>
   <script src="www/js/definitions/total_profit.js"></script>
   <script src="www/js/definitions/balance.js"></script>
   <script src="www/js/definitions/notify.js"></script>
@@ -374,6 +377,8 @@
   <script src="www/js/definitions/purchase.js"></script>
   <script src="www/js/definitions/submarkets/random/ticktrade_markets.js"></script>
   <script src="www/js/definitions/conditions/ticktrades.js"></script>
+  <script src="www/js/code_generators/strategy.js"></script>
+  <script src="www/js/code_generators/finish.js"></script>
   <script src="www/js/code_generators/total_profit.js"></script>
   <script src="www/js/code_generators/balance.js"></script>
   <script src="www/js/code_generators/notify.js"></script>

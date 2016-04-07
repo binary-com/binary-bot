@@ -231,7 +231,7 @@
 		}
 	};
 
-	Bot.server.init = function init(token, callback, strategy, finish){
+	Bot.server.init = function init(token, callback){
 		if ( token === '' ) {
 			showError('No token is available to authenticate');
 			return;
@@ -244,8 +244,6 @@
 			Bot.server.tradeConfig = [token, callback, strategy, finish];
 			Bot.server.contractService = ContractService();	
 			Bot.server.contracts = [];
-			Bot.strategy = strategy;
-			Bot.finish = finish;
 			Bot.server.purchaseBegan = false;
 			Bot.server.observeTicks();
 			Bot.server.observeBalance();

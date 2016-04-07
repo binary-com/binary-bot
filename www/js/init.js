@@ -5,17 +5,13 @@ var workspace = Blockly.inject('blocklyDiv', {
 Blockly.Xml.domToWorkspace(workspace,
 	document.getElementById('startBlocks'));
 
-var showXml = function showXml() {
-	var xmlDom = Blockly.Xml.workspaceToDom(workspace);
-	var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-	Bot.utils.log(xmlText);
-};
-
-var saveXml = function saveXml() {
+var saveXml = function saveXml(showOnly) {
 	var xmlDom = Blockly.Xml.workspaceToDom(workspace);
 	Array.prototype.slice.apply(xmlDom.getElementsByTagName('field')).forEach(function(field){
 		if ( field.getAttribute('name') === 'ACCOUNT_LIST' ) {
-			field.childNodes[0].nodeValue = '';
+			if ( field.childNodes.length >= 1 ) {
+				field.childNodes[0].nodeValue = '';
+			}
 		}
 	});
 	Array.prototype.slice.apply(xmlDom.getElementsByTagName('block')).forEach(function(block){
@@ -23,16 +19,11 @@ var saveXml = function saveXml() {
 			case 'trade':
 				block.setAttribute('id', 'trade');
 				break;
-			case 'procedures_defnoreturn':
-				Array.prototype.slice.apply(block.childNodes).forEach(function(childNode){
-					if ( childNode.getAttribute('name') === 'NAME' ) {
-						if ( childNode.childNodes[0].nodeValue.indexOf('each tick') > -1 ) {
-							block.setAttribute('id', 'strategy');
-						} else if ( childNode.childNodes[0].nodeValue.indexOf('finished') > -1 ) {
-							block.setAttribute('id', 'finish');
-						}
-					}
-				});
+			case 'strategy':
+				block.setAttribute('id', 'strategy');
+				break;
+			case 'finish':
+				block.setAttribute('id', 'finish');
 				break;
 			default:
 				block.removeAttribute('id');
@@ -40,12 +31,16 @@ var saveXml = function saveXml() {
 		}
 	});
 	var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-	var filename = 'binary-bot' + parseInt(new Date()
-		.getTime() / 1000) + '.xml';
-	var blob = new Blob([xmlText], {
-		type: "text/xml;charset=utf-8"
-	});
-	saveAs(blob, filename);
+	if ( showOnly ) {
+		Bot.utils.log(xmlText);
+	} else {
+		var filename = 'binary-bot' + parseInt(new Date()
+			.getTime() / 1000) + '.xml';
+		var blob = new Blob([xmlText], {
+			type: "text/xml;charset=utf-8"
+		});
+		saveAs(blob, filename);
+	}
 };
 
 var showCode = function showCode() {
@@ -55,6 +50,8 @@ var showCode = function showCode() {
 		var code = Blockly.JavaScript.workspaceToCode(workspace);
 		Bot.utils.log(code);
 	} catch(e) {
+		console.log(e);
+		Bot.e=e;
 		Bot.utils.showError(e.message);
 	}
 
