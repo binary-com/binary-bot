@@ -179,7 +179,7 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>This is a <b>strategy</b> block. All the blocks you put in here are run for each and every tick received.</p>',
+			content: '<p>This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -187,7 +187,7 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>The received tick value is in the variable <b>tick</b> and the tick direction (up or down) is in the variable <b>direction</b>. You can pick them from the <b>Strategy</b> menu</p>',
+			content: '<p>The received tick value is in the block <b>tick</b> and the tick direction (up or down) is in the block <b>direction</b>. You can pick them from the <b>Strategy</b> menu</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -195,15 +195,15 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 			setup: function(tour, options) {
 				components.toolbox.css('opacity', 1);
-				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
-				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
+				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
+				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
 			},
 			teardown: function(tour, options) {
 				components.toolbox.css('opacity', 0.3);
 			},
 		},
 		{
-			content: '<p>For this tourial we are not going to use those variables, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block</p>',
+			content: '<p>For this tourial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -224,7 +224,7 @@ Bot.introduction = (function Introduction(){
 			},
 		},
 		{
-			content: '<p>Now add it to the strategy block.</p>',
+			content: '<p>Now add it to the Strategy block.</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -249,7 +249,7 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>A strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.</p>',
+			content: '<p>A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -257,7 +257,7 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the <b>finish</b> block</p>',
+			content: '<p>After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -265,7 +265,7 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>Same as the strategy block, the <b>finish</b> block can have multiple blocks defining its functionality. The finish block defines what to do when the previously purchased contract is finished.</p>',
+			content: '<p>Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -273,7 +273,7 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>A <b>Trade Again</b> block creates a new trade and exits from the finish block. Now pick a Trade Again block.</p>',
+			content: '<p>A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -283,8 +283,8 @@ Bot.introduction = (function Introduction(){
 				tour.next();
 			},
 			setup: function(tour, options) {
-				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
+				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
 				components.toolbox.css('opacity', 1);
 				window.addEventListener('tour:trade_again_created', this.tour_trade_again_created);
 			},
@@ -294,7 +294,7 @@ Bot.introduction = (function Introduction(){
 			},
 		},
 		{
-			content: '<p>Now add it to the finish block</p>',
+			content: '<p>Now add it to the On Finish block</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -304,13 +304,9 @@ Bot.introduction = (function Introduction(){
 				tour.next();
 			},
 			setup: function(tour, options) {
-				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
-				components.toolbox.css('opacity', 1);
 				window.addEventListener('tour:trade_again', this.tour_trade_again);
 			},
 			teardown: function(tour, options) {
-				components.toolbox.css('opacity', 0.3);
 				window.removeEventListener('tour:trade_again', this.tour_trade_again);
 				Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			},

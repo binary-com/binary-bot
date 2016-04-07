@@ -24,7 +24,7 @@
 			+e.detail.barrier,
 		];
 		log('Purchase was finished, result is: ' + e.detail.result, (e.detail.result === 'win')? 'success': 'error');
-		Bot.finish(e.detail.result, detail_list);
+		Bot.on_finish(e.detail.result, detail_list);
 	});
 
 	window.addEventListener('contract:updated', function(e){
@@ -37,7 +37,7 @@
 			label: '<span> ' + e.detail.direction + '</span>',
 		});
 		if ( Bot.server.contracts.length === 2 ) {
-			Bot.strategy(e.detail.tick, e.detail.direction);
+			Bot.on_strategy(e.detail.tick, e.detail.direction);
 		} else if ( !Bot.server.purchaseBegan ) {
 			log('Skipped strategy because at least one of the contracts is not ready yet', 'info');
 		}
@@ -241,7 +241,7 @@
 		log('Authenticating...', 'info');
 		Bot.server.api.authorize(token).then(function(response){
 			log('Authenticated using token: ' + token, 'success');
-			Bot.server.tradeConfig = [token, callback, strategy, finish];
+			Bot.server.tradeConfig = [token, callback];
 			Bot.server.contractService = ContractService();	
 			Bot.server.contracts = [];
 			Bot.server.purchaseBegan = false;

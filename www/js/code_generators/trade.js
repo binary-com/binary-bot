@@ -5,6 +5,6 @@ Blockly.JavaScript['trade'] = function(block) {
 		throw {message: 'You have to add a submarket first'};
 	}
 	// TODO: Assemble JavaScript into code variable.
-	var code = 'var trade = function(){\nBot.server.init(\''+account.trim()+'\', '+submarket.trim()+', strategy, finish);\n};\ntrade();\n';
+	var code = 'var trade = function(){\nBot.server.init(\''+account.trim()+'\', '+submarket.trim()+');\n};\ntrade();\n';
 	return code;
 };

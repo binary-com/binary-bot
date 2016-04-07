@@ -49,7 +49,7 @@ Bot.RelationChecker = function RelationChecker(){
 		}
 		var topParent = Bot.utils.findTopParentBlock(_trade);
 		if ( topParent !== null ) {
-			if ( Bot.config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.id === 'strategy' || topParent.id === 'finish' ) {
+			if ( Bot.config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.type === 'on_strategy' || topParent.type === 'on_finish' ) {
 				Bot.utils.log('The trade block cannot be inside binary blocks', 'warning');
 				_trade.unplug();
 			}
@@ -123,20 +123,48 @@ Bot.RelationChecker = function RelationChecker(){
 	};
 	var purchase = function purchase(_purchase, ev) {
 		var topParent = Bot.utils.findTopParentBlock(_purchase);
-		if ( topParent !== null && ( topParent.id === 'finish' || topParent.id === 'trade' ) ) {
-			Bot.utils.log('Purchase blocks have to be added inside the strategy block', 'warning');
+		if ( topParent !== null && ( topParent.type === 'on_finish' || topParent.type === 'trade' ) ) {
+			Bot.utils.log('Purchase block has to be added inside the strategy block', 'warning');
 			_purchase.unplug();
-		} else if ( topParent !== null && topParent.id === 'strategy' ) {
+		} else if ( topParent !== null && topParent.type === 'on_strategy' ) {
 			Bot.utils.broadcast('tour:purchase');
 		}
 	};
-	var trage_again = function trade_again(_trade_again, ev) {
+	var tick = function tick(_tick, ev) {
+		var topParent = Bot.utils.findTopParentBlock(_tick);
+		if ( topParent !== null && ( topParent.type === 'on_finish' || topParent.type === 'trade' ) ) {
+			Bot.utils.log('Tick block has to be added inside the strategy block', 'warning');
+			_tick.unplug();
+		}
+	};
+	var direction = function direction(_direction, ev) {
+		var topParent = Bot.utils.findTopParentBlock(_direction);
+		if ( topParent !== null && ( topParent.type === 'on_finish' || topParent.type === 'trade' ) ) {
+			Bot.utils.log('Direction block has to be added inside the strategy block', 'warning');
+			_direction.unplug();
+		}
+	};
+	var trade_again = function trade_again(_trade_again, ev) {
 		var topParent = Bot.utils.findTopParentBlock(_trade_again);
-		if ( topParent !== null && ( topParent.id === 'strategy' || topParent.id === 'trade' ) ) {
-			Bot.utils.log('Purchase blocks have to be added inside the finish block', 'warning');
+		if ( topParent !== null && ( topParent.type === 'on_strategy' || topParent.type === 'trade' ) ) {
+			Bot.utils.log('Trade Again block has to be added inside the finish block', 'warning');
 			_trade_again.unplug();
-		} else if ( topParent !== null && topParent.id === 'finish' ) {
+		} else if ( topParent !== null && topParent.type === 'on_finish' ) {
 			Bot.utils.broadcast('tour:trade_again');
+		}
+	};
+	var contract_result = function contract_result(_contract_result, ev) {
+		var topParent = Bot.utils.findTopParentBlock(_contract_result);
+		if ( topParent !== null && ( topParent.type === 'on_strategy' || topParent.type === 'trade' ) ) {
+			Bot.utils.log('Contract Result block has to be added inside the finish block', 'warning');
+			_contract_result.unplug();
+		}
+	};
+	var contract_details = function contract_details(_contract_details, ev) {
+		var topParent = Bot.utils.findTopParentBlock(_contract_details);
+		if ( topParent !== null && ( topParent.type === 'on_strategy' || topParent.type === 'trade' ) ) {
+			Bot.utils.log('Contract Details block has to be added inside the finish block', 'warning');
+			_contract_details.unplug();
 		}
 	};
 	return {
@@ -144,6 +172,10 @@ Bot.RelationChecker = function RelationChecker(){
 		submarket: submarket,
 		condition: condition,
 		purchase: purchase,
-		trage_again: trage_again,
+		trade_again: trade_again,
+		tick: tick,
+		direction: direction,
+		contract_result: contract_result,
+		contract_details: contract_details,
 	};
 };

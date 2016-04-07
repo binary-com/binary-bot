@@ -313,29 +313,21 @@
 				<block type="evenodd"></block>
 				<block type="overunder"></block>
 			</category>
-			<category name="Tools" colour="180">
+			<category name="Strategy" colour="290">
+				<block type="tick"></block>
+				<block type="direction"></block>
 				<block type="purchase"></block>
+			</category>
+			<category name="On Finish" colour="290">
+				<block type="contract_result"></block>
+				<block type="contract_details"></block>
 				<block type="trade_again"></block>
+			</category>
+			<category name="Tools" colour="180">
 				<block type="read_details"></block>
 				<block type="balance"></block>
 				<block type="total_profit"></block>
 				<block type="notify"></block>
-			</category>
-			<category name="Strategy" colour="330">
-				 <block type="variables_get">
-					 <field name="VAR">tick</field>
-				 </block>
-				 <block type="variables_get">
-					 <field name="VAR">direction</field>
-				 </block>
-			</category>
-			<category name="Finish" colour="330">
-				 <block type="variables_get">
-					 <field name="VAR">result</field>
-				 </block>
-				 <block type="variables_get">
-					 <field name="VAR">details</field>
-				 </block>
 			</category>
     </category>
   </xml>
@@ -343,7 +335,7 @@
 	<xml id="startBlocks" style="display: none">
 		<block type="trade" id="trade" x="10" y="10"></block>
 		<block type="on_strategy" id="strategy" x="400" y="10"></block>
-		<block type="on_contract_finished" id="finish" x="400" y="210"></block>
+		<block type="on_finish" id="finish" x="400" y="210"></block>
 	</xml>
 
 	<script src="node_modules/binary-live-api/lib/binary-live-api.js"></script>
@@ -366,6 +358,10 @@
   <script src="www/js/utils.js"></script>
   <script src="www/js/conditions.js"></script>
   <script src="www/js/markets.js"></script>
+  <script src="www/js/definitions/tick.js"></script>
+  <script src="www/js/definitions/direction.js"></script>
+  <script src="www/js/definitions/result.js"></script>
+  <script src="www/js/definitions/details.js"></script>
   <script src="www/js/definitions/strategy.js"></script>
   <script src="www/js/definitions/finish.js"></script>
   <script src="www/js/definitions/total_profit.js"></script>
@@ -377,6 +373,10 @@
   <script src="www/js/definitions/purchase.js"></script>
   <script src="www/js/definitions/submarkets/random/ticktrade_markets.js"></script>
   <script src="www/js/definitions/conditions/ticktrades.js"></script>
+  <script src="www/js/code_generators/tick.js"></script>
+  <script src="www/js/code_generators/direction.js"></script>
+  <script src="www/js/code_generators/result.js"></script>
+  <script src="www/js/code_generators/details.js"></script>
   <script src="www/js/code_generators/strategy.js"></script>
   <script src="www/js/code_generators/finish.js"></script>
   <script src="www/js/code_generators/total_profit.js"></script>

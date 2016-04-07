@@ -19,10 +19,10 @@ var saveXml = function saveXml(showOnly) {
 			case 'trade':
 				block.setAttribute('id', 'trade');
 				break;
-			case 'strategy':
+			case 'on_strategy':
 				block.setAttribute('id', 'strategy');
 				break;
-			case 'finish':
+			case 'on_finish':
 				block.setAttribute('id', 'finish');
 				break;
 			default:

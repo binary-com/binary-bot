@@ -1,6 +1,6 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u9tgts
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
 
-Blockly.Blocks['on_contract_finished'] = {
+Blockly.Blocks['on_finish'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("On Finish (Decide what to do after the contract is finished)");

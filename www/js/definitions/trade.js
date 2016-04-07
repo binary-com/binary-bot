@@ -13,20 +13,6 @@ Blockly.Blocks['trade'] = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	}, 
 	onchange: function(ev){
-		if ( ev.type === 'change' && ev.blockId && ev.blockId === 'strategy' ) {
-			Array.prototype.slice.apply(Blockly.mainWorkspace.getTopBlocks()).forEach(function(block){
-				switch(block.id) {
-					case 'strategy':
-						block.inputList[0].fieldRow[1].setText('decide when to purchase with each tick');
-						break;
-					case 'finish':
-						block.inputList[0].fieldRow[1].setText('decide what to do after the contract is finished');
-						break;
-					default:
-						break;
-				}
-			});
-		}
 		Bot.utils.getRelationChecker().trade(this, ev);
 	},
 };
