@@ -57,3 +57,11 @@ Bot.addTick = function addTick(tick){
 	Bot.globals.ticks.reverse();
 	Bot.showTicks();
 };
+
+Bot.undo = function undo(){
+	Blockly.mainWorkspace.undo();
+};
+
+Bot.redo = function redo(){
+	Blockly.mainWorkspace.undo(true);
+};

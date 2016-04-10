@@ -22,6 +22,10 @@
 				<button title="Run the blocks" onclick="runCode()">Run</button>
 				<button title="Stop the blocks" onclick="stopCode()">Stop</button>
 			</div>
+			<div class="intro-undo-redo">
+				<button title="Undo the changes (Ctrl+Z)" onclick="Bot.undo()">Undo</button>
+				<button title="Redo the changes (Ctrl+Shift+Z)" onclick="Bot.redo()">Redo</button>
+			</div>
 	</div>
 	<div class="logout"><button onclick="Bot.server.logout()">Logout</button></div>
 	<div class="help">

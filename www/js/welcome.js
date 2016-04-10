@@ -6,6 +6,7 @@ Bot.welcome = (function Welcome(){
 		token: $('.intro-token'),
 		run_stop: $('.intro-run-stop'),
 		trash: $('.blocklyTrash'),
+		undo_redo: $('.intro-undo-redo'),
 	};
 
 	var setOpacityForAll = function setOpacityForAll(opacity){
@@ -95,7 +96,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Use these buttons to run or stop your blocks. Good Luck!</p>',
+			content: '<p>Use these buttons to run or stop your blocks.</p>',
 			target: $('.intro-run-stop'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -104,6 +105,39 @@ Bot.welcome = (function Welcome(){
 			setup: function(tour, options) {
 				components.run_stop.css('opacity', 1);
 			},
+			teardown: function(tour, options) {
+				components.run_stop.css('opacity', 0.3);
+			},
+		},
+		{
+			content: '<p>Use these buttons to Undo/Redo changes to your blocks.</p>',
+			target: $('.intro-undo-redo'),
+			nextButton: true,
+			highlightTarget: true,	
+			my: 'top center',
+			at: 'bottom center',
+			setup: function(tour, options) {
+				components.undo_redo.css('opacity', 1);
+			},
+			teardown: function(tour, options) {
+				components.undo_redo.css('opacity', 0.3);
+			},
+		},
+		{
+			content: '<p>Click on the button to Show/Hide the output panel.</p>',
+			target: $('#outputPanel'),
+			nextButton: true,
+			highlightTarget: true,	
+			my: 'right center',
+			at: 'left center',
+		},
+		{
+			content: '<p>Good Luck!</p>',
+			target: $('#center'),
+			nextButton: true,
+			highlightTarget: true,	
+			my: 'top center',
+			at: 'bottom center',
 			teardown: function(tour, options) {
 				setOpacityForAll(1);
 				Bot.utils.getStorageManager().setDone('welcomeFinished');

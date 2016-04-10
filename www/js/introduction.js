@@ -363,6 +363,14 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
+			content: '<p>Click to show the <b>Output Panel</b> where you can see you work progress.</p>',
+			target: $('#outputPanel'),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			nextButton: true,
+		},
+		{
 			content: '<p>Go ahead and run the blocks. You can stop the code anytime you want using the stop button.</p>',
 			target: $('.intro-run-stop'),
 			highlightTarget: true,

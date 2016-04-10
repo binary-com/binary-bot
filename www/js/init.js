@@ -112,6 +112,7 @@ var readFile = function readFile(f) {
 					Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenList[0].token);
 					Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
 				}
+				Blockly.mainWorkspace.clearUndo();
 				Bot.utils.log('Blocks are loaded successfully', 'success');
 			} catch(e){
 				Bot.utils.showError(e);
@@ -132,3 +133,18 @@ dropZone.addEventListener('dragover', handleDragOver, false);
 dropZone.addEventListener('drop', handleFileSelect, false);
 document.getElementById('files')
 	.addEventListener('change', handleFileSelect, false);
+Bot.startTutorial = function startTutorial(){
+	Bot[$('#tours').val()].start();	
+};
+$('#outputPanel .showPanel').click(function(){
+	$('#outputPanel .showPanel').css('display', 'none');
+	$('#outputPanel .hidePanel').css('display', 'block');
+	$('#outputPanel .results').css('display', 'block');
+	$('#outputPanel').animate({right: '0px'}, 1000);
+});
+$('#outputPanel .hidePanel').click(function(){
+	$('#outputPanel .hidePanel').css('display', 'none');
+	$('#outputPanel .showPanel').css('display', 'block');
+	$('#outputPanel .results').css('display', 'none');
+	console.log($('#outputPanel').animate({right: '-185px'}, 300));
+});
