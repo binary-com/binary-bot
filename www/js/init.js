@@ -52,7 +52,7 @@ var showCode = function showCode() {
 	} catch(e) {
 		console.log(e);
 		Bot.e=e;
-		Bot.utils.showError(e.message);
+		Bot.utils.showError(e);
 	}
 
 };
@@ -67,7 +67,7 @@ var runCode = function runCode() {
 		Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 		eval(code);
 	} catch (e) {
-		Bot.utils.showError(e.message);
+		Bot.utils.showError(e);
 	}
 };
 
@@ -114,7 +114,7 @@ var readFile = function readFile(f) {
 				}
 				Bot.utils.log('Blocks are loaded successfully', 'success');
 			} catch(e){
-				Bot.utils.showError(e.message);
+				Bot.utils.showError(e);
 			}
 		};
 	})(f);

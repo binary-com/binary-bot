@@ -2,12 +2,25 @@ Bot.utils = (function Utils(){
 	var relationChecker = new Bot.RelationChecker();
 	var storageManager = new Bot.StorageManager();
 	
-	var showError = function showError(message){
+	var showError = function showError(error){
+		if ( error.stack ){
+			if (Bot.debug) {
+				console.log(error.stack);	
+			}
+		}
+		var message;
+		if ( error.message) {
+			message = error.message;
+		} else {
+			message = error;
+		}
 		$.notify(message, {
 			position: 'bottom right',
 			className: 'error',
 		});
-		console.log('Error: ' + message);
+		if (Bot.debug) {
+			console.log('Error: ' + message);
+		}
 	};
 
 	var log = function log(message, notify_type, position) {
@@ -17,7 +30,9 @@ Bot.utils = (function Utils(){
 				className: notify_type,
 			});
 		}
-		console.log(message);
+		if (Bot.debug) {
+			console.log(message);
+		}
 	};
 
 	var broadcast = function broadcast(eventName, data) {

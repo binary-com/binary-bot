@@ -100,10 +100,11 @@
 
 	Bot.server.portfolio = function portfolio(proposalContract, purchaseContract){
 		Bot.server.api.getPortfolio().then(function(portfolio){
+			Bot.server.updateDetected();
 			var contractId = purchaseContract.buy.contract_id;
 			portfolio.portfolio.contracts.forEach(function (contract) {
 				if (contract.contract_id == contractId) {
-					log('Waiting for the purchased contract to finish', 'info');
+					log('Waiting for the purchased contract to finish, see the output panel for more info', 'info');
 					Bot.server.contractService.addContract({
 						statement: contract.transaction_id,
 						startTime: contract.date_start + 1,
@@ -116,7 +117,8 @@
 				}
 			});
 		}, function(reason){
-			showError(reason.message);
+			Bot.server.updateDetected();
+			showError(reason);
 		});
 	};
 
@@ -125,20 +127,27 @@
 		Bot.server.contracts = [];
 		log(proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
+			Bot.server.updateDetected();
 			Bot.server.purchaseBegan = true;
-			log('Contract was purchased successfully', 'success');
+			log('Contract was purchased successfully, reading data from portfolio...', 'success');
 			Bot.server.portfolio(proposalContract, purchaseContract);
 		}, function(reason){
-			showError(reason.message);
+			Bot.server.updateDetected();
+			showError(reason);
 		});
 	};
 
-	Bot.server.checkTick = function checkTick(){
-		setTimeout(function(){
-			if ( !Bot.server.tickWasRecieved ) {
-				showError('No ticks was received in 5 seconds');
+	Bot.server.updateDetected = function updateDetected(){
+		Bot.server.lastUpdatetime = parseInt(new Date().getTime()/1000);
+	};
+
+	Bot.server.checkUpdate = function checkUpdate(){
+		Bot.server.checkUpdateInterval = setInterval(function(){
+			var now = parseInt(new Date().getTime()/1000);
+			if ( now - Bot.server.lastUpdatetime > 5 ) {
+				showError('No update was received in 5 seconds, trying again...');
 				log('restarting the trade...', 'info');
-				Bot.server.init.apply(this, Bot.server.tradeConfig);
+				Bot.server.connect();
 			}
 		}, 5000);
 	};
@@ -149,11 +158,12 @@
 			"count": Bot.server.contractService.getCapacity(),
 			"subscribe": 1,
 		}).then(function(value){
+			Bot.server.updateDetected();
 			log('Request sent for history');
 			Bot.server.tickWasRecieved = false;
-			Bot.server.checkTick();
 		}, function(reason){
-			showError(reason.message);
+			Bot.server.updateDetected();
+			showError(reason);
 		});
 	};
 
@@ -171,17 +181,20 @@
 
 	Bot.server.observeBalance = function observeBalance(){
 		Bot.server.api.events.on('balance', function (response) {
+			Bot.server.updateDetected();
 			Bot.server.balance = response.balance.balance;
 			Bot.server.balance_currency = response.balance.currency;
 			Bot.globals.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
 		});
 
 		Bot.server.api.subscribeToBalance().then(function(response){
+			Bot.server.updateDetected();
 			Bot.server.balance = response.balance.balance;
 			Bot.server.balance_currency = response.balance.currency;
 			Bot.globals.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
 		}, function(reason){
 			showError('Could not subscribe to balance');
+			Bot.server.updateDetected();
 		});
 
 	};
@@ -189,21 +202,19 @@
 	Bot.server.observeTicks = function observeTicks(){
 
 		Bot.server.api.events.on('tick', function (feed) {
-			if (feed && feed.echo_req.ticks_history === Bot.server.symbol) {
-				log('tick received at: ' + feed.tick.epoch);
-				if ( !Bot.server.tickWasRecieved ) {
-					Bot.globals.numOfRuns++;
-					Bot.updateGlobals();
-				}
-				Bot.server.tickWasRecieved = true;
-				Bot.server.contractService.addTick(feed.tick);
+			Bot.server.updateDetected();
+			log('tick received at: ' + feed.tick.epoch);
+			if ( !Bot.server.tickWasRecieved ) {
+				Bot.globals.numOfRuns++;
+				Bot.updateGlobals();
 			}
+			Bot.server.tickWasRecieved = true;
+			Bot.server.contractService.addTick(feed.tick);
 		});
 
 		Bot.server.api.events.on('history', function (feed) {
-			if (feed && feed.echo_req.ticks_history === Bot.server.symbol) {
-				Bot.server.contractService.addHistory(feed.history);
-			}
+			Bot.server.updateDetected();
+			Bot.server.contractService.addHistory(feed.history);
 		});
 
 		Bot.server.requestHistory();
@@ -211,6 +222,7 @@
 
 	Bot.server.submitProposal = function submitProposal(options){
 		Bot.server.api.getPriceProposalForContract(options).then(function(value){
+			Bot.server.updateDetected();
 			Bot.globals.stake = +(+value.proposal.ask_price).toFixed(2);
 			Bot.globals.payout = +(+value.proposal.payout).toFixed(2);
 			Bot.updateGlobals();
@@ -220,37 +232,50 @@
 			}
 			Bot.server.contracts.push(value);
 		}, function(reason){
-			showError(reason.message);
+			Bot.server.updateDetected();
+			showError(reason);
 		});
 	};
 
+
 	Bot.server.stop = function stop(){
-		if ( Bot.server.hasOwnProperty('api') ) {
-			log('API is disconnected');
-			Bot.server.api.disconnect();
+		if ( Bot.server.api ) {
+			try {
+				Bot.server.api.disconnect();
+			} catch(e){
+			}
 		}
+	};
+
+	Bot.server.connect = function connect(){
+		Bot.server.stop();
+		Bot.server.api = new LiveApi();
+		Bot.server.api.authorize(Bot.server.token);
+		clearInterval(Bot.server.checkUpdateInterval);
+		Bot.server.checkUpdate();
+		Bot.server.api.events.on('authorize', function (response) {
+			if ( response.error ) {
+				showError(response.error);
+			} else {
+				Bot.server.updateDetected();
+				log('Authenticated using token: ' + Bot.server.token , 'success');
+				Bot.server.contractService = ContractService();	
+				Bot.server.contracts = [];
+				Bot.server.purchaseBegan = false;
+				Bot.server.observeTicks();
+				Bot.server.observeBalance();
+				Bot.server.authorizeCallback();
+			}
+		});
 	};
 
 	Bot.server.init = function init(token, callback){
 		if ( token === '' ) {
 			showError('No token is available to authenticate');
-			return;
+		} else {
+			Bot.server.token = token;
+			Bot.server.authorizeCallback = callback;
+			Bot.server.connect();
 		}
-		Bot.server.stop();
-		Bot.server.api = new LiveApi();
-		log('Authenticating...', 'info');
-		Bot.server.api.authorize(token).then(function(response){
-			log('Authenticated using token: ' + token, 'success');
-			Bot.server.tradeConfig = [token, callback];
-			Bot.server.contractService = ContractService();	
-			Bot.server.contracts = [];
-			Bot.server.purchaseBegan = false;
-			Bot.server.observeTicks();
-			Bot.server.observeBalance();
-			callback();
-		}, function(reason){
-			removeToken(token);
-			showError('Authentication using token: ' + token + ' failed!');
-		});
 	};
 })();
