@@ -2,8 +2,7 @@ var workspace = Blockly.inject('blocklyDiv', {
 	media: 'node_modules/blockly/media/',
 	toolbox: document.getElementById('toolbox')
 });
-Blockly.Xml.domToWorkspace(workspace,
-	document.getElementById('startBlocks'));
+Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'), workspace);
 
 var saveXml = function saveXml(showOnly) {
 	var xmlDom = Blockly.Xml.workspaceToDom(workspace);
@@ -105,7 +104,7 @@ var readFile = function readFile(f) {
 			try {
 				Blockly.mainWorkspace.clear();
 				var xml = Blockly.Xml.textToDom(e.target.result);
-				Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+				Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
 				Bot.utils.addPurchaseOptions();
 				var tokenList = Bot.utils.getStorageManager().getTokenList();
 				if ( tokenList.length !== 0 ) {
