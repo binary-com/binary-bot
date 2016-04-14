@@ -8,7 +8,8 @@ Bot.globals = {
 	lastResult: '',
 	balance: '',
 	ticks: [],
-	ticksCount: 4,
+	results: {},
+	ticksCount: 15,
 };
 Bot.updateGlobals = function updateGlobals(){
 	Object.keys(Bot.globals).forEach(function(key){
@@ -24,33 +25,31 @@ Bot.showTicks = function showTicks(){
 
 	Bot.globals.ticks.forEach(function(tick, index) {
 		tick = Bot.globals.ticks[index];
-		var style = '';
+		var style = 'style="text-align: left; font-variant: small-caps; font-weight: bold;';
 		if ( index <= 1 ) {
-			style = 'style="opacity: 1;"';
+			style += 'opacity: 1;"';
 		} else {
-			style = 'style="opacity: '+ calculateOpacity(index) +';"';
+			style += 'opacity: '+ calculateOpacity(index) +';"';
 		}
-		$('#ticksDisplay').append('<div ' + style + ' class="tick"><span>' + tick.tick + '</span>' + tick.label + '</div>');
-	});
-	$('#ticksDisplay div:nth-child(2)').animate({opacity: calculateOpacity(1)}, 1000);
-	Bot.globals.ticks.forEach(function(tick, index) {
-		if ( tick.result ) {
-			Bot.addResult(tick.result, index);	
+		var element = '<li ' + style + ' class="tick"><span style="font-style: italic; font-size: x-small; font-weight: normal">' + new Date(parseInt(tick.time + '000')).toLocaleTimeString() + ':</span><span> ' + tick.tick + '</span>' + tick.label;
+		if ( Bot.globals.results.hasOwnProperty(tick.time) ) {
+			element += '<span> - ' + Bot.globals.results[tick.time] + '</span>';
 		}
+		element += '</li>';
+		$('#ticksDisplay').append(element);
 	});
+	$('#ticksDisplay li:nth-child(2)').animate({opacity: calculateOpacity(1)}, 1000);
 };
 
-Bot.addResult = function addResult(result, index){
-	if ( isNaN(index) ) {
-		index = 0;
-		Bot.globals.ticks[0].result = result;
-	}
-	$('#ticksDisplay div:nth-child(' + (index + 1).toString() + ')').append('<span> - ' + result + '</span>');
+Bot.addResult = function addResult(time, result){
+	Bot.globals.results[time] = result;
+	Bot.showTicks();
 };
 
 Bot.addTick = function addTick(tick){
 	Bot.globals.ticks.reverse();
 	if ( Bot.globals.ticks.length === Bot.globals.ticksCount ) {
+		delete Bot.globals.results[Bot.globals.ticks[0].time];
 		Bot.globals.ticks.shift();
 	}
 	Bot.globals.ticks.push(tick);
