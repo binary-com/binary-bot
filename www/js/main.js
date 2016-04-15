@@ -6,7 +6,6 @@
 
 	Bot.server.state = 'STOPPED';
 	window.addEventListener('contract:finished', function(e){
-		console.log('finished!');
 		Bot.server.state = 'FINISHED';
 		var contract = e.detail.contract;
 		Bot.addResult(e.detail.time, contract.result);
