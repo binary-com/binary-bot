@@ -47,10 +47,8 @@ var showCode = function showCode() {
 	try {
 		Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 		var code = Blockly.JavaScript.workspaceToCode(workspace);
-		Bot.utils.log(code);
+		console.log(code);
 	} catch(e) {
-		console.log(e);
-		Bot.e=e;
 		Bot.utils.showError(e);
 	}
 
@@ -145,5 +143,5 @@ $('#outputPanel .hidePanel').click(function(){
 	$('#outputPanel .hidePanel').css('display', 'none');
 	$('#outputPanel .showPanel').css('display', 'block');
 	$('#outputPanel .results').css('display', 'none');
-	console.log($('#outputPanel').animate({right: '-185px'}, 300));
+	$('#outputPanel').animate({right: '-185px'}, 300);
 });

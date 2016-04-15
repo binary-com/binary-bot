@@ -6,9 +6,9 @@
 
 	Bot.server.state = 'STOPPED';
 	window.addEventListener('contract:finished', function(e){
+		console.log('finished!');
 		Bot.server.state = 'FINISHED';
 		var contract = e.detail.contract;
-		console.log(e.detail);
 		Bot.addResult(e.detail.time, contract.result);
 		var payout = (contract.result !== 'win' )? 0 : +contract.payout;
 		Bot.globals.lastProfit = +(payout - +contract.askPrice).toFixed(2);
@@ -301,56 +301,55 @@
 		}
 	};
 
+	Bot.server.restartContracts = function restartContracts(){
+		Bot.server.purchaseInfo = null;
+		Bot.server.contracts = [];
+		Bot.server.authorizeCallback();
+	};
+
+	Bot.server.contractService = ContractService();	
+
 	Bot.server.connect = function connect(){
-		Bot.server.stop();
-		Bot.server.api = new LiveApi();
-		Bot.server.api.authorize(Bot.server.token);
-		Bot.server.firstAuthorize = true;
 		Bot.server.api.events.on('authorize', function (response) {
 			if ( response.error ) {
 				showError(response.error);
 				Bot.server.state = 'NOT_AUTHORIZED';
 			} else {
-				var state = Bot.server.state;
-				if ( state !== 'AUTHORIZED' ) {
-					Bot.server.state = 'AUTHORIZED';
+				if ( Bot.server.state !== 'AUTHORIZED' ) { // potentially bug maker
 					log('Authenticated using token: ' + Bot.server.token , 'success');
-					if ( Bot.server.firstAuthorize ) { 
-						Bot.server.firstAuthorize = false;
-						Bot.server.purchaseInfo = null;
-						Bot.server.contracts = [];
+					if ( Bot.server.state === 'INITIALIZED' ) { 
 						Bot.server.observeTicks();
 						Bot.server.observeTransaction();
-						Bot.server.authorizeCallback();
-					} else {
-						if ( state === 'PORTFOLIO_RECEIVED' || state === 'PURCHASED' ) {
-							Bot.server.getLastPurchaseInfo();
-						} else {
-							Bot.server.purchaseInfo = null;
-							var contracts = Bot.server.contracts;
-							Bot.server.contracts = [];
-							contracts.forEach(function(contract){
-								Bot.server.submitProposal(contract.echo_req);
-							}); 
-						}
 					}
-					Bot.server.contractService = ContractService();	
+					if ( Bot.server.state === 'PORTFOLIO_RECEIVED' || Bot.server.state === 'PURCHASED' ) {
+						Bot.server.getLastPurchaseInfo();
+					} else {
+						Bot.server.restartContracts();
+					}
 					Bot.server.requestHistory();
 					Bot.server.requestTransaction();
 					Bot.server.requestBalance();
+					Bot.server.state = 'AUTHORIZED';
 				}
 			}
 		});
 	};
 
-	Bot.server.init = function init(token, callback){
+	Bot.server.trade = function trade(token, callback, trade_again){
 		if ( token === '' ) {
 			showError('No token is available to authenticate');
 		} else {
-			Bot.server.state = 'CONNECTING';
-			Bot.server.token = token;
 			Bot.server.authorizeCallback = callback;
-			Bot.server.connect();
+			if ( trade_again ) {
+				Bot.server.state = 'TRADE_AGAIN';
+				Bot.server.restartContracts();
+			} else {
+				Bot.server.state = 'INITIALIZED';
+				Bot.server.token = token;
+				Bot.server.api = new LiveApi();
+				Bot.server.api.authorize(Bot.server.token);
+				Bot.server.connect();
+			}
 		}
 	};
 })();
