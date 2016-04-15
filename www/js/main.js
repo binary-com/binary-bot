@@ -156,7 +156,6 @@
 			"subscribe": 1,
 		}).then(function(value){
 			log('Request sent for history');
-			Bot.server.tickWasRecieved = false;
 		}, function(reason){
 			showError(reason);
 		});
@@ -212,11 +211,6 @@
 
 		Bot.server.api.events.on('tick', function (feed) {
 			log('tick received at: ' + feed.tick.epoch);
-			if ( !Bot.server.tickWasRecieved ) {
-				Bot.globals.numOfRuns++;
-				Bot.updateGlobals();
-			}
-			Bot.server.tickWasRecieved = true;
 			Bot.server.contractService.addTick(feed.tick);
 		});
 
@@ -339,6 +333,8 @@
 			showError('No token is available to authenticate');
 		} else {
 			Bot.server.authorizeCallback = callback;
+			Bot.globals.numOfRuns++;
+			Bot.updateGlobals();
 			if ( trade_again ) {
 				Bot.server.state = 'TRADE_AGAIN';
 				Bot.server.restartContracts();
