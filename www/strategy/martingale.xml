@@ -29,7 +29,7 @@
                   <block type="r_100">
                     <statement name="CONDITION">
                       <block type="evenodd">
-                        <field name="PAYOUTTYPE_LIST">payout</field>
+                        <field name="PAYOUTTYPE_LIST">stake</field>
                         <field name="CURRENCY_LIST">USD</field>
                         <value name="DURATION">
                           <block type="math_number">
