@@ -65,6 +65,7 @@
 		Bot.utils.getStorageManager().removeToken(token);
 		Bot.utils.updateTokenList();
 	};
+
 	Bot.server.logout = function logout(){
 		Bot.utils.getStorageManager().removeAllTokens();
 		Bot.utils.updateTokenList();
