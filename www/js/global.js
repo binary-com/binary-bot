@@ -109,7 +109,7 @@ Bot.showTrades = function showTrades(){
 		$('#tradesDisplay tbody').append(element);
 		count += 1;
 	});
-	for ( var i = count; i <= Bot.globals.tableSize ; i+=1 ){
+	for ( var i = count; i < Bot.globals.tableSize ; i+=1 ){
 		var element = '<tr>';
 		for ( var j = 0 ; j < 8 ; j += 1 ) {
 			element += '<td></td>';
