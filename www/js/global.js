@@ -4,16 +4,31 @@ Bot.globals = {
 	stake: '',
 	payout: '',
 	totalProfit: '',
+	totalPayout: '',
+	totalStake: '',
 	lastProfit: '',
 	lastResult: '',
 	balance: '',
 	ticks: [],
-	results: {},
+	tickResults: {},
 	ticksCount: 15,
+	tradeTable: [],
+	tradesCount: 10000,
+	tableSize: 10,
 };
+
 Bot.updateGlobals = function updateGlobals(){
 	Object.keys(Bot.globals).forEach(function(key){
-		$('#'+ key +'').text(Bot.globals[key]);	
+		$('.'+ key).text(Bot.globals[key]);	
+		if ( key === 'totalProfit' ){
+			if ( +Bot.globals[key] > 0 ) {
+				$('.' + key).css('color', 'green');
+			} else if ( +Bot.globals[key] < 0 ) {
+				$('.' + key).css('color', 'red');
+			} else {
+				$('.' + key).css('color', 'black');
+			}
+		}
 	});
 };
 
@@ -31,9 +46,10 @@ Bot.showTicks = function showTicks(){
 		} else {
 			style += 'opacity: '+ calculateOpacity(index) +';"';
 		}
-		var element = '<li ' + style + ' class="tick"><span style="font-style: italic; font-size: x-small; font-weight: normal">' + new Date(parseInt(tick.time + '000')).toLocaleTimeString() + ':</span><span> ' + tick.tick + '</span>' + tick.label;
-		if ( Bot.globals.results.hasOwnProperty(tick.time) ) {
-			element += '<span> - ' + Bot.globals.results[tick.time] + '</span>';
+		var element = '<li ' + style + ' class="tick"><span style="font-style: italic; font-size: x-small; font-weight: normal">';
+	 	element += new Date(parseInt(tick.time + '000')).toLocaleTimeString() + ':</span><span> ' + tick.tick + '</span>' + tick.label;
+		if ( Bot.globals.tickResults.hasOwnProperty(tick.time) ) {
+			element += '<span> - ' + Bot.globals.tickResults[tick.time] + '</span>';
 		}
 		element += '</li>';
 		$('#ticksDisplay').append(element);
@@ -42,14 +58,14 @@ Bot.showTicks = function showTicks(){
 };
 
 Bot.addResult = function addResult(time, result){
-	Bot.globals.results[time] = result;
+	Bot.globals.tickResults[time] = result;
 	Bot.showTicks();
 };
 
 Bot.addTick = function addTick(tick){
 	Bot.globals.ticks.reverse();
-	if ( Bot.globals.ticks.length === Bot.globals.ticksCount ) {
-		delete Bot.globals.results[Bot.globals.ticks[0].time];
+	if ( Bot.globals.ticks.length > Bot.globals.ticksCount ) {
+		delete Bot.globals.tickResults[Bot.globals.ticks[0].time];
 		Bot.globals.ticks.shift();
 	}
 	Bot.globals.ticks.push(tick);
@@ -63,4 +79,42 @@ Bot.undo = function undo(){
 
 Bot.redo = function redo(){
 	Blockly.mainWorkspace.undo(true);
+};
+
+Bot.addTrade = function addTrade(trade){
+	trade.number = Bot.globals.numOfRuns;
+	if ( Bot.globals.tradeTable.length > Bot.globals.tradesCount ) {
+		Bot.globals.tradeTable.shift();
+	}
+	Bot.globals.tradeTable.push(trade);
+	Bot.showTrades();
+};
+
+Bot.showTrades = function showTrades(){
+	$('#tradesDisplay tbody').children().remove();
+	var count = 0;
+	Bot.globals.tradeTable.forEach(function(trade, index) {
+		var payout = (trade.result !== 'win' )? 0 : +trade.payout;
+		var lastProfit = +(payout - +trade.askPrice).toFixed(2);
+		var element = '<tr>'
+			+'<td>' + trade.number + '</td>'
+			+'<td>' + trade.statement + '</td>'
+			+'<td>' + trade.type + '</td>'
+			+'<td>' + trade.entrySpot + '</td>'
+			+'<td>' + trade.exitSpot + '</td>'
+			+'<td>' + trade.askPrice + '</td>'
+			+'<td>' + payout + '</td>'
+			+'<td>' + lastProfit + '</td>'
+		+'</tr>';
+		$('#tradesDisplay tbody').append(element);
+		count += 1;
+	});
+	for ( var i = count; i <= Bot.globals.tableSize ; i+=1 ){
+		var element = '<tr>';
+		for ( var j = 0 ; j < 8 ; j += 1 ) {
+			element += '<td></td>';
+		}
+		+'</tr>';
+		$('#tradesDisplay tbody').append(element);
+	}
 };

@@ -130,18 +130,33 @@ dropZone.addEventListener('dragover', handleDragOver, false);
 dropZone.addEventListener('drop', handleFileSelect, false);
 document.getElementById('files')
 	.addEventListener('change', handleFileSelect, false);
+
 Bot.startTutorial = function startTutorial(){
 	Bot[$('#tours').val()].start();	
 };
+
 $('#outputPanel .showPanel').click(function(){
 	$('#outputPanel .showPanel').css('display', 'none');
 	$('#outputPanel .hidePanel').css('display', 'block');
 	$('#outputPanel .results').css('display', 'block');
 	$('#outputPanel').animate({right: '0px'}, 1000);
 });
+
 $('#outputPanel .hidePanel').click(function(){
 	$('#outputPanel .hidePanel').css('display', 'none');
 	$('#outputPanel .showPanel').css('display', 'block');
 	$('#outputPanel .results').css('display', 'none');
 	$('#outputPanel').animate({right: '-185px'}, 300);
 });
+
+$('#summaryPanel .exitPanel').click(function(){
+	$(this).parent().hide();
+});
+
+$('#summaryPanel').hide();
+
+Bot.showSummary = function showSummary(){
+	$('#summaryPanel').show();
+};
+
+Bot.showTrades();

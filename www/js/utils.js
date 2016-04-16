@@ -5,7 +5,7 @@ Bot.utils = (function Utils(){
 	var showError = function showError(error){
 		if ( error.stack ){
 			if (Bot.debug) {
-				console.log(error.stack);	
+				console.log('%c ' + error.stack, 'color: red');	
 			}
 		}
 		var message;
@@ -19,7 +19,7 @@ Bot.utils = (function Utils(){
 			className: 'error',
 		});
 		if (Bot.debug) {
-			console.log('Error: ' + message);
+			console.log('%c Error: ' + message, 'color: red');
 		}
 	};
 
