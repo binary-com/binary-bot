@@ -17,6 +17,21 @@ Bot.globals = {
 	tableSize: 10,
 };
 
+Bot.initialGlobals = {};
+
+Bot.copyObjectKeys = function copyObjectKeys(obj1, obj2){
+	$.extend(obj1, JSON.parse(JSON.stringify(obj2)));
+};
+
+Bot.copyObjectKeys(Bot.initialGlobals, Bot.globals);
+
+Bot.resetGlobals = function resetGlobals(){
+	Bot.copyObjectKeys(Bot.globals, Bot.initialGlobals);
+	Bot.updateGlobals();
+	Bot.showTicks();
+	Bot.showTrades();
+};
+
 Bot.updateGlobals = function updateGlobals(){
 	Object.keys(Bot.globals).forEach(function(key){
 		$('.'+ key).text(Bot.globals[key]);	
@@ -83,10 +98,12 @@ Bot.redo = function redo(){
 
 Bot.addTrade = function addTrade(trade){
 	trade.number = Bot.globals.numOfRuns;
+	Bot.globals.tradeTable.reverse();
 	if ( Bot.globals.tradeTable.length > Bot.globals.tradesCount ) {
 		Bot.globals.tradeTable.shift();
 	}
 	Bot.globals.tradeTable.push(trade);
+	Bot.globals.tradeTable.reverse();
 	Bot.showTrades();
 };
 

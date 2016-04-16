@@ -164,7 +164,7 @@
 				callback();
 			}
 		}, function(reason){
-			showError(reason);
+			log(reason);
 		});
 	};
 
@@ -236,7 +236,7 @@
 				callback();
 			}
 		}, function(reason){
-			showError(reason);
+			log(reason);
 		});
 	};
 
@@ -249,7 +249,7 @@
 				callback();
 			}
 		}, function(reason){
-			showError(reason);
+			log(reason);
 			Bot.server.reconnect();
 		});
 	};
@@ -424,12 +424,12 @@
 		} else {
 			Bot.server.updateTickTime();
 			Bot.server.authorizeCallback = callback;
-			Bot.globals.numOfRuns++;
 			Bot.updateGlobals();
 			if ( trade_again ) {
 				Bot.server.state = 'TRADE_AGAIN';
 				Bot.server.restartContracts();
 			} else {
+				Bot.resetGlobals();
 				Bot.server.token = token;
 				Bot.server.stop();
 				Bot.server.api = new LiveApi();
@@ -437,6 +437,7 @@
 				Bot.server.api.authorize(Bot.server.token);
 				Bot.server.connect();
 			}
+			Bot.globals.numOfRuns++;
 		}
 	};
 })();
