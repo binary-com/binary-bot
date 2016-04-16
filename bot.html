@@ -26,8 +26,8 @@
 				<button title="Open the summary panel" onclick="Bot.showSummary()">Summary</button>
 			</div>
 			<div class="intro-run-stop">
-				<button title="Run the blocks" onclick="runCode()">Run</button>
-				<button title="Stop the blocks" onclick="stopCode()">Stop</button>
+				<button title="Run the blocks" onclick="Bot.run()">Run</button>
+				<button title="Stop the blocks" id="stopButton">Reset</button>
 			</div>
 	</div>
 	<div class="logout"><button onclick="Bot.server.logout()">Logout</button></div>

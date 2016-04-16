@@ -7,6 +7,7 @@ Bot.welcome = (function Welcome(){
 		run_stop: $('.intro-run-stop'),
 		trash: $('.blocklyTrash'),
 		undo_redo: $('.intro-undo-redo'),
+		summary: $('.intro-summary'),
 	};
 
 	var setOpacityForAll = function setOpacityForAll(opacity){
@@ -96,20 +97,6 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Use these buttons to run or stop your blocks.</p>',
-			target: $('.intro-run-stop'),
-			nextButton: true,
-			highlightTarget: true,	
-			my: 'top center',
-			at: 'bottom center',
-			setup: function(tour, options) {
-				components.run_stop.css('opacity', 1);
-			},
-			teardown: function(tour, options) {
-				components.run_stop.css('opacity', 0.3);
-			},
-		},
-		{
 			content: '<p>Use these buttons to Undo/Redo changes to your blocks.</p>',
 			target: $('.intro-undo-redo'),
 			nextButton: true,
@@ -121,6 +108,34 @@ Bot.welcome = (function Welcome(){
 			},
 			teardown: function(tour, options) {
 				components.undo_redo.css('opacity', 0.3);
+			},
+		},
+		{
+			content: '<p>Click on this button to see the summary of your trades.</p>',
+			target: $('.intro-summary'),
+			nextButton: true,
+			highlightTarget: true,	
+			my: 'top center',
+			at: 'bottom center',
+			setup: function(tour, options) {
+				components.summary.css('opacity', 1);
+			},
+			teardown: function(tour, options) {
+				components.summary.css('opacity', 0.3);
+			},
+		},
+		{
+			content: '<p>Use these buttons to run or stop your blocks, or reset your result panels.</p>',
+			target: $('.intro-run-stop'),
+			nextButton: true,
+			highlightTarget: true,	
+			my: 'top center',
+			at: 'bottom center',
+			setup: function(tour, options) {
+				components.run_stop.css('opacity', 1);
+			},
+			teardown: function(tour, options) {
+				components.run_stop.css('opacity', 0.3);
 			},
 		},
 		{

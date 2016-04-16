@@ -54,7 +54,7 @@ var showCode = function showCode() {
 
 };
 
-var runCode = function runCode() {
+Bot.run = function run() {
 	// Generate JavaScript code and run it.
 	try {
 		window.LoopTrap = 1000;
@@ -63,13 +63,12 @@ var runCode = function runCode() {
 		var code = Blockly.JavaScript.workspaceToCode(workspace);
 		Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 		eval(code);
+		$('#stopButton').text('Stop');
+		$('#stopButton').unbind('click', Bot.reset);
+		$('#stopButton').bind('click', Bot.stop);
 	} catch (e) {
 		Bot.utils.showError(e);
 	}
-};
-
-var stopCode = function stopCode() {
-	Bot.server.stop();
 };
 
 var addAccount = function addAccount() {
@@ -134,6 +133,22 @@ document.getElementById('files')
 Bot.startTutorial = function startTutorial(){
 	Bot[$('#tours').val()].start();	
 };
+
+Bot.reset = function reset(e){
+	e.preventDefault();
+	Bot.server.reset();
+};
+
+Bot.stop = function stop(e){
+	e.preventDefault();
+	Bot.server.stop();
+	$('#stopButton').text('Reset');
+	$('#stopButton').unbind('click', Bot.stop);
+	$('#stopButton').bind('click', Bot.reset);
+};
+
+$('#stopButton').text('Reset');
+$('#stopButton').bind('click', Bot.reset);
 
 $('#outputPanel .showPanel').click(function(){
 	$('#outputPanel .showPanel').css('display', 'none');

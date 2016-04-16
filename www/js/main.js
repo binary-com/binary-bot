@@ -346,8 +346,13 @@
 		});
 	};
 
+	Bot.server.reset = function reset(){
+		Bot.resetGlobals();
+	};
+
 	Bot.server.stop = function stop(){
 		Bot.server.tickExpected = false;
+		Bot.server.stopped = true;
 		if ( Bot.server.api ) {
 			try {
 				Bot.server.api.disconnect();
@@ -382,6 +387,7 @@
 	};
 
 	Bot.server.connect = function connect(){
+		Bot.server.stopped = false;
 		Bot.server.tickExpected = true;
 		Bot.server.api.events.on('authorize', function (response) {
 			if ( response.error ) {
@@ -429,7 +435,6 @@
 				Bot.server.state = 'TRADE_AGAIN';
 				Bot.server.restartContracts();
 			} else {
-				Bot.resetGlobals();
 				Bot.server.token = token;
 				Bot.server.stop();
 				Bot.server.api = new LiveApi();

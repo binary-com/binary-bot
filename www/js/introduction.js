@@ -5,6 +5,8 @@ Bot.introduction = (function Introduction(){
 		file_management: $('.intro-file-management'),
 		token: $('.intro-token'),
 		run_stop: $('.intro-run-stop'),
+		undo_redo: $('.intro-undo-redo'),
+		summary: $('.intro-summary'),
 	};
 
 	var setOpacityForAll = function setOpacityForAll(opacity){
@@ -331,6 +333,22 @@ Bot.introduction = (function Introduction(){
 			},
 		},
 		{
+			content: '<p>If you changed a block by accedent you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo</p>',
+			target: $('.intro-undo-redo'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+		},
+		{
+			content: '<p>You can save/load your blocks using these tools</p>',
+			target: $('.intro-file-management'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+		},
+		{
 			content: '<p>At last! It\'s time to run the blocks we created. You can run/stop the blocks by clicking on these buttons. Please make sure you have chosen a Virtual Account before running the blocks.</p>',
 			target: $('.intro-run-stop'),
 			highlightTarget: true,
@@ -347,14 +365,6 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>You can save/load your blocks using these tools</p>',
-			target: $('.intro-file-management'),
-			highlightTarget: true,
-			my: 'top center',
-			at: 'bottom center',
-			nextButton: true,
-		},
-		{
 			content: '<p>You can add a token to the bot using the <b>Add Token</b> button.</p>',
 			target: $('.intro-token'),
 			highlightTarget: true,
@@ -363,15 +373,29 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>Click to show the <b>Output Panel</b> where you can see you work progress.</p>',
-			target: $('#outputPanel'),
+			content: '<p>You can see the summary of your trades by clicking on this button.</p>',
+			target: $('.intro-summary'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+		},
+		{
+			content: '<p>Click the right green button to show/hide the <b>Output Panel</b> where you can see you work progress.</p>',
+			target: $('#center'),
 			highlightTarget: true,
 			my: 'right center',
 			at: 'left center',
 			nextButton: true,
+			setup: function(tour, options) {
+				$('#outputPanel .showPanel').click();
+			},
+			teardown: function(tour, options) {
+				$('#outputPanel .hidePanel').click();
+			},
 		},
 		{
-			content: '<p>Go ahead and run the blocks. You can stop the code anytime you want using the stop button.</p>',
+			content: '<p>Go ahead and run the blocks. You can stop the code anytime you want using the stop button, or reset the values in the result panels using the reset button.</p>',
 			target: $('.intro-run-stop'),
 			highlightTarget: true,
 			my: 'top center',
