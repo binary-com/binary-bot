@@ -35,7 +35,7 @@ Bot.resetGlobals = function resetGlobals(){
 Bot.updateGlobals = function updateGlobals(){
 	Object.keys(Bot.globals).forEach(function(key){
 		$('.'+ key).text(Bot.globals[key]);	
-		if ( key === 'totalProfit' ){
+		if ( key === 'totalProfit' || key === 'lastProfit' ){
 			if ( +Bot.globals[key] > 0 ) {
 				$('.' + key).css('color', 'green');
 			} else if ( +Bot.globals[key] < 0 ) {
@@ -62,9 +62,16 @@ Bot.showTicks = function showTicks(){
 			style += 'opacity: '+ calculateOpacity(index) +';"';
 		}
 		var element = '<li ' + style + ' class="tick"><span style="font-style: italic; font-size: x-small; font-weight: normal">';
-	 	element += new Date(parseInt(tick.time + '000')).toLocaleTimeString() + ':</span><span> ' + tick.tick + '</span>' + tick.label;
+	 	element += new Date(parseInt(tick.time + '000')).toLocaleTimeString() + ':</span><span> ' + tick.tick + '</span>';
 		if ( Bot.globals.tickResults.hasOwnProperty(tick.time) ) {
-			element += '<span> - ' + Bot.globals.tickResults[tick.time] + '</span>';
+			var result = Bot.globals.tickResults[tick.time];
+			var resultStyle = ' style="';
+			if ( result === 'win' ) {
+				resultStyle += 'color: green;" ';
+			} else {
+				resultStyle += 'color: red;" ';
+			}
+			element += ':<span' + resultStyle + '> ' + Bot.globals.tickResults[tick.time] + '</span>';
 		}
 		element += '</li>';
 		$('#ticksDisplay').append(element);
