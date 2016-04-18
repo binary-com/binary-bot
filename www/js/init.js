@@ -135,12 +135,16 @@ Bot.startTutorial = function startTutorial(){
 };
 
 Bot.reset = function reset(e){
-	e.preventDefault();
+	if ( e ) {
+		e.preventDefault();
+	}
 	Bot.server.reset();
 };
 
 Bot.stop = function stop(e){
-	e.preventDefault();
+	if ( e ) {
+		e.preventDefault();
+	}
 	Bot.server.stop();
 	$('#stopButton').text('Reset');
 	$('#stopButton').unbind('click', Bot.stop);

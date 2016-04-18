@@ -6,10 +6,10 @@
 	Bot.server.state = 'STOPPED';
 
 	Bot.server.updateTickTime = function updateTickTime(){
-		var now = parseInt((new Date().getTime())/1000);
-		Bot.server.lastTickTime = now;
+		Bot.server.lastTickTime = parseInt((new Date().getTime())/1000);
 	};
 
+	// depends on reconnect, tickExpected and updateTickTime
 	setInterval(function(){
 		var now = parseInt((new Date().getTime())/1000);
 		if ( Bot.server.tickExpected ) {
@@ -20,7 +20,9 @@
 		}
 	}, 2000);
 
+	// influences globals, calls on_finish
 	Bot.server.listen_on_contract_finish = function listen_on_contract_finish(e){
+		Bot.server.purchaseInfoNeeded = false;
 		Bot.server.state = 'FINISHED';
 		var contract = e.detail.contract;
 		Bot.addTrade(contract);
@@ -52,10 +54,12 @@
 		Bot.on_finish(contract.result, detail_list);
 	};
 
+	// adds result to globals
 	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
 		Bot.addResult(e.detail.time, e.detail.contract.result);
 	};
 
+	// actions needed on a tick received from the contract service
 	Bot.server.listen_on_tick_update = function listen_on_tick_update(e){
 		Bot.server.updateTickTime();
 		Bot.addTick({
@@ -65,26 +69,15 @@
 		Bot.utils.broadcast('strategy:updated', e.detail);
 	};
 
+	// calls on_strategy
 	Bot.server.listen_on_strategy = function listen_on_strategy(e){
-		if ( Bot.server.contracts.length === 2 ) {
-			Bot.on_strategy(e.detail.tick, e.detail.direction);
-		} else {
-			window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
-		}
+		Bot.on_strategy(e.detail.tick, e.detail.direction);
 	};
 
+	// maps a function to an event
 	Bot.server.listen_on = function listen_on(eventName, functionName){
 		window.addEventListener(eventName, functionName);
 	};
-
-	Bot.server.listen_on_proposal_ready = function listen_on_proposal_ready(e){
-		Bot.server.listen_on('strategy:updated', Bot.server.listen_on_strategy);
-	};
-
-	Bot.server.listen_on('tick:updated', Bot.server.listen_on_tick_update);
-	Bot.server.listen_on('contract:updated', Bot.server.listen_on_contract_update);
-	Bot.server.listen_on('contract:finished', Bot.server.listen_on_contract_finish);
-	Bot.server.listen_on('proposal:ready', Bot.server.listen_on_proposal_ready);
 
 	Bot.server.accounts = [['Please add a token first', '']];
 	Bot.server.purchase_choices = [['Click to select', '']];
@@ -128,7 +121,7 @@
 	Bot.server.logout = function logout(){
 		Bot.utils.getStorageManager().removeAllTokens();
 		Bot.utils.updateTokenList();
-		log('Logged you out!', 'success');
+		log('Logged you out!', 'info');
 	};
 
 	Bot.server.addAccount = function addAccount(token){
@@ -145,7 +138,7 @@
 				api.disconnect();
 				Bot.utils.getStorageManager().addToken(token, response.authorize.loginid);
 				Bot.utils.updateTokenList(token);
-				log('Your token was added successfully', 'success');
+				log('Your token was added successfully', 'info');
 			}, function(reason){
 				api.disconnect();
 				Bot.server.removeToken(token);
@@ -168,27 +161,13 @@
 		});
 	};
 
-	Bot.server.requestHistory = function requestHistory(callback){
-		Bot.server.api.getTickHistory(Bot.server.symbol,{
-			"end": "latest",
-			"count": Bot.server.contractService.getCapacity(),
-		}).then(function(value){
-			log('Request receieved for history');
-			if ( callback ) {
-				callback();
-			}
-		}, function(reason){
-			log(reason);
-		});
-	};
-
 	Bot.server.requestBalance = function requestBalance(){
 		Bot.server.api.send({
 			balance: 1,
 		}).then(function(response){
 			Bot.server.updateBalance(response.balance);
 		}, function(reason){
-			showError('Could not subscribe to transaction');
+			log('Could not get balance');
 		});
 	};
 
@@ -240,6 +219,21 @@
 		});
 	};
 
+	Bot.server.requestHistory = function requestHistory(callback){
+		Bot.server.api.getTickHistory(Bot.server.symbol,{
+			"end": "latest",
+			"count": Bot.server.contractService.getCapacity(),
+		}).then(function(value){
+			log('Request receieved for history');
+			if ( callback ) {
+				callback();
+			}
+		}, function(reason){
+			log(reason);
+			Bot.server.reconnect();
+		});
+	};
+
 	Bot.server.resubscribe = function resubscribe(callback){
 		Bot.server.forgetAllTicks(function(){
 			Bot.server.subscribeToTick(function(){
@@ -263,14 +257,15 @@
 			Bot.updateGlobals();
 			log('contract added: ' + value.proposal.longcode);
 			if ( Bot.server.contracts.length === 1 ) {
-				log('Contracts are ready to be purchased by the strategy', 'success'); 
-				Bot.utils.broadcast('proposal:ready');
+				log('Contracts are ready to be purchased by the strategy', 'info'); 
+				Bot.server.listen_on('strategy:updated', Bot.server.listen_on_strategy);
 			}
 			Bot.server.contracts.push(value);
 			if ( callback ){
 				callback();
 			}
 		}, function(reason){
+			Bot.stop();
 			Bot.server.state = 'PROPOSAL_NOT_SUBMITTED';
 			showError(reason);
 		});
@@ -302,9 +297,7 @@
 			}
 		}, function(reason){
 			showError(reason);
-			if ( callback ) {
-				callback();
-			}
+			Bot.server.reconnect();
 		});	
 	};
 
@@ -327,9 +320,7 @@
 			}
 		}, function(reason){
 			showError(reason);
-			if ( callback ) {
-				callback();
-			}
+			Bot.server.reconnect();
 		});
 	};
 
@@ -357,32 +348,34 @@
 				}
 			});
 		}, function(reason){
+			Bot.server.reconnect();
 			Bot.server.state = 'PORTFOLIO_NOT_RECEIVED';
 			showError(reason);
 		});
 	};
 
 	Bot.server.purchase = function purchase(option){
+		window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
-		Bot.server.contracts = [];
-		log(proposalContract.proposal.longcode, 'info');
+		log('Purchased: ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
+			Bot.server.purchaseInfoNeeded = true;
 			Bot.server.state = 'PURCHASED';
 			Bot.server.purchaseInfo = {
 				proposalContract: proposalContract,
 				purchaseContract: purchaseContract,
 			};
-			log('Contract was purchased successfully, reading data from portfolio...', 'success');
 			Bot.server.portfolio();
 		}, function(reason){
+			Bot.stop();
 			Bot.server.state = 'PURCHASE_FAILED';
 			showError(reason);
 		});
 	};
 
 	Bot.server.restartContracts = function restartContracts(resetOnly, callback){
+		window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
 		Bot.server.purchaseInfo = null;
-		Bot.server.contracts = [];
 		Bot.server.contractService = ContractService();	
 		if ( !resetOnly ) {
 			Bot.server.authorizeCallback(function(){
@@ -398,13 +391,19 @@
 				showError(response.error);
 				Bot.server.state = 'NOT_AUTHORIZED';
 			} else {
-				if ( Bot.server.state !== 'AUTHORIZED' ) { 
-					log('Authenticated using token: ' + Bot.server.token , 'success');
-					if ( Bot.server.state === 'INITIALIZED' ) { 
+				var now = parseInt((new Date().getTime())/1000);
+				if ( Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized > 10 ) { 
+					Bot.server.lastAuthorized = now;
+					log('Authenticated using token: ' + Bot.server.token , 'info');
+					if ( Bot.server.firstRun ) { 
+						Bot.server.firstRun = false;
+						Bot.server.listen_on('tick:updated', Bot.server.listen_on_tick_update);
+						Bot.server.listen_on('contract:updated', Bot.server.listen_on_contract_update);
+						Bot.server.listen_on('contract:finished', Bot.server.listen_on_contract_finish);
 						Bot.server.observeTicks();
 						Bot.server.observeTransaction();
 					}
-					if ( Bot.server.state === 'PORTFOLIO_RECEIVED' || Bot.server.state === 'PURCHASED' ) {
+					if ( Bot.server.purchaseInfoNeeded ) {
 						Bot.server.getLastPurchaseInfo(function(){
 							Bot.server.restartContracts(false);
 						});
@@ -414,7 +413,7 @@
 					Bot.server.requestTransaction();
 					Bot.server.requestBalance();
 					Bot.server.state = 'AUTHORIZED';
-				}
+				} 
 			}
 		});
 	};
@@ -447,6 +446,7 @@
 		} else {
 			Bot.server.updateTickTime();
 			Bot.server.authorizeCallback = callback;
+			Bot.server.purchaseInfoNeeded = false;
 			Bot.updateGlobals();
 			if ( trade_again ) {
 				Bot.server.state = 'TRADE_AGAIN';
@@ -456,10 +456,17 @@
 				Bot.server.stop();
 				Bot.server.api = new LiveApi();
 				Bot.server.state = 'INITIALIZED';
+				Bot.server.firstRun = true;
 				Bot.server.api.authorize(Bot.server.token);
 				Bot.server.connect();
 			}
 			Bot.globals.numOfRuns++;
 		}
 	};
+
+	/*
+	 Order of calls:
+	 trade [-> authorize] -> restartContracts -> submitProposal -> subscribeToTick -> on_strategy -> purchase -> portfolio -> contract_finished
+	 */
+
 })();
