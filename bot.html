@@ -18,13 +18,16 @@
 			<div class="intro-token">
 				<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
 			</div>
-			<div class="intro-run-stop">
-				<button title="Run the blocks" onclick="runCode()">Run</button>
-				<button title="Stop the blocks" onclick="stopCode()">Stop</button>
-			</div>
 			<div class="intro-undo-redo">
 				<button title="Undo the changes (Ctrl+Z)" onclick="Bot.undo()">Undo</button>
 				<button title="Redo the changes (Ctrl+Shift+Z)" onclick="Bot.redo()">Redo</button>
+			</div>
+			<div class="intro-summary">
+				<button title="Open the summary panel" onclick="Bot.showSummary()">Summary</button>
+			</div>
+			<div class="intro-run-stop">
+				<button title="Run the blocks" onclick="Bot.run()">Run</button>
+				<button title="Stop the blocks" id="stopButton">Reset</button>
 			</div>
 	</div>
 	<div class="logout"><button onclick="Bot.server.logout()">Logout</button></div>
@@ -40,18 +43,68 @@
 		<div class="hidePanel"><p>&gt;</p></div>
 		<div class="showPanel"><p>&lt;</p></div>
 		<div class="results">
-			<p>Number of runs: <span id="numOfRuns"></span></p>
-			<p>Stake: <span id="stake"></span></p>
-			<p>Payout: <span id="payout"></span></p>
-			<p>Total Profit: <span id="totalProfit"></span></p>
-			<p>Last Profit: <span id="lastProfit"></span></p>
-			<p>Last Result: <span id="lastResult"></span></p>
-			<p>Balance: <span id="balance"></span></p>
+			<p>Number of runs: <span class="numOfRuns"></span></p>
+			<p>Current Stake: <span class="stake"></span></p>
+			<p>Current Payout: <span class="payout"></span></p>
+			<p>Total Profit: <span class="totalProfit"></span></p>
+			<p>Last Profit: <span class="lastProfit"></span></p>
+			<p>Last Result: <span class="lastResult"></span></p>
+			<p>Balance: <span class="balance"></span></p>
 			Ticks:
-			<div id="ticksDisplay"></div>
+			<ul id="ticksDisplay">
+			</ul>
 		</div>
 	</div>
 	<div id="blocklyDiv"></div>
+	<div id="summaryPanel">
+		<div class="exitPanel"><p>x</p></div>
+		<div class="content">
+			<h4>
+				Summary
+			</h4>
+			<table id="summaryDisplay">
+				<thead>
+					<tr>
+						<th>No. of runs</th>
+						<th>Total Stake</th>
+						<th>Total Payout</th>
+						<th>Total Profit/Loss</th>
+						<th>Balance</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="numOfRuns"></td>
+						<td class="totalStake"></td>
+						<td class="totalPayout"></td>
+						<td class="totalProfit"></td>
+						<td class="balance"></td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>
+				Trades
+			</h4>
+			<div class="table-scroll">
+				<table id="tradesDisplay">
+					<thead>
+						<tr>
+							<th><span>Number</span></th>
+							<th><span>Reference</span></th>
+							<th><span>TradeType</span></th>
+							<th><span>Entry Spot</span></th>
+							<th><span>Exit Spot</span></th>
+							<th><span>Buy Price</span></th>
+							<th><span>Final Price</span></th>
+							<th><span>Profit/Loss</span></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
   <xml id="toolbox" style="display: none">
     <category name="Logic" colour="210">

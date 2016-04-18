@@ -8,10 +8,10 @@ Bot.config.ticktrade_markets.forEach(function(market){
 			option.symbol = Bot.server.symbol;
 		});
 
-		var submarket = function submarket(){
-			options.forEach(function(option){
-				Bot.server.submitProposal(option);
-			});
+		var submarket = function submarket(cb){
+			Bot.server.submitProposal(options[0], function(){
+				Bot.server.submitProposal(options[1], cb);
+			}, true);
 		};
 
 		return submarket;

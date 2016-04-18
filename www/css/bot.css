@@ -85,7 +85,53 @@ h1 {
 	color: white;
 	margin-top: 4px;
 }
-#outputPanel #ticksDisplay{
-	margin-left: 6px;
-	height: 6em;
+#ticksDisplay{
+	height: 8em;
+	overflow:hidden;
+	overflow-y:scroll;
+	padding: 0px;
+	margin: 0px;
+	list-style-type: none;
+}
+#summaryPanel .exitPanel p{
+	color: white;
+	background-color: black;
+	margin-top: 4px;
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	text-align: center;
+}
+#summaryPanel{
+	display: none;
+	background-color: white;
+	z-index: 9998;
+	position: fixed;
+	width: 80%;
+	top: 5%;
+	left: 10%;
+}
+#summaryPanel .content{
+	padding: 15px;
+	background-color: #EEEEEE;
+}
+table {
+	overflow:auto;  
+	width: 100%;
+}
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+th, td {
+	text-align: center !important;
+	padding: 3px !important;
+	height: 2em;
+}
+.table-scroll {
+  height: 24em;
+  overflow:auto;  
 }

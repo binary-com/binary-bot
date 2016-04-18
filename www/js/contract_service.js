@@ -121,7 +121,8 @@ var ContractService = function ContractService() {
 			}
 			utils.broadcast('tick:updated', {
 				tick: lastTick,
-				direction: difference
+				direction: difference,
+				time: historyData.slice(-1)[0].time,
 			});
 		};
 
@@ -313,10 +314,16 @@ var ContractService = function ContractService() {
 							if (utils.asianTrade(contract)) {
 							contract.barrier = +parseFloat(contract.barrier).toFixed(3);
 							}
-							utils.broadcast("contract:finished", contract);
+							utils.broadcast("contract:finished", {
+								time: lastTime,	
+								contract: contract,
+							});
 						}
 					} else {
-						utils.broadcast("contract:updated", contract);
+						utils.broadcast("contract:updated", {
+							time: lastTime,	
+							contract: contract,
+						});
 					}
 				}
 			}
