@@ -66,6 +66,10 @@ h1 {
   color: gray;
   font-size: 12px;
 }
+ul.bullet li{
+  list-style-image: url(../image/list-circle_1.png);
+  margin:5px 0;
+}
 @media only screen and (max-width: 480px) {
   .left, .right {
     width: 100%;
