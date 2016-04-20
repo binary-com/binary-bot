@@ -26,9 +26,7 @@
 		Bot.server.state = 'FINISHED';
 		var contract = e.detail.contract;
 		Bot.addTrade(contract);
-		Bot.addResult(e.detail.time, contract.result);
 		var payout = (contract.result !== 'win' )? 0 : +contract.payout;
-
 		Bot.globals.lastProfit = +(payout - +contract.askPrice).toFixed(2);
 		Bot.globals.totalStake = +(+Bot.globals.totalStake + +contract.askPrice).toFixed(2);
 		Bot.globals.totalPayout = +(+Bot.globals.totalPayout + payout).toFixed(2);
@@ -54,17 +52,12 @@
 		Bot.on_finish(contract.result, detail_list);
 	};
 
-	// adds result to globals
-	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
-		Bot.addResult(e.detail.time, e.detail.contract.result);
-	};
-
 	// actions needed on a tick received from the contract service
 	Bot.server.listen_on_tick_update = function listen_on_tick_update(e){
 		Bot.server.updateTickTime();
 		Bot.addTick({
-			tick: e.detail.tick,
-			time: e.detail.time,
+			epoch: +(e.detail.time),
+			quote: +e.detail.tick,
 		});
 		Bot.utils.broadcast('strategy:updated', e.detail);
 	};

@@ -5,4 +5,3 @@ Bot.utils.updateTokenList();
 Bot.utils.addPurchaseOptions();
 Bot.welcome.welcome();
 Blockly.mainWorkspace.clearUndo();
-

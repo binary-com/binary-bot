@@ -10,11 +10,10 @@ Bot.globals = {
 	lastResult: '',
 	balance: '',
 	ticks: [],
-	tickResults: {},
 	ticksCount: 15,
 	tradeTable: [],
 	tradesCount: 10000,
-	tableSize: 10,
+	tableSize: 5,
 };
 
 Bot.initialGlobals = {};
@@ -28,7 +27,6 @@ Bot.copyObjectKeys(Bot.initialGlobals, Bot.globals);
 Bot.resetGlobals = function resetGlobals(){
 	Bot.copyObjectKeys(Bot.globals, Bot.initialGlobals);
 	Bot.updateGlobals();
-	Bot.showTicks();
 	Bot.showTrades();
 };
 
@@ -47,52 +45,9 @@ Bot.updateGlobals = function updateGlobals(){
 	});
 };
 
-Bot.showTicks = function showTicks(){
-	$('#ticksDisplay').children().remove();
-	var calculateOpacity = function calculateOpacity(index){
-		return (0.1 + (Bot.globals.ticks.length - index)/Bot.globals.ticks.length).toFixed(1);
-	};
-
-	Bot.globals.ticks.forEach(function(tick, index) {
-		tick = Bot.globals.ticks[index];
-		var style = 'style="text-align: left; font-variant: small-caps; font-weight: bold;';
-		if ( index <= 1 ) {
-			style += 'opacity: 1;"';
-		} else {
-			style += 'opacity: '+ calculateOpacity(index) +';"';
-		}
-		var element = '<li ' + style + ' class="tick"><span style="font-style: italic; font-size: x-small; font-weight: normal">';
-	 	element += new Date(parseInt(tick.time + '000')).toLocaleTimeString() + ':</span><span> ' + tick.tick + '</span>';
-		if ( Bot.globals.tickResults.hasOwnProperty(tick.time) ) {
-			var result = Bot.globals.tickResults[tick.time];
-			var resultStyle = ' style="';
-			if ( result === 'win' ) {
-				resultStyle += 'color: green;" ';
-			} else {
-				resultStyle += 'color: red;" ';
-			}
-			element += ':<span' + resultStyle + '> ' + Bot.globals.tickResults[tick.time] + '</span>';
-		}
-		element += '</li>';
-		$('#ticksDisplay').append(element);
-	});
-	$('#ticksDisplay li:nth-child(2)').animate({opacity: calculateOpacity(1)}, 1000);
-};
-
-Bot.addResult = function addResult(time, result){
-	Bot.globals.tickResults[time] = result;
-	Bot.showTicks();
-};
-
 Bot.addTick = function addTick(tick){
-	Bot.globals.ticks.reverse();
-	if ( Bot.globals.ticks.length > Bot.globals.ticksCount ) {
-		delete Bot.globals.tickResults[Bot.globals.ticks[0].time];
-		Bot.globals.ticks.shift();
-	}
-	Bot.globals.ticks.push(tick);
-	Bot.globals.ticks.reverse();
-	Bot.showTicks();
+	Bot.globals.ticks = Bot.globals.ticks.concat(tick);
+	Bot.chart.updateChart({ticks: Bot.globals.ticks});
 };
 
 Bot.undo = function undo(){

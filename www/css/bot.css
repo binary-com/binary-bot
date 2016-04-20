@@ -15,8 +15,6 @@ h1 {
 	height: 100%;
 	width: 100%;
 }
-.toolbox {
-}
 .toolbox * {
 	margin: 2px;
 	float: left;
@@ -132,6 +130,8 @@ th, td {
 	height: 2em;
 }
 .table-scroll {
-  height: 24em;
   overflow:auto;  
+}
+#chart {
+	height: 40%;
 }

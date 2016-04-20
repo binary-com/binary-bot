@@ -179,3 +179,4 @@ Bot.showSummary = function showSummary(){
 };
 
 Bot.showTrades();
+Bot.chart = BinaryChart.createChart('chart', { ticks: [] });
