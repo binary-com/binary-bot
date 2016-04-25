@@ -66,6 +66,8 @@
 			Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 			eval(code);
 			$('#stopButton').text('Stop');
+			$('#runButton').text('Restart');
+			$('#summaryPanel').show();
 			$('#stopButton').unbind('click', Bot.reset);
 			$('#stopButton').bind('click', Bot.stop);
 		} catch (e) {
@@ -151,6 +153,7 @@
 		}
 		Bot.server.stop();
 		$('#stopButton').text('Reset');
+		$('#runButton').text('Run');
 		$('#stopButton').unbind('click', Bot.stop);
 		$('#stopButton').bind('click', Bot.reset);
 	};

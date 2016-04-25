@@ -50,24 +50,30 @@
 		log('Purchase was finished, result is: ' + contract.result, (contract.result === 'win')? 'success': 'error');
 
 		Bot.on_finish(contract.result, detail_list);
+		Bot.server.listen_on_contract_update(e);
 	};
 
 	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
-		if ( Bot.server.purchaseInfo ) {
-			Bot.server.purchaseInfo.contractForChart = {
-				barrier: e.detail.contract.barrier,
-				barrierType: 'absolute',
-				entry_tick_time: e.detail.contract.entrySpotTime,
-				exit_tick_time: e.detail.contract.exitSpotTime,
-			};
-			if ( Bot.server.purchaseInfo.contract ) {
-				Object.keys(Bot.server.purchaseInfo.contract).forEach(function(key){
-					if ( !Bot.server.purchaseInfo.contractForChart.hasOwnProperty(key) ) {
-						Bot.server.purchaseInfo.contractForChart[key] = Bot.server.purchaseInfo.contract[key];
-					}
-				});
-			}
+		Bot.server.contractForChart = {
+			barrier: e.detail.contract.barrier,
+			barrierType: 'absolute',
+			entry_tick_time: e.detail.contract.entrySpotTime,
+			contract_type: e.detail.contract.type,
+		};
+		if ( e.detail.contract.exitSpotTime ) {
+			Bot.server.contractForChart.exit_tick_time = e.detail.contract.exitSpotTime;
 		}
+		if ( Bot.server.portfolioContract ) {
+			Bot.server.contractForChart.date_expiry = Bot.server.portfolioContract.expiry_time;
+		}
+		var ticks = [];
+		Bot.server.contractService.getTicks().forEach(function(tick){
+			ticks.push({
+				epoch: +tick.time,
+				quote: +tick.price,
+			});
+		});
+		Bot.chart.updateChart({ticks: ticks, contract: Bot.server.contractForChart});
 	};
 
 	// actions needed on a tick received from the contract service
@@ -80,8 +86,8 @@
 				quote: +tick.price,
 			});
 		});
-		if ( Bot.server.purchaseInfo && Bot.server.purchaseInfo.contractForChart ) {
-			Bot.chart.updateChart({ticks: ticks, contract: Bot.server.purchaseInfo.contractForChart});
+		if ( Bot.server.purchaseInfo && Bot.server.contractForChart ) {
+			Bot.chart.updateChart({ticks: ticks, contract: Bot.server.contractForChart});
 		} else {
 			Bot.chart.updateChart({ticks: ticks});
 		}
@@ -366,7 +372,7 @@
 						askPrice: parseFloat(proposalContract.proposal.ask_price),
 						payout: proposalContract.proposal.payout,
 					});
-					Bot.server.purchaseInfo.portfolioContract = contract;
+					Bot.server.portfolioContract = contract;
 				}
 			});
 		}, function(reason){
@@ -388,9 +394,6 @@
 				purchaseContract: purchaseContract,
 			};
 			Bot.server.portfolio();
-			Bot.server.getContractInfo('', purchaseContract.buy.contract_id, function(contract){
-				Bot.server.purchaseInfo.contract = contract;
-			});
 		}, function(reason){
 			Bot.stop();
 			Bot.server.state = 'PURCHASE_FAILED';
@@ -401,12 +404,16 @@
 	Bot.server.restartContracts = function restartContracts(resetOnly, callback){
 		window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
 		Bot.server.purchaseInfo = null;
-		Bot.server.contractService = ContractService();	
 		if ( !resetOnly ) {
 			Bot.server.authorizeCallback(function(){
 				Bot.server.resubscribe(callback);
 			});
 		}
+	};
+
+	Bot.server.initContractService = function initContractService(){
+		Bot.server.contractService = ContractService();	
+		Bot.server.contractForChart = null;
 	};
 
 	Bot.server.connect = function connect(){
@@ -418,6 +425,7 @@
 			} else {
 				var now = parseInt((new Date().getTime())/1000);
 				if ( Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized > 10 ) { 
+					Bot.server.initContractService();
 					Bot.server.lastAuthorized = now;
 					log('Authenticated using token: ' + Bot.server.token , 'info');
 					if ( Bot.server.firstRun ) { 

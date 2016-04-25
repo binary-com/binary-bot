@@ -401,7 +401,11 @@ var ContractService = function ContractService() {
 	};
 
 	var getTicks = function getTicks() {
-		return localHistory.getHistory(0, capacity);
+		if ( localHistory instanceof Object ) {
+			return localHistory.getHistory(0, capacity);
+		} else {
+			return [];
+		}
 	};
 
 	return {
