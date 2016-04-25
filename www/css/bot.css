@@ -40,57 +40,6 @@ h1 {
 	top: 50%;
 	left: 50%;
 }
-#outputPanel {
-	width: 200px;
-	position: fixed;
-	right: -185px;
-	top: 20%;
-	z-index: 9999;
-	height: 320px;
-}
-#outputPanel .results{
-	background-color: #DDDDDD;
-	margin-left: 15px;
-	display: none;
-	padding: 3px;
-}
-#outputPanel .showPanel{
-	cursor: pointer;
-	background-color: green;
-	width: 15px;
-	height: 30px;
-	position: absolute;
-	left: 0px;
-	top: 50%;
-	text-align: center;
-}
-#outputPanel .hidePanel{
-	cursor: pointer;
-	background-color: green;
-	width: 15px;
-	height: 30px;
-	position: absolute;
-	left: 0px;
-	top: 50%;
-	text-align: center;
-	display: none;
-}
-#outputPanel .hidePanel p{
-	color: white;
-	margin-top: 4px;
-}
-#outputPanel .showPanel p{
-	color: white;
-	margin-top: 4px;
-}
-#ticksDisplay{
-	height: 8em;
-	overflow:hidden;
-	overflow-y:scroll;
-	padding: 0px;
-	margin: 0px;
-	list-style-type: none;
-}
 #summaryPanel .exitPanel p{
 	color: white;
 	background-color: black;
@@ -108,9 +57,12 @@ h1 {
 	background-color: white;
 	z-index: 9998;
 	position: fixed;
-	width: 80%;
-	top: 5%;
-	left: 10%;
+	width: 800px;
+	height: 600px;
+	top: 50%;
+	left: 50%;
+	margin-top: -300px;
+	margin-left: -400px;
 }
 #summaryPanel .content{
 	padding: 15px;
@@ -131,7 +83,12 @@ th, td {
 }
 .table-scroll {
   overflow:auto;  
+	height: 169px;
 }
 #chart {
-	height: 40%;
+	height: 230px;
+	width: 770px; 
+}
+.draggable{
+	opacity: 0.75;
 }

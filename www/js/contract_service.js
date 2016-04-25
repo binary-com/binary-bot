@@ -169,13 +169,13 @@ var ContractService = function ContractService() {
 			updateHistoryArray(historyData, history);
 		};
 
-		var getHistory = function getHistory(dataIndex, count, callback) {
+		var getHistory = function getHistory(dataIndex, count) {
 			var end = capacity - dataIndex,
 				start = end - count;
 			if (start >= 0) {
-				callback(historyData.slice(start, end));
+				return historyData.slice(start, end);
 			} else {
-				callback([]);
+				return [];
 			}
 		};
 
@@ -363,7 +363,7 @@ var ContractService = function ContractService() {
 	var addTick = function addTick(tick) {
 		if (utils.isDefined(localHistory)) {
 			localHistory.addTick(tick);
-			localHistory.getHistory(0, capacity, updateContracts);
+			updateContracts(localHistory.getHistory(0, capacity));
 		}
 	};
 
@@ -372,7 +372,7 @@ var ContractService = function ContractService() {
 			localHistory = LocalHistory(capacity);
 		}
 		localHistory.addHistory(history);
-		localHistory.getHistory(0, capacity, updateContracts);
+		updateContracts(localHistory.getHistory(0, capacity));
 	};
 
 	var getDataIndex = function getDataIndex() {
@@ -400,11 +400,16 @@ var ContractService = function ContractService() {
 		return capacity;
 	};
 
+	var getTicks = function getTicks() {
+		return localHistory.getHistory(0, capacity);
+	};
+
 	return {
 		destroy: destroy,
 		addContract: addContract,
 		addTick: addTick,
 		addHistory: addHistory,
 		getCapacity: getCapacity,
+		getTicks: getTicks,
 	};
 };

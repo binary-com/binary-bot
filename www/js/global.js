@@ -9,8 +9,6 @@ Bot.globals = {
 	lastProfit: '',
 	lastResult: '',
 	balance: '',
-	ticks: [],
-	ticksCount: 15,
 	tradeTable: [],
 	tradesCount: 10000,
 	tableSize: 5,
@@ -45,11 +43,6 @@ Bot.updateGlobals = function updateGlobals(){
 	});
 };
 
-Bot.addTick = function addTick(tick){
-	Bot.globals.ticks = Bot.globals.ticks.concat(tick);
-	Bot.chart.updateChart({ticks: Bot.globals.ticks});
-};
-
 Bot.undo = function undo(){
 	Blockly.mainWorkspace.undo();
 };
@@ -60,12 +53,12 @@ Bot.redo = function redo(){
 
 Bot.addTrade = function addTrade(trade){
 	trade.number = Bot.globals.numOfRuns;
-	Bot.globals.tradeTable.reverse();
+	// Bot.globals.tradeTable.reverse(); //reverse the table row growth
 	if ( Bot.globals.tradeTable.length > Bot.globals.tradesCount ) {
 		Bot.globals.tradeTable.shift();
 	}
 	Bot.globals.tradeTable.push(trade);
-	Bot.globals.tradeTable.reverse();
+	// Bot.globals.tradeTable.reverse();
 	Bot.showTrades();
 };
 

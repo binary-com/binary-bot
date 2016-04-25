@@ -139,14 +139,6 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Click on the button to Show/Hide the output panel.</p>',
-			target: $('#outputPanel'),
-			nextButton: true,
-			highlightTarget: true,	
-			my: 'right center',
-			at: 'left center',
-		},
-		{
 			content: '<p>Good Luck!</p>',
 			target: $('#center'),
 			nextButton: true,

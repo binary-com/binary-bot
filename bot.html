@@ -12,10 +12,10 @@
 	<div class="toolbox">
 			<div class="intro-file-management">
 				<span>Open Blocks XML: </span><input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
-				<button title="Save the blocks as a XML file" onclick="saveXml()">Save Blocks</button>
+				<button title="Save the blocks as a XML file" onclick="Bot.saveXml()">Save Blocks</button>
 			</div>
 			<div class="intro-token">
-				<button title="Add your tokens to the bot" onclick="addAccount()">Add Token</button>
+				<button title="Add your tokens to the bot" onclick="Bot.addAccount()">Add Token</button>
 			</div>
 			<div class="intro-undo-redo">
 				<button title="Undo the changes (Ctrl+Z)" onclick="Bot.undo()">Undo</button>
@@ -37,22 +37,6 @@
 			<option value="introduction">Introduction</option>
 		</select>
 		<button onclick="Bot.startTutorial()">Go!</button>
-	</div>
-	<div id="outputPanel">
-		<div class="hidePanel"><p>&gt;</p></div>
-		<div class="showPanel"><p>&lt;</p></div>
-		<div class="results">
-			<p>Number of runs: <span class="numOfRuns"></span></p>
-			<p>Current Stake: <span class="stake"></span></p>
-			<p>Current Payout: <span class="payout"></span></p>
-			<p>Total Profit: <span class="totalProfit"></span></p>
-			<p>Last Profit: <span class="lastProfit"></span></p>
-			<p>Last Result: <span class="lastResult"></span></p>
-			<p>Balance: <span class="balance"></span></p>
-			Ticks:
-			<ul id="ticksDisplay">
-			</ul>
-		</div>
 	</div>
 	<div id="blocklyDiv"></div>
 	<div id="summaryPanel">
@@ -102,6 +86,9 @@
 					</tbody>
 				</table>
 			</div>
+			<h4>
+				Chart
+			</h4>
 			<div id="chart"></div>
 		</div>
 	</div>
@@ -397,7 +384,9 @@
 
 	<script src="node_modules/binary-live-api/lib/binary-live-api.js"></script>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
-	<script src="www/js/vendor/binary-charts/bundle.js"></script>
+	<script src="node_modules/react/dist/react.min.js"></script>
+	<script src="www/js/vendor/draggable/draggable.js"></script>
+	<script src="www/js/vendor/binary-charts/binary-charts.js"></script>
 	<script src="www/js/vendor/notifyjs/notify.min.js"></script>
   <script src="node_modules/blockly/blockly_compressed.js"></script>
   <script src="node_modules/blockly/blocks_compressed.js"></script>

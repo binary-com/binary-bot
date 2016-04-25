@@ -52,13 +52,39 @@
 		Bot.on_finish(contract.result, detail_list);
 	};
 
+	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
+		if ( Bot.server.purchaseInfo ) {
+			Bot.server.purchaseInfo.contractForChart = {
+				barrier: e.detail.contract.barrier,
+				barrierType: 'absolute',
+				entry_tick_time: e.detail.contract.entrySpotTime,
+				exit_tick_time: e.detail.contract.exitSpotTime,
+			};
+			if ( Bot.server.purchaseInfo.contract ) {
+				Object.keys(Bot.server.purchaseInfo.contract).forEach(function(key){
+					if ( !Bot.server.purchaseInfo.contractForChart.hasOwnProperty(key) ) {
+						Bot.server.purchaseInfo.contractForChart[key] = Bot.server.purchaseInfo.contract[key];
+					}
+				});
+			}
+		}
+	};
+
 	// actions needed on a tick received from the contract service
 	Bot.server.listen_on_tick_update = function listen_on_tick_update(e){
 		Bot.server.updateTickTime();
-		Bot.addTick({
-			epoch: +(e.detail.time),
-			quote: +e.detail.tick,
+		var ticks = [];
+		Bot.server.contractService.getTicks().forEach(function(tick){
+			ticks.push({
+				epoch: +tick.time,
+				quote: +tick.price,
+			});
 		});
+		if ( Bot.server.purchaseInfo && Bot.server.purchaseInfo.contractForChart ) {
+			Bot.chart.updateChart({ticks: ticks, contract: Bot.server.purchaseInfo.contractForChart});
+		} else {
+			Bot.chart.updateChart({ticks: ticks});
+		}
 		Bot.utils.broadcast('strategy:updated', e.detail);
 	};
 
@@ -264,29 +290,31 @@
 		});
 	};
 
-	Bot.server.getContractInfo = function getContractInfo(result, contract_id, callback){
+	Bot.server.getContractInfo = function getContractInfo(result, contract_id, callback, reconnect){
 		Bot.server.api.send({
 			proposal_open_contract: 1,
 			contract_id: contract_id
 		}).then(function(response){
-			var data = response.proposal_open_contract;
-			Bot.utils.broadcast('contract:finished', {
-				time: '0',
-				contract: {
-					result: result,
-					askPrice: data.buy_price,
-					statement: data.transaction_ids['buy'],
-					type: data.contract_type,
-					entrySpot: data.entry_tick,
-					entrySpotTime: data.entry_tick_time,
-					exitSpot: data.exit_tick,
-					exitSpotTime: data.exit_tick_time,
-					barrier: data.barrier,
-					payout: data.payout,
-				}
-			});
+			if ( reconnect ) {
+				var data = response.proposal_open_contract;
+				Bot.utils.broadcast('contract:finished', {
+					time: '0',
+					contract: {
+						result: result,
+						askPrice: data.buy_price,
+						statement: data.transaction_ids['buy'],
+						type: data.contract_type,
+						entrySpot: data.entry_tick,
+						entrySpotTime: data.entry_tick_time,
+						exitSpot: data.exit_tick,
+						exitSpotTime: data.exit_tick_time,
+						barrier: data.barrier,
+						payout: data.payout,
+					}
+				});
+			}
 			if ( callback ) {
-				callback();
+				callback(response.proposal_open_contract);
 			}
 		}, function(reason){
 			showError(reason);
@@ -309,7 +337,7 @@
 				} else {
 					result = 'win';
 				}
-				Bot.server.getContractInfo(result, transaction.contract_id, callback);
+				Bot.server.getContractInfo(result, transaction.contract_id, callback, true);
 			}
 		}, function(reason){
 			showError(reason);
@@ -328,7 +356,7 @@
 			portfolio.portfolio.contracts.forEach(function (contract) {
 				if (contract.contract_id == contractId) {
 					Bot.server.state = 'PORTFOLIO_RECEIVED';
-					log('Waiting for the purchased contract to finish, see the output panel for more info', 'info');
+					log('Waiting for the purchased contract to finish', 'info');
 					Bot.server.contractService.addContract({
 						statement: contract.transaction_id,
 						startTime: contract.date_start + 1,
@@ -338,6 +366,7 @@
 						askPrice: parseFloat(proposalContract.proposal.ask_price),
 						payout: proposalContract.proposal.payout,
 					});
+					Bot.server.purchaseInfo.portfolioContract = contract;
 				}
 			});
 		}, function(reason){
@@ -359,6 +388,9 @@
 				purchaseContract: purchaseContract,
 			};
 			Bot.server.portfolio();
+			Bot.server.getContractInfo('', purchaseContract.buy.contract_id, function(contract){
+				Bot.server.purchaseInfo.contract = contract;
+			});
 		}, function(reason){
 			Bot.stop();
 			Bot.server.state = 'PURCHASE_FAILED';
@@ -420,6 +452,7 @@
 
 	Bot.server.reset = function reset(){
 		Bot.resetGlobals();
+		Bot.utils.log('Reset successful', 'success');
 	};
 
 	Bot.server.stop = function stop(){

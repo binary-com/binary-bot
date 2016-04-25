@@ -381,20 +381,6 @@ Bot.introduction = (function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>Click the right green button to show/hide the <b>Output Panel</b> where you can see you work progress.</p>',
-			target: $('#center'),
-			highlightTarget: true,
-			my: 'right center',
-			at: 'left center',
-			nextButton: true,
-			setup: function(tour, options) {
-				$('#outputPanel .showPanel').click();
-			},
-			teardown: function(tour, options) {
-				$('#outputPanel .hidePanel').click();
-			},
-		},
-		{
 			content: '<p>Go ahead and run the blocks. You can stop the code anytime you want using the stop button, or reset the values in the result panels using the reset button.</p>',
 			target: $('.intro-run-stop'),
 			highlightTarget: true,
