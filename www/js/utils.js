@@ -67,6 +67,7 @@ Bot.utils = (function Utils(){
 
 	var updateTokenList = function updateTokenList(tokenToAdd){
 		var tokenList = storageManager.getTokenList();
+		Blockly.WidgetDiv.hideIfOwner(Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST'));
 		if ( tokenList.length === 0 ) {
 			Bot.server.accounts = [['Please add a token first', '']];
 			Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue('');
@@ -126,6 +127,7 @@ Bot.utils = (function Utils(){
 			});
 			purchases.forEach(function(purchase){
 				var value = purchase.getField('PURCHASE_LIST').getValue();
+				Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
 				if ( value === firstOption.condition ) {
 					purchase.getField('PURCHASE_LIST').setText(firstOption.name);
 				} else if ( value === secondOption.condition ) {
