@@ -52,7 +52,6 @@
 		Bot.server.listen_on_contract_update(e);
 		Bot.server.purchaseNotDone = false;
 		Bot.disableRun(false);
-		Bot.server.requestBalance();
 	};
 
 	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
@@ -181,6 +180,7 @@
 			Bot.server.balance_currency = data.currency;
 		}
 		Bot.globals.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
+		Bot.updateGlobals();
 	};
 
 	Bot.server.observeTransaction = function observeTransaction(){
