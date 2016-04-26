@@ -55,7 +55,7 @@ h1 {
 #summaryPanel{
 	display: none;
 	background-color: white;
-	z-index: 9998;
+	z-index: 1;
 	position: fixed;
 	width: 800px;
 	height: 600px;
