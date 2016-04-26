@@ -2,6 +2,13 @@ Bot.utils = (function Utils(){
 	var relationChecker = new Bot.RelationChecker();
 	var storageManager = new Bot.StorageManager();
 	
+	var getUTCTime = function getUTCTime(date){
+		var dateObject = new Date(date);
+		return ('0' + dateObject.getUTCHours()).slice(-2) + ':' 
+			+ ('0' + dateObject.getUTCMinutes()).slice(-2) + ':' 
+			+ ('0' + dateObject.getUTCSeconds()).slice(-2);
+	};
+
 	var showError = function showError(error){
 		if ( error.stack ){
 			if (Bot.debug) {
@@ -147,6 +154,7 @@ Bot.utils = (function Utils(){
 	return {
 		showError: showError,
 		log: log,
+		getUTCTime: getUTCTime,
 		broadcast: broadcast,
 		chooseByIndex: chooseByIndex,
 		findTopParentBlock: findTopParentBlock,

@@ -40,9 +40,9 @@
 			Bot.globals.lastProfit,
 			contract.type, 
 			+contract.entrySpot, 
-			new Date(parseInt(contract.entrySpotTime + '000')).toLocaleTimeString(),
+			Bot.utils.getUTCTime(new Date(parseInt(contract.entrySpotTime + '000'))),
 			+contract.exitSpot, 
-			new Date(parseInt(contract.exitSpotTime + '000')).toLocaleTimeString(),
+			Bot.utils.getUTCTime(new Date(parseInt(contract.exitSpotTime + '000'))),
 			+( (contract.barrier) ? contract.barrier : 0 ),
 		];
 
