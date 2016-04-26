@@ -52,6 +52,7 @@
 		Bot.server.listen_on_contract_update(e);
 		Bot.server.purchaseNotDone = false;
 		Bot.disableRun(false);
+		Bot.server.requestBalance();
 	};
 
 	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
@@ -176,7 +177,9 @@
 
 	Bot.server.updateBalance = function updateBalance(data){
 		Bot.server.balance = data.balance;
-		Bot.server.balance_currency = data.currency;
+		if ( data.currency ) {
+			Bot.server.balance_currency = data.currency;
+		}
 		Bot.globals.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
 	};
 
@@ -389,6 +392,7 @@
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
 		log('Purchased: ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
+			Bot.server.updateBalance({balance: purchaseContract.buy.balance_after});
 			Bot.globals.numOfRuns++;
 			Bot.updateGlobals();
 			Bot.server.purchaseNotDone = true;
