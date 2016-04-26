@@ -318,6 +318,7 @@ var ContractService = function ContractService() {
 								time: lastTime,	
 								contract: contract,
 							});
+							setNotBroadcastable();
 						}
 					} else {
 						utils.broadcast("contract:updated", {

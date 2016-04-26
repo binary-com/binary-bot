@@ -51,6 +51,8 @@
 
 		Bot.on_finish(contract.result, detail_list);
 		Bot.server.listen_on_contract_update(e);
+		Bot.server.purchaseInfo = null;
+		Bot.server.purchaseInfoNeeded = true;
 	};
 
 	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
@@ -62,9 +64,10 @@
 		};
 		if ( e.detail.contract.exitSpotTime ) {
 			Bot.server.contractForChart.exit_tick_time = e.detail.contract.exitSpotTime;
-		}
-		if ( Bot.server.portfolioContract ) {
-			Bot.server.contractForChart.date_expiry = Bot.server.portfolioContract.expiry_time;
+		} else {
+			if ( Bot.server.portfolioContract ) {
+				Bot.server.contractForChart.date_expiry = Bot.server.portfolioContract.expiry_time;
+			}
 		}
 		var ticks = [];
 		Bot.server.contractService.getTicks().forEach(function(tick){
@@ -387,6 +390,8 @@
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
 		log('Purchased: ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
+			Bot.globals.numOfRuns++;
+			Bot.updateGlobals();
 			Bot.server.purchaseInfoNeeded = true;
 			Bot.server.state = 'PURCHASED';
 			Bot.server.purchaseInfo = {
@@ -481,7 +486,6 @@
 			Bot.server.updateTickTime();
 			Bot.server.authorizeCallback = callback;
 			Bot.server.purchaseInfoNeeded = false;
-			Bot.updateGlobals();
 			if ( trade_again ) {
 				Bot.server.state = 'TRADE_AGAIN';
 				Bot.server.restartContracts(false);
@@ -494,7 +498,6 @@
 				Bot.server.api.authorize(Bot.server.token);
 				Bot.server.connect();
 			}
-			Bot.globals.numOfRuns++;
 		}
 	};
 
