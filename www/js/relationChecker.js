@@ -84,7 +84,7 @@ Bot.RelationChecker = function RelationChecker(){
 						var duration = getNumField(_condition, 'DURATION');
 						if ( duration !== '' ) {
 							if ( !isInteger(duration) || !isInRange(duration, 5, 15) ) {
-								Bot.utils.log('Ticks has to be an integer between 5 and 15', 'warning');
+								Bot.utils.log('Number of ticks must be between 5 and 10', 'warning');
 							} else {
 								Bot.utils.broadcast('tour:ticks');
 								added.push('DURATION');
@@ -94,7 +94,7 @@ Bot.RelationChecker = function RelationChecker(){
 						var amount = getNumField(_condition, 'AMOUNT');
 						if ( amount !== '' ) {
 							if ( !isInRange(amount, 0.35, maximum) ) {
-								Bot.utils.log('Ticks has to be an integer between 0.35 and ' + maximum, 'warning');
+								Bot.utils.log('Amount must be between 0.35 and ' + maximum, 'warning');
 							} else {
 								added.push('AMOUNT');
 							}
@@ -102,7 +102,7 @@ Bot.RelationChecker = function RelationChecker(){
 						var prediction = getNumField(_condition, 'PREDICTION');
 						if ( prediction !== '' ) {
 							if ( !isInteger(prediction) || !isInRange(prediction, 0, 9) ) {
-								Bot.utils.log('Prediction has to be one digit', 'warning');
+								Bot.utils.log('Prediction must be one digit', 'warning');
 							} else {
 								added.push('PREDICTION');
 							}
