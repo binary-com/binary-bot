@@ -162,6 +162,13 @@ Bot.RelationChecker = function RelationChecker(){
 			_contract_details.unplug();
 		}
 	};
+	var read_details = function read_details(_read_details, ev) {
+		var topParent = Bot.utils.findTopParentBlock(_read_details);
+		if ( topParent !== null && ( topParent.type === 'on_strategy' || topParent.type === 'trade' ) ) {
+			Bot.utils.log('Contract Read Detail block has to be added inside the finish block', 'warning');
+			_read_details.unplug();
+		}
+	};
 	return {
 		trade: trade,
 		submarket: submarket,
@@ -172,5 +179,6 @@ Bot.RelationChecker = function RelationChecker(){
 		direction: direction,
 		contract_result: contract_result,
 		contract_details: contract_details,
+		read_details: read_details,
 	};
 };

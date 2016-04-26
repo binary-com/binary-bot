@@ -9,5 +9,8 @@ Blockly.Blocks['read_details'] = {
     this.setColour(180);
     this.setTooltip('Reads a selected option from contract details list');
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  }
+  },
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().read_details(this, ev);
+	},
 };
