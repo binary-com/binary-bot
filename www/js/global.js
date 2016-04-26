@@ -89,4 +89,5 @@ Bot.showTrades = function showTrades(){
 		+'</tr>';
 		$('#tradesDisplay tbody').append(element);
 	}
+	$('.table-scroll').scrollTop($('.table-scroll')[0].scrollHeight);
 };
