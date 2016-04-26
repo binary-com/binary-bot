@@ -22,7 +22,6 @@
 
 	// influences globals, calls on_finish
 	Bot.server.listen_on_contract_finish = function listen_on_contract_finish(e){
-		Bot.server.purchaseInfoNeeded = false;
 		Bot.server.state = 'FINISHED';
 		var contract = e.detail.contract;
 		Bot.addTrade(contract);
@@ -51,6 +50,8 @@
 
 		Bot.on_finish(contract.result, detail_list);
 		Bot.server.listen_on_contract_update(e);
+		Bot.server.purchaseInfoNeeded = false;
+		Bot.disableRun(false);
 	};
 
 	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
@@ -391,6 +392,7 @@
 			Bot.globals.numOfRuns++;
 			Bot.updateGlobals();
 			Bot.server.purchaseInfoNeeded = true;
+			Bot.disableRun(true);
 			Bot.server.state = 'PURCHASED';
 			Bot.server.purchaseInfo = {
 				proposalContract: proposalContract,
@@ -472,6 +474,8 @@
 			try {
 				Bot.server.api.disconnect();
 				Bot.server.state = 'STOPPED';
+				Bot.server.purchaseInfoNeeded = false;
+				Bot.disableRun(false);
 			} catch(e){
 			}
 		}
@@ -484,6 +488,7 @@
 			Bot.server.updateTickTime();
 			Bot.server.authorizeCallback = callback;
 			Bot.server.purchaseInfoNeeded = false;
+			Bot.disableRun(false);
 			if ( trade_again ) {
 				Bot.server.state = 'TRADE_AGAIN';
 				Bot.server.restartContracts(false);

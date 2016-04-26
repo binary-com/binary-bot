@@ -184,6 +184,10 @@
 		$('#stopButton').unbind('click', Bot.stop);
 		$('#stopButton').bind('click', Bot.reset);
 	};
+	
+	Bot.disableRun = function disableRun(disabled){
+		$('#runButton').prop('disabled', disabled);
+	};
 
 	$('#stopButton').text('Reset');
 	$('#stopButton').bind('click', Bot.reset);
