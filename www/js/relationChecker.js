@@ -90,14 +90,9 @@ Bot.RelationChecker = function RelationChecker(){
 								added.push('DURATION');
 							}
 						}
-						var maximum = (_condition.type === 'asian') ? 10000: 50000;
 						var amount = getNumField(_condition, 'AMOUNT');
 						if ( amount !== '' ) {
-							if ( !isInRange(amount, 0.35, maximum) ) {
-								Bot.utils.log('Amount must be between 0.35 and ' + maximum, 'warning');
-							} else {
-								added.push('AMOUNT');
-							}
+							added.push('AMOUNT');
 						}
 						var prediction = getNumField(_condition, 'PREDICTION');
 						if ( prediction !== '' ) {
