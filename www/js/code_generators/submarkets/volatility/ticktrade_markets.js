@@ -7,7 +7,7 @@ Bot.config.ticktrade_markets.forEach(function(market){
 		if ( !condition ) {
 			throw {message: 'A condition has to be defined for the market'};
 		}
-		var code = 'Bot.markets.random.' + market + '('+condition.trim()+')';
+		var code = 'Bot.markets.volatility.' + market + '('+condition.trim()+')';
 		return code;
 	};
 });

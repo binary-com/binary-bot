@@ -1,7 +1,7 @@
 Bot.markets = {};
-Bot.markets.random = {};
+Bot.markets.volatility = {};
 Bot.config.ticktrade_markets.forEach(function(market){
-	Bot.markets.random[market] = function(options){
+	Bot.markets.volatility[market] = function(options){
 		Bot.server.symbol = market.toUpperCase();
 
 		options.forEach(function(option){
