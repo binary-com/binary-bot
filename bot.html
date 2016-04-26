@@ -31,12 +31,14 @@
 	</div>
 	<div class="logout"><button onclick="Bot.server.logout()">Logout</button></div>
 	<div class="help">
-		Tours:
-		<select id="tours">
-			<option value="welcome">Welcome!</option>
-			<option value="introduction">Introduction</option>
-		</select>
-		<button onclick="Bot.startTutorial()">Go!</button>
+		<span class="tutorialList">
+			Tours:
+			<select id="tours">
+				<option value="welcome">Welcome!</option>
+				<option value="introduction">Introduction</option>
+			</select>
+		</span>
+		<button id="tutorialButton">Go!</button>
 	</div>
 	<div id="blocklyDiv"></div>
 	<div id="summaryPanel">

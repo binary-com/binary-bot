@@ -1,5 +1,7 @@
 Bot.welcome = (function Welcome(){
 	var components = {
+		tutorialList: $('.tutorialList'),
+		logout: $('.logout'),
 		workspace: $('.blocklyWorkspace'),
 		toolbox: $('.blocklyToolboxDiv'),
 		file_management: $('.intro-file-management'),
@@ -14,6 +16,12 @@ Bot.welcome = (function Welcome(){
 		Object.keys(components).forEach(function(key){
 			components[key].css('opacity', opacity);
 		});
+	};
+
+	var setOpacity = function setOpacity(componentName, opacity){
+		if ( started) {
+			components[componentName].css('opacity', opacity);
+		}
 	};
 
 	var steps = [
@@ -34,10 +42,10 @@ Bot.welcome = (function Welcome(){
 			my: 'top center',
 			at: 'bottom center',
 			setup: function(tour, options) {
-				components.workspace.css('opacity', 1);
+				setOpacity('workspace', 1);
 			},
 			teardown: function(tour, options) {
-				components.workspace.css('opacity', 0.3);
+				setOpacity('workspace', 0.3);
 			},
 		},
 		{
@@ -48,10 +56,10 @@ Bot.welcome = (function Welcome(){
 			my: 'left center',
 			at: 'right center',
 			setup: function(tour, options) {
-				components.toolbox.css('opacity', 1);
+				setOpacity('toolbox', 1);
 			},
 			teardown: function(tour, options) {
-				components.toolbox.css('opacity', 0.3);
+				setOpacity('toolbox', 0.3);
 			},
 		},
 		{
@@ -62,10 +70,10 @@ Bot.welcome = (function Welcome(){
 			my: 'right bottom',
 			at: 'left top',
 			setup: function(tour, options) {
-				components.trash.css('opacity', 1);
+				setOpacity('trash', 1);
 			},
 			teardown: function(tour, options) {
-				components.trash.css('opacity', 0.3);
+				setOpacity('trash', 0.3);
 			},
 		},
 		{
@@ -76,10 +84,10 @@ Bot.welcome = (function Welcome(){
 			my: 'top center',
 			at: 'bottom center',
 			setup: function(tour, options) {
-				components.file_management.css('opacity', 1);
+				setOpacity('file_management', 1);
 			},
 			teardown: function(tour, options) {
-				components.file_management.css('opacity', 0.3);
+				setOpacity('file_management', 0.3);
 			},
 		},
 		{
@@ -90,10 +98,10 @@ Bot.welcome = (function Welcome(){
 			my: 'top center',
 			at: 'bottom center',
 			setup: function(tour, options) {
-				components.token.css('opacity', 1);
+				setOpacity('token', 1);
 			},
 			teardown: function(tour, options) {
-				components.token.css('opacity', 0.3);
+				setOpacity('token', 0.3);
 			},
 		},
 		{
@@ -104,10 +112,10 @@ Bot.welcome = (function Welcome(){
 			my: 'top center',
 			at: 'bottom center',
 			setup: function(tour, options) {
-				components.undo_redo.css('opacity', 1);
+				setOpacity('undo_redo', 1);
 			},
 			teardown: function(tour, options) {
-				components.undo_redo.css('opacity', 0.3);
+				setOpacity('undo_redo', 0.3);
 			},
 		},
 		{
@@ -118,10 +126,10 @@ Bot.welcome = (function Welcome(){
 			my: 'top center',
 			at: 'bottom center',
 			setup: function(tour, options) {
-				components.summary.css('opacity', 1);
+				setOpacity('summary', 1);
 			},
 			teardown: function(tour, options) {
-				components.summary.css('opacity', 0.3);
+				setOpacity('summary', 0.3);
 			},
 		},
 		{
@@ -132,10 +140,10 @@ Bot.welcome = (function Welcome(){
 			my: 'top center',
 			at: 'bottom center',
 			setup: function(tour, options) {
-				components.run_stop.css('opacity', 1);
+				setOpacity('run_stop', 1);
 			},
 			teardown: function(tour, options) {
-				components.run_stop.css('opacity', 0.3);
+				setOpacity('run_stop', 0.3);
 			},
 		},
 		{
@@ -148,7 +156,7 @@ Bot.welcome = (function Welcome(){
 			teardown: function(tour, options) {
 				setOpacityForAll(1);
 				Bot.utils.getStorageManager().setDone('welcomeFinished');
-				delete Bot.tour;
+				Bot.stopTutorial();
 			},
 		},
 	];
@@ -157,9 +165,12 @@ Bot.welcome = (function Welcome(){
 		steps: steps
 	});
 
+	var started = false;
+
 	return {
 		start: function start(){
 			if ( !Bot.tour ) {
+				started = true;
 				Bot.tour = tour;
 				Bot.tour.start();
 			}
@@ -167,10 +178,18 @@ Bot.welcome = (function Welcome(){
 		welcome: function welcome(){
 			if ( !Bot.utils.getStorageManager().isDone('welcomeFinished') ) {
 				if ( !Bot.tour ) {
+					started = true;
 					Bot.tour = tour;
 					Bot.tour.start();
 				}
 			}
+		},
+		stop: function stop(){
+			started = false;
+			setOpacityForAll(1);
+			Bot.tour.stop();
+			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+			delete Bot.tour;
 		},
 	};
 })();

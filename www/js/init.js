@@ -136,9 +136,36 @@
 	document.getElementById('files')
 		.addEventListener('change', handleFileSelect, false);
 
-	Bot.startTutorial = function startTutorial(){
-		Bot[$('#tours').val()].start();	
+	Bot.startTutorial = function startTutorial(e){
+		if ( e ) {
+			e.preventDefault();
+		}
+		if ( Bot.activeTutorial ) {
+			Bot.activeTutorial.stop();	
+		}
+		Bot.activeTutorial = Bot[$('#tours').val()];
+		Bot.activeTutorial.start();	
+		$('#tutorialButton').unbind('click', Bot.startTutorial);
+		$('#tutorialButton').bind('click', Bot.stopTutorial);
+		$('#tutorialButton').text('Stop!');
 	};
+
+	Bot.stopTutorial = function stopTutorial(e){
+		if ( e ) {
+			e.preventDefault();
+		}
+		if ( Bot.activeTutorial ) {
+			if ( e ) {
+				Bot.activeTutorial.stop();	
+			}
+			Bot.activeTutorial = null;
+		}
+		$('#tutorialButton').unbind('click', Bot.stopTutorial);
+		$('#tutorialButton').bind('click', Bot.startTutorial);
+		$('#tutorialButton').text('Go!');
+	};
+
+	$('#tutorialButton').bind('click', Bot.startTutorial);
 
 	Bot.reset = function reset(e){
 		if ( e ) {

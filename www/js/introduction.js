@@ -1,5 +1,7 @@
 Bot.introduction = (function Introduction(){
 	var components = {
+		tutorialList: $('.tutorialList'),
+		logout: $('.logout'),
 		workspace: $('svg > .blocklyWorkspace > .blocklyBlockCanvas'),
 		toolbox: $('.blocklyToolboxDiv'),
 		file_management: $('.intro-file-management'),
@@ -13,6 +15,12 @@ Bot.introduction = (function Introduction(){
 		Object.keys(components).forEach(function(key){
 			components[key].css('opacity', opacity);
 		});
+	};
+
+	var setOpacity = function setOpacity(componentName, opacity){
+		if ( started) {
+			components[componentName].css('opacity', opacity);
+		}
 	};
 
 	var steps = [
@@ -33,7 +41,7 @@ Bot.introduction = (function Introduction(){
 			my: 'top center',
 			at: 'bottom center',
 			setup: function(tour, options) {
-				components.workspace.css('opacity', 1);
+				setOpacity('workspace', 1);
 			},
 			teardown: function(tour, options) {
 			},
@@ -52,11 +60,11 @@ Bot.introduction = (function Introduction(){
 				window.addEventListener('tour:submarket_created', this.tour_submarket_created);
 				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].reveal(true);
 				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].select();
-				components.toolbox.css('opacity', 1);
+				setOpacity('toolbox', 1);
 			},
 			teardown: function(tour, options) {
 				window.removeEventListener('tour:submarket_created', this.tour_submarket_created);
-				components.toolbox.css('opacity', 0.3);
+				setOpacity('toolbox', 0.3);
 			},
 		},
 		{
@@ -90,11 +98,11 @@ Bot.introduction = (function Introduction(){
 			setup: function(tour, options) {
 				window.addEventListener('tour:condition_created', this.tour_condition_created);
 				Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
-				components.toolbox.css('opacity', 1);
+				setOpacity('toolbox', 1);
 			},
 			teardown: function(tour, options) {
 				window.removeEventListener('tour:condition_created', this.tour_condition_created);
-				components.toolbox.css('opacity', 0.3);
+				setOpacity('toolbox', 0.3);
 			},
 		},
 		{
@@ -128,11 +136,11 @@ Bot.introduction = (function Introduction(){
 			setup: function(tour, options) {
 				window.addEventListener('tour:number', this.tour_number_created);
 				Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
-				components.toolbox.css('opacity', 1);
+				setOpacity('toolbox', 1);
 			},
 			teardown: function(tour, options) {
 				window.removeEventListener('tour:number', this.tour_number_created);
-				components.toolbox.css('opacity', 0.3);
+				setOpacity('toolbox', 0.3);
 			},
 		},
 		{
@@ -388,7 +396,7 @@ Bot.introduction = (function Introduction(){
 			at: 'bottom center',
 			nextButton: true,
 			teardown: function(tour, options) {
-				delete Bot.tour;
+				Bot.stopTutorial();
 			},
 		},
 	];
@@ -396,13 +404,23 @@ Bot.introduction = (function Introduction(){
 	var tour = new Tourist.Tour({
 		steps: steps
 	});
+	
+	var started = false;
 
 	return {
 		start: function start(){
 			if ( !Bot.tour ) {
+				started = true;
 				Bot.tour = tour;
 				Bot.tour.start();
 			}
+		},
+		stop: function stop(){
+			started = false;
+			setOpacityForAll(1);
+			Bot.tour.stop();
+			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+			delete Bot.tour;
 		},
 	};
 })();
