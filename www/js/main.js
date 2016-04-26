@@ -51,8 +51,6 @@
 
 		Bot.on_finish(contract.result, detail_list);
 		Bot.server.listen_on_contract_update(e);
-		Bot.server.purchaseInfo = null;
-		Bot.server.purchaseInfoNeeded = true;
 	};
 
 	Bot.server.listen_on_contract_update = function listen_on_contract_update(e){
@@ -89,7 +87,7 @@
 				quote: +tick.price,
 			});
 		});
-		if ( Bot.server.purchaseInfo && Bot.server.contractForChart ) {
+		if ( Bot.server.purchaseInfoNeeded && Bot.server.contractForChart ) {
 			Bot.chart.updateChart({ticks: ticks, contract: Bot.server.contractForChart});
 		} else {
 			Bot.chart.updateChart({ticks: ticks});
