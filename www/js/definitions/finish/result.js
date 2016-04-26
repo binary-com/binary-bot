@@ -10,7 +10,7 @@ Blockly.Blocks['contract_result'] = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().contract_result(this, ev);
+		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Contract Result');
 	},
 };
 

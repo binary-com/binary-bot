@@ -11,6 +11,6 @@ Blockly.Blocks['read_details'] = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().read_details(this, ev);
+		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Read Contract Details');
 	},
 };

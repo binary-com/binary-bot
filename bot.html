@@ -351,11 +351,16 @@
 			<category name="Strategy" colour="290">
 				<block type="tick"></block>
 				<block type="direction"></block>
+				<block type="direction_up"></block>
+				<block type="direction_down"></block>
+				<block type="direction_no_change"></block>
 				<block type="purchase"></block>
 			</category>
 			<category name="On Finish" colour="290">
 				<block type="contract_result"></block>
 				<block type="contract_details"></block>
+				<block type="contract_win"></block>
+				<block type="contract_loss"></block>
 				<block type="read_details"></block>
 				<block type="trade_again"></block>
 			</category>
@@ -400,6 +405,9 @@
   <script src="www/js/definitions/strategy/tick.js"></script>
   <script src="www/js/definitions/strategy/direction.js"></script>
   <script src="www/js/definitions/strategy/strategy.js"></script>
+  <script src="www/js/definitions/strategy/up.js"></script>
+  <script src="www/js/definitions/strategy/down.js"></script>
+  <script src="www/js/definitions/strategy/no_change.js"></script>
   <script src="www/js/definitions/tools/total_profit.js"></script>
   <script src="www/js/definitions/tools/balance.js"></script>
   <script src="www/js/definitions/tools/notify.js"></script>
@@ -408,6 +416,8 @@
   <script src="www/js/definitions/finish/finish.js"></script>
   <script src="www/js/definitions/finish/result.js"></script>
   <script src="www/js/definitions/finish/details.js"></script>
+  <script src="www/js/definitions/finish/win.js"></script>
+  <script src="www/js/definitions/finish/loss.js"></script>
   <script src="www/js/definitions/submarkets/volatility/ticktrade_markets.js"></script>
   <script src="www/js/definitions/conditions/ticktrades.js"></script>
   <script src="www/js/code_generators/trade.js"></script>
@@ -415,6 +425,9 @@
   <script src="www/js/code_generators/strategy/direction.js"></script>
   <script src="www/js/code_generators/strategy/strategy.js"></script>
   <script src="www/js/code_generators/strategy/purchase.js"></script>
+  <script src="www/js/code_generators/strategy/up.js"></script>
+  <script src="www/js/code_generators/strategy/down.js"></script>
+  <script src="www/js/code_generators/strategy/no_change.js"></script>
   <script src="www/js/code_generators/tools/total_profit.js"></script>
   <script src="www/js/code_generators/tools/balance.js"></script>
   <script src="www/js/code_generators/tools/notify.js"></script>
@@ -423,6 +436,8 @@
   <script src="www/js/code_generators/finish/details.js"></script>
   <script src="www/js/code_generators/finish/trade_again.js"></script>
   <script src="www/js/code_generators/finish/finish.js"></script>
+  <script src="www/js/code_generators/finish/win.js"></script>
+  <script src="www/js/code_generators/finish/loss.js"></script>
   <script src="www/js/code_generators/submarkets/volatility/ticktrade_markets.js"></script>
   <script src="www/js/code_generators/conditions/ticktrades.js"></script>
   <script src="www/js/main.js"></script>

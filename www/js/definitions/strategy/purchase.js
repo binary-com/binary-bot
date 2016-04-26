@@ -11,6 +11,6 @@ Blockly.Blocks['purchase'] = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().purchase(this, ev);
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Purchase');
 	},
 };

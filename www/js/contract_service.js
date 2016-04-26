@@ -301,7 +301,7 @@ var ContractService = function ContractService() {
 					if (utils.conditions[contract.type](contract.barrier, lastPrice)) {
 						contract.result = 'win';
 					} else {
-						contract.result = 'lose';
+						contract.result = 'loss';
 					}
 					if ( isFinished() && broadcastable ) {
 						contractCtrls.forEach(function(contractctrl, index){

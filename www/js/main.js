@@ -98,7 +98,7 @@
 
 	// calls on_strategy
 	Bot.server.listen_on_strategy = function listen_on_strategy(e){
-		Bot.on_strategy(e.detail.tick, e.detail.direction);
+		Bot.on_strategy(+e.detail.tick, e.detail.direction);
 	};
 
 	// maps a function to an event
@@ -344,7 +344,7 @@
 			} else {
 				var result;
 				if ( +transaction.amount === 0 ){
-					result = 'lose';
+					result = 'loss';
 				} else {
 					result = 'win';
 				}
