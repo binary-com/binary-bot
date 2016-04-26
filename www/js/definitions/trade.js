@@ -6,8 +6,7 @@ Blockly.Blocks['trade'] = {
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
 			.appendField("Submarket");
-		this.setPreviousStatement(true, 'Trade');
-		this.setNextStatement(true, 'Submarket');
+		this.setPreviousStatement(true, null);
 		this.setColour(60);
 		this.setTooltip('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.');
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');

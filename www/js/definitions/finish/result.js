@@ -6,7 +6,7 @@ Blockly.Blocks['contract_result'] = {
         .appendField("Contract Result");
     this.setOutput(true, "String");
     this.setColour(180);
-    this.setTooltip('Returns the tick value received by a strategy block');
+    this.setTooltip('Returns the result of the finished contract');
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
