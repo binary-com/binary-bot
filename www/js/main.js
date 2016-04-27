@@ -5,21 +5,6 @@
 	Bot.server = {}; 
 	Bot.server.state = 'STOPPED';
 
-	Bot.server.updateTickTime = function updateTickTime(){
-		Bot.server.lastTickTime = parseInt((new Date().getTime())/1000);
-	};
-
-	// depends on reconnect, tickExpected and updateTickTime
-	setInterval(function(){
-		var now = parseInt((new Date().getTime())/1000);
-		if ( Bot.server.tickExpected ) {
-			if ( now - Bot.server.lastTickTime > 20 ) {
-				Bot.server.lastTickTime = now;
-				Bot.server.reconnect();
-			}
-		}
-	}, 2000);
-
 	// influences globals, calls on_finish
 	Bot.server.listen_on_contract_finish = function listen_on_contract_finish(e){
 		Bot.server.state = 'FINISHED';
@@ -80,7 +65,6 @@
 
 	// actions needed on a tick received from the contract service
 	Bot.server.listen_on_tick_update = function listen_on_tick_update(e){
-		Bot.server.updateTickTime();
 		var ticks = [];
 		Bot.server.contractService.getTicks().forEach(function(tick){
 			ticks.push({
@@ -223,7 +207,6 @@
 	};
 
 	Bot.server.forgetAllTicks = function forgetAllTicks(callback){
-		Bot.server.tickExpected = false;
 		Bot.server.api.send({
 			forget_all: 'ticks',
 		}).then(function(response){
@@ -236,7 +219,6 @@
 	};
 
 	Bot.server.subscribeToTick = function subscribeToTick(callback){
-		Bot.server.tickExpected = true;
 		Bot.server.api.send({
 			ticks: Bot.server.symbol,
 		}).then(function(response){
@@ -253,6 +235,7 @@
 		Bot.server.api.getTickHistory(Bot.server.symbol,{
 			"end": "latest",
 			"count": Bot.server.contractService.getCapacity(),
+			"subscribe": 1
 		}).then(function(value){
 			log('Request receieved for history');
 			if ( callback ) {
@@ -264,36 +247,22 @@
 		});
 	};
 
-	Bot.server.resubscribe = function resubscribe(callback){
-		Bot.server.forgetAllTicks(function(){
-			Bot.server.subscribeToTick(function(){
-				Bot.server.requestHistory(function(){
-					if ( callback ) {
-						callback();
-					}
-				});
-			});
-		});
-	};
-
-	Bot.server.submitProposal = function submitProposal(options, callback, first){
-		if ( first ) {
-			Bot.server.contracts = [];
-		}
-		Bot.server.api.getPriceProposalForContract(options).then(function(value){
-			Bot.server.state = 'PROPOSAL_SUBMITTED';
-			Bot.globals.stake = +(+value.proposal.ask_price).toFixed(2);
-			Bot.globals.payout = +(+value.proposal.payout).toFixed(2);
-			Bot.updateGlobals();
-			log('contract added: ' + value.proposal.longcode);
-			if ( Bot.server.contracts.length === 1 ) {
+	Bot.server.observeProposal = function observeProposal(options){
+		Bot.server.api.events.on('proposal', function(value){
+			if ( Bot.server.contracts.length === 2 ) {
+				Bot.server.contracts = [];
+				window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
+			}
+			Bot.server.contracts.push(value);
+			if ( Bot.server.contracts.length === 2 ) {
 				log('Contracts are ready to be purchased by the strategy', 'info'); 
 				Bot.server.listen_on('strategy:updated', Bot.server.listen_on_strategy);
 			}
-			Bot.server.contracts.push(value);
-			if ( callback ){
-				callback();
-			}
+		});
+	};
+
+	Bot.server.submitProposal = function submitProposal(options){
+		Bot.server.api.subscribeToPriceForContractProposal(options).then(function(value){
 		}, function(reason){
 			Bot.stop();
 			Bot.server.state = 'PROPOSAL_NOT_SUBMITTED';
@@ -410,14 +379,14 @@
 		});
 	};
 
-	Bot.server.restartContracts = function restartContracts(resetOnly, callback){
+	Bot.server.restartContracts = function restartContracts(){
 		window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
 		Bot.server.purchaseInfo = null;
-		if ( !resetOnly ) {
-			Bot.server.authorizeCallback(function(){
-				Bot.server.resubscribe(callback);
-			});
-		}
+		Bot.server.api.unsubscribeFromAllProposals().then(function(response){
+			Bot.server.authorizeCallback();
+		}, function(reason){
+			showError(reason);
+		});
 	};
 
 	Bot.server.initContractService = function initContractService(){
@@ -426,14 +395,13 @@
 	};
 
 	Bot.server.connect = function connect(){
-		Bot.server.tickExpected = true;
 		Bot.server.api.events.on('authorize', function (response) {
 			if ( response.error ) {
 				showError(response.error);
 				Bot.server.state = 'NOT_AUTHORIZED';
 			} else {
 				var now = parseInt((new Date().getTime())/1000);
-				if ( Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized > 10 ) { 
+				if ( Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized > 10 ) {  // prevent live-api to call this many times in case of disconnect
 					Bot.server.initContractService();
 					Bot.server.lastAuthorized = now;
 					log('Authenticated using token: ' + Bot.server.token , 'info');
@@ -444,16 +412,16 @@
 						Bot.server.listen_on('contract:finished', Bot.server.listen_on_contract_finish);
 						Bot.server.observeTicks();
 						Bot.server.observeTransaction();
+						Bot.server.observeProposal();
 					}
 					if ( Bot.server.purchaseNotDone ) {
 						Bot.server.getLastPurchaseInfo(function(){
-							Bot.server.restartContracts(false);
 						});
-					} else {
-						Bot.server.restartContracts(false);
 					}
+					Bot.server.restartContracts();
 					Bot.server.requestTransaction();
 					Bot.server.requestBalance();
+					Bot.server.requestHistory();
 					Bot.server.state = 'AUTHORIZED';
 				} 
 			}
@@ -461,7 +429,6 @@
 	};
 
 	Bot.server.reconnect = function reconnect(){
-		Bot.server.restartContracts(true);
 		Bot.server.stop();
 		Bot.server.api.token = Bot.server.token;
 		Bot.server.api.connect();
@@ -473,7 +440,6 @@
 	};
 
 	Bot.server.stop = function stop(){
-		Bot.server.tickExpected = false;
 		if ( Bot.server.api ) {
 			try {
 				Bot.server.api.disconnect();
@@ -489,13 +455,13 @@
 		if ( token === '' ) {
 			showError('No token is available to authenticate');
 		} else {
-			Bot.server.updateTickTime();
 			Bot.server.authorizeCallback = callback;
 			Bot.server.purchaseNotDone = false;
 			Bot.disableRun(false);
+			Bot.server.contracts = [];
 			if ( trade_again ) {
 				Bot.server.state = 'TRADE_AGAIN';
-				Bot.server.restartContracts(false);
+				Bot.server.restartContracts();
 			} else {
 				Bot.server.token = token;
 				Bot.server.stop();

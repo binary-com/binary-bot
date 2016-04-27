@@ -1,8 +1,6 @@
 Bot = {};
 Bot.globals = {
 	numOfRuns: 0,
-	stake: '',
-	payout: '',
 	totalProfit: '',
 	totalPayout: '',
 	totalStake: '',

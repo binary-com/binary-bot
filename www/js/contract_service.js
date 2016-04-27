@@ -167,6 +167,7 @@ var ContractService = function ContractService() {
 		var addHistory = function addHistory(history) {
 			historyData = [];
 			updateHistoryArray(historyData, history);
+			updateTick();
 		};
 
 		var getHistory = function getHistory(dataIndex, count) {

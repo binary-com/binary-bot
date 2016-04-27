@@ -9,9 +9,8 @@ Bot.config.ticktrade_markets.forEach(function(market){
 		});
 
 		var submarket = function submarket(cb){
-			Bot.server.submitProposal(options[0], function(){
-				Bot.server.submitProposal(options[1], cb);
-			}, true);
+			Bot.server.submitProposal(options[0]);
+			Bot.server.submitProposal(options[1]);
 		};
 
 		return submarket;
