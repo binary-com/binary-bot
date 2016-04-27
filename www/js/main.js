@@ -386,7 +386,7 @@
 				Bot.server.state = 'NOT_AUTHORIZED';
 			} else {
 				var now = parseInt((new Date().getTime())/1000);
-				if ( Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized > 10 ) {  // prevent live-api to call this many times in case of disconnect
+				if ( Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized >= 1 ) {  // prevent live-api to call this many times in case of disconnect
 					Bot.server.initContractService();
 					Bot.server.lastAuthorized = now;
 					log('Authenticated using token: ' + Bot.server.token , 'info');
