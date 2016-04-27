@@ -204,6 +204,10 @@
 
 	$('#summaryPanel').drags();
 
+	$('#chart').mousedown(function(e){ // allow default chart mousedown actions
+		e.stopPropagation();
+	});
+
 	Bot.showTrades();
 	Bot.chart = BinaryChart.createChart('chart', { ticks: [] });
 })();
