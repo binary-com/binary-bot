@@ -448,7 +448,9 @@
 				Bot.server.restartContracts();
 			} else {
 				if ( Bot.debug ) {
-					console.log('%cBinary Bot (v1.0) started.', 'color: green');
+					console.log('%cBinary Bot (v' + Bot.version + ') started.', 'color: green');
+				} else {
+					Bot.queueLog('%cBinary Bot (v1.0) started.', 'color: green');
 				}
 				Bot.server.token = token;
 				Bot.server.stop();

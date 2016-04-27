@@ -1,6 +1,7 @@
 Bot = {};
 Bot.globals = {
 	numOfRuns: 0,
+	logQueue: [],
 	totalProfit: '',
 	totalPayout: '',
 	totalStake: '',
@@ -88,4 +89,21 @@ Bot.showTrades = function showTrades(){
 		$('#tradesDisplay tbody').append(element);
 	}
 	$('.table-scroll').scrollTop($('.table-scroll')[0].scrollHeight);
+};
+
+Bot.toggleDebug = function toggleDebug(){
+	if ( Bot.debug === undefined ) {
+		Bot.debug = false;
+	}
+	Bot.debug = !Bot.debug;
+	if ( Bot.debug ) {
+		Bot.globals.logQueue.forEach(function(log){
+			console.log.apply(console, log);
+		});
+		Bot.globals.logQueue = [];
+	}
+};
+
+Bot.queueLog = function queueLog(){
+	Bot.globals.logQueue.push(Array.prototype.slice.apply(arguments));
 };

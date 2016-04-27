@@ -1,4 +1,5 @@
 (function init(){
+	Bot.version = '1.0';
 	var BinaryChart = window['binary-charts'];
 	var workspace = Blockly.inject('blocklyDiv', {
 		media: 'node_modules/blockly/media/',

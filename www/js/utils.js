@@ -12,7 +12,9 @@ Bot.utils = (function Utils(){
 	var showError = function showError(error){
 		if ( error.stack ){
 			if (Bot.debug) {
-				console.log('%c ' + error.stack, 'color: red');	
+				console.log('%c' + error.stack, 'color: red');	
+			} else {
+				Bot.queueLog('%c' + error.stack, 'color: red');
 			}
 		}
 		var message;
@@ -26,7 +28,9 @@ Bot.utils = (function Utils(){
 			className: 'error',
 		});
 		if (Bot.debug) {
-			console.log('%c Error: ' + message, 'color: red');
+			console.log('%cError: ' + message, 'color: red');
+		} else {
+			Bot.queueLog('%cError: ' + message, 'color: red');
 		}
 	};
 
@@ -39,6 +43,8 @@ Bot.utils = (function Utils(){
 		}
 		if (Bot.debug) {
 			console.log(message);
+		} else {
+			Bot.queueLog(message);
 		}
 	};
 
