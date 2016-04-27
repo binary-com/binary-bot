@@ -160,38 +160,24 @@
 
 	Bot.server.updateBalance = function updateBalance(data){
 		Bot.server.balance = data.balance;
-		if ( data.currency ) {
-			Bot.server.balance_currency = data.currency;
-		}
+		Bot.server.balance_currency = data.currency;
 		Bot.globals.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
 		Bot.updateGlobals();
 	};
 
-	Bot.server.observeTransaction = function observeTransaction(){
-		Bot.server.api.events.on('transaction', function (response) {
-			if ( response.transaction.action ) {
-				Bot.server.updateBalance(response.transaction);
-			}
+	Bot.server.observeBalance = function observeBalance(){
+		Bot.server.api.events.on('balance', function (response) {
+			Bot.server.updateBalance(response.balance);
 		});
 	};
 
 	Bot.server.requestBalance = function requestBalance(){
 		Bot.server.api.send({
 			balance: 1,
+			subscribe: 1
 		}).then(function(response){
-			Bot.server.updateBalance(response.balance);
 		}, function(reason){
 			log('Could not get balance');
-		});
-	};
-
-	Bot.server.requestTransaction = function requestTransaction(){
-		Bot.server.api.send({
-			"transaction": 1,
-			"subscribe": 1
-		}).then(function(response){
-		}, function(reason){
-			showError('Could not subscribe to transaction');
 		});
 	};
 
@@ -361,7 +347,6 @@
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
 		log('Purchased: ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
-			Bot.server.updateBalance({balance: purchaseContract.buy.balance_after});
 			Bot.globals.numOfRuns++;
 			Bot.updateGlobals();
 			Bot.server.purchaseNotDone = true;
@@ -411,7 +396,7 @@
 						Bot.server.listen_on('contract:updated', Bot.server.listen_on_contract_update);
 						Bot.server.listen_on('contract:finished', Bot.server.listen_on_contract_finish);
 						Bot.server.observeTicks();
-						Bot.server.observeTransaction();
+						Bot.server.observeBalance();
 						Bot.server.observeProposal();
 					}
 					if ( Bot.server.purchaseNotDone ) {
@@ -419,7 +404,6 @@
 						});
 					}
 					Bot.server.restartContracts();
-					Bot.server.requestTransaction();
 					Bot.server.requestBalance();
 					Bot.server.requestHistory();
 					Bot.server.state = 'AUTHORIZED';
