@@ -447,6 +447,9 @@
 				Bot.server.state = 'TRADE_AGAIN';
 				Bot.server.restartContracts();
 			} else {
+				if ( Bot.debug ) {
+					console.log('%cBinary Bot (v1.0) started.', 'color: green');
+				}
 				Bot.server.token = token;
 				Bot.server.stop();
 				Bot.server.api = new LiveApi();
