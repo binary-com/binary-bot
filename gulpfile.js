@@ -109,6 +109,6 @@ gulp.task('build', ['vendor', 'globals', 'definitions', 'code_generators', 'util
 
 gulp.task('watch', ['i18n', 'build'], function () {
 	gp_watch(['src/**/*.js', '*.html'], function(){
-		gulp.run('i18n');
+		gulp.run(['i18n', 'build']);
 	});
 });
