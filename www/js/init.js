@@ -39,7 +39,7 @@
 			var filename = 'binary-bot' + parseInt(new Date()
 				.getTime() / 1000) + '.xml';
 			var blob = new Blob([xmlText], {
-				type: "text/xml;charset=utf-8"
+				type: 'text/xml;charset=utf-8'
 			});
 			saveAs(blob, filename);
 		}
@@ -211,4 +211,5 @@
 
 	Bot.showTrades();
 	Bot.chart = BinaryChart.createChart('chart', { ticks: [] });
+
 })();

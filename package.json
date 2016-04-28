@@ -4,7 +4,9 @@
   "description": "Visual automation for binary.com",
   "main": "index.js",
   "scripts": {
-    "postinstall": "node_modules/.bin/bower install"
+    "postinstall": "node_modules/.bin/bower install",
+    "i18n": "gulp i18n",
+    "serve": "lite-server"
   },
   "author": "Amin Marashi",
   "license": "MIT",
@@ -13,7 +15,18 @@
     "binary-live-api": "~18.0.0",
     "blockly": "git+https://git@github.com/google/blockly.git",
     "bower": "^1.7.7",
+    "gulp-watch": "^4.3.5",
+    "i18next": "^2.5.1",
+    "i18next-xhr-backend": "^0.5.3",
     "jquery": "^2.2.2",
+    "js-sha1": "^0.3.0",
     "react": "^15.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "i18next-scanner": "^1.1.0",
+    "lite-server": "^2.2.0",
+    "sha1": "^1.1.1",
+    "vinyl-fs": "^2.4.3"
   }
 }

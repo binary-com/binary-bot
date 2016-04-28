@@ -1,4 +1,4 @@
-Bot.welcome = (function Welcome(){
+Bot.Welcome = function Welcome(){
 	var components = {
 		tutorialList: $('.tutorialList'),
 		logout: $('.logout'),
@@ -26,7 +26,7 @@ Bot.welcome = (function Welcome(){
 
 	var steps = [
 		{
-			content: '<p>Welcome to the binary bot, a blockly based automation tool for binary.com trades</p>',
+			content: '<p>' + i18n._('Welcome to the binary bot, a blockly based automation tool for binary.com trades') + '</p>',
 			target: $('#center'),
 			nextButton: true,
 			my: 'top center',
@@ -36,7 +36,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>The blocks you put in here will create a binary bot code which you can then execute using the run button.</p>',
+			content: '<p>' + i18n._('The blocks you put in here will create a binary bot code which you can then execute using the run button.') + '</p>',
 			target: $('#center'),
 			nextButton: true,
 			my: 'top center',
@@ -49,7 +49,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>You can add blocks from here to the workspace</p>',
+			content: '<p>' + i18n._('You can add blocks from here to the workspace') + '</p>',
 			target: $('.blocklyToolboxDiv'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -63,7 +63,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Erase the blocks by dropping them in here.</p>',
+			content: '<p>' + i18n._('Erase the blocks by dropping them in here.') + '</p>',
 			target: $('.blocklyTrash'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -77,7 +77,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Use these buttons to load and save blocks</p>',
+			content: '<p>' + i18n._('Use these buttons to load and save blocks') + '</p>',
 			target: $('.intro-file-management'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -91,7 +91,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Click to add a token, at least one token is needed. Get your token from <a href="https://www.binary.com/user/api_tokenws" target="_blank">here</a></p>',
+			content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from ') + '<a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
 			target: $('.intro-token'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -105,7 +105,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Use these buttons to Undo/Redo changes to your blocks.</p>',
+			content: '<p>' + i18n._('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
 			target: $('.intro-undo-redo'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -119,7 +119,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Click on this button to see the summary of your trades.</p>',
+			content: '<p>' + i18n._('Click on this button to see the summary of your trades.') + '</p>',
 			target: $('.intro-summary'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -133,7 +133,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Use these buttons to run or stop your blocks, or reset your result panels.</p>',
+			content: '<p>' + i18n._('Use these buttons to run or stop your blocks, or reset your result panels.') + '</p>',
 			target: $('.intro-run-stop'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -147,7 +147,7 @@ Bot.welcome = (function Welcome(){
 			},
 		},
 		{
-			content: '<p>Good Luck!</p>',
+			content: '<p>' + i18n._('Good Luck!') + '</p>',
 			target: $('#center'),
 			nextButton: true,
 			highlightTarget: true,	
@@ -192,4 +192,4 @@ Bot.welcome = (function Welcome(){
 			delete Bot.tour;
 		},
 	};
-})();
+};
