@@ -77,8 +77,11 @@ Bot.View = function View(){
 		e.stopPropagation();
 	});
 
+	Bot.showTrades();
+
 	var BinaryChart = window['binary-charts'];
 	Bot.chart = BinaryChart.createChart('chart', { ticks: [] });
+
 	Blockly.mainWorkspace.getBlockById('trade').setDeletable(false);
 	Blockly.mainWorkspace.getBlockById('strategy').setDeletable(false);
 	Blockly.mainWorkspace.getBlockById('finish').setDeletable(false);

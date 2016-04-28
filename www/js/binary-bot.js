@@ -28,6 +28,8 @@ Bot = {};Bot.Config = function Config(){
 Bot.Globals = function Globals(){
 	Bot.version = '1.1';
 
+	Bot.tours = {};
+
 	Bot.display = {
 		numOfRuns: 0,
 		logQueue: [],
@@ -218,7 +220,7 @@ Bot.Globals = function Globals(){
 		if ( Bot.activeTutorial ) {
 			Bot.activeTutorial.stop();	
 		}
-		Bot.activeTutorial = Bot[$('#tours').val()];
+		Bot.activeTutorial = Bot.tours[$('#tours').val()];
 		Bot.activeTutorial.start();	
 		$('#tutorialButton').unbind('click', Bot.startTutorial);
 		$('#tutorialButton').bind('click', Bot.stopTutorial);
@@ -348,8 +350,11 @@ Bot.View = function View(){
 		e.stopPropagation();
 	});
 
+	Bot.showTrades();
+
 	var BinaryChart = window['binary-charts'];
 	Bot.chart = BinaryChart.createChart('chart', { ticks: [] });
+
 	Blockly.mainWorkspace.getBlockById('trade').setDeletable(false);
 	Blockly.mainWorkspace.getBlockById('strategy').setDeletable(false);
 	Blockly.mainWorkspace.getBlockById('finish').setDeletable(false);
@@ -2870,17 +2875,16 @@ i18n
 		Bot.config = Bot.Config();
 		Bot.utils = Bot.Utils();
 		Bot.globals = Bot.Globals();
+
 		Bot.conditions = Bot.Conditions();
 		Bot.Markets();
 		Bot.Trade();
 
-		Bot.welcome = Bot.Welcome();
-		Bot.introduction = Bot.Introduction();
+		Bot.Definitions();
+		Bot.CodeGenerators();
 
-		Bot.definitions = Bot.Definitions();
-		Bot.codeGenerators = Bot.CodeGenerators();
-
-		Bot.view = Bot.View();
-		Bot.showTrades();
-		Bot.welcome.welcome();
+		Bot.View();
+		Bot.tours.introduction = Bot.Introduction();
+		Bot.tours.welcome = Bot.Welcome()
+		Bot.tours.welcome.welcome();
 	});

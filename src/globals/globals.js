@@ -1,6 +1,8 @@
 Bot.Globals = function Globals(){
 	Bot.version = '1.1';
 
+	Bot.tours = {};
+
 	Bot.display = {
 		numOfRuns: 0,
 		logQueue: [],
@@ -191,7 +193,7 @@ Bot.Globals = function Globals(){
 		if ( Bot.activeTutorial ) {
 			Bot.activeTutorial.stop();	
 		}
-		Bot.activeTutorial = Bot[$('#tours').val()];
+		Bot.activeTutorial = Bot.tours[$('#tours').val()];
 		Bot.activeTutorial.start();	
 		$('#tutorialButton').unbind('click', Bot.startTutorial);
 		$('#tutorialButton').bind('click', Bot.stopTutorial);

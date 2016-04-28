@@ -24,17 +24,16 @@ i18n
 		Bot.config = Bot.Config();
 		Bot.utils = Bot.Utils();
 		Bot.globals = Bot.Globals();
+
 		Bot.conditions = Bot.Conditions();
 		Bot.Markets();
 		Bot.Trade();
 
-		Bot.welcome = Bot.Welcome();
-		Bot.introduction = Bot.Introduction();
+		Bot.Definitions();
+		Bot.CodeGenerators();
 
-		Bot.definitions = Bot.Definitions();
-		Bot.codeGenerators = Bot.CodeGenerators();
-
-		Bot.view = Bot.View();
-		Bot.showTrades();
-		Bot.welcome.welcome();
+		Bot.View();
+		Bot.tours.introduction = Bot.Introduction();
+		Bot.tours.welcome = Bot.Welcome()
+		Bot.tours.welcome.welcome();
 	});
