@@ -106,7 +106,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("Ok! Now add it to the submarket you added in the previous step.") + '</p>',
+			content: '<p>' + i18n._("OK! Now add it to the submarket you added in the previous step.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
 			highlightTarget: true,
 			my: 'left center',
@@ -161,7 +161,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("Ok, Now add all remaining options to the condition block") + '</p>',
+			content: '<p>' + i18n._("OK, Now add all remaining options to the condition block") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
 			highlightTarget: true,
 			my: 'left center',
@@ -213,7 +213,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("For this tourial we are not going to use those blocks, so we create our strategy by adding a ") + '<b>' + i18n._("purchase") + '</b>' + i18n._(" block. Please pick a purchase block") + '</p>',
+			content: '<p>' + i18n._("For this tutorial we are not going to use those blocks, so we create our strategy by adding a ") + '<b>' + i18n._("purchase") + '</b>' + i18n._(" block. Please pick a purchase block") + '</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -322,7 +322,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("Excellent! The ") + '<b>' + i18n._("Trade Again") + '</b>' + i18n._(" block starts a new trade immidiately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
+			content: '<p>' + i18n._("Excellent! The ") + '<b>' + i18n._("Trade Again") + '</b>' + i18n._(" block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -330,7 +330,7 @@ Bot.Introduction = function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>' + i18n._("Ok, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.") + '</p>',
+			content: '<p>' + i18n._("OK, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -341,7 +341,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("If you changed a block by accedent you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
+			content: '<p>' + i18n._("If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
 			target: $('.intro-undo-redo'),
 			highlightTarget: true,
 			my: 'top center',

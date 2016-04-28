@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "node_modules/.bin/bower install",
-    "i18n": "gulp i18n",
+    "i18n": "gulp i18n; gulp watch",
+    "hunspell": "gulp i18n; cd www/i18n ; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../known_words.txt en.txt; rm *.po *.txt",
     "serve": "lite-server"
   },
   "author": "Amin Marashi",
@@ -23,6 +24,7 @@
     "react": "^15.0.1"
   },
   "devDependencies": {
+    "del": "^2.2.0",
     "gulp": "^3.9.1",
     "i18next-scanner": "^1.1.0",
     "lite-server": "^2.2.0",

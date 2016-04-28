@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var watch = require('gulp-watch');
+var del = require('del');
 var scanner = require('i18next-scanner');
 var hash = require('sha1');
 var fs = require('fs');
@@ -36,7 +37,11 @@ var customTransform = function _transform(file, enc, done) {
 	done();
 };
 
-gulp.task('i18n', function () {
+gulp.task('clean_i18n', function () {
+	return del(['www/i18n/*.json']);
+});
+
+gulp.task('i18n', ['clean_i18n'], function () {
 	return gulp.src(['www/js/**/*.js', '*.html'])
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
@@ -44,6 +49,6 @@ gulp.task('i18n', function () {
 
 gulp.task('watch', function () {
 	watch(['www/js/**/*.js', '*.html'], function(){
-		gulp.run(['i18n']);
+		gulp.run('i18n');
 	});
 });
