@@ -1,9 +1,14 @@
-var gulp = require('gulp');
-var watch = require('gulp-watch');
-var del = require('del');
-var scanner = require('i18next-scanner');
-var hash = require('sha1');
-var fs = require('fs');
+var gulp = require('gulp'),
+		gp_rename = require('gulp-rename'),
+		gp_uglify = require('gulp-uglify');
+		gp_watch = require('gulp-watch'),
+		concat = require('gulp-concat-util'),
+		vinylPaths = require('vinyl-paths'),
+		del = require('del'),
+		scanner = require('i18next-scanner'),
+		hash = require('sha1'),
+		fs = require('fs');
+
 
 var options = {
 	attr: {
@@ -42,13 +47,68 @@ gulp.task('clean_i18n', function () {
 });
 
 gulp.task('i18n', ['clean_i18n'], function () {
-	return gulp.src(['www/js/**/*.js', '*.html'])
+	return gulp.src(['src/**/*.js', '*.html'])
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('watch', function () {
-	watch(['www/js/**/*.js', '*.html'], function(){
+gulp.task('vendor', function(){
+	return gulp.src(['src/vendor/**/*.js'])
+		.pipe(gulp.dest('www/js/vendor'));
+});
+
+gulp.task('globals', function(){
+	return gulp.src(['src/globals/**/*.js'])
+		.pipe(concat('globals.js'))
+		.pipe(concat.header('Bot = {};'))
+		.pipe(gulp.dest('www/js'));
+});
+
+gulp.task('definitions', function(){
+	return gulp.src(['src/definitions/**/*.js'])
+		.pipe(concat('definitions.js'))
+		.pipe(concat.header('Bot.Definitions = function Definitions(){'))
+		.pipe(concat.footer('};'))
+		.pipe(gulp.dest('www/js'));
+});
+
+gulp.task('code_generators', function(){
+	return gulp.src(['src/code_generators/**/*.js'])
+		.pipe(concat('code_generators.js'))
+		.pipe(concat.header('Bot.CodeGenerators = function CodeGenerators(){'))
+		.pipe(concat.footer('};'))
+		.pipe(gulp.dest('www/js'));
+});
+
+gulp.task('utils', function(){
+	return gulp.src(['src/utils/**/*.js'])
+		.pipe(concat('utils.js'))
+		.pipe(gulp.dest('www/js'));
+});
+
+gulp.task('tours', function(){
+	return gulp.src(['src/tours/**/*.js'])
+		.pipe(concat('tours.js'))
+		.pipe(gulp.dest('www/js'));
+});
+
+gulp.task('after_all', function(){
+	return gulp.src(['src/after_all.js'])
+		.pipe(gulp.dest('www/js'));
+});
+
+gulp.task('build', ['vendor', 'globals', 'definitions', 'code_generators', 'utils', 'tours', 'after_all'], function(){
+	return gulp.src(['www/js/{globals,definitions,code_generators,utils,tours,after_all}.js'])
+		.pipe(vinylPaths(del))
+		.pipe(concat('binary-bot.js'))
+		.pipe(gulp.dest('www/js'))
+		.pipe(gp_rename('binary-bot.min.js'))
+		.pipe(gp_uglify())
+		.pipe(gulp.dest('www/js'));
+});
+
+gulp.task('watch', ['build'], function () {
+	gp_watch(['src/**/*.js', '*.html'], function(){
 		gulp.run('i18n');
 	});
 });

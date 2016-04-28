@@ -1,9 +1,3 @@
-Blockly.mainWorkspace.getBlockById('trade').setDeletable(false);
-Blockly.mainWorkspace.getBlockById('strategy').setDeletable(false);
-Blockly.mainWorkspace.getBlockById('finish').setDeletable(false);
-Bot.utils.updateTokenList();
-Bot.utils.addPurchaseOptions();
-Blockly.mainWorkspace.clearUndo();
 window.i18n = i18next;
 var options = {
 	lng: 'id',
@@ -27,7 +21,20 @@ i18n._ = function _(str, opt){
 i18n
 	.use(i18nextXHRBackend)
 	.init(options, function() {
+		Bot.config = Bot.Config();
+		Bot.utils = Bot.Utils();
+		Bot.globals = Bot.Globals();
+		Bot.conditions = Bot.Conditions();
+		Bot.Markets();
+		Bot.Trade();
+
 		Bot.welcome = Bot.Welcome();
 		Bot.introduction = Bot.Introduction();
+
+		Bot.definitions = Bot.Definitions();
+		Bot.codeGenerators = Bot.CodeGenerators();
+
+		Bot.view = Bot.View();
+		Bot.showTrades();
 		Bot.welcome.welcome();
 	});

@@ -1,4 +1,4 @@
-Bot.utils = (function Utils(){
+Bot.Utils = function Utils(){
 	var relationChecker = new Bot.RelationChecker();
 	var storageManager = new Bot.StorageManager();
 	
@@ -169,4 +169,4 @@ Bot.utils = (function Utils(){
 		addPurchaseOptions: addPurchaseOptions,
 		getRelationChecker: getRelationChecker,
 	};
-})();
+};

@@ -1,11 +1,114 @@
-(function init(){
-	Bot.version = '1.0';
-	var BinaryChart = window['binary-charts'];
-	var workspace = Blockly.inject('blocklyDiv', {
-		media: 'node_modules/blockly/media/',
-		toolbox: document.getElementById('toolbox')
-	});
-	Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'), workspace);
+Bot.Globals = function Globals(){
+	Bot.version = '1.1';
+
+	Bot.display = {
+		numOfRuns: 0,
+		logQueue: [],
+		totalProfit: '',
+		totalPayout: '',
+		totalStake: '',
+		lastProfit: '',
+		lastResult: '',
+		balance: '',
+		tradeTable: [],
+		tradesCount: 10000,
+		tableSize: 5,
+	};
+
+	Bot.initialDisplay = {};
+
+	Bot.copyObjectKeys = function copyObjectKeys(obj1, obj2){
+		$.extend(obj1, JSON.parse(JSON.stringify(obj2)));
+	};
+
+	Bot.copyObjectKeys(Bot.initialDisplay, Bot.display);
+
+	Bot.resetDisplay = function resetDisplay(){
+		Bot.copyObjectKeys(Bot.display, Bot.initialDisplay);
+		Bot.updateDisplay();
+		Bot.showTrades();
+	};
+
+	Bot.updateDisplay = function updateDisplay(){
+		Object.keys(Bot.display).forEach(function(key){
+			$('.'+ key).text(Bot.display[key]);	
+			if ( key === 'totalProfit' || key === 'lastProfit' ){
+				if ( +Bot.display[key] > 0 ) {
+					$('.' + key).css('color', 'green');
+				} else if ( +Bot.display[key] < 0 ) {
+					$('.' + key).css('color', 'red');
+				} else {
+					$('.' + key).css('color', 'black');
+				}
+			}
+		});
+	};
+
+	Bot.undo = function undo(){
+		Blockly.mainWorkspace.undo();
+	};
+
+	Bot.redo = function redo(){
+		Blockly.mainWorkspace.undo(true);
+	};
+
+	Bot.addTrade = function addTrade(trade){
+		trade.number = Bot.display.numOfRuns;
+		// Bot.display.tradeTable.reverse(); //reverse the table row growth
+		if ( Bot.display.tradeTable.length > Bot.display.tradesCount ) {
+			Bot.display.tradeTable.shift();
+		}
+		Bot.display.tradeTable.push(trade);
+		// Bot.display.tradeTable.reverse();
+		Bot.showTrades();
+	};
+
+	Bot.showTrades = function showTrades(){
+		$('#tradesDisplay tbody').children().remove();
+		var count = 0;
+		Bot.display.tradeTable.forEach(function(trade, index) {
+			var payout = (trade.result !== 'win' )? 0 : +trade.payout;
+			var lastProfit = +(payout - +trade.askPrice).toFixed(2);
+			var element = '<tr>'
+				+'<td>' + trade.number + '</td>'
+				+'<td>' + trade.statement + '</td>'
+				+'<td>' + trade.type + '</td>'
+				+'<td>' + trade.entrySpot + '</td>'
+				+'<td>' + trade.exitSpot + '</td>'
+				+'<td>' + trade.askPrice + '</td>'
+				+'<td>' + payout + '</td>'
+				+'<td>' + lastProfit + '</td>'
+			+'</tr>';
+			$('#tradesDisplay tbody').append(element);
+			count += 1;
+		});
+		for ( var i = count; i < Bot.display.tableSize ; i+=1 ){
+			var element = '<tr>';
+			for ( var j = 0 ; j < 8 ; j += 1 ) {
+				element += '<td></td>';
+			}
+			+'</tr>';
+			$('#tradesDisplay tbody').append(element);
+		}
+		$('.table-scroll').scrollTop($('.table-scroll')[0].scrollHeight);
+	};
+
+	Bot.toggleDebug = function toggleDebug(){
+		if ( Bot.debug === undefined ) {
+			Bot.debug = false;
+		}
+		Bot.debug = !Bot.debug;
+		if ( Bot.debug ) {
+			Bot.display.logQueue.forEach(function(log){
+				console.log.apply(console, log);
+			});
+			Bot.display.logQueue = [];
+		}
+	};
+
+	Bot.queueLog = function queueLog(){
+		Bot.display.logQueue.push(Array.prototype.slice.apply(arguments));
+	};
 
 	Bot.saveXml = function saveXml(showOnly) {
 		var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
@@ -81,62 +184,6 @@
 		Bot.server.addAccount(token);
 	};
 
-	var handleFileSelect = function handleFileSelect(e) {
-		var files;
-		if (e.type === 'drop') {
-			e.stopPropagation();
-			e.preventDefault();
-			files = e.dataTransfer.files;
-		} else {
-			files = e.target.files;
-		}
-		files = Array.prototype.slice.apply( files );
-		var file = files[0];
-		if ( file ) {
-			if (file.type.match('text/xml')) {
-				readFile(file);
-			} else {
-				Bot.utils.log('File: ' + file.name + ' is not supported.', 'info');
-			}
-		}
-	};
-
-	var readFile = function readFile(f) {
-		reader = new FileReader();
-		reader.onload = (function (theFile) {
-			return function (e) {
-				try {
-					Blockly.mainWorkspace.clear();
-					var xml = Blockly.Xml.textToDom(e.target.result);
-					Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-					Bot.utils.addPurchaseOptions();
-					var tokenList = Bot.utils.getStorageManager().getTokenList();
-					if ( tokenList.length !== 0 ) {
-						Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenList[0].token);
-						Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
-					}
-					Blockly.mainWorkspace.clearUndo();
-					Bot.utils.log('Blocks are loaded successfully', 'success');
-				} catch(e){
-					Bot.utils.showError(e);
-				}
-			};
-		})(f);
-		reader.readAsText(f);
-	};
-
-	var handleDragOver = function handleDragOver(e) {
-		e.stopPropagation();
-		e.preventDefault();
-		e.dataTransfer.dropEffect = 'copy';
-	};
-
-	var dropZone = document.getElementById('drop_zone');
-	dropZone.addEventListener('dragover', handleDragOver, false);
-	dropZone.addEventListener('drop', handleFileSelect, false);
-	document.getElementById('files')
-		.addEventListener('change', handleFileSelect, false);
-
 	Bot.startTutorial = function startTutorial(e){
 		if ( e ) {
 			e.preventDefault();
@@ -166,13 +213,12 @@
 		$('#tutorialButton').text('Go!');
 	};
 
-	$('#tutorialButton').bind('click', Bot.startTutorial);
-
 	Bot.reset = function reset(e){
 		if ( e ) {
 			e.preventDefault();
 		}
-		Bot.server.reset();
+		Bot.resetDisplay();
+		Bot.utils.log('Reset successful', 'success');
 	};
 
 	Bot.stop = function stop(e){
@@ -190,26 +236,8 @@
 		$('#runButton').prop('disabled', disabled);
 	};
 
-	$('#stopButton').text('Reset');
-	$('#stopButton').bind('click', Bot.reset);
-
-	$('#summaryPanel .exitPanel').click(function(){
-		$(this).parent().hide();
-	});
-
-	$('#summaryPanel').hide();
-
 	Bot.showSummary = function showSummary(){
 		$('#summaryPanel').show();
 	};
 
-	$('#summaryPanel').drags();
-
-	$('#chart').mousedown(function(e){ // allow default chart mousedown actions
-		e.stopPropagation();
-	});
-
-	Bot.showTrades();
-	Bot.chart = BinaryChart.createChart('chart', { ticks: [] });
-
-})();
+};

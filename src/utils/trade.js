@@ -1,28 +1,28 @@
-(function(){
+Bot.Trade = function(){
 	var showError = Bot.utils.showError;
 	var log = Bot.utils.log;
 	var LiveApi = window['binary-live-api'].LiveApi;
 	Bot.server = {}; 
 	Bot.server.state = 'STOPPED';
 
-	// influences globals, calls on_finish
+	// influences display, calls on_finish
 	Bot.server.listen_on_contract_finish = function listen_on_contract_finish(e){
 		Bot.server.state = 'FINISHED';
 		var contract = e.detail.contract;
 		Bot.addTrade(contract);
 		var payout = (contract.result !== 'win' )? 0 : +contract.payout;
-		Bot.globals.lastProfit = +(payout - +contract.askPrice).toFixed(2);
-		Bot.globals.totalStake = +(+Bot.globals.totalStake + +contract.askPrice).toFixed(2);
-		Bot.globals.totalPayout = +(+Bot.globals.totalPayout + payout).toFixed(2);
-		Bot.globals.totalProfit = +(+Bot.globals.totalProfit + +Bot.globals.lastProfit).toFixed(2);
-		Bot.globals.lastResult = contract.result;
-		Bot.updateGlobals();
+		Bot.display.lastProfit = +(payout - +contract.askPrice).toFixed(2);
+		Bot.display.totalStake = +(+Bot.display.totalStake + +contract.askPrice).toFixed(2);
+		Bot.display.totalPayout = +(+Bot.display.totalPayout + payout).toFixed(2);
+		Bot.display.totalProfit = +(+Bot.display.totalProfit + +Bot.display.lastProfit).toFixed(2);
+		Bot.display.lastResult = contract.result;
+		Bot.updateDisplay();
 
 		var detail_list = [
 			contract.statement, 
 			+contract.askPrice, 
 			+payout, 
-			Bot.globals.lastProfit,
+			Bot.display.lastProfit,
 			contract.type, 
 			+contract.entrySpot, 
 			Bot.utils.getUTCTime(new Date(parseInt(contract.entrySpotTime + '000'))),
@@ -102,7 +102,7 @@
 	};
 
 	Bot.server.getTotalProfit = function getTotalProfit(){
-		return +Bot.globals.totalProfit;
+		return +Bot.display.totalProfit;
 	};
 
 	Bot.server.getBalance = function getBalance(balance_type){
@@ -161,8 +161,8 @@
 	Bot.server.updateBalance = function updateBalance(data){
 		Bot.server.balance = data.balance;
 		Bot.server.balance_currency = data.currency;
-		Bot.globals.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
-		Bot.updateGlobals();
+		Bot.display.balance = Bot.server.balance_currency + ' ' + parseFloat(Bot.server.balance);
+		Bot.updateDisplay();
 	};
 
 	Bot.server.observeBalance = function observeBalance(){
@@ -347,8 +347,8 @@
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
 		log('Purchased: ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
-			Bot.globals.numOfRuns++;
-			Bot.updateGlobals();
+			Bot.display.numOfRuns++;
+			Bot.updateDisplay();
 			Bot.server.purchaseNotDone = true;
 			Bot.disableRun(true);
 			Bot.server.state = 'PURCHASED';
@@ -379,7 +379,7 @@
 		Bot.server.contractForChart = null;
 	};
 
-	Bot.server.connect = function connect(){
+	Bot.server.observeAuthorize = function observeAuthorize(){
 		Bot.server.api.events.on('authorize', function (response) {
 			if ( response.error ) {
 				showError(response.error);
@@ -418,11 +418,6 @@
 		Bot.server.api.connect();
 	};
 
-	Bot.server.reset = function reset(){
-		Bot.resetGlobals();
-		Bot.utils.log('Reset successful', 'success');
-	};
-
 	Bot.server.stop = function stop(){
 		if ( Bot.server.api ) {
 			try {
@@ -458,7 +453,7 @@
 				Bot.server.state = 'INITIALIZED';
 				Bot.server.firstRun = true;
 				Bot.server.api.authorize(Bot.server.token);
-				Bot.server.connect();
+				Bot.server.observeAuthorize();
 			}
 		}
 	};
@@ -468,4 +463,4 @@
 	 trade [-> authorize] -> restartContracts -> submitProposal -> subscribeToTick -> on_strategy -> purchase -> portfolio -> contract_finished
 	 */
 
-})();
+};
