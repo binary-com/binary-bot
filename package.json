@@ -16,7 +16,6 @@
     "binary-live-api": "~18.0.0",
     "blockly": "git+https://git@github.com/google/blockly.git",
     "bower": "^1.7.7",
-    "gulp-watch": "^4.3.5",
     "i18next": "^2.5.1",
     "i18next-xhr-backend": "^0.5.3",
     "jquery": "^2.2.2",
@@ -24,11 +23,12 @@
     "react": "^15.0.1"
   },
   "devDependencies": {
-    "del": "^2.2.0",
     "gulp": "^3.9.1",
+    "gulp-watch": "^4.3.5",
     "gulp-concat-util": "^0.5.5",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.3",
+    "del": "^2.2.0",
     "i18next-scanner": "^1.1.0",
     "lite-server": "^2.2.0",
     "sha1": "^1.1.1",
