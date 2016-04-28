@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "node_modules/.bin/bower install",
     "serve": "lite-server",
-    "i18n": "gulp i18n; gulp watch",
+    "watch": "gulp watch",
     "hunspell": "gulp i18n; cd www/i18n ; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../known_words.txt en.txt; rm *.po *.txt"
   },
   "author": "Amin Marashi",
