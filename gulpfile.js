@@ -112,3 +112,5 @@ gulp.task('watch', ['i18n', 'build'], function () {
 		gulp.run(['i18n', 'build']);
 	});
 });
+
+gulp.task('default', ['watch']);
