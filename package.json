@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "node_modules/.bin/bower install",
+    "serve": "lite-server",
     "i18n": "gulp i18n; gulp watch",
-    "hunspell": "gulp i18n; cd www/i18n ; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../known_words.txt en.txt; rm *.po *.txt",
-    "serve": "lite-server"
+    "hunspell": "gulp i18n; cd www/i18n ; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../known_words.txt en.txt; rm *.po *.txt"
   },
   "author": "Amin Marashi",
   "license": "MIT",
@@ -20,6 +20,7 @@
     "i18next-xhr-backend": "^0.5.3",
     "jquery": "^2.2.2",
     "js-sha1": "^0.3.0",
+    "lite-server": "^2.2.0",
     "react": "^15.0.1"
   },
   "devDependencies": {
@@ -30,7 +31,6 @@
     "gulp-uglify": "^1.5.3",
     "del": "^2.2.0",
     "i18next-scanner": "^1.1.0",
-    "lite-server": "^2.2.0",
     "sha1": "^1.1.1",
     "vinyl-fs": "^2.4.3",
     "vinyl-paths": "^2.1.0"
