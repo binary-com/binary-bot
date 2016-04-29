@@ -184,6 +184,31 @@ Bot.Utils = function Utils() {
 		return relationChecker;
 	};
 
+	var setOpacityForAll = function setOpacityForAll(enabled, opacity) {
+		if (enabled) {
+			Object.keys(Bot.uiComponents)
+				.forEach(function (key) {
+					if ( Bot.doNotHide.indexOf(key) < 0 ) {
+						Bot.getUiComponent(key).css('opacity', opacity);
+						var disabled = +opacity < 1;
+						Bot.getUiComponent(key).find('button').prop('disabled', disabled);
+						Bot.getUiComponent(key).find('input').prop('disabled', disabled);
+						Bot.getUiComponent(key).find('select').prop('disabled', disabled);
+					}
+				});
+		}
+	};
+
+	var setOpacity = function setOpacity(enabled, componentName, opacity) {
+		if (enabled) {
+			Bot.getUiComponent(componentName).css('opacity', opacity);
+			var disabled = +opacity < 1;
+			Bot.getUiComponent(componentName).find('button').prop('disabled', disabled);
+			Bot.getUiComponent(componentName).find('input').prop('disabled', disabled);
+			Bot.getUiComponent(componentName).find('select').prop('disabled', disabled);
+		}
+	};
+
 	return {
 		showError: showError,
 		log: log,
@@ -195,5 +220,7 @@ Bot.Utils = function Utils() {
 		getStorageManager: getStorageManager,
 		addPurchaseOptions: addPurchaseOptions,
 		getRelationChecker: getRelationChecker,
+		setOpacityForAll: setOpacityForAll,
+		setOpacity: setOpacity,
 	};
 };

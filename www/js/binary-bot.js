@@ -333,7 +333,7 @@ Bot.Globals = function Globals() {
 };
 
 Bot.Version = function Version(){
-	Bot.version = '1.1.1';
+	Bot.version = '1.1.2';
 	if (Bot.debug) {
 		console.log('%cBinary Bot (v' + Bot.version + ') started.', 'color: green');
 	} else {
@@ -450,6 +450,32 @@ Bot.View = function View() {
 	Bot.utils.updateTokenList();
 	Bot.utils.addPurchaseOptions();
 	Blockly.mainWorkspace.clearUndo();
+	
+	Bot.uiComponents = {
+		tutorialList: '.tutorialList',
+		logout: '.logout',
+		workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
+		workspace: '.blocklyWorkspace',
+		toolbox: '.blocklyToolboxDiv',
+		file_management: '.intro-file-management',
+		token: '.intro-token',
+		run_stop: '.intro-run-stop',
+		trash: '.blocklyTrash',
+		undo_redo: '.intro-undo-redo',
+		summary: '.intro-summary',
+		center: '#center',
+		flyout: '.blocklyFlyoutBackground',
+		submarket: ".blocklyDraggable:contains('Submarket'):last",
+		strategy: ".blocklyDraggable:contains('Strategy'):last",
+		finish: ".blocklyDraggable:contains('Finish'):last",
+	};
+
+	Bot.doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
+
+	Bot.getUiComponent = function getUiComponent(component){
+		return $(Bot.uiComponents[component]);
+	};
+	
 };
 
 Bot.Definitions = function Definitions(){
@@ -2397,6 +2423,31 @@ Bot.Utils = function Utils() {
 		return relationChecker;
 	};
 
+	var setOpacityForAll = function setOpacityForAll(enabled, opacity) {
+		if (enabled) {
+			Object.keys(Bot.uiComponents)
+				.forEach(function (key) {
+					if ( Bot.doNotHide.indexOf(key) < 0 ) {
+						Bot.getUiComponent(key).css('opacity', opacity);
+						var disabled = +opacity < 1;
+						Bot.getUiComponent(key).find('button').prop('disabled', disabled);
+						Bot.getUiComponent(key).find('input').prop('disabled', disabled);
+						Bot.getUiComponent(key).find('select').prop('disabled', disabled);
+					}
+				});
+		}
+	};
+
+	var setOpacity = function setOpacity(enabled, componentName, opacity) {
+		if (enabled) {
+			Bot.getUiComponent(componentName).css('opacity', opacity);
+			var disabled = +opacity < 1;
+			Bot.getUiComponent(componentName).find('button').prop('disabled', disabled);
+			Bot.getUiComponent(componentName).find('input').prop('disabled', disabled);
+			Bot.getUiComponent(componentName).find('select').prop('disabled', disabled);
+		}
+	};
+
 	return {
 		showError: showError,
 		log: log,
@@ -2408,57 +2459,34 @@ Bot.Utils = function Utils() {
 		getStorageManager: getStorageManager,
 		addPurchaseOptions: addPurchaseOptions,
 		getRelationChecker: getRelationChecker,
+		setOpacityForAll: setOpacityForAll,
+		setOpacity: setOpacity,
 	};
 };
 
 Bot.Introduction = function Introduction() {
-	var components = {
-		tutorialList: $('.tutorialList'),
-		logout: $('.logout'),
-		workspace: $('svg > .blocklyWorkspace > .blocklyBlockCanvas'),
-		toolbox: $('.blocklyToolboxDiv'),
-		file_management: $('.intro-file-management'),
-		token: $('.intro-token'),
-		run_stop: $('.intro-run-stop'),
-		undo_redo: $('.intro-undo-redo'),
-		summary: $('.intro-summary'),
-	};
-
-	var setOpacityForAll = function setOpacityForAll(opacity) {
-		Object.keys(components)
-			.forEach(function (key) {
-				components[key].css('opacity', opacity);
-			});
-	};
-
-	var setOpacity = function setOpacity(componentName, opacity) {
-		if (started) {
-			components[componentName].css('opacity', opacity);
-		}
-	};
-
 	var steps = [{
 		content: '<p>' + i18n._("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot.") + '</p>',
-		target: $('#center'),
+		target: Bot.getUiComponent('center'),
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacityForAll(0.3);
+			Bot.utils.setOpacityForAll(started, 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._("You will need to add the blocks to this area which is called the <b>workspace</b>.") + '</p>',
-		target: $('#center'),
+		target: Bot.getUiComponent('center'),
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacity('workspace', 1);
+			Bot.utils.setOpacity(started, 'workspace', 1);
 		},
 		teardown: function (tour, options) {},
 	}, {
 		content: '<p>' + i18n._("To start pick a <b>submarket</b> block from volatility markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a submarket from left should lead you to the next step.)") + '</p>',
-		target: $('.blocklyFlyoutBackground'),
+		target: Bot.getUiComponent('flyout'),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
@@ -2470,15 +2498,15 @@ Bot.Introduction = function Introduction() {
 			window.addEventListener('tour:submarket_created', this.tour_submarket_created);
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].reveal(true);
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].select();
-			setOpacity('toolbox', 1);
+			Bot.utils.setOpacity(started, 'toolbox', 1);
 		},
 		teardown: function (tour, options) {
 			window.removeEventListener('tour:submarket_created', this.tour_submarket_created);
-			setOpacity('toolbox', 0.3);
+			Bot.utils.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._("Great! Now add it to the <b>trade</b> block.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.submarket),
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
@@ -2495,7 +2523,7 @@ Bot.Introduction = function Introduction() {
 		},
 	}, {
 		content: '<p>' + i18n._("Alright! Now pick a <b>condition</b> block.") + '</p>',
-		target: $('.blocklyFlyoutBackground'),
+		target: Bot.getUiComponent('flyout'),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
@@ -2506,15 +2534,15 @@ Bot.Introduction = function Introduction() {
 		setup: function (tour, options) {
 			window.addEventListener('tour:condition_created', this.tour_condition_created);
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
-			setOpacity('toolbox', 1);
+			Bot.utils.setOpacity(started, 'toolbox', 1);
 		},
 		teardown: function (tour, options) {
 			window.removeEventListener('tour:condition_created', this.tour_condition_created);
-			setOpacity('toolbox', 0.3);
+			Bot.utils.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._("OK! Now add it to the submarket you added in the previous step.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.submarket),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
@@ -2531,7 +2559,7 @@ Bot.Introduction = function Introduction() {
 		},
 	}, {
 		content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number ") + '(<img src="www/image/number.png"/>)' + i18n._(" from the Math menu") + '</p>',
-		target: $('.blocklyFlyoutBackground'),
+		target: Bot.getUiComponent('flyout'),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
@@ -2542,15 +2570,15 @@ Bot.Introduction = function Introduction() {
 		setup: function (tour, options) {
 			window.addEventListener('tour:number', this.tour_number_created);
 			Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
-			setOpacity('toolbox', 1);
+			Bot.utils.setOpacity(started, 'toolbox', 1);
 		},
 		teardown: function (tour, options) {
 			window.removeEventListener('tour:number', this.tour_number_created);
-			setOpacity('toolbox', 0.3);
+			Bot.utils.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._("Click on the number block to edit its value ") + '(<img src="www/image/number_editing.png"/>)' + i18n._(", change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.submarket),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
@@ -2566,7 +2594,7 @@ Bot.Introduction = function Introduction() {
 		},
 	}, {
 		content: '<p>' + i18n._("OK, Now add all remaining options to the condition block") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.submarket),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
@@ -2577,44 +2605,44 @@ Bot.Introduction = function Introduction() {
 		setup: function (tour, options) {
 			Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
 			window.addEventListener('tour:options', this.tour_options_added);
-			components.toolbox.css('opacity', 1);
+			Bot.getUiComponent('toolbox').css('opacity', 1);
 		},
 		teardown: function (tour, options) {
 			window.removeEventListener('tour:options', this.tour_options_added);
-			components.toolbox.css('opacity', 1);
+			Bot.getUiComponent('toolbox').css('opacity', 1);
 		},
 	}, {
 		content: '<p>' + i18n._("That's it, now you have a complete trade block with its options. It's time to define a strategy") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.submarket),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.strategy),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("The received tick value is in the block <b>tick</b> and the tick direction (up or down) is in the block <b>direction</b>. You can pick them from the <b>Strategy</b> menu") + '</p>',
-		target: $('.blocklyFlyoutBackground'),
+		target: Bot.getUiComponent('flyout'),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
 		nextButton: true,
 		setup: function (tour, options) {
-			components.toolbox.css('opacity', 1);
+			Bot.getUiComponent('toolbox').css('opacity', 1);
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
 		},
 		teardown: function (tour, options) {
-			components.toolbox.css('opacity', 0.3);
+			Bot.getUiComponent('toolbox').css('opacity', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._("For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block") + '</p>',
-		target: $('.blocklyFlyoutBackground'),
+		target: Bot.getUiComponent('flyout'),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
@@ -2625,16 +2653,16 @@ Bot.Introduction = function Introduction() {
 		setup: function (tour, options) {
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
-			components.toolbox.css('opacity', 1);
+			Bot.getUiComponent('toolbox').css('opacity', 1);
 			window.addEventListener('tour:purchase_created', this.tour_purchase_created);
 		},
 		teardown: function (tour, options) {
-			components.toolbox.css('opacity', 0.3);
+			Bot.getUiComponent('toolbox').css('opacity', 0.3);
 			window.removeEventListener('tour:purchase_created', this.tour_purchase_created);
 		},
 	}, {
 		content: '<p>' + i18n._("Now add it to the Strategy block.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.strategy),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
@@ -2650,35 +2678,35 @@ Bot.Introduction = function Introduction() {
 		},
 	}, {
 		content: '<p>' + i18n._("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.strategy),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.strategy),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.finish),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.finish),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.") + '</p>',
-		target: $('.blocklyFlyoutBackground'),
+		target: Bot.getUiComponent('flyout'),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
@@ -2689,16 +2717,16 @@ Bot.Introduction = function Introduction() {
 		setup: function (tour, options) {
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
-			components.toolbox.css('opacity', 1);
+			Bot.getUiComponent('toolbox').css('opacity', 1);
 			window.addEventListener('tour:trade_again_created', this.tour_trade_again_created);
 		},
 		teardown: function (tour, options) {
-			components.toolbox.css('opacity', 0.3);
+			Bot.getUiComponent('toolbox').css('opacity', 0.3);
 			window.removeEventListener('tour:trade_again_created', this.tour_trade_again_created);
 		},
 	}, {
 		content: '<p>' + i18n._("Now add it to the On Finish block") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.finish),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
@@ -2715,66 +2743,66 @@ Bot.Introduction = function Introduction() {
 		},
 	}, {
 		content: '<p>' + i18n._("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.finish),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("OK, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.finish),
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
 		nextButton: true,
 		teardown: function (tour, options) {
-			setOpacityForAll(1);
+			Bot.utils.setOpacityForAll(started, 1);
 		},
 	}, {
 		content: '<p>' + i18n._("If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
-		target: $('.intro-undo-redo'),
+		target: Bot.getUiComponent('undo_redo'),
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("You can save/load your blocks using these tools") + '</p>',
-		target: $('.intro-file-management'),
+		target: Bot.getUiComponent('file_management'),
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on these buttons. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
-		target: $('.intro-run-stop'),
+		target: Bot.getUiComponent('run_stop'),
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please add one using the <b>Add Token</b> button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
-		target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
+		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.submarket),
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("You can add a token to the bot using the <b>Add Token</b> button.") + '</p>',
-		target: $('.intro-token'),
+		target: Bot.getUiComponent('token'),
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("You can see the summary of your trades by clicking on this button.") + '</p>',
-		target: $('.intro-summary'),
+		target: Bot.getUiComponent('summary'),
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("Go ahead and run the blocks. You can stop the code anytime you want using the stop button, or reset the values in the result panels using the reset button.") + '</p>',
-		target: $('.intro-run-stop'),
+		target: Bot.getUiComponent('run_stop'),
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
@@ -2800,7 +2828,7 @@ Bot.Introduction = function Introduction() {
 		},
 		stop: function stop() {
 			started = false;
-			setOpacityForAll(1);
+			Bot.utils.setOpacityForAll(started, 1);
 			Bot.tour.stop();
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete Bot.tour;
@@ -2809,153 +2837,127 @@ Bot.Introduction = function Introduction() {
 };
 
 Bot.Welcome = function Welcome() {
-	var components = {
-		tutorialList: $('.tutorialList'),
-		logout: $('.logout'),
-		workspace: $('.blocklyWorkspace'),
-		toolbox: $('.blocklyToolboxDiv'),
-		file_management: $('.intro-file-management'),
-		token: $('.intro-token'),
-		run_stop: $('.intro-run-stop'),
-		trash: $('.blocklyTrash'),
-		undo_redo: $('.intro-undo-redo'),
-		summary: $('.intro-summary'),
-	};
-
-	var setOpacityForAll = function setOpacityForAll(opacity) {
-		Object.keys(components)
-			.forEach(function (key) {
-				components[key].css('opacity', opacity);
-			});
-	};
-
-	var setOpacity = function setOpacity(componentName, opacity) {
-		if (started) {
-			components[componentName].css('opacity', opacity);
-		}
-	};
-
 	var steps = [{
 		content: '<p>' + i18n._('Welcome to the binary bot, a blockly based automation tool for binary.com trades') + '</p>',
-		target: $('#center'),
+		target: Bot.getUiComponent('center'),
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacityForAll(0.3);
+			Bot.utils.setOpacityForAll(started, 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('The blocks you put in here will create a binary bot code which you can then execute using the run button.') + '</p>',
-		target: $('#center'),
+		target: Bot.getUiComponent('center'),
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacity('workspace', 1);
+			Bot.utils.setOpacity(started, 'workspace', 1);
 		},
 		teardown: function (tour, options) {
-			setOpacity('workspace', 0.3);
+			Bot.utils.setOpacity(started, 'workspace', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('You can add blocks from here to the workspace') + '</p>',
-		target: $('.blocklyToolboxDiv'),
+		target: Bot.getUiComponent('toolbox'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'left center',
 		at: 'right center',
 		setup: function (tour, options) {
-			setOpacity('toolbox', 1);
+			Bot.utils.setOpacity(started, 'toolbox', 1);
 		},
 		teardown: function (tour, options) {
-			setOpacity('toolbox', 0.3);
+			Bot.utils.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Erase the blocks by dropping them in here.') + '</p>',
-		target: $('.blocklyTrash'),
+		target: Bot.getUiComponent('trash'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'right bottom',
 		at: 'left top',
 		setup: function (tour, options) {
-			setOpacity('trash', 1);
+			Bot.utils.setOpacity(started, 'trash', 1);
 		},
 		teardown: function (tour, options) {
-			setOpacity('trash', 0.3);
+			Bot.utils.setOpacity(started, 'trash', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Use these buttons to load and save blocks') + '</p>',
-		target: $('.intro-file-management'),
+		target: Bot.getUiComponent('file_management'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacity('file_management', 1);
+			Bot.utils.setOpacity(started, 'file_management', 1);
 		},
 		teardown: function (tour, options) {
-			setOpacity('file_management', 0.3);
+			Bot.utils.setOpacity(started, 'file_management', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from ') + '<a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
-		target: $('.intro-token'),
+		target: Bot.getUiComponent('token'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacity('token', 1);
+			Bot.utils.setOpacity(started, 'token', 1);
 		},
 		teardown: function (tour, options) {
-			setOpacity('token', 0.3);
+			Bot.utils.setOpacity(started, 'token', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
-		target: $('.intro-undo-redo'),
+		target: Bot.getUiComponent('undo_redo'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacity('undo_redo', 1);
+			Bot.utils.setOpacity(started, 'undo_redo', 1);
 		},
 		teardown: function (tour, options) {
-			setOpacity('undo_redo', 0.3);
+			Bot.utils.setOpacity(started, 'undo_redo', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Click on this button to see the summary of your trades.') + '</p>',
-		target: $('.intro-summary'),
+		target: Bot.getUiComponent('summary'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacity('summary', 1);
+			Bot.utils.setOpacity(started, 'summary', 1);
 		},
 		teardown: function (tour, options) {
-			setOpacity('summary', 0.3);
+			Bot.utils.setOpacity(started, 'summary', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Use these buttons to run or stop your blocks, or reset your result panels.') + '</p>',
-		target: $('.intro-run-stop'),
+		target: Bot.getUiComponent('run_stop'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			setOpacity('run_stop', 1);
+			Bot.utils.setOpacity(started, 'run_stop', 1);
 		},
 		teardown: function (tour, options) {
-			setOpacity('run_stop', 0.3);
+			Bot.utils.setOpacity(started, 'run_stop', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Good Luck!') + '</p>',
-		target: $('#center'),
+		target: Bot.getUiComponent('center'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		teardown: function (tour, options) {
-			setOpacityForAll(1);
+			Bot.utils.setOpacityForAll(started, 1);
 			Bot.utils.getStorageManager()
 				.setDone('welcomeFinished');
 			Bot.stopTutorial();
@@ -2988,7 +2990,7 @@ Bot.Welcome = function Welcome() {
 		},
 		stop: function stop() {
 			started = false;
-			setOpacityForAll(1);
+			Bot.utils.setOpacityForAll(started, 1);
 			Bot.tour.stop();
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete Bot.tour;

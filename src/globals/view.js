@@ -107,4 +107,30 @@ Bot.View = function View() {
 	Bot.utils.updateTokenList();
 	Bot.utils.addPurchaseOptions();
 	Blockly.mainWorkspace.clearUndo();
+	
+	Bot.uiComponents = {
+		tutorialList: '.tutorialList',
+		logout: '.logout',
+		workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
+		workspace: '.blocklyWorkspace',
+		toolbox: '.blocklyToolboxDiv',
+		file_management: '.intro-file-management',
+		token: '.intro-token',
+		run_stop: '.intro-run-stop',
+		trash: '.blocklyTrash',
+		undo_redo: '.intro-undo-redo',
+		summary: '.intro-summary',
+		center: '#center',
+		flyout: '.blocklyFlyoutBackground',
+		submarket: ".blocklyDraggable:contains('Submarket'):last",
+		strategy: ".blocklyDraggable:contains('Strategy'):last",
+		finish: ".blocklyDraggable:contains('Finish'):last",
+	};
+
+	Bot.doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
+
+	Bot.getUiComponent = function getUiComponent(component){
+		return $(Bot.uiComponents[component]);
+	};
+	
 };
