@@ -33,7 +33,15 @@ var customTransform = function _transform(file, enc, done) {
 	var content = fs.readFileSync(file.path, enc);
 
 	parser.parseFuncFromString(content, {
-		list: ['i18n._', 'i18next._', '_']
+		list: ['i18n._', 'i18next._', '_'],
+	}, function (key) {
+		var value = key;
+		var defaultKey = hash(value);
+		parser.set(defaultKey, value);
+	});
+
+	parser.parseAttrFromString(content, {
+		list: ['data-i18n-text'],
 	}, function (key) {
 		var value = key;
 		var defaultKey = hash(value);
@@ -99,17 +107,19 @@ gulp.task('tours', ['utils'], function(){
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('after_all', ['tours'], function(){
-	return gulp.src(['src/after_all.js'])
-		.pipe(gulp.dest('www/js'));
-});
-
-gulp.task('build', ['vendor', 'after_all'], function(){
-	return gulp.src(['www/js/{globals,definitions,code_generators,utils,tours,after_all}.js'])
+gulp.task('pack', ['vendor', 'tours'], function(){
+	return gulp.src(['www/js/{globals,definitions,code_generators,utils,tours}.js'])
 		.pipe(vinylPaths(del))
 		.pipe(concat('binary-bot.js'))
 		.pipe(gulp.dest('www/js'))
 		.pipe(gp_rename('binary-bot.min.js'))
+		.pipe(gp_uglify())
+		.pipe(gulp.dest('www/js'));
+});
+
+gulp.task('build', ['pack'], function(){
+	return gulp.src(['src/after_all.js'])
+		.pipe(gp_rename('after_all.min.js'))
 		.pipe(gp_uglify())
 		.pipe(gulp.dest('www/js'));
 });
