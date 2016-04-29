@@ -1,9 +1,9 @@
-Bot.Conditions = function Conditions(){
+Bot.Conditions = function Conditions() {
 	return {
-		ticktrade: function ticktrade(parameters){
+		ticktrade: function ticktrade(parameters) {
 			var options = [];
 			var opposites = Bot.config.opposites[parameters.condition];
-			opposites.forEach(function(option){
+			opposites.forEach(function (option) {
 				var option_name = Object.keys(option)[0];
 				var option_data = {
 					'amount': parameters.amount,
@@ -13,7 +13,7 @@ Bot.Conditions = function Conditions(){
 					'duration': parameters.duration,
 					'duration_unit': 't',
 				};
-				if ( parameters.hasOwnProperty('barrier') ) {
+				if (parameters.hasOwnProperty('barrier')) {
 					option_data.barrier = parameters.barrier;
 				}
 				options.push(option_data);

@@ -1,4 +1,4 @@
-Bot.View = function View(){
+Bot.View = function View() {
 	var workspace = Blockly.inject('blocklyDiv', {
 		media: 'node_modules/blockly/media/',
 		toolbox: document.getElementById('toolbox')
@@ -14,9 +14,9 @@ Bot.View = function View(){
 		} else {
 			files = e.target.files;
 		}
-		files = Array.prototype.slice.apply( files );
+		files = Array.prototype.slice.apply(files);
 		var file = files[0];
-		if ( file ) {
+		if (file) {
 			if (file.type.match('text/xml')) {
 				readFile(file);
 			} else {
@@ -34,14 +34,19 @@ Bot.View = function View(){
 					var xml = Blockly.Xml.textToDom(e.target.result);
 					Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
 					Bot.utils.addPurchaseOptions();
-					var tokenList = Bot.utils.getStorageManager().getTokenList();
-					if ( tokenList.length !== 0 ) {
-						Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenList[0].token);
-						Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
+					var tokenList = Bot.utils.getStorageManager()
+						.getTokenList();
+					if (tokenList.length !== 0) {
+						Blockly.mainWorkspace.getBlockById('trade')
+							.getField('ACCOUNT_LIST')
+							.setValue(tokenList[0].token);
+						Blockly.mainWorkspace.getBlockById('trade')
+							.getField('ACCOUNT_LIST')
+							.setText(tokenList[0].account_name);
 					}
 					Blockly.mainWorkspace.clearUndo();
 					Bot.utils.log(i18n._('Blocks are loaded successfully'), 'success');
-				} catch(err){
+				} catch (err) {
 					Bot.utils.showError(err);
 				}
 			};
@@ -61,30 +66,44 @@ Bot.View = function View(){
 	document.getElementById('files')
 		.addEventListener('change', handleFileSelect, false);
 
-	$('#tutorialButton').bind('click', Bot.startTutorial);
-	$('#stopButton').text(i18n._('Reset'));
-	$('#stopButton').bind('click', Bot.reset);
+	$('#tutorialButton')
+		.bind('click', Bot.startTutorial);
+	$('#stopButton')
+		.text(i18n._('Reset'));
+	$('#stopButton')
+		.bind('click', Bot.reset);
 
-	$('#summaryPanel .exitPanel').click(function(){
-		$(this).parent().hide();
-	});
+	$('#summaryPanel .exitPanel')
+		.click(function () {
+			$(this)
+				.parent()
+				.hide();
+		});
 
-	$('#summaryPanel').hide();
+	$('#summaryPanel')
+		.hide();
 
-	$('#summaryPanel').drags();
+	$('#summaryPanel')
+		.drags();
 
-	$('#chart').mousedown(function(e){ // allow default chart mousedown actions
-		e.stopPropagation();
-	});
+	$('#chart')
+		.mousedown(function (e) { // allow default chart mousedown actions
+			e.stopPropagation();
+		});
 
 	Bot.showTrades();
 
 	var BinaryChart = window['binary-charts'];
-	Bot.chart = BinaryChart.createChart('chart', { ticks: [] });
+	Bot.chart = BinaryChart.createChart('chart', {
+		ticks: []
+	});
 
-	Blockly.mainWorkspace.getBlockById('trade').setDeletable(false);
-	Blockly.mainWorkspace.getBlockById('strategy').setDeletable(false);
-	Blockly.mainWorkspace.getBlockById('finish').setDeletable(false);
+	Blockly.mainWorkspace.getBlockById('trade')
+		.setDeletable(false);
+	Blockly.mainWorkspace.getBlockById('strategy')
+		.setDeletable(false);
+	Blockly.mainWorkspace.getBlockById('finish')
+		.setDeletable(false);
 	Bot.utils.updateTokenList();
 	Bot.utils.addPurchaseOptions();
 	Blockly.mainWorkspace.clearUndo();

@@ -1,5 +1,7 @@
 var broadcast = function broadcast(eventName, data) {
-	window.dispatchEvent(new CustomEvent(eventName, {detail: data}));
+	window.dispatchEvent(new CustomEvent(eventName, {
+		detail: data
+	}));
 };
 
 var ContractService = function ContractService() {
@@ -11,7 +13,9 @@ var ContractService = function ContractService() {
 
 	var utils = {
 		broadcast: function broadcast(eventName, data) {
-			window.dispatchEvent(new CustomEvent(eventName, {detail: data}));
+			window.dispatchEvent(new CustomEvent(eventName, {
+				detail: data
+			}));
 		},
 		zeroPad: function zeroPad(num) {
 			if (num < 10) {
@@ -108,16 +112,16 @@ var ContractService = function ContractService() {
 
 		var historyData = [];
 
-		var updateTick = function updateTick(){
+		var updateTick = function updateTick() {
 			var lastTick = historyData.slice(-1)[0].price;
 			var previousTick = historyData.slice(-2)[0].price;
 			var difference;
-			if ( lastTick > previousTick ) {
-				difference = 'up';	
-			} else if ( lastTick < previousTick ) {
-				difference = 'down';	
+			if (lastTick > previousTick) {
+				difference = 'up';
+			} else if (lastTick < previousTick) {
+				difference = 'down';
 			} else {
-				difference = '';	
+				difference = '';
 			}
 			utils.broadcast('tick:updated', {
 				tick: lastTick,
@@ -192,16 +196,16 @@ var ContractService = function ContractService() {
 
 		var broadcastable = true;
 
-		var setNotBroadcastable = function setNotBroadcastable(){
+		var setNotBroadcastable = function setNotBroadcastable() {
 			broadcastable = false;
 			return broadcastable;
 		};
 
-		var isFinished = function isFinished(){
+		var isFinished = function isFinished() {
 			return utils.isDefined(contract.exitSpotTime);
 		};
 
-		var getContract = function getContract(){
+		var getContract = function getContract() {
 			return contract;
 		};
 
@@ -290,41 +294,42 @@ var ContractService = function ContractService() {
 			if (hasEntrySpot()) {
 				if (betweenExistingSpots(lastTime)) {
 					if (utils.asianTrade(contract)) {
-						if ( typeof contract.seenTicksCount === 'undefined' ){
-							contract.seenTicksCount = 0;	
+						if (typeof contract.seenTicksCount === 'undefined') {
+							contract.seenTicksCount = 0;
 						}
-						if ( contract.seenTicksCount === 0 ) {
+						if (contract.seenTicksCount === 0) {
 							contract.barrier = parseFloat(lastPrice);
 						} else {
-							contract.barrier = ( parseFloat(lastPrice) + parseFloat(contract.barrier) * contract.seenTicksCount ) / ( contract.seenTicksCount + 1 );
+							contract.barrier = (parseFloat(lastPrice) + parseFloat(contract.barrier) * contract.seenTicksCount) / (contract.seenTicksCount + 1);
 						}
 						contract.seenTicksCount += 1;
-					}	
+					}
 					if (utils.conditions[contract.type](contract.barrier, lastPrice)) {
 						contract.result = 'win';
 					} else {
 						contract.result = 'loss';
 					}
-					if ( isFinished() && broadcastable ) {
-						contractCtrls.forEach(function(contractctrl, index){
+					if (isFinished() && broadcastable) {
+						contractCtrls.forEach(function (contractctrl, index) {
 							var oldContract = contractctrl.getContract();
-							if ( contract !== oldContract && !contractctrl.isFinished() ) {
+							if (contract !== oldContract && !contractctrl.isFinished()) {
 								setNotBroadcastable();
 							}
 						});
-						if ( broadcastable ) {
+						if (broadcastable) {
 							if (utils.asianTrade(contract)) {
-							contract.barrier = +parseFloat(contract.barrier).toFixed(3);
+								contract.barrier = +parseFloat(contract.barrier)
+									.toFixed(3);
 							}
 							utils.broadcast("contract:finished", {
-								time: lastTime,	
+								time: lastTime,
 								contract: contract,
 							});
 							setNotBroadcastable();
 						}
 					} else {
 						utils.broadcast("contract:updated", {
-							time: lastTime,	
+							time: lastTime,
 							contract: contract,
 						});
 					}
@@ -393,7 +398,7 @@ var ContractService = function ContractService() {
 	};
 
 	var destroy = function destroy() {
-		contractCtrls.forEach(function(contractctrl, index){
+		contractCtrls.forEach(function (contractctrl, index) {
 			contractctrl.setNotBroadcastable();
 		});
 		localHistory = null;
@@ -404,7 +409,7 @@ var ContractService = function ContractService() {
 	};
 
 	var getTicks = function getTicks() {
-		if ( localHistory instanceof Object ) {
+		if (localHistory instanceof Object) {
 			return localHistory.getHistory(0, capacity);
 		} else {
 			return [];
