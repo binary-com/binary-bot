@@ -21,13 +21,15 @@ i18n._ = function _(str, opt){
 i18n
 	.use(i18nextXHRBackend)
 	.init(options, function() {
+		// be careful with assignments
 		Bot.config = Bot.Config();
 		Bot.utils = Bot.Utils();
 		Bot.globals = Bot.Globals();
 
+		Bot.Version();
 		Bot.conditions = Bot.Conditions();
 		Bot.Markets();
-		Bot.Trade();
+		Bot.Trade(); 
 
 		Bot.Definitions();
 		Bot.CodeGenerators();

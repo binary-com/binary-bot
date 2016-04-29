@@ -59,7 +59,7 @@ gulp.task('i18n', ['clean_i18n'], function () {
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('vendor', function(){
+gulp.task('vendor', ['lint'], function(){
 	return gulp.src(['src/vendor/**/*.js'])
 		.pipe(gulp.dest('www/js/vendor'));
 });
@@ -67,44 +67,44 @@ gulp.task('vendor', function(){
 gulp.task('globals', function(){
 	return gulp.src(['src/globals/**/*.js'])
 		.pipe(concat('globals.js'))
-		.pipe(concat.header('Bot = {};'))
+		.pipe(concat.header('Bot = {};\n'))
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('definitions', function(){
+gulp.task('definitions', ['globals'], function(){
 	return gulp.src(['src/definitions/**/*.js'])
 		.pipe(concat('definitions.js'))
-		.pipe(concat.header('Bot.Definitions = function Definitions(){'))
-		.pipe(concat.footer('};'))
+		.pipe(concat.header('Bot.Definitions = function Definitions(){\n'))
+		.pipe(concat.footer('\n};'))
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('code_generators', function(){
+gulp.task('code_generators', ['definitions'], function(){
 	return gulp.src(['src/code_generators/**/*.js'])
 		.pipe(concat('code_generators.js'))
-		.pipe(concat.header('Bot.CodeGenerators = function CodeGenerators(){'))
-		.pipe(concat.footer('};'))
+		.pipe(concat.header('Bot.CodeGenerators = function CodeGenerators(){\n'))
+		.pipe(concat.footer('\n};'))
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('utils', function(){
+gulp.task('utils', ['code_generators'], function(){
 	return gulp.src(['src/utils/**/*.js'])
 		.pipe(concat('utils.js'))
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('tours', function(){
+gulp.task('tours', ['utils'], function(){
 	return gulp.src(['src/tours/**/*.js'])
 		.pipe(concat('tours.js'))
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('after_all', function(){
+gulp.task('after_all', ['tours'], function(){
 	return gulp.src(['src/after_all.js'])
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('build', ['lint', 'vendor', 'globals', 'definitions', 'code_generators', 'utils', 'tours', 'after_all'], function(){
+gulp.task('build', ['vendor', 'after_all'], function(){
 	return gulp.src(['www/js/{globals,definitions,code_generators,utils,tours,after_all}.js'])
 		.pipe(vinylPaths(del))
 		.pipe(concat('binary-bot.js'))

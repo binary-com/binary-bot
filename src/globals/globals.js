@@ -1,6 +1,4 @@
 Bot.Globals = function Globals() {
-	Bot.version = '1.1';
-
 	Bot.tours = {};
 
 	Bot.display = {

@@ -1,8 +1,8 @@
 {
+  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
   "a6d6a2783600f06699eae5d3f81b919e444e4e58": "Trade With Account:",
   "5465174048929828b0cc34f2291e93a2e0ea782c": "Submarket",
   "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
-  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
   "9bb396940adb9705fe57eba6ea8b578e6aafa792": "Payout",
   "78d7103a319e808455d397513279d99f3b3f3768": "Stake",
   "bbb930cc426507ed3f6b7c343c75dd0e041494b7": "statement",

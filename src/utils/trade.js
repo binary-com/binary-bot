@@ -254,15 +254,18 @@ Bot.Trade = function () {
 	};
 
 	Bot.server.observeProposal = function observeProposal(options) {
+
 		Bot.server.api.events.on('proposal', function (value) {
-			if (Bot.server.contracts.length === 2) {
-				Bot.server.contracts = [];
-				window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
-			}
-			Bot.server.contracts.push(value);
-			if (Bot.server.contracts.length === 2) {
-				log(i18n._('Contracts are ready to be purchased by the strategy'), 'info');
-				Bot.server.listen_on('strategy:updated', Bot.server.listen_on_strategy);
+			if (!Bot.server.purchaseNotDone) {
+				if (Bot.server.contracts.length === 2) {
+					Bot.server.contracts = [];
+					window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
+				}
+				Bot.server.contracts.push(value);
+				if (Bot.server.contracts.length === 2) {
+					log(i18n._('Contracts are ready to be purchased by the strategy'), 'info');
+					Bot.server.listen_on('strategy:updated', Bot.server.listen_on_strategy);
+				}
 			}
 		});
 	};
@@ -371,9 +374,9 @@ Bot.Trade = function () {
 		log(i18n._('Purchased:') + ' ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price)
 			.then(function (purchaseContract) {
+				Bot.server.purchaseNotDone = true;
 				Bot.display.numOfRuns++;
 				Bot.updateDisplay();
-				Bot.server.purchaseNotDone = true;
 				Bot.disableRun(true);
 				Bot.server.state = 'PURCHASED';
 				Bot.server.purchaseInfo = {
@@ -426,9 +429,12 @@ Bot.Trade = function () {
 						Bot.server.observeProposal();
 					}
 					if (Bot.server.purchaseNotDone) {
-						Bot.server.getLastPurchaseInfo(function () {});
+						Bot.server.getLastPurchaseInfo(function () {
+							Bot.server.restartContracts();
+						});
+					} else {
+						Bot.server.restartContracts();
 					}
-					Bot.server.restartContracts();
 					Bot.server.requestBalance();
 					Bot.server.requestHistory();
 					Bot.server.state = 'AUTHORIZED';
@@ -466,11 +472,6 @@ Bot.Trade = function () {
 				Bot.server.state = 'TRADE_AGAIN';
 				Bot.server.restartContracts();
 			} else {
-				if (Bot.debug) {
-					console.log('%cBinary Bot (v' + Bot.version + ') started.', 'color: green');
-				} else {
-					Bot.queueLog('%cBinary Bot (v1.0) started.', 'color: green');
-				}
 				Bot.server.token = token;
 				Bot.server.stop();
 				Bot.server.api = new LiveApi();
