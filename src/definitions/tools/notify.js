@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
 
-Blockly.Blocks['notify'] = {
+Blockly.Blocks.notify = {
   init: function() {
     this.appendValueInput("MESSAGE")
         .setCheck(null)

@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 
-Blockly.Blocks['direction'] = {
+Blockly.Blocks.direction = {
   init: function() {
     this.appendDummyInput()
         .appendField("Tick Direction");

@@ -20,7 +20,7 @@ Bot.View = function View(){
 			if (file.type.match('text/xml')) {
 				readFile(file);
 			} else {
-				Bot.utils.log('File: ' + file.name + ' is not supported.', 'info');
+				Bot.utils.log(i18n._('File is not supported:' + ' ') + file.name, 'info');
 			}
 		}
 	};
@@ -40,9 +40,9 @@ Bot.View = function View(){
 						Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
 					}
 					Blockly.mainWorkspace.clearUndo();
-					Bot.utils.log('Blocks are loaded successfully', 'success');
-				} catch(e){
-					Bot.utils.showError(e);
+					Bot.utils.log(i18n._('Blocks are loaded successfully'), 'success');
+				} catch(err){
+					Bot.utils.showError(err);
 				}
 			};
 		})(f);
@@ -62,7 +62,7 @@ Bot.View = function View(){
 		.addEventListener('change', handleFileSelect, false);
 
 	$('#tutorialButton').bind('click', Bot.startTutorial);
-	$('#stopButton').text('Reset');
+	$('#stopButton').text(i18n._('Reset'));
 	$('#stopButton').bind('click', Bot.reset);
 
 	$('#summaryPanel .exitPanel').click(function(){

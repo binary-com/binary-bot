@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
 
-Blockly.Blocks['read_details'] = {
+Blockly.Blocks.read_details = {
   init: function() {
     this.appendDummyInput()
         .appendField("Contract Detail:")

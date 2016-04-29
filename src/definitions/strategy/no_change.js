@@ -1,4 +1,4 @@
-Blockly.Blocks['direction_no_change'] = {
+Blockly.Blocks.direction_no_change = {
   init: function() {
     this.appendDummyInput()
         .appendField("No Change");

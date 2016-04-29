@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 
-Blockly.Blocks['balance'] = {
+Blockly.Blocks.balance = {
   init: function() {
     this.appendDummyInput()
         .appendField("Balance:")

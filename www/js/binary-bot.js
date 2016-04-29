@@ -1,17 +1,17 @@
 Bot = {};Bot.Config = function Config(){
 	return {
 		lists: { 
-			PAYOUTTYPE: [["Payout", "payout"], ["Stake", "stake"]],
-			CURRENCY: [["USD", "USD"], ["EUR", "EUR"], ["GBP", "GBP"], ["AUD", "AUD"]],
-			DETAILS: [['statement', '1'], ['ask price', '2'], ['payout', '3'], ['profit', '4'], ['contract type', '5'], ['entry spot', '6'], ['entry value', '7'], ['exit spot', '8'], ['exit value', '9'], ['barrier', '10'], ],
+			PAYOUTTYPE: [[i18n._('Payout'), 'payout'], [i18n._('Stake'), 'stake']],
+			CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD']],
+			DETAILS: [[i18n._('statement'), '1'], [i18n._('ask price'), '2'], [i18n._('payout'), '3'], [i18n._('profit'), '4'], [i18n._('contract type'), '5'], [i18n._('entry spot'), '6'], [i18n._('entry value'), '7'], [i18n._('exit spot'), '8'], [i18n._('exit value'), '9'], [i18n._('barrier'), '10'], ],
 		}, 
 
 		opposites: {
-			UPDOWN: [{'CALL': 'Up'}, {'PUT': 'Down'}],
-			ASIAN: [{'ASIANU': 'Asian Up'}, {'ASIAND': 'Asian Down'}],
-			MATCHESDIFFERS: [{'DIGITMATCH': 'Matches'}, {'DIGITDIFF': 'Differs'}],
-			EVENODD: [{'DIGITEVEN': 'Even'}, {'DIGITODD': 'Odd'}],
-			OVERUNDER: [{'DIGITOVER': 'Over'}, {'DIGITUNDER': 'Under'}],
+			UPDOWN: [{'CALL': i18n._('Up')}, {'PUT': i18n._('Down')}],
+			ASIAN: [{'ASIANU': i18n._('Asian Up')}, {'ASIAND': i18n._('Asian Down')}],
+			MATCHESDIFFERS: [{'DIGITMATCH': i18n._('Matches')}, {'DIGITDIFF': i18n._('Differs')}],
+			EVENODD: [{'DIGITEVEN': i18n._('Even')}, {'DIGITODD': i18n._('Odd')}],
+			OVERUNDER: [{'DIGITOVER': i18n._('Over')}, {'DIGITUNDER': i18n._('Under')}],
 		},
 
 		opposites_have_barrier: [
@@ -21,11 +21,11 @@ Bot = {};Bot.Config = function Config(){
 
 		conditions: ['updown', 'asian', 'matchesdiffers', 'evenodd', 'overunder'],
 		ticktrade_markets: ['r_25', 'r_50', 'r_75', 'r_100', 'rdbear', 'rdbull'],
-		ticktrade_market_names: ['Volatility 25 Index', 'Volatility 50 Index', 'Volatility 75 Index', 'Volatility 100 Index', 'Bear Market Index', 'Bull Market Index'],
+		ticktrade_market_names: [i18n._('Volatility 25 Index'), i18n._('Volatility 50 Index'), i18n._('Volatility 75 Index'), i18n._('Volatility 100 Index'), i18n._('Bear Market Index'), i18n._('Bull Market Index')],
 	};
 };
 
-Bot.Globals = function Globals(){
+Bot.Globals = function Globals() {
 	Bot.version = '1.1';
 
 	Bot.tours = {};
@@ -46,45 +46,50 @@ Bot.Globals = function Globals(){
 
 	Bot.initialDisplay = {};
 
-	Bot.copyObjectKeys = function copyObjectKeys(obj1, obj2){
+	Bot.copyObjectKeys = function copyObjectKeys(obj1, obj2) {
 		$.extend(obj1, JSON.parse(JSON.stringify(obj2)));
 	};
 
 	Bot.copyObjectKeys(Bot.initialDisplay, Bot.display);
 
-	Bot.resetDisplay = function resetDisplay(){
+	Bot.resetDisplay = function resetDisplay() {
 		Bot.copyObjectKeys(Bot.display, Bot.initialDisplay);
 		Bot.updateDisplay();
 		Bot.showTrades();
 	};
 
-	Bot.updateDisplay = function updateDisplay(){
-		Object.keys(Bot.display).forEach(function(key){
-			$('.'+ key).text(Bot.display[key]);	
-			if ( key === 'totalProfit' || key === 'lastProfit' ){
-				if ( +Bot.display[key] > 0 ) {
-					$('.' + key).css('color', 'green');
-				} else if ( +Bot.display[key] < 0 ) {
-					$('.' + key).css('color', 'red');
-				} else {
-					$('.' + key).css('color', 'black');
+	Bot.updateDisplay = function updateDisplay() {
+		Object.keys(Bot.display)
+			.forEach(function (key) {
+				$('.' + key)
+					.text(Bot.display[key]);
+				if (key === 'totalProfit' || key === 'lastProfit') {
+					if (+Bot.display[key] > 0) {
+						$('.' + key)
+							.css('color', 'green');
+					} else if (+Bot.display[key] < 0) {
+						$('.' + key)
+							.css('color', 'red');
+					} else {
+						$('.' + key)
+							.css('color', 'black');
+					}
 				}
-			}
-		});
+			});
 	};
 
-	Bot.undo = function undo(){
+	Bot.undo = function undo() {
 		Blockly.mainWorkspace.undo();
 	};
 
-	Bot.redo = function redo(){
+	Bot.redo = function redo() {
 		Blockly.mainWorkspace.undo(true);
 	};
 
-	Bot.addTrade = function addTrade(trade){
+	Bot.addTrade = function addTrade(trade) {
 		trade.number = Bot.display.numOfRuns;
 		// Bot.display.tradeTable.reverse(); //reverse the table row growth
-		if ( Bot.display.tradeTable.length > Bot.display.tradesCount ) {
+		if (Bot.display.tradeTable.length > Bot.display.tradesCount) {
 			Bot.display.tradeTable.shift();
 		}
 		Bot.display.tradeTable.push(trade);
@@ -92,64 +97,63 @@ Bot.Globals = function Globals(){
 		Bot.showTrades();
 	};
 
-	Bot.showTrades = function showTrades(){
-		$('#tradesDisplay tbody').children().remove();
+	Bot.showTrades = function showTrades() {
+		$('#tradesDisplay tbody')
+			.children()
+			.remove();
 		var count = 0;
-		Bot.display.tradeTable.forEach(function(trade, index) {
-			var payout = (trade.result !== 'win' )? 0 : +trade.payout;
-			var lastProfit = +(payout - +trade.askPrice).toFixed(2);
-			var element = '<tr>'
-				+'<td>' + trade.number + '</td>'
-				+'<td>' + trade.statement + '</td>'
-				+'<td>' + trade.type + '</td>'
-				+'<td>' + trade.entrySpot + '</td>'
-				+'<td>' + trade.exitSpot + '</td>'
-				+'<td>' + trade.askPrice + '</td>'
-				+'<td>' + payout + '</td>'
-				+'<td>' + lastProfit + '</td>'
-			+'</tr>';
-			$('#tradesDisplay tbody').append(element);
+		Bot.display.tradeTable.forEach(function (trade, index) {
+			var payout = (trade.result !== 'win') ? 0 : +trade.payout;
+			var lastProfit = +(payout - +trade.askPrice)
+				.toFixed(2);
+			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.statement + '</td>' + '<td>' + trade.type + '</td>' + '<td>' + trade.entrySpot + '</td>' + '<td>' + trade.exitSpot + '</td>' + '<td>' + trade.askPrice + '</td>' + '<td>' + payout + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
+			$('#tradesDisplay tbody')
+				.append(element);
 			count += 1;
 		});
-		for ( var i = count; i < Bot.display.tableSize ; i+=1 ){
+		for (var i = count; i < Bot.display.tableSize; i += 1) {
 			var element = '<tr>';
-			for ( var j = 0 ; j < 8 ; j += 1 ) {
+			for (var j = 0; j < 8; j += 1) {
 				element += '<td></td>';
 			}
-			+'</tr>';
-			$('#tradesDisplay tbody').append(element);
+			element += '</tr>';
+			$('#tradesDisplay tbody')
+				.append(element);
 		}
-		$('.table-scroll').scrollTop($('.table-scroll')[0].scrollHeight);
+		$('.table-scroll')
+			.scrollTop($('.table-scroll')[0].scrollHeight);
 	};
 
-	Bot.toggleDebug = function toggleDebug(){
-		if ( Bot.debug === undefined ) {
+	Bot.toggleDebug = function toggleDebug() {
+		if (Bot.debug === undefined) {
 			Bot.debug = false;
 		}
 		Bot.debug = !Bot.debug;
-		if ( Bot.debug ) {
-			Bot.display.logQueue.forEach(function(log){
+		if (Bot.debug) {
+			Bot.display.logQueue.forEach(function (log) {
 				console.log.apply(console, log);
 			});
 			Bot.display.logQueue = [];
 		}
 	};
 
-	Bot.queueLog = function queueLog(){
+	Bot.queueLog = function queueLog() {
 		Bot.display.logQueue.push(Array.prototype.slice.apply(arguments));
 	};
 
 	Bot.saveXml = function saveXml(showOnly) {
 		var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-		Array.prototype.slice.apply(xmlDom.getElementsByTagName('field')).forEach(function(field){
-			if ( field.getAttribute('name') === 'ACCOUNT_LIST' ) {
-				if ( field.childNodes.length >= 1 ) {
-					field.childNodes[0].nodeValue = '';
+		Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))
+			.forEach(function (field) {
+				if (field.getAttribute('name') === 'ACCOUNT_LIST') {
+					if (field.childNodes.length >= 1) {
+						field.childNodes[0].nodeValue = '';
+					}
 				}
-			}
-		});
-		Array.prototype.slice.apply(xmlDom.getElementsByTagName('block')).forEach(function(block){
-			switch(block.getAttribute('type')){
+			});
+		Array.prototype.slice.apply(xmlDom.getElementsByTagName('block'))
+			.forEach(function (block) {
+				switch (block.getAttribute('type')) {
 				case 'trade':
 					block.setAttribute('id', 'trade');
 					break;
@@ -162,10 +166,10 @@ Bot.Globals = function Globals(){
 				default:
 					block.removeAttribute('id');
 					break;
-			}
-		});
+				}
+			});
 		var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-		if ( showOnly ) {
+		if (showOnly) {
 			Bot.utils.log(xmlText);
 		} else {
 			var filename = 'binary-bot' + parseInt(new Date()
@@ -183,7 +187,7 @@ Bot.Globals = function Globals(){
 			Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 			var code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
 			Bot.utils.log(code);
-		} catch(e) {
+		} catch (e) {
 			Bot.utils.showError(e);
 		}
 
@@ -197,76 +201,95 @@ Bot.Globals = function Globals(){
 				'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
 			var code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
 			Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-			eval(code);
-			$('#stopButton').text('Stop');
-			$('#runButton').text('Restart');
-			$('#summaryPanel').show();
-			$('#stopButton').unbind('click', Bot.reset);
-			$('#stopButton').bind('click', Bot.stop);
+			var EVAL_BLOCKLY_CODE = eval;
+			EVAL_BLOCKLY_CODE(code);
+			$('#stopButton')
+				.text('Stop');
+			$('#runButton')
+				.text('Restart');
+			$('#summaryPanel')
+				.show();
+			$('#stopButton')
+				.unbind('click', Bot.reset);
+			$('#stopButton')
+				.bind('click', Bot.stop);
 		} catch (e) {
 			Bot.utils.showError(e);
 		}
 	};
 
 	Bot.addAccount = function addAccount() {
-		var token = prompt('Please enter your token here:', '');
+		var token = prompt(i18n._('Please enter your token here:'), '');
 		Bot.server.addAccount(token);
 	};
 
-	Bot.startTutorial = function startTutorial(e){
-		if ( e ) {
+	Bot.startTutorial = function startTutorial(e) {
+		if (e) {
 			e.preventDefault();
 		}
-		if ( Bot.activeTutorial ) {
-			Bot.activeTutorial.stop();	
+		if (Bot.activeTutorial) {
+			Bot.activeTutorial.stop();
 		}
-		Bot.activeTutorial = Bot.tours[$('#tours').val()];
-		Bot.activeTutorial.start();	
-		$('#tutorialButton').unbind('click', Bot.startTutorial);
-		$('#tutorialButton').bind('click', Bot.stopTutorial);
-		$('#tutorialButton').text('Stop!');
+		Bot.activeTutorial = Bot.tours[$('#tours')
+			.val()];
+		Bot.activeTutorial.start();
+		$('#tutorialButton')
+			.unbind('click', Bot.startTutorial);
+		$('#tutorialButton')
+			.bind('click', Bot.stopTutorial);
+		$('#tutorialButton')
+			.text(i18n._('Stop!'));
 	};
 
-	Bot.stopTutorial = function stopTutorial(e){
-		if ( e ) {
+	Bot.stopTutorial = function stopTutorial(e) {
+		if (e) {
 			e.preventDefault();
 		}
-		if ( Bot.activeTutorial ) {
-			if ( e ) {
-				Bot.activeTutorial.stop();	
+		if (Bot.activeTutorial) {
+			if (e) {
+				Bot.activeTutorial.stop();
 			}
 			Bot.activeTutorial = null;
 		}
-		$('#tutorialButton').unbind('click', Bot.stopTutorial);
-		$('#tutorialButton').bind('click', Bot.startTutorial);
-		$('#tutorialButton').text('Go!');
+		$('#tutorialButton')
+			.unbind('click', Bot.stopTutorial);
+		$('#tutorialButton')
+			.bind('click', Bot.startTutorial);
+		$('#tutorialButton')
+			.text(i18n._('Go!'));
 	};
 
-	Bot.reset = function reset(e){
-		if ( e ) {
+	Bot.reset = function reset(e) {
+		if (e) {
 			e.preventDefault();
 		}
 		Bot.resetDisplay();
-		Bot.utils.log('Reset successful', 'success');
+		Bot.utils.log(i18n._('Reset successful'), 'success');
 	};
 
-	Bot.stop = function stop(e){
-		if ( e ) {
+	Bot.stop = function stop(e) {
+		if (e) {
 			e.preventDefault();
 		}
 		Bot.server.stop();
-		$('#stopButton').text('Reset');
-		$('#runButton').text('Run');
-		$('#stopButton').unbind('click', Bot.stop);
-		$('#stopButton').bind('click', Bot.reset);
-	};
-	
-	Bot.disableRun = function disableRun(disabled){
-		$('#runButton').prop('disabled', disabled);
+		$('#stopButton')
+			.text(i18n._('Reset'));
+		$('#runButton')
+			.text(i18n._('Run'));
+		$('#stopButton')
+			.unbind('click', Bot.stop);
+		$('#stopButton')
+			.bind('click', Bot.reset);
 	};
 
-	Bot.showSummary = function showSummary(){
-		$('#summaryPanel').show();
+	Bot.disableRun = function disableRun(disabled) {
+		$('#runButton')
+			.prop('disabled', disabled);
+	};
+
+	Bot.showSummary = function showSummary() {
+		$('#summaryPanel')
+			.show();
 	};
 
 };
@@ -293,7 +316,7 @@ Bot.View = function View(){
 			if (file.type.match('text/xml')) {
 				readFile(file);
 			} else {
-				Bot.utils.log('File: ' + file.name + ' is not supported.', 'info');
+				Bot.utils.log(i18n._('File is not supported:' + ' ') + file.name, 'info');
 			}
 		}
 	};
@@ -313,9 +336,9 @@ Bot.View = function View(){
 						Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenList[0].account_name);
 					}
 					Blockly.mainWorkspace.clearUndo();
-					Bot.utils.log('Blocks are loaded successfully', 'success');
-				} catch(e){
-					Bot.utils.showError(e);
+					Bot.utils.log(i18n._('Blocks are loaded successfully'), 'success');
+				} catch(err){
+					Bot.utils.showError(err);
 				}
 			};
 		})(f);
@@ -335,7 +358,7 @@ Bot.View = function View(){
 		.addEventListener('change', handleFileSelect, false);
 
 	$('#tutorialButton').bind('click', Bot.startTutorial);
-	$('#stopButton').text('Reset');
+	$('#stopButton').text(i18n._('Reset'));
 	$('#stopButton').bind('click', Bot.reset);
 
 	$('#summaryPanel .exitPanel').click(function(){
@@ -363,17 +386,17 @@ Bot.View = function View(){
 	Blockly.mainWorkspace.clearUndo();
 };
 
-Bot.Definitions = function Definitions(){Blockly.Blocks['trade'] = {
+Bot.Definitions = function Definitions(){Blockly.Blocks.trade = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField("Trade With Account:")
+			.appendField(i18n._("Trade With Account:"))
 			.appendField(new Blockly.FieldDropdown(Bot.server.getAccounts), "ACCOUNT_LIST");
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
-			.appendField("Submarket");
+			.appendField(i18n._("Submarket"));
 		this.setPreviousStatement(true, null);
 		this.setColour(60);
-		this.setTooltip('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.');
+		this.setTooltip(i18n._('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	}, 
 	onchange: function(ev){
@@ -426,7 +449,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
 
-Blockly.Blocks['contract_details'] = {
+Blockly.Blocks.contract_details = {
   init: function() {
     this.appendDummyInput()
         .appendField("Contract Details");
@@ -442,7 +465,7 @@ Blockly.Blocks['contract_details'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
 
-Blockly.Blocks['on_finish'] = {
+Blockly.Blocks.on_finish = {
   init: function() {
     this.appendDummyInput()
         .appendField("On Finish (Decide what to do after the contract is finished)");
@@ -454,7 +477,7 @@ Blockly.Blocks['on_finish'] = {
   }
 };
 
-Blockly.Blocks['contract_loss'] = {
+Blockly.Blocks.contract_loss = {
   init: function() {
     this.appendDummyInput()
         .appendField("Loss");
@@ -470,7 +493,7 @@ Blockly.Blocks['contract_loss'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
 
-Blockly.Blocks['read_details'] = {
+Blockly.Blocks.read_details = {
   init: function() {
     this.appendDummyInput()
         .appendField("Contract Detail:")
@@ -487,7 +510,7 @@ Blockly.Blocks['read_details'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
 
-Blockly.Blocks['contract_result'] = {
+Blockly.Blocks.contract_result = {
   init: function() {
     this.appendDummyInput()
         .appendField("Contract Result");
@@ -504,7 +527,7 @@ Blockly.Blocks['contract_result'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
 
-Blockly.Blocks['trade_again'] = {
+Blockly.Blocks.trade_again = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField("Trade Again");
@@ -518,7 +541,7 @@ Blockly.Blocks['trade_again'] = {
 	},
 };
 
-Blockly.Blocks['contract_win'] = {
+Blockly.Blocks.contract_win = {
   init: function() {
     this.appendDummyInput()
         .appendField("Win");
@@ -534,7 +557,7 @@ Blockly.Blocks['contract_win'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 
-Blockly.Blocks['direction'] = {
+Blockly.Blocks.direction = {
   init: function() {
     this.appendDummyInput()
         .appendField("Tick Direction");
@@ -549,7 +572,7 @@ Blockly.Blocks['direction'] = {
 };
 
 
-Blockly.Blocks['direction_down'] = {
+Blockly.Blocks.direction_down = {
   init: function() {
     this.appendDummyInput()
         .appendField("Down");
@@ -563,7 +586,7 @@ Blockly.Blocks['direction_down'] = {
 	},
 };
 
-Blockly.Blocks['direction_no_change'] = {
+Blockly.Blocks.direction_no_change = {
   init: function() {
     this.appendDummyInput()
         .appendField("No Change");
@@ -579,7 +602,7 @@ Blockly.Blocks['direction_no_change'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 
-Blockly.Blocks['purchase'] = {
+Blockly.Blocks.purchase = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField("Purchase")
@@ -596,7 +619,7 @@ Blockly.Blocks['purchase'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
 
-Blockly.Blocks['on_strategy'] = {
+Blockly.Blocks.on_strategy = {
   init: function() {
     this.appendDummyInput()
         .appendField("Strategy (Decide when to purchase with each tick)");
@@ -610,7 +633,7 @@ Blockly.Blocks['on_strategy'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 
-Blockly.Blocks['tick'] = {
+Blockly.Blocks.tick = {
   init: function() {
     this.appendDummyInput()
         .appendField("Tick Value");
@@ -624,7 +647,7 @@ Blockly.Blocks['tick'] = {
 	},
 };
 
-Blockly.Blocks['direction_up'] = {
+Blockly.Blocks.direction_up = {
   init: function() {
     this.appendDummyInput()
         .appendField("Up");
@@ -640,7 +663,7 @@ Blockly.Blocks['direction_up'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 
-Blockly.Blocks['balance'] = {
+Blockly.Blocks.balance = {
   init: function() {
     this.appendDummyInput()
         .appendField("Balance:")
@@ -654,7 +677,7 @@ Blockly.Blocks['balance'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
 
-Blockly.Blocks['notify'] = {
+Blockly.Blocks.notify = {
   init: function() {
     this.appendValueInput("MESSAGE")
         .setCheck(null)
@@ -670,7 +693,7 @@ Blockly.Blocks['notify'] = {
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
 
-Blockly.Blocks['total_profit'] = {
+Blockly.Blocks.total_profit = {
   init: function() {
     this.appendDummyInput()
         .appendField("Total Profit");
@@ -702,11 +725,11 @@ Bot.config.ticktrade_markets.forEach(function(market, index){
 	};
 });
 };
-Bot.CodeGenerators = function CodeGenerators(){Blockly.JavaScript['trade'] = function(block) {
+Bot.CodeGenerators = function CodeGenerators(){Blockly.JavaScript.trade = function(block) {
 	var account = block.getFieldValue('ACCOUNT_LIST');
 	var submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 	if ( submarket === '' ) {
-		throw {message: 'You have to add a submarket first'};
+		throw {message: i18n._('You have to add a submarket first')};
 	}
 	// TODO: Assemble JavaScript into code variable.
 	var code = 'var trade = function(trade_again){\nBot.server.trade(\''+account.trim()+'\', '+submarket.trim()+', trade_again);\n};\ntrade();\n';
@@ -744,35 +767,35 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 	};
 });
 
-Blockly.JavaScript['contract_details'] = function(block) {
+Blockly.JavaScript.contract_details = function(block) {
 	var code = 'details';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['on_finish'] = function(block) {
+Blockly.JavaScript.on_finish = function(block) {
   var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
   var code = 'Bot.on_finish = function on_finish(result, details){\n' + stack + '\n};\n';
   return code;
 };
 
-Blockly.JavaScript['contract_loss'] = function(block) {
+Blockly.JavaScript.contract_loss = function(block) {
 	var code = '(result === \'loss\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['read_details'] = function(block) {
+Blockly.JavaScript.read_details = function(block) {
   var detail_index = block.getFieldValue('DETAIL_INDEX');
   // TODO: Assemble JavaScript into code variable.
   var code = '((details instanceof Array && details.length === Bot.config.lists.DETAILS.length) ? details[' + ( parseInt(detail_index.trim()) - 1 ) + '] : \'\' )';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['contract_result'] = function(block) {
+Blockly.JavaScript.contract_result = function(block) {
 	var code = 'result';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['trade_again'] = function(block) {
+Blockly.JavaScript.trade_again = function(block) {
 	if ( this.parentBlock_ === null ) {
 		return '';
 	}
@@ -780,27 +803,27 @@ Blockly.JavaScript['trade_again'] = function(block) {
 	return code;
 };
 
-Blockly.JavaScript['contract_win'] = function(block) {
+Blockly.JavaScript.contract_win = function(block) {
 	var code = '(result === \'win\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['direction'] = function(block) {
+Blockly.JavaScript.direction = function(block) {
 	var code = 'direction';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['direction_down'] = function(block) {
+Blockly.JavaScript.direction_down = function(block) {
 	var code = '(direction === \'down\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['direction_no_change'] = function(block) {
+Blockly.JavaScript.direction_no_change = function(block) {
 	var code = '(direction === \'\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['purchase'] = function(block) {
+Blockly.JavaScript.purchase = function(block) {
 	if ( this.parentBlock_ === null ) {
 		return '';
 	}
@@ -810,29 +833,29 @@ Blockly.JavaScript['purchase'] = function(block) {
 	return code;
 };
 
-Blockly.JavaScript['on_strategy'] = function(block) {
+Blockly.JavaScript.on_strategy = function(block) {
   var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
   var code = 'Bot.on_strategy = function on_strategy(tick, direction){\n' + stack + '\n};\n';
   return code;
 };
 
-Blockly.JavaScript['tick'] = function(block) {
+Blockly.JavaScript.tick = function(block) {
 	var code = 'tick';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['direction_up'] = function(block) {
+Blockly.JavaScript.direction_up = function(block) {
 	var code = '(direction === \'up\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['balance'] = function(block) {
+Blockly.JavaScript.balance = function(block) {
   var balance_type = block.getFieldValue('BALANCE_TYPE');
 	var code = 'Bot.server.getBalance(\''+ balance_type +'\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['notify'] = function(block) {
+Blockly.JavaScript.notify = function(block) {
   var notification_type = block.getFieldValue('NOTIFICATION_TYPE');
   var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
@@ -840,7 +863,7 @@ Blockly.JavaScript['notify'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['total_profit'] = function(block) {
+Blockly.JavaScript.total_profit = function(block) {
 	var code = 'Bot.server.getTotalProfit()';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
@@ -1080,7 +1103,8 @@ var ContractService = function ContractService() {
 		var broadcastable = true;
 
 		var setNotBroadcastable = function setNotBroadcastable(){
-			return broadcastable = false;
+			broadcastable = false;
+			return broadcastable;
 		};
 
 		var isFinished = function isFinished(){
@@ -1182,7 +1206,7 @@ var ContractService = function ContractService() {
 						if ( contract.seenTicksCount === 0 ) {
 							contract.barrier = parseFloat(lastPrice);
 						} else {
-							contract.barrier = ( parseFloat(lastPrice) + parseFloat(contract.barrier) * contract.seenTicksCount ) / ( contract.seenTicksCount + 1 )
+							contract.barrier = ( parseFloat(lastPrice) + parseFloat(contract.barrier) * contract.seenTicksCount ) / ( contract.seenTicksCount + 1 );
 						}
 						contract.seenTicksCount += 1;
 					}	
@@ -1307,6 +1331,7 @@ var ContractService = function ContractService() {
 	};
 };
 
+/* jshint ignore:start */
 (function($) {
 	$.fn.drags = function(opt) {
 
@@ -1348,6 +1373,7 @@ var ContractService = function ContractService() {
 
 	}
 })(jQuery);
+/* jshint ignore:end */
 
 Bot.Markets = function Markets(){
 	Bot.markets = {};
@@ -1408,7 +1434,7 @@ Bot.RelationChecker = function RelationChecker(){
 			}
 		}
 		if ( _trade.childBlocks_.length > 0 && Bot.config.ticktrade_markets.indexOf(_trade.childBlocks_[0].type) < 0 ) {
-			Bot.utils.log('The trade block can only accept submarket blocks', 'warning');
+			Bot.utils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
 			Array.prototype.slice.apply(_trade.childBlocks_).forEach(function(child){
 				child.unplug();
 			});
@@ -1422,14 +1448,14 @@ Bot.RelationChecker = function RelationChecker(){
 		var topParent = Bot.utils.findTopParentBlock(_trade);
 		if ( topParent !== null ) {
 			if ( Bot.config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.type === 'on_strategy' || topParent.type === 'on_finish' ) {
-				Bot.utils.log('The trade block cannot be inside binary blocks', 'warning');
+				Bot.utils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
 				_trade.unplug();
 			}
 		}
 	};
 	var submarket = function submarket(_submarket, ev){
 		if ( _submarket.childBlocks_.length > 0 && Bot.config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0 ) {
-			Bot.utils.log('Submarket blocks can only accept condition blocks', 'warning');
+			Bot.utils.log(i18n._('Submarket blocks can only accept condition blocks'), 'warning');
 			Array.prototype.slice.apply(_submarket.childBlocks_).forEach(function(child){
 				child.unplug();
 			});
@@ -1438,7 +1464,7 @@ Bot.RelationChecker = function RelationChecker(){
 		}
 		if ( _submarket.parentBlock_ !== null) {
 			if ( _submarket.parentBlock_.type !== 'trade' ) {
-				Bot.utils.log('Submarket blocks have to be added to the trade block', 'warning');
+				Bot.utils.log(i18n._('Submarket blocks have to be added to the trade block'), 'warning');
 				_submarket.unplug();
 			}
 		}
@@ -1446,7 +1472,7 @@ Bot.RelationChecker = function RelationChecker(){
 	var condition = function condition(_condition, ev, calledByParent){
 		if ( _condition.parentBlock_ !== null ) {
 			if ( Bot.config.ticktrade_markets.indexOf(_condition.parentBlock_.type) < 0 ) {
-				Bot.utils.log('Condition blocks have to be added to submarket blocks', 'warning');
+				Bot.utils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
 				_condition.unplug();
 			} else {
 				Bot.utils.broadcast('tour:condition');
@@ -1456,7 +1482,7 @@ Bot.RelationChecker = function RelationChecker(){
 						var duration = getNumField(_condition, 'DURATION');
 						if ( duration !== '' ) {
 							if ( !isInteger(duration) || !isInRange(duration, 5, 15) ) {
-								Bot.utils.log('Number of ticks must be between 5 and 10', 'warning');
+								Bot.utils.log(i18n._('Number of ticks must be between 5 and 10'), 'warning');
 							} else {
 								Bot.utils.broadcast('tour:ticks');
 								added.push('DURATION');
@@ -1469,7 +1495,7 @@ Bot.RelationChecker = function RelationChecker(){
 						var prediction = getNumField(_condition, 'PREDICTION');
 						if ( prediction !== '' ) {
 							if ( !isInteger(prediction) || !isInRange(prediction, 0, 9) ) {
-								Bot.utils.log('Prediction must be one digit', 'warning');
+								Bot.utils.log(i18n._('Prediction must be one digit'), 'warning');
 							} else {
 								added.push('PREDICTION');
 							}
@@ -1491,7 +1517,7 @@ Bot.RelationChecker = function RelationChecker(){
 	var inside_strategy = function inside_strategy(blockObject, ev, name) {
 		var topParent = Bot.utils.findTopParentBlock(blockObject);
 		if ( topParent !== null && ( topParent.type === 'on_finish' || topParent.type === 'trade' ) ) {
-			Bot.utils.log(name + ' must be added inside the strategy block', 'warning');
+			Bot.utils.log(i18n._(name + ' ' + 'must be added inside the strategy block'), 'warning');
 			blockObject.unplug();
 		} else if ( topParent !== null && topParent.type === 'on_strategy' ) {
 			if ( blockObject.type === 'purchase' ) {
@@ -1502,7 +1528,7 @@ Bot.RelationChecker = function RelationChecker(){
 	var inside_finish = function inside_finish(blockObject, ev, name) {
 		var topParent = Bot.utils.findTopParentBlock(blockObject);
 		if ( topParent !== null && ( topParent.type === 'on_strategy' || topParent.type === 'trade' ) ) {
-			Bot.utils.log(name + ' must be added inside the finish block', 'warning');
+			Bot.utils.log(i18n._(name + ' ' + 'must be added inside the finish block'), 'warning');
 			blockObject.unplug();
 		} else if ( topParent !== null && topParent.type === 'on_finish' ) {
 			if ( blockObject.type === 'trade_again' ) {
@@ -1600,9 +1626,9 @@ Bot.Trade = function(){
 		Bot.addTrade(contract);
 		var payout = (contract.result !== 'win' )? 0 : +contract.payout;
 		Bot.display.lastProfit = +(payout - +contract.askPrice).toFixed(2);
-		Bot.display.totalStake = +(+Bot.display.totalStake + +contract.askPrice).toFixed(2);
+		Bot.display.totalStake = +(+Bot.display.totalStake + (+contract.askPrice)).toFixed(2);
 		Bot.display.totalPayout = +(+Bot.display.totalPayout + payout).toFixed(2);
-		Bot.display.totalProfit = +(+Bot.display.totalProfit + +Bot.display.lastProfit).toFixed(2);
+		Bot.display.totalProfit = +(+Bot.display.totalProfit + (+Bot.display.lastProfit)).toFixed(2);
 		Bot.display.lastResult = contract.result;
 		Bot.updateDisplay();
 
@@ -1619,7 +1645,7 @@ Bot.Trade = function(){
 			+( (contract.barrier) ? contract.barrier : 0 ),
 		];
 
-		log('Purchase was finished, result is: ' + contract.result, (contract.result === 'win')? 'success': 'error');
+		log(i18n._('Purchase was finished, result is:') + ' ' + contract.result, (contract.result === 'win')? 'success': 'error');
 
 		Bot.on_finish(contract.result, detail_list);
 		Bot.server.listen_on_contract_update(e);
@@ -1678,8 +1704,8 @@ Bot.Trade = function(){
 		window.addEventListener(eventName, functionName);
 	};
 
-	Bot.server.accounts = [['Please add a token first', '']];
-	Bot.server.purchase_choices = [['Click to select', '']];
+	Bot.server.accounts = [[i18n._('Please add a token first'), '']];
+	Bot.server.purchase_choices = [[i18n._('Click to select'), '']];
 
 	Bot.server.getAccounts = function getAccounts(){
 		return Bot.server.accounts;
@@ -1720,28 +1746,28 @@ Bot.Trade = function(){
 	Bot.server.logout = function logout(){
 		Bot.utils.getStorageManager().removeAllTokens();
 		Bot.utils.updateTokenList();
-		log('Logged you out!', 'info');
+		log(i18n._('Logged you out!'), 'info');
 	};
 
 	Bot.server.addAccount = function addAccount(token){
 		var index = Bot.server.findToken(token);
 		if ( index >= 0 ) {
-			log('Token already added.', 'info');
+			log(i18n._('Token already added.'), 'info');
 			return;
 		}
 		if ( token === '' ) {
-			showError('Token cannot be empty');
+			showError(i18n._('Token cannot be empty'));
 		} else if ( token !== null ) {
 			var api = new LiveApi();
 			api.authorize(token).then(function(response){
 				api.disconnect();
 				Bot.utils.getStorageManager().addToken(token, response.authorize.loginid);
 				Bot.utils.updateTokenList(token);
-				log('Your token was added successfully', 'info');
+				log(i18n._('Your token was added successfully'), 'info');
 			}, function(reason){
 				api.disconnect();
 				Bot.server.removeToken(token);
-				showError('Authentication using token: ' + token + ' failed!');
+				showError(i18n._('Authentication failed using token:') + ' ' + token);
 			});
 		}
 	};
@@ -1765,13 +1791,13 @@ Bot.Trade = function(){
 			subscribe: 1
 		}).then(function(response){
 		}, function(reason){
-			log('Could not get balance');
+			log(i18n._('Could not get balance'));
 		});
 	};
 
 	Bot.server.observeTicks = function observeTicks(){
 		Bot.server.api.events.on('tick', function (feed) {
-			log('tick received at: ' + feed.tick.epoch);
+			log(i18n._('tick received at:') + ' ' + feed.tick.epoch);
 			Bot.server.contractService.addTick(feed.tick);
 		});
 
@@ -1811,7 +1837,7 @@ Bot.Trade = function(){
 			"count": Bot.server.contractService.getCapacity(),
 			"subscribe": 1
 		}).then(function(value){
-			log('Request receieved for history');
+			log(i18n._('Request receieved for history'));
 			if ( callback ) {
 				callback();
 			}
@@ -1829,7 +1855,7 @@ Bot.Trade = function(){
 			}
 			Bot.server.contracts.push(value);
 			if ( Bot.server.contracts.length === 2 ) {
-				log('Contracts are ready to be purchased by the strategy', 'info'); 
+				log(i18n._('Contracts are ready to be purchased by the strategy'), 'info'); 
 				Bot.server.listen_on('strategy:updated', Bot.server.listen_on_strategy);
 			}
 		});
@@ -1856,7 +1882,7 @@ Bot.Trade = function(){
 					contract: {
 						result: result,
 						askPrice: data.buy_price,
-						statement: data.transaction_ids['buy'],
+						statement: data.transaction_ids.buy,
 						type: data.contract_type,
 						entrySpot: data.entry_tick,
 						entrySpotTime: data.entry_tick_time,
@@ -1910,7 +1936,7 @@ Bot.Trade = function(){
 			portfolio.portfolio.contracts.forEach(function (contract) {
 				if (contract.contract_id == contractId) {
 					Bot.server.state = 'PORTFOLIO_RECEIVED';
-					log('Waiting for the purchased contract to finish', 'info');
+					log(i18n._('Waiting for the purchased contract to finish'), 'info');
 					Bot.server.contractService.addContract({
 						statement: contract.transaction_id,
 						startTime: contract.date_start + 1,
@@ -1933,7 +1959,7 @@ Bot.Trade = function(){
 	Bot.server.purchase = function purchase(option){
 		window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
-		log('Purchased: ' + proposalContract.proposal.longcode, 'info');
+		log(i18n._('Purchased:') + ' ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
 			Bot.display.numOfRuns++;
 			Bot.updateDisplay();
@@ -1977,7 +2003,7 @@ Bot.Trade = function(){
 				if ( Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized >= 1 ) {  // prevent live-api to call this many times in case of disconnect
 					Bot.server.initContractService();
 					Bot.server.lastAuthorized = now;
-					log('Authenticated using token: ' + Bot.server.token , 'info');
+					log(i18n._('Authenticated using token:') + ' ' + Bot.server.token , 'info');
 					if ( Bot.server.firstRun ) { 
 						Bot.server.firstRun = false;
 						Bot.server.listen_on('tick:updated', Bot.server.listen_on_tick_update);
@@ -2020,7 +2046,7 @@ Bot.Trade = function(){
 
 	Bot.server.trade = function trade(token, callback, trade_again){
 		if ( token === '' ) {
-			showError('No token is available to authenticate');
+			showError(i18n._('No token is available to authenticate'));
 		} else {
 			Bot.server.authorizeCallback = callback;
 			Bot.server.purchaseNotDone = false;
@@ -2053,27 +2079,28 @@ Bot.Trade = function(){
 
 };
 
-Bot.Utils = function Utils(){
+Bot.Utils = function Utils() {
 	var relationChecker = new Bot.RelationChecker();
 	var storageManager = new Bot.StorageManager();
-	
-	var getUTCTime = function getUTCTime(date){
+
+	var getUTCTime = function getUTCTime(date) {
 		var dateObject = new Date(date);
-		return ('0' + dateObject.getUTCHours()).slice(-2) + ':' 
-			+ ('0' + dateObject.getUTCMinutes()).slice(-2) + ':' 
-			+ ('0' + dateObject.getUTCSeconds()).slice(-2);
+		return ('0' + dateObject.getUTCHours())
+			.slice(-2) + ':' + ('0' + dateObject.getUTCMinutes())
+			.slice(-2) + ':' + ('0' + dateObject.getUTCSeconds())
+			.slice(-2);
 	};
 
-	var showError = function showError(error){
-		if ( error.stack ){
+	var showError = function showError(error) {
+		if (error.stack) {
 			if (Bot.debug) {
-				console.log('%c' + error.stack, 'color: red');	
+				console.log('%c' + error.stack, 'color: red');
 			} else {
 				Bot.queueLog('%c' + error.stack, 'color: red');
 			}
 		}
 		var message;
-		if ( error.message) {
+		if (error.message) {
 			message = error.message;
 		} else {
 			message = error;
@@ -2090,9 +2117,9 @@ Bot.Utils = function Utils(){
 	};
 
 	var log = function log(message, notify_type, position) {
-		if ( notify_type !== undefined ) {
+		if (notify_type !== undefined) {
 			$.notify(message, {
-				position: (position === undefined)? 'bottom right': position,
+				position: (position === undefined) ? 'bottom right' : position,
 				className: notify_type,
 			});
 		}
@@ -2104,16 +2131,18 @@ Bot.Utils = function Utils(){
 	};
 
 	var broadcast = function broadcast(eventName, data) {
-		window.dispatchEvent(new CustomEvent(eventName, {detail: data}));
+		window.dispatchEvent(new CustomEvent(eventName, {
+			detail: data
+		}));
 	};
 
-	var chooseByIndex = function chooseByIndex(caps_name, index, list){
-		list = ( typeof list === 'undefined' ) ? Bot.config.lists[caps_name] : list;
+	var chooseByIndex = function chooseByIndex(caps_name, index, list) {
+		list = (typeof list === 'undefined') ? Bot.config.lists[caps_name] : list;
 		index = parseInt(index);
-		if ( isNaN(index) ){
+		if (isNaN(index)) {
 			return null;
 		}
-		if ( index > 0 && index <= list.length ) {
+		if (index > 0 && index <= list.length) {
 			index--;
 			return list[index][1];
 		} else {
@@ -2123,92 +2152,116 @@ Bot.Utils = function Utils(){
 
 	var findTopParentBlock = function findTopParentBlock(block) {
 		var pblock = block.parentBlock_;
-		if ( pblock === null ) {
+		if (pblock === null) {
 			return null;
 		}
-		while ( pblock !== null ) {
+		while (pblock !== null) {
 			block = pblock;
 			pblock = block.parentBlock_;
 		}
 		return block;
 	};
 
-	var updateTokenList = function updateTokenList(tokenToAdd){
+	var updateTokenList = function updateTokenList(tokenToAdd) {
 		var tokenList = storageManager.getTokenList();
-		Blockly.WidgetDiv.hideIfOwner(Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST'));
-		if ( tokenList.length === 0 ) {
-			Bot.server.accounts = [['Please add a token first', '']];
-			Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue('');
-			Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText('Please add a token first');
+		Blockly.WidgetDiv.hideIfOwner(Blockly.mainWorkspace.getBlockById('trade')
+			.getField('ACCOUNT_LIST'));
+		if (tokenList.length === 0) {
+			Bot.server.accounts = [
+				[i18n._('Please add a token first'), '']
+			];
+			Blockly.mainWorkspace.getBlockById('trade')
+				.getField('ACCOUNT_LIST')
+				.setValue('');
+			Blockly.mainWorkspace.getBlockById('trade')
+				.getField('ACCOUNT_LIST')
+				.setText(i18n._('Please add a token first'));
 		} else {
 			Bot.server.accounts = [];
-			tokenList.forEach(function(tokenInfo){
+			tokenList.forEach(function (tokenInfo) {
 				Bot.server.accounts.push([tokenInfo.account_name, tokenInfo.token]);
 			});
 			var tokenInfoToAdd = tokenList[0];
-			if ( tokenToAdd !== undefined ) {
+			if (tokenToAdd !== undefined) {
 				var tokenInfoIndex = storageManager.findToken(tokenToAdd);
-				if (tokenInfoIndex >= 0){
+				if (tokenInfoIndex >= 0) {
 					tokenInfoToAdd = tokenList[tokenInfoIndex];
 				}
 			}
-			if ( Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').getValue() !== tokenInfoToAdd.token ) {
-				Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setValue(tokenInfoToAdd.token);
+			if (Blockly.mainWorkspace.getBlockById('trade')
+				.getField('ACCOUNT_LIST')
+				.getValue() !== tokenInfoToAdd.token) {
+				Blockly.mainWorkspace.getBlockById('trade')
+					.getField('ACCOUNT_LIST')
+					.setValue(tokenInfoToAdd.token);
 			}
-			if ( Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').getText() !== tokenInfoToAdd.account_name ) {
-				Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').setText(tokenInfoToAdd.account_name);
+			if (Blockly.mainWorkspace.getBlockById('trade')
+				.getField('ACCOUNT_LIST')
+				.getText() !== tokenInfoToAdd.account_name) {
+				Blockly.mainWorkspace.getBlockById('trade')
+					.getField('ACCOUNT_LIST')
+					.setText(tokenInfoToAdd.account_name);
 			}
 		}
 	};
 
-	var getStorageManager = function getStorageManager(){
+	var getStorageManager = function getStorageManager() {
 		return storageManager;
 	};
 
-	var addPurchaseOptions = function addPurchaseOptions(){
+	var addPurchaseOptions = function addPurchaseOptions() {
 		var firstOption = {};
 		var secondOption = {};
 		var trade = Blockly.mainWorkspace.getBlockById('trade');
-		if ( trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
-			var condition_type = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
+		if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
+			.getInputTargetBlock('CONDITION') !== null) {
+			var condition_type = trade.getInputTargetBlock('SUBMARKET')
+				.getInputTargetBlock('CONDITION')
+				.type;
 			var opposites = Bot.config.opposites[condition_type.toUpperCase()];
 			Bot.server.purchase_choices = [];
-			opposites.forEach(function(option, index){
-				if ( index === 0 ) {
+			opposites.forEach(function (option, index) {
+				if (index === 0) {
 					firstOption = {
 						condition: Object.keys(option)[0],
-				name: option[Object.keys(option)[0]],
+						name: option[Object.keys(option)[0]],
 					};
 				} else {
 					secondOption = {
 						condition: Object.keys(option)[0],
-				name: option[Object.keys(option)[0]],
+						name: option[Object.keys(option)[0]],
 					};
 				}
 				Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
 			});
 			var purchases = [];
-			Blockly.mainWorkspace.getAllBlocks().forEach(function(block){
-				if ( block.type === 'purchase' ) {
-					purchases.push(block);
-				}
-			});
-			purchases.forEach(function(purchase){
-				var value = purchase.getField('PURCHASE_LIST').getValue();
+			Blockly.mainWorkspace.getAllBlocks()
+				.forEach(function (block) {
+					if (block.type === 'purchase') {
+						purchases.push(block);
+					}
+				});
+			purchases.forEach(function (purchase) {
+				var value = purchase.getField('PURCHASE_LIST')
+					.getValue();
 				Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-				if ( value === firstOption.condition ) {
-					purchase.getField('PURCHASE_LIST').setText(firstOption.name);
-				} else if ( value === secondOption.condition ) {
-					purchase.getField('PURCHASE_LIST').setText(secondOption.name);
+				if (value === firstOption.condition) {
+					purchase.getField('PURCHASE_LIST')
+						.setText(firstOption.name);
+				} else if (value === secondOption.condition) {
+					purchase.getField('PURCHASE_LIST')
+						.setText(secondOption.name);
 				} else {
-					purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
-					purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+					purchase.getField('PURCHASE_LIST')
+						.setValue(firstOption.condition);
+					purchase.getField('PURCHASE_LIST')
+						.setText(firstOption.name);
 				}
 			});
 		}
 	};
 
-	var getRelationChecker = function getRelationChecker(){
+	var getRelationChecker = function getRelationChecker() {
 		return relationChecker;
 	};
 
@@ -2263,7 +2316,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("You will need to add the blocks to this area which is called the ") + '<b>' + i18n._("workspace") + '</b></p>',
+			content: '<p>' + i18n._("You will need to add the blocks to this area which is called the <b>workspace</b>.") + '</p>',
 			target: $('#center'),
 			nextButton: true,
 			my: 'top center',
@@ -2275,7 +2328,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("To start pick a ") + '<b>' + i18n._("submarket") + '</b>' + i18n._(" block from volatility markets. Some steps like this one don't have the ") + '<b>' + i18n._("Next step") + '</b>' + i18n._(" button, therefore you need to follow the instructions to go to the next step, (in this case picking a submarket from left should lead you to the next step.)") + '</p>',
+			content: '<p>' + i18n._("To start pick a <b>submarket</b> block from volatility markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a submarket from left should lead you to the next step.)") + '</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -2296,7 +2349,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("Great! Now add it to the ") + '<b>' + i18n._("trade") + '</b>' + i18n._(" block.") + '</p>',
+			content: '<p>' + i18n._("Great! Now add it to the <b>trade</b> block.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
 			highlightTarget: true,
 			my: 'top center',
@@ -2314,7 +2367,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("Alright! Now pick a ") + '<b>' + i18n._("condition") + '</b>' + i18n._(" block.") + '</p>',
+			content: '<p>' + i18n._("Alright! Now pick a <b>condition</b> block.") + '</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -2372,7 +2425,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("Click on the number block to edit its value ") + '(<img src="www/image/number_editing.png"/>)' + i18n._(", change the value to 5 and add it to the ") + '<b>' + i18n._("ticks") + '</b>' + i18n._(" field of the condition block") + '</p>',
+			content: '<p>' + i18n._("Click on the number block to edit its value ") + '(<img src="www/image/number_editing.png"/>)' + i18n._(", change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
 			highlightTarget: true,
 			my: 'left center',
@@ -2417,7 +2470,7 @@ Bot.Introduction = function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>' + i18n._("This is a ") + '<b>' + i18n._("Strategy") + '</b>' + i18n._(" block. All the blocks you put in here are run for each and every tick received.") + '</p>',
+			content: '<p>' + i18n._("This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -2425,7 +2478,7 @@ Bot.Introduction = function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>' + i18n._("The received tick value is in the block ") + '<b>' + i18n._("tick") + '</b>' + i18n._(" and the tick direction (up or down) is in the block ") + '<b>' + i18n._("direction") + '</b>' + i18n._(". You can pick them from the ") + '<b>' + i18n._("Strategy") + '</b>' + i18n._(" menu") + '</p>',
+			content: '<p>' + i18n._("The received tick value is in the block <b>tick</b> and the tick direction (up or down) is in the block <b>direction</b>. You can pick them from the <b>Strategy</b> menu") + '</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -2441,7 +2494,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("For this tutorial we are not going to use those blocks, so we create our strategy by adding a ") + '<b>' + i18n._("purchase") + '</b>' + i18n._(" block. Please pick a purchase block") + '</p>',
+			content: '<p>' + i18n._("For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block") + '</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -2479,7 +2532,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of ") + '<b>' + i18n._("Up/Down") + '</b>' + i18n._(" type you will have ") + '<b>' + i18n._("Up") + '</b>' + i18n._(" and ") + '<b>' + i18n._("Down") + '</b>' + i18n._(" options on the purchase block to select from.") + '</p>',
+			content: '<p>' + i18n._("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Strategy'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -2495,7 +2548,7 @@ Bot.Introduction = function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>' + i18n._("After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the ") + '<b>' + i18n._("On Finish") + '</b>' + i18n._(" block") + '</p>',
+			content: '<p>' + i18n._("After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -2503,7 +2556,7 @@ Bot.Introduction = function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>' + i18n._("Same as the Strategy block, the ") + '<b>' + i18n._("On Finish") + '</b>' + i18n._(" block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.") + '</p>',
+			content: '<p>' + i18n._("Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -2511,7 +2564,7 @@ Bot.Introduction = function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>' + i18n._("A ") + '<b>' + i18n._("Trade Again") + '</b>' + i18n._(" block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.") + '</p>',
+			content: '<p>' + i18n._("A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.") + '</p>',
 			target: $('.blocklyFlyoutBackground'),
 			highlightTarget: true,
 			my: 'left center',
@@ -2550,7 +2603,7 @@ Bot.Introduction = function Introduction(){
 			},
 		},
 		{
-			content: '<p>' + i18n._("Excellent! The ") + '<b>' + i18n._("Trade Again") + '</b>' + i18n._(" block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
+			content: '<p>' + i18n._("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Finish'):last"),
 			highlightTarget: true,
 			my: 'right center',
@@ -2593,7 +2646,7 @@ Bot.Introduction = function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>' + i18n._("You can choose the token you want by the ") + '<b>' + i18n._("Account") + '</b>' + i18n._(" dropdown on the trade block. If you do not have any token in the dropdown please add one using the ") + '<b>' + i18n._("Add Token") + '</b>' + i18n._(" button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
+			content: '<p>' + i18n._("You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please add one using the <b>Add Token</b> button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
 			target: components.workspace.find(".blocklyDraggable:contains('Submarket'):last"),
 			highlightTarget: true,
 			my: 'left center',
@@ -2601,7 +2654,7 @@ Bot.Introduction = function Introduction(){
 			nextButton: true,
 		},
 		{
-			content: '<p>' + i18n._("You can add a token to the bot using the ") + '<b>' + i18n._("Add Token") + '</b>' + i18n._(" button.") + '</p>',
+			content: '<p>' + i18n._("You can add a token to the bot using the <b>Add Token</b> button.") + '</p>',
 			target: $('.intro-token'),
 			highlightTarget: true,
 			my: 'top center',
@@ -2885,6 +2938,6 @@ i18n
 
 		Bot.View();
 		Bot.tours.introduction = Bot.Introduction();
-		Bot.tours.welcome = Bot.Welcome()
+		Bot.tours.welcome = Bot.Welcome();
 		Bot.tours.welcome.welcome();
 	});

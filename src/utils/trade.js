@@ -12,9 +12,9 @@ Bot.Trade = function(){
 		Bot.addTrade(contract);
 		var payout = (contract.result !== 'win' )? 0 : +contract.payout;
 		Bot.display.lastProfit = +(payout - +contract.askPrice).toFixed(2);
-		Bot.display.totalStake = +(+Bot.display.totalStake + +contract.askPrice).toFixed(2);
+		Bot.display.totalStake = +(+Bot.display.totalStake + (+contract.askPrice)).toFixed(2);
 		Bot.display.totalPayout = +(+Bot.display.totalPayout + payout).toFixed(2);
-		Bot.display.totalProfit = +(+Bot.display.totalProfit + +Bot.display.lastProfit).toFixed(2);
+		Bot.display.totalProfit = +(+Bot.display.totalProfit + (+Bot.display.lastProfit)).toFixed(2);
 		Bot.display.lastResult = contract.result;
 		Bot.updateDisplay();
 
@@ -31,7 +31,7 @@ Bot.Trade = function(){
 			+( (contract.barrier) ? contract.barrier : 0 ),
 		];
 
-		log('Purchase was finished, result is: ' + contract.result, (contract.result === 'win')? 'success': 'error');
+		log(i18n._('Purchase was finished, result is:') + ' ' + contract.result, (contract.result === 'win')? 'success': 'error');
 
 		Bot.on_finish(contract.result, detail_list);
 		Bot.server.listen_on_contract_update(e);
@@ -90,8 +90,8 @@ Bot.Trade = function(){
 		window.addEventListener(eventName, functionName);
 	};
 
-	Bot.server.accounts = [['Please add a token first', '']];
-	Bot.server.purchase_choices = [['Click to select', '']];
+	Bot.server.accounts = [[i18n._('Please add a token first'), '']];
+	Bot.server.purchase_choices = [[i18n._('Click to select'), '']];
 
 	Bot.server.getAccounts = function getAccounts(){
 		return Bot.server.accounts;
@@ -132,28 +132,28 @@ Bot.Trade = function(){
 	Bot.server.logout = function logout(){
 		Bot.utils.getStorageManager().removeAllTokens();
 		Bot.utils.updateTokenList();
-		log('Logged you out!', 'info');
+		log(i18n._('Logged you out!'), 'info');
 	};
 
 	Bot.server.addAccount = function addAccount(token){
 		var index = Bot.server.findToken(token);
 		if ( index >= 0 ) {
-			log('Token already added.', 'info');
+			log(i18n._('Token already added.'), 'info');
 			return;
 		}
 		if ( token === '' ) {
-			showError('Token cannot be empty');
+			showError(i18n._('Token cannot be empty'));
 		} else if ( token !== null ) {
 			var api = new LiveApi();
 			api.authorize(token).then(function(response){
 				api.disconnect();
 				Bot.utils.getStorageManager().addToken(token, response.authorize.loginid);
 				Bot.utils.updateTokenList(token);
-				log('Your token was added successfully', 'info');
+				log(i18n._('Your token was added successfully'), 'info');
 			}, function(reason){
 				api.disconnect();
 				Bot.server.removeToken(token);
-				showError('Authentication using token: ' + token + ' failed!');
+				showError(i18n._('Authentication failed using token:') + ' ' + token);
 			});
 		}
 	};
@@ -177,13 +177,13 @@ Bot.Trade = function(){
 			subscribe: 1
 		}).then(function(response){
 		}, function(reason){
-			log('Could not get balance');
+			log(i18n._('Could not get balance'));
 		});
 	};
 
 	Bot.server.observeTicks = function observeTicks(){
 		Bot.server.api.events.on('tick', function (feed) {
-			log('tick received at: ' + feed.tick.epoch);
+			log(i18n._('tick received at:') + ' ' + feed.tick.epoch);
 			Bot.server.contractService.addTick(feed.tick);
 		});
 
@@ -223,7 +223,7 @@ Bot.Trade = function(){
 			"count": Bot.server.contractService.getCapacity(),
 			"subscribe": 1
 		}).then(function(value){
-			log('Request receieved for history');
+			log(i18n._('Request receieved for history'));
 			if ( callback ) {
 				callback();
 			}
@@ -241,7 +241,7 @@ Bot.Trade = function(){
 			}
 			Bot.server.contracts.push(value);
 			if ( Bot.server.contracts.length === 2 ) {
-				log('Contracts are ready to be purchased by the strategy', 'info'); 
+				log(i18n._('Contracts are ready to be purchased by the strategy'), 'info'); 
 				Bot.server.listen_on('strategy:updated', Bot.server.listen_on_strategy);
 			}
 		});
@@ -268,7 +268,7 @@ Bot.Trade = function(){
 					contract: {
 						result: result,
 						askPrice: data.buy_price,
-						statement: data.transaction_ids['buy'],
+						statement: data.transaction_ids.buy,
 						type: data.contract_type,
 						entrySpot: data.entry_tick,
 						entrySpotTime: data.entry_tick_time,
@@ -322,7 +322,7 @@ Bot.Trade = function(){
 			portfolio.portfolio.contracts.forEach(function (contract) {
 				if (contract.contract_id == contractId) {
 					Bot.server.state = 'PORTFOLIO_RECEIVED';
-					log('Waiting for the purchased contract to finish', 'info');
+					log(i18n._('Waiting for the purchased contract to finish'), 'info');
 					Bot.server.contractService.addContract({
 						statement: contract.transaction_id,
 						startTime: contract.date_start + 1,
@@ -345,7 +345,7 @@ Bot.Trade = function(){
 	Bot.server.purchase = function purchase(option){
 		window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type)? Bot.server.contracts[1] : Bot.server.contracts[0];
-		log('Purchased: ' + proposalContract.proposal.longcode, 'info');
+		log(i18n._('Purchased:') + ' ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price).then(function(purchaseContract){
 			Bot.display.numOfRuns++;
 			Bot.updateDisplay();
@@ -389,7 +389,7 @@ Bot.Trade = function(){
 				if ( Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized >= 1 ) {  // prevent live-api to call this many times in case of disconnect
 					Bot.server.initContractService();
 					Bot.server.lastAuthorized = now;
-					log('Authenticated using token: ' + Bot.server.token , 'info');
+					log(i18n._('Authenticated using token:') + ' ' + Bot.server.token , 'info');
 					if ( Bot.server.firstRun ) { 
 						Bot.server.firstRun = false;
 						Bot.server.listen_on('tick:updated', Bot.server.listen_on_tick_update);
@@ -432,7 +432,7 @@ Bot.Trade = function(){
 
 	Bot.server.trade = function trade(token, callback, trade_again){
 		if ( token === '' ) {
-			showError('No token is available to authenticate');
+			showError(i18n._('No token is available to authenticate'));
 		} else {
 			Bot.server.authorizeCallback = callback;
 			Bot.server.purchaseNotDone = false;

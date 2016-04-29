@@ -193,7 +193,8 @@ var ContractService = function ContractService() {
 		var broadcastable = true;
 
 		var setNotBroadcastable = function setNotBroadcastable(){
-			return broadcastable = false;
+			broadcastable = false;
+			return broadcastable;
 		};
 
 		var isFinished = function isFinished(){
@@ -295,7 +296,7 @@ var ContractService = function ContractService() {
 						if ( contract.seenTicksCount === 0 ) {
 							contract.barrier = parseFloat(lastPrice);
 						} else {
-							contract.barrier = ( parseFloat(lastPrice) + parseFloat(contract.barrier) * contract.seenTicksCount ) / ( contract.seenTicksCount + 1 )
+							contract.barrier = ( parseFloat(lastPrice) + parseFloat(contract.barrier) * contract.seenTicksCount ) / ( contract.seenTicksCount + 1 );
 						}
 						contract.seenTicksCount += 1;
 					}	

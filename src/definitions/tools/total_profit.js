@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
 
-Blockly.Blocks['total_profit'] = {
+Blockly.Blocks.total_profit = {
   init: function() {
     this.appendDummyInput()
         .appendField("Total Profit");

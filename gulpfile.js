@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+		jshint = require('gulp-jshint'),
 		gp_rename = require('gulp-rename'),
 		gp_uglify = require('gulp-uglify');
 		gp_watch = require('gulp-watch'),
@@ -41,6 +42,12 @@ var customTransform = function _transform(file, enc, done) {
 
 	done();
 };
+
+gulp.task('lint', function() {
+	return gulp.src(['./src/**/*.js', "!./src/**/*.min.js"])
+		.pipe(jshint())
+		.pipe(jshint.reporter('default'));
+});
 
 gulp.task('clean_i18n', function () {
 	return del(['www/i18n/*.json']);
@@ -97,7 +104,7 @@ gulp.task('after_all', function(){
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('build', ['vendor', 'globals', 'definitions', 'code_generators', 'utils', 'tours', 'after_all'], function(){
+gulp.task('build', ['lint', 'vendor', 'globals', 'definitions', 'code_generators', 'utils', 'tours', 'after_all'], function(){
 	return gulp.src(['www/js/{globals,definitions,code_generators,utils,tours,after_all}.js'])
 		.pipe(vinylPaths(del))
 		.pipe(concat('binary-bot.js'))

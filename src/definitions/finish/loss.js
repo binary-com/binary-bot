@@ -1,4 +1,4 @@
-Blockly.Blocks['contract_loss'] = {
+Blockly.Blocks.contract_loss = {
   init: function() {
     this.appendDummyInput()
         .appendField("Loss");

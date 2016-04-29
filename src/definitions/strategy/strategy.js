@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
 
-Blockly.Blocks['on_strategy'] = {
+Blockly.Blocks.on_strategy = {
   init: function() {
     this.appendDummyInput()
         .appendField("Strategy (Decide when to purchase with each tick)");

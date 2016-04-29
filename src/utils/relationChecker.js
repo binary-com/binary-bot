@@ -36,7 +36,7 @@ Bot.RelationChecker = function RelationChecker(){
 			}
 		}
 		if ( _trade.childBlocks_.length > 0 && Bot.config.ticktrade_markets.indexOf(_trade.childBlocks_[0].type) < 0 ) {
-			Bot.utils.log('The trade block can only accept submarket blocks', 'warning');
+			Bot.utils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
 			Array.prototype.slice.apply(_trade.childBlocks_).forEach(function(child){
 				child.unplug();
 			});
@@ -50,14 +50,14 @@ Bot.RelationChecker = function RelationChecker(){
 		var topParent = Bot.utils.findTopParentBlock(_trade);
 		if ( topParent !== null ) {
 			if ( Bot.config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.type === 'on_strategy' || topParent.type === 'on_finish' ) {
-				Bot.utils.log('The trade block cannot be inside binary blocks', 'warning');
+				Bot.utils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
 				_trade.unplug();
 			}
 		}
 	};
 	var submarket = function submarket(_submarket, ev){
 		if ( _submarket.childBlocks_.length > 0 && Bot.config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0 ) {
-			Bot.utils.log('Submarket blocks can only accept condition blocks', 'warning');
+			Bot.utils.log(i18n._('Submarket blocks can only accept condition blocks'), 'warning');
 			Array.prototype.slice.apply(_submarket.childBlocks_).forEach(function(child){
 				child.unplug();
 			});
@@ -66,7 +66,7 @@ Bot.RelationChecker = function RelationChecker(){
 		}
 		if ( _submarket.parentBlock_ !== null) {
 			if ( _submarket.parentBlock_.type !== 'trade' ) {
-				Bot.utils.log('Submarket blocks have to be added to the trade block', 'warning');
+				Bot.utils.log(i18n._('Submarket blocks have to be added to the trade block'), 'warning');
 				_submarket.unplug();
 			}
 		}
@@ -74,7 +74,7 @@ Bot.RelationChecker = function RelationChecker(){
 	var condition = function condition(_condition, ev, calledByParent){
 		if ( _condition.parentBlock_ !== null ) {
 			if ( Bot.config.ticktrade_markets.indexOf(_condition.parentBlock_.type) < 0 ) {
-				Bot.utils.log('Condition blocks have to be added to submarket blocks', 'warning');
+				Bot.utils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
 				_condition.unplug();
 			} else {
 				Bot.utils.broadcast('tour:condition');
@@ -84,7 +84,7 @@ Bot.RelationChecker = function RelationChecker(){
 						var duration = getNumField(_condition, 'DURATION');
 						if ( duration !== '' ) {
 							if ( !isInteger(duration) || !isInRange(duration, 5, 15) ) {
-								Bot.utils.log('Number of ticks must be between 5 and 10', 'warning');
+								Bot.utils.log(i18n._('Number of ticks must be between 5 and 10'), 'warning');
 							} else {
 								Bot.utils.broadcast('tour:ticks');
 								added.push('DURATION');
@@ -97,7 +97,7 @@ Bot.RelationChecker = function RelationChecker(){
 						var prediction = getNumField(_condition, 'PREDICTION');
 						if ( prediction !== '' ) {
 							if ( !isInteger(prediction) || !isInRange(prediction, 0, 9) ) {
-								Bot.utils.log('Prediction must be one digit', 'warning');
+								Bot.utils.log(i18n._('Prediction must be one digit'), 'warning');
 							} else {
 								added.push('PREDICTION');
 							}
@@ -119,7 +119,7 @@ Bot.RelationChecker = function RelationChecker(){
 	var inside_strategy = function inside_strategy(blockObject, ev, name) {
 		var topParent = Bot.utils.findTopParentBlock(blockObject);
 		if ( topParent !== null && ( topParent.type === 'on_finish' || topParent.type === 'trade' ) ) {
-			Bot.utils.log(name + ' must be added inside the strategy block', 'warning');
+			Bot.utils.log(i18n._(name + ' ' + 'must be added inside the strategy block'), 'warning');
 			blockObject.unplug();
 		} else if ( topParent !== null && topParent.type === 'on_strategy' ) {
 			if ( blockObject.type === 'purchase' ) {
@@ -130,7 +130,7 @@ Bot.RelationChecker = function RelationChecker(){
 	var inside_finish = function inside_finish(blockObject, ev, name) {
 		var topParent = Bot.utils.findTopParentBlock(blockObject);
 		if ( topParent !== null && ( topParent.type === 'on_strategy' || topParent.type === 'trade' ) ) {
-			Bot.utils.log(name + ' must be added inside the finish block', 'warning');
+			Bot.utils.log(i18n._(name + ' ' + 'must be added inside the finish block'), 'warning');
 			blockObject.unplug();
 		} else if ( topParent !== null && topParent.type === 'on_finish' ) {
 			if ( blockObject.type === 'trade_again' ) {

@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 
-Blockly.Blocks['tick'] = {
+Blockly.Blocks.tick = {
   init: function() {
     this.appendDummyInput()
         .appendField("Tick Value");

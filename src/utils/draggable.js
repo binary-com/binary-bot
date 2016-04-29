@@ -1,3 +1,4 @@
+/* jshint ignore:start */
 (function($) {
 	$.fn.drags = function(opt) {
 
@@ -39,3 +40,4 @@
 
 	}
 })(jQuery);
+/* jshint ignore:end */

@@ -34,6 +34,6 @@ i18n
 
 		Bot.View();
 		Bot.tours.introduction = Bot.Introduction();
-		Bot.tours.welcome = Bot.Welcome()
+		Bot.tours.welcome = Bot.Welcome();
 		Bot.tours.welcome.welcome();
 	});

@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 
-Blockly.Blocks['purchase'] = {
+Blockly.Blocks.purchase = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField("Purchase")

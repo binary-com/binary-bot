@@ -1,4 +1,4 @@
-Blockly.Blocks['direction_up'] = {
+Blockly.Blocks.direction_up = {
   init: function() {
     this.appendDummyInput()
         .appendField("Up");
