@@ -7,7 +7,7 @@ Blockly.Blocks.balance = {
         .appendField(new Blockly.FieldDropdown([["string", "STR"], ["number", "NUM"]]), "BALANCE_TYPE");
     this.setOutput(true, null);
     this.setColour(180);
-    this.setTooltip('Get balance number or string');
+    this.setTooltip(i18n._('Get balance number or string'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };

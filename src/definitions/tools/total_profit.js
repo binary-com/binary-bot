@@ -6,7 +6,7 @@ Blockly.Blocks.total_profit = {
         .appendField("Total Profit");
     this.setOutput(true, "Number");
     this.setColour(180);
-    this.setTooltip('Returns the total profit since the bot page is opened');
+    this.setTooltip(i18n._('Returns the total profit'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };

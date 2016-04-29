@@ -9,7 +9,7 @@ Blockly.Blocks.notify = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(180);
-    this.setTooltip('Creates notification');
+    this.setTooltip(i18n._('Creates notification'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };

@@ -532,7 +532,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, "Condition");
 			this.setColour(15);
-			this.setTooltip('Provides the contract conditions ' + option_names[0] + '/' + option_names[1] + ' for the chosen submarket');
+			this.setTooltip(i18n._('Provides the contract conditions:') + ' ' + option_names[0] + '/' + option_names[1]);
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){
@@ -549,7 +549,7 @@ Blockly.Blocks.contract_details = {
         .appendField("Contract Details");
     this.setOutput(true, "Array");
     this.setColour(180);
-    this.setTooltip('Returns the list of details for the finished contract');
+    this.setTooltip(i18n._('Returns the list of details for the finished contract'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -566,7 +566,7 @@ Blockly.Blocks.on_finish = {
     this.appendStatementInput("FINISH_STACK")
         .setCheck("TradeAgain");
     this.setColour(290);
-    this.setTooltip('This block decides what to do when a purchased contract is finished');
+    this.setTooltip(i18n._('This block decides what to do when a purchased contract is finished'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };
@@ -577,7 +577,7 @@ Blockly.Blocks.contract_loss = {
         .appendField("Loss");
     this.setOutput(true, "Boolean");
     this.setColour(180);
-    this.setTooltip('True if the tick direction is loss');
+    this.setTooltip(i18n._('True if the tick direction is loss'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -594,7 +594,7 @@ Blockly.Blocks.read_details = {
         .appendField(new Blockly.FieldDropdown(Bot.config.lists.DETAILS), "DETAIL_INDEX");
 		this.setOutput(true, null);
     this.setColour(180);
-    this.setTooltip('Reads a selected option from contract details list');
+    this.setTooltip(i18n._('Reads a selected option from contract details list'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -610,7 +610,7 @@ Blockly.Blocks.contract_result = {
         .appendField("Contract Result");
     this.setOutput(true, "String");
     this.setColour(180);
-    this.setTooltip('Returns the result of the finished contract');
+    this.setTooltip(i18n._('Returns the result of the finished contract'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -627,7 +627,7 @@ Blockly.Blocks.trade_again = {
 			.appendField("Trade Again");
 		this.setPreviousStatement(true, 'TradeAgain');
 		this.setColour(180);
-		this.setTooltip('Runs the trade block again');
+		this.setTooltip(i18n._('Runs the trade block again'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
@@ -641,7 +641,7 @@ Blockly.Blocks.contract_win = {
         .appendField("Win");
     this.setOutput(true, "Boolean");
     this.setColour(180);
-    this.setTooltip('True if the tick direction is win');
+    this.setTooltip(i18n._('True if the tick direction is win'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -657,7 +657,7 @@ Blockly.Blocks.direction = {
         .appendField("Tick Direction");
     this.setOutput(true, "String");
     this.setColour(180);
-    this.setTooltip('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick');
+    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -672,7 +672,7 @@ Blockly.Blocks.direction_down = {
         .appendField("Down");
     this.setOutput(true, "Boolean");
     this.setColour(180);
-    this.setTooltip('True if the tick direction is Down');
+    this.setTooltip(i18n._('True if the tick direction is Down'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -686,7 +686,7 @@ Blockly.Blocks.direction_no_change = {
         .appendField("No Change");
     this.setOutput(true, "Boolean");
     this.setColour(180);
-    this.setTooltip('True if the tick direction is No Change');
+    this.setTooltip(i18n._('True if the tick direction is No Change'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -703,7 +703,7 @@ Blockly.Blocks.purchase = {
 			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
 		this.setPreviousStatement(true, 'Purchase');
 		this.setColour(180);
-		this.setTooltip('Purchases a chosen contract. Accepts index to choose between the contracts.');
+		this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
@@ -720,7 +720,7 @@ Blockly.Blocks.on_strategy = {
     this.appendStatementInput("STRATEGY_STACK")
         .setCheck('Purchase');
     this.setColour(290);
-    this.setTooltip('This block decides what to do each time a new tick is received');
+    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };
@@ -733,7 +733,7 @@ Blockly.Blocks.tick = {
         .appendField("Tick Value");
     this.setOutput(true, "Number");
     this.setColour(180);
-    this.setTooltip('Returns the tick value received by a strategy block');
+    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -747,7 +747,7 @@ Blockly.Blocks.direction_up = {
         .appendField("Up");
     this.setOutput(true, "Boolean");
     this.setColour(180);
-    this.setTooltip('True if the tick direction is Up');
+    this.setTooltip(i18n._('True if the tick direction is Up'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
@@ -764,7 +764,7 @@ Blockly.Blocks.balance = {
         .appendField(new Blockly.FieldDropdown([["string", "STR"], ["number", "NUM"]]), "BALANCE_TYPE");
     this.setOutput(true, null);
     this.setColour(180);
-    this.setTooltip('Get balance number or string');
+    this.setTooltip(i18n._('Get balance number or string'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };
@@ -780,7 +780,7 @@ Blockly.Blocks.notify = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(180);
-    this.setTooltip('Creates notification');
+    this.setTooltip(i18n._('Creates notification'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };
@@ -793,7 +793,7 @@ Blockly.Blocks.total_profit = {
         .appendField("Total Profit");
     this.setOutput(true, "Number");
     this.setColour(180);
-    this.setTooltip('Returns the total profit since the bot page is opened');
+    this.setTooltip(i18n._('Returns the total profit'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };
@@ -810,7 +810,7 @@ Bot.config.ticktrade_markets.forEach(function(market, index){
 			this.setInputsInline(true);
 			this.setPreviousStatement(true, "Submarket");
 			this.setColour(345);
-			this.setTooltip('Chooses the market ' + Bot.config.ticktrade_market_names[index] + ' for the trade block');
+			this.setTooltip(i18n._('Chooses the market:') + ' ' + Bot.config.ticktrade_market_names[index]);
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){

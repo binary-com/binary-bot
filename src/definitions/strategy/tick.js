@@ -6,7 +6,7 @@ Blockly.Blocks.tick = {
         .appendField("Tick Value");
     this.setOutput(true, "Number");
     this.setColour(180);
-    this.setTooltip('Returns the tick value received by a strategy block');
+    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {

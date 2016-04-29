@@ -7,7 +7,7 @@ Blockly.Blocks.on_strategy = {
     this.appendStatementInput("STRATEGY_STACK")
         .setCheck('Purchase');
     this.setColour(290);
-    this.setTooltip('This block decides what to do each time a new tick is received');
+    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };

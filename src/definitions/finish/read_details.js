@@ -7,7 +7,7 @@ Blockly.Blocks.read_details = {
         .appendField(new Blockly.FieldDropdown(Bot.config.lists.DETAILS), "DETAIL_INDEX");
 		this.setOutput(true, null);
     this.setColour(180);
-    this.setTooltip('Reads a selected option from contract details list');
+    this.setTooltip(i18n._('Reads a selected option from contract details list'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {

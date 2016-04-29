@@ -4,7 +4,7 @@ Blockly.Blocks.direction_up = {
         .appendField("Up");
     this.setOutput(true, "Boolean");
     this.setColour(180);
-    this.setTooltip('True if the tick direction is Up');
+    this.setTooltip(i18n._('True if the tick direction is Up'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {

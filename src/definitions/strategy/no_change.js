@@ -4,7 +4,7 @@ Blockly.Blocks.direction_no_change = {
         .appendField("No Change");
     this.setOutput(true, "Boolean");
     this.setColour(180);
-    this.setTooltip('True if the tick direction is No Change');
+    this.setTooltip(i18n._('True if the tick direction is No Change'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
