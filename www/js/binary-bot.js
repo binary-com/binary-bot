@@ -2827,8 +2827,8 @@ Bot.Introduction = function Introduction() {
 			}
 		},
 		stop: function stop() {
+			Bot.utils.setOpacityForAll(true, 1);
 			started = false;
-			Bot.utils.setOpacityForAll(started, 1);
 			Bot.tour.stop();
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete Bot.tour;
@@ -2989,8 +2989,8 @@ Bot.Welcome = function Welcome() {
 			}
 		},
 		stop: function stop() {
+			Bot.utils.setOpacityForAll(true, 1);
 			started = false;
-			Bot.utils.setOpacityForAll(started, 1);
 			Bot.tour.stop();
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete Bot.tour;
