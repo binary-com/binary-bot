@@ -1,5 +1,5 @@
 Bot.Version = function Version(){
-	Bot.version = '1.1.3';
+	Bot.version = '1.1.4';
 	if (Bot.debug) {
 		console.log('%cBinary Bot (v' + Bot.version + ') started.', 'color: green');
 	} else {
