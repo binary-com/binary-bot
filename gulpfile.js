@@ -13,7 +13,7 @@ var gulp = require('gulp'),
 
 var options = {
 	attr: {
-		list: ['data-i18n'],
+		list: ['data-i18n', 'i18n'],
 		extensions: ['.html', '.htm']
 	},
 	func: {
@@ -41,7 +41,7 @@ var customTransform = function _transform(file, enc, done) {
 	});
 
 	parser.parseAttrFromString(content, {
-		list: ['data-i18n-text'],
+		list: ['data-i18n-text', 'i18n-text'],
 	}, function (key) {
 		var value = key;
 		var defaultKey = hash(value);
@@ -62,7 +62,7 @@ gulp.task('clean_i18n', function () {
 });
 
 gulp.task('i18n', ['clean_i18n'], function () {
-	return gulp.src(['src/**/*.js', '*.html'])
+	return gulp.src(['src/**/*.js', 'www/xml/*.xml', '*.html'])
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
 });
@@ -125,7 +125,7 @@ gulp.task('build', ['pack'], function(){
 });
 
 gulp.task('watch', ['i18n', 'build'], function () {
-	gp_watch(['src/**/*.js', '*.html'], function(){
+	gp_watch(['src/**/*.js', 'www/xml/*.xml', '*.html'], function(){
 		gulp.run(['i18n', 'build']);
 	});
 });

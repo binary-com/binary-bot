@@ -1,0 +1,6 @@
+<xml id="startBlocks" style="display: none">
+	<block type="trade" id="trade" x="10" y="10"></block>
+	<block type="on_strategy" id="strategy" x="400" y="10"></block>
+	<block type="on_finish" id="finish" x="400" y="210"></block>
+</xml>
+

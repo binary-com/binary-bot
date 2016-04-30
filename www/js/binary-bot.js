@@ -351,20 +351,34 @@ Bot.Version = function Version(){
 };
 
 Bot.View = function View() {
-	var workspace = Blockly.inject('blocklyDiv', {
-		media: 'node_modules/blockly/media/',
-		toolbox: document.getElementById('toolbox'),
-		zoom: {
-			controls: true,
-			wheel: true,
-			startScale: 1.0,
-			maxScale: 3,
-			minScale: 0.3,
-			scaleSpeed: 1.2
-		},
-		trashcan: true,
+	var workspace;
+	$.get('www/xml/toolbox.xml', function(toolbox){
+		workspace = Blockly.inject('blocklyDiv', {
+			media: 'node_modules/blockly/media/',
+			toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
+			zoom: {
+				controls: true,
+				wheel: true,
+				startScale: 1.0,
+				maxScale: 3,
+				minScale: 0.3,
+				scaleSpeed: 1.2
+			},
+			trashcan: true,
+		});
+		$.get('www/xml/main.xml', function(main){
+			Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+			Blockly.mainWorkspace.getBlockById('trade')
+				.setDeletable(false);
+			Blockly.mainWorkspace.getBlockById('strategy')
+				.setDeletable(false);
+			Blockly.mainWorkspace.getBlockById('finish')
+				.setDeletable(false);
+			Bot.utils.updateTokenList();
+			Bot.utils.addPurchaseOptions();
+			Blockly.mainWorkspace.clearUndo();
+		});
 	});
-	Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'), workspace);
 
 	var handleFileSelect = function handleFileSelect(e) {
 		var files;
@@ -460,16 +474,6 @@ Bot.View = function View() {
 		ticks: []
 	});
 
-	Blockly.mainWorkspace.getBlockById('trade')
-		.setDeletable(false);
-	Blockly.mainWorkspace.getBlockById('strategy')
-		.setDeletable(false);
-	Blockly.mainWorkspace.getBlockById('finish')
-		.setDeletable(false);
-	Bot.utils.updateTokenList();
-	Bot.utils.addPurchaseOptions();
-	Blockly.mainWorkspace.clearUndo();
-	
 	Bot.uiComponents = {
 		tutorialList: '.tutorialList',
 		logout: '.logout',
