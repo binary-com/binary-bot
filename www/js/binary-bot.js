@@ -560,85 +560,6 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 	};
 });
 
-Blockly.Blocks.check_direction = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(i18n._("Direction is"))
-				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
-    this.setOutput(true, "Boolean");
-    this.setColour(180);
-    this.setTooltip(i18n._('True if the direction matches the selection'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Check Direction');
-	},
-};
-
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
-
-Blockly.Blocks.direction = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(i18n._("Tick Direction"));
-    this.setOutput(true, "String");
-    this.setColour(180);
-    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Direction');
-	},
-};
-
-
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-
-Blockly.Blocks.purchase = {
-	init: function() {
-		this.appendDummyInput()
-			.appendField(i18n._("Purchase"))
-			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
-		this.setPreviousStatement(true, 'Purchase');
-		this.setColour(180);
-		this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
-		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	},
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Purchase');
-	},
-};
-
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
-
-Blockly.Blocks.on_strategy = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
-    this.appendStatementInput("STRATEGY_STACK")
-        .setCheck('Purchase');
-    this.setColour(290);
-    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  }
-};
-
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
-
-Blockly.Blocks.tick = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(i18n._("Tick Value"));
-    this.setOutput(true, "Number");
-    this.setColour(180);
-    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Value');
-	},
-};
-
 Blockly.Blocks.contract_check_result = {
   init: function() {
     this.appendDummyInput()
@@ -734,6 +655,85 @@ Blockly.Blocks.trade_again = {
 	},
 };
 
+Blockly.Blocks.check_direction = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Direction is"))
+				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
+    this.setOutput(true, "Boolean");
+    this.setColour(180);
+    this.setTooltip(i18n._('True if the direction matches the selection'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  },
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Check Direction');
+	},
+};
+
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
+
+Blockly.Blocks.direction = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Tick Direction"));
+    this.setOutput(true, "String");
+    this.setColour(180);
+    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  },
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Direction');
+	},
+};
+
+
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+
+Blockly.Blocks.purchase = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(i18n._("Purchase"))
+			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
+		this.setPreviousStatement(true, 'Purchase');
+		this.setColour(180);
+		this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
+		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	},
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Purchase');
+	},
+};
+
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
+
+Blockly.Blocks.on_strategy = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
+    this.appendStatementInput("STRATEGY_STACK")
+        .setCheck('Purchase');
+    this.setColour(290);
+    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  }
+};
+
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
+
+Blockly.Blocks.tick = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Tick Value"));
+    this.setOutput(true, "Number");
+    this.setColour(180);
+    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  },
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Value');
+	},
+};
+
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 
 Blockly.Blocks.balance = {
@@ -755,7 +755,7 @@ Blockly.Blocks.notify = {
     this.appendValueInput("MESSAGE")
         .setCheck(null)
         .appendField(i18n._("Notify type:"))
-        .appendField(new Blockly.FieldDropdown([["success", "success"], ["information", "info"], ["warning", "warn"], ["error", "error"]]), "NOTIFICATION_TYPE");
+        .appendField(new Blockly.FieldDropdown([[i18n._("success"), "success"], [i18n._("information"), "info"], [i18n._("warning"), "warn"], [i18n._("error"), "error"]]), "NOTIFICATION_TYPE");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(180);

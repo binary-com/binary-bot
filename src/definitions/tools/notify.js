@@ -5,7 +5,7 @@ Blockly.Blocks.notify = {
     this.appendValueInput("MESSAGE")
         .setCheck(null)
         .appendField(i18n._("Notify type:"))
-        .appendField(new Blockly.FieldDropdown([["success", "success"], ["information", "info"], ["warning", "warn"], ["error", "error"]]), "NOTIFICATION_TYPE");
+        .appendField(new Blockly.FieldDropdown([[i18n._("success"), "success"], [i18n._("information"), "info"], [i18n._("warning"), "warn"], [i18n._("error"), "error"]]), "NOTIFICATION_TYPE");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(180);
