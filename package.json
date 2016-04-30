@@ -13,16 +13,16 @@
   "author": "Amin Marashi",
   "license": "MIT",
   "dependencies": {
-    "binary-charts": "^5.3.1",
+    "binary-charts": "^5.5.4",
     "binary-live-api": "~18.0.0",
     "blockly": "git+https://git@github.com/google/blockly.git",
-    "bower": "^1.7.7",
+    "bower": "^1.7.9",
     "i18next": "^2.5.1",
     "i18next-xhr-backend": "^0.5.3",
-    "jquery": "^2.2.2",
+    "jquery": "^2.2.3",
     "js-sha1": "^0.3.0",
     "lite-server": "^2.2.0",
-    "react": "^15.0.1"
+    "react": "^15.0.2"
   },
   "devDependencies": {
     "del": "^2.2.0",
