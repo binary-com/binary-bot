@@ -1,7 +1,8 @@
 window.i18n = i18next;
 i18n._ = function _(str, opt){
 	var hash = sha1(str);
-	return i18n.t(hash);
+	var result = i18n.t(hash);
+	return (result === '') ? str : result;
 };
 i18n
 	.use(i18nextXHRBackend)

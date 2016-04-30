@@ -243,7 +243,7 @@ Bot.Trade = function () {
 				"subscribe": 1
 			})
 			.then(function (value) {
-				log(i18n._('Request receieved for history'));
+				log(i18n._('Request received for history'));
 				if (callback) {
 					callback();
 				}
