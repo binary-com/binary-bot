@@ -127,7 +127,7 @@ Bot.RelationChecker = function RelationChecker() {
 	var inside_strategy = function inside_strategy(blockObject, ev, name) {
 		var topParent = Bot.utils.findTopParentBlock(blockObject);
 		if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
-			Bot.utils.log(i18n._(name + ' ' + 'must be added inside the strategy block'), 'warning');
+			Bot.utils.log(name + ' ' + i18n._('must be added inside the strategy block'), 'warning');
 			blockObject.unplug();
 		} else if (topParent !== null && topParent.type === 'on_strategy') {
 			if (blockObject.type === 'purchase') {
@@ -138,7 +138,7 @@ Bot.RelationChecker = function RelationChecker() {
 	var inside_finish = function inside_finish(blockObject, ev, name) {
 		var topParent = Bot.utils.findTopParentBlock(blockObject);
 		if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
-			Bot.utils.log(i18n._(name + ' ' + 'must be added inside the finish block'), 'warning');
+			Bot.utils.log(name + ' ' + i18n._('must be added inside the finish block'), 'warning');
 			blockObject.unplug();
 		} else if (topParent !== null && topParent.type === 'on_finish') {
 			if (blockObject.type === 'trade_again') {

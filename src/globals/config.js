@@ -36,29 +36,29 @@ Bot.Config = function Config() {
 
 		opposites: {
 			UPDOWN: [{
-				'CALL': i18n._('Up')
+				i18n._('Up'): 'CALL'
 			}, {
-				'PUT': i18n._('Down')
+				i18n._('Down'): 'PUT'
 			}],
 			ASIAN: [{
-				'ASIANU': i18n._('Asian Up')
+				i18n._('Asian Up'): 'ASIANU'
 			}, {
-				'ASIAND': i18n._('Asian Down')
+				i18n._('Asian Down'): 'ASIAND'
 			}],
 			MATCHESDIFFERS: [{
-				'DIGITMATCH': i18n._('Matches')
+				i18n._('Matches'): 'DIGITMATCH'
 			}, {
-				'DIGITDIFF': i18n._('Differs')
+				i18n._('Differs'): 'DIGITDIFF'
 			}],
 			EVENODD: [{
-				'DIGITEVEN': i18n._('Even')
+				i18n._('Even'): 'DIGITEVEN'
 			}, {
-				'DIGITODD': i18n._('Odd')
+				i18n._('Odd'): 'DIGITODD'
 			}],
 			OVERUNDER: [{
-				'DIGITOVER': i18n._('Over')
+				i18n._('Over'): 'DIGITOVER'
 			}, {
-				'DIGITUNDER': i18n._('Under')
+				i18n._('Under'): 'DIGITUNDER'
 			}],
 		},
 

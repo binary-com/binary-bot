@@ -9,6 +9,6 @@ Blockly.Blocks.check_direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Check Direction');
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Check Direction');
 	},
 };

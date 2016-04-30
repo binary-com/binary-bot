@@ -60,7 +60,7 @@ Bot.Welcome = function Welcome() {
 			Bot.utils.setOpacity(started, 'file_management', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from ') + '<a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
+		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
 		target: Bot.getUiComponent('token'),
 		nextButton: true,
 		highlightTarget: true,

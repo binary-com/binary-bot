@@ -37,29 +37,29 @@ Bot.Config = function Config() {
 
 		opposites: {
 			UPDOWN: [{
-				'CALL': i18n._('Up')
+				i18n._('Up'): 'CALL'
 			}, {
-				'PUT': i18n._('Down')
+				i18n._('Down'): 'PUT'
 			}],
 			ASIAN: [{
-				'ASIANU': i18n._('Asian Up')
+				i18n._('Asian Up'): 'ASIANU'
 			}, {
-				'ASIAND': i18n._('Asian Down')
+				i18n._('Asian Down'): 'ASIAND'
 			}],
 			MATCHESDIFFERS: [{
-				'DIGITMATCH': i18n._('Matches')
+				i18n._('Matches'): 'DIGITMATCH'
 			}, {
-				'DIGITDIFF': i18n._('Differs')
+				i18n._('Differs'): 'DIGITDIFF'
 			}],
 			EVENODD: [{
-				'DIGITEVEN': i18n._('Even')
+				i18n._('Even'): 'DIGITEVEN'
 			}, {
-				'DIGITODD': i18n._('Odd')
+				i18n._('Odd'): 'DIGITODD'
 			}],
 			OVERUNDER: [{
-				'DIGITOVER': i18n._('Over')
+				i18n._('Over'): 'DIGITOVER'
 			}, {
-				'DIGITUNDER': i18n._('Under')
+				i18n._('Under'): 'DIGITUNDER'
 			}],
 		},
 
@@ -666,7 +666,7 @@ Blockly.Blocks.check_direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Check Direction');
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Check Direction');
 	},
 };
 
@@ -1616,7 +1616,7 @@ Bot.RelationChecker = function RelationChecker() {
 	var inside_strategy = function inside_strategy(blockObject, ev, name) {
 		var topParent = Bot.utils.findTopParentBlock(blockObject);
 		if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
-			Bot.utils.log(i18n._(name + ' ' + 'must be added inside the strategy block'), 'warning');
+			Bot.utils.log(name + ' ' + i18n._('must be added inside the strategy block'), 'warning');
 			blockObject.unplug();
 		} else if (topParent !== null && topParent.type === 'on_strategy') {
 			if (blockObject.type === 'purchase') {
@@ -1627,7 +1627,7 @@ Bot.RelationChecker = function RelationChecker() {
 	var inside_finish = function inside_finish(blockObject, ev, name) {
 		var topParent = Bot.utils.findTopParentBlock(blockObject);
 		if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
-			Bot.utils.log(i18n._(name + ' ' + 'must be added inside the finish block'), 'warning');
+			Bot.utils.log(name + ' ' + i18n._('must be added inside the finish block'), 'warning');
 			blockObject.unplug();
 		} else if (topParent !== null && topParent.type === 'on_finish') {
 			if (blockObject.type === 'trade_again') {
@@ -2524,7 +2524,7 @@ Bot.Introduction = function Introduction() {
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 		},
 	}, {
-		content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number ") + '(<img src="www/image/number.png"/>)' + i18n._(" from the Math menu") + '</p>',
+		content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="www/image/number.png"/>) ' + i18n._("from the Math menu") + '</p>',
 		target: Bot.getUiComponent('flyout'),
 		highlightTarget: true,
 		my: 'left center',
@@ -2543,7 +2543,7 @@ Bot.Introduction = function Introduction() {
 			Bot.utils.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("Click on the number block to edit its value ") + '(<img src="www/image/number_editing.png"/>)' + i18n._(", change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
+		content: '<p>' + i18n._("Click on the number block to edit its value") + ' (<img src="www/image/number_editing.png"/>), ' + i18n._("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
 		target: Bot.getUiComponent('workspace').find(Bot.uiComponents.submarket),
 		highlightTarget: true,
 		my: 'left center',
@@ -2864,7 +2864,7 @@ Bot.Welcome = function Welcome() {
 			Bot.utils.setOpacity(started, 'file_management', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from ') + '<a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
+		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
 		target: Bot.getUiComponent('token'),
 		nextButton: true,
 		highlightTarget: true,
