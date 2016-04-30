@@ -52,7 +52,7 @@
       </block>
     </next>
   </block>
-  <block type="on_strategy" id="strategy" deletable="false" x="396" y="16">
+  <block type="on_strategy" id="strategy" deletable="false" x="395" y="16">
     <statement name="STRATEGY_STACK">
       <block type="purchase">
         <field name="PURCHASE_LIST">DIGITEVEN</field>
@@ -64,18 +64,8 @@
       <block type="controls_if">
         <mutation else="1"></mutation>
         <value name="IF0">
-          <block type="logic_compare">
-            <field name="OP">EQ</field>
-            <value name="A">
-              <block type="variables_get">
-                <field name="VAR">result</field>
-              </block>
-            </value>
-            <value name="B">
-              <block type="text">
-                <field name="TEXT">win</field>
-              </block>
-            </value>
+          <block type="contract_check_result">
+            <field name="CHECK_RESULT">win</field>
           </block>
         </value>
         <statement name="DO0">
