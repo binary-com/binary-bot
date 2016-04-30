@@ -406,6 +406,7 @@ Bot.View = function View() {
 							.setText(tokenList[0].account_name);
 					}
 					Blockly.mainWorkspace.clearUndo();
+					Blockly.mainWorkspace.zoomToFit();
 					Bot.utils.log(i18n._('Blocks are loaded successfully'), 'success');
 				} catch (err) {
 					Bot.utils.showError(err);
