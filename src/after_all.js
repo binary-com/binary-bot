@@ -26,7 +26,6 @@ i18n.xml = function xml(dom){
 				child.setAttribute('name', (result === '') ? str : result);
 			}
 			if ( child.children.length > 0 ) {
-				console.log(child);
 				i18n.xml(child);
 			}
 		}

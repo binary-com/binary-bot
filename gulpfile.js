@@ -124,9 +124,12 @@ gulp.task('build', ['pack'], function(){
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('watch', ['i18n', 'build'], function () {
+gulp.task('build_all', ['i18n', 'build'], function () {
+});
+
+gulp.task('watch', ['build_all'], function () {
 	gp_watch(['src/**/*.js', 'www/xml/*.xml', '*.html'], function(){
-		gulp.run(['i18n', 'build']);
+		gulp.run(['build_all']);
 	});
 });
 
