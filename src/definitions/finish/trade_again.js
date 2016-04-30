@@ -3,7 +3,7 @@
 Blockly.Blocks.trade_again = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField("Trade Again");
+			.appendField(i18n._("Trade Again"));
 		this.setPreviousStatement(true, 'TradeAgain');
 		this.setColour(180);
 		this.setTooltip(i18n._('Runs the trade block again'));

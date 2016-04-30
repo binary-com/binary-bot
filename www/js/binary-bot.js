@@ -524,29 +524,28 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 		init: function() {
 			var option_names = [];
 			Bot.config.opposites[opposites].forEach(function(options){
-				
-				var option_alias = Object.keys(options)[0];
-				var option_name = options[option_alias];
+				var option_name = Object.keys(options)[0];
+				var option_alias = options[option_name];
 				option_names.push(option_name);	
 			});
 			this.appendDummyInput()
 				.appendField(option_names[0] + '/' + option_names[1]);
 			this.appendValueInput("DURATION")
 				.setCheck("Number")
-				.appendField("Ticks:");
+				.appendField(i18n._("Ticks:"));
 			this.appendDummyInput()
-				.appendField("Payout:")
+				.appendField(i18n._("Payout:"))
 				.appendField(new Blockly.FieldDropdown(Bot.config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
 			this.appendDummyInput()
-				.appendField("Currency:")
+				.appendField(i18n._("Currency:"))
 				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CURRENCY), "CURRENCY_LIST");
 			this.appendValueInput("AMOUNT")
 				.setCheck("Number")
-				.appendField("Amount:");
+				.appendField(i18n._("Amount:"));
 			if ( Bot.config.opposites_have_barrier.indexOf(opposites) > -1 ) {
 				this.appendValueInput("PREDICTION")
 					.setCheck("Number")
-					.appendField("Prediction:");
+					.appendField(i18n._("Prediction:"));
 			}
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, "Condition");
@@ -580,7 +579,7 @@ Blockly.Blocks.contract_check_result = {
 Blockly.Blocks.contract_details = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Contract Details");
+        .appendField(i18n._("Contract Details"));
     this.setOutput(true, "Array");
     this.setColour(180);
     this.setTooltip(i18n._('Returns the list of details for the finished contract'));
@@ -596,7 +595,7 @@ Blockly.Blocks.contract_details = {
 Blockly.Blocks.on_finish = {
   init: function() {
     this.appendDummyInput()
-        .appendField("On Finish (Decide what to do after the contract is finished)");
+        .appendField(i18n._("On Finish (Decide what to do after the contract is finished)"));
     this.appendStatementInput("FINISH_STACK")
         .setCheck("TradeAgain");
     this.setColour(290);
@@ -610,7 +609,7 @@ Blockly.Blocks.on_finish = {
 Blockly.Blocks.read_details = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Contract Detail:")
+        .appendField(i18n._("Contract Detail:"))
         .appendField(new Blockly.FieldDropdown(Bot.config.lists.DETAILS), "DETAIL_INDEX");
 		this.setOutput(true, null);
     this.setColour(180);
@@ -627,7 +626,7 @@ Blockly.Blocks.read_details = {
 Blockly.Blocks.contract_result = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Contract Result");
+        .appendField(i18n._("Contract Result"));
     this.setOutput(true, "String");
     this.setColour(180);
     this.setTooltip(i18n._('Returns the result of the finished contract'));
@@ -644,7 +643,7 @@ Blockly.Blocks.contract_result = {
 Blockly.Blocks.trade_again = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField("Trade Again");
+			.appendField(i18n._("Trade Again"));
 		this.setPreviousStatement(true, 'TradeAgain');
 		this.setColour(180);
 		this.setTooltip(i18n._('Runs the trade block again'));
@@ -675,7 +674,7 @@ Blockly.Blocks.check_direction = {
 Blockly.Blocks.direction = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Tick Direction");
+        .appendField(i18n._("Tick Direction"));
     this.setOutput(true, "String");
     this.setColour(180);
     this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
@@ -692,7 +691,7 @@ Blockly.Blocks.direction = {
 Blockly.Blocks.purchase = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField("Purchase")
+			.appendField(i18n._("Purchase"))
 			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
 		this.setPreviousStatement(true, 'Purchase');
 		this.setColour(180);
@@ -709,7 +708,7 @@ Blockly.Blocks.purchase = {
 Blockly.Blocks.on_strategy = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Strategy (Decide when to purchase with each tick)");
+        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
     this.appendStatementInput("STRATEGY_STACK")
         .setCheck('Purchase');
     this.setColour(290);
@@ -723,7 +722,7 @@ Blockly.Blocks.on_strategy = {
 Blockly.Blocks.tick = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Tick Value");
+        .appendField(i18n._("Tick Value"));
     this.setOutput(true, "Number");
     this.setColour(180);
     this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
@@ -739,8 +738,8 @@ Blockly.Blocks.tick = {
 Blockly.Blocks.balance = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Balance:")
-        .appendField(new Blockly.FieldDropdown([["string", "STR"], ["number", "NUM"]]), "BALANCE_TYPE");
+        .appendField(i18n._("Balance:"))
+        .appendField(new Blockly.FieldDropdown([[i18n._("string"), "STR"], [i18n._("number"(, "NUM"]]), "BALANCE_TYPE");
     this.setOutput(true, null);
     this.setColour(180);
     this.setTooltip(i18n._('Get balance number or string'));
@@ -754,7 +753,7 @@ Blockly.Blocks.notify = {
   init: function() {
     this.appendValueInput("MESSAGE")
         .setCheck(null)
-        .appendField("Notify type:")
+        .appendField(i18n._("Notify type:"))
         .appendField(new Blockly.FieldDropdown([["success", "success"], ["information", "info"], ["warning", "warn"], ["error", "error"]]), "NOTIFICATION_TYPE");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -769,7 +768,7 @@ Blockly.Blocks.notify = {
 Blockly.Blocks.total_profit = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Total Profit");
+        .appendField(i18n._("Total Profit"));
     this.setOutput(true, "Number");
     this.setColour(180);
     this.setTooltip(i18n._('Returns the total profit'));
@@ -829,7 +828,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 				throw {message: 'All condition options are required'};
 			}
 		}
-		if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
+		if (duration === '' || payouttype === '' || currency === '' || amount === ''){
 			throw {message: 'All condition options are required'};
 		}
 		var code = 'Bot.conditions.ticktrade({\n'+
@@ -954,10 +953,11 @@ Bot.Conditions = function Conditions() {
 			var opposites = Bot.config.opposites[parameters.condition];
 			opposites.forEach(function (option) {
 				var option_name = Object.keys(option)[0];
+				var condition = option[option_name];
 				var option_data = {
 					'amount': parameters.amount,
 					'basis': parameters.payouttype,
-					'contract_type': option_name,
+					'contract_type': condition,
 					'currency': parameters.currency,
 					'duration': parameters.duration,
 					'duration_unit': 't',
@@ -2345,15 +2345,17 @@ Bot.Utils = function Utils() {
 			var opposites = Bot.config.opposites[condition_type.toUpperCase()];
 			Bot.server.purchase_choices = [];
 			opposites.forEach(function (option, index) {
+				var name = Object.keys(option)[0];
+				var condition = option[name];
 				if (index === 0) {
 					firstOption = {
-						condition: Object.keys(option)[0],
-						name: option[Object.keys(option)[0]],
+						condition: condition,
+						name: name,
 					};
 				} else {
 					secondOption = {
-						condition: Object.keys(option)[0],
-						name: option[Object.keys(option)[0]],
+						condition: condition,
+						name: name,
 					};
 				}
 				Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);

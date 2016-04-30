@@ -3,7 +3,7 @@
 Blockly.Blocks.on_finish = {
   init: function() {
     this.appendDummyInput()
-        .appendField("On Finish (Decide what to do after the contract is finished)");
+        .appendField(i18n._("On Finish (Decide what to do after the contract is finished)"));
     this.appendStatementInput("FINISH_STACK")
         .setCheck("TradeAgain");
     this.setColour(290);

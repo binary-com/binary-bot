@@ -3,7 +3,7 @@
 Blockly.Blocks.total_profit = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Total Profit");
+        .appendField(i18n._("Total Profit"));
     this.setOutput(true, "Number");
     this.setColour(180);
     this.setTooltip(i18n._('Returns the total profit'));

@@ -3,7 +3,7 @@
 Blockly.Blocks.tick = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Tick Value");
+        .appendField(i18n._("Tick Value"));
     this.setOutput(true, "Number");
     this.setColour(180);
     this.setTooltip(i18n._('Returns the tick value received by a strategy block'));

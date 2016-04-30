@@ -13,20 +13,20 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 				.appendField(option_names[0] + '/' + option_names[1]);
 			this.appendValueInput("DURATION")
 				.setCheck("Number")
-				.appendField("Ticks:");
+				.appendField(i18n._("Ticks:"));
 			this.appendDummyInput()
-				.appendField("Payout:")
+				.appendField(i18n._("Payout:"))
 				.appendField(new Blockly.FieldDropdown(Bot.config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
 			this.appendDummyInput()
-				.appendField("Currency:")
+				.appendField(i18n._("Currency:"))
 				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CURRENCY), "CURRENCY_LIST");
 			this.appendValueInput("AMOUNT")
 				.setCheck("Number")
-				.appendField("Amount:");
+				.appendField(i18n._("Amount:"));
 			if ( Bot.config.opposites_have_barrier.indexOf(opposites) > -1 ) {
 				this.appendValueInput("PREDICTION")
 					.setCheck("Number")
-					.appendField("Prediction:");
+					.appendField(i18n._("Prediction:"));
 			}
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, "Condition");

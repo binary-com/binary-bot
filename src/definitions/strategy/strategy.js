@@ -3,7 +3,7 @@
 Blockly.Blocks.on_strategy = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Strategy (Decide when to purchase with each tick)");
+        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
     this.appendStatementInput("STRATEGY_STACK")
         .setCheck('Purchase');
     this.setColour(290);

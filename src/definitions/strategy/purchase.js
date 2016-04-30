@@ -3,7 +3,7 @@
 Blockly.Blocks.purchase = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField("Purchase")
+			.appendField(i18n._("Purchase"))
 			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
 		this.setPreviousStatement(true, 'Purchase');
 		this.setColour(180);

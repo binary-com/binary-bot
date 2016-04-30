@@ -3,7 +3,7 @@
 Blockly.Blocks.read_details = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Contract Detail:")
+        .appendField(i18n._("Contract Detail:"))
         .appendField(new Blockly.FieldDropdown(Bot.config.lists.DETAILS), "DETAIL_INDEX");
 		this.setOutput(true, null);
     this.setColour(180);

@@ -3,8 +3,8 @@
 Blockly.Blocks.balance = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Balance:")
-        .appendField(new Blockly.FieldDropdown([["string", "STR"], ["number", "NUM"]]), "BALANCE_TYPE");
+        .appendField(i18n._("Balance:"))
+        .appendField(new Blockly.FieldDropdown([[i18n._("string"), "STR"], [i18n._("number"(, "NUM"]]), "BALANCE_TYPE");
     this.setOutput(true, null);
     this.setColour(180);
     this.setTooltip(i18n._('Get balance number or string'));

@@ -3,7 +3,7 @@
 Blockly.Blocks.contract_result = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Contract Result");
+        .appendField(i18n._("Contract Result"));
     this.setOutput(true, "String");
     this.setColour(180);
     this.setTooltip(i18n._('Returns the result of the finished contract'));
