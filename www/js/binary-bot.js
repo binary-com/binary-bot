@@ -24,6 +24,15 @@ Bot.Config = function Config() {
 				[i18n._('exit value'), '9'],
 				[i18n._('barrier'), '10'],
 			],
+			CHECK_RESULT: [
+				[i18n._('Win'), 'win'],
+				[i18n._('Loss'), 'loss'],
+			],
+			CHECK_DIRECTION: [
+				[i18n._('Up'), 'up'],
+				[i18n._('Down'), 'down'],
+				[i18n._('No Change'), ''],
+			],
 		},
 
 		opposites: {
@@ -333,7 +342,7 @@ Bot.Globals = function Globals() {
 };
 
 Bot.Version = function Version(){
-	Bot.version = '1.1.2';
+	Bot.version = '1.1.3';
 	if (Bot.debug) {
 		console.log('%cBinary Bot (v' + Bot.version + ') started.', 'color: green');
 	} else {
@@ -344,7 +353,16 @@ Bot.Version = function Version(){
 Bot.View = function View() {
 	var workspace = Blockly.inject('blocklyDiv', {
 		media: 'node_modules/blockly/media/',
-		toolbox: document.getElementById('toolbox')
+		toolbox: document.getElementById('toolbox'),
+		zoom: {
+			controls: true,
+			wheel: true,
+			startScale: 1.0,
+			maxScale: 3,
+			minScale: 0.3,
+			scaleSpeed: 1.2
+		},
+		trashcan: true,
 	});
 	Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'), workspace);
 
@@ -541,6 +559,21 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 	};
 });
 
+Blockly.Blocks.contract_check_result = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Result is"))
+				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CHECK_RESULT), "CHECK_RESULT");
+    this.setOutput(true, "Boolean");
+    this.setColour(180);
+    this.setTooltip(i18n._('True if the result matches the selection'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  },
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Check Result');
+	},
+};
+
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
 
 Blockly.Blocks.contract_details = {
@@ -569,20 +602,6 @@ Blockly.Blocks.on_finish = {
     this.setTooltip(i18n._('This block decides what to do when a purchased contract is finished'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
-};
-
-Blockly.Blocks.contract_loss = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Loss");
-    this.setOutput(true, "Boolean");
-    this.setColour(180);
-    this.setTooltip(i18n._('True if the tick direction is loss'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Loss');
-	},
 };
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
@@ -635,17 +654,18 @@ Blockly.Blocks.trade_again = {
 	},
 };
 
-Blockly.Blocks.contract_win = {
+Blockly.Blocks.check_direction = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Win");
+        .appendField(i18n._("Direction is"))
+				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
     this.setOutput(true, "Boolean");
     this.setColour(180);
-    this.setTooltip(i18n._('True if the tick direction is win'));
+    this.setTooltip(i18n._('True if the direction matches the selection'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Win');
+		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Check Direction');
 	},
 };
 
@@ -665,34 +685,6 @@ Blockly.Blocks.direction = {
 	},
 };
 
-
-Blockly.Blocks.direction_down = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Down");
-    this.setOutput(true, "Boolean");
-    this.setColour(180);
-    this.setTooltip(i18n._('True if the tick direction is Down'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Down');
-	},
-};
-
-Blockly.Blocks.direction_no_change = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("No Change");
-    this.setOutput(true, "Boolean");
-    this.setColour(180);
-    this.setTooltip(i18n._('True if the tick direction is No Change'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'No Change');
-	},
-};
 
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 
@@ -738,20 +730,6 @@ Blockly.Blocks.tick = {
   },
 	onchange: function(ev) {
 		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Value');
-	},
-};
-
-Blockly.Blocks.direction_up = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Up");
-    this.setOutput(true, "Boolean");
-    this.setColour(180);
-    this.setTooltip(i18n._('True if the tick direction is Up'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Up');
 	},
 };
 
@@ -865,6 +843,12 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 	};
 });
 
+Blockly.JavaScript.contract_check_result = function(block) {
+	var check_with = block.getFieldValue('CHECK_RESULT');
+	var code = '(result === \'' + check_with + '\')';
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
 Blockly.JavaScript.contract_details = function(block) {
 	var code = 'details';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
@@ -874,11 +858,6 @@ Blockly.JavaScript.on_finish = function(block) {
   var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
   var code = 'Bot.on_finish = function on_finish(result, details){\n' + stack + '\n};\n';
   return code;
-};
-
-Blockly.JavaScript.contract_loss = function(block) {
-	var code = '(result === \'loss\')';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript.read_details = function(block) {
@@ -901,23 +880,14 @@ Blockly.JavaScript.trade_again = function(block) {
 	return code;
 };
 
-Blockly.JavaScript.contract_win = function(block) {
-	var code = '(result === \'win\')';
+Blockly.JavaScript.check_direction = function(block) {
+	var check_with = block.getFieldValue('CHECK_DIRECTION');
+	var code = '(direction === \'' + check_with + '\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript.direction = function(block) {
 	var code = 'direction';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript.direction_down = function(block) {
-	var code = '(direction === \'down\')';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript.direction_no_change = function(block) {
-	var code = '(direction === \'\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
@@ -939,11 +909,6 @@ Blockly.JavaScript.on_strategy = function(block) {
 
 Blockly.JavaScript.tick = function(block) {
 	var code = 'tick';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript.direction_up = function(block) {
-	var code = '(direction === \'up\')';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
@@ -1990,7 +1955,7 @@ Bot.Trade = function () {
 				"subscribe": 1
 			})
 			.then(function (value) {
-				log(i18n._('Request receieved for history'));
+				log(i18n._('Request received for history'));
 				if (callback) {
 					callback();
 				}

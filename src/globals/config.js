@@ -23,6 +23,15 @@ Bot.Config = function Config() {
 				[i18n._('exit value'), '9'],
 				[i18n._('barrier'), '10'],
 			],
+			CHECK_RESULT: [
+				[i18n._('Win'), 'win'],
+				[i18n._('Loss'), 'loss'],
+			],
+			CHECK_DIRECTION: [
+				[i18n._('Up'), 'up'],
+				[i18n._('Down'), 'down'],
+				[i18n._('No Change'), ''],
+			],
 		},
 
 		opposites: {
