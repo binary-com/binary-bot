@@ -5,6 +5,9 @@ i18n._ = function _(str, opt){
 	var result = i18n.t(key);
 	return (result === '') ? str : result;
 };
+$.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+	options.async = true;
+});
 i18n.xml = function xml(dom){
 	for ( var i in dom.children ) {
 		if ( dom.children.hasOwnProperty(i) && !isNaN(+i) ) {
@@ -32,10 +35,14 @@ i18n.xml = function xml(dom){
 	}
 	return dom;
 };
-i18n
-	.use(i18nextXHRBackend)
-	.init({
-		lng: lang,
+$.get('www/i18n/' + lang + '.json', function(translation) {
+	var resources = {
+		en: {
+			translation: translation
+		},
+	};
+	i18n.init({
+		lng: 'en',
 		fallbackLng: 'en',
 		ns: [
 			'translation'
@@ -43,11 +50,7 @@ i18n
 		defaultNS: [
 			'translation'
 		],
-		backend: {
-			loadPath: '/www/i18n/{{lng}}.json',
-			savePath: '/www/i18n/{{lng}}.json',
-			allowMultiLoading: false
-		},
+		resources: resources
 	}, function() {
 		// be careful with assignments
 		if ( typeof Bot !== 'undefined' ) {
@@ -79,3 +82,4 @@ i18n
 			$(this).text(i18n._($(this).attr('data-i18n-text')));
 		});
 	});
+});
