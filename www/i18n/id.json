@@ -138,6 +138,7 @@
   "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
   "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
   "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
   "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
   "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
   "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",

@@ -5,8 +5,9 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 		init: function() {
 			var option_names = [];
 			Bot.config.opposites[opposites].forEach(function(options){
-				var option_name = Object.keys(options)[0];
-				var option_alias = options[option_name];
+				
+				var option_alias = Object.keys(options)[0];
+				var option_name = options[option_alias];
 				option_names.push(option_name);	
 			});
 			this.appendDummyInput()

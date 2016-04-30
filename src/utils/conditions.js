@@ -5,11 +5,10 @@ Bot.Conditions = function Conditions() {
 			var opposites = Bot.config.opposites[parameters.condition];
 			opposites.forEach(function (option) {
 				var option_name = Object.keys(option)[0];
-				var condition = option[option_name];
 				var option_data = {
 					'amount': parameters.amount,
 					'basis': parameters.payouttype,
-					'contract_type': condition,
+					'contract_type': option_name,
 					'currency': parameters.currency,
 					'duration': parameters.duration,
 					'duration_unit': 't',

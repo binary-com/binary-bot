@@ -140,17 +140,15 @@ Bot.Utils = function Utils() {
 			var opposites = Bot.config.opposites[condition_type.toUpperCase()];
 			Bot.server.purchase_choices = [];
 			opposites.forEach(function (option, index) {
-				var name = Object.keys(option)[0];
-				var condition = option[name];
 				if (index === 0) {
 					firstOption = {
-						condition: condition,
-						name: name,
+						condition: Object.keys(option)[0],
+						name: option[Object.keys(option)[0]],
 					};
 				} else {
 					secondOption = {
-						condition: condition,
-						name: name,
+						condition: Object.keys(option)[0],
+						name: option[Object.keys(option)[0]],
 					};
 				}
 				Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);

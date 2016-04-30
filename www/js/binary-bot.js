@@ -37,29 +37,29 @@ Bot.Config = function Config() {
 
 		opposites: {
 			UPDOWN: [{
-				i18n._('Up'): 'CALL'
+				'CALL': i18n._('Up')
 			}, {
-				i18n._('Down'): 'PUT'
+				'PUT': i18n._('Down')
 			}],
 			ASIAN: [{
-				i18n._('Asian Up'): 'ASIANU'
+				'ASIANU': i18n._('Asian Up')
 			}, {
-				i18n._('Asian Down'): 'ASIAND'
+				'ASIAND': i18n._('Asian Down')
 			}],
 			MATCHESDIFFERS: [{
-				i18n._('Matches'): 'DIGITMATCH'
+				'DIGITMATCH': i18n._('Matches')
 			}, {
-				i18n._('Differs'): 'DIGITDIFF'
+				'DIGITDIFF': i18n._('Differs')
 			}],
 			EVENODD: [{
-				i18n._('Even'): 'DIGITEVEN'
+				'DIGITEVEN': i18n._('Even')
 			}, {
-				i18n._('Odd'): 'DIGITODD'
+				'DIGITODD': i18n._('Odd')
 			}],
 			OVERUNDER: [{
-				i18n._('Over'): 'DIGITOVER'
+				'DIGITOVER': i18n._('Over')
 			}, {
-				i18n._('Under'): 'DIGITUNDER'
+				'DIGITUNDER': i18n._('Under')
 			}],
 		},
 
@@ -524,8 +524,9 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 		init: function() {
 			var option_names = [];
 			Bot.config.opposites[opposites].forEach(function(options){
-				var option_name = Object.keys(options)[0];
-				var option_alias = options[option_name];
+				
+				var option_alias = Object.keys(options)[0];
+				var option_name = options[option_alias];
 				option_names.push(option_name);	
 			});
 			this.appendDummyInput()
@@ -558,6 +559,85 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 		},
 	};
 });
+
+Blockly.Blocks.check_direction = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Direction is"))
+				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
+    this.setOutput(true, "Boolean");
+    this.setColour(180);
+    this.setTooltip(i18n._('True if the direction matches the selection'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  },
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Check Direction');
+	},
+};
+
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
+
+Blockly.Blocks.direction = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Tick Direction"));
+    this.setOutput(true, "String");
+    this.setColour(180);
+    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  },
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Direction');
+	},
+};
+
+
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+
+Blockly.Blocks.purchase = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(i18n._("Purchase"))
+			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
+		this.setPreviousStatement(true, 'Purchase');
+		this.setColour(180);
+		this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
+		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	},
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Purchase');
+	},
+};
+
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
+
+Blockly.Blocks.on_strategy = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
+    this.appendStatementInput("STRATEGY_STACK")
+        .setCheck('Purchase');
+    this.setColour(290);
+    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  }
+};
+
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
+
+Blockly.Blocks.tick = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(i18n._("Tick Value"));
+    this.setOutput(true, "Number");
+    this.setColour(180);
+    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
+    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  },
+	onchange: function(ev) {
+		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Value');
+	},
+};
 
 Blockly.Blocks.contract_check_result = {
   init: function() {
@@ -654,92 +734,13 @@ Blockly.Blocks.trade_again = {
 	},
 };
 
-Blockly.Blocks.check_direction = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(i18n._("Direction is"))
-				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
-    this.setOutput(true, "Boolean");
-    this.setColour(180);
-    this.setTooltip(i18n._('True if the direction matches the selection'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Check Direction');
-	},
-};
-
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
-
-Blockly.Blocks.direction = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(i18n._("Tick Direction"));
-    this.setOutput(true, "String");
-    this.setColour(180);
-    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Direction');
-	},
-};
-
-
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-
-Blockly.Blocks.purchase = {
-	init: function() {
-		this.appendDummyInput()
-			.appendField(i18n._("Purchase"))
-			.appendField(new Blockly.FieldDropdown(Bot.server.getPurchaseChoices), "PURCHASE_LIST");
-		this.setPreviousStatement(true, 'Purchase');
-		this.setColour(180);
-		this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
-		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	},
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Purchase');
-	},
-};
-
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
-
-Blockly.Blocks.on_strategy = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
-    this.appendStatementInput("STRATEGY_STACK")
-        .setCheck('Purchase');
-    this.setColour(290);
-    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  }
-};
-
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
-
-Blockly.Blocks.tick = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(i18n._("Tick Value"));
-    this.setOutput(true, "Number");
-    this.setColour(180);
-    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Value');
-	},
-};
-
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 
 Blockly.Blocks.balance = {
   init: function() {
     this.appendDummyInput()
         .appendField(i18n._("Balance:"))
-        .appendField(new Blockly.FieldDropdown([[i18n._("string"), "STR"], [i18n._("number"(, "NUM"]]), "BALANCE_TYPE");
+        .appendField(new Blockly.FieldDropdown([[i18n._("string"), "STR"], [i18n._("number"), "NUM"]]), "BALANCE_TYPE");
     this.setOutput(true, null);
     this.setColour(180);
     this.setTooltip(i18n._('Get balance number or string'));
@@ -828,7 +829,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 				throw {message: 'All condition options are required'};
 			}
 		}
-		if (duration === '' || payouttype === '' || currency === '' || amount === ''){
+		if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
 			throw {message: 'All condition options are required'};
 		}
 		var code = 'Bot.conditions.ticktrade({\n'+
@@ -953,11 +954,10 @@ Bot.Conditions = function Conditions() {
 			var opposites = Bot.config.opposites[parameters.condition];
 			opposites.forEach(function (option) {
 				var option_name = Object.keys(option)[0];
-				var condition = option[option_name];
 				var option_data = {
 					'amount': parameters.amount,
 					'basis': parameters.payouttype,
-					'contract_type': condition,
+					'contract_type': option_name,
 					'currency': parameters.currency,
 					'duration': parameters.duration,
 					'duration_unit': 't',
@@ -2345,17 +2345,15 @@ Bot.Utils = function Utils() {
 			var opposites = Bot.config.opposites[condition_type.toUpperCase()];
 			Bot.server.purchase_choices = [];
 			opposites.forEach(function (option, index) {
-				var name = Object.keys(option)[0];
-				var condition = option[name];
 				if (index === 0) {
 					firstOption = {
-						condition: condition,
-						name: name,
+						condition: Object.keys(option)[0],
+						name: option[Object.keys(option)[0]],
 					};
 				} else {
 					secondOption = {
-						condition: condition,
-						name: name,
+						condition: Object.keys(option)[0],
+						name: option[Object.keys(option)[0]],
 					};
 				}
 				Bot.server.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);

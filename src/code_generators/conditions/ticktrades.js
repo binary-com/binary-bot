@@ -14,7 +14,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 				throw {message: 'All condition options are required'};
 			}
 		}
-		if (duration === '' || payouttype === '' || currency === '' || amount === ''){
+		if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
 			throw {message: 'All condition options are required'};
 		}
 		var code = 'Bot.conditions.ticktrade({\n'+
