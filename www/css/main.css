@@ -16,6 +16,12 @@ body {
   display: inline-block;
   ;
 }
+.language-select {
+  display: inline-block;
+	float: right;
+	margin-top: 10px;
+	margin-right: 40px;
+}
 .type-logo {
   width: 80%;
 }

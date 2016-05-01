@@ -20,7 +20,7 @@ var options = {
 		list: ['i18next.t', 'i18n.t', 't'],
 		extensions: ['.js', '.jsx']
 	},
-	lngs: ['en', 'id'], // supported languages
+	lngs: ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'], // supported languages
 	resource: {
 		loadPath: 'www/i18n/{{lng}}.json',
 		savePath: 'www/i18n/{{lng}}.json',

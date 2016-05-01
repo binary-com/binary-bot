@@ -1,6 +1,6 @@
 Bot.View = function View() {
 	var workspace;
-	$.get('www/xml/toolbox.xml', function(toolbox){
+	$.get('www/xml/toolbox.xml', function (toolbox) {
 		workspace = Blockly.inject('blocklyDiv', {
 			media: 'node_modules/blockly/media/',
 			toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
@@ -14,7 +14,7 @@ Bot.View = function View() {
 			},
 			trashcan: true,
 		});
-		$.get('www/xml/main.xml', function(main){
+		$.get('www/xml/main.xml', function (main) {
 			Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
 			Blockly.mainWorkspace.getBlockById('trade')
 				.setDeletable(false);
@@ -143,8 +143,8 @@ Bot.View = function View() {
 
 	Bot.doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
 
-	Bot.getUiComponent = function getUiComponent(component){
+	Bot.getUiComponent = function getUiComponent(component) {
 		return $(Bot.uiComponents[component]);
 	};
-	
+
 };

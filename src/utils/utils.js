@@ -188,12 +188,19 @@ Bot.Utils = function Utils() {
 		if (enabled) {
 			Object.keys(Bot.uiComponents)
 				.forEach(function (key) {
-					if ( Bot.doNotHide.indexOf(key) < 0 ) {
-						Bot.getUiComponent(key).css('opacity', opacity);
+					if (Bot.doNotHide.indexOf(key) < 0) {
+						Bot.getUiComponent(key)
+							.css('opacity', opacity);
 						var disabled = +opacity < 1;
-						Bot.getUiComponent(key).find('button').prop('disabled', disabled);
-						Bot.getUiComponent(key).find('input').prop('disabled', disabled);
-						Bot.getUiComponent(key).find('select').prop('disabled', disabled);
+						Bot.getUiComponent(key)
+							.find('button')
+							.prop('disabled', disabled);
+						Bot.getUiComponent(key)
+							.find('input')
+							.prop('disabled', disabled);
+						Bot.getUiComponent(key)
+							.find('select')
+							.prop('disabled', disabled);
 					}
 				});
 		}
@@ -201,11 +208,18 @@ Bot.Utils = function Utils() {
 
 	var setOpacity = function setOpacity(enabled, componentName, opacity) {
 		if (enabled) {
-			Bot.getUiComponent(componentName).css('opacity', opacity);
+			Bot.getUiComponent(componentName)
+				.css('opacity', opacity);
 			var disabled = +opacity < 1;
-			Bot.getUiComponent(componentName).find('button').prop('disabled', disabled);
-			Bot.getUiComponent(componentName).find('input').prop('disabled', disabled);
-			Bot.getUiComponent(componentName).find('select').prop('disabled', disabled);
+			Bot.getUiComponent(componentName)
+				.find('button')
+				.prop('disabled', disabled);
+			Bot.getUiComponent(componentName)
+				.find('input')
+				.prop('disabled', disabled);
+			Bot.getUiComponent(componentName)
+				.find('select')
+				.prop('disabled', disabled);
 		}
 	};
 
