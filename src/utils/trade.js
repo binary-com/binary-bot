@@ -253,8 +253,26 @@ Bot.Trade = function () {
 			});
 	};
 
-	Bot.server.observeProposal = function observeProposal(options) {
+	Bot.server.requestTransaction = function requestTransaction() {
+		Bot.server.api.subscribeToTransactions();
+	};
 
+	Bot.server.observeTransaction = function observeTransaction() {
+		Bot.server.api.events.on('transaction', function(response) {
+			var transaction = response.transaction;
+			if ( transaction.action === 'sell' ) {
+				var result;
+				if (+transaction.amount === 0) {
+					result = 'loss';
+				} else {
+					result = 'win';
+				}
+				Bot.server.getContractInfo(result, transaction.contract_id, null, true);
+			}
+		});
+	};
+
+	Bot.server.observeProposal = function observeProposal(options) {
 		Bot.server.api.events.on('proposal', function (value) {
 			if (!Bot.server.purchaseNotDone) {
 				if (Bot.server.contracts.length === 2) {
@@ -427,6 +445,7 @@ Bot.Trade = function () {
 						Bot.server.observeTicks();
 						Bot.server.observeBalance();
 						Bot.server.observeProposal();
+						Bot.server.observeTransaction();
 					}
 					if (Bot.server.purchaseNotDone) {
 						Bot.server.getLastPurchaseInfo(function () {
@@ -437,6 +456,7 @@ Bot.Trade = function () {
 					}
 					Bot.server.requestBalance();
 					Bot.server.requestHistory();
+					Bot.server.requestTransaction();
 					Bot.server.state = 'AUTHORIZED';
 				}
 			}

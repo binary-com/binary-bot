@@ -85,6 +85,9 @@ th, td {
   overflow:auto;  
 	height: 169px;
 }
+#chart, #tradesDisplay, #summaryDisplay {
+	cursor: default;
+}
 #chart {
 	height: 270px;
 	width: 770px; 

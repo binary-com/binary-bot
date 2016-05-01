@@ -358,7 +358,7 @@ Bot.View = function View() {
 			toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
 			zoom: {
 				controls: true,
-				wheel: true,
+				wheel: false,
 				startScale: 1.0,
 				maxScale: 3,
 				minScale: 0.3,
@@ -463,7 +463,12 @@ Bot.View = function View() {
 		.drags();
 
 	$('#chart')
-		.mousedown(function (e) { // allow default chart mousedown actions
+		.mousedown(function (e) { // prevent chart to trigger draggable
+			e.stopPropagation();
+		});
+
+	$('table')
+		.mousedown(function (e) { // prevent tables to trigger draggable
 			e.stopPropagation();
 		});
 
@@ -977,12 +982,6 @@ Bot.Conditions = function Conditions() {
 	};
 };
 
-var broadcast = function broadcast(eventName, data) {
-	window.dispatchEvent(new CustomEvent(eventName, {
-		detail: data
-	}));
-};
-
 var ContractService = function ContractService() {
 
 	var capacity = 600;
@@ -1173,13 +1172,6 @@ var ContractService = function ContractService() {
 
 	var ContractCtrl = function ContractCtrl(contract) {
 
-		var broadcastable = true;
-
-		var setNotBroadcastable = function setNotBroadcastable() {
-			broadcastable = false;
-			return broadcastable;
-		};
-
 		var isFinished = function isFinished() {
 			return utils.isDefined(contract.exitSpotTime);
 		};
@@ -1288,25 +1280,7 @@ var ContractService = function ContractService() {
 					} else {
 						contract.result = 'loss';
 					}
-					if (isFinished() && broadcastable) {
-						contractCtrls.forEach(function (contractctrl, index) {
-							var oldContract = contractctrl.getContract();
-							if (contract !== oldContract && !contractctrl.isFinished()) {
-								setNotBroadcastable();
-							}
-						});
-						if (broadcastable) {
-							if (utils.asianTrade(contract)) {
-								contract.barrier = +parseFloat(contract.barrier)
-									.toFixed(3);
-							}
-							utils.broadcast("contract:finished", {
-								time: lastTime,
-								contract: contract,
-							});
-							setNotBroadcastable();
-						}
-					} else {
+					if (!isFinished()) {
 						utils.broadcast("contract:updated", {
 							time: lastTime,
 							contract: contract,
@@ -1317,7 +1291,6 @@ var ContractService = function ContractService() {
 		};
 
 		return {
-			setNotBroadcastable: setNotBroadcastable,
 			isFinished: isFinished,
 			getContract: getContract,
 			isSpot: isSpot,
@@ -1377,9 +1350,6 @@ var ContractService = function ContractService() {
 	};
 
 	var destroy = function destroy() {
-		contractCtrls.forEach(function (contractctrl, index) {
-			contractctrl.setNotBroadcastable();
-		});
 		localHistory = null;
 	};
 
@@ -1970,8 +1940,26 @@ Bot.Trade = function () {
 			});
 	};
 
-	Bot.server.observeProposal = function observeProposal(options) {
+	Bot.server.requestTransaction = function requestTransaction() {
+		Bot.server.api.subscribeToTransactions();
+	};
 
+	Bot.server.observeTransaction = function observeTransaction() {
+		Bot.server.api.events.on('transaction', function(response) {
+			var transaction = response.transaction;
+			if ( transaction.action === 'sell' ) {
+				var result;
+				if (+transaction.amount === 0) {
+					result = 'loss';
+				} else {
+					result = 'win';
+				}
+				Bot.server.getContractInfo(result, transaction.contract_id, null, true);
+			}
+		});
+	};
+
+	Bot.server.observeProposal = function observeProposal(options) {
 		Bot.server.api.events.on('proposal', function (value) {
 			if (!Bot.server.purchaseNotDone) {
 				if (Bot.server.contracts.length === 2) {
@@ -2144,6 +2132,7 @@ Bot.Trade = function () {
 						Bot.server.observeTicks();
 						Bot.server.observeBalance();
 						Bot.server.observeProposal();
+						Bot.server.observeTransaction();
 					}
 					if (Bot.server.purchaseNotDone) {
 						Bot.server.getLastPurchaseInfo(function () {
@@ -2154,6 +2143,7 @@ Bot.Trade = function () {
 					}
 					Bot.server.requestBalance();
 					Bot.server.requestHistory();
+					Bot.server.requestTransaction();
 					Bot.server.state = 'AUTHORIZED';
 				}
 			}

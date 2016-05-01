@@ -6,7 +6,7 @@ Bot.View = function View() {
 			toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
 			zoom: {
 				controls: true,
-				wheel: true,
+				wheel: false,
 				startScale: 1.0,
 				maxScale: 3,
 				minScale: 0.3,
@@ -111,7 +111,12 @@ Bot.View = function View() {
 		.drags();
 
 	$('#chart')
-		.mousedown(function (e) { // allow default chart mousedown actions
+		.mousedown(function (e) { // prevent chart to trigger draggable
+			e.stopPropagation();
+		});
+
+	$('table')
+		.mousedown(function (e) { // prevent tables to trigger draggable
 			e.stopPropagation();
 		});
 
