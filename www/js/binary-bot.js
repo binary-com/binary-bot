@@ -982,399 +982,6 @@ Bot.Conditions = function Conditions() {
 	};
 };
 
-var ContractService = function ContractService() {
-
-	var capacity = 600;
-
-	var localHistory,
-		contractCtrls = [];
-
-	var utils = {
-		broadcast: function broadcast(eventName, data) {
-			window.dispatchEvent(new CustomEvent(eventName, {
-				detail: data
-			}));
-		},
-		zeroPad: function zeroPad(num) {
-			if (num < 10) {
-				return '0' + num;
-			} else {
-				return num.toString();
-			}
-		},
-		getTickTime: function getTickTime(tick) {
-			var date = new Date(tick * 1000);
-			return date.getUTCHours() + ':' + utils.zeroPad(date.getUTCMinutes()) + ':' + utils.zeroPad(date.getUTCSeconds());
-		},
-		isDefined: function isDefined(obj) {
-			if (typeof obj === 'undefined' || obj === null) {
-				return false;
-			} else {
-				return true;
-			}
-		},
-		setObjValue: function setObjValue(obj, attr, value, condition) {
-			if (utils.isDefined(obj)) {
-				if (utils.isDefined(condition)) {
-					if (condition) {
-						obj[attr] = value;
-					}
-				} else if (typeof obj[attr] === 'undefined') {
-					obj[attr] = value;
-				}
-			}
-		},
-		fractionalLength: function fractionalLength(floatNumber) {
-			var stringNumber = floatNumber.toString(),
-				decimalLength = stringNumber.indexOf('.');
-			return stringNumber.length - decimalLength - 1;
-		},
-		maxFractionalLength: function maxFractionalLength(floatNumbers) {
-			var max = 0;
-			floatNumbers.forEach(function (number) {
-				max = (max < utils.fractionalLength(number)) ? utils.fractionalLength(number) : max;
-			});
-			return max;
-		},
-		lastDigit: function lastDigit(num) {
-			return parseInt(num.toString()
-				.slice(-1)[0]);
-		},
-		conditions: {
-			CALL: function condition(barrier, price) {
-				return parseFloat(price) > parseFloat(barrier);
-			},
-			PUT: function condition(barrier, price) {
-				return parseFloat(price) < parseFloat(barrier);
-			},
-			DIGITMATCH: function condition(barrier, price) {
-				return utils.lastDigit(barrier) === utils.lastDigit(price);
-			},
-			DIGITDIFF: function condition(barrier, price) {
-				return utils.lastDigit(barrier) !== utils.lastDigit(price);
-			},
-			DIGITEVEN: function condition(barrier, price) {
-				return utils.lastDigit(price) % 2 === 0;
-			},
-			DIGITODD: function condition(barrier, price) {
-				return utils.lastDigit(price) % 2 !== 0;
-			},
-			DIGITUNDER: function condition(barrier, price) {
-				return utils.lastDigit(price) < parseInt(barrier);
-			},
-			DIGITOVER: function condition(barrier, price) {
-				return utils.lastDigit(price) > parseInt(barrier);
-			},
-			ASIANU: function condition(barrier, price) {
-				return parseFloat(price) > parseFloat(barrier);
-			},
-			ASIAND: function condition(barrier, price) {
-				return parseFloat(price) < parseFloat(barrier);
-			},
-		},
-		digitTrade: function digitTrade(contract) {
-			if (contract.type.indexOf('DIGIT') === 0) {
-				return true;
-			}
-			return false;
-		},
-		asianTrade: function asianTrade(contract) {
-			if (contract.type.indexOf('ASIAN') === 0) {
-				return true;
-			}
-			return false;
-		},
-	};
-
-	var LocalHistory = function LocalHistory(capacity) {
-
-		var historyData = [];
-
-		var updateTick = function updateTick() {
-			var lastTick = historyData.slice(-1)[0].price;
-			var previousTick = historyData.slice(-2)[0].price;
-			var difference;
-			if (lastTick > previousTick) {
-				difference = 'up';
-			} else if (lastTick < previousTick) {
-				difference = 'down';
-			} else {
-				difference = '';
-			}
-			utils.broadcast('tick:updated', {
-				tick: lastTick,
-				direction: difference,
-				time: historyData.slice(-1)[0].time,
-			});
-		};
-
-		var addTick = function addTick(tick) {
-			if (parseInt(tick.epoch) > parseInt(historyData.slice(-1)[0].time)) {
-				historyData.push({
-					time: tick.epoch,
-					price: tick.quote
-				});
-				historyData.shift();
-				updateTick();
-			}
-		};
-
-		var updateHistoryArray = function updateHistoryArray(historyArray, history) {
-			var times = history.times,
-				prices = history.prices;
-			var compare = function compare(a, b) {
-				var timea = parseInt(a.time),
-					timeb = parseInt(b.time);
-				if (timea < timeb) {
-					return -1;
-				} else if (timea > timeb) {
-					return 1;
-				} else {
-					return 0;
-				}
-			};
-			var seenTimes = [];
-			times.forEach(function (time, index) {
-				if (seenTimes.indexOf(time) < 0) {
-					seenTimes.push(time);
-					historyArray.push({
-						time: time,
-						price: prices[index]
-					});
-				}
-			});
-			times.sort(compare);
-		};
-
-		var addHistory = function addHistory(history) {
-			historyData = [];
-			updateHistoryArray(historyData, history);
-			updateTick();
-		};
-
-		var getHistory = function getHistory(dataIndex, count) {
-			var end = capacity - dataIndex,
-				start = end - count;
-			if (start >= 0) {
-				return historyData.slice(start, end);
-			} else {
-				return [];
-			}
-		};
-
-		return {
-			getHistory: getHistory,
-			addTick: addTick,
-			addHistory: addHistory,
-		};
-
-	};
-
-	var ContractCtrl = function ContractCtrl(contract) {
-
-		var isFinished = function isFinished() {
-			return utils.isDefined(contract.exitSpotTime);
-		};
-
-		var getContract = function getContract() {
-			return contract;
-		};
-
-		var hasEntrySpot = function hasEntrySpot() {
-			if (utils.isDefined(contract.entrySpotIndex)) {
-				return true;
-			} else {
-				return false;
-			}
-		};
-
-		var hasExitSpot = function hasExitSpot() {
-			if (utils.isDefined(contract.exitSpotIndex)) {
-				return true;
-			} else {
-				return false;
-			}
-		};
-
-		var betweenExistingSpots = function betweenExistingSpots(time) {
-			if (hasEntrySpot() && time >= contract.entrySpotTime && (!hasExitSpot() || time <= contract.exitSpotTime)) {
-				return true;
-			} else {
-				return false;
-			}
-		};
-
-		var isSpot = function isSpot(i) {
-			if (contract.showingEntrySpot && contract.entrySpotIndex === utils.getAbsoluteIndex(i)) {
-				return true;
-			}
-			if (contract.showingExitSpot && contract.exitSpotIndex === utils.getAbsoluteIndex(i)) {
-				return true;
-			}
-			return false;
-		};
-
-		var isEntrySpot = function isEntrySpot(time) {
-			if (hasEntrySpot()) {
-				if (time === contract.entrySpotTime) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				if (time >= contract.startTime) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		};
-
-		var isExitSpot = function isExitSpot(time, index) {
-			if (hasExitSpot()) {
-				if (time === contract.exitSpotTime) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				if (hasEntrySpot() && index === contract.entrySpotIndex + contract.duration) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		};
-
-		var addSpots = function addSpots(index, tickTime, tickPrice) {
-			if (isEntrySpot(tickTime) || betweenExistingSpots(tickTime)) {
-				if (isEntrySpot(tickTime)) {
-					utils.setObjValue(contract, 'barrier', tickPrice, !utils.digitTrade(contract) && !utils.asianTrade(contract));
-					utils.setObjValue(contract, 'entrySpotTime', tickTime, !hasEntrySpot());
-				} else if (isExitSpot(tickTime, index)) {
-					utils.setObjValue(contract, 'exitSpotTime', tickTime, !hasExitSpot());
-				}
-				utils.setObjValue(contract, 'entrySpotIndex', index, isEntrySpot(tickTime));
-				utils.setObjValue(contract, 'exitSpotIndex', index, isExitSpot(tickTime, index));
-				utils.setObjValue(contract, 'entrySpot', tickPrice, isEntrySpot(tickTime));
-				utils.setObjValue(contract, 'exitSpot', tickPrice, isExitSpot(tickTime, index));
-			}
-		};
-
-		var addRegions = function addRegions(lastTime, lastPrice) {
-			if (hasEntrySpot()) {
-				if (betweenExistingSpots(lastTime)) {
-					if (utils.asianTrade(contract)) {
-						if (typeof contract.seenTicksCount === 'undefined') {
-							contract.seenTicksCount = 0;
-						}
-						if (contract.seenTicksCount === 0) {
-							contract.barrier = parseFloat(lastPrice);
-						} else {
-							contract.barrier = (parseFloat(lastPrice) + parseFloat(contract.barrier) * contract.seenTicksCount) / (contract.seenTicksCount + 1);
-						}
-						contract.seenTicksCount += 1;
-					}
-					if (utils.conditions[contract.type](contract.barrier, lastPrice)) {
-						contract.result = 'win';
-					} else {
-						contract.result = 'loss';
-					}
-					if (!isFinished()) {
-						utils.broadcast("contract:updated", {
-							time: lastTime,
-							contract: contract,
-						});
-					}
-				}
-			}
-		};
-
-		return {
-			isFinished: isFinished,
-			getContract: getContract,
-			isSpot: isSpot,
-			betweenExistingSpots: betweenExistingSpots,
-			addSpots: addSpots,
-			addRegions: addRegions,
-		};
-
-	};
-
-	var updateContracts = function updateContracts(ticks) {
-		var lastTime,
-			lastPrice;
-
-		ticks.forEach(function (tick, index) {
-			var tickTime = parseInt(tick.time);
-			var tickPrice = tick.price;
-			contractCtrls.forEach(function (contract) {
-				contract.addSpots(index, tickTime, tickPrice);
-			});
-			lastTime = parseInt(tick.time);
-			lastPrice = tick.price;
-		});
-
-		contractCtrls.forEach(function (contract) {
-			contract.addRegions(lastTime, lastPrice);
-		});
-	};
-
-	var addTick = function addTick(tick) {
-		if (utils.isDefined(localHistory)) {
-			localHistory.addTick(tick);
-			updateContracts(localHistory.getHistory(0, capacity));
-		}
-	};
-
-	var addHistory = function addHistory(history) {
-		if (!utils.isDefined(localHistory)) {
-			localHistory = LocalHistory(capacity);
-		}
-		localHistory.addHistory(history);
-		updateContracts(localHistory.getHistory(0, capacity));
-	};
-
-	var getDataIndex = function getDataIndex() {
-		return dataIndex;
-	};
-
-	var addContract = function addContract(_contract) {
-		if (_contract) {
-			if (utils.digitTrade(_contract) || utils.asianTrade(_contract)) {
-				_contract.duration -= 1;
-			}
-			contractCtrls.push(ContractCtrl(_contract));
-			dataIndex = 0;
-		}
-	};
-
-	var destroy = function destroy() {
-		localHistory = null;
-	};
-
-	var getCapacity = function getCapacity() {
-		return capacity;
-	};
-
-	var getTicks = function getTicks() {
-		if (localHistory instanceof Object) {
-			return localHistory.getHistory(0, capacity);
-		} else {
-			return [];
-		}
-	};
-
-	return {
-		destroy: destroy,
-		addContract: addContract,
-		addTick: addTick,
-		addHistory: addHistory,
-		getCapacity: getCapacity,
-		getTicks: getTicks,
-	};
-};
-
 /* jshint ignore:start */
 (function ($) {
 	$.fn.drags = function (opt) {
@@ -1690,12 +1297,11 @@ Bot.Trade = function () {
 	var log = Bot.utils.log;
 	var LiveApi = window['binary-live-api'].LiveApi;
 	Bot.server = {};
-	Bot.server.state = 'STOPPED';
+	Bot.server.ticks = [];
+	Bot.server.contractForChart = null; 
 
 	// influences display, calls on_finish
-	Bot.server.listen_on_contract_finish = function listen_on_contract_finish(e) {
-		Bot.server.state = 'FINISHED';
-		var contract = e.detail.contract;
+	Bot.server.on_contract_finish = function on_contract_finish(contract) {
 		Bot.addTrade(contract);
 		var payout = (contract.result !== 'win') ? 0 : +contract.payout;
 		Bot.display.lastProfit = +(payout - +contract.askPrice)
@@ -1720,70 +1326,48 @@ Bot.Trade = function () {
 		log(i18n._('Purchase was finished, result is:') + ' ' + contract.result, (contract.result === 'win') ? 'success' : 'error');
 
 		Bot.on_finish(contract.result, detail_list);
-		Bot.server.listen_on_contract_update(e);
 		Bot.server.purchaseNotDone = false;
+		Bot.server.contractForChart = null;
 		Bot.disableRun(false);
 	};
 
-	Bot.server.listen_on_contract_update = function listen_on_contract_update(e) {
-		Bot.server.contractForChart = {
-			barrier: e.detail.contract.barrier,
-			barrierType: 'absolute',
-			entry_tick_time: e.detail.contract.entrySpotTime,
-			contract_type: e.detail.contract.type,
-		};
-		if (e.detail.contract.exitSpotTime) {
-			Bot.server.contractForChart.exit_tick_time = e.detail.contract.exitSpotTime;
-		} else {
-			if (Bot.server.portfolioContract) {
-				Bot.server.contractForChart.date_expiry = Bot.server.portfolioContract.expiry_time;
+	Bot.server.updateChart = function updateChart(){
+		var contract;
+		if ( Bot.server.contractForChart ) {
+			contract = {
+				barrier: Bot.server.contractForChart.barrier,
+				entry_tick_time: Bot.server.contractForChart.entry_tick_time,
+				contract_type: Bot.server.contractForChart.contract_type,
+			};
+			if ( Bot.server.contractForChart.exit_tick_time ) {
+				contract.exit_tick_time = Bot.server.contractForChart.exit_tick_time;
+			} else {
+				contract.date_expiry = Bot.server.contractForChart.date_expiry;
 			}
 		}
-		var ticks = [];
-		Bot.server.contractService.getTicks()
-			.forEach(function (tick) {
-				ticks.push({
-					epoch: +tick.time,
-					quote: +tick.price,
-				});
-			});
 		Bot.chart.updateChart({
-			ticks: ticks,
-			contract: Bot.server.contractForChart
+			ticks: Bot.server.ticks,
+			contract: contract
 		});
 	};
 
-	// actions needed on a tick received from the contract service
-	Bot.server.listen_on_tick_update = function listen_on_tick_update(e) {
-		var ticks = [];
-		Bot.server.contractService.getTicks()
-			.forEach(function (tick) {
-				ticks.push({
-					epoch: +tick.time,
-					quote: +tick.price,
-				});
-			});
-		if (Bot.server.purchaseNotDone && Bot.server.contractForChart) {
-			Bot.chart.updateChart({
-				ticks: ticks,
-				contract: Bot.server.contractForChart
-			});
-		} else {
-			Bot.chart.updateChart({
-				ticks: ticks
-			});
+	Bot.server.on_contract_update = function on_contract_update(contract) {
+		Bot.server.contractForChart = contract;
+		Bot.server.updateChart();
+	};
+
+	Bot.server.callStrategy = function callStrategy() {
+		if ( Bot.server.strategyEnabled ) {
+			var direction = '';
+			if ( Bot.server.ticks.length > 1 ) {
+				if ( +Bot.server.ticks.slice(-1)[0].quote > +Bot.server.ticks.slice(-2).quote ) {
+					direction = 'up';
+				} else if ( +Bot.server.ticks.slice(-1)[0].quote < +Bot.server.ticks.slice(-2).quote ) {
+					direction = 'down';
+				} 
+			}
+			Bot.on_strategy(+Bot.server.ticks.slice(-1)[0].quote, direction);
 		}
-		Bot.utils.broadcast('strategy:updated', e.detail);
-	};
-
-	// calls on_strategy
-	Bot.server.listen_on_strategy = function listen_on_strategy(e) {
-		Bot.on_strategy(+e.detail.tick, e.detail.direction);
-	};
-
-	// maps a function to an event
-	Bot.server.listen_on = function listen_on(eventName, functionName) {
-		window.addEventListener(eventName, functionName);
 	};
 
 	Bot.server.accounts = [
@@ -1869,18 +1453,13 @@ Bot.Trade = function () {
 		Bot.updateDisplay();
 	};
 
-	Bot.server.observeBalance = function observeBalance() {
-		Bot.server.api.events.on('balance', function (response) {
-			Bot.server.updateBalance(response.balance);
-		});
-	};
-
 	Bot.server.requestBalance = function requestBalance() {
 		Bot.server.api.send({
 				balance: 1,
-				subscribe: 1
 			})
-			.then(function (response) {}, function (reason) {
+			.then(function (response) {
+				Bot.server.updateBalance(response.balance);
+			}, function (reason) {
 				log(i18n._('Could not get balance'));
 			});
 	};
@@ -1888,52 +1467,33 @@ Bot.Trade = function () {
 	Bot.server.observeTicks = function observeTicks() {
 		Bot.server.api.events.on('tick', function (feed) {
 			log(i18n._('tick received at:') + ' ' + feed.tick.epoch);
-			Bot.server.contractService.addTick(feed.tick);
+			Bot.server.ticks = Bot.server.ticks.concat({
+				epoch: +feed.tick.epoch,
+				quote: +feed.tick.quote,
+			});
+			Bot.server.updateChart();
+			Bot.server.callStrategy();
 		});
 
 		Bot.server.api.events.on('history', function (feed) {
-			Bot.server.contractService.addHistory(feed.history);
+			Bot.server.ticks = [];
+			feed.history.times.forEach(function(time, index){
+				Bot.server.ticks.push({
+					epoch: +time,
+					quote: +feed.history.prices[index]
+				});
+			});
 		});
 	};
 
-	Bot.server.forgetAllTicks = function forgetAllTicks(callback) {
-		Bot.server.api.send({
-				forget_all: 'ticks',
-			})
-			.then(function (response) {
-				if (callback) {
-					callback();
-				}
-			}, function (reason) {
-				log(reason);
-			});
-	};
-
-	Bot.server.subscribeToTick = function subscribeToTick(callback) {
-		Bot.server.api.send({
-				ticks: Bot.server.symbol,
-			})
-			.then(function (response) {
-				if (callback) {
-					callback();
-				}
-			}, function (reason) {
-				log(reason);
-				Bot.server.reconnect();
-			});
-	};
-
-	Bot.server.requestHistory = function requestHistory(callback) {
+	Bot.server.requestHistory = function requestHistory() {
 		Bot.server.api.getTickHistory(Bot.server.symbol, {
 				"end": "latest",
-				"count": Bot.server.contractService.getCapacity(),
+				"count": 600,
 				"subscribe": 1
 			})
 			.then(function (value) {
 				log(i18n._('Request received for history'));
-				if (callback) {
-					callback();
-				}
 			}, function (reason) {
 				log(reason);
 				Bot.server.reconnect();
@@ -1947,6 +1507,7 @@ Bot.Trade = function () {
 	Bot.server.observeTransaction = function observeTransaction() {
 		Bot.server.api.events.on('transaction', function(response) {
 			var transaction = response.transaction;
+			Bot.server.updateBalance(transaction);
 			if ( transaction.action === 'sell' ) {
 				var result;
 				if (+transaction.amount === 0) {
@@ -1955,22 +1516,31 @@ Bot.Trade = function () {
 					result = 'win';
 				}
 				Bot.server.getContractInfo(result, transaction.contract_id, null, true);
+			} else if ( transaction.action === 'buy' ) {
+				Bot.server.api.unsubscribeFromAllProposals().then(function(){
+					Bot.server.contracts = [];
+					Bot.server.api.subscribeToOpenContract(transaction.contract_id);
+				});
 			}
+		});
+	};
+
+	Bot.server.observeOpenContracts = function observeOpenContracts() {
+		Bot.server.api.events.on('proposal_open_contract', function(response) {
+			Bot.server.on_contract_update(response.proposal_open_contract);
 		});
 	};
 
 	Bot.server.observeProposal = function observeProposal(options) {
 		Bot.server.api.events.on('proposal', function (value) {
-			if (!Bot.server.purchaseNotDone) {
-				if (Bot.server.contracts.length === 2) {
-					Bot.server.contracts = [];
-					window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
-				}
-				Bot.server.contracts.push(value);
-				if (Bot.server.contracts.length === 2) {
-					log(i18n._('Contracts are ready to be purchased by the strategy'), 'info');
-					Bot.server.listen_on('strategy:updated', Bot.server.listen_on_strategy);
-				}
+			if (Bot.server.contracts.length === 2) {
+				Bot.server.contracts = [];
+				Bot.server.strategyEnabled = false;
+			}
+			Bot.server.contracts.push(value);
+			if (Bot.server.contracts.length === 2) {
+				log(i18n._('Contracts are ready to be purchased by the strategy'), 'info');
+				Bot.server.strategyEnabled = true;
 			}
 		});
 	};
@@ -1979,7 +1549,6 @@ Bot.Trade = function () {
 		Bot.server.api.subscribeToPriceForContractProposal(options)
 			.then(function (value) {}, function (reason) {
 				Bot.stop();
-				Bot.server.state = 'PROPOSAL_NOT_SUBMITTED';
 				showError(reason);
 			});
 	};
@@ -1992,20 +1561,17 @@ Bot.Trade = function () {
 			.then(function (response) {
 				if (reconnect) {
 					var data = response.proposal_open_contract;
-					Bot.utils.broadcast('contract:finished', {
-						time: '0',
-						contract: {
-							result: result,
-							askPrice: data.buy_price,
-							statement: data.transaction_ids.buy,
-							type: data.contract_type,
-							entrySpot: data.entry_tick,
-							entrySpotTime: data.entry_tick_time,
-							exitSpot: data.exit_tick,
-							exitSpotTime: data.exit_tick_time,
-							barrier: data.barrier,
-							payout: data.payout,
-						}
+					Bot.server.on_contract_finish({
+						result: result,
+						askPrice: data.buy_price,
+						statement: data.transaction_ids.buy,
+						type: data.contract_type,
+						entrySpot: data.entry_tick,
+						entrySpotTime: data.entry_tick_time,
+						exitSpot: data.exit_tick,
+						exitSpotTime: data.exit_tick_time,
+						barrier: data.barrier,
+						payout: data.payout,
 					});
 				}
 				if (callback) {
@@ -2041,64 +1607,24 @@ Bot.Trade = function () {
 			});
 	};
 
-	Bot.server.portfolio = function portfolio() {
-		if (Bot.server.purchaseInfo === null) {
-			return;
-		}
-		var proposalContract = Bot.server.purchaseInfo.proposalContract;
-		var purchaseContract = Bot.server.purchaseInfo.purchaseContract;
-		Bot.server.api.getPortfolio()
-			.then(function (portfolio) {
-				var contractId = purchaseContract.buy.contract_id;
-				portfolio.portfolio.contracts.forEach(function (contract) {
-					if (contract.contract_id == contractId) {
-						Bot.server.state = 'PORTFOLIO_RECEIVED';
-						log(i18n._('Waiting for the purchased contract to finish'), 'info');
-						Bot.server.contractService.addContract({
-							statement: contract.transaction_id,
-							startTime: contract.date_start + 1,
-							duration: parseInt(proposalContract.echo_req.duration),
-							type: contract.contract_type,
-							barrier: proposalContract.echo_req.barrier,
-							askPrice: parseFloat(proposalContract.proposal.ask_price),
-							payout: proposalContract.proposal.payout,
-						});
-						Bot.server.portfolioContract = contract;
-					}
-				});
-			}, function (reason) {
-				Bot.server.reconnect();
-				Bot.server.state = 'PORTFOLIO_NOT_RECEIVED';
-				showError(reason);
-			});
-	};
-
 	Bot.server.purchase = function purchase(option) {
-		window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
+		Bot.server.strategyEnabled = false;
 		var proposalContract = (option === Bot.server.contracts[1].echo_req.contract_type) ? Bot.server.contracts[1] : Bot.server.contracts[0];
-		log(i18n._('Purchased:') + ' ' + proposalContract.proposal.longcode, 'info');
+		log(i18n._('Purchased') + ': ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price)
 			.then(function (purchaseContract) {
 				Bot.server.purchaseNotDone = true;
 				Bot.display.numOfRuns++;
 				Bot.updateDisplay();
 				Bot.disableRun(true);
-				Bot.server.state = 'PURCHASED';
-				Bot.server.purchaseInfo = {
-					proposalContract: proposalContract,
-					purchaseContract: purchaseContract,
-				};
-				Bot.server.portfolio();
 			}, function (reason) {
 				Bot.stop();
-				Bot.server.state = 'PURCHASE_FAILED';
 				showError(reason);
 			});
 	};
 
 	Bot.server.restartContracts = function restartContracts() {
-		window.removeEventListener('strategy:updated', Bot.server.listen_on_strategy);
-		Bot.server.purchaseInfo = null;
+		Bot.server.strategyEnabled = false;
 		Bot.server.api.unsubscribeFromAllProposals()
 			.then(function (response) {
 				Bot.server.authorizeCallback();
@@ -2107,33 +1633,16 @@ Bot.Trade = function () {
 			});
 	};
 
-	Bot.server.initContractService = function initContractService() {
-		Bot.server.contractService = ContractService();
-		Bot.server.contractForChart = null;
-	};
-
 	Bot.server.observeAuthorize = function observeAuthorize() {
 		Bot.server.api.events.on('authorize', function (response) {
 			if (response.error) {
 				showError(response.error);
-				Bot.server.state = 'NOT_AUTHORIZED';
 			} else {
 				var now = parseInt((new Date()
 					.getTime()) / 1000);
 				if (Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized >= 1) { // prevent live-api to call this many times in case of disconnect
-					Bot.server.initContractService();
 					Bot.server.lastAuthorized = now;
 					log(i18n._('Authenticated using token:') + ' ' + Bot.server.token, 'info');
-					if (Bot.server.firstRun) {
-						Bot.server.firstRun = false;
-						Bot.server.listen_on('tick:updated', Bot.server.listen_on_tick_update);
-						Bot.server.listen_on('contract:updated', Bot.server.listen_on_contract_update);
-						Bot.server.listen_on('contract:finished', Bot.server.listen_on_contract_finish);
-						Bot.server.observeTicks();
-						Bot.server.observeBalance();
-						Bot.server.observeProposal();
-						Bot.server.observeTransaction();
-					}
 					if (Bot.server.purchaseNotDone) {
 						Bot.server.getLastPurchaseInfo(function () {
 							Bot.server.restartContracts();
@@ -2144,7 +1653,6 @@ Bot.Trade = function () {
 					Bot.server.requestBalance();
 					Bot.server.requestHistory();
 					Bot.server.requestTransaction();
-					Bot.server.state = 'AUTHORIZED';
 				}
 			}
 		});
@@ -2160,8 +1668,6 @@ Bot.Trade = function () {
 		if (Bot.server.api) {
 			try {
 				Bot.server.api.disconnect();
-				Bot.server.state = 'STOPPED';
-				Bot.server.purchaseNotDone = false;
 				Bot.disableRun(false);
 			} catch (e) {}
 		}
@@ -2172,27 +1678,26 @@ Bot.Trade = function () {
 			showError(i18n._('No token is available to authenticate'));
 		} else {
 			Bot.server.authorizeCallback = callback;
-			Bot.server.purchaseNotDone = false;
 			Bot.disableRun(false);
 			Bot.server.contracts = [];
 			if (trade_again) {
-				Bot.server.state = 'TRADE_AGAIN';
 				Bot.server.restartContracts();
 			} else {
 				Bot.server.token = token;
-				Bot.server.stop();
 				Bot.server.api = new LiveApi();
-				Bot.server.state = 'INITIALIZED';
-				Bot.server.firstRun = true;
-				Bot.server.api.authorize(Bot.server.token);
+				Bot.server.observeTicks();
+				Bot.server.observeProposal();
+				Bot.server.observeTransaction();
+				Bot.server.observeOpenContracts();
 				Bot.server.observeAuthorize();
+				Bot.server.api.authorize(Bot.server.token);
 			}
 		}
 	};
 
 	/*
 	 Order of calls:
-	 trade [-> authorize] -> restartContracts -> submitProposal -> subscribeToTick -> on_strategy -> purchase -> portfolio -> contract_finished
+	 trade [-> authorize] ->  do subscriptions -> submitProposal -> callStrategy -> purchase -> contract_finished
 	 */
 
 };
