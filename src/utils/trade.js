@@ -221,7 +221,7 @@ Bot.Trade = function () {
 				} else {
 					result = 'win';
 				}
-				Bot.server.getContractInfo(result, transaction.contract_id, null, true);
+				Bot.server.getContractInfo(result, transaction.contract_id, null);
 			} else if ( transaction.action === 'buy' ) {
 				Bot.server.api.unsubscribeFromAllProposals().then(function(){
 					Bot.server.contracts = [];
@@ -259,27 +259,25 @@ Bot.Trade = function () {
 			});
 	};
 
-	Bot.server.getContractInfo = function getContractInfo(result, contract_id, callback, reconnect) {
+	Bot.server.getContractInfo = function getContractInfo(result, contract_id, callback) {
 		Bot.server.api.send({
 				proposal_open_contract: 1,
 				contract_id: contract_id
 			})
 			.then(function (response) {
-				if (reconnect) {
-					var data = response.proposal_open_contract;
-					Bot.server.on_contract_finish({
-						result: result,
-						askPrice: data.buy_price,
-						statement: data.transaction_ids.buy,
-						type: data.contract_type,
-						entrySpot: data.entry_tick,
-						entrySpotTime: data.entry_tick_time,
-						exitSpot: data.exit_tick,
-						exitSpotTime: data.exit_tick_time,
-						barrier: data.barrier,
-						payout: data.payout,
-					});
-				}
+				var data = response.proposal_open_contract;
+				Bot.server.on_contract_finish({
+					result: result,
+					askPrice: data.buy_price,
+					statement: data.transaction_ids.buy,
+					type: data.contract_type,
+					entrySpot: data.entry_tick,
+					entrySpotTime: data.entry_tick_time,
+					exitSpot: data.exit_tick,
+					exitSpotTime: data.exit_tick_time,
+					barrier: data.barrier,
+					payout: data.payout,
+				});
 				if (callback) {
 					callback(response.proposal_open_contract);
 				}
@@ -296,16 +294,14 @@ Bot.Trade = function () {
 			})
 			.then(function (response) {
 				var transaction = response.statement.transactions[0];
-				if (transaction.action_type === 'buy') {
-					Bot.server.portfolio();
-				} else {
+				if (transaction.action_type === 'sell') {
 					var result;
 					if (+transaction.amount === 0) {
 						result = 'loss';
 					} else {
 						result = 'win';
 					}
-					Bot.server.getContractInfo(result, transaction.contract_id, callback, true);
+					Bot.server.getContractInfo(result, transaction.contract_id, callback);
 				}
 			}, function (reason) {
 				showError(reason);
@@ -368,6 +364,7 @@ Bot.Trade = function () {
 		Bot.server.stop();
 		Bot.server.api.token = Bot.server.token;
 		Bot.server.api.connect();
+		Bot.server.api.authorize(Bot.server.token);
 	};
 
 	Bot.server.stop = function stop() {
@@ -384,12 +381,14 @@ Bot.Trade = function () {
 			showError(i18n._('No token is available to authenticate'));
 		} else {
 			Bot.server.authorizeCallback = callback;
+			Bot.server.purchaseNotDone = false;
 			Bot.disableRun(false);
 			Bot.server.contracts = [];
 			if (trade_again) {
 				Bot.server.restartContracts();
 			} else {
 				Bot.server.token = token;
+				Bot.server.stop();
 				Bot.server.api = new LiveApi();
 				Bot.server.observeTicks();
 				Bot.server.observeProposal();
