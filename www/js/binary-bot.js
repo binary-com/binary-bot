@@ -150,10 +150,9 @@ Bot.Globals = function Globals() {
 			.remove();
 		var count = 0;
 		Bot.display.tradeTable.forEach(function (trade, index) {
-			var payout = (trade.result !== 'win') ? 0 : +trade.payout;
-			var lastProfit = +(payout - +trade.askPrice)
+			var lastProfit = +(+trade.payout - (+trade.buy_price))
 				.toFixed(2);
-			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.statement + '</td>' + '<td>' + trade.type + '</td>' + '<td>' + trade.entrySpot + '</td>' + '<td>' + trade.exitSpot + '</td>' + '<td>' + trade.askPrice + '</td>' + '<td>' + payout + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
+			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.payout + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
 			$('#tradesDisplay tbody')
 				.append(element);
 			count += 1;
@@ -1302,38 +1301,39 @@ Bot.Trade = function () {
 
 	// influences display, calls on_finish
 	Bot.server.on_contract_finish = function on_contract_finish(contract) {
+		var result = (+contract.payout === 0) ? 'loss' : 'win';
 		Bot.addTrade(contract);
-		var payout = (contract.result !== 'win') ? 0 : +contract.payout;
-		Bot.display.lastProfit = +(payout - +contract.askPrice)
+		Bot.display.lastProfit = +(+contract.payout - +contract.buy_price)
 			.toFixed(2);
-		Bot.display.totalStake = +(+Bot.display.totalStake + (+contract.askPrice))
+		Bot.display.totalStake = +(+Bot.display.totalStake + (+contract.buy_price))
 			.toFixed(2);
-		Bot.display.totalPayout = +(+Bot.display.totalPayout + payout)
+		Bot.display.totalPayout = +(+Bot.display.totalPayout + (+contract.payout))
 			.toFixed(2);
 		Bot.display.totalProfit = +(+Bot.display.totalProfit + (+Bot.display.lastProfit))
 			.toFixed(2);
-		Bot.display.lastResult = contract.result;
+		Bot.display.lastResult = result;
 		Bot.updateDisplay();
 
 		var detail_list = [
-			contract.statement, +contract.askPrice, +payout,
+			contract.transaction_ids.buy, +contract.buy_price, +contract.payout,
 			Bot.display.lastProfit,
-			contract.type, +contract.entrySpot,
-			Bot.utils.getUTCTime(new Date(parseInt(contract.entrySpotTime + '000'))), +contract.exitSpot,
-			Bot.utils.getUTCTime(new Date(parseInt(contract.exitSpotTime + '000'))), +((contract.barrier) ? contract.barrier : 0),
+			contract.contract_type, +contract.entry_tick,
+			Bot.utils.getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.exit_tick,
+			Bot.utils.getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +((contract.barrier) ? contract.barrier : 0),
 		];
 
-		log(i18n._('Purchase was finished, result is:') + ' ' + contract.result, (contract.result === 'win') ? 'success' : 'error');
+		log(i18n._('Purchase was finished, result is:') + ' ' + result, (result === 'win') ? 'success' : 'error');
 
-		Bot.on_finish(contract.result, detail_list);
-		Bot.server.purchaseNotDone = false;
+		Bot.on_finish(result, detail_list);
+		Bot.server.on_contract_update(contract);
+		Bot.server.purchasedContractId = null;
 		Bot.server.contractForChart = null;
 		Bot.disableRun(false);
 	};
 
 	Bot.server.updateChart = function updateChart(){
 		var contract;
-		if ( Bot.server.contractForChart ) {
+		if ( Bot.server.checkSold(Bot.server.contractForChart) ) {
 			contract = {
 				barrier: Bot.server.contractForChart.barrier,
 				entry_tick_time: Bot.server.contractForChart.entry_tick_time,
@@ -1408,7 +1408,6 @@ Bot.Trade = function () {
 	};
 
 	Bot.server.removeToken = function removeToken(token) {
-		var index = Bot.server.findToken(token);
 		Bot.utils.getStorageManager()
 			.removeToken(token);
 		Bot.utils.updateTokenList();
@@ -1508,26 +1507,32 @@ Bot.Trade = function () {
 		Bot.server.api.events.on('transaction', function(response) {
 			var transaction = response.transaction;
 			Bot.server.updateBalance(transaction);
-			if ( transaction.action === 'sell' ) {
-				var result;
-				if (+transaction.amount === 0) {
-					result = 'loss';
-				} else {
-					result = 'win';
+			if ( transaction.contract_id === Bot.server.purchasedContractId ) {
+				if ( transaction.action === 'buy' ) {
+					Bot.server.api.unsubscribeFromAllProposals().then(function(){
+						Bot.server.contracts = [];
+					});
 				}
-				Bot.server.getContractInfo(result, transaction.contract_id, null);
-			} else if ( transaction.action === 'buy' ) {
-				Bot.server.api.unsubscribeFromAllProposals().then(function(){
-					Bot.server.contracts = [];
-					Bot.server.api.subscribeToOpenContract(transaction.contract_id);
-				});
 			}
 		});
 	};
 
+	Bot.server.checkSold = function checkSold(contract){
+		return ( contract !== null && ( !contract.hasOwnProperty('is_sold') || contract.is_sold === 1 ));
+	};
+
 	Bot.server.observeOpenContracts = function observeOpenContracts() {
 		Bot.server.api.events.on('proposal_open_contract', function(response) {
-			Bot.server.on_contract_update(response.proposal_open_contract);
+			var contract = response.proposal_open_contract;
+			if ( contract.is_expired ) {
+				if ( Bot.server.purchasedContractId ) {
+					Bot.server.on_contract_finish(contract);
+				}
+			} else {
+				if ( Bot.server.checkSold(contract) ) {
+					Bot.server.on_contract_update(contract);
+				}
+			}
 		});
 	};
 
@@ -1553,49 +1558,18 @@ Bot.Trade = function () {
 			});
 	};
 
-	Bot.server.getContractInfo = function getContractInfo(result, contract_id, callback) {
+	Bot.server.getContractInfo = function getContractInfo(callback) {
 		Bot.server.api.send({
 				proposal_open_contract: 1,
-				contract_id: contract_id
+				contract_id: Bot.server.purchasedContractId, 
 			})
 			.then(function (response) {
-				var data = response.proposal_open_contract;
-				Bot.server.on_contract_finish({
-					result: result,
-					askPrice: data.buy_price,
-					statement: data.transaction_ids.buy,
-					type: data.contract_type,
-					entrySpot: data.entry_tick,
-					entrySpotTime: data.entry_tick_time,
-					exitSpot: data.exit_tick,
-					exitSpotTime: data.exit_tick_time,
-					barrier: data.barrier,
-					payout: data.payout,
-				});
-				if (callback) {
-					callback(response.proposal_open_contract);
-				}
-			}, function (reason) {
-				showError(reason);
-				Bot.server.reconnect();
-			});
-	};
-
-	Bot.server.getLastPurchaseInfo = function getLastPurchaseInfo(callback) {
-		Bot.server.api.getStatement({
-				description: 1,
-				limit: 1
-			})
-			.then(function (response) {
-				var transaction = response.statement.transactions[0];
-				if (transaction.action_type === 'sell') {
-					var result;
-					if (+transaction.amount === 0) {
-						result = 'loss';
-					} else {
-						result = 'win';
+				var contract = response.proposal_open_contract;
+				if ( contract.is_expired ) {
+					Bot.server.on_contract_finish(contract);
+					if (callback) {
+						callback(contract);
 					}
-					Bot.server.getContractInfo(result, transaction.contract_id, callback);
 				}
 			}, function (reason) {
 				showError(reason);
@@ -1609,7 +1583,8 @@ Bot.Trade = function () {
 		log(i18n._('Purchased') + ': ' + proposalContract.proposal.longcode, 'info');
 		Bot.server.api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price)
 			.then(function (purchaseContract) {
-				Bot.server.purchaseNotDone = true;
+				Bot.server.purchasedContractId = purchaseContract.buy.contract_id;
+				Bot.server.api.subscribeToOpenContract(Bot.server.purchasedContractId);
 				Bot.display.numOfRuns++;
 				Bot.updateDisplay();
 				Bot.disableRun(true);
@@ -1639,8 +1614,8 @@ Bot.Trade = function () {
 				if (Bot.server.lastAuthorized === undefined || now - Bot.server.lastAuthorized >= 1) { // prevent live-api to call this many times in case of disconnect
 					Bot.server.lastAuthorized = now;
 					log(i18n._('Authenticated using token:') + ' ' + Bot.server.token, 'info');
-					if (Bot.server.purchaseNotDone) {
-						Bot.server.getLastPurchaseInfo(function () {
+					if ( Bot.server.purchasedContractId ) {
+						Bot.server.getContractInfo(function () {
 							Bot.server.restartContracts();
 						});
 					} else {
@@ -1675,7 +1650,7 @@ Bot.Trade = function () {
 			showError(i18n._('No token is available to authenticate'));
 		} else {
 			Bot.server.authorizeCallback = callback;
-			Bot.server.purchaseNotDone = false;
+			Bot.server.purchasedContractId = null;
 			Bot.disableRun(false);
 			Bot.server.contracts = [];
 			if (trade_again) {

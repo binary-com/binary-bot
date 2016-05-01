@@ -74,10 +74,9 @@ Bot.Globals = function Globals() {
 			.remove();
 		var count = 0;
 		Bot.display.tradeTable.forEach(function (trade, index) {
-			var payout = (trade.result !== 'win') ? 0 : +trade.payout;
-			var lastProfit = +(payout - +trade.askPrice)
+			var lastProfit = +(+trade.payout - (+trade.buy_price))
 				.toFixed(2);
-			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.statement + '</td>' + '<td>' + trade.type + '</td>' + '<td>' + trade.entrySpot + '</td>' + '<td>' + trade.exitSpot + '</td>' + '<td>' + trade.askPrice + '</td>' + '<td>' + payout + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
+			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.payout + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
 			$('#tradesDisplay tbody')
 				.append(element);
 			count += 1;
