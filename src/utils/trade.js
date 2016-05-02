@@ -54,7 +54,7 @@ Bot.Trade = function () {
 		}
 		Bot.chart.updateChart({
 			ticks: Bot.server.ticks,
-			contract: contract
+			contract: contract,
 		});
 	};
 
@@ -270,7 +270,6 @@ Bot.Trade = function () {
 			})
 			.then(function (response) {
 				var contract = response.proposal_open_contract;
-				console.log(contract);
 				if ( contract.is_expired ) {
 					Bot.server.on_contract_finish(contract);
 					if (callback) {

@@ -106,11 +106,11 @@
 				script.src = 'node_modules/blockly/msg/js/' + blocklyLang + '.js';
 				$('body').append(script);
 
-				Bot.View();
-				Bot.tours.introduction = Bot.Introduction();
-				Bot.tours.welcome = Bot.Welcome();
-				Bot.tours.welcome.welcome();
-
+				Bot.View(function(){
+					Bot.tours.introduction = Bot.Introduction();
+					Bot.tours.welcome = Bot.Welcome();
+					Bot.tours.welcome.welcome();
+				});
 			}
 			$('[data-i18n-text]').each(function(){
 				$(this).text(i18n._($(this).attr('data-i18n-text')));

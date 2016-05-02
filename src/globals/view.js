@@ -1,4 +1,4 @@
-Bot.View = function View() {
+Bot.View = function View(on_load) {
 	var workspace;
 	$.get('www/xml/toolbox.xml', function (toolbox) {
 		workspace = Blockly.inject('blocklyDiv', {
@@ -25,6 +25,9 @@ Bot.View = function View() {
 			Bot.utils.updateTokenList();
 			Bot.utils.addPurchaseOptions();
 			Blockly.mainWorkspace.clearUndo();
+			if ( on_load ) {
+				on_load();
+			}
 		});
 	});
 

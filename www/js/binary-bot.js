@@ -349,7 +349,7 @@ Bot.Version = function Version() {
 	}
 };
 
-Bot.View = function View() {
+Bot.View = function View(on_load) {
 	var workspace;
 	$.get('www/xml/toolbox.xml', function (toolbox) {
 		workspace = Blockly.inject('blocklyDiv', {
@@ -376,6 +376,9 @@ Bot.View = function View() {
 			Bot.utils.updateTokenList();
 			Bot.utils.addPurchaseOptions();
 			Blockly.mainWorkspace.clearUndo();
+			if ( on_load ) {
+				on_load();
+			}
 		});
 	});
 
@@ -1347,7 +1350,7 @@ Bot.Trade = function () {
 		}
 		Bot.chart.updateChart({
 			ticks: Bot.server.ticks,
-			contract: contract
+			contract: contract,
 		});
 	};
 
@@ -1563,7 +1566,6 @@ Bot.Trade = function () {
 			})
 			.then(function (response) {
 				var contract = response.proposal_open_contract;
-				console.log(contract);
 				if ( contract.is_expired ) {
 					Bot.server.on_contract_finish(contract);
 					if (callback) {
