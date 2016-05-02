@@ -8,13 +8,13 @@ Bot.Trade = function () {
 
 	// influences display, calls on_finish
 	Bot.server.on_contract_finish = function on_contract_finish(contract) {
-		var result = (+contract.payout === 0) ? 'loss' : 'win';
+		var result = (+contract.sell_price === 0) ? 'loss' : 'win';
 		Bot.addTrade(contract);
-		Bot.display.lastProfit = +(+contract.payout - +contract.buy_price)
+		Bot.display.lastProfit = +(+contract.sell_price - +contract.buy_price)
 			.toFixed(2);
 		Bot.display.totalStake = +(+Bot.display.totalStake + (+contract.buy_price))
 			.toFixed(2);
-		Bot.display.totalPayout = +(+Bot.display.totalPayout + (+contract.payout))
+		Bot.display.totalPayout = +(+Bot.display.totalPayout + (+contract.sell_price))
 			.toFixed(2);
 		Bot.display.totalProfit = +(+Bot.display.totalProfit + (+Bot.display.lastProfit))
 			.toFixed(2);
@@ -22,7 +22,7 @@ Bot.Trade = function () {
 		Bot.updateDisplay();
 
 		var detail_list = [
-			contract.transaction_ids.buy, +contract.buy_price, +contract.payout,
+			contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
 			Bot.display.lastProfit,
 			contract.contract_type, +contract.entry_tick,
 			Bot.utils.getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.exit_tick,
@@ -40,7 +40,7 @@ Bot.Trade = function () {
 
 	Bot.server.updateChart = function updateChart(){
 		var contract;
-		if ( Bot.server.checkSold(Bot.server.contractForChart) ) {
+		if ( Bot.server.checkBought(Bot.server.contractForChart) ) {
 			contract = {
 				barrier: Bot.server.contractForChart.barrier,
 				entry_tick_time: Bot.server.contractForChart.entry_tick_time,
@@ -219,24 +219,22 @@ Bot.Trade = function () {
 					Bot.server.api.unsubscribeFromAllProposals().then(function(){
 						Bot.server.contracts = [];
 					});
+				} else if ( transaction.action === 'sell' ) {
+					Bot.server.getContractInfo();
 				}
 			}
 		});
 	};
 
-	Bot.server.checkSold = function checkSold(contract){
+	Bot.server.checkBought = function checkBought(contract){
 		return ( contract !== null && ( !contract.hasOwnProperty('is_sold') || contract.is_sold === 1 ));
 	};
 
 	Bot.server.observeOpenContracts = function observeOpenContracts() {
 		Bot.server.api.events.on('proposal_open_contract', function(response) {
 			var contract = response.proposal_open_contract;
-			if ( contract.is_expired ) {
-				if ( Bot.server.purchasedContractId ) {
-					Bot.server.on_contract_finish(contract);
-				}
-			} else {
-				if ( Bot.server.checkSold(contract) ) {
+			if ( !contract.is_expired || contract.is_valid_to_sell ) {
+				if ( Bot.server.checkBought(contract) ) {
 					Bot.server.on_contract_update(contract);
 				}
 			}
@@ -272,6 +270,7 @@ Bot.Trade = function () {
 			})
 			.then(function (response) {
 				var contract = response.proposal_open_contract;
+				console.log(contract);
 				if ( contract.is_expired ) {
 					Bot.server.on_contract_finish(contract);
 					if (callback) {
