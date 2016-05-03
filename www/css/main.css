@@ -1,7 +1,3 @@
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-}
 #header {
   width: 100%;
   height: 100%;
@@ -14,10 +10,9 @@ body {
 }
 #header #logo div {
   display: inline-block;
-  ;
 }
 .language-select {
-  display: inline-block;
+    display: inline-block;
 	float: right;
 	margin-top: 10px;
 	margin-right: 40px;
@@ -34,11 +29,6 @@ body {
   margin: 0 auto;
   background-color: #F8F8FF;
 }
-h1 {
-  font-size: 36px;
-  font-weight: 300;
-  color: #e98024;
-}
 .left, .right {
   width: 45%;
   margin: 20px;
@@ -47,20 +37,6 @@ h1 {
 }
 .right img {
   width: 100%;
-}
-.button span {
-  color: #fff;
-  text-decoration: none;
-  text-align: center;
-  line-height: 100%;
-  background: #2e8836;
-  border-radius: 4px;
-  text-transform: capitalize;
-  padding: 10px 25px;
-  display: inline-block;
-  letter-spacing: .75px;
-  overflow: visible;
-  border: 0;
 }
 .cta {
   margin: 30px auto;
@@ -71,10 +47,6 @@ h1 {
 .contact p {
   color: gray;
   font-size: 12px;
-}
-ul.bullet li{
-  list-style-image: url(../image/list-circle_1.png);
-  margin:5px 0;
 }
 @media only screen and (max-width: 480px) {
   .left, .right {

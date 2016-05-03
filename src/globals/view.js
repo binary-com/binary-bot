@@ -125,8 +125,8 @@ Bot.View = function View(on_load) {
 
 	Bot.showTrades();
 
-	var BinaryChart = window['binary-charts'];
-	Bot.chart = BinaryChart.createChart('chart', {
+	var BinaryChart = window['binary-charts'].PlainChart;
+	Bot.chart = BinaryChart('chart', {
 		ticks: []
 	});
 
