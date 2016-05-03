@@ -1,37 +1,32 @@
 html, body {
-		height: 100%;
-		margin: 0px;
+	height: 100%;
+	margin: 0;
 }
 body {
-
-	backgroun-color: #fff;
-	font-family: sans-serif;
+	display: flex;
 }
 h1 {
 	font-weight: normal;
 	font-size: 140%;
 }
-#drop_zone{
-	height: 100%;
-	width: 100%;
+.header, .toolbox {
+    display: flex;
 }
-.toolbox * {
-	margin: 2px;
-	float: left;
+.header {
+	padding: .25rem;
+	background: #2a3052 !important;
+	font-size: 14px;
+    justify-content: space-between;
 }
-#blocklyDiv{
-	height: 100%;
-	width: 100%;
-	right: 100px;
-	bottom: 0px;
+.header button {
+	margin-right: .5rem;
 }
-.help{
-	float: right;
-	margin: 2px;
+.workspace {
+   flex: 1;
+   display: flex;
 }
-.logout{
-	float: right;
-	margin: 2px;
+#blocklyDiv {
+	flex: 1;
 }
 #center {
 	position: fixed;
@@ -68,21 +63,8 @@ h1 {
 	padding: 15px;
 	background-color: #EEEEEE;
 }
-table {
-	overflow:auto;  
-	width: 100%;
-}
-table, th, td {
-	border: 1px solid black;
-	border-collapse: collapse;
-}
-th, td {
-	text-align: center !important;
-	padding: 3px !important;
-	height: 2em;
-}
 .table-scroll {
-  overflow:auto;  
+  	overflow: auto;
 	height: 169px;
 }
 #chart, #tradesDisplay, #summaryDisplay {
@@ -90,7 +72,7 @@ th, td {
 }
 #chart {
 	height: 270px;
-	width: 770px; 
+	width: 770px;
 }
 .draggable{
 	opacity: 0.75;
