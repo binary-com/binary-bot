@@ -84,7 +84,6 @@ var addTradeInfo = function addTradeInfo(trade) {
 };
 
 var showTradeInfo = function showTradeInfo() {
-	console.log('showing trade');
 	$('#tradesDisplay tbody')
 		.children()
 		.remove();

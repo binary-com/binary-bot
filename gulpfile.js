@@ -95,7 +95,7 @@ gulp.task('build_all', ['i18n', 'build-bot', 'build-index'], function () {
 });
 
 gulp.task('watch', ['build_all'], function () {
-	gp_watch(['src/**/*.js', 'www/xml/*.xml', '*.html'], function(){
+	gp_watch(['src/**/*.js', 'www/xml/*.xml', '*.html', '*.js'], function(){
 		gulp.run(['build_all']);
 	});
 });

@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var i18n = require('i18n');
+var sha1 = require('sha1');
 // handle language in localStorage and query string
 var supportedLanguages = ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'];
 var parseQueryString = function parseQueryString() {

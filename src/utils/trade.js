@@ -18,10 +18,7 @@ var contracts;
 var authorizeCallback;
 var lastAuthorized;
 var token;
-
-var chart = BinaryCharts.createChart('chart', {
-	ticks: []
-});
+var chart;
 
 // influences display, calls on_finish
 var on_contract_finish = function on_contract_finish(contract) {
@@ -69,9 +66,16 @@ var updateChart = function updateChart() {
 			contract.date_expiry = contractForChart.date_expiry;
 		}
 	}
+	if ( !chart ) {
+		chart = BinaryCharts('chart', {
+			ticks: [],
+			pipSize: 2,
+		});
+	}
 	chart.updateChart({
 		ticks: ticks,
 		contract: contract,
+		pipSize: 2,
 	});
 };
 
@@ -358,7 +362,7 @@ var setSymbol = function setSymbol(_symbol) {
 	symbol = _symbol;
 };
 
-var trade = function trade(token, callback, trade_again) {
+var trade = function trade(_token, callback, trade_again) {
 	if (token === '') {
 		showError(i18n._('No token is available to authenticate'));
 	} else {
@@ -369,7 +373,7 @@ var trade = function trade(token, callback, trade_again) {
 		if (trade_again) {
 			restartContracts();
 		} else {
-			token = token;
+			token = _token;
 			stop();
 			api = new LiveApi();
 			observeTicks();
