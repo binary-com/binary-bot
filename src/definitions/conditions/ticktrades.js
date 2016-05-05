@@ -1,10 +1,15 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#cur8so
+var blockly = require('blockly');
+var i18n = require('i18n');
+var config = require('../../globals/config');
+var utils = require('../../utils/utils');
+var relationChecker = require('../../utils/relationChecker');
 
-Object.keys(Bot.config.opposites).forEach(function(opposites){
-	Blockly.Blocks[opposites.toLowerCase()] = {
+Object.keys(config.opposites).forEach(function(opposites){
+	blockly.Blocks[opposites.toLowerCase()] = {
 		init: function() {
 			var option_names = [];
-			Bot.config.opposites[opposites].forEach(function(options){
+			config.opposites[opposites].forEach(function(options){
 				
 				var option_alias = Object.keys(options)[0];
 				var option_name = options[option_alias];
@@ -17,14 +22,14 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 				.appendField(i18n._("Ticks:"));
 			this.appendDummyInput()
 				.appendField(i18n._("Payout:"))
-				.appendField(new Blockly.FieldDropdown(Bot.config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
+				.appendField(new blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
 			this.appendDummyInput()
 				.appendField(i18n._("Currency:"))
-				.appendField(new Blockly.FieldDropdown(Bot.config.lists.CURRENCY), "CURRENCY_LIST");
+				.appendField(new blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
 			this.appendValueInput("AMOUNT")
 				.setCheck("Number")
 				.appendField(i18n._("Amount:"));
-			if ( Bot.config.opposites_have_barrier.indexOf(opposites) > -1 ) {
+			if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
 				this.appendValueInput("PREDICTION")
 					.setCheck("Number")
 					.appendField(i18n._("Prediction:"));
@@ -36,7 +41,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){
-			Bot.utils.getRelationChecker().condition(this, ev);
+			relationChecker.condition(this, ev);
 		},
 	};
 });

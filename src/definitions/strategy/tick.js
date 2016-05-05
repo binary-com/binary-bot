@@ -1,6 +1,10 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 
-Blockly.Blocks.tick = {
+var blockly = require('blockly');
+var relationChecker = require('../../utils/relationChecker');
+var i18n = require('i18n');
+
+blockly.Blocks.tick = {
   init: function() {
     this.appendDummyInput()
         .appendField(i18n._("Tick Value"));
@@ -10,6 +14,6 @@ Blockly.Blocks.tick = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Value');
+		relationChecker.inside_strategy(this, ev, 'Tick Value');
 	},
 };

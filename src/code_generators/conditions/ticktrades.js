@@ -1,15 +1,17 @@
-Object.keys(Bot.config.opposites).forEach(function(opposites){
-	Blockly.JavaScript[opposites.toLowerCase()] = function(block) {
+var blockly = require('blockly');
+var config = require('../../globals/config');
+Object.keys(config.opposites).forEach(function(opposites){
+	blockly.JavaScript[opposites.toLowerCase()] = function(block) {
 		if ( this.parentBlock_ === null ) {
 			return '';
 		}
-		var duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
+		var duration = blockly.JavaScript.valueToCode(block, 'DURATION', blockly.JavaScript.ORDER_ATOMIC);
 		var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
 		var currency = block.getFieldValue('CURRENCY_LIST');
-		var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
+		var amount = blockly.JavaScript.valueToCode(block, 'AMOUNT', blockly.JavaScript.ORDER_ATOMIC);
 		var prediction;
-		if ( Bot.config.opposites_have_barrier.indexOf(opposites) > -1 ) {
-			prediction = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
+		if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
+			prediction = blockly.JavaScript.valueToCode(block, 'PREDICTION', blockly.JavaScript.ORDER_ATOMIC);
 			if ( prediction === '' ) {
 				throw {message: 'All condition options are required'};
 			}
@@ -23,7 +25,7 @@ Object.keys(Bot.config.opposites).forEach(function(opposites){
 			'payouttype: \'' + payouttype + '\',\n'+
 			'currency: \'' + currency + '\',\n'+
 			'amount: (' + amount + ').toFixed(2),\n'+
-			((Bot.config.opposites_have_barrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
+			((config.opposites_have_barrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
 		'})';
 		return code;
 	};

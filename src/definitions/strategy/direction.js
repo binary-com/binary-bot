@@ -1,6 +1,9 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
+var blockly = require('blockly');
+var i18n = require('i18n');
+var relationChecker = require('../../utils/relationChecker');
 
-Blockly.Blocks.direction = {
+blockly.Blocks.direction = {
   init: function() {
     this.appendDummyInput()
         .appendField(i18n._("Tick Direction"));
@@ -10,7 +13,7 @@ Blockly.Blocks.direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_strategy(this, ev, 'Tick Direction');
+		relationChecker.inside_strategy(this, ev, 'Tick Direction');
 	},
 };
 

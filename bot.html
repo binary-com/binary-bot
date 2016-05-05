@@ -27,24 +27,24 @@
 	<div class="toolbox">
 			<div class="intro-file-management">
 				<span data-i18n-text="Open Block file"></span> <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
-				<button title="Save the blocks as a XML file" onclick="Bot.saveXml()" data-i18n-text="Save Blocks"></button>
+				<button title="Save the blocks as a XML file" id="saveXml" data-i18n-text="Save Blocks"></button>
 			</div>
 			<div class="intro-token">
-				<button title="Add your tokens to the bot" onclick="Bot.addAccount()" data-i18n-text="Add Token"></button>
+				<button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Add Token"></button>
 			</div>
 			<div class="intro-undo-redo">
-				<button title="Undo the changes (Ctrl+Z)" onclick="Bot.undo()" data-i18n-text="Undo"></button>
-				<button title="Redo the changes (Ctrl+Shift+Z)" onclick="Bot.redo()" data-i18n-text="Redo"></button>
+				<button title="Undo the changes (Ctrl+Z)" id="undo" data-i18n-text="Undo"></button>
+				<button title="Redo the changes (Ctrl+Shift+Z)" id="redo" data-i18n-text="Redo"></button>
 			</div>
 			<div class="intro-summary">
-				<button title="Open the summary panel" onclick="Bot.showSummary()" data-i18n-text="Summary"></button>
+				<button title="Open the summary panel" id="showSummary" data-i18n-text="Summary"></button>
 			</div>
 			<div class="intro-run-stop">
-				<button title="Run the blocks" id="runButton" onclick="Bot.run()" data-i18n-text="Run"></button>
+				<button title="Run the blocks" id="runButton" id="run" data-i18n-text="Run"></button>
 				<button title="Stop the blocks" id="stopButton" data-i18n-text="Reset"></button>
 			</div>
 	</div>
-	<div class="logout"><button onclick="Bot.server.logout()" data-i18n-text="Logout"></button></div>
+	<div class="logout"><button id="logout" data-i18n-text="Logout"></button></div>
 	<div class="help">
 		<span class="language-select" style="display: none">
 			<select id="language">
@@ -138,8 +138,7 @@
   <script src="bower_components/backbone/backbone-min.js"></script>
   <script src="bower_components/Tourist.js/tourist.min.js"></script>
 	<script src="www/js/vendor/notifyjs/notify.min.js"></script>
-	<script src="www/js/binary-bot.min.js"></script>
-	<script src="www/js/after_all.min.js"></script>
+	<script src="www/js/bot.min.js"></script>
 
 </body>
 </html>

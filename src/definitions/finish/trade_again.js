@@ -1,6 +1,9 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
+var blockly = require('blockly');
+var i18n = require('i18n');
+var relationChecker = require('../../utils/relationChecker');
 
-Blockly.Blocks.trade_again = {
+blockly.Blocks.trade_again = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(i18n._("Trade Again"));
@@ -10,6 +13,6 @@ Blockly.Blocks.trade_again = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Trade Again');
+		relationChecker.inside_finish(this, ev, 'Trade Again');
 	},
 };

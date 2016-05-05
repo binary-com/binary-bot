@@ -1,8 +1,12 @@
-Blockly.Blocks.trade = {
+var blockly = require('blockly');
+var i18n = require('i18n');
+var relationChecker = require('../../utils/relationChecker');
+var globals = require('../../globals/globals');
+blockly.Blocks.trade = {
 	init: function () {
 		this.appendDummyInput()
 			.appendField(i18n._("Trade With Account:"))
-			.appendField(new Blockly.FieldDropdown(Bot.server.getAccounts), "ACCOUNT_LIST");
+			.appendField(new blockly.FieldDropdown(globals.accounts), "ACCOUNT_LIST");
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
 			.appendField(i18n._("Submarket"));
@@ -12,7 +16,6 @@ Blockly.Blocks.trade = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function (ev) {
-		Bot.utils.getRelationChecker()
-			.trade(this, ev);
+		relationChecker.trade(this, ev);
 	},
 };

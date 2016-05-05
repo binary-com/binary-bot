@@ -1,6 +1,9 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
+var blockly = require('blockly');
+var i18n = require('i18n');
+var relationChecker = require('../../utils/relationChecker');
 
-Blockly.Blocks.contract_details = {
+blockly.Blocks.contract_details = {
   init: function() {
     this.appendDummyInput()
         .appendField(i18n._("Contract Details"));
@@ -10,6 +13,6 @@ Blockly.Blocks.contract_details = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		Bot.utils.getRelationChecker().inside_finish(this, ev, 'Contract Details');
+		relationChecker.inside_finish(this, ev, 'Contract Details');
 	},
 };

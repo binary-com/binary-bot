@@ -1,4 +1,5 @@
-Blockly.JavaScript.contract_result = function(block) {
+var blockly = require('blockly');
+blockly.JavaScript.contract_result = function(block) {
 	var code = 'result';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, blockly.JavaScript.ORDER_ATOMIC];
 };

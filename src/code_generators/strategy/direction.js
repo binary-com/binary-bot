@@ -1,4 +1,5 @@
-Blockly.JavaScript.direction = function(block) {
+var blockly = require('blockly');
+blockly.JavaScript.direction = function(block) {
 	var code = 'direction';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, blockly.JavaScript.ORDER_ATOMIC];
 };

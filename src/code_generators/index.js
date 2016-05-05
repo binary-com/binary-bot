@@ -1,0 +1,17 @@
+require('./trade/trade.js');
+require('./tools/balance.js');
+require('./tools/notify.js');
+require('./tools/total_profit.js');
+require('./submarkets/volatility/ticktrade_markets.js');
+require('./strategy/check_direction.js');
+require('./strategy/direction.js');
+require('./strategy/purchase.js');
+require('./strategy/strategy.js');
+require('./strategy/tick.js');
+require('./finish/check_result.js');
+require('./finish/details.js');
+require('./finish/finish.js');
+require('./finish/read_details.js');
+require('./finish/result.js');
+require('./finish/trade_again.js');
+require('./conditions/ticktrades.js');
