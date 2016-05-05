@@ -360,7 +360,8 @@
 	};
 
 	var showTradeInfo = function showTradeInfo() {
-		$('#tradesTradeInfo tbody')
+		console.log('showing trade');
+		$('#tradesDisplay tbody')
 			.children()
 			.remove();
 		var count = 0;
@@ -368,7 +369,7 @@
 			var lastProfit = +(+trade.sell_price - (+trade.buy_price))
 				.toFixed(2);
 			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.sell_price + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
-			$('#tradesTradeInfo tbody')
+			$('#tradesDisplay tbody')
 				.append(element);
 			count += 1;
 		});
@@ -378,7 +379,7 @@
 				element += '<td></td>';
 			}
 			element += '</tr>';
-			$('#tradesTradeInfo tbody')
+			$('#tradesDisplay tbody')
 				.append(element);
 		}
 		$('.table-scroll')
