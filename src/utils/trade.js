@@ -3,7 +3,7 @@ var utils = require('./utils');
 var storageManager = require('./storageManager');
 var i18n = require('i18n');
 var LiveApi = require('LiveApi');
-var BinaryCharts = require('BinaryCharts');
+var Chart = require('BinaryCharts').PlainChart;
 var showError = utils.showError;
 var log = utils.log;
 var api = new LiveApi();
@@ -67,7 +67,7 @@ var updateChart = function updateChart() {
 		}
 	}
 	if ( !chart ) {
-		chart = BinaryCharts('chart', {
+		chart = Chart('chart', {
 			ticks: [],
 			pipSize: 2,
 		});

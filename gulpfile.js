@@ -79,6 +79,7 @@ gulp.task('webpack', ['vendor'], function(){
 
 gulp.task('build-bot', ['webpack'], function(){
 	return gulp.src(['www/js/bot.js'])
+		.pipe(vinylPaths(del))
 		.pipe(gp_rename('bot.min.js'))
 		.pipe(gp_uglify())
 		.pipe(gulp.dest('www/js'));
@@ -86,6 +87,7 @@ gulp.task('build-bot', ['webpack'], function(){
 
 gulp.task('build-index', ['webpack'], function(){
 	return gulp.src(['www/js/index.js'])
+		.pipe(vinylPaths(del))
 		.pipe(gp_rename('index.min.js'))
 		.pipe(gp_uglify())
 		.pipe(gulp.dest('www/js'));

@@ -83,7 +83,7 @@ th, td {
 }
 .table-scroll {
   overflow:auto;  
-	height: 169px;
+	height: 170px;
 }
 #chart, #tradesDisplay, #summaryDisplay {
 	cursor: default;

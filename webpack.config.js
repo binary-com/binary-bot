@@ -11,7 +11,7 @@ module.exports = {
     i18n: 'i18next',
     LiveApi: 'window["binary-live-api"].LiveApi',
     blockly: 'Blockly',
-    BinaryCharts: 'binary-charts/PlainChart',
+    BinaryCharts: 'window["binary-charts"]',
   },
   output: {
     filename: "[name].js",
