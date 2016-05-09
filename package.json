@@ -13,7 +13,7 @@
   "author": "Amin Marashi",
   "license": "MIT",
   "dependencies": {
-    "binary-charts": "^5.6.8",
+    "binary-charts": "^5.8.1",
     "binary-live-api": "~18.0.0",
     "blockly": "git+https://git@github.com/google/blockly.git",
     "bower": "^1.7.9",

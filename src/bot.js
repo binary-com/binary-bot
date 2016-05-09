@@ -1,6 +1,9 @@
 Bot = {};
 var translator = require('./translator'); // must be on top
 var i18n = require('i18n');
+var $ = require('jquery');
+
+translator.addBlocklyTranslation();
 translator.Translator(function(){
 	Bot.config = require('./globals/config');
 	Bot.globals = require('./globals/globals');

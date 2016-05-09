@@ -9,6 +9,7 @@ var log = utils.log;
 var api = new LiveApi();
 var ticks = [];
 var contractForChart = null;
+var symbolInfo;
 var symbol;
 var purchasedContractId;
 var strategyEnabled;
@@ -54,29 +55,19 @@ var on_contract_finish = function on_contract_finish(contract) {
 
 var updateChart = function updateChart() {
 	var contract;
-	if (checkBought(contractForChart)) {
-		contract = {
-			barrier: contractForChart.barrier,
-			entry_tick_time: contractForChart.entry_tick_time,
-			contract_type: contractForChart.contract_type,
-		};
-		if (contractForChart.exit_tick_time) {
-			contract.exit_tick_time = contractForChart.exit_tick_time;
-		} else {
-			contract.date_expiry = contractForChart.date_expiry;
-		}
+	var chartOptions = {
+		ticks: ticks,
+		trade: contractForChart,
+	};
+	if (!checkBought(contractForChart)) {
+		delete chartOptions.trade;
 	}
 	if ( !chart ) {
-		chart = Chart('chart', {
-			ticks: [],
-			pipSize: 2,
-		});
+		chartOptions.pipSize = +(+symbolInfo.pip).toExponential().substring(3);
+		chart = Chart('chart', chartOptions);
+	} else {
+		chart.updateChart(chartOptions);
 	}
-	chart.updateChart({
-		ticks: ticks,
-		contract: contract,
-		pipSize: 2,
-	});
 };
 
 var on_contract_update = function on_contract_update(contract) {
@@ -185,7 +176,9 @@ var observeTicks = function observeTicks() {
 			epoch: +feed.tick.epoch,
 			quote: +feed.tick.quote,
 		});
-		updateChart();
+		if ( !contractForChart ) {
+			updateChart();
+		}
 		callStrategy();
 	});
 
@@ -338,6 +331,7 @@ var observeAuthorize = function observeAuthorize() {
 				requestBalance();
 				requestHistory();
 				requestTransaction();
+				requestSymbolInfo();
 			}
 		}
 	});
@@ -354,8 +348,23 @@ var stop = function stop() {
 	if (api) {
 		try {
 			api.disconnect();
+			chart = null;
 		} catch (e) {}
 	}
+};
+
+var requestSymbolInfo = function requestSymbolInfo(callback){
+	api.getActiveSymbolsBrief().then(function(response){
+		var symbols = response.active_symbols;
+		symbols.forEach(function(_symbolInfo){
+			if ( _symbolInfo.symbol === symbol ) {
+				symbolInfo = _symbolInfo;
+				if ( callback ) {
+					callback();
+				}
+			}
+		});
+	});
 };
 
 var setSymbol = function setSymbol(_symbol) {
@@ -370,6 +379,7 @@ var trade = function trade(_token, callback, trade_again) {
 		purchasedContractId = null;
 		globals.disableRun(false);
 		contracts = [];
+		chart = null;
 		if (trade_again) {
 			restartContracts();
 		} else {

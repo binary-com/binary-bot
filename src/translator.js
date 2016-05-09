@@ -37,11 +37,6 @@ i18n._ = function _(str, opt){
 	return (result === '') ? str : result;
 };
 
-// to include script tag in html without warning
-$.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
-	options.async = true;
-});
-
 // definition of the xml function for i18n
 i18n.xml = function xml(dom){
 	for ( var i in dom.children ) {
@@ -71,20 +66,26 @@ i18n.xml = function xml(dom){
 	return dom;
 };
 
-var script = document.createElement( 'script' );
-script.type = 'text/javascript';
-var blocklyLang;
-if ( lang === 'zh_tw' ) {
-	blocklyLang = 'zh-hant';
-} else if ( lang === 'zh_cn' ) {
-	blocklyLang = 'zh-hans';
-} else {
-	blocklyLang = lang;
-}
-script.src = 'node_modules/blockly/msg/js/' + blocklyLang + '.js';
-$('body').append(script);
-
 module.exports = {
+	addBlocklyTranslation: function addBlocklyTranslation(){
+		// to include script tag in html without warning
+		$.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+			options.async = true;
+		});
+
+		var script = document.createElement( 'script' );
+		script.type = 'text/javascript';
+		var blocklyLang;
+		if ( lang === 'zh_tw' ) {
+			blocklyLang = 'zh-hant';
+		} else if ( lang === 'zh_cn' ) {
+			blocklyLang = 'zh-hans';
+		} else {
+			blocklyLang = lang;
+		}
+		script.src = 'node_modules/blockly/msg/js/' + blocklyLang + '.js';
+		$('body').append(script);
+	},
 	Translator: function Translator(callback){
 		// load the language file (this should not be called en)
 		$.get('www/i18n/' + lang + '.json', function(translation) {
