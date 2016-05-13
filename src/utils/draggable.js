@@ -1,5 +1,4 @@
 /* jshint ignore:start */
-var $ = require('jquery');
 $.fn.drags = function (opt) {
 
 	opt = $.extend({

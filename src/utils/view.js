@@ -2,6 +2,7 @@ var utils = require('./utils');
 var globals = require('../globals/globals');
 var storageManager = require('./storageManager');
 var blockly = require('blockly');
+var saveAs = require('filesaverjs').saveAs;
 require('../code_generators/index');
 require('../definitions/index');
 require('./draggable');
@@ -99,42 +100,6 @@ var handleDragOver = function handleDragOver(e) {
 };
 
 var dropZone = document.getElementById('drop_zone');
-dropZone.addEventListener('dragover', handleDragOver, false);
-dropZone.addEventListener('drop', handleFileSelect, false);
-document.getElementById('files')
-	.addEventListener('change', handleFileSelect, false);
-
-$('#tutorialButton')
-	.bind('click', startTutorial);
-$('#stopButton')
-	.text(i18n._('Reset'));
-$('#stopButton')
-	.bind('click', reset);
-
-$('#summaryPanel .exitPanel')
-	.click(function () {
-		$(this)
-			.parent()
-			.hide();
-	});
-
-$('#summaryPanel')
-	.hide();
-
-$('#summaryPanel')
-	.drags();
-
-$('#chart')
-	.mousedown(function (e) { // prevent chart to trigger draggable
-		e.stopPropagation();
-	});
-
-$('table')
-	.mousedown(function (e) { // prevent tables to trigger draggable
-		e.stopPropagation();
-	});
-
-globals.showTradeInfo();
 
 var uiComponents = {
 	tutorialList: '.tutorialList',
@@ -342,6 +307,42 @@ var setOpacity = function setOpacity(enabled, componentName, opacity) {
 	}
 };
 
+dropZone.addEventListener('dragover', handleDragOver, false);
+dropZone.addEventListener('drop', handleFileSelect, false);
+document.getElementById('files')
+	.addEventListener('change', handleFileSelect, false);
+
+$('#tutorialButton')
+	.bind('click', startTutorial);
+$('#stopButton')
+	.text(i18n._('Reset'));
+$('#stopButton')
+	.bind('click', reset);
+
+$('#summaryPanel .exitPanel')
+	.click(function () {
+		$(this)
+			.parent()
+			.hide();
+	});
+
+$('#summaryPanel')
+	.hide();
+
+$('#summaryPanel')
+	.drags();
+
+$('#chart')
+	.mousedown(function (e) { // prevent chart to trigger draggable
+		e.stopPropagation();
+	});
+
+$('table')
+	.mousedown(function (e) { // prevent tables to trigger draggable
+		e.stopPropagation();
+	});
+
+globals.showTradeInfo();
 $('#saveXml')
 	.click(function (e) {
 		saveXml();
@@ -378,11 +379,6 @@ $('#logout')
 		trade.logout();
 	});
 
-$('#logout')
-	.click(function (e) {
-		trade.logout();
-	});
-
 $('#runButton')
 	.click(function (e) {
 		run();
@@ -396,4 +392,5 @@ module.exports = {
 	showCode: showCode,
 	setOpacityForAll: setOpacityForAll,
 	setOpacity: setOpacity,
+	stopTutorial: stopTutorial,
 };

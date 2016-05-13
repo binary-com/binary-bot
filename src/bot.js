@@ -6,7 +6,6 @@ window.$ = window.jQuery = $;
 window.Backbone = require('backbone');
 window._ = require('underscore');
 require('notifyjs-browser');
-require('filesaverjs');
 require('tourist');
 
 translator.addBlocklyTranslation();

@@ -124,8 +124,7 @@ var steps = [{
 	at: 'bottom center',
 	teardown: function (tour, options) {
 		view.setOpacityForAll(started, 1);
-		view.getStorageManager()
-			.setDone('welcomeFinished');
+		storageManager.setDone('welcomeFinished');
 		view.stopTutorial();
 	},
 }, ];

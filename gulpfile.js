@@ -64,7 +64,7 @@ gulp.task('clean_i18n', function () {
 });
 
 gulp.task('i18n', ['clean_i18n'], function () {
-	return gulp.src(['src/**/*.js', 'www/xml/*.xml', '*.html'])
+	return gulp.src(['src/**/*.{js,html}', 'www/xml/*.xml'])
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
 });
@@ -139,7 +139,7 @@ gulp.task('deploy', ['build-min'], function () {
 });
 
 gulp.task('watch', ['build'], function () {
-	gp_watch(['src/**/*.js', 'www/xml/*.xml', '*.html'], function(){
+	gp_watch(['src/*', 'src/**/*.{html,js}', 'www/xml/*.xml', '!src/html/www'], function(){
 		gulp.run(['build']);
 	});
 });
