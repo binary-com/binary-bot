@@ -5,8 +5,20 @@ Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.
 
 ## How to run
 ```
-npm install
 npm start 
+```
+
+## Development
+
+```
+npm install
+npm run dev
+```
+
+## Deployment 
+
+```
+gulp deploy
 ```
 
 ## To update to latest version
