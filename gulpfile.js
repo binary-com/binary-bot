@@ -134,7 +134,7 @@ gulp.task('build-min', ['build', 'build-bot-min', 'build-index-min', 'pack-css-m
 });
 
 gulp.task('deploy', ['build-min'], function () {
-	return gulp.src(['*.html', './www/**/*'])
+	return gulp.src(['LICENSE', 'README.md', 'CNAME', '*.html', './www/**/*'], { base: './' })
 		.pipe(ghPages());
 });
 
