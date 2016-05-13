@@ -2,6 +2,12 @@ Bot = {};
 var translator = require('./translator'); // must be on top
 var i18n = require('i18n');
 var $ = require('jquery');
+window.$ = window.jQuery = $;
+window.Backbone = require('backbone');
+window._ = require('underscore');
+require('notifyjs-browser');
+require('filesaverjs');
+require('tourist');
 
 translator.addBlocklyTranslation();
 translator.Translator(function(){

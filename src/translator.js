@@ -83,7 +83,7 @@ module.exports = {
 		} else {
 			blocklyLang = lang;
 		}
-		script.src = 'node_modules/blockly/msg/js/' + blocklyLang + '.js';
+		script.src = 'www/js/blockly/msg/js/' + blocklyLang + '.js';
 		$('body').append(script);
 	},
 	Translator: function Translator(callback){

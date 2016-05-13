@@ -13,7 +13,7 @@ var tours = {}; // e
 
 $.get('www/xml/toolbox.xml', function (toolbox) {
 	workspace = blockly.inject('blocklyDiv', {
-		media: 'node_modules/blockly/media/',
+		media: 'www/js/blockly/media/',
 		toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
 		zoom: {
 			controls: true,
