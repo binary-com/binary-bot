@@ -59,12 +59,18 @@ gulp.task('lint', function() {
 		.pipe(jshint.reporter('default'));
 });
 
-gulp.task('clean_i18n', function () {
+gulp.task('clean-i18n', function () {
 	return del(['www/i18n/*.json']);
 });
 
-gulp.task('i18n', ['clean_i18n'], function () {
-	return gulp.src(['src/**/*.{js,html}', 'www/xml/*.xml'])
+gulp.task('i18n-xml', ['clean-i18n'], function () {
+	return gulp.src('www/xml/*.xml')
+		.pipe(scanner(options, customTransform))
+		.pipe(gulp.dest('./'));
+});
+
+gulp.task('i18n', ['i18n-xml'], function () {
+	return gulp.src('src/**/*.{js,html}')
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
 });
