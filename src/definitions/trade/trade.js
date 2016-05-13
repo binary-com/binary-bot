@@ -6,7 +6,7 @@ blockly.Blocks.trade = {
 	init: function () {
 		this.appendDummyInput()
 			.appendField(i18n._("Trade With Account:"))
-			.appendField(new blockly.FieldDropdown(globals.accounts), "ACCOUNT_LIST");
+			.appendField(new blockly.FieldDropdown(globals.getAccounts), "ACCOUNT_LIST");
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
 			.appendField(i18n._("Submarket"));

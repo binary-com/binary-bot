@@ -74,7 +74,7 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 	blockly.WidgetDiv.hideIfOwner(blockly.mainWorkspace.getBlockById('trade')
 		.getField('ACCOUNT_LIST'));
 	if (tokenList.length === 0) {
-		globals.accounts = [
+		globals.lists.accounts = [
 			[i18n._('Please add a token first'), '']
 		];
 		blockly.mainWorkspace.getBlockById('trade')
@@ -84,9 +84,9 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 			.getField('ACCOUNT_LIST')
 			.setText(i18n._('Please add a token first'));
 	} else {
-		globals.accounts = [];
+		globals.lists.accounts = [];
 		tokenList.forEach(function (tokenInfo) {
-			globals.accounts.push([tokenInfo.account_name, tokenInfo.token]);
+			globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
 		});
 		var tokenInfoToAdd = tokenList[0];
 		if (tokenToAdd !== undefined) {
@@ -122,7 +122,7 @@ var addPurchaseOptions = function addPurchaseOptions() {
 			.getInputTargetBlock('CONDITION')
 			.type;
 		var opposites = config.opposites[condition_type.toUpperCase()];
-		globals.purchase_choices = [];
+		globals.lists.purchase_choices = [];
 		opposites.forEach(function (option, index) {
 			if (index === 0) {
 				firstOption = {
@@ -135,7 +135,7 @@ var addPurchaseOptions = function addPurchaseOptions() {
 					name: option[Object.keys(option)[0]],
 				};
 			}
-			globals.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+			globals.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
 		});
 		var purchases = [];
 		blockly.mainWorkspace.getAllBlocks()

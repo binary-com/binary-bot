@@ -109,7 +109,7 @@ var getBalance = function getBalance(balance_type) {
 
 var findToken = function findToken(token) {
 	var index = -1;
-	globals.accounts.forEach(function (tokenInfo, i) {
+	globals.lists.accounts.forEach(function (tokenInfo, i) {
 		if (tokenInfo[1] === token) {
 			index = i;
 		}
@@ -118,14 +118,12 @@ var findToken = function findToken(token) {
 };
 
 var removeToken = function removeToken(token) {
-	storageManager
-		.removeToken(token);
+	storageManager.removeToken(token);
 	utils.updateTokenList();
 };
 
 var logout = function logout() {
-	storageManager
-		.removeAllTokens();
+	storageManager.removeAllTokens();
 	utils.updateTokenList();
 	log(i18n._('Logged you out!'), 'info');
 };
@@ -143,8 +141,7 @@ var addAccount = function addAccount(token) {
 		api.authorize(token)
 			.then(function (response) {
 				api.disconnect();
-				storageManager
-					.addToken(token, response.authorize.loginid);
+				storageManager.addToken(token, response.authorize.loginid);
 				utils.updateTokenList(token);
 				log(i18n._('Your token was added successfully'), 'info');
 			}, function (reason) {

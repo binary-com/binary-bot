@@ -8,13 +8,22 @@ var on_strategy = function () {};
 
 var tour = null;
 
-var accounts = [
-	[i18n._('Please add a token first'), '']
-];
-var purchase_choices = [
-	[i18n._('Click to select'), '']
-];
+var lists = {
+	accounts: [
+		[i18n._('Please add a token first'), '']
+	],
+	purchase_choices: [
+		[i18n._('Click to select'), '']
+	]
+};
 
+var getAccounts = function getAccounts(){
+	return lists.accounts;
+};
+
+var getPurchaseChoices = function getPurchaseChoices(){
+	return lists.purchase_choices;
+};
 
 var tradeInfo = {
 	numOfRuns: 0,
@@ -142,8 +151,9 @@ module.exports = {
 	toggleDebug: toggleDebug,
 	addLogToQueue: addLogToQueue,
 	isDebug: isDebug,
-	accounts: accounts,
-	purchase_choices: purchase_choices,
+	getAccounts: getAccounts,
+	lists: lists,
+	getPurchaseChoices: getPurchaseChoices,
 	disableRun: disableRun,
 	on_finish: on_finish,
 	on_strategy: on_strategy,
