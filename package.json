@@ -40,8 +40,6 @@
     "gulp-watch": "^4.3.5",
     "gulp-webpack": "^1.5.0",
     "i18next-scanner": "^1.2.1",
-    "jshint": "^2.9.2",
-    "vinyl-fs": "^2.4.3",
-    "vinyl-paths": "^2.1.0"
+    "jshint": "^2.9.2"
   }
 }

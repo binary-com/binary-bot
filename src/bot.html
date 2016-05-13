@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Binary Bot</title>
+	<link href="www/css/bot.css" rel="stylesheet" />
+	<link href="www/css/bundle.min.css" rel="stylesheet" />
+
+	<link rel="apple-touch-icon" sizes="57x57" href="https://static.binary.com/images/favicons/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="https://static.binary.com/images/favicons/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="https://static.binary.com/images/favicons/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="https://static.binary.com/images/favicons/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="https://static.binary.com/images/favicons/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="https://static.binary.com/images/favicons/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="https://static.binary.com/images/favicons/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="https://static.binary.com/images/favicons/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://static.binary.com/images/favicons/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="https://static.binary.com/images/favicons/favicon-192x192.png">
+	<link rel="icon" type="image/png" sizes="160x160" href="https://static.binary.com/images/favicons/favicon-160x160.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="https://static.binary.com/images/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://static.binary.com/images/favicons/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://static.binary.com/images/favicons/favicon-32x32.png">
+</head>
+<body id="drop_zone">
+	<div id="center"></div>
+	<div class="toolbox">
+			<div class="intro-file-management">
+				<span data-i18n-text="Open Block file"></span> <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
+				<button title="Save the blocks as a XML file" id="saveXml" data-i18n-text="Save Blocks"></button>
+			</div>
+			<div class="intro-token">
+				<button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Add Token"></button>
+			</div>
+			<div class="intro-undo-redo">
+				<button title="Undo the changes (Ctrl+Z)" id="undo" data-i18n-text="Undo"></button>
+				<button title="Redo the changes (Ctrl+Shift+Z)" id="redo" data-i18n-text="Redo"></button>
+			</div>
+			<div class="intro-summary">
+				<button title="Open the summary panel" id="showSummary" data-i18n-text="Summary"></button>
+			</div>
+			<div class="intro-run-stop">
+				<button title="Run the blocks" id="runButton" id="run" data-i18n-text="Run"></button>
+				<button title="Stop the blocks" id="stopButton" data-i18n-text="Reset"></button>
+			</div>
+	</div>
+	<div class="logout"><button id="logout" data-i18n-text="Logout"></button></div>
+	<div class="help">
+		<span class="language-select" style="display: none">
+			<select id="language">
+				<option value="zh_tw">繁體中文</option>
+				<option value="de">Deutsch</option>
+				<option value="id">Bahasa Indonesia</option>
+				<option value="zh_cn">简体中文</option>
+				<option value="it">Italiano</option>
+				<option value="vi">Vietnamese</option>
+				<option value="ar">Arabic</option>
+				<option value="pl">Polish</option>
+				<option value="ru">Русский</option>
+				<option value="pt">Português</option>
+				<option value="es">Español</option>
+				<option value="fr">Français</option>
+				<option value="en" selected="selected">English</option>
+			</select>
+		</span>
+		<span class="tutorialList">
+			<span data-i18n-text="Tours:"></span>
+			<select id="tours">
+				<option value="welcome" data-i18n-text="Welcome!"></option>
+				<option value="introduction" data-i18n-text="Introduction"></option>
+			</select>
+		</span>
+		<button id="tutorialButton" data-i18n-text="Go!"></button>
+	</div>
+	<div id="blocklyDiv"></div>
+	<div id="summaryPanel">
+		<div class="exitPanel"><p>x</p></div>
+		<div class="content">
+			<h4>
+				<span data-i18n-text="Summary"></span>
+			</h4>
+			<table id="summaryDisplay">
+				<thead>
+					<tr>
+						<th data-i18n-text="No. of runs"></th>
+						<th data-i18n-text="Total Stake"></th>
+						<th data-i18n-text="Total Payout"></th>
+						<th data-i18n-text="Total Profit/Loss"></th>
+						<th data-i18n-text="Balance"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="numOfRuns"></td>
+						<td class="totalStake"></td>
+						<td class="totalPayout"></td>
+						<td class="totalProfit"></td>
+						<td class="balance"></td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>
+				<span data-i18n-text="Trades"></span>
+			</h4>
+			<div class="table-scroll">
+				<table id="tradesDisplay">
+					<thead>
+						<tr>
+							<th><span data-i18n-text="Number"></span></th>
+							<th><span data-i18n-text="Reference"></span></th>
+							<th><span data-i18n-text="Trade Type"></span></th>
+							<th><span data-i18n-text="Entry Spot"></span></th>
+							<th><span data-i18n-text="Exit Spot"></span></th>
+							<th><span data-i18n-text="Buy Price"></span></th>
+							<th><span data-i18n-text="Final Price"></span></th>
+							<th><span data-i18n-text="Profit/Loss"></span></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="chart"></div>
+		</div>
+	</div>
+
+  <script src="www/js/blockly/blockly.min.js"></script>
+	<script src="www/js/bot.min.js"></script>
+
+</body>
+</html>
+

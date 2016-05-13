@@ -19,7 +19,7 @@ translator.Translator(function(){
 	Bot.markets = require('./utils/markets');
 	Bot.trade = require('./utils/trade');
 	Bot.toggleDebug = require('./globals/globals').toggleDebug;
-	var view = require('./utils/view'); 
+	require('./utils/view'); 
   $('[data-i18n-text]').each(function(){
     $(this).text(i18n._($(this).attr('data-i18n-text')));
   });
