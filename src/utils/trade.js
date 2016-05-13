@@ -2,8 +2,10 @@ var globals = require('../globals/globals');
 var utils = require('./utils');
 var storageManager = require('./storageManager');
 var i18n = require('i18n');
-var LiveApi = require('binary-live-api').LiveApi;
-var Chart = require('binary-charts').PlainChart;
+var LiveApi = require('binary-live-api')
+	.LiveApi;
+var Chart = require('binary-charts')
+	.PlainChart;
 var showError = utils.showError;
 var log = utils.log;
 var api = new LiveApi();
@@ -62,8 +64,10 @@ var updateChart = function updateChart() {
 	if (!checkBought(contractForChart)) {
 		delete chartOptions.trade;
 	}
-	if ( !chart ) {
-		chartOptions.pipSize = +(+symbolInfo.pip).toExponential().substring(3);
+	if (!chart) {
+		chartOptions.pipSize = +(+symbolInfo.pip)
+			.toExponential()
+			.substring(3);
 		chart = Chart('chart', chartOptions);
 	} else {
 		chart.updateChart(chartOptions);
@@ -176,7 +180,7 @@ var observeTicks = function observeTicks() {
 			epoch: +feed.tick.epoch,
 			quote: +feed.tick.quote,
 		});
-		if ( !contractForChart ) {
+		if (!contractForChart) {
 			updateChart();
 		}
 		callStrategy();
@@ -353,18 +357,19 @@ var stop = function stop() {
 	}
 };
 
-var requestSymbolInfo = function requestSymbolInfo(callback){
-	api.getActiveSymbolsBrief().then(function(response){
-		var symbols = response.active_symbols;
-		symbols.forEach(function(_symbolInfo){
-			if ( _symbolInfo.symbol === symbol ) {
-				symbolInfo = _symbolInfo;
-				if ( callback ) {
-					callback();
+var requestSymbolInfo = function requestSymbolInfo(callback) {
+	api.getActiveSymbolsBrief()
+		.then(function (response) {
+			var symbols = response.active_symbols;
+			symbols.forEach(function (_symbolInfo) {
+				if (_symbolInfo.symbol === symbol) {
+					symbolInfo = _symbolInfo;
+					if (callback) {
+						callback();
+					}
 				}
-			}
+			});
 		});
-	});
 };
 
 var setSymbol = function setSymbol(_symbol) {

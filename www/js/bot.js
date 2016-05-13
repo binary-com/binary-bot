@@ -20037,8 +20037,10 @@
 	var utils = __webpack_require__(33);
 	var storageManager = __webpack_require__(34);
 	var i18n = __webpack_require__(3);
-	var LiveApi = __webpack_require__(39).LiveApi;
-	var Chart = __webpack_require__(40).PlainChart;
+	var LiveApi = __webpack_require__(39)
+		.LiveApi;
+	var Chart = __webpack_require__(40)
+		.PlainChart;
 	var showError = utils.showError;
 	var log = utils.log;
 	var api = new LiveApi();
@@ -20097,8 +20099,10 @@
 		if (!checkBought(contractForChart)) {
 			delete chartOptions.trade;
 		}
-		if ( !chart ) {
-			chartOptions.pipSize = +(+symbolInfo.pip).toExponential().substring(3);
+		if (!chart) {
+			chartOptions.pipSize = +(+symbolInfo.pip)
+				.toExponential()
+				.substring(3);
 			chart = Chart('chart', chartOptions);
 		} else {
 			chart.updateChart(chartOptions);
@@ -20211,7 +20215,7 @@
 				epoch: +feed.tick.epoch,
 				quote: +feed.tick.quote,
 			});
-			if ( !contractForChart ) {
+			if (!contractForChart) {
 				updateChart();
 			}
 			callStrategy();
@@ -20388,18 +20392,19 @@
 		}
 	};
 
-	var requestSymbolInfo = function requestSymbolInfo(callback){
-		api.getActiveSymbolsBrief().then(function(response){
-			var symbols = response.active_symbols;
-			symbols.forEach(function(_symbolInfo){
-				if ( _symbolInfo.symbol === symbol ) {
-					symbolInfo = _symbolInfo;
-					if ( callback ) {
-						callback();
+	var requestSymbolInfo = function requestSymbolInfo(callback) {
+		api.getActiveSymbolsBrief()
+			.then(function (response) {
+				var symbols = response.active_symbols;
+				symbols.forEach(function (_symbolInfo) {
+					if (_symbolInfo.symbol === symbol) {
+						symbolInfo = _symbolInfo;
+						if (callback) {
+							callback();
+						}
 					}
-				}
+				});
 			});
-		});
 	};
 
 	var setSymbol = function setSymbol(_symbol) {
@@ -25620,7 +25625,8 @@
 	var globals = __webpack_require__(31);
 	var storageManager = __webpack_require__(34);
 	var blockly = __webpack_require__(32);
-	var saveAs = __webpack_require__(74).saveAs;
+	var saveAs = __webpack_require__(74)
+		.saveAs;
 	__webpack_require__(77);
 	__webpack_require__(95);
 	__webpack_require__(114);
@@ -25690,8 +25696,7 @@
 					var xml = blockly.Xml.textToDom(e.target.result);
 					blockly.Xml.domToWorkspace(xml, blockly.mainWorkspace);
 					utils.addPurchaseOptions();
-					var tokenList = storageManager
-						.getTokenList();
+					var tokenList = storageManager.getTokenList();
 					if (tokenList.length !== 0) {
 						blockly.mainWorkspace.getBlockById('trade')
 							.getField('ACCOUNT_LIST')

@@ -2,7 +2,8 @@ var utils = require('./utils');
 var globals = require('../globals/globals');
 var storageManager = require('./storageManager');
 var blockly = require('blockly');
-var saveAs = require('filesaverjs').saveAs;
+var saveAs = require('filesaverjs')
+	.saveAs;
 require('../code_generators/index');
 require('../definitions/index');
 require('./draggable');
@@ -72,8 +73,7 @@ var readFile = function readFile(f) {
 				var xml = blockly.Xml.textToDom(e.target.result);
 				blockly.Xml.domToWorkspace(xml, blockly.mainWorkspace);
 				utils.addPurchaseOptions();
-				var tokenList = storageManager
-					.getTokenList();
+				var tokenList = storageManager.getTokenList();
 				if (tokenList.length !== 0) {
 					blockly.mainWorkspace.getBlockById('trade')
 						.getField('ACCOUNT_LIST')
