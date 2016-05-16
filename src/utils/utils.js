@@ -1,8 +1,4 @@
-var blockly = require('blockly');
-var storageManager = require('./storageManager');
 var globals = require('../globals/globals');
-var config = require('../globals/config');
-var i18n = require('i18n');
 
 var getUTCTime = function getUTCTime(date) {
 	var dateObject = new Date(date);

@@ -18,7 +18,7 @@ translator.Translator(function(){
 	Bot.markets = require('./utils/markets');
 	Bot.trade = require('./utils/trade');
 	Bot.toggleDebug = require('./globals/globals').toggleDebug;
-	require('./utils/view'); 
+	require('./ui'); 
   $('[data-i18n-text]').each(function(){
     $(this).text(i18n._($(this).attr('data-i18n-text')));
   });

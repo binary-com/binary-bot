@@ -1,5 +1,6 @@
 var globals = require('../globals/globals');
 var utils = require('./utils');
+var view = require('./view');
 var storageManager = require('./storageManager');
 var i18n = require('i18n');
 var LiveApi = require('binary-live-api')
@@ -56,7 +57,6 @@ var on_contract_finish = function on_contract_finish(contract) {
 };
 
 var updateChart = function updateChart() {
-	var contract;
 	var chartOptions = {
 		ticks: ticks,
 		trade: contractForChart,
@@ -117,13 +117,18 @@ var findToken = function findToken(token) {
 	return index;
 };
 
-var logout = function logout(updateTokenList) {
+var removeToken = function removeToken(token) {
+	storageManager.removeToken(token);
+	view.updateTokenList();
+};
+
+var logout = function logout() {
 	storageManager.removeAllTokens();
-	updateTokenList();
+	view.updateTokenList();
 	log(i18n._('Logged you out!'), 'info');
 };
 
-var addAccount = function addAccount(token, updateTokenList) {
+var addAccount = function addAccount(token) {
 	var index = findToken(token);
 	if (index >= 0) {
 		log(i18n._('Token already added.'), 'info');
@@ -137,12 +142,11 @@ var addAccount = function addAccount(token, updateTokenList) {
 			.then(function (response) {
 				api.disconnect();
 				storageManager.addToken(token, response.authorize.loginid);
-				updateTokenList(token);
+				view.updateTokenList(token);
 				log(i18n._('Your token was added successfully'), 'info');
 			}, function (reason) {
 				api.disconnect();
-				storageManager.removeToken(token);
-				updateTokenList();
+				removeToken(token);
 				showError(i18n._('Authentication failed using token:') + ' ' + token);
 			});
 	}
