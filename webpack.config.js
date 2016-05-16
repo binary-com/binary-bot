@@ -4,9 +4,9 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			i18n: 'i18next',
 			tourist: 'tourist/tourist.js',
 		},
+		root: './src',
   },
   entry: {
     bot: './src/bot',

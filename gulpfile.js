@@ -14,14 +14,6 @@ var gulp = require('gulp'),
 		fs = require('fs');
 
 var options = {
-	attr: {
-		list: ['data-i18n', 'i18n'],
-		extensions: ['.html', '.htm']
-	},
-	func: {
-		list: ['i18next.t', 'i18n.t', 't'],
-		extensions: ['.js', '.jsx']
-	},
 	lngs: ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'], // supported languages
 	resource: {
 		loadPath: 'www/i18n/{{lng}}.json',
@@ -54,7 +46,7 @@ var customTransform = function _transform(file, enc, done) {
 };
 
 gulp.task('lint', function() {
-	return gulp.src(['./src/**/*.js', "!./src/**/*.min.js", '!./src/html/www/**/*'])
+	return gulp.src(['./src/**/*.js', "!./src/**/*.min.js"])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'));
 });
@@ -69,8 +61,14 @@ gulp.task('i18n-xml', ['clean-i18n'], function () {
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('i18n', ['i18n-xml'], function () {
-	return gulp.src(['src/**/*.{js,html}', '!./src/html/www/**/*'])
+gulp.task('i18n-html', ['i18n-xml'], function () {
+	return gulp.src('*.html')
+		.pipe(scanner(options, customTransform))
+		.pipe(gulp.dest('./'));
+});
+
+gulp.task('i18n-js', ['i18n-html'], function () {
+	return gulp.src('src/**/*.js')
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
 });
@@ -133,7 +131,7 @@ gulp.task('pack-css-min', function(){
 		.pipe(gulp.dest('www/css'));
 });
 
-gulp.task('build', ['i18n', 'pack-css', 'webpack'], function () {
+gulp.task('build', ['i18n-js', 'pack-css', 'webpack'], function () {
 });
 
 gulp.task('build-min', ['build', 'build-bot-min', 'build-index-min', 'pack-css-min'], function () {
@@ -145,7 +143,7 @@ gulp.task('deploy', ['build-min'], function () {
 });
 
 gulp.task('watch', ['build'], function () {
-	gp_watch(['src/*', 'src/**/*.{html,js}', 'www/xml/*.xml', '!./src/html/www/**/*'], function(){
+	gp_watch(['src/*', 'src/**/*.{html,js}', 'www/xml/*.xml'], function(){
 		gulp.run(['build']);
 	});
 });

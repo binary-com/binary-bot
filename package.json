@@ -19,7 +19,6 @@
     "blockly": "google/blockly.git",
     "bootstrap": "^3.3.6",
     "filesaverjs": "^0.2.2",
-    "i18next": "^3.1.0",
     "jquery": "^2.2.3",
     "lite-server": "^2.2.0",
     "notifyjs-browser": "^0.4.2",

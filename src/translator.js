@@ -1,6 +1,5 @@
 var $ = require('jquery');
 var i18n = require('i18n');
-var sha1 = require('sha1');
 // handle language in localStorage and query string
 var supportedLanguages = ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'];
 var parseQueryString = function parseQueryString() {
@@ -29,42 +28,6 @@ if ( queryStr.hasOwnProperty('l') && queryStr.l !== '' && supportedLanguages.ind
 }
 $('#language').val(window.lang);
 // end of handling language
-
-// define the _ function for i18n
-i18n._ = function _(str, opt){
-	var key = sha1(str);
-	var result = i18n.t(key);
-	return (result === '') ? str : result;
-};
-
-// definition of the xml function for i18n
-i18n.xml = function xml(dom){
-	for ( var i in dom.children ) {
-		if ( dom.children.hasOwnProperty(i) && !isNaN(+i) ) {
-			var child = dom.children[i];
-			var str = child.getAttribute('i18n-text');
-			var key;
-			var hasTranslation = false;
-			if ( str === null ) {
-				key = child.getAttribute('i18n');
-				if ( key !== null ) {
-					hasTranslation = true;
-				}
-			} else {
-				key = sha1(str);
-				hasTranslation = true;
-			}
-			var result = i18n.t(key);
-			if ( hasTranslation ) {
-				child.setAttribute('name', (result === '') ? str : result);
-			}
-			if ( child.children.length > 0 ) {
-				i18n.xml(child);
-			}
-		}
-	}
-	return dom;
-};
 
 module.exports = {
 	addBlocklyTranslation: function addBlocklyTranslation(){
