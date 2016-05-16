@@ -17540,109 +17540,12 @@
 		return block;
 	};
 
-	var updateTokenList = function updateTokenList(tokenToAdd) {
-		var tokenList = storageManager.getTokenList();
-		blockly.WidgetDiv.hideIfOwner(blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST'));
-		if (tokenList.length === 0) {
-			globals.lists.accounts = [
-				[i18n._('Please add a token first'), '']
-			];
-			blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.setValue('');
-			blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.setText(i18n._('Please add a token first'));
-		} else {
-			globals.lists.accounts = [];
-			tokenList.forEach(function (tokenInfo) {
-				globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
-			});
-			var tokenInfoToAdd = tokenList[0];
-			if (tokenToAdd !== undefined) {
-				var tokenInfoIndex = storageManager.findToken(tokenToAdd);
-				if (tokenInfoIndex >= 0) {
-					tokenInfoToAdd = tokenList[tokenInfoIndex];
-				}
-			}
-			if (blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.getValue() !== tokenInfoToAdd.token) {
-				blockly.mainWorkspace.getBlockById('trade')
-					.getField('ACCOUNT_LIST')
-					.setValue(tokenInfoToAdd.token);
-			}
-			if (blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.getText() !== tokenInfoToAdd.account_name) {
-				blockly.mainWorkspace.getBlockById('trade')
-					.getField('ACCOUNT_LIST')
-					.setText(tokenInfoToAdd.account_name);
-			}
-		}
-	};
-
-	var addPurchaseOptions = function addPurchaseOptions() {
-		var firstOption = {};
-		var secondOption = {};
-		var trade = blockly.mainWorkspace.getBlockById('trade');
-		if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
-			.getInputTargetBlock('CONDITION') !== null) {
-			var condition_type = trade.getInputTargetBlock('SUBMARKET')
-				.getInputTargetBlock('CONDITION')
-				.type;
-			var opposites = config.opposites[condition_type.toUpperCase()];
-			globals.lists.purchase_choices = [];
-			opposites.forEach(function (option, index) {
-				if (index === 0) {
-					firstOption = {
-						condition: Object.keys(option)[0],
-						name: option[Object.keys(option)[0]],
-					};
-				} else {
-					secondOption = {
-						condition: Object.keys(option)[0],
-						name: option[Object.keys(option)[0]],
-					};
-				}
-				globals.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
-			});
-			var purchases = [];
-			blockly.mainWorkspace.getAllBlocks()
-				.forEach(function (block) {
-					if (block.type === 'purchase') {
-						purchases.push(block);
-					}
-				});
-			purchases.forEach(function (purchase) {
-				var value = purchase.getField('PURCHASE_LIST')
-					.getValue();
-				blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-				if (value === firstOption.condition) {
-					purchase.getField('PURCHASE_LIST')
-						.setText(firstOption.name);
-				} else if (value === secondOption.condition) {
-					purchase.getField('PURCHASE_LIST')
-						.setText(secondOption.name);
-				} else {
-					purchase.getField('PURCHASE_LIST')
-						.setValue(firstOption.condition);
-					purchase.getField('PURCHASE_LIST')
-						.setText(firstOption.name);
-				}
-			});
-		}
-	};
-
 	module.exports = {
 		showError: showError,
 		log: log,
 		getUTCTime: getUTCTime,
 		broadcast: broadcast,
 		findTopParentBlock: findTopParentBlock,
-		updateTokenList: updateTokenList,
-		addPurchaseOptions: addPurchaseOptions,
 	};
 
 
@@ -17911,18 +17814,13 @@
 		return index;
 	};
 
-	var removeToken = function removeToken(token) {
-		storageManager.removeToken(token);
-		utils.updateTokenList();
-	};
-
-	var logout = function logout() {
+	var logout = function logout(updateTokenList) {
 		storageManager.removeAllTokens();
-		utils.updateTokenList();
+		updateTokenList();
 		log(i18n._('Logged you out!'), 'info');
 	};
 
-	var addAccount = function addAccount(token) {
+	var addAccount = function addAccount(token, updateTokenList) {
 		var index = findToken(token);
 		if (index >= 0) {
 			log(i18n._('Token already added.'), 'info');
@@ -17936,11 +17834,12 @@
 				.then(function (response) {
 					api.disconnect();
 					storageManager.addToken(token, response.authorize.loginid);
-					utils.updateTokenList(token);
+					updateTokenList(token);
 					log(i18n._('Your token was added successfully'), 'info');
 				}, function (reason) {
 					api.disconnect();
-					removeToken(token);
+					storageManager.removeToken(token);
+					updateTokenList();
 					showError(i18n._('Authentication failed using token:') + ' ' + token);
 				});
 		}
@@ -23414,8 +23313,8 @@
 				.setDeletable(false);
 			blockly.mainWorkspace.getBlockById('finish')
 				.setDeletable(false);
-			utils.updateTokenList();
-			utils.addPurchaseOptions();
+			updateTokenList();
+			addPurchaseOptions();
 			blockly.mainWorkspace.clearUndo();
 			tours.introduction = __webpack_require__(100);
 			tours.welcome = __webpack_require__(101);
@@ -23451,7 +23350,7 @@
 					blockly.mainWorkspace.clear();
 					var xml = blockly.Xml.textToDom(e.target.result);
 					blockly.Xml.domToWorkspace(xml, blockly.mainWorkspace);
-					utils.addPurchaseOptions();
+					addPurchaseOptions();
 					var tokenList = storageManager.getTokenList();
 					if (tokenList.length !== 0) {
 						blockly.mainWorkspace.getBlockById('trade')
@@ -23507,7 +23406,7 @@
 
 	var addAccount = function addAccount() {
 		var token = prompt(i18n._('Please enter your token here:'), '');
-		trade.addAccount(token);
+		trade.addAccount(token, updateTokenList);
 	};
 
 	var saveXml = function saveXml(showOnly) {
@@ -23686,6 +23585,105 @@
 		}
 	};
 
+	var updateTokenList = function updateTokenList(tokenToAdd) {
+		var tokenList = storageManager.getTokenList();
+		blockly.WidgetDiv.hideIfOwner(blockly.mainWorkspace.getBlockById('trade')
+			.getField('ACCOUNT_LIST'));
+		if (tokenList.length === 0) {
+			$('#addAccount').text('Login');
+			$('#logout').hide();
+			globals.lists.accounts = [
+				[i18n._('Please add a token first'), '']
+			];
+			blockly.mainWorkspace.getBlockById('trade')
+				.getField('ACCOUNT_LIST')
+				.setValue('');
+			blockly.mainWorkspace.getBlockById('trade')
+				.getField('ACCOUNT_LIST')
+				.setText(i18n._('Please add a token first'));
+		} else {
+			$('#addAccount').text('Add Token');
+			$('#logout').show();
+			globals.lists.accounts = [];
+			tokenList.forEach(function (tokenInfo) {
+				globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
+			});
+			var tokenInfoToAdd = tokenList[0];
+			if (tokenToAdd !== undefined) {
+				var tokenInfoIndex = storageManager.findToken(tokenToAdd);
+				if (tokenInfoIndex >= 0) {
+					tokenInfoToAdd = tokenList[tokenInfoIndex];
+				}
+			}
+			if (blockly.mainWorkspace.getBlockById('trade')
+				.getField('ACCOUNT_LIST')
+				.getValue() !== tokenInfoToAdd.token) {
+				blockly.mainWorkspace.getBlockById('trade')
+					.getField('ACCOUNT_LIST')
+					.setValue(tokenInfoToAdd.token);
+			}
+			if (blockly.mainWorkspace.getBlockById('trade')
+				.getField('ACCOUNT_LIST')
+				.getText() !== tokenInfoToAdd.account_name) {
+				blockly.mainWorkspace.getBlockById('trade')
+					.getField('ACCOUNT_LIST')
+					.setText(tokenInfoToAdd.account_name);
+			}
+		}
+	};
+
+	var addPurchaseOptions = function addPurchaseOptions() {
+		var firstOption = {};
+		var secondOption = {};
+		var trade = blockly.mainWorkspace.getBlockById('trade');
+		if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
+			.getInputTargetBlock('CONDITION') !== null) {
+			var condition_type = trade.getInputTargetBlock('SUBMARKET')
+				.getInputTargetBlock('CONDITION')
+				.type;
+			var opposites = config.opposites[condition_type.toUpperCase()];
+			globals.lists.purchase_choices = [];
+			opposites.forEach(function (option, index) {
+				if (index === 0) {
+					firstOption = {
+						condition: Object.keys(option)[0],
+						name: option[Object.keys(option)[0]],
+					};
+				} else {
+					secondOption = {
+						condition: Object.keys(option)[0],
+						name: option[Object.keys(option)[0]],
+					};
+				}
+				globals.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+			});
+			var purchases = [];
+			blockly.mainWorkspace.getAllBlocks()
+				.forEach(function (block) {
+					if (block.type === 'purchase') {
+						purchases.push(block);
+					}
+				});
+			purchases.forEach(function (purchase) {
+				var value = purchase.getField('PURCHASE_LIST')
+					.getValue();
+				blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
+				if (value === firstOption.condition) {
+					purchase.getField('PURCHASE_LIST')
+						.setText(firstOption.name);
+				} else if (value === secondOption.condition) {
+					purchase.getField('PURCHASE_LIST')
+						.setText(secondOption.name);
+				} else {
+					purchase.getField('PURCHASE_LIST')
+						.setValue(firstOption.condition);
+					purchase.getField('PURCHASE_LIST')
+						.setText(firstOption.name);
+				}
+			});
+		}
+	};
+
 	dropZone.addEventListener('dragover', handleDragOver, false);
 	dropZone.addEventListener('drop', handleFileSelect, false);
 	document.getElementById('files')
@@ -23755,7 +23753,7 @@
 
 	$('#logout')
 		.click(function (e) {
-			trade.logout();
+			trade.logout(updateTokenList);
 		});
 
 	$('#runButton')
@@ -23766,7 +23764,6 @@
 	module.exports = {
 		uiComponents: uiComponents,
 		getUiComponent: getUiComponent,
-		addAccount: addAccount,
 		saveXml: saveXml,
 		showCode: showCode,
 		setOpacityForAll: setOpacityForAll,
@@ -24406,6 +24403,7 @@
 
 	var blockly = __webpack_require__(17);
 	var config = __webpack_require__(15);
+	var view = __webpack_require__(58);
 	var utils = __webpack_require__(18);
 	var i18n = __webpack_require__(3);
 	var getNumField = function getNumField(block, fieldName) {
@@ -24459,7 +24457,7 @@
 			submarket(_trade.childBlocks_[0], ev);
 			utils.broadcast('tour:submarket');
 			if (ev.hasOwnProperty('newInputName')) {
-				utils.addPurchaseOptions();
+				view.addPurchaseOptions();
 			}
 		}
 		var topParent = utils.findTopParentBlock(_trade);

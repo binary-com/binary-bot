@@ -117,18 +117,13 @@ var findToken = function findToken(token) {
 	return index;
 };
 
-var removeToken = function removeToken(token) {
-	storageManager.removeToken(token);
-	utils.updateTokenList();
-};
-
-var logout = function logout() {
+var logout = function logout(updateTokenList) {
 	storageManager.removeAllTokens();
-	utils.updateTokenList();
+	updateTokenList();
 	log(i18n._('Logged you out!'), 'info');
 };
 
-var addAccount = function addAccount(token) {
+var addAccount = function addAccount(token, updateTokenList) {
 	var index = findToken(token);
 	if (index >= 0) {
 		log(i18n._('Token already added.'), 'info');
@@ -142,11 +137,12 @@ var addAccount = function addAccount(token) {
 			.then(function (response) {
 				api.disconnect();
 				storageManager.addToken(token, response.authorize.loginid);
-				utils.updateTokenList(token);
+				updateTokenList(token);
 				log(i18n._('Your token was added successfully'), 'info');
 			}, function (reason) {
 				api.disconnect();
-				removeToken(token);
+				storageManager.removeToken(token);
+				updateTokenList();
 				showError(i18n._('Authentication failed using token:') + ' ' + token);
 			});
 	}

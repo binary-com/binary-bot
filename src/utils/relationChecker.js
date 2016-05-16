@@ -1,5 +1,6 @@
 var blockly = require('blockly');
 var config = require('../globals/config');
+var view = require('../utils/view');
 var utils = require('../utils/utils');
 var i18n = require('i18n');
 var getNumField = function getNumField(block, fieldName) {
@@ -53,7 +54,7 @@ var trade = function trade(_trade, ev) {
 		submarket(_trade.childBlocks_[0], ev);
 		utils.broadcast('tour:submarket');
 		if (ev.hasOwnProperty('newInputName')) {
-			utils.addPurchaseOptions();
+			view.addPurchaseOptions();
 		}
 	}
 	var topParent = utils.findTopParentBlock(_trade);
