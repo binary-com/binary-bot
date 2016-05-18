@@ -275,7 +275,7 @@ var getContractInfo = function getContractInfo(callback) {
 		})
 		.then(function (response) {
 			var contract = response.proposal_open_contract;
-			if (contract.is_expired) {
+			if (contract.hasOwnProperty('sell_price')) {
 				on_contract_finish(contract);
 				if (callback) {
 					callback(contract);
