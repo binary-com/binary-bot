@@ -17674,7 +17674,6 @@
 		log(i18n._('Purchase was finished, result is:') + ' ' + result, (result === 'win') ? 'success' : 'error');
 
 		globals.on_finish(result, detail_list);
-		on_contract_update(contract);
 		purchasedContractId = null;
 		contractForChart = null;
 		finished = true;
@@ -17686,9 +17685,6 @@
 			ticks: ticks,
 			trade: contractForChart,
 		};
-		if (!checkBought(contractForChart)) {
-			delete chartOptions.trade;
-		}
 		if (!chart) {
 			chartOptions.pipSize = +(+symbolInfo.pip)
 				.toExponential()
@@ -17701,7 +17697,6 @@
 
 	var on_contract_update = function on_contract_update(contract) {
 		contractForChart = contract;
-		updateChart();
 	};
 
 	var callStrategy = function callStrategy() {
@@ -17802,9 +17797,7 @@
 				epoch: +feed.tick.epoch,
 				quote: +feed.tick.quote,
 			});
-			if (!contractForChart) {
-				updateChart();
-			}
+			updateChart();
 			callStrategy();
 		});
 
@@ -17847,8 +17840,6 @@
 						.then(function () {
 							contracts = [];
 						});
-				} else if (transaction.action === 'sell') {
-					getContractInfo();
 				}
 			}
 		});
@@ -17860,10 +17851,11 @@
 
 	var observeOpenContracts = function observeOpenContracts() {
 		api.events.on('proposal_open_contract', function (response) {
-			var contract = response.proposal_open_contract;
-			if (!contract.is_expired || contract.is_valid_to_sell) {
-				if (checkBought(contract)) {
-					on_contract_update(contract);
+			if ( purchasedContractId ) {
+				var contract = response.proposal_open_contract;
+				on_contract_update(contract);
+				if (contract.is_valid_to_sell === 1){
+					getContractInfo();
 				}
 			}
 		});
