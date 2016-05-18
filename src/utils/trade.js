@@ -23,6 +23,7 @@ var authorizeCallback;
 var lastAuthorized;
 var token;
 var chart;
+var finished = true;
 
 // influences display, calls on_finish
 var on_contract_finish = function on_contract_finish(contract) {
@@ -53,6 +54,7 @@ var on_contract_finish = function on_contract_finish(contract) {
 	on_contract_update(contract);
 	purchasedContractId = null;
 	contractForChart = null;
+	finished = true;
 	globals.disableRun(false);
 };
 
@@ -316,7 +318,7 @@ var observeAuthorize = function observeAuthorize() {
 	api.events.on('authorize', function (response) {
 		if (response.error) {
 			showError(response.error);
-		} else {
+		} else if ( !finished ) {
 			var now = parseInt((new Date()
 				.getTime()) / 1000);
 			if (lastAuthorized === undefined || now - lastAuthorized >= 1) { // prevent live-api to call this many times in case of disconnect
@@ -377,6 +379,7 @@ var trade = function trade(_token, callback, trade_again) {
 	if (token === '') {
 		showError(i18n._('No token is available to authenticate'));
 	} else {
+		finished = false;
 		authorizeCallback = callback;
 		purchasedContractId = null;
 		globals.disableRun(false);
