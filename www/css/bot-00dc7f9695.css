@@ -1,0 +1,97 @@
+html, body {
+		height: 100%;
+		margin: 0px;
+}
+body {
+
+	backgroun-color: #fff;
+	font-family: sans-serif;
+}
+h1 {
+	font-weight: normal;
+	font-size: 140%;
+}
+#drop_zone{
+	height: 100%;
+	width: 100%;
+}
+.toolbox * {
+	margin: 2px;
+	float: left;
+}
+#blocklyDiv{
+	height: 100%;
+	width: 100%;
+	right: 100px;
+	bottom: 0px;
+}
+.help{
+	float: right;
+	margin: 2px;
+}
+.logout{
+	float: right;
+	margin: 2px;
+}
+#center {
+	position: fixed;
+	width: 1px;
+	height: 1px;
+	top: 50%;
+	left: 50%;
+}
+#summaryPanel .exitPanel p{
+	color: white;
+	background-color: black;
+	margin-top: 4px;
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	text-align: center;
+}
+#summaryPanel{
+	display: none;
+	background-color: white;
+	z-index: 1001;
+	position: fixed;
+	width: 800px;
+	height: 600px;
+	top: 50%;
+	left: 50%;
+	margin-top: -300px;
+	margin-left: -400px;
+}
+#summaryPanel .content{
+	padding: 15px;
+	background-color: #EEEEEE;
+}
+table {
+	overflow:auto;  
+	width: 100%;
+}
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+th, td {
+	text-align: center !important;
+	padding: 3px !important;
+	height: 2em;
+}
+.table-scroll {
+  overflow:auto;  
+	height: 170px;
+}
+#chart, #tradesDisplay, #summaryDisplay {
+	cursor: default;
+}
+#chart {
+	height: 270px;
+	width: 770px; 
+}
+.draggable{
+	opacity: 0.75;
+}

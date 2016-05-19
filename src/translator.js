@@ -46,12 +46,12 @@ module.exports = {
 		} else {
 			blocklyLang = lang;
 		}
-		script.src = 'www/js/blockly/msg/js/' + blocklyLang + '.js';
+		script.src = 'js/blockly/msg/js/' + blocklyLang + '.js';
 		$('body').append(script);
 	},
 	Translator: function Translator(callback){
 		// load the language file (this should not be called en)
-		$.get('www/i18n/' + lang + '.json', function(translation) {
+		$.get('i18n/' + lang + '.json', function(translation) {
 			var resources = {
 				en: {
 					translation: translation

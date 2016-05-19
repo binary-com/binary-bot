@@ -1,0 +1,87 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+}
+#header {
+  width: 100%;
+  height: 100%;
+  background-color: #2a3052;
+  padding: 20px 0px;
+}
+#header .wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+#header #logo div {
+  display: inline-block;
+  ;
+}
+.language-select {
+  display: inline-block;
+	float: right;
+	margin-top: 10px;
+	margin-right: 40px;
+}
+.type-logo {
+  width: 80%;
+}
+body {
+  width: 100%;
+}
+#main {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  background-color: #F8F8FF;
+}
+h1 {
+  font-size: 36px;
+  font-weight: 300;
+  color: #e98024;
+}
+.left, .right {
+  width: 45%;
+  margin: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+.right img {
+  width: 100%;
+}
+.button span {
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  line-height: 100%;
+  background: #2e8836;
+  border-radius: 4px;
+  text-transform: capitalize;
+  padding: 10px 25px;
+  display: inline-block;
+  letter-spacing: .75px;
+  overflow: visible;
+  border: 0;
+}
+.cta {
+  margin: 30px auto;
+}
+.contact {
+  margin-top: 40px;
+}
+.contact p {
+  color: gray;
+  font-size: 12px;
+}
+ul.bullet li{
+  list-style-image: url(../image/list-circle_1.png);
+  margin:5px 0;
+}
+@media only screen and (max-width: 480px) {
+  .left, .right {
+    width: 100%;
+    margin: 20px;
+    display: block;
+    ;
+    vertical-align: top;
+  }
+}

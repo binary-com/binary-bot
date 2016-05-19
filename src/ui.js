@@ -75,9 +75,9 @@ var run = function run() {
 	}
 };
 
-$.get('www/xml/toolbox.xml', function (toolbox) {
+$.get('xml/toolbox.xml', function (toolbox) {
 	var workspace = blockly.inject('blocklyDiv', {
-		media: 'www/js/blockly/media/',
+		media: 'js/blockly/media/',
 		toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
 		zoom: {
 			controls: true,
@@ -89,7 +89,7 @@ $.get('www/xml/toolbox.xml', function (toolbox) {
 		},
 		trashcan: true,
 	});
-	$.get('www/xml/main.xml', function (main) {
+	$.get('xml/main.xml', function (main) {
 		blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
 		blockly.mainWorkspace.getBlockById('trade')
 			.setDeletable(false);

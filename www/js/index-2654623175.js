@@ -47,6 +47,7 @@
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var $ = __webpack_require__(2);
+	$.ajaxSetup({cache: false});
 	translator.Translator(function(){
 		$('[data-i18n-text]').each(function(){
 			$(this).text(i18n._($(this).attr('data-i18n-text')));
@@ -106,12 +107,12 @@
 			} else {
 				blocklyLang = lang;
 			}
-			script.src = 'www/js/blockly/msg/js/' + blocklyLang + '.js';
+			script.src = 'js/blockly/msg/js/' + blocklyLang + '.js';
 			$('body').append(script);
 		},
 		Translator: function Translator(callback){
 			// load the language file (this should not be called en)
-			$.get('www/i18n/' + lang + '.json', function(translation) {
+			$.get('i18n/' + lang + '.json', function(translation) {
 				var resources = {
 					en: {
 						translation: translation

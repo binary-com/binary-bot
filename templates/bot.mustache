@@ -1,25 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
+{{> ./partials/head }}
   <title>Binary Bot</title>
-	<link href="www/css/bot.css" rel="stylesheet" />
-	<link href="www/css/bundle.min.css" rel="stylesheet" />
-
-	<link rel="apple-touch-icon" sizes="57x57" href="https://static.binary.com/images/favicons/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="https://static.binary.com/images/favicons/apple-touch-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="https://static.binary.com/images/favicons/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="https://static.binary.com/images/favicons/apple-touch-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="https://static.binary.com/images/favicons/apple-touch-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="https://static.binary.com/images/favicons/apple-touch-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="https://static.binary.com/images/favicons/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="https://static.binary.com/images/favicons/apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="https://static.binary.com/images/favicons/apple-touch-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="https://static.binary.com/images/favicons/favicon-192x192.png">
-	<link rel="icon" type="image/png" sizes="160x160" href="https://static.binary.com/images/favicons/favicon-160x160.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="https://static.binary.com/images/favicons/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="https://static.binary.com/images/favicons/favicon-16x16.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="https://static.binary.com/images/favicons/favicon-32x32.png">
+	{{> main_css }}
+	{{> bot_css }}
+{{> bundle_css }}
 </head>
 <body id="drop_zone">
 	<div id="center"></div>
@@ -45,23 +30,7 @@
 	</div>
 	<div class="logout"><button id="logout" data-i18n-text="Logout"></button></div>
 	<div class="help">
-		<span class="language-select" style="display: none">
-			<select id="language">
-				<option value="zh_tw">繁體中文</option>
-				<option value="de">Deutsch</option>
-				<option value="id">Bahasa Indonesia</option>
-				<option value="zh_cn">简体中文</option>
-				<option value="it">Italiano</option>
-				<option value="vi">Vietnamese</option>
-				<option value="ar">Arabic</option>
-				<option value="pl">Polish</option>
-				<option value="ru">Русский</option>
-				<option value="pt">Português</option>
-				<option value="es">Español</option>
-				<option value="fr">Français</option>
-				<option value="en" selected="selected">English</option>
-			</select>
-		</span>
+		{{> ./partials/language }}
 		<span class="tutorialList">
 			<span data-i18n-text="Tours:"></span>
 			<select id="tours">
@@ -123,8 +92,8 @@
 		</div>
 	</div>
 
-  <script src="www/js/blockly/blockly.min.js"></script>
-	<script src="www/js/bot.min.js"></script>
+  <script src="js/blockly/blockly.js"></script>
+	{{> bot}}
 
 </body>
 </html>

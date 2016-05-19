@@ -1,6 +1,6 @@
 {
   "port": 8080,
-  "files": ["./www/**/*"],
-  "server": { "baseDir": "./www_dev" }
+  "files": ["./www/*.html"],
+  "server": { "baseDir": "./www" }
 }
 

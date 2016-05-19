@@ -48,6 +48,7 @@
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var $ = __webpack_require__(2);
+	$.ajaxSetup({cache: false});
 	window.$ = window.jQuery = $;
 	window.Backbone = __webpack_require__(11);
 	window._ = __webpack_require__(12);
@@ -123,12 +124,12 @@
 			} else {
 				blocklyLang = lang;
 			}
-			script.src = 'www/js/blockly/msg/js/' + blocklyLang + '.js';
+			script.src = 'js/blockly/msg/js/' + blocklyLang + '.js';
 			$('body').append(script);
 		},
 		Translator: function Translator(callback){
 			// load the language file (this should not be called en)
-			$.get('www/i18n/' + lang + '.json', function(translation) {
+			$.get('i18n/' + lang + '.json', function(translation) {
 				var resources = {
 					en: {
 						translation: translation
@@ -18432,7 +18433,7 @@
 			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 		},
 	}, {
-		content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="www/image/number.png"/>) ' + i18n._("from the Math menu") + '</p>',
+		content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="image/number.png"/>) ' + i18n._("from the Math menu") + '</p>',
 		target: view.getUiComponent('flyout'),
 		highlightTarget: true,
 		my: 'left center',
@@ -18451,7 +18452,7 @@
 			view.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("Click on the number block to edit its value") + ' (<img src="www/image/number_editing.png"/>), ' + i18n._("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
+		content: '<p>' + i18n._("Click on the number block to edit its value") + ' (<img src="image/number_editing.png"/>), ' + i18n._("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		highlightTarget: true,
@@ -24137,9 +24138,9 @@
 		}
 	};
 
-	$.get('www/xml/toolbox.xml', function (toolbox) {
+	$.get('xml/toolbox.xml', function (toolbox) {
 		var workspace = blockly.inject('blocklyDiv', {
-			media: 'www/js/blockly/media/',
+			media: 'js/blockly/media/',
 			toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
 			zoom: {
 				controls: true,
@@ -24151,7 +24152,7 @@
 			},
 			trashcan: true,
 		});
-		$.get('www/xml/main.xml', function (main) {
+		$.get('xml/main.xml', function (main) {
 			blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
 			blockly.mainWorkspace.getBlockById('trade')
 				.setDeletable(false);

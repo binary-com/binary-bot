@@ -9,8 +9,12 @@ var gulp = require('gulp'),
 		concat = require('gulp-concat-util'),
 		concatCss = require('gulp-concat-css'),
 		del = require('del'),
+		vinyl_paths = require('vinyl-paths'),
 		scanner = require('i18next-scanner'),
 		hash = require('sha1'),
+		sum = require('hash-sum'),
+		mustache = require('gulp-mustache-plus'),
+		rev = require('gulp-rev'),
 		fs = require('fs');
 
 var options = {
@@ -45,105 +49,158 @@ var customTransform = function _transform(file, enc, done) {
 	done();
 };
 
+gulp.task('clean-css', function() {
+	return gulp.src('./www/css/*-*.css')
+		.pipe(vinyl_paths(del));
+});
+
+gulp.task('static-css', ['clean-css'], function() {
+	return gulp.src('static/css/*')
+		.pipe(rev())
+		.pipe(gulp.dest('./www/css'))
+		.pipe(rev.manifest({base: './', merge: true}))
+		.pipe(gulp.dest('./'));
+});
+
+gulp.task('static', ['static-css'], function() {
+	return gulp.src(['static/**', '!static/css/*'])
+		.pipe(gulp.dest('./www'));
+});
+
 gulp.task('lint', function() {
-	return gulp.src(['./src/**/*.js', "!./src/**/*.min.js"])
+	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js'])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'));
 });
 
-gulp.task('clean-i18n', function () {
-	return del(['www/i18n/*.json']);
-});
-
-gulp.task('i18n-xml', ['clean-i18n'], function () {
+gulp.task('i18n-xml', ['static'], function () {
 	return gulp.src('www/xml/*.xml')
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
 });
 
 gulp.task('i18n-html', ['i18n-xml'], function () {
-	return gulp.src('*.html')
+	return gulp.src('templates/*.mustache')
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('i18n-js', ['i18n-html'], function () {
+gulp.task('i18n', ['i18n-html'], function () {
 	return gulp.src('src/**/*.js')
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('blockly-msg', function(){
-	return gulp.src('node_modules/blockly/msg/**/*')
+gulp.task('blockly-msg', ['static'], function(){
+	return gulp.src('node_modules/blockly/msg/**')
 		.pipe(gulp.dest('www/js/blockly/msg'));
 });
 
-gulp.task('blockly-media', function(){
-	return gulp.src('node_modules/blockly/media/*')
+gulp.task('blockly-media', ['static'], function(){
+	return gulp.src('node_modules/blockly/media/**')
 		.pipe(gulp.dest('www/js/blockly/media'));
 });
 
-gulp.task('blockly-js', function(){
+gulp.task('blockly-js', ['static'], function(){
 	return gulp.src(['node_modules/blockly/{blockly_compressed,blocks_compressed,javascript_compressed}.js'])
 		.pipe(concat('blockly.js'))
-		.pipe(gulp.dest('www/js/blockly'));
-});
-
-gulp.task('blockly-js-min', function(){
-	return gulp.src('www/js/blockly/blockly.js')
-		.pipe(gp_rename('blockly.min.js'))
-		.pipe(gp_uglify())
 		.pipe(gulp.dest('www/js/blockly'));
 });
 
 gulp.task('blockly', ['blockly-msg', 'blockly-media', 'blockly-js'], function () {
 });
 
-gulp.task('webpack', ['lint', 'blockly'], function(){
-	return webpack(require('./webpack.config.js'))
-		.pipe(gulp.dest('www/js'));
+gulp.task('clean-webpack', function() {
+	return gulp.src(['./www/js/*-*.js'])
+		.pipe(vinyl_paths(del));
 });
 
-gulp.task('build-bot-min', ['webpack'], function(){
-	return gulp.src(['www/js/bot.js'])
+gulp.task('webpack', ['clean-webpack', 'lint', 'blockly'], function(){
+	return webpack(require('./webpack.config.js'))
+		.pipe(rev())
+		.pipe(gulp.dest('www/js'))
+		.pipe(rev.manifest({base: './', merge: true}))
+		.pipe(gulp.dest('./'));
+});
+
+gulp.task('build-bot-min', ['build'], function(){
+	return gulp.src(['www/js/bot-*.js'])
 		.pipe(gp_rename('bot.min.js'))
 		.pipe(gp_uglify())
-		.pipe(gulp.dest('www/js'));
+		.pipe(rev())
+		.pipe(gulp.dest('www/js'))
+		.pipe(rev.manifest({base: './', merge: true}))
+		.pipe(gulp.dest('./'));
 });
 
-gulp.task('build-index-min', ['webpack'], function(){
-	return gulp.src(['www/js/index.js'])
+gulp.task('build-index-min', ['build'], function(){
+	return gulp.src(['www/js/index-*.js'])
 		.pipe(gp_rename('index.min.js'))
 		.pipe(gp_uglify())
-		.pipe(gulp.dest('www/js'));
+		.pipe(rev())
+		.pipe(gulp.dest('www/js'))
+		.pipe(rev.manifest({base: './', merge: true}))
+		.pipe(gulp.dest('./'));
 });
 
-gulp.task('pack-css', function(){
+gulp.task('pack-css', ['static'], function(){
 	return gulp.src(['node_modules/{bootstrap/dist/css/bootstrap.min,tourist/tourist}.css'])
 		.pipe(concatCss('bundle.css'))
-		.pipe(gulp.dest('www/css'));
+		.pipe(rev())
+		.pipe(gulp.dest('www/css'))
+		.pipe(rev.manifest({base: './', merge: true}))
+		.pipe(gulp.dest('./'));
 });
 
-gulp.task('pack-css-min', function(){
-	return gulp.src('www/css/bundle.css')
+gulp.task('pack-css-min', ['build'], function(){
+	return gulp.src('www/css/bundle-*.css')
 		.pipe(gp_rename('bundle.min.css'))
 		.pipe(cleanCSS())
-		.pipe(gulp.dest('www/css'));
+		.pipe(rev())
+		.pipe(gulp.dest('www/css'))
+		.pipe(rev.manifest({merge: true}))
+		.pipe(gulp.dest('./'));
 });
 
-gulp.task('build', ['i18n-js', 'pack-css', 'webpack'], function () {
+gulp.task('mustache-dev', ['static'], function(){
+	var rev_manifest = require('./rev-manifest');
+	return gulp.src('templates/*.mustache')
+		.pipe(mustache({},{},{
+			index: '<script src="js/' + rev_manifest['index.js'] + '"></script>',
+			bot: '<script src="js/' + rev_manifest['bot.js'] + '"></script>',
+			bundle: '<link href="css/' + rev_manifest['bundle.css'] + '" rel="stylesheet" />',
+			main_css: '<link href="css/' + rev_manifest['main.css'] + '" rel="stylesheet" />',
+			bot_css: '<link href="css/' + rev_manifest['bot.css'] + '" rel="stylesheet" />',
+		}))
+		.pipe(gulp.dest('www'));
 });
 
-gulp.task('build-min', ['build', 'build-bot-min', 'build-index-min', 'pack-css-min'], function () {
+gulp.task('mustache-min', ['build'], function(){
+	var rev_manifest = require('./rev-manifest');
+	return gulp.src('templates/*.mustache')
+		.pipe(mustache({},{},{
+			index: '<script src="js/' + rev_manifest['index.min.js'] + '"></script>',
+			bot: '<script src="js/' + rev_manifest['bot.min.js'] + '"></script>',
+			bundle_css: '<link href="css/' + rev_manifest['bundle.min.css'] + '" rel="stylesheet" />',
+			main_css: '<link href="css/' + rev_manifest['main.css'] + '" rel="stylesheet" />',
+			bot_css: '<link href="css/' + rev_manifest['bot.css'] + '" rel="stylesheet" />',
+		}))
+		.pipe(gulp.dest('www'));
+});
+
+gulp.task('build', ['i18n', 'pack-css', 'webpack', 'mustache-dev'], function () {
+});
+
+gulp.task('build-min', ['build-bot-min', 'build-index-min', 'pack-css-min', 'mustache-min'], function () {
 });
 
 gulp.task('deploy', ['build-min'], function () {
-	return gulp.src(['LICENSE', 'README.md', 'CNAME', '*.html', './www/**/*'], { base: './' })
+	return gulp.src(['LICENSE', 'README.md', 'CNAME', './www/**'])
 		.pipe(ghPages());
 });
 
 gulp.task('watch', ['build'], function () {
-	gp_watch(['src/*', 'src/**/*.{html,js}', 'www/xml/*.xml'], function(){
+	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache'], function(){
 		gulp.run(['build']);
 	});
 });

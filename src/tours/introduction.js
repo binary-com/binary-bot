@@ -97,7 +97,7 @@ var steps = [{
 		blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 	},
 }, {
-	content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="www/image/number.png"/>) ' + i18n._("from the Math menu") + '</p>',
+	content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="image/number.png"/>) ' + i18n._("from the Math menu") + '</p>',
 	target: view.getUiComponent('flyout'),
 	highlightTarget: true,
 	my: 'left center',
@@ -116,7 +116,7 @@ var steps = [{
 		view.setOpacity(started, 'toolbox', 0.3);
 	},
 }, {
-	content: '<p>' + i18n._("Click on the number block to edit its value") + ' (<img src="www/image/number_editing.png"/>), ' + i18n._("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
+	content: '<p>' + i18n._("Click on the number block to edit its value") + ' (<img src="image/number_editing.png"/>), ' + i18n._("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
 	target: view.getUiComponent('workspace')
 		.find(view.uiComponents.submarket),
 	highlightTarget: true,

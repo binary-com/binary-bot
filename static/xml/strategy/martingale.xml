@@ -1,4 +1,4 @@
-<xml xmlns="http://www.w3.org/1999/xhtml">
+﻿<xml xmlns="http://www.w3.org/1999/xhtml">
   <block type="variables_set" x="11" y="14">
     <field name="VAR">Expected Profit</field>
     <value name="VALUE">
