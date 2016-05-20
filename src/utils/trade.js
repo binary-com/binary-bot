@@ -228,10 +228,10 @@ var checkBought = function checkBought(contract) {
 
 var observeOpenContracts = function observeOpenContracts() {
 	api.events.on('proposal_open_contract', function (response) {
-		if ( purchasedContractId ) {
+		if (purchasedContractId) {
 			var contract = response.proposal_open_contract;
 			on_contract_update(contract);
-			if (contract.is_valid_to_sell === 1){
+			if (contract.is_valid_to_sell === 1) {
 				getContractInfo();
 			}
 		}
@@ -310,7 +310,7 @@ var observeAuthorize = function observeAuthorize() {
 	api.events.on('authorize', function (response) {
 		if (response.error) {
 			showError(response.error);
-		} else if ( !finished ) {
+		} else if (!finished) {
 			var now = parseInt((new Date()
 				.getTime()) / 1000);
 			if (lastAuthorized === undefined || now - lastAuthorized >= 1) { // prevent live-api to call this many times in case of disconnect

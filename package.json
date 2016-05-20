@@ -4,27 +4,27 @@
   "description": "Visual automation for binary.com",
   "main": "src/bot.js",
   "scripts": {
-    "start": "lite-server",
-    "watch": "gulp watch",
-    "dev": "gulp watch& npm start",
+    "start": "gulp serve",
+    "dev": "gulp watch",
     "hunspell": "gulp i18n; cd www/i18n ; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../known_words.txt en.txt; rm *.po *.txt"
   },
   "author": "Amin Marashi",
   "license": "MIT",
   "dependencies": {
-    "tourist": "easelinc/tourist.git",
     "backbone": "^1.3.3",
     "binary-charts": "^5.13.1",
     "binary-live-api": "~18.6.0",
     "blockly": "google/blockly.git",
     "bootstrap": "^3.3.6",
     "filesaverjs": "^0.2.2",
+    "gulp-connect": "^4.0.0",
+    "gulp-open": "^2.0.0",
     "jquery": "^2.2.3",
-    "lite-server": "^2.2.0",
     "notifyjs-browser": "^0.4.2",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "sha1": "^1.1.1",
+    "tourist": "easelinc/tourist.git",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

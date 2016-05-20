@@ -15,7 +15,12 @@ var gulp = require('gulp'),
 		sum = require('hash-sum'),
 		mustache = require('gulp-mustache-plus'),
 		rev = require('gulp-rev'),
-		fs = require('fs');
+		fs = require('fs')
+		connect = require('gulp-connect')
+		open = require('gulp-open')
+		through = require('through2')
+		path = require('path')
+		;
 
 var options = {
 	lngs: ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'], // supported languages
@@ -49,6 +54,14 @@ var customTransform = function _transform(file, enc, done) {
 	done();
 };
 
+var manifest = {};
+var addToManifest = function addToManifest(chunk, enc, cb) {
+	var oldFile = path.parse(chunk.revOrigPath);
+	var newFileName = oldFile.name + '-' + chunk.revHash + oldFile.ext;
+	manifest[oldFile.base] = newFileName;
+	return cb(null, chunk);
+};
+
 gulp.task('clean-css', function() {
 	return gulp.src('./www/css/*-*.css')
 		.pipe(vinyl_paths(del));
@@ -57,9 +70,8 @@ gulp.task('clean-css', function() {
 gulp.task('static-css', ['clean-css'], function() {
 	return gulp.src('static/css/*')
 		.pipe(rev())
-		.pipe(gulp.dest('./www/css'))
-		.pipe(rev.manifest({base: './', merge: true}))
-		.pipe(gulp.dest('./'));
+		.pipe(through.obj(addToManifest))
+		.pipe(gulp.dest('./www/css'));
 });
 
 gulp.task('static', ['static-css'], function() {
@@ -118,9 +130,8 @@ gulp.task('clean-webpack', function() {
 gulp.task('webpack', ['clean-webpack', 'lint', 'blockly'], function(){
 	return webpack(require('./webpack.config.js'))
 		.pipe(rev())
-		.pipe(gulp.dest('www/js'))
-		.pipe(rev.manifest({base: './', merge: true}))
-		.pipe(gulp.dest('./'));
+		.pipe(through.obj(addToManifest))
+		.pipe(gulp.dest('www/js'));
 });
 
 gulp.task('build-bot-min', ['build'], function(){
@@ -128,9 +139,8 @@ gulp.task('build-bot-min', ['build'], function(){
 		.pipe(gp_rename('bot.min.js'))
 		.pipe(gp_uglify())
 		.pipe(rev())
-		.pipe(gulp.dest('www/js'))
-		.pipe(rev.manifest({base: './', merge: true}))
-		.pipe(gulp.dest('./'));
+		.pipe(through.obj(addToManifest))
+		.pipe(gulp.dest('www/js'));
 });
 
 gulp.task('build-index-min', ['build'], function(){
@@ -138,18 +148,16 @@ gulp.task('build-index-min', ['build'], function(){
 		.pipe(gp_rename('index.min.js'))
 		.pipe(gp_uglify())
 		.pipe(rev())
-		.pipe(gulp.dest('www/js'))
-		.pipe(rev.manifest({base: './', merge: true}))
-		.pipe(gulp.dest('./'));
+		.pipe(through.obj(addToManifest))
+		.pipe(gulp.dest('www/js'));
 });
 
 gulp.task('pack-css', ['static'], function(){
 	return gulp.src(['node_modules/{bootstrap/dist/css/bootstrap.min,tourist/tourist}.css'])
 		.pipe(concatCss('bundle.css'))
 		.pipe(rev())
-		.pipe(gulp.dest('www/css'))
-		.pipe(rev.manifest({base: './', merge: true}))
-		.pipe(gulp.dest('./'));
+		.pipe(through.obj(addToManifest))
+		.pipe(gulp.dest('www/css'));
 });
 
 gulp.task('pack-css-min', ['build'], function(){
@@ -157,38 +165,50 @@ gulp.task('pack-css-min', ['build'], function(){
 		.pipe(gp_rename('bundle.min.css'))
 		.pipe(cleanCSS())
 		.pipe(rev())
-		.pipe(gulp.dest('www/css'))
-		.pipe(rev.manifest({merge: true}))
-		.pipe(gulp.dest('./'));
+		.pipe(through.obj(addToManifest))
+		.pipe(gulp.dest('www/css'));
 });
 
-gulp.task('mustache-dev', ['static'], function(){
-	var rev_manifest = require('./rev-manifest');
+gulp.task('mustache-dev', ['static', 'webpack', 'pack-css'], function(){
 	return gulp.src('templates/*.mustache')
 		.pipe(mustache({},{},{
-			index: '<script src="js/' + rev_manifest['index.js'] + '"></script>',
-			bot: '<script src="js/' + rev_manifest['bot.js'] + '"></script>',
-			bundle: '<link href="css/' + rev_manifest['bundle.css'] + '" rel="stylesheet" />',
-			main_css: '<link href="css/' + rev_manifest['main.css'] + '" rel="stylesheet" />',
-			bot_css: '<link href="css/' + rev_manifest['bot.css'] + '" rel="stylesheet" />',
+			index: '<script src="js/' + manifest['index.js'] + '"></script>',
+			bot: '<script src="js/' + manifest['bot.js'] + '"></script>',
+			bundle: '<link href="css/' + manifest['bundle.css'] + '" rel="stylesheet" />',
+			main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
+			bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
 		}))
 		.pipe(gulp.dest('www'));
 });
 
-gulp.task('mustache-min', ['build'], function(){
-	var rev_manifest = require('./rev-manifest');
+gulp.task('mustache-min', ['static', 'pack-css-min', 'build-bot-min', 'build-index-min'], function(){
 	return gulp.src('templates/*.mustache')
 		.pipe(mustache({},{},{
-			index: '<script src="js/' + rev_manifest['index.min.js'] + '"></script>',
-			bot: '<script src="js/' + rev_manifest['bot.min.js'] + '"></script>',
-			bundle_css: '<link href="css/' + rev_manifest['bundle.min.css'] + '" rel="stylesheet" />',
-			main_css: '<link href="css/' + rev_manifest['main.css'] + '" rel="stylesheet" />',
-			bot_css: '<link href="css/' + rev_manifest['bot.css'] + '" rel="stylesheet" />',
+			index: '<script src="js/' + manifest['index.min.js'] + '"></script>',
+			bot: '<script src="js/' + manifest['bot.min.js'] + '"></script>',
+			bundle_css: '<link href="css/' + manifest['bundle.min.css'] + '" rel="stylesheet" />',
+			main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
+			bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
 		}))
 		.pipe(gulp.dest('www'));
+});
+
+gulp.task('connect', function () {
+	connect.server({
+		root: 'www',
+		port: 8080,
+		livereload: true
+	});
+});
+
+gulp.task('open', function(){
+	gulp.src('www/index.html')
+		.pipe(open({uri: 'http://localhost:8080/'}));
 });
 
 gulp.task('build', ['i18n', 'pack-css', 'webpack', 'mustache-dev'], function () {
+	gulp.src('www/**')
+		.pipe(connect.reload());
 });
 
 gulp.task('build-min', ['build-bot-min', 'build-index-min', 'pack-css-min', 'mustache-min'], function () {
@@ -199,7 +219,12 @@ gulp.task('deploy', ['build-min'], function () {
 		.pipe(ghPages());
 });
 
-gulp.task('watch', ['build'], function () {
+gulp.task('serve', ['open', 'connect'], function () {
+	gp_watch(['www/**'])
+		.pipe(connect.reload());
+});
+
+gulp.task('watch', ['build', 'serve'], function () {
 	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache'], function(){
 		gulp.run(['build']);
 	});

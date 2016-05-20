@@ -17,11 +17,11 @@ var lists = {
 	]
 };
 
-var getAccounts = function getAccounts(){
+var getAccounts = function getAccounts() {
 	return lists.accounts;
 };
 
-var getPurchaseChoices = function getPurchaseChoices(){
+var getPurchaseChoices = function getPurchaseChoices() {
 	return lists.purchase_choices;
 };
 

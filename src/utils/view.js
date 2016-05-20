@@ -6,7 +6,7 @@ var i18n = require('i18n');
 var activeTutorial = null;
 var tours = {}; // e
 
-var initTours = function initTours(){
+var initTours = function initTours() {
 	tours.introduction = require('../tours/introduction');
 	tours.welcome = require('../tours/welcome');
 	tours.welcome.welcome();
@@ -117,8 +117,10 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 	blockly.WidgetDiv.hideIfOwner(blockly.mainWorkspace.getBlockById('trade')
 		.getField('ACCOUNT_LIST'));
 	if (tokenList.length === 0) {
-		$('#addAccount').text('Login');
-		$('#logout').hide();
+		$('#addAccount')
+			.text('Login');
+		$('#logout')
+			.hide();
 		globals.lists.accounts = [
 			[i18n._('Please add a token first'), '']
 		];
@@ -129,8 +131,10 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 			.getField('ACCOUNT_LIST')
 			.setText(i18n._('Please add a token first'));
 	} else {
-		$('#addAccount').text('Add Token');
-		$('#logout').show();
+		$('#addAccount')
+			.text('Add Token');
+		$('#logout')
+			.show();
 		globals.lists.accounts = [];
 		tokenList.forEach(function (tokenInfo) {
 			globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);

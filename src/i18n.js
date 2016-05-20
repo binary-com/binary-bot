@@ -3,7 +3,7 @@ var translation;
 
 var init = function init(options, callback) {
 	translation = options.resources[options.lng][options.defaultNS];
-	if ( callback ) {
+	if (callback) {
 		callback();
 	}
 };

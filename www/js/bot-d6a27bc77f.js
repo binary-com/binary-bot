@@ -48,7 +48,9 @@
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var $ = __webpack_require__(2);
-	$.ajaxSetup({cache: false});
+	$.ajaxSetup({
+		cache: false
+	});
 	window.$ = window.jQuery = $;
 	window.Backbone = __webpack_require__(11);
 	window._ = __webpack_require__(12);
@@ -56,7 +58,7 @@
 	__webpack_require__(14);
 
 	translator.addBlocklyTranslation();
-	translator.Translator(function(){
+	translator.Translator(function () {
 		Bot.config = __webpack_require__(15);
 		Bot.globals = __webpack_require__(16);
 		Bot.utils = __webpack_require__(18);
@@ -64,11 +66,15 @@
 		Bot.conditions = __webpack_require__(20);
 		Bot.markets = __webpack_require__(21);
 		Bot.trade = __webpack_require__(22);
-		Bot.toggleDebug = __webpack_require__(16).toggleDebug;
-		__webpack_require__(61); 
-	  $('[data-i18n-text]').each(function(){
-	    $(this).text(i18n._($(this).attr('data-i18n-text')));
-	  });
+		Bot.toggleDebug = __webpack_require__(16)
+			.toggleDebug;
+		__webpack_require__(61);
+		$('[data-i18n-text]')
+			.each(function () {
+				$(this)
+					.text(i18n._($(this)
+						.attr('data-i18n-text')));
+			});
 	});
 
 
@@ -84,52 +90,55 @@
 		var str = window.location.search;
 		var objURL = {};
 		str.replace(
-			new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
-			function( $0, $1, $2, $3 ){
-				objURL[ $1 ] = $3;
+			new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+			function ($0, $1, $2, $3) {
+				objURL[$1] = $3;
 			}
 		);
 		return objURL;
 	};
-	$('#language').change(function change(e){
-		localStorage.lang = e.target.value;
-		window.location.search = '?l=' + e.target.value;
-	});
+	$('#language')
+		.change(function change(e) {
+			localStorage.lang = e.target.value;
+			window.location.search = '?l=' + e.target.value;
+		});
 	var queryStr = parseQueryString();
-	if ( queryStr.hasOwnProperty('l') && queryStr.l !== '' && supportedLanguages.indexOf(queryStr.l) >= 0 ) {
+	if (queryStr.hasOwnProperty('l') && queryStr.l !== '' && supportedLanguages.indexOf(queryStr.l) >= 0) {
 		window.lang = queryStr.l;
 		localStorage.lang = queryStr.l;
-	} else if (localStorage.lang){
+	} else if (localStorage.lang) {
 		window.lang = localStorage.lang;
 	} else {
 		window.lang = 'en';
 	}
-	$('#language').val(window.lang);
+	$('#language')
+		.val(window.lang);
 	// end of handling language
 
 	module.exports = {
-		addBlocklyTranslation: function addBlocklyTranslation(){
+		addBlocklyTranslation: function addBlocklyTranslation() {
 			// to include script tag in html without warning
-			$.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+			$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
 				options.async = true;
 			});
 
-			var script = document.createElement( 'script' );
+			var script = document.createElement('script');
 			script.type = 'text/javascript';
 			var blocklyLang;
-			if ( lang === 'zh_tw' ) {
+			if (lang === 'zh_tw') {
 				blocklyLang = 'zh-hant';
-			} else if ( lang === 'zh_cn' ) {
+			} else if (lang === 'zh_cn') {
 				blocklyLang = 'zh-hans';
 			} else {
 				blocklyLang = lang;
 			}
 			script.src = 'js/blockly/msg/js/' + blocklyLang + '.js';
-			$('body').append(script);
+			$('body')
+				.append(script);
 		},
-		Translator: function Translator(callback){
+		Translator: function Translator(callback) {
 			// load the language file (this should not be called en)
-			$.get('i18n/' + lang + '.json', function(translation) {
+			$.get('i18n/' + lang + '.json', function (translation) {
 				var resources = {
 					en: {
 						translation: translation
@@ -145,7 +154,7 @@
 						'translation'
 					],
 					resources: resources
-				}, function() {
+				}, function () {
 					callback();
 				});
 			});
@@ -10010,7 +10019,7 @@
 
 	var init = function init(options, callback) {
 		translation = options.resources[options.lng][options.defaultNS];
-		if ( callback ) {
+		if (callback) {
 			callback();
 		}
 	};
@@ -17316,11 +17325,11 @@
 		]
 	};
 
-	var getAccounts = function getAccounts(){
+	var getAccounts = function getAccounts() {
 		return lists.accounts;
 	};
 
-	var getPurchaseChoices = function getPurchaseChoices(){
+	var getPurchaseChoices = function getPurchaseChoices() {
 		return lists.purchase_choices;
 	};
 
@@ -17852,10 +17861,10 @@
 
 	var observeOpenContracts = function observeOpenContracts() {
 		api.events.on('proposal_open_contract', function (response) {
-			if ( purchasedContractId ) {
+			if (purchasedContractId) {
 				var contract = response.proposal_open_contract;
 				on_contract_update(contract);
-				if (contract.is_valid_to_sell === 1){
+				if (contract.is_valid_to_sell === 1) {
 					getContractInfo();
 				}
 			}
@@ -17934,7 +17943,7 @@
 		api.events.on('authorize', function (response) {
 			if (response.error) {
 				showError(response.error);
-			} else if ( !finished ) {
+			} else if (!finished) {
 				var now = parseInt((new Date()
 					.getTime()) / 1000);
 				if (lastAuthorized === undefined || now - lastAuthorized >= 1) { // prevent live-api to call this many times in case of disconnect
@@ -18042,7 +18051,7 @@
 	var activeTutorial = null;
 	var tours = {}; // e
 
-	var initTours = function initTours(){
+	var initTours = function initTours() {
 		tours.introduction = __webpack_require__(25);
 		tours.welcome = __webpack_require__(26);
 		tours.welcome.welcome();
@@ -18153,8 +18162,10 @@
 		blockly.WidgetDiv.hideIfOwner(blockly.mainWorkspace.getBlockById('trade')
 			.getField('ACCOUNT_LIST'));
 		if (tokenList.length === 0) {
-			$('#addAccount').text('Login');
-			$('#logout').hide();
+			$('#addAccount')
+				.text('Login');
+			$('#logout')
+				.hide();
 			globals.lists.accounts = [
 				[i18n._('Please add a token first'), '']
 			];
@@ -18165,8 +18176,10 @@
 				.getField('ACCOUNT_LIST')
 				.setText(i18n._('Please add a token first'));
 		} else {
-			$('#addAccount').text('Add Token');
-			$('#logout').show();
+			$('#addAccount')
+				.text('Add Token');
+			$('#logout')
+				.show();
 			globals.lists.accounts = [];
 			tokenList.forEach(function (tokenInfo) {
 				globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
@@ -24329,7 +24342,6 @@
 		.click(function (e) {
 			run();
 		});
-
 
 
 /***/ },

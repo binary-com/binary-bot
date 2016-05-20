@@ -47,11 +47,13 @@
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var $ = __webpack_require__(2);
-	$.ajaxSetup({cache: false});
-	translator.Translator(function(){
-		$('[data-i18n-text]').each(function(){
-			$(this).text(i18n._($(this).attr('data-i18n-text')));
-		});
+	translator.Translator(function () {
+		$('[data-i18n-text]')
+			.each(function () {
+				$(this)
+					.text(i18n._($(this)
+						.attr('data-i18n-text')));
+			});
 	});
 
 
@@ -67,52 +69,55 @@
 		var str = window.location.search;
 		var objURL = {};
 		str.replace(
-			new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
-			function( $0, $1, $2, $3 ){
-				objURL[ $1 ] = $3;
+			new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+			function ($0, $1, $2, $3) {
+				objURL[$1] = $3;
 			}
 		);
 		return objURL;
 	};
-	$('#language').change(function change(e){
-		localStorage.lang = e.target.value;
-		window.location.search = '?l=' + e.target.value;
-	});
+	$('#language')
+		.change(function change(e) {
+			localStorage.lang = e.target.value;
+			window.location.search = '?l=' + e.target.value;
+		});
 	var queryStr = parseQueryString();
-	if ( queryStr.hasOwnProperty('l') && queryStr.l !== '' && supportedLanguages.indexOf(queryStr.l) >= 0 ) {
+	if (queryStr.hasOwnProperty('l') && queryStr.l !== '' && supportedLanguages.indexOf(queryStr.l) >= 0) {
 		window.lang = queryStr.l;
 		localStorage.lang = queryStr.l;
-	} else if (localStorage.lang){
+	} else if (localStorage.lang) {
 		window.lang = localStorage.lang;
 	} else {
 		window.lang = 'en';
 	}
-	$('#language').val(window.lang);
+	$('#language')
+		.val(window.lang);
 	// end of handling language
 
 	module.exports = {
-		addBlocklyTranslation: function addBlocklyTranslation(){
+		addBlocklyTranslation: function addBlocklyTranslation() {
 			// to include script tag in html without warning
-			$.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+			$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
 				options.async = true;
 			});
 
-			var script = document.createElement( 'script' );
+			var script = document.createElement('script');
 			script.type = 'text/javascript';
 			var blocklyLang;
-			if ( lang === 'zh_tw' ) {
+			if (lang === 'zh_tw') {
 				blocklyLang = 'zh-hant';
-			} else if ( lang === 'zh_cn' ) {
+			} else if (lang === 'zh_cn') {
 				blocklyLang = 'zh-hans';
 			} else {
 				blocklyLang = lang;
 			}
 			script.src = 'js/blockly/msg/js/' + blocklyLang + '.js';
-			$('body').append(script);
+			$('body')
+				.append(script);
 		},
-		Translator: function Translator(callback){
+		Translator: function Translator(callback) {
 			// load the language file (this should not be called en)
-			$.get('i18n/' + lang + '.json', function(translation) {
+			$.get('i18n/' + lang + '.json', function (translation) {
 				var resources = {
 					en: {
 						translation: translation
@@ -128,7 +133,7 @@
 						'translation'
 					],
 					resources: resources
-				}, function() {
+				}, function () {
 					callback();
 				});
 			});
@@ -9993,7 +9998,7 @@
 
 	var init = function init(options, callback) {
 		translation = options.resources[options.lng][options.defaultNS];
-		if ( callback ) {
+		if (callback) {
 			callback();
 		}
 	};
