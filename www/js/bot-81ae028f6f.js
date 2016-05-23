@@ -17532,7 +17532,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var globals = __webpack_require__(16);
-	var version = '1.1.7';
+	var version = '1.1.8';
 	if (globals.debug) {
 		console.log('%cBinary Bot (v' + version + ') started.', 'color: green');
 	} else {
