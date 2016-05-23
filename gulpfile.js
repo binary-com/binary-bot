@@ -57,7 +57,9 @@ var customTransform = function _transform(file, enc, done) {
 var manifest = {};
 var addToManifest = function addToManifest(chunk, enc, cb) {
 	var oldFile = path.parse(chunk.revOrigPath);
-	var newFileName = oldFile.name + '-' + chunk.revHash + oldFile.ext;
+	var filename = oldFile.base.slice(0, oldFile.base.indexOf('.'));
+	var ext = oldFile.base.slice(oldFile.base.indexOf('.'));
+	var newFileName = filename + '-' + chunk.revHash + ext;
 	manifest[oldFile.base] = newFileName;
 	return cb(null, chunk);
 };
@@ -222,6 +224,9 @@ gulp.task('deploy', ['build-min'], function () {
 gulp.task('serve', ['open', 'connect'], function () {
 	gp_watch(['www/*.html'])
 		.pipe(connect.reload());
+});
+
+gulp.task('test-deploy', ['deploy', 'serve'], function () {
 });
 
 gulp.task('watch', ['build', 'serve'], function () {

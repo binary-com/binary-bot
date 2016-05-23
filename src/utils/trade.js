@@ -23,6 +23,7 @@ var authorizeCallback;
 var token;
 var chart;
 var finished = true;
+var purchased = false;
 
 // influences display, calls on_finish
 var contractFinished = function contractFinished(contract) {
@@ -60,7 +61,7 @@ var updateChart = function updateChart() {
 	var chartOptions = {
 		ticks: ticks,
 	};
-	if ( contractForChart ){
+	if (contractForChart) {
 		chartOptions.contract = contractForChart;
 	}
 	if (!chart) {
@@ -147,7 +148,7 @@ var addAccount = function addAccount(token) {
 };
 
 var updateBalance = function updateBalance(data) {
-	if ( data.balance && data.currency ) { 
+	if (data.balance && data.currency) {
 		balance = data.balance;
 		balance_currency = data.currency;
 		globals.tradeInfo.balance = balance_currency + ' ' + parseFloat(balance);
@@ -213,26 +214,19 @@ var observeTransaction = function observeTransaction() {
 		log(transaction);
 		if (transaction.contract_id === purchasedContractId) {
 			if (transaction.action === 'buy') {
-				api.unsubscribeFromAllProposals()
-					.then(function () {
-						 contracts = [];
-					});
-			} else if ( transaction.action === 'sell' ) {
+				api.unsubscribeFromAllProposals();
+			} else if (transaction.action === 'sell') {
 				getContractInfo();
 			}
 		}
 	});
 };
 
-var checkBought = function checkBought(contract) {
-	return (contract !== null && (!contract.hasOwnProperty('is_sold') || contract.is_sold === 1));
-};
-
 var observeOpenContracts = function observeOpenContracts() {
 	api.events.on('proposal_open_contract', function (response) {
 		var contract = response.proposal_open_contract;
 		contractForChart = contract;
-		if ( contract.is_expired ) {
+		if (contract.is_expired) {
 			api.sellExpiredContracts();
 		}
 	});
@@ -240,14 +234,18 @@ var observeOpenContracts = function observeOpenContracts() {
 
 var observeProposal = function observeProposal(options) {
 	api.events.on('proposal', function (value) {
-		if (contracts.length === 2) {
-			contracts = [];
-			strategyEnabled = false;
-		}
-		contracts.push(value);
-		if (contracts.length === 2) {
-			log(i18n._('Contracts are ready to be purchased by the strategy'), 'info');
-			strategyEnabled = true;
+		if ( !purchased ) {
+			if ( !purchasedContractId ) {
+				if (contracts.length === 2) {
+					contracts = [];
+					strategyEnabled = false;
+				}
+			}
+			contracts.push(value);
+			if (contracts.length === 2) {
+				log(i18n._('Contracts are ready to be purchased by the strategy'), 'info');
+				strategyEnabled = true;
+			}
 		}
 	});
 };
@@ -261,7 +259,7 @@ var submitProposal = function submitProposal(options) {
 };
 
 var getContractInfo = function getContractInfo(callback) {
-	if ( purchasedContractId !== '' ) {
+	if (purchasedContractId !== '') {
 		api.send({
 				proposal_open_contract: 1,
 				contract_id: purchasedContractId,
@@ -286,6 +284,7 @@ var getContractInfo = function getContractInfo(callback) {
 };
 
 var purchase = function purchase(option) {
+	purchased = true;
 	strategyEnabled = false;
 	var proposalContract = (option === contracts[1].echo_req.contract_type) ? contracts[1] : contracts[0];
 	log(i18n._('Purchased') + ': ' + proposalContract.proposal.longcode, 'info');
@@ -310,7 +309,6 @@ var restartContracts = function restartContracts() {
 		}, function (reason) {
 			showError(reason);
 		});
-	authorizeCallback();
 };
 
 var observeAuthorize = function observeAuthorize() {
@@ -319,13 +317,14 @@ var observeAuthorize = function observeAuthorize() {
 			showError(response.error);
 		} else if (!finished) {
 			log(i18n._('Authenticated using token:') + ' ' + token, 'info');
-			getContractInfo(function () {
-				restartContracts();
+			requestSymbolInfo(function(){
+				getContractInfo(function () {
+					restartContracts();
+				});
+				requestBalance();
+				requestHistory();
+				requestTransaction();
 			});
-			requestBalance();
-			requestHistory();
-			requestTransaction();
-			requestSymbolInfo();
 		}
 	});
 };
@@ -366,10 +365,11 @@ var setSymbol = function setSymbol(_symbol) {
 };
 
 var trade = function trade(_token, callback, trade_again) {
-	if (token === '') {
+	if (_token === '') {
 		showError(i18n._('No token is available to authenticate'));
 	} else {
 		finished = false;
+		purchased = false;
 		authorizeCallback = callback;
 		purchasedContractId = '';
 		globals.disableRun(false);
@@ -379,17 +379,18 @@ var trade = function trade(_token, callback, trade_again) {
 			restartContracts();
 		} else {
 			token = _token;
+			api = new LiveApi();
+			observeTicks();
+			observeProposal();
+			observeTransaction();
+			observeOpenContracts();
+			observeAuthorize();
 			api.authorize(token);
 		}
 	}
 };
 
-api = new LiveApi();
-observeTicks();
-observeProposal();
-observeTransaction();
-observeOpenContracts();
-observeAuthorize();
+globals.disableRun(false);
 
 module.exports = {
 	addAccount: addAccount,

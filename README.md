@@ -18,6 +18,7 @@ npm run dev
 ## Deployment 
 
 ```
+gulp test-deploy
 gulp deploy
 ```
 
