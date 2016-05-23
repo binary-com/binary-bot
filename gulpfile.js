@@ -12,7 +12,6 @@ var gulp = require('gulp'),
 		vinyl_paths = require('vinyl-paths'),
 		scanner = require('i18next-scanner'),
 		hash = require('sha1'),
-		sum = require('hash-sum'),
 		mustache = require('gulp-mustache-plus'),
 		rev = require('gulp-rev'),
 		fs = require('fs')
