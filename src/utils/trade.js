@@ -9,7 +9,7 @@ var Chart = require('binary-charts')
 	.PlainChart;
 var showError = utils.showError;
 var log = utils.log;
-var api = new LiveApi();
+var api;
 var ticks = [];
 var contractForChart = null;
 var symbolInfo;
@@ -20,13 +20,12 @@ var balance;
 var balance_currency;
 var contracts;
 var authorizeCallback;
-var lastAuthorized;
 var token;
 var chart;
 var finished = true;
 
 // influences display, calls on_finish
-var on_contract_finish = function on_contract_finish(contract) {
+var contractFinished = function contractFinished(contract) {
 	var result = (+contract.sell_price === 0) ? 'loss' : 'win';
 	globals.addTradeInfo(contract);
 	globals.tradeInfo.lastProfit = +(+contract.sell_price - +contract.buy_price)
@@ -51,7 +50,7 @@ var on_contract_finish = function on_contract_finish(contract) {
 	log(i18n._('Purchase was finished, result is:') + ' ' + result, (result === 'win') ? 'success' : 'error');
 
 	globals.on_finish(result, detail_list);
-	purchasedContractId = null;
+	purchasedContractId = '';
 	contractForChart = null;
 	finished = true;
 	globals.disableRun(false);
@@ -60,8 +59,10 @@ var on_contract_finish = function on_contract_finish(contract) {
 var updateChart = function updateChart() {
 	var chartOptions = {
 		ticks: ticks,
-		trade: contractForChart,
 	};
+	if ( contractForChart ){
+		chartOptions.contract = contractForChart;
+	}
 	if (!chart) {
 		chartOptions.pipSize = +(+symbolInfo.pip)
 			.toExponential()
@@ -70,10 +71,6 @@ var updateChart = function updateChart() {
 	} else {
 		chart.updateChart(chartOptions);
 	}
-};
-
-var on_contract_update = function on_contract_update(contract) {
-	contractForChart = contract;
 };
 
 var callStrategy = function callStrategy() {
@@ -150,10 +147,12 @@ var addAccount = function addAccount(token) {
 };
 
 var updateBalance = function updateBalance(data) {
-	balance = data.balance;
-	balance_currency = data.currency;
-	globals.tradeInfo.balance = balance_currency + ' ' + parseFloat(balance);
-	globals.updateTradeInfo();
+	if ( data.balance && data.currency ) { 
+		balance = data.balance;
+		balance_currency = data.currency;
+		globals.tradeInfo.balance = balance_currency + ' ' + parseFloat(balance);
+		globals.updateTradeInfo();
+	}
 };
 
 var requestBalance = function requestBalance() {
@@ -211,12 +210,15 @@ var observeTransaction = function observeTransaction() {
 	api.events.on('transaction', function (response) {
 		var transaction = response.transaction;
 		updateBalance(transaction);
+		log(transaction);
 		if (transaction.contract_id === purchasedContractId) {
 			if (transaction.action === 'buy') {
 				api.unsubscribeFromAllProposals()
 					.then(function () {
-						contracts = [];
+						 contracts = [];
 					});
+			} else if ( transaction.action === 'sell' ) {
+				getContractInfo();
 			}
 		}
 	});
@@ -228,12 +230,10 @@ var checkBought = function checkBought(contract) {
 
 var observeOpenContracts = function observeOpenContracts() {
 	api.events.on('proposal_open_contract', function (response) {
-		if (purchasedContractId) {
-			var contract = response.proposal_open_contract;
-			on_contract_update(contract);
-			if (contract.is_valid_to_sell === 1) {
-				getContractInfo();
-			}
+		var contract = response.proposal_open_contract;
+		contractForChart = contract;
+		if ( contract.is_expired ) {
+			api.sellExpiredContracts();
 		}
 	});
 };
@@ -261,22 +261,28 @@ var submitProposal = function submitProposal(options) {
 };
 
 var getContractInfo = function getContractInfo(callback) {
-	api.send({
-			proposal_open_contract: 1,
-			contract_id: purchasedContractId,
-		})
-		.then(function (response) {
-			var contract = response.proposal_open_contract;
-			if (contract.hasOwnProperty('sell_price')) {
-				on_contract_finish(contract);
-				if (callback) {
-					callback(contract);
+	if ( purchasedContractId !== '' ) {
+		api.send({
+				proposal_open_contract: 1,
+				contract_id: purchasedContractId,
+			})
+			.then(function (response) {
+				var contract = response.proposal_open_contract;
+				if (contract.hasOwnProperty('sell_price')) {
+					contractFinished(contract);
+					if (callback) {
+						callback(contract);
+					}
 				}
-			}
-		}, function (reason) {
-			showError(reason);
-			reconnect();
-		});
+			}, function (reason) {
+				showError(reason);
+				reconnect();
+			});
+	} else {
+		if (callback) {
+			callback();
+		}
+	}
 };
 
 var purchase = function purchase(option) {
@@ -304,6 +310,7 @@ var restartContracts = function restartContracts() {
 		}, function (reason) {
 			showError(reason);
 		});
+	authorizeCallback();
 };
 
 var observeAuthorize = function observeAuthorize() {
@@ -311,23 +318,14 @@ var observeAuthorize = function observeAuthorize() {
 		if (response.error) {
 			showError(response.error);
 		} else if (!finished) {
-			var now = parseInt((new Date()
-				.getTime()) / 1000);
-			if (lastAuthorized === undefined || now - lastAuthorized >= 1) { // prevent live-api to call this many times in case of disconnect
-				lastAuthorized = now;
-				log(i18n._('Authenticated using token:') + ' ' + token, 'info');
-				if (purchasedContractId) {
-					getContractInfo(function () {
-						restartContracts();
-					});
-				} else {
-					restartContracts();
-				}
-				requestBalance();
-				requestHistory();
-				requestTransaction();
-				requestSymbolInfo();
-			}
+			log(i18n._('Authenticated using token:') + ' ' + token, 'info');
+			getContractInfo(function () {
+				restartContracts();
+			});
+			requestBalance();
+			requestHistory();
+			requestTransaction();
+			requestSymbolInfo();
 		}
 	});
 };
@@ -373,7 +371,7 @@ var trade = function trade(_token, callback, trade_again) {
 	} else {
 		finished = false;
 		authorizeCallback = callback;
-		purchasedContractId = null;
+		purchasedContractId = '';
 		globals.disableRun(false);
 		contracts = [];
 		chart = null;
@@ -381,17 +379,17 @@ var trade = function trade(_token, callback, trade_again) {
 			restartContracts();
 		} else {
 			token = _token;
-			stop();
-			api = new LiveApi();
-			observeTicks();
-			observeProposal();
-			observeTransaction();
-			observeOpenContracts();
-			observeAuthorize();
 			api.authorize(token);
 		}
 	}
 };
+
+api = new LiveApi();
+observeTicks();
+observeProposal();
+observeTransaction();
+observeOpenContracts();
+observeAuthorize();
 
 module.exports = {
 	addAccount: addAccount,

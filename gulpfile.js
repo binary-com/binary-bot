@@ -174,7 +174,7 @@ gulp.task('mustache-dev', ['static', 'webpack', 'pack-css'], function(){
 		.pipe(mustache({},{},{
 			index: '<script src="js/' + manifest['index.js'] + '"></script>',
 			bot: '<script src="js/' + manifest['bot.js'] + '"></script>',
-			bundle: '<link href="css/' + manifest['bundle.css'] + '" rel="stylesheet" />',
+			bundle_css: '<link href="css/' + manifest['bundle.css'] + '" rel="stylesheet" />',
 			main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
 			bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
 		}))
@@ -220,7 +220,7 @@ gulp.task('deploy', ['build-min'], function () {
 });
 
 gulp.task('serve', ['open', 'connect'], function () {
-	gp_watch(['www/**'])
+	gp_watch(['www/*.html'])
 		.pipe(connect.reload());
 });
 
