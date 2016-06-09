@@ -198,5 +198,6 @@
   "5465174048929828b0cc34f2291e93a2e0ea782c": "Submarket",
   "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
   "33e4bca830fc829ea645c969eaa6403d9fd8df9b": "Chooses the market:",
-  "c74f890044cfe8fc5a3631d46797dc7613c1cf28": "Logged in to:"
+  "c74f890044cfe8fc5a3631d46797dc7613c1cf28": "Logged in to:",
+  "c9682cd9c0d26c6a70d2fd02ab46f490ad8b3335": "Computational Thinking Course"
 }
