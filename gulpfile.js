@@ -19,6 +19,7 @@ var gulp = require('gulp'),
 		open = require('gulp-open')
 		through = require('through2')
 		path = require('path')
+		mocha = require('gulp-mocha')
 		;
 
 var options = {
@@ -104,7 +105,12 @@ gulp.task('static', ['static-css'], function() {
 		.pipe(gulp.dest('./www'));
 });
 
-gulp.task('lint', function() {
+gulp.task('mocha', () => {
+    return gulp.src(['./src/**/__tests__/*.js'])
+        .pipe(mocha({reporter: 'nyan'}));
+});
+
+gulp.task('test', ['mocha'], function() {
 	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js'])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'));
@@ -152,7 +158,7 @@ gulp.task('clean-webpack', function() {
 		.pipe(vinyl_paths(del));
 });
 
-gulp.task('webpack', ['clean-webpack', 'lint', 'blockly'], function(){
+gulp.task('webpack', ['clean-webpack', 'test', 'blockly'], function(){
 	return webpack(require('./webpack.config.js'))
 		.pipe(through.obj(addToManifest))
 		.pipe(gulp.dest('www/js'));
