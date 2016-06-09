@@ -8,8 +8,13 @@ var AppId = {
 	oauthLogin: function getToken() {
 		var queryStr = utils.parseQueryString();
 		if (queryStr.token1) {
-			utils.addTokenIfValid(queryStr.token1, function(){
-				document.location.pathname = '/bot.html';
+			utils.addTokenIfValid(queryStr.token1, function(err){
+				if (err) {
+					alert('Login failed');
+					document.location.search = '';
+				} else {
+					document.location.pathname = '/bot.html';
+				}
 			});
 		}
 	},

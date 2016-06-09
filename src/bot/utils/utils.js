@@ -33,8 +33,14 @@ var addAccount = function addAccount() {
 	if (token === '') {
 		showError(i18n._('Token cannot be empty'));
 	} else if (token !== null) {
-		commonUtils.addTokenIfValid(token, function(){
-			updateTokenList(token);
+		commonUtils.addTokenIfValid(token, function(err){
+			if (err) {
+				showError(i18n._('Authentication failed using token:') + ' ' + token);
+				return;
+			} else {
+				log(i18n._('Your token was added successfully'), 'info');
+				updateTokenList(token);
+			}
 		});
 	}
 };

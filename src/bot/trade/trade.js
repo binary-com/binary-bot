@@ -274,7 +274,7 @@ var observeAuthorize = function observeAuthorize() {
 			commonUtils.removeToken(token);
 			showError(response.error);
 		} else if (!finished) {
-			log(i18n._('Authenticated using token:') + ' ' + token, 'info');
+			log(i18n._('Logged in to:') + ' ' + commonUtils.getAccountName(token), 'info');
 			requestSymbolInfo(function(){
 				getContractInfo(function () {
 					restartContracts();

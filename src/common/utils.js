@@ -36,19 +36,29 @@ var addTokenIfValid = function addTokenIfValid(token, callback) {
 			api.disconnect();
 			storageManager.addToken(token, response.authorize.loginid);
 			if (callback) {
-				callback();
+				callback(null);
 			}
-			log(i18n._('Your token was added successfully'), 'info');
 		}, function (reason) {
 			api.disconnect();
 			removeToken(token);
-			showError(i18n._('Authentication failed using token:') + ' ' + token);
-			});
+			if (callback) {
+				callback('Error');
+			}
+		});
+};
+
+var getAccountName = function getAccountName(token) {
+	var accountName = storageManager.getToken(token);
+	if (accountName instanceof Object) {
+		return accountName.account_name;
+	}
+	return '';
 };
 
 module.exports = {
 	parseQueryString: parseQueryString,
 	removeToken: removeToken,
 	removeAllTokens: removeAllTokens,
-	addTokenIfValid: addTokenIfValid
+	addTokenIfValid: addTokenIfValid,
+	getAccountName: getAccountName
 };
