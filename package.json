@@ -5,6 +5,7 @@
   "main": "src/bot.js",
   "scripts": {
     "start": "gulp serve",
+    "test": "gulp test",
     "dev": "gulp watch",
     "hunspell": "gulp i18n; cd www/i18n ; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../known_words.txt en.txt; rm *.po *.txt"
   },
