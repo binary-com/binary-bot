@@ -13,7 +13,7 @@
   "dependencies": {
     "backbone": "^1.3.3",
     "binary-charts": "^6.3.2",
-    "binary-live-api": "~18.8.0",
+    "binary-live-api": "~18.9.9",
     "blockly": "google/blockly.git",
     "bootstrap": "^3.3.6",
     "filesaverjs": "^0.2.2",

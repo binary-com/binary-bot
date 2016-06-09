@@ -1,13 +1,15 @@
 var globals = require('./globals/globals');
 var config = require('./globals/config');
-var storageManager = require('./utils/storageManager');
+var storageManager = require('storageManager');
 var blockly = require('blockly');
 var i18n = require('i18n');
+var appId = require('appId');
 var activeTutorial = null;
 var tours = {}; // e
-var utils = require('./utils/utils');
+var botUtils = require('./utils/utils');
+var commonUtils = require('utils');
 var fileSaver = require('filesaverjs');
-var trade = require('./utils/trade');
+var trade = require('./trade/trade');
 require('./code_generators/index');
 require('./definitions/index');
 require('./utils/draggable');
@@ -118,109 +120,6 @@ var setOpacity = function setOpacity(enabled, componentName, opacity) {
 	}
 };
 
-var updateTokenList = function updateTokenList(tokenToAdd) {
-	var tokenList = storageManager.getTokenList();
-	blockly.WidgetDiv.hideIfOwner(blockly.mainWorkspace.getBlockById('trade')
-		.getField('ACCOUNT_LIST'));
-	if (tokenList.length === 0) {
-		$('#addAccount')
-			.text('Login');
-		$('#logout')
-			.hide();
-		globals.lists.accounts = [
-			[i18n._('Please add a token first'), '']
-		];
-		blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.setValue('');
-		blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.setText(i18n._('Please add a token first'));
-	} else {
-		$('#addAccount')
-			.text('Add Token');
-		$('#logout')
-			.show();
-		globals.lists.accounts = [];
-		tokenList.forEach(function (tokenInfo) {
-			globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
-		});
-		var tokenInfoToAdd = tokenList[0];
-		if (tokenToAdd !== undefined) {
-			var tokenInfoIndex = storageManager.findToken(tokenToAdd);
-			if (tokenInfoIndex >= 0) {
-				tokenInfoToAdd = tokenList[tokenInfoIndex];
-			}
-		}
-		if (blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.getValue() !== tokenInfoToAdd.token) {
-			blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.setValue(tokenInfoToAdd.token);
-		}
-		if (blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.getText() !== tokenInfoToAdd.account_name) {
-			blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.setText(tokenInfoToAdd.account_name);
-		}
-	}
-};
-
-var addPurchaseOptions = function addPurchaseOptions() {
-	var firstOption = {};
-	var secondOption = {};
-	var trade = blockly.mainWorkspace.getBlockById('trade');
-	if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
-		.getInputTargetBlock('CONDITION') !== null) {
-		var condition_type = trade.getInputTargetBlock('SUBMARKET')
-			.getInputTargetBlock('CONDITION')
-			.type;
-		var opposites = config.opposites[condition_type.toUpperCase()];
-		globals.lists.purchase_choices = [];
-		opposites.forEach(function (option, index) {
-			if (index === 0) {
-				firstOption = {
-					condition: Object.keys(option)[0],
-					name: option[Object.keys(option)[0]],
-				};
-			} else {
-				secondOption = {
-					condition: Object.keys(option)[0],
-					name: option[Object.keys(option)[0]],
-				};
-			}
-			globals.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
-		});
-		var purchases = [];
-		blockly.mainWorkspace.getAllBlocks()
-			.forEach(function (block) {
-				if (block.type === 'purchase') {
-					purchases.push(block);
-				}
-			});
-		purchases.forEach(function (purchase) {
-			var value = purchase.getField('PURCHASE_LIST')
-				.getValue();
-			blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-			if (value === firstOption.condition) {
-				purchase.getField('PURCHASE_LIST')
-					.setText(firstOption.name);
-			} else if (value === secondOption.condition) {
-				purchase.getField('PURCHASE_LIST')
-					.setText(secondOption.name);
-			} else {
-				purchase.getField('PURCHASE_LIST')
-					.setValue(firstOption.condition);
-				purchase.getField('PURCHASE_LIST')
-					.setText(firstOption.name);
-			}
-		});
-	}
-};
-
 var saveXml = function saveXml(showOnly) {
 	var xmlDom = blockly.Xml.workspaceToDom(blockly.mainWorkspace);
 	Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))
@@ -250,7 +149,7 @@ var saveXml = function saveXml(showOnly) {
 		});
 	var xmlText = blockly.Xml.domToPrettyText(xmlDom);
 	if (showOnly) {
-		utils.log(xmlText);
+		botUtils.log(xmlText);
 	} else {
 		var filename = 'binary-bot' + parseInt(new Date()
 			.getTime() / 1000) + '.xml';
@@ -282,7 +181,7 @@ var run = function run() {
 		$('#stopButton')
 			.bind('click', stop);
 	} catch (e) {
-		utils.showError(e);
+		botUtils.showError(e);
 	}
 };
 
@@ -308,8 +207,8 @@ $.get('xml/toolbox.xml', function (toolbox) {
 			.setDeletable(false);
 		blockly.mainWorkspace.getBlockById('finish')
 			.setDeletable(false);
-		updateTokenList();
-		addPurchaseOptions();
+		botUtils.updateTokenList();
+		botUtils.addPurchaseOptions();
 		blockly.mainWorkspace.clearUndo();
 		initTours();
 	});
@@ -330,7 +229,7 @@ var handleFileSelect = function handleFileSelect(e) {
 		if (file.type.match('text/xml')) {
 			readFile(file);
 		} else {
-			utils.log(i18n._('File is not supported:' + ' ') + file.name, 'info');
+			botUtils.log(i18n._('File is not supported:' + ' ') + file.name, 'info');
 		}
 	}
 };
@@ -343,7 +242,7 @@ var readFile = function readFile(f) {
 				blockly.mainWorkspace.clear();
 				var xml = blockly.Xml.textToDom(e.target.result);
 				blockly.Xml.domToWorkspace(xml, blockly.mainWorkspace);
-				addPurchaseOptions();
+				botUtils.addPurchaseOptions();
 				var tokenList = storageManager.getTokenList();
 				if (tokenList.length !== 0) {
 					blockly.mainWorkspace.getBlockById('trade')
@@ -355,9 +254,9 @@ var readFile = function readFile(f) {
 				}
 				blockly.mainWorkspace.clearUndo();
 				blockly.mainWorkspace.zoomToFit();
-				utils.log(i18n._('Blocks are loaded successfully'), 'success');
+				botUtils.log(i18n._('Blocks are loaded successfully'), 'success');
 			} catch (err) {
-				utils.showError(err);
+				botUtils.showError(err);
 			}
 		};
 	})(f);
@@ -382,7 +281,7 @@ var reset = function reset(e) {
 		e.preventDefault();
 	}
 	globals.resetTradeInfo();
-	utils.log(i18n._('Reset successful'), 'success');
+	botUtils.log(i18n._('Reset successful'), 'success');
 };
 
 var stop = function stop(e) {
@@ -437,11 +336,6 @@ $('#saveXml')
 		saveXml();
 	});
 
-$('#addAccount')
-	.click(function (e) {
-		addAccount();
-	});
-
 $('#undo')
 	.click(function (e) {
 		globals.undoBlocks();
@@ -463,14 +357,9 @@ $('#run')
 		run();
 	});
 
-var addAccount = function addAccount() {
-	var token = prompt(i18n._('Please enter your token here:'), '');
-	trade.addAccount(token);
-};
-
 $('#logout')
 	.click(function (e) {
-		trade.logout();
+		botUtils.logout();
 	});
 
 $('#runButton')
@@ -486,7 +375,5 @@ module.exports = {
 	setOpacity: setOpacity,
 	stopTutorial: stopTutorial,
 	startTutorial: startTutorial,
-	addPurchaseOptions: addPurchaseOptions,
-	updateTokenList: updateTokenList,
 	initTours: initTours,
 };

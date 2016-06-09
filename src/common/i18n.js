@@ -4,7 +4,6 @@ var I18n = {
 	translation: null,
 	init: function init(options, callback) {
 		this.translation = options.resources[options.lng][options.defaultNS];
-		console.log('init called');
 		if (callback) {
 			callback();
 		}

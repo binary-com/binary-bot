@@ -1,14 +1,14 @@
 var globals = require('../globals/globals');
-var utils = require('./utils');
+var botUtils = require('../utils/utils');
+var commonUtils = require('utils');
 var view = require('../view');
-var storageManager = require('./storageManager');
 var i18n = require('i18n');
 var LiveApi = require('binary-live-api')
 	.LiveApi;
 var Chart = require('binary-charts')
 	.PlainChart;
-var showError = utils.showError;
-var log = utils.log;
+var showError = botUtils.showError;
+var log = botUtils.log;
 var api;
 var ticks = [];
 var contractForChart = null;
@@ -44,8 +44,8 @@ var contractFinished = function contractFinished(contract) {
 		contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
 		globals.tradeInfo.lastProfit,
 		contract.contract_type, +contract.entry_tick,
-		utils.getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.exit_tick,
-		utils.getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +((contract.barrier) ? contract.barrier : 0),
+		botUtils.getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.exit_tick,
+		botUtils.getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +((contract.barrier) ? contract.barrier : 0),
 	];
 
 	log(i18n._('Purchase was finished, result is:') + ' ' + result, (result === 'win') ? 'success' : 'error');
@@ -68,6 +68,7 @@ var updateChart = function updateChart() {
 		chartOptions.pipSize = +(+symbolInfo.pip)
 			.toExponential()
 			.substring(3);
+			console.log(Chart, chartOptions);
 		chart = Chart('chart', chartOptions);
 	} else {
 		chart.updateChart(chartOptions);
@@ -99,51 +100,6 @@ var getBalance = function getBalance(balance_type) {
 		return (balance_type === 'NUM') ? parseFloat(balance) : balance_currency + ' ' + parseFloat(balance);
 	} else {
 		return 0;
-	}
-};
-
-var findToken = function findToken(token) {
-	var index = -1;
-	globals.lists.accounts.forEach(function (tokenInfo, i) {
-		if (tokenInfo[1] === token) {
-			index = i;
-		}
-	});
-	return index;
-};
-
-var removeToken = function removeToken(token) {
-	storageManager.removeToken(token);
-	view.updateTokenList();
-};
-
-var logout = function logout() {
-	storageManager.removeAllTokens();
-	view.updateTokenList();
-	log(i18n._('Logged you out!'), 'info');
-};
-
-var addAccount = function addAccount(token) {
-	var index = findToken(token);
-	if (index >= 0) {
-		log(i18n._('Token already added.'), 'info');
-		return;
-	}
-	if (token === '') {
-		showError(i18n._('Token cannot be empty'));
-	} else if (token !== null) {
-		var api = new LiveApi();
-		api.authorize(token)
-			.then(function (response) {
-				api.disconnect();
-				storageManager.addToken(token, response.authorize.loginid);
-				view.updateTokenList(token);
-				log(i18n._('Your token was added successfully'), 'info');
-			}, function (reason) {
-				api.disconnect();
-				removeToken(token);
-				showError(i18n._('Authentication failed using token:') + ' ' + token);
-			});
 	}
 };
 
@@ -314,6 +270,7 @@ var restartContracts = function restartContracts() {
 var observeAuthorize = function observeAuthorize() {
 	api.events.on('authorize', function (response) {
 		if (response.error) {
+			commonUtils.removeToken(token);
 			showError(response.error);
 		} else if (!finished) {
 			log(i18n._('Authenticated using token:') + ' ' + token, 'info');
@@ -393,9 +350,7 @@ var trade = function trade(_token, callback, trade_again) {
 globals.disableRun(false);
 
 module.exports = {
-	addAccount: addAccount,
 	stop: stop,
-	logout: logout,
 	getTotalProfit: getTotalProfit,
 	getBalance: getBalance,
 	submitProposal: submitProposal,
