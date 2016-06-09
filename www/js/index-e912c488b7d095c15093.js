@@ -12077,6 +12077,16 @@
 			});
 	};
 	
+	var addAllTokens = function addAllTokens(tokenList, callback) {
+		if (tokenList.length) {
+			addTokenIfValid(tokenList[0], function(err){
+				addAllTokens(tokenList.slice(1, tokenList.length), callback);
+			});
+		} else {
+			callback();
+		}
+	};
+	
 	var getAccountName = function getAccountName(token) {
 		var accountName = storageManager.getToken(token);
 		if (accountName instanceof Object) {
@@ -12090,7 +12100,8 @@
 		removeToken: removeToken,
 		removeAllTokens: removeAllTokens,
 		addTokenIfValid: addTokenIfValid,
-		getAccountName: getAccountName
+		getAccountName: getAccountName,
+		addAllTokens: addAllTokens
 	};
 
 /***/ },
@@ -13731,16 +13742,15 @@
 		},
 		oauthLogin: function getToken() {
 			var queryStr = utils.parseQueryString();
-			if (queryStr.token1) {
-				utils.addTokenIfValid(queryStr.token1, function(err){
-					if (err) {
-						alert('Login failed');
-						document.location.search = '';
-					} else {
-						document.location.pathname = '/bot.html';
-					}
-				});
-			}
+			var tokenList = [];
+			Object.keys(queryStr).forEach(function(key){
+				if ( key.indexOf('token') === 0 ) {
+					tokenList.push(queryStr[key]);
+				}
+			});
+			utils.addAllTokens(tokenList, function(){
+				document.location.pathname = '/bot.html';
+			});
 		},
 		removeTokenFromUrl: function removeTokenFromUrl(){
 			var queryStr = utils.parseQueryString();
@@ -23577,4 +23587,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-9e71f99c1e7e28d994a0.map
+//# sourceMappingURL=index-e912c488b7d095c15093.map
