@@ -78,13 +78,11 @@ var parseFilenameWithVersion = function parseFilenameWithVersion(file) {
 
 var addToManifest = function addToManifest(chunk, enc, cb) {
 	var map;
-	console.log(chunk, Object.keys(chunk));
 	if ( !chunk.hasOwnProperty('revHash') ) {
 		map = parseFilenameWithVersion(chunk);
 	} else {
 		map = parseFilenameWithoutVersion(chunk);
 	}
-	console.log(map);
 	manifest[map.old] = map.new;
 	return cb(null, chunk);
 };

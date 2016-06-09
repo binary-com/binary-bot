@@ -18,6 +18,9 @@ var AppId = {
 		if (queryStr.token1) {
 			document.location.search = '';
 		}
+	},
+	getAppId: function getAppId(){
+		return this.app_id;
 	}
 };
 

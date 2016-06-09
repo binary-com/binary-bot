@@ -13721,6 +13721,9 @@
 			if (queryStr.token1) {
 				document.location.search = '';
 			}
+		},
+		getAppId: function getAppId(){
+			return this.app_id;
 		}
 	};
 	
@@ -23548,4 +23551,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-d0dc8aa1c5aa8eb1cb57.map
+//# sourceMappingURL=index-7b5ee13b9889bcbe9586.map

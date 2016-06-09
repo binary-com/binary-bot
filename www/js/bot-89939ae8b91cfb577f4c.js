@@ -13743,6 +13743,9 @@
 			if (queryStr.token1) {
 				document.location.search = '';
 			}
+		},
+		getAppId: function getAppId(){
+			return this.app_id;
 		}
 	};
 	
@@ -29267,6 +29270,7 @@
 	var commonUtils = __webpack_require__(11);
 	var view = __webpack_require__(28);
 	var i18n = __webpack_require__(3);
+	var appId = __webpack_require__(15);
 	var LiveApi = __webpack_require__(72)
 		.LiveApi;
 	var Chart = __webpack_require__(73)
@@ -29600,7 +29604,7 @@
 				restartContracts();
 			} else {
 				token = _token;
-				api = new LiveApi();
+				api = new LiveApi({ appId: appId.getAppId() });
 				observeTicks();
 				observeProposal();
 				observeTransaction();
@@ -37548,4 +37552,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-8221bcfa07e412fd01de.map
+//# sourceMappingURL=bot-89939ae8b91cfb577f4c.map
