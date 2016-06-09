@@ -54,12 +54,37 @@ var customTransform = function _transform(file, enc, done) {
 };
 
 var manifest = {};
-var addToManifest = function addToManifest(chunk, enc, cb) {
+
+var parseFilenameWithoutVersion = function parseFilenameWithoutVersion(chunk) {
 	var oldFile = path.parse(chunk.revOrigPath);
 	var filename = oldFile.base.slice(0, oldFile.base.indexOf('.'));
 	var ext = oldFile.base.slice(oldFile.base.indexOf('.'));
 	var newFileName = filename + '-' + chunk.revHash + ext;
-	manifest[oldFile.base] = newFileName;
+	return {
+		old: oldFile.base,
+		new: newFileName
+	}
+}
+
+var parseFilenameWithVersion = function parseFilenameWithVersion(file) {
+	var newFile = path.parse(file.path);
+	var ext = newFile.ext;
+	var filename = newFile.base.slice(0, newFile.base.indexOf('-'));
+	return {
+		old: filename + ext,
+		new: newFile.base
+	}
+}
+
+var addToManifest = function addToManifest(chunk, enc, cb) {
+	var map;
+	if ( chunk.path ) {
+		map = parseFilenameWithVersion(chunk);
+	} else {
+		map = parseFilenameWithoutVersion(chunk);
+	}
+	console.log(map);
+	manifest[map.old] = map.new;
 	return cb(null, chunk);
 };
 
@@ -130,7 +155,6 @@ gulp.task('clean-webpack', function() {
 
 gulp.task('webpack', ['clean-webpack', 'lint', 'blockly'], function(){
 	return webpack(require('./webpack.config.js'))
-		.pipe(rev())
 		.pipe(through.obj(addToManifest))
 		.pipe(gulp.dest('www/js'));
 });

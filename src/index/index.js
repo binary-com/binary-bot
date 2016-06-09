@@ -1,4 +1,5 @@
-var translator = require('./translator'); // must be on top
+window.Blockly = {};
+var translator = require('translator'); // must be on top
 var i18n = require('i18n');
 var $ = require('jquery');
 translator.Translator(function () {

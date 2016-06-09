@@ -1,5 +1,5 @@
 Bot = {};
-var translator = require('./translator'); // must be on top
+var translator = require('translator'); // must be on top
 var i18n = require('i18n');
 var $ = require('jquery');
 $.ajaxSetup({
@@ -25,8 +25,10 @@ translator.Translator(function () {
 	require('./ui');
 	$('[data-i18n-text]')
 		.each(function () {
+			i18n._('a');
 			$(this)
-				.text(i18n._($(this)
+				.text(
+					i18n._($(this)
 					.attr('data-i18n-text')));
 		});
 });

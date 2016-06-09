@@ -1,24 +1,14 @@
 var $ = require('jquery');
 var i18n = require('i18n');
+var utils = require('utils');
 // handle language in localStorage and query string
 var supportedLanguages = ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'];
-var parseQueryString = function parseQueryString() {
-	var str = window.location.search;
-	var objURL = {};
-	str.replace(
-		new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-		function ($0, $1, $2, $3) {
-			objURL[$1] = $3;
-		}
-	);
-	return objURL;
-};
 $('#language')
 	.change(function change(e) {
 		localStorage.lang = e.target.value;
 		window.location.search = '?l=' + e.target.value;
 	});
-var queryStr = parseQueryString();
+var queryStr = utils.parseQueryString();
 if (queryStr.hasOwnProperty('l') && queryStr.l !== '' && supportedLanguages.indexOf(queryStr.l) >= 0) {
 	window.lang = queryStr.l;
 	localStorage.lang = queryStr.l;

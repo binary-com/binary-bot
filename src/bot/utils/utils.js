@@ -70,5 +70,5 @@ module.exports = {
 	log: log,
 	getUTCTime: getUTCTime,
 	broadcast: broadcast,
-	findTopParentBlock: findTopParentBlock,
+	findTopParentBlock: findTopParentBlock
 };
