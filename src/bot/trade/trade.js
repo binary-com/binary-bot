@@ -59,6 +59,7 @@ var contractFinished = function contractFinished(contract) {
 
 var updateChart = function updateChart() {
 	var chartOptions = {
+		type: 'area',
 		ticks: ticks,
 	};
 	if (contractForChart) {
@@ -68,7 +69,6 @@ var updateChart = function updateChart() {
 		chartOptions.pipSize = +(+symbolInfo.pip)
 			.toExponential()
 			.substring(3);
-			console.log(Chart, chartOptions);
 		chart = Chart('chart', chartOptions);
 	} else {
 		chart.updateChart(chartOptions);

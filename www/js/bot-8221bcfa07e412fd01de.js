@@ -44,7 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	Bot = {};
+	window.Bot = {};
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var appId = __webpack_require__(15);
@@ -29323,6 +29323,7 @@
 	
 	var updateChart = function updateChart() {
 		var chartOptions = {
+			type: 'area',
 			ticks: ticks,
 		};
 		if (contractForChart) {
@@ -29332,7 +29333,6 @@
 			chartOptions.pipSize = +(+symbolInfo.pip)
 				.toExponential()
 				.substring(3);
-				console.log(Chart, chartOptions);
 			chart = Chart('chart', chartOptions);
 		} else {
 			chart.updateChart(chartOptions);
@@ -37548,4 +37548,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-ece899f4d924656a8757.map
+//# sourceMappingURL=bot-8221bcfa07e412fd01de.map
