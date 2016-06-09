@@ -111,10 +111,10 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 		.getField('ACCOUNT_LIST'));
 	if (tokenList.length === 0) {
 		$('#addAccount')
-			.click(function (e) {
+			.unbind('.addAccount')
+			.bind('click.login', function(e){
 				appId.redirectOauth();
-			});
-		$('#addAccount')
+			})
 			.text('Login');
 		$('#logout')
 			.hide();
@@ -129,10 +129,10 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 			.setText(i18n._('Please add a token first'));
 	} else {
 		$('#addAccount')
-			.click(function (e) {
+			.unbind('.login')
+			.bind('click.addAccount', function(e){
 				addAccount();
-			});
-		$('#addAccount')
+			})
 			.text('Add Token');
 		$('#logout')
 			.show();

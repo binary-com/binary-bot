@@ -9,9 +9,6 @@ var tours = {}; // e
 var botUtils = require('./utils/utils');
 var commonUtils = require('utils');
 var fileSaver = require('filesaverjs');
-var trade = require('./trade/trade');
-require('./code_generators/index');
-require('./definitions/index');
 require('./utils/draggable');
 
 var initTours = function initTours() {
@@ -186,6 +183,8 @@ var run = function run() {
 };
 
 $.get('xml/toolbox.xml', function (toolbox) {
+	require('./code_generators/index');
+	require('./definitions/index');
 	var workspace = blockly.inject('blocklyDiv', {
 		media: 'js/blockly/media/',
 		toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
@@ -288,6 +287,7 @@ var stop = function stop(e) {
 	if (e) {
 		e.preventDefault();
 	}
+	var trade = require('./trade/trade');
 	trade.stop();
 	globals.disableRun(false);
 	$('#stopButton')

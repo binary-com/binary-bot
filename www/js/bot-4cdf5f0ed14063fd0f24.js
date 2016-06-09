@@ -12072,8 +12072,8 @@
 		}
 	};
 	
-	var removeAllTokens = function removeAllTokens(token, callback) {
-		storageManager.removeAllTokens(token);
+	var removeAllTokens = function removeAllTokens(callback) {
+		storageManager.removeAllTokens();
 		if (callback) {
 			callback();
 		}
@@ -29072,10 +29072,10 @@
 			.getField('ACCOUNT_LIST'));
 		if (tokenList.length === 0) {
 			$('#addAccount')
-				.click(function (e) {
+				.unbind('.addAccount')
+				.bind('click.login', function(e){
 					appId.redirectOauth();
-				});
-			$('#addAccount')
+				})
 				.text('Login');
 			$('#logout')
 				.hide();
@@ -29090,10 +29090,10 @@
 				.setText(i18n._('Please add a token first'));
 		} else {
 			$('#addAccount')
-				.click(function (e) {
+				.unbind('.login')
+				.bind('click.addAccount', function(e){
 					addAccount();
-				});
-			$('#addAccount')
+				})
 				.text('Add Token');
 			$('#logout')
 				.show();
@@ -29194,7 +29194,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var globals = __webpack_require__(22);
-	var version = '1.1.8';
+	var version = '1.1.9';
 	if (globals.debug) {
 		console.log('%cBinary Bot (v' + version + ') started.', 'color: green');
 	} else {
@@ -29643,14 +29643,11 @@
 	var botUtils = __webpack_require__(23);
 	var commonUtils = __webpack_require__(11);
 	var fileSaver = __webpack_require__(29);
-	var trade = __webpack_require__(27);
 	__webpack_require__(32);
-	__webpack_require__(50);
-	__webpack_require__(69);
 	
 	var initTours = function initTours() {
-		tours.introduction = __webpack_require__(70);
-		tours.welcome = __webpack_require__(71);
+		tours.introduction = __webpack_require__(33);
+		tours.welcome = __webpack_require__(34);
 		tours.welcome.welcome();
 	};
 	
@@ -29820,6 +29817,8 @@
 	};
 	
 	$.get('xml/toolbox.xml', function (toolbox) {
+		__webpack_require__(35);
+		__webpack_require__(53);
 		var workspace = blockly.inject('blocklyDiv', {
 			media: 'js/blockly/media/',
 			toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
@@ -29922,6 +29921,7 @@
 		if (e) {
 			e.preventDefault();
 		}
+		var trade = __webpack_require__(27);
 		trade.stop();
 		globals.disableRun(false);
 		$('#stopButton')
@@ -30315,906 +30315,6 @@
 
 /***/ },
 /* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(33);
-	__webpack_require__(34);
-	__webpack_require__(35);
-	__webpack_require__(36);
-	__webpack_require__(37);
-	__webpack_require__(38);
-	__webpack_require__(39);
-	__webpack_require__(40);
-	__webpack_require__(41);
-	__webpack_require__(42);
-	__webpack_require__(43);
-	__webpack_require__(44);
-	__webpack_require__(45);
-	__webpack_require__(46);
-	__webpack_require__(47);
-	__webpack_require__(48);
-	__webpack_require__(49);
-
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	blockly.JavaScript.trade = function (block) {
-		var account = block.getFieldValue('ACCOUNT_LIST');
-		var submarket = blockly.JavaScript.statementToCode(block, 'SUBMARKET');
-		if (submarket === '') {
-			throw {
-				message: i18n._('You have to add a submarket first')
-			};
-		}
-		// TODO: Assemble JavaScript into code variable.
-		var code = 'var trade = function(trade_again){\nBot.trade.trade(\'' + account.trim() + '\', ' + submarket.trim() + ', trade_again);\n};\ntrade();\n';
-		return code;
-	};
-
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.balance = function(block) {
-	  var balance_type = block.getFieldValue('BALANCE_TYPE');
-		var code = 'Bot.trade.getBalance(\''+ balance_type +'\')';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.notify = function(block) {
-	  var notification_type = block.getFieldValue('NOTIFICATION_TYPE');
-	  var message = blockly.JavaScript.valueToCode(block, 'MESSAGE', blockly.JavaScript.ORDER_ATOMIC);
-	  // TODO: Assemble JavaScript into code variable.
-	  var code = 'Bot.utils.log('+ message +', \''+ notification_type +'\', \'bottom left\');\n';
-	  return code;
-	};
-
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.total_profit = function(block) {
-		var code = 'Bot.trade.getTotalProfit()';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var config = __webpack_require__(21);
-	config.ticktrade_markets.forEach(function(market){
-		blockly.JavaScript[market] = function(block) {
-			if ( this.parentBlock_ === null ) {
-				return '';
-			}
-			var condition = blockly.JavaScript.statementToCode(block, 'CONDITION');
-			if ( !condition ) {
-				throw {message: 'A condition has to be defined for the market'};
-			}
-			var code = 'Bot.markets.volatility.' + market + '('+condition.trim()+')';
-			return code;
-		};
-	});
-
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.check_direction = function(block) {
-		var check_with = block.getFieldValue('CHECK_DIRECTION');
-		var code = '(direction === \'' + check_with + '\')';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.direction = function(block) {
-		var code = 'direction';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.purchase = function(block) {
-		if ( this.parentBlock_ === null ) {
-			return '';
-		}
-		var purchase_list = block.getFieldValue('PURCHASE_LIST');
-		var code = purchase_list;
-		code = 'Bot.trade.purchase(\'' + code + '\');\n';
-		return code;
-	};
-
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.on_strategy = function(block) {
-	  var stack = blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
-	  var code = 'Bot.globals.on_strategy = function on_strategy(tick, direction){\n' + stack + '\n};\n';
-	  return code;
-	};
-
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.tick = function(block) {
-		var code = 'tick';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.contract_check_result = function(block) {
-		var check_with = block.getFieldValue('CHECK_RESULT');
-		var code = '(result === \'' + check_with + '\')';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.contract_details = function(block) {
-		var code = 'details';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.on_finish = function(block) {
-	  var stack = blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-	  var code = 'Bot.globals.on_finish = function on_finish(result, details){\n' + stack + '\n};\n';
-	  return code;
-	};
-
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.read_details = function(block) {
-	  var detail_index = block.getFieldValue('DETAIL_INDEX');
-	  // TODO: Assemble JavaScript into code variable.
-	  var code = '((details instanceof Array && details.length === Bot.config.lists.DETAILS.length) ? details[' + ( parseInt(detail_index.trim()) - 1 ) + '] : \'\' )';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.contract_result = function(block) {
-		var code = 'result';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.trade_again = function(block) {
-		if ( this.parentBlock_ === null ) {
-			return '';
-		}
-		var code = 'trade(true);\n';
-		return code;
-	};
-
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var config = __webpack_require__(21);
-	Object.keys(config.opposites).forEach(function(opposites){
-		blockly.JavaScript[opposites.toLowerCase()] = function(block) {
-			if ( this.parentBlock_ === null ) {
-				return '';
-			}
-			var duration = blockly.JavaScript.valueToCode(block, 'DURATION', blockly.JavaScript.ORDER_ATOMIC);
-			var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
-			var currency = block.getFieldValue('CURRENCY_LIST');
-			var amount = blockly.JavaScript.valueToCode(block, 'AMOUNT', blockly.JavaScript.ORDER_ATOMIC);
-			var prediction;
-			if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
-				prediction = blockly.JavaScript.valueToCode(block, 'PREDICTION', blockly.JavaScript.ORDER_ATOMIC);
-				if ( prediction === '' ) {
-					throw {message: 'All condition options are required'};
-				}
-			}
-			if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
-				throw {message: 'All condition options are required'};
-			}
-			var code = 'Bot.conditions.ticktrade({\n'+
-				'condition: \'' + opposites + '\',\n'+
-				'duration: ' + duration + ',\n'+
-				'payouttype: \'' + payouttype + '\',\n'+
-				'currency: \'' + currency + '\',\n'+
-				'amount: (' + amount + ').toFixed(2),\n'+
-				((config.opposites_have_barrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
-			'})';
-			return code;
-		};
-	});
-
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(51);
-	__webpack_require__(53);
-	__webpack_require__(54);
-	__webpack_require__(55);
-	__webpack_require__(56);
-	__webpack_require__(57);
-	__webpack_require__(58);
-	__webpack_require__(59);
-	__webpack_require__(60);
-	__webpack_require__(61);
-	__webpack_require__(62);
-	__webpack_require__(63);
-	__webpack_require__(64);
-	__webpack_require__(65);
-	__webpack_require__(66);
-	__webpack_require__(67);
-	__webpack_require__(68);
-
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(52);
-	var globals = __webpack_require__(22);
-	blockly.Blocks.trade = {
-		init: function () {
-			this.appendDummyInput()
-				.appendField(i18n._("Trade With Account:"))
-				.appendField(new blockly.FieldDropdown(globals.getAccounts), "ACCOUNT_LIST");
-			this.appendStatementInput("SUBMARKET")
-				.setCheck("Submarket")
-				.appendField(i18n._("Submarket"));
-			this.setPreviousStatement(true, null);
-			this.setColour(60);
-			this.setTooltip(i18n._('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.'));
-			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-		},
-		onchange: function (ev) {
-			relationChecker.trade(this, ev);
-		},
-	};
-
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var config = __webpack_require__(21);
-	var view = __webpack_require__(28);
-	var botUtils = __webpack_require__(23);
-	var i18n = __webpack_require__(3);
-	var getNumField = function getNumField(block, fieldName) {
-		var field = block.getInputTargetBlock(fieldName);
-		if (field !== null && field.type === 'math_number') {
-			field = field.getFieldValue('NUM')
-				.trim();
-			return field;
-		}
-		return '';
-	};
-	
-	var isInteger = function isInteger(amount) {
-		return !isNaN(+amount) && parseInt(amount) === parseFloat(amount);
-	};
-	
-	var isInRange = function isInRange(amount, min, max) {
-		return !isNaN(+amount) && +amount >= min && +amount <= max;
-	};
-	
-	var trade = function trade(_trade, ev) {
-		if (ev.type === 'create') {
-			if (config.ticktrade_markets.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
-					.type) >= 0) {
-				botUtils.broadcast('tour:submarket_created');
-			}
-			if (config.conditions.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
-					.type) >= 0) {
-				botUtils.broadcast('tour:condition_created');
-			}
-			if (blockly.mainWorkspace.getBlockById(ev.blockId)
-				.type === 'math_number') {
-				botUtils.broadcast('tour:number');
-			}
-			if (blockly.mainWorkspace.getBlockById(ev.blockId)
-				.type === 'purchase') {
-				botUtils.broadcast('tour:purchase_created');
-			}
-			if (blockly.mainWorkspace.getBlockById(ev.blockId)
-				.type === 'trade_again') {
-				botUtils.broadcast('tour:trade_again_created');
-			}
-		}
-		if (_trade.childBlocks_.length > 0 && config.ticktrade_markets.indexOf(_trade.childBlocks_[0].type) < 0) {
-			botUtils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
-			Array.prototype.slice.apply(_trade.childBlocks_)
-				.forEach(function (child) {
-					child.unplug();
-				});
-		} else if (_trade.childBlocks_.length > 0) {
-			submarket(_trade.childBlocks_[0], ev);
-			botUtils.broadcast('tour:submarket');
-			if (ev.hasOwnProperty('newInputName')) {
-				botUtils.addPurchaseOptions();
-			}
-		}
-		var topParent = botUtils.findTopParentBlock(_trade);
-		if (topParent !== null) {
-			if (config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
-				botUtils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
-				_trade.unplug();
-			}
-		}
-	};
-	var submarket = function submarket(_submarket, ev) {
-		if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
-			botUtils.log(i18n._('Submarket blocks can only accept condition blocks'), 'warning');
-			Array.prototype.slice.apply(_submarket.childBlocks_)
-				.forEach(function (child) {
-					child.unplug();
-				});
-		} else if (_submarket.childBlocks_.length > 0) {
-			condition(_submarket.childBlocks_[0], ev, true);
-		}
-		if (_submarket.parentBlock_ !== null) {
-			if (_submarket.parentBlock_.type !== 'trade') {
-				botUtils.log(i18n._('Submarket blocks have to be added to the trade block'), 'warning');
-				_submarket.unplug();
-			}
-		}
-	};
-	var condition = function condition(_condition, ev, calledByParent) {
-		if (_condition.parentBlock_ !== null) {
-			if (config.ticktrade_markets.indexOf(_condition.parentBlock_.type) < 0) {
-				botUtils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
-				_condition.unplug();
-			} else {
-				botUtils.broadcast('tour:condition');
-				if (!calledByParent) {
-					if ((ev.type === 'change' && ev.element && ev.element === 'field') || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
-						var added = [];
-						var duration = getNumField(_condition, 'DURATION');
-						if (duration !== '') {
-							if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
-								botUtils.log(i18n._('Number of ticks must be between 5 and 10'), 'warning');
-							} else {
-								botUtils.broadcast('tour:ticks');
-								added.push('DURATION');
-							}
-						}
-						var amount = getNumField(_condition, 'AMOUNT');
-						if (amount !== '') {
-							added.push('AMOUNT');
-						}
-						var prediction = getNumField(_condition, 'PREDICTION');
-						if (prediction !== '') {
-							if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-								botUtils.log(i18n._('Prediction must be one digit'), 'warning');
-							} else {
-								added.push('PREDICTION');
-							}
-						}
-						if (added.indexOf('AMOUNT') >= 0 && added.indexOf('DURATION') >= 0) {
-							if (_condition.inputList.slice(-1)[0].name === 'PREDICTION') {
-								if (added.indexOf('PREDICTION') >= 0) {
-									botUtils.broadcast('tour:options');
-								}
-							} else {
-								botUtils.broadcast('tour:options');
-							}
-						}
-					}
-				}
-			}
-		}
-	};
-	var inside_strategy = function inside_strategy(blockObject, ev, name) {
-		var topParent = botUtils.findTopParentBlock(blockObject);
-		if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
-			botUtils.log(name + ' ' + i18n._('must be added inside the strategy block'), 'warning');
-			blockObject.unplug();
-		} else if (topParent !== null && topParent.type === 'on_strategy') {
-			if (blockObject.type === 'purchase') {
-				botUtils.broadcast('tour:purchase');
-			}
-		}
-	};
-	var inside_finish = function inside_finish(blockObject, ev, name) {
-		var topParent = botUtils.findTopParentBlock(blockObject);
-		if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
-			botUtils.log(name + ' ' + i18n._('must be added inside the finish block'), 'warning');
-			blockObject.unplug();
-		} else if (topParent !== null && topParent.type === 'on_finish') {
-			if (blockObject.type === 'trade_again') {
-				botUtils.broadcast('tour:trade_again');
-			}
-		}
-	};
-	module.exports = {
-		trade: trade,
-		submarket: submarket,
-		condition: condition,
-		inside_strategy: inside_strategy,
-		inside_finish: inside_finish,
-	};
-
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.balance = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Balance:"))
-	        .appendField(new blockly.FieldDropdown([[i18n._("string"), "STR"], [i18n._("number"), "NUM"]]), "BALANCE_TYPE");
-	    this.setOutput(true, null);
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Get balance number or string'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.notify = {
-	  init: function() {
-	    this.appendValueInput("MESSAGE")
-	        .setCheck(null)
-	        .appendField(i18n._("Notify type:"))
-	        .appendField(new blockly.FieldDropdown([[i18n._("success"), "success"], [i18n._("information"), "info"], [i18n._("warning"), "warn"], [i18n._("error"), "error"]]), "NOTIFICATION_TYPE");
-	    this.setPreviousStatement(true, null);
-	    this.setNextStatement(true, null);
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Creates notification'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.total_profit = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Total Profit"));
-	    this.setOutput(true, "Number");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the total profit'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#abpy8a
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var config = __webpack_require__(21);
-	var relationChecker = __webpack_require__(52);
-	
-	config.ticktrade_markets.forEach(function(market, index){
-		blockly.Blocks[market] = {
-			init: function() {
-				this.appendDummyInput()
-					.appendField(config.ticktrade_market_names[index]);
-				this.appendStatementInput("CONDITION")
-					.setCheck("Condition");
-				this.setInputsInline(true);
-				this.setPreviousStatement(true, "Submarket");
-				this.setColour(345);
-				this.setTooltip(i18n._('Chooses the market:') + ' ' + config.ticktrade_market_names[index]);
-				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-			},
-			onchange: function(ev){
-				relationChecker.submarket(this, ev);
-			}
-		};
-	});
-
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(52);
-	var config = __webpack_require__(21);
-	blockly.Blocks.check_direction = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Direction is"))
-					.appendField(new blockly.FieldDropdown(config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
-	    this.setOutput(true, "Boolean");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('True if the direction matches the selection'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_strategy(this, ev, 'Check Direction');
-		},
-	};
-
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(52);
-	
-	blockly.Blocks.direction = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Tick Direction"));
-	    this.setOutput(true, "String");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_strategy(this, ev, 'Tick Direction');
-		},
-	};
-	
-
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(52);
-	var globals = __webpack_require__(22);
-	
-	blockly.Blocks.purchase = {
-		init: function() {
-			this.appendDummyInput()
-				.appendField(i18n._("Purchase"))
-				.appendField(new blockly.FieldDropdown(globals.getPurchaseChoices), "PURCHASE_LIST");
-			this.setPreviousStatement(true, 'Purchase');
-			this.setColour(180);
-			this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
-			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-		},
-		onchange: function(ev) {
-			relationChecker.inside_strategy(this, ev, 'Purchase');
-		},
-	};
-
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.on_strategy = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
-	    this.appendStatementInput("STRATEGY_STACK")
-	        .setCheck('Purchase');
-	    this.setColour(290);
-	    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
-	
-	var blockly = __webpack_require__(13);
-	var relationChecker = __webpack_require__(52);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.tick = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Tick Value"));
-	    this.setOutput(true, "Number");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_strategy(this, ev, 'Tick Value');
-		},
-	};
-
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var config = __webpack_require__(21);
-	var relationChecker = __webpack_require__(52);
-	blockly.Blocks.contract_check_result = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Result is"))
-					.appendField(new blockly.FieldDropdown(config.lists.CHECK_RESULT), "CHECK_RESULT");
-	    this.setOutput(true, "Boolean");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('True if the result matches the selection'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Check Result');
-		},
-	};
-
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(52);
-	
-	blockly.Blocks.contract_details = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Contract Details"));
-	    this.setOutput(true, "Array");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the list of details for the finished contract'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Contract Details');
-		},
-	};
-
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.on_finish = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("On Finish (Decide what to do after the contract is finished)"));
-	    this.appendStatementInput("FINISH_STACK")
-	        .setCheck("TradeAgain");
-	    this.setColour(290);
-	    this.setTooltip(i18n._('This block decides what to do when a purchased contract is finished'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(52);
-	var config = __webpack_require__(21);
-	
-	blockly.Blocks.read_details = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Contract Detail:"))
-	        .appendField(new blockly.FieldDropdown(config.lists.DETAILS), "DETAIL_INDEX");
-			this.setOutput(true, null);
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Reads a selected option from contract details list'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Read Contract Details');
-		},
-	};
-
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(52);
-	
-	blockly.Blocks.contract_result = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Contract Result"));
-	    this.setOutput(true, "String");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the result of the finished contract'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Contract Result');
-		},
-	};
-	
-
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(52);
-	
-	blockly.Blocks.trade_again = {
-		init: function() {
-			this.appendDummyInput()
-				.appendField(i18n._("Trade Again"));
-			this.setPreviousStatement(true, 'TradeAgain');
-			this.setColour(180);
-			this.setTooltip(i18n._('Runs the trade block again'));
-			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-		},
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Trade Again');
-		},
-	};
-
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#cur8so
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var config = __webpack_require__(21);
-	var utils = __webpack_require__(23);
-	var relationChecker = __webpack_require__(52);
-	
-	Object.keys(config.opposites).forEach(function(opposites){
-		blockly.Blocks[opposites.toLowerCase()] = {
-			init: function() {
-				var option_names = [];
-				config.opposites[opposites].forEach(function(options){
-					
-					var option_alias = Object.keys(options)[0];
-					var option_name = options[option_alias];
-					option_names.push(option_name);	
-				});
-				this.appendDummyInput()
-					.appendField(option_names[0] + '/' + option_names[1]);
-				this.appendValueInput("DURATION")
-					.setCheck("Number")
-					.appendField(i18n._("Ticks:"));
-				this.appendDummyInput()
-					.appendField(i18n._("Payout:"))
-					.appendField(new blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
-				this.appendDummyInput()
-					.appendField(i18n._("Currency:"))
-					.appendField(new blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
-				this.appendValueInput("AMOUNT")
-					.setCheck("Number")
-					.appendField(i18n._("Amount:"));
-				if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
-					this.appendValueInput("PREDICTION")
-						.setCheck("Number")
-						.appendField(i18n._("Prediction:"));
-				}
-				this.setInputsInline(false);
-				this.setPreviousStatement(true, "Condition");
-				this.setColour(15);
-				this.setTooltip(i18n._('Provides the contract conditions:') + ' ' + option_names[0] + '/' + option_names[1]);
-				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-			},
-			onchange: function(ev){
-				relationChecker.condition(this, ev);
-			},
-		};
-	});
-
-
-/***/ },
-/* 69 */
 /***/ function(module, exports) {
 
 	/* jshint ignore:start */
@@ -31281,7 +30381,7 @@
 
 
 /***/ },
-/* 70 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var globals = __webpack_require__(22);
@@ -31683,7 +30783,7 @@
 
 
 /***/ },
-/* 71 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var globals = __webpack_require__(22);
@@ -31848,6 +30948,906 @@
 			delete globals.tour;
 		},
 	};
+
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(36);
+	__webpack_require__(37);
+	__webpack_require__(38);
+	__webpack_require__(39);
+	__webpack_require__(40);
+	__webpack_require__(41);
+	__webpack_require__(42);
+	__webpack_require__(43);
+	__webpack_require__(44);
+	__webpack_require__(45);
+	__webpack_require__(46);
+	__webpack_require__(47);
+	__webpack_require__(48);
+	__webpack_require__(49);
+	__webpack_require__(50);
+	__webpack_require__(51);
+	__webpack_require__(52);
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	blockly.JavaScript.trade = function (block) {
+		var account = block.getFieldValue('ACCOUNT_LIST');
+		var submarket = blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+		if (submarket === '') {
+			throw {
+				message: i18n._('You have to add a submarket first')
+			};
+		}
+		// TODO: Assemble JavaScript into code variable.
+		var code = 'var trade = function(trade_again){\nBot.trade.trade(\'' + account.trim() + '\', ' + submarket.trim() + ', trade_again);\n};\ntrade();\n';
+		return code;
+	};
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.balance = function(block) {
+	  var balance_type = block.getFieldValue('BALANCE_TYPE');
+		var code = 'Bot.trade.getBalance(\''+ balance_type +'\')';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.notify = function(block) {
+	  var notification_type = block.getFieldValue('NOTIFICATION_TYPE');
+	  var message = blockly.JavaScript.valueToCode(block, 'MESSAGE', blockly.JavaScript.ORDER_ATOMIC);
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = 'Bot.utils.log('+ message +', \''+ notification_type +'\', \'bottom left\');\n';
+	  return code;
+	};
+
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.total_profit = function(block) {
+		var code = 'Bot.trade.getTotalProfit()';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var config = __webpack_require__(21);
+	config.ticktrade_markets.forEach(function(market){
+		blockly.JavaScript[market] = function(block) {
+			if ( this.parentBlock_ === null ) {
+				return '';
+			}
+			var condition = blockly.JavaScript.statementToCode(block, 'CONDITION');
+			if ( !condition ) {
+				throw {message: 'A condition has to be defined for the market'};
+			}
+			var code = 'Bot.markets.volatility.' + market + '('+condition.trim()+')';
+			return code;
+		};
+	});
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.check_direction = function(block) {
+		var check_with = block.getFieldValue('CHECK_DIRECTION');
+		var code = '(direction === \'' + check_with + '\')';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.direction = function(block) {
+		var code = 'direction';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.purchase = function(block) {
+		if ( this.parentBlock_ === null ) {
+			return '';
+		}
+		var purchase_list = block.getFieldValue('PURCHASE_LIST');
+		var code = purchase_list;
+		code = 'Bot.trade.purchase(\'' + code + '\');\n';
+		return code;
+	};
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.on_strategy = function(block) {
+	  var stack = blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
+	  var code = 'Bot.globals.on_strategy = function on_strategy(tick, direction){\n' + stack + '\n};\n';
+	  return code;
+	};
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.tick = function(block) {
+		var code = 'tick';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.contract_check_result = function(block) {
+		var check_with = block.getFieldValue('CHECK_RESULT');
+		var code = '(result === \'' + check_with + '\')';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.contract_details = function(block) {
+		var code = 'details';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.on_finish = function(block) {
+	  var stack = blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
+	  var code = 'Bot.globals.on_finish = function on_finish(result, details){\n' + stack + '\n};\n';
+	  return code;
+	};
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.read_details = function(block) {
+	  var detail_index = block.getFieldValue('DETAIL_INDEX');
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = '((details instanceof Array && details.length === Bot.config.lists.DETAILS.length) ? details[' + ( parseInt(detail_index.trim()) - 1 ) + '] : \'\' )';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.contract_result = function(block) {
+		var code = 'result';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.trade_again = function(block) {
+		if ( this.parentBlock_ === null ) {
+			return '';
+		}
+		var code = 'trade(true);\n';
+		return code;
+	};
+
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var config = __webpack_require__(21);
+	Object.keys(config.opposites).forEach(function(opposites){
+		blockly.JavaScript[opposites.toLowerCase()] = function(block) {
+			if ( this.parentBlock_ === null ) {
+				return '';
+			}
+			var duration = blockly.JavaScript.valueToCode(block, 'DURATION', blockly.JavaScript.ORDER_ATOMIC);
+			var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
+			var currency = block.getFieldValue('CURRENCY_LIST');
+			var amount = blockly.JavaScript.valueToCode(block, 'AMOUNT', blockly.JavaScript.ORDER_ATOMIC);
+			var prediction;
+			if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
+				prediction = blockly.JavaScript.valueToCode(block, 'PREDICTION', blockly.JavaScript.ORDER_ATOMIC);
+				if ( prediction === '' ) {
+					throw {message: 'All condition options are required'};
+				}
+			}
+			if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
+				throw {message: 'All condition options are required'};
+			}
+			var code = 'Bot.conditions.ticktrade({\n'+
+				'condition: \'' + opposites + '\',\n'+
+				'duration: ' + duration + ',\n'+
+				'payouttype: \'' + payouttype + '\',\n'+
+				'currency: \'' + currency + '\',\n'+
+				'amount: (' + amount + ').toFixed(2),\n'+
+				((config.opposites_have_barrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
+			'})';
+			return code;
+		};
+	});
+
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(54);
+	__webpack_require__(56);
+	__webpack_require__(57);
+	__webpack_require__(58);
+	__webpack_require__(59);
+	__webpack_require__(60);
+	__webpack_require__(61);
+	__webpack_require__(62);
+	__webpack_require__(63);
+	__webpack_require__(64);
+	__webpack_require__(65);
+	__webpack_require__(66);
+	__webpack_require__(67);
+	__webpack_require__(68);
+	__webpack_require__(69);
+	__webpack_require__(70);
+	__webpack_require__(71);
+
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(55);
+	var globals = __webpack_require__(22);
+	blockly.Blocks.trade = {
+		init: function () {
+			this.appendDummyInput()
+				.appendField(i18n._("Trade With Account:"))
+				.appendField(new blockly.FieldDropdown(globals.getAccounts), "ACCOUNT_LIST");
+			this.appendStatementInput("SUBMARKET")
+				.setCheck("Submarket")
+				.appendField(i18n._("Submarket"));
+			this.setPreviousStatement(true, null);
+			this.setColour(60);
+			this.setTooltip(i18n._('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.'));
+			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+		},
+		onchange: function (ev) {
+			relationChecker.trade(this, ev);
+		},
+	};
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var config = __webpack_require__(21);
+	var view = __webpack_require__(28);
+	var botUtils = __webpack_require__(23);
+	var i18n = __webpack_require__(3);
+	var getNumField = function getNumField(block, fieldName) {
+		var field = block.getInputTargetBlock(fieldName);
+		if (field !== null && field.type === 'math_number') {
+			field = field.getFieldValue('NUM')
+				.trim();
+			return field;
+		}
+		return '';
+	};
+	
+	var isInteger = function isInteger(amount) {
+		return !isNaN(+amount) && parseInt(amount) === parseFloat(amount);
+	};
+	
+	var isInRange = function isInRange(amount, min, max) {
+		return !isNaN(+amount) && +amount >= min && +amount <= max;
+	};
+	
+	var trade = function trade(_trade, ev) {
+		if (ev.type === 'create') {
+			if (config.ticktrade_markets.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
+					.type) >= 0) {
+				botUtils.broadcast('tour:submarket_created');
+			}
+			if (config.conditions.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
+					.type) >= 0) {
+				botUtils.broadcast('tour:condition_created');
+			}
+			if (blockly.mainWorkspace.getBlockById(ev.blockId)
+				.type === 'math_number') {
+				botUtils.broadcast('tour:number');
+			}
+			if (blockly.mainWorkspace.getBlockById(ev.blockId)
+				.type === 'purchase') {
+				botUtils.broadcast('tour:purchase_created');
+			}
+			if (blockly.mainWorkspace.getBlockById(ev.blockId)
+				.type === 'trade_again') {
+				botUtils.broadcast('tour:trade_again_created');
+			}
+		}
+		if (_trade.childBlocks_.length > 0 && config.ticktrade_markets.indexOf(_trade.childBlocks_[0].type) < 0) {
+			botUtils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
+			Array.prototype.slice.apply(_trade.childBlocks_)
+				.forEach(function (child) {
+					child.unplug();
+				});
+		} else if (_trade.childBlocks_.length > 0) {
+			submarket(_trade.childBlocks_[0], ev);
+			botUtils.broadcast('tour:submarket');
+			if (ev.hasOwnProperty('newInputName')) {
+				botUtils.addPurchaseOptions();
+			}
+		}
+		var topParent = botUtils.findTopParentBlock(_trade);
+		if (topParent !== null) {
+			if (config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
+				botUtils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
+				_trade.unplug();
+			}
+		}
+	};
+	var submarket = function submarket(_submarket, ev) {
+		if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
+			botUtils.log(i18n._('Submarket blocks can only accept condition blocks'), 'warning');
+			Array.prototype.slice.apply(_submarket.childBlocks_)
+				.forEach(function (child) {
+					child.unplug();
+				});
+		} else if (_submarket.childBlocks_.length > 0) {
+			condition(_submarket.childBlocks_[0], ev, true);
+		}
+		if (_submarket.parentBlock_ !== null) {
+			if (_submarket.parentBlock_.type !== 'trade') {
+				botUtils.log(i18n._('Submarket blocks have to be added to the trade block'), 'warning');
+				_submarket.unplug();
+			}
+		}
+	};
+	var condition = function condition(_condition, ev, calledByParent) {
+		if (_condition.parentBlock_ !== null) {
+			if (config.ticktrade_markets.indexOf(_condition.parentBlock_.type) < 0) {
+				botUtils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
+				_condition.unplug();
+			} else {
+				botUtils.broadcast('tour:condition');
+				if (!calledByParent) {
+					if ((ev.type === 'change' && ev.element && ev.element === 'field') || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
+						var added = [];
+						var duration = getNumField(_condition, 'DURATION');
+						if (duration !== '') {
+							if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
+								botUtils.log(i18n._('Number of ticks must be between 5 and 10'), 'warning');
+							} else {
+								botUtils.broadcast('tour:ticks');
+								added.push('DURATION');
+							}
+						}
+						var amount = getNumField(_condition, 'AMOUNT');
+						if (amount !== '') {
+							added.push('AMOUNT');
+						}
+						var prediction = getNumField(_condition, 'PREDICTION');
+						if (prediction !== '') {
+							if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
+								botUtils.log(i18n._('Prediction must be one digit'), 'warning');
+							} else {
+								added.push('PREDICTION');
+							}
+						}
+						if (added.indexOf('AMOUNT') >= 0 && added.indexOf('DURATION') >= 0) {
+							if (_condition.inputList.slice(-1)[0].name === 'PREDICTION') {
+								if (added.indexOf('PREDICTION') >= 0) {
+									botUtils.broadcast('tour:options');
+								}
+							} else {
+								botUtils.broadcast('tour:options');
+							}
+						}
+					}
+				}
+			}
+		}
+	};
+	var inside_strategy = function inside_strategy(blockObject, ev, name) {
+		var topParent = botUtils.findTopParentBlock(blockObject);
+		if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
+			botUtils.log(name + ' ' + i18n._('must be added inside the strategy block'), 'warning');
+			blockObject.unplug();
+		} else if (topParent !== null && topParent.type === 'on_strategy') {
+			if (blockObject.type === 'purchase') {
+				botUtils.broadcast('tour:purchase');
+			}
+		}
+	};
+	var inside_finish = function inside_finish(blockObject, ev, name) {
+		var topParent = botUtils.findTopParentBlock(blockObject);
+		if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
+			botUtils.log(name + ' ' + i18n._('must be added inside the finish block'), 'warning');
+			blockObject.unplug();
+		} else if (topParent !== null && topParent.type === 'on_finish') {
+			if (blockObject.type === 'trade_again') {
+				botUtils.broadcast('tour:trade_again');
+			}
+		}
+	};
+	module.exports = {
+		trade: trade,
+		submarket: submarket,
+		condition: condition,
+		inside_strategy: inside_strategy,
+		inside_finish: inside_finish,
+	};
+
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.balance = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Balance:"))
+	        .appendField(new blockly.FieldDropdown([[i18n._("string"), "STR"], [i18n._("number"), "NUM"]]), "BALANCE_TYPE");
+	    this.setOutput(true, null);
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Get balance number or string'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.notify = {
+	  init: function() {
+	    this.appendValueInput("MESSAGE")
+	        .setCheck(null)
+	        .appendField(i18n._("Notify type:"))
+	        .appendField(new blockly.FieldDropdown([[i18n._("success"), "success"], [i18n._("information"), "info"], [i18n._("warning"), "warn"], [i18n._("error"), "error"]]), "NOTIFICATION_TYPE");
+	    this.setPreviousStatement(true, null);
+	    this.setNextStatement(true, null);
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Creates notification'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.total_profit = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Total Profit"));
+	    this.setOutput(true, "Number");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the total profit'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#abpy8a
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var config = __webpack_require__(21);
+	var relationChecker = __webpack_require__(55);
+	
+	config.ticktrade_markets.forEach(function(market, index){
+		blockly.Blocks[market] = {
+			init: function() {
+				this.appendDummyInput()
+					.appendField(config.ticktrade_market_names[index]);
+				this.appendStatementInput("CONDITION")
+					.setCheck("Condition");
+				this.setInputsInline(true);
+				this.setPreviousStatement(true, "Submarket");
+				this.setColour(345);
+				this.setTooltip(i18n._('Chooses the market:') + ' ' + config.ticktrade_market_names[index]);
+				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+			},
+			onchange: function(ev){
+				relationChecker.submarket(this, ev);
+			}
+		};
+	});
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(55);
+	var config = __webpack_require__(21);
+	blockly.Blocks.check_direction = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Direction is"))
+					.appendField(new blockly.FieldDropdown(config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
+	    this.setOutput(true, "Boolean");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('True if the direction matches the selection'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_strategy(this, ev, 'Check Direction');
+		},
+	};
+
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(55);
+	
+	blockly.Blocks.direction = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Tick Direction"));
+	    this.setOutput(true, "String");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_strategy(this, ev, 'Tick Direction');
+		},
+	};
+	
+
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(55);
+	var globals = __webpack_require__(22);
+	
+	blockly.Blocks.purchase = {
+		init: function() {
+			this.appendDummyInput()
+				.appendField(i18n._("Purchase"))
+				.appendField(new blockly.FieldDropdown(globals.getPurchaseChoices), "PURCHASE_LIST");
+			this.setPreviousStatement(true, 'Purchase');
+			this.setColour(180);
+			this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
+			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+		},
+		onchange: function(ev) {
+			relationChecker.inside_strategy(this, ev, 'Purchase');
+		},
+	};
+
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.on_strategy = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
+	    this.appendStatementInput("STRATEGY_STACK")
+	        .setCheck('Purchase');
+	    this.setColour(290);
+	    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
+	
+	var blockly = __webpack_require__(13);
+	var relationChecker = __webpack_require__(55);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.tick = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Tick Value"));
+	    this.setOutput(true, "Number");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_strategy(this, ev, 'Tick Value');
+		},
+	};
+
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var config = __webpack_require__(21);
+	var relationChecker = __webpack_require__(55);
+	blockly.Blocks.contract_check_result = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Result is"))
+					.appendField(new blockly.FieldDropdown(config.lists.CHECK_RESULT), "CHECK_RESULT");
+	    this.setOutput(true, "Boolean");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('True if the result matches the selection'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Check Result');
+		},
+	};
+
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(55);
+	
+	blockly.Blocks.contract_details = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Contract Details"));
+	    this.setOutput(true, "Array");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the list of details for the finished contract'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Contract Details');
+		},
+	};
+
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.on_finish = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("On Finish (Decide what to do after the contract is finished)"));
+	    this.appendStatementInput("FINISH_STACK")
+	        .setCheck("TradeAgain");
+	    this.setColour(290);
+	    this.setTooltip(i18n._('This block decides what to do when a purchased contract is finished'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(55);
+	var config = __webpack_require__(21);
+	
+	blockly.Blocks.read_details = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Contract Detail:"))
+	        .appendField(new blockly.FieldDropdown(config.lists.DETAILS), "DETAIL_INDEX");
+			this.setOutput(true, null);
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Reads a selected option from contract details list'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Read Contract Details');
+		},
+	};
+
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(55);
+	
+	blockly.Blocks.contract_result = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Contract Result"));
+	    this.setOutput(true, "String");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the result of the finished contract'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Contract Result');
+		},
+	};
+	
+
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(55);
+	
+	blockly.Blocks.trade_again = {
+		init: function() {
+			this.appendDummyInput()
+				.appendField(i18n._("Trade Again"));
+			this.setPreviousStatement(true, 'TradeAgain');
+			this.setColour(180);
+			this.setTooltip(i18n._('Runs the trade block again'));
+			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+		},
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Trade Again');
+		},
+	};
+
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#cur8so
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var config = __webpack_require__(21);
+	var utils = __webpack_require__(23);
+	var relationChecker = __webpack_require__(55);
+	
+	Object.keys(config.opposites).forEach(function(opposites){
+		blockly.Blocks[opposites.toLowerCase()] = {
+			init: function() {
+				var option_names = [];
+				config.opposites[opposites].forEach(function(options){
+					
+					var option_alias = Object.keys(options)[0];
+					var option_name = options[option_alias];
+					option_names.push(option_name);	
+				});
+				this.appendDummyInput()
+					.appendField(option_names[0] + '/' + option_names[1]);
+				this.appendValueInput("DURATION")
+					.setCheck("Number")
+					.appendField(i18n._("Ticks:"));
+				this.appendDummyInput()
+					.appendField(i18n._("Payout:"))
+					.appendField(new blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
+				this.appendDummyInput()
+					.appendField(i18n._("Currency:"))
+					.appendField(new blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
+				this.appendValueInput("AMOUNT")
+					.setCheck("Number")
+					.appendField(i18n._("Amount:"));
+				if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
+					this.appendValueInput("PREDICTION")
+						.setCheck("Number")
+						.appendField(i18n._("Prediction:"));
+				}
+				this.setInputsInline(false);
+				this.setPreviousStatement(true, "Condition");
+				this.setColour(15);
+				this.setTooltip(i18n._('Provides the contract conditions:') + ' ' + option_names[0] + '/' + option_names[1]);
+				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+			},
+			onchange: function(ev){
+				relationChecker.condition(this, ev);
+			},
+		};
+	});
 
 
 /***/ },
@@ -37552,4 +37552,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-89939ae8b91cfb577f4c.map
+//# sourceMappingURL=bot-4cdf5f0ed14063fd0f24.map

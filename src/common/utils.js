@@ -20,8 +20,8 @@ var removeToken = function removeToken(token, callback) {
 	}
 };
 
-var removeAllTokens = function removeAllTokens(token, callback) {
-	storageManager.removeAllTokens(token);
+var removeAllTokens = function removeAllTokens(callback) {
+	storageManager.removeAllTokens();
 	if (callback) {
 		callback();
 	}
