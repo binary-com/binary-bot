@@ -7,14 +7,15 @@ var AppId = {
 	},
 	oauthLogin: function getToken() {
 		var queryStr = utils.parseQueryString();
-		if (queryStr.token1) {
-			utils.addTokenIfValid(queryStr.token1, function(err){
-				if (err) {
-					alert('Login failed');
-					document.location.search = '';
-				} else {
-					document.location.pathname = '/bot.html';
-				}
+		var tokenList = [];
+		Object.keys(queryStr).forEach(function(key){
+			if ( key.indexOf('token') === 0 ) {
+				tokenList.push(queryStr[key]);
+			}
+		});
+		if (tokenList.length) {
+			utils.addAllTokens(tokenList, function(){
+				document.location.pathname = '/bot.html';
 			});
 		}
 	},

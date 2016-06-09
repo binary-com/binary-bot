@@ -47,6 +47,16 @@ var addTokenIfValid = function addTokenIfValid(token, callback) {
 		});
 };
 
+var addAllTokens = function addAllTokens(tokenList, callback) {
+	if (tokenList.length) {
+		addTokenIfValid(tokenList[0], function(err){
+			addAllTokens(tokenList.slice(1, tokenList.length), callback);
+		});
+	} else {
+		callback();
+	}
+};
+
 var getAccountName = function getAccountName(token) {
 	var accountName = storageManager.getToken(token);
 	if (accountName instanceof Object) {
@@ -60,5 +70,6 @@ module.exports = {
 	removeToken: removeToken,
 	removeAllTokens: removeAllTokens,
 	addTokenIfValid: addTokenIfValid,
-	getAccountName: getAccountName
+	getAccountName: getAccountName,
+	addAllTokens: addAllTokens
 };
