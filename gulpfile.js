@@ -78,11 +78,13 @@ var parseFilenameWithVersion = function parseFilenameWithVersion(file) {
 
 var addToManifest = function addToManifest(chunk, enc, cb) {
 	var map;
-	if ( chunk.path ) {
+	console.log(chunk, Object.keys(chunk));
+	if ( !chunk.hasOwnProperty('revHash') ) {
 		map = parseFilenameWithVersion(chunk);
 	} else {
 		map = parseFilenameWithoutVersion(chunk);
 	}
+	console.log(map);
 	manifest[map.old] = map.new;
 	return cb(null, chunk);
 };
@@ -236,6 +238,8 @@ gulp.task('build', ['i18n', 'pack-css', 'webpack', 'mustache-dev'], function () 
 });
 
 gulp.task('build-min', ['build-bot-min', 'build-index-min', 'pack-css-min', 'mustache-min'], function () {
+	gulp.src('www/**')
+		.pipe(connect.reload());
 });
 
 gulp.task('deploy', ['build-min'], function () {
@@ -248,7 +252,7 @@ gulp.task('serve', ['open', 'connect'], function () {
 		.pipe(connect.reload());
 });
 
-gulp.task('test-deploy', ['deploy', 'serve'], function () {
+gulp.task('test-deploy', ['build-min', 'serve'], function () {
 });
 
 gulp.task('watch', ['build', 'serve'], function () {
