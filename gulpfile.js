@@ -83,7 +83,6 @@ var addToManifest = function addToManifest(chunk, enc, cb) {
 	} else {
 		map = parseFilenameWithoutVersion(chunk);
 	}
-	console.log(map);
 	manifest[map.old] = map.new;
 	return cb(null, chunk);
 };
@@ -149,7 +148,7 @@ gulp.task('blockly', ['blockly-msg', 'blockly-media', 'blockly-js'], function ()
 });
 
 gulp.task('clean-webpack', function() {
-	return gulp.src(['./www/js/*-*.js'])
+	return gulp.src(['./www/js/*-*.{js,map}'])
 		.pipe(vinyl_paths(del));
 });
 

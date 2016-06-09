@@ -1,6 +1,6 @@
 var globals = require('../globals/globals');
 var utils = require('./utils');
-var view = require('./view');
+var view = require('../view');
 var storageManager = require('./storageManager');
 var i18n = require('i18n');
 var LiveApi = require('binary-live-api')

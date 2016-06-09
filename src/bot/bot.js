@@ -22,7 +22,7 @@ translator.Translator(function () {
 	Bot.trade = require('./utils/trade');
 	Bot.toggleDebug = require('./globals/globals')
 		.toggleDebug;
-	require('./ui');
+	require('./view');
 	$('[data-i18n-text]')
 		.each(function () {
 			i18n._('a');

@@ -1,5 +1,5 @@
 var globals = require('../globals/globals');
-var view = require('../utils/view');
+var view = require('../view');
 var storageManager = require('../utils/storageManager');
 var blockly = require('blockly');
 var i18n = require('i18n');
