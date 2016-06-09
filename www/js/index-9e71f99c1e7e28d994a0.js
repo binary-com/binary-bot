@@ -12066,21 +12066,31 @@
 				api.disconnect();
 				storageManager.addToken(token, response.authorize.loginid);
 				if (callback) {
-					callback();
+					callback(null);
 				}
-				log(i18n._('Your token was added successfully'), 'info');
 			}, function (reason) {
 				api.disconnect();
 				removeToken(token);
-				showError(i18n._('Authentication failed using token:') + ' ' + token);
-				});
+				if (callback) {
+					callback('Error');
+				}
+			});
+	};
+	
+	var getAccountName = function getAccountName(token) {
+		var accountName = storageManager.getToken(token);
+		if (accountName instanceof Object) {
+			return accountName.account_name;
+		}
+		return '';
 	};
 	
 	module.exports = {
 		parseQueryString: parseQueryString,
 		removeToken: removeToken,
 		removeAllTokens: removeAllTokens,
-		addTokenIfValid: addTokenIfValid
+		addTokenIfValid: addTokenIfValid,
+		getAccountName: getAccountName
 	};
 
 /***/ },
@@ -12120,6 +12130,16 @@
 			setTokenList(tokenList);
 		}
 	};
+	
+	var getToken = function getToken(token) {
+		var tokenList = getTokenList();
+		var index = findToken(token);
+		if (index >= 0) {
+			return tokenList[index];
+		}
+		return '';
+	};
+	
 	var removeToken = function removeToken(token) {
 		var tokenList = getTokenList();
 		var index = findToken(token);
@@ -12144,6 +12164,7 @@
 		getTokenList: getTokenList,
 		findToken: findToken,
 		setTokenList: setTokenList,
+		getToken: getToken,
 		addToken: addToken,
 		removeToken: removeToken,
 		removeAllTokens: removeAllTokens,
@@ -13711,8 +13732,13 @@
 		oauthLogin: function getToken() {
 			var queryStr = utils.parseQueryString();
 			if (queryStr.token1) {
-				utils.addTokenIfValid(queryStr.token1, function(){
-					document.location.pathname = '/bot.html';
+				utils.addTokenIfValid(queryStr.token1, function(err){
+					if (err) {
+						alert('Login failed');
+						document.location.search = '';
+					} else {
+						document.location.pathname = '/bot.html';
+					}
 				});
 			}
 		},
@@ -23551,4 +23577,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-cc276221ee97450d3cfc.map
+//# sourceMappingURL=index-9e71f99c1e7e28d994a0.map

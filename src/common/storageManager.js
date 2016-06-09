@@ -31,6 +31,16 @@ var addToken = function addToken(token, account_name) {
 		setTokenList(tokenList);
 	}
 };
+
+var getToken = function getToken(token) {
+	var tokenList = getTokenList();
+	var index = findToken(token);
+	if (index >= 0) {
+		return tokenList[index];
+	}
+	return '';
+};
+
 var removeToken = function removeToken(token) {
 	var tokenList = getTokenList();
 	var index = findToken(token);
@@ -55,6 +65,7 @@ module.exports = {
 	getTokenList: getTokenList,
 	findToken: findToken,
 	setTokenList: setTokenList,
+	getToken: getToken,
 	addToken: addToken,
 	removeToken: removeToken,
 	removeAllTokens: removeAllTokens,

@@ -12088,21 +12088,31 @@
 				api.disconnect();
 				storageManager.addToken(token, response.authorize.loginid);
 				if (callback) {
-					callback();
+					callback(null);
 				}
-				log(i18n._('Your token was added successfully'), 'info');
 			}, function (reason) {
 				api.disconnect();
 				removeToken(token);
-				showError(i18n._('Authentication failed using token:') + ' ' + token);
-				});
+				if (callback) {
+					callback('Error');
+				}
+			});
+	};
+	
+	var getAccountName = function getAccountName(token) {
+		var accountName = storageManager.getToken(token);
+		if (accountName instanceof Object) {
+			return accountName.account_name;
+		}
+		return '';
 	};
 	
 	module.exports = {
 		parseQueryString: parseQueryString,
 		removeToken: removeToken,
 		removeAllTokens: removeAllTokens,
-		addTokenIfValid: addTokenIfValid
+		addTokenIfValid: addTokenIfValid,
+		getAccountName: getAccountName
 	};
 
 /***/ },
@@ -12142,6 +12152,16 @@
 			setTokenList(tokenList);
 		}
 	};
+	
+	var getToken = function getToken(token) {
+		var tokenList = getTokenList();
+		var index = findToken(token);
+		if (index >= 0) {
+			return tokenList[index];
+		}
+		return '';
+	};
+	
 	var removeToken = function removeToken(token) {
 		var tokenList = getTokenList();
 		var index = findToken(token);
@@ -12166,6 +12186,7 @@
 		getTokenList: getTokenList,
 		findToken: findToken,
 		setTokenList: setTokenList,
+		getToken: getToken,
 		addToken: addToken,
 		removeToken: removeToken,
 		removeAllTokens: removeAllTokens,
@@ -13733,8 +13754,13 @@
 		oauthLogin: function getToken() {
 			var queryStr = utils.parseQueryString();
 			if (queryStr.token1) {
-				utils.addTokenIfValid(queryStr.token1, function(){
-					document.location.pathname = '/bot.html';
+				utils.addTokenIfValid(queryStr.token1, function(err){
+					if (err) {
+						alert('Login failed');
+						document.location.search = '';
+					} else {
+						document.location.pathname = '/bot.html';
+					}
 				});
 			}
 		},
@@ -28994,8 +29020,14 @@
 		if (token === '') {
 			showError(i18n._('Token cannot be empty'));
 		} else if (token !== null) {
-			commonUtils.addTokenIfValid(token, function(){
-				updateTokenList(token);
+			commonUtils.addTokenIfValid(token, function(err){
+				if (err) {
+					showError(i18n._('Authentication failed using token:') + ' ' + token);
+					return;
+				} else {
+					log(i18n._('Your token was added successfully'), 'info');
+					updateTokenList(token);
+				}
 			});
 		}
 	};
@@ -29541,7 +29573,7 @@
 				commonUtils.removeToken(token);
 				showError(response.error);
 			} else if (!finished) {
-				log(i18n._('Authenticated using token:') + ' ' + token, 'info');
+				log(i18n._('Logged in to:') + ' ' + commonUtils.getAccountName(token), 'info');
 				requestSymbolInfo(function(){
 					getContractInfo(function () {
 						restartContracts();
@@ -37552,4 +37584,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-b22ae82f8e7d35cd3bf3.map
+//# sourceMappingURL=bot-676cfa5f9f0f56bab67c.map
