@@ -13726,7 +13726,7 @@
 	var utils = __webpack_require__(11);
 	
 	var AppId = {
-		app_id: ( document.location.port === '8080' ) ? 1168 : 1163,
+		app_id: ( document.location.port === '8080' ) ? 1168 : 1169,
 		redirectOauth: function oauthLogin(){
 			document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + this.app_id + '&l=' + window.lang.toUpperCase();
 		},
@@ -37552,4 +37552,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-4cdf5f0ed14063fd0f24.map
+//# sourceMappingURL=bot-b22ae82f8e7d35cd3bf3.map
