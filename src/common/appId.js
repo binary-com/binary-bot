@@ -13,9 +13,11 @@ var AppId = {
 				tokenList.push(queryStr[key]);
 			}
 		});
-		utils.addAllTokens(tokenList, function(){
-			document.location.pathname = '/bot.html';
-		});
+		if (tokenList.length) {
+			utils.addAllTokens(tokenList, function(){
+				document.location.pathname = '/bot.html';
+			});
+		}
 	},
 	removeTokenFromUrl: function removeTokenFromUrl(){
 		var queryStr = utils.parseQueryString();

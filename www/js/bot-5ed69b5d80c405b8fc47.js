@@ -13770,9 +13770,11 @@
 					tokenList.push(queryStr[key]);
 				}
 			});
-			utils.addAllTokens(tokenList, function(){
-				document.location.pathname = '/bot.html';
-			});
+			if (tokenList.length) {
+				utils.addAllTokens(tokenList, function(){
+					document.location.pathname = '/bot.html';
+				});
+			}
 		},
 		removeTokenFromUrl: function removeTokenFromUrl(){
 			var queryStr = utils.parseQueryString();
@@ -37594,4 +37596,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-a8aec57b8452ccfbde71.map
+//# sourceMappingURL=bot-5ed69b5d80c405b8fc47.map
