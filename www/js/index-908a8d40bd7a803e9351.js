@@ -48,17 +48,28 @@
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var appId = __webpack_require__(15);
+	var commonUtils = __webpack_require__(11);
 	var $ = __webpack_require__(16);
 	
-	appId.oauthLogin();
-	translator.Translator(function () {
-		$('[data-i18n-text]')
-			.each(function () {
-				$(this)
-					.text(i18n._($(this)
-						.attr('data-i18n-text')));
-			});
-	});
+	commonUtils.asyncChain()
+	.pipe(function checkOauthLogin(done){
+		appId.oauthLogin(done);
+	})
+	.pipe(function translate(done){
+		translator.Translator(function () {
+			$('[data-i18n-text]')
+				.each(function () {
+					$(this)
+						.text(i18n._($(this)
+							.attr('data-i18n-text')));
+				});
+				done();
+		});
+	})
+	.pipe(function hideSpinner(done){
+		$('.spinning').hide();
+	}).exec();
+	
 
 
 /***/ },
@@ -12031,6 +12042,28 @@
 	var storageManager = __webpack_require__(12);
 	var blockly = __webpack_require__(13);
 	
+	var asyncChain = function asyncChain(){
+	  return {
+	    asyncCallChain: [],
+	    pipe: function pipe(fun){
+	      this.asyncCallChain.push(fun);
+	      return this;
+	    },
+	    exec: function exec() {
+	      var wrap = function (call, callback) {
+	        return function () {
+	          call(callback);
+	        };
+	      };
+	      for (var i = this.asyncCallChain.length-1; i > -1; i--) {
+	        this.asyncCallChain[i] = wrap(this.asyncCallChain[i], i < this.asyncCallChain.length - 1 ? this.asyncCallChain[i + 1] : function(){});
+	      }
+	      this.asyncCallChain[0]();
+	    },
+	  };
+	};
+	
+	
 	var parseQueryString = function parseQueryString() {
 		var str = window.location.search;
 		var objURL = {};
@@ -12101,7 +12134,8 @@
 		removeAllTokens: removeAllTokens,
 		addTokenIfValid: addTokenIfValid,
 		getAccountName: getAccountName,
-		addAllTokens: addAllTokens
+		addAllTokens: addAllTokens,
+		asyncChain: asyncChain
 	};
 
 /***/ },
@@ -13740,7 +13774,7 @@
 		redirectOauth: function oauthLogin(){
 			document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + this.app_id + '&l=' + window.lang.toUpperCase();
 		},
-		oauthLogin: function getToken() {
+		oauthLogin: function getToken(done) {
 			var queryStr = utils.parseQueryString();
 			var tokenList = [];
 			Object.keys(queryStr).forEach(function(key){
@@ -13752,6 +13786,10 @@
 				utils.addAllTokens(tokenList, function(){
 					document.location.pathname = '/bot.html';
 				});
+			} else {
+				if (done) {
+					done();
+				}
 			}
 		},
 		removeTokenFromUrl: function removeTokenFromUrl(){
@@ -23589,4 +23627,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-edee64decd75fa91a076.map
+//# sourceMappingURL=index-908a8d40bd7a803e9351.map

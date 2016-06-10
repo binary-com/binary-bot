@@ -68,6 +68,4 @@ module.exports = {
 	],
 
 	conditions: ['updown', 'asian', 'matchesdiffers', 'evenodd', 'overunder'],
-	ticktrade_markets: ['r_25', 'r_50', 'r_75', 'r_100', 'rdbear', 'rdbull'],
-	ticktrade_market_names: [i18n._('Volatility 25 Index'), i18n._('Volatility 50 Index'), i18n._('Volatility 75 Index'), i18n._('Volatility 100 Index'), i18n._('Bear Market Index'), i18n._('Bull Market Index')],
 };

@@ -2,7 +2,7 @@ require('./trade/trade');
 require('./tools/balance');
 require('./tools/notify');
 require('./tools/total_profit');
-require('./submarkets/volatility/ticktrade_markets');
+require('./markets');
 require('./strategy/check_direction');
 require('./strategy/direction');
 require('./strategy/purchase');

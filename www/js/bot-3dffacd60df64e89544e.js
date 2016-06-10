@@ -48,6 +48,7 @@
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var appId = __webpack_require__(15);
+	var commonUtils = __webpack_require__(11);
 	var $ = __webpack_require__(16);
 	$.ajaxSetup({
 		cache: false
@@ -61,26 +62,43 @@
 	appId.removeTokenFromUrl();
 	
 	translator.addBlocklyTranslation();
-	translator.Translator(function () {
-		Bot.config = __webpack_require__(21);
-		Bot.globals = __webpack_require__(22);
-		Bot.utils = __webpack_require__(23);
-		Bot.version = __webpack_require__(24);
-		Bot.conditions = __webpack_require__(25);
-		Bot.markets = __webpack_require__(26);
-		Bot.trade = __webpack_require__(27);
-		Bot.toggleDebug = __webpack_require__(22)
-			.toggleDebug;
-		__webpack_require__(28);
-		$('[data-i18n-text]')
-			.each(function () {
-				i18n._('a');
-				$(this)
-					.text(
-						i18n._($(this)
-						.attr('data-i18n-text')));
+	commonUtils.asyncChain()
+		.pipe(function translate(done){
+			translator.Translator(function () {
+				$('[data-i18n-text]')
+					.each(function () {
+						$(this)
+							.text(i18n._($(this)
+								.attr('data-i18n-text')));
+					});
+					done();
 			});
-	});
+		})
+		.pipe(function loadActiveSymbols(done){
+			var botUtils = __webpack_require__(21);
+			Bot.globals = __webpack_require__(22);
+			botUtils.getActiveSymbols(function(activeSymbols){
+				Bot.globals.activeSymbols = activeSymbols;
+				done();
+			});
+		})
+		.pipe(function runBot(done){
+			Bot.config = __webpack_require__(23);
+			Bot.utils = __webpack_require__(21);
+			Bot.version = __webpack_require__(26);
+			Bot.markets = __webpack_require__(27);
+			Bot.conditions = __webpack_require__(111);
+			Bot.trade = __webpack_require__(28);
+			Bot.toggleDebug = __webpack_require__(22)
+				.toggleDebug;
+			var view = __webpack_require__(29); // show the bot
+			view.show(function(){
+				done();
+			});
+		})
+		.pipe(function hideSpinner(done){
+			$('.spinning').hide();
+		}).exec();
 
 
 /***/ },
@@ -12053,6 +12071,28 @@
 	var storageManager = __webpack_require__(12);
 	var blockly = __webpack_require__(13);
 	
+	var asyncChain = function asyncChain(){
+	  return {
+	    asyncCallChain: [],
+	    pipe: function pipe(fun){
+	      this.asyncCallChain.push(fun);
+	      return this;
+	    },
+	    exec: function exec() {
+	      var wrap = function (call, callback) {
+	        return function () {
+	          call(callback);
+	        };
+	      };
+	      for (var i = this.asyncCallChain.length-1; i > -1; i--) {
+	        this.asyncCallChain[i] = wrap(this.asyncCallChain[i], i < this.asyncCallChain.length - 1 ? this.asyncCallChain[i + 1] : function(){});
+	      }
+	      this.asyncCallChain[0]();
+	    },
+	  };
+	};
+	
+	
 	var parseQueryString = function parseQueryString() {
 		var str = window.location.search;
 		var objURL = {};
@@ -12123,7 +12163,8 @@
 		removeAllTokens: removeAllTokens,
 		addTokenIfValid: addTokenIfValid,
 		getAccountName: getAccountName,
-		addAllTokens: addAllTokens
+		addAllTokens: addAllTokens,
+		asyncChain: asyncChain
 	};
 
 /***/ },
@@ -13762,7 +13803,7 @@
 		redirectOauth: function oauthLogin(){
 			document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + this.app_id + '&l=' + window.lang.toUpperCase();
 		},
-		oauthLogin: function getToken() {
+		oauthLogin: function getToken(done) {
 			var queryStr = utils.parseQueryString();
 			var tokenList = [];
 			Object.keys(queryStr).forEach(function(key){
@@ -13774,6 +13815,10 @@
 				utils.addAllTokens(tokenList, function(){
 					document.location.pathname = '/bot.html';
 				});
+			} else {
+				if (done) {
+					done();
+				}
 			}
 		},
 		removeTokenFromUrl: function removeTokenFromUrl(){
@@ -28751,259 +28796,52 @@
 /* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var i18n = __webpack_require__(3);
-	module.exports = {
-		lists: {
-			PAYOUTTYPE: [
-				[i18n._('Payout'), 'payout'],
-				[i18n._('Stake'), 'stake']
-			],
-			CURRENCY: [
-				['USD', 'USD'],
-				['EUR', 'EUR'],
-				['GBP', 'GBP'],
-				['AUD', 'AUD']
-			],
-			DETAILS: [
-				[i18n._('statement'), '1'],
-				[i18n._('ask price'), '2'],
-				[i18n._('payout'), '3'],
-				[i18n._('profit'), '4'],
-				[i18n._('contract type'), '5'],
-				[i18n._('entry spot'), '6'],
-				[i18n._('entry value'), '7'],
-				[i18n._('exit spot'), '8'],
-				[i18n._('exit value'), '9'],
-				[i18n._('barrier'), '10'],
-			],
-			CHECK_RESULT: [
-				[i18n._('Win'), 'win'],
-				[i18n._('Loss'), 'loss'],
-			],
-			CHECK_DIRECTION: [
-				[i18n._('Up'), 'up'],
-				[i18n._('Down'), 'down'],
-				[i18n._('No Change'), ''],
-			],
-		},
-	
-		opposites: {
-			UPDOWN: [{
-				'CALL': i18n._('Up')
-			}, {
-				'PUT': i18n._('Down')
-			}],
-			ASIAN: [{
-				'ASIANU': i18n._('Asian Up')
-			}, {
-				'ASIAND': i18n._('Asian Down')
-			}],
-			MATCHESDIFFERS: [{
-				'DIGITMATCH': i18n._('Matches')
-			}, {
-				'DIGITDIFF': i18n._('Differs')
-			}],
-			EVENODD: [{
-				'DIGITEVEN': i18n._('Even')
-			}, {
-				'DIGITODD': i18n._('Odd')
-			}],
-			OVERUNDER: [{
-				'DIGITOVER': i18n._('Over')
-			}, {
-				'DIGITUNDER': i18n._('Under')
-			}],
-		},
-	
-		opposites_have_barrier: [
-			'MATCHESDIFFERS',
-			'OVERUNDER',
-		],
-	
-		conditions: ['updown', 'asian', 'matchesdiffers', 'evenodd', 'overunder'],
-		ticktrade_markets: ['r_25', 'r_50', 'r_75', 'r_100', 'rdbear', 'rdbull'],
-		ticktrade_market_names: [i18n._('Volatility 25 Index'), i18n._('Volatility 50 Index'), i18n._('Volatility 75 Index'), i18n._('Volatility 100 Index'), i18n._('Bear Market Index'), i18n._('Bull Market Index')],
-	};
-
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var debug = false;
-	var logQueue = [];
-	
-	var on_finish = function () {};
-	var on_strategy = function () {};
-	
-	var tour = null;
-	
-	var lists = {
-		accounts: [
-			[i18n._('Please add a token first'), '']
-		],
-		purchase_choices: [
-			[i18n._('Click to select'), '']
-		]
-	};
-	
-	var getAccounts = function getAccounts() {
-		return lists.accounts;
-	};
-	
-	var getPurchaseChoices = function getPurchaseChoices() {
-		return lists.purchase_choices;
-	};
-	
-	var tradeInfo = {
-		numOfRuns: 0,
-		totalProfit: '',
-		totalPayout: '',
-		totalStake: '',
-		lastProfit: '',
-		lastResult: '',
-		balance: '',
-		tradeTable: [],
-		tradesCount: 10000,
-		tableSize: 5,
-	};
-	
-	var initialTradeInfo = {};
-	
-	var copyObjectKeys = function copyObjectKeys(obj1, obj2) {
-		$.extend(obj1, JSON.parse(JSON.stringify(obj2)));
-	};
-	
-	copyObjectKeys(initialTradeInfo, tradeInfo);
-	
-	var resetTradeInfo = function resetTradeInfo() {
-		copyObjectKeys(tradeInfo, initialTradeInfo);
-		updateTradeInfo();
-		showTradeInfo();
-	};
-	
-	var updateTradeInfo = function updateTradeInfo() {
-		Object.keys(tradeInfo)
-			.forEach(function (key) {
-				$('.' + key)
-					.text(tradeInfo[key]);
-				if (key === 'totalProfit' || key === 'lastProfit') {
-					if (+tradeInfo[key] > 0) {
-						$('.' + key)
-							.css('color', 'green');
-					} else if (+tradeInfo[key] < 0) {
-						$('.' + key)
-							.css('color', 'red');
-					} else {
-						$('.' + key)
-							.css('color', 'black');
-					}
-				}
-			});
-	};
-	
-	var undoBlocks = function undoBlocks() {
-		blockly.mainWorkspace.undo();
-	};
-	
-	var redoBlocks = function redoBlocks() {
-		blockly.mainWorkspace.undo(true);
-	};
-	
-	var addTradeInfo = function addTradeInfo(trade) {
-		trade.number = tradeInfo.numOfRuns;
-		// tradeInfo.tradeTable.reverse(); //reverse the table row growth
-		if (tradeInfo.tradeTable.length > tradeInfo.tradesCount) {
-			tradeInfo.tradeTable.shift();
-		}
-		tradeInfo.tradeTable.push(trade);
-		// tradeInfo.tradeTable.reverse();
-		showTradeInfo();
-	};
-	
-	var showTradeInfo = function showTradeInfo() {
-		$('#tradesDisplay tbody')
-			.children()
-			.remove();
-		var count = 0;
-		tradeInfo.tradeTable.forEach(function (trade, index) {
-			var lastProfit = +(+trade.sell_price - (+trade.buy_price))
-				.toFixed(2);
-			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.sell_price + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
-			$('#tradesDisplay tbody')
-				.append(element);
-			count += 1;
-		});
-		for (var i = count; i < tradeInfo.tableSize; i += 1) {
-			var element = '<tr>';
-			for (var j = 0; j < 8; j += 1) {
-				element += '<td></td>';
-			}
-			element += '</tr>';
-			$('#tradesDisplay tbody')
-				.append(element);
-		}
-		$('.table-scroll')
-			.scrollTop($('.table-scroll')[0].scrollHeight);
-	};
-	
-	var toggleDebug = function toggleDebug() {
-		debug = !debug;
-		if (debug) {
-			logQueue.forEach(function (log) {
-				console.log.apply(console, log);
-			});
-			logQueue = [];
-		}
-	};
-	
-	var addLogToQueue = function addLogToQueue() {
-		logQueue.push(Array.prototype.slice.apply(arguments));
-	};
-	
-	var isDebug = function isDebug() {
-		return debug;
-	};
-	
-	var disableRun = function disableRun(disabled) {
-		$('#runButton')
-			.prop('disabled', disabled);
-	};
-	
-	module.exports = {
-		tradeInfo: tradeInfo,
-		resetTradeInfo: resetTradeInfo,
-		updateTradeInfo: updateTradeInfo,
-		undoBlocks: undoBlocks,
-		redoBlocks: redoBlocks,
-		addTradeInfo: addTradeInfo,
-		showTradeInfo: showTradeInfo,
-		toggleDebug: toggleDebug,
-		addLogToQueue: addLogToQueue,
-		isDebug: isDebug,
-		getAccounts: getAccounts,
-		lists: lists,
-		getPurchaseChoices: getPurchaseChoices,
-		disableRun: disableRun,
-		on_finish: on_finish,
-		on_strategy: on_strategy,
-		tour: tour,
-	};
-
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var globals = __webpack_require__(22);
-	var config = __webpack_require__(21);
+	var config = __webpack_require__(23);
+	var activeSymbols = __webpack_require__(24);
 	var storageManager = __webpack_require__(12);
 	var appId = __webpack_require__(15);
 	var blockly = __webpack_require__(13);
 	var commonUtils = __webpack_require__(11);
 	var i18n = __webpack_require__(3);
+	
+	var createXmlTag = function createXmlTag(obj) {
+		var xmlStr = '<category name="Markets" colour="345" i18n-text="Markets">\n';
+		Object.keys(obj).forEach(function(market){
+			xmlStr += '\t<category name="'+ obj[market].name +'" colour="345">\n';
+				Object.keys(obj[market].submarkets).forEach(function(submarket){
+					xmlStr += '\t\t<category name="'+ obj[market].submarkets[submarket].name +'" colour="345">\n';
+						Object.keys(obj[market].submarkets[submarket].symbols).forEach(function(symbol){
+							xmlStr += '\t\t\t<block type="'+ symbol.toLowerCase() +'"></block>\n';
+						});
+					xmlStr += '\t\t</category>\n';
+				});
+			xmlStr += '\t</category>\n';
+		});
+		xmlStr += '</category>\n';
+		return xmlStr;
+	};
+	
+	var xmlToStr = function xmlToStr(xml){
+		var serializer = new XMLSerializer(); 
+		return serializer.serializeToString(xml);
+	};
+	
+	var marketsToXml = function marketsToXml(xml){
+		var xmlStr = xmlToStr(xml);
+		var marketXml = createXmlTag(globals.activeSymbols.getMarkets());
+		return xmlStr.replace('<!--Markets-->', marketXml);
+	};
+	
+	var getActiveSymbols = function getActiveSymbols(callback) {
+		var LiveApi = __webpack_require__(25)
+			.LiveApi;
+		var api = new LiveApi();
+		api.getActiveSymbolsBrief().then(function(response){
+			activeSymbols.getMarkets(response.active_symbols);
+			callback(activeSymbols);
+		});
+	};
 	
 	var findToken = function findToken(token) {
 		var index = -1;
@@ -29229,7 +29067,254 @@
 		findTopParentBlock: findTopParentBlock,
 		updateTokenList: updateTokenList,
 		addPurchaseOptions: addPurchaseOptions,
-		logout: logout
+		logout: logout,
+		getActiveSymbols: getActiveSymbols,
+		marketsToXml: marketsToXml,
+		xmlToStr: xmlToStr
+	};
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var debug = false;
+	var logQueue = [];
+	
+	var on_finish = function () {};
+	var on_strategy = function () {};
+	
+	var tour = null;
+	
+	var lists = {
+		accounts: [
+			[i18n._('Please add a token first'), '']
+		],
+		purchase_choices: [
+			[i18n._('Click to select'), '']
+		]
+	};
+	
+	var getAccounts = function getAccounts() {
+		return lists.accounts;
+	};
+	
+	var getPurchaseChoices = function getPurchaseChoices() {
+		return lists.purchase_choices;
+	};
+	
+	var tradeInfo = {
+		numOfRuns: 0,
+		totalProfit: '',
+		totalPayout: '',
+		totalStake: '',
+		lastProfit: '',
+		lastResult: '',
+		balance: '',
+		tradeTable: [],
+		tradesCount: 10000,
+		tableSize: 5,
+	};
+	
+	var initialTradeInfo = {};
+	
+	var copyObjectKeys = function copyObjectKeys(obj1, obj2) {
+		$.extend(obj1, JSON.parse(JSON.stringify(obj2)));
+	};
+	
+	copyObjectKeys(initialTradeInfo, tradeInfo);
+	
+	var resetTradeInfo = function resetTradeInfo() {
+		copyObjectKeys(tradeInfo, initialTradeInfo);
+		updateTradeInfo();
+		showTradeInfo();
+	};
+	
+	var updateTradeInfo = function updateTradeInfo() {
+		Object.keys(tradeInfo)
+			.forEach(function (key) {
+				$('.' + key)
+					.text(tradeInfo[key]);
+				if (key === 'totalProfit' || key === 'lastProfit') {
+					if (+tradeInfo[key] > 0) {
+						$('.' + key)
+							.css('color', 'green');
+					} else if (+tradeInfo[key] < 0) {
+						$('.' + key)
+							.css('color', 'red');
+					} else {
+						$('.' + key)
+							.css('color', 'black');
+					}
+				}
+			});
+	};
+	
+	var undoBlocks = function undoBlocks() {
+		blockly.mainWorkspace.undo();
+	};
+	
+	var redoBlocks = function redoBlocks() {
+		blockly.mainWorkspace.undo(true);
+	};
+	
+	var addTradeInfo = function addTradeInfo(trade) {
+		trade.number = tradeInfo.numOfRuns;
+		// tradeInfo.tradeTable.reverse(); //reverse the table row growth
+		if (tradeInfo.tradeTable.length > tradeInfo.tradesCount) {
+			tradeInfo.tradeTable.shift();
+		}
+		tradeInfo.tradeTable.push(trade);
+		// tradeInfo.tradeTable.reverse();
+		showTradeInfo();
+	};
+	
+	var showTradeInfo = function showTradeInfo() {
+		$('#tradesDisplay tbody')
+			.children()
+			.remove();
+		var count = 0;
+		tradeInfo.tradeTable.forEach(function (trade, index) {
+			var lastProfit = +(+trade.sell_price - (+trade.buy_price))
+				.toFixed(2);
+			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.sell_price + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
+			$('#tradesDisplay tbody')
+				.append(element);
+			count += 1;
+		});
+		for (var i = count; i < tradeInfo.tableSize; i += 1) {
+			var element = '<tr>';
+			for (var j = 0; j < 8; j += 1) {
+				element += '<td></td>';
+			}
+			element += '</tr>';
+			$('#tradesDisplay tbody')
+				.append(element);
+		}
+		$('.table-scroll')
+			.scrollTop($('.table-scroll')[0].scrollHeight);
+	};
+	
+	var toggleDebug = function toggleDebug() {
+		debug = !debug;
+		if (debug) {
+			logQueue.forEach(function (log) {
+				console.log.apply(console, log);
+			});
+			logQueue = [];
+		}
+	};
+	
+	var addLogToQueue = function addLogToQueue() {
+		logQueue.push(Array.prototype.slice.apply(arguments));
+	};
+	
+	var isDebug = function isDebug() {
+		return debug;
+	};
+	
+	var disableRun = function disableRun(disabled) {
+		$('#runButton')
+			.prop('disabled', disabled);
+	};
+	
+	module.exports = {
+		tradeInfo: tradeInfo,
+		resetTradeInfo: resetTradeInfo,
+		updateTradeInfo: updateTradeInfo,
+		undoBlocks: undoBlocks,
+		redoBlocks: redoBlocks,
+		addTradeInfo: addTradeInfo,
+		showTradeInfo: showTradeInfo,
+		toggleDebug: toggleDebug,
+		addLogToQueue: addLogToQueue,
+		isDebug: isDebug,
+		getAccounts: getAccounts,
+		lists: lists,
+		getPurchaseChoices: getPurchaseChoices,
+		disableRun: disableRun,
+		on_finish: on_finish,
+		on_strategy: on_strategy,
+		tour: tour,
+	};
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var i18n = __webpack_require__(3);
+	module.exports = {
+		lists: {
+			PAYOUTTYPE: [
+				[i18n._('Payout'), 'payout'],
+				[i18n._('Stake'), 'stake']
+			],
+			CURRENCY: [
+				['USD', 'USD'],
+				['EUR', 'EUR'],
+				['GBP', 'GBP'],
+				['AUD', 'AUD']
+			],
+			DETAILS: [
+				[i18n._('statement'), '1'],
+				[i18n._('ask price'), '2'],
+				[i18n._('payout'), '3'],
+				[i18n._('profit'), '4'],
+				[i18n._('contract type'), '5'],
+				[i18n._('entry spot'), '6'],
+				[i18n._('entry value'), '7'],
+				[i18n._('exit spot'), '8'],
+				[i18n._('exit value'), '9'],
+				[i18n._('barrier'), '10'],
+			],
+			CHECK_RESULT: [
+				[i18n._('Win'), 'win'],
+				[i18n._('Loss'), 'loss'],
+			],
+			CHECK_DIRECTION: [
+				[i18n._('Up'), 'up'],
+				[i18n._('Down'), 'down'],
+				[i18n._('No Change'), ''],
+			],
+		},
+	
+		opposites: {
+			UPDOWN: [{
+				'CALL': i18n._('Up')
+			}, {
+				'PUT': i18n._('Down')
+			}],
+			ASIAN: [{
+				'ASIANU': i18n._('Asian Up')
+			}, {
+				'ASIAND': i18n._('Asian Down')
+			}],
+			MATCHESDIFFERS: [{
+				'DIGITMATCH': i18n._('Matches')
+			}, {
+				'DIGITDIFF': i18n._('Differs')
+			}],
+			EVENODD: [{
+				'DIGITEVEN': i18n._('Even')
+			}, {
+				'DIGITODD': i18n._('Odd')
+			}],
+			OVERUNDER: [{
+				'DIGITOVER': i18n._('Over')
+			}, {
+				'DIGITUNDER': i18n._('Under')
+			}],
+		},
+	
+		opposites_have_barrier: [
+			'MATCHESDIFFERS',
+			'OVERUNDER',
+		],
+	
+		conditions: ['updown', 'asian', 'matchesdiffers', 'evenodd', 'overunder'],
 	};
 
 
@@ -29237,2665 +29322,165 @@
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var globals = __webpack_require__(22);
-	var version = '1.1.9';
-	if (globals.debug) {
-		console.log('%cBinary Bot (v' + version + ') started.', 'color: green');
-	} else {
-		globals.addLogToQueue('%cBinary Bot (v' + version + ') started.', 'color: green');
-	}
-	module.exports = version;
+	var ActiveSymbols = (function () {
+	    'use strict';
+	
+	    var groupBy = function(xs, key) {
+	      return xs.reduce(function(rv, x) {
+	        (rv[x[key]] = rv[x[key]] || []).push(x);
+	        return rv;
+	      }, {});
+	    };
+	
+	    var extend = function extend(a, b) {
+	        a = (a) ? a : {};
+	        if ( b ) {
+	            Object.keys(b).forEach(function(key){
+	                a[key] = b[key];
+	            });
+	        }
+	    };
+	
+	    var objectNotEmpty = function objectNotEmpty(obj){
+	        return obj && obj instanceof Object && Object.keys(obj).length;
+	    };
+	
+	    var clone = function clone(obj){
+	        var newObj = {};
+	        extend(newObj, obj);
+	        return newObj;
+	    };
+	
+	    var activeSymbols = {
+	        markets: {},
+	        submarkets: {},
+	        symbols: {},
+	        getMarkets: function getMarkets(activeSymbols) {
+	            if ( objectNotEmpty(this.markets) ) {
+	                return clone(this.markets);
+	            } else {
+	                var that = this;
+	                var markets = groupBy(activeSymbols, 'market');
+	                var parsedMarkets = [];
+	                Object.keys(markets).forEach(function(key){
+	                    var marketName = key;
+	                    var marketSymbols = markets[key];
+	                    var symbol = marketSymbols[0];
+	                    that.markets[marketName] = {
+	                        name: symbol.market_display_name,
+	                        is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
+	                    };
+	                    that.getSubmarketsForMarket(marketSymbols, that.markets[marketName]);
+	                });
+	                return clone(this.markets);
+	            }
+	        },
+	        getSubmarketsForMarket: function getSubmarketsForMarket(activeSymbols, market) {
+	            if ( objectNotEmpty(market.submarkets) ) {
+	                return clone(market.submarkets);
+	            } else {
+	                market.submarkets = {};
+	                var that = this;
+	                var submarkets = groupBy(activeSymbols, 'submarket');
+	                var parsedSubmarkets = [];
+	                Object.keys(submarkets).forEach(function(key){
+	                    var submarketName = key;
+	                    var submarketSymbols = submarkets[key];
+	                    var symbol = submarketSymbols[0];
+	                    market.submarkets[submarketName] = {
+	                        name: symbol.submarket_display_name,
+	                        is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
+	                    };
+	                    that.getSymbolsForSubmarket(submarketSymbols, market.submarkets[submarketName]);
+	                });
+	                return clone(market.submarkets);
+	            }
+	        },
+	        getSymbolsForSubmarket: function getSymbolsForSubmarket(activeSymbols, submarket) {
+	            if ( objectNotEmpty(submarket.symbols) ) {
+	                return clone(submarket.symbols);
+	            } else {
+	                submarket.symbols = {};
+	                activeSymbols.forEach(function(symbol){
+	                    submarket.symbols[symbol.symbol] = {
+	                        display: symbol.display_name,
+	                        symbol_type: symbol.symbol_type,
+	                        is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
+	                        pip: symbol.pip,
+	                        market: symbol.market,
+	                        submarket: symbol.submarket
+	                    };
+	                });
+	                return clone(submarket.symbols);
+	            }
+	        },
+	        getSubmarkets: function getSubmarkets(active_symbols) {
+	            if ( objectNotEmpty(this.submarkets) ) {
+	                return clone(this.submarkets);
+	            } else {
+	                var markets = this.getMarkets(active_symbols);
+	                var that = this;
+	                Object.keys(markets).forEach(function(key){
+	                    var market = markets[key];
+	                    var submarkets = that.getSubmarketsForMarket(active_symbols, market);
+	                    extend(that.submarkets, submarkets);
+	                });
+	                return clone(this.submarkets);
+	            }
+	        },
+	        getSymbols: function getSymbols(active_symbols) {
+	            if ( objectNotEmpty(this.symbols) ) {
+	                return clone(this.symbols);
+	            } else {
+	                var submarkets = this.getSubmarkets(active_symbols);
+	                var that = this;
+	                Object.keys(submarkets).forEach(function(key){
+	                    var submarket = submarkets[key];
+	                    var symbols = that.getSymbolsForSubmarket(active_symbols, submarket);
+	                    extend(that.symbols, symbols);
+	                });
+	                return clone(this.symbols);
+	            }
+	        },
+	        getMarketsList: function getMarketsList(active_symbols) {
+	            var tradeMarketsList = {};
+	            extend(tradeMarketsList, this.getMarkets(active_symbols));
+	            extend(tradeMarketsList, this.getSubmarkets(active_symbols));
+	            return tradeMarketsList;
+	        },
+	        getTradeUnderlyings: function getTradeUnderlyings(active_symbols) {
+	            var tradeUnderlyings = {};
+	            var symbols = this.getSymbols(active_symbols);
+	            Object.keys(symbols).forEach(function(key){
+	                var symbol = symbols[key];
+	                if ( !tradeUnderlyings[symbol.market] ) {
+	                    tradeUnderlyings[symbol.market] = {};
+	                }
+	                if ( !tradeUnderlyings[symbol.submarket] ) {
+	                    tradeUnderlyings[symbol.submarket] = {};
+	                }
+	                tradeUnderlyings[symbol.market][key] = symbol;
+	                tradeUnderlyings[symbol.submarket][key] = symbol;
+	            });
+	            return tradeUnderlyings;
+	        },
+	        getSymbolNames: function getSymbolNames(active_symbols){
+	            var symbols = clone(this.getSymbols(active_symbols));
+	            Object.keys(symbols).map(function(key){
+	                symbols[key] = symbols[key].display;
+	            });
+	            return symbols;
+	        },
+	    };
+	    if (true) {
+	        module.exports = activeSymbols;
+	    }
+	    return activeSymbols;
+	})();
 
 
 /***/ },
 /* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var config = __webpack_require__(21);
-	module.exports = {
-		ticktrade: function ticktrade(parameters) {
-			var options = [];
-			var opposites = config.opposites[parameters.condition];
-			opposites.forEach(function (option) {
-				var option_name = Object.keys(option)[0];
-				var option_data = {
-					'amount': parameters.amount,
-					'basis': parameters.payouttype,
-					'contract_type': option_name,
-					'currency': parameters.currency,
-					'duration': parameters.duration,
-					'duration_unit': 't',
-				};
-				if (parameters.hasOwnProperty('barrier')) {
-					option_data.barrier = parameters.barrier;
-				}
-				options.push(option_data);
-			});
-	
-			return options;
-		}
-	};
-
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var config = __webpack_require__(21);
-	var trade = __webpack_require__(27);
-	var markets = {};
-	markets.volatility = {};
-	config.ticktrade_markets.forEach(function (market) {
-		markets.volatility[market] = function (options) {
-			var symbol = market.toUpperCase();
-	
-			trade.setSymbol(symbol);
-			options.forEach(function (option) {
-				option.symbol = symbol;
-			});
-	
-			var submarket = function submarket(cb) {
-				trade.submitProposal(options[0]);
-				trade.submitProposal(options[1]);
-			};
-	
-			return submarket;
-		};
-	});
-	module.exports = markets;
-
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var globals = __webpack_require__(22);
-	var botUtils = __webpack_require__(23);
-	var commonUtils = __webpack_require__(11);
-	var view = __webpack_require__(28);
-	var i18n = __webpack_require__(3);
-	var appId = __webpack_require__(15);
-	var LiveApi = __webpack_require__(72)
-		.LiveApi;
-	var Chart = __webpack_require__(73)
-		.PlainChart;
-	var showError = botUtils.showError;
-	var log = botUtils.log;
-	var api;
-	var ticks = [];
-	var contractForChart = null;
-	var symbolInfo;
-	var symbol;
-	var purchasedContractId;
-	var strategyEnabled;
-	var balance;
-	var balance_currency;
-	var contracts;
-	var authorizeCallback;
-	var token;
-	var chart;
-	var finished = true;
-	var purchased = false;
-	
-	// influences display, calls on_finish
-	var contractFinished = function contractFinished(contract) {
-		var result = (+contract.sell_price === 0) ? 'loss' : 'win';
-		globals.addTradeInfo(contract);
-		globals.tradeInfo.lastProfit = +(+contract.sell_price - +contract.buy_price)
-			.toFixed(2);
-		globals.tradeInfo.totalStake = +(+globals.tradeInfo.totalStake + (+contract.buy_price))
-			.toFixed(2);
-		globals.tradeInfo.totalPayout = +(+globals.tradeInfo.totalPayout + (+contract.sell_price))
-			.toFixed(2);
-		globals.tradeInfo.totalProfit = +(+globals.tradeInfo.totalProfit + (+globals.tradeInfo.lastProfit))
-			.toFixed(2);
-		globals.tradeInfo.lastResult = result;
-		globals.updateTradeInfo();
-	
-		var detail_list = [
-			contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
-			globals.tradeInfo.lastProfit,
-			contract.contract_type, +contract.entry_tick,
-			botUtils.getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.exit_tick,
-			botUtils.getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +((contract.barrier) ? contract.barrier : 0),
-		];
-	
-		log(i18n._('Purchase was finished, result is:') + ' ' + result, (result === 'win') ? 'success' : 'error');
-	
-		globals.on_finish(result, detail_list);
-		purchasedContractId = '';
-		contractForChart = null;
-		finished = true;
-		globals.disableRun(false);
-	};
-	
-	var updateChart = function updateChart() {
-		var chartOptions = {
-			type: 'area',
-			ticks: ticks,
-		};
-		if (contractForChart) {
-			chartOptions.contract = contractForChart;
-		}
-		if (!chart) {
-			chartOptions.pipSize = +(+symbolInfo.pip)
-				.toExponential()
-				.substring(3);
-			chart = Chart('chart', chartOptions);
-		} else {
-			chart.updateChart(chartOptions);
-		}
-	};
-	
-	var callStrategy = function callStrategy() {
-		if (strategyEnabled) {
-			var direction = '';
-			if (ticks.length > 1) {
-				if (+ticks.slice(-1)[0].quote > +ticks.slice(-2)
-					.quote) {
-					direction = 'up';
-				} else if (+ticks.slice(-1)[0].quote < +ticks.slice(-2)
-					.quote) {
-					direction = 'down';
-				}
-			}
-			globals.on_strategy(+ticks.slice(-1)[0].quote, direction);
-		}
-	};
-	
-	var getTotalProfit = function getTotalProfit() {
-		return +globals.tradeInfo.totalProfit;
-	};
-	
-	var getBalance = function getBalance(balance_type) {
-		if (!isNaN(parseFloat(balance))) {
-			return (balance_type === 'NUM') ? parseFloat(balance) : balance_currency + ' ' + parseFloat(balance);
-		} else {
-			return 0;
-		}
-	};
-	
-	var updateBalance = function updateBalance(data) {
-		if (data.balance && data.currency) {
-			balance = data.balance;
-			balance_currency = data.currency;
-			globals.tradeInfo.balance = balance_currency + ' ' + parseFloat(balance);
-			globals.updateTradeInfo();
-		}
-	};
-	
-	var requestBalance = function requestBalance() {
-		api.send({
-				balance: 1,
-			})
-			.then(function (response) {
-				updateBalance(response.balance);
-			}, function (reason) {
-				log(i18n._('Could not get balance'));
-			});
-	};
-	
-	var observeTicks = function observeTicks() {
-		api.events.on('tick', function (feed) {
-			log(i18n._('tick received at:') + ' ' + feed.tick.epoch);
-			ticks = ticks.concat({
-				epoch: +feed.tick.epoch,
-				quote: +feed.tick.quote,
-			});
-			updateChart();
-			callStrategy();
-		});
-	
-		api.events.on('history', function (feed) {
-			ticks = [];
-			feed.history.times.forEach(function (time, index) {
-				ticks.push({
-					epoch: +time,
-					quote: +feed.history.prices[index]
-				});
-			});
-		});
-	};
-	
-	var requestHistory = function requestHistory() {
-		api.getTickHistory(symbol, {
-				"end": "latest",
-				"count": 600,
-				"subscribe": 1
-			})
-			.then(function (value) {
-				log(i18n._('Request received for history'));
-			}, function (reason) {
-				log(reason);
-				reconnect();
-			});
-	};
-	
-	var requestTransaction = function requestTransaction() {
-		api.subscribeToTransactions();
-	};
-	
-	var observeTransaction = function observeTransaction() {
-		api.events.on('transaction', function (response) {
-			var transaction = response.transaction;
-			updateBalance(transaction);
-			log(transaction);
-			if (transaction.contract_id === purchasedContractId) {
-				if (transaction.action === 'buy') {
-					api.unsubscribeFromAllProposals();
-				} else if (transaction.action === 'sell') {
-					getContractInfo();
-				}
-			}
-		});
-	};
-	
-	var observeOpenContracts = function observeOpenContracts() {
-		api.events.on('proposal_open_contract', function (response) {
-			var contract = response.proposal_open_contract;
-			contractForChart = contract;
-			if (contract.is_expired) {
-				api.sellExpiredContracts();
-			}
-		});
-	};
-	
-	var observeProposal = function observeProposal(options) {
-		api.events.on('proposal', function (value) {
-			if ( !purchased ) {
-				if ( !purchasedContractId ) {
-					if (contracts.length === 2) {
-						contracts = [];
-						strategyEnabled = false;
-					}
-				}
-				contracts.push(value);
-				if (contracts.length === 2) {
-					log(i18n._('Contracts are ready to be purchased by the strategy'), 'info');
-					strategyEnabled = true;
-				}
-			}
-		});
-	};
-	
-	var submitProposal = function submitProposal(options) {
-		api.subscribeToPriceForContractProposal(options)
-			.then(function (value) {}, function (reason) {
-				stop();
-				showError(reason);
-			});
-	};
-	
-	var getContractInfo = function getContractInfo(callback) {
-		if (purchasedContractId !== '') {
-			api.send({
-					proposal_open_contract: 1,
-					contract_id: purchasedContractId,
-				})
-				.then(function (response) {
-					var contract = response.proposal_open_contract;
-					if (contract.hasOwnProperty('sell_price')) {
-						contractFinished(contract);
-						if (callback) {
-							callback(contract);
-						}
-					}
-				}, function (reason) {
-					showError(reason);
-					reconnect();
-				});
-		} else {
-			if (callback) {
-				callback();
-			}
-		}
-	};
-	
-	var purchase = function purchase(option) {
-		purchased = true;
-		strategyEnabled = false;
-		var proposalContract = (option === contracts[1].echo_req.contract_type) ? contracts[1] : contracts[0];
-		log(i18n._('Purchased') + ': ' + proposalContract.proposal.longcode, 'info');
-		api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price)
-			.then(function (purchaseContract) {
-				purchasedContractId = purchaseContract.buy.contract_id;
-				api.subscribeToOpenContract(purchasedContractId);
-				globals.tradeInfo.numOfRuns++;
-				globals.updateTradeInfo();
-				globals.disableRun(true);
-			}, function (reason) {
-				stop();
-				showError(reason);
-			});
-	};
-	
-	var restartContracts = function restartContracts() {
-		strategyEnabled = false;
-		api.unsubscribeFromAllProposals()
-			.then(function (response) {
-				authorizeCallback();
-			}, function (reason) {
-				showError(reason);
-			});
-	};
-	
-	var observeAuthorize = function observeAuthorize() {
-		api.events.on('authorize', function (response) {
-			if (response.error) {
-				commonUtils.removeToken(token);
-				showError(response.error);
-			} else if (!finished) {
-				log(i18n._('Logged in to:') + ' ' + commonUtils.getAccountName(token), 'info');
-				requestSymbolInfo(function(){
-					getContractInfo(function () {
-						restartContracts();
-					});
-					requestBalance();
-					requestHistory();
-					requestTransaction();
-				});
-			}
-		});
-	};
-	
-	var reconnect = function reconnect() {
-		stop();
-		api.token = token;
-		api.connect();
-		api.authorize(token);
-	};
-	
-	var stop = function stop() {
-		if (api) {
-			try {
-				api.disconnect();
-				chart = null;
-			} catch (e) {}
-		}
-	};
-	
-	var requestSymbolInfo = function requestSymbolInfo(callback) {
-		api.getActiveSymbolsBrief()
-			.then(function (response) {
-				var symbols = response.active_symbols;
-				symbols.forEach(function (_symbolInfo) {
-					if (_symbolInfo.symbol === symbol) {
-						symbolInfo = _symbolInfo;
-						if (callback) {
-							callback();
-						}
-					}
-				});
-			});
-	};
-	
-	var setSymbol = function setSymbol(_symbol) {
-		symbol = _symbol;
-	};
-	
-	var trade = function trade(_token, callback, trade_again) {
-		if (_token === '') {
-			showError(i18n._('No token is available to authenticate'));
-		} else {
-			finished = false;
-			purchased = false;
-			authorizeCallback = callback;
-			purchasedContractId = '';
-			globals.disableRun(false);
-			contracts = [];
-			chart = null;
-			if (trade_again) {
-				restartContracts();
-			} else {
-				token = _token;
-				api = new LiveApi({ appId: appId.getAppId() });
-				observeTicks();
-				observeProposal();
-				observeTransaction();
-				observeOpenContracts();
-				observeAuthorize();
-				api.authorize(token);
-			}
-		}
-	};
-	
-	globals.disableRun(false);
-	
-	module.exports = {
-		stop: stop,
-		getTotalProfit: getTotalProfit,
-		getBalance: getBalance,
-		submitProposal: submitProposal,
-		purchase: purchase,
-		setSymbol: setSymbol,
-		trade: trade,
-	};
-
-
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var globals = __webpack_require__(22);
-	var config = __webpack_require__(21);
-	var storageManager = __webpack_require__(12);
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var appId = __webpack_require__(15);
-	var activeTutorial = null;
-	var tours = {}; // e
-	var botUtils = __webpack_require__(23);
-	var commonUtils = __webpack_require__(11);
-	var fileSaver = __webpack_require__(29);
-	__webpack_require__(32);
-	
-	var initTours = function initTours() {
-		tours.introduction = __webpack_require__(33);
-		tours.welcome = __webpack_require__(34);
-		tours.welcome.welcome();
-	};
-	
-	var uiComponents = {
-		tutorialList: '.tutorialList',
-		logout: '.logout',
-		workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
-		workspace: '.blocklyWorkspace',
-		toolbox: '.blocklyToolboxDiv',
-		file_management: '.intro-file-management',
-		token: '.intro-token',
-		run_stop: '.intro-run-stop',
-		trash: '.blocklyTrash',
-		undo_redo: '.intro-undo-redo',
-		summary: '.intro-summary',
-		center: '#center',
-		flyout: '.blocklyFlyoutBackground',
-		submarket: ".blocklyDraggable:contains('Submarket'):last",
-		strategy: ".blocklyDraggable:contains('Strategy'):last",
-		finish: ".blocklyDraggable:contains('Finish'):last",
-	};
-	
-	var doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
-	
-	var getUiComponent = function getUiComponent(component) {
-		return $(uiComponents[component]);
-	};
-	
-	var startTutorial = function startTutorial(e) {
-		if (e) {
-			e.preventDefault();
-		}
-		if (activeTutorial) {
-			activeTutorial.stop();
-		}
-		activeTutorial = tours[$('#tours')
-			.val()];
-		activeTutorial.start();
-		$('#tutorialButton')
-			.unbind('click', startTutorial);
-		$('#tutorialButton')
-			.bind('click', stopTutorial);
-		$('#tutorialButton')
-			.text(i18n._('Stop!'));
-	};
-	
-	var stopTutorial = function stopTutorial(e) {
-		if (e) {
-			e.preventDefault();
-		}
-		if (activeTutorial) {
-			if (e) {
-				activeTutorial.stop();
-			}
-			activeTutorial = null;
-		}
-		$('#tutorialButton')
-			.unbind('click', stopTutorial);
-		$('#tutorialButton')
-			.bind('click', startTutorial);
-		$('#tutorialButton')
-			.text(i18n._('Go!'));
-	};
-	
-	var setOpacityForAll = function setOpacityForAll(enabled, opacity) {
-		if (enabled) {
-			Object.keys(uiComponents)
-				.forEach(function (key) {
-					if (doNotHide.indexOf(key) < 0) {
-						getUiComponent(key)
-							.css('opacity', opacity);
-						var disabled = +opacity < 1;
-						getUiComponent(key)
-							.find('button')
-							.prop('disabled', disabled);
-						getUiComponent(key)
-							.find('input')
-							.prop('disabled', disabled);
-						getUiComponent(key)
-							.find('select')
-							.prop('disabled', disabled);
-					}
-				});
-		}
-	};
-	
-	var setOpacity = function setOpacity(enabled, componentName, opacity) {
-		if (enabled) {
-			getUiComponent(componentName)
-				.css('opacity', opacity);
-			var disabled = +opacity < 1;
-			getUiComponent(componentName)
-				.find('button')
-				.prop('disabled', disabled);
-			getUiComponent(componentName)
-				.find('input')
-				.prop('disabled', disabled);
-			getUiComponent(componentName)
-				.find('select')
-				.prop('disabled', disabled);
-		}
-	};
-	
-	var saveXml = function saveXml(showOnly) {
-		var xmlDom = blockly.Xml.workspaceToDom(blockly.mainWorkspace);
-		Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))
-			.forEach(function (field) {
-				if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-					if (field.childNodes.length >= 1) {
-						field.childNodes[0].nodeValue = '';
-					}
-				}
-			});
-		Array.prototype.slice.apply(xmlDom.getElementsByTagName('block'))
-			.forEach(function (block) {
-				switch (block.getAttribute('type')) {
-				case 'trade':
-					block.setAttribute('id', 'trade');
-					break;
-				case 'on_strategy':
-					block.setAttribute('id', 'strategy');
-					break;
-				case 'on_finish':
-					block.setAttribute('id', 'finish');
-					break;
-				default:
-					block.removeAttribute('id');
-					break;
-				}
-			});
-		var xmlText = blockly.Xml.domToPrettyText(xmlDom);
-		if (showOnly) {
-			botUtils.log(xmlText);
-		} else {
-			var filename = 'binary-bot' + parseInt(new Date()
-				.getTime() / 1000) + '.xml';
-			var blob = new Blob([xmlText], {
-				type: 'text/xml;charset=utf-8'
-			});
-			fileSaver.saveAs(blob, filename);
-		}
-	};
-	
-	var run = function run() {
-		// Generate JavaScript code and run it.
-		try {
-			window.LoopTrap = 1000;
-			blockly.JavaScript.INFINITE_LOOP_TRAP =
-				'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-			var code = blockly.JavaScript.workspaceToCode(blockly.mainWorkspace);
-			blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-			var EVAL_BLOCKLY_CODE = eval;
-			EVAL_BLOCKLY_CODE(code);
-			$('#stopButton')
-				.text('Stop');
-			$('#runButton')
-				.text('Restart');
-			$('#summaryPanel')
-				.show();
-			$('#stopButton')
-				.unbind('click', reset);
-			$('#stopButton')
-				.bind('click', stop);
-		} catch (e) {
-			botUtils.showError(e);
-		}
-	};
-	
-	$.get('xml/toolbox.xml', function (toolbox) {
-		__webpack_require__(35);
-		__webpack_require__(53);
-		var workspace = blockly.inject('blocklyDiv', {
-			media: 'js/blockly/media/',
-			toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
-			zoom: {
-				controls: true,
-				wheel: false,
-				startScale: 1.0,
-				maxScale: 3,
-				minScale: 0.3,
-				scaleSpeed: 1.2
-			},
-			trashcan: true,
-		});
-		$.get('xml/main.xml', function (main) {
-			blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-			blockly.mainWorkspace.getBlockById('trade')
-				.setDeletable(false);
-			blockly.mainWorkspace.getBlockById('strategy')
-				.setDeletable(false);
-			blockly.mainWorkspace.getBlockById('finish')
-				.setDeletable(false);
-			botUtils.updateTokenList();
-			botUtils.addPurchaseOptions();
-			blockly.mainWorkspace.clearUndo();
-			initTours();
-		});
-	});
-	
-	var handleFileSelect = function handleFileSelect(e) {
-		var files;
-		if (e.type === 'drop') {
-			e.stopPropagation();
-			e.preventDefault();
-			files = e.dataTransfer.files;
-		} else {
-			files = e.target.files;
-		}
-		files = Array.prototype.slice.apply(files);
-		var file = files[0];
-		if (file) {
-			if (file.type.match('text/xml')) {
-				readFile(file);
-			} else {
-				botUtils.log(i18n._('File is not supported:' + ' ') + file.name, 'info');
-			}
-		}
-	};
-	
-	var readFile = function readFile(f) {
-		reader = new FileReader();
-		reader.onload = (function (theFile) {
-			return function (e) {
-				try {
-					blockly.mainWorkspace.clear();
-					var xml = blockly.Xml.textToDom(e.target.result);
-					blockly.Xml.domToWorkspace(xml, blockly.mainWorkspace);
-					botUtils.addPurchaseOptions();
-					var tokenList = storageManager.getTokenList();
-					if (tokenList.length !== 0) {
-						blockly.mainWorkspace.getBlockById('trade')
-							.getField('ACCOUNT_LIST')
-							.setValue(tokenList[0].token);
-						blockly.mainWorkspace.getBlockById('trade')
-							.getField('ACCOUNT_LIST')
-							.setText(tokenList[0].account_name);
-					}
-					blockly.mainWorkspace.clearUndo();
-					blockly.mainWorkspace.zoomToFit();
-					botUtils.log(i18n._('Blocks are loaded successfully'), 'success');
-				} catch (err) {
-					botUtils.showError(err);
-				}
-			};
-		})(f);
-		reader.readAsText(f);
-	};
-	
-	var handleDragOver = function handleDragOver(e) {
-		e.stopPropagation();
-		e.preventDefault();
-		e.dataTransfer.dropEffect = 'copy';
-	};
-	
-	var dropZone = document.getElementById('drop_zone');
-	
-	dropZone.addEventListener('dragover', handleDragOver, false);
-	dropZone.addEventListener('drop', handleFileSelect, false);
-	document.getElementById('files')
-		.addEventListener('change', handleFileSelect, false);
-	
-	var reset = function reset(e) {
-		if (e) {
-			e.preventDefault();
-		}
-		globals.resetTradeInfo();
-		botUtils.log(i18n._('Reset successful'), 'success');
-	};
-	
-	var stop = function stop(e) {
-		if (e) {
-			e.preventDefault();
-		}
-		var trade = __webpack_require__(27);
-		trade.stop();
-		globals.disableRun(false);
-		$('#stopButton')
-			.text(i18n._('Reset'));
-		$('#runButton')
-			.text(i18n._('Run'));
-		$('#stopButton')
-			.unbind('click', stop);
-		$('#stopButton')
-			.bind('click', reset);
-	};
-	
-	$('#tutorialButton')
-		.bind('click', startTutorial);
-	$('#stopButton')
-		.text(i18n._('Reset'));
-	$('#stopButton')
-		.bind('click', reset);
-	
-	$('#summaryPanel .exitPanel')
-		.click(function () {
-			$(this)
-				.parent()
-				.hide();
-		});
-	
-	$('#summaryPanel')
-		.hide();
-	
-	$('#summaryPanel')
-		.drags();
-	
-	$('#chart')
-		.mousedown(function (e) { // prevent chart to trigger draggable
-			e.stopPropagation();
-		});
-	
-	$('table')
-		.mousedown(function (e) { // prevent tables to trigger draggable
-			e.stopPropagation();
-		});
-	
-	globals.showTradeInfo();
-	$('#saveXml')
-		.click(function (e) {
-			saveXml();
-		});
-	
-	$('#undo')
-		.click(function (e) {
-			globals.undoBlocks();
-		});
-	
-	$('#redo')
-		.click(function (e) {
-			globals.redoBlocks();
-		});
-	
-	$('#showSummary')
-		.click(function (e) {
-			$('#summaryPanel')
-				.show();
-		});
-	
-	$('#run')
-		.click(function (e) {
-			run();
-		});
-	
-	$('#logout')
-		.click(function (e) {
-			botUtils.logout();
-		});
-	
-	$('#runButton')
-		.click(function (e) {
-			run();
-		});
-	
-	
-	module.exports = {
-		uiComponents: uiComponents,
-		getUiComponent: getUiComponent,
-		setOpacityForAll: setOpacityForAll,
-		setOpacity: setOpacity,
-		stopTutorial: stopTutorial,
-		startTutorial: startTutorial,
-		initTours: initTours,
-	};
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* FileSaver.js
-	 * A saveAs() FileSaver implementation.
-	 * 1.1.20160328
-	 *
-	 * By Eli Grey, http://eligrey.com
-	 * License: MIT
-	 *   See https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md
-	 */
-	
-	/*global self */
-	/*jslint bitwise: true, indent: 4, laxbreak: true, laxcomma: true, smarttabs: true, plusplus: true */
-	
-	/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
-	
-	var saveAs = saveAs || (function(view) {
-		"use strict";
-		// IE <10 is explicitly unsupported
-		if (typeof navigator !== "undefined" && /MSIE [1-9]\./.test(navigator.userAgent)) {
-			return;
-		}
-		var
-			  doc = view.document
-			  // only get URL when necessary in case Blob.js hasn't overridden it yet
-			, get_URL = function() {
-				return view.URL || view.webkitURL || view;
-			}
-			, save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a")
-			, can_use_save_link = "download" in save_link
-			, click = function(node) {
-				var event = new MouseEvent("click");
-				node.dispatchEvent(event);
-			}
-			, is_safari = /Version\/[\d\.]+.*Safari/.test(navigator.userAgent)
-			, webkit_req_fs = view.webkitRequestFileSystem
-			, req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem
-			, throw_outside = function(ex) {
-				(view.setImmediate || view.setTimeout)(function() {
-					throw ex;
-				}, 0);
-			}
-			, force_saveable_type = "application/octet-stream"
-			, fs_min_size = 0
-			// the Blob API is fundamentally broken as there is no "downloadfinished" event to subscribe to
-			, arbitrary_revoke_timeout = 1000 * 40 // in ms
-			, revoke = function(file) {
-				var revoker = function() {
-					if (typeof file === "string") { // file is an object URL
-						get_URL().revokeObjectURL(file);
-					} else { // file is a File
-						file.remove();
-					}
-				};
-				/* // Take note W3C:
-				var
-				  uri = typeof file === "string" ? file : file.toURL()
-				, revoker = function(evt) {
-					// idealy DownloadFinishedEvent.data would be the URL requested
-					if (evt.data === uri) {
-						if (typeof file === "string") { // file is an object URL
-							get_URL().revokeObjectURL(file);
-						} else { // file is a File
-							file.remove();
-						}
-					}
-				}
-				;
-				view.addEventListener("downloadfinished", revoker);
-				*/
-				setTimeout(revoker, arbitrary_revoke_timeout);
-			}
-			, dispatch = function(filesaver, event_types, event) {
-				event_types = [].concat(event_types);
-				var i = event_types.length;
-				while (i--) {
-					var listener = filesaver["on" + event_types[i]];
-					if (typeof listener === "function") {
-						try {
-							listener.call(filesaver, event || filesaver);
-						} catch (ex) {
-							throw_outside(ex);
-						}
-					}
-				}
-			}
-			, auto_bom = function(blob) {
-				// prepend BOM for UTF-8 XML and text/* types (including HTML)
-				if (/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
-					return new Blob(["\ufeff", blob], {type: blob.type});
-				}
-				return blob;
-			}
-			, FileSaver = function(blob, name, no_auto_bom) {
-				if (!no_auto_bom) {
-					blob = auto_bom(blob);
-				}
-				// First try a.download, then web filesystem, then object URLs
-				var
-					  filesaver = this
-					, type = blob.type
-					, blob_changed = false
-					, object_url
-					, target_view
-					, dispatch_all = function() {
-						dispatch(filesaver, "writestart progress write writeend".split(" "));
-					}
-					// on any filesys errors revert to saving with object URLs
-					, fs_error = function() {
-						if (target_view && is_safari && typeof FileReader !== "undefined") {
-							// Safari doesn't allow downloading of blob urls
-							var reader = new FileReader();
-							reader.onloadend = function() {
-								var base64Data = reader.result;
-								target_view.location.href = "data:attachment/file" + base64Data.slice(base64Data.search(/[,;]/));
-								filesaver.readyState = filesaver.DONE;
-								dispatch_all();
-							};
-							reader.readAsDataURL(blob);
-							filesaver.readyState = filesaver.INIT;
-							return;
-						}
-						// don't create more object URLs than needed
-						if (blob_changed || !object_url) {
-							object_url = get_URL().createObjectURL(blob);
-						}
-						if (target_view) {
-							target_view.location.href = object_url;
-						} else {
-							var new_tab = view.open(object_url, "_blank");
-							if (new_tab === undefined && is_safari) {
-								//Apple do not allow window.open, see http://bit.ly/1kZffRI
-								view.location.href = object_url
-							}
-						}
-						filesaver.readyState = filesaver.DONE;
-						dispatch_all();
-						revoke(object_url);
-					}
-					, abortable = function(func) {
-						return function() {
-							if (filesaver.readyState !== filesaver.DONE) {
-								return func.apply(this, arguments);
-							}
-						};
-					}
-					, create_if_not_found = {create: true, exclusive: false}
-					, slice
-				;
-				filesaver.readyState = filesaver.INIT;
-				if (!name) {
-					name = "download";
-				}
-				if (can_use_save_link) {
-					object_url = get_URL().createObjectURL(blob);
-					setTimeout(function() {
-						save_link.href = object_url;
-						save_link.download = name;
-						click(save_link);
-						dispatch_all();
-						revoke(object_url);
-						filesaver.readyState = filesaver.DONE;
-					});
-					return;
-				}
-				// Object and web filesystem URLs have a problem saving in Google Chrome when
-				// viewed in a tab, so I force save with application/octet-stream
-				// http://code.google.com/p/chromium/issues/detail?id=91158
-				// Update: Google errantly closed 91158, I submitted it again:
-				// https://code.google.com/p/chromium/issues/detail?id=389642
-				if (view.chrome && type && type !== force_saveable_type) {
-					slice = blob.slice || blob.webkitSlice;
-					blob = slice.call(blob, 0, blob.size, force_saveable_type);
-					blob_changed = true;
-				}
-				// Since I can't be sure that the guessed media type will trigger a download
-				// in WebKit, I append .download to the filename.
-				// https://bugs.webkit.org/show_bug.cgi?id=65440
-				if (webkit_req_fs && name !== "download") {
-					name += ".download";
-				}
-				if (type === force_saveable_type || webkit_req_fs) {
-					target_view = view;
-				}
-				if (!req_fs) {
-					fs_error();
-					return;
-				}
-				fs_min_size += blob.size;
-				req_fs(view.TEMPORARY, fs_min_size, abortable(function(fs) {
-					fs.root.getDirectory("saved", create_if_not_found, abortable(function(dir) {
-						var save = function() {
-							dir.getFile(name, create_if_not_found, abortable(function(file) {
-								file.createWriter(abortable(function(writer) {
-									writer.onwriteend = function(event) {
-										target_view.location.href = file.toURL();
-										filesaver.readyState = filesaver.DONE;
-										dispatch(filesaver, "writeend", event);
-										revoke(file);
-									};
-									writer.onerror = function() {
-										var error = writer.error;
-										if (error.code !== error.ABORT_ERR) {
-											fs_error();
-										}
-									};
-									"writestart progress write abort".split(" ").forEach(function(event) {
-										writer["on" + event] = filesaver["on" + event];
-									});
-									writer.write(blob);
-									filesaver.abort = function() {
-										writer.abort();
-										filesaver.readyState = filesaver.DONE;
-									};
-									filesaver.readyState = filesaver.WRITING;
-								}), fs_error);
-							}), fs_error);
-						};
-						dir.getFile(name, {create: false}, abortable(function(file) {
-							// delete file if it already exists
-							file.remove();
-							save();
-						}), abortable(function(ex) {
-							if (ex.code === ex.NOT_FOUND_ERR) {
-								save();
-							} else {
-								fs_error();
-							}
-						}));
-					}), fs_error);
-				}), fs_error);
-			}
-			, FS_proto = FileSaver.prototype
-			, saveAs = function(blob, name, no_auto_bom) {
-				return new FileSaver(blob, name, no_auto_bom);
-			}
-		;
-		// IE 10+ (native saveAs)
-		if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
-			return function(blob, name, no_auto_bom) {
-				if (!no_auto_bom) {
-					blob = auto_bom(blob);
-				}
-				return navigator.msSaveOrOpenBlob(blob, name || "download");
-			};
-		}
-	
-		FS_proto.abort = function() {
-			var filesaver = this;
-			filesaver.readyState = filesaver.DONE;
-			dispatch(filesaver, "abort");
-		};
-		FS_proto.readyState = FS_proto.INIT = 0;
-		FS_proto.WRITING = 1;
-		FS_proto.DONE = 2;
-	
-		FS_proto.error =
-		FS_proto.onwritestart =
-		FS_proto.onprogress =
-		FS_proto.onwrite =
-		FS_proto.onabort =
-		FS_proto.onerror =
-		FS_proto.onwriteend =
-			null;
-	
-		return saveAs;
-	}(
-		   typeof self !== "undefined" && self
-		|| typeof window !== "undefined" && window
-		|| this.content
-	));
-	// `self` is undefined in Firefox for Android content script context
-	// while `this` is nsIContentFrameMessageManager
-	// with an attribute `content` that corresponds to the window
-	
-	if (typeof module !== "undefined" && module.exports) {
-	  module.exports.saveAs = saveAs;
-	} else if (("function" !== "undefined" && __webpack_require__(30) !== null) && (__webpack_require__(31) !== null)) {
-	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
-	    return saveAs;
-	  }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-	module.exports = function() { throw new Error("define cannot be used indirect"); };
-
-
-/***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, {}))
-
-/***/ },
-/* 32 */
-/***/ function(module, exports) {
-
-	/* jshint ignore:start */
-	$.fn.drags = function (opt) {
-	
-		opt = $.extend({
-			handle: "",
-			cursor: "move"
-		}, opt);
-	
-		if (opt.handle === "") {
-			var $el = this;
-		} else {
-			var $el = this.find(opt.handle);
-		}
-	
-		return $el.css('cursor', opt.cursor)
-			.on("mousedown", function (e) {
-				if (opt.handle === "") {
-					var $drag = $(this)
-						.addClass('draggable');
-				} else {
-					var $drag = $(this)
-						.addClass('active-handle')
-						.parent()
-						.addClass('draggable');
-				}
-				var z_idx = $drag.css('z-index'),
-					drg_h = $drag.outerHeight(),
-					drg_w = $drag.outerWidth(),
-					pos_y = $drag.offset()
-					.top + drg_h - e.pageY,
-					pos_x = $drag.offset()
-					.left + drg_w - e.pageX;
-				$drag.css('z-index', 1000)
-					.parents()
-					.on("mousemove", function (e) {
-						$('.draggable')
-							.offset({
-								top: e.pageY + pos_y - drg_h,
-								left: e.pageX + pos_x - drg_w
-							})
-							.on("mouseup", function () {
-								$(this)
-									.removeClass('draggable')
-									.css('z-index', z_idx);
-							});
-					});
-				e.preventDefault(); // disable selection
-			})
-			.on("mouseup", function () {
-				if (opt.handle === "") {
-					$(this)
-						.removeClass('draggable');
-				} else {
-					$(this)
-						.removeClass('active-handle')
-						.parent()
-						.removeClass('draggable');
-				}
-			});
-	};
-	/* jshint ignore:end */
-
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var globals = __webpack_require__(22);
-	var view = __webpack_require__(28);
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var steps = [{
-		content: '<p>' + i18n._("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot.") + '</p>',
-		target: view.getUiComponent('center'),
-		nextButton: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacityForAll(started, 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._("You will need to add the blocks to this area which is called the <b>workspace</b>.") + '</p>',
-		target: view.getUiComponent('center'),
-		nextButton: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'workspace', 1);
-		},
-		teardown: function (tour, options) {},
-	}, {
-		content: '<p>' + i18n._("To start pick a <b>submarket</b> block from volatility markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a submarket from left should lead you to the next step.)") + '</p>',
-		target: view.getUiComponent('flyout'),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		bind: ['tour_submarket_created'],
-		tour_submarket_created: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			window.addEventListener('tour:submarket_created', this.tour_submarket_created);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].reveal(true);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].select();
-			view.setOpacity(started, 'toolbox', 1);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:submarket_created', this.tour_submarket_created);
-			view.setOpacity(started, 'toolbox', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._("Great! Now add it to the <b>trade</b> block.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.submarket),
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		bind: ['tour_submarket_added'],
-		tour_submarket_added: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			window.addEventListener('tour:submarket', this.tour_submarket_added);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:submarket', this.tour_submarket_added);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
-		},
-	}, {
-		content: '<p>' + i18n._("Alright! Now pick a <b>condition</b> block.") + '</p>',
-		target: view.getUiComponent('flyout'),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		bind: ['tour_condition_created'],
-		tour_condition_created: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			window.addEventListener('tour:condition_created', this.tour_condition_created);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
-			view.setOpacity(started, 'toolbox', 1);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:condition_created', this.tour_condition_created);
-			view.setOpacity(started, 'toolbox', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._("OK! Now add it to the submarket you added in the previous step.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.submarket),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		bind: ['tour_condition_added'],
-		tour_condition_added: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			window.addEventListener('tour:condition', this.tour_condition_added);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:condition', this.tour_condition_added);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
-		},
-	}, {
-		content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="image/number.png"/>) ' + i18n._("from the Math menu") + '</p>',
-		target: view.getUiComponent('flyout'),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		bind: ['tour_number_created'],
-		tour_number_created: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			window.addEventListener('tour:number', this.tour_number_created);
-			blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
-			view.setOpacity(started, 'toolbox', 1);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:number', this.tour_number_created);
-			view.setOpacity(started, 'toolbox', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._("Click on the number block to edit its value") + ' (<img src="image/number_editing.png"/>), ' + i18n._("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.submarket),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		bind: ['tour_ticks_added'],
-		tour_ticks_added: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			window.addEventListener('tour:ticks', this.tour_ticks_added);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:ticks', this.tour_ticks_added);
-		},
-	}, {
-		content: '<p>' + i18n._("OK, Now add all remaining options to the condition block") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.submarket),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		bind: ['tour_options_added'],
-		tour_options_added: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
-			window.addEventListener('tour:options', this.tour_options_added);
-			view.getUiComponent('toolbox')
-				.css('opacity', 1);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:options', this.tour_options_added);
-			view.getUiComponent('toolbox')
-				.css('opacity', 1);
-		},
-	}, {
-		content: '<p>' + i18n._("That's it, now you have a complete trade block with its options. It's time to define a strategy") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.submarket),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.strategy),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("The received tick value is in the block <b>tick</b> and the tick direction (up or down) is in the block <b>direction</b>. You can pick them from the <b>Strategy</b> menu") + '</p>',
-		target: view.getUiComponent('flyout'),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		nextButton: true,
-		setup: function (tour, options) {
-			view.getUiComponent('toolbox')
-				.css('opacity', 1);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
-		},
-		teardown: function (tour, options) {
-			view.getUiComponent('toolbox')
-				.css('opacity', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._("For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block") + '</p>',
-		target: view.getUiComponent('flyout'),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		bind: ['tour_purchase_created'],
-		tour_purchase_created: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
-			view.getUiComponent('toolbox')
-				.css('opacity', 1);
-			window.addEventListener('tour:purchase_created', this.tour_purchase_created);
-		},
-		teardown: function (tour, options) {
-			view.getUiComponent('toolbox')
-				.css('opacity', 0.3);
-			window.removeEventListener('tour:purchase_created', this.tour_purchase_created);
-		},
-	}, {
-		content: '<p>' + i18n._("Now add it to the Strategy block.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.strategy),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		bind: ['tour_purchase_added'],
-		tour_purchase_added: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			window.addEventListener('tour:purchase', this.tour_purchase_added);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:purchase', this.tour_purchase_added);
-		},
-	}, {
-		content: '<p>' + i18n._("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.strategy),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.strategy),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.finish),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.finish),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.") + '</p>',
-		target: view.getUiComponent('flyout'),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		bind: ['tour_trade_again_created'],
-		tour_trade_again_created: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
-			view.getUiComponent('toolbox')
-				.css('opacity', 1);
-			window.addEventListener('tour:trade_again_created', this.tour_trade_again_created);
-		},
-		teardown: function (tour, options) {
-			view.getUiComponent('toolbox')
-				.css('opacity', 0.3);
-			window.removeEventListener('tour:trade_again_created', this.tour_trade_again_created);
-		},
-	}, {
-		content: '<p>' + i18n._("Now add it to the On Finish block") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.finish),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		bind: ['tour_trade_again'],
-		tour_trade_again: function (tour, options, model, value) {
-			tour.next();
-		},
-		setup: function (tour, options) {
-			window.addEventListener('tour:trade_again', this.tour_trade_again);
-		},
-		teardown: function (tour, options) {
-			window.removeEventListener('tour:trade_again', this.tour_trade_again);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
-		},
-	}, {
-		content: '<p>' + i18n._("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.finish),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("OK, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.finish),
-		highlightTarget: true,
-		my: 'right center',
-		at: 'left center',
-		nextButton: true,
-		teardown: function (tour, options) {
-			view.setOpacityForAll(started, 1);
-		},
-	}, {
-		content: '<p>' + i18n._("If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
-		target: view.getUiComponent('undo_redo'),
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("You can save/load your blocks using these tools") + '</p>',
-		target: view.getUiComponent('file_management'),
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on these buttons. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
-		target: view.getUiComponent('run_stop'),
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please add one using the <b>Add Token</b> button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
-		target: view.getUiComponent('workspace')
-			.find(view.uiComponents.submarket),
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("You can add a token to the bot using the <b>Add Token</b> button.") + '</p>',
-		target: view.getUiComponent('token'),
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("You can see the summary of your trades by clicking on this button.") + '</p>',
-		target: view.getUiComponent('summary'),
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("Go ahead and run the blocks. You can stop the code anytime you want using the stop button, or reset the values in the result panels using the reset button.") + '</p>',
-		target: view.getUiComponent('run_stop'),
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		nextButton: true,
-		teardown: function (tour, options) {
-			view.stopTutorial();
-		},
-	}, ];
-	
-	var tour = new Tourist.Tour({
-		steps: steps
-	});
-	
-	var started = false;
-	
-	module.exports = {
-		start: function start() {
-			if (!globals.tour) {
-				started = true;
-				globals.tour = tour;
-				globals.tour.start();
-			}
-		},
-		stop: function stop() {
-			view.setOpacityForAll(true, 1);
-			started = false;
-			globals.tour.stop();
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
-			delete globals.tour;
-		},
-	};
-
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var globals = __webpack_require__(22);
-	var view = __webpack_require__(28);
-	var storageManager = __webpack_require__(12);
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var steps = [{
-		content: '<p>' + i18n._('Welcome to the binary bot, a blockly based automation tool for binary.com trades') + '</p>',
-		target: view.getUiComponent('center'),
-		nextButton: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacityForAll(started, 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('The blocks you put in here will create a binary bot code which you can then execute using the run button.') + '</p>',
-		target: view.getUiComponent('center'),
-		nextButton: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'workspace', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'workspace', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('You can add blocks from here to the workspace') + '</p>',
-		target: view.getUiComponent('toolbox'),
-		nextButton: true,
-		highlightTarget: true,
-		my: 'left center',
-		at: 'right center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'toolbox', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'toolbox', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Erase the blocks by dropping them in here.') + '</p>',
-		target: view.getUiComponent('trash'),
-		nextButton: true,
-		highlightTarget: true,
-		my: 'right bottom',
-		at: 'left top',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'trash', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'trash', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Use these buttons to load and save blocks') + '</p>',
-		target: view.getUiComponent('file_management'),
-		nextButton: true,
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'file_management', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'file_management', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
-		target: view.getUiComponent('token'),
-		nextButton: true,
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'token', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'token', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
-		target: view.getUiComponent('undo_redo'),
-		nextButton: true,
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'undo_redo', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'undo_redo', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Click on this button to see the summary of your trades.') + '</p>',
-		target: view.getUiComponent('summary'),
-		nextButton: true,
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'summary', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'summary', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Use these buttons to run or stop your blocks, or reset your result panels.') + '</p>',
-		target: view.getUiComponent('run_stop'),
-		nextButton: true,
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'run_stop', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'run_stop', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Good Luck!') + '</p>',
-		target: view.getUiComponent('center'),
-		nextButton: true,
-		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
-		teardown: function (tour, options) {
-			view.setOpacityForAll(started, 1);
-			storageManager.setDone('welcomeFinished');
-			view.stopTutorial();
-		},
-	}, ];
-	
-	var tour = new Tourist.Tour({
-		steps: steps
-	});
-	
-	var started = false;
-	
-	module.exports = {
-		start: function start() {
-			if (!globals.tour) {
-				started = true;
-				globals.tour = tour;
-				globals.tour.start();
-			}
-		},
-		welcome: function welcome() {
-			if (!storageManager.isDone('welcomeFinished')) {
-				if (!globals.tour) {
-					started = true;
-					globals.tour = tour;
-					globals.tour.start();
-				}
-			}
-		},
-		stop: function stop() {
-			view.setOpacityForAll(true, 1);
-			started = false;
-			globals.tour.stop();
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
-			delete globals.tour;
-		},
-	};
-
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(36);
-	__webpack_require__(37);
-	__webpack_require__(38);
-	__webpack_require__(39);
-	__webpack_require__(40);
-	__webpack_require__(41);
-	__webpack_require__(42);
-	__webpack_require__(43);
-	__webpack_require__(44);
-	__webpack_require__(45);
-	__webpack_require__(46);
-	__webpack_require__(47);
-	__webpack_require__(48);
-	__webpack_require__(49);
-	__webpack_require__(50);
-	__webpack_require__(51);
-	__webpack_require__(52);
-
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	blockly.JavaScript.trade = function (block) {
-		var account = block.getFieldValue('ACCOUNT_LIST');
-		var submarket = blockly.JavaScript.statementToCode(block, 'SUBMARKET');
-		if (submarket === '') {
-			throw {
-				message: i18n._('You have to add a submarket first')
-			};
-		}
-		// TODO: Assemble JavaScript into code variable.
-		var code = 'var trade = function(trade_again){\nBot.trade.trade(\'' + account.trim() + '\', ' + submarket.trim() + ', trade_again);\n};\ntrade();\n';
-		return code;
-	};
-
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.balance = function(block) {
-	  var balance_type = block.getFieldValue('BALANCE_TYPE');
-		var code = 'Bot.trade.getBalance(\''+ balance_type +'\')';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.notify = function(block) {
-	  var notification_type = block.getFieldValue('NOTIFICATION_TYPE');
-	  var message = blockly.JavaScript.valueToCode(block, 'MESSAGE', blockly.JavaScript.ORDER_ATOMIC);
-	  // TODO: Assemble JavaScript into code variable.
-	  var code = 'Bot.utils.log('+ message +', \''+ notification_type +'\', \'bottom left\');\n';
-	  return code;
-	};
-
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.total_profit = function(block) {
-		var code = 'Bot.trade.getTotalProfit()';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var config = __webpack_require__(21);
-	config.ticktrade_markets.forEach(function(market){
-		blockly.JavaScript[market] = function(block) {
-			if ( this.parentBlock_ === null ) {
-				return '';
-			}
-			var condition = blockly.JavaScript.statementToCode(block, 'CONDITION');
-			if ( !condition ) {
-				throw {message: 'A condition has to be defined for the market'};
-			}
-			var code = 'Bot.markets.volatility.' + market + '('+condition.trim()+')';
-			return code;
-		};
-	});
-
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.check_direction = function(block) {
-		var check_with = block.getFieldValue('CHECK_DIRECTION');
-		var code = '(direction === \'' + check_with + '\')';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.direction = function(block) {
-		var code = 'direction';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.purchase = function(block) {
-		if ( this.parentBlock_ === null ) {
-			return '';
-		}
-		var purchase_list = block.getFieldValue('PURCHASE_LIST');
-		var code = purchase_list;
-		code = 'Bot.trade.purchase(\'' + code + '\');\n';
-		return code;
-	};
-
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.on_strategy = function(block) {
-	  var stack = blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
-	  var code = 'Bot.globals.on_strategy = function on_strategy(tick, direction){\n' + stack + '\n};\n';
-	  return code;
-	};
-
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.tick = function(block) {
-		var code = 'tick';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.contract_check_result = function(block) {
-		var check_with = block.getFieldValue('CHECK_RESULT');
-		var code = '(result === \'' + check_with + '\')';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.contract_details = function(block) {
-		var code = 'details';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.on_finish = function(block) {
-	  var stack = blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-	  var code = 'Bot.globals.on_finish = function on_finish(result, details){\n' + stack + '\n};\n';
-	  return code;
-	};
-
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.read_details = function(block) {
-	  var detail_index = block.getFieldValue('DETAIL_INDEX');
-	  // TODO: Assemble JavaScript into code variable.
-	  var code = '((details instanceof Array && details.length === Bot.config.lists.DETAILS.length) ? details[' + ( parseInt(detail_index.trim()) - 1 ) + '] : \'\' )';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.contract_result = function(block) {
-		var code = 'result';
-	  return [code, blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	blockly.JavaScript.trade_again = function(block) {
-		if ( this.parentBlock_ === null ) {
-			return '';
-		}
-		var code = 'trade(true);\n';
-		return code;
-	};
-
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var config = __webpack_require__(21);
-	Object.keys(config.opposites).forEach(function(opposites){
-		blockly.JavaScript[opposites.toLowerCase()] = function(block) {
-			if ( this.parentBlock_ === null ) {
-				return '';
-			}
-			var duration = blockly.JavaScript.valueToCode(block, 'DURATION', blockly.JavaScript.ORDER_ATOMIC);
-			var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
-			var currency = block.getFieldValue('CURRENCY_LIST');
-			var amount = blockly.JavaScript.valueToCode(block, 'AMOUNT', blockly.JavaScript.ORDER_ATOMIC);
-			var prediction;
-			if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
-				prediction = blockly.JavaScript.valueToCode(block, 'PREDICTION', blockly.JavaScript.ORDER_ATOMIC);
-				if ( prediction === '' ) {
-					throw {message: 'All condition options are required'};
-				}
-			}
-			if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
-				throw {message: 'All condition options are required'};
-			}
-			var code = 'Bot.conditions.ticktrade({\n'+
-				'condition: \'' + opposites + '\',\n'+
-				'duration: ' + duration + ',\n'+
-				'payouttype: \'' + payouttype + '\',\n'+
-				'currency: \'' + currency + '\',\n'+
-				'amount: (' + amount + ').toFixed(2),\n'+
-				((config.opposites_have_barrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
-			'})';
-			return code;
-		};
-	});
-
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(54);
-	__webpack_require__(56);
-	__webpack_require__(57);
-	__webpack_require__(58);
-	__webpack_require__(59);
-	__webpack_require__(60);
-	__webpack_require__(61);
-	__webpack_require__(62);
-	__webpack_require__(63);
-	__webpack_require__(64);
-	__webpack_require__(65);
-	__webpack_require__(66);
-	__webpack_require__(67);
-	__webpack_require__(68);
-	__webpack_require__(69);
-	__webpack_require__(70);
-	__webpack_require__(71);
-
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(55);
-	var globals = __webpack_require__(22);
-	blockly.Blocks.trade = {
-		init: function () {
-			this.appendDummyInput()
-				.appendField(i18n._("Trade With Account:"))
-				.appendField(new blockly.FieldDropdown(globals.getAccounts), "ACCOUNT_LIST");
-			this.appendStatementInput("SUBMARKET")
-				.setCheck("Submarket")
-				.appendField(i18n._("Submarket"));
-			this.setPreviousStatement(true, null);
-			this.setColour(60);
-			this.setTooltip(i18n._('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.'));
-			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-		},
-		onchange: function (ev) {
-			relationChecker.trade(this, ev);
-		},
-	};
-
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var config = __webpack_require__(21);
-	var view = __webpack_require__(28);
-	var botUtils = __webpack_require__(23);
-	var i18n = __webpack_require__(3);
-	var getNumField = function getNumField(block, fieldName) {
-		var field = block.getInputTargetBlock(fieldName);
-		if (field !== null && field.type === 'math_number') {
-			field = field.getFieldValue('NUM')
-				.trim();
-			return field;
-		}
-		return '';
-	};
-	
-	var isInteger = function isInteger(amount) {
-		return !isNaN(+amount) && parseInt(amount) === parseFloat(amount);
-	};
-	
-	var isInRange = function isInRange(amount, min, max) {
-		return !isNaN(+amount) && +amount >= min && +amount <= max;
-	};
-	
-	var trade = function trade(_trade, ev) {
-		if (ev.type === 'create') {
-			if (config.ticktrade_markets.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
-					.type) >= 0) {
-				botUtils.broadcast('tour:submarket_created');
-			}
-			if (config.conditions.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
-					.type) >= 0) {
-				botUtils.broadcast('tour:condition_created');
-			}
-			if (blockly.mainWorkspace.getBlockById(ev.blockId)
-				.type === 'math_number') {
-				botUtils.broadcast('tour:number');
-			}
-			if (blockly.mainWorkspace.getBlockById(ev.blockId)
-				.type === 'purchase') {
-				botUtils.broadcast('tour:purchase_created');
-			}
-			if (blockly.mainWorkspace.getBlockById(ev.blockId)
-				.type === 'trade_again') {
-				botUtils.broadcast('tour:trade_again_created');
-			}
-		}
-		if (_trade.childBlocks_.length > 0 && config.ticktrade_markets.indexOf(_trade.childBlocks_[0].type) < 0) {
-			botUtils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
-			Array.prototype.slice.apply(_trade.childBlocks_)
-				.forEach(function (child) {
-					child.unplug();
-				});
-		} else if (_trade.childBlocks_.length > 0) {
-			submarket(_trade.childBlocks_[0], ev);
-			botUtils.broadcast('tour:submarket');
-			if (ev.hasOwnProperty('newInputName')) {
-				botUtils.addPurchaseOptions();
-			}
-		}
-		var topParent = botUtils.findTopParentBlock(_trade);
-		if (topParent !== null) {
-			if (config.ticktrade_markets.indexOf(topParent.type) >= 0 || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
-				botUtils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
-				_trade.unplug();
-			}
-		}
-	};
-	var submarket = function submarket(_submarket, ev) {
-		if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
-			botUtils.log(i18n._('Submarket blocks can only accept condition blocks'), 'warning');
-			Array.prototype.slice.apply(_submarket.childBlocks_)
-				.forEach(function (child) {
-					child.unplug();
-				});
-		} else if (_submarket.childBlocks_.length > 0) {
-			condition(_submarket.childBlocks_[0], ev, true);
-		}
-		if (_submarket.parentBlock_ !== null) {
-			if (_submarket.parentBlock_.type !== 'trade') {
-				botUtils.log(i18n._('Submarket blocks have to be added to the trade block'), 'warning');
-				_submarket.unplug();
-			}
-		}
-	};
-	var condition = function condition(_condition, ev, calledByParent) {
-		if (_condition.parentBlock_ !== null) {
-			if (config.ticktrade_markets.indexOf(_condition.parentBlock_.type) < 0) {
-				botUtils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
-				_condition.unplug();
-			} else {
-				botUtils.broadcast('tour:condition');
-				if (!calledByParent) {
-					if ((ev.type === 'change' && ev.element && ev.element === 'field') || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
-						var added = [];
-						var duration = getNumField(_condition, 'DURATION');
-						if (duration !== '') {
-							if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
-								botUtils.log(i18n._('Number of ticks must be between 5 and 10'), 'warning');
-							} else {
-								botUtils.broadcast('tour:ticks');
-								added.push('DURATION');
-							}
-						}
-						var amount = getNumField(_condition, 'AMOUNT');
-						if (amount !== '') {
-							added.push('AMOUNT');
-						}
-						var prediction = getNumField(_condition, 'PREDICTION');
-						if (prediction !== '') {
-							if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-								botUtils.log(i18n._('Prediction must be one digit'), 'warning');
-							} else {
-								added.push('PREDICTION');
-							}
-						}
-						if (added.indexOf('AMOUNT') >= 0 && added.indexOf('DURATION') >= 0) {
-							if (_condition.inputList.slice(-1)[0].name === 'PREDICTION') {
-								if (added.indexOf('PREDICTION') >= 0) {
-									botUtils.broadcast('tour:options');
-								}
-							} else {
-								botUtils.broadcast('tour:options');
-							}
-						}
-					}
-				}
-			}
-		}
-	};
-	var inside_strategy = function inside_strategy(blockObject, ev, name) {
-		var topParent = botUtils.findTopParentBlock(blockObject);
-		if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
-			botUtils.log(name + ' ' + i18n._('must be added inside the strategy block'), 'warning');
-			blockObject.unplug();
-		} else if (topParent !== null && topParent.type === 'on_strategy') {
-			if (blockObject.type === 'purchase') {
-				botUtils.broadcast('tour:purchase');
-			}
-		}
-	};
-	var inside_finish = function inside_finish(blockObject, ev, name) {
-		var topParent = botUtils.findTopParentBlock(blockObject);
-		if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
-			botUtils.log(name + ' ' + i18n._('must be added inside the finish block'), 'warning');
-			blockObject.unplug();
-		} else if (topParent !== null && topParent.type === 'on_finish') {
-			if (blockObject.type === 'trade_again') {
-				botUtils.broadcast('tour:trade_again');
-			}
-		}
-	};
-	module.exports = {
-		trade: trade,
-		submarket: submarket,
-		condition: condition,
-		inside_strategy: inside_strategy,
-		inside_finish: inside_finish,
-	};
-
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.balance = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Balance:"))
-	        .appendField(new blockly.FieldDropdown([[i18n._("string"), "STR"], [i18n._("number"), "NUM"]]), "BALANCE_TYPE");
-	    this.setOutput(true, null);
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Get balance number or string'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.notify = {
-	  init: function() {
-	    this.appendValueInput("MESSAGE")
-	        .setCheck(null)
-	        .appendField(i18n._("Notify type:"))
-	        .appendField(new blockly.FieldDropdown([[i18n._("success"), "success"], [i18n._("information"), "info"], [i18n._("warning"), "warn"], [i18n._("error"), "error"]]), "NOTIFICATION_TYPE");
-	    this.setPreviousStatement(true, null);
-	    this.setNextStatement(true, null);
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Creates notification'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.total_profit = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Total Profit"));
-	    this.setOutput(true, "Number");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the total profit'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#abpy8a
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var config = __webpack_require__(21);
-	var relationChecker = __webpack_require__(55);
-	
-	config.ticktrade_markets.forEach(function(market, index){
-		blockly.Blocks[market] = {
-			init: function() {
-				this.appendDummyInput()
-					.appendField(config.ticktrade_market_names[index]);
-				this.appendStatementInput("CONDITION")
-					.setCheck("Condition");
-				this.setInputsInline(true);
-				this.setPreviousStatement(true, "Submarket");
-				this.setColour(345);
-				this.setTooltip(i18n._('Chooses the market:') + ' ' + config.ticktrade_market_names[index]);
-				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-			},
-			onchange: function(ev){
-				relationChecker.submarket(this, ev);
-			}
-		};
-	});
-
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(55);
-	var config = __webpack_require__(21);
-	blockly.Blocks.check_direction = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Direction is"))
-					.appendField(new blockly.FieldDropdown(config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
-	    this.setOutput(true, "Boolean");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('True if the direction matches the selection'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_strategy(this, ev, 'Check Direction');
-		},
-	};
-
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(55);
-	
-	blockly.Blocks.direction = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Tick Direction"));
-	    this.setOutput(true, "String");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_strategy(this, ev, 'Tick Direction');
-		},
-	};
-	
-
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(55);
-	var globals = __webpack_require__(22);
-	
-	blockly.Blocks.purchase = {
-		init: function() {
-			this.appendDummyInput()
-				.appendField(i18n._("Purchase"))
-				.appendField(new blockly.FieldDropdown(globals.getPurchaseChoices), "PURCHASE_LIST");
-			this.setPreviousStatement(true, 'Purchase');
-			this.setColour(180);
-			this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
-			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-		},
-		onchange: function(ev) {
-			relationChecker.inside_strategy(this, ev, 'Purchase');
-		},
-	};
-
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.on_strategy = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
-	    this.appendStatementInput("STRATEGY_STACK")
-	        .setCheck('Purchase');
-	    this.setColour(290);
-	    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
-	
-	var blockly = __webpack_require__(13);
-	var relationChecker = __webpack_require__(55);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.tick = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Tick Value"));
-	    this.setOutput(true, "Number");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_strategy(this, ev, 'Tick Value');
-		},
-	};
-
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var config = __webpack_require__(21);
-	var relationChecker = __webpack_require__(55);
-	blockly.Blocks.contract_check_result = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Result is"))
-					.appendField(new blockly.FieldDropdown(config.lists.CHECK_RESULT), "CHECK_RESULT");
-	    this.setOutput(true, "Boolean");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('True if the result matches the selection'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Check Result');
-		},
-	};
-
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(55);
-	
-	blockly.Blocks.contract_details = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Contract Details"));
-	    this.setOutput(true, "Array");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the list of details for the finished contract'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Contract Details');
-		},
-	};
-
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	
-	blockly.Blocks.on_finish = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("On Finish (Decide what to do after the contract is finished)"));
-	    this.appendStatementInput("FINISH_STACK")
-	        .setCheck("TradeAgain");
-	    this.setColour(290);
-	    this.setTooltip(i18n._('This block decides what to do when a purchased contract is finished'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	};
-
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(55);
-	var config = __webpack_require__(21);
-	
-	blockly.Blocks.read_details = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Contract Detail:"))
-	        .appendField(new blockly.FieldDropdown(config.lists.DETAILS), "DETAIL_INDEX");
-			this.setOutput(true, null);
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Reads a selected option from contract details list'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Read Contract Details');
-		},
-	};
-
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(55);
-	
-	blockly.Blocks.contract_result = {
-	  init: function() {
-	    this.appendDummyInput()
-	        .appendField(i18n._("Contract Result"));
-	    this.setOutput(true, "String");
-	    this.setColour(180);
-	    this.setTooltip(i18n._('Returns the result of the finished contract'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Contract Result');
-		},
-	};
-	
-
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var relationChecker = __webpack_require__(55);
-	
-	blockly.Blocks.trade_again = {
-		init: function() {
-			this.appendDummyInput()
-				.appendField(i18n._("Trade Again"));
-			this.setPreviousStatement(true, 'TradeAgain');
-			this.setColour(180);
-			this.setTooltip(i18n._('Runs the trade block again'));
-			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-		},
-		onchange: function(ev) {
-			relationChecker.inside_finish(this, ev, 'Trade Again');
-		},
-	};
-
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#cur8so
-	var blockly = __webpack_require__(13);
-	var i18n = __webpack_require__(3);
-	var config = __webpack_require__(21);
-	var utils = __webpack_require__(23);
-	var relationChecker = __webpack_require__(55);
-	
-	Object.keys(config.opposites).forEach(function(opposites){
-		blockly.Blocks[opposites.toLowerCase()] = {
-			init: function() {
-				var option_names = [];
-				config.opposites[opposites].forEach(function(options){
-					
-					var option_alias = Object.keys(options)[0];
-					var option_name = options[option_alias];
-					option_names.push(option_name);	
-				});
-				this.appendDummyInput()
-					.appendField(option_names[0] + '/' + option_names[1]);
-				this.appendValueInput("DURATION")
-					.setCheck("Number")
-					.appendField(i18n._("Ticks:"));
-				this.appendDummyInput()
-					.appendField(i18n._("Payout:"))
-					.appendField(new blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
-				this.appendDummyInput()
-					.appendField(i18n._("Currency:"))
-					.appendField(new blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
-				this.appendValueInput("AMOUNT")
-					.setCheck("Number")
-					.appendField(i18n._("Amount:"));
-				if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
-					this.appendValueInput("PREDICTION")
-						.setCheck("Number")
-						.appendField(i18n._("Prediction:"));
-				}
-				this.setInputsInline(false);
-				this.setPreviousStatement(true, "Condition");
-				this.setColour(15);
-				this.setTooltip(i18n._('Provides the contract conditions:') + ' ' + option_names[0] + '/' + option_names[1]);
-				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-			},
-			onchange: function(ev){
-				relationChecker.condition(this, ev);
-			},
-		};
-	});
-
-
-/***/ },
-/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -33431,6 +31016,2654 @@
 	});
 	;
 	//# sourceMappingURL=binary-live-api.js.map
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var globals = __webpack_require__(22);
+	var version = '1.1.9';
+	if (globals.debug) {
+		console.log('%cBinary Bot (v' + version + ') started.', 'color: green');
+	} else {
+		globals.addLogToQueue('%cBinary Bot (v' + version + ') started.', 'color: green');
+	}
+	module.exports = version;
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var globals = __webpack_require__(22);
+	var trade = __webpack_require__(28);
+	var markets = {};
+	markets.symbolActions = {};
+	var symbolNames = globals.activeSymbols.getSymbolNames();
+	Object.keys(symbolNames).forEach(function (symbol) {
+		markets.symbolActions[symbol] = function (options) {
+			trade.setSymbol(symbol);
+			options.forEach(function (option) {
+				option.symbol = symbol;
+			});
+			var submarket = function submarket(cb) {
+				trade.submitProposal(options[0]);
+				trade.submitProposal(options[1]);
+			};
+			return submarket;
+		};
+	});
+	module.exports = markets;
+
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var globals = __webpack_require__(22);
+	var botUtils = __webpack_require__(21);
+	var commonUtils = __webpack_require__(11);
+	var view = __webpack_require__(29);
+	var i18n = __webpack_require__(3);
+	var appId = __webpack_require__(15);
+	var LiveApi = __webpack_require__(25)
+		.LiveApi;
+	var Chart = __webpack_require__(73)
+		.PlainChart;
+	var showError = botUtils.showError;
+	var log = botUtils.log;
+	var api;
+	var ticks = [];
+	var contractForChart = null;
+	var symbolInfo;
+	var symbol;
+	var purchasedContractId;
+	var strategyEnabled;
+	var balance;
+	var balance_currency;
+	var contracts;
+	var authorizeCallback;
+	var token;
+	var chart;
+	var finished = true;
+	var purchased = false;
+	
+	// influences display, calls on_finish
+	var contractFinished = function contractFinished(contract) {
+		var result = (+contract.sell_price === 0) ? 'loss' : 'win';
+		globals.addTradeInfo(contract);
+		globals.tradeInfo.lastProfit = +(+contract.sell_price - +contract.buy_price)
+			.toFixed(2);
+		globals.tradeInfo.totalStake = +(+globals.tradeInfo.totalStake + (+contract.buy_price))
+			.toFixed(2);
+		globals.tradeInfo.totalPayout = +(+globals.tradeInfo.totalPayout + (+contract.sell_price))
+			.toFixed(2);
+		globals.tradeInfo.totalProfit = +(+globals.tradeInfo.totalProfit + (+globals.tradeInfo.lastProfit))
+			.toFixed(2);
+		globals.tradeInfo.lastResult = result;
+		globals.updateTradeInfo();
+	
+		var detail_list = [
+			contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
+			globals.tradeInfo.lastProfit,
+			contract.contract_type, +contract.entry_tick,
+			botUtils.getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.exit_tick,
+			botUtils.getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +((contract.barrier) ? contract.barrier : 0),
+		];
+	
+		log(i18n._('Purchase was finished, result is:') + ' ' + result, (result === 'win') ? 'success' : 'error');
+	
+		globals.on_finish(result, detail_list);
+		purchasedContractId = '';
+		contractForChart = null;
+		finished = true;
+		globals.disableRun(false);
+	};
+	
+	var updateChart = function updateChart() {
+		var chartOptions = {
+			type: 'area',
+			ticks: ticks,
+		};
+		if (contractForChart) {
+			chartOptions.contract = contractForChart;
+		}
+		if (!chart) {
+			chartOptions.pipSize = +(+symbolInfo.pip)
+				.toExponential()
+				.substring(3);
+			chart = Chart('chart', chartOptions);
+		} else {
+			chart.updateChart(chartOptions);
+		}
+	};
+	
+	var callStrategy = function callStrategy() {
+		if (strategyEnabled) {
+			var direction = '';
+			if (ticks.length > 1) {
+				if (+ticks.slice(-1)[0].quote > +ticks.slice(-2)
+					.quote) {
+					direction = 'up';
+				} else if (+ticks.slice(-1)[0].quote < +ticks.slice(-2)
+					.quote) {
+					direction = 'down';
+				}
+			}
+			globals.on_strategy(+ticks.slice(-1)[0].quote, direction);
+		}
+	};
+	
+	var getTotalProfit = function getTotalProfit() {
+		return +globals.tradeInfo.totalProfit;
+	};
+	
+	var getBalance = function getBalance(balance_type) {
+		if (!isNaN(parseFloat(balance))) {
+			return (balance_type === 'NUM') ? parseFloat(balance) : balance_currency + ' ' + parseFloat(balance);
+		} else {
+			return 0;
+		}
+	};
+	
+	var updateBalance = function updateBalance(data) {
+		if (data.balance && data.currency) {
+			balance = data.balance;
+			balance_currency = data.currency;
+			globals.tradeInfo.balance = balance_currency + ' ' + parseFloat(balance);
+			globals.updateTradeInfo();
+		}
+	};
+	
+	var requestBalance = function requestBalance() {
+		api.send({
+				balance: 1,
+			})
+			.then(function (response) {
+				updateBalance(response.balance);
+			}, function (reason) {
+				log(i18n._('Could not get balance'));
+			});
+	};
+	
+	var observeTicks = function observeTicks() {
+		api.events.on('tick', function (feed) {
+			log(i18n._('tick received at:') + ' ' + feed.tick.epoch);
+			ticks = ticks.concat({
+				epoch: +feed.tick.epoch,
+				quote: +feed.tick.quote,
+			});
+			updateChart();
+			callStrategy();
+		});
+	
+		api.events.on('history', function (feed) {
+			ticks = [];
+			feed.history.times.forEach(function (time, index) {
+				ticks.push({
+					epoch: +time,
+					quote: +feed.history.prices[index]
+				});
+			});
+		});
+	};
+	
+	var requestHistory = function requestHistory() {
+		api.getTickHistory(symbol, {
+				"end": "latest",
+				"count": 600,
+				"subscribe": 1
+			})
+			.then(function (value) {
+				log(i18n._('Request received for history'));
+			}, function (reason) {
+				log(reason);
+				reconnect();
+			});
+	};
+	
+	var requestTransaction = function requestTransaction() {
+		api.subscribeToTransactions();
+	};
+	
+	var observeTransaction = function observeTransaction() {
+		api.events.on('transaction', function (response) {
+			var transaction = response.transaction;
+			updateBalance(transaction);
+			log(transaction);
+			if (transaction.contract_id === purchasedContractId) {
+				if (transaction.action === 'buy') {
+					api.unsubscribeFromAllProposals();
+				} else if (transaction.action === 'sell') {
+					getContractInfo();
+				}
+			}
+		});
+	};
+	
+	var observeOpenContracts = function observeOpenContracts() {
+		api.events.on('proposal_open_contract', function (response) {
+			var contract = response.proposal_open_contract;
+			contractForChart = contract;
+			if (contract.is_expired) {
+				api.sellExpiredContracts();
+			}
+		});
+	};
+	
+	var observeProposal = function observeProposal(options) {
+		api.events.on('proposal', function (value) {
+			if ( !purchased ) {
+				if ( !purchasedContractId ) {
+					if (contracts.length === 2) {
+						contracts = [];
+						strategyEnabled = false;
+					}
+				}
+				contracts.push(value);
+				if (contracts.length === 2) {
+					log(i18n._('Contracts are ready to be purchased by the strategy'), 'info');
+					strategyEnabled = true;
+				}
+			}
+		});
+	};
+	
+	var submitProposal = function submitProposal(options) {
+		api.subscribeToPriceForContractProposal(options)
+			.then(function (value) {}, function (reason) {
+				stop();
+				showError(reason);
+			});
+	};
+	
+	var getContractInfo = function getContractInfo(callback) {
+		if (purchasedContractId !== '') {
+			api.send({
+					proposal_open_contract: 1,
+					contract_id: purchasedContractId,
+				})
+				.then(function (response) {
+					var contract = response.proposal_open_contract;
+					if (contract.hasOwnProperty('sell_price')) {
+						contractFinished(contract);
+						if (callback) {
+							callback(contract);
+						}
+					}
+				}, function (reason) {
+					showError(reason);
+					reconnect();
+				});
+		} else {
+			if (callback) {
+				callback();
+			}
+		}
+	};
+	
+	var purchase = function purchase(option) {
+		purchased = true;
+		strategyEnabled = false;
+		var proposalContract = (option === contracts[1].echo_req.contract_type) ? contracts[1] : contracts[0];
+		log(i18n._('Purchased') + ': ' + proposalContract.proposal.longcode, 'info');
+		api.buyContract(proposalContract.proposal.id, proposalContract.proposal.ask_price)
+			.then(function (purchaseContract) {
+				purchasedContractId = purchaseContract.buy.contract_id;
+				api.subscribeToOpenContract(purchasedContractId);
+				globals.tradeInfo.numOfRuns++;
+				globals.updateTradeInfo();
+				globals.disableRun(true);
+			}, function (reason) {
+				stop();
+				showError(reason);
+			});
+	};
+	
+	var restartContracts = function restartContracts() {
+		strategyEnabled = false;
+		api.unsubscribeFromAllProposals()
+			.then(function (response) {
+				authorizeCallback();
+			}, function (reason) {
+				showError(reason);
+			});
+	};
+	
+	var observeAuthorize = function observeAuthorize() {
+		api.events.on('authorize', function (response) {
+			if (response.error) {
+				commonUtils.removeToken(token);
+				showError(response.error);
+			} else if (!finished) {
+				log(i18n._('Logged in to:') + ' ' + commonUtils.getAccountName(token), 'info');
+				requestSymbolInfo(function(){
+					getContractInfo(function () {
+						restartContracts();
+					});
+					requestBalance();
+					requestHistory();
+					requestTransaction();
+				});
+			}
+		});
+	};
+	
+	var reconnect = function reconnect() {
+		stop();
+		api.token = token;
+		api.connect();
+		api.authorize(token);
+	};
+	
+	var stop = function stop() {
+		if (api) {
+			try {
+				api.disconnect();
+				chart = null;
+			} catch (e) {}
+		}
+	};
+	
+	var requestSymbolInfo = function requestSymbolInfo(callback) {
+		api.getActiveSymbolsBrief()
+			.then(function (response) {
+				var symbols = response.active_symbols;
+				symbols.forEach(function (_symbolInfo) {
+					if (_symbolInfo.symbol === symbol) {
+						symbolInfo = _symbolInfo;
+						if (callback) {
+							callback();
+						}
+					}
+				});
+			});
+	};
+	
+	var setSymbol = function setSymbol(_symbol) {
+		symbol = _symbol;
+	};
+	
+	var trade = function trade(_token, callback, trade_again) {
+		if (_token === '') {
+			showError(i18n._('No token is available to authenticate'));
+		} else {
+			finished = false;
+			purchased = false;
+			authorizeCallback = callback;
+			purchasedContractId = '';
+			globals.disableRun(false);
+			contracts = [];
+			chart = null;
+			if (trade_again) {
+				restartContracts();
+			} else {
+				token = _token;
+				api = new LiveApi({ appId: appId.getAppId() });
+				observeTicks();
+				observeProposal();
+				observeTransaction();
+				observeOpenContracts();
+				observeAuthorize();
+				api.authorize(token);
+			}
+		}
+	};
+	
+	globals.disableRun(false);
+	
+	module.exports = {
+		stop: stop,
+		getTotalProfit: getTotalProfit,
+		getBalance: getBalance,
+		submitProposal: submitProposal,
+		purchase: purchase,
+		setSymbol: setSymbol,
+		trade: trade,
+	};
+
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var globals = __webpack_require__(22);
+	var config = __webpack_require__(23);
+	var storageManager = __webpack_require__(12);
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var appId = __webpack_require__(15);
+	var activeTutorial = null;
+	var tours = {}; // e
+	var botUtils = __webpack_require__(21);
+	var commonUtils = __webpack_require__(11);
+	var fileSaver = __webpack_require__(30);
+	__webpack_require__(33);
+	
+	var initTours = function initTours() {
+		tours.introduction = __webpack_require__(34).init();
+		tours.welcome = __webpack_require__(35).init();
+		tours.welcome.welcome();
+	};
+	
+	var uiComponents = {
+		tutorialList: '.tutorialList',
+		logout: '.logout',
+		workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
+		workspace: '.blocklyWorkspace',
+		toolbox: '.blocklyToolboxDiv',
+		file_management: '.intro-file-management',
+		token: '.intro-token',
+		run_stop: '.intro-run-stop',
+		trash: '.blocklyTrash',
+		undo_redo: '.intro-undo-redo',
+		summary: '.intro-summary',
+		center: '#center',
+		flyout: '.blocklyFlyoutBackground',
+		submarket: ".blocklyDraggable:contains('Submarket'):last",
+		strategy: ".blocklyDraggable:contains('Strategy'):last",
+		finish: ".blocklyDraggable:contains('Finish'):last",
+	};
+	
+	var doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
+	
+	var getUiComponent = function getUiComponent(component) {
+		return $(uiComponents[component]);
+	};
+	
+	var startTutorial = function startTutorial(e) {
+		if (e) {
+			e.preventDefault();
+		}
+		if (activeTutorial) {
+			activeTutorial.stop();
+		}
+		activeTutorial = tours[$('#tours')
+			.val()];
+		activeTutorial.start();
+		$('#tutorialButton')
+			.unbind('click', startTutorial);
+		$('#tutorialButton')
+			.bind('click', stopTutorial);
+		$('#tutorialButton')
+			.text(i18n._('Stop!'));
+	};
+	
+	var stopTutorial = function stopTutorial(e) {
+		if (e) {
+			e.preventDefault();
+		}
+		if (activeTutorial) {
+			if (e) {
+				activeTutorial.stop();
+			}
+			activeTutorial = null;
+		}
+		$('#tutorialButton')
+			.unbind('click', stopTutorial);
+		$('#tutorialButton')
+			.bind('click', startTutorial);
+		$('#tutorialButton')
+			.text(i18n._('Go!'));
+	};
+	
+	var setOpacityForAll = function setOpacityForAll(enabled, opacity) {
+		if (enabled) {
+			Object.keys(uiComponents)
+				.forEach(function (key) {
+					if (doNotHide.indexOf(key) < 0) {
+						getUiComponent(key)
+							.css('opacity', opacity);
+						var disabled = +opacity < 1;
+						getUiComponent(key)
+							.find('button')
+							.prop('disabled', disabled);
+						getUiComponent(key)
+							.find('input')
+							.prop('disabled', disabled);
+						getUiComponent(key)
+							.find('select')
+							.prop('disabled', disabled);
+					}
+				});
+		}
+	};
+	
+	var setOpacity = function setOpacity(enabled, componentName, opacity) {
+		if (enabled) {
+			getUiComponent(componentName)
+				.css('opacity', opacity);
+			var disabled = +opacity < 1;
+			getUiComponent(componentName)
+				.find('button')
+				.prop('disabled', disabled);
+			getUiComponent(componentName)
+				.find('input')
+				.prop('disabled', disabled);
+			getUiComponent(componentName)
+				.find('select')
+				.prop('disabled', disabled);
+		}
+	};
+	
+	var saveXml = function saveXml(showOnly) {
+		var xmlDom = blockly.Xml.workspaceToDom(blockly.mainWorkspace);
+		Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))
+			.forEach(function (field) {
+				if (field.getAttribute('name') === 'ACCOUNT_LIST') {
+					if (field.childNodes.length >= 1) {
+						field.childNodes[0].nodeValue = '';
+					}
+				}
+			});
+		Array.prototype.slice.apply(xmlDom.getElementsByTagName('block'))
+			.forEach(function (block) {
+				switch (block.getAttribute('type')) {
+				case 'trade':
+					block.setAttribute('id', 'trade');
+					break;
+				case 'on_strategy':
+					block.setAttribute('id', 'strategy');
+					break;
+				case 'on_finish':
+					block.setAttribute('id', 'finish');
+					break;
+				default:
+					block.removeAttribute('id');
+					break;
+				}
+			});
+		var xmlText = blockly.Xml.domToPrettyText(xmlDom);
+		if (showOnly) {
+			botUtils.log(xmlText);
+		} else {
+			var filename = 'binary-bot' + parseInt(new Date()
+				.getTime() / 1000) + '.xml';
+			var blob = new Blob([xmlText], {
+				type: 'text/xml;charset=utf-8'
+			});
+			fileSaver.saveAs(blob, filename);
+		}
+	};
+	
+	var run = function run() {
+		// Generate JavaScript code and run it.
+		try {
+			window.LoopTrap = 1000;
+			blockly.JavaScript.INFINITE_LOOP_TRAP =
+				'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+			var code = blockly.JavaScript.workspaceToCode(blockly.mainWorkspace);
+			blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+			var EVAL_BLOCKLY_CODE = eval;
+			EVAL_BLOCKLY_CODE(code);
+			$('#stopButton')
+				.text('Stop');
+			$('#runButton')
+				.text('Restart');
+			$('#summaryPanel')
+				.show();
+			$('#stopButton')
+				.unbind('click', reset);
+			$('#stopButton')
+				.bind('click', stop);
+		} catch (e) {
+			botUtils.showError(e);
+		}
+	};
+	
+	var handleFileSelect = function handleFileSelect(e) {
+		var files;
+		if (e.type === 'drop') {
+			e.stopPropagation();
+			e.preventDefault();
+			files = e.dataTransfer.files;
+		} else {
+			files = e.target.files;
+		}
+		files = Array.prototype.slice.apply(files);
+		var file = files[0];
+		if (file) {
+			if (file.type.match('text/xml')) {
+				readFile(file);
+			} else {
+				botUtils.log(i18n._('File is not supported:' + ' ') + file.name, 'info');
+			}
+		}
+	};
+	
+	var readFile = function readFile(f) {
+		reader = new FileReader();
+		reader.onload = (function (theFile) {
+			return function (e) {
+				try {
+					blockly.mainWorkspace.clear();
+					var xml = blockly.Xml.textToDom(e.target.result);
+					blockly.Xml.domToWorkspace(xml, blockly.mainWorkspace);
+					botUtils.addPurchaseOptions();
+					var tokenList = storageManager.getTokenList();
+					if (tokenList.length !== 0) {
+						blockly.mainWorkspace.getBlockById('trade')
+							.getField('ACCOUNT_LIST')
+							.setValue(tokenList[0].token);
+						blockly.mainWorkspace.getBlockById('trade')
+							.getField('ACCOUNT_LIST')
+							.setText(tokenList[0].account_name);
+					}
+					blockly.mainWorkspace.clearUndo();
+					blockly.mainWorkspace.zoomToFit();
+					botUtils.log(i18n._('Blocks are loaded successfully'), 'success');
+				} catch (err) {
+					botUtils.showError(err);
+				}
+			};
+		})(f);
+		reader.readAsText(f);
+	};
+	
+	var handleDragOver = function handleDragOver(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'copy';
+	};
+	
+	var dropZone = document.getElementById('drop_zone');
+	
+	var reset = function reset(e) {
+		if (e) {
+			e.preventDefault();
+		}
+		globals.resetTradeInfo();
+		botUtils.log(i18n._('Reset successful'), 'success');
+	};
+	
+	var stop = function stop(e) {
+		if (e) {
+			e.preventDefault();
+		}
+		var trade = __webpack_require__(28);
+		trade.stop();
+		globals.disableRun(false);
+		$('#stopButton')
+			.text(i18n._('Reset'));
+		$('#runButton')
+			.text(i18n._('Run'));
+		$('#stopButton')
+			.unbind('click', stop);
+		$('#stopButton')
+			.bind('click', reset);
+	};
+	
+	var show = function show(done) {
+		dropZone.addEventListener('dragover', handleDragOver, false);
+		dropZone.addEventListener('drop', handleFileSelect, false);
+		document.getElementById('files')
+			.addEventListener('change', handleFileSelect, false);
+	
+		$('#tutorialButton')
+			.bind('click', startTutorial);
+		$('#stopButton')
+			.text(i18n._('Reset'));
+		$('#stopButton')
+			.bind('click', reset);
+	
+		$('#summaryPanel .exitPanel')
+			.click(function () {
+				$(this)
+					.parent()
+					.hide();
+			});
+	
+		$('#summaryPanel')
+			.hide();
+	
+		$('#summaryPanel')
+			.drags();
+	
+		$('#chart')
+			.mousedown(function (e) { // prevent chart to trigger draggable
+				e.stopPropagation();
+			});
+	
+		$('table')
+			.mousedown(function (e) { // prevent tables to trigger draggable
+				e.stopPropagation();
+			});
+	
+		globals.showTradeInfo();
+		$('#saveXml')
+			.click(function (e) {
+				saveXml();
+			});
+	
+		$('#undo')
+			.click(function (e) {
+				globals.undoBlocks();
+			});
+	
+		$('#redo')
+			.click(function (e) {
+				globals.redoBlocks();
+			});
+	
+		$('#showSummary')
+			.click(function (e) {
+				$('#summaryPanel')
+					.show();
+			});
+	
+		$('#run')
+			.click(function (e) {
+				run();
+			});
+	
+		$('#logout')
+			.click(function (e) {
+				botUtils.logout();
+			});
+	
+		$('#runButton')
+			.click(function (e) {
+				run();
+			});
+	
+		$.get('xml/toolbox.xml', function (toolbox) {
+			__webpack_require__(36);
+			__webpack_require__(54);
+			var workspace = blockly.inject('blocklyDiv', {
+				media: 'js/blockly/media/',
+				toolbox: botUtils.xmlToStr(i18n.xml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
+				zoom: {
+					controls: true,
+					wheel: false,
+					startScale: 1.0,
+					maxScale: 3,
+					minScale: 0.3,
+					scaleSpeed: 1.2
+				},
+				trashcan: true,
+			});
+			$.get('xml/main.xml', function (main) {
+				blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+				blockly.mainWorkspace.getBlockById('trade')
+					.setDeletable(false);
+				blockly.mainWorkspace.getBlockById('strategy')
+					.setDeletable(false);
+				blockly.mainWorkspace.getBlockById('finish')
+					.setDeletable(false);
+				botUtils.updateTokenList();
+				botUtils.addPurchaseOptions();
+				blockly.mainWorkspace.clearUndo();
+				initTours();
+				done();
+			});
+		});
+	};
+	
+	module.exports = {
+		uiComponents: uiComponents,
+		getUiComponent: getUiComponent,
+		setOpacityForAll: setOpacityForAll,
+		setOpacity: setOpacity,
+		stopTutorial: stopTutorial,
+		startTutorial: startTutorial,
+		initTours: initTours,
+		show: show
+	};
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* FileSaver.js
+	 * A saveAs() FileSaver implementation.
+	 * 1.1.20160328
+	 *
+	 * By Eli Grey, http://eligrey.com
+	 * License: MIT
+	 *   See https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md
+	 */
+	
+	/*global self */
+	/*jslint bitwise: true, indent: 4, laxbreak: true, laxcomma: true, smarttabs: true, plusplus: true */
+	
+	/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
+	
+	var saveAs = saveAs || (function(view) {
+		"use strict";
+		// IE <10 is explicitly unsupported
+		if (typeof navigator !== "undefined" && /MSIE [1-9]\./.test(navigator.userAgent)) {
+			return;
+		}
+		var
+			  doc = view.document
+			  // only get URL when necessary in case Blob.js hasn't overridden it yet
+			, get_URL = function() {
+				return view.URL || view.webkitURL || view;
+			}
+			, save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a")
+			, can_use_save_link = "download" in save_link
+			, click = function(node) {
+				var event = new MouseEvent("click");
+				node.dispatchEvent(event);
+			}
+			, is_safari = /Version\/[\d\.]+.*Safari/.test(navigator.userAgent)
+			, webkit_req_fs = view.webkitRequestFileSystem
+			, req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem
+			, throw_outside = function(ex) {
+				(view.setImmediate || view.setTimeout)(function() {
+					throw ex;
+				}, 0);
+			}
+			, force_saveable_type = "application/octet-stream"
+			, fs_min_size = 0
+			// the Blob API is fundamentally broken as there is no "downloadfinished" event to subscribe to
+			, arbitrary_revoke_timeout = 1000 * 40 // in ms
+			, revoke = function(file) {
+				var revoker = function() {
+					if (typeof file === "string") { // file is an object URL
+						get_URL().revokeObjectURL(file);
+					} else { // file is a File
+						file.remove();
+					}
+				};
+				/* // Take note W3C:
+				var
+				  uri = typeof file === "string" ? file : file.toURL()
+				, revoker = function(evt) {
+					// idealy DownloadFinishedEvent.data would be the URL requested
+					if (evt.data === uri) {
+						if (typeof file === "string") { // file is an object URL
+							get_URL().revokeObjectURL(file);
+						} else { // file is a File
+							file.remove();
+						}
+					}
+				}
+				;
+				view.addEventListener("downloadfinished", revoker);
+				*/
+				setTimeout(revoker, arbitrary_revoke_timeout);
+			}
+			, dispatch = function(filesaver, event_types, event) {
+				event_types = [].concat(event_types);
+				var i = event_types.length;
+				while (i--) {
+					var listener = filesaver["on" + event_types[i]];
+					if (typeof listener === "function") {
+						try {
+							listener.call(filesaver, event || filesaver);
+						} catch (ex) {
+							throw_outside(ex);
+						}
+					}
+				}
+			}
+			, auto_bom = function(blob) {
+				// prepend BOM for UTF-8 XML and text/* types (including HTML)
+				if (/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
+					return new Blob(["\ufeff", blob], {type: blob.type});
+				}
+				return blob;
+			}
+			, FileSaver = function(blob, name, no_auto_bom) {
+				if (!no_auto_bom) {
+					blob = auto_bom(blob);
+				}
+				// First try a.download, then web filesystem, then object URLs
+				var
+					  filesaver = this
+					, type = blob.type
+					, blob_changed = false
+					, object_url
+					, target_view
+					, dispatch_all = function() {
+						dispatch(filesaver, "writestart progress write writeend".split(" "));
+					}
+					// on any filesys errors revert to saving with object URLs
+					, fs_error = function() {
+						if (target_view && is_safari && typeof FileReader !== "undefined") {
+							// Safari doesn't allow downloading of blob urls
+							var reader = new FileReader();
+							reader.onloadend = function() {
+								var base64Data = reader.result;
+								target_view.location.href = "data:attachment/file" + base64Data.slice(base64Data.search(/[,;]/));
+								filesaver.readyState = filesaver.DONE;
+								dispatch_all();
+							};
+							reader.readAsDataURL(blob);
+							filesaver.readyState = filesaver.INIT;
+							return;
+						}
+						// don't create more object URLs than needed
+						if (blob_changed || !object_url) {
+							object_url = get_URL().createObjectURL(blob);
+						}
+						if (target_view) {
+							target_view.location.href = object_url;
+						} else {
+							var new_tab = view.open(object_url, "_blank");
+							if (new_tab === undefined && is_safari) {
+								//Apple do not allow window.open, see http://bit.ly/1kZffRI
+								view.location.href = object_url
+							}
+						}
+						filesaver.readyState = filesaver.DONE;
+						dispatch_all();
+						revoke(object_url);
+					}
+					, abortable = function(func) {
+						return function() {
+							if (filesaver.readyState !== filesaver.DONE) {
+								return func.apply(this, arguments);
+							}
+						};
+					}
+					, create_if_not_found = {create: true, exclusive: false}
+					, slice
+				;
+				filesaver.readyState = filesaver.INIT;
+				if (!name) {
+					name = "download";
+				}
+				if (can_use_save_link) {
+					object_url = get_URL().createObjectURL(blob);
+					setTimeout(function() {
+						save_link.href = object_url;
+						save_link.download = name;
+						click(save_link);
+						dispatch_all();
+						revoke(object_url);
+						filesaver.readyState = filesaver.DONE;
+					});
+					return;
+				}
+				// Object and web filesystem URLs have a problem saving in Google Chrome when
+				// viewed in a tab, so I force save with application/octet-stream
+				// http://code.google.com/p/chromium/issues/detail?id=91158
+				// Update: Google errantly closed 91158, I submitted it again:
+				// https://code.google.com/p/chromium/issues/detail?id=389642
+				if (view.chrome && type && type !== force_saveable_type) {
+					slice = blob.slice || blob.webkitSlice;
+					blob = slice.call(blob, 0, blob.size, force_saveable_type);
+					blob_changed = true;
+				}
+				// Since I can't be sure that the guessed media type will trigger a download
+				// in WebKit, I append .download to the filename.
+				// https://bugs.webkit.org/show_bug.cgi?id=65440
+				if (webkit_req_fs && name !== "download") {
+					name += ".download";
+				}
+				if (type === force_saveable_type || webkit_req_fs) {
+					target_view = view;
+				}
+				if (!req_fs) {
+					fs_error();
+					return;
+				}
+				fs_min_size += blob.size;
+				req_fs(view.TEMPORARY, fs_min_size, abortable(function(fs) {
+					fs.root.getDirectory("saved", create_if_not_found, abortable(function(dir) {
+						var save = function() {
+							dir.getFile(name, create_if_not_found, abortable(function(file) {
+								file.createWriter(abortable(function(writer) {
+									writer.onwriteend = function(event) {
+										target_view.location.href = file.toURL();
+										filesaver.readyState = filesaver.DONE;
+										dispatch(filesaver, "writeend", event);
+										revoke(file);
+									};
+									writer.onerror = function() {
+										var error = writer.error;
+										if (error.code !== error.ABORT_ERR) {
+											fs_error();
+										}
+									};
+									"writestart progress write abort".split(" ").forEach(function(event) {
+										writer["on" + event] = filesaver["on" + event];
+									});
+									writer.write(blob);
+									filesaver.abort = function() {
+										writer.abort();
+										filesaver.readyState = filesaver.DONE;
+									};
+									filesaver.readyState = filesaver.WRITING;
+								}), fs_error);
+							}), fs_error);
+						};
+						dir.getFile(name, {create: false}, abortable(function(file) {
+							// delete file if it already exists
+							file.remove();
+							save();
+						}), abortable(function(ex) {
+							if (ex.code === ex.NOT_FOUND_ERR) {
+								save();
+							} else {
+								fs_error();
+							}
+						}));
+					}), fs_error);
+				}), fs_error);
+			}
+			, FS_proto = FileSaver.prototype
+			, saveAs = function(blob, name, no_auto_bom) {
+				return new FileSaver(blob, name, no_auto_bom);
+			}
+		;
+		// IE 10+ (native saveAs)
+		if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
+			return function(blob, name, no_auto_bom) {
+				if (!no_auto_bom) {
+					blob = auto_bom(blob);
+				}
+				return navigator.msSaveOrOpenBlob(blob, name || "download");
+			};
+		}
+	
+		FS_proto.abort = function() {
+			var filesaver = this;
+			filesaver.readyState = filesaver.DONE;
+			dispatch(filesaver, "abort");
+		};
+		FS_proto.readyState = FS_proto.INIT = 0;
+		FS_proto.WRITING = 1;
+		FS_proto.DONE = 2;
+	
+		FS_proto.error =
+		FS_proto.onwritestart =
+		FS_proto.onprogress =
+		FS_proto.onwrite =
+		FS_proto.onabort =
+		FS_proto.onerror =
+		FS_proto.onwriteend =
+			null;
+	
+		return saveAs;
+	}(
+		   typeof self !== "undefined" && self
+		|| typeof window !== "undefined" && window
+		|| this.content
+	));
+	// `self` is undefined in Firefox for Android content script context
+	// while `this` is nsIContentFrameMessageManager
+	// with an attribute `content` that corresponds to the window
+	
+	if (typeof module !== "undefined" && module.exports) {
+	  module.exports.saveAs = saveAs;
+	} else if (("function" !== "undefined" && __webpack_require__(31) !== null) && (__webpack_require__(32) !== null)) {
+	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	    return saveAs;
+	  }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	module.exports = function() { throw new Error("define cannot be used indirect"); };
+
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, {}))
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	/* jshint ignore:start */
+	$.fn.drags = function (opt) {
+	
+		opt = $.extend({
+			handle: "",
+			cursor: "move"
+		}, opt);
+	
+		if (opt.handle === "") {
+			var $el = this;
+		} else {
+			var $el = this.find(opt.handle);
+		}
+	
+		return $el.css('cursor', opt.cursor)
+			.on("mousedown", function (e) {
+				if (opt.handle === "") {
+					var $drag = $(this)
+						.addClass('draggable');
+				} else {
+					var $drag = $(this)
+						.addClass('active-handle')
+						.parent()
+						.addClass('draggable');
+				}
+				var z_idx = $drag.css('z-index'),
+					drg_h = $drag.outerHeight(),
+					drg_w = $drag.outerWidth(),
+					pos_y = $drag.offset()
+					.top + drg_h - e.pageY,
+					pos_x = $drag.offset()
+					.left + drg_w - e.pageX;
+				$drag.css('z-index', 1000)
+					.parents()
+					.on("mousemove", function (e) {
+						$('.draggable')
+							.offset({
+								top: e.pageY + pos_y - drg_h,
+								left: e.pageX + pos_x - drg_w
+							})
+							.on("mouseup", function () {
+								$(this)
+									.removeClass('draggable')
+									.css('z-index', z_idx);
+							});
+					});
+				e.preventDefault(); // disable selection
+			})
+			.on("mouseup", function () {
+				if (opt.handle === "") {
+					$(this)
+						.removeClass('draggable');
+				} else {
+					$(this)
+						.removeClass('active-handle')
+						.parent()
+						.removeClass('draggable');
+				}
+			});
+	};
+	/* jshint ignore:end */
+
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var globals = __webpack_require__(22);
+	var view = __webpack_require__(29);
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var init = function init(){
+		var steps = [{
+			content: '<p>' + i18n._("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.") + '</p>',
+			target: view.getUiComponent('center'),
+			nextButton: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacityForAll(started, 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._("You will need to add the blocks to this area which is called the <b>workspace</b>.") + '</p>',
+			target: view.getUiComponent('center'),
+			nextButton: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'workspace', 1);
+			},
+			teardown: function (tour, options) {},
+		}, {
+			content: '<p>' + i18n._("To start pick a <b>symbol</b> block from markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)") + '</p>',
+			target: view.getUiComponent('flyout'),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			bind: ['tour_submarket_created'],
+			tour_submarket_created: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				window.addEventListener('tour:submarket_created', this.tour_submarket_created);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].reveal(true);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].select();
+				view.setOpacity(started, 'toolbox', 1);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:submarket_created', this.tour_submarket_created);
+				view.setOpacity(started, 'toolbox', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._("Great! Now add it to the <b>trade</b> block.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.submarket),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			bind: ['tour_submarket_added'],
+			tour_submarket_added: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				window.addEventListener('tour:submarket', this.tour_submarket_added);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:submarket', this.tour_submarket_added);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
+			},
+		}, {
+			content: '<p>' + i18n._("Alright! Now pick a <b>condition</b> block.") + '</p>',
+			target: view.getUiComponent('flyout'),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			bind: ['tour_condition_created'],
+			tour_condition_created: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				window.addEventListener('tour:condition_created', this.tour_condition_created);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
+				view.setOpacity(started, 'toolbox', 1);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:condition_created', this.tour_condition_created);
+				view.setOpacity(started, 'toolbox', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._("OK! Now add it to the symbol you added in the previous step.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.submarket),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			bind: ['tour_condition_added'],
+			tour_condition_added: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				window.addEventListener('tour:condition', this.tour_condition_added);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:condition', this.tour_condition_added);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+			},
+		}, {
+			content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="image/number.png"/>) ' + i18n._("from the Math menu") + '</p>',
+			target: view.getUiComponent('flyout'),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			bind: ['tour_number_created'],
+			tour_number_created: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				window.addEventListener('tour:number', this.tour_number_created);
+				blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
+				view.setOpacity(started, 'toolbox', 1);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:number', this.tour_number_created);
+				view.setOpacity(started, 'toolbox', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._("Click on the number block to edit its value") + ' (<img src="image/number_editing.png"/>), ' + i18n._("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.submarket),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			bind: ['tour_ticks_added'],
+			tour_ticks_added: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				window.addEventListener('tour:ticks', this.tour_ticks_added);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:ticks', this.tour_ticks_added);
+			},
+		}, {
+			content: '<p>' + i18n._("OK, Now add all remaining options to the condition block") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.submarket),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			bind: ['tour_options_added'],
+			tour_options_added: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
+				window.addEventListener('tour:options', this.tour_options_added);
+				view.getUiComponent('toolbox')
+					.css('opacity', 1);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:options', this.tour_options_added);
+				view.getUiComponent('toolbox')
+					.css('opacity', 1);
+			},
+		}, {
+			content: '<p>' + i18n._("That's it, now you have a complete trade block with its options. It's time to define a strategy") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.submarket),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.strategy),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("The received tick value is in the block <b>tick</b> and the tick direction (up or down) is in the block <b>direction</b>. You can pick them from the <b>Strategy</b> menu") + '</p>',
+			target: view.getUiComponent('flyout'),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			nextButton: true,
+			setup: function (tour, options) {
+				view.getUiComponent('toolbox')
+					.css('opacity', 1);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+			},
+			teardown: function (tour, options) {
+				view.getUiComponent('toolbox')
+					.css('opacity', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._("For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block") + '</p>',
+			target: view.getUiComponent('flyout'),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			bind: ['tour_purchase_created'],
+			tour_purchase_created: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+				view.getUiComponent('toolbox')
+					.css('opacity', 1);
+				window.addEventListener('tour:purchase_created', this.tour_purchase_created);
+			},
+			teardown: function (tour, options) {
+				view.getUiComponent('toolbox')
+					.css('opacity', 0.3);
+				window.removeEventListener('tour:purchase_created', this.tour_purchase_created);
+			},
+		}, {
+			content: '<p>' + i18n._("Now add it to the Strategy block.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.strategy),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			bind: ['tour_purchase_added'],
+			tour_purchase_added: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				window.addEventListener('tour:purchase', this.tour_purchase_added);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:purchase', this.tour_purchase_added);
+			},
+		}, {
+			content: '<p>' + i18n._("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.strategy),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.strategy),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.finish),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.finish),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.") + '</p>',
+			target: view.getUiComponent('flyout'),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			bind: ['tour_trade_again_created'],
+			tour_trade_again_created: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
+				view.getUiComponent('toolbox')
+					.css('opacity', 1);
+				window.addEventListener('tour:trade_again_created', this.tour_trade_again_created);
+			},
+			teardown: function (tour, options) {
+				view.getUiComponent('toolbox')
+					.css('opacity', 0.3);
+				window.removeEventListener('tour:trade_again_created', this.tour_trade_again_created);
+			},
+		}, {
+			content: '<p>' + i18n._("Now add it to the On Finish block") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.finish),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			bind: ['tour_trade_again'],
+			tour_trade_again: function (tour, options, model, value) {
+				tour.next();
+			},
+			setup: function (tour, options) {
+				window.addEventListener('tour:trade_again', this.tour_trade_again);
+			},
+			teardown: function (tour, options) {
+				window.removeEventListener('tour:trade_again', this.tour_trade_again);
+				blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+			},
+		}, {
+			content: '<p>' + i18n._("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.finish),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("OK, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.finish),
+			highlightTarget: true,
+			my: 'right center',
+			at: 'left center',
+			nextButton: true,
+			teardown: function (tour, options) {
+				view.setOpacityForAll(started, 1);
+			},
+		}, {
+			content: '<p>' + i18n._("If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
+			target: view.getUiComponent('undo_redo'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("You can save/load your blocks using these tools") + '</p>',
+			target: view.getUiComponent('file_management'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on these buttons. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
+			target: view.getUiComponent('run_stop'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
+			target: view.getUiComponent('workspace')
+				.find(view.uiComponents.submarket),
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("You can add a token to the bot using the <b>Add Token</b> button.") + '</p>',
+			target: view.getUiComponent('token'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("You can see the summary of your trades by clicking on this button.") + '</p>',
+			target: view.getUiComponent('summary'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+		}, {
+			content: '<p>' + i18n._("Go ahead and run the blocks. You can stop the code anytime you want using the stop button, or reset the values in the result panels using the reset button.") + '</p>',
+			target: view.getUiComponent('run_stop'),
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			nextButton: true,
+			teardown: function (tour, options) {
+				view.stopTutorial();
+			},
+		}, ];
+	
+		tour = new Tourist.Tour({
+			steps: steps
+		});
+	};
+	
+	var tour;
+	var started = false;
+	
+	module.exports = {
+		init: function(){
+			init();
+			return this;
+		},
+		start: function start() {
+			if (!globals.tour) {
+				started = true;
+				globals.tour = tour;
+				globals.tour.start();
+			}
+		},
+		stop: function stop() {
+			view.setOpacityForAll(true, 1);
+			started = false;
+			globals.tour.stop();
+			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+			delete globals.tour;
+		},
+	};
+
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var globals = __webpack_require__(22);
+	var view = __webpack_require__(29);
+	var storageManager = __webpack_require__(12);
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var init = function init(){
+		var steps = [{
+			content: '<p>' + i18n._('Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.') + '</p>',
+			target: view.getUiComponent('center'),
+			nextButton: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacityForAll(started, 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('The blocks you put in here will create a binary bot code which you can then execute using the run button.') + '</p>',
+			target: view.getUiComponent('center'),
+			nextButton: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'workspace', 1);
+			},
+			teardown: function (tour, options) {
+				view.setOpacity(started, 'workspace', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('You can add blocks from here to the workspace') + '</p>',
+			target: view.getUiComponent('toolbox'),
+			nextButton: true,
+			highlightTarget: true,
+			my: 'left center',
+			at: 'right center',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'toolbox', 1);
+			},
+			teardown: function (tour, options) {
+				view.setOpacity(started, 'toolbox', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('Erase the blocks by dropping them in here.') + '</p>',
+			target: view.getUiComponent('trash'),
+			nextButton: true,
+			highlightTarget: true,
+			my: 'right bottom',
+			at: 'left top',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'trash', 1);
+			},
+			teardown: function (tour, options) {
+				view.setOpacity(started, 'trash', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('Use these buttons to load and save blocks') + '</p>',
+			target: view.getUiComponent('file_management'),
+			nextButton: true,
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'file_management', 1);
+			},
+			teardown: function (tour, options) {
+				view.setOpacity(started, 'file_management', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
+			target: view.getUiComponent('token'),
+			nextButton: true,
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'token', 1);
+			},
+			teardown: function (tour, options) {
+				view.setOpacity(started, 'token', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
+			target: view.getUiComponent('undo_redo'),
+			nextButton: true,
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'undo_redo', 1);
+			},
+			teardown: function (tour, options) {
+				view.setOpacity(started, 'undo_redo', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('Click on this button to see the summary of your trades.') + '</p>',
+			target: view.getUiComponent('summary'),
+			nextButton: true,
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'summary', 1);
+			},
+			teardown: function (tour, options) {
+				view.setOpacity(started, 'summary', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('Use these buttons to run or stop your blocks, or reset your result panels.') + '</p>',
+			target: view.getUiComponent('run_stop'),
+			nextButton: true,
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			setup: function (tour, options) {
+				view.setOpacity(started, 'run_stop', 1);
+			},
+			teardown: function (tour, options) {
+				view.setOpacity(started, 'run_stop', 0.3);
+			},
+		}, {
+			content: '<p>' + i18n._('Good Luck!') + '</p>',
+			target: view.getUiComponent('center'),
+			nextButton: true,
+			highlightTarget: true,
+			my: 'top center',
+			at: 'bottom center',
+			teardown: function (tour, options) {
+				view.setOpacityForAll(started, 1);
+				storageManager.setDone('welcomeFinished');
+				view.stopTutorial();
+			},
+		}, ];
+	
+		tour = new Tourist.Tour({
+			steps: steps
+		});
+	};
+	
+	var tour;
+	var started = false;
+	
+	module.exports = {
+		init: function(){
+			init();
+			return this;
+		},
+		start: function start() {
+			if (!globals.tour) {
+				started = true;
+				globals.tour = tour;
+				globals.tour.start();
+			}
+		},
+		welcome: function welcome() {
+			if (!storageManager.isDone('welcomeFinished')) {
+				if (!globals.tour) {
+					started = true;
+					globals.tour = tour;
+					globals.tour.start();
+				}
+			}
+		},
+		stop: function stop() {
+			view.setOpacityForAll(true, 1);
+			started = false;
+			globals.tour.stop();
+			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+			delete globals.tour;
+		},
+	};
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(37);
+	__webpack_require__(38);
+	__webpack_require__(39);
+	__webpack_require__(40);
+	__webpack_require__(41);
+	__webpack_require__(42);
+	__webpack_require__(43);
+	__webpack_require__(44);
+	__webpack_require__(45);
+	__webpack_require__(46);
+	__webpack_require__(47);
+	__webpack_require__(48);
+	__webpack_require__(49);
+	__webpack_require__(50);
+	__webpack_require__(51);
+	__webpack_require__(52);
+	__webpack_require__(53);
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	blockly.JavaScript.trade = function (block) {
+		var account = block.getFieldValue('ACCOUNT_LIST');
+		var submarket = blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+		if (submarket === '') {
+			throw {
+				message: i18n._('You have to add a submarket first')
+			};
+		}
+		// TODO: Assemble JavaScript into code variable.
+		var code = 'var trade = function(trade_again){\nBot.trade.trade(\'' + account.trim() + '\', ' + submarket.trim() + ', trade_again);\n};\ntrade();\n';
+		return code;
+	};
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.balance = function(block) {
+	  var balance_type = block.getFieldValue('BALANCE_TYPE');
+		var code = 'Bot.trade.getBalance(\''+ balance_type +'\')';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.notify = function(block) {
+	  var notification_type = block.getFieldValue('NOTIFICATION_TYPE');
+	  var message = blockly.JavaScript.valueToCode(block, 'MESSAGE', blockly.JavaScript.ORDER_ATOMIC);
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = 'Bot.utils.log('+ message +', \''+ notification_type +'\', \'bottom left\');\n';
+	  return code;
+	};
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.total_profit = function(block) {
+		var code = 'Bot.trade.getTotalProfit()';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var globals = __webpack_require__(22);
+	var symbolNames = globals.activeSymbols.getSymbolNames();
+	Object.keys(symbolNames).forEach(function(symbol){
+		blockly.JavaScript[symbol.toLowerCase()] = function(block) {
+			if ( this.parentBlock_ === null ) {
+				return '';
+			}
+			var condition = blockly.JavaScript.statementToCode(block, 'CONDITION');
+			if ( !condition ) {
+				throw {message: 'A condition has to be defined for the symbol'};
+			}
+			var code = 'Bot.markets.symbolActions.' + symbol + '('+condition.trim()+')';
+			return code;
+		};
+	});
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.check_direction = function(block) {
+		var check_with = block.getFieldValue('CHECK_DIRECTION');
+		var code = '(direction === \'' + check_with + '\')';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.direction = function(block) {
+		var code = 'direction';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.purchase = function(block) {
+		if ( this.parentBlock_ === null ) {
+			return '';
+		}
+		var purchase_list = block.getFieldValue('PURCHASE_LIST');
+		var code = purchase_list;
+		code = 'Bot.trade.purchase(\'' + code + '\');\n';
+		return code;
+	};
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.on_strategy = function(block) {
+	  var stack = blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
+	  var code = 'Bot.globals.on_strategy = function on_strategy(tick, direction){\n' + stack + '\n};\n';
+	  return code;
+	};
+
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.tick = function(block) {
+		var code = 'tick';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.contract_check_result = function(block) {
+		var check_with = block.getFieldValue('CHECK_RESULT');
+		var code = '(result === \'' + check_with + '\')';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.contract_details = function(block) {
+		var code = 'details';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.on_finish = function(block) {
+	  var stack = blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
+	  var code = 'Bot.globals.on_finish = function on_finish(result, details){\n' + stack + '\n};\n';
+	  return code;
+	};
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.read_details = function(block) {
+	  var detail_index = block.getFieldValue('DETAIL_INDEX');
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = '((details instanceof Array && details.length === Bot.config.lists.DETAILS.length) ? details[' + ( parseInt(detail_index.trim()) - 1 ) + '] : \'\' )';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.contract_result = function(block) {
+		var code = 'result';
+	  return [code, blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	blockly.JavaScript.trade_again = function(block) {
+		if ( this.parentBlock_ === null ) {
+			return '';
+		}
+		var code = 'trade(true);\n';
+		return code;
+	};
+
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var config = __webpack_require__(23);
+	Object.keys(config.opposites).forEach(function(opposites){
+		blockly.JavaScript[opposites.toLowerCase()] = function(block) {
+			if ( this.parentBlock_ === null ) {
+				return '';
+			}
+			var duration = blockly.JavaScript.valueToCode(block, 'DURATION', blockly.JavaScript.ORDER_ATOMIC);
+			var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
+			var currency = block.getFieldValue('CURRENCY_LIST');
+			var amount = blockly.JavaScript.valueToCode(block, 'AMOUNT', blockly.JavaScript.ORDER_ATOMIC);
+			var prediction;
+			if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
+				prediction = blockly.JavaScript.valueToCode(block, 'PREDICTION', blockly.JavaScript.ORDER_ATOMIC);
+				if ( prediction === '' ) {
+					throw {message: 'All condition options are required'};
+				}
+			}
+			if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
+				throw {message: 'All condition options are required'};
+			}
+			var code = 'Bot.conditions.ticktrade({\n'+
+				'condition: \'' + opposites + '\',\n'+
+				'duration: ' + duration + ',\n'+
+				'payouttype: \'' + payouttype + '\',\n'+
+				'currency: \'' + currency + '\',\n'+
+				'amount: (' + amount + ').toFixed(2),\n'+
+				((config.opposites_have_barrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
+			'})';
+			return code;
+		};
+	});
+
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(55);
+	__webpack_require__(57);
+	__webpack_require__(58);
+	__webpack_require__(59);
+	__webpack_require__(60);
+	__webpack_require__(61);
+	__webpack_require__(62);
+	__webpack_require__(63);
+	__webpack_require__(64);
+	__webpack_require__(65);
+	__webpack_require__(66);
+	__webpack_require__(67);
+	__webpack_require__(68);
+	__webpack_require__(69);
+	__webpack_require__(70);
+	__webpack_require__(71);
+	__webpack_require__(72);
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(56);
+	var globals = __webpack_require__(22);
+	blockly.Blocks.trade = {
+		init: function () {
+			this.appendDummyInput()
+				.appendField(i18n._("Trade With Account:"))
+				.appendField(new blockly.FieldDropdown(globals.getAccounts), "ACCOUNT_LIST");
+			this.appendStatementInput("SUBMARKET")
+				.setCheck("Submarket")
+				.appendField(i18n._("Submarket"));
+			this.setPreviousStatement(true, null);
+			this.setColour(60);
+			this.setTooltip(i18n._('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.'));
+			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+		},
+		onchange: function (ev) {
+			relationChecker.trade(this, ev);
+		},
+	};
+
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var config = __webpack_require__(23);
+	var globals = __webpack_require__(22);
+	var view = __webpack_require__(29);
+	var botUtils = __webpack_require__(21);
+	var i18n = __webpack_require__(3);
+	var getNumField = function getNumField(block, fieldName) {
+		var field = block.getInputTargetBlock(fieldName);
+		if (field !== null && field.type === 'math_number') {
+			field = field.getFieldValue('NUM')
+				.trim();
+			return field;
+		}
+		return '';
+	};
+	
+	var symbolNames = globals.activeSymbols.getSymbolNames();
+	
+	var isInteger = function isInteger(amount) {
+		return !isNaN(+amount) && parseInt(amount) === parseFloat(amount);
+	};
+	
+	var isInRange = function isInRange(amount, min, max) {
+		return !isNaN(+amount) && +amount >= min && +amount <= max;
+	};
+	
+	var trade = function trade(_trade, ev) {
+		if (ev.type === 'create') {
+			if (symbolNames.hasOwnProperty(blockly.mainWorkspace.getBlockById(ev.blockId).type.toUpperCase())) {
+				botUtils.broadcast('tour:submarket_created');
+			}
+			if (config.conditions.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
+					.type) >= 0) {
+				botUtils.broadcast('tour:condition_created');
+			}
+			if (blockly.mainWorkspace.getBlockById(ev.blockId)
+				.type === 'math_number') {
+				botUtils.broadcast('tour:number');
+			}
+			if (blockly.mainWorkspace.getBlockById(ev.blockId)
+				.type === 'purchase') {
+				botUtils.broadcast('tour:purchase_created');
+			}
+			if (blockly.mainWorkspace.getBlockById(ev.blockId)
+				.type === 'trade_again') {
+				botUtils.broadcast('tour:trade_again_created');
+			}
+		}
+		if (_trade.childBlocks_.length && !symbolNames.hasOwnProperty(_trade.childBlocks_[0].type.toUpperCase())) {
+			botUtils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
+			Array.prototype.slice.apply(_trade.childBlocks_)
+				.forEach(function (child) {
+					child.unplug();
+				});
+		} else if (_trade.childBlocks_.length > 0) {
+			submarket(_trade.childBlocks_[0], ev);
+			botUtils.broadcast('tour:submarket');
+			if (ev.hasOwnProperty('newInputName')) {
+				botUtils.addPurchaseOptions();
+			}
+		}
+		var topParent = botUtils.findTopParentBlock(_trade);
+		if (topParent !== null) {
+			if (symbolNames.hasOwnProperty(topParent.type.toUpperCase()) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
+				botUtils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
+				_trade.unplug();
+			}
+		}
+	};
+	var submarket = function submarket(_submarket, ev) {
+		if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
+			botUtils.log(i18n._('Submarket blocks can only accept condition blocks'), 'warning');
+			Array.prototype.slice.apply(_submarket.childBlocks_)
+				.forEach(function (child) {
+					child.unplug();
+				});
+		} else if (_submarket.childBlocks_.length > 0) {
+			condition(_submarket.childBlocks_[0], ev, true);
+		}
+		if (_submarket.parentBlock_ !== null) {
+			if (_submarket.parentBlock_.type !== 'trade') {
+				botUtils.log(i18n._('Submarket blocks have to be added to the trade block'), 'warning');
+				_submarket.unplug();
+			}
+		}
+	};
+	var condition = function condition(_condition, ev, calledByParent) {
+		if (_condition.parentBlock_ !== null) {
+			if (!symbolNames.hasOwnProperty(_condition.parentBlock_.type.toUpperCase())) {
+				botUtils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
+				_condition.unplug();
+			} else {
+				botUtils.broadcast('tour:condition');
+				if (!calledByParent) {
+					if ((ev.type === 'change' && ev.element && ev.element === 'field') || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
+						var added = [];
+						var duration = getNumField(_condition, 'DURATION');
+						if (duration !== '') {
+							if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
+								botUtils.log(i18n._('Number of ticks must be between 5 and 10'), 'warning');
+							} else {
+								botUtils.broadcast('tour:ticks');
+								added.push('DURATION');
+							}
+						}
+						var amount = getNumField(_condition, 'AMOUNT');
+						if (amount !== '') {
+							added.push('AMOUNT');
+						}
+						var prediction = getNumField(_condition, 'PREDICTION');
+						if (prediction !== '') {
+							if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
+								botUtils.log(i18n._('Prediction must be one digit'), 'warning');
+							} else {
+								added.push('PREDICTION');
+							}
+						}
+						if (added.indexOf('AMOUNT') >= 0 && added.indexOf('DURATION') >= 0) {
+							if (_condition.inputList.slice(-1)[0].name === 'PREDICTION') {
+								if (added.indexOf('PREDICTION') >= 0) {
+									botUtils.broadcast('tour:options');
+								}
+							} else {
+								botUtils.broadcast('tour:options');
+							}
+						}
+					}
+				}
+			}
+		}
+	};
+	var inside_strategy = function inside_strategy(blockObject, ev, name) {
+		var topParent = botUtils.findTopParentBlock(blockObject);
+		if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
+			botUtils.log(name + ' ' + i18n._('must be added inside the strategy block'), 'warning');
+			blockObject.unplug();
+		} else if (topParent !== null && topParent.type === 'on_strategy') {
+			if (blockObject.type === 'purchase') {
+				botUtils.broadcast('tour:purchase');
+			}
+		}
+	};
+	var inside_finish = function inside_finish(blockObject, ev, name) {
+		var topParent = botUtils.findTopParentBlock(blockObject);
+		if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
+			botUtils.log(name + ' ' + i18n._('must be added inside the finish block'), 'warning');
+			blockObject.unplug();
+		} else if (topParent !== null && topParent.type === 'on_finish') {
+			if (blockObject.type === 'trade_again') {
+				botUtils.broadcast('tour:trade_again');
+			}
+		}
+	};
+	module.exports = {
+		trade: trade,
+		submarket: submarket,
+		condition: condition,
+		inside_strategy: inside_strategy,
+		inside_finish: inside_finish,
+	};
+
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.balance = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Balance:"))
+	        .appendField(new blockly.FieldDropdown([[i18n._("string"), "STR"], [i18n._("number"), "NUM"]]), "BALANCE_TYPE");
+	    this.setOutput(true, null);
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Get balance number or string'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.notify = {
+	  init: function() {
+	    this.appendValueInput("MESSAGE")
+	        .setCheck(null)
+	        .appendField(i18n._("Notify type:"))
+	        .appendField(new blockly.FieldDropdown([[i18n._("success"), "success"], [i18n._("information"), "info"], [i18n._("warning"), "warn"], [i18n._("error"), "error"]]), "NOTIFICATION_TYPE");
+	    this.setPreviousStatement(true, null);
+	    this.setNextStatement(true, null);
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Creates notification'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.total_profit = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Total Profit"));
+	    this.setOutput(true, "Number");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the total profit'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#abpy8a
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var globals = __webpack_require__(22);
+	var relationChecker = __webpack_require__(56);
+	var symbolNames = globals.activeSymbols.getSymbolNames();
+	Object.keys(symbolNames).forEach(function(symbol){
+		blockly.Blocks[symbol.toLowerCase()] = {
+			init: function() {
+				this.appendDummyInput()
+					.appendField(symbolNames[symbol]);
+				this.appendStatementInput("CONDITION")
+					.setCheck("Condition");
+				this.setInputsInline(true);
+				this.setPreviousStatement(true, "Submarket");
+				this.setColour(345);
+				this.setTooltip(i18n._('Chooses the symbol:') + ' ' + symbolNames[symbol]);
+				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+			},
+			onchange: function(ev){
+				relationChecker.submarket(this, ev);
+			}
+		};
+	});
+
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(56);
+	var config = __webpack_require__(23);
+	blockly.Blocks.check_direction = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Direction is"))
+					.appendField(new blockly.FieldDropdown(config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
+	    this.setOutput(true, "Boolean");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('True if the direction matches the selection'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_strategy(this, ev, 'Check Direction');
+		},
+	};
+
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(56);
+	
+	blockly.Blocks.direction = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Tick Direction"));
+	    this.setOutput(true, "String");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the tick direction received by a strategy block, its value could be "up" if the tick is more than before, "down" if less than before and empty ("") if the tick is equal to the previous tick'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_strategy(this, ev, 'Tick Direction');
+		},
+	};
+	
+
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(56);
+	var globals = __webpack_require__(22);
+	
+	blockly.Blocks.purchase = {
+		init: function() {
+			this.appendDummyInput()
+				.appendField(i18n._("Purchase"))
+				.appendField(new blockly.FieldDropdown(globals.getPurchaseChoices), "PURCHASE_LIST");
+			this.setPreviousStatement(true, 'Purchase');
+			this.setColour(180);
+			this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
+			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+		},
+		onchange: function(ev) {
+			relationChecker.inside_strategy(this, ev, 'Purchase');
+		},
+	};
+
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.on_strategy = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
+	    this.appendStatementInput("STRATEGY_STACK")
+	        .setCheck('Purchase');
+	    this.setColour(290);
+	    this.setTooltip(i18n._('This block decides what to do each time a new tick is received'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
+	
+	var blockly = __webpack_require__(13);
+	var relationChecker = __webpack_require__(56);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.tick = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Tick Value"));
+	    this.setOutput(true, "Number");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_strategy(this, ev, 'Tick Value');
+		},
+	};
+
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var config = __webpack_require__(23);
+	var relationChecker = __webpack_require__(56);
+	blockly.Blocks.contract_check_result = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Result is"))
+					.appendField(new blockly.FieldDropdown(config.lists.CHECK_RESULT), "CHECK_RESULT");
+	    this.setOutput(true, "Boolean");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('True if the result matches the selection'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Check Result');
+		},
+	};
+
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(56);
+	
+	blockly.Blocks.contract_details = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Contract Details"));
+	    this.setOutput(true, "Array");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the list of details for the finished contract'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Contract Details');
+		},
+	};
+
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	
+	blockly.Blocks.on_finish = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("On Finish (Decide what to do after the contract is finished)"));
+	    this.appendStatementInput("FINISH_STACK")
+	        .setCheck("TradeAgain");
+	    this.setColour(290);
+	    this.setTooltip(i18n._('This block decides what to do when a purchased contract is finished'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(56);
+	var config = __webpack_require__(23);
+	
+	blockly.Blocks.read_details = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Contract Detail:"))
+	        .appendField(new blockly.FieldDropdown(config.lists.DETAILS), "DETAIL_INDEX");
+			this.setOutput(true, null);
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Reads a selected option from contract details list'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Read Contract Details');
+		},
+	};
+
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(56);
+	
+	blockly.Blocks.contract_result = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField(i18n._("Contract Result"));
+	    this.setOutput(true, "String");
+	    this.setColour(180);
+	    this.setTooltip(i18n._('Returns the result of the finished contract'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Contract Result');
+		},
+	};
+	
+
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var relationChecker = __webpack_require__(56);
+	
+	blockly.Blocks.trade_again = {
+		init: function() {
+			this.appendDummyInput()
+				.appendField(i18n._("Trade Again"));
+			this.setPreviousStatement(true, 'TradeAgain');
+			this.setColour(180);
+			this.setTooltip(i18n._('Runs the trade block again'));
+			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+		},
+		onchange: function(ev) {
+			relationChecker.inside_finish(this, ev, 'Trade Again');
+		},
+	};
+
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#cur8so
+	var blockly = __webpack_require__(13);
+	var i18n = __webpack_require__(3);
+	var config = __webpack_require__(23);
+	var utils = __webpack_require__(21);
+	var relationChecker = __webpack_require__(56);
+	
+	Object.keys(config.opposites).forEach(function(opposites){
+		blockly.Blocks[opposites.toLowerCase()] = {
+			init: function() {
+				var option_names = [];
+				config.opposites[opposites].forEach(function(options){
+					
+					var option_alias = Object.keys(options)[0];
+					var option_name = options[option_alias];
+					option_names.push(option_name);	
+				});
+				this.appendDummyInput()
+					.appendField(option_names[0] + '/' + option_names[1]);
+				this.appendValueInput("DURATION")
+					.setCheck("Number")
+					.appendField(i18n._("Ticks:"));
+				this.appendDummyInput()
+					.appendField(i18n._("Payout:"))
+					.appendField(new blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
+				this.appendDummyInput()
+					.appendField(i18n._("Currency:"))
+					.appendField(new blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
+				this.appendValueInput("AMOUNT")
+					.setCheck("Number")
+					.appendField(i18n._("Amount:"));
+				if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
+					this.appendValueInput("PREDICTION")
+						.setCheck("Number")
+						.appendField(i18n._("Prediction:"));
+				}
+				this.setInputsInline(false);
+				this.setPreviousStatement(true, "Condition");
+				this.setColour(15);
+				this.setTooltip(i18n._('Provides the contract conditions:') + ' ' + option_names[0] + '/' + option_names[1]);
+				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+			},
+			onchange: function(ev){
+				relationChecker.condition(this, ev);
+			},
+		};
+	});
+
 
 /***/ },
 /* 73 */
@@ -37594,6 +37827,36 @@
 	module.exports = onlyChild;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(76)))
 
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var config = __webpack_require__(23);
+	module.exports = {
+		ticktrade: function ticktrade(parameters) {
+			var options = [];
+			var opposites = config.opposites[parameters.condition];
+			opposites.forEach(function (option) {
+				var option_name = Object.keys(option)[0];
+				var option_data = {
+					'amount': parameters.amount,
+					'basis': parameters.payouttype,
+					'contract_type': option_name,
+					'currency': parameters.currency,
+					'duration': parameters.duration,
+					'duration_unit': 't',
+				};
+				if (parameters.hasOwnProperty('barrier')) {
+					option_data.barrier = parameters.barrier;
+				}
+				options.push(option_data);
+			});
+	
+			return options;
+		}
+	};
+
+
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-5ed69b5d80c405b8fc47.map
+//# sourceMappingURL=bot-3dffacd60df64e89544e.map

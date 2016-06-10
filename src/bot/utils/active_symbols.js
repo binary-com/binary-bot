@@ -141,7 +141,7 @@ var ActiveSymbols = (function () {
             return tradeUnderlyings;
         },
         getSymbolNames: function getSymbolNames(active_symbols){
-            var symbols = this.getSymbols(active_symbols);
+            var symbols = clone(this.getSymbols(active_symbols));
             Object.keys(symbols).map(function(key){
                 symbols[key] = symbols[key].display;
             });

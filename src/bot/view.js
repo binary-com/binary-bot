@@ -12,8 +12,8 @@ var fileSaver = require('filesaverjs');
 require('./utils/draggable');
 
 var initTours = function initTours() {
-	tours.introduction = require('./tours/introduction');
-	tours.welcome = require('./tours/welcome');
+	tours.introduction = require('./tours/introduction').init();
+	tours.welcome = require('./tours/welcome').init();
 	tours.welcome.welcome();
 };
 
@@ -182,37 +182,6 @@ var run = function run() {
 	}
 };
 
-$.get('xml/toolbox.xml', function (toolbox) {
-	require('./code_generators/index');
-	require('./definitions/index');
-	var workspace = blockly.inject('blocklyDiv', {
-		media: 'js/blockly/media/',
-		toolbox: i18n.xml(toolbox.getElementsByTagName('xml')[0]),
-		zoom: {
-			controls: true,
-			wheel: false,
-			startScale: 1.0,
-			maxScale: 3,
-			minScale: 0.3,
-			scaleSpeed: 1.2
-		},
-		trashcan: true,
-	});
-	$.get('xml/main.xml', function (main) {
-		blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-		blockly.mainWorkspace.getBlockById('trade')
-			.setDeletable(false);
-		blockly.mainWorkspace.getBlockById('strategy')
-			.setDeletable(false);
-		blockly.mainWorkspace.getBlockById('finish')
-			.setDeletable(false);
-		botUtils.updateTokenList();
-		botUtils.addPurchaseOptions();
-		blockly.mainWorkspace.clearUndo();
-		initTours();
-	});
-});
-
 var handleFileSelect = function handleFileSelect(e) {
 	var files;
 	if (e.type === 'drop') {
@@ -270,11 +239,6 @@ var handleDragOver = function handleDragOver(e) {
 
 var dropZone = document.getElementById('drop_zone');
 
-dropZone.addEventListener('dragover', handleDragOver, false);
-dropZone.addEventListener('drop', handleFileSelect, false);
-document.getElementById('files')
-	.addEventListener('change', handleFileSelect, false);
-
 var reset = function reset(e) {
 	if (e) {
 		e.preventDefault();
@@ -300,73 +264,111 @@ var stop = function stop(e) {
 		.bind('click', reset);
 };
 
-$('#tutorialButton')
-	.bind('click', startTutorial);
-$('#stopButton')
-	.text(i18n._('Reset'));
-$('#stopButton')
-	.bind('click', reset);
+var show = function show(done) {
+	dropZone.addEventListener('dragover', handleDragOver, false);
+	dropZone.addEventListener('drop', handleFileSelect, false);
+	document.getElementById('files')
+		.addEventListener('change', handleFileSelect, false);
 
-$('#summaryPanel .exitPanel')
-	.click(function () {
-		$(this)
-			.parent()
-			.hide();
+	$('#tutorialButton')
+		.bind('click', startTutorial);
+	$('#stopButton')
+		.text(i18n._('Reset'));
+	$('#stopButton')
+		.bind('click', reset);
+
+	$('#summaryPanel .exitPanel')
+		.click(function () {
+			$(this)
+				.parent()
+				.hide();
+		});
+
+	$('#summaryPanel')
+		.hide();
+
+	$('#summaryPanel')
+		.drags();
+
+	$('#chart')
+		.mousedown(function (e) { // prevent chart to trigger draggable
+			e.stopPropagation();
+		});
+
+	$('table')
+		.mousedown(function (e) { // prevent tables to trigger draggable
+			e.stopPropagation();
+		});
+
+	globals.showTradeInfo();
+	$('#saveXml')
+		.click(function (e) {
+			saveXml();
+		});
+
+	$('#undo')
+		.click(function (e) {
+			globals.undoBlocks();
+		});
+
+	$('#redo')
+		.click(function (e) {
+			globals.redoBlocks();
+		});
+
+	$('#showSummary')
+		.click(function (e) {
+			$('#summaryPanel')
+				.show();
+		});
+
+	$('#run')
+		.click(function (e) {
+			run();
+		});
+
+	$('#logout')
+		.click(function (e) {
+			botUtils.logout();
+		});
+
+	$('#runButton')
+		.click(function (e) {
+			run();
+		});
+
+	$.get('xml/toolbox.xml', function (toolbox) {
+		require('./code_generators');
+		require('./definitions');
+		var workspace = blockly.inject('blocklyDiv', {
+			media: 'js/blockly/media/',
+			toolbox: botUtils.xmlToStr(i18n.xml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
+			zoom: {
+				controls: true,
+				wheel: false,
+				startScale: 1.0,
+				maxScale: 3,
+				minScale: 0.3,
+				scaleSpeed: 1.2
+			},
+			trashcan: true,
+		});
+		$.get('xml/main.xml', function (main) {
+			blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+			blockly.mainWorkspace.getBlockById('trade')
+				.setDeletable(false);
+			blockly.mainWorkspace.getBlockById('strategy')
+				.setDeletable(false);
+			blockly.mainWorkspace.getBlockById('finish')
+				.setDeletable(false);
+			botUtils.updateTokenList();
+			botUtils.addPurchaseOptions();
+			blockly.mainWorkspace.clearUndo();
+			initTours();
+			done();
+		});
 	});
-
-$('#summaryPanel')
-	.hide();
-
-$('#summaryPanel')
-	.drags();
-
-$('#chart')
-	.mousedown(function (e) { // prevent chart to trigger draggable
-		e.stopPropagation();
-	});
-
-$('table')
-	.mousedown(function (e) { // prevent tables to trigger draggable
-		e.stopPropagation();
-	});
-
-globals.showTradeInfo();
-$('#saveXml')
-	.click(function (e) {
-		saveXml();
-	});
-
-$('#undo')
-	.click(function (e) {
-		globals.undoBlocks();
-	});
-
-$('#redo')
-	.click(function (e) {
-		globals.redoBlocks();
-	});
-
-$('#showSummary')
-	.click(function (e) {
-		$('#summaryPanel')
-			.show();
-	});
-
-$('#run')
-	.click(function (e) {
-		run();
-	});
-
-$('#logout')
-	.click(function (e) {
-		botUtils.logout();
-	});
-
-$('#runButton')
-	.click(function (e) {
-		run();
-	});
-
+};
 
 module.exports = {
 	uiComponents: uiComponents,
@@ -376,4 +378,5 @@ module.exports = {
 	stopTutorial: stopTutorial,
 	startTutorial: startTutorial,
 	initTours: initTours,
+	show: show
 };

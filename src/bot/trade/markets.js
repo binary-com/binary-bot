@@ -1,21 +1,18 @@
-var config = require('../globals/config');
+var globals = require('../globals/globals');
 var trade = require('./trade');
 var markets = {};
-markets.volatility = {};
-config.ticktrade_markets.forEach(function (market) {
-	markets.volatility[market] = function (options) {
-		var symbol = market.toUpperCase();
-
+markets.symbolActions = {};
+var symbolNames = globals.activeSymbols.getSymbolNames();
+Object.keys(symbolNames).forEach(function (symbol) {
+	markets.symbolActions[symbol] = function (options) {
 		trade.setSymbol(symbol);
 		options.forEach(function (option) {
 			option.symbol = symbol;
 		});
-
 		var submarket = function submarket(cb) {
 			trade.submitProposal(options[0]);
 			trade.submitProposal(options[1]);
 		};
-
 		return submarket;
 	};
 });

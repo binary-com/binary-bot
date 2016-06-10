@@ -1,20 +1,20 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#abpy8a
 var blockly = require('blockly');
 var i18n = require('i18n');
-var config = require('../../../globals/config');
-var relationChecker = require('../../../utils/relationChecker');
-
-config.ticktrade_markets.forEach(function(market, index){
-	blockly.Blocks[market] = {
+var globals = require('../../globals/globals');
+var relationChecker = require('../../utils/relationChecker');
+var symbolNames = globals.activeSymbols.getSymbolNames();
+Object.keys(symbolNames).forEach(function(symbol){
+	blockly.Blocks[symbol.toLowerCase()] = {
 		init: function() {
 			this.appendDummyInput()
-				.appendField(config.ticktrade_market_names[index]);
+				.appendField(symbolNames[symbol]);
 			this.appendStatementInput("CONDITION")
 				.setCheck("Condition");
 			this.setInputsInline(true);
 			this.setPreviousStatement(true, "Submarket");
 			this.setColour(345);
-			this.setTooltip(i18n._('Chooses the market:') + ' ' + config.ticktrade_market_names[index]);
+			this.setTooltip(i18n._('Chooses the symbol:') + ' ' + symbolNames[symbol]);
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){

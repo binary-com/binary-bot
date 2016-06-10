@@ -235,18 +235,7 @@
 	<category name="Variable" id="Variables" colour="330" custom="VARIABLE" i18n-text="Variable">></category>
 	<category name="Functions" id="Functions" colour="290" custom="PROCEDURE" i18n-text="Functions"></category>
 	<category name="Binary" colour="60" i18n-text="Binary">
-		<category name="Volatility Indices" colour="345" i18n-text="Volatility Indices">
-			<category name="Continuous Indices" colour="345" i18n-text="Continuous Indices">
-				<block type="r_100"></block>
-				<block type="r_25"></block>
-				<block type="r_50"></block>
-				<block type="r_75"></block>
-			</category>
-			<category name="Daily Reset Indices" colour="345" i18n-text="Daily Reset Indices">
-				<block type="rdbear"></block>
-				<block type="rdbull"></block>
-			</category>
-		</category>
+		<!--Markets-->
 		<category name="Conditions" colour="15" i18n-text="Conditions">
 			<block type="updown"></block>
 			<block type="asian"></block>

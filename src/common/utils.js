@@ -1,6 +1,28 @@
 var storageManager = require('storageManager');
 var blockly = require('blockly');
 
+var asyncChain = function asyncChain(){
+  return {
+    asyncCallChain: [],
+    pipe: function pipe(fun){
+      this.asyncCallChain.push(fun);
+      return this;
+    },
+    exec: function exec() {
+      var wrap = function (call, callback) {
+        return function () {
+          call(callback);
+        };
+      };
+      for (var i = this.asyncCallChain.length-1; i > -1; i--) {
+        this.asyncCallChain[i] = wrap(this.asyncCallChain[i], i < this.asyncCallChain.length - 1 ? this.asyncCallChain[i + 1] : function(){});
+      }
+      this.asyncCallChain[0]();
+    },
+  };
+};
+
+
 var parseQueryString = function parseQueryString() {
 	var str = window.location.search;
 	var objURL = {};
@@ -71,5 +93,6 @@ module.exports = {
 	removeAllTokens: removeAllTokens,
 	addTokenIfValid: addTokenIfValid,
 	getAccountName: getAccountName,
-	addAllTokens: addAllTokens
+	addAllTokens: addAllTokens,
+	asyncChain: asyncChain
 };

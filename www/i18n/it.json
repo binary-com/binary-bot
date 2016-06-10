@@ -199,5 +199,13 @@
   "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
   "33e4bca830fc829ea645c969eaa6403d9fd8df9b": "Chooses the market:",
   "c74f890044cfe8fc5a3631d46797dc7613c1cf28": "Logged in to:",
-  "c9682cd9c0d26c6a70d2fd02ab46f490ad8b3335": "Computational Thinking Course"
+  "c9682cd9c0d26c6a70d2fd02ab46f490ad8b3335": "Computational Thinking Course",
+  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
+  "ed508b921e0828ee1881290914a8099df1fb0bc8": "To start pick a <b>symbol</b> block from Volatility Indices. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)",
+  "f4bad39e0da47ce1f413083ec703c9bdb4e821bc": "To start pick a <b>symbol</b> block from markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)",
+  "a8ce204c869e6df24277611290801e35b787c870": "OK! Now add it to the symbol you added in the previous step.",
+  "837730f3669584a070e3252eccf39aa0b96d3820": "You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.",
+  "362ade1b08d481c8c83c5dbc63866c81b4706814": "Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.",
+  "da9f5de675878c0d60438194c913be6be8442451": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page."
 }

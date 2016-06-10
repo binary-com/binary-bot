@@ -1,10 +1,49 @@
 var globals = require('../globals/globals');
 var config = require('../globals/config');
+var activeSymbols = require('./active_symbols');
 var storageManager = require('storageManager');
 var appId = require('appId');
 var blockly = require('blockly');
 var commonUtils = require('utils');
 var i18n = require('i18n');
+
+var createXmlTag = function createXmlTag(obj) {
+	var xmlStr = '<category name="Markets" colour="345" i18n-text="Markets">\n';
+	Object.keys(obj).forEach(function(market){
+		xmlStr += '\t<category name="'+ obj[market].name +'" colour="345">\n';
+			Object.keys(obj[market].submarkets).forEach(function(submarket){
+				xmlStr += '\t\t<category name="'+ obj[market].submarkets[submarket].name +'" colour="345">\n';
+					Object.keys(obj[market].submarkets[submarket].symbols).forEach(function(symbol){
+						xmlStr += '\t\t\t<block type="'+ symbol.toLowerCase() +'"></block>\n';
+					});
+				xmlStr += '\t\t</category>\n';
+			});
+		xmlStr += '\t</category>\n';
+	});
+	xmlStr += '</category>\n';
+	return xmlStr;
+};
+
+var xmlToStr = function xmlToStr(xml){
+	var serializer = new XMLSerializer(); 
+	return serializer.serializeToString(xml);
+};
+
+var marketsToXml = function marketsToXml(xml){
+	var xmlStr = xmlToStr(xml);
+	var marketXml = createXmlTag(globals.activeSymbols.getMarkets());
+	return xmlStr.replace('<!--Markets-->', marketXml);
+};
+
+var getActiveSymbols = function getActiveSymbols(callback) {
+	var LiveApi = require('binary-live-api')
+		.LiveApi;
+	var api = new LiveApi();
+	api.getActiveSymbolsBrief().then(function(response){
+		activeSymbols.getMarkets(response.active_symbols);
+		callback(activeSymbols);
+	});
+};
 
 var findToken = function findToken(token) {
 	var index = -1;
@@ -230,5 +269,8 @@ module.exports = {
 	findTopParentBlock: findTopParentBlock,
 	updateTokenList: updateTokenList,
 	addPurchaseOptions: addPurchaseOptions,
-	logout: logout
+	logout: logout,
+	getActiveSymbols: getActiveSymbols,
+	marketsToXml: marketsToXml,
+	xmlToStr: xmlToStr
 };
