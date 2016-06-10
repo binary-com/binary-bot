@@ -207,5 +207,6 @@
   "a8ce204c869e6df24277611290801e35b787c870": "OK! Now add it to the symbol you added in the previous step.",
   "837730f3669584a070e3252eccf39aa0b96d3820": "You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.",
   "362ade1b08d481c8c83c5dbc63866c81b4706814": "Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.",
-  "da9f5de675878c0d60438194c913be6be8442451": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page."
+  "da9f5de675878c0d60438194c913be6be8442451": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.",
+  "34dae9390583a6d4bba3b71c5929df4fe4d985b0": "does not support this condition"
 }

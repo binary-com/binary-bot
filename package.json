@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "deep-diff": "^0.3.4",
     "del": "^2.2.0",
     "gulp-clean-css": "^2.0.7",
     "gulp-concat-css": "^2.3.0",

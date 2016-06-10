@@ -28805,6 +28805,49 @@
 	var commonUtils = __webpack_require__(11);
 	var i18n = __webpack_require__(3);
 	
+	var isConditionAllowedInSymbol = function isConditionAllowedInSymbol(symbol, condition) {
+		var allowedConditions = getAllowedConditions(symbol);
+		return allowedConditions.indexOf(condition) >= 0;
+	};
+	
+	var getAllowedConditions = function getAllowedConditions(symbol) {
+		var allowedConditions = [];
+		globals.assetIndex.forEach(function(assetIndex){
+			if (assetIndex[0].toLowerCase() === symbol.toLowerCase()) {
+				assetIndex[2].forEach(function(conditionInfo){
+					var conditionName = conditionInfo[0];
+					if ( config.conditionsCategory.hasOwnProperty(conditionName) ) {
+						allowedConditions = allowedConditions.concat(config.conditionsCategory[conditionName]);
+					}
+				});
+			}
+		});
+		return allowedConditions;
+	};
+	
+	var findSymbol = function findSymbol(symbol) {
+		var activeSymbols = globals.activeSymbols.getSymbolNames();
+		var result;
+		Object.keys(activeSymbols).forEach(function(key){
+			if (key.toLowerCase() === symbol.toLowerCase()) {
+				if (!result) {
+					result = {};
+				}
+				result[key] = activeSymbols[key];
+			}
+		});
+		return result;
+	};
+	
+	var getAssetIndex = function getAssetIndex(api, cb) {
+		api.getAssetIndex().then(function(response){
+			globals.assetIndex = response.asset_index;
+			if ( cb ) {
+				cb();
+			}
+		});
+	};
+	
 	var createXmlTag = function createXmlTag(obj) {
 		var xmlStr = '<category name="Markets" colour="345" i18n-text="Markets">\n';
 		Object.keys(obj).forEach(function(market){
@@ -28839,7 +28882,9 @@
 		var api = new LiveApi();
 		api.getActiveSymbolsBrief().then(function(response){
 			activeSymbols.getMarkets(response.active_symbols);
-			callback(activeSymbols);
+			getAssetIndex(api, function(){
+				callback(activeSymbols);
+			});
 		});
 	};
 	
@@ -29070,7 +29115,10 @@
 		logout: logout,
 		getActiveSymbols: getActiveSymbols,
 		marketsToXml: marketsToXml,
-		xmlToStr: xmlToStr
+		xmlToStr: xmlToStr,
+		findSymbol: findSymbol,
+		getAssetIndex: getAssetIndex,
+		isConditionAllowedInSymbol: isConditionAllowedInSymbol
 	};
 
 
@@ -29313,7 +29361,11 @@
 			'MATCHESDIFFERS',
 			'OVERUNDER',
 		],
-	
+		conditionsCategory: {
+			callput: ['updown'],
+			asian: ['asian'],
+			digits: ['matchesdiffers', 'evenodd', 'overunder']
+		},
 		conditions: ['updown', 'asian', 'matchesdiffers', 'evenodd', 'overunder'],
 	};
 
@@ -33107,8 +33159,6 @@
 		return '';
 	};
 	
-	var symbolNames = globals.activeSymbols.getSymbolNames();
-	
 	var isInteger = function isInteger(amount) {
 		return !isNaN(+amount) && parseInt(amount) === parseFloat(amount);
 	};
@@ -33119,7 +33169,7 @@
 	
 	var trade = function trade(_trade, ev) {
 		if (ev.type === 'create') {
-			if (symbolNames.hasOwnProperty(blockly.mainWorkspace.getBlockById(ev.blockId).type.toUpperCase())) {
+			if (botUtils.findSymbol(blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
 				botUtils.broadcast('tour:submarket_created');
 			}
 			if (config.conditions.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
@@ -33139,7 +33189,7 @@
 				botUtils.broadcast('tour:trade_again_created');
 			}
 		}
-		if (_trade.childBlocks_.length && !symbolNames.hasOwnProperty(_trade.childBlocks_[0].type.toUpperCase())) {
+		if (_trade.childBlocks_.length && !botUtils.findSymbol(_trade.childBlocks_[0].type)) {
 			botUtils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
 			Array.prototype.slice.apply(_trade.childBlocks_)
 				.forEach(function (child) {
@@ -33154,7 +33204,7 @@
 		}
 		var topParent = botUtils.findTopParentBlock(_trade);
 		if (topParent !== null) {
-			if (symbolNames.hasOwnProperty(topParent.type.toUpperCase()) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
+			if (botUtils.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
 				botUtils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
 				_trade.unplug();
 			}
@@ -33179,8 +33229,12 @@
 	};
 	var condition = function condition(_condition, ev, calledByParent) {
 		if (_condition.parentBlock_ !== null) {
-			if (!symbolNames.hasOwnProperty(_condition.parentBlock_.type.toUpperCase())) {
+			if (!botUtils.findSymbol(_condition.parentBlock_.type)) {
 				botUtils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
+				_condition.unplug();
+			} else if ( !botUtils.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
+				var symbol = botUtils.findSymbol(_condition.parentBlock_.type);
+				botUtils.log(symbol[Object.keys(symbol)[0]] + ' ' + i18n._('does not support this condition'), 'warning');
 				_condition.unplug();
 			} else {
 				botUtils.broadcast('tour:condition');
@@ -37859,4 +37913,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-3dffacd60df64e89544e.map
+//# sourceMappingURL=bot-1257b21f0f2b1829540b.map

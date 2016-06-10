@@ -14,8 +14,6 @@ var getNumField = function getNumField(block, fieldName) {
 	return '';
 };
 
-var symbolNames = globals.activeSymbols.getSymbolNames();
-
 var isInteger = function isInteger(amount) {
 	return !isNaN(+amount) && parseInt(amount) === parseFloat(amount);
 };
@@ -26,7 +24,7 @@ var isInRange = function isInRange(amount, min, max) {
 
 var trade = function trade(_trade, ev) {
 	if (ev.type === 'create') {
-		if (symbolNames.hasOwnProperty(blockly.mainWorkspace.getBlockById(ev.blockId).type.toUpperCase())) {
+		if (botUtils.findSymbol(blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
 			botUtils.broadcast('tour:submarket_created');
 		}
 		if (config.conditions.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
@@ -46,7 +44,7 @@ var trade = function trade(_trade, ev) {
 			botUtils.broadcast('tour:trade_again_created');
 		}
 	}
-	if (_trade.childBlocks_.length && !symbolNames.hasOwnProperty(_trade.childBlocks_[0].type.toUpperCase())) {
+	if (_trade.childBlocks_.length && !botUtils.findSymbol(_trade.childBlocks_[0].type)) {
 		botUtils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
 		Array.prototype.slice.apply(_trade.childBlocks_)
 			.forEach(function (child) {
@@ -61,7 +59,7 @@ var trade = function trade(_trade, ev) {
 	}
 	var topParent = botUtils.findTopParentBlock(_trade);
 	if (topParent !== null) {
-		if (symbolNames.hasOwnProperty(topParent.type.toUpperCase()) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
+		if (botUtils.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
 			botUtils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
 			_trade.unplug();
 		}
@@ -86,8 +84,12 @@ var submarket = function submarket(_submarket, ev) {
 };
 var condition = function condition(_condition, ev, calledByParent) {
 	if (_condition.parentBlock_ !== null) {
-		if (!symbolNames.hasOwnProperty(_condition.parentBlock_.type.toUpperCase())) {
+		if (!botUtils.findSymbol(_condition.parentBlock_.type)) {
 			botUtils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
+			_condition.unplug();
+		} else if ( !botUtils.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
+			var symbol = botUtils.findSymbol(_condition.parentBlock_.type);
+			botUtils.log(symbol[Object.keys(symbol)[0]] + ' ' + i18n._('does not support this condition'), 'warning');
 			_condition.unplug();
 		} else {
 			botUtils.broadcast('tour:condition');

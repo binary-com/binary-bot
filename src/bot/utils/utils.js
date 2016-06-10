@@ -7,6 +7,49 @@ var blockly = require('blockly');
 var commonUtils = require('utils');
 var i18n = require('i18n');
 
+var isConditionAllowedInSymbol = function isConditionAllowedInSymbol(symbol, condition) {
+	var allowedConditions = getAllowedConditions(symbol);
+	return allowedConditions.indexOf(condition) >= 0;
+};
+
+var getAllowedConditions = function getAllowedConditions(symbol) {
+	var allowedConditions = [];
+	globals.assetIndex.forEach(function(assetIndex){
+		if (assetIndex[0].toLowerCase() === symbol.toLowerCase()) {
+			assetIndex[2].forEach(function(conditionInfo){
+				var conditionName = conditionInfo[0];
+				if ( config.conditionsCategory.hasOwnProperty(conditionName) ) {
+					allowedConditions = allowedConditions.concat(config.conditionsCategory[conditionName]);
+				}
+			});
+		}
+	});
+	return allowedConditions;
+};
+
+var findSymbol = function findSymbol(symbol) {
+	var activeSymbols = globals.activeSymbols.getSymbolNames();
+	var result;
+	Object.keys(activeSymbols).forEach(function(key){
+		if (key.toLowerCase() === symbol.toLowerCase()) {
+			if (!result) {
+				result = {};
+			}
+			result[key] = activeSymbols[key];
+		}
+	});
+	return result;
+};
+
+var getAssetIndex = function getAssetIndex(api, cb) {
+	api.getAssetIndex().then(function(response){
+		globals.assetIndex = response.asset_index;
+		if ( cb ) {
+			cb();
+		}
+	});
+};
+
 var createXmlTag = function createXmlTag(obj) {
 	var xmlStr = '<category name="Markets" colour="345" i18n-text="Markets">\n';
 	Object.keys(obj).forEach(function(market){
@@ -41,7 +84,9 @@ var getActiveSymbols = function getActiveSymbols(callback) {
 	var api = new LiveApi();
 	api.getActiveSymbolsBrief().then(function(response){
 		activeSymbols.getMarkets(response.active_symbols);
-		callback(activeSymbols);
+		getAssetIndex(api, function(){
+			callback(activeSymbols);
+		});
 	});
 };
 
@@ -272,5 +317,8 @@ module.exports = {
 	logout: logout,
 	getActiveSymbols: getActiveSymbols,
 	marketsToXml: marketsToXml,
-	xmlToStr: xmlToStr
+	xmlToStr: xmlToStr,
+	findSymbol: findSymbol,
+	getAssetIndex: getAssetIndex,
+	isConditionAllowedInSymbol: isConditionAllowedInSymbol
 };

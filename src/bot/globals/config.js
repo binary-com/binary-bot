@@ -66,6 +66,10 @@ module.exports = {
 		'MATCHESDIFFERS',
 		'OVERUNDER',
 	],
-
+	conditionsCategory: {
+		callput: ['updown'],
+		asian: ['asian'],
+		digits: ['matchesdiffers', 'evenodd', 'overunder']
+	},
 	conditions: ['updown', 'asian', 'matchesdiffers', 'evenodd', 'overunder'],
 };
