@@ -1,94 +1,104 @@
 <!DOCTYPE html>
 <html>
-  <title>Binary Bot</title>
-<link href="css/bot-00dc7f9695.css" rel="stylesheet" /><link href="css/bundle-385e16f73c.min.css" rel="stylesheet" /></head>
+
+<head>
+    <title>Binary Bot</title>
+    <link href="css/bot-00dc7f9695.css" rel="stylesheet" />
+    <link href="css/bundle-385e16f73c.min.css" rel="stylesheet" />
+</head>
+
 <body id="drop_zone">
-	<div id="center"></div>
-	<div class="toolbox">
-			<div class="intro-file-management">
-				<span data-i18n-text="Open Block file"></span> <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
-				<button title="Save the blocks as a XML file" id="saveXml" data-i18n-text="Save Blocks"></button>
-			</div>
-			<div class="intro-token">
-				<button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Add Token"></button>
-			</div>
-			<div class="intro-undo-redo">
-				<button title="Undo the changes (Ctrl+Z)" id="undo" data-i18n-text="Undo"></button>
-				<button title="Redo the changes (Ctrl+Shift+Z)" id="redo" data-i18n-text="Redo"></button>
-			</div>
-			<div class="intro-summary">
-				<button title="Open the summary panel" id="showSummary" data-i18n-text="Summary"></button>
-			</div>
-			<div class="intro-run-stop">
-				<button title="Run the blocks" id="runButton" id="run" data-i18n-text="Run"></button>
-				<button title="Stop the blocks" id="stopButton" data-i18n-text="Reset"></button>
-			</div>
-	</div>
-	<div class="logout"><button id="logout" data-i18n-text="Logout"></button></div>
-	<div class="help">
-		<span class="tutorialList">
+    <div id="center"></div>
+    <div class="toolbox">
+        <div class="intro-file-management">
+            <span data-i18n-text="Open Block file"></span>
+            <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml">
+            <button title="Save the blocks as a XML file" id="saveXml" data-i18n-text="Save Blocks"></button>
+        </div>
+        <div class="intro-token">
+            <button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Add Token"></button>
+        </div>
+        <div class="intro-undo-redo">
+            <button title="Undo the changes (Ctrl+Z)" id="undo" data-i18n-text="Undo"></button>
+            <button title="Redo the changes (Ctrl+Shift+Z)" id="redo" data-i18n-text="Redo"></button>
+        </div>
+        <div class="intro-summary">
+            <button title="Open the summary panel" id="showSummary" data-i18n-text="Summary"></button>
+        </div>
+        <div class="intro-run-stop">
+            <button title="Run the blocks" id="runButton" id="run" data-i18n-text="Run"></button>
+            <button title="Stop the blocks" id="stopButton" data-i18n-text="Reset"></button>
+        </div>
+    </div>
+    <div class="logout">
+        <button id="logout" data-i18n-text="Logout"></button>
+    </div>
+    <div class="help">
+        <span class="tutorialList">
 			<span data-i18n-text="Tours:"></span>
-			<select id="tours">
-				<option value="welcome" data-i18n-text="Welcome!"></option>
-				<option value="introduction" data-i18n-text="Introduction"></option>
-			</select>
-		</span>
-		<button id="tutorialButton" data-i18n-text="Go!"></button>
-	</div>
-	<div id="blocklyDiv"></div>
-	<div id="summaryPanel">
-		<div class="exitPanel"><p>x</p></div>
-		<div class="content">
-			<h4>
+        <select id="tours">
+            <option value="welcome" data-i18n-text="Welcome!"></option>
+            <option value="introduction" data-i18n-text="Introduction"></option>
+        </select>
+        </span>
+        <button id="tutorialButton" data-i18n-text="Go!"></button>
+    </div>
+    <div id="blocklyDiv"></div>
+    <div id="summaryPanel">
+        <div class="exitPanel">
+            <p>x</p>
+        </div>
+        <div class="content">
+            <h4>
 				<span data-i18n-text="Summary"></span>
 			</h4>
-			<table id="summaryDisplay">
-				<thead>
-					<tr>
-						<th data-i18n-text="No. of runs"></th>
-						<th data-i18n-text="Total Stake"></th>
-						<th data-i18n-text="Total Payout"></th>
-						<th data-i18n-text="Total Profit/Loss"></th>
-						<th data-i18n-text="Balance"></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="numOfRuns"></td>
-						<td class="totalStake"></td>
-						<td class="totalPayout"></td>
-						<td class="totalProfit"></td>
-						<td class="balance"></td>
-					</tr>
-				</tbody>
-			</table>
-			<h4>
+            <table id="summaryDisplay">
+                <thead>
+                    <tr>
+                        <th data-i18n-text="No. of runs"></th>
+                        <th data-i18n-text="Total Stake"></th>
+                        <th data-i18n-text="Total Payout"></th>
+                        <th data-i18n-text="Total Profit/Loss"></th>
+                        <th data-i18n-text="Balance"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="numOfRuns"></td>
+                        <td class="totalStake"></td>
+                        <td class="totalPayout"></td>
+                        <td class="totalProfit"></td>
+                        <td class="balance"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>
 				<span data-i18n-text="Trades"></span>
 			</h4>
-			<div class="table-scroll">
-				<table id="tradesDisplay">
-					<thead>
-						<tr>
-							<th><span data-i18n-text="Number"></span></th>
-							<th><span data-i18n-text="Reference"></span></th>
-							<th><span data-i18n-text="Trade Type"></span></th>
-							<th><span data-i18n-text="Entry Spot"></span></th>
-							<th><span data-i18n-text="Exit Spot"></span></th>
-							<th><span data-i18n-text="Buy Price"></span></th>
-							<th><span data-i18n-text="Final Price"></span></th>
-							<th><span data-i18n-text="Profit/Loss"></span></th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-			<div id="chart"></div>
-		</div>
-	</div>
+            <div class="table-scroll">
+                <table id="tradesDisplay">
+                    <thead>
+                        <tr>
+                            <th><span data-i18n-text="Number"></span></th>
+                            <th><span data-i18n-text="Reference"></span></th>
+                            <th><span data-i18n-text="Trade Type"></span></th>
+                            <th><span data-i18n-text="Entry Spot"></span></th>
+                            <th><span data-i18n-text="Exit Spot"></span></th>
+                            <th><span data-i18n-text="Buy Price"></span></th>
+                            <th><span data-i18n-text="Final Price"></span></th>
+                            <th><span data-i18n-text="Profit/Loss"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id="chart"></div>
+        </div>
+    </div>
 
-  <script src="js/blockly/blockly.js"></script>
-<script src="js/bot-5c940a6533.min.js"></script>
+    <script src="js/blockly/blockly.js"></script>
+    <script src="js/bot-5c940a6533.min.js"></script>
 </body>
-</html>
 
+</html>
