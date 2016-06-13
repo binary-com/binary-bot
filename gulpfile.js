@@ -113,7 +113,8 @@ gulp.task('mocha', () => {
 gulp.task('test', ['mocha'], function() {
 	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js'])
 		.pipe(jshint())
-		.pipe(jshint.reporter('default'));
+		.pipe(jshint.reporter('default'))
+		.pipe(jshint.reporter('fail'));
 });
 
 gulp.task('i18n-xml', ['static'], function () {
@@ -248,9 +249,7 @@ gulp.task('build-min', ['build-bot-min', 'build-index-min', 'pack-css-min', 'mus
 
 gulp.task('deploy', ['build-min'], function () {
 	return gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**'])
-		.pipe(ghPages({
-			branch: 'master'
-		}));
+		.pipe(ghPages());
 });
 
 gulp.task('serve', ['open', 'connect'], function () {

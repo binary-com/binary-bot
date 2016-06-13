@@ -237,11 +237,17 @@
 	<category name="Binary" colour="60" i18n-text="Binary">
 		<!--Markets-->
 		<category name="Conditions" colour="15" i18n-text="Conditions">
-			<block type="updown"></block>
-			<block type="asian"></block>
-			<block type="matchesdiffers"></block>
-			<block type="evenodd"></block>
-			<block type="overunder"></block>
+			<category name="Up/Down" colour="15" i18n-text="Up/Down">
+				<block type="risefall"></block>
+			</category>
+			<category name="Asians" colour="15" i18n-text="Asians">
+				<block type="asians"></block>
+			</category>
+			<category name="Digits" colour="15" i18n-text="Digits">
+				<block type="matchesdiffers"></block>
+				<block type="evenodd"></block>
+				<block type="overunder"></block>
+			</category>
 		</category>
 		<category name="Strategy" colour="290" i18n-text="Strategy">
 			<block type="tick"></block>

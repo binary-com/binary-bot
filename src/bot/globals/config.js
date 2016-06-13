@@ -28,19 +28,19 @@ module.exports = {
 			[i18n._('Loss'), 'loss'],
 		],
 		CHECK_DIRECTION: [
-			[i18n._('Up'), 'up'],
-			[i18n._('Down'), 'down'],
+			[i18n._('Rise'), 'rise'],
+			[i18n._('Fall'), 'fall'],
 			[i18n._('No Change'), ''],
 		],
 	},
 
 	opposites: {
-		UPDOWN: [{
-			'CALL': i18n._('Up')
+		RISEFALL: [{
+			'CALL': i18n._('Rise')
 		}, {
-			'PUT': i18n._('Down')
+			'PUT': i18n._('Fall')
 		}],
-		ASIAN: [{
+		ASIANS: [{
 			'ASIANU': i18n._('Asian Up')
 		}, {
 			'ASIAND': i18n._('Asian Down')
@@ -61,15 +61,19 @@ module.exports = {
 			'DIGITUNDER': i18n._('Under')
 		}],
 	},
-
 	opposites_have_barrier: [
 		'MATCHESDIFFERS',
 		'OVERUNDER',
 	],
 	conditionsCategory: {
-		callput: ['updown'],
-		asian: ['asian'],
+		callput: ['risefall'],
+		asian: ['asians'],
 		digits: ['matchesdiffers', 'evenodd', 'overunder']
 	},
-	conditions: ['updown', 'asian', 'matchesdiffers', 'evenodd', 'overunder'],
+	conditionsCategoryName: {
+		callput: i18n._('Up/Down'),
+		asian: i18n._('Asians'),
+		digits: i18n._('Digits'),
+	},
+	conditions: ['risefall', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
 };

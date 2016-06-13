@@ -156,8 +156,10 @@ module.exports = {
 				started = true;
 				globals.tour = tour;
 				globals.tour.start();
+				return true;
 			}
 		}
+		return false;
 	},
 	stop: function stop() {
 		view.setOpacityForAll(true, 1);

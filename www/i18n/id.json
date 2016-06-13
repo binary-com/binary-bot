@@ -208,5 +208,15 @@
   "837730f3669584a070e3252eccf39aa0b96d3820": "You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.",
   "362ade1b08d481c8c83c5dbc63866c81b4706814": "Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.",
   "da9f5de675878c0d60438194c913be6be8442451": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.",
-  "34dae9390583a6d4bba3b71c5929df4fe4d985b0": "does not support this condition"
+  "34dae9390583a6d4bba3b71c5929df4fe4d985b0": "does not support this condition",
+  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
+  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
+  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
+  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
+  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
+  "73d80ed0f64f5ce97460a01f3eb0fe660b37ea7a": "does not support condition:",
+  "14e44f34585c54b478925a93690cf9760a92d3df": "Allowed  are",
+  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are"
 }
