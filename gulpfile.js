@@ -248,9 +248,7 @@ gulp.task('build-min', ['build-bot-min', 'build-index-min', 'pack-css-min', 'mus
 
 gulp.task('deploy', ['build-min'], function () {
 	return gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**'])
-		.pipe(ghPages({
-			branch: 'master'
-		}));
+		.pipe(ghPages());
 });
 
 gulp.task('serve', ['open', 'connect'], function () {

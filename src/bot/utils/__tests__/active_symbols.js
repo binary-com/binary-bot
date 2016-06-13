@@ -74,7 +74,7 @@ describe('ActiveSymbols', function() {
 	});
 	it('Should getMarkets output match the market snapshot', function() {
 		var markets = activeSymbols.getMarkets(active_symbols);
-		var deepDiff = deep(set_checks(markets), set_checks(JSON.parse(expected_markets_str)))
+		var deepDiff = deep(set_checks(markets), set_checks(JSON.parse(expected_markets_str)));
 		if (deepDiff) {
 			deepDiff.forEach(function(diff){
 				expect(diff).to.have.property('kind')
