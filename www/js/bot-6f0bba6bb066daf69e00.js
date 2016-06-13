@@ -13813,7 +13813,7 @@
 			});
 			if (tokenList.length) {
 				utils.addAllTokens(tokenList, function(){
-					document.location.pathname = '/bot.html';
+					document.location.pathname += '/bot.html';
 				});
 			} else {
 				if (done) {
@@ -37969,4 +37969,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-1047f528ed06d3396b71.map
+//# sourceMappingURL=bot-6f0bba6bb066daf69e00.map

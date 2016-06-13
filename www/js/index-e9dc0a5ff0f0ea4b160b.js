@@ -13784,7 +13784,7 @@
 			});
 			if (tokenList.length) {
 				utils.addAllTokens(tokenList, function(){
-					document.location.pathname = '/bot.html';
+					document.location.pathname += '/bot.html';
 				});
 			} else {
 				if (done) {
@@ -23627,4 +23627,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-48ae81c2856719302744.map
+//# sourceMappingURL=index-e9dc0a5ff0f0ea4b160b.map
