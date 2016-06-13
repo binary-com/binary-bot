@@ -15,7 +15,7 @@ var AppId = {
 		});
 		if (tokenList.length) {
 			utils.addAllTokens(tokenList, function(){
-				document.location.pathname = '/bot.html';
+				document.location.pathname += '/bot.html';
 			});
 		} else {
 			if (done) {

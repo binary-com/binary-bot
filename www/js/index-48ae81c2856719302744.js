@@ -13770,7 +13770,7 @@
 	var utils = __webpack_require__(11);
 	
 	var AppId = {
-		app_id: ( document.location.port === '8080' ) ? 1168 : 1169,
+		app_id: ( document.location.port === '8080' ) ? 1168 : ( document.location.hostname.indexOf('github.io') >= 0 ) ? 1180 : 1169,
 		redirectOauth: function oauthLogin(){
 			document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + this.app_id + '&l=' + window.lang.toUpperCase();
 		},
@@ -23627,4 +23627,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-e893397923df53669838.map
+//# sourceMappingURL=index-48ae81c2856719302744.map
