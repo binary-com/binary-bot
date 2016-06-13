@@ -14,7 +14,10 @@ require('./utils/draggable');
 var initTours = function initTours() {
 	tours.introduction = require('./tours/introduction').init();
 	tours.welcome = require('./tours/welcome').init();
-	tours.welcome.welcome();
+	tours.welcome.welcome(function(){
+		$('#tutorialButton')
+			.text(i18n._('Stop!'));
+	});
 };
 
 var uiComponents = {

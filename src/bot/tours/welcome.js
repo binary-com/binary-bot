@@ -150,12 +150,13 @@ module.exports = {
 			globals.tour.start();
 		}
 	},
-	welcome: function welcome() {
+	welcome: function welcome(cb) {
 		if (!storageManager.isDone('welcomeFinished')) {
 			if (!globals.tour) {
 				started = true;
 				globals.tour = tour;
 				globals.tour.start();
+				cb();
 			}
 		}
 	},
