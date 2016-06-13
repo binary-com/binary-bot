@@ -74,9 +74,12 @@ describe('ActiveSymbols', function() {
 	});
 	it('Should getMarkets output match the market snapshot', function() {
 		var markets = activeSymbols.getMarkets(active_symbols);
-		deep(set_checks(markets), set_checks(JSON.parse(expected_markets_str))).forEach(function(diff){
-			expect(diff).to.have.property('kind')
-				.and.not.to.be.equal('E');
-		});
+		var deepDiff = deep(set_checks(markets), set_checks(JSON.parse(expected_markets_str)))
+		if (deepDiff) {
+			deepDiff.forEach(function(diff){
+				expect(diff).to.have.property('kind')
+					.and.not.to.be.equal('E');
+			});
+		}
 	});
 });
