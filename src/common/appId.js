@@ -15,7 +15,7 @@ var AppId = {
 		});
 		if (tokenList.length) {
 			utils.addAllTokens(tokenList, function(){
-				document.location.pathname += '/bot.html';
+				document.location.pathname += ((document.location.pathname.slice(-1) === '/')?'':'/') + 'bot.html';
 			});
 		} else {
 			if (done) {
@@ -26,7 +26,7 @@ var AppId = {
 	removeTokenFromUrl: function removeTokenFromUrl(){
 		var queryStr = utils.parseQueryString();
 		if (queryStr.token1) {
-			document.location.search = '';
+			document.location.href = document.location.href.split('?')[0];
 		}
 	},
 	getAppId: function getAppId(){

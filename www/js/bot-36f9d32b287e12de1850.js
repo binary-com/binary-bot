@@ -13799,7 +13799,7 @@
 	var utils = __webpack_require__(11);
 	
 	var AppId = {
-		app_id: ( document.location.port === '8080' ) ? 1168 : ( document.location.hostname.indexOf('github.io') >= 0 ) ? 1180 : 1169,
+		app_id: ( document.location.port === '8080' ) ? 1168 : ( ( document.location.hostname.indexOf('github.io') >= 0 ) ? 1180 : 1169 ),
 		redirectOauth: function oauthLogin(){
 			document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + this.app_id + '&l=' + window.lang.toUpperCase();
 		},
@@ -13813,7 +13813,7 @@
 			});
 			if (tokenList.length) {
 				utils.addAllTokens(tokenList, function(){
-					document.location.pathname += '/bot.html';
+					document.location.pathname += ((document.location.pathname.slice(-1) === '/')?'':'/') + 'bot.html';
 				});
 			} else {
 				if (done) {
@@ -13824,7 +13824,7 @@
 		removeTokenFromUrl: function removeTokenFromUrl(){
 			var queryStr = utils.parseQueryString();
 			if (queryStr.token1) {
-				document.location.search = '';
+				document.location.href = document.location.href.split('?')[0];
 			}
 		},
 		getAppId: function getAppId(){
@@ -37969,4 +37969,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-6f0bba6bb066daf69e00.map
+//# sourceMappingURL=bot-36f9d32b287e12de1850.map
