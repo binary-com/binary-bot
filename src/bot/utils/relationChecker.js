@@ -1,7 +1,6 @@
 var blockly = require('blockly');
 var config = require('../globals/config');
 var globals = require('../globals/globals');
-var view = require('../view');
 var botUtils = require('./utils');
 var i18n = require('i18n');
 var getNumField = function getNumField(block, fieldName) {
