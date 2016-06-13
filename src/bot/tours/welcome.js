@@ -150,15 +150,16 @@ module.exports = {
 			globals.tour.start();
 		}
 	},
-	welcome: function welcome(cb) {
+	welcome: function welcome() {
 		if (!storageManager.isDone('welcomeFinished')) {
 			if (!globals.tour) {
 				started = true;
 				globals.tour = tour;
 				globals.tour.start();
-				cb();
+				return true;
 			}
 		}
+		return false;
 	},
 	stop: function stop() {
 		view.setOpacityForAll(true, 1);

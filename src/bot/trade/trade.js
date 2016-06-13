@@ -82,10 +82,10 @@ var callStrategy = function callStrategy() {
 		if (ticks.length > 1) {
 			if (+ticks.slice(-1)[0].quote > +ticks.slice(-2)
 				.quote) {
-				direction = 'up';
+				direction = 'rise';
 			} else if (+ticks.slice(-1)[0].quote < +ticks.slice(-2)
 				.quote) {
-				direction = 'down';
+				direction = 'fall';
 			}
 		}
 		globals.on_strategy(+ticks.slice(-1)[0].quote, direction);

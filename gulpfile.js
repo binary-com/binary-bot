@@ -113,7 +113,8 @@ gulp.task('mocha', () => {
 gulp.task('test', ['mocha'], function() {
 	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js'])
 		.pipe(jshint())
-		.pipe(jshint.reporter('default'));
+		.pipe(jshint.reporter('default'))
+		.pipe(jshint.reporter('fail'));
 });
 
 gulp.task('i18n-xml', ['static'], function () {

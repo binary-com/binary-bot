@@ -14,10 +14,13 @@ require('./utils/draggable');
 var initTours = function initTours() {
 	tours.introduction = require('./tours/introduction').init();
 	tours.welcome = require('./tours/welcome').init();
-	tours.welcome.welcome(function(){
+	if ( tours.welcome.welcome() ){
+		activeTutorial = tours.welcome;
 		$('#tutorialButton')
+			.unbind('click.startTutorial')
+			.bind('click.stopTutorial', stopTutorial)
 			.text(i18n._('Stop!'));
-	});
+	}
 };
 
 var uiComponents = {
@@ -56,10 +59,8 @@ var startTutorial = function startTutorial(e) {
 		.val()];
 	activeTutorial.start();
 	$('#tutorialButton')
-		.unbind('click', startTutorial);
-	$('#tutorialButton')
-		.bind('click', stopTutorial);
-	$('#tutorialButton')
+		.unbind('click.startTutorial')
+		.bind('click.stopTutorial', stopTutorial)
 		.text(i18n._('Stop!'));
 };
 
@@ -74,10 +75,8 @@ var stopTutorial = function stopTutorial(e) {
 		activeTutorial = null;
 	}
 	$('#tutorialButton')
-		.unbind('click', stopTutorial);
-	$('#tutorialButton')
-		.bind('click', startTutorial);
-	$('#tutorialButton')
+		.unbind('click.stopTutorial')
+		.bind('click.startTutorial', startTutorial)
 		.text(i18n._('Go!'));
 };
 
@@ -274,7 +273,7 @@ var show = function show(done) {
 		.addEventListener('change', handleFileSelect, false);
 
 	$('#tutorialButton')
-		.bind('click', startTutorial);
+		.bind('click.startTutorial', startTutorial);
 	$('#stopButton')
 		.text(i18n._('Reset'));
 	$('#stopButton')

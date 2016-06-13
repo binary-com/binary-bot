@@ -89,7 +89,9 @@ var condition = function condition(_condition, ev, calledByParent) {
 			_condition.unplug();
 		} else if ( !botUtils.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
 			var symbol = botUtils.findSymbol(_condition.parentBlock_.type);
-			botUtils.log(symbol[Object.keys(symbol)[0]] + ' ' + i18n._('does not support this condition'), 'warning');
+			botUtils.log(symbol[Object.keys(symbol)[0]] + ' ' + i18n._('does not support category:') + 
+				' ' + botUtils.getCategoryName(_condition.type) +
+				', ' + i18n._('Allowed categories are') + ' ' + botUtils.getAllowedCategoryNames(_condition.parentBlock_.type), 'warning');
 			_condition.unplug();
 		} else {
 			botUtils.broadcast('tour:condition');
