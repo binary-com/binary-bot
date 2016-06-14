@@ -63,7 +63,6 @@ module.exports = {
 				translation: supportedLanguages[lang]
 			};
 		}
-		console.log(window.lang);
 		i18n.init({
 			lng: window.lang,
 			fallbackLng: 'en',

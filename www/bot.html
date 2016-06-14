@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-		<script>
-			if ( top !== self ) {
-				top.location = self.location;
-			}
-		</script>
-
-  <title>Binary Bot</title>
-<link href="css/bot-2e120f8b0b.css" rel="stylesheet" /><link href="css/bundle-0a7eb16c40.css" rel="stylesheet" /></head>
+<head>
+	<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+	<script>
+		if ( top !== self ) {
+			top.location = self.location;
+		}
+	</script>
+	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<link rel="apple-touch-icon" sizes="57x57" href="https://www.binary.com/images/favicons/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="https://www.binary.com/images/favicons/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="https://www.binary.com/images/favicons/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="https://www.binary.com/images/favicons/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="https://www.binary.com/images/favicons/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="https://www.binary.com/images/favicons/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="https://www.binary.com/images/favicons/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="https://www.binary.com/images/favicons/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.binary.com/images/favicons/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="https://www.binary.com/images/favicons/favicon-192x192.png">
+	<link rel="icon" type="image/png" sizes="160x160" href="https://www.binary.com/images/favicons/favicon-160x160.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="https://www.binary.com/images/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.binary.com/images/favicons/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.binary.com/images/favicons/favicon-32x32.png">
+	<meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0">
+	<meta http-equiv="pragma" content="no-cache">
+	<title>Binary Bot</title>
+	<link href="css/bot-2e120f8b0b.css" rel="stylesheet" />
+	<link href="css/bundle-0a7eb16c40.css" rel="stylesheet" />
+</head>
 <body id="drop_zone">
 	<div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
 	<div id="center"></div>
@@ -35,6 +53,24 @@
 	</div>
 	<div class="logout"><button id="logout" data-i18n-text="Logout"></button></div>
 	<div class="help">
+	<span class="language-select" style="display: none">
+		<select id="language">
+			<option value="zh_tw">繁體中文</option>
+			<option value="de">Deutsch</option>
+			<option value="id">Bahasa Indonesia</option>
+			<option value="zh_cn">简体中文</option>
+			<option value="it">Italiano</option>
+			<option value="vi">Vietnamese</option>
+			<option value="ar">Arabic</option>
+			<option value="pl">Polish</option>
+			<option value="ru">Русский</option>
+			<option value="pt">Português</option>
+			<option value="es">Español</option>
+			<option value="fr">Français</option>
+			<option value="en" selected="selected">English</option>
+		</select>
+	</span>
+
 		<span class="tutorialList">
 			<span data-i18n-text="Tours:"></span>
 			<select id="tours">
@@ -97,7 +133,7 @@
 	</div>
 
   <script src="js/blockly/blockly.js"></script>
-<script src="js/bot-a62d9389e2c82b9033a5.js"></script>
+	<script src="js/bot-6922e42b5baed30f9bb0.js"></script>
 </body>
 </html>
 

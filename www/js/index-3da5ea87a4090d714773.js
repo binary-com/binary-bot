@@ -144,7 +144,6 @@
 					translation: supportedLanguages[lang]
 				};
 			}
-			console.log(window.lang);
 			i18n.init({
 				lng: window.lang,
 				fallbackLng: 'en',
@@ -16475,4 +16474,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-b1d2fa03998ba1e19783.map
+//# sourceMappingURL=index-3da5ea87a4090d714773.map

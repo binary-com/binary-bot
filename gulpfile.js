@@ -213,6 +213,9 @@ gulp.task('mustache-dev', ['static', 'webpack', 'pack-css'], function(){
 			bundle_css: '<link href="css/' + manifest['bundle.css'] + '" rel="stylesheet" />',
 			main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
 			bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
+			head: 'templates/partials/head.mustache',
+			security: 'templates/partials/security.mustache',
+			language: 'templates/partials/language.mustache',
 		}))
 		.pipe(gulp.dest('www'));
 });
@@ -225,6 +228,9 @@ gulp.task('mustache-min', ['static', 'pack-css-min', 'build-bot-min', 'build-ind
 			bundle_css: '<link href="css/' + manifest['bundle.min.css'] + '" rel="stylesheet" />',
 			main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
 			bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
+			head: 'templates/partials/head.mustache',
+			security: 'templates/partials/security.mustache',
+			language: 'templates/partials/language.mustache',
 		}))
 		.pipe(gulp.dest('www'));
 });

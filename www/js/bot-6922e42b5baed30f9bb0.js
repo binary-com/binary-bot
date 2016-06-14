@@ -173,7 +173,6 @@
 					translation: supportedLanguages[lang]
 				};
 			}
-			console.log(window.lang);
 			i18n.init({
 				lng: window.lang,
 				fallbackLng: 'en',
@@ -29278,4 +29277,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-a62d9389e2c82b9033a5.map
+//# sourceMappingURL=bot-6922e42b5baed30f9bb0.map
