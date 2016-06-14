@@ -45,6 +45,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	window.Bot = {};
+	if ( top !== self ) {
+		top.location = self.location;
+	}
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var appId = __webpack_require__(15);
@@ -33190,7 +33193,6 @@
 	var blockly = __webpack_require__(13);
 	var config = __webpack_require__(23);
 	var globals = __webpack_require__(22);
-	var view = __webpack_require__(29);
 	var botUtils = __webpack_require__(21);
 	var i18n = __webpack_require__(3);
 	var getNumField = function getNumField(block, fieldName) {
@@ -37964,4 +37966,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-d41f3492923e8939d959.map
+//# sourceMappingURL=bot-af06cc15f130740e9f31.map

@@ -105,7 +105,7 @@ gulp.task('static', ['static-css'], function() {
 		.pipe(gulp.dest('./www'));
 });
 
-gulp.task('mocha', () => {
+gulp.task('mocha', function() {
     return gulp.src(['./src/**/__tests__/*.js'])
         .pipe(mocha({reporter: 'nyan'}));
 });

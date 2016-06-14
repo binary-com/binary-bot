@@ -45,6 +45,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	window.Blockly = {};
+	if ( top !== self ) {
+		top.location = self.location;
+	}
 	var translator = __webpack_require__(1); // must be on top
 	var i18n = __webpack_require__(3);
 	var appId = __webpack_require__(15);
@@ -23627,4 +23630,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-ca744194fc449c659cc2.map
+//# sourceMappingURL=index-413653e9202c844a6e86.map
