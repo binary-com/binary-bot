@@ -1,0 +1,17 @@
+require('./trade/trade');
+require('./tools/balance');
+require('./tools/notify');
+require('./tools/total_profit');
+require('./markets');
+require('./strategy/check_direction');
+require('./strategy/direction');
+require('./strategy/purchase');
+require('./strategy/strategy');
+require('./strategy/tick');
+require('./finish/check_result');
+require('./finish/details');
+require('./finish/finish');
+require('./finish/read_details');
+require('./finish/result');
+require('./finish/trade_again');
+require('./conditions/ticktrades');
