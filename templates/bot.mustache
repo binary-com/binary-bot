@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-		<script>
-			if ( top !== self ) {
-				top.location = self.location;
-			}
-		</script>
+<head>
+{{> security }}
 
-{{> ./partials/head }}
-  <title>Binary Bot</title>
-	{{> bot_css }}
+{{> head }}
+	<title>Binary Bot</title>
+{{> bot_css }}
+
 {{> bundle_css }}
+
 </head>
 <body id="drop_zone">
 	<div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
@@ -38,7 +35,7 @@
 	</div>
 	<div class="logout"><button id="logout" data-i18n-text="Logout"></button></div>
 	<div class="help">
-		{{> ./partials/language }}
+		{{> language }}
 		<span class="tutorialList">
 			<span data-i18n-text="Tours:"></span>
 			<select id="tours">

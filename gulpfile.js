@@ -25,8 +25,8 @@ var gulp = require('gulp'),
 var options = {
 	lngs: ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'], // supported languages
 	resource: {
-		loadPath: 'www/i18n/{{lng}}.json',
-		savePath: 'www/i18n/{{lng}}.json',
+		loadPath: 'src/i18n/{{lng}}.json',
+		savePath: 'src/i18n/{{lng}}.json',
 		jsonIndent: 2
 	}
 }
@@ -111,7 +111,7 @@ gulp.task('mocha', function() {
 });
 
 gulp.task('test', ['mocha'], function() {
-	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js'])
+	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js', '!./src/i18n/*.js'])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		.pipe(jshint.reporter('fail'));
@@ -129,10 +129,15 @@ gulp.task('i18n-html', ['i18n-xml'], function () {
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('i18n', ['i18n-html'], function () {
-	return gulp.src('src/**/*.js')
+gulp.task('i18n-js', ['i18n-html'], function () {
+	return gulp.src(['src/**/*.js', '!src/i18n/*.js'])
 		.pipe(scanner(options, customTransform))
 		.pipe(gulp.dest('./'));
+});
+
+gulp.task('i18n', ['i18n-js'], function () {
+	return gulp.src('src/i18n/*.json')
+		.pipe(gulp.dest('./src/i18n'));
 });
 
 gulp.task('blockly-msg', ['static'], function(){
@@ -208,6 +213,9 @@ gulp.task('mustache-dev', ['static', 'webpack', 'pack-css'], function(){
 			bundle_css: '<link href="css/' + manifest['bundle.css'] + '" rel="stylesheet" />',
 			main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
 			bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
+			head: 'templates/partials/head.mustache',
+			security: 'templates/partials/security.mustache',
+			language: 'templates/partials/language.mustache',
 		}))
 		.pipe(gulp.dest('www'));
 });
@@ -220,6 +228,9 @@ gulp.task('mustache-min', ['static', 'pack-css-min', 'build-bot-min', 'build-ind
 			bundle_css: '<link href="css/' + manifest['bundle.min.css'] + '" rel="stylesheet" />',
 			main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
 			bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
+			head: 'templates/partials/head.mustache',
+			security: 'templates/partials/security.mustache',
+			language: 'templates/partials/language.mustache',
 		}))
 		.pipe(gulp.dest('www'));
 });
@@ -261,7 +272,7 @@ gulp.task('test-deploy', ['build-min', 'serve'], function () {
 });
 
 gulp.task('watch', ['build', 'serve'], function () {
-	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache'], function(){
+	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/i18n/*.js'], function(){
 		gulp.run(['build']);
 	});
 });
