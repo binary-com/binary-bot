@@ -8,7 +8,7 @@ var conditions = require('./conditions');
 var markets = require('./markets');
 
 module.exports = {
-	assetIndex: null;
+	assetIndex: null,
 	activeSymbols: activeSymbols,
 	conditions: conditions,
 	markets: markets,

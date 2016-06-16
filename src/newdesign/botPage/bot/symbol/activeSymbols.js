@@ -41,7 +41,7 @@ var ActiveSymbols = (function () {
         init: function init(activeSymbols) {
             this.activeSymbols = activeSymbols;
             this._initialized = true;
-            this.getMarkets(), activeSymbols;
+            this.getMarkets();
         },
         getMarkets: function getMarkets() {
             this.checkInitialized();

@@ -109,7 +109,7 @@ var addPurchaseOptions = function addPurchaseOptions() {
 }
 };
 
-findTopParentBlock = function findTopParentBlock(block) {
+var findTopParentBlock = function findTopParentBlock(block) {
 		var pblock = block.parentBlock_;
 		if (pblock === null) {
 			return null;
@@ -119,4 +119,4 @@ findTopParentBlock = function findTopParentBlock(block) {
 			pblock = block.parentBlock_;
 		}
 		return block;
-	}
+	};

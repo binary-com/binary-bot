@@ -16,27 +16,29 @@ module.exports = {
 		return xmlStr;
 	},
 	xmlToStr: function xmlToStr(xml){
+		var serializer;
 		if (!window.DOMParser) {
-			var XMLSerializer = require('xmldom').XMLSerializer;
-			var serializer = new XMLSerializer(); 
+			var _XMLSerializer = require('xmldom').XMLSerializer;
+			serializer = new _XMLSerializer(); 
 			return serializer.serializeToString(xml);
 		} else {
-			var serializer = new XMLSerializer(); 
+			serializer = new XMLSerializer(); 
 			return serializer.serializeToString(xml);
 		}
 	},
 	strToXml: function strToXml(str) {
 		var xmlDoc;
+		var parser;
 		if (window.DOMParser) {
-			var parser = new DOMParser();
+			parser = new DOMParser();
 			xmlDoc = parser.parseFromString(str, "text/xml");
 		} else if (window.ActiveXObject){
 			xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
 			xmlDoc.async = false;
 			xmlDoc.loadXML(str);
 		} else {
-			var DOMParser = require('xmldom').DOMParser;
-			var parser = new DOMParser();
+			var _DOMParser = require('xmldom').DOMParser;
+			parser = new _DOMParser();
 			xmlDoc = parser.parseFromString(str, "text/xml");
 		}
 		return xmlDoc;
