@@ -108,3 +108,15 @@ var addPurchaseOptions = function addPurchaseOptions() {
 	});
 }
 };
+
+findTopParentBlock = function findTopParentBlock(block) {
+		var pblock = block.parentBlock_;
+		if (pblock === null) {
+			return null;
+		}
+		while (pblock !== null) {
+			block = pblock;
+			pblock = block.parentBlock_;
+		}
+		return block;
+	}

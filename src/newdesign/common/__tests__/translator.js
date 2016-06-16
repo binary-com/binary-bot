@@ -1,20 +1,10 @@
 var translator = require('../translator');
+var xml = require('../xml');
 var DOMParser = require('xmldom').DOMParser;
 var expect = require('chai').expect;
 require('./browser');
 
 describe('Translation', function(){
-	describe('Error Handling', function(){
-		it('translateText Throw if used uninitialized', function(){
-			expect(function(){translator.translateText('a');}).to.throw(Error);
-		});
-		it('translateXml Throw if used uninitialized', function(){
-			expect(function(){translator.translateXml('a');}).to.throw(Error);
-		});
-		it('init should not throw', function(){
-			expect(function(){translator.init();}).not.to.throw(Error);
-		});
-	});
 	describe('Translate Functions', function(){
 		var xml;
 		before(function(){

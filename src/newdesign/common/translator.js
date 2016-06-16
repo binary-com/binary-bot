@@ -1,7 +1,7 @@
 var i18n = require('./i18n');
-var utils = require('./utils');
+var tools = require('./tools');
 
-module.exports = {
+var Translator = {
 	_initialized: false,
 	_supportedLanguages: {
 		zh_tw: require('./translations/zh_tw'),
@@ -19,7 +19,7 @@ module.exports = {
 		en: require('./translations/en')
 	},
 	_getLanguage: function _getLanguage() {
-		var queryStr = utils.parseQueryString();
+		var queryStr = tools.parseQueryString();
 		if (queryStr.hasOwnProperty('l') && queryStr.l !== '' && 
 			this._supportedLanguages.hasOwnProperty(queryStr.l) ) {
 			window.lang = queryStr.l;
@@ -52,15 +52,12 @@ module.exports = {
 		this._initialized = true;
 	},
 	translateText: function translateText(str) {
-		if ( !this._initialized ) {
-			throw Error('Translator cannot be used before initialization');
-		}
 		return i18n._(str);
 	},
 	translateXml: function translateXml(xml) {
-		if ( !this._initialized ) {
-			throw Error('Translator cannot be used before initialization');
-		}
 		return i18n.xml(xml);
 	},
 };
+
+Translator.init();
+module.exports = Translator;

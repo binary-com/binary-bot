@@ -2,7 +2,7 @@ var tools = require('../tools');
 var expect = require('chai').expect;
 require('./browser');
 
-describe('Utils', function(){
+describe('Tools', function(){
 	describe('asyncChain function', function(){
 		var zeroToHundred = [];
 		for (var i=0; i<100; i++) {
@@ -40,6 +40,18 @@ describe('Utils', function(){
 		});
 		it('parseQueryString functions detects queryString existance correctly', function(){
 			expect(queryString).to.be.empty;
+		});
+	});
+	describe('getObjectValue', function(){
+		it('getObjectValue gets the value of an object with one attribute', function(){
+			var obj = {key: 'value'};
+			expect(tools.getObjectValue(obj)).to.be.equal('value');
+		});
+	});
+	describe('getUTCTime', function(){
+		it('getUTCTime gets the current UTC time with format HH:MM:SS', function(){
+			var date = new Date('1990-01-01T01:11:10.000Z');
+			expect(tools.getUTCTime(date)).to.be.equal('01:11:10');
 		});
 	});
 });

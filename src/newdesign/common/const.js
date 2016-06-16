@@ -1,9 +1,10 @@
-var i18n = require('i18n');
+var translator = require('./translator');
+
 module.exports = {
 	lists: {
 		PAYOUTTYPE: [
-			[i18n._('Payout'), 'payout'],
-			[i18n._('Stake'), 'stake']
+			[translator.translateText('Payout'), 'payout'],
+			[translator.translateText('Stake'), 'stake']
 		],
 		CURRENCY: [
 			['USD', 'USD'],
@@ -12,56 +13,56 @@ module.exports = {
 			['AUD', 'AUD']
 		],
 		DETAILS: [
-			[i18n._('statement'), '1'],
-			[i18n._('ask price'), '2'],
-			[i18n._('payout'), '3'],
-			[i18n._('profit'), '4'],
-			[i18n._('contract type'), '5'],
-			[i18n._('entry spot'), '6'],
-			[i18n._('entry value'), '7'],
-			[i18n._('exit spot'), '8'],
-			[i18n._('exit value'), '9'],
-			[i18n._('barrier'), '10'],
+			[translator.translateText('statement'), '1'],
+			[translator.translateText('ask price'), '2'],
+			[translator.translateText('payout'), '3'],
+			[translator.translateText('profit'), '4'],
+			[translator.translateText('contract type'), '5'],
+			[translator.translateText('entry spot'), '6'],
+			[translator.translateText('entry value'), '7'],
+			[translator.translateText('exit spot'), '8'],
+			[translator.translateText('exit value'), '9'],
+			[translator.translateText('barrier'), '10'],
 		],
 		CHECK_RESULT: [
-			[i18n._('Win'), 'win'],
-			[i18n._('Loss'), 'loss'],
+			[translator.translateText('Win'), 'win'],
+			[translator.translateText('Loss'), 'loss'],
 		],
 		CHECK_DIRECTION: [
-			[i18n._('Rise'), 'rise'],
-			[i18n._('Fall'), 'fall'],
-			[i18n._('No Change'), ''],
+			[translator.translateText('Rise'), 'rise'],
+			[translator.translateText('Fall'), 'fall'],
+			[translator.translateText('No Change'), ''],
 		],
 	},
 
 	opposites: {
 		RISEFALL: [{
-			'CALL': i18n._('Rise')
+			'CALL': translator.translateText('Rise')
 		}, {
-			'PUT': i18n._('Fall')
+			'PUT': translator.translateText('Fall')
 		}],
 		ASIANS: [{
-			'ASIANU': i18n._('Asian Up')
+			'ASIANU': translator.translateText('Asian Up')
 		}, {
-			'ASIAND': i18n._('Asian Down')
+			'ASIAND': translator.translateText('Asian Down')
 		}],
 		MATCHESDIFFERS: [{
-			'DIGITMATCH': i18n._('Matches')
+			'DIGITMATCH': translator.translateText('Matches')
 		}, {
-			'DIGITDIFF': i18n._('Differs')
+			'DIGITDIFF': translator.translateText('Differs')
 		}],
 		EVENODD: [{
-			'DIGITEVEN': i18n._('Even')
+			'DIGITEVEN': translator.translateText('Even')
 		}, {
-			'DIGITODD': i18n._('Odd')
+			'DIGITODD': translator.translateText('Odd')
 		}],
 		OVERUNDER: [{
-			'DIGITOVER': i18n._('Over')
+			'DIGITOVER': translator.translateText('Over')
 		}, {
-			'DIGITUNDER': i18n._('Under')
+			'DIGITUNDER': translator.translateText('Under')
 		}],
 	},
-	opposites_have_barrier: [
+	oppositesHaveBarrier: [
 		'MATCHESDIFFERS',
 		'OVERUNDER',
 	],
@@ -71,9 +72,10 @@ module.exports = {
 		digits: ['matchesdiffers', 'evenodd', 'overunder']
 	},
 	conditionsCategoryName: {
-		callput: i18n._('Up/Down'),
-		asian: i18n._('Asians'),
-		digits: i18n._('Digits'),
+		callput: translator.translateText('Up/Down'),
+		asian: translator.translateText('Asians'),
+		digits: translator.translateText('Digits'),
 	},
 	conditions: ['risefall', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
+	version: '1.2.0'
 };
