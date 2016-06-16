@@ -50,8 +50,10 @@
     "json-loader": "^0.5.4",
     "loader-utils": "^0.2.15",
     "mocha": "^2.5.3",
+    "mock-socket": "^3.0.1",
     "through2": "^2.0.1",
     "vinyl-paths": "^2.1.0",
-    "ws": "^1.1.0"
+    "ws": "^1.1.0",
+    "xmldom": "^0.1.22"
   }
 }
