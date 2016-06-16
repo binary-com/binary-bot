@@ -52,20 +52,20 @@ var init = function init(){
 			view.setOpacity(started, 'trash', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Use these buttons to load and save blocks') + '</p>',
-		target: view.getUiComponent('file_management'),
+		content: '<p>' + i18n._('Use this menu to load and save blocks') + '</p>',
+		target: view.getUiComponent('block_menu'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'file_management', 1);
+			view.setOpacity(started, 'block_menu', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'file_management', 0.3);
+			view.setOpacity(started, 'block_menu', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
+		content: '<p>' + i18n._('Click to add a token after logging in, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/en/user/settings/api_tokenws.html" target="_blank">' + i18n._('here') + '</a></p>',
 		target: view.getUiComponent('token'),
 		nextButton: true,
 		highlightTarget: true,
@@ -79,42 +79,42 @@ var init = function init(){
 		},
 	}, {
 		content: '<p>' + i18n._('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
-		target: view.getUiComponent('undo_redo'),
+		target: view.getUiComponent('actions_menu'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'undo_redo', 1);
+			view.setOpacity(started, 'actions_menu', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'undo_redo', 0.3);
+			view.setOpacity(started, 'actions_menu', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Click on this button to see the summary of your trades.') + '</p>',
-		target: view.getUiComponent('summary'),
+		content: '<p>' + i18n._('See the summary of your trades in this menu.') + '</p>',
+		target: view.getUiComponent('actions_menu'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'summary', 1);
+			view.setOpacity(started, 'actions_menu', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'summary', 0.3);
+			view.setOpacity(started, 'actions_menu', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Use these buttons to run or stop your blocks, or reset your result panels.') + '</p>',
-		target: view.getUiComponent('run_stop'),
+		content: '<p>' + i18n._('Use the run/stop buttons in this menu to run or stop your blocks, or reset your result panels.') + '</p>',
+		target: view.getUiComponent('actions_menu'),
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'run_stop', 1);
+			view.setOpacity(started, 'actions_menu', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'run_stop', 0.3);
+			view.setOpacity(started, 'actions_menu', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Good Luck!') + '</p>',
