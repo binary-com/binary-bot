@@ -1,12 +1,11 @@
 var translator = require('../translator');
 var xml = require('../xml');
-var DOMParser = require('xmldom').DOMParser;
 var expect = require('chai').expect;
 require('./browser');
 
 describe('Translation', function(){
 	describe('Translate Functions', function(){
-		var xml;
+		var toolbox;
 		before(function(){
 			window = {
 				location: {
@@ -18,7 +17,7 @@ describe('Translation', function(){
 				}
 			};
 			localStorage = {};
-			xml = new DOMParser().parseFromString('\
+			toolbox = xml.strToXml('\
 				<category name="fake1" colour="15" i18n-text="Conditions">\
 					<category name="fake2" colour="15" i18n-text="Up/Down">\
 						<block type="risefall"></block>\
@@ -32,7 +31,7 @@ describe('Translation', function(){
 				.and.to.be.equal('Logic');
 		});
 		it('translateXml', function(){
-			expect(translator.translateXml(xml)).to.have.property('firstChild')
+			expect(translator.translateXml(toolbox)).to.have.property('firstChild')
 				.that.satisfy(function(dom){ return dom.getAttribute('name') === 'Conditions'; })
 				.and.to.have.property('childNodes')
 				.that.has.property('1')
