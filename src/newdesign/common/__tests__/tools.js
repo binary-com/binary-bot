@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var tools = require('../tools');
 var expect = require('chai').expect;
 require('./browser');
 
@@ -11,7 +11,7 @@ describe('Utils', function(){
 		var asyncResult = [];
 		before(function(finish){
 			this.timeout('1000');
-			var chain = utils.asyncChain();
+			var chain = tools.asyncChain();
 			var iife = function(i){
 				chain.pipe(function(done){
 					setTimeout(function(){
@@ -36,7 +36,7 @@ describe('Utils', function(){
 		var queryString;
 		before(function(){
 			window.location.search = '?';
-			queryString = utils.parseQueryString();
+			queryString = tools.parseQueryString();
 		});
 		it('parseQueryString functions detects queryString existance correctly', function(){
 			expect(queryString).to.be.empty;

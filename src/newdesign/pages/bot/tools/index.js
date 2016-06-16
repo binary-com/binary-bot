@@ -1,5 +1,5 @@
-var globals = require('../globals/globals');
-var config = require('../globals/config');
+var global = require('../global/global');
+var config = require('../global/config');
 var activeSymbols = require('./active_symbols');
 var storageManager = require('storageManager');
 var appId = require('appId');
@@ -43,7 +43,7 @@ var getAllowedCategoryNames = function getAllowedCategoryNames(symbol) {
 var getAllowedConditions = function getAllowedConditions(symbol) {
 	var allowedConditions = [];
 	var allowedCategories = [];
-	globals.assetIndex.forEach(function(assetIndex){
+	global.assetIndex.forEach(function(assetIndex){
 		if (assetIndex[0].toLowerCase() === symbol.toLowerCase()) {
 			assetIndex[2].forEach(function(conditionInfo){
 				var conditionName = conditionInfo[0];
@@ -61,7 +61,7 @@ var getAllowedConditions = function getAllowedConditions(symbol) {
 };
 
 var findSymbol = function findSymbol(symbol) {
-	var activeSymbols = globals.activeSymbols.getSymbolNames();
+	var activeSymbols = global.activeSymbols.getSymbolNames();
 	var result;
 	Object.keys(activeSymbols).forEach(function(key){
 		if (key.toLowerCase() === symbol.toLowerCase()) {
@@ -76,7 +76,7 @@ var findSymbol = function findSymbol(symbol) {
 
 var getAssetIndex = function getAssetIndex(api, cb) {
 	api.getAssetIndex().then(function(response){
-		globals.assetIndex = response.asset_index;
+		global.assetIndex = response.asset_index;
 		if ( cb ) {
 			cb();
 		}
@@ -107,7 +107,7 @@ var xmlToStr = function xmlToStr(xml){
 
 var marketsToXml = function marketsToXml(xml){
 	var xmlStr = xmlToStr(xml);
-	var marketXml = createXmlTag(globals.activeSymbols.getMarkets());
+	var marketXml = createXmlTag(global.activeSymbols.getMarkets());
 	return xmlStr.replace('<!--Markets-->', marketXml);
 };
 
@@ -125,7 +125,7 @@ var getActiveSymbols = function getActiveSymbols(callback) {
 
 var findToken = function findToken(token) {
 	var index = -1;
-	globals.lists.accounts.forEach(function (tokenInfo, i) {
+	global.lists.accounts.forEach(function (tokenInfo, i) {
 		if (tokenInfo[1] === token) {
 			index = i;
 		}
@@ -173,10 +173,10 @@ var getUTCTime = function getUTCTime(date) {
 
 var showError = function showError(error) {
 	if (error.stack) {
-		if (globals.isDebug()) {
+		if (global.isDebug()) {
 			console.log('%c' + error.stack, 'color: red');
 		} else {
-			globals.addLogToQueue('%c' + error.stack, 'color: red');
+			global.addLogToQueue('%c' + error.stack, 'color: red');
 		}
 	}
 	var message;
@@ -189,10 +189,10 @@ var showError = function showError(error) {
 		position: 'bottom right',
 		className: 'error',
 	});
-	if (globals.isDebug()) {
+	if (global.isDebug()) {
 		console.log('%cError: ' + message, 'color: red');
 	} else {
-		globals.addLogToQueue('%cError: ' + message, 'color: red');
+		global.addLogToQueue('%cError: ' + message, 'color: red');
 	}
 };
 
@@ -203,10 +203,10 @@ var log = function log(message, notify_type, position) {
 			className: notify_type,
 		});
 	}
-	if (globals.isDebug()) {
+	if (global.isDebug()) {
 		console.log(message);
 	} else {
-		globals.addLogToQueue(message);
+		global.addLogToQueue(message);
 	}
 };
 
@@ -241,7 +241,7 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 			.text('Login');
 		$('#logout')
 			.hide();
-		globals.lists.accounts = [
+		global.lists.accounts = [
 			[i18n._('Please add a token first'), '']
 		];
 		blockly.mainWorkspace.getBlockById('trade')
@@ -259,9 +259,9 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 			.text('Add Token');
 		$('#logout')
 			.show();
-		globals.lists.accounts = [];
+		global.lists.accounts = [];
 		tokenList.forEach(function (tokenInfo) {
-			globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
+			global.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
 		});
 		var tokenInfoToAdd = tokenList[0];
 		if (tokenToAdd !== undefined) {
@@ -297,7 +297,7 @@ var addPurchaseOptions = function addPurchaseOptions() {
 			.getInputTargetBlock('CONDITION')
 			.type;
 		var opposites = config.opposites[condition_type.toUpperCase()];
-		globals.lists.purchase_choices = [];
+		global.lists.purchase_choices = [];
 		opposites.forEach(function (option, index) {
 			if (index === 0) {
 				firstOption = {
@@ -310,7 +310,7 @@ var addPurchaseOptions = function addPurchaseOptions() {
 					name: option[Object.keys(option)[0]],
 				};
 			}
-			globals.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+			global.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
 		});
 		var purchases = [];
 		blockly.mainWorkspace.getAllBlocks()
