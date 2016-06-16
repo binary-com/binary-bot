@@ -1,8 +1,8 @@
-var globals = require('../globals/globals');
-var trade = require('./trade');
+var activeSymbols = require('./activeSymbols');
+
 var markets = {};
 markets.symbolActions = {};
-var symbolNames = globals.activeSymbols.getSymbolNames();
+var symbolNames = activeSymbols.getSymbolNames();
 Object.keys(symbolNames).forEach(function (symbol) {
 	markets.symbolActions[symbol] = function (options) {
 		trade.setSymbol(symbol);

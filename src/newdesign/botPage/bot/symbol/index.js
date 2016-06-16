@@ -1,11 +1,17 @@
-var config = require('config');
-var globals = require('globals');
-var activeSymbols = require('activeSymbols');
+var tools = require('tools');
 var LiveApi = require('binary-live-api').LiveApi;
+var asyncChain = require('common').asyncChain;
+var config = tools.const;
+
+var activeSymbols = require('./activeSymbols');
+var conditions = require('./conditions');
+var markets = require('./markets');
 
 module.exports = {
 	assetIndex: null;
 	activeSymbols: activeSymbols,
+	conditions: conditions,
+	markets: markets,
 	getAllowedConditions: function getAllowedConditions(symbol) {
 		var allowedConditions = [];
 		var allowedCategories = [];
@@ -31,7 +37,7 @@ module.exports = {
 	},
 	getConditionName: function getConditionName(condition) {
 		var opposites = config.opposites[condition.toUpperCase()];
-		return globals.getFirstObjectValue(opposites[0]) + '/' + globals.getFirstObjectValue(opposites[1]);
+		return tools.getFirstObjectValue(opposites[0]) + '/' + tools.getFirstObjectValue(opposites[1]);
 	},
 	getCategory: function getCategory(condition) {
 		for( var category in config.conditionsCategory ) {
@@ -50,7 +56,7 @@ module.exports = {
 		});
 	},
 	findSymbol: function findSymbol(symbol) {
-		var activeSymbols = globals.activeSymbols.getSymbolNames();
+		var activeSymbols = tools.activeSymbols.getSymbolNames();
 		var result;
 		Object.keys(activeSymbols).forEach(function(key){
 			if (key.toLowerCase() === symbol.toLowerCase()) {
@@ -62,21 +68,25 @@ module.exports = {
 		});
 		return result;
 	},
-	getAssetIndex: function getAssetIndex(api, cb) {
-		api.getAssetIndex().then(function(response){
-			this.assetIndex = response.asset_index;
-			if ( cb ) {
-				cb();
-			}
-		});
-	},
-	getActiveSymbols = function getActiveSymbols(callback) {
+	init: function init() {
 		var api = new LiveApi();
-		api.getActiveSymbolsBrief().then(function(response){
-			this.activeSymbols.getMarkets(response.active_symbols);
-			getAssetIndex(api, function(){
-				callback(activeSymbols);
-			});
-		});
+		asyncChain()
+			.pipe(function getActiveSymbols(done){
+				api.getActiveSymbolsBrief().then(function(response){
+					this.activeSymbols.init(response.active_symbols);
+					done();
+				});
+			})
+			.pipe(function getAssetIndex(){
+				api.getAssetIndex().then(function(response){
+					this.assetIndex = response.asset_index;
+				});
+			})
+			.exec();
+	},
+	addMarketsToXml: function addMarketsToXml(xml){
+		var xmlStr = tools.xmlToStr(xml);
+		var marketXml = tools.createXmlFromMarket(tools.activeSymbols.getMarkets());
+		return tools.strToXml(xmlStr.replace('<!--Markets-->', marketXml));
 	}
 };

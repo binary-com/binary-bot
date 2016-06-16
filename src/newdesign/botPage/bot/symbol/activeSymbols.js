@@ -31,12 +31,16 @@ var ActiveSymbols = (function () {
         markets: {},
         submarkets: {},
         symbols: {},
-        getMarkets: function getMarkets(activeSymbols) {
+        activeSymbols: null,
+        init: function init(activeSymbols) {
+            this.activeSymbols = activeSymbols;
+        },
+        getMarkets: function getMarkets() {
             if ( objectNotEmpty(this.markets) ) {
                 return clone(this.markets);
             } else {
                 var that = this;
-                var markets = groupBy(activeSymbols, 'market');
+                var markets = groupBy(this.activeSymbols, 'market');
                 var parsedMarkets = [];
                 Object.keys(markets).forEach(function(key){
                     var marketName = key;
@@ -51,13 +55,13 @@ var ActiveSymbols = (function () {
                 return clone(this.markets);
             }
         },
-        getSubmarketsForMarket: function getSubmarketsForMarket(activeSymbols, market) {
+        getSubmarketsForMarket: function getSubmarketsForMarket(market) {
             if ( objectNotEmpty(market.submarkets) ) {
                 return clone(market.submarkets);
             } else {
                 market.submarkets = {};
                 var that = this;
-                var submarkets = groupBy(activeSymbols, 'submarket');
+                var submarkets = groupBy(this.activeSymbols, 'submarket');
                 var parsedSubmarkets = [];
                 Object.keys(submarkets).forEach(function(key){
                     var submarketName = key;
@@ -72,12 +76,12 @@ var ActiveSymbols = (function () {
                 return clone(market.submarkets);
             }
         },
-        getSymbolsForSubmarket: function getSymbolsForSubmarket(activeSymbols, submarket) {
+        getSymbolsForSubmarket: function getSymbolsForSubmarket(submarket) {
             if ( objectNotEmpty(submarket.symbols) ) {
                 return clone(submarket.symbols);
             } else {
                 submarket.symbols = {};
-                activeSymbols.forEach(function(symbol){
+                this.activeSymbols.forEach(function(symbol){
                     submarket.symbols[symbol.symbol] = {
                         display: symbol.display_name,
                         symbol_type: symbol.symbol_type,
@@ -90,43 +94,43 @@ var ActiveSymbols = (function () {
                 return clone(submarket.symbols);
             }
         },
-        getSubmarkets: function getSubmarkets(active_symbols) {
+        getSubmarkets: function getSubmarkets() {
             if ( objectNotEmpty(this.submarkets) ) {
                 return clone(this.submarkets);
             } else {
-                var markets = this.getMarkets(active_symbols);
+                var markets = this.getMarkets();
                 var that = this;
                 Object.keys(markets).forEach(function(key){
                     var market = markets[key];
-                    var submarkets = that.getSubmarketsForMarket(active_symbols, market);
+                    var submarkets = that.getSubmarketsForMarket(market);
                     extend(that.submarkets, submarkets);
                 });
                 return clone(this.submarkets);
             }
         },
-        getSymbols: function getSymbols(active_symbols) {
+        getSymbols: function getSymbols() {
             if ( objectNotEmpty(this.symbols) ) {
                 return clone(this.symbols);
             } else {
-                var submarkets = this.getSubmarkets(active_symbols);
+                var submarkets = this.getSubmarkets();
                 var that = this;
                 Object.keys(submarkets).forEach(function(key){
                     var submarket = submarkets[key];
-                    var symbols = that.getSymbolsForSubmarket(active_symbols, submarket);
+                    var symbols = that.getSymbolsForSubmarket(submarket);
                     extend(that.symbols, symbols);
                 });
                 return clone(this.symbols);
             }
         },
-        getMarketsList: function getMarketsList(active_symbols) {
+        getMarketsList: function getMarketsList() {
             var tradeMarketsList = {};
-            extend(tradeMarketsList, this.getMarkets(active_symbols));
-            extend(tradeMarketsList, this.getSubmarkets(active_symbols));
+            extend(tradeMarketsList, this.getMarkets());
+            extend(tradeMarketsList, this.getSubmarkets());
             return tradeMarketsList;
         },
-        getTradeUnderlyings: function getTradeUnderlyings(active_symbols) {
+        getTradeUnderlyings: function getTradeUnderlyings() {
             var tradeUnderlyings = {};
-            var symbols = this.getSymbols(active_symbols);
+            var symbols = this.getSymbols();
             Object.keys(symbols).forEach(function(key){
                 var symbol = symbols[key];
                 if ( !tradeUnderlyings[symbol.market] ) {
@@ -140,8 +144,8 @@ var ActiveSymbols = (function () {
             });
             return tradeUnderlyings;
         },
-        getSymbolNames: function getSymbolNames(active_symbols){
-            var symbols = clone(this.getSymbols(active_symbols));
+        getSymbolNames: function getSymbolNames(){
+            var symbols = clone(this.getSymbols());
             Object.keys(symbols).map(function(key){
                 symbols[key] = symbols[key].display;
             });

@@ -1,4 +1,5 @@
-var config = require('../globals/config');
+var config = require('tools').const;
+
 module.exports = {
 	ticktrade: function ticktrade(parameters) {
 		var options = [];

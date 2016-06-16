@@ -30,4 +30,25 @@ module.exports = {
 		);
 		return objURL;
 	},
+	getFirstObjectValue: function getFirstObjectValue(obj) {
+		return obj[Object.keys(obj)[0]];
+	},
+	getUTCTime: function getUTCTime(date) {
+		var dateObject = new Date(date);
+		return ('0' + dateObject.getUTCHours())
+		.slice(-2) + ':' + ('0' + dateObject.getUTCMinutes())
+		.slice(-2) + ':' + ('0' + dateObject.getUTCSeconds())
+		.slice(-2);
+	},
+	findTopParentBlock = function findTopParentBlock(block) {
+		var pblock = block.parentBlock_;
+		if (pblock === null) {
+			return null;
+		}
+		while (pblock !== null) {
+			block = pblock;
+			pblock = block.parentBlock_;
+		}
+		return block;
+	}
 };

@@ -44,6 +44,46 @@ var uiComponents = {
 
 var doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
 
+var findToken = function findToken(token) {
+	var index = -1;
+	global.lists.accounts.forEach(function (tokenInfo, i) {
+		if (tokenInfo[1] === token) {
+			index = i;
+		}
+	});
+	return index;
+};
+
+var logout = function logout() {
+	commonUtils.removeAllTokens(function(){
+		updateTokenList();
+		log(i18n._('Logged you out!'), 'info');
+	});
+};
+
+var addAccount = function addAccount() {
+	var token = prompt(i18n._('Please enter your token here:'), '');
+	var index = findToken(token);
+	if (index >= 0) {
+		log(i18n._('Token already added.'), 'info');
+		return;
+	}
+	if (token === '') {
+		showError(i18n._('Token cannot be empty'));
+	} else if (token !== null) {
+		commonUtils.addTokenIfValid(token, function(err){
+			if (err) {
+				showError(i18n._('Authentication failed using token:') + ' ' + token);
+				return;
+			} else {
+				log(i18n._('Your token was added successfully'), 'info');
+				updateTokenList(token);
+			}
+		});
+	}
+};
+
+
 var getUiComponent = function getUiComponent(component) {
 	return $(uiComponents[component]);
 };
