@@ -12,72 +12,63 @@ var fileSaver = require('filesaverjs');
 require('./utils/draggable');
 
 var initTours = function initTours() {
-	tours.introduction = require('./tours/introduction').init();
-	tours.welcome = require('./tours/welcome').init();
-	if ( tours.welcome.welcome() ){
-		activeTutorial = tours.welcome;
-		$('#tutorialButton')
-			.unbind('click.startTutorial')
-			.bind('click.stopTutorial', stopTutorial)
-			.text(i18n._('Stop!'));
-	}
+  tours.introduction = require('./tours/introduction').init();
+  tours.welcome = require('./tours/welcome').init();
+  if ( tours.welcome.welcome() ){
+    activeTutorial = tours.welcome;
+  }
 };
 
 var uiComponents = {
-	tutorialList: '.tutorialList',
-	logout: '.logout',
-	workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
-	workspace: '.blocklyWorkspace',
-	toolbox: '.blocklyToolboxDiv',
-	file_management: '.intro-file-management',
-	token: '.intro-token',
-	run_stop: '.intro-run-stop',
-	trash: '.blocklyTrash',
-	undo_redo: '.intro-undo-redo',
-	summary: '.intro-summary',
-	center: '#center',
-	flyout: '.blocklyFlyoutBackground',
-	submarket: ".blocklyDraggable:contains('Submarket'):last",
-	strategy: ".blocklyDraggable:contains('Strategy'):last",
-	finish: ".blocklyDraggable:contains('Finish'):last",
+  tutorialList: '.tutorialList',
+  logout: '.logout',
+  workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
+  workspace: '.blocklyWorkspace',
+  toolbox: '.blocklyToolboxDiv',
+  block_menu: '#block_menu',
+  token: '.intro-token',
+  trash: '.blocklyTrash',
+  actions_menu: '#actions_menu',
+  center: '#center',
+  flyout: '.blocklyFlyoutBackground',
+  submarket: ".blocklyDraggable:contains('Submarket'):last",
+  strategy: ".blocklyDraggable:contains('Strategy'):last",
+  finish: ".blocklyDraggable:contains('Finish'):last",
 };
 
 var doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
 
 var getUiComponent = function getUiComponent(component) {
-	return $(uiComponents[component]);
+  return $(uiComponents[component]);
 };
 
 var startTutorial = function startTutorial(e) {
-	if (e) {
-		e.preventDefault();
-	}
-	if (activeTutorial) {
-		activeTutorial.stop();
-	}
-	activeTutorial = tours[$('#tours')
-		.val()];
-	activeTutorial.start();
-	$('#tutorialButton')
-		.unbind('click.startTutorial')
-		.bind('click.stopTutorial', stopTutorial)
-		.text(i18n._('Stop!'));
+  if (e) {
+    e.preventDefault();
+  }
+  if (activeTutorial) {
+    activeTutorial.stop();
+  }
+  $('#welcome-tour').on('click', function(e) {
+      activeTutorial = tours.welcome;
+      activeTutorial.start();
+  });
+  $('#introduction-tour').on('click', function(e) {
+      activeTutorial = tours.introduction;
+      activeTutorial.start();
+  });
 };
 
 var stopTutorial = function stopTutorial(e) {
-	if (e) {
-		e.preventDefault();
-	}
-	if (activeTutorial) {
-		if (e) {
-			activeTutorial.stop();
-		}
-		activeTutorial = null;
-	}
-	$('#tutorialButton')
-		.unbind('click.stopTutorial')
-		.bind('click.startTutorial', startTutorial)
-		.text(i18n._('Go!'));
+  if (e) {
+    e.preventDefault();
+  }
+  if (activeTutorial) {
+    if (e) {
+      activeTutorial.stop();
+    }
+    activeTutorial = null;
+  }
 };
 
 var setOpacityForAll = function setOpacityForAll(enabled, opacity) {
@@ -267,118 +258,142 @@ var stop = function stop(e) {
 };
 
 var show = function show(done) {
-	dropZone.addEventListener('dragover', handleDragOver, false);
-	dropZone.addEventListener('drop', handleFileSelect, false);
-	document.getElementById('files')
-		.addEventListener('change', handleFileSelect, false);
+  dropZone.addEventListener('dragover', handleDragOver, false);
+  dropZone.addEventListener('drop', handleFileSelect, false);
+  if (document.getElementById('files')) {
+      document.getElementById('files')
+        .addEventListener('change', handleFileSelect, false);
+  }
+  $('#open_btn')
+        .on('click', function() {
+            $.FileDialog({
+                  accept: ".xml",
+                  cancelButton: "Close",
+                  dragMessage: "Drop files here",
+                  dropheight: 400,
+                  errorMessage: "An error occured while loading file",
+                  multiple: false,
+                  okButton: "OK",
+                  readAs: "DataURL",
+                  removeMessage: "Remove&nbsp;file",
+                  title: "Load file"
+            });
+        })
+        .on('files.bs.filedialog', function(ev) {
+            var files_list = ev.files;
+            handleFileSelect(files_list);
+        })
+        .on('cancel.bs.filedialog', function(ev) {
+            handleFileSelect(ev);
+        });
 
-	$('#tutorialButton')
-		.bind('click.startTutorial', startTutorial);
-	$('#stopButton')
-		.text(i18n._('Reset'));
-	$('#stopButton')
-		.bind('click', reset);
+  startTutorial();
+  $('#stopButton')
+    .text(i18n._('Reset'));
+  $('#stopButton')
+    .bind('click', reset);
 
-	$('#summaryPanel .exitPanel')
-		.click(function () {
-			$(this)
-				.parent()
-				.hide();
-		});
+  $('#summaryPanel .exitPanel')
+    .click(function () {
+      $(this)
+        .parent()
+        .hide();
+    });
 
-	$('#summaryPanel')
-		.hide();
+  $('#summaryPanel')
+    .hide();
 
-	$('#summaryPanel')
-		.drags();
+  $('#summaryPanel')
+    .drags();
 
-	$('#chart')
-		.mousedown(function (e) { // prevent chart to trigger draggable
-			e.stopPropagation();
-		});
+  $('#chart')
+    .mousedown(function (e) { // prevent chart to trigger draggable
+      e.stopPropagation();
+    });
 
-	$('table')
-		.mousedown(function (e) { // prevent tables to trigger draggable
-			e.stopPropagation();
-		});
+  $('table')
+    .mousedown(function (e) { // prevent tables to trigger draggable
+      e.stopPropagation();
+    });
 
-	globals.showTradeInfo();
-	$('#saveXml')
-		.click(function (e) {
-			saveXml();
-		});
+  globals.showTradeInfo();
+  $('#saveXml')
+    .click(function (e) {
+      saveXml();
+    });
 
-	$('#undo')
-		.click(function (e) {
-			globals.undoBlocks();
-		});
+  $('#undo')
+    .click(function (e) {
+      globals.undoBlocks();
+    });
 
-	$('#redo')
-		.click(function (e) {
-			globals.redoBlocks();
-		});
+  $('#redo')
+    .click(function (e) {
+      globals.redoBlocks();
+    });
 
-	$('#showSummary')
-		.click(function (e) {
-			$('#summaryPanel')
-				.show();
-		});
+  $('#showSummary')
+    .click(function (e) {
+      $('#summaryPanel')
+        .show();
+    });
 
-	$('#run')
-		.click(function (e) {
-			run();
-		});
+  $('#run')
+    .click(function (e) {
+      run();
+    });
 
-	$('#logout')
-		.click(function (e) {
-			botUtils.logout();
-		});
+  $('#logout')
+    .click(function (e) {
+      botUtils.logout();
+      $('.logout').addClass('invisible');
+    });
 
-	$('#runButton')
-		.click(function (e) {
-			run();
-		});
+  $('#runButton')
+    .click(function (e) {
+      run();
+    });
 
-	$.get('xml/toolbox.xml', function (toolbox) {
-		require('./code_generators');
-		require('./definitions');
-		var workspace = blockly.inject('blocklyDiv', {
-			media: 'js/blockly/media/',
-			toolbox: botUtils.xmlToStr(i18n.xml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
-			zoom: {
-				controls: true,
-				wheel: false,
-				startScale: 1.0,
-				maxScale: 3,
-				minScale: 0.3,
-				scaleSpeed: 1.2
-			},
-			trashcan: true,
-		});
-		$.get('xml/main.xml', function (main) {
-			blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-			blockly.mainWorkspace.getBlockById('trade')
-				.setDeletable(false);
-			blockly.mainWorkspace.getBlockById('strategy')
-				.setDeletable(false);
-			blockly.mainWorkspace.getBlockById('finish')
-				.setDeletable(false);
-			botUtils.updateTokenList();
-			botUtils.addPurchaseOptions();
-			blockly.mainWorkspace.clearUndo();
-			initTours();
-			done();
-		});
-	});
+  $.get('xml/toolbox.xml', function (toolbox) {
+    require('./code_generators');
+    require('./definitions');
+    var workspace = blockly.inject('blocklyDiv', {
+      media: 'js/blockly/media/',
+      toolbox: botUtils.xmlToStr(i18n.xml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
+      zoom: {
+        controls: true,
+        wheel: false,
+        startScale: 1.0,
+        maxScale: 3,
+        minScale: 0.3,
+        scaleSpeed: 1.2
+      },
+      trashcan: true,
+    });
+    $.get('xml/main.xml', function (main) {
+      blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+      blockly.mainWorkspace.getBlockById('trade')
+        .setDeletable(false);
+      blockly.mainWorkspace.getBlockById('strategy')
+        .setDeletable(false);
+      blockly.mainWorkspace.getBlockById('finish')
+        .setDeletable(false);
+      botUtils.updateTokenList();
+      botUtils.addPurchaseOptions();
+      blockly.mainWorkspace.clearUndo();
+      initTours();
+      done();
+    });
+  });
 };
 
 module.exports = {
-	uiComponents: uiComponents,
-	getUiComponent: getUiComponent,
-	setOpacityForAll: setOpacityForAll,
-	setOpacity: setOpacity,
-	stopTutorial: stopTutorial,
-	startTutorial: startTutorial,
-	initTours: initTours,
-	show: show
+  uiComponents: uiComponents,
+  getUiComponent: getUiComponent,
+  setOpacityForAll: setOpacityForAll,
+  setOpacity: setOpacity,
+  stopTutorial: stopTutorial,
+  startTutorial: startTutorial,
+  initTours: initTours,
+  show: show
 };
