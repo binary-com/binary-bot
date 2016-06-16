@@ -30,6 +30,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "app-module-path": "^1.1.0",
     "chai": "^3.5.0",
     "deep-diff": "^0.3.4",
     "del": "^2.2.0",

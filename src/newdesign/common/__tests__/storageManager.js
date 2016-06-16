@@ -1,6 +1,6 @@
 var storageManager = require('../storageManager');
 var expect = require('chai').expect;
-require('./browser');
+require('../browser');
 
 describe('StorageManager', function(){
 	before(function(){

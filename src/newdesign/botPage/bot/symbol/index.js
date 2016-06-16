@@ -1,4 +1,4 @@
-var tools = require('tools');
+var tools = require('common').tools;
 var LiveApi = require('binary-live-api').LiveApi;
 var asyncChain = require('common').asyncChain;
 var config = tools.const;
@@ -37,7 +37,7 @@ module.exports = {
 	},
 	getConditionName: function getConditionName(condition) {
 		var opposites = config.opposites[condition.toUpperCase()];
-		return tools.getFirstObjectValue(opposites[0]) + '/' + tools.getFirstObjectValue(opposites[1]);
+		return tools.getObjectValue(opposites[0]) + '/' + tools.getObjectValue(opposites[1]);
 	},
 	getCategory: function getCategory(condition) {
 		for( var category in config.conditionsCategory ) {
@@ -56,7 +56,7 @@ module.exports = {
 		});
 	},
 	findSymbol: function findSymbol(symbol) {
-		var activeSymbols = tools.activeSymbols.getSymbolNames();
+		var activeSymbols = activeSymbols.getSymbolNames();
 		var result;
 		Object.keys(activeSymbols).forEach(function(key){
 			if (key.toLowerCase() === symbol.toLowerCase()) {

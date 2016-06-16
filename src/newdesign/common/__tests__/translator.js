@@ -1,7 +1,7 @@
 var translator = require('../translator');
 var xml = require('../xml');
 var expect = require('chai').expect;
-require('./browser');
+require('../browser');
 
 describe('Translation', function(){
 	describe('Translate Functions', function(){

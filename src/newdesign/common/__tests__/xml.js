@@ -1,6 +1,6 @@
 var xml = require('../xml');
 var expect = require('chai').expect;
-require('./browser');
+require('../browser');
 
 describe('Xml', function(){
 	var marketsObj = {};

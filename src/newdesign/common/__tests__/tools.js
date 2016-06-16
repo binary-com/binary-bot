@@ -1,6 +1,6 @@
 var tools = require('../tools');
 var expect = require('chai').expect;
-require('./browser');
+require('../browser');
 
 describe('Tools', function(){
 	describe('asyncChain function', function(){
@@ -46,6 +46,20 @@ describe('Tools', function(){
 		it('getObjectValue gets the value of an object with one attribute', function(){
 			var obj = {key: 'value'};
 			expect(tools.getObjectValue(obj)).to.be.equal('value');
+		});
+	});
+	describe('getObjectKey', function(){
+		it('getObjectKey gets the key of an object with one attribute', function(){
+			var obj = {key: 'value'};
+			expect(tools.getObjectKey(obj)).to.be.equal('key');
+		});
+	});
+	describe('copyAttributeIfExists', function(){
+		it('copyAttributeIfExists copies attribute of one object to another', function(){
+			var obj1 = {key: 'value'};
+			var obj2 = {key2: 'value2'};
+			tools.copyAttributeIfExists(obj1, obj2, 'key2');
+			expect(obj1.key2).to.be.ok;
 		});
 	});
 	describe('getUTCTime', function(){

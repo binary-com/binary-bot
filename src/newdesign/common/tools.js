@@ -33,11 +33,19 @@ module.exports = {
 	getObjectValue: function getObjectValue(obj) {
 		return obj[Object.keys(obj)[0]];
 	},
+	getObjectKey: function getObjectKey(obj) {
+		return Object.keys(obj)[0];
+	},
 	getUTCTime: function getUTCTime(date) {
 		var dateObject = new Date(date);
 		return ('0' + dateObject.getUTCHours())
 		.slice(-2) + ':' + ('0' + dateObject.getUTCMinutes())
 		.slice(-2) + ':' + ('0' + dateObject.getUTCSeconds())
 		.slice(-2);
+	},
+	copyAttributeIfExists: function copyAttributeIfExists(obj1, obj2, name) {
+		if (obj2.hasOwnProperty(name)) {
+			obj1[name] = obj2[name];
+		}
 	}
 };

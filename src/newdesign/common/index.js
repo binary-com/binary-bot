@@ -4,7 +4,6 @@ var account = require('./account');
 var tools = require('./tools');
 var _const = require('./const');
 var xml = require('./xml');
-var version = require('./version');
 var observer = require('./observer');
 
 module.exports = {

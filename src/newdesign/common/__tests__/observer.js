@@ -1,6 +1,6 @@
 var observer = require('../observer');
 var expect = require('chai').expect;
-require('./browser');
+require('../browser');
 
 describe('Observer', function(){
 	var returnedValue = null;
