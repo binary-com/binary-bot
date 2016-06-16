@@ -232,7 +232,7 @@
 		</value>
 		</block>
 	</category>
-	<category name="Variable" id="Variables" colour="330" custom="VARIABLE" i18n-text="Variable">></category>
+	<category name="Variable" id="Variables" colour="330" custom="VARIABLE" i18n-text="Variable"></category>
 	<category name="Functions" id="Functions" colour="290" custom="PROCEDURE" i18n-text="Functions"></category>
 	<category name="Binary" colour="60" i18n-text="Binary">
 		<!--Markets-->
