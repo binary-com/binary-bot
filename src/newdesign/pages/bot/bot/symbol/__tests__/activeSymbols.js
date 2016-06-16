@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var activeSymbols = require('../active_symbols');
+var activeSymbols = require('../activeSymbols');
 var ws = require('ws');
 var LiveApi = require('binary-live-api').LiveApi;
 var api = new LiveApi({ websocket: ws });

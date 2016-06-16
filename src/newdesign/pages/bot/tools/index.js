@@ -7,80 +7,8 @@ var blockly = require('blockly');
 var commonUtils = require('utils');
 var i18n = require('i18n');
 
-var isConditionAllowedInSymbol = function isConditionAllowedInSymbol(symbol, condition) {
-	var allowedConditions = getAllowedConditions(symbol).conditions;
-	return allowedConditions.indexOf(condition) >= 0;
-};
-
 var getFirstObjectValue = function getFirstObjectValue(obj) {
 	return obj[Object.keys(obj)[0]];
-};
-
-var getConditionName = function getConditionName(condition) {
-	var opposites = config.opposites[condition.toUpperCase()];
-	return getFirstObjectValue(opposites[0]) + '/' + getFirstObjectValue(opposites[1]);
-};
-
-var getCategory = function getCategory(condition) {
-	for( var category in config.conditionsCategory ) {
-		if ( config.conditionsCategory[category].indexOf(condition.toLowerCase()) >= 0 ) {
-			return category;
-		}
-	}
-};
-
-var getCategoryName = function getCategoryName(condition) {
-	return config.conditionsCategoryName[getCategory(condition)];
-};
-
-var getAllowedCategoryNames = function getAllowedCategoryNames(symbol) {
-	var allowedCategories = getAllowedConditions(symbol).categories;
-	return allowedCategories.map(function(el){
-		return config.conditionsCategoryName[el];
-	});
-};
-
-var getAllowedConditions = function getAllowedConditions(symbol) {
-	var allowedConditions = [];
-	var allowedCategories = [];
-	global.assetIndex.forEach(function(assetIndex){
-		if (assetIndex[0].toLowerCase() === symbol.toLowerCase()) {
-			assetIndex[2].forEach(function(conditionInfo){
-				var conditionName = conditionInfo[0];
-				if ( config.conditionsCategory.hasOwnProperty(conditionName) ) {
-					allowedConditions = allowedConditions.concat(config.conditionsCategory[conditionName]);
-					allowedCategories.push(conditionName);
-				}
-			});
-		}
-	});
-	return {
-		conditions: allowedConditions,
-		categories: allowedCategories
-	};
-};
-
-var findSymbol = function findSymbol(symbol) {
-	var activeSymbols = global.activeSymbols.getSymbolNames();
-	var result;
-	Object.keys(activeSymbols).forEach(function(key){
-		if (key.toLowerCase() === symbol.toLowerCase()) {
-			if (!result) {
-				result = {};
-			}
-			result[key] = activeSymbols[key];
-		}
-	});
-	return result;
-};
-
-var getAssetIndex = function getAssetIndex(api, cb) {
-	api.getAssetIndex().then(function(response){
-		global.assetIndex = response.asset_index;
-		if ( cb ) {
-			cb();
-		}
-	});
 };
 
 var createXmlTag = function createXmlTag(obj) {
