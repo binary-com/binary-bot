@@ -27,15 +27,24 @@ var ActiveSymbols = (function () {
         return newObj;
     };
 
-    var activeSymbols = {
+    var ActiveSymbols = {
         markets: {},
         submarkets: {},
         symbols: {},
         activeSymbols: null,
+        _initialized: false,
+        checkInitialized: function checkInitialized() {
+            if (!this._initialized) {
+                throw(Error('Should be initialized first'));
+            }
+        },
         init: function init(activeSymbols) {
             this.activeSymbols = activeSymbols;
+            this._initialized = true;
+            this.getMarkets(), activeSymbols;
         },
         getMarkets: function getMarkets() {
+            this.checkInitialized();
             if ( objectNotEmpty(this.markets) ) {
                 return clone(this.markets);
             } else {
@@ -50,12 +59,13 @@ var ActiveSymbols = (function () {
                         name: symbol.market_display_name,
                         is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
                     };
-                    that.getSubmarketsForMarket(marketSymbols, that.markets[marketName]);
+                    that.getSubmarketsForMarket(that.markets[marketName]);
                 });
                 return clone(this.markets);
             }
         },
         getSubmarketsForMarket: function getSubmarketsForMarket(market) {
+            this.checkInitialized();
             if ( objectNotEmpty(market.submarkets) ) {
                 return clone(market.submarkets);
             } else {
@@ -71,12 +81,13 @@ var ActiveSymbols = (function () {
                         name: symbol.submarket_display_name,
                         is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
                     };
-                    that.getSymbolsForSubmarket(submarketSymbols, market.submarkets[submarketName]);
+                    that.getSymbolsForSubmarket(market.submarkets[submarketName]);
                 });
                 return clone(market.submarkets);
             }
         },
         getSymbolsForSubmarket: function getSymbolsForSubmarket(submarket) {
+            this.checkInitialized();
             if ( objectNotEmpty(submarket.symbols) ) {
                 return clone(submarket.symbols);
             } else {
@@ -95,6 +106,7 @@ var ActiveSymbols = (function () {
             }
         },
         getSubmarkets: function getSubmarkets() {
+            this.checkInitialized();
             if ( objectNotEmpty(this.submarkets) ) {
                 return clone(this.submarkets);
             } else {
@@ -109,6 +121,7 @@ var ActiveSymbols = (function () {
             }
         },
         getSymbols: function getSymbols() {
+            this.checkInitialized();
             if ( objectNotEmpty(this.symbols) ) {
                 return clone(this.symbols);
             } else {
@@ -123,12 +136,14 @@ var ActiveSymbols = (function () {
             }
         },
         getMarketsList: function getMarketsList() {
+            this.checkInitialized();
             var tradeMarketsList = {};
             extend(tradeMarketsList, this.getMarkets());
             extend(tradeMarketsList, this.getSubmarkets());
             return tradeMarketsList;
         },
         getTradeUnderlyings: function getTradeUnderlyings() {
+            this.checkInitialized();
             var tradeUnderlyings = {};
             var symbols = this.getSymbols();
             Object.keys(symbols).forEach(function(key){
@@ -145,6 +160,7 @@ var ActiveSymbols = (function () {
             return tradeUnderlyings;
         },
         getSymbolNames: function getSymbolNames(){
+            this.checkInitialized();
             var symbols = clone(this.getSymbols());
             Object.keys(symbols).map(function(key){
                 symbols[key] = symbols[key].display;
@@ -153,7 +169,7 @@ var ActiveSymbols = (function () {
         },
     };
     if (typeof module !== 'undefined') {
-        module.exports = activeSymbols;
+        module.exports = ActiveSymbols;
     }
-    return activeSymbols;
+    return ActiveSymbols;
 })();

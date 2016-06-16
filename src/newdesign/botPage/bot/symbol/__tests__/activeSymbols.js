@@ -24,11 +24,10 @@ var set_checks = function set_checks(obj) {
 };
 
 describe('ActiveSymbols', function() {
-	var active_symbols;
 	before(function(done){
 		this.timeout(10000);
 		api.getActiveSymbolsBrief().then(function(response){
-			active_symbols = response.active_symbols;
+			activeSymbols.init(response.active_symbols);
 			done();
 		});
 	});
@@ -36,7 +35,7 @@ describe('ActiveSymbols', function() {
 		expect(activeSymbols).to.have.any.of.keys(['getMarkets', 'getSubmarkets', 'getMarketsList', 'getTradeUnderlyings', 'getSymbolNames']);
 	});
 	it('Should getMarkets have forex as a key', function() {
-		var markets = activeSymbols.getMarkets(active_symbols);
+		var markets = activeSymbols.getMarkets();
 		expect(markets).to.be.an('Object')
 			.and.to.have.property('forex');
 		expect(markets.forex).to.have.property('name')
@@ -47,18 +46,18 @@ describe('ActiveSymbols', function() {
 			.and.to.be.an('Object');
 	});
 	it('Should getSubmarkets have major_pairs as a key, but not forex', function() {
-		var submarkets = activeSymbols.getSubmarkets(active_symbols);
+		var submarkets = activeSymbols.getSubmarkets();
 		expect(submarkets).to.be.an('Object')
 			.and.to.have.any.of.key('major_pairs')
 			.and.not.to.have.any.of.key('forex');
 	});
 	it('Should getMarketsList have major_pairs and forex as keys', function() {
-		var marketList = activeSymbols.getMarketsList(active_symbols);
+		var marketList = activeSymbols.getMarketsList();
 		expect(marketList).to.be.an('Object')
 			.and.to.have.any.of.keys(['forex', 'major_pairs']);
 	});
 	it('Should getTradeUnderlyings have major_pairs and forex as keys and symbols as values', function() {
-		var tradeUnderlyings = activeSymbols.getTradeUnderlyings(active_symbols);
+		var tradeUnderlyings = activeSymbols.getTradeUnderlyings();
 		expect(tradeUnderlyings).to.be.an('Object')
 			.and.to.have.property('forex')
 			.and.to.have.property('frxEURUSD')
@@ -68,12 +67,12 @@ describe('ActiveSymbols', function() {
 			.and.to.have.any.of.keys(['is_active', 'display', 'market', 'submarket']);
 	});
 	it('Should getSymbolNames have all symbol names', function() {
-		var names = activeSymbols.getSymbolNames(active_symbols);
+		var names = activeSymbols.getSymbolNames();
 		expect(names).to.be.an('Object')
 			.and.to.have.property('frxEURUSD');
 	});
 	it('Should getMarkets output match the market snapshot', function() {
-		var markets = activeSymbols.getMarkets(active_symbols);
+		var markets = activeSymbols.getMarkets();
 		var deepDiff = deep(set_checks(markets), set_checks(JSON.parse(expected_markets_str)));
 		if (deepDiff) {
 			deepDiff.forEach(function(diff){
