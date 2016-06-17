@@ -1,5 +1,5 @@
 var translator = require('../translator');
-var xml = require('../xml');
+var tools = require('../tools');
 var expect = require('chai').expect;
 require('../browser');
 
@@ -17,7 +17,7 @@ describe('Translation', function(){
 				}
 			};
 			localStorage = {};
-			toolbox = xml.strToXml('\
+			toolbox = tools.strToXml('\
 				<category name="fake1" colour="15" i18n-text="Conditions">\
 					<category name="fake2" colour="15" i18n-text="Up/Down">\
 						<block type="risefall"></block>\

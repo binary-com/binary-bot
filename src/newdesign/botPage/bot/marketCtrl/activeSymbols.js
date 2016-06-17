@@ -92,7 +92,11 @@ var ActiveSymbols = (function () {
                 return clone(submarket.symbols);
             } else {
                 submarket.symbols = {};
-                this.activeSymbols.forEach(function(symbol){
+                this.activeSymbols.filter(function(el){
+                    if(el.submarket_display_name === submarket.name) {
+                        return el;
+                    }
+                }).forEach(function(symbol){
                     submarket.symbols[symbol.symbol] = {
                         display: symbol.display_name,
                         symbol_type: symbol.symbol_type,

@@ -17,7 +17,6 @@ module.exports = {
 			tools.copyAttributeIfExists(option_data, parameters, 'barrier');
 			options.push(option_data);
 		});
-
 		return options;
 	}
 };

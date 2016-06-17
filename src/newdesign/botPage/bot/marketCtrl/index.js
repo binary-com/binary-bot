@@ -1,18 +1,31 @@
 var tools = require('common').tools;
+var config = require('common').const;
 var LiveApi = require('binary-live-api').LiveApi;
 var asyncChain = require('common').asyncChain;
-var config = tools.const;
 
 var activeSymbols = require('./activeSymbols');
 var conditions = require('./conditions');
-var markets = require('./markets');
+var _ = require('underscore');
+
 
 module.exports = {
 	assetIndex: null,
 	activeSymbols: activeSymbols,
 	conditions: conditions,
-	markets: markets,
-	getAllowedConditions: function getAllowedConditions(symbol) {
+	_initialized: false,
+	checkInitialized: function checkInitialized() {
+        if (!this._initialized) {
+            throw(Error('Should be initialized first'));
+        }
+    },
+	getAllowedConditionsForSymbol: function getAllowedConditionsForSymbol(symbol) {
+		return this.getAllowedForSymbol(symbol).conditions;
+    },
+    getAllowedCategoriesForSymbol: function getAllowedCategoriesForSymbol(symbol) {
+    	return this.getAllowedForSymbol(symbol).categories;
+    },
+	getAllowedForSymbol: function getAllowedForSymbol(symbol) {
+		this.checkInitialized();
 		var allowedConditions = [];
 		var allowedCategories = [];
 		this.assetIndex.forEach(function(index){
@@ -32,31 +45,32 @@ module.exports = {
 		};
 	},
 	isConditionAllowedInSymbol: function isConditionAllowedInSymbol(symbol, condition) {
-		var allowedConditions = this.getAllowedConditions(symbol).conditions;
+		var allowedConditions = this.getAllowedConditionsForSymbol(symbol);
 		return allowedConditions.indexOf(condition) >= 0;
 	},
 	getConditionName: function getConditionName(condition) {
 		var opposites = config.opposites[condition.toUpperCase()];
 		return tools.getObjectValue(opposites[0]) + '/' + tools.getObjectValue(opposites[1]);
 	},
-	getCategory: function getCategory(condition) {
+	getCategoryForCondition: function getCategoryForCondition(condition) {
 		for( var category in config.conditionsCategory ) {
 			if ( config.conditionsCategory[category].indexOf(condition.toLowerCase()) >= 0 ) {
 				return category;
 			}
 		}
 	},
-	getCategoryName: function getCategoryName(condition) {
-		return config.conditionsCategoryName[getCategory(condition)];
+	getCategoryNameForCondition: function getCategoryNameForCondition(condition) {
+		return config.conditionsCategoryName[this.getCategoryForCondition(condition)];
 	},
 	getAllowedCategoryNames: function getAllowedCategoryNames(symbol) {
-		var allowedCategories = this.getAllowedConditions(symbol).categories;
+		var allowedCategories = this.getAllowedCategoriesForSymbol(symbol);
 		return allowedCategories.map(function(el){
 			return config.conditionsCategoryName[el];
 		});
 	},
 	findSymbol: function findSymbol(symbol) {
-		var activeSymbols = activeSymbols.getSymbolNames();
+		this.checkInitialized();
+		var activeSymbols = this.activeSymbols.getSymbolNames();
 		var result;
 		Object.keys(activeSymbols).forEach(function(key){
 			if (key.toLowerCase() === symbol.toLowerCase()) {
@@ -68,25 +82,51 @@ module.exports = {
 		});
 		return result;
 	},
-	init: function init() {
-		var api = new LiveApi();
-		asyncChain()
+	init: function init(cb) {
+		var api;
+		if (typeof ws === 'undefined') {
+			api = new LiveApi({ websocket: require('ws') });
+		} else {
+			api = new LiveApi();
+		}
+		var that = this;
+		tools.asyncChain()
 			.pipe(function getActiveSymbols(done){
 				api.getActiveSymbolsBrief().then(function(response){
-					this.activeSymbols.init(response.active_symbols);
+					that.activeSymbols.init(response.active_symbols);
 					done();
 				});
 			})
-			.pipe(function getAssetIndex(){
+			.pipe(function getAssetIndex(done){
 				api.getAssetIndex().then(function(response){
-					this.assetIndex = response.asset_index;
+					that.assetIndex = response.asset_index;
+					done();
 				});
+			})
+			.pipe(function finish(){
+				that._initialized = true;
+				cb();
 			})
 			.exec();
 	},
 	addMarketsToXml: function addMarketsToXml(xml){
+		this.checkInitialized();
 		var xmlStr = tools.xmlToStr(xml);
-		var marketXml = tools.createXmlFromMarket(tools.activeSymbols.getMarkets());
+		var marketXml = tools.createXmlFromMarket(this.activeSymbols.getMarkets());
 		return tools.strToXml(xmlStr.replace('<!--Markets-->', marketXml));
+	},
+	makeProposalsFromOptions: function makeProposalsFromOptions(options){
+		this.checkInitialized();
+		var proposals = {};
+		var symbols = this.activeSymbols.getSymbols();
+		for(var symbol in symbols) {
+			proposals[symbol] = [];
+			for(var option in options) {
+				var newOption = _.clone(options[option]);
+				newOption.symbol = symbol;
+				proposals[symbol].push(newOption);
+			}
+		}
+		return proposals;
 	}
 };
