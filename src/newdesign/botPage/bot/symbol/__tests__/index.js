@@ -1,33 +1,33 @@
 require('app-module-path').addPath(__dirname + '/../../../../');
 require('common/browser');
 
-var marketCtrl = require('../index');
+var symbol = require('../index');
 var tools = require('common').tools;
 var expect = require('chai').expect;
 
-describe('marketCtrl', function() {
+describe('symbol', function() {
 	describe('Error Handling', function(){
-		it('initializing is needed for marketCtrl functions', function(){
-			expect(function(){marketCtrl.getAllowedConditions();}).to.throw(Error);
-			expect(function(){marketCtrl.isConditionAllowedInSymbol();}).to.throw(Error);
-			expect(function(){marketCtrl.getConditionName();}).to.throw(Error);
-			expect(function(){marketCtrl.getCategory();}).to.throw(Error);
-			expect(function(){marketCtrl.getCategoryName();}).to.throw(Error);
-			expect(function(){marketCtrl.getAllowedCategoryNames();}).to.throw(Error);
-			expect(function(){marketCtrl.findSymbol();}).to.throw(Error);
-			expect(function(){marketCtrl.addMarketsToXml();}).to.throw(Error);
-			expect(function(){marketCtrl.makeProposalsFromOptions();}).to.throw(Error);
+		it('initializing is needed for symbol functions', function(){
+			expect(function(){symbol.getAllowedConditions();}).to.throw(Error);
+			expect(function(){symbol.isConditionAllowedInSymbol();}).to.throw(Error);
+			expect(function(){symbol.getConditionName();}).to.throw(Error);
+			expect(function(){symbol.getCategory();}).to.throw(Error);
+			expect(function(){symbol.getCategoryName();}).to.throw(Error);
+			expect(function(){symbol.getAllowedCategoryNames();}).to.throw(Error);
+			expect(function(){symbol.findSymbol();}).to.throw(Error);
+			expect(function(){symbol.addMarketsToXml();}).to.throw(Error);
+			expect(function(){symbol.makeProposalsFromOptions();}).to.throw(Error);
 		});
 	});
 	describe('Checking functions', function(){
 		this.timeout('10000');
 		before(function(done){
-			marketCtrl.init(function(){
+			symbol.init(function(){
 				done();
 			});
 		});
 		it('makeProposalsFromOptions creates proposals', function(){
-			var proposals = marketCtrl.makeProposalsFromOptions(marketCtrl.conditions.ticktrade({
+			var proposals = symbol.makeProposalsFromOptions(symbol.conditions.ticktrade({
 				condition: 'RISEFALL',
 				amount: 1,
 				basis: 'Stake',
@@ -44,52 +44,52 @@ describe('marketCtrl', function() {
 		});
 		it('addMarketsToXml adds market to the toolbox', function(){
 			var marketXml = tools.strToXml('<xml><!--Markets--></xml>');
-			expect(marketCtrl.addMarketsToXml(marketXml))
+			expect(symbol.addMarketsToXml(marketXml))
 				.to.have.deep.property('.childNodes[0].childNodes[0].attributes[0].value')
 				.that.be.equal('Markets');
 		});
 		it('findSymbol returns symbol if exist', function(){
-			expect(marketCtrl.findSymbol('R_100')).to.be.ok
+			expect(symbol.findSymbol('R_100')).to.be.ok
 				.and.to.have.property('R_100');
-			expect(marketCtrl.findSymbol('FAKE')).not.to.be.ok;
+			expect(symbol.findSymbol('FAKE')).not.to.be.ok;
 		});
 		it('getAllowedCategoryNames returns allowed category names', function(){
-			expect(marketCtrl.getAllowedCategoryNames('R_100')).to.be.ok
+			expect(symbol.getAllowedCategoryNames('R_100')).to.be.ok
 				.and.to.have.all.members([ 'Up/Down', 'Digits', 'Asians' ]);
-			expect(marketCtrl.getAllowedCategoryNames('FAKE')).to.be.empty;
+			expect(symbol.getAllowedCategoryNames('FAKE')).to.be.empty;
 		});
 		it('getCategoryNameForCondition returns category name of a condition', function(){
-			expect(marketCtrl.getCategoryNameForCondition('risefall'))
+			expect(symbol.getCategoryNameForCondition('risefall'))
 				.to.be.equal('Up/Down');
 		});
 		it('getCategoryForCondition returns category of a condition', function(){
-			expect(marketCtrl.getCategoryForCondition('risefall'))
+			expect(symbol.getCategoryForCondition('risefall'))
 				.to.be.equal('callput');
 		});
 		it('getConditionName returns name of a condition', function(){
-			expect(marketCtrl.getConditionName('risefall'))
+			expect(symbol.getConditionName('risefall'))
 				.to.be.equal('Rise/Fall');
 		});
 		it('isConditionAllowedInSymbol returns true if a condition is allowed in a symbol', function(){
-			expect(marketCtrl.isConditionAllowedInSymbol('R_100', 'risefall'))
+			expect(symbol.isConditionAllowedInSymbol('R_100', 'risefall'))
 				.to.be.ok;
-			expect(marketCtrl.isConditionAllowedInSymbol('frxEURUSD', 'asians'))
+			expect(symbol.isConditionAllowedInSymbol('frxEURUSD', 'asians'))
 				.not.to.be.ok;
-			expect(marketCtrl.isConditionAllowedInSymbol('fake', 'asians'))
+			expect(symbol.isConditionAllowedInSymbol('fake', 'asians'))
 				.not.to.be.ok;
-			expect(marketCtrl.isConditionAllowedInSymbol('frxEURUSD', 'fake'))
+			expect(symbol.isConditionAllowedInSymbol('frxEURUSD', 'fake'))
 				.not.to.be.ok;
 		});
 		it('getAllowedConditionsForSymbol returns allowed conditions for a symbol', function(){
-			expect(marketCtrl.getAllowedConditionsForSymbol('R_100'))
+			expect(symbol.getAllowedConditionsForSymbol('R_100'))
 				.to.have.all.members([ 'risefall', 'matchesdiffers', 'evenodd', 'overunder', 'asians' ]);
-			expect(marketCtrl.getAllowedConditionsForSymbol('fake'))
+			expect(symbol.getAllowedConditionsForSymbol('fake'))
 				.to.be.empty;
 		});
 		it('getAllowedCategoriesForSymbol returns allowed categories for a symbol', function(){
-			expect(marketCtrl.getAllowedCategoriesForSymbol('R_100'))
+			expect(symbol.getAllowedCategoriesForSymbol('R_100'))
 				.to.have.all.members([ 'callput', 'digits', 'asian' ]);
-			expect(marketCtrl.getAllowedCategoriesForSymbol('fake'))
+			expect(symbol.getAllowedCategoriesForSymbol('fake'))
 				.to.be.empty;
 		});
 	});
