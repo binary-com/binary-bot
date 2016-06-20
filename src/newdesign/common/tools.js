@@ -1,3 +1,5 @@
+var observer = require('./observer');
+
 module.exports = {
 	asyncChain: function asyncChain(){
 		return {
@@ -91,5 +93,12 @@ module.exports = {
 			xmlDoc = parser.parseFromString(str, "text/xml");
 		}
 		return xmlDoc;
+	},
+	apiFailed: function apiFailed(response) {
+		if (response.error) {
+			observer.emit('ui.error', response.error);
+			return true;
+		}
+		return false;
 	}
 };

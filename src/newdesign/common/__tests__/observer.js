@@ -10,7 +10,7 @@ describe('Observer', function(){
 			return obj.name;
 		});
 		setTimeout(function(){
-			returnedValue = observer.trigger('global.createVar', {
+			returnedValue = observer.emit('global.createVar', {
 				name: 'newVar',
 				text: 'Hello, thanks for defining me'
 			});

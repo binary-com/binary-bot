@@ -1,4 +1,4 @@
-var translator = require('../translator');
+var Translator = require('../translator');
 var tools = require('../tools');
 var expect = require('chai').expect;
 require('../browser');
@@ -24,7 +24,7 @@ describe('Translation', function(){
 					</category>\
 				</category>\
 					', 'text/xml');
-			translator.init();
+			translator = new Translator();
 		});
 		it('translateText', function(){
 			expect(translator.translateText('Logic')).to.be.a('string')

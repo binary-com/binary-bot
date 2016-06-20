@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
-var activeSymbols = require('../activeSymbols');
+require('app-module-path').addPath(__dirname + '/../../../../');
+var ActiveSymbols = require('../activeSymbols');
 var ws = require('ws');
 var LiveApi = require('binary-live-api').LiveApi;
 var api = new LiveApi({ websocket: ws });
@@ -24,15 +25,16 @@ var set_checks = function set_checks(obj) {
 };
 
 describe('ActiveSymbols', function() {
+	var activeSymbols;
 	before(function(done){
-		this.timeout(10000);
+		this.timeout(5000);
 		api.getActiveSymbolsBrief().then(function(response){
-			activeSymbols.init(response.active_symbols);
+			activeSymbols = new ActiveSymbols(response.active_symbols);
 			done();
 		});
 	});
 	it('Should have all functions that are being tested', function() {
-		expect(activeSymbols).to.have.any.of.keys(['getMarkets', 'getSubmarkets', 'getMarketsList', 'getTradeUnderlyings', 'getSymbolNames']);
+		expect(activeSymbols).to.have.any.of.keys(['_initialized', 'activeSymbols', 'markets', 'submarkets', 'symbols']);
 	});
 	it('Should getMarkets have forex as a key', function() {
 		var markets = activeSymbols.getMarkets();

@@ -35,7 +35,7 @@ module.exports = {
 		if (index >= 0) {
 			return tokenList[index];
 		}
-		return '';
+		return {};
 	},
 	removeToken: function removeToken(token) {
 		var tokenList = this.getTokenList();
@@ -56,5 +56,11 @@ module.exports = {
 	},
 	setNotDone: function setNotDone(varName) {
 		delete localStorage[varName];
+	},
+	set: function set(varName, value) {
+		localStorage[varName] = value;
+	},
+	get: function get(varName) {
+		return localStorage[varName];
 	},
 };

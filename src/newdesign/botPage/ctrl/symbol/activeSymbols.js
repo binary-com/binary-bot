@@ -1,55 +1,27 @@
-var ActiveSymbols = (function () {
-    'use strict';
+'use strict';
 
-    var groupBy = function(xs, key) {
-      return xs.reduce(function(rv, x) {
-        (rv[x[key]] = rv[x[key]] || []).push(x);
-        return rv;
-      }, {});
-    };
+var _ = require('underscore');
 
-    var extend = function extend(a, b) {
-        a = (a) ? a : {};
-        if ( b ) {
-            Object.keys(b).forEach(function(key){
-                a[key] = b[key];
-            });
-        }
-    };
+var ActiveSymbols = function ActiveSymbols(activeSymbols) {
+    if ( ActiveSymbols.instance ) {
+        return ActiveSymbols.instance;
+    }
+    ActiveSymbols.instance = this;
+    this.activeSymbols = activeSymbols;
+    this.markets = {};
+    this.submarkets = {};
+    this.symbols = {};
+    this.getMarkets();
+};
 
-    var objectNotEmpty = function objectNotEmpty(obj){
-        return obj && obj instanceof Object && Object.keys(obj).length;
-    };
-
-    var clone = function clone(obj){
-        var newObj = {};
-        extend(newObj, obj);
-        return newObj;
-    };
-
-    var ActiveSymbols = {
-        markets: {},
-        submarkets: {},
-        symbols: {},
-        activeSymbols: null,
-        _initialized: false,
-        checkInitialized: function checkInitialized() {
-            if (!this._initialized) {
-                throw(Error('Should be initialized first'));
-            }
-        },
-        init: function init(activeSymbols) {
-            this.activeSymbols = activeSymbols;
-            this._initialized = true;
-            this.getMarkets();
-        },
-        getMarkets: function getMarkets() {
-            this.checkInitialized();
-            if ( objectNotEmpty(this.markets) ) {
-                return clone(this.markets);
+ActiveSymbols.prototype = Object.create(null, {
+    getMarkets: {
+        value: function getMarkets() {
+            if ( !_.isEmpty(this.markets) ) {
+                return _.clone(this.markets);
             } else {
                 var that = this;
-                var markets = groupBy(this.activeSymbols, 'market');
+                var markets = _.groupBy(this.activeSymbols, 'market');
                 var parsedMarkets = [];
                 Object.keys(markets).forEach(function(key){
                     var marketName = key;
@@ -61,17 +33,18 @@ var ActiveSymbols = (function () {
                     };
                     that.getSubmarketsForMarket(that.markets[marketName]);
                 });
-                return clone(this.markets);
+                return _.clone(this.markets);
             }
-        },
-        getSubmarketsForMarket: function getSubmarketsForMarket(market) {
-            this.checkInitialized();
-            if ( objectNotEmpty(market.submarkets) ) {
-                return clone(market.submarkets);
+        }
+    },
+    getSubmarketsForMarket: {
+        value: function getSubmarketsForMarket(market) {
+            if ( !_.isEmpty(market.submarkets) ) {
+                return _.clone(market.submarkets);
             } else {
                 market.submarkets = {};
                 var that = this;
-                var submarkets = groupBy(this.activeSymbols, 'submarket');
+                var submarkets = _.groupBy(this.activeSymbols, 'submarket');
                 var parsedSubmarkets = [];
                 Object.keys(submarkets).forEach(function(key){
                     var submarketName = key;
@@ -83,13 +56,14 @@ var ActiveSymbols = (function () {
                     };
                     that.getSymbolsForSubmarket(market.submarkets[submarketName]);
                 });
-                return clone(market.submarkets);
+                return _.clone(market.submarkets);
             }
-        },
-        getSymbolsForSubmarket: function getSymbolsForSubmarket(submarket) {
-            this.checkInitialized();
-            if ( objectNotEmpty(submarket.symbols) ) {
-                return clone(submarket.symbols);
+        }
+    },
+    getSymbolsForSubmarket: {
+        value: function getSymbolsForSubmarket(submarket) {
+            if ( !_.isEmpty(submarket.symbols) ) {
+                return _.clone(submarket.symbols);
             } else {
                 submarket.symbols = {};
                 this.activeSymbols.filter(function(el){
@@ -106,48 +80,52 @@ var ActiveSymbols = (function () {
                         submarket: symbol.submarket
                     };
                 });
-                return clone(submarket.symbols);
+                return _.clone(submarket.symbols);
             }
-        },
-        getSubmarkets: function getSubmarkets() {
-            this.checkInitialized();
-            if ( objectNotEmpty(this.submarkets) ) {
-                return clone(this.submarkets);
+        }
+    },
+    getSubmarkets: {
+        value: function getSubmarkets() {
+            if ( !_.isEmpty(this.submarkets) ) {
+                return _.clone(this.submarkets);
             } else {
                 var markets = this.getMarkets();
                 var that = this;
                 Object.keys(markets).forEach(function(key){
                     var market = markets[key];
                     var submarkets = that.getSubmarketsForMarket(market);
-                    extend(that.submarkets, submarkets);
+                    _.extend(that.submarkets, submarkets);
                 });
-                return clone(this.submarkets);
+                return _.clone(this.submarkets);
             }
-        },
-        getSymbols: function getSymbols() {
-            this.checkInitialized();
-            if ( objectNotEmpty(this.symbols) ) {
-                return clone(this.symbols);
+        }
+    },
+    getSymbols: {
+        value: function getSymbols() {
+            if ( !_.isEmpty(this.symbols) ) {
+                return _.clone(this.symbols);
             } else {
                 var submarkets = this.getSubmarkets();
                 var that = this;
                 Object.keys(submarkets).forEach(function(key){
                     var submarket = submarkets[key];
                     var symbols = that.getSymbolsForSubmarket(submarket);
-                    extend(that.symbols, symbols);
+                    _.extend(that.symbols, symbols);
                 });
-                return clone(this.symbols);
+                return _.clone(this.symbols);
             }
-        },
-        getMarketsList: function getMarketsList() {
-            this.checkInitialized();
+        }
+    },
+    getMarketsList: {
+        value: function getMarketsList() {
             var tradeMarketsList = {};
-            extend(tradeMarketsList, this.getMarkets());
-            extend(tradeMarketsList, this.getSubmarkets());
+            _.extend(tradeMarketsList, this.getMarkets());
+            _.extend(tradeMarketsList, this.getSubmarkets());
             return tradeMarketsList;
-        },
-        getTradeUnderlyings: function getTradeUnderlyings() {
-            this.checkInitialized();
+        }
+    },
+    getTradeUnderlyings: {
+        value: function getTradeUnderlyings() {
             var tradeUnderlyings = {};
             var symbols = this.getSymbols();
             Object.keys(symbols).forEach(function(key){
@@ -162,18 +140,17 @@ var ActiveSymbols = (function () {
                 tradeUnderlyings[symbol.submarket][key] = symbol;
             });
             return tradeUnderlyings;
-        },
-        getSymbolNames: function getSymbolNames(){
-            this.checkInitialized();
-            var symbols = clone(this.getSymbols());
+        }
+    },
+    getSymbolNames: {
+        value: function getSymbolNames(){
+            var symbols = _.clone(this.getSymbols());
             Object.keys(symbols).map(function(key){
                 symbols[key] = symbols[key].display;
             });
             return symbols;
         },
-    };
-    if (typeof module !== 'undefined') {
-        module.exports = ActiveSymbols;
     }
-    return ActiveSymbols;
-})();
+});
+
+module.exports = ActiveSymbols;

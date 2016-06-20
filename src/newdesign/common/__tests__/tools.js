@@ -1,4 +1,5 @@
 var tools = require('../tools');
+var observer = require('../observer');
 var expect = require('chai').expect;
 require('../browser');
 
@@ -66,6 +67,16 @@ describe('Misc Tools', function(){
 		it('getUTCTime gets the current UTC time with format HH:MM:SS', function(){
 			var date = new Date('1990-01-01T01:11:10.000Z');
 			expect(tools.getUTCTime(date)).to.be.equal('01:11:10');
+		});
+	});
+	describe('apiFailed', function(){
+		it('apiFailed detects a failed api response', function(){
+			observer.register('ui.error', function(error){
+				expect(error).to.be.equal('Error Message');
+			});
+			expect(tools.apiFailed({
+				error: 'Error Message'
+			})).to.be.ok;
 		});
 	});
 });

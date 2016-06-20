@@ -9,7 +9,7 @@ module.exports = {
 	unregister: function unregister(_event) {
 		delete this._eventActionMap[_event];
 	},
-	trigger: function trigger(_event, data) {
+	emit: function emit(_event, data) {
 		if (this._eventActionMap.hasOwnProperty(_event)){
 			return this._eventActionMap[_event](data);
 		}
