@@ -1,24 +1,24 @@
 var storageManager = require('common/storageManager');
 var observer = require('common/observer');
-var ApiEvents = require('./apiEvents');
-var LiveApi = require('binary-live-api').LiveApi;
+var CustomApi = require('./customApi');
 
-var Bot = function Bot(token, tradeOptions, strategy, finish) {
+var Ctrl = function Ctrl(token, tradeOptions, strategy, finish) {
 	this.token = token;
 	this.strategy = strategy;
 	this.finish = finish;
 	this.tradeOptions = tradeOptions;
-	this.api = new LiveApi({ appId: storageManager.get('appId'), language: storageManager.get('lang') });
-	this.apiEvents = new ApiEvents(this.api);
+	this.api = new CustomApi({ appId: storageManager.get('appId'), language: storageManager.get('lang') });
 }
 
-Bot.prototype = Object.create(null, {
+Ctrl.prototype = Object.create(null, {
 	login: {
 		value: function login(){
 			this.api.authorize(this.token);
 			observer.register('bot.authorize', function(authorize){
-				console.log(authorize);
+				console.log('auth', authorize);
 			});
 		}
 	}
 });
+
+module.exports = Ctrl;

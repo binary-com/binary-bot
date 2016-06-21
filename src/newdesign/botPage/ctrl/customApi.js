@@ -31,11 +31,6 @@ var CustomApi = function CustomApi(options) {
 		buy: function(){
 			return this.api.buyContract.apply(this.api, Array.prototype.slice.call(arguments));
 		},
-		balance: function(){
-			return this.api.send({
-				balance: 1,
-			});
-		},
 		authorize: function(){
 			return this.api.authorize.apply(this.api, Array.prototype.slice.call(arguments));
 		},
@@ -86,7 +81,7 @@ CustomApi.prototype = Object.create(LiveApi.prototype, {
 			},
 			authorize: function authorize(response) {
 				if ( !tools.apiFailed(response) ) {
-					var token = response.req_data.token;
+					var token = response.echo_req.authorize;
 					var authorize = response.authorize;
 					observer.emit('ui.log', translator.translateText('Logged in to:') + ' ' + storageManager.getToken(token).account_name, 'info');
 					observer.emit('bot.authorize', authorize);
