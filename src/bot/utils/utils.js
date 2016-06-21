@@ -101,7 +101,7 @@ var createXmlTag = function createXmlTag(obj) {
 };
 
 var xmlToStr = function xmlToStr(xml){
-	var serializer = new XMLSerializer(); 
+	var serializer = new XMLSerializer();
 	return serializer.serializeToString(xml);
 };
 
@@ -238,9 +238,9 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 			.bind('click.login', function(e){
 				appId.redirectOauth();
 			})
-			.text('Login');
-		$('#logout')
-			.hide();
+            .text('Log in');
+        $('.intro-token')
+            .removeClass('invisible');
 		globals.lists.accounts = [
 			[i18n._('Please add a token first'), '']
 		];
@@ -257,8 +257,10 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 				addAccount();
 			})
 			.text('Add Token');
-		$('#logout')
-			.show();
+        $('.intro-token')
+            .removeClass('invisible');
+		$('.logout')
+			.removeClass('invisible');
 		globals.lists.accounts = [];
 		tokenList.forEach(function (tokenInfo) {
 			globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);

@@ -23,10 +23,19 @@ commonUtils.asyncChain()
 	.pipe(function translate(done){
 		translator.Translator(function () {
 			$('[data-i18n-text]')
-				.each(function () {
-					$(this)
-						.text(i18n._($(this)
-							.attr('data-i18n-text')));
+				.each(function() {
+			    	var contents = $(this).contents();
+			    	if (contents.length > 0) {
+			        	if (contents.get(0).nodeType == Node.TEXT_NODE) {
+			            	$(this).text(i18n._($(this)
+								.attr('data-i18n-text')))
+								.append(contents.slice(1));
+			        	}
+			    	} else {
+						$(this)
+							.text(i18n._($(this)
+								.attr('data-i18n-text')));
+					}
 				});
 				done();
 		});

@@ -69,7 +69,7 @@ h1 {
 	background-color: #EEEEEE;
 }
 table {
-	overflow:auto;  
+	overflow:auto;
 	width: 100%;
 }
 table, th, td {
@@ -82,7 +82,7 @@ th, td {
 	height: 2em;
 }
 .table-scroll {
-  overflow:auto;  
+  overflow:auto;
 	height: 170px;
 }
 #chart, #tradesDisplay, #summaryDisplay {
@@ -90,7 +90,7 @@ th, td {
 }
 #chart {
 	height: 270px;
-	width: 770px; 
+	width: 770px;
 }
 .draggable{
 	opacity: 0.75;
@@ -115,4 +115,100 @@ th, td {
 
 .icon-remove:before {
 	content: 'X';
+}
+
+#topbar {
+    width: 100%;
+    color: #fff;
+    line-height: 1;
+    font-size: 70%;
+    text-align: right;
+    padding: 3px 0;
+}
+
+.dark-blue {
+    background: #15212d;
+}
+
+#header {
+    background: #2a3052;
+    border-top: 2px solid #394171;
+    border-bottom: 4px solid #e98024;
+    height: 75px;
+    font-size: 18px;
+    padding: 10px 0;
+}
+
+.header-split {
+    width: 33%;
+    padding: 0 10px;
+    float: left;
+    display: inline-block;
+    min-height: 1px;
+    box-sizing: border-box;
+}
+
+#addAccount, #logout {
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    background: #2E8836;
+    border-radius: 4px;
+    display: inline-block;
+    letter-spacing: .75px;
+    border: 0;
+    padding: 0 10px;
+    white-space: nowrap;
+    font-weight: 400;
+    font-size: .8em;
+    line-height: 2em;
+    margin: .8em 0;
+}
+
+.invisible {
+    display: none;
+}
+
+#nav-menu, #nav-menu ul {
+    list-style: none;
+}
+#nav-menu {
+    float: left;
+    margin: 10px 0;
+}
+#nav-menu > li {
+    float: left;
+}
+#nav-menu li a {
+    display: block;
+    height: 2em;
+    line-height: 2em;
+    padding: 0 1.5em;
+    text-decoration: none;
+    color: #fff;
+}
+#nav-menu ul {
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 0 4px 4px 0;
+    position: absolute;
+    display: none;
+    z-index: 999;
+    background: #2a3052;
+    min-width: 140px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+#nav-menu li:hover ul {
+    display: block;
+}
+#nav-menu > li:hover > a, #nav-menu ul li:hover a {
+    color: #cacbd4;
+    cursor: pointer;
+}
+#nav-menu .nav-submenu {
+    font-size: 14px;
+}
+.caret {
+    margin-left: 5px !important;
 }

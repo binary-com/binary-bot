@@ -195,5 +195,15 @@
   "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
   "a6d6a2783600f06699eae5d3f81b919e444e4e58": "Trade With Account:",
   "5465174048929828b0cc34f2291e93a2e0ea782c": "Submarket",
-  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+  "54c45c033f5eb914fae27a646cbd9e23d3750d19": "Blocks",
+  "71df2d71c370d785cb1f4dd2dfda60aae80e92b8": "Open a Block",
+  "c3cd636a585b20c40ac2df5ffb403e83cb2eef51": "Actions",
+  "4257140b4d20d09f62bf2f4975814f9e8aefeacf": "Tours",
+  "fda3db9f6403aa2eb92dd93ce7ff60503aa4f7c0": "At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.",
+  "803adad740b5756a975629ac142e7f520af7303e": "You can see the summary of your trades in this menu.",
+  "11d8d3c8d82211465bc82e34a4fccd4ed958e94c": "Use this menu to load and save blocks",
+  "9a318407382efa52d00e6365ce62264a48bb644d": "Click to add a token after logging in, at least one token is needed. Get your token from",
+  "c129fb8ed4d97d8c411c119cf19d66ff03c205b6": "See the summary of your trades in this menu.",
+  "400870cd7372b80f5d521c951a0759953f9fb181": "Use the run/stop buttons in this menu to run or stop your blocks, or reset your result panels."
 }

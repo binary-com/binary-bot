@@ -342,7 +342,7 @@ var init = function init(){
 		},
 	}, {
 		content: '<p>' + i18n._("If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
-		target: view.getUiComponent('undo_redo'),
+		target: view.getUiComponent('actions_menu'),
 		closeButton: true,
 		highlightTarget: true,
 		my: 'top center',
@@ -350,15 +350,15 @@ var init = function init(){
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("You can save/load your blocks using these tools") + '</p>',
-		target: view.getUiComponent('file_management'),
+		target: view.getUiComponent('block_menu'),
 		closeButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on these buttons. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
-		target: view.getUiComponent('run_stop'),
+		content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
+		target: view.getUiComponent('actions_menu'),
 		closeButton: true,
 		highlightTarget: true,
 		my: 'top center',
@@ -382,8 +382,8 @@ var init = function init(){
 		at: 'bottom center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("You can see the summary of your trades by clicking on this button.") + '</p>',
-		target: view.getUiComponent('summary'),
+		content: '<p>' + i18n._("You can see the summary of your trades in this menu.") + '</p>',
+		target: view.getUiComponent('actions_menu'),
 		closeButton: true,
 		highlightTarget: true,
 		my: 'top center',
@@ -391,7 +391,7 @@ var init = function init(){
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("Go ahead and run the blocks. You can stop the code anytime you want using the stop button, or reset the values in the result panels using the reset button.") + '</p>',
-		target: view.getUiComponent('run_stop'),
+		target: view.getUiComponent('actions_menu'),
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
