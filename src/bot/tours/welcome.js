@@ -7,6 +7,7 @@ var init = function init(){
 	var steps = [{
 		content: '<p>' + i18n._('Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.') + '</p>',
 		target: view.getUiComponent('center'),
+		closeButton: true,
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
@@ -16,6 +17,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('The blocks you put in here will create a binary bot code which you can then execute using the run button.') + '</p>',
 		target: view.getUiComponent('center'),
+		closeButton: true,
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
@@ -28,6 +30,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('You can add blocks from here to the workspace') + '</p>',
 		target: view.getUiComponent('toolbox'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'left center',
@@ -41,6 +44,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('Erase the blocks by dropping them in here.') + '</p>',
 		target: view.getUiComponent('trash'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'right bottom',
@@ -54,6 +58,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('Use these buttons to load and save blocks') + '</p>',
 		target: view.getUiComponent('file_management'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
@@ -67,6 +72,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
 		target: view.getUiComponent('token'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
@@ -80,6 +86,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
 		target: view.getUiComponent('undo_redo'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
@@ -93,6 +100,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('Click on this button to see the summary of your trades.') + '</p>',
 		target: view.getUiComponent('summary'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
@@ -105,6 +113,7 @@ var init = function init(){
 		},
 	}, {
 		content: '<p>' + i18n._('Use these buttons to run or stop your blocks, or reset your result panels.') + '</p>',
+		closeButton: true,
 		target: view.getUiComponent('run_stop'),
 		nextButton: true,
 		highlightTarget: true,
@@ -130,23 +139,31 @@ var init = function init(){
 		},
 	}, ];
 
-	tour = new Tourist.Tour({
-		steps: steps
+	return new Tourist.Tour({
+		steps: steps,
+		cancelStep: function cancelStep(){
+			globals.tour._teardownCurrentStep = function(){};
+			view.setOpacityForAll(started, 1);
+			view.stopTutorial();
+		},
+		successStep: function successStep(){
+			view.setOpacityForAll(started, 1);
+			storageManager.setDone('welcomeFinished');
+			view.stopTutorial();
+		}
 	});
 };
 
-var tour;
 var started = false;
 
 module.exports = {
 	init: function(){
-		init();
 		return this;
 	},
 	start: function start() {
 		if (!globals.tour) {
 			started = true;
-			globals.tour = tour;
+			globals.tour = init();
 			globals.tour.start();
 		}
 	},
@@ -154,7 +171,7 @@ module.exports = {
 		if (!storageManager.isDone('welcomeFinished')) {
 			if (!globals.tour) {
 				started = true;
-				globals.tour = tour;
+				globals.tour = init();
 				globals.tour.start();
 				return true;
 			}
