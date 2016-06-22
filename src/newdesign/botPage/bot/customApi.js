@@ -10,35 +10,35 @@ var CustomApi = function CustomApi(options) {
 		return CustomApi.instance;
 	}
 	CustomApi.instance = this;
-	this.api = new LiveApi(options);
+	this._originalApi = new LiveApi(options);
 	var events = {
 		tick: function(){},
 		history: function(){
-			return this.api.getTickHistory.apply(this.api, Array.prototype.slice.call(arguments));
+			return this._originalApi.getTickHistory.apply(this._originalApi, Array.prototype.slice.call(arguments));
 		},
 		transaction: function(){
-			return this.api.subscribeToTransactions.apply(this.api, Array.prototype.slice.call(arguments));
+			return this._originalApi.subscribeToTransactions.apply(this._originalApi, Array.prototype.slice.call(arguments));
 		},
 		proposal_open_contract: function(contract_id){
-			return this.api.send({
+			return this._originalApi.send({
 				proposal_open_contract: 1,
 				contract_id: contract_id,
 			});
 		},
 		proposal: function(){
-			return this.api.subscribeToPriceForContractProposal.apply(this.api, Array.prototype.slice.call(arguments));
+			return this._originalApi.subscribeToPriceForContractProposal.apply(this._originalApi, Array.prototype.slice.call(arguments));
 		},
 		buy: function(){
-			return this.api.buyContract.apply(this.api, Array.prototype.slice.call(arguments));
+			return this._originalApi.buyContract.apply(this._originalApi, Array.prototype.slice.call(arguments));
 		},
 		authorize: function(){
-			return this.api.authorize.apply(this.api, Array.prototype.slice.call(arguments));
+			return this._originalApi.authorize.apply(this._originalApi, Array.prototype.slice.call(arguments));
 		},
 	};
 	var that = this;
 	Object.keys(events).forEach(function(e){
 		var _event = (!that.events[e])? that.events._default: that.events[e];
-		that.api.events.on(e, _event);
+		that._originalApi.events.on(e, _event);
 		that[e] = function(){
 			var promise = events[e].apply(that, Array.prototype.slice.call(arguments));
 			if ( promise instanceof Promise ) {
@@ -58,7 +58,7 @@ CustomApi.prototype = Object.create(LiveApi.prototype, {
 				if ( !tools.apiFailed(response) ) {
 					var tick = response.tick;
 					observer.emit('ui.log', translator.translateText('tick received at:') + ' ' + tick.epoch);
-					observer.emit('bot.tick', {
+					observer.emit('api.tick', {
 						epoch: +tick.epoch,
 						quote: +tick.quote,
 					});
@@ -76,7 +76,7 @@ CustomApi.prototype = Object.create(LiveApi.prototype, {
 						});
 					});
 					observer.emit('ui.log', ticks);
-					observer.emit('bot.history', ticks);
+					observer.emit('api.history', ticks);
 				}
 			},
 			authorize: function authorize(response) {
@@ -84,7 +84,7 @@ CustomApi.prototype = Object.create(LiveApi.prototype, {
 					var token = response.echo_req.authorize;
 					var authorize = response.authorize;
 					observer.emit('ui.log', translator.translateText('Logged in to:') + ' ' + storageManager.getToken(token).account_name, 'info');
-					observer.emit('bot.authorize', authorize);
+					observer.emit('api.authorize', authorize);
 				} else {
 					storageManager.removeToken(token);
 				}
@@ -93,7 +93,7 @@ CustomApi.prototype = Object.create(LiveApi.prototype, {
 				var msg_type = response.msg_type;
 				if ( !tools.apiFailed(response) ) {
 					observer.emit('ui.log', message[msg_type]);
-					observer.emit('bot.' + message[msg_type], response);
+					observer.emit('api.' + message[msg_type], response);
 				}
 			},
 		}

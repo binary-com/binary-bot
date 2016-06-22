@@ -1,19 +1,28 @@
-var common = require('common');
-var $ = require('jquery');
-module.exports = {
-	init: function init(){
-		var translator = common.translator;
-		var i18n = require('i18n');
-		var appId = require('appId');
-		var commonUtils = require('utils');
-		window.$ = require('jquery');
-		$.ajaxSetup({
-			cache: false
-		});
-		window.jQuery = window.$;
-		window.Backbone = require('backbone');
-		window._ = require('underscore');
-		require('notifyjs-browser');
-		require('tourist');
+var storageManager = require('common/storageManager');
+var Symbol = require('./bot/symbol');
+var observer = require('common/observer');
+var bot = require('./bot');
+var CustomApi = require('./bot/customApi');
+
+var BotPage = function BotPage() {
+	if (BotPage.instance) {
+		return BotPage.instance;
+	}
+	BotPage.instance = this;
+	this.api = new CustomApi({ appId: storageManager.get('appId'), language: storageManager.get('lang') });
+	this.symbol = new Symbol(this.api._originalApi);
+	this.initPromise = this.symbol.initPromise;
+}
+
+BotPage.prototype = Object.create(null, {
+	createBot: {
+		value: function createBot(token, tradeOptions, strategy, finish){
+			this.bot = new Bot(this.api, token, tradeOptions, strategy, finish);
+			this.bot.initPromise.then(function(resolve){
+				this.bot.login();
+			});
+		}
 	},
-};
+});
+
+module.exports = BotPage;
