@@ -6,6 +6,7 @@
 {{> head }}
 	<title>Binary Bot</title>
 {{> bot_css }}
+{{> fontello_css }}
 
 {{> bundle_css }}
 
@@ -13,7 +14,17 @@
 <body id="drop_zone">
   <div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
   <div id="center"></div>
-  <div id="topbar" class="dark-blue" style="height:20px;"></div>
+  <div id="topbar" class="dark-blue" style="height:26px;">
+      <div class="help">
+		<span class="tutorialList">
+			<select id="tours">
+                <option value="" data-i18n-text="Select a Tour"></option>
+				<option value="welcome" data-i18n-text="Welcome!"></option>
+				<option value="introduction" data-i18n-text="Introduction"></option>
+			</select>
+		</span>
+      </div>
+  </div>
   <div id="header">
     <div class="header-split">
       <a href="https://bot.binary.com">
@@ -25,40 +36,13 @@
         </div>
       </a>
     </div>
-    <div class="header-split">
-        <ul id="nav-menu">
-          <li>
-              <a id="block_menu" data-i18n-text="Blocks"> <b class="caret"></b></a>
-              <ul class="nav-submenu">
-                  <li><a id="open_btn" data-i18n-text="Open a Block"></a></li>
-                  <li><a id="saveXml" data-i18n-text="Save Blocks"></a></li>
-              </ul>
-          </li>
-          <li>
-              <a id="actions_menu" data-i18n-text="Actions"> <b class="caret"></b></a>
-              <ul class="nav-submenu">
-                  <li><a title="Undo the changes (Ctrl+Z)" id="undo" data-i18n-text="Undo"></a></li>
-                  <li><a title="Redo the changes (Ctrl+Shift+Z)" id="redo" data-i18n-text="Redo"></a></li>
-                  <li><a title="Open the summary panel" id="showSummary" data-i18n-text="Summary"></a></li>
-                  <li><a title="Run the blocks" id="runButton" id="run" data-i18n-text="Run"></a></li>
-                  <li><a title="Stop the blocks" id="stopButton" data-i18n-text="Reset"></a></li>
-              </ul>
-          </li>
-          <li>
-              <a id="tours_menu" data-i18n-text="Tours"> <b class="caret"></b></a>
-              <ul class="nav-submenu" id="tours">
-                  <li><a id="welcome-tour" value="welcome" data-i18n-text="Welcome!"></a></li>
-                  <li><a id="introduction-tour" value="introduction" data-i18n-text="Introduction"></a></li>
-              </ul>
-          </li>
-      </ul>
-    </div>
+    <div class="header-split"></div>
     <div class="header-split" style="text-align: right;">
-      <span class="intro-token invisible">
-        <button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Add Token"></button>
-      </span>
       <span class="logout invisible">
         <button id="logout" data-i18n-text="Logout"></button>
+      </span>
+      <span class="intro-token invisible">
+        <button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Add Token"></button>
       </span>
     </div>
   </div>
@@ -112,6 +96,19 @@
       </div>
       <div id="chart"></div>
     </div>
+  </div>
+  <div id="fixed-bar-right">
+      <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-download"></button></div>
+      <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"></button></div>
+      <div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo"></button></div>
+      <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
+      <div><button title="Run the blocks" id="runButton" id="run" class="icon-start"></button></div>
+      <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
+  </div>
+  <div id="fixed-bar-bottom">
+      <div class="intro-file-management">
+          <span data-i18n-text="Open block file"></span> <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" />
+      </div>
   </div>
 
   <script src="js/blockly/blockly.js"></script>

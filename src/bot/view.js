@@ -49,12 +49,10 @@ var startTutorial = function startTutorial(e) {
   if (activeTutorial) {
     activeTutorial.stop();
   }
-  $('#welcome-tour').on('click', function(e) {
-      activeTutorial = tours.welcome;
-      activeTutorial.start();
-  });
-  $('#introduction-tour').on('click', function(e) {
-      activeTutorial = tours.introduction;
+  $('#tours').on('change', function(e) {
+      var value = $(this).val();
+      if (value === '') return;
+      activeTutorial = tours[value];
       activeTutorial.start();
   });
 };
@@ -158,10 +156,6 @@ var run = function run() {
 		blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 		var EVAL_BLOCKLY_CODE = eval;
 		EVAL_BLOCKLY_CODE(code);
-		$('#stopButton')
-			.text('Stop');
-		$('#runButton')
-			.text('Restart');
 		$('#summaryPanel')
 			.show();
 		$('#stopButton')
@@ -245,14 +239,6 @@ var stop = function stop(e) {
 	var trade = require('./trade/trade');
 	trade.stop();
 	globals.disableRun(false);
-	$('#stopButton')
-		.text(i18n._('Reset'));
-	$('#runButton')
-		.text(i18n._('Run'));
-	$('#stopButton')
-		.unbind('click', stop);
-	$('#stopButton')
-		.bind('click', reset);
 };
 
 var show = function show(done) {
@@ -286,8 +272,6 @@ var show = function show(done) {
         });
 
   startTutorial();
-  $('#stopButton')
-    .text(i18n._('Reset'));
   $('#stopButton')
     .bind('click', reset);
 

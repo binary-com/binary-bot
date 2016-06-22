@@ -27,9 +27,8 @@ h1 {
 }
 .help{
 	float: right;
-	margin: 2px;
 }
-.logout{
+.logout, .intro-token{
 	float: right;
 	margin: 2px;
 }
@@ -121,9 +120,8 @@ th, td {
     width: 100%;
     color: #fff;
     line-height: 1;
-    font-size: 70%;
     text-align: right;
-    padding: 3px 0;
+    padding: 3px 30px;
 }
 
 .dark-blue {
@@ -169,46 +167,49 @@ th, td {
     display: none;
 }
 
-#nav-menu, #nav-menu ul {
-    list-style: none;
+#fixed-bar-bottom {
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 110px;
+    background-color: #F2F2F2;
 }
-#nav-menu {
-    float: left;
-    margin: 10px 0;
+#fixed-bar-bottom * {
+    margin: 0 2px;
 }
-#nav-menu > li {
-    float: left;
+
+.intro-file-management {
+    display: table;
 }
-#nav-menu li a {
-    display: block;
-    height: 2em;
-    line-height: 2em;
-    padding: 0 1.5em;
-    text-decoration: none;
-    color: #fff;
+
+#files {
+    display: inline-flex;
+    vertical-align: middle;
 }
-#nav-menu ul {
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: 0 4px 4px 0;
+
+#fixed-bar-right {
     position: absolute;
-    display: none;
-    z-index: 999;
-    background: #2a3052;
-    min-width: 140px;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    z-index: 100;
+    top: 101px;
+    left: 90%;
+    width: 10%;
+    text-align: center;
+    padding: 10px;
+    margin-left: 12px;
 }
-#nav-menu li:hover ul {
-    display: block;
+#fixed-bar-right * {
+    margin-bottom: 5px;
 }
-#nav-menu > li:hover > a, #nav-menu ul li:hover a {
-    color: #cacbd4;
-    cursor: pointer;
+#fixed-bar-right button {
+    background-color: #F2F2F2;
+    border: 1px solid #ddd;
 }
-#nav-menu .nav-submenu {
-    font-size: 14px;
+#fixed-bar-right button:hover {
+    background-color: #ddd;
 }
-.caret {
-    margin-left: 5px !important;
+
+button:focus {
+    outline: none;
 }
