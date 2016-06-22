@@ -229,6 +229,7 @@ gulp.task('mustache-min', ['static', 'pack-css-min', 'build-bot-min', 'build-ind
 			bundle_css: '<link href="css/' + manifest['bundle.min.css'] + '" rel="stylesheet" />',
 			main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
 			bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
+			fontello_css: '<link href="css/' + manifest['fontello.css'] + '" rel="stylesheet" />',
 			head: 'templates/partials/head.mustache',
 			security: 'templates/partials/security.mustache',
 			language: 'templates/partials/language.mustache',

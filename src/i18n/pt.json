@@ -198,5 +198,7 @@
   "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
   "a6d6a2783600f06699eae5d3f81b919e444e4e58": "Trade With Account:",
   "5465174048929828b0cc34f2291e93a2e0ea782c": "Submarket",
-  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
+  "04e046bf6757188d25df467cc5eda3f50e5ea062": "Open block file"
 }
