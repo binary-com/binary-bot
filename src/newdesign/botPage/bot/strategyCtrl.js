@@ -23,10 +23,10 @@ StrategyCtrl.prototype = Object.create(null, {
 			}
 		}
 	},
-	updateTick: {
-		value: function updateTick(tick) {
+	updateTicks: {
+		value: function updateTicks(ticks) {
 			if ( this.ready ) {
-				this.strategy(tick, this.proposals);
+				this.strategy(ticks, this.proposals);
 			}
 		}
 	}

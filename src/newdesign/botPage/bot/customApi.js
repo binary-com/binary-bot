@@ -16,13 +16,11 @@ var CustomApi = function CustomApi(options) {
 		history: function(){
 			return this._originalApi.getTickHistory.apply(this._originalApi, Array.prototype.slice.call(arguments));
 		},
-		transaction: function(){
-			return this._originalApi.subscribeToTransactions.apply(this._originalApi, Array.prototype.slice.call(arguments));
-		},
 		proposal_open_contract: function(contract_id){
 			return this._originalApi.send({
 				proposal_open_contract: 1,
 				contract_id: contract_id,
+				subscribe: 1
 			});
 		},
 		proposal: function(){

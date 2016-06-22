@@ -19,7 +19,14 @@ var Bot = function Bot(api, token, tradeOptions, strategy, finish) {
 					subscribe: 1
 				});
 				observer.register('api.history', function(history){
-
+					this.ticks = [];
+					var that = this;
+					history.times.forEach(function (time, index) {
+						that.ticks.push({
+							epoch: +time,
+							quote: +feed.history.prices[index]
+						});
+					});
 					done();
 				})
 			})
@@ -50,6 +57,18 @@ Bot.prototype = Object.create(null, {
 			}
 			observer.register('api.proposal', function(proposal){
 				this.strategyCtrl.updateProposal(proposal);
+			})
+		}
+	},
+	observeTicks: {
+		value: function observeTicks() {
+			observer.register('api.tick', function(tick){
+				observer.emit('ui.log', i18n._('tick received at:') + ' ' + feed.tick.epoch);
+				this.ticks.push({
+					epoch: +feed.tick.epoch,
+					quote: +feed.tick.quote,
+				});
+				this.strategyCtrl.updateTicks(this.ticks);
 			})
 		}
 	}

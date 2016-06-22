@@ -8,16 +8,28 @@ var expect = require('chai').expect;
 var observer = require('common/observer');
 
 describe('Bot', function() {
-	var botPage;
+	var bot;
 	before(function(done){
 		this.timeout('10000');
 		var token = process.env.BOT_TOKEN;
-		botPage = new BotPage();
-		botPage.initPromise.then(function(resolve){
+		bot = new Bot(api, token, tradeOptions, strategy, finish);
+		bot.initPromise.then(function(){
 			done();
 		});
 	});
-	it('Bot is initialized', function(){
-		expect(botPage).to.be.ok;
+	it('Initialized bot have history of ticks', function(){
+		expect(bot).to.be.ok;
+	});
+	it('Start trading with the users strategy', function(){
+		expect(bot).to.be.ok;
+	});
+	it('Strategy decides to purchase the trade', function(){
+		expect(bot).to.be.ok;
+	});
+	it('Calls the finish function when trade is finished', function(){
+		expect(bot).to.be.ok;
+	});
+	it('Is able to make an identical trade with previous argument', function(){
+		expect(bot).to.be.ok;
 	});
 });
