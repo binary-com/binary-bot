@@ -64,10 +64,8 @@ var stopTutorial = function stopTutorial(e) {
     e.preventDefault();
   }
   if (activeTutorial) {
-    if (e) {
       activeTutorial.stop();
-    }
-    activeTutorial = null;
+      activeTutorial = null;
   }
 };
 
