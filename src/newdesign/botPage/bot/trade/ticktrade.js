@@ -28,7 +28,7 @@ Ticktrade.prototype = Object.create(null, {
 					that.api._originalApi.sellExpiredContracts();
 				}
 				if ( contract.sell_price ) {
-					observer.emit('bot.contractFinish', contract);
+					observer.emit('trade.finish', contract);
 					that.finish();
 				}
 				observer.emit('ui.contractUpdate', contract);

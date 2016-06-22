@@ -46,7 +46,7 @@ Bot.prototype = Object.create(null, {
 	},
 	startTrading: {
 		value: function startTrading() {
-			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
+			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy, this.finish);
 			this.subscribeProposals();
 		}
 	},
@@ -70,6 +70,11 @@ Bot.prototype = Object.create(null, {
 				});
 				this.strategyCtrl.updateTicks(this.ticks);
 			})
+		}
+	},
+	purchase: {
+		value: function purchase(option){
+
 		}
 	}
 });
