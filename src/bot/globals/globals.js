@@ -95,24 +95,13 @@ var showTradeInfo = function showTradeInfo() {
 	$('#tradesDisplay tbody')
 		.children()
 		.remove();
-	var count = 0;
 	tradeInfo.tradeTable.forEach(function (trade, index) {
 		var lastProfit = +(+trade.sell_price - (+trade.buy_price))
 			.toFixed(2);
 		var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.sell_price + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
 		$('#tradesDisplay tbody')
 			.append(element);
-		count += 1;
 	});
-	for (var i = count; i < tradeInfo.tableSize; i += 1) {
-		var element = '<tr>';
-		for (var j = 0; j < 8; j += 1) {
-			element += '<td></td>';
-		}
-		element += '</tr>';
-		$('#tradesDisplay tbody')
-			.append(element);
-	}
 	$('.table-scroll')
 		.scrollTop($('.table-scroll')[0].scrollHeight);
 };
