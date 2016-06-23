@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+	<style id="antiClickjack">body{display:none !important;}</style>
+	<script type="text/javascript">
+		if (self === top) {
+			var antiClickjack = document.getElementById("antiClickjack");
+			antiClickjack.parentNode.removeChild(antiClickjack);
+		} else {
+			top.location = self.location;
+		}
+	</script>
+	<link rel="apple-touch-icon" sizes="57x57" href="https://www.binary.com/images/favicons/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="https://www.binary.com/images/favicons/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="https://www.binary.com/images/favicons/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="https://www.binary.com/images/favicons/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="https://www.binary.com/images/favicons/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="https://www.binary.com/images/favicons/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="https://www.binary.com/images/favicons/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="https://www.binary.com/images/favicons/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.binary.com/images/favicons/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="https://www.binary.com/images/favicons/favicon-192x192.png">
+	<link rel="icon" type="image/png" sizes="160x160" href="https://www.binary.com/images/favicons/favicon-160x160.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="https://www.binary.com/images/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.binary.com/images/favicons/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.binary.com/images/favicons/favicon-32x32.png">
+	<link rel="stylesheet" href="https://style.binary.com/binary.css">
+	<meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0">
+	<meta http-equiv="pragma" content="no-cache">
+	<title>Binary Bot</title>
+<link href="css/bot-ca39d0979d.css" rel="stylesheet" /><link href="css/fontello-5d57a50f39.css" rel="stylesheet" />
+<link href="css/bundle-385e16f73c.min.css" rel="stylesheet" />
+</head>
+<body id="drop_zone">
+  <div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
+  <div id="center"></div>
+  <div id="topbar" class="dark-blue" style="height:26px;">
+      <div class="help">
+		<span class="tutorialList">
+			<select id="tours">
+                <option value="" data-i18n-text="Select a Tour"></option>
+				<option value="welcome" data-i18n-text="Welcome!"></option>
+				<option value="introduction" data-i18n-text="Introduction"></option>
+			</select>
+		</span>
+      </div>
+  </div>
+  <div id="header">
+    <div class="header-split">
+      <a href="https://bot.binary.com">
+        <div style="display:inline-block;margin:0 10px;">
+          <img class="responsive" src="https://www.binary.com/images/pages/binary-symbol-logo.svg">
+        </div>
+        <div style="display:inline-block;">
+          <img class="responsive" src="https://www.binary.com/images/pages/binary-type-logo.svg" style="width:80%;">
+        </div>
+      </a>
+    </div>
+    <div class="header-split"></div>
+    <div class="header-split" style="text-align: right;">
+      <span class="logout invisible">
+        <button id="logout" data-i18n-text="Logout"></button>
+      </span>
+      <span class="intro-token invisible">
+        <button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Add Token"></button>
+      </span>
+    </div>
+  </div>
+  <div id="blocklyDiv"></div>
+  <div id="summaryPanel">
+      <div class="exitPanel"><p class="icon-close"></p></div>
+      <div class="description">
+          <h4 data-i18n-text="Results"></h4>
+      </div>
+    <div class="content">
+      <h4>
+        <span data-i18n-text="Summary"></span>
+      </h4>
+      <table id="summaryDisplay">
+        <thead>
+          <tr>
+            <th data-i18n-text="No. of runs"></th>
+            <th data-i18n-text="Total Stake"></th>
+            <th data-i18n-text="Total Payout"></th>
+            <th data-i18n-text="Total Profit/Loss"></th>
+            <th data-i18n-text="Balance"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="numOfRuns"></td>
+            <td class="totalStake"></td>
+            <td class="totalPayout"></td>
+            <td class="totalProfit"></td>
+            <td class="balance"></td>
+          </tr>
+        </tbody>
+      </table>
+      <h4>
+        <span data-i18n-text="Trades"></span>
+      </h4>
+      <div class="table-scroll">
+        <table id="tradesDisplay">
+          <thead>
+            <tr>
+              <th><span data-i18n-text="Number"></span></th>
+              <th><span data-i18n-text="Reference"></span></th>
+              <th><span data-i18n-text="Trade Type"></span></th>
+              <th><span data-i18n-text="Entry Spot"></span></th>
+              <th><span data-i18n-text="Exit Spot"></span></th>
+              <th><span data-i18n-text="Buy Price"></span></th>
+              <th><span data-i18n-text="Final Price"></span></th>
+              <th><span data-i18n-text="Profit/Loss"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div id="chart"></div>
+    </div>
+  </div>
+  <div id="fixed-bar-right" class="actions_menu">
+      <div class="group-save">
+        <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-download"></button></div>
+      </div>
+      <div class="group-undo-redo">
+        <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"></button></div>
+        <div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo"></button></div>
+      </div>
+      <div class="group-summary">
+        <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
+      </div>
+      <div class="group-start-stop">
+        <div><button title="Run the blocks" id="runButton" id="run" class="icon-start"></button></div>
+        <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
+      </div>
+  </div>
+  <div id="fixed-bar-bottom">
+      <div class="intro-file-management group-load">
+          <span data-i18n-text="Open block file"></span> <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" />
+      </div>
+  </div>
+
+  <script src="js/blockly/blockly.js"></script>
+<script src="js/bot-9594e57d9b.min.js"></script>
+</body>
+</html>

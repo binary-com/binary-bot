@@ -1,6 +1,0 @@
-*.swp
-.publish
-node_modules/
-npm-debug.log
-rev-manifest.json
-www
