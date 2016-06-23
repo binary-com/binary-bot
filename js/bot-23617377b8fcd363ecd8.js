@@ -22723,6 +22723,7 @@
 	var updateChart = function updateChart() {
 		var chartOptions = {
 			type: 'area',
+			theme: 'light',
 			ticks: ticks,
 		};
 		if (contractForChart) {
@@ -30647,4 +30648,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-44a30e706ea1199deb8d.map
+//# sourceMappingURL=bot-23617377b8fcd363ecd8.map
