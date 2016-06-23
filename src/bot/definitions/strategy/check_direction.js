@@ -8,7 +8,7 @@ blockly.Blocks.check_direction = {
         .appendField(i18n._("Direction is"))
 				.appendField(new blockly.FieldDropdown(config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
     this.setOutput(true, "Boolean");
-    this.setColour(180);
+    this.setColour("#e98024");
     this.setTooltip(i18n._('True if the direction matches the selection'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },

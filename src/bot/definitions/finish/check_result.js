@@ -8,7 +8,7 @@ blockly.Blocks.contract_check_result = {
         .appendField(i18n._("Result is"))
 				.appendField(new blockly.FieldDropdown(config.lists.CHECK_RESULT), "CHECK_RESULT");
     this.setOutput(true, "Boolean");
-    this.setColour(180);
+    this.setColour("#e98024");
     this.setTooltip(i18n._('True if the result matches the selection'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },

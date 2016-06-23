@@ -27,9 +27,8 @@ h1 {
 }
 .help{
 	float: right;
-	margin: 2px;
 }
-.logout{
+.logout, .intro-token{
 	float: right;
 	margin: 2px;
 }
@@ -69,7 +68,7 @@ h1 {
 	background-color: #EEEEEE;
 }
 table {
-	overflow:auto;  
+	overflow:auto;
 	width: 100%;
 }
 table, th, td {
@@ -82,7 +81,7 @@ th, td {
 	height: 2em;
 }
 .table-scroll {
-  overflow:auto;  
+  overflow:auto;
 	height: 170px;
 }
 #chart, #tradesDisplay, #summaryDisplay {
@@ -90,7 +89,7 @@ th, td {
 }
 #chart {
 	height: 270px;
-	width: 770px; 
+	width: 770px;
 }
 .draggable{
 	opacity: 0.75;
@@ -112,3 +111,105 @@ th, td {
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.icon-remove:before {
+	content: 'X';
+}
+
+#topbar {
+    width: 100%;
+    color: #fff;
+    line-height: 1;
+    text-align: right;
+    padding: 3px 30px;
+}
+
+.dark-blue {
+    background: #15212d;
+}
+
+#header {
+    background: #2a3052;
+    border-top: 2px solid #394171;
+    border-bottom: 4px solid #e98024;
+    height: 75px;
+    font-size: 18px;
+    padding: 10px 0;
+}
+
+.header-split {
+    width: 33%;
+    padding: 0 10px;
+    float: left;
+    display: inline-block;
+    min-height: 1px;
+    box-sizing: border-box;
+}
+
+#addAccount, #logout {
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    background: #2E8836;
+    border-radius: 4px;
+    display: inline-block;
+    letter-spacing: .75px;
+    border: 0;
+    padding: 0 10px;
+    white-space: nowrap;
+    font-weight: 400;
+    font-size: .8em;
+    line-height: 2em;
+    margin: .8em 0;
+}
+
+.invisible {
+    display: none;
+}
+
+#fixed-bar-bottom {
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 110px;
+    background-color: #F2F2F2;
+}
+#fixed-bar-bottom * {
+    margin: 0 2px;
+}
+
+.intro-file-management {
+    display: table;
+}
+
+#files {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+#fixed-bar-right {
+    position: absolute;
+    z-index: 100;
+    top: 101px;
+    left: 90%;
+    width: 10%;
+    text-align: center;
+    padding: 10px;
+    margin-left: 12px;
+}
+#fixed-bar-right * {
+    margin-bottom: 5px;
+}
+#fixed-bar-right button {
+    background-color: #F2F2F2;
+    border: 1px solid #ddd;
+}
+#fixed-bar-right button:hover {
+    background-color: #ddd;
+}
+
+button:focus {
+    outline: none;
+}

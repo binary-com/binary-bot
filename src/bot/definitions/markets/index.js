@@ -16,7 +16,7 @@ Object.keys(symbolNames).forEach(function(symbol){
 				.setCheck("Condition");
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, "Submarket");
-			this.setColour(345);
+			this.setColour("#2a3052");
 			this.setTooltip(i18n._('Chooses the symbol:') + ' ' + symbolNames[symbol]);
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
