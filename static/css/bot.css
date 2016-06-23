@@ -90,6 +90,7 @@ th, td {
 #chart {
 	height: 270px;
 	width: 770px;
+	background-color: #15122d;
 }
 .draggable{
 	opacity: 0.75;
