@@ -12289,11 +12289,9 @@
 	/******/ 	// expose the module cache
 	/******/ 	__webpack_require__.c = installedModules;
 	/******/
-	/******/ 	// on error function for async loading
-	/******/ 	__webpack_require__.oe = function(err) { throw err; };
-	/******/
 	/******/ 	// __webpack_public_path__
 	/******/ 	__webpack_require__.p = "";
+	/******/
 	/******/ 	// Load entry module and return exports
 	/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 	/******/ })
@@ -12354,7 +12352,7 @@
 		
 		    return LiveEvents;
 		}();
-	
+		
 		exports.default = LiveEvents;
 	
 	/***/ },
@@ -13057,6 +13055,12 @@
 		    }, options);
 		};
 		
+		var getRealityCheckSummary = exports.getRealityCheckSummary = function getRealityCheckSummary() {
+		    return {
+		        reality_check: 1
+		    };
+		};
+		
 		var subscribeToBalance = exports.subscribeToBalance = function subscribeToBalance() {
 		    return {
 		        balance: 1,
@@ -13675,12 +13679,40 @@
 		// shim for using process in browser
 		
 		var process = module.exports = {};
+		
+		// cached from whatever global is present so that test runners that stub it
+		// don't break things.  But we need to wrap it in a try catch in case it is
+		// wrapped in strict mode code which doesn't define any globals.  It's inside a
+		// function because try/catches deoptimize in certain engines.
+		
+		var cachedSetTimeout;
+		var cachedClearTimeout;
+		
+		(function () {
+		  try {
+		    cachedSetTimeout = setTimeout;
+		  } catch (e) {
+		    cachedSetTimeout = function () {
+		      throw new Error('setTimeout is not defined');
+		    }
+		  }
+		  try {
+		    cachedClearTimeout = clearTimeout;
+		  } catch (e) {
+		    cachedClearTimeout = function () {
+		      throw new Error('clearTimeout is not defined');
+		    }
+		  }
+		} ())
 		var queue = [];
 		var draining = false;
 		var currentQueue;
 		var queueIndex = -1;
 		
 		function cleanUpNextTick() {
+		    if (!draining || !currentQueue) {
+		        return;
+		    }
 		    draining = false;
 		    if (currentQueue.length) {
 		        queue = currentQueue.concat(queue);
@@ -13696,7 +13728,7 @@
 		    if (draining) {
 		        return;
 		    }
-		    var timeout = setTimeout(cleanUpNextTick);
+		    var timeout = cachedSetTimeout(cleanUpNextTick);
 		    draining = true;
 		
 		    var len = queue.length;
@@ -13713,7 +13745,7 @@
 		    }
 		    currentQueue = null;
 		    draining = false;
-		    clearTimeout(timeout);
+		    cachedClearTimeout(timeout);
 		}
 		
 		process.nextTick = function (fun) {
@@ -13725,7 +13757,7 @@
 		    }
 		    queue.push(new Item(fun, args));
 		    if (queue.length === 1 && !draining) {
-		        setTimeout(drainQueue, 0);
+		        cachedSetTimeout(drainQueue, 0);
 		    }
 		};
 		
@@ -16630,4 +16662,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-63b00a9efccaa4d0e327.map
+//# sourceMappingURL=index-9fe94c699918fa477943.map
