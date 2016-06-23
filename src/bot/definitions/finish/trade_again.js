@@ -8,7 +8,7 @@ blockly.Blocks.trade_again = {
 		this.appendDummyInput()
 			.appendField(i18n._("Trade Again"));
 		this.setPreviousStatement(true, 'TradeAgain');
-		this.setColour(180);
+		this.setColour("#e98024");
 		this.setTooltip(i18n._('Runs the trade block again'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},

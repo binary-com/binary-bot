@@ -84,11 +84,11 @@ var getAssetIndex = function getAssetIndex(api, cb) {
 };
 
 var createXmlTag = function createXmlTag(obj) {
-	var xmlStr = '<category name="Markets" colour="345" i18n-text="Markets">\n';
+	var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
 	Object.keys(obj).forEach(function(market){
-		xmlStr += '\t<category name="'+ obj[market].name +'" colour="345">\n';
+		xmlStr += '\t<category name="'+ obj[market].name +'" colour="#2a3052">\n';
 			Object.keys(obj[market].submarkets).forEach(function(submarket){
-				xmlStr += '\t\t<category name="'+ obj[market].submarkets[submarket].name +'" colour="345">\n';
+				xmlStr += '\t\t<category name="'+ obj[market].submarkets[submarket].name +'" colour="#2a3052">\n';
 					Object.keys(obj[market].submarkets[submarket].symbols).forEach(function(symbol){
 						xmlStr += '\t\t\t<block type="'+ symbol.toLowerCase() +'"></block>\n';
 					});
@@ -101,7 +101,7 @@ var createXmlTag = function createXmlTag(obj) {
 };
 
 var xmlToStr = function xmlToStr(xml){
-	var serializer = new XMLSerializer(); 
+	var serializer = new XMLSerializer();
 	return serializer.serializeToString(xml);
 };
 
@@ -238,9 +238,9 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 			.bind('click.login', function(e){
 				appId.redirectOauth();
 			})
-			.text('Login');
-		$('#logout')
-			.hide();
+            .text('Log in');
+        $('.intro-token')
+            .removeClass('invisible');
 		globals.lists.accounts = [
 			[i18n._('Please add a token first'), '']
 		];
@@ -257,8 +257,10 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 				addAccount();
 			})
 			.text('Add Token');
-		$('#logout')
-			.show();
+        $('.intro-token')
+            .removeClass('invisible');
+		$('.logout')
+			.removeClass('invisible');
 		globals.lists.accounts = [];
 		tokenList.forEach(function (tokenInfo) {
 			globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);

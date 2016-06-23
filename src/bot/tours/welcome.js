@@ -7,6 +7,7 @@ var init = function init(){
 	var steps = [{
 		content: '<p>' + i18n._('Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.') + '</p>',
 		target: view.getUiComponent('center'),
+		closeButton: true,
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
@@ -16,6 +17,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('The blocks you put in here will create a binary bot code which you can then execute using the run button.') + '</p>',
 		target: view.getUiComponent('center'),
+		closeButton: true,
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
@@ -28,6 +30,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('You can add blocks from here to the workspace') + '</p>',
 		target: view.getUiComponent('toolbox'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'left center',
@@ -41,6 +44,7 @@ var init = function init(){
 	}, {
 		content: '<p>' + i18n._('Erase the blocks by dropping them in here.') + '</p>',
 		target: view.getUiComponent('trash'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'right bottom',
@@ -52,21 +56,23 @@ var init = function init(){
 			view.setOpacity(started, 'trash', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Use these buttons to load and save blocks') + '</p>',
-		target: view.getUiComponent('file_management'),
+		content: '<p>' + i18n._('Use this menu to load and save blocks') + '</p>',
+		target: view.getUiComponent('block_menu'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'file_management', 1);
+			view.setOpacity(started, 'block_menu', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'file_management', 0.3);
+			view.setOpacity(started, 'block_menu', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Click to add a token, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/user/api_tokenws" target="_blank">' + i18n._('here') + '</a></p>',
+		content: '<p>' + i18n._('Click to add a token after logging in, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/en/user/settings/api_tokenws.html" target="_blank">' + i18n._('here') + '</a></p>',
 		target: view.getUiComponent('token'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
@@ -79,42 +85,45 @@ var init = function init(){
 		},
 	}, {
 		content: '<p>' + i18n._('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
-		target: view.getUiComponent('undo_redo'),
+		target: view.getUiComponent('actions_menu'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'undo_redo', 1);
+			view.setOpacity(started, 'actions_menu', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'undo_redo', 0.3);
+			view.setOpacity(started, 'actions_menu', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Click on this button to see the summary of your trades.') + '</p>',
-		target: view.getUiComponent('summary'),
+		content: '<p>' + i18n._('See the summary of your trades in this menu.') + '</p>',
+		target: view.getUiComponent('actions_menu'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'summary', 1);
+			view.setOpacity(started, 'actions_menu', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'summary', 0.3);
+			view.setOpacity(started, 'actions_menu', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Use these buttons to run or stop your blocks, or reset your result panels.') + '</p>',
-		target: view.getUiComponent('run_stop'),
+		content: '<p>' + i18n._('Use the run/stop buttons in this menu to run or stop your blocks, or reset your result panels.') + '</p>',
+		target: view.getUiComponent('actions_menu'),
+		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'run_stop', 1);
+			view.setOpacity(started, 'actions_menu', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'run_stop', 0.3);
+			view.setOpacity(started, 'actions_menu', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Good Luck!') + '</p>',
@@ -130,23 +139,31 @@ var init = function init(){
 		},
 	}, ];
 
-	tour = new Tourist.Tour({
-		steps: steps
+	return new Tourist.Tour({
+		steps: steps,
+		cancelStep: function cancelStep(){
+			globals.tour._teardownCurrentStep = function(){};
+			view.setOpacityForAll(started, 1);
+			view.stopTutorial();
+		},
+		successStep: function successStep(){
+			view.setOpacityForAll(started, 1);
+			storageManager.setDone('welcomeFinished');
+			view.stopTutorial();
+		}
 	});
 };
 
-var tour;
 var started = false;
 
 module.exports = {
 	init: function(){
-		init();
 		return this;
 	},
 	start: function start() {
 		if (!globals.tour) {
 			started = true;
-			globals.tour = tour;
+			globals.tour = init();
 			globals.tour.start();
 		}
 	},
@@ -154,7 +171,7 @@ module.exports = {
 		if (!storageManager.isDone('welcomeFinished')) {
 			if (!globals.tour) {
 				started = true;
-				globals.tour = tour;
+				globals.tour = init();
 				globals.tour.start();
 				return true;
 			}

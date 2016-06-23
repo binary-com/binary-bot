@@ -8,7 +8,7 @@ blockly.Blocks.contract_result = {
     this.appendDummyInput()
         .appendField(i18n._("Contract Result"));
     this.setOutput(true, "String");
-    this.setColour(180);
+    this.setColour("#e98024");
     this.setTooltip(i18n._('Returns the result of the finished contract'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
