@@ -61,6 +61,7 @@ var contractFinished = function contractFinished(contract) {
 var updateChart = function updateChart() {
 	var chartOptions = {
 		type: 'area',
+		theme: 'light',
 		ticks: ticks,
 	};
 	if (contractForChart) {
