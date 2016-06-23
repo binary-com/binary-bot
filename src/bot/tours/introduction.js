@@ -77,7 +77,8 @@ var init = function init(){
 		},
 		setup: function (tour, options) {
 			window.addEventListener('tour:condition_created', this.tour_condition_created);
-			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
+			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].reveal(true);
+			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].select();
 			view.setOpacity(started, 'toolbox', 1);
 		},
 		teardown: function (tour, options) {
@@ -342,27 +343,35 @@ var init = function init(){
 		},
 	}, {
 		content: '<p>' + i18n._("If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
-		target: view.getUiComponent('actions_menu'),
+		target: view.getUiComponent('group_undo_redo'),
 		closeButton: true,
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("You can save/load your blocks using these tools") + '</p>',
-		target: view.getUiComponent('block_menu'),
+		content: '<p>' + i18n._("You can save your blocks using this button") + '</p>',
+		target: view.getUiComponent('group_save'),
 		closeButton: true,
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
+		nextButton: true,
+	}, {
+		content: '<p>' + i18n._("You can load your blocks using these tools") + '</p>',
+		target: view.getUiComponent('group_load'),
+		closeButton: true,
+		highlightTarget: true,
+		my: 'bottom center',
+		at: 'top center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
-		target: view.getUiComponent('actions_menu'),
+		target: view.getUiComponent('group_start_stop'),
 		closeButton: true,
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
@@ -383,22 +392,19 @@ var init = function init(){
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("You can see the summary of your trades in this menu.") + '</p>',
-		target: view.getUiComponent('actions_menu'),
+		target: view.getUiComponent('group_summary'),
 		closeButton: true,
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("Go ahead and run the blocks. You can stop the code anytime you want using the stop button, or reset the values in the result panels using the reset button.") + '</p>',
-		target: view.getUiComponent('actions_menu'),
+		content: '<p>' + i18n._("Go ahead and run the blocks. You can stop the code anytime you want using the stop button") + '</p>',
+		target: view.getUiComponent('group_start_stop'),
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
 		nextButton: true,
-		teardown: function (tour, options) {
-			view.stopTutorial();
-		},
 	}, ];
 
 	return new Tourist.Tour({

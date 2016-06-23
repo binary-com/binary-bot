@@ -100,16 +100,24 @@
       <div id="chart"></div>
     </div>
   </div>
-  <div id="fixed-bar-right">
-      <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-download"></button></div>
-      <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"></button></div>
-      <div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo"></button></div>
-      <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
-      <div><button title="Run the blocks" id="runButton" id="run" class="icon-start"></button></div>
-      <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
+  <div id="fixed-bar-right" class="actions_menu">
+      <div class="group-save">
+        <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-download"></button></div>
+      </div>
+      <div class="group-undo-redo">
+        <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"></button></div>
+        <div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo"></button></div>
+      </div>
+      <div class="group-summary">
+        <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
+      </div>
+      <div class="group-start-stop">
+        <div><button title="Run the blocks" id="runButton" id="run" class="icon-start"></button></div>
+        <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
+      </div>
   </div>
   <div id="fixed-bar-bottom">
-      <div class="intro-file-management">
+      <div class="intro-file-management group-load">
           <span data-i18n-text="Open block file"></span> <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" />
       </div>
   </div>
