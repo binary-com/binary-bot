@@ -56,18 +56,32 @@ var init = function init(){
 			view.setOpacity(started, 'trash', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Use this menu to load and save blocks') + '</p>',
-		target: view.getUiComponent('block_menu'),
+		content: '<p>' + i18n._('Use this button to save your blocks') + '</p>',
+		target: view.getUiComponent('group_save'),
 		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'block_menu', 1);
+			view.setOpacity(started, 'group_save', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'block_menu', 0.3);
+			view.setOpacity(started, 'group_save', 0.3);
+		},
+	}, {
+		content: '<p>' + i18n._('Use this button to load blocks') + '</p>',
+		target: view.getUiComponent('group_load'),
+		closeButton: true,
+		nextButton: true,
+		highlightTarget: true,
+		my: 'bottom center',
+		at: 'top center',
+		setup: function (tour, options) {
+			view.setOpacity(started, 'group_load', 1);
+		},
+		teardown: function (tour, options) {
+			view.setOpacity(started, 'group_load', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Click to add a token after logging in, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/en/user/settings/api_tokenws.html" target="_blank">' + i18n._('here') + '</a></p>',
@@ -85,45 +99,45 @@ var init = function init(){
 		},
 	}, {
 		content: '<p>' + i18n._('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
-		target: view.getUiComponent('actions_menu'),
+		target: view.getUiComponent('group_undo_redo'),
 		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'actions_menu', 1);
+			view.setOpacity(started, 'group_undo_redo', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'actions_menu', 0.3);
+			view.setOpacity(started, 'group_undo_redo', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('See the summary of your trades in this menu.') + '</p>',
-		target: view.getUiComponent('actions_menu'),
+		target: view.getUiComponent('group_summary'),
 		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'actions_menu', 1);
+			view.setOpacity(started, 'group_summary', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'actions_menu', 0.3);
+			view.setOpacity(started, 'group_summary', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Use the run/stop buttons in this menu to run or stop your blocks, or reset your result panels.') + '</p>',
-		target: view.getUiComponent('actions_menu'),
+		target: view.getUiComponent('group_start_stop'),
 		closeButton: true,
 		nextButton: true,
 		highlightTarget: true,
-		my: 'top center',
-		at: 'bottom center',
+		my: 'right center',
+		at: 'left center',
 		setup: function (tour, options) {
-			view.setOpacity(started, 'actions_menu', 1);
+			view.setOpacity(started, 'group_start_stop', 1);
 		},
 		teardown: function (tour, options) {
-			view.setOpacity(started, 'actions_menu', 0.3);
+			view.setOpacity(started, 'group_start_stop', 0.3);
 		},
 	}, {
 		content: '<p>' + i18n._('Good Luck!') + '</p>',
@@ -132,11 +146,6 @@ var init = function init(){
 		highlightTarget: true,
 		my: 'top center',
 		at: 'bottom center',
-		teardown: function (tour, options) {
-			view.setOpacityForAll(started, 1);
-			storageManager.setDone('welcomeFinished');
-			view.stopTutorial();
-		},
 	}, ];
 
 	return new Tourist.Tour({
