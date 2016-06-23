@@ -40,16 +40,17 @@ h1 {
 	left: 50%;
 }
 #summaryPanel .exitPanel p{
-	color: white;
-	background-color: black;
-	margin-top: 4px;
-	cursor: pointer;
-	width: 20px;
-	height: 20px;
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	text-align: center;
+    color: white;
+    cursor: pointer;
+    width: 25px;
+    height: 22px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    text-align: center;
+    border: 1px solid #e98024;
+    border-radius: 0 0 0 4px;
+    background: #e98024;
 }
 #summaryPanel{
 	display: none;
@@ -62,17 +63,29 @@ h1 {
 	left: 50%;
 	margin-top: -300px;
 	margin-left: -400px;
+    border: 1px solid #2a3052;
+    border-top-color: #ddd;
 }
 #summaryPanel .content{
-	padding: 15px;
-	background-color: #f2f2f2;
+	padding: 0 15px 15px 15px;
+    background: white;
+    height: 90vh;
+    max-height: 800px;
+}
+#summaryPanel .description {
+    padding: 5px;
+    background-color: #2a3052;
+    color: #fff;
+}
+#summaryPanel .description h4 {
+    margin: 0;
+    text-align: center;
 }
 table {
 	overflow:auto;
 	width: 100%;
 }
 table, th, td {
-	border: 1px solid black;
 	border-collapse: collapse;
 }
 th, td {
@@ -88,7 +101,7 @@ th, td {
 	cursor: default;
 }
 #chart {
-	height: 270px;
+	height: 255px;
 	width: 770px;
 	background-color: #15122d;
 }
@@ -125,6 +138,10 @@ th, td {
     padding: 3px 30px;
 }
 
+#tours {
+	color: #000;
+}
+
 .dark-blue {
     background: #15212d;
 }
@@ -149,16 +166,8 @@ th, td {
 
 #addAccount, #logout {
     color: #fff;
-    text-decoration: none;
-    text-align: center;
-    background: #2E8836;
-    border-radius: 4px;
-    display: inline-block;
     letter-spacing: .75px;
-    border: 0;
     padding: 0 10px;
-    white-space: nowrap;
-    font-weight: 400;
     font-size: .8em;
     line-height: 2em;
     margin: .8em 0;
@@ -188,6 +197,7 @@ th, td {
 #files {
     display: inline-flex;
     vertical-align: middle;
+    background-color: #F2F2F2;
 }
 
 #fixed-bar-right {
@@ -206,6 +216,7 @@ th, td {
 #fixed-bar-right button {
     background-color: #F2F2F2;
     border: 1px solid #ddd;
+    padding: 2.5px 6px;
 }
 #fixed-bar-right button:hover {
     background-color: #ddd;
