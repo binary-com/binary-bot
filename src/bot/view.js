@@ -364,6 +364,12 @@ var show = function show(done) {
       botUtils.addPurchaseOptions();
       blockly.mainWorkspace.clearUndo();
       initTours();
+      Blockly.Blocks.texts.HUE = '#15212d';
+      Blockly.Blocks.math.HUE = '#15212d';
+      Blockly.Blocks.logic.HUE = '#15212d';
+      Blockly.Blocks.lists.HUE = '#15212d';
+      Blockly.Blocks.variables.HUE = '#15212d';
+      Blockly.Blocks.procedures.HUE = '#15212d';
       done();
     });
   });

@@ -1,5 +1,5 @@
 <xml id="toolbox" style="display: none">
-	<category name="Logic" colour="210" i18n-text="Logic">
+	<category name="Logic" colour="#15212d" i18n-text="Logic">
 		<block type="controls_if"></block>
 		<block type="logic_compare"></block>
 		<block type="logic_operation"></block>
@@ -8,7 +8,7 @@
 		<block type="logic_null"></block>
 		<block type="logic_ternary"></block>
 	</category>
-	<category name="Math" colour="230" i18n-text="Math">
+	<category name="Math" colour="#15212d" i18n-text="Math">
 		<block type="math_number">
 		<field name="NUM">1</field>
 		</block>
@@ -105,7 +105,7 @@
 		<block type="math_random_float"></block>
 
 	</category>
-	<category name="Text" colour="160" i18n-text="Text">>
+	<category name="Text" colour="#15212d" i18n-text="Text">>
 		<block type="text"></block>
 		<block type="text_join"></block>
 		<block type="text_append">
@@ -182,7 +182,7 @@
 		</value>
 		</block>
 	</category>
-	<category name="List" colour="260" i18n-text="List">>
+	<category name="List" colour="#15212d" i18n-text="List">>
 		<block type="lists_create_with">
 		<mutation items="0"></mutation>
 		</block>
@@ -232,37 +232,37 @@
 		</value>
 		</block>
 	</category>
-	<category name="Variable" id="Variables" colour="330" custom="VARIABLE" i18n-text="Variable">></category>
-	<category name="Functions" id="Functions" colour="290" custom="PROCEDURE" i18n-text="Functions"></category>
-	<category name="Binary" colour="60" i18n-text="Binary">
+	<category name="Variable" id="Variables" colour="#15212d" custom="VARIABLE" i18n-text="Variable">></category>
+	<category name="Functions" id="Functions" colour="#15212d" custom="PROCEDURE" i18n-text="Functions"></category>
+	<category name="Binary" colour="#2a3052" i18n-text="Binary">
 		<!--Markets-->
-		<category name="Conditions" colour="15" i18n-text="Conditions">
-			<category name="Up/Down" colour="15" i18n-text="Up/Down">
+		<category name="Conditions" colour="#2a3052" i18n-text="Conditions">
+			<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
 				<block type="risefall"></block>
 			</category>
-			<category name="Asians" colour="15" i18n-text="Asians">
+			<category name="Asians" colour="#2a3052" i18n-text="Asians">
 				<block type="asians"></block>
 			</category>
-			<category name="Digits" colour="15" i18n-text="Digits">
+			<category name="Digits" colour="#2a3052" i18n-text="Digits">
 				<block type="matchesdiffers"></block>
 				<block type="evenodd"></block>
 				<block type="overunder"></block>
 			</category>
 		</category>
-		<category name="Strategy" colour="290" i18n-text="Strategy">
+		<category name="Strategy" colour="#e98024" i18n-text="Strategy">
 			<block type="tick"></block>
 			<block type="direction"></block>
 			<block type="check_direction"></block>
 			<block type="purchase"></block>
 		</category>
-		<category name="Finish" colour="290" i18n-text="Finish">
+		<category name="Finish" colour="#e98024" i18n-text="Finish">
 			<block type="contract_result"></block>
 			<block type="contract_details"></block>
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
 			<block type="trade_again"></block>
 		</category>
-		<category name="Tools" colour="180" i18n-text="Tools">
+		<category name="Tools" colour="#e98024" i18n-text="Tools">
 			<block type="balance"></block>
 			<block type="total_profit"></block>
 			<block type="notify"></block>

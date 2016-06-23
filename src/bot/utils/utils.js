@@ -84,11 +84,11 @@ var getAssetIndex = function getAssetIndex(api, cb) {
 };
 
 var createXmlTag = function createXmlTag(obj) {
-	var xmlStr = '<category name="Markets" colour="345" i18n-text="Markets">\n';
+	var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
 	Object.keys(obj).forEach(function(market){
-		xmlStr += '\t<category name="'+ obj[market].name +'" colour="345">\n';
+		xmlStr += '\t<category name="'+ obj[market].name +'" colour="#2a3052">\n';
 			Object.keys(obj[market].submarkets).forEach(function(submarket){
-				xmlStr += '\t\t<category name="'+ obj[market].submarkets[submarket].name +'" colour="345">\n';
+				xmlStr += '\t\t<category name="'+ obj[market].submarkets[submarket].name +'" colour="#2a3052">\n';
 					Object.keys(obj[market].submarkets[submarket].symbols).forEach(function(symbol){
 						xmlStr += '\t\t\t<block type="'+ symbol.toLowerCase() +'"></block>\n';
 					});
