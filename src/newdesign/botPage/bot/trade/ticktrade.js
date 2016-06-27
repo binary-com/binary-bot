@@ -1,42 +1,52 @@
 var observer = require('common/observer');
+var Translator = require('common/translator');
 
 var Ticktrade = function Ticktrade(api) {
 	this.api = api;
-	this.contractLive = false;
+	this.purchaseInProgress = false;
+	this.translator = new Translator();
 }
 
 Ticktrade.prototype = Object.create(null, {
 	purchase: {
 		value: function purchase(contract) {
-			log(i18n._('Purchased') + ': ' + contract.proposal.longcode, 'info');
+			observer.emit('ui.log.info', this.translator.translateText('Purchased') + ': ' + contract.longcode);
 			var that = this;
-			this.api.buy(contract.proposal.id, contract.proposal.ask_price);
+			this.api.buy(contract.id, contract.ask_price);
 			observer.register('api.buy', function(purchasedContract){
-				that.contractLive = true;
+				that.contractId = purchasedContract.contract_id;
+				that.purchaseInProgress = true;
 				that.api._originalApi.unsubscribeFromAllProposals();
-				that.api._originalApi.subscribeToOpenContract(purchasedContract.contract_id);
+				that.subscribeToOpenContract();
 			});
 		}
 	},
 	subscribeToOpenContract: {
-		value: function subscribeToOpenContract(contractId){
-			this.api.proposal_open_contract(contractId);
+		value: function subscribeToOpenContract(){
+			this.api.proposal_open_contract(this.contractId);
 			var that = this;
 			observer.register('api.proposal_open_contract', function(contract){
 				// detect changes and decide what to do when proposal is updated
-				if (contract.is_expired) {
+				if (contract.is_valid_to_sell) {
 					that.api._originalApi.sellExpiredContracts();
+					that.getTheContractInfoAfterSell();
 				}
 				if ( contract.sell_price ) {
 					observer.emit('trade.finish', contract);
 					that.finish();
 				}
-				observer.emit('ui.contractUpdate', contract);
+				observer.emit('trade.contractUpdate', contract);
 			});
+		}
+	},
+	getTheContractInfoAfterSell: {
+		value: function getTheContractInfoAfterSell() {
+			this.api._originalApi.getContractInfo(this.contractId);
 		}
 	},
 	finish: {
 		value: function finish(){
+			this.purchaseInProgress = false;
 			this.api._originalApi.unsubscribeFromAllOpenContracts();
 		}
 	}
