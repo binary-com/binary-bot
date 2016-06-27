@@ -1,19 +1,19 @@
-require('app-module-path').addPath(__dirname + '/../../');
+require('app-module-path').addPath(__dirname + '/../../../../');
 require('common/browser');
 window.WebSocket = require('ws');
 
 
-var TickTrade = require('../index');
+var TickTrade = require('../ticktrade');
 var expect = require('chai').expect;
 var observer = require('common/observer');
 
 describe('TickTrade', function() {
-	var botPage;
+	var tickTrade;
 	before(function(done){
 		this.timeout('10000');
 		var token = process.env.BOT_TOKEN;
-		botPage = new BotPage();
-		botPage.initPromise.then(function(resolve){
+		tickTrade = new TickTrade();
+		tickTrade.initPromise.then(function(resolve){
 			done();
 		});
 	});
