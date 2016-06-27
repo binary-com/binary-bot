@@ -367,12 +367,12 @@ var show = function show(done) {
       botUtils.addPurchaseOptions();
       blockly.mainWorkspace.clearUndo();
       initTours();
-      Blockly.Blocks.texts.HUE = '#15212d';
-      Blockly.Blocks.math.HUE = '#15212d';
-      Blockly.Blocks.logic.HUE = '#15212d';
-      Blockly.Blocks.lists.HUE = '#15212d';
-      Blockly.Blocks.variables.HUE = '#15212d';
-      Blockly.Blocks.procedures.HUE = '#15212d';
+      Blockly.Blocks.texts.HUE = '#bfbdc8';
+      Blockly.Blocks.math.HUE = '#bfbdc8';
+      Blockly.Blocks.logic.HUE = '#bfbdc8';
+      Blockly.Blocks.lists.HUE = '#bfbdc8';
+      Blockly.Blocks.variables.HUE = '#bfbdc8';
+      Blockly.Blocks.procedures.HUE = '#bfbdc8';
       done();
     });
   });

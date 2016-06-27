@@ -5,13 +5,13 @@ var globals = require('../../globals/globals');
 blockly.Blocks.trade = {
 	init: function () {
 		this.appendDummyInput()
-			.appendField(i18n._("Trade With Account:"))
+			.appendField(i18n._("Step 1: Trade"))
 			.appendField(new blockly.FieldDropdown(globals.getAccounts), "ACCOUNT_LIST");
 		this.appendStatementInput("SUBMARKET")
 			.setCheck("Submarket")
 			.appendField(i18n._("Submarket"));
 		this.setPreviousStatement(true, null);
-		this.setColour('#2a3052');
+		this.setColour('#dedede');
 		this.setTooltip(i18n._('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},

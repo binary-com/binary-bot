@@ -207,5 +207,9 @@
   "0a20a33acd1f9c31eaeb866b2e80fc191dc5ab2c": "Use this button to save your blocks",
   "7e39fa78566c634019a84603f84e15c5e0f5ba56": "Use this button to load blocks",
   "529d9fa8f773d3164f19697eebca2627b451d26a": "Go ahead and run the blocks. You can stop the code anytime you want using the stop button",
-  "23b3d90128fcabe7e299fb6f8301e6f2a4a7f477": "You can save your blocks using this button"
+  "23b3d90128fcabe7e299fb6f8301e6f2a4a7f477": "You can save your blocks using this button",
+  "e43b9c7ea8057895c90dd9c4357f96ee4d94a9ec": "Step 1: Trade",
+  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
+  "f108c8d5a46b91d3a47fe604f0ee5037543f5db3": "Step 3: Finish",
+  "3405bc7f3ebe12f8558d450f889a4e96732a8cbc": "Step 3: Result"
 }
