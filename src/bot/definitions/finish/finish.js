@@ -5,7 +5,7 @@ var i18n = require('i18n');
 blockly.Blocks.on_finish = {
   init: function() {
     this.appendDummyInput()
-        .appendField(i18n._("On Finish (Decide what to do after the contract is finished)"));
+        .appendField(i18n._("Step 3: Finish"));
     this.appendStatementInput("FINISH_STACK")
         .setCheck("TradeAgain");
     this.setColour('#2a3052');

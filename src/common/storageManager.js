@@ -20,13 +20,14 @@ var setTokenList = function setTokenList(tokenList) {
 	localStorage.tokenList = JSON.stringify(tokenList);
 };
 
-var addToken = function addToken(token, account_name) {
+var addToken = function addToken(token, account_name, isVirtual) {
 	var tokenList = getTokenList();
 	var index = findToken(token);
 	if (index < 0) {
 		tokenList.push({
 			account_name: account_name,
-			token: token
+			token: token,
+			isVirtual: isVirtual
 		});
 		setTokenList(tokenList);
 	}

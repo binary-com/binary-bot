@@ -20,7 +20,7 @@ h1 {
 	float: left;
 }
 #blocklyDiv{
-	height: 100%;
+	height: calc(100% - 135px);
 	width: 100%;
 	right: 100px;
 	bottom: 0px;
@@ -136,8 +136,12 @@ th, td {
     padding: 3px 30px;
 }
 
-#tours {
+#tours, #accountSelect {
 	color: #000;
+}
+
+#accountSelect {
+    font-size: 14px;
 }
 
 .dark-blue {
@@ -148,13 +152,13 @@ th, td {
     background: #2a3052;
     border-top: 2px solid #394171;
     border-bottom: 4px solid #e98024;
-    height: 75px;
+    height: 100px;
     font-size: 18px;
     padding: 10px 0;
 }
 
 .header-split {
-    width: 33%;
+    width: 33.3%;
     padding: 0 10px;
     float: left;
     display: inline-block;
@@ -166,9 +170,9 @@ th, td {
     color: #fff;
     letter-spacing: .75px;
     padding: 0 10px;
-    font-size: .8em;
+    font-size: .7em;
     line-height: 2em;
-    margin: .8em 0;
+    margin: .5em 0;
 }
 
 .invisible {
@@ -201,7 +205,7 @@ th, td {
 #fixed-bar-right {
     position: absolute;
     z-index: 100;
-    top: 101px;
+    top: 130px;
     left: 90%;
     width: 10%;
     text-align: center;
@@ -222,4 +226,8 @@ th, td {
 
 button:focus {
     outline: none;
+}
+
+.blocklyScrollbarVertical {
+    display: none;
 }

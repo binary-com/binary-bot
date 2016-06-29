@@ -346,12 +346,7 @@ var show = function show(done) {
       media: 'js/blockly/media/',
       toolbox: botUtils.xmlToStr(i18n.xml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
       zoom: {
-        controls: true,
         wheel: false,
-        startScale: 1.0,
-        maxScale: 3,
-        minScale: 0.3,
-        scaleSpeed: 1.2
       },
       trashcan: true,
     });
