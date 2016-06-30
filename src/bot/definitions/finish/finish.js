@@ -8,7 +8,7 @@ blockly.Blocks.on_finish = {
         .appendField(i18n._("Step 3: Result"));
     this.appendStatementInput("FINISH_STACK")
         .setCheck("TradeAgain");
-    this.setColour('#dedede');
+    this.setColour('#2a3052');
     this.setTooltip(i18n._('This block decides what to do when a purchased contract is finished'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }

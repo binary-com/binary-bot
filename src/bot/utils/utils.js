@@ -229,64 +229,7 @@ var findTopParentBlock = function findTopParentBlock(block) {
 };
 
 var updateTokenList = function updateTokenList(tokenToAdd) {
-	var tokenList = storageManager.getTokenList();
-	blockly.WidgetDiv.hideIfOwner(blockly.mainWorkspace.getBlockById('trade')
-		.getField('ACCOUNT_LIST'));
-	if (tokenList.length === 0) {
-		$('#addAccount')
-			.unbind('.addAccount')
-			.bind('click.login', function(e){
-				appId.redirectOauth();
-			})
-            .text('Log in');
-        $('.intro-token')
-            .removeClass('invisible');
-		globals.lists.accounts = [
-			[i18n._('Please add a token first'), '']
-		];
-		blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.setValue('');
-		blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.setText(i18n._('Please add a token first'));
-	} else {
-		$('#addAccount')
-			.unbind('.login')
-			.bind('click.addAccount', function(e){
-				addAccount();
-			})
-			.text('Add Token');
-        $('.intro-token')
-            .removeClass('invisible');
-		$('.logout')
-			.removeClass('invisible');
-		globals.lists.accounts = [];
-		tokenList.forEach(function (tokenInfo) {
-			globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
-		});
-		var tokenInfoToAdd = tokenList[0];
-		if (tokenToAdd !== undefined) {
-			var tokenInfoIndex = storageManager.findToken(tokenToAdd);
-			if (tokenInfoIndex >= 0) {
-				tokenInfoToAdd = tokenList[tokenInfoIndex];
-			}
-		}
-		if (blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.getValue() !== tokenInfoToAdd.token) {
-			blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.setValue(tokenInfoToAdd.token);
-		}
-		if (blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.getText() !== tokenInfoToAdd.account_name) {
-			blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.setText(tokenInfoToAdd.account_name);
-		}
-	}
+	
 };
 
 var addPurchaseOptions = function addPurchaseOptions() {

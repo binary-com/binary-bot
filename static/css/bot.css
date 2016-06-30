@@ -237,7 +237,42 @@ button:focus {
     background-color: #dedede !important;
 }
 
+.blocklyToolboxDiv .blocklyTreeRow{
+    color: black;
+}
+
+.blocklyEditableText tspan {
+    fill: black !important;
+}
+
+.blocklyEditableText rect {
+    fill-opacity: 1 !important;
+}
+
+.blocklyFlyoutBackground {
+    fill: white !important;
+    fill-opacity: 1 !important;
+    stroke: #dedede;
+    stroke-width: 1px;
+}
+
 .blocklyToolboxDiv {
     background-color: #f2f2f2 !important;
-    color: black;
+    border-width: thin;
+    color: #dedede;
+    border-right: 1px solid;
+}
+
+.blocklyIconShape {
+    fill: #2a3052 !important;
+}
+
+.blocklyIconGroup:not(:hover), .blocklyIconGroupReadonly {
+    opacity: 1 !important;
+}
+
+.blocklyTrash {
+    height: 80px !important;
+    width: 62px !important;
+
 }
