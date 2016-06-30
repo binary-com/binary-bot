@@ -3,7 +3,8 @@ html, body {
 		margin: 0px;
 }
 body {
-
+    height: 100%;
+    width: 100%;
 	backgroun-color: #fff;
 	font-family: sans-serif;
 }
@@ -11,16 +12,12 @@ h1 {
 	font-weight: normal;
 	font-size: 140%;
 }
-#drop_zone{
-	height: 100%;
-	width: 100%;
-}
 .toolbox * {
 	margin: 2px;
 	float: left;
 }
 #blocklyDiv{
-	height: calc(100% - 135px);
+	height: calc(100% - 125px);
 	width: 100%;
 	right: 100px;
 	bottom: 0px;
@@ -39,7 +36,7 @@ h1 {
 	top: 50%;
 	left: 50%;
 }
-#summaryPanel .exitPanel p{
+.panelExitButton p{
     color: white;
     cursor: pointer;
     width: 25px;
@@ -52,29 +49,38 @@ h1 {
     border-radius: 0 0 0 4px;
     background: #e98024;
 }
-#summaryPanel{
+#summaryPanel {
+    width: 800px;
+    margin-top: -300px;
+    margin-left: -400px;
+    z-index: 1001;
+}
+#fileBrowser {
+    width: 500px;
+    height: 500px;
+    margin-top: -200px;
+    margin-left: -200px;
+    z-index: 1002;
+}
+.panel {
 	display: none;
 	background-color: white;
-	z-index: 1001;
 	position: fixed;
-	width: 800px;
 	top: 50%;
 	left: 50%;
-	margin-top: -300px;
-	margin-left: -400px;
     border: 1px solid #2a3052;
     border-top-color: #ddd;
 }
-#summaryPanel .content{
+.panel .content{
 	padding: 0 15px 15px 15px;
     background: white;
 }
-#summaryPanel .description {
+.panel .description {
     padding: 5px;
     background-color: #2a3052;
     color: #fff;
 }
-#summaryPanel .description h4 {
+.panel .description h4 {
     margin: 0;
     text-align: center;
 }
@@ -166,7 +172,7 @@ th, td {
     box-sizing: border-box;
 }
 
-#addAccount, #logout {
+#login, #logout {
     color: #fff;
     letter-spacing: .75px;
     padding: 0 10px;
@@ -179,19 +185,6 @@ th, td {
     display: none;
 }
 
-#fixed-bar-bottom {
-    position: fixed;
-    z-index: 100;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 5px 110px;
-    background-color: #F2F2F2;
-}
-#fixed-bar-bottom * {
-    margin: 0 2px;
-}
-
 .intro-file-management {
     display: table;
 }
@@ -199,7 +192,6 @@ th, td {
 #files {
     display: inline-flex;
     vertical-align: middle;
-    background-color: #F2F2F2;
 }
 
 #fixed-bar-right {
@@ -281,6 +273,30 @@ button:focus {
 
 }
 
-.blocklyScrollbarVertical {
+.blocklyScrollbarVertical, .blocklyScrollbarHorizontal{
     display: none;
+}
+
+.box.is-dragover {
+  background-color: grey;
+}
+
+#dropZone {
+    font-weight: bold;
+    text-align: center;
+    padding: 1em 0;
+    margin: 1em 0;
+    color: #555;
+    border: 2px dashed #555;
+    border-radius: 7px;
+    cursor: default;
+    height: 400px;
+    line-height: 350px;
+}
+
+#dropZone.hover {
+    color: #f00;
+    border-color: #f00;
+    border-style: solid;
+    box-shadow: inset 0 3px 4px #888;
 }

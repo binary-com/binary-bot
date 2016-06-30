@@ -350,20 +350,12 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("You can save your blocks using this button") + '</p>',
+		content: '<p>' + i18n._("You can save/load your blocks using these buttons") + '</p>',
 		target: view.getUiComponent('group_save'),
 		closeButton: true,
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("You can load your blocks using these tools") + '</p>',
-		target: view.getUiComponent('group_load'),
-		closeButton: true,
-		highlightTarget: true,
-		my: 'bottom center',
-		at: 'top center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',

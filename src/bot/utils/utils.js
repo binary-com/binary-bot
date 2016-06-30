@@ -140,28 +140,6 @@ var logout = function logout() {
 	});
 };
 
-var addAccount = function addAccount() {
-	var token = prompt(i18n._('Please enter your token here:'), '');
-	var index = findToken(token);
-	if (index >= 0) {
-		log(i18n._('Token already added.'), 'info');
-		return;
-	}
-	if (token === '') {
-		showError(i18n._('Token cannot be empty'));
-	} else if (token !== null) {
-		commonUtils.addTokenIfValid(token, function(err){
-			if (err) {
-				showError(i18n._('Authentication failed using token:') + ' ' + token);
-				return;
-			} else {
-				log(i18n._('Your token was added successfully'), 'info');
-				updateTokenList(token);
-			}
-		});
-	}
-};
-
 
 var getUTCTime = function getUTCTime(date) {
 	var dateObject = new Date(date);
@@ -231,12 +209,12 @@ var findTopParentBlock = function findTopParentBlock(block) {
 var updateTokenList = function updateTokenList(tokenToAdd) {
 	var tokenList = storageManager.getTokenList();
 	if (tokenList.length === 0) {
-		$('#addAccount').show();
+		$('#login').show();
 		$('#accountSelect').hide();
         $('.intro-token')
             .removeClass('invisible');
 	} else {
-		$('#addAccount').hide();
+		$('#login').hide();
 		$('#accountSelect').show();
         $('.intro-token')
             .removeClass('invisible');
@@ -244,7 +222,6 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 			.removeClass('invisible');
 		tokenList.forEach(function (tokenInfo) {
 			var str = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
-			console.log(str);
 			$('#accountSelect').append('<option value="' + tokenInfo.token + '">'+str + ' (' + tokenInfo.account_name+ ') ' + '</option>');
 		});
 	}
@@ -302,7 +279,7 @@ var addPurchaseOptions = function addPurchaseOptions() {
 	}
 };
 
-$('#addAccount')
+$('#login')
 	.bind('click.login', function(e){
 		appId.redirectOauth();
 	})

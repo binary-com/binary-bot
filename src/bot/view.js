@@ -40,7 +40,6 @@ var selectTextBlock = function selectTextBlock(text) {
 };
 
 var setBlockColors = function setBlockColors() {
-  console.log('set colors');
   selectTextBlock('Step&nbsp;1:&nbsp;Define&nbsp;Trade').style.setProperty('fill', 'white', 'important');
   selectTextBlock('Step&nbsp;2:&nbsp;Strategy').style.setProperty('fill', 'white', 'important');
   selectTextBlock('Step&nbsp;3:&nbsp;Result').style.setProperty('fill', 'white', 'important');
@@ -54,7 +53,6 @@ var uiComponents = {
   toolbox: '.blocklyToolboxDiv',
   group_load: '.group-load',
   token: '.intro-token',
-  trash: '.blocklyTrash',
   group_save: '.group-save',
   group_undo_redo: '.group-undo-redo',
   group_summary: '.group-summary',
@@ -66,7 +64,7 @@ var uiComponents = {
   finish: ".blocklyDraggable:contains('Result'):last",
 };
 
-var doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
+var doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
 
 var getUiComponent = function getUiComponent(component) {
   return $(uiComponents[component]);
@@ -220,6 +218,7 @@ var handleFileSelect = function handleFileSelect(e) {
 var readFile = function readFile(f) {
 	reader = new FileReader();
 	reader.onload = (function (theFile) {
+    $('#fileBrowser').hide();
 		return function (e) {
 			try {
 				blockly.mainWorkspace.clear();
@@ -244,7 +243,7 @@ var handleDragOver = function handleDragOver(e) {
 	e.dataTransfer.dropEffect = 'copy';
 };
 
-var dropZone = document.getElementById('drop_zone');
+var dropZone = document.getElementById('dropZone');
 
 var reset = function reset(e) {
 	if (e) {
@@ -297,17 +296,17 @@ var show = function show(done) {
   $('#stopButton')
     .bind('click', reset);
 
-  $('#summaryPanel .exitPanel')
+  $('.panelExitButton')
     .click(function () {
       $(this)
         .parent()
         .hide();
     });
 
-  $('#summaryPanel')
+  $('.panel')
     .hide();
 
-  $('#summaryPanel')
+  $('.panel')
     .drags();
 
   $('#chart')
@@ -339,6 +338,12 @@ var show = function show(done) {
   $('#showSummary')
     .click(function (e) {
       $('#summaryPanel')
+        .show();
+    });
+
+ $('#loadXml')
+    .click(function (e) {
+      $('#fileBrowser')
         .show();
     });
 
@@ -378,7 +383,7 @@ var show = function show(done) {
       zoom: {
         wheel: false,
       },
-      trashcan: true,
+      trashcan: false,
     });
     $.get('xml/main.xml', function (main) {
       blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);

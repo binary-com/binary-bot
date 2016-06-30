@@ -42,21 +42,7 @@ var init = function init(){
 			view.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Erase the blocks by dropping them in here.') + '</p>',
-		target: view.getUiComponent('trash'),
-		closeButton: true,
-		nextButton: true,
-		highlightTarget: true,
-		my: 'right bottom',
-		at: 'left top',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'trash', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'trash', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Use this button to save your blocks') + '</p>',
+		content: '<p>' + i18n._('Use these buttons to save/load your blocks') + '</p>',
 		target: view.getUiComponent('group_save'),
 		closeButton: true,
 		nextButton: true,
@@ -70,21 +56,7 @@ var init = function init(){
 			view.setOpacity(started, 'group_save', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._('Use this button to load blocks') + '</p>',
-		target: view.getUiComponent('group_load'),
-		closeButton: true,
-		nextButton: true,
-		highlightTarget: true,
-		my: 'bottom center',
-		at: 'top center',
-		setup: function (tour, options) {
-			view.setOpacity(started, 'group_load', 1);
-		},
-		teardown: function (tour, options) {
-			view.setOpacity(started, 'group_load', 0.3);
-		},
-	}, {
-		content: '<p>' + i18n._('Click to add a token after logging in, at least one token is needed. Get your token from') + ' <a href="https://www.binary.com/en/user/settings/api_tokenws.html" target="_blank">' + i18n._('here') + '</a></p>',
+		content: '<p>' + i18n._('You need to login before running the bot.') + '</p>',
 		target: view.getUiComponent('token'),
 		closeButton: true,
 		nextButton: true,

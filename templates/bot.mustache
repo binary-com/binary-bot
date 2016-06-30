@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-{{> bot_css }}
 {{> security }}
 
 {{> head }}
@@ -10,9 +9,10 @@
 {{> fontello_css }}
 
 {{> bundle_css }}
+{{> bot_css }}
 
 </head>
-<body id="drop_zone">
+<body>
   <div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
   <div id="center"></div>
   <div id="topbar" class="dark-blue" style="height:26px;">
@@ -43,17 +43,17 @@
         <select id="accountSelect">
         </select>
       </div>
-      <div class="logout invisible">
+      <div class="logout invisible intro-token">
         <button id="logout" data-i18n-text="Logout"></button>
       </div>
-      <div class="intro-token invisible">
-        <button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Login"></button>
+      <div class="intro-token">
+        <button title="Add your tokens to the bot" id="login" data-i18n-text="Login"></button>
       </div>
     </div>
   </div>
   <div id="blocklyDiv"></div>
-  <div id="summaryPanel">
-      <div class="exitPanel"><p class="icon-close"></p></div>
+  <div id="summaryPanel" class="panel">
+      <div class="panelExitButton"><p class="icon-close"></p></div>
       <div class="description">
           <h4 data-i18n-text="Results"></h4>
       </div>
@@ -105,9 +105,22 @@
       <div id="chart"></div>
     </div>
   </div>
+  <div id="fileBrowser" class="panel">
+    <div class="panelExitButton"><p class="icon-close"></p></div>
+    <div class="description">
+        <h4 data-i18n-text="Load block file"></h4>
+    </div>
+    <div class="content">
+      <span data-i18n-text="Block file"></span> <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" />
+      <div id="dropZone">
+        Drop your block here
+      </div>
+    </div>
+  </div>
   <div id="fixed-bar-right" class="actions_menu">
       <div class="group-save">
-        <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-download"></button></div>
+        <div><button title="Load the blocks as an XML file" id="loadXml" class="icon-browse"></button></div>
+        <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-save"></button></div>
       </div>
       <div class="group-undo-redo">
         <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"></button></div>
@@ -117,13 +130,8 @@
         <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
       </div>
       <div class="group-start-stop">
-        <div><button title="Run the blocks" id="runButton" id="run" class="icon-start"></button></div>
+        <div><button title="Run the blocks" id="runButton" id="run" class="icon-run"></button></div>
         <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
-      </div>
-  </div>
-  <div id="fixed-bar-bottom">
-      <div class="intro-file-management group-load">
-          <span data-i18n-text="Open block file"></span> <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" />
       </div>
   </div>
 

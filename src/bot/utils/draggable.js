@@ -30,7 +30,7 @@ $.fn.drags = function (opt) {
 				.top + drg_h - e.pageY,
 				pos_x = $drag.offset()
 				.left + drg_w - e.pageX;
-			$drag.css('z-index', 1000)
+			$drag.css('z-index', 9999)
 				.parents()
 				.on("mousemove", function (e) {
 					$('.draggable')

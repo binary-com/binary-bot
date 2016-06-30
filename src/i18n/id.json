@@ -195,5 +195,12 @@
   "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
   "e43b9c7ea8057895c90dd9c4357f96ee4d94a9ec": "Step 1: Trade",
   "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+  "315961ce04dc63aadf7292f7b70ea0c4492623bb": "Load Blocks",
+  "129b4372ce84996fae10be0a001a0ca53d593737": "You need to login before running the bot.",
+  "719c817f94ff88a1f89650ba01933e35bc7d0ceb": "Use these buttons to save/load your blocks",
+  "21fe96f872d9140d436c194537e731ef280d3810": "You can save/load your blocks using these buttons",
+  "18d76188e5c5d9df16ea3b7375c0da13c4fa8756": "Load block file",
+  "71e142fada99e90b6c7cc9e80f9312f9b12d1667": "block file",
+  "56bb242d8211b81fb557f03bce8ef4c3dd4bc736": "Block file"
 }
