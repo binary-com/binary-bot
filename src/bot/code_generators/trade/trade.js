@@ -1,7 +1,7 @@
 var blockly = require('blockly');
 var i18n = require('i18n');
 blockly.JavaScript.trade = function (block) {
-	var account = ' '; //block.getFieldValue('ACCOUNT_LIST');
+	var account = $('#accountSelect').val();
 	var submarket = blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 	if (submarket === '') {
 		throw {

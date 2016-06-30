@@ -5,7 +5,7 @@ var globals = require('../../globals/globals');
 blockly.Blocks.trade = {
 	init: function () {
 		this.appendDummyInput()
-	        .appendField(i18n._("Step 1: Trade"));
+	        .appendField(i18n._("Step 1: Define Trade"));
 	    this.appendStatementInput("SUBMARKET")
 	        .setCheck('Submarket');
 		this.setPreviousStatement(true, null);

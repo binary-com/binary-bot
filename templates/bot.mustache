@@ -39,12 +39,16 @@
     </div>
     <div class="header-split"></div>
     <div class="header-split" style="text-align: right;">
-      <span class="logout invisible">
+      <div>
+        <select id="accountSelect">
+        </select>
+      </div>
+      <div class="logout invisible">
         <button id="logout" data-i18n-text="Logout"></button>
-      </span>
-      <span class="intro-token invisible">
-        <button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Add Token"></button>
-      </span>
+      </div>
+      <div class="intro-token invisible">
+        <button title="Add your tokens to the bot" id="addAccount" data-i18n-text="Login"></button>
+      </div>
     </div>
   </div>
   <div id="blocklyDiv"></div>

@@ -229,7 +229,25 @@ var findTopParentBlock = function findTopParentBlock(block) {
 };
 
 var updateTokenList = function updateTokenList(tokenToAdd) {
-	
+	var tokenList = storageManager.getTokenList();
+	if (tokenList.length === 0) {
+		$('#addAccount').show();
+		$('#accountSelect').hide();
+        $('.intro-token')
+            .removeClass('invisible');
+	} else {
+		$('#addAccount').hide();
+		$('#accountSelect').show();
+        $('.intro-token')
+            .removeClass('invisible');
+		$('.logout')
+			.removeClass('invisible');
+		tokenList.forEach(function (tokenInfo) {
+			var str = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
+			console.log(str);
+			$('#accountSelect').append('<option value="' + tokenInfo.token + '">'+str + ' (' + tokenInfo.account_name+ ') ' + '</option>');
+		});
+	}
 };
 
 var addPurchaseOptions = function addPurchaseOptions() {
@@ -284,6 +302,11 @@ var addPurchaseOptions = function addPurchaseOptions() {
 	}
 };
 
+$('#addAccount')
+	.bind('click.login', function(e){
+		appId.redirectOauth();
+	})
+	.text('Log in');
 module.exports = {
 	showError: showError,
 	log: log,

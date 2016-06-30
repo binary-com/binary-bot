@@ -56,7 +56,7 @@ var addTokenIfValid = function addTokenIfValid(token, callback) {
 	api.authorize(token)
 		.then(function (response) {
 			api.disconnect();
-			storageManager.addToken(token, response.authorize.loginid);
+			storageManager.addToken(token, response.authorize.loginid, response.authorize.is_virtual);
 			if (callback) {
 				callback(null);
 			}
