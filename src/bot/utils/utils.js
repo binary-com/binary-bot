@@ -133,14 +133,6 @@ var findToken = function findToken(token) {
 	return index;
 };
 
-var logout = function logout() {
-	commonUtils.removeAllTokens(function(){
-		updateTokenList();
-		log(i18n._('Logged you out!'), 'info');
-	});
-};
-
-
 var getUTCTime = function getUTCTime(date) {
 	var dateObject = new Date(date);
 	return ('0' + dateObject.getUTCHours())
@@ -293,7 +285,6 @@ module.exports = {
 	findTopParentBlock: findTopParentBlock,
 	updateTokenList: updateTokenList,
 	addPurchaseOptions: addPurchaseOptions,
-	logout: logout,
 	getActiveSymbols: getActiveSymbols,
 	marketsToXml: marketsToXml,
 	xmlToStr: xmlToStr,

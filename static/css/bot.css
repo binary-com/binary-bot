@@ -281,6 +281,6 @@ button:focus {
     float: right;
 }
 
-#logout, #accountSelect {
+#logout, #accountSelect, #login{
     display: none;
 }

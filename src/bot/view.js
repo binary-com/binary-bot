@@ -252,6 +252,15 @@ var stop = function stop(e) {
 	globals.disableRun(false);
 };
 
+var logout = function logout() {
+  commonUtils.logoutAllTokens(function(){
+    commonUtils.removeAllTokens(function(){
+      botUtils.updateTokenList();
+      botUtils.log(i18n._('Logged you out!'), 'info');
+    });
+  });
+};
+
 var show = function show(done) {
   dropZone.addEventListener('dragover', handleDragOver, false);
   dropZone.addEventListener('drop', handleFileSelect, false);
@@ -342,7 +351,7 @@ var show = function show(done) {
 
   $('#logout')
     .click(function (e) {
-      botUtils.logout();
+      logout();
       $('.logout').hide();
     });
 
