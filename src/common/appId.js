@@ -1,4 +1,5 @@
 var utils = require('utils');
+var $ = require('jquery');
 
 var AppId = {
 	app_id: ( document.location.port === '8080' ) ? 1168 : ( ( document.location.hostname.indexOf('github.io') >= 0 ) ? 1180 : 1169 ),
@@ -14,6 +15,7 @@ var AppId = {
 			}
 		});
 		if (tokenList.length) {
+			$('#main').hide();
 			utils.addAllTokens(tokenList, function(){
 				document.location.pathname += ((document.location.pathname.slice(-1) === '/')?'':'/') + 'bot.html';
 			});
