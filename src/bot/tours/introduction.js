@@ -4,13 +4,14 @@ var blockly = require('blockly');
 var i18n = require('i18n');
 var init = function init(){
 	var steps = [{
-		content: '<p>' + i18n._("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.") + '</p>',
+		content: '<p>' + i18n._("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.") + '</p>',
 		closeButton: true,
 		target: view.getUiComponent('center'),
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
+			window.elem = view.selectBlockByText('Step&nbsp;1');
 			view.setOpacityForAll(started, 0.3);
 		},
 	}, {
@@ -46,7 +47,7 @@ var init = function init(){
 			view.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("Great! Now add it to the <b>trade</b> block.") + '</p>',
+		content: '<p>' + i18n._("Great! Now add it to the <b>Define Trade</b> block.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		closeButton: true,

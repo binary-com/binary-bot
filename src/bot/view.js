@@ -22,7 +22,7 @@ var initTours = function initTours() {
 var selectBlockByText = function selectBlockByText(text) {
   var returnVal;
   $('.blocklyText').each(function(){
-    if ( this.innerHTML === text ){
+    if ( this.innerHTML.indexOf(text) >= 0 ){
       returnVal = $(this).parent()[0];
     }
   });
@@ -46,6 +46,7 @@ var setBlockColors = function setBlockColors() {
 };
 
 var uiComponents = {
+  accountSelect: '#accountSelect',
   tutorialList: '.tutorialList',
   logout: '.logout',
   workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
@@ -187,8 +188,6 @@ var run = function run() {
 		$('#summaryPanel')
 			.show();
 		$('#stopButton')
-			.unbind('click', reset);
-		$('#stopButton')
 			.bind('click', stop);
 	} catch (e) {
 		botUtils.showError(e);
@@ -245,14 +244,6 @@ var handleDragOver = function handleDragOver(e) {
 
 var dropZone = document.getElementById('dropZone');
 
-var reset = function reset(e) {
-	if (e) {
-		e.preventDefault();
-	}
-	globals.resetTradeInfo();
-	botUtils.log(i18n._('Reset successful'), 'success');
-};
-
 var stop = function stop(e) {
 	if (e) {
 		e.preventDefault();
@@ -293,8 +284,6 @@ var show = function show(done) {
         });
 
   startTutorial();
-  $('#stopButton')
-    .bind('click', reset);
 
   $('.panelExitButton')
     .click(function () {
@@ -417,5 +406,6 @@ module.exports = {
   stopTutorial: stopTutorial,
   startTutorial: startTutorial,
   initTours: initTours,
-  show: show
+  show: show,
+  selectBlockByText: selectBlockByText
 };
