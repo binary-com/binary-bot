@@ -10,44 +10,42 @@
 
 {{> bundle_css }}
 {{> bot_css }}
+<link rel="stylesheet" href="https://style.binary.com/binary.css">
 
 </head>
 <body>
   <div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
   <div id="center"></div>
-  <div id="topbar" class="dark-blue" style="height:26px;">
-      <div class="help">
-		<span class="tutorialList">
-			<select id="tours">
-                <option value="" data-i18n-text="Select a Tour"></option>
-				<option value="welcome" data-i18n-text="Welcome!"></option>
-				<option value="introduction" data-i18n-text="Introduction"></option>
-			</select>
-		</span>
-      </div>
-  </div>
-  <div id="header">
-    <div class="header-split">
-      <a href="https://bot.binary.com">
-        <div style="display:inline-block;margin:0 10px;">
-          <img class="responsive" src="https://www.binary.com/images/pages/binary-symbol-logo.svg">
-        </div>
-        <div style="display:inline-block;">
-          <img class="responsive" src="https://www.binary.com/images/pages/binary-type-logo.svg" style="width:80%;">
-        </div>
-      </a>
-    </div>
-    <div class="header-split"></div>
-    <div class="header-split" style="text-align: right;">
-      <div>
-        <select id="accountSelect">
+ <div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
+  <div id="topbar">
+    <div class="wrapper">
+      <div class="right-header">
+        {{> language }}
+        <select id="tours">
+                  <option value="" data-i18n-text="Select a Tour"></option>
+          <option value="welcome" data-i18n-text="Welcome!"></option>
+          <option value="introduction" data-i18n-text="Introduction"></option>
         </select>
       </div>
-      <div class="logout invisible intro-token">
-        <button id="logout" data-i18n-text="Logout"></button>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper">
+      <div class="left-header">
+        <a href="" id="logo">
+          <div><img class="symbol-logo" src="image/binary-symbol-logo.svg" alt="Binary-logo" /></div>
+          <div><img class="type-logo" src="image/binary-type-logo.svg" alt="Binary-logo"></div>
+        </a>
       </div>
-      <div class="intro-token">
-        <button title="Add your tokens to the bot" id="login" data-i18n-text="Login"></button>
+      <div class="right-header">
+        <div>
+          <select id="accountSelect">
+          </select>
+        </div>
+        <div class="intro-token">
+          <button id="logout" data-i18n-text="Logout"></button>
+          <button title="Add your tokens to the bot" id="login" data-i18n-text="Login"></button>
+        </div>
       </div>
     </div>
   </div>

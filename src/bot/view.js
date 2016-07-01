@@ -47,7 +47,6 @@ var setBlockColors = function setBlockColors() {
 
 var uiComponents = {
   accountSelect: '#accountSelect',
-  tutorialList: '.tutorialList',
   logout: '.logout',
   workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
   workspace: '.blocklyWorkspace',
@@ -344,7 +343,7 @@ var show = function show(done) {
   $('#logout')
     .click(function (e) {
       botUtils.logout();
-      $('.logout').addClass('invisible');
+      $('.logout').hide();
     });
 
   $('#runButton')

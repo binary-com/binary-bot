@@ -211,17 +211,18 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 	if (tokenList.length === 0) {
 		$('#login').show();
 		$('#accountSelect').hide();
-        $('.intro-token')
-            .removeClass('invisible');
+		$('#logout').hide();
 	} else {
 		$('#login').hide();
 		$('#accountSelect').show();
-        $('.intro-token')
-            .removeClass('invisible');
-		$('.logout')
-			.removeClass('invisible');
+		$('#logout').show();
 		tokenList.forEach(function (tokenInfo) {
-			var str = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
+			var str;
+			if ( tokenInfo.hasOwnProperty('isVirtual') ) {
+				str = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
+			} else {
+				str = '';
+			}
 			$('#accountSelect').append('<option value="' + tokenInfo.token + '">'+str + ' (' + tokenInfo.account_name+ ') ' + '</option>');
 		});
 	}

@@ -1,31 +1,23 @@
 html, body {
-		height: 100%;
-		margin: 0px;
-}
-body {
-    height: 100%;
-    width: 100%;
-	backgroun-color: #fff;
-	font-family: sans-serif;
-}
-h1 {
-	font-weight: normal;
-	font-size: 140%;
+	height: 100%;
+    margin: 0px;
+    max-width: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 .toolbox * {
 	margin: 2px;
 	float: left;
 }
 #blocklyDiv{
-	height: calc(100% - 125px);
+	height: calc(100% - 96px);
 	width: 100%;
 	right: 100px;
 	bottom: 0px;
 }
-.help{
-	float: right;
-}
-.logout, .intro-token{
+
+.intro-token{
 	float: right;
 	margin: 2px;
 }
@@ -134,59 +126,13 @@ th, td {
 	content: 'X';
 }
 
-#topbar {
-    width: 100%;
-    color: #fff;
-    line-height: 1;
-    text-align: right;
-    padding: 3px 30px;
-}
-
-#tours, #accountSelect {
-	color: #000;
-}
-
-#accountSelect {
+#header select, #topbar select{
+    color: #000;
     font-size: 14px;
 }
 
 .dark-blue {
     background: #15212d;
-}
-
-#header {
-    background: #2a3052;
-    border-top: 2px solid #394171;
-    border-bottom: 4px solid #e98024;
-    height: 100px;
-    font-size: 18px;
-    padding: 10px 0;
-}
-
-.header-split {
-    width: 33.3%;
-    padding: 0 10px;
-    float: left;
-    display: inline-block;
-    min-height: 1px;
-    box-sizing: border-box;
-}
-
-#login, #logout {
-    color: #fff;
-    letter-spacing: .75px;
-    padding: 0 10px;
-    font-size: .7em;
-    line-height: 2em;
-    margin: .5em 0;
-}
-
-.invisible {
-    display: none;
-}
-
-.intro-file-management {
-    display: table;
 }
 
 #files {
@@ -197,7 +143,7 @@ th, td {
 #fixed-bar-right {
     position: absolute;
     z-index: 100;
-    top: 130px;
+    top: 110px;
     left: 90%;
     width: 10%;
     text-align: center;
@@ -211,6 +157,7 @@ th, td {
     background-color: #F2F2F2;  
     border: 1px solid #ddd;
     padding: 2.5px 6px;
+    color: black;
 }
 #fixed-bar-right button:hover {
     background-color: #ddd;
@@ -267,12 +214,6 @@ button:focus {
     opacity: 1 !important;
 }
 
-.blocklyTrash {
-    height: 80px !important;
-    width: 62px !important;
-
-}
-
 .blocklyScrollbarVertical, .blocklyScrollbarHorizontal{
     display: none;
 }
@@ -299,4 +240,47 @@ button:focus {
     border-color: #f00;
     border-style: solid;
     box-shadow: inset 0 3px 4px #888;
+}
+
+#header {
+    height: 75px;
+    width: 100%;
+    background-color: #2a3052;
+    border-top: 2px solid #394171;
+    border-bottom: 4px solid #e98024;
+    font-size: 18px;
+}
+.wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+}
+#header #logo div {
+    display: inline-block;
+}
+#topbar {
+    background-color: #15212d;
+    width: 100%;
+    height: 20px;
+    color: #fff;
+    line-height: 1;
+}
+#logo {
+    display: inline-block;
+    margin-top: 15px;
+}
+.type-logo {
+    width: 80%;
+    margin-left: 10px;
+}
+
+.left-header {
+    float: left;
+}
+
+.right-header {
+    float: right;
+}
+
+#logout, #accountSelect {
+    display: none;
 }
