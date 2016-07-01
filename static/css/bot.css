@@ -32,7 +32,7 @@ html, body {
     color: white;
     cursor: pointer;
     width: 25px;
-    height: 22px;
+    height: 25px;
     position: absolute;
     right: 0px;
     top: 0px;
@@ -40,6 +40,7 @@ html, body {
     border: 1px solid #e98024;
     border-radius: 0 0 0 4px;
     background: #e98024;
+    margin: 0px;
 }
 #summaryPanel {
     width: 800px;
@@ -73,6 +74,7 @@ html, body {
     color: #fff;
 }
 .panel .description h4 {
+    color: white;
     margin: 0;
     text-align: center;
 }
@@ -226,12 +228,12 @@ button:focus {
     font-weight: bold;
     text-align: center;
     padding: 1em 0;
-    margin: 1em 0;
+    margin: 0px;
     color: #555;
     border: 2px dashed #555;
     border-radius: 7px;
     cursor: default;
-    height: 400px;
+    height: 425px;
     line-height: 350px;
 }
 
@@ -283,4 +285,18 @@ button:focus {
 
 #logout, #accountSelect, #login{
     display: none;
+}
+
+.btn-primary {
+    color: #FFF !important;
+    text-decoration: none !important;
+    background: #2E8836 !important;
+    border-color: #2E8836 !important;
+}
+
+.btn-primary:active, .btn-primary:hover {
+    color: #FFF !important;
+    text-decoration: none !important;
+    background-color: #14602B !important;
+    border-color: #14602B !important;
 }
