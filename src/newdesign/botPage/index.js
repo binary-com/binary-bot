@@ -2,7 +2,7 @@ var storageManager = require('common/storageManager');
 var Symbol = require('./bot/symbol');
 var observer = require('common/observer');
 var bot = require('./bot');
-var CustomApi = require('./bot/customApi');
+var CustomApi = require('common/customApi');
 
 var BotPage = function BotPage() {
 	if (BotPage.instance) {

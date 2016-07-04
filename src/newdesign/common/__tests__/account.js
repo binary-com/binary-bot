@@ -1,7 +1,7 @@
+require('../browser');
 var storageManager = require('../storageManager');
 var account = require('../account');
 var expect = require('chai').expect;
-require('../browser');
 
 describe('Account', function(){
 	var callbackResult;

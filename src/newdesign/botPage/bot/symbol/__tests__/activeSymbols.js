@@ -1,9 +1,11 @@
+require('app-module-path').addPath(__dirname + '/../../../../');
+require('common/browser');
+
 var expect = require('chai').expect;
 require('app-module-path').addPath(__dirname + '/../../../../');
 var ActiveSymbols = require('../activeSymbols');
-var ws = require('ws');
-var LiveApi = require('binary-live-api').LiveApi;
-var api = new LiveApi({ websocket: ws });
+var CustomApi = require('common/customApi');
+var api = new CustomApi()._originalApi;
 var deep = require('deep-diff');
 
 /* 

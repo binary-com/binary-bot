@@ -7,7 +7,7 @@ var Translator = function Translator() {
 		return Translator.instance;
 	}
 	Translator.instance = this;
-	var lang = this._getLanguage();
+	var lang = this.getLanguage();
 	var resources = {};
 	for (var lang in this._supportedLanguages) {
 		resources[lang] = {
@@ -45,8 +45,8 @@ Translator.prototype = Object.create(null, {
 			en: require('./translations/en')
 		}
 	},
-	_getLanguage: {
-		value: function _getLanguage() {
+	getLanguage: {
+		value: function getLanguage() {
 			var queryStr = tools.parseQueryString();
 			var lang;
 			if (queryStr.hasOwnProperty('l') && queryStr.l !== '' && 

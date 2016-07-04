@@ -5,7 +5,7 @@ var conditions = require('../conditions');
 var Symbol = require('../index');
 var tools = require('common/tools');
 var expect = require('chai').expect;
-var LiveApi = require('binary-live-api').LiveApi;
+var CustomApi = require('common/customApi');
 
 describe('symbol', function() {
 	describe('Error Handling', function(){
@@ -25,7 +25,7 @@ describe('symbol', function() {
 		this.timeout('10000');
 		var symbol;
 		before(function(done){
-			symbol = new Symbol(new LiveApi({ websocket: require('ws') }));
+			symbol = new Symbol(new CustomApi());
 			symbol.initPromise.then(function(){
 				done();
 			});

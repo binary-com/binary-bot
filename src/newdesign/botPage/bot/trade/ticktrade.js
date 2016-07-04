@@ -33,9 +33,9 @@ Ticktrade.prototype = Object.create(null, {
 				}
 				if ( contract.sell_price ) {
 					observer.emit('trade.finish', contract);
-					that.finish();
+					that.destroy();
 				}
-				observer.emit('trade.contractUpdate', contract);
+				observer.emit('trade.update', contract);
 			});
 		}
 	},
@@ -44,8 +44,8 @@ Ticktrade.prototype = Object.create(null, {
 			this.api._originalApi.getContractInfo(this.contractId);
 		}
 	},
-	finish: {
-		value: function finish(){
+	destroy: {
+		value: function destroy(){
 			this.purchaseInProgress = false;
 			this.api._originalApi.unsubscribeFromAllOpenContracts();
 		}

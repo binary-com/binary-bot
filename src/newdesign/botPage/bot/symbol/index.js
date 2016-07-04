@@ -10,7 +10,7 @@ var Symbol = function Symbol(api) {
 		return Symbol.instance;
 	}
 	Symbol.instance = this;
-	this.api = api;
+	this.api = api._originalApi;
 	var that = this;
 	this.initPromise = new Promise(function(resolve){
 		tools.asyncChain()
