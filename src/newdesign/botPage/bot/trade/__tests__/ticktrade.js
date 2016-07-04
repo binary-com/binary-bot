@@ -20,20 +20,20 @@ describe('TickTrade', function() {
 			asyncChain()
 			.pipe(function(chainDone){
 				api.authorize('c9A3gPFcqQtAQDW');
-				observer.register('api.authorize', function(){
+				observer.registerOnce('api.authorize', function(){
 					chainDone();
 				});
 			})
 			.pipe(function(chainDone){
 				api.proposal({"amount":"20.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
-				observer.register('api.proposal', function(_proposal){
+				observer.registerOnce('api.proposal', function(_proposal){
 					proposal = _proposal;
 					chainDone();
 				});
 			})
 			.pipe(function(chainDone){
 				ticktrade.purchase(proposal);
-				observer.register('api.buy', function(_purchasedContract){
+				observer.registerOnce('api.buy', function(_purchasedContract){
 					purchasedContract = _purchasedContract;
 					done();
 				});
@@ -49,10 +49,10 @@ describe('TickTrade', function() {
 		var contractUpdates = [];
 		before(function(done){
 			this.timeout('25000');
-			observer.register('trade.finish', function(_contract){
+			observer.registerOnce('trade.finish', function(_contract){
 				finishedContract = _contract;
 			});
-			observer.register('trade.update', function(contractUpdate){
+			observer.registerOnce('trade.update', function(contractUpdate){
 				contractUpdates.push(contractUpdate);
 				if (contractUpdates.slice(-1)[0].is_sold) {
 					done();
@@ -73,7 +73,7 @@ describe('TickTrade', function() {
 		before(function(done){
 			this.timeout('5000');
 			ticktrade.purchase(proposal);
-			observer.register('ui.error', function(_err){
+			observer.registerOnce('ui.error', function(_err){
 				error = _err;
 				done();
 			});

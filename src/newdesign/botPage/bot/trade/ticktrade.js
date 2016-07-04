@@ -13,7 +13,7 @@ Ticktrade.prototype = Object.create(null, {
 			observer.emit('ui.log.info', this.translator.translateText('Purchased') + ': ' + contract.longcode);
 			var that = this;
 			this.api.buy(contract.id, contract.ask_price);
-			observer.register('api.buy', function(purchasedContract){
+			observer.registerOnce('api.buy', function(purchasedContract){
 				that.contractId = purchasedContract.contract_id;
 				that.purchaseInProgress = true;
 				that.api._originalApi.unsubscribeFromAllProposals();
@@ -47,6 +47,8 @@ Ticktrade.prototype = Object.create(null, {
 	destroy: {
 		value: function destroy(){
 			this.purchaseInProgress = false;
+			observer.unregisterAll('api.proposal_open_contract');
+			observer.unregisterAll('api.buy');
 			this.api._originalApi.unsubscribeFromAllOpenContracts();
 		}
 	}

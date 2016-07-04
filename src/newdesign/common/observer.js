@@ -45,11 +45,17 @@ module.exports = {
 		delete this._eventActionMap[_event];
 	},
 	emit: function emit(_event, data) {
-		if (this._eventActionMap.hasOwnProperty(_event)){
-			var actionList = this._eventActionMap[_event];
-			for ( var index in actionList ) {
-				actionList[index](data);
+		var that = this;
+		return new Promise(function(resolve, reject) {
+			if (that._eventActionMap.hasOwnProperty(_event)){
+				var actionList = that._eventActionMap[_event];
+				for ( var index in actionList ) {
+					actionList[index](data);
+				}
+				resolve();
+			} else {
+				reject(Error('Event not found'));
 			}
-		}
+		});
 	},
 };

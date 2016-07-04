@@ -5,7 +5,7 @@ var LiveApi = require('binary-live-api').LiveApi;
 var Translator = require('./translator');
 var translator = new Translator();
 
-var CustomApi = function CustomApi(options) {
+var CustomApi = function CustomApi() {
 	var option = {
 		language: storageManager.get('lang'),
 		appId: storageManager.get('appId'),

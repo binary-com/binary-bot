@@ -27,24 +27,24 @@ Bot.prototype = Object.create(null, {
 			this.token = token;
 			var that = this;
 			asyncChain()
-			.pipe(function(done){
-				observer.register('api.authorize', function(){
-					done();
+			.pipe(function(chainDone){
+				observer.registerOnce('api.authorize', function(){	
+					chainDone();
 				});
 				that.api.authorize(that.token);
 			})
-			.pipe(function(done){
+			.pipe(function(chainDone){
 				that.api.history(that.tradeOptions[0].symbol, {
 					end: 'latest',
 					count: 600,
 					subscribe: 1
 				});
-				observer.register('api.history', function(history){
+				observer.registerOnce('api.history', function(history){
 					that.ticks.concat(history);					
-					done();
+					chainDone();
 				});
 			})
-			.pipe(function(done){
+			.pipe(function(chainDone){
 				that.startTrading();
 			})
 			.exec();
@@ -54,7 +54,7 @@ Bot.prototype = Object.create(null, {
 		value: function startTrading() {
 			var that = this;
 			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
-			observer.register('strategy.finish', function(contract){
+			observer.registerOnce('strategy.finish', function(contract){
 				that.finish(contract);
 				that.stop(contract);
 			});
@@ -90,30 +90,37 @@ Bot.prototype = Object.create(null, {
 			if ( this.running ) {
 				this.running = false;
 			} else {
+				observer.emit('bot.stop', contract);
 				return;
 			}
+			if ( this.strategyCtrl ) {
+				this.strategyCtrl.destroy();
+			}
+			observer.unregisterAll('api.authorize');
+			observer.unregisterAll('api.history');
+			observer.unregisterAll('api.proposal');
+			observer.unregisterAll('api.tick');
+			observer.unregisterAll('strategy.ready');
+			observer.unregisterAll('strategy.finish');
 			var that = this;
 			asyncChain()
 			.pipe(function(done){
 				that.api._originalApi.unsubscribeFromAllTicks().then(function(response){
-					console.log('unsub from ticks');
 					done();
 				});
 			})
 			.pipe(function(done){
 				that.api._originalApi.unsubscribeFromAllProposals().then(function(response){
-					console.log('unsub from proposal', response);
 					done();
 				});
 			})
 			.pipe(function(done){
 				that.api._originalApi.unsubscribeFromAlProposals().then(function(response){
-					console.log('unsub from o proposal');
 					done();
 				});
 			})
 			.pipe(function(done){
-				observer.emit('bot.finish', contract);
+				observer.emit('bot.stop', contract);
 			})
 			.exec();
 		}

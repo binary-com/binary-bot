@@ -8,7 +8,7 @@ var observer = require('../observer');
 describe('CustomApi', function() {
 	var api;
 	before(function(){
-		api = new CustomApi({ websocket: require('ws') });
+		api = new CustomApi();
 	});
 	describe('authorize', function(){
 		var message;

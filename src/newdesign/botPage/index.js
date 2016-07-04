@@ -9,7 +9,7 @@ var BotPage = function BotPage() {
 		return BotPage.instance;
 	}
 	BotPage.instance = this;
-	this.api = new CustomApi({ appId: storageManager.get('appId'), language: storageManager.get('lang') });
+	this.api = new CustomApi();
 	this.symbol = new Symbol(this.api._originalApi);
 	this.initPromise = this.symbol.initPromise;
 }

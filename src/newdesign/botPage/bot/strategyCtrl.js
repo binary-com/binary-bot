@@ -43,7 +43,7 @@ StrategyCtrl.prototype = Object.create(null, {
 				this.trade = new Ticktrade(this.api);
 				this.trade.purchase(contract);
 				var that = this;
-				observer.register('trade.finish', function(contract){
+				observer.registerOnce('trade.finish', function(contract){
 					observer.emit('strategy.finish', contract);
 					that.destroy();
 				});
@@ -52,6 +52,10 @@ StrategyCtrl.prototype = Object.create(null, {
 	},
 	destroy: {
 		value: function destroy() {
+			if ( this.trade ) {
+				this.trade.destroy();
+			}
+			observer.unregisterAll('trade.finish');
 			this.proposals = [];
 			this.ready = false;
 			this.strategy = null;
