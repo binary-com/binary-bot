@@ -4,7 +4,7 @@ require('../browser');
 
 describe('Observer', function(){
 	before(function(done){
-		observer.register('global.createVar', function(obj){
+		observer.registerOnce('global.createVar', function(obj){
 			window[obj.name] = obj.text;
 			done();
 		});

@@ -1,9 +1,9 @@
 require('app-module-path').addPath(__dirname + '/../../../');
-require('common/browser');
+require('../browser');
 
 var CustomApi = require('../customApi');
 var expect = require('chai').expect;
-var observer = require('common/observer');
+var observer = require('../observer');
 
 describe('CustomApi', function() {
 	var api;
@@ -14,7 +14,7 @@ describe('CustomApi', function() {
 		var message;
 		before(function(done){
 			this.timeout('5000');
-			observer.register('ui.error', function(error) {
+			observer.registerOnce('ui.error', function(error) {
 				message = error;
 				done();
 			});
@@ -30,10 +30,10 @@ describe('CustomApi', function() {
 		var message2;
 		before(function(done){
 			this.timeout('5000');
-			observer.register('bot.history', function(data) {
+			observer.registerOnce('api.history', function(data) {
 				message1 = data;
 			});
-			observer.register('bot.tick', function(data) {
+			observer.registerOnce('api.tick', function(data) {
 				message2 = data;
 				done();
 			});
@@ -50,30 +50,19 @@ describe('CustomApi', function() {
 			expect(message2).to.have.all.keys(['epoch', 'quote']);
 		});
 	});
-	var authorizationRequiredFor = [
-		'transaction',
-		'proposal_open_contract',
-		'proposal',
-		'buy',
-		'balance',
-	];
-	for ( var i in authorizationRequiredFor ) {
-		var request = authorizationRequiredFor[i];
-		describe(request, function(){
-			var message;
-			before(function(done){
-				this.timeout('5000');
-				observer.register('ui.error', function(error) {
-					message = error;
-					done();
-				});
-				api[request]();
+	describe('buy', function(){
+		var message;
+		before(function(done){
+			this.timeout('5000');
+			observer.registerOnce('ui.error', function(error) {
+				message = error;
+				done();
 			});
-			it(request + ' return AuthorizationRequired', function() {
-				expect(message).to.have.property('code')
-					.that.be.equal('AuthorizationRequired');
-			});
+			api.buy('uw2mk7no3oktoRVVsB4Dz7TQnFfABuFDgO95dlxfMxRuPUsz', 100);
 		});
-	}
-	
+		it('buy return AuthorizationRequired', function() {
+			expect(message).to.have.property('code')
+				.that.be.equal('AuthorizationRequired');
+		});
+	});
 });

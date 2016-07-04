@@ -71,7 +71,7 @@ describe('Misc Tools', function(){
 	});
 	describe('apiFailed', function(){
 		it('apiFailed detects a failed api response', function(){
-			observer.register('ui.error', function(error){
+			observer.registerOnce('ui.error', function(error){
 				expect(error).to.be.equal('Error Message');
 			});
 			expect(tools.apiFailed({

@@ -1,16 +1,19 @@
-var observer = require('common/observer');
-var tools = require('common/tools');
-var storageManager = require('common/storageManager');
+var observer = require('./observer');
+var tools = require('./tools');
+var storageManager = require('./storageManager');
 var LiveApi = require('binary-live-api').LiveApi;
-var Translator = require('common/translator');
+var Translator = require('./translator');
 var translator = new Translator();
 
 var CustomApi = function CustomApi(options) {
-	if ( CustomApi.instance ) {
-		return CustomApi.instance;
+	var option = {
+		language: storageManager.get('lang'),
+		appId: storageManager.get('appId'),
+	};
+	if ( typeof WebSocket === 'undefined' ) {
+		option.websocket = require('ws');
 	}
-	CustomApi.instance = this;
-	this._originalApi = new LiveApi(options);
+	this._originalApi = new LiveApi(option);
 	var events = {
 		tick: function(){},
 		history: function(){

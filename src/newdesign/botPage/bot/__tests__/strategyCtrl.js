@@ -39,7 +39,7 @@ describe('TickTrade', function() {
 			asyncChain()
 			.pipe(function(chainDone){
 				api.authorize('c9A3gPFcqQtAQDW');
-				observer.register('api.authorize', function(){
+				observer.registerOnce('api.authorize', function(){
 					chainDone();
 				});
 			})
@@ -92,7 +92,7 @@ describe('TickTrade', function() {
 	});
 	describe('Waiting for strategy to purchase the contract', function(){
 		before(function(done){
-			observer.register('test.purchase', function(){
+			observer.registerOnce('test.purchase', function(){
 				done();
 			});
 			strategyCtrl.updateProposal(proposals[1]);
@@ -105,7 +105,7 @@ describe('TickTrade', function() {
 		var finishedContract;
 		before(function(done){
 			this.timeout('20000');
-			observer.register('strategy.finish', function(_finishedContract){
+			observer.registerOnce('strategy.finish', function(_finishedContract){
 				finishedContract = _finishedContract;
 				done();
 			});
@@ -115,5 +115,8 @@ describe('TickTrade', function() {
 			expect(finishedContract).to.have.property('sell_price')
 				.that.satisfy(function(price){return !isNaN(price)});
 		});
+	});
+	after(function(){
+		observer.unregisterAll('api.proposal');
 	});
 });
