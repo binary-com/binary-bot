@@ -253,8 +253,8 @@ button:focus {
     font-size: 18px;
 }
 .wrapper {
-    max-width: 960px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0 20px;
 }
 #header #logo div {
     display: inline-block;
@@ -262,9 +262,10 @@ button:focus {
 #topbar {
     background-color: #15212d;
     width: 100%;
-    height: 20px;
+    height: 26px;
     color: #fff;
     line-height: 1;
+    padding-top: 3px;
 }
 #logo {
     display: inline-block;
@@ -288,7 +289,7 @@ button:focus {
 }
 
 #login {
-    margin-top: 25px;
+    margin-top: 12px;
 }
 
 .btn-primary {
