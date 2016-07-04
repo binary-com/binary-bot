@@ -52,7 +52,7 @@ describe('TickTrade', function() {
 			observer.registerOnce('trade.finish', function(_contract){
 				finishedContract = _contract;
 			});
-			observer.registerOnce('trade.update', function(contractUpdate){
+			observer.register('trade.update', function(contractUpdate){
 				contractUpdates.push(contractUpdate);
 				if (contractUpdates.slice(-1)[0].is_sold) {
 					done();

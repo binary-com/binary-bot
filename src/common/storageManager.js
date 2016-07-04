@@ -8,7 +8,7 @@ module.exports = {
 		return localStorage.tokenList;
 	},
 	findAccount: function findAccount(account_name) {
-		var tokenList = getTokenList();
+		var tokenList = this.getTokenList();
 		var index = -1;
 		tokenList.forEach(function (tokenInfo, i) {
 			if (tokenInfo.account_name === account_name) {
@@ -18,23 +18,23 @@ module.exports = {
 		return index;
 	},
 	setTokenList: function setTokenList(tokenList) {
-		localStorage.tokenList = JSON.stringify(tokenList);
+		localStorage.tokenList = tokenList;
 	},
-	addToken = function addToken(token, account_name, isVirtual) {
-		var tokenList = getTokenList();
-		var tokenIndex = findToken(token);
-		var accountIndex = findAccount(account_name);
+	addToken: function addToken(token, account_name, isVirtual) {
+		var tokenList = this.getTokenList();
+		var tokenIndex = this.findToken(token);
+		var accountIndex = this.findAccount(account_name);
 		if (tokenIndex < 0 && accountIndex < 0) {
 			tokenList.push({
 				account_name: account_name,
 				token: token,
 				isVirtual: isVirtual
 			});
-			setTokenList(tokenList);
+			this.setTokenList(tokenList);
 		}
 	},
 	findToken: function findToken(token) {
-		var tokenList = getTokenList();
+		var tokenList = this.getTokenList();
 		var index = -1;
 		tokenList.forEach(function (tokenInfo, i) {
 			if (tokenInfo.token === token) {
@@ -42,20 +42,6 @@ module.exports = {
 			}
 		});
 		return index;
-	},
-	addToken: function addToken(token, account_name) {
-		if ( !token || !account_name ) {
-			throw(Error('Token and account name should be both passed to addToken'));
-		}
-		var tokenList = this.getTokenList();
-		var index = this.findToken(token);
-		if (index < 0) {
-			tokenList.push({
-				account_name: account_name,
-				token: token
-			});
-			localStorage.tokenList = tokenList;
-		}
 	},
 	getToken: function getToken(token) {
 		var tokenList = this.getTokenList();

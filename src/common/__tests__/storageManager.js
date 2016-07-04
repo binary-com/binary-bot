@@ -6,19 +6,6 @@ describe('StorageManager', function(){
 	before(function(){
 		storageManager.removeAllTokens();
 	});
-	describe('Error Handling', function(){
-		it('addToken must have two arguments', function(){
-			expect(function(){
-				storageManager.addToken();
-			}).to.throw(Error);
-			expect(function(){
-				storageManager.addToken('a');
-			}).to.throw(Error);
-			expect(function(){
-				storageManager.addToken(null, 'a');
-			}).to.throw(Error);
-		});
-	});
 	describe('token retrieve functions when there is no token', function(){
 		it('getTokenList', function(){
 			expect(storageManager.getTokenList()).to.be.empty;
@@ -36,7 +23,8 @@ describe('StorageManager', function(){
 			localStorage.tokenList = [
 				{
 					account_name: 'Real Account',
-					token: 'RealToken'
+					token: 'RealToken',
+					isVirtual: 0
 				}
 			];
 		});
@@ -49,7 +37,7 @@ describe('StorageManager', function(){
 		});
 		it('getToken should be get the real token', function(){
 			expect(storageManager.getToken('RealToken')).to.be.an('Object')
-				.that.has.keys(['account_name', 'token']);
+				.that.has.keys(['account_name', 'token', 'isVirtual']);
 			realToken = storageManager.getToken('RealToken');
 		});
 		it('removeToken real should be able to remove real token', function(){
@@ -57,16 +45,17 @@ describe('StorageManager', function(){
 			expect(storageManager.getTokenList()).to.be.empty;
 		});
 		it('addToken should be able to add real token and findToken should find it', function(){
-			storageManager.getTokenList(realToken.token, realToken.account_name);
+			storageManager.getTokenList(realToken.token, realToken.account_name, 0);
 			expect(storageManager.findToken('RealToken')).not.to.be.empty;
 		});
 		it('addToken should be able to add real token and findToken should find it', function(){
-			storageManager.addToken(realToken.token, realToken.account_name);
+			storageManager.addToken(realToken.token, realToken.account_name, 0);
 			var tokenList = storageManager.getTokenList();
 			expect(tokenList[storageManager.findToken('RealToken')])
 				.to.be.deep.equal({
 					account_name: 'Real Account',
-					token: 'RealToken'
+					token: 'RealToken',
+					isVirtual: 0
 				});
 		});
 		it('removeAllTokens should remove all tokens and getToken should be empty', function(){
