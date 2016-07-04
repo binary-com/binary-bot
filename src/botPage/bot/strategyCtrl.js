@@ -7,7 +7,7 @@ var StrategyCtrl = function StrategyCtrl(api, strategy) {
 	this.ready = false;
 	this.purchased = false;
 	this.proposals = [];
-}
+};
 
 StrategyCtrl.prototype = Object.create(null, {
 	updateProposal: {

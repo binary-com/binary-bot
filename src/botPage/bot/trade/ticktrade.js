@@ -5,7 +5,7 @@ var Ticktrade = function Ticktrade(api) {
 	this.api = api;
 	this.purchaseInProgress = false;
 	this.translator = new Translator();
-}
+};
 
 Ticktrade.prototype = Object.create(null, {
 	purchase: {

@@ -30,13 +30,14 @@ module.exports = {
 	unregister: function unregister(_event, _function) {
 		var actionList = this._eventActionMap[_event];
 		var toDeleteIndexes = [];
+		var i;
 		if ( actionList ) {
-			for ( var i in actionList ) {
+			for ( i in actionList ) {
 				if ( actionList[i] === _function ) {
 					toDeleteIndexes.push(i);
 				}
 			}
-			for (var i in toDeleteIndexes) {
+			for ( i in toDeleteIndexes) {
 				delete actionList[toDeleteIndexes[i]];
 			}
 		}

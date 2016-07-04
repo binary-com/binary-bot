@@ -12,7 +12,7 @@ var BotPage = function BotPage() {
 	this.api = new CustomApi();
 	this.symbol = new Symbol(this.api._originalApi);
 	this.initPromise = this.symbol.initPromise;
-}
+};
 
 BotPage.prototype = Object.create(null, {
 	createBot: {

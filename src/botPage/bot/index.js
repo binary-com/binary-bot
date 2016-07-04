@@ -11,7 +11,7 @@ var Bot = function Bot() {
 	this.symbol = new Symbol(this.api);
 	this.initPromise = this.symbol.initPromise;
 	this.running = false;
-}
+};
 
 Bot.prototype = Object.create(null, {
 	start: {
@@ -82,7 +82,7 @@ Bot.prototype = Object.create(null, {
 				observer.emit('ui.log', i18n._('tick received at:') + ' ' + tick.epoch);
 				that.ticks.concat(tick);
 				that.strategyCtrl.updateTicks(that.ticks);
-			})
+			});
 		}
 	},
 	stop: {

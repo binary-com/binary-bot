@@ -113,7 +113,7 @@ describe('TickTrade', function() {
 		});
 		it('finish is called whenever the purchase is finished', function(){
 			expect(finishedContract).to.have.property('sell_price')
-				.that.satisfy(function(price){return !isNaN(price)});
+				.that.satisfy(function(price){return !isNaN(price);});
 		});
 	});
 	after(function(){

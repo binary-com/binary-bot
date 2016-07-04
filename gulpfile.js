@@ -110,7 +110,14 @@ gulp.task('mocha', function() {
         .pipe(mocha({reporter: 'nyan'}));
 });
 
-gulp.task('test', ['mocha'], function() {
+gulp.task('lint', function() {
+	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js', '!./src/i18n/*.js'])
+		.pipe(jshint())
+		.pipe(jshint.reporter('default'))
+		.pipe(jshint.reporter('fail'));
+});
+
+gulp.task('test', ['mocha', 'lint'], function() {
 	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js', '!./src/i18n/*.js'])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))

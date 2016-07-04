@@ -81,8 +81,9 @@ CustomApi.prototype = Object.create(LiveApi.prototype, {
 				}
 			},
 			authorize: function authorize(response) {
+				var token;
 				if ( !tools.apiFailed(response) ) {
-					var token = response.echo_req.authorize;
+					token = response.echo_req.authorize;
 					var authorize = response.authorize;
 					observer.emit('ui.log', translator.translateText('Logged in to:') + ' ' + storageManager.getToken(token).account_name, 'info');
 					observer.emit('api.authorize', authorize);

@@ -9,9 +9,9 @@ var Translator = function Translator() {
 	Translator.instance = this;
 	var lang = this.getLanguage();
 	var resources = {};
-	for (var lang in this._supportedLanguages) {
-		resources[lang] = {
-			translation: this._supportedLanguages[lang]
+	for (var i in this._supportedLanguages) {
+		resources[i] = {
+			translation: this._supportedLanguages[i]
 		};
 	}
 	i18n.init({
