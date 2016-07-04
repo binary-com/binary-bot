@@ -45,24 +45,24 @@ Bot.prototype = Object.create(null, {
 				});
 			})
 			.pipe(function(chainDone){
-				that.startTrading();
+				that._startTrading();
 			})
 			.exec();
 		}
 	},
-	startTrading: {
-		value: function startTrading() {
+	_startTrading: {
+		value: function _startTrading() {
 			var that = this;
 			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
 			observer.registerOnce('strategy.finish', function(contract){
 				that.finish(contract);
 				that.stop(contract);
 			});
-			this.subscribeProposals();
+			this._subscribeProposals();
 		}
 	},
-	subscribeProposals: {
-		value: function subscribeProposals() {
+	_subscribeProposals: {
+		value: function _subscribeProposals() {
 			var that = this;
 			for (var i in this.tradeOptions) {
 				this.api.proposal(this.tradeOptions[i]);
@@ -75,8 +75,8 @@ Bot.prototype = Object.create(null, {
 			});
 		}
 	},
-	observeTicks: {
-		value: function observeTicks() {
+	_observeTicks: {
+		value: function _observeTicks() {
 			var that = this;
 			observer.register('api.tick', function(tick){
 				observer.emit('ui.log', i18n._('tick received at:') + ' ' + tick.epoch);
