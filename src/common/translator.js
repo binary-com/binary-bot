@@ -1,80 +1,76 @@
-var $ = require('jquery');
-var i18n = require('i18n');
-var utils = require('utils');
-// handle language in localStorage and query string
-var supportedLanguages = {
-	zh_tw: require('json!../i18n/zh_tw.json'),
-	de: require('json!../i18n/de.json'),
-	id: require('json!../i18n/id.json'),
-	zh_cn: require('json!../i18n/zh_cn.json'),
-	it: require('json!../i18n/it.json'),
-	vi: require('json!../i18n/vi.json'),
-	ar: require('json!../i18n/ar.json'),
-	pl: require('json!../i18n/pl.json'),
-	ru: require('json!../i18n/ru.json'),
-	pt: require('json!../i18n/pt.json'),
-	es: require('json!../i18n/es.json'),
-	fr: require('json!../i18n/fr.json'),
-	en: require('json!../i18n/en.json')
-};
-$('#language')
-	.change(function change(e) {
-		localStorage.lang = e.target.value;
-		window.location.search = '?l=' + e.target.value;
+var i18n = require('./i18n');
+var tools = require('./tools');
+var storageManager = require('./storageManager');
+
+var Translator = function Translator() {
+	if ( Translator.instance ) {
+		return Translator.instance;
+	}
+	Translator.instance = this;
+	var lang = this.getLanguage();
+	var resources = {};
+	for (var lang in this._supportedLanguages) {
+		resources[lang] = {
+			translation: this._supportedLanguages[lang]
+		};
+	}
+	i18n.init({
+		lng: lang,
+		fallbackLng: 'en',
+		ns: [
+			'translation'
+		],
+		defaultNS: [
+			'translation'
+		],
+		resources: resources
 	});
-var queryStr = utils.parseQueryString();
-if (queryStr.hasOwnProperty('l') && queryStr.l !== '' && supportedLanguages.hasOwnProperty(queryStr.l) ) {
-	window.lang = queryStr.l;
-	localStorage.lang = queryStr.l;
-} else if (localStorage.lang) {
-	window.lang = localStorage.lang;
-} else {
-	window.lang = 'en';
-}
-$('#language')
-	.val(window.lang);
-// end of handling language
-
-module.exports = {
-	addBlocklyTranslation: function addBlocklyTranslation() {
-		// to include script tag in html without warning
-		$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-			options.async = true;
-		});
-
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		var blocklyLang;
-		if (lang === 'zh_tw') {
-			blocklyLang = 'zh-hant';
-		} else if (lang === 'zh_cn') {
-			blocklyLang = 'zh-hans';
-		} else {
-			blocklyLang = lang;
-		}
-		script.src = 'js/blockly/msg/js/' + blocklyLang + '.js';
-		$('body')
-			.append(script);
-	},
-	Translator: function Translator(callback) {
-		var resources = {};
-		for (var lang in supportedLanguages) {
-			resources[lang] = {
-				translation: supportedLanguages[lang]
-			};
-		}
-		i18n.init({
-			lng: window.lang,
-			fallbackLng: 'en',
-			ns: [
-				'translation'
-			],
-			defaultNS: [
-				'translation'
-			],
-			resources: resources
-		}, function () {
-			callback();
-		});
-	},
 };
+
+Translator.prototype = Object.create(null, {
+	_supportedLanguages: {
+		value: {
+			zh_tw: require('./translations/zh_tw'),
+			de: require('./translations/de'),
+			id: require('./translations/id'),
+			zh_cn: require('./translations/zh_cn'),
+			it: require('./translations/it'),
+			vi: require('./translations/vi'),
+			ar: require('./translations/ar'),
+			pl: require('./translations/pl'),
+			ru: require('./translations/ru'),
+			pt: require('./translations/pt'),
+			es: require('./translations/es'),
+			fr: require('./translations/fr'),
+			en: require('./translations/en')
+		}
+	},
+	getLanguage: {
+		value: function getLanguage() {
+			var queryStr = tools.parseQueryString();
+			var lang;
+			if (queryStr.hasOwnProperty('l') && queryStr.l !== '' && 
+				this._supportedLanguages.hasOwnProperty(queryStr.l) ) {
+				lang = queryStr.l;
+				storageManager.set('lang', queryStr.l);
+			} else if (storageManager.get('lang')) {
+				lang = storageManager.get('lang');
+			} else {
+				storageManager.set('lang', lang = 'en');
+			}
+			return lang;
+		}
+	},
+	translateText: {
+		value: function translateText(str) {
+			return i18n._(str);
+		}
+	},
+	translateXml: {
+		value: function translateXml(xml) {
+			return i18n.xml(xml);
+		}
+	},
+});
+
+module.exports = Translator;

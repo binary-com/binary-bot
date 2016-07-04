@@ -1,10 +1,17 @@
 var utils = require('utils');
-var $ = require('jquery');
-
+var storageManager = require('common').storageManager;
+var appId = 0;
+if ( document.location.port === '8080' ) {
+	appId = 1168; // binary bot on localhost
+} else if ( document.location.hostname.indexOf('github.io') >= 0 ) {
+	appId = 1180; // binary bot on dev gh-pages
+} else {
+	appId = 1169; // binary bot on deploy gh-pages
+}
+storageManager.set('appId', appId);
 var AppId = {
-	app_id: ( document.location.port === '8080' ) ? 1168 : ( ( document.location.hostname.indexOf('github.io') >= 0 ) ? 1180 : 1169 ),
 	redirectOauth: function oauthLogin(){
-		document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + this.app_id + '&l=' + window.lang.toUpperCase();
+		document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + window.lang.toUpperCase();
 	},
 	oauthLogin: function getToken(done) {
 		var queryStr = utils.parseQueryString();
@@ -32,7 +39,7 @@ var AppId = {
 		}
 	},
 	getAppId: function getAppId(){
-		return this.app_id;
+		return storageManager.get('appId');
 	}
 };
 

@@ -5,7 +5,7 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			tourist: 'tourist/tourist.js',
+      tourist: 'tourist/tourist.js',
 		},
     root: __dirname + '/src/common'
   },

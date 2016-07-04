@@ -66,6 +66,46 @@ var uiComponents = {
 
 var doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
 
+var findToken = function findToken(token) {
+	var index = -1;
+	global.lists.accounts.forEach(function (tokenInfo, i) {
+		if (tokenInfo[1] === token) {
+			index = i;
+		}
+	});
+	return index;
+};
+
+var logout = function logout() {
+	commonUtils.removeAllTokens(function(){
+		updateTokenList();
+		log(i18n._('Logged you out!'), 'info');
+	});
+};
+
+var addAccount = function addAccount() {
+	var token = prompt(i18n._('Please enter your token here:'), '');
+	var index = findToken(token);
+	if (index >= 0) {
+		log(i18n._('Token already added.'), 'info');
+		return;
+	}
+	if (token === '') {
+		showError(i18n._('Token cannot be empty'));
+	} else if (token !== null) {
+		commonUtils.addTokenIfValid(token, function(err){
+			if (err) {
+				showError(i18n._('Authentication failed using token:') + ' ' + token);
+				return;
+			} else {
+				log(i18n._('Your token was added successfully'), 'info');
+				updateTokenList(token);
+			}
+		});
+	}
+};
+
+
 var getUiComponent = function getUiComponent(component) {
   return $(uiComponents[component]);
 };
@@ -405,6 +445,36 @@ var show = function show(done) {
     });
   });
 };
+
+var addBlocklyTranslation = function addBlocklyTranslation() {
+	// to include script tag in html without warning
+	$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+		options.async = true;
+	});
+
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	var blocklyLang;
+	if (window.lang === 'zh_tw') {
+		blocklyLang = 'zh-hant';
+	} else if (window.lang === 'zh_cn') {
+		blocklyLang = 'zh-hans';
+	} else {
+		blocklyLang = window.lang;
+	}
+	script.src = 'js/blockly/msg/js/' + blocklyLang + '.js';
+	$('body')
+		.append(script);
+};
+
+addBlocklyTranslation();
+
+$('#language')
+	.change(function change(e) {
+		localStorage.lang = e.target.value;
+		window.location.search = '?l=' + e.target.value;
+	})
+	.val(window.lang);
 
 module.exports = {
   uiComponents: uiComponents,
