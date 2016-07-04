@@ -1,75 +1,66 @@
-var getTokenList = function getTokenList() {
-	if (!localStorage.hasOwnProperty('tokenList')) {
-		localStorage.tokenList = JSON.stringify([]);
-	}
-	return JSON.parse(localStorage.tokenList);
-};
-
-var findToken = function findToken(token) {
-	var tokenList = getTokenList();
-	var index = -1;
-	tokenList.forEach(function (tokenInfo, i) {
-		if (tokenInfo.token === token) {
-			index = i;
-		}
-	});
-	return index;
-};
-
-var setTokenList = function setTokenList(tokenList) {
-	localStorage.tokenList = JSON.stringify(tokenList);
-};
-
-var addToken = function addToken(token, account_name) {
-	var tokenList = getTokenList();
-	var index = findToken(token);
-	if (index < 0) {
-		tokenList.push({
-			account_name: account_name,
-			token: token
-		});
-		setTokenList(tokenList);
-	}
-};
-
-var getToken = function getToken(token) {
-	var tokenList = getTokenList();
-	var index = findToken(token);
-	if (index >= 0) {
-		return tokenList[index];
-	}
-	return '';
-};
-
-var removeToken = function removeToken(token) {
-	var tokenList = getTokenList();
-	var index = findToken(token);
-	if (index > -1) {
-		tokenList.splice(index, 1);
-		setTokenList(tokenList);
-	}
-};
-var removeAllTokens = function removeAllTokens() {
-	delete localStorage.tokenList;
-};
-var isDone = function isDone(varName) {
-	return localStorage.hasOwnProperty(varName);
-};
-var setDone = function setDone(varName) {
-	localStorage[varName] = true;
-};
-var setNotDone = function setNotDone(varName) {
-	delete localStorage[varName];
-};
 module.exports = {
-	getTokenList: getTokenList,
-	findToken: findToken,
-	setTokenList: setTokenList,
-	getToken: getToken,
-	addToken: addToken,
-	removeToken: removeToken,
-	removeAllTokens: removeAllTokens,
-	isDone: isDone,
-	setDone: setDone,
-	setNotDone: setNotDone,
+	getTokenList: function getTokenList() {
+		if (!localStorage.hasOwnProperty('tokenList')) {
+			localStorage.tokenList = [];
+		}
+		return localStorage.tokenList;
+	},
+	findToken: function findToken(token) {
+		var tokenList = this.getTokenList();
+		var index = -1;
+		tokenList.forEach(function (tokenInfo, i) {
+			if (tokenInfo.token === token) {
+				index = i;
+			}
+		});
+		return index;
+	},
+	addToken: function addToken(token, account_name) {
+		if ( !token || !account_name ) {
+			throw(Error('Token and account name should be both passed to addToken'));
+		}
+		var tokenList = this.getTokenList();
+		var index = this.findToken(token);
+		if (index < 0) {
+			tokenList.push({
+				account_name: account_name,
+				token: token
+			});
+			localStorage.tokenList = tokenList;
+		}
+	},
+	getToken: function getToken(token) {
+		var tokenList = this.getTokenList();
+		var index = this.findToken(token);
+		if (index >= 0) {
+			return tokenList[index];
+		}
+		return {};
+	},
+	removeToken: function removeToken(token) {
+		var tokenList = this.getTokenList();
+		var index = this.findToken(token);
+		if (index > -1) {
+			tokenList.splice(index, 1);
+			localStorage.tokenList = tokenList;
+		}
+	},
+	removeAllTokens: function removeAllTokens() {
+		delete localStorage.tokenList;
+	},
+	isDone: function isDone(varName) {
+		return localStorage.hasOwnProperty(varName);
+	},
+	setDone: function setDone(varName) {
+		localStorage[varName] = true;
+	},
+	setNotDone: function setNotDone(varName) {
+		delete localStorage[varName];
+	},
+	set: function set(varName, value) {
+		localStorage[varName] = value;
+	},
+	get: function get(varName) {
+		return localStorage[varName];
+	},
 };
