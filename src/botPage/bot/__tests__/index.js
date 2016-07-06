@@ -10,9 +10,6 @@ var asyncChain = require('common/tools').asyncChain;
 describe('Bot', function() {
 	var bot;
 	var token = 'c9A3gPFcqQtAQDW';
-	observer.register('ui.error', function(error){
-		console.log('error', error);
-	});
 	before(function(done){
 		this.timeout('10000');
 		bot = new Bot();

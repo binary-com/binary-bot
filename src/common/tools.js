@@ -21,6 +21,18 @@ module.exports = {
 			},
 		};
 	},
+	asyncForEach: function asyncForEach(list, func, callback, index) {
+		if ( typeof index === 'undefined' ) {
+			index = 0;
+		} else if ( index === list.length ) {
+			callback();
+			return;
+		}
+		var toolScope = this;
+		func(list[index], index, function(){
+			toolScope.asyncForEach(list, func, callback, index+1);
+		});
+	},
 	parseQueryString: function parseQueryString() {
 		var str = window.location.search;
 		var objURL = {};
