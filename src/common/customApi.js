@@ -5,13 +5,13 @@ var LiveApi = require('binary-live-api').LiveApi;
 var Translator = require('./translator');
 var translator = new Translator();
 
-var CustomApi = function CustomApi() {
+var CustomApi = function CustomApi(generating) {
 	var option = {
 		language: storageManager.get('lang'),
 		appId: storageManager.get('appId'),
 	};
 	if ( typeof WebSocket === 'undefined' ) {
-		option.websocket = require('ws');
+		option.websocket = require('./websocket');
 	}
 	this._originalApi = new LiveApi(option);
 	var events = {
@@ -92,7 +92,6 @@ CustomApi.prototype = Object.create(LiveApi.prototype, {
 				}
 			},
 			_default: function _default(response) {
-				var msg_type = response.msg_type;
 				if ( !tools.apiFailed(response) ) {
 					observer.emit('ui.log', response);
 					observer.emit('api.' + msg_type, response[msg_type]);

@@ -1,20 +1,33 @@
-var database = require('./database');
+var Mock = require('./mock');
+var WS = require('ws');
 
 var WebSocket = function WebSocket(url) {
-	this.url = url;
-	var that = this;
-	setTimeout(function(){
-		that.onopen();
-	},200);
+	WS.prototype.constructor.call(this, url);
+	this.mock = new Mock();
 };
 
-WebSocket.prototype = Object.create(null, {
+WebSocket.prototype = Object.create(WS.prototype, {
 	send: {
-		value: function send(data) {
-			console.log(Object.keys(database), data);
-			//this.onmessage(database[data]);
+		value: function send(rawData) {
+			var data = JSON.parse(rawData);
+			if ( data.subscribe ) {
+				var _sendData = this.mock.findData(data);
+				var that = this;
+				_sendData.forEach(function(sendData){
+					that.onmessage({
+						data: JSON.stringify(sendData)
+					});
+				});
+			} else {
+				this.onmessage({
+					data: JSON.stringify(this.mock.findData(data))
+				});
+			}
 		},
 	},
+	close: {
+		value: function close() {}
+    }
 });
 
 module.exports = WebSocket;

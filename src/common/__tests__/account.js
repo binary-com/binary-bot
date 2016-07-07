@@ -10,10 +10,10 @@ describe('Account', function(){
 		localStorage.tokenList = [
 			{
 				account_name: 'Real Account',
-				token: 'RealToken'
+				token: 'c9A3gPFcqQtAQDW'
 			}
 		];
-		account.addTokenIfValid('fakeToken', function(result){
+		account.addTokenIfValid('FakeToken', function(result){
 			callbackResult = result;
 			done();
 		});

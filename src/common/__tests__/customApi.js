@@ -1,6 +1,7 @@
 require('app-module-path').addPath(__dirname + '/../../../');
 require('../browser');
 
+var asyncChain = require('../tools').asyncChain;
 var CustomApi = require('../customApi');
 var expect = require('chai').expect;
 var observer = require('../observer');
@@ -54,15 +55,26 @@ describe('CustomApi', function() {
 		var message;
 		before(function(done){
 			this.timeout('5000');
-			observer.registerOnce('ui.error', function(error) {
-				message = error;
-				done();
-			});
-			api.buy('uw2mk7no3oktoRVVsB4Dz7TQnFfABuFDgO95dlxfMxRuPUsz', 100);
+			asyncChain()
+			.pipe(function(chainDone){
+				observer.registerOnce('api.authorize', function(){
+					chainDone();
+				});
+				api.authorize('c9A3gPFcqQtAQDW');
+			})
+			.pipe(function(chainDone){
+				observer.registerOnce('ui.error', function(error) {
+					console.log('ERROR', error);
+					message = error;
+					done();
+				});
+				api.buy('uw2mk7no3oktoRVVsB4Dz7TQnFfABuFDgO95dlxfMxRuPUsz', 100);
+			})
+			.exec();
 		});
-		it('buy return AuthorizationRequired', function() {
+		it('buy return InvalidContractProposal', function() {
 			expect(message).to.have.property('code')
-				.that.be.equal('AuthorizationRequired');
+				.that.be.equal('InvalidContractProposal');
 		});
 	});
 });
