@@ -3,6 +3,7 @@ var WS = require('ws');
 
 var WebSocket = function WebSocket(url) {
 	WS.prototype.constructor.call(this, url);
+	this.delay = 50;
 	this.mock = new Mock();
 };
 
@@ -19,9 +20,12 @@ WebSocket.prototype = Object.create(WS.prototype, {
 					});
 				});
 			} else {
-				this.onmessage({
-					data: JSON.stringify(this.mock.findData(data))
-				});
+				var that = this;
+				setTimeout(function(){
+					that.onmessage({
+						data: JSON.stringify(that.mock.findData(data))
+					});
+				}, this.delay);
 			}
 		},
 	},

@@ -64,7 +64,6 @@ describe('CustomApi', function() {
 			})
 			.pipe(function(chainDone){
 				observer.registerOnce('ui.error', function(error) {
-					console.log('ERROR', error);
 					message = error;
 					done();
 				});

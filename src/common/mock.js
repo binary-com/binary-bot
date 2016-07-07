@@ -184,7 +184,6 @@ Mock.prototype = Object.create(null, {
 						var functionCall = conditions[conditionName];
 						functionCall.func();
 						that.responseDatabase[dbCallName][responseName] = {};
-						console.log(conditionName);
 						if (responseName === 'subscriptions') {
 							observer.register('data', function(data){
 								var key = getKeyFromRequest(data);
