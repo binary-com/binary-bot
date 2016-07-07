@@ -18,36 +18,31 @@
   <div id="center"></div>
  <div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
   <div id="topbar">
-    <div class="wrapper">
-      <div class="right-header">
-        {{> language }}
-        <select id="tours">
-                  <option value="" data-i18n-text="Select a Tour"></option>
-          <option value="welcome" data-i18n-text="Welcome!"></option>
-          <option value="introduction" data-i18n-text="Introduction"></option>
-        </select>
-      </div>
-    </div>
+	  <div class="right-header">
+	    {{> language }}
+	    <select id="tours">
+	              <option value="" data-i18n-text="Select a Tour"></option>
+	      <option value="welcome" data-i18n-text="Welcome!"></option>
+	      <option value="introduction" data-i18n-text="Introduction"></option>
+	    </select>
+	  </div>
   </div>
   <div id="header">
-    <div class="wrapper">
       <div class="left-header">
         <a href="" id="logo">
-          <div><img class="symbol-logo" src="image/binary-symbol-logo.svg" alt="Binary-logo" /></div>
-          <div><img class="type-logo" src="image/binary-type-logo.svg" alt="Binary-logo"></div>
+          <img class="symbol-logo" src="image/binary-symbol-logo.svg" alt="Binary-logo" />
+          <img class="type-logo" src="image/binary-type-logo.svg" alt="Binary-logo">
         </a>
       </div>
       <div class="right-header">
         <div>
-          <select id="accountSelect">
-          </select>
+          <select id="accountSelect"></select>
         </div>
         <div class="intro-token">
-          <button id="logout" data-i18n-text="Logout"></button>
+          <button id="logout" data-i18n-text="Log out"></button>
           <button title="Add your tokens to the bot" id="login" data-i18n-text="Login"></button>
         </div>
       </div>
-    </div>
   </div>
   <div id="blocklyDiv"></div>
   <div id="summaryPanel" class="panel">

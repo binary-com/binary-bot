@@ -201,13 +201,13 @@ var findTopParentBlock = function findTopParentBlock(block) {
 var updateTokenList = function updateTokenList(tokenToAdd) {
 	var tokenList = storageManager.getTokenList();
 	if (tokenList.length === 0) {
-		$('#login').show();
-		$('#accountSelect').hide();
-		$('#logout').hide();
+		$('#login').css('display', 'inline-block');
+		$('#accountSelect').css('display', 'none');
+		$('#logout').css('display', 'none');
 	} else {
-		$('#login').hide();
-		$('#accountSelect').show();
-		$('#logout').show();
+		$('#login').css('display', 'none');
+		$('#accountSelect').css('display', 'inline-block');
+		$('#logout').css('display', 'inline-block');
 		tokenList.forEach(function (tokenInfo) {
 			var str;
 			if ( tokenInfo.hasOwnProperty('isVirtual') ) {
