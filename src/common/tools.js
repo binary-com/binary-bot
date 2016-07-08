@@ -22,6 +22,7 @@ module.exports = {
 		};
 	},
 	asyncForEach: function asyncForEach(list, func, callback, index) {
+		var callbackCalled = false;
 		if ( typeof index === 'undefined' ) {
 			index = 0;
 		} else if ( index === list.length ) {
@@ -30,7 +31,10 @@ module.exports = {
 		}
 		var toolScope = this;
 		func(list[index], index, function(){
-			toolScope.asyncForEach(list, func, callback, index+1);
+			if ( !callbackCalled ) {
+				callbackCalled = true;
+				toolScope.asyncForEach(list, func, callback, index+1);
+			}
 		});
 	},
 	parseQueryString: function parseQueryString() {

@@ -11,7 +11,7 @@ var CustomApi = function CustomApi(generating) {
 		appId: storageManager.get('appId'),
 	};
 	if ( typeof WebSocket === 'undefined' ) {
-		option.websocket = require('./websocket');
+		option.websocket = require('./mock/websocket');
 	}
 	this._originalApi = new LiveApi(option);
 	var events = {

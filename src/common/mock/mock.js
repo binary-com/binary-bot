@@ -1,9 +1,10 @@
-require('./browser');
+require('../browser');
 var LiveApi = require('binary-live-api').LiveApi;
-var observer = require('./observer');
-var tools = require('./tools');
+var observer = require('../observer');
+var tools = require('../tools');
 var _ = require('underscore');
 var fs = require('fs');
+var calls = require('./calls');
 
 var replaceSensitiveData = function replaceSensitiveData(data){
 	switch(data.msg_type) {
@@ -69,130 +70,6 @@ var getKeyFromRequest = function getKeyFromRequest(data) {
 	return JSON.stringify(data.echo_req);
 };
 
-var Mock = function Mock(){
-	this.api = new LiveApi({websocket: require('ws')});
-	var originalOnMessage = this.api.socket._events.message;
-	this.api.socket._events.message = function onMessage(rawData, flags){
-		var data = JSON.parse(rawData);
-		replaceSensitiveData(data);
-
-		observer.emit('data.'+data.msg_type, data);
-		originalOnMessage(rawData, flags);
-	};
-
-	this.global = {};
-
-	var that = this;
-	this.dbCalls = {
-		authorize: {
-			errors: {
-				InvalidToken: {
-					func: function InvalidToken(){
-						that.api.authorize('FakeToken');
-					}
-				}
-			},
-			responses: {
-				realToken: {
-					func: function realToken(){
-						that.api.authorize('c9A3gPFcqQtAQDW');
-					}
-				}
-			},
-		},
-		history: {
-			subscriptions: {
-				r_100: {
-					func: function r_100(){
-						that.api.getTickHistory('R_100', {
-							"end": "latest",
-							"count": 600,
-							"subscribe": 1
-						});
-					},
-					maxResponse: 4
-				}
-			},
-		},
-		proposal: {
-			subscriptions: {
-				r_100_digitodd: {
-					func: function r_100_digitodd(){
-						that.api.subscribeToPriceForContractProposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
-					},
-					maxResponse: 1
-				},
-				r_100_digiteven: {
-					func: function r_100_digiteven(){
-						that.api.subscribeToPriceForContractProposal({"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
-					},
-					maxResponse: 1
-				}
-			},
-		},
-		buy: {
-			errors: {
-				InvalidContractProposal: {
-					func: function InvalidContractProposal(){
-						that.api.buyContract('uw2mk7no3oktoRVVsB4Dz7TQnFfABuFDgO95dlxfMxRuPUsz', 100);
-					},
-				}
-			},
-			responses: {
-				buyOdd: {
-					func: function buyOdd(){
-						that.api.buyContract(that.global.oddContract.id, that.global.oddContract.ask_price);
-					}
-				},
-				buyEven: {
-					func: function buyEven(){
-						that.api.buyContract(that.global.evenContract.id, that.global.evenContract.ask_price);
-					}
-				}
-			},
-		},
-		proposal_open_contract: {
-			subscriptions: {
-				digitevenPurchase: {
-					func: function digitevenPurchase(){
-						that.api.send({
-							proposal_open_contract: 1,
-							contract_id: that.global.evenPurchasedContract,
-							subscribe: 1
-						});
-					},
-					stopCondition: function(data){
-						if (data.proposal_open_contract.is_sold){
-							return true;
-						} else {
-							return false;
-						}
-					}
-				},
-				digitoddPurchase: {
-					func: function digitoddPurchase(){
-						that.api.send({
-							proposal_open_contract: 1,
-							contract_id: that.global.oddPurchasedContract,
-							subscribe: 1
-						});
-					},
-					stopCondition: function(data){
-						if (data.proposal_open_contract.is_sold){
-							return true;
-						} else {
-							return false;
-						}
-					}
-				},
-			},
-		},
-	};
-
-	this.responseDatabase = _.clone(this.dbCalls);
-
-};
-
 var observeSubscriptions = function observeSubscriptions(data, responseDatabase, global, functionCall, callback){
 	var key = getKeyFromRequest(data);
 	var messageType = (data.msg_type === 'tick') ? 'history': data.msg_type;
@@ -207,6 +84,26 @@ var observeSubscriptions = function observeSubscriptions(data, responseDatabase,
 		functionCall,
 		callback
 	);
+};
+
+var Mock = function Mock(){
+	this.api = new LiveApi({websocket: require('ws')});
+	this.dbCalls = calls;
+	var originalOnMessage = this.api.socket._events.message;
+	this.api.socket._events.message = function onMessage(rawData, flags){
+		var data = JSON.parse(rawData);
+		replaceSensitiveData(data);
+
+		observer.emit('data.'+data.msg_type, data);
+		originalOnMessage(rawData, flags);
+	};
+
+	this.global = {};
+
+	var that = this;
+
+	this.responseDatabase = _.clone(this.dbCalls);
+
 };
 
 Mock.prototype = Object.create(null, {
