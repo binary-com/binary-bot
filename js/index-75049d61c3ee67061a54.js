@@ -14056,7 +14056,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -14274,7 +14279,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -14492,7 +14502,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -14710,7 +14725,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -14928,7 +14948,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -15146,7 +15171,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -15364,7 +15394,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -15582,7 +15617,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -15800,7 +15840,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -16018,7 +16063,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -16236,7 +16286,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -16454,7 +16509,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -16672,7 +16732,12 @@
 		"d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 		"f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
 		"befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
+		"6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+		"c6b17547bc9403960fa7a1bc260ea91d6ba9a9ea": "You can see the <b>main blocks</b> already added to the workspace",
+		"3244a62169438b74b1dfb1810e2401347b26fdfd": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them.",
+		"ebe6a948362c5ad0193279e8fa51147b0a7907d1": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace. You cannot add or delete them, but you can move them in the workspace.",
+		"535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+		"3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace."
 	};
 
 /***/ },
@@ -16721,4 +16786,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-a57d1239692ccfe53f3d.map
+//# sourceMappingURL=index-75049d61c3ee67061a54.map

@@ -321,3 +321,15 @@ button:focus {
 	background-color: #14602B !important;
 	border-color: #14602B !important;
 }
+
+#blocker {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    top: 0px;
+    opacity: 0;
+    left: 0px;
+    background: white;
+}
