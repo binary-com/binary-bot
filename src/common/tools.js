@@ -1,4 +1,5 @@
 var observer = require('./observer');
+var _ = require('underscore');
 
 module.exports = {
 	asyncChain: function asyncChain(){

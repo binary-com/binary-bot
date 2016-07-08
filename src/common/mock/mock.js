@@ -23,6 +23,7 @@ var handleSubscriptionLimits = function handleSubscriptionLimits(data, responseD
 	responseData.push(data);
 	if ( responseData.length === functionCall.maxResponse 
 		|| ( functionCall.stopCondition && functionCall.stopCondition(data) ) ) {
+		observer.unregisterAll('data.' + data.msg_type);
 		callback();
 	}
 };
@@ -86,24 +87,84 @@ var observeSubscriptions = function observeSubscriptions(data, responseDatabase,
 	);
 };
 
+var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, iterateCallback) {
+	tools.asyncForEach(Object.keys(calls), function(callName, index, callback){
+		var responseTypes = calls[callName];
+		tools.asyncForEach(Object.keys(responseTypes), function(responseTypeName, index, callback){
+			var options = responseTypes[responseTypeName];
+			if ( !responseDatabase.hasOwnProperty(callName) ){
+				responseDatabase[callName] = {};
+			}
+			responseDatabase[callName][responseTypeName] = {};
+			tools.asyncForEach(Object.keys(options), function(optionName, index, callback){
+				var option = options[optionName];
+				option.func(api, global);
+				if ( option.next ) {
+					var old_callback = callback;
+					callback = function callback(){
+						iterateCalls(option.next, responseDatabase, api, global, function(){
+							old_callback();
+						})
+					};
+				}
+				console.log(optionName);
+				if (responseTypeName === 'subscriptions') {
+					if ( callName === 'history' ) {
+						observer.registerOnce('data.history', function(data){
+							handleDataSharing(data, global);
+							responseDatabase[callName][responseName][getKeyFromRequest(data)] = [data];
+						});
+						observer.register('data.tick', function(data){
+							observeSubscriptions(data, responseDatabase, global, option, callback)
+						});
+					} else {
+						observer.register('data.' + callName, function(data){
+							observeSubscriptions(data, responseDatabase, global, option, callback)
+						});
+					}
+				} else {
+					observer.registerOnce('data.' + callName, function(data){
+						handleDataSharing(data, global);
+						responseDatabase[callName][responseTypeName][getKeyFromRequest(data)] = data;
+						callback();
+					});
+				}
+			}, function(){
+				callback();
+			});
+		}, function(){
+			callback();
+		});
+	}, function(){
+		iterateCallback();
+	});
+};
+
+var deepCloneDatabase = function deepCloneDatabase(database) {
+	var result = {};
+	for ( var callName in database ) {
+		for ( var responseTypeName in database[callName] ) {
+			if ( !result.hasOwnProperty(callName) ) {
+				result[callName] = {};
+			}
+			result[callName][responseTypeName] = {};
+		}
+	}
+	return result;
+};
+
 var Mock = function Mock(){
 	this.api = new LiveApi({websocket: require('ws')});
-	this.dbCalls = calls;
+	this.calls = calls;
 	var originalOnMessage = this.api.socket._events.message;
 	this.api.socket._events.message = function onMessage(rawData, flags){
 		var data = JSON.parse(rawData);
 		replaceSensitiveData(data);
-
 		observer.emit('data.'+data.msg_type, data);
 		originalOnMessage(rawData, flags);
 	};
-
 	this.global = {};
-
-	var that = this;
-
-	this.responseDatabase = _.clone(this.dbCalls);
-
+	this.responseDatabase = deepCloneDatabase(this.calls);
 };
 
 Mock.prototype = Object.create(null, {
@@ -134,44 +195,8 @@ Mock.prototype = Object.create(null, {
 	generate: {
 		value: function generate() {
 			var that = this;
-			tools.asyncForEach(Object.keys(this.dbCalls), function(dbCallName, index, callback){
-				var responses = that.dbCalls[dbCallName];
-				tools.asyncForEach(Object.keys(responses), function(responseName, index, callback){
-					var conditions = responses[responseName];
-					that.responseDatabase[dbCallName][responseName] = {};
-					tools.asyncForEach(Object.keys(conditions), function(conditionName, index, callback){
-						console.log(conditionName);
-						var functionCall = conditions[conditionName];
-						functionCall.func();
-						if (responseName === 'subscriptions') {
-							if ( dbCallName === 'history' ) {
-								observer.registerOnce('data.history', function(data){
-									handleDataSharing(data, that.global);
-									that.responseDatabase[dbCallName][responseName][getKeyFromRequest(data)] = [data];
-								});
-								observer.register('data.tick', function(data){
-									observeSubscriptions(data, that.responseDatabase, that.global, functionCall, callback)
-								});
-							} else {
-								observer.register('data.' + dbCallName, function(data){
-									console.log(data);
-									observeSubscriptions(data, that.responseDatabase, that.global, functionCall, callback)
-								});
-							}
-						} else {
-							observer.registerOnce('data.' + dbCallName, function(data){
-								handleDataSharing(data, that.global);
-								that.responseDatabase[dbCallName][responseName][getKeyFromRequest(data)] = data;
-								callback();
-							});
-						}
-					}, function(){
-						callback();
-					});
-				}, function(){
-					callback();
-				});
-			}, function(){
+			this.responseDatabase.amin = 1;
+			iterateCalls(this.calls, this.responseDatabase, this.api, this.global, function(){
 				fs.writeFile("./database.js", "module.exports = " + JSON.stringify(that.responseDatabase).replace("'", "\\'"), function(err) {
 				    if(err) {
 				        return console.log(err);
