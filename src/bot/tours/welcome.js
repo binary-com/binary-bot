@@ -12,6 +12,7 @@ var init = function init(){
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
+			$('#blocker').show();
 			view.setOpacityForAll(started, 0.3);
 		},
 	}, {
@@ -124,10 +125,12 @@ var init = function init(){
 		steps: steps,
 		cancelStep: function cancelStep(){
 			globals.tour._teardownCurrentStep = function(){};
+			$('#blocker').hide();
 			view.setOpacityForAll(started, 1);
 			view.stopTutorial();
 		},
 		successStep: function successStep(){
+			$('#blocker').hide();
 			view.setOpacityForAll(started, 1);
 			storageManager.setDone('welcomeFinished');
 			view.stopTutorial();
