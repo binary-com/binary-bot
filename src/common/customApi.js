@@ -93,6 +93,7 @@ CustomApi.prototype = Object.create(LiveApi.prototype, {
 			},
 			_default: function _default(response) {
 				if ( !tools.apiFailed(response) ) {
+					var msg_type = response.msg_type;
 					observer.emit('ui.log', response);
 					observer.emit('api.' + msg_type, response[msg_type]);
 				}

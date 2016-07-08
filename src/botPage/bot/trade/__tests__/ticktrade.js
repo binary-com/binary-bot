@@ -25,18 +25,18 @@ describe('TickTrade', function() {
 				});
 			})
 			.pipe(function(chainDone){
-				api.proposal({"amount":"20.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 				observer.registerOnce('api.proposal', function(_proposal){
 					proposal = _proposal;
 					chainDone();
 				});
+				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 			})
 			.pipe(function(chainDone){
-				ticktrade.purchase(proposal);
 				observer.registerOnce('api.buy', function(_purchasedContract){
 					purchasedContract = _purchasedContract;
 					done();
 				});
+				ticktrade.purchase(proposal);
 			})
 			.exec();
 		});

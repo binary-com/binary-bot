@@ -21,8 +21,7 @@ var replaceSensitiveData = function replaceSensitiveData(data){
 var handleSubscriptionLimits = function handleSubscriptionLimits(data, responseData, functionCall, callback) {
 	responseData.push(data);
 	if ( responseData.length === functionCall.maxResponse 
-		|| ( functionCall.stopCondition && functionCall.stopCondition() ) ) {
-		observer.unregisterAll('data');
+		|| ( functionCall.stopCondition && functionCall.stopCondition(data) ) ) {
 		callback();
 	}
 };
@@ -36,6 +35,14 @@ var handleDataSharing = function handleDataSharing(data, global) {
 				global.oddContract = data.proposal;
 			}
 			break;
+		case 'buy':
+			if ( !data.error ) {
+				if ( data.buy.shortcode.indexOf('DIGITEVEN') >= 0 ) {
+					global.evenPurchasedContract = data.buy.contract_id;
+				} else {
+					global.oddPurchasedContract = data.buy.contract_id;
+				}
+			}
 		default:
 			break;
 	}
@@ -65,11 +72,11 @@ var getKeyFromRequest = function getKeyFromRequest(data) {
 var Mock = function Mock(){
 	this.api = new LiveApi({websocket: require('ws')});
 	var originalOnMessage = this.api.socket._events.message;
-
 	this.api.socket._events.message = function onMessage(rawData, flags){
 		var data = JSON.parse(rawData);
 		replaceSensitiveData(data);
-		observer.emit('data', data);
+
+		observer.emit('data.'+data.msg_type, data);
 		originalOnMessage(rawData, flags);
 	};
 
@@ -108,16 +115,18 @@ var Mock = function Mock(){
 			},
 		},
 		proposal: {
-			responses: {
+			subscriptions: {
 				r_100_digitodd: {
 					func: function r_100_digitodd(){
 						that.api.subscribeToPriceForContractProposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
-					}
+					},
+					maxResponse: 1
 				},
 				r_100_digiteven: {
 					func: function r_100_digiteven(){
 						that.api.subscribeToPriceForContractProposal({"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
-					}
+					},
+					maxResponse: 1
 				}
 			},
 		},
@@ -142,10 +151,62 @@ var Mock = function Mock(){
 				}
 			},
 		},
+		proposal_open_contract: {
+			subscriptions: {
+				digitevenPurchase: {
+					func: function digitevenPurchase(){
+						that.api.send({
+							proposal_open_contract: 1,
+							contract_id: that.global.evenPurchasedContract,
+							subscribe: 1
+						});
+					},
+					stopCondition: function(data){
+						if (data.proposal_open_contract.is_sold){
+							return true;
+						} else {
+							return false;
+						}
+					}
+				},
+				digitoddPurchase: {
+					func: function digitoddPurchase(){
+						that.api.send({
+							proposal_open_contract: 1,
+							contract_id: that.global.oddPurchasedContract,
+							subscribe: 1
+						});
+					},
+					stopCondition: function(data){
+						if (data.proposal_open_contract.is_sold){
+							return true;
+						} else {
+							return false;
+						}
+					}
+				},
+			},
+		},
 	};
 
 	this.responseDatabase = _.clone(this.dbCalls);
 
+};
+
+var observeSubscriptions = function observeSubscriptions(data, responseDatabase, global, functionCall, callback){
+	var key = getKeyFromRequest(data);
+	var messageType = (data.msg_type === 'tick') ? 'history': data.msg_type;
+	var response = responseDatabase[messageType].subscriptions;
+	if ( !response.hasOwnProperty(key) ) {
+		response[key] = [];
+	}
+	handleDataSharing(data, global);
+	handleSubscriptionLimits(
+		data,
+		response[key],
+		functionCall,
+		callback
+	);
 };
 
 Mock.prototype = Object.create(null, {
@@ -180,26 +241,28 @@ Mock.prototype = Object.create(null, {
 				var responses = that.dbCalls[dbCallName];
 				tools.asyncForEach(Object.keys(responses), function(responseName, index, callback){
 					var conditions = responses[responseName];
+					that.responseDatabase[dbCallName][responseName] = {};
 					tools.asyncForEach(Object.keys(conditions), function(conditionName, index, callback){
+						console.log(conditionName);
 						var functionCall = conditions[conditionName];
 						functionCall.func();
-						that.responseDatabase[dbCallName][responseName] = {};
 						if (responseName === 'subscriptions') {
-							observer.register('data', function(data){
-								var key = getKeyFromRequest(data);
-								var response = that.responseDatabase[dbCallName][responseName];
-								if ( !response.hasOwnProperty(key) ) {
-									response[key] = [];
-								}
-								handleSubscriptionLimits(
-									data,
-									response[key],
-									functionCall,
-									callback
-								);
-							});
+							if ( dbCallName === 'history' ) {
+								observer.registerOnce('data.history', function(data){
+									handleDataSharing(data, that.global);
+									that.responseDatabase[dbCallName][responseName][getKeyFromRequest(data)] = [data];
+								});
+								observer.register('data.tick', function(data){
+									observeSubscriptions(data, that.responseDatabase, that.global, functionCall, callback)
+								});
+							} else {
+								observer.register('data.' + dbCallName, function(data){
+									console.log(data);
+									observeSubscriptions(data, that.responseDatabase, that.global, functionCall, callback)
+								});
+							}
 						} else {
-							observer.registerOnce('data', function(data){
+							observer.registerOnce('data.' + dbCallName, function(data){
 								handleDataSharing(data, that.global);
 								that.responseDatabase[dbCallName][responseName][getKeyFromRequest(data)] = data;
 								callback();
