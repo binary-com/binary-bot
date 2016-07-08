@@ -16,14 +16,26 @@ var findToken = function findToken(token) {
 	return index;
 };
 
+var findAccount = function findAccount(account_name) {
+	var tokenList = getTokenList();
+	var index = -1;
+	tokenList.forEach(function (tokenInfo, i) {
+		if (tokenInfo.account_name === account_name) {
+			index = i;
+		}
+	});
+	return index;
+};
+
 var setTokenList = function setTokenList(tokenList) {
 	localStorage.tokenList = JSON.stringify(tokenList);
 };
 
 var addToken = function addToken(token, account_name, isVirtual) {
 	var tokenList = getTokenList();
-	var index = findToken(token);
-	if (index < 0) {
+	var tokenIndex = findToken(token);
+	var accountIndex = findAccount(account_name);
+	if (tokenIndex < 0 && accountIndex < 0) {
 		tokenList.push({
 			account_name: account_name,
 			token: token,

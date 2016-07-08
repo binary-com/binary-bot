@@ -10,7 +10,7 @@ blockly.Blocks.purchase = {
 			.appendField(i18n._("Purchase"))
 			.appendField(new blockly.FieldDropdown(globals.getPurchaseChoices), "PURCHASE_LIST");
 		this.setPreviousStatement(true, 'Purchase');
-		this.setColour("#e98024");
+		this.setColour("#f2f2f2");
 		this.setTooltip(i18n._('Purchases a chosen contract. Accepts index to choose between the contracts.'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},

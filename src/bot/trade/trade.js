@@ -1,5 +1,6 @@
 var globals = require('../globals/globals');
 var botUtils = require('../utils/utils');
+var storageManager = require('storageManager');
 var commonUtils = require('utils');
 var view = require('../view');
 var i18n = require('i18n');

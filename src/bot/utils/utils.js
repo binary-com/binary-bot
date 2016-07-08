@@ -133,36 +133,6 @@ var findToken = function findToken(token) {
 	return index;
 };
 
-var logout = function logout() {
-	commonUtils.removeAllTokens(function(){
-		updateTokenList();
-		log(i18n._('Logged you out!'), 'info');
-	});
-};
-
-var addAccount = function addAccount() {
-	var token = prompt(i18n._('Please enter your token here:'), '');
-	var index = findToken(token);
-	if (index >= 0) {
-		log(i18n._('Token already added.'), 'info');
-		return;
-	}
-	if (token === '') {
-		showError(i18n._('Token cannot be empty'));
-	} else if (token !== null) {
-		commonUtils.addTokenIfValid(token, function(err){
-			if (err) {
-				showError(i18n._('Authentication failed using token:') + ' ' + token);
-				return;
-			} else {
-				log(i18n._('Your token was added successfully'), 'info');
-				updateTokenList(token);
-			}
-		});
-	}
-};
-
-
 var getUTCTime = function getUTCTime(date) {
 	var dateObject = new Date(date);
 	return ('0' + dateObject.getUTCHours())
@@ -231,20 +201,20 @@ var findTopParentBlock = function findTopParentBlock(block) {
 var updateTokenList = function updateTokenList(tokenToAdd) {
 	var tokenList = storageManager.getTokenList();
 	if (tokenList.length === 0) {
-		$('#addAccount').show();
-		$('#accountSelect').hide();
-        $('.intro-token')
-            .removeClass('invisible');
+		$('#login').css('display', 'inline-block');
+		$('#accountSelect').css('display', 'none');
+		$('#logout').css('display', 'none');
 	} else {
-		$('#addAccount').hide();
-		$('#accountSelect').show();
-        $('.intro-token')
-            .removeClass('invisible');
-		$('.logout')
-			.removeClass('invisible');
+		$('#login').css('display', 'none');
+		$('#accountSelect').css('display', 'inline-block');
+		$('#logout').css('display', 'inline-block');
 		tokenList.forEach(function (tokenInfo) {
-			var str = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
-			console.log(str);
+			var str;
+			if ( tokenInfo.hasOwnProperty('isVirtual') ) {
+				str = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
+			} else {
+				str = '';
+			}
 			$('#accountSelect').append('<option value="' + tokenInfo.token + '">'+str + ' (' + tokenInfo.account_name+ ') ' + '</option>');
 		});
 	}
@@ -302,7 +272,7 @@ var addPurchaseOptions = function addPurchaseOptions() {
 	}
 };
 
-$('#addAccount')
+$('#login')
 	.bind('click.login', function(e){
 		appId.redirectOauth();
 	})
@@ -315,7 +285,6 @@ module.exports = {
 	findTopParentBlock: findTopParentBlock,
 	updateTokenList: updateTokenList,
 	addPurchaseOptions: addPurchaseOptions,
-	logout: logout,
 	getActiveSymbols: getActiveSymbols,
 	marketsToXml: marketsToXml,
 	xmlToStr: xmlToStr,

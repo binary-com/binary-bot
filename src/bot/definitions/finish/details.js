@@ -8,7 +8,7 @@ blockly.Blocks.contract_details = {
     this.appendDummyInput()
         .appendField(i18n._("Contract Details"));
     this.setOutput(true, "Array");
-    this.setColour("#e98024");
+    this.setColour("#f2f2f2");
     this.setTooltip(i18n._('Returns the list of details for the finished contract'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
