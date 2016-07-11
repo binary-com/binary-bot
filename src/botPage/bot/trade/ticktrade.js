@@ -16,7 +16,6 @@ Ticktrade.prototype = Object.create(null, {
 			observer.registerOnce('api.buy', function(purchasedContract){
 				that.contractId = purchasedContract.contract_id;
 				that.purchaseInProgress = true;
-				that.api._originalApi.unsubscribeFromAllProposals();
 				that.subscribeToOpenContract();
 			});
 		}
@@ -32,6 +31,7 @@ Ticktrade.prototype = Object.create(null, {
 					that.getTheContractInfoAfterSell();
 				}
 				if ( contract.sell_price ) {
+					console.log('finished!!!!');
 					observer.emit('trade.finish', contract);
 					that.destroy();
 				}
@@ -49,7 +49,6 @@ Ticktrade.prototype = Object.create(null, {
 			this.purchaseInProgress = false;
 			observer.unregisterAll('api.proposal_open_contract');
 			observer.unregisterAll('api.buy');
-			this.api._originalApi.unsubscribeFromAllOpenContracts();
 		}
 	}
 });

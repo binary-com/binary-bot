@@ -27,7 +27,9 @@ module.exports = {
 		if ( typeof index === 'undefined' ) {
 			index = 0;
 		} else if ( index === list.length ) {
-			callback();
+			if (callback) {
+				callback();
+			}
 			return;
 		}
 		var toolScope = this;

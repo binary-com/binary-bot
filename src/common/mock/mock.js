@@ -90,12 +90,17 @@ var observeSubscriptions = function observeSubscriptions(data, responseDatabase,
 var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, iterateCallback) {
 	tools.asyncForEach(Object.keys(calls), function(callName, index, callback){
 		var responseTypes = calls[callName];
+		if (callName === 'proposal_open_contract') {
+			console.log(responseTypes);
+		}
 		tools.asyncForEach(Object.keys(responseTypes), function(responseTypeName, index, callback){
 			var options = responseTypes[responseTypeName];
 			if ( !responseDatabase.hasOwnProperty(callName) ){
 				responseDatabase[callName] = {};
 			}
-			responseDatabase[callName][responseTypeName] = {};
+			if ( !responseDatabase[callName].hasOwnProperty(responseTypeName) ) {
+				responseDatabase[callName][responseTypeName] = {};
+			}
 			tools.asyncForEach(Object.keys(options), function(optionName, index, callback){
 				var option = options[optionName];
 				option.func(api, global);
@@ -112,7 +117,7 @@ var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, i
 					if ( callName === 'history' ) {
 						observer.registerOnce('data.history', function(data){
 							handleDataSharing(data, global);
-							responseDatabase[callName][responseName][getKeyFromRequest(data)] = [data];
+							responseDatabase[callName][responseTypeName][getKeyFromRequest(data)] = [data];
 						});
 						observer.register('data.tick', function(data){
 							observeSubscriptions(data, responseDatabase, global, option, callback)
@@ -178,6 +183,7 @@ Mock.prototype = Object.create(null, {
 					for (var responseConditionName in responseConditions) {
 						var responseData = findKeyInObj(responseConditions[responseConditionName], data);
 						if ( responseData ) {
+							console.log(responseData);
 							if ( data.subscribe ) {
 								responseData.forEach(function(_responseData){
 									_responseData.echo_req.req_id = _responseData.req_id = data.req_id;
@@ -195,7 +201,6 @@ Mock.prototype = Object.create(null, {
 	generate: {
 		value: function generate() {
 			var that = this;
-			this.responseDatabase.amin = 1;
 			iterateCalls(this.calls, this.responseDatabase, this.api, this.global, function(){
 				fs.writeFile("./database.js", "module.exports = " + JSON.stringify(that.responseDatabase).replace("'", "\\'"), function(err) {
 				    if(err) {

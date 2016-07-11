@@ -1,9 +1,10 @@
 var Mock = require('./mock');
 var WS = require('ws');
+var tools = require('../tools');
 
 var WebSocket = function WebSocket(url) {
 	WS.prototype.constructor.call(this, url);
-	this.delay = 50;
+	this.delay = 1000;
 	this.mock = new Mock();
 };
 
@@ -14,11 +15,14 @@ WebSocket.prototype = Object.create(WS.prototype, {
 			if ( data.subscribe ) {
 				var _sendData = this.mock.findData(data);
 				var that = this;
-				_sendData.forEach(function(sendData){
-					that.onmessage({
-						data: JSON.stringify(sendData)
-					});
-				});
+				tools.asyncForEach(_sendData, function(sendData, index, done){
+					setTimeout(function(){
+						that.onmessage({
+							data: JSON.stringify(sendData)
+						});
+						done();
+					}, that.delay);
+				})
 			} else {
 				var that = this;
 				setTimeout(function(){
