@@ -23,9 +23,9 @@ var handleSubscriptionLimits = function handleSubscriptionLimits(data, responseD
 	responseData.push(data);
 	if ( responseData.length === functionCall.maxResponse 
 		|| ( functionCall.stopCondition && functionCall.stopCondition(data) ) ) {
-		observer.unregisterAll('data.' + data.msg_type);
-		callback();
-	}
+			observer.unregisterAll('data.' + data.msg_type);
+			callback();
+		}
 };
 
 var handleDataSharing = function handleDataSharing(data, global) {
@@ -160,6 +160,7 @@ var deepCloneDatabase = function deepCloneDatabase(database) {
 
 var Mock = function Mock(){
 	this.api = new LiveApi({websocket: require('ws')});
+	this.delay = 0;
 	this.calls = calls;
 	var originalOnMessage = this.api.socket._events.message;
 	this.api.socket._events.message = function onMessage(rawData, flags){
@@ -174,27 +175,36 @@ var Mock = function Mock(){
 
 Mock.prototype = Object.create(null, {
 	findData: {
-		value: function findData(data) {
-			var database = require('./database');
+		value: function findData(data, message) {
+			var database = require('./database'); 
 			for(var requestName in database) {
 				if ( ( requestName === 'history' && data.hasOwnProperty('ticks_history') ) 
 					|| data.hasOwnProperty(requestName) ) {
-					var responseConditions = database[requestName];
-					for (var responseConditionName in responseConditions) {
-						var responseData = findKeyInObj(responseConditions[responseConditionName], data);
-						if ( responseData ) {
-							console.log(responseData);
-							if ( data.subscribe ) {
-								responseData.forEach(function(_responseData){
-									_responseData.echo_req.req_id = _responseData.req_id = data.req_id;
-								});
-							} else {
-								responseData.echo_req.req_id = responseData.req_id = data.req_id;
+						var responseConditions = database[requestName];
+						for (var responseConditionName in responseConditions) {
+							var responseData = findKeyInObj(
+								responseConditions[responseConditionName], data);
+							var that = this;
+							if ( responseData ) {
+								if ( data.subscribe ) {
+									tools.asyncForEach(responseData, function(_responseData, index, done){
+										setTimeout(function(){
+											_responseData.echo_req.req_id = _responseData.req_id = data.req_id;
+											message(JSON.stringify(_responseData));
+											done();
+										}, that.delay);
+									});
+								} else {
+									(function(responseData){
+										setTimeout(function(){
+											responseData.echo_req.req_id = responseData.req_id = data.req_id;
+											message(JSON.stringify(responseData)); 
+										}, that.delay);
+									})(responseData);
+								}
 							}
-							return responseData;
 						}
 					}
-				}
 			}
 		}
 	},
@@ -203,9 +213,9 @@ Mock.prototype = Object.create(null, {
 			var that = this;
 			iterateCalls(this.calls, this.responseDatabase, this.api, this.global, function(){
 				fs.writeFile("./database.js", "module.exports = " + JSON.stringify(that.responseDatabase).replace("'", "\\'"), function(err) {
-				    if(err) {
-				        return console.log(err);
-				    }
+					if(err) {
+						return console.log(err);
+					}
 					process.exit(0);
 				}); 
 			});
