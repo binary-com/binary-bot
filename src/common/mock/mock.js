@@ -76,12 +76,14 @@ var observeSubscriptions = function observeSubscriptions(data, responseDatabase,
 	var messageType = (data.msg_type === 'tick') ? 'history': data.msg_type;
 	var response = responseDatabase[messageType].subscriptions;
 	if ( !response.hasOwnProperty(key) ) {
-		response[key] = [];
+		response[key] = {
+			data: []
+		};
 	}
 	handleDataSharing(data, global);
 	handleSubscriptionLimits(
 		data,
-		response[key],
+		response[key].data,
 		functionCall,
 		callback
 	);
@@ -90,9 +92,6 @@ var observeSubscriptions = function observeSubscriptions(data, responseDatabase,
 var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, iterateCallback) {
 	tools.asyncForEach(Object.keys(calls), function(callName, index, callback){
 		var responseTypes = calls[callName];
-		if (callName === 'proposal_open_contract') {
-			console.log(responseTypes);
-		}
 		tools.asyncForEach(Object.keys(responseTypes), function(responseTypeName, index, callback){
 			var options = responseTypes[responseTypeName];
 			if ( !responseDatabase.hasOwnProperty(callName) ){
@@ -117,7 +116,9 @@ var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, i
 					if ( callName === 'history' ) {
 						observer.registerOnce('data.history', function(data){
 							handleDataSharing(data, global);
-							responseDatabase[callName][responseTypeName][getKeyFromRequest(data)] = [data];
+							responseDatabase[callName][responseTypeName][getKeyFromRequest(data)] = {
+								data: [data]
+							};
 						});
 						observer.register('data.tick', function(data){
 							observeSubscriptions(data, responseDatabase, global, option, callback)
@@ -130,7 +131,9 @@ var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, i
 				} else {
 					observer.registerOnce('data.' + callName, function(data){
 						handleDataSharing(data, global);
-						responseDatabase[callName][responseTypeName][getKeyFromRequest(data)] = data;
+						responseDatabase[callName][responseTypeName][getKeyFromRequest(data)] = {
+							data: data
+						};
 						callback();
 					});
 				}
