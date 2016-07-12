@@ -19,13 +19,13 @@ var replaceSensitiveData = function replaceSensitiveData(data){
 	}
 };
 
-var handleSubscriptionLimits = function handleSubscriptionLimits(data, responseData, functionCall, callback) {
+var handleSubscriptionLimits = function handleSubscriptionLimits(data, responseData, option) {
 	responseData.push(data);
-	if ( responseData.length === functionCall.maxResponse 
-		|| ( functionCall.stopCondition && functionCall.stopCondition(data) ) ) {
-			observer.unregisterAll('data.' + data.msg_type);
-			callback();
+	if ( responseData.length === option.maxResponse 
+		|| ( option.stopCondition && option.stopCondition(data) ) ) {
+			return true;
 		}
+	return false;
 };
 
 var handleDataSharing = function handleDataSharing(data, global) {
@@ -71,22 +71,35 @@ var getKeyFromRequest = function getKeyFromRequest(data) {
 	return JSON.stringify(data.echo_req);
 };
 
-var observeSubscriptions = function observeSubscriptions(data, responseDatabase, global, functionCall, callback){
+var observeSubscriptions = function observeSubscriptions(data, responseDatabase, global, option, iterateCalls, api, callback){
 	var key = getKeyFromRequest(data);
 	var messageType = (data.msg_type === 'tick') ? 'history': data.msg_type;
-	var response = responseDatabase[messageType].subscriptions;
-	if ( !response.hasOwnProperty(key) ) {
-		response[key] = {
-			data: []
+	var responseData = responseDatabase[messageType].subscriptions[key];
+	handleDataSharing(data, global);
+	var finished = handleSubscriptionLimits(
+		data,
+		responseData.data,
+		option
+	);
+	if ( finished ) {
+		observer.unregisterAll('data.' + data.msg_type);
+		callback = wrapCallback(iterateCalls, option, responseData, 
+		api, global, callback);
+		callback();
+	}
+};
+
+var wrapCallback = function wrapCallback(iterateCalls, option, responseData, api, global, callback) {
+	if ( option.next ) {
+		var old_callback = callback;
+		callback = function callback(){
+			responseData.next = {};
+			iterateCalls(option.next, responseData.next, api, global, function(){
+				old_callback();
+			})
 		};
 	}
-	handleDataSharing(data, global);
-	handleSubscriptionLimits(
-		data,
-		response[key].data,
-		functionCall,
-		callback
-	);
+	return callback;
 };
 
 var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, iterateCallback) {
@@ -103,14 +116,6 @@ var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, i
 			tools.asyncForEach(Object.keys(options), function(optionName, index, callback){
 				var option = options[optionName];
 				option.func(api, global);
-				if ( option.next ) {
-					var old_callback = callback;
-					callback = function callback(){
-						iterateCalls(option.next, responseDatabase, api, global, function(){
-							old_callback();
-						})
-					};
-				}
 				console.log(optionName);
 				if (responseTypeName === 'subscriptions') {
 					if ( callName === 'history' ) {
@@ -121,19 +126,22 @@ var iterateCalls = function iterateCalls(calls, responseDatabase, api, global, i
 							};
 						});
 						observer.register('data.tick', function(data){
-							observeSubscriptions(data, responseDatabase, global, option, callback)
+							observeSubscriptions(data, responseDatabase, global, option, iterateCalls, api, callback);
 						});
 					} else {
 						observer.register('data.' + callName, function(data){
-							observeSubscriptions(data, responseDatabase, global, option, callback)
+							observeSubscriptions(data, responseDatabase, global, option, iterateCalls, api, callback);
 						});
 					}
 				} else {
 					observer.registerOnce('data.' + callName, function(data){
 						handleDataSharing(data, global);
-						responseDatabase[callName][responseTypeName][getKeyFromRequest(data)] = {
+						var key = getKeyFromRequest(data);
+						var responseData = responseDatabase[callName][responseTypeName][key] = {
 							data: data
 						};
+						callback = wrapCallback(iterateCalls, option, responseData, 
+						api, global, callback);
 						callback();
 					});
 				}
