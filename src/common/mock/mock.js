@@ -1,3 +1,4 @@
+/*jshint loopfunc: true */
 require('../browser');
 var LiveApi = require('binary-live-api').LiveApi;
 var observer = require('../observer');
@@ -30,8 +31,7 @@ Mock.prototype = Object.create(null, {
 			var that = this;
 			var database = require('./database'); 
 			for(var requestName in database) {
-				if ( ( requestName === 'history' && data.hasOwnProperty('ticks_history') ) 
-					|| data.hasOwnProperty(requestName) ) {
+				if ( ( requestName === 'history' && data.hasOwnProperty('ticks_history') ) || data.hasOwnProperty(requestName) ) {
 						var responseConditions = database[requestName];
 						for (var responseConditionName in responseConditions) {
 							var responseData = this.findKeyInObj(
@@ -89,8 +89,7 @@ Mock.prototype = Object.create(null, {
 	handleSubscriptionLimits: {
 		value: function handleSubscriptionLimits(data, responseData, option) {
 			responseData.push(data);
-			if ( responseData.length === option.maxResponse 
-				|| ( option.stopCondition && option.stopCondition(data) ) ) {
+			if ( responseData.length === option.maxResponse || ( option.stopCondition && option.stopCondition(data) ) ) {
 					return true;
 				}
 			return false;
@@ -114,6 +113,7 @@ Mock.prototype = Object.create(null, {
 							this.global.oddPurchasedContract = data.buy.contract_id;
 						}
 					}
+					break;
 				default:
 					break;
 			}
@@ -148,11 +148,10 @@ Mock.prototype = Object.create(null, {
 			var key = this.getKeyFromRequest(data);
 			var messageType = (data.msg_type === 'tick') ? 'history': data.msg_type;
 			var responses = responseDatabase[messageType].subscriptions;
-			console.log(key);
 			if (!responses.hasOwnProperty(key)){
 				responses[key] = {
 					data: []
-				}
+				};
 			}
 			var responseData = responses[key];
 			this.handleDataSharing(data);
@@ -178,7 +177,7 @@ Mock.prototype = Object.create(null, {
 					responseData.next = {};
 					that.iterateCalls(option.next, responseData.next, function(){
 						old_callback();
-					})
+					});
 				};
 			}
 			return callback;
