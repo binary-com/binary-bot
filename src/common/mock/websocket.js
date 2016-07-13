@@ -12,10 +12,10 @@ WebSocket.prototype = Object.create(WS.prototype, {
 		value: function send(rawData) {
 			var data = JSON.parse(rawData);
 			var that = this;
-			that.mock.findData(data, function(receivedData){
+			that.mock.getResponse(data, function(receivedData){
 				that.onmessage({
 					data: receivedData
-				})
+				});
 			});
 		},
 	},

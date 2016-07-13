@@ -10,51 +10,157 @@ var calls = require('./calls');
 
 var Mock = function Mock(){
 	this.api = new LiveApi({websocket: require('ws')});
-	this.delay = 0;
+	this.delay = 100;
 	this.calls = calls;
 	var originalOnMessage = this.api.socket._events.message;
 	var that = this;
 	this.api.socket._events.message = function onMessage(rawData, flags){
 		var data = JSON.parse(rawData);
+		that.consistentEchoReq(data);
 		that.replaceSensitiveData(data);
 		observer.emit('data.'+data.msg_type, data);
 		originalOnMessage(rawData, flags);
 	};
 	this.global = {};
-	this.bufferedResponse = null;
+	this.bufferedResponse = [];
+	this.queuedRequest = [];
 	this.responseDatabase = this.deepCloneDatabase(this.calls);
+	this.requestList = {};
 };
 
 Mock.prototype = Object.create(null, {
-	findData: {
-		value: function findData(data, onmessage) {
-			var that = this;
-			var database = require('./database'); 
-			for(var requestName in database) {
+	consistentEchoReq: {
+		value: function consistentEchoReq(data) {
+			// Fix for inconsistency in the API
+			if (data.echo_req.req_id in this.requestList) {
+				data.echo_req = this.requestList[data.echo_req.req_id];
+			} else {
+				this.requestList[data.echo_req.req_id] = data.echo_req;
+			}
+		}
+	},
+	findDataInBuffer: {
+		value: function findDataInBuffer(data, database) {
+			for (var requestName in database) {
 				if ( ( requestName === 'history' && data.hasOwnProperty('ticks_history') ) || data.hasOwnProperty(requestName) ) {
-						var responseConditions = database[requestName];
-						for (var responseConditionName in responseConditions) {
-							var responseData = this.findKeyInObj(responseConditions[responseConditionName], data);
-							if ( responseData ) {
-								if ( data.subscribe ) {
+					var responseConditions = database[requestName];
+					for (var responseConditionName in responseConditions) {
+						var responseData = this.findKeyInObj(responseConditions[responseConditionName], data);
+						if ( responseData ) {
+							return database;
+						}
+					}
+				}
+			}
+			return null;
+		}
+	},
+	getResponseFromBuffer: {
+		value: function getResponseFromBuffer(data) {
+			var index;
+			var database;
+			for (var i in this.bufferedResponse) {
+				database = this.findDataInBuffer(data, this.bufferedResponse[i]);
+				if ( !_.isEmpty(database) ) {
+					index = i;
+					break;
+				}
+			}
+			if (database) {
+				return this.bufferedResponse[index];
+			}
+			return null;
+		}
+	},
+	addToResponseBuffer: {
+		value: function addToResponseBuffer(database) {
+			this.bufferedResponse.push(database);
+			if (!_.isEmpty(this.queuedRequest)) {
+				var tmp = this.queuedRequest;
+				this.queuedRequest = [];
+				for(var i in tmp) {
+					this.getResponse(tmp[i].data, tmp[i].onmessage);
+				}
+			}
+		}
+	},
+	handleUnsubscribe: {
+		value: function handleUnsubscribe(data) {
+			var type = data.forget_all;
+			if ( data.forget_all === 'ticks' ) {
+				type = 'history';
+			}
+			var tmp = _.clone(this.queuedRequest);
+			for(var i in tmp) {
+				if ( type in tmp[i].data ) {
+					this.queuedRequest.splice(i, 1);
+				}
+			}
+		}
+	},
+	getResponse: {
+		value: function getResponse(data, onmessage) {
+			if ( data.hasOwnProperty('forget_all') ) {
+				this.handleUnsubscribe(data);
+				onmessage(JSON.stringify({
+					"echo_req": {
+					"forget_all": "ticks"
+					},
+					"forget_all": [],
+					"msg_type": "forget_all"
+				}));
+				return;
+			}
+			var that = this;
+			var database = this.getResponseFromBuffer(data); 
+			if (_.isEmpty(database)) {
+				database = require('./database');
+			}
+			for (var requestName in database) {
+				if ( ( requestName === 'history' && data.hasOwnProperty('ticks_history') ) || data.hasOwnProperty(requestName) ) {
+					var responseConditions = database[requestName];
+					var foundResponse = false;
+					for (var responseConditionName in responseConditions) {
+						var responseData = this.findKeyInObj(responseConditions[responseConditionName], data);
+						if ( responseData ) {
+							foundResponse = true;
+							if ( data.subscribe ) {
+								this.queuedRequest.push({
+									data: data,
+									onmessage: onmessage
+								});
+								(function(responseData){
 									tools.asyncForEach(responseData.data, function(_responseData, index, done){
 										setTimeout(function(){
+											if (index === 0 && !_.isEmpty(responseData.next)) {
+												that.addToResponseBuffer(responseData.next);
+											}
 											_responseData.echo_req.req_id = _responseData.req_id = data.req_id;
 											onmessage(JSON.stringify(_responseData));
 											done();
 										}, that.delay);
 									});
-								} else {
-									(function(responseData){
-										setTimeout(function(){
-											responseData.echo_req.req_id = responseData.req_id = data.req_id;
-											onmessage(JSON.stringify(responseData)); 
-										}, that.delay);
-									})(responseData.data);
-								}
+								})(responseData);
+							} else {
+								(function(responseData){
+									setTimeout(function(){
+										if (!_.isEmpty(responseData.next)) {
+											that.addToResponseBuffer(responseData.next);
+										}
+										responseData.data.echo_req.req_id = responseData.data.req_id = data.req_id;
+										onmessage(JSON.stringify(responseData.data)); 
+									}, that.delay);
+								})(responseData);
 							}
-						}
+						} 
 					}
+					if( !foundResponse ) {
+						this.queuedRequest.push({
+							data: data,
+							onmessage: onmessage
+						});
+					}
+				}
 			}
 		}
 	},
@@ -62,7 +168,7 @@ Mock.prototype = Object.create(null, {
 		value: function generate() {
 			var that = this;
 			this.iterateCalls(this.calls, this.responseDatabase, function(){
-				fs.writeFile("./database.js", "module.exports = " + JSON.stringify(that.responseDatabase).replace("'", "\\'"), function(err) {
+				fs.writeFile("./database.js", "module.exports = " + JSON.stringify(that.responseDatabase).replace("'", "\\'") + ';', function(err) {
 					if(err) {
 						return console.log(err);
 					}
@@ -89,8 +195,8 @@ Mock.prototype = Object.create(null, {
 		value: function handleSubscriptionLimits(data, responseData, option) {
 			responseData.push(data);
 			if ( responseData.length === option.maxResponse || ( option.stopCondition && option.stopCondition(data) ) ) {
-					return true;
-				}
+				return true;
+			}
 			return false;
 		}
 	},
@@ -121,7 +227,7 @@ Mock.prototype = Object.create(null, {
 	findKeyInObj: {
 		value: function findKeyInObj(obj1, obj2) {
 			for(var key in obj1) {
-				if (_.isMatch(this.removeReqId(JSON.parse(key)), this.removeReqId(obj2))) {
+				if (_.isEqual(this.removeReqId(JSON.parse(key)), this.removeReqId(obj2))) {
 					return obj1[key];
 				}
 			}
@@ -161,8 +267,7 @@ Mock.prototype = Object.create(null, {
 			);
 			if ( finished ) {
 				observer.unregisterAll('data.' + data.msg_type);
-				callback = this.wrapCallback(option, responseData, 
-				callback);
+				callback = this.wrapCallback(option, responseData, callback);
 				callback();
 			}
 		}
@@ -170,10 +275,12 @@ Mock.prototype = Object.create(null, {
 	wrapCallback: {
 		value: function wrapCallback(option, responseData, callback) {
 			var that = this;
-			if ( option.next ) {
+			if ( !_.isEmpty(option.next) ) {
 				var old_callback = callback;
 				callback = function callback(){
-					responseData.next = {};
+					if ( !responseData.hasOwnProperty('next') ) {
+						responseData.next = {};
+					}
 					that.iterateCalls(option.next, responseData.next, function(){
 						old_callback();
 					});
@@ -223,7 +330,7 @@ Mock.prototype = Object.create(null, {
 									data: data
 								};
 								callback = that.wrapCallback(option, responseData, 
-								callback);
+									callback);
 								callback();
 							});
 						}

@@ -55,7 +55,7 @@ module.exports = {
 													});
 												},
 												stopCondition: function(data){
-													if (data.proposal_open_contract.is_valid_to_sell){
+													if (data.proposal_open_contract.is_expired){
 														return true;
 													} else {
 														return false;
