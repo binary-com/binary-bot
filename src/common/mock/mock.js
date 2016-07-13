@@ -74,7 +74,13 @@ var getKeyFromRequest = function getKeyFromRequest(data) {
 var observeSubscriptions = function observeSubscriptions(data, responseDatabase, global, option, iterateCalls, api, callback){
 	var key = getKeyFromRequest(data);
 	var messageType = (data.msg_type === 'tick') ? 'history': data.msg_type;
-	var responseData = responseDatabase[messageType].subscriptions[key];
+	var responses = responseDatabase[messageType].subscriptions;
+	if (!responses.hasOwnProperty(key)){
+		responses[key] = {
+			data: []
+		}
+	}
+	var responseData = responses[key];
 	handleDataSharing(data, global);
 	var finished = handleSubscriptionLimits(
 		data,
@@ -181,12 +187,13 @@ var Mock = function Mock(){
 		originalOnMessage(rawData, flags);
 	};
 	this.global = {};
+	this.bufferedResponse = null;
 	this.responseDatabase = deepCloneDatabase(this.calls);
 };
 
 Mock.prototype = Object.create(null, {
 	findData: {
-		value: function findData(data, message) {
+		value: function findData(data, onmessage) {
 			var database = require('./database'); 
 			for(var requestName in database) {
 				if ( ( requestName === 'history' && data.hasOwnProperty('ticks_history') ) 
@@ -201,7 +208,7 @@ Mock.prototype = Object.create(null, {
 									tools.asyncForEach(responseData, function(_responseData, index, done){
 										setTimeout(function(){
 											_responseData.echo_req.req_id = _responseData.req_id = data.req_id;
-											message(JSON.stringify(_responseData));
+											onmessage(JSON.stringify(_responseData));
 											done();
 										}, that.delay);
 									});
@@ -209,7 +216,7 @@ Mock.prototype = Object.create(null, {
 									(function(responseData){
 										setTimeout(function(){
 											responseData.echo_req.req_id = responseData.req_id = data.req_id;
-											message(JSON.stringify(responseData)); 
+											onmessage(JSON.stringify(responseData)); 
 										}, that.delay);
 									})(responseData);
 								}
