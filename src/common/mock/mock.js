@@ -34,11 +34,10 @@ Mock.prototype = Object.create(null, {
 				if ( ( requestName === 'history' && data.hasOwnProperty('ticks_history') ) || data.hasOwnProperty(requestName) ) {
 						var responseConditions = database[requestName];
 						for (var responseConditionName in responseConditions) {
-							var responseData = this.findKeyInObj(
-								responseConditions[responseConditionName], data);
+							var responseData = this.findKeyInObj(responseConditions[responseConditionName], data);
 							if ( responseData ) {
 								if ( data.subscribe ) {
-									tools.asyncForEach(responseData, function(_responseData, index, done){
+									tools.asyncForEach(responseData.data, function(_responseData, index, done){
 										setTimeout(function(){
 											_responseData.echo_req.req_id = _responseData.req_id = data.req_id;
 											onmessage(JSON.stringify(_responseData));
@@ -51,7 +50,7 @@ Mock.prototype = Object.create(null, {
 											responseData.echo_req.req_id = responseData.req_id = data.req_id;
 											onmessage(JSON.stringify(responseData)); 
 										}, that.delay);
-									})(responseData);
+									})(responseData.data);
 								}
 							}
 						}
