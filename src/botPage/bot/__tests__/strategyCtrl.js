@@ -44,13 +44,13 @@ describe('TickTrade', function() {
 				});
 			})
 			.pipe(function(chainDone){
-				api.proposal({"amount":"20.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
+				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 				observer.registerOnce('api.proposal', function (_proposal){
 					chainDone();
 				});
 			})
 			.pipe(function(chainDone){
-				api.proposal({"amount":"20.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
+				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 				observer.registerOnce('api.proposal', function (_proposal){
 					chainDone();
 				});

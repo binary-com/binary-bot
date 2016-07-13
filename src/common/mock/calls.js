@@ -163,5 +163,23 @@ module.exports = {
 				},
 			}
 		},
-	}
+	},
+	active_symbols: {
+		responses: {
+			allActiveSymbols: {
+				func: function allActiveSymbols(api) {
+					api.getActiveSymbolsBrief();
+				}
+			}
+		}
+	},
+	asset_index: {
+		responses: {
+			allAssetIndices: {
+				func: function allAssetIndices(api) {
+					api.getAssetIndex();
+				}
+			}
+		}
+	},
 };
