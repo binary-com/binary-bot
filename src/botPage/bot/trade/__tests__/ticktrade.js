@@ -18,27 +18,27 @@ describe('TickTrade', function() {
 		before(function(done){
 			this.timeout('15000');
 			asyncChain()
-			.pipe(function(chainDone){
-				api.authorize('c9A3gPFcqQtAQDW');
-				observer.registerOnce('api.authorize', function(){
-					chainDone();
-				});
-			})
-			.pipe(function(chainDone){
-				observer.registerOnce('api.proposal', function(_proposal){
-					proposal = _proposal;
-					chainDone();
-				});
-				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
-			})
-			.pipe(function(chainDone){
-				observer.registerOnce('api.buy', function(_purchasedContract){
-					purchasedContract = _purchasedContract;
-					done();
-				});
-				ticktrade.purchase(proposal);
-			})
-			.exec();
+				.pipe(function(chainDone){
+					api.authorize('c9A3gPFcqQtAQDW');
+					observer.registerOnce('api.authorize', function(){
+						chainDone();
+					});
+				})
+				.pipe(function(chainDone){
+					observer.registerOnce('api.proposal', function(_proposal){
+						proposal = _proposal;
+						chainDone();
+					});
+					api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
+				})
+				.pipe(function(chainDone){
+					observer.registerOnce('api.buy', function(_purchasedContract){
+						purchasedContract = _purchasedContract;
+						done();
+					});
+					ticktrade.purchase(proposal);
+				})
+				.exec();
 		});
 		it('Purchased the proposal successfuly', function(){
 			expect(purchasedContract).to.have.property('longcode')
@@ -66,21 +66,6 @@ describe('TickTrade', function() {
 		it('Emits the finish signal', function(){
 			expect(finishedContract).to.have.property('sell_price')
 				.that.satisfy(function(el){return !isNaN(el);});
-		});
-	});
-	describe('Emits error', function(){
-		var error;
-		before(function(done){
-			this.timeout('5000');
-			ticktrade.purchase(proposal);
-			observer.registerOnce('ui.error', function(_err){
-				error = _err;
-				done();
-			});
-		});
-		it('trying to buy the proposal again is not allowed', function(){
-			expect(error).to.have.property('code')
-				.that.is.equal('InvalidContractProposal');
 		});
 	});
 });
