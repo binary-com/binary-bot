@@ -32,7 +32,7 @@ module.exports = {
 	proposal: {
 		subscriptions: {
 			r_100_digitodd: {
-				func: function r_100_digitodd(api){
+				func: function r_100_digitodd(api, global){
 					api.subscribeToPriceForContractProposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 				},
 				maxResponse: 1,
@@ -41,7 +41,7 @@ module.exports = {
 						responses: {
 							buyOdd: {
 								func: function buyOdd(api, global){
-									api.buyContract(global.oddContract.id, global.oddContract.ask_price);
+									api.buyContract(global.contract.id, global.contract.ask_price);
 								},
 								next: {
 									proposal_open_contract: {
@@ -93,7 +93,7 @@ module.exports = {
 				}
 			},
 			r_100_digiteven: {
-				func: function r_100_digiteven(api){
+				func: function r_100_digiteven(api, global){
 					api.subscribeToPriceForContractProposal({"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 				},
 				maxResponse: 1,
@@ -102,7 +102,7 @@ module.exports = {
 						responses: {
 							buyEven: {
 								func: function buyEven(api, global){
-									api.buyContract(global.evenContract.id, global.evenContract.ask_price);
+									api.buyContract(global.contract.id, global.contract.ask_price);
 								},
 								next: {
 									proposal_open_contract: {
@@ -116,7 +116,7 @@ module.exports = {
 													});
 												},
 												stopCondition: function(data){
-													if (data.proposal_open_contract.is_valid_to_sell){
+													if (data.proposal_open_contract.is_expired){
 														return true;
 													} else {
 														return false;

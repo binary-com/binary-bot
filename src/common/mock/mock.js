@@ -7,16 +7,21 @@ var _ = require('underscore');
 var fs = require('fs');
 var calls = require('./calls');
 
-
 var Mock = function Mock(){
 	this.api = new LiveApi({websocket: require('ws')});
-	this.delay = 100;
+	this.delay = 10;
 	this.calls = calls;
 	var originalOnMessage = this.api.socket._events.message;
 	var that = this;
+	this.api.send = function send(json){
+		var reqId = Math.floor(Math.random() * 1e15);
+		that.requestList[reqId] = json;
+		return that.api.sendRaw.call(that.api, _.extend({
+			req_id: reqId
+		}, json));
+	};
 	this.api.socket._events.message = function onMessage(rawData, flags){
 		var data = JSON.parse(rawData);
-		that.consistentEchoReq(data);
 		that.replaceSensitiveData(data);
 		observer.emit('data.'+data.msg_type, data);
 		originalOnMessage(rawData, flags);
@@ -29,16 +34,6 @@ var Mock = function Mock(){
 };
 
 Mock.prototype = Object.create(null, {
-	consistentEchoReq: {
-		value: function consistentEchoReq(data) {
-			// Fix for inconsistency in the API
-			if (data.echo_req.req_id in this.requestList) {
-				data.echo_req = this.requestList[data.echo_req.req_id];
-			} else {
-				this.requestList[data.echo_req.req_id] = data.echo_req;
-			}
-		}
-	},
 	findDataInBuffer: {
 		value: function findDataInBuffer(data, database) {
 			for (var requestName in database) {
@@ -193,11 +188,7 @@ Mock.prototype = Object.create(null, {
 		value: function handleDataSharing(data) {
 			switch(data.msg_type) {
 				case 'proposal':
-					if ( data.echo_req.contract_type === 'DIGITEVEN' ) {
-						this.global.evenContract = data.proposal;
-					} else {
-						this.global.oddContract = data.proposal;
-					}
+					this.global.contract = data.proposal;
 					break;
 				case 'buy':
 					if ( !data.error ) {
@@ -234,7 +225,7 @@ Mock.prototype = Object.create(null, {
 	},
 	getKeyFromRequest: {
 		value: function getKeyFromRequest(data) {
-			return JSON.stringify(data.echo_req);
+			return JSON.stringify(this.requestList[data.req_id]);
 		}
 	},
 	observeSubscriptions: {
@@ -298,7 +289,6 @@ Mock.prototype = Object.create(null, {
 						if (responseTypeName === 'subscriptions') {
 							if ( callName === 'history' ) {
 								observer.registerOnce('data.history', function(data){
-									console.log(data);
 									that.handleDataSharing(data);
 									responseDatabase[callName][responseTypeName][that.getKeyFromRequest(data)] = {
 										data: [data]
