@@ -86,29 +86,22 @@ Mock.prototype = Object.create(null, {
 	},
 	handleUnsubscribe: {
 		value: function handleUnsubscribe(data) {
-			var type = data.forget_all;
-			if ( data.forget_all === 'ticks' ) {
-				type = 'history';
-			}
-			var tmp = _.clone(this.queuedRequest);
-			for(var i in tmp) {
-				if ( type in tmp[i].data ) {
-					this.queuedRequest.splice(i, 1);
-				}
-			}
 		}
 	},
 	getResponse: {
 		value: function getResponse(data, onmessage) {
-			if ( data.hasOwnProperty('forget_all') ) {
+			if ( data.hasOwnProperty('forget_all') || (data.hasOwnProperty('subscribe') && data.subscribe === 0) ) {
 				this.handleUnsubscribe(data);
-				onmessage(JSON.stringify({
-					"echo_req": {
-					"forget_all": "ticks"
+				setTimeout(function(){
+					onmessage(JSON.stringify({ echo_req: {
+						req_id: data.req_id,
+						forget_all: 'ticks'
 					},
-					"forget_all": [],
-					"msg_type": "forget_all"
-				}));
+					req_id: data.req_id,
+					forget_all: [],
+					msg_type: 'forget_all'
+					}));
+				}, this.delay);
 				return;
 			}
 			var that = this;
@@ -116,19 +109,15 @@ Mock.prototype = Object.create(null, {
 			if (_.isEmpty(database)) {
 				database = require('./database');
 			}
+			var foundResponse = false;
 			for (var requestName in database) {
 				if ( ( requestName === 'history' && data.hasOwnProperty('ticks_history') ) || data.hasOwnProperty(requestName) ) {
 					var responseConditions = database[requestName];
-					var foundResponse = false;
 					for (var responseConditionName in responseConditions) {
 						var responseData = this.findKeyInObj(responseConditions[responseConditionName], data);
 						if ( responseData ) {
 							foundResponse = true;
 							if ( data.subscribe ) {
-								this.queuedRequest.push({
-									data: data,
-									onmessage: onmessage
-								});
 								(function(responseData){
 									tools.asyncForEach(responseData.data, function(_responseData, index, done){
 										setTimeout(function(){
@@ -154,13 +143,13 @@ Mock.prototype = Object.create(null, {
 							}
 						} 
 					}
-					if( !foundResponse ) {
-						this.queuedRequest.push({
-							data: data,
-							onmessage: onmessage
-						});
-					}
 				}
+			}
+			if( !foundResponse ) {
+				this.queuedRequest.push({
+					data: data,
+					onmessage: onmessage
+				});
 			}
 		}
 	},
@@ -309,6 +298,7 @@ Mock.prototype = Object.create(null, {
 						if (responseTypeName === 'subscriptions') {
 							if ( callName === 'history' ) {
 								observer.registerOnce('data.history', function(data){
+									console.log(data);
 									that.handleDataSharing(data);
 									responseDatabase[callName][responseTypeName][that.getKeyFromRequest(data)] = {
 										data: [data]

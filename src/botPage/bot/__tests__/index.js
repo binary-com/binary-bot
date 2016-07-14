@@ -7,6 +7,11 @@ var expect = require('chai').expect;
 var observer = require('common/observer');
 var asyncChain = require('common/tools').asyncChain;
 
+var options = [
+	{"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"},
+	{"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"}
+];
+
 describe('Bot', function() {
 	var bot;
 	var token = 'c9A3gPFcqQtAQDW';
@@ -30,7 +35,7 @@ describe('Bot', function() {
 				error = _error;
 				done();
 			});
-			bot.start('faketoken', null, null, null);
+			bot.start('FakeToken', null, null, null);
 		});
 		it('fake token should cause an error', function(){
 			expect(error).to.have.property('code')
@@ -40,10 +45,6 @@ describe('Bot', function() {
 	describe('Start trading', function(){
 		before(function(done){
 			this.timeout('5000');
-			var options = [
-				{"amount":"20.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"},
-				{"amount":"20.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"}
-			];
 			observer.registerOnce('bot.waiting_for_purchase', function(){
 				done();
 			});
@@ -59,10 +60,6 @@ describe('Bot', function() {
 		var finishedContract;
 		before(function(done){
 			this.timeout('10000');
-			var options = [
-				{"amount":"20.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"},
-				{"amount":"20.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"}
-			];
 			asyncChain()
 			.pipe(function(chainDone){
 				observer.registerOnce('bot.stop', function(_finishedContract){
@@ -90,10 +87,6 @@ describe('Bot', function() {
 		var finishedContractFromFinishFunction;
 		var finishedContractFromFinishSignal;
 		var numOfTicks = 0;
-		var options = [
-			{"amount":"20.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"},
-			{"amount":"20.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"}
-		];
 		before(function(done){
 			this.timeout('10000');
 			bot.start(token, options, function strategy(tick, proposals, _strategyCtrl){
@@ -126,10 +119,6 @@ describe('Bot', function() {
 		var finishedContractFromFinishFunction;
 		var finishedContractFromFinishSignal;
 		var numOfTicks = 0;
-		var options = [
-			{"amount":"20.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"},
-			{"amount":"20.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"}
-		];
 		before(function(done){
 			this.timeout('10000');
 			bot.start(token, options, function strategy(tick, proposals, _strategyCtrl){

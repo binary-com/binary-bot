@@ -34,14 +34,14 @@ Bot.prototype = Object.create(null, {
 				that.api.authorize(that.token);
 			})
 			.pipe(function(chainDone){
+				observer.registerOnce('api.history', function(history){
+					that.ticks.concat(history);					
+					chainDone();
+				});
 				that.api.history(that.tradeOptions[0].symbol, {
 					end: 'latest',
 					count: 600,
 					subscribe: 1
-				});
-				observer.registerOnce('api.history', function(history){
-					that.ticks.concat(history);					
-					chainDone();
 				});
 			})
 			.pipe(function(chainDone){

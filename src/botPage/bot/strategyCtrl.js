@@ -41,12 +41,12 @@ StrategyCtrl.prototype = Object.create(null, {
 				this.purchased = true;
 				var contract = (option === this.proposals[1].contract_type) ? this.proposals[1] : this.proposals[0];
 				this.trade = new Ticktrade(this.api);
-				this.trade.purchase(contract);
 				var that = this;
 				observer.registerOnce('trade.finish', function(contract){
 					observer.emit('strategy.finish', contract);
 					that.destroy();
 				});
+				this.trade.purchase(contract);
 			}
 		}
 	},

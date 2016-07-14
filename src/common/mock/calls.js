@@ -1,4 +1,18 @@
 module.exports = {
+	history: {
+		subscriptions: {
+			r_100: {
+				func: function r_100(api){
+					api.getTickHistory('R_100', {
+						"end": "latest",
+						"count": 600,
+						"subscribe": 1
+					});
+				},
+				maxResponse: 4
+			}
+		},
+	},
 	authorize: {
 		errors: {
 			InvalidToken: {
@@ -12,20 +26,6 @@ module.exports = {
 				func: function realToken(api){
 					api.authorize('c9A3gPFcqQtAQDW');
 				}
-			}
-		},
-	},
-	history: {
-		subscriptions: {
-			r_100: {
-				func: function r_100(api){
-					api.getTickHistory('R_100', {
-						"end": "latest",
-						"count": 600,
-						"subscribe": 1
-					});
-				},
-				maxResponse: 4
 			}
 		},
 	},
