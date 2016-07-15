@@ -11,7 +11,7 @@ var init = function init(){
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
-			window.elem = view.selectBlockByText('Step&nbsp;1');
+			$('#blocker').show();
 			view.setOpacityForAll(started, 0.3);
 		},
 	}, {
@@ -24,7 +24,25 @@ var init = function init(){
 		setup: function (tour, options) {
 			view.setOpacity(started, 'workspace', 1);
 		},
-		teardown: function (tour, options) {},
+		teardown: function (tour, options) {
+		},
+	}, {
+		content: '<p>' + i18n._("You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.") + '</p>',
+		target: view.getUiComponent('center'),
+		closeButton: true,
+		nextButton: true,
+		my: 'top center',
+		at: 'bottom center',
+	}, {
+		content: '<p>' + i18n._("You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.") + '</p>',
+		target: view.getUiComponent('center'),
+		closeButton: true,
+		nextButton: true,
+		my: 'top center',
+		at: 'bottom center',
+		setup: function (tour, options) {
+			$('#blocker').hide();
+		},
 	}, {
 		content: '<p>' + i18n._("To start pick a <b>symbol</b> block from markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)") + '</p>',
 		target: view.getUiComponent('flyout'),

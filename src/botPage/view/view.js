@@ -47,6 +47,7 @@ var setBlockColors = function setBlockColors() {
 
 var uiComponents = {
   accountSelect: '#accountSelect',
+  tours: '#tours',
   logout: '.logout',
   workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
   workspace: '.blocklyWorkspace',
