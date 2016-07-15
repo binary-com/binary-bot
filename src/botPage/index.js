@@ -1,10 +1,5 @@
 window.Bot = {};
-if ( top !== self ) {
-	top.location = self.location;
-}
-var translator = require('translator'); // must be on top
-var i18n = require('i18n');
-var appId = require('appId');
+var translator = require('common/translator'); // must be on top
 var commonUtils = require('utils');
 var $ = require('jquery');
 $.ajaxSetup({
@@ -16,7 +11,6 @@ window._ = require('underscore');
 require('notifyjs-browser');
 require('tourist');
 
-appId.removeTokenFromUrl();
 
 translator.addBlocklyTranslation();
 commonUtils.asyncChain()
@@ -41,23 +35,23 @@ commonUtils.asyncChain()
 		});
 	})
 	.pipe(function loadActiveSymbols(done){
-		var botUtils = require('./utils/utils');
-		Bot.globals = require('./globals/globals');
+		var botUtils = require('./view/utils/utils');
+		Bot.globals = require('./view/globals/globals');
 		botUtils.getActiveSymbols(function(activeSymbols){
 			Bot.globals.activeSymbols = activeSymbols;
 			done();
 		});
 	})
 	.pipe(function runBot(done){
-		Bot.config = require('./globals/config');
-		Bot.utils = require('./utils/utils');
-		Bot.version = require('./globals/version');
-		Bot.markets = require('./trade/markets');
-		Bot.conditions = require('./trade/conditions');
-		Bot.trade = require('./trade/trade');
-		Bot.toggleDebug = require('./globals/globals')
+		Bot.config = require('./view/globals/config');
+		Bot.utils = require('./view/utils/utils');
+		Bot.version = require('./view/globals/version');
+		Bot.markets = require('./view/trade/markets');
+		Bot.conditions = require('./view/trade/conditions');
+		Bot.trade = require('./view/trade/trade');
+		Bot.toggleDebug = require('./view/globals/globals')
 			.toggleDebug;
-		var view = require('./view'); // show the bot
+		var view = require('./view/view'); // show the bot
 		view.show(function(){
 			done();
 		});
