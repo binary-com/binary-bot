@@ -1,4 +1,4 @@
-var observer = require('common/observer');
+var observer = require('binary-common-utils/observer');
 var Translator = require('common/translator');
 
 var Ticktrade = function Ticktrade(api) {

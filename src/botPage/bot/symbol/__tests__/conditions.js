@@ -1,5 +1,5 @@
 require('app-module-path').addPath(__dirname + '/../../../../');
-require('common/browser');
+require('binary-common-utils/compatibility');
 
 var conditions = require('../conditions');
 var expect = require('chai').expect;

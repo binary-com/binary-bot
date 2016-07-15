@@ -1,15 +1,16 @@
 require('app-module-path').addPath(__dirname + '/../../../../');
-require('common/browser');
+require('binary-common-utils/compatibility');
 
 
-var asyncChain = require('common/tools').asyncChain;
+var asyncChain = require('binary-common-utils/tools').asyncChain;
 var Ticktrade = require('../ticktrade');
-var CustomApi = require('common/customApi');
+var ws = require('common/mock/websocket');
+var CustomApi = require('binary-common-utils/customApi');
 var expect = require('chai').expect;
-var observer = require('common/observer');
+var observer = require('binary-common-utils/observer');
 
 describe('TickTrade', function() {
-	var api = new CustomApi();
+	var api = new CustomApi(ws);
 	var ticktrade = new Ticktrade(api);
 	var proposal;
 	var finishedContract;

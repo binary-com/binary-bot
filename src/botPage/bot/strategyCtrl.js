@@ -1,4 +1,4 @@
-var observer = require('common/observer');
+var observer = require('binary-common-utils/observer');
 var Ticktrade = require('./trade/ticktrade');
 
 var StrategyCtrl = function StrategyCtrl(api, strategy) {

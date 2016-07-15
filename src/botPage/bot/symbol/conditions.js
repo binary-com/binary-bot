@@ -1,5 +1,5 @@
 var config = require('common/const');
-var tools = require('common/tools');
+var tools = require('binary-common-utils/tools');
 
 module.exports = {
 	ticktrade: function ticktrade(parameters) {

@@ -1,13 +1,14 @@
-var observer = require('common/observer');
+var observer = require('binary-common-utils/observer');
 var Symbol = require('./symbol');
+var ws = require('common/mock/websocket');
 var StrategyCtrl = require('./strategyCtrl');
-var asyncChain = require('common/tools').asyncChain;
-var storageManager = require('common/storageManager');
-var CustomApi = require('common/customApi');
+var asyncChain = require('binary-common-utils/tools').asyncChain;
+var storageManager = require('binary-common-utils/storageManager');
+var CustomApi = require('binary-common-utils/customApi');
 
 var Bot = function Bot() {
 	this.ticks = [];
-	this.api = new CustomApi();
+	this.api = new CustomApi(ws);
 	this.symbol = new Symbol(this.api);
 	this.initPromise = this.symbol.initPromise;
 	this.running = false;

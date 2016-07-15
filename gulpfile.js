@@ -14,13 +14,13 @@ var gulp = require('gulp'),
 		hash = require('sha1'),
 		mustache = require('gulp-mustache-plus'),
 		rev = require('gulp-rev'),
-		fs = require('fs')
-		connect = require('gulp-connect')
-		open = require('gulp-open')
-		through = require('through2')
-		path = require('path')
-		mocha = require('gulp-mocha')
-		;
+		fs = require('fs'),
+		connect = require('gulp-connect'),
+		open = require('gulp-open'),
+		through = require('through2'),
+		path = require('path'),
+		mock = require('binary-mock-websocket'),
+		mocha = require('gulp-mocha');
 
 var options = {
 	lngs: ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'], // supported languages
@@ -29,7 +29,7 @@ var options = {
 		savePath: 'src/i18n/{{lng}}.json',
 		jsonIndent: 2
 	}
-}
+};
 
 var customTransform = function _transform(file, enc, done) {
 	var parser = this.parser;
@@ -64,8 +64,8 @@ var parseFilenameWithoutVersion = function parseFilenameWithoutVersion(chunk) {
 	return {
 		old: oldFile.base,
 		new: newFileName
-	}
-}
+	};
+};
 
 var parseFilenameWithVersion = function parseFilenameWithVersion(file) {
 	var newFile = path.parse(file.path);
@@ -74,8 +74,8 @@ var parseFilenameWithVersion = function parseFilenameWithVersion(file) {
 	return {
 		old: filename + ext,
 		new: newFile.base
-	}
-}
+	};
+};
 
 var addToManifest = function addToManifest(chunk, enc, cb) {
 	var map;
@@ -127,24 +127,24 @@ gulp.task('test', ['mocha', 'lint'], function() {
 gulp.task('i18n-xml', ['static'], function () {
 	return gulp.src('www/xml/*.xml')
 		.pipe(scanner(options, customTransform))
-		.pipe(gulp.dest('./'));
+		.pipe(gulp.dest('/tmp'));
 });
 
 gulp.task('i18n-html', ['i18n-xml'], function () {
 	return gulp.src('templates/*.mustache')
 		.pipe(scanner(options, customTransform))
-		.pipe(gulp.dest('./'));
+		.pipe(gulp.dest('/tmp'));
 });
 
 gulp.task('i18n-js', ['i18n-html'], function () {
 	return gulp.src(['src/**/*.js', '!src/i18n/*.js'])
 		.pipe(scanner(options, customTransform))
-		.pipe(gulp.dest('./'));
+		.pipe(gulp.dest('/tmp'));
 });
 
 gulp.task('i18n', ['i18n-js'], function () {
 	return gulp.src('src/i18n/*.json')
-		.pipe(gulp.dest('./src/i18n'));
+		.pipe(gulp.dest('/tmp/common/translations'));
 });
 
 gulp.task('blockly-msg', ['static'], function(){
@@ -171,7 +171,7 @@ gulp.task('clean-webpack', function() {
 		.pipe(vinyl_paths(del));
 });
 
-gulp.task('webpack', ['clean-webpack', 'test', 'blockly'], function(){
+gulp.task('webpack', ['i18n', 'clean-webpack', 'test', 'blockly'], function(){
 	return webpack(require('./webpack.config.js'))
 		.pipe(through.obj(addToManifest))
 		.pipe(gulp.dest('www/js'));
@@ -257,7 +257,7 @@ gulp.task('open', function(){
 		.pipe(open({uri: 'http://localhost:8080/'}));
 });
 
-gulp.task('build', ['i18n', 'pack-css', 'webpack', 'mustache-dev'], function () {
+gulp.task('build', ['pack-css', 'webpack', 'mustache-dev'], function () {
 	gulp.src('www/**')
 		.pipe(connect.reload());
 });
@@ -284,6 +284,12 @@ gulp.task('watch', ['build', 'serve'], function () {
 	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/i18n/*.js'], {debounceDelay: 5000}, function(){
 		gulp.run(['build']);
 	});
+});
+
+gulp.task('build-mock', function() {
+	return gulp.src('./src/common/calls.js', {read: false})
+		.pipe(mock())
+		.pipe(gulp.dest('./src/common/mock'));
 });
 
 gulp.task('default', ['watch']);

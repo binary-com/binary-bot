@@ -1,6 +1,6 @@
-var tools = require('common/tools');
+var tools = require('binary-common-utils/tools');
 var config = require('common/const');
-var asyncChain = require('common/tools').asyncChain;
+var asyncChain = require('binary-common-utils/tools').asyncChain;
 
 var ActiveSymbols = require('./activeSymbols');
 var _ = require('underscore');

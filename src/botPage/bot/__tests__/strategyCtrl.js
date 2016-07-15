@@ -1,17 +1,18 @@
 require('app-module-path').addPath(__dirname + '/../../../');
-require('common/browser');
+require('binary-common-utils/compatibility');
 
 
-var asyncChain = require('common/tools').asyncChain;
+var asyncChain = require('binary-common-utils/tools').asyncChain;
 var StrategyCtrl = require('../strategyCtrl');
-var CustomApi = require('common/customApi');
+var ws = require('common/mock/websocket');
+var CustomApi = require('binary-common-utils/customApi');
 var expect = require('chai').expect;
-var observer = require('common/observer');
+var observer = require('binary-common-utils/observer');
 var api;
 var proposals = [];
 var firstAttemptDetected = true;
 describe('TickTrade', function() {
-	api = new CustomApi();
+	api = new CustomApi(ws);
 	var strategy = function strategy(ticks, proposals, _strategyCtrl) {
 		if ( proposals ) {
 			if ( firstAttemptDetected ){

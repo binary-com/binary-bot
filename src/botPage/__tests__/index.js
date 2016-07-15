@@ -1,10 +1,10 @@
 require('app-module-path').addPath(__dirname + '/../../');
-require('common/browser');
+require('binary-common-utils/compatibility');
 
 
 var BotPage = require('../index');
 var expect = require('chai').expect;
-var observer = require('common/observer');
+var observer = require('binary-common-utils/observer');
 
 describe('BotPage', function() {
 	before(function(){

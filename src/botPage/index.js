@@ -1,15 +1,16 @@
-var storageManager = require('common/storageManager');
+var storageManager = require('binary-common-utils/storageManager');
 var Symbol = require('./bot/symbol');
-var observer = require('common/observer');
+var observer = require('binary-common-utils/observer');
 var bot = require('./bot');
-var CustomApi = require('common/customApi');
+var ws = require('common/mock/websocket');
+var CustomApi = require('binary-common-utils/customApi');
 
 var BotPage = function BotPage() {
 	if (BotPage.instance) {
 		return BotPage.instance;
 	}
 	BotPage.instance = this;
-	this.api = new CustomApi();
+	this.api = new CustomApi(ws);
 	this.symbol = new Symbol(this.api._originalApi);
 	this.initPromise = this.symbol.initPromise;
 };

@@ -1,6 +1,6 @@
 var i18n = require('./i18n');
-var tools = require('./tools');
-var storageManager = require('./storageManager');
+var tools = require('binary-common-utils/tools');
+var storageManager = require('binary-common-utils/storageManager');
 
 var Translator = function Translator() {
 	if ( Translator.instance ) {

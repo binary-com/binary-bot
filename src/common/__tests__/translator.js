@@ -1,7 +1,7 @@
 var Translator = require('../translator');
-var tools = require('../tools');
+var tools = require('binary-common-utils/tools');
 var expect = require('chai').expect;
-require('../browser');
+require('binary-common-utils/compatibility');
 
 describe('Translation', function(){
 	describe('Translate Functions', function(){

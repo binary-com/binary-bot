@@ -1,11 +1,12 @@
 require('app-module-path').addPath(__dirname + '/../../../../');
-require('common/browser');
+require('binary-common-utils/compatibility');
 
 var conditions = require('../conditions');
 var Symbol = require('../index');
-var tools = require('common/tools');
+var tools = require('binary-common-utils/tools');
 var expect = require('chai').expect;
-var CustomApi = require('common/customApi');
+var ws = require('common/mock/websocket');
+var CustomApi = require('binary-common-utils/customApi');
 
 describe('symbol', function() {
 	describe('Error Handling', function(){
@@ -25,7 +26,7 @@ describe('symbol', function() {
 		this.timeout('10000');
 		var symbol;
 		before(function(done){
-			symbol = new Symbol(new CustomApi());
+			symbol = new Symbol(new CustomApi(ws));
 			symbol.initPromise.then(function(){
 				done();
 			});

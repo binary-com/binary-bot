@@ -1,11 +1,11 @@
 require('app-module-path').addPath(__dirname + '/../../../');
-require('common/browser');
+require('binary-common-utils/compatibility');
 
 
 var Bot = require('../index');
 var expect = require('chai').expect;
-var observer = require('common/observer');
-var asyncChain = require('common/tools').asyncChain;
+var observer = require('binary-common-utils/observer');
+var asyncChain = require('binary-common-utils/tools').asyncChain;
 
 var options = [
 	{"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"},
@@ -31,7 +31,7 @@ describe('Bot', function() {
 		var error;
 		before(function(done){
 			this.timeout('5000');
-			observer.registerOnce('ui.error', function(_error){
+			observer.registerOnce('api.error', function(_error){
 				error = _error;
 				done();
 			});
