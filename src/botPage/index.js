@@ -1,29 +1,67 @@
-var storageManager = require('binary-common-utils/storageManager');
-var Symbol = require('./bot/symbol');
-var observer = require('binary-common-utils/observer');
-var bot = require('./bot');
-var ws = require('common/mock/websocket');
-var CustomApi = require('binary-common-utils/customApi');
-
-var BotPage = function BotPage() {
-	if (BotPage.instance) {
-		return BotPage.instance;
-	}
-	BotPage.instance = this;
-	this.api = new CustomApi(ws);
-	this.symbol = new Symbol(this.api._originalApi);
-	this.initPromise = this.symbol.initPromise;
-};
-
-BotPage.prototype = Object.create(null, {
-	createBot: {
-		value: function createBot(token, tradeOptions, strategy, finish){
-			this.bot = new Bot(this.api, token, tradeOptions, strategy, finish);
-			this.bot.initPromise.then(function(resolve){
-				this.bot.login();
-			});
-		}
-	},
+window.Bot = {};
+if ( top !== self ) {
+	top.location = self.location;
+}
+var translator = require('translator'); // must be on top
+var i18n = require('i18n');
+var appId = require('appId');
+var commonUtils = require('utils');
+var $ = require('jquery');
+$.ajaxSetup({
+	cache: false
 });
+window.$ = window.jQuery = $;
+window.Backbone = require('backbone');
+window._ = require('underscore');
+require('notifyjs-browser');
+require('tourist');
 
-module.exports = BotPage;
+appId.removeTokenFromUrl();
+
+translator.addBlocklyTranslation();
+commonUtils.asyncChain()
+	.pipe(function translate(done){
+		translator.Translator(function () {
+			$('[data-i18n-text]')
+				.each(function() {
+			    	var contents = $(this).contents();
+			    	if (contents.length > 0) {
+			        	if (contents.get(0).nodeType == Node.TEXT_NODE) {
+			            	$(this).text(i18n._($(this)
+								.attr('data-i18n-text')))
+								.append(contents.slice(1));
+			        	}
+			    	} else {
+						$(this)
+							.text(i18n._($(this)
+								.attr('data-i18n-text')));
+					}
+				});
+				done();
+		});
+	})
+	.pipe(function loadActiveSymbols(done){
+		var botUtils = require('./utils/utils');
+		Bot.globals = require('./globals/globals');
+		botUtils.getActiveSymbols(function(activeSymbols){
+			Bot.globals.activeSymbols = activeSymbols;
+			done();
+		});
+	})
+	.pipe(function runBot(done){
+		Bot.config = require('./globals/config');
+		Bot.utils = require('./utils/utils');
+		Bot.version = require('./globals/version');
+		Bot.markets = require('./trade/markets');
+		Bot.conditions = require('./trade/conditions');
+		Bot.trade = require('./trade/trade');
+		Bot.toggleDebug = require('./globals/globals')
+			.toggleDebug;
+		var view = require('./view'); // show the bot
+		view.show(function(){
+			done();
+		});
+	})
+	.pipe(function hideSpinner(done){
+		$('.spinning').hide();
+	}).exec();
