@@ -1,5 +1,5 @@
 var blockly = require('blockly');
-var globals = require('../../globals/globals');
+var globals = require('../../../globals/globals');
 var symbolNames = globals.activeSymbols.getSymbolNames();
 Object.keys(symbolNames).forEach(function(symbol){
 	blockly.JavaScript[symbol.toLowerCase()] = function(block) {

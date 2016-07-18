@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
 var blockly = require('blockly');
 var i18n = require('i18n');
-var relationChecker = require('../../utils/relationChecker');
+var relationChecker = require('../../relationChecker');
 
 blockly.Blocks.trade_again = {
 	init: function() {

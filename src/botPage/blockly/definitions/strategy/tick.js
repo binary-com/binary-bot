@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 
 var blockly = require('blockly');
-var relationChecker = require('../../utils/relationChecker');
+var relationChecker = require('../../relationChecker');
 var i18n = require('i18n');
 
 blockly.Blocks.tick = {

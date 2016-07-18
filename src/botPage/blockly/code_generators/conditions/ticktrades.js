@@ -1,5 +1,5 @@
 var blockly = require('blockly');
-var config = require('../../globals/config');
+var config = require('const');
 Object.keys(config.opposites).forEach(function(opposites){
 	blockly.JavaScript[opposites.toLowerCase()] = function(block) {
 		if ( this.parentBlock_ === null ) {

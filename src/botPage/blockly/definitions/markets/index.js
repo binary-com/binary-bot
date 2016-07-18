@@ -1,17 +1,19 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 var blockly = require('blockly');
 var i18n = require('i18n');
-var globals = require('../../globals/globals');
-var botUtils = require('../../utils/utils');
-var relationChecker = require('../../utils/relationChecker');
+var globals = require('../../../globals/globals');
+var relationChecker = require('../../relationChecker');
+var Bot = require('../../../bot');
 var symbolNames = globals.activeSymbols.getSymbolNames();
+var bot = new Bot();
+
 Object.keys(symbolNames).forEach(function(symbol){
 	blockly.Blocks[symbol.toLowerCase()] = {
 		init: function() {
 			this.appendDummyInput()
 				.appendField(symbolNames[symbol]);
 			this.appendDummyInput()
-				.appendField(translator.translateText('Accepts') + ': (' + botUtils.getAllowedCategoryNames(symbol) + ')');
+				.appendField(translator.translateText('Accepts') + ': (' + bot.symbol.getAllowedCategoryNames(symbol) + ')');
 			this.appendStatementInput("CONDITION")
 				.setCheck("Condition");
 			this.setInputsInline(false);

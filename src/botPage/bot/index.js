@@ -5,6 +5,10 @@ var asyncChain = require('binary-common-utils/tools').asyncChain;
 var CustomApi = require('binary-common-utils/customApi');
 
 var Bot = function Bot(api) {
+	if (Bot.instance) {
+		return Bot.instance;
+	}
+	Bot.instance = this;
 	this.ticks = [];
 	if ( typeof api === 'undefined' ) {
 		this.api = new CustomApi();

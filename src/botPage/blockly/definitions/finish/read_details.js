@@ -1,8 +1,8 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
 var blockly = require('blockly');
 var i18n = require('i18n');
-var relationChecker = require('../../utils/relationChecker');
-var config = require('../../globals/config');
+var relationChecker = require('../../relationChecker');
+var config = require('const');
 
 blockly.Blocks.read_details = {
   init: function() {

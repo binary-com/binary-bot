@@ -1,9 +1,10 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zuc7w9
 var blockly = require('blockly');
 var i18n = require('i18n');
-var config = require('../../globals/config');
-var utils = require('../../utils/utils');
-var relationChecker = require('../../utils/relationChecker');
+var config = require('const');
+var Bot = require('../../../bot');
+var relationChecker = require('../../relationChecker');
+var bot = new Bot();
 
 Object.keys(config.opposites).forEach(function(opposites){
 	blockly.Blocks[opposites.toLowerCase()] = {
@@ -16,7 +17,7 @@ Object.keys(config.opposites).forEach(function(opposites){
 			});
 			this.appendDummyInput()
 				.setAlign(Blockly.ALIGN_CENTRE)
-				.appendField(utils.getCategoryName(opposites));
+				.appendField(bot.symbol.getCategoryName(opposites));
 			this.appendDummyInput()
 				.appendField('> ' + option_names[0] + '/' + option_names[1]);
 			this.appendValueInput("DURATION")

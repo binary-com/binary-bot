@@ -81,33 +81,6 @@ var getAssetIndex = function getAssetIndex(api, cb) {
 	});
 };
 
-var createXmlTag = function createXmlTag(obj) {
-	var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
-	Object.keys(obj).forEach(function(market){
-		xmlStr += '\t<category name="'+ obj[market].name +'" colour="#2a3052">\n';
-			Object.keys(obj[market].submarkets).forEach(function(submarket){
-				xmlStr += '\t\t<category name="'+ obj[market].submarkets[submarket].name +'" colour="#2a3052">\n';
-					Object.keys(obj[market].submarkets[submarket].symbols).forEach(function(symbol){
-						xmlStr += '\t\t\t<block type="'+ symbol.toLowerCase() +'"></block>\n';
-					});
-				xmlStr += '\t\t</category>\n';
-			});
-		xmlStr += '\t</category>\n';
-	});
-	xmlStr += '</category>\n';
-	return xmlStr;
-};
-
-var xmlToStr = function xmlToStr(xml){
-	var serializer = new XMLSerializer();
-	return serializer.serializeToString(xml);
-};
-
-var marketsToXml = function marketsToXml(xml){
-	var xmlStr = xmlToStr(xml);
-	var marketXml = createXmlTag(globals.activeSymbols.getMarkets());
-	return xmlStr.replace('<!--Markets-->', marketXml);
-};
 
 var getActiveSymbols = function getActiveSymbols(callback) {
 	var LiveApi = require('binary-live-api')
@@ -218,58 +191,6 @@ var updateTokenList = function updateTokenList(tokenToAdd) {
 	}
 };
 
-var addPurchaseOptions = function addPurchaseOptions() {
-	var firstOption = {};
-	var secondOption = {};
-	var trade = blockly.mainWorkspace.getBlockById('trade');
-	if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
-		.getInputTargetBlock('CONDITION') !== null) {
-		var condition_type = trade.getInputTargetBlock('SUBMARKET')
-			.getInputTargetBlock('CONDITION')
-			.type;
-		var opposites = config.opposites[condition_type.toUpperCase()];
-		globals.lists.purchase_choices = [];
-		opposites.forEach(function (option, index) {
-			if (index === 0) {
-				firstOption = {
-					condition: Object.keys(option)[0],
-					name: option[Object.keys(option)[0]],
-				};
-			} else {
-				secondOption = {
-					condition: Object.keys(option)[0],
-					name: option[Object.keys(option)[0]],
-				};
-			}
-			globals.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
-		});
-		var purchases = [];
-		blockly.mainWorkspace.getAllBlocks()
-			.forEach(function (block) {
-				if (block.type === 'purchase') {
-					purchases.push(block);
-				}
-			});
-		purchases.forEach(function (purchase) {
-			var value = purchase.getField('PURCHASE_LIST')
-				.getValue();
-			blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-			if (value === firstOption.condition) {
-				purchase.getField('PURCHASE_LIST')
-					.setText(firstOption.name);
-			} else if (value === secondOption.condition) {
-				purchase.getField('PURCHASE_LIST')
-					.setText(secondOption.name);
-			} else {
-				purchase.getField('PURCHASE_LIST')
-					.setValue(firstOption.condition);
-				purchase.getField('PURCHASE_LIST')
-					.setText(firstOption.name);
-			}
-		});
-	}
-};
-
 $('#login')
 	.bind('click.login', function(e){
 		document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + window.lang.toUpperCase();
@@ -284,8 +205,6 @@ module.exports = {
 	updateTokenList: updateTokenList,
 	addPurchaseOptions: addPurchaseOptions,
 	getActiveSymbols: getActiveSymbols,
-	marketsToXml: marketsToXml,
-	xmlToStr: xmlToStr,
 	findSymbol: findSymbol,
 	getAssetIndex: getAssetIndex,
 	isConditionAllowedInSymbol: isConditionAllowedInSymbol,

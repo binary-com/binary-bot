@@ -1,8 +1,12 @@
-var blockly = require('blockly');
+var globalBlockly = require('blockly');
 var config = require('../globals/config');
 var globals = require('../globals/globals');
-var botUtils = require('./utils');
-var i18n = require('i18n');
+var Bot = require('../bot');
+var Translator = require('translator');
+var translator = new Translator();
+var bot = new Bot();
+var observer = require('binary-common-utils/observer');
+var blockly = require('./');
 var getNumField = function getNumField(block, fieldName) {
 	var field = block.getInputTargetBlock(fieldName);
 	if (field !== null && field.type === 'math_number') {
@@ -23,50 +27,50 @@ var isInRange = function isInRange(amount, min, max) {
 
 var trade = function trade(_trade, ev) {
 	if (ev.type === 'create') {
-		if (botUtils.findSymbol(blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
-			botUtils.broadcast('tour:submarket_created');
+		if (bot.symbol.findSymbol(globalBlockly.mainWorkspace.getBlockById(ev.blockId).type)) {
+			observer.emit('tour:submarket_created');
 		}
-		if (config.conditions.indexOf(blockly.mainWorkspace.getBlockById(ev.blockId)
+		if (config.conditions.indexOf(globalBlockly.mainWorkspace.getBlockById(ev.blockId)
 				.type) >= 0) {
-			botUtils.broadcast('tour:condition_created');
+			observer.emit('tour:condition_created');
 		}
-		if (blockly.mainWorkspace.getBlockById(ev.blockId)
+		if (globalBlockly.mainWorkspace.getBlockById(ev.blockId)
 			.type === 'math_number') {
-			botUtils.broadcast('tour:number');
+			observer.emit('tour:number');
 		}
-		if (blockly.mainWorkspace.getBlockById(ev.blockId)
+		if (globalBlockly.mainWorkspace.getBlockById(ev.blockId)
 			.type === 'purchase') {
-			botUtils.broadcast('tour:purchase_created');
+			observer.emit('tour:purchase_created');
 		}
-		if (blockly.mainWorkspace.getBlockById(ev.blockId)
+		if (globalBlockly.mainWorkspace.getBlockById(ev.blockId)
 			.type === 'trade_again') {
-			botUtils.broadcast('tour:trade_again_created');
+			observer.emit('tour:trade_again_created');
 		}
 	}
-	if (_trade.childBlocks_.length && !botUtils.findSymbol(_trade.childBlocks_[0].type)) {
-		botUtils.log(translator.translateText('The trade block can only accept submarket blocks'), 'warning');
+	if (_trade.childBlocks_.length && !bot.symbol.findSymbol(_trade.childBlocks_[0].type)) {
+		observer.emit('ui.log.warning', translator.translateText('The trade block can only accept submarket blocks'));
 		Array.prototype.slice.apply(_trade.childBlocks_)
 			.forEach(function (child) {
 				child.unplug();
 			});
 	} else if (_trade.childBlocks_.length > 0) {
 		submarket(_trade.childBlocks_[0], ev);
-		botUtils.broadcast('tour:submarket');
+		observer.emit('tour:submarket');
 		if (ev.hasOwnProperty('newInputName')) {
-			botUtils.addPurchaseOptions();
+			blockly.addPurchaseOptions();
 		}
 	}
-	var topParent = botUtils.findTopParentBlock(_trade);
+	var topParent = blockly.findTopParentBlock(_trade);
 	if (topParent !== null) {
-		if (botUtils.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
-			botUtils.log(translator.translateText('The trade block cannot be inside binary blocks'), 'warning');
+		if (bot.symbol.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
+			observer.emit('ui.log.warning', translator.translateText('The trade block cannot be inside binary blocks'));
 			_trade.unplug();
 		}
 	}
 };
 var submarket = function submarket(_submarket, ev) {
 	if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
-		botUtils.log(translator.translateText('Submarket blocks can only accept condition blocks'), 'warning');
+		observer.emit('ui.log.warning', translator.translateText('Submarket blocks can only accept condition blocks'));
 		Array.prototype.slice.apply(_submarket.childBlocks_)
 			.forEach(function (child) {
 				child.unplug();
@@ -76,33 +80,33 @@ var submarket = function submarket(_submarket, ev) {
 	}
 	if (_submarket.parentBlock_ !== null) {
 		if (_submarket.parentBlock_.type !== 'trade') {
-			botUtils.log(translator.translateText('Submarket blocks have to be added to the trade block'), 'warning');
+			observer.emit('ui.log.warning', translator.translateText('Submarket blocks have to be added to the trade block'));
 			_submarket.unplug();
 		}
 	}
 };
 var condition = function condition(_condition, ev, calledByParent) {
 	if (_condition.parentBlock_ !== null) {
-		if (!botUtils.findSymbol(_condition.parentBlock_.type)) {
-			botUtils.log(translator.translateText('Condition blocks have to be added to submarket blocks'), 'warning');
+		if (!bot.symbol.findSymbol(_condition.parentBlock_.type)) {
+			observer.emit('ui.log.warning', translator.translateText('Condition blocks have to be added to submarket blocks'));
 			_condition.unplug();
-		} else if ( !botUtils.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
-			var symbol = botUtils.findSymbol(_condition.parentBlock_.type);
-			botUtils.log(symbol[Object.keys(symbol)[0]] + ' ' + translator.translateText('does not support category:') + 
-				' ' + botUtils.getCategoryName(_condition.type) +
-				', ' + translator.translateText('Allowed categories are') + ' ' + botUtils.getAllowedCategoryNames(_condition.parentBlock_.type), 'warning');
+		} else if ( !bot.symbol.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
+			var symbol = bot.symbol.findSymbol(_condition.parentBlock_.type);
+			observer.emit('ui.log.warning', symbol[Object.keys(symbol)[0]] + ' ' + translator.translateText('does not support category:') + 
+				' ' + bot.symbol.getCategoryName(_condition.type) +
+				', ' + translator.translateText('Allowed categories are') + ' ' + bot.symbol.getAllowedCategoryNames(_condition.parentBlock_.type));
 			_condition.unplug();
 		} else {
-			botUtils.broadcast('tour:condition');
+			observer.emit('tour:condition');
 			if (!calledByParent) {
 				if ((ev.type === 'change' && ev.element && ev.element === 'field') || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
 					var added = [];
 					var duration = getNumField(_condition, 'DURATION');
 					if (duration !== '') {
 						if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
-							botUtils.log(translator.translateText('Number of ticks must be between 5 and 10'), 'warning');
+							observer.emit('ui.log.warning', translator.translateText('Number of ticks must be between 5 and 10'));
 						} else {
-							botUtils.broadcast('tour:ticks');
+							observer.emit('tour:ticks');
 							added.push('DURATION');
 						}
 					}
@@ -113,7 +117,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 					var prediction = getNumField(_condition, 'PREDICTION');
 					if (prediction !== '') {
 						if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-							botUtils.log(translator.translateText('Prediction must be one digit'), 'warning');
+							observer.emit('ui.log.warning', translator.translateText('Prediction must be one digit'));
 						} else {
 							added.push('PREDICTION');
 						}
@@ -121,10 +125,10 @@ var condition = function condition(_condition, ev, calledByParent) {
 					if (added.indexOf('AMOUNT') >= 0 && added.indexOf('DURATION') >= 0) {
 						if (_condition.inputList.slice(-1)[0].name === 'PREDICTION') {
 							if (added.indexOf('PREDICTION') >= 0) {
-								botUtils.broadcast('tour:options');
+								observer.emit('tour:options');
 							}
 						} else {
-							botUtils.broadcast('tour:options');
+							observer.emit('tour:options');
 						}
 					}
 				}
@@ -133,24 +137,24 @@ var condition = function condition(_condition, ev, calledByParent) {
 	}
 };
 var inside_strategy = function inside_strategy(blockObject, ev, name) {
-	var topParent = botUtils.findTopParentBlock(blockObject);
+	var topParent = blockly.findTopParentBlock(blockObject);
 	if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
-		botUtils.log(name + ' ' + translator.translateText('must be added inside the strategy block'), 'warning');
+		observer.emit('ui.log.warning', name + ' ' + translator.translateText('must be added inside the strategy block'));
 		blockObject.unplug();
 	} else if (topParent !== null && topParent.type === 'on_strategy') {
 		if (blockObject.type === 'purchase') {
-			botUtils.broadcast('tour:purchase');
+			observer.emit('tour:purchase');
 		}
 	}
 };
 var inside_finish = function inside_finish(blockObject, ev, name) {
-	var topParent = botUtils.findTopParentBlock(blockObject);
+	var topParent = blockly.findTopParentBlock(blockObject);
 	if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
-		botUtils.log(name + ' ' + translator.translateText('must be added inside the finish block'), 'warning');
+		observer.emit('ui.log.warning', name + ' ' + translator.translateText('must be added inside the finish block'));
 		blockObject.unplug();
 	} else if (topParent !== null && topParent.type === 'on_finish') {
 		if (blockObject.type === 'trade_again') {
-			botUtils.broadcast('tour:trade_again');
+			observer.emit('tour:trade_again');
 		}
 	}
 };

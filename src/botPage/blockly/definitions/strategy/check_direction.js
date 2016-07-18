@@ -1,7 +1,7 @@
 var blockly = require('blockly');
 var i18n = require('i18n');
-var relationChecker = require('../../utils/relationChecker');
-var config = require('../../globals/config');
+var relationChecker = require('../../relationChecker');
+var config = require('const');
 blockly.Blocks.check_direction = {
   init: function() {
     this.appendDummyInput()

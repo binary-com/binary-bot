@@ -1,8 +1,8 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 var blockly = require('blockly');
 var i18n = require('i18n');
-var relationChecker = require('../../utils/relationChecker');
-var globals = require('../../globals/globals');
+var relationChecker = require('../../relationChecker');
+var globals = require('../../../globals/globals');
 
 blockly.Blocks.purchase = {
 	init: function() {

@@ -1,196 +1,130 @@
 var globals = require('./globals/globals');
-var config = require('./globals/config');
-var blockly = require('blockly');
-var i18n = require('i18n');
+var config = require('const');
 var account = require('binary-common-utils/account');
 var activeTutorial = null;
-var tours = {}; // e
 var botUtils = require('./utils/utils');
 var fileSaver = require('filesaverjs');
+var Blockly = require('./blockly');
 require('./utils/draggable');
 
-var initTours = function initTours() {
-  tours.introduction = require('./tours/introduction').init();
-  tours.welcome = require('./tours/welcome').init();
-  if ( tours.welcome.welcome() ){
-    activeTutorial = tours.welcome;
-  }
+var View = function View(){
+	this.tours = {};
+	this.translator = new Translator();
+	this.addTranslationToUi();
+	this.blockly = new Blockly();
+	var that = this;
+	this.initPromise = new Promise(function(resolve, reject){
+		that.then(function(){
+			that.initTours();
+			resolve();
+		});
+	});
 };
 
-var selectBlockByText = function selectBlockByText(text) {
-  var returnVal;
-  $('.blocklyText').each(function(){
-    if ( this.innerHTML.indexOf(text) >= 0 ){
-      returnVal = $(this).parent()[0];
-    }
-  });
-  return returnVal;
-};
-
-var selectTextBlock = function selectTextBlock(text) {
-  var returnVal;
-  $('.blocklyText').each(function(){
-    if ( this.innerHTML === text ){
-      returnVal = this;
-    }
-  });
-  return returnVal;
-};
-
-var setBlockColors = function setBlockColors() {
-  selectTextBlock('Step&nbsp;1:&nbsp;Define&nbsp;Trade').style.setProperty('fill', 'white', 'important');
-  selectTextBlock('Step&nbsp;2:&nbsp;Strategy').style.setProperty('fill', 'white', 'important');
-  selectTextBlock('Step&nbsp;3:&nbsp;Result').style.setProperty('fill', 'white', 'important');
-};
-
-var uiComponents = {
-  accountSelect: '#accountSelect',
-  tours: '#tours',
-  logout: '.logout',
-  workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
-  workspace: '.blocklyWorkspace',
-  toolbox: '.blocklyToolboxDiv',
-  group_load: '.group-load',
-  token: '.intro-token',
-  group_save: '.group-save',
-  group_undo_redo: '.group-undo-redo',
-  group_summary: '.group-summary',
-  group_start_stop: '.group-start-stop',
-  center: '#center',
-  flyout: '.blocklyFlyoutBackground',
-  submarket: ".blocklyDraggable:contains('Trade'):last",
-  strategy: ".blocklyDraggable:contains('Strategy'):last",
-  finish: ".blocklyDraggable:contains('Result'):last",
-};
-
-var doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
-
-var getUiComponent = function getUiComponent(component) {
-  return $(uiComponents[component]);
-};
-
-var startTutorial = function startTutorial(e) {
-  if (e) {
-    e.preventDefault();
-  }
-  if (activeTutorial) {
-    activeTutorial.stop();
-  }
-  $('#tours').on('change', function(e) {
-      var value = $(this).val();
-      if (value === '') return;
-      activeTutorial = tours[value];
-      activeTutorial.start();
-  });
-};
-
-var stopTutorial = function stopTutorial(e) {
-  if (e) {
-    e.preventDefault();
-  }
-  if (activeTutorial) {
-      activeTutorial.stop();
-      activeTutorial = null;
-  }
-};
-
-var setOpacityForAll = function setOpacityForAll(enabled, opacity) {
-	if (enabled) {
-		Object.keys(uiComponents)
-			.forEach(function (key) {
-				if (doNotHide.indexOf(key) < 0) {
-					getUiComponent(key)
-						.css('opacity', opacity);
-					var disabled = +opacity < 1;
-					getUiComponent(key)
-						.find('button')
-						.prop('disabled', disabled);
-					getUiComponent(key)
-						.find('input')
-						.prop('disabled', disabled);
-					getUiComponent(key)
-						.find('select')
-						.prop('disabled', disabled);
-				}
+View.prototype = Object.create(null, {
+	addTranslationToUi: {
+		value: function addTranslationToUi(){
+			this.blockly.addBlocklyTranslation();
+			$('[data-i18n-text]')
+				.each(function() {
+						var contents = $(this).contents();
+						if (contents.length > 0) {
+								if (contents.get(0).nodeType == Node.TEXT_NODE) {
+										$(this).text(translator.translateText($(this)
+								.attr('data-i18n-text')))
+								.append(contents.slice(1));
+								}
+						} else {
+						$(this)
+							.text(translator.translateText($(this)
+								.attr('data-i18n-text')));
+					}
+				});
+		}
+	},
+	initTours: {
+		value: function initTours() {
+			this.tours.introduction = require('./tours/introduction').init();
+			this.tours.welcome = require('./tours/welcome').init();
+			if ( tours.welcome.welcome() ){
+				this.activeTutorial = this.tours.welcome;
+			}
+		}
+	},
+	getUiComponent: {
+		value: function getUiComponent(component) {
+			return $(config.uiComponents[component]);
+		}
+	},
+	startTutorial: {
+		value: function startTutorial(e) {
+			if (e) {
+				e.preventDefault();
+			}
+			if (activeTutorial) {
+				activeTutorial.stop();
+			}
+			$('#tours').on('change', function(e) {
+					var value = $(this).val();
+					if (value === '') return;
+					activeTutorial = tours[value];
+					activeTutorial.start();
 			});
-	}
-};
-
-var setOpacity = function setOpacity(enabled, componentName, opacity) {
-	if (enabled) {
-		getUiComponent(componentName)
-			.css('opacity', opacity);
-		var disabled = +opacity < 1;
-		getUiComponent(componentName)
-			.find('button')
-			.prop('disabled', disabled);
-		getUiComponent(componentName)
-			.find('input')
-			.prop('disabled', disabled);
-		getUiComponent(componentName)
-			.find('select')
-			.prop('disabled', disabled);
-	}
-};
-
-var saveXml = function saveXml(showOnly) {
-	var xmlDom = blockly.Xml.workspaceToDom(blockly.mainWorkspace);
-	Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))
-		.forEach(function (field) {
-			if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-				if (field.childNodes.length >= 1) {
-					field.childNodes[0].nodeValue = '';
+		}
+	},
+	stopTutorial: {
+		value: function stopTutorial(e) {
+			if (e) {
+				e.preventDefault();
+			}
+			if (activeTutorial) {
+					activeTutorial.stop();
+					activeTutorial = null;
+			}
+		}
+	},
+	setOpacityForAll: {
+		value: function setOpacityForAll(enabled, opacity) {
+			if (enabled) {
+				for (var key in config.uiComponents) {
+					if (config.doNotHide.indexOf(key) < 0) {
+						this.getUiComponent(key)
+							.css('opacity', opacity);
+						var disabled = +opacity < 1;
+						this.getUiComponent(key)
+							.find('button')
+							.prop('disabled', disabled);
+						this.getUiComponent(key)
+							.find('input')
+							.prop('disabled', disabled);
+						this.getUiComponent(key)
+							.find('select')
+							.prop('disabled', disabled);
+					}
 				}
 			}
-		});
-	Array.prototype.slice.apply(xmlDom.getElementsByTagName('block'))
-		.forEach(function (block) {
-			switch (block.getAttribute('type')) {
-			case 'trade':
-				block.setAttribute('id', 'trade');
-				break;
-			case 'on_strategy':
-				block.setAttribute('id', 'strategy');
-				break;
-			case 'on_finish':
-				block.setAttribute('id', 'finish');
-				break;
-			default:
-				block.removeAttribute('id');
-				break;
+		}
+	},
+	setOpacity: {
+		value: function setOpacity(enabled, componentName, opacity) {
+			if (enabled) {
+				this.getUiComponent(componentName)
+					.css('opacity', opacity);
+				var disabled = +opacity < 1;
+				this.getUiComponent(componentName)
+					.find('button')
+					.prop('disabled', disabled);
+				this.getUiComponent(componentName)
+					.find('input')
+					.prop('disabled', disabled);
+				this.getUiComponent(componentName)
+					.find('select')
+					.prop('disabled', disabled);
 			}
-		});
-	var xmlText = blockly.Xml.domToPrettyText(xmlDom);
-	if (showOnly) {
-		botUtils.log(xmlText);
-	} else {
-		var filename = 'binary-bot' + parseInt(new Date()
-			.getTime() / 1000) + '.xml';
-		var blob = new Blob([xmlText], {
-			type: 'text/xml;charset=utf-8'
-		});
-		fileSaver.saveAs(blob, filename);
+		}
 	}
-};
+});
 
-var run = function run() {
-	// Generate JavaScript code and run it.
-	try {
-		window.LoopTrap = 1000;
-		blockly.JavaScript.INFINITE_LOOP_TRAP =
-			'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-		var code = blockly.JavaScript.workspaceToCode(blockly.mainWorkspace);
-		blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-		var EVAL_BLOCKLY_CODE = eval;
-		EVAL_BLOCKLY_CODE(code);
-		$('#summaryPanel')
-			.show();
-		$('#stopButton')
-			.bind('click', stop);
-	} catch (e) {
-		botUtils.showError(e);
-	}
-};
 
 var handleFileSelect = function handleFileSelect(e) {
 	var files;
@@ -214,17 +148,12 @@ var handleFileSelect = function handleFileSelect(e) {
 
 var readFile = function readFile(f) {
 	reader = new FileReader();
+	var that = this;
 	reader.onload = (function (theFile) {
     $('#fileBrowser').hide();
 		return function (e) {
 			try {
-				blockly.mainWorkspace.clear();
-				var xml = blockly.Xml.textToDom(e.target.result);
-				blockly.Xml.domToWorkspace(xml, blockly.mainWorkspace);
-				botUtils.addPurchaseOptions();
-				blockly.mainWorkspace.clearUndo();
-				blockly.mainWorkspace.zoomToFit();
-        setBlockColors();
+				that.blockly.loadBlocksFile(e.target.result);
 				botUtils.log(translator.translateText('Blocks are loaded successfully'), 'success');
 			} catch (err) {
 				botUtils.showError(err);
@@ -356,60 +285,4 @@ var show = function show(done) {
       run();
     });
 
-  $.get('xml/toolbox.xml', function (toolbox) {
-    require('./code_generators');
-    require('./definitions');
-    Blockly.Blocks.text.newQuote_ = function(open) {
-      var file;
-      
-      if (open == this.RTL) {
-        file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFpJREFUeNpiZGBg+M+ACRyh9H50CSYGEsEg1AACDlB8HxoAIKwAxAJIcu+h4u+RNcEUz0czMAFJroEBKfiQTUcG95FMF2BBUnAAiA8C8QM05z6A4o1A/AEgwACTSBqO/l02SwAAAABJRU5ErkJggg==';
-      } else {
-        file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAAXNSR0IArs4c6QAAActpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx4bXA6Q3JlYXRvclRvb2w+QWRvYmUgSW1hZ2VSZWFkeTwveG1wOkNyZWF0b3JUb29sPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KKS7NPQAAAHFJREFUGBljYICAAiC1H4odIEJwsgHIgskpgEQFgPg9EP8H4vtAjAwUgByQOAjvB2IwaACSMMEEsAiCmI8k5wASZgRikOkgWz4AcSAQg8AFIAaJ3QdxgOABECeCGCANINPRgSNUYD+6BBO6ACH+INQAAKsvFws0VtvEAAAAAElFTkSuQmCC';
-      }
-      return new Blockly.FieldImage(file, 12, 12, '"');
-    };
-
-    var workspace = blockly.inject('blocklyDiv', {
-      media: 'js/blockly/media/',
-      toolbox: botUtils.xmlToStr(translator.translateXml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
-      zoom: {
-        wheel: false,
-      },
-      trashcan: false,
-    });
-    $.get('xml/main.xml', function (main) {
-      blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-      blockly.mainWorkspace.getBlockById('trade')
-        .setDeletable(false);
-      blockly.mainWorkspace.getBlockById('strategy')
-        .setDeletable(false);
-      blockly.mainWorkspace.getBlockById('finish')
-        .setDeletable(false);
-      botUtils.updateTokenList();
-      botUtils.addPurchaseOptions();
-      blockly.mainWorkspace.clearUndo();
-      initTours();
-      Blockly.Blocks.texts.HUE = '#dedede';
-      Blockly.Blocks.math.HUE = '#dedede';
-      Blockly.Blocks.logic.HUE = '#dedede';
-      Blockly.Blocks.lists.HUE = '#dedede';
-      Blockly.Blocks.variables.HUE = '#dedede';
-      Blockly.Blocks.procedures.HUE = '#dedede';
-      setBlockColors();
-      done();
-    });
-  });
-};
-
-module.exports = {
-  uiComponents: uiComponents,
-  getUiComponent: getUiComponent,
-  setOpacityForAll: setOpacityForAll,
-  setOpacity: setOpacity,
-  stopTutorial: stopTutorial,
-  startTutorial: startTutorial,
-  initTours: initTours,
-  show: show,
-  selectBlockByText: selectBlockByText
 };
