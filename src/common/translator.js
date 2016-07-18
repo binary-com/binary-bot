@@ -1,6 +1,6 @@
 var $ = require('jquery');
 var i18n = require('i18n');
-var utils = require('utils');
+var parseQueryString = require('binary-common-utils/tools').parseQueryString;
 // handle language in localStorage and query string
 var supportedLanguages = {
 	zh_tw: require('json!../i18n/zh_tw.json'),
@@ -22,7 +22,7 @@ $('#language')
 		localStorage.lang = e.target.value;
 		window.location.search = '?l=' + e.target.value;
 	});
-var queryStr = utils.parseQueryString();
+var queryStr = parseQueryString();
 if (queryStr.hasOwnProperty('l') && queryStr.l !== '' && supportedLanguages.hasOwnProperty(queryStr.l) ) {
 	window.lang = queryStr.l;
 	localStorage.lang = queryStr.l;

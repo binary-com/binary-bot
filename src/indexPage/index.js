@@ -5,10 +5,10 @@ if ( top !== self ) {
 var translator = require('translator'); // must be on top
 var i18n = require('i18n');
 var appId = require('./appId');
-var commonUtils = require('utils');
+var asyncChain= require('binary-common-utils/tools').asyncChain;
 var $ = require('jquery');
 
-commonUtils.asyncChain()
+asyncChain()
 .pipe(function checkOauthLogin(done){
 	appId.oauthLogin(done);
 })

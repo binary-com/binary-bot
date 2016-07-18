@@ -1,7 +1,7 @@
 window.Bot = {};
 var translator = require('translator'); // must be on top
 var i18n = require('i18n');
-var commonUtils = require('utils');
+var asyncChain= require('binary-common-utils/tools').asyncChain;
 var $ = require('jquery');
 $.ajaxSetup({
 	cache: false
@@ -13,7 +13,7 @@ require('notifyjs-browser');
 require('tourist');
 
 translator.addBlocklyTranslation();
-commonUtils.asyncChain()
+asyncChain()
 	.pipe(function translate(done){
 		translator.Translator(function () {
 			$('[data-i18n-text]')

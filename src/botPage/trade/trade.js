@@ -1,7 +1,6 @@
 var globals = require('../globals/globals');
 var botUtils = require('../utils/utils');
 var storageManager = require('binary-common-utils/storageManager');
-var commonUtils = require('utils');
 var view = require('../view');
 var i18n = require('i18n');
 var LiveApi = require('binary-live-api')
@@ -272,10 +271,9 @@ var restartContracts = function restartContracts() {
 var observeAuthorize = function observeAuthorize() {
 	api.events.on('authorize', function (response) {
 		if (response.error) {
-			commonUtils.removeToken(token);
 			showError(response.error);
 		} else if (!finished) {
-			log(i18n._('Logged in to:') + ' ' + commonUtils.getAccountName(token), 'info');
+			log(i18n._('Logged in to:') + ' ' + token, 'info');
 			requestSymbolInfo(function(){
 				getContractInfo(function () {
 					restartContracts();

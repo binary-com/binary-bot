@@ -2,10 +2,10 @@ var globals = require('./globals/globals');
 var config = require('./globals/config');
 var blockly = require('blockly');
 var i18n = require('i18n');
+var account = require('binary-common-utils/account');
 var activeTutorial = null;
 var tours = {}; // e
 var botUtils = require('./utils/utils');
-var commonUtils = require('utils');
 var fileSaver = require('filesaverjs');
 require('./utils/draggable');
 
@@ -252,12 +252,10 @@ var stop = function stop(e) {
 };
 
 var logout = function logout() {
-  commonUtils.logoutAllTokens(function(){
-    commonUtils.removeAllTokens(function(){
-      botUtils.updateTokenList();
-      botUtils.log(i18n._('Logged you out!'), 'info');
-    });
-  });
+	account.logoutAllTokens(function(){
+		botUtils.updateTokenList();
+		botUtils.log(i18n._('Logged you out!'), 'info');
+	});
 };
 
 var show = function show(done) {

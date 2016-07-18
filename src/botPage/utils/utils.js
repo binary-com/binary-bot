@@ -3,7 +3,6 @@ var config = require('../globals/config');
 var activeSymbols = require('./active_symbols');
 var storageManager = require('binary-common-utils/storageManager');
 var blockly = require('blockly');
-var commonUtils = require('utils');
 var i18n = require('i18n');
 
 var isConditionAllowedInSymbol = function isConditionAllowedInSymbol(symbol, condition) {
