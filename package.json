@@ -14,7 +14,7 @@
   "dependencies": {
     "backbone": "^1.3.3",
     "binary-charts": "^7.6.3",
-    "binary-common-utils": "^1.0.10",
+    "binary-common-utils": "^1.0.11",
     "binary-live-api": "~20.0.1",
     "blockly": "google/blockly.git#ac0e704c699133e57e8a57bd49a971ce01014535",
     "bootstrap": "^3.3.6",

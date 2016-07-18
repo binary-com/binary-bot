@@ -1,9 +1,7 @@
 var globals = require('./globals/globals');
 var config = require('./globals/config');
-var storageManager = require('storageManager');
 var blockly = require('blockly');
 var i18n = require('i18n');
-var appId = require('appId');
 var activeTutorial = null;
 var tours = {}; // e
 var botUtils = require('./utils/utils');

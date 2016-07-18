@@ -1,8 +1,7 @@
 var globals = require('../globals/globals');
 var config = require('../globals/config');
 var activeSymbols = require('./active_symbols');
-var storageManager = require('storageManager');
-var appId = require('appId');
+var storageManager = require('binary-common-utils/storageManager');
 var blockly = require('blockly');
 var commonUtils = require('utils');
 var i18n = require('i18n');
@@ -274,7 +273,7 @@ var addPurchaseOptions = function addPurchaseOptions() {
 
 $('#login')
 	.bind('click.login', function(e){
-		appId.redirectOauth();
+		document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + window.lang.toUpperCase();
 	})
 	.text('Log in');
 module.exports = {

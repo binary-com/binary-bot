@@ -1,4 +1,4 @@
-var storageManager = require('storageManager');
+var storageManager = require('binary-common-utils/storageManager');
 var blockly = require('blockly');
 
 var asyncChain = function asyncChain(){
@@ -49,35 +49,6 @@ var removeAllTokens = function removeAllTokens(callback) {
 	}
 };
 
-var addTokenIfValid = function addTokenIfValid(token, callback) {
-	var LiveApi = require('binary-live-api')
-		.LiveApi;
-	var api = new LiveApi();
-	api.authorize(token)
-		.then(function (response) {
-			api.disconnect();
-			storageManager.addToken(token, response.authorize.loginid, response.authorize.is_virtual);
-			if (callback) {
-				callback(null);
-			}
-		}, function (reason) {
-			api.disconnect();
-			removeToken(token);
-			if (callback) {
-				callback('Error');
-			}
-		});
-};
-
-var addAllTokens = function addAllTokens(tokenList, callback) {
-	if (tokenList.length) {
-		addTokenIfValid(tokenList[0], function(err){
-			addAllTokens(tokenList.slice(1, tokenList.length), callback);
-		});
-	} else {
-		callback();
-	}
-};
 
 var logoutAllTokens = function logoutAllTokens(callback) {
 	var tokenList = storageManager.getTokenList();
@@ -108,9 +79,7 @@ module.exports = {
 	parseQueryString: parseQueryString,
 	removeToken: removeToken,
 	removeAllTokens: removeAllTokens,
-	addTokenIfValid: addTokenIfValid,
 	getAccountName: getAccountName,
-	addAllTokens: addAllTokens,
 	asyncChain: asyncChain,
 	logoutAllTokens: logoutAllTokens
 };

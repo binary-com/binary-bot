@@ -1,7 +1,6 @@
 window.Bot = {};
 var translator = require('translator'); // must be on top
 var i18n = require('i18n');
-var appId = require('appId');
 var commonUtils = require('utils');
 var $ = require('jquery');
 $.ajaxSetup({
@@ -12,8 +11,6 @@ window.Backbone = require('backbone');
 window._ = require('underscore');
 require('notifyjs-browser');
 require('tourist');
-
-appId.removeTokenFromUrl();
 
 translator.addBlocklyTranslation();
 commonUtils.asyncChain()

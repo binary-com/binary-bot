@@ -1,10 +1,9 @@
 var globals = require('../globals/globals');
 var botUtils = require('../utils/utils');
-var storageManager = require('storageManager');
+var storageManager = require('binary-common-utils/storageManager');
 var commonUtils = require('utils');
 var view = require('../view');
 var i18n = require('i18n');
-var appId = require('appId');
 var LiveApi = require('binary-live-api')
 	.LiveApi;
 var Chart = require('binary-charts')
@@ -339,7 +338,7 @@ var trade = function trade(_token, callback, trade_again) {
 			restartContracts();
 		} else {
 			token = _token;
-			api = new LiveApi({ appId: appId.getAppId() });
+			api = new LiveApi({ appId: storageManager.get('appId') });
 			observeTicks();
 			observeProposal();
 			observeTransaction();

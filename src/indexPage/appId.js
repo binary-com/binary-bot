@@ -12,9 +12,6 @@ if ( document.location.port === '8080' ) {
 }
 storageManager.set('appId', appId);
 var AppId = {
-	redirectOauth: function oauthLogin(){
-		document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + window.lang.toUpperCase();
-	},
 	oauthLogin: function getToken(done) {
 		var queryStr = tools.parseQueryString();
 		var tokenList = [];
