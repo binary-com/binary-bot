@@ -14,7 +14,7 @@
   "dependencies": {
     "backbone": "^1.3.3",
     "binary-charts": "^7.6.3",
-    "binary-common-utils": "^1.0.6",
+    "binary-common-utils": "^1.0.10",
     "binary-live-api": "~20.0.1",
     "blockly": "google/blockly.git#ac0e704c699133e57e8a57bd49a971ce01014535",
     "bootstrap": "^3.3.6",
@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "app-module-path": "^1.1.0",
+    "binary-mock-websocket": "^1.0.4",
     "chai": "^3.5.0",
     "deep-diff": "^0.3.4",
     "del": "^2.2.1",
