@@ -13,8 +13,8 @@ module.exports = {
     root: __dirname + '/src/common'
   },
   entry: {
-    bot: __dirname + '/src/bot/bot',
-    index: __dirname + '/src/index/index',
+    bot: __dirname + '/src/botPage',
+    index: __dirname + '/src/indexPage',
   },
 	externals: [
 		{
