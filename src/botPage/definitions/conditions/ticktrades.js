@@ -21,25 +21,25 @@ Object.keys(config.opposites).forEach(function(opposites){
 				.appendField('> ' + option_names[0] + '/' + option_names[1]);
 			this.appendValueInput("DURATION")
 				.setCheck("Number")
-				.appendField(i18n._("Ticks:"));
+				.appendField(translator.translateText("Ticks:"));
 			this.appendDummyInput()
-				.appendField(i18n._("Payout:"))
+				.appendField(translator.translateText("Payout:"))
 				.appendField(new blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
 			this.appendDummyInput()
-				.appendField(i18n._("Currency:"))
+				.appendField(translator.translateText("Currency:"))
 				.appendField(new blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
 			this.appendValueInput("AMOUNT")
 				.setCheck("Number")
-				.appendField(i18n._("Amount:"));
+				.appendField(translator.translateText("Amount:"));
 			if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
 				this.appendValueInput("PREDICTION")
 					.setCheck("Number")
-					.appendField(i18n._("Prediction:"));
+					.appendField(translator.translateText("Prediction:"));
 			}
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, "Condition");
 			this.setColour("#f2f2f2");
-			this.setTooltip(i18n._('Provides the contract conditions:') + ' ' + option_names[0] + '/' + option_names[1]);
+			this.setTooltip(translator.translateText('Provides the contract conditions:') + ' ' + option_names[0] + '/' + option_names[1]);
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){

@@ -4,7 +4,7 @@ var blockly = require('blockly');
 var i18n = require('i18n');
 var init = function init(){
 	var steps = [{
-		content: '<p>' + i18n._("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.") + '</p>',
+		content: '<p>' + translator.translateText("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.") + '</p>',
 		closeButton: true,
 		target: view.getUiComponent('center'),
 		nextButton: true,
@@ -15,7 +15,7 @@ var init = function init(){
 			view.setOpacityForAll(started, 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("You will need to add the blocks to this area which is called the <b>workspace</b>.") + '</p>',
+		content: '<p>' + translator.translateText("You will need to add the blocks to this area which is called the <b>workspace</b>.") + '</p>',
 		target: view.getUiComponent('center'),
 		closeButton: true,
 		nextButton: true,
@@ -27,14 +27,14 @@ var init = function init(){
 		teardown: function (tour, options) {
 		},
 	}, {
-		content: '<p>' + i18n._("You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.") + '</p>',
+		content: '<p>' + translator.translateText("You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.") + '</p>',
 		target: view.getUiComponent('center'),
 		closeButton: true,
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
 	}, {
-		content: '<p>' + i18n._("You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.") + '</p>',
+		content: '<p>' + translator.translateText("You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.") + '</p>',
 		target: view.getUiComponent('center'),
 		closeButton: true,
 		nextButton: true,
@@ -44,7 +44,7 @@ var init = function init(){
 			$('#blocker').hide();
 		},
 	}, {
-		content: '<p>' + i18n._("To start pick a <b>symbol</b> block from markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)") + '</p>',
+		content: '<p>' + translator.translateText("To start pick a <b>symbol</b> block from markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)") + '</p>',
 		target: view.getUiComponent('flyout'),
 		closeButton: true,
 		highlightTarget: true,
@@ -65,7 +65,7 @@ var init = function init(){
 			view.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("Great! Now add it to the <b>Define Trade</b> block.") + '</p>',
+		content: '<p>' + translator.translateText("Great! Now add it to the <b>Define Trade</b> block.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		closeButton: true,
@@ -84,7 +84,7 @@ var init = function init(){
 			blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
 		},
 	}, {
-		content: '<p>' + i18n._("Alright! Now pick a <b>condition</b> block.") + '</p>',
+		content: '<p>' + translator.translateText("Alright! Now pick a <b>condition</b> block.") + '</p>',
 		target: view.getUiComponent('flyout'),
 		closeButton: true,
 		highlightTarget: true,
@@ -105,7 +105,7 @@ var init = function init(){
 			view.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("OK! Now add it to the symbol you added in the previous step.") + '</p>',
+		content: '<p>' + translator.translateText("OK! Now add it to the symbol you added in the previous step.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		closeButton: true,
@@ -124,7 +124,7 @@ var init = function init(){
 			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 		},
 	}, {
-		content: '<p>' + i18n._("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="image/number.png"/>) ' + i18n._("from the Math menu") + '</p>',
+		content: '<p>' + translator.translateText("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="image/number.png"/>) ' + translator.translateText("from the Math menu") + '</p>',
 		target: view.getUiComponent('flyout'),
 		closeButton: true,
 		highlightTarget: true,
@@ -144,7 +144,7 @@ var init = function init(){
 			view.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("Click on the number block to edit its value") + ' (<img src="image/number_editing.png"/>), ' + i18n._("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
+		content: '<p>' + translator.translateText("Click on the number block to edit its value") + ' (<img src="image/number_editing.png"/>), ' + translator.translateText("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		highlightTarget: true,
@@ -162,7 +162,7 @@ var init = function init(){
 			window.removeEventListener('tour:ticks', this.tour_ticks_added);
 		},
 	}, {
-		content: '<p>' + i18n._("OK, Now add all remaining options to the condition block") + '</p>',
+		content: '<p>' + translator.translateText("OK, Now add all remaining options to the condition block") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		closeButton: true,
@@ -185,7 +185,7 @@ var init = function init(){
 				.css('opacity', 1);
 		},
 	}, {
-		content: '<p>' + i18n._("That's it, now you have a complete trade block with its options. It's time to define a strategy") + '</p>',
+		content: '<p>' + translator.translateText("That's it, now you have a complete trade block with its options. It's time to define a strategy") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		closeButton: true,
@@ -194,7 +194,7 @@ var init = function init(){
 		at: 'right center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.") + '</p>',
+		content: '<p>' + translator.translateText("This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.strategy),
 		closeButton: true,
@@ -203,7 +203,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("The received tick value is in the block <b>tick</b> and the tick direction (up or down) is in the block <b>direction</b>. You can pick them from the <b>Strategy</b> menu") + '</p>',
+		content: '<p>' + translator.translateText("The received tick value is in the block <b>tick</b> and the tick direction (up or down) is in the block <b>direction</b>. You can pick them from the <b>Strategy</b> menu") + '</p>',
 		target: view.getUiComponent('flyout'),
 		closeButton: true,
 		highlightTarget: true,
@@ -221,7 +221,7 @@ var init = function init(){
 				.css('opacity', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block") + '</p>',
+		content: '<p>' + translator.translateText("For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block") + '</p>',
 		target: view.getUiComponent('flyout'),
 		highlightTarget: true,
 		closeButton: true,
@@ -244,7 +244,7 @@ var init = function init(){
 			window.removeEventListener('tour:purchase_created', this.tour_purchase_created);
 		},
 	}, {
-		content: '<p>' + i18n._("Now add it to the Strategy block.") + '</p>',
+		content: '<p>' + translator.translateText("Now add it to the Strategy block.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.strategy),
 		closeButton: true,
@@ -262,7 +262,7 @@ var init = function init(){
 			window.removeEventListener('tour:purchase', this.tour_purchase_added);
 		},
 	}, {
-		content: '<p>' + i18n._("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
+		content: '<p>' + translator.translateText("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.strategy),
 		closeButton: true,
@@ -271,7 +271,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.") + '</p>',
+		content: '<p>' + translator.translateText("A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.strategy),
 		closeButton: true,
@@ -280,7 +280,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block") + '</p>',
+		content: '<p>' + translator.translateText("After a purchase was started, the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.finish),
 		closeButton: true,
@@ -289,7 +289,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.") + '</p>',
+		content: '<p>' + translator.translateText("Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.finish),
 		closeButton: true,
@@ -298,7 +298,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.") + '</p>',
+		content: '<p>' + translator.translateText("A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.") + '</p>',
 		target: view.getUiComponent('flyout'),
 		closeButton: true,
 		highlightTarget: true,
@@ -321,7 +321,7 @@ var init = function init(){
 			window.removeEventListener('tour:trade_again_created', this.tour_trade_again_created);
 		},
 	}, {
-		content: '<p>' + i18n._("Now add it to the On Finish block") + '</p>',
+		content: '<p>' + translator.translateText("Now add it to the On Finish block") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.finish),
 		closeButton: true,
@@ -340,7 +340,7 @@ var init = function init(){
 			blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 		},
 	}, {
-		content: '<p>' + i18n._("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
+		content: '<p>' + translator.translateText("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.finish),
 		closeButton: true,
@@ -349,7 +349,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("OK, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.") + '</p>',
+		content: '<p>' + translator.translateText("OK, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.finish),
 		closeButton: true,
@@ -361,7 +361,7 @@ var init = function init(){
 			view.setOpacityForAll(started, 1);
 		},
 	}, {
-		content: '<p>' + i18n._("If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
+		content: '<p>' + translator.translateText("If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo") + '</p>',
 		target: view.getUiComponent('group_undo_redo'),
 		closeButton: true,
 		highlightTarget: true,
@@ -369,7 +369,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("You can save/load your blocks using these buttons") + '</p>',
+		content: '<p>' + translator.translateText("You can save/load your blocks using these buttons") + '</p>',
 		target: view.getUiComponent('group_save'),
 		closeButton: true,
 		highlightTarget: true,
@@ -377,7 +377,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
+		content: '<p>' + translator.translateText("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
 		target: view.getUiComponent('group_start_stop'),
 		closeButton: true,
 		highlightTarget: true,
@@ -385,7 +385,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
+		content: '<p>' + translator.translateText("You can choose the token you want by the <b>Account</b> dropdown on the trade block. If you do not have any token in the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		closeButton: true,
@@ -394,7 +394,7 @@ var init = function init(){
 		at: 'right center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("You can add a token to the bot using the <b>Add Token</b> button.") + '</p>',
+		content: '<p>' + translator.translateText("You can add a token to the bot using the <b>Add Token</b> button.") + '</p>',
 		target: view.getUiComponent('token'),
 		closeButton: true,
 		highlightTarget: true,
@@ -402,7 +402,7 @@ var init = function init(){
 		at: 'bottom center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("You can see the summary of your trades in this menu.") + '</p>',
+		content: '<p>' + translator.translateText("You can see the summary of your trades in this menu.") + '</p>',
 		target: view.getUiComponent('group_summary'),
 		closeButton: true,
 		highlightTarget: true,
@@ -410,7 +410,7 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("Go ahead and run the blocks. You can stop the code anytime you want using the stop button") + '</p>',
+		content: '<p>' + translator.translateText("Go ahead and run the blocks. You can stop the code anytime you want using the stop button") + '</p>',
 		target: view.getUiComponent('group_start_stop'),
 		highlightTarget: true,
 		my: 'right center',

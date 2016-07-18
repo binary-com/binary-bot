@@ -207,7 +207,7 @@ var handleFileSelect = function handleFileSelect(e) {
 		if (file.type.match('text/xml')) {
 			readFile(file);
 		} else {
-			botUtils.log(i18n._('File is not supported:' + ' ') + file.name, 'info');
+			botUtils.log(translator.translateText('File is not supported:' + ' ') + file.name, 'info');
 		}
 	}
 };
@@ -225,7 +225,7 @@ var readFile = function readFile(f) {
 				blockly.mainWorkspace.clearUndo();
 				blockly.mainWorkspace.zoomToFit();
         setBlockColors();
-				botUtils.log(i18n._('Blocks are loaded successfully'), 'success');
+				botUtils.log(translator.translateText('Blocks are loaded successfully'), 'success');
 			} catch (err) {
 				botUtils.showError(err);
 			}
@@ -246,15 +246,14 @@ var stop = function stop(e) {
 	if (e) {
 		e.preventDefault();
 	}
-	var trade = require('./trade/trade');
-	trade.stop();
+	Bot.stop();
 	globals.disableRun(false);
 };
 
 var logout = function logout() {
 	account.logoutAllTokens(function(){
 		botUtils.updateTokenList();
-		botUtils.log(i18n._('Logged you out!'), 'info');
+		botUtils.log(translator.translateText('Logged you out!'), 'info');
 	});
 };
 
@@ -373,7 +372,7 @@ var show = function show(done) {
 
     var workspace = blockly.inject('blocklyDiv', {
       media: 'js/blockly/media/',
-      toolbox: botUtils.xmlToStr(i18n.xml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
+      toolbox: botUtils.xmlToStr(translator.translateXml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
       zoom: {
         wheel: false,
       },

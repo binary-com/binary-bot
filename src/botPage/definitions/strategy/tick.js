@@ -7,10 +7,10 @@ var i18n = require('i18n');
 blockly.Blocks.tick = {
   init: function() {
     this.appendDummyInput()
-        .appendField(i18n._("Tick Value"));
+        .appendField(translator.translateText("Tick Value"));
     this.setOutput(true, "Number");
     this.setColour("#f2f2f2");
-    this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
+    this.setTooltip(translator.translateText('Returns the tick value received by a strategy block'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {

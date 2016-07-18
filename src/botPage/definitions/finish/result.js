@@ -6,10 +6,10 @@ var relationChecker = require('../../utils/relationChecker');
 blockly.Blocks.contract_result = {
   init: function() {
     this.appendDummyInput()
-        .appendField(i18n._("Contract Result"));
+        .appendField(translator.translateText("Contract Result"));
     this.setOutput(true, "String");
     this.setColour("#f2f2f2");
-    this.setTooltip(i18n._('Returns the result of the finished contract'));
+    this.setTooltip(translator.translateText('Returns the result of the finished contract'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {

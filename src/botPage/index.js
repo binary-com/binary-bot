@@ -1,5 +1,5 @@
-window.Bot = {};
-var translator = require('translator'); // must be on top
+var Bot = require('./bot');
+var Translator = require('translator'); // must be on top
 var i18n = require('i18n');
 var asyncChain= require('binary-common-utils/tools').asyncChain;
 var $ = require('jquery');
@@ -12,28 +12,24 @@ window._ = require('underscore');
 require('notifyjs-browser');
 require('tourist');
 
-translator.addBlocklyTranslation();
-asyncChain()
-	.pipe(function translate(done){
-		translator.Translator(function () {
-			$('[data-i18n-text]')
-				.each(function() {
-			    	var contents = $(this).contents();
-			    	if (contents.length > 0) {
-			        	if (contents.get(0).nodeType == Node.TEXT_NODE) {
-			            	$(this).text(i18n._($(this)
-								.attr('data-i18n-text')))
-								.append(contents.slice(1));
-			        	}
-			    	} else {
-						$(this)
-							.text(i18n._($(this)
-								.attr('data-i18n-text')));
+var translator = new Translator();
+//translator.addBlocklyTranslation();
+$('[data-i18n-text]')
+	.each(function() {
+			var contents = $(this).contents();
+			if (contents.length > 0) {
+					if (contents.get(0).nodeType == Node.TEXT_NODE) {
+							$(this).text(translator.translateText($(this)
+					.attr('data-i18n-text')))
+					.append(contents.slice(1));
 					}
-				});
-				done();
-		});
-	})
+			} else {
+			$(this)
+				.text(translator.translateText($(this)
+					.attr('data-i18n-text')));
+		}
+	});
+asyncChain()
 	.pipe(function loadActiveSymbols(done){
 		var botUtils = require('./utils/utils');
 		Bot.globals = require('./globals/globals');
@@ -43,14 +39,7 @@ asyncChain()
 		});
 	})
 	.pipe(function runBot(done){
-		Bot.config = require('./globals/config');
-		Bot.utils = require('./utils/utils');
-		Bot.version = require('./globals/version');
-		Bot.markets = require('./trade/markets');
-		Bot.conditions = require('./trade/conditions');
-		Bot.trade = require('./trade/trade');
-		Bot.toggleDebug = require('./globals/globals')
-			.toggleDebug;
+		window.Bot = new Bot();
 		var view = require('./view'); // show the bot
 		view.show(function(){
 			done();

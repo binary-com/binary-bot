@@ -5,10 +5,10 @@ var i18n = require('i18n');
 blockly.Blocks.total_profit = {
   init: function() {
     this.appendDummyInput()
-        .appendField(i18n._("Total Profit"));
+        .appendField(translator.translateText("Total Profit"));
     this.setOutput(true, "Number");
     this.setColour("#dedede");
-    this.setTooltip(i18n._('Returns the total profit'));
+    this.setTooltip(translator.translateText('Returns the total profit'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };

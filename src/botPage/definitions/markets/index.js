@@ -11,13 +11,13 @@ Object.keys(symbolNames).forEach(function(symbol){
 			this.appendDummyInput()
 				.appendField(symbolNames[symbol]);
 			this.appendDummyInput()
-				.appendField(i18n._('Accepts') + ': (' + botUtils.getAllowedCategoryNames(symbol) + ')');
+				.appendField(translator.translateText('Accepts') + ': (' + botUtils.getAllowedCategoryNames(symbol) + ')');
 			this.appendStatementInput("CONDITION")
 				.setCheck("Condition");
 			this.setInputsInline(false);
 			this.setPreviousStatement(true, "Submarket");
 			this.setColour("#f2f2f2");
-			this.setTooltip(i18n._('Chooses the symbol:') + ' ' + symbolNames[symbol]);
+			this.setTooltip(translator.translateText('Chooses the symbol:') + ' ' + symbolNames[symbol]);
 			this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 		},
 		onchange: function(ev){

@@ -10,10 +10,10 @@ var tour = null;
 
 var lists = {
 	accounts: [
-		[i18n._('Please add a token first'), '']
+		[translator.translateText('Please add a token first'), '']
 	],
 	purchase_choices: [
-		[i18n._('Click to select'), '']
+		[translator.translateText('Click to select'), '']
 	]
 };
 

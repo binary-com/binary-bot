@@ -5,7 +5,7 @@ blockly.JavaScript.trade = function (block) {
 	var submarket = blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 	if (submarket === '') {
 		throw {
-			message: i18n._('You have to add a submarket first')
+			message: translator.translateText('You have to add a submarket first')
 		};
 	}
 	// TODO: Assemble JavaScript into code variable.

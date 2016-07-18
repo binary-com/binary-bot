@@ -6,12 +6,12 @@ blockly.Blocks.notify = {
   init: function() {
     this.appendValueInput("MESSAGE")
         .setCheck(null)
-        .appendField(i18n._("Notify type:"))
-        .appendField(new blockly.FieldDropdown([[i18n._("success"), "success"], [i18n._("information"), "info"], [i18n._("warning"), "warn"], [i18n._("error"), "error"]]), "NOTIFICATION_TYPE");
+        .appendField(translator.translateText("Notify type:"))
+        .appendField(new blockly.FieldDropdown([[translator.translateText("success"), "success"], [translator.translateText("information"), "info"], [translator.translateText("warning"), "warn"], [translator.translateText("error"), "error"]]), "NOTIFICATION_TYPE");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour("#dedede");
-    this.setTooltip(i18n._('Creates notification'));
+    this.setTooltip(translator.translateText('Creates notification'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   }
 };

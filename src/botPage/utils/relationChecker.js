@@ -44,7 +44,7 @@ var trade = function trade(_trade, ev) {
 		}
 	}
 	if (_trade.childBlocks_.length && !botUtils.findSymbol(_trade.childBlocks_[0].type)) {
-		botUtils.log(i18n._('The trade block can only accept submarket blocks'), 'warning');
+		botUtils.log(translator.translateText('The trade block can only accept submarket blocks'), 'warning');
 		Array.prototype.slice.apply(_trade.childBlocks_)
 			.forEach(function (child) {
 				child.unplug();
@@ -59,14 +59,14 @@ var trade = function trade(_trade, ev) {
 	var topParent = botUtils.findTopParentBlock(_trade);
 	if (topParent !== null) {
 		if (botUtils.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
-			botUtils.log(i18n._('The trade block cannot be inside binary blocks'), 'warning');
+			botUtils.log(translator.translateText('The trade block cannot be inside binary blocks'), 'warning');
 			_trade.unplug();
 		}
 	}
 };
 var submarket = function submarket(_submarket, ev) {
 	if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
-		botUtils.log(i18n._('Submarket blocks can only accept condition blocks'), 'warning');
+		botUtils.log(translator.translateText('Submarket blocks can only accept condition blocks'), 'warning');
 		Array.prototype.slice.apply(_submarket.childBlocks_)
 			.forEach(function (child) {
 				child.unplug();
@@ -76,7 +76,7 @@ var submarket = function submarket(_submarket, ev) {
 	}
 	if (_submarket.parentBlock_ !== null) {
 		if (_submarket.parentBlock_.type !== 'trade') {
-			botUtils.log(i18n._('Submarket blocks have to be added to the trade block'), 'warning');
+			botUtils.log(translator.translateText('Submarket blocks have to be added to the trade block'), 'warning');
 			_submarket.unplug();
 		}
 	}
@@ -84,13 +84,13 @@ var submarket = function submarket(_submarket, ev) {
 var condition = function condition(_condition, ev, calledByParent) {
 	if (_condition.parentBlock_ !== null) {
 		if (!botUtils.findSymbol(_condition.parentBlock_.type)) {
-			botUtils.log(i18n._('Condition blocks have to be added to submarket blocks'), 'warning');
+			botUtils.log(translator.translateText('Condition blocks have to be added to submarket blocks'), 'warning');
 			_condition.unplug();
 		} else if ( !botUtils.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
 			var symbol = botUtils.findSymbol(_condition.parentBlock_.type);
-			botUtils.log(symbol[Object.keys(symbol)[0]] + ' ' + i18n._('does not support category:') + 
+			botUtils.log(symbol[Object.keys(symbol)[0]] + ' ' + translator.translateText('does not support category:') + 
 				' ' + botUtils.getCategoryName(_condition.type) +
-				', ' + i18n._('Allowed categories are') + ' ' + botUtils.getAllowedCategoryNames(_condition.parentBlock_.type), 'warning');
+				', ' + translator.translateText('Allowed categories are') + ' ' + botUtils.getAllowedCategoryNames(_condition.parentBlock_.type), 'warning');
 			_condition.unplug();
 		} else {
 			botUtils.broadcast('tour:condition');
@@ -100,7 +100,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 					var duration = getNumField(_condition, 'DURATION');
 					if (duration !== '') {
 						if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
-							botUtils.log(i18n._('Number of ticks must be between 5 and 10'), 'warning');
+							botUtils.log(translator.translateText('Number of ticks must be between 5 and 10'), 'warning');
 						} else {
 							botUtils.broadcast('tour:ticks');
 							added.push('DURATION');
@@ -113,7 +113,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 					var prediction = getNumField(_condition, 'PREDICTION');
 					if (prediction !== '') {
 						if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-							botUtils.log(i18n._('Prediction must be one digit'), 'warning');
+							botUtils.log(translator.translateText('Prediction must be one digit'), 'warning');
 						} else {
 							added.push('PREDICTION');
 						}
@@ -135,7 +135,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 var inside_strategy = function inside_strategy(blockObject, ev, name) {
 	var topParent = botUtils.findTopParentBlock(blockObject);
 	if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
-		botUtils.log(name + ' ' + i18n._('must be added inside the strategy block'), 'warning');
+		botUtils.log(name + ' ' + translator.translateText('must be added inside the strategy block'), 'warning');
 		blockObject.unplug();
 	} else if (topParent !== null && topParent.type === 'on_strategy') {
 		if (blockObject.type === 'purchase') {
@@ -146,7 +146,7 @@ var inside_strategy = function inside_strategy(blockObject, ev, name) {
 var inside_finish = function inside_finish(blockObject, ev, name) {
 	var topParent = botUtils.findTopParentBlock(blockObject);
 	if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
-		botUtils.log(name + ' ' + i18n._('must be added inside the finish block'), 'warning');
+		botUtils.log(name + ' ' + translator.translateText('must be added inside the finish block'), 'warning');
 		blockObject.unplug();
 	} else if (topParent !== null && topParent.type === 'on_finish') {
 		if (blockObject.type === 'trade_again') {
