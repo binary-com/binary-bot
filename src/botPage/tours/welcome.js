@@ -1,6 +1,6 @@
 var globals = require('../globals/globals');
 var view = require('../view');
-var storageManager = require('storageManager');
+var storageManager = require('binary-common-utils/storageManager');
 var blockly = require('blockly');
 var i18n = require('i18n');
 var init = function init(){
