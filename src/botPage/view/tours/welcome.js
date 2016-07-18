@@ -1,8 +1,7 @@
 var globals = require('../globals/globals');
-var view = require('../view');
+var view = require('../');
 var storageManager = require('binary-common-utils/storageManager');
 var blockly = require('blockly');
-var i18n = require('i18n');
 var init = function init(){
 	var steps = [{
 		content: '<p>' + translator.translateText('Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>X</b> button.') + '</p>',

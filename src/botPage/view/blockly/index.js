@@ -19,7 +19,6 @@ var _Blockly = function Blockly(){
 			});
 			$.get('xml/main.xml', function (main) {
 				globalBlockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-				botUtils.updateTokenList();
 				that.addPurchaseOptions();
 				globalBlockly.mainWorkspace.clearUndo();
 				resolve();

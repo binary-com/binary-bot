@@ -2,7 +2,7 @@
 var blockly = require('blockly');
 var i18n = require('i18n');
 var config = require('const');
-var Bot = require('../../../bot');
+var Bot = require('../../../../bot');
 var relationChecker = require('../../relationChecker');
 var bot = new Bot();
 

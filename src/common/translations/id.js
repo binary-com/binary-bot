@@ -51,8 +51,6 @@ module.exports = {
   "0606f0b7763ee6e8094a3dab7873d34c08fd3670": "Begin Building a Bot Now",
   "221acaf3a0290adafe08cdcb8c66121c73d8b4a3": "Need further assistance?",
   "4832e45812a2724f16a15f9ae87adfc8ae4168cf": "Contact us",
-  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
-  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
   "9bb396940adb9705fe57eba6ea8b578e6aafa792": "Payout",
   "78d7103a319e808455d397513279d99f3b3f3768": "Stake",
   "bbb930cc426507ed3f6b7c343c75dd0e041494b7": "statement",
@@ -78,6 +76,10 @@ module.exports = {
   "dc28f5f3c65ec611f0f30022650d24382d27448e": "Odd",
   "18a63f5512afb5573e5b44deba78d629f0635317": "Over",
   "2a268b89b83f8cb38ea48e46e93dd8840db512f9": "Under",
+  "f977a1b8eb64b809abfcaf7ca75f1a2377bed426": "tick received at:",
+  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
   "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
   "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
   "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
@@ -90,7 +92,6 @@ module.exports = {
   "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
   "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
   "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
-  "f977a1b8eb64b809abfcaf7ca75f1a2377bed426": "tick received at:",
   "4819b2f64fbd355ddbf0771d2b54b49c0d1796f5": "Please add a token first",
   "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
   "f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
@@ -135,8 +136,6 @@ module.exports = {
   "3f71217a42b6920b422b3d9a6b37c5d39cdbbf19": "Open the summary panel.",
   "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
   "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
-  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
-  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
   "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
   "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
   "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -180,6 +179,7 @@ module.exports = {
   "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
   "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
   "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
 }
 ;

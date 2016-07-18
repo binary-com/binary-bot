@@ -2,10 +2,67 @@ var globals = require('./globals/globals');
 var config = require('const');
 var account = require('binary-common-utils/account');
 var activeTutorial = null;
-var botUtils = require('./utils/utils');
 var fileSaver = require('filesaverjs');
+var observer = require('binary-common-utils/observer');
 var Blockly = require('./blockly');
+var storageManager = require('binary-common-utils/storageManager');
 require('./utils/draggable');
+
+observer.register('ui.error', function showError(error) {
+	if (error.stack) {
+		if (globals.isDebug()) {
+			console.log('%c' + error.stack, 'color: red');
+		} else {
+			globals.addLogToQueue('%c' + error.stack, 'color: red');
+		}
+	}
+	var message;
+	if (error.message) {
+		message = error.message;
+	} else {
+		message = error;
+	}
+	$.notify(message, {
+		position: 'bottom right',
+		className: 'error',
+	});
+	if (globals.isDebug()) {
+		console.log('%cError: ' + message, 'color: red');
+	} else {
+		globals.addLogToQueue('%cError: ' + message, 'color: red');
+	}
+});
+
+var logTypes = ["success", "info", "warn", "error"];
+
+var observeForLogTypes = function observeForLogTypes(type){
+	observer.register('ui.log.' + type, function(message){
+		$.notify(message, {
+			position: 'bottom right',
+			className: type,
+		});
+		if (globals.isDebug()) {
+			console.log(message);
+		} else {
+			globals.addLogToQueue(message);
+		}
+	});
+	observer.register('ui.log.' + type + '.' + 'left', function(message){
+		$.notify(message, {
+			position: 'bottom left',
+			className: type,
+		});
+		if (globals.isDebug()) {
+			console.log(message);
+		} else {
+			globals.addLogToQueue(message);
+		}
+	});
+};
+
+logTypes.forEach(function(type){
+	observeForLogTypes(type);
+});
 
 var View = function View(){
 	this.tours = {};
@@ -16,12 +73,36 @@ var View = function View(){
 	this.initPromise = new Promise(function(resolve, reject){
 		that.then(function(){
 			that.initTours();
+			that.updateTokenList();
 			resolve();
 		});
 	});
 };
 
 View.prototype = Object.create(null, {
+	updateTokenList: {
+		value: function updateTokenList() {
+			var tokenList = storageManager.getTokenList();
+			if (tokenList.length === 0) {
+				$('#login').css('display', 'inline-block');
+				$('#accountSelect').css('display', 'none');
+				$('#logout').css('display', 'none');
+			} else {
+				$('#login').css('display', 'none');
+				$('#accountSelect').css('display', 'inline-block');
+				$('#logout').css('display', 'inline-block');
+				tokenList.forEach(function (tokenInfo) {
+					var str;
+					if ( tokenInfo.hasOwnProperty('isVirtual') ) {
+						str = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
+					} else {
+						str = '';
+					}
+					$('#accountSelect').append('<option value="' + tokenInfo.token + '">'+str + ' (' + tokenInfo.account_name+ ') ' + '</option>');
+				});
+			}
+		}
+	},
 	addTranslationToUi: {
 		value: function addTranslationToUi(){
 			this.blockly.addBlocklyTranslation();
@@ -141,7 +222,7 @@ var handleFileSelect = function handleFileSelect(e) {
 		if (file.type.match('text/xml')) {
 			readFile(file);
 		} else {
-			botUtils.log(translator.translateText('File is not supported:' + ' ') + file.name, 'info');
+			observer.emit('ui.log.info', translator.translateText('File is not supported:' + ' ') + file.name);
 		}
 	}
 };
@@ -154,7 +235,7 @@ var readFile = function readFile(f) {
 		return function (e) {
 			try {
 				that.blockly.loadBlocksFile(e.target.result);
-				botUtils.log(translator.translateText('Blocks are loaded successfully'), 'success');
+				observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'));
 			} catch (err) {
 				botUtils.showError(err);
 			}
@@ -180,9 +261,10 @@ var stop = function stop(e) {
 };
 
 var logout = function logout() {
+	var that = this;
 	account.logoutAllTokens(function(){
-		botUtils.updateTokenList();
-		botUtils.log(translator.translateText('Logged you out!'), 'info');
+		that.updateTokenList();
+		observer.emit('ui.log.info', translator.translateText('Logged you out!'));
 	});
 };
 
@@ -284,5 +366,9 @@ var show = function show(done) {
     .click(function (e) {
       run();
     });
-
+	$('#login')
+		.bind('click.login', function(e){
+			document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + window.lang.toUpperCase();
+		})
+		.text('Log in');
 };

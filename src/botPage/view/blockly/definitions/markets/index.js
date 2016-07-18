@@ -3,7 +3,7 @@ var blockly = require('blockly');
 var i18n = require('i18n');
 var globals = require('../../../globals/globals');
 var relationChecker = require('../../relationChecker');
-var Bot = require('../../../bot');
+var Bot = require('../../../../bot');
 var symbolNames = globals.activeSymbols.getSymbolNames();
 var bot = new Bot();
 
