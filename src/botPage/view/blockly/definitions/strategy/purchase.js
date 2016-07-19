@@ -1,14 +1,17 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-var blockly = require('blockly');
-var i18n = require('i18n');
+var globalBlockly = require('blockly');
+var Blockly = require('../../../blockly');
+var blockly = new Blockly();
 var relationChecker = require('../../relationChecker');
 var globals = require('../../../globals');
 
-blockly.Blocks.purchase = {
+globalBlockly.Blocks.purchase = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(translator.translateText("Purchase"))
-			.appendField(new blockly.FieldDropdown(globals.getPurchaseChoices), "PURCHASE_LIST");
+			.appendField(new globalBlockly.FieldDropdown(function(){
+				return blockly.getPurchaseChoices();
+			}), "PURCHASE_LIST");
 		this.setPreviousStatement(true, 'Purchase');
 		this.setColour("#f2f2f2");
 		this.setTooltip(translator.translateText('Purchases a chosen contract. Accepts index to choose between the contracts.'));

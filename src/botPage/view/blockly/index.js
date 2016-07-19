@@ -11,6 +11,7 @@ var _Blockly = function _Blockly(){
 	if ( _Blockly.instance ) {
 		return _Blockly.instance;
 	}
+	this.purchase_choices = [[translator.translateText('Click to select'), '']];
 	_Blockly.instance = this;
 	this.translator = new Translator();
 	this.addBlocklyTranslation();
@@ -29,10 +30,10 @@ var _Blockly = function _Blockly(){
 			});
 			$.get('xml/main.xml', function (main) {
 				globalBlockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-				that.addPurchaseOptions();
 				that.disableDeleteForMainBlocks();
 				that.overrideBlocklyDefaultShape();
 				globalBlockly.mainWorkspace.clearUndo();
+				that.addPurchaseOptions();
 				resolve();
 			});
 		});
@@ -40,6 +41,11 @@ var _Blockly = function _Blockly(){
 };
 
 _Blockly.prototype = Object.create(null, {
+	getPurchaseChoices: {
+		value: function getPurchaseChoices(){
+			return this.purchase_choices;
+		}
+	},
 	findTopParentBlock: {
 		value: function findTopParentBlock(block) {
 			 var pblock = block.parentBlock_;
@@ -124,10 +130,10 @@ _Blockly.prototype = Object.create(null, {
 	},
 	reconfigureBlocklyAfterLoad: {
 		value: function reconfigureBlocklyAfterLoad(){
-			this.addPurchaseOptions();
 			globalBlockly.mainWorkspace.clearUndo();
 			globalBlockly.mainWorkspace.zoomToFit();
 			this.setBlockColors();
+			this.addPurchaseOptions();
 		}
 	},
 	selectBlockByText: {
@@ -239,7 +245,8 @@ _Blockly.prototype = Object.create(null, {
 					.getInputTargetBlock('CONDITION')
 					.type;
 				var opposites = config.opposites[condition_type.toUpperCase()];
-				globals.lists.purchase_choices = [];
+				this.purchase_choices = [];
+				var that = this;
 				opposites.forEach(function (option, index) {
 					if (index === 0) {
 						firstOption = {
@@ -252,7 +259,7 @@ _Blockly.prototype = Object.create(null, {
 							name: option[Object.keys(option)[0]],
 						};
 					}
-					globals.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+					that.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
 				});
 				var purchases = [];
 				globalBlockly.mainWorkspace.getAllBlocks()

@@ -9,23 +9,6 @@ var on_strategy = function () {};
 
 var tour = null;
 
-var lists = {
-	accounts: [
-		[translator.translateText('Please add a token first'), '']
-	],
-	purchase_choices: [
-		[translator.translateText('Click to select'), '']
-	]
-};
-
-var getAccounts = function getAccounts() {
-	return lists.accounts;
-};
-
-var getPurchaseChoices = function getPurchaseChoices() {
-	return lists.purchase_choices;
-};
-
 var tradeInfo = {
 	numOfRuns: 0,
 	totalProfit: '',
@@ -131,9 +114,6 @@ module.exports = {
 	toggleDebug: toggleDebug,
 	addLogToQueue: addLogToQueue,
 	isDebug: isDebug,
-	getAccounts: getAccounts,
-	lists: lists,
-	getPurchaseChoices: getPurchaseChoices,
 	disableRun: disableRun,
 	on_finish: on_finish,
 	on_strategy: on_strategy,
