@@ -2,7 +2,6 @@ var globals = require('./globals/globals');
 var config = require('const');
 var account = require('binary-common-utils/account');
 var activeTutorial = null;
-var fileSaver = require('filesaverjs');
 var observer = require('binary-common-utils/observer');
 var Blockly = require('./blockly');
 var storageManager = require('binary-common-utils/storageManager');
@@ -24,7 +23,7 @@ var View = function View(){
 	this.addTranslationToUi();
 	this.errorAndLogHandling();
 	this.setElementActions();
-	this.bot = new Bot();
+	window.Bot = this.bot = new Bot();
 	var that = this;
 	this.initPromise = new Promise(function(resolve, reject){
 		that.initTours();

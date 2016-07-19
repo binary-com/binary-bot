@@ -12,7 +12,7 @@ Object.keys(symbolNames).forEach(function(symbol){
 		if ( !condition ) {
 			throw {message: 'A condition has to be defined for the symbol'};
 		}
-		var code = 'Bot.markets.symbolActions.' + symbol + '('+condition.trim()+')';
+		var code = condition.trim()+'\n symbol: \'' + symbol + '\'}'; // opened by the condition block;
 		return code;
 	};
 });

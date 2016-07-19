@@ -19,14 +19,13 @@ Object.keys(config.opposites).forEach(function(opposites){
 		if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
 			throw {message: 'All condition options are required'};
 		}
-		var code = 'Bot.conditions.ticktrade({\n'+
+		var code = '{\n'+
 			'condition: \'' + opposites + '\',\n'+
 			'duration: ' + duration + ',\n'+
-			'payouttype: \'' + payouttype + '\',\n'+
+			'basis: \'' + payouttype + '\',\n'+
 			'currency: \'' + currency + '\',\n'+
 			'amount: (' + amount + ').toFixed(2),\n'+
-			((config.oppositesHaveBarrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
-		'})';
+			((config.oppositesHaveBarrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' ); // symbol to be added by the market block
 		return code;
 	};
 });

@@ -5,6 +5,6 @@ blockly.JavaScript.purchase = function(block) {
 	}
 	var purchase_list = block.getFieldValue('PURCHASE_LIST');
 	var code = purchase_list;
-	code = 'Bot.trade.purchase(\'' + code + '\');\n';
+	code = '_strategyCtrl.purchase(\'' + code + '\');\n';
 	return code;
 };

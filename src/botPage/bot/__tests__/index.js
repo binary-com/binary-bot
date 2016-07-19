@@ -7,10 +7,7 @@ var expect = require('chai').expect;
 var observer = require('binary-common-utils/observer');
 var asyncChain = require('binary-common-utils/tools').asyncChain;
 
-var options = [
-	{"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"},
-	{"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"}
-];
+var option = {"amount":"1.00","basis":"stake","condition":"EVENODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"};
 
 describe('Bot', function() {
 	var bot;
@@ -50,11 +47,11 @@ describe('Bot', function() {
 				done();
 			});
 			observer.registerOnce('bot.stop', function(){
-				bot.start(token, options, null, null);
+				bot.start(token, option, null, null);
 			});
 			bot.stop();
 		});
-		it('start bot with the token, options', function(){
+		it('start bot with the token, option', function(){
 		});
 	});
 	describe('Start the trade without real finish and strategy functions', function(){
@@ -73,7 +70,7 @@ describe('Bot', function() {
 				observer.registerOnce('bot.waiting_for_purchase', function(){
 					chainDone();
 				});
-				bot.start(token, options, null, null);
+				bot.start(token, option, null, null);
 			})
 			.pipe(function(chainDone){
 				done();
@@ -90,7 +87,7 @@ describe('Bot', function() {
 		var numOfTicks = 0;
 		before(function(done){
 			this.timeout('10000');
-			bot.start(token, options, function strategy(tick, proposals, _strategyCtrl){
+			bot.start(token, option, function strategy(tick, proposals, _strategyCtrl){
 				if ( ++numOfTicks === 3 ) {
 					_strategyCtrl.purchase('DIGITEVEN');
 				}
@@ -122,7 +119,7 @@ describe('Bot', function() {
 		var numOfTicks = 0;
 		before(function(done){
 			this.timeout('10000');
-			bot.start(token, options, function strategy(tick, proposals, _strategyCtrl){
+			bot.start(token, option, function strategy(tick, proposals, _strategyCtrl){
 				if ( ++numOfTicks === 3 ) {
 					_strategyCtrl.purchase('DIGITEVEN');
 				}

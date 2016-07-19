@@ -1,8 +1,10 @@
 var observer = require('binary-common-utils/observer');
+var _ = require('underscore');
 var _Symbol = require('./symbol');
 var StrategyCtrl = require('./strategyCtrl');
 var asyncChain = require('binary-common-utils/tools').asyncChain;
 var CustomApi = require('binary-common-utils/customApi');
+var config = require('const');
 
 var Bot = function Bot(api) {
 	if (Bot.instance) {
@@ -22,7 +24,7 @@ var Bot = function Bot(api) {
 
 Bot.prototype = Object.create(null, {
 	start: {
-		value: function start(token, tradeOptions, strategy, finish){
+		value: function start(token, tradeOption, strategy, finish){
 			if ( !this.running ) {
 				this.running = true;
 			} else {
@@ -30,7 +32,19 @@ Bot.prototype = Object.create(null, {
 			}
 			this.strategy = strategy;
 			this.finish = finish;
-			this.tradeOptions = tradeOptions;
+			if (!_.isEmpty(tradeOption)) {
+				var opposites = config.opposites[tradeOption.condition];
+				this.tradeOptions = [];
+				for (var key in opposites) {
+					this.tradeOptions.push( _.extend(_.clone(tradeOption), {
+							contract_type: Object.keys(opposites[key])[0]
+						}));
+					this.tradeOptions.slice(-1)[0].duration_unit = 't';
+					delete this.tradeOptions.slice(-1)[0].condition;
+				}
+			} else {
+				this.tradeOptions = [];
+			}
 			this.token = token;
 			var that = this;
 			asyncChain()
@@ -45,7 +59,7 @@ Bot.prototype = Object.create(null, {
 					that.ticks.concat(history);					
 					chainDone();
 				});
-				that.api.history(that.tradeOptions[0].symbol, {
+				that.api.history(tradeOption.symbol, {
 					end: 'latest',
 					count: 600,
 					subscribe: 1
@@ -66,6 +80,7 @@ Bot.prototype = Object.create(null, {
 				that.stop(contract);
 			});
 			this._subscribeProposals();
+			this._observeTicks();
 		}
 	},
 	_subscribeProposals: {

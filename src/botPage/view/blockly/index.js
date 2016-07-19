@@ -1,4 +1,5 @@
 var globalBlockly = require('blockly');
+var fileSaver = require('filesaverjs');
 var config = require('const');
 var Translator = require('translator');
 var tools = require('binary-common-utils/tools');
@@ -208,6 +209,7 @@ _Blockly.prototype = Object.create(null, {
 				var code = globalBlockly.JavaScript.workspaceToCode(globalBlockly.mainWorkspace);
 				globalBlockly.JavaScript.INFINITE_LOOP_TRAP = null;
 				var EVAL_BLOCKLY_CODE = eval;
+				console.log(code);
 				EVAL_BLOCKLY_CODE(code);
 				$('#summaryPanel')
 					.show();
