@@ -9,6 +9,7 @@ var storageManager = require('binary-common-utils/storageManager');
 var Translator = require('translator');
 var Bot = require('../bot');
 var $ = require('jquery');
+window.Blockly = require('blockly');
 window.$ = window.jQuery = $;
 window.Backbone = require('backbone');
 window._ = require('underscore');

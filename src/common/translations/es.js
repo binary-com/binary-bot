@@ -16,7 +16,7 @@ module.exports = {
   "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
   "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
   "2473e96bc614a911821242119918a241a41836d6": "Introduction",
-  "e43d612e11f1568f2373e719d4c4b08dcecdc7cc": "Logout",
+  "6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
   "4e5a2893bdcc7d239c1db72e4c4ffbe4bea73174": "Login",
   "612e12d29278b5519294bc25cdaddffec6d0f1c6": "Results",
   "12b71c3e0fe5f7c0b8d17cc03186e281412da4a8": "Summary",
