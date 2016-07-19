@@ -1,13 +1,6 @@
-var debug = false;
-var logQueue = [];
 var Translator = require('translator');
 var translator = new Translator();
 var $ = require('jquery');
-
-var on_finish = function () {};
-var on_strategy = function () {};
-
-var tour = null;
 
 var tradeInfo = {
 	numOfRuns: 0,
@@ -30,13 +23,13 @@ var copyObjectKeys = function copyObjectKeys(obj1, obj2) {
 
 copyObjectKeys(initialTradeInfo, tradeInfo);
 
-var resetTradeInfo = function resetTradeInfo() {
+var reset = function reset() {
 	copyObjectKeys(tradeInfo, initialTradeInfo);
-	updateTradeInfo();
-	showTradeInfo();
+	update();
+	show();
 };
 
-var updateTradeInfo = function updateTradeInfo() {
+var update = function update() {
 	Object.keys(tradeInfo)
 		.forEach(function (key) {
 			$('.' + key)
@@ -56,7 +49,7 @@ var updateTradeInfo = function updateTradeInfo() {
 		});
 };
 
-var addTradeInfo = function addTradeInfo(trade) {
+var add = function add(trade) {
 	trade.number = tradeInfo.numOfRuns;
 	// tradeInfo.tradeTable.reverse(); //reverse the table row growth
 	if (tradeInfo.tradeTable.length > tradeInfo.tradesCount) {
@@ -64,10 +57,10 @@ var addTradeInfo = function addTradeInfo(trade) {
 	}
 	tradeInfo.tradeTable.push(trade);
 	// tradeInfo.tradeTable.reverse();
-	showTradeInfo();
+	show();
 };
 
-var showTradeInfo = function showTradeInfo() {
+var show = function show() {
 	$('#tradesDisplay tbody')
 		.children()
 		.remove();
@@ -82,40 +75,10 @@ var showTradeInfo = function showTradeInfo() {
 		.scrollTop($('.table-scroll')[0].scrollHeight);
 };
 
-var toggleDebug = function toggleDebug() {
-	debug = !debug;
-	if (debug) {
-		logQueue.forEach(function (log) {
-			console.log.apply(console, log);
-		});
-		logQueue = [];
-	}
-};
-
-var addLogToQueue = function addLogToQueue() {
-	logQueue.push(Array.prototype.slice.apply(arguments));
-};
-
-var isDebug = function isDebug() {
-	return debug;
-};
-
-var disableRun = function disableRun(disabled) {
-	$('#runButton')
-		.prop('disabled', disabled);
-};
-
 module.exports = {
 	tradeInfo: tradeInfo,
-	resetTradeInfo: resetTradeInfo,
-	updateTradeInfo: updateTradeInfo,
-	addTradeInfo: addTradeInfo,
-	showTradeInfo: showTradeInfo,
-	toggleDebug: toggleDebug,
-	addLogToQueue: addLogToQueue,
-	isDebug: isDebug,
-	disableRun: disableRun,
-	on_finish: on_finish,
-	on_strategy: on_strategy,
-	tour: tour,
+	reset: reset,
+	update: update,
+	add: add,
+	show: show,
 };

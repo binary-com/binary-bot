@@ -1,6 +1,5 @@
 var globalBlockly = require('blockly');
 var config = require('const');
-var globals = require('../globals');
 var Bot = require('../../bot');
 var Translator = require('translator');
 var translator = new Translator();

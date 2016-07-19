@@ -3,7 +3,6 @@ var globalBlockly = require('blockly');
 var Blockly = require('../../../blockly');
 var blockly = new Blockly();
 var relationChecker = require('../../relationChecker');
-var globals = require('../../../globals');
 
 globalBlockly.Blocks.purchase = {
 	init: function() {

@@ -1,4 +1,5 @@
-var globals = require('./globals');
+var logger = require('./logger');
+var tradeInfo = require('./tradeInfo');
 var config = require('const');
 var account = require('binary-common-utils/account');
 var activeTutorial = null;
@@ -7,11 +8,12 @@ var Blockly = require('./blockly');
 var storageManager = require('binary-common-utils/storageManager');
 var Translator = require('translator');
 var Bot = require('../bot');
+var logger = require('./logger');
 var $ = require('jquery');
 window.Blockly = require('blockly');
 window.$ = window.jQuery = $;
 window.Backbone = require('backbone');
-window.globals = globals;
+window.logger = logger;
 window._ = require('underscore');
 require('notifyjs-browser');
 require('tourist');
@@ -161,10 +163,10 @@ View.prototype = Object.create(null, {
 
 			observer.register('ui.error', function showError(error) {
 				if (error.stack) {
-					if (globals.isDebug()) {
+					if (logger.isDebug()) {
 						console.log('%c' + error.stack, 'color: red');
 					} else {
-						globals.addLogToQueue('%c' + error.stack, 'color: red');
+						logger.addLogToQueue('%c' + error.stack, 'color: red');
 					}
 				}
 				var message;
@@ -177,10 +179,10 @@ View.prototype = Object.create(null, {
 					position: 'bottom right',
 					className: 'error',
 				});
-				if (globals.isDebug()) {
+				if (logger.isDebug()) {
 					console.log('%cError: ' + message, 'color: red');
 				} else {
-					globals.addLogToQueue('%cError: ' + message, 'color: red');
+					logger.addLogToQueue('%cError: ' + message, 'color: red');
 				}
 			});
 
@@ -191,10 +193,10 @@ View.prototype = Object.create(null, {
 						position: 'bottom ' + position,
 						className: type,
 					});
-					if (globals.isDebug()) {
+					if (logger.isDebug()) {
 						console.log(message);
 					} else {
-						globals.addLogToQueue(message);
+						logger.addLogToQueue(message);
 					}
 				});
 			};
@@ -294,7 +296,7 @@ View.prototype = Object.create(null, {
 			this.setFileBrowser();
 			this.startTutorial();
 			this.addBindings();
-			globals.showTradeInfo();
+			tradeInfo.show();
 		}
 	},
 	addBindings: {
@@ -305,7 +307,6 @@ View.prototype = Object.create(null, {
 					e.preventDefault();
 				}
 				that.bot.stop();
-				globals.disableRun(false);
 			};
 
 			var logout = function logout() {

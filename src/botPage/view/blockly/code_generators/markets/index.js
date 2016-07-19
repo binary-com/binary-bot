@@ -1,5 +1,4 @@
 var blockly = require('blockly');
-var globals = require('../../../globals');
 var Bot = require('../../../../bot');
 var bot = new Bot();
 var symbolNames = bot.symbol.activeSymbols.getSymbolNames();

@@ -1,7 +1,6 @@
 var blockly = require('blockly');
 var i18n = require('i18n');
 var relationChecker = require('../../relationChecker');
-var globals = require('../../../globals');
 blockly.Blocks.trade = {
 	init: function () {
 		this.appendDummyInput()
