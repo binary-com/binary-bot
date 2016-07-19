@@ -94,7 +94,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 		} else if ( !bot.symbol.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
 			var symbol = bot.symbol.findSymbol(_condition.parentBlock_.type);
 			observer.emit('ui.log.warning', symbol[Object.keys(symbol)[0]] + ' ' + translator.translateText('does not support category:') + 
-				' ' + bot.symbol.getCategoryName(_condition.type) +
+				' ' + bot.symbol.getCategoryNameForCondition(_condition.type) +
 				', ' + translator.translateText('Allowed categories are') + ' ' + bot.symbol.getAllowedCategoryNames(_condition.parentBlock_.type));
 			_condition.unplug();
 		} else {

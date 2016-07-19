@@ -1,5 +1,3 @@
-var blockly = require('blockly');
-var i18n = require('i18n');
 var debug = false;
 var logQueue = [];
 var Translator = require('translator');
@@ -75,14 +73,6 @@ var updateTradeInfo = function updateTradeInfo() {
 		});
 };
 
-var undoBlocks = function undoBlocks() {
-	blockly.mainWorkspace.undo();
-};
-
-var redoBlocks = function redoBlocks() {
-	blockly.mainWorkspace.undo(true);
-};
-
 var addTradeInfo = function addTradeInfo(trade) {
 	trade.number = tradeInfo.numOfRuns;
 	// tradeInfo.tradeTable.reverse(); //reverse the table row growth
@@ -136,8 +126,6 @@ module.exports = {
 	tradeInfo: tradeInfo,
 	resetTradeInfo: resetTradeInfo,
 	updateTradeInfo: updateTradeInfo,
-	undoBlocks: undoBlocks,
-	redoBlocks: redoBlocks,
 	addTradeInfo: addTradeInfo,
 	showTradeInfo: showTradeInfo,
 	toggleDebug: toggleDebug,

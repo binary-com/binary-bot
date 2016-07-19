@@ -10,7 +10,7 @@ Object.keys(config.opposites).forEach(function(opposites){
 		var currency = block.getFieldValue('CURRENCY_LIST');
 		var amount = blockly.JavaScript.valueToCode(block, 'AMOUNT', blockly.JavaScript.ORDER_ATOMIC);
 		var prediction;
-		if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
+		if ( config.oppositesHaveBarrier.indexOf(opposites) > -1 ) {
 			prediction = blockly.JavaScript.valueToCode(block, 'PREDICTION', blockly.JavaScript.ORDER_ATOMIC);
 			if ( prediction === '' ) {
 				throw {message: 'All condition options are required'};
@@ -25,7 +25,7 @@ Object.keys(config.opposites).forEach(function(opposites){
 			'payouttype: \'' + payouttype + '\',\n'+
 			'currency: \'' + currency + '\',\n'+
 			'amount: (' + amount + ').toFixed(2),\n'+
-			((config.opposites_have_barrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
+			((config.oppositesHaveBarrier.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
 		'})';
 		return code;
 	};

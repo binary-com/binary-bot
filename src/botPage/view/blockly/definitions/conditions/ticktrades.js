@@ -17,7 +17,7 @@ Object.keys(config.opposites).forEach(function(opposites){
 			});
 			this.appendDummyInput()
 				.setAlign(Blockly.ALIGN_CENTRE)
-				.appendField(bot.symbol.getCategoryName(opposites));
+				.appendField(bot.symbol.getCategoryNameForCondition(opposites));
 			this.appendDummyInput()
 				.appendField('> ' + option_names[0] + '/' + option_names[1]);
 			this.appendValueInput("DURATION")
@@ -32,7 +32,7 @@ Object.keys(config.opposites).forEach(function(opposites){
 			this.appendValueInput("AMOUNT")
 				.setCheck("Number")
 				.appendField(translator.translateText("Amount:"));
-			if ( config.opposites_have_barrier.indexOf(opposites) > -1 ) {
+			if ( config.oppositesHaveBarrier.indexOf(opposites) > -1 ) {
 				this.appendValueInput("PREDICTION")
 					.setCheck("Number")
 					.appendField(translator.translateText("Prediction:"));

@@ -1,5 +1,5 @@
 var observer = require('binary-common-utils/observer');
-var Symbol = require('./symbol');
+var _Symbol = require('./symbol');
 var StrategyCtrl = require('./strategyCtrl');
 var asyncChain = require('binary-common-utils/tools').asyncChain;
 var CustomApi = require('binary-common-utils/customApi');
@@ -15,7 +15,7 @@ var Bot = function Bot(api) {
 	} else {
 		this.api = api;
 	}
-	this.symbol = new Symbol(this.api);
+	this.symbol = new _Symbol(this.api);
 	this.initPromise = this.symbol.initPromise;
 	this.running = false;
 };

@@ -5,11 +5,11 @@ var asyncChain = require('binary-common-utils/tools').asyncChain;
 var ActiveSymbols = require('./activeSymbols');
 var _ = require('underscore');
 
-var Symbol = function Symbol(api) {
-	if ( Symbol.instance ) {
-		return Symbol.instance;
+var _Symbol = function _Symbol(api) {
+	if ( _Symbol.instance ) {
+		return _Symbol.instance;
 	}
-	Symbol.instance = this;
+	_Symbol.instance = this;
 	this.api = api._originalApi;
 	var that = this;
 	this.initPromise = new Promise(function(resolve){
@@ -31,7 +31,7 @@ var Symbol = function Symbol(api) {
 	});
 };
 
-Symbol.prototype = Object.create(null, {
+_Symbol.prototype = Object.create(null, {
 	getAllowedConditionsForSymbol: {
 		value: function getAllowedConditionsForSymbol(symbol) {
 			return this.getAllowedForSymbol(symbol).conditions;
@@ -136,4 +136,4 @@ Symbol.prototype = Object.create(null, {
 	}
 });
 
-module.exports = Symbol;
+module.exports = _Symbol;

@@ -14,8 +14,8 @@ describe('symbol', function() {
 			expect(function(){Symbol.getAllowedConditions();}).to.throw(Error);
 			expect(function(){Symbol.isConditionAllowedInSymbol();}).to.throw(Error);
 			expect(function(){Symbol.getConditionName();}).to.throw(Error);
-			expect(function(){Symbol.getCategory();}).to.throw(Error);
-			expect(function(){Symbol.getCategoryName();}).to.throw(Error);
+			expect(function(){Symbol.getCategoryForCondition();}).to.throw(Error);
+			expect(function(){Symbol.getCategoryNameForCondition();}).to.throw(Error);
 			expect(function(){Symbol.getAllowedCategoryNames();}).to.throw(Error);
 			expect(function(){Symbol.findSymbol();}).to.throw(Error);
 			expect(function(){Symbol.addMarketsToXml();}).to.throw(Error);

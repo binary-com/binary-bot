@@ -27,18 +27,12 @@ var AppId = {
 					next();
 				});
 			}, function(){
-				document.location.pathname += ((document.location.pathname.slice(-1) === '/')?'':'/') + 'bot.html';
+				document.location = '/bot.html';
 			});
 		} else {
 			if (done) {
 				done();
 			}
-		}
-	},
-	removeTokenFromUrl: function removeTokenFromUrl(){
-		var queryStr = tools.parseQueryString();
-		if (queryStr.token1) {
-			document.location.href = document.location.href.split('?')[0];
 		}
 	},
 	getAppId: function getAppId(){
