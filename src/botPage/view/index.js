@@ -156,6 +156,9 @@ View.prototype = Object.create(null, {
 	},
 	errorAndLogHandling: {
 		value: function errorAndLogHandling(){
+
+			var that = this;
+
 			observer.register('ui.error', function showError(error) {
 				if (error.stack) {
 					if (globals.isDebug()) {
@@ -201,6 +204,12 @@ View.prototype = Object.create(null, {
 				observeForLog(type, 'left');
 			});
 
+			observer.register('api.error', function(error){
+				if (error.code === 'InvalidToken'){
+					storageManager.removeAllTokens();
+					that.updateTokenList();
+				}
+			});
 		}
 	},
 	setFileBrowser: {
