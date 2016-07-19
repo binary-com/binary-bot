@@ -1,4 +1,4 @@
-var globals = require('../globals/globals');
+var globals = require('../globals');
 var view = require('../');
 var storageManager = require('binary-common-utils/storageManager');
 var blockly = require('blockly');

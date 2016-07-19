@@ -2,7 +2,7 @@
 var blockly = require('blockly');
 var i18n = require('i18n');
 var relationChecker = require('../../relationChecker');
-var globals = require('../../../globals/globals');
+var globals = require('../../../globals');
 
 blockly.Blocks.purchase = {
 	init: function() {

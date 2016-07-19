@@ -1,4 +1,4 @@
-var globals = require('../globals/globals');
+var globals = require('../globals');
 var view = require('../');
 var config = require('const');
 var blockly = require('blockly');

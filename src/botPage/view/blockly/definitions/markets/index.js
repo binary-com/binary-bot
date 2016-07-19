@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 var blockly = require('blockly');
 var i18n = require('i18n');
-var globals = require('../../../globals/globals');
+var globals = require('../../../globals');
 var relationChecker = require('../../relationChecker');
 var Bot = require('../../../../bot');
 var bot = new Bot();

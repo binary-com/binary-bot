@@ -209,7 +209,6 @@ _Blockly.prototype = Object.create(null, {
 				var code = globalBlockly.JavaScript.workspaceToCode(globalBlockly.mainWorkspace);
 				globalBlockly.JavaScript.INFINITE_LOOP_TRAP = null;
 				var EVAL_BLOCKLY_CODE = eval;
-				console.log(code);
 				EVAL_BLOCKLY_CODE(code);
 				$('#summaryPanel')
 					.show();

@@ -1,4 +1,4 @@
-var globals = require('./globals/globals');
+var globals = require('./globals');
 var config = require('const');
 var account = require('binary-common-utils/account');
 var activeTutorial = null;
