@@ -1,6 +1,8 @@
 var blockly = require('blockly');
 var globals = require('../../../globals/globals');
-var symbolNames = globals.activeSymbols.getSymbolNames();
+var Bot = require('../../../../bot');
+var bot = new Bot();
+var symbolNames = bot.symbol.activeSymbols.getSymbolNames();
 Object.keys(symbolNames).forEach(function(symbol){
 	blockly.JavaScript[symbol.toLowerCase()] = function(block) {
 		if ( this.parentBlock_ === null ) {

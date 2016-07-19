@@ -4,8 +4,8 @@ var i18n = require('i18n');
 var globals = require('../../../globals/globals');
 var relationChecker = require('../../relationChecker');
 var Bot = require('../../../../bot');
-var symbolNames = globals.activeSymbols.getSymbolNames();
 var bot = new Bot();
+var symbolNames = bot.symbol.activeSymbols.getSymbolNames();
 
 Object.keys(symbolNames).forEach(function(symbol){
 	blockly.Blocks[symbol.toLowerCase()] = {

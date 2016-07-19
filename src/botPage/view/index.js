@@ -6,6 +6,14 @@ var fileSaver = require('filesaverjs');
 var observer = require('binary-common-utils/observer');
 var Blockly = require('./blockly');
 var storageManager = require('binary-common-utils/storageManager');
+var Translator = require('translator');
+var Bot = require('../bot');
+var $ = require('jquery');
+window.$ = window.jQuery = $;
+window.Backbone = require('backbone');
+window._ = require('underscore');
+require('notifyjs-browser');
+require('tourist');
 require('./utils/draggable');
 
 observer.register('ui.error', function showError(error) {
@@ -68,12 +76,13 @@ var View = function View(){
 	this.tours = {};
 	this.translator = new Translator();
 	this.addTranslationToUi();
-	this.blockly = new Blockly();
+	this.bot = new Bot();
 	var that = this;
 	this.initPromise = new Promise(function(resolve, reject){
-		that.then(function(){
-			that.initTours();
-			that.updateTokenList();
+		that.initTours();
+		that.updateTokenList();
+		that.bot.initPromise.then(function(){
+			that.blockly = new Blockly();
 			resolve();
 		});
 	});
@@ -105,7 +114,6 @@ View.prototype = Object.create(null, {
 	},
 	addTranslationToUi: {
 		value: function addTranslationToUi(){
-			this.blockly.addBlocklyTranslation();
 			$('[data-i18n-text]')
 				.each(function() {
 						var contents = $(this).contents();
@@ -127,7 +135,7 @@ View.prototype = Object.create(null, {
 		value: function initTours() {
 			this.tours.introduction = require('./tours/introduction').init();
 			this.tours.welcome = require('./tours/welcome').init();
-			if ( tours.welcome.welcome() ){
+			if ( this.tours.welcome.welcome() ){
 				this.activeTutorial = this.tours.welcome;
 			}
 		}
@@ -372,3 +380,5 @@ var show = function show(done) {
 		})
 		.text('Log in');
 };
+
+module.exports = View;

@@ -1,14 +1,21 @@
 var globalBlockly = require('blockly');
 var Translator = require('translator');
 var tools = require('binary-common-utils/tools');
-require('./code_generators');
-require('./definitions');
+var Bot = require('../../bot');
+var bot = new Bot();
 
-var _Blockly = function Blockly(){
+var _Blockly = function _Blockly(){
+	if ( _Blockly.instance ) {
+		return _Blockly.instance;
+	}
+	_Blockly.instance = this;
 	this.translator = new Translator();
+	this.addBlocklyTranslation();
 	var that = this;
 	this.initPromise = new Promise(function(resolve, reject){
 		$.get('xml/toolbox.xml', function (toolbox) {
+			require('./code_generators');
+			require('./definitions');
 			var workspace = globalBlockly.inject('blocklyDiv', {
 				media: 'js/blockly/media/',
 				toolbox: that.xmlToStr(translator.translateXml($.parseXML(that.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
@@ -28,6 +35,19 @@ var _Blockly = function Blockly(){
 };
 
 _Blockly.prototype = Object.create(null, {
+	findTopParentBlock: {
+		value: function findTopParentBlock(block) {
+			 var pblock = block.parentBlock_;
+			 if (pblock === null) {
+							 return null;
+			 }
+			 while (pblock !== null) {
+							 block = pblock;
+							 pblock = block.parentBlock_;
+			 }
+			 return block;
+		}
+	},
 	createXmlTag: {
 		value: function createXmlTag(obj) {
 			var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
@@ -55,7 +75,7 @@ _Blockly.prototype = Object.create(null, {
 	marketsToXml: {
 		value: function marketsToXml(xml){
 			var xmlStr = this.xmlToStr(xml);
-			var marketXml = this.createXmlTag(globals.activeSymbols.getMarkets());
+			var marketXml = this.createXmlTag(bot.symbol.activeSymbols.getMarkets());
 			return xmlStr.replace('<!--Markets-->', marketXml);
 		}
 	},
@@ -136,7 +156,7 @@ _Blockly.prototype = Object.create(null, {
 	},
 	saveXml: {
 		value: function saveXml(showOnly) {
-			var xmlDom = blockly.Xml.workspaceToDom(blockly.mainWorkspace);
+			var xmlDom = globalBlockly.Xml.workspaceToDom(globalBlockly.mainWorkspace);
 			Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))
 				.forEach(function (field) {
 					if (field.getAttribute('name') === 'ACCOUNT_LIST') {
@@ -162,7 +182,7 @@ _Blockly.prototype = Object.create(null, {
 						break;
 					}
 				});
-			var xmlText = blockly.Xml.domToPrettyText(xmlDom);
+			var xmlText = globalBlockly.Xml.domToPrettyText(xmlDom);
 			if (showOnly) {
 				botUtils.log(xmlText);
 			} else {
@@ -179,10 +199,10 @@ _Blockly.prototype = Object.create(null, {
 		value: function run() {
 			try {
 				window.LoopTrap = 1000;
-				blockly.JavaScript.INFINITE_LOOP_TRAP =
+				globalBlockly.JavaScript.INFINITE_LOOP_TRAP =
 					'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-				var code = blockly.JavaScript.workspaceToCode(blockly.mainWorkspace);
-				blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+				var code = globalBlockly.JavaScript.workspaceToCode(globalBlockly.mainWorkspace);
+				globalBlockly.JavaScript.INFINITE_LOOP_TRAP = null;
 				var EVAL_BLOCKLY_CODE = eval;
 				EVAL_BLOCKLY_CODE(code);
 				$('#summaryPanel')
@@ -209,7 +229,7 @@ _Blockly.prototype = Object.create(null, {
 		value: function addPurchaseOptions() {
 			var firstOption = {};
 			var secondOption = {};
-			var trade = blockly.mainWorkspace.getBlockById('trade');
+			var trade = globalBlockly.mainWorkspace.getBlockById('trade');
 			if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
 				.getInputTargetBlock('CONDITION') !== null) {
 				var condition_type = trade.getInputTargetBlock('SUBMARKET')
@@ -232,7 +252,7 @@ _Blockly.prototype = Object.create(null, {
 					globals.lists.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
 				});
 				var purchases = [];
-				blockly.mainWorkspace.getAllBlocks()
+				globalBlockly.mainWorkspace.getAllBlocks()
 					.forEach(function (block) {
 						if (block.type === 'purchase') {
 							purchases.push(block);
@@ -241,7 +261,7 @@ _Blockly.prototype = Object.create(null, {
 				purchases.forEach(function (purchase) {
 					var value = purchase.getField('PURCHASE_LIST')
 						.getValue();
-					blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
+					globalBlockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
 					if (value === firstOption.condition) {
 						purchase.getField('PURCHASE_LIST')
 							.setText(firstOption.name);

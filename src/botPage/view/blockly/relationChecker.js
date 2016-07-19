@@ -6,7 +6,8 @@ var Translator = require('translator');
 var translator = new Translator();
 var bot = new Bot();
 var observer = require('binary-common-utils/observer');
-var blockly = require('./');
+var Blockly = require('./');
+var blockly = new Blockly();
 var getNumField = function getNumField(block, fieldName) {
 	var field = block.getInputTargetBlock(fieldName);
 	if (field !== null && field.type === 'math_number') {

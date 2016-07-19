@@ -2,6 +2,9 @@ var blockly = require('blockly');
 var i18n = require('i18n');
 var debug = false;
 var logQueue = [];
+var Translator = require('translator');
+var translator = new Translator();
+var $ = require('jquery');
 
 var on_finish = function () {};
 var on_strategy = function () {};
