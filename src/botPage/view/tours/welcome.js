@@ -1,4 +1,5 @@
 var Components = require('../components');
+var View = require('../');
 var storageManager = require('binary-common-utils/storageManager');
 var globalBlockly = require('blockly');
 
@@ -7,7 +8,6 @@ var Welcome = function Welcome(){
 		return Welcome.instance;
 	}
 	Welcome.instance = this;
-	this.started = false;
 	this.components = new Components();
 };
 
@@ -16,7 +16,7 @@ Welcome.prototype = Object.create(null, {
 		value: function getSteps(){
 			var that = this;
 			return [{
-				content: '<p>' + translator.translateText('Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>X</b> button.') + '</p>',
+				content: '<p>' + translator.translateText('Welcome to the binary bot, a blockly based automation tool for binary.com trades. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (') + '&rarr;' + translator.translateText(')</b> on the keyboard.') + '</p>',
 				target: that.components.getUiComponent('center'),
 				closeButton: true,
 				nextButton: true,
@@ -133,28 +133,33 @@ Welcome.prototype = Object.create(null, {
 			}, ];
 		}
 	},
-	start: {
-		value: function start(){
-			if (!this.components.activeTour && !this.started)	{
-				this.started = true;
-				var that = this;
-				this.tour = new Tourist.Tour({
-					steps: that.getSteps(),
-					cancelStep: function cancelStep(){
-						that.tour._teardownCurrentStep = function(){};
-						$('#blocker').hide();
-						that.components.setOpacityForAll(1);
-						that.stop();
-					},
-					successStep: function successStep(){
-						$('#blocker').hide();
-						that.components.setOpacityForAll(1);
-						storageManager.setDone('welcomeFinished');
-						that.stop();
-					}
-				});
-				this.tour.start();
+	next: {
+		value: function next(){
+			if ( this.tour ) {
+				this.tour.next();
 			}
+		}
+	},
+	start: {
+		value: function start(stopCallback){
+			this.stopCallback = stopCallback;
+			var that = this;
+			this.tour = new Tourist.Tour({
+				steps: that.getSteps(),
+				cancelStep: function cancelStep(){
+					that.tour._teardownCurrentStep = function(){};
+					$('#blocker').hide();
+					that.components.setOpacityForAll(1);
+					that.stop();
+				},
+				successStep: function successStep(){
+					$('#blocker').hide();
+					that.components.setOpacityForAll(1);
+					storageManager.setDone('welcomeFinished');
+					that.stop();
+				}
+			});
+			this.tour.start();
 		}
 	},
 	welcome: {
@@ -167,11 +172,12 @@ Welcome.prototype = Object.create(null, {
 	stop: {
 		value: function stop(){
 			this.components.setOpacityForAll(true, 1);
-			this.started = false;
 			this.tour.stop();
 			globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete this.tour;
-			this.components.activeTour = null;
+			if ( this.stopCallback ) {
+				this.stopCallback();
+			}
 		}
 	}
 });

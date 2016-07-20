@@ -92,13 +92,16 @@ View.prototype = Object.create(null, {
 	startTour: {
 		value: function startTour() {
 			var that = this;
-			if (this.activeTour) {
-				this.activeTour.stop();
-			}
 			$('#tours').on('change', function(e) {
 					var value = $(this).val();
 					if (value === '') return;
-					that.tours[value].start();
+					if (that.activeTour) {
+						that.activeTour.stop();
+					}
+					that.activeTour = that.tours[value];
+					that.activeTour.start(function(){
+						that.activeTour = null;
+					});
 			});
 		}
 	},
@@ -331,6 +334,30 @@ View.prototype = Object.create(null, {
 					document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + translator.getLanguage().toUpperCase();
 				})
 				.text('Log in');
+
+			$(document).keydown(function(e) {
+				switch(e.which) {
+					case 37: // left
+						break;
+
+					case 38: // up
+						break;
+
+					case 39: // right
+						if (that.activeTour) {
+							that.activeTour.next();
+						} else {
+							return;
+						}
+						break;
+
+					case 40: // down
+						break;
+
+					default: return; // exit this handler for other keys
+				}
+				e.preventDefault(); // prevent the default action (scroll / move caret)
+			});
 
 		}
 	}

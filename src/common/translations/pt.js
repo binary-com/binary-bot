@@ -93,7 +93,8 @@ module.exports = {
   "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
   "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
   "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
-  "f115603ea88f0fbc51ec2a35ba7bea78efb5695d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.",
+  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
+  "401ddc8376746eceaddf4dba5b8c91dc6d5f6fbe": ")</b> on the keyboard.",
   "625a8ce764f231dee4f6daf9a85c097bf23a7374": "You will need to add the blocks to this area which is called the <b>workspace</b>.",
   "535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
   "3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.",
@@ -126,7 +127,7 @@ module.exports = {
   "2339707b37e938d193477cea66300cbfdd64a540": "Use this button to log in to your account",
   "803adad740b5756a975629ac142e7f520af7303e": "You can see the summary of your trades in this menu.",
   "529d9fa8f773d3164f19697eebca2627b451d26a": "Go ahead and run the blocks. You can stop the code anytime you want using the stop button",
-  "5da35b3ca474394fb1fbc4de9c22daeb360ecfef": "Welcome to the binary bot, a blockly based automation tool for binary.com trades. If you want to skip this tutorial click on the <b>X</b> button.",
+  "281aee66a3d239cc45deca55a360f54fbd8fdbef": "Welcome to the binary bot, a blockly based automation tool for binary.com trades. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
   "ec58d9b45b6d9d2873a67648e21affc43d4108bc": "The blocks you put in here will create a binary bot code which you can then execute using the run button.",
   "cb5ec2c49b4eb83efeef0acf765d51003e0059af": "You can pick blocks from here to add to the workspace",
   "129b4372ce84996fae10be0a001a0ca53d593737": "You need to login before running the bot.",
@@ -135,7 +136,6 @@ module.exports = {
   "3f71217a42b6920b422b3d9a6b37c5d39cdbbf19": "Open the summary panel.",
   "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
   "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
-  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
   "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
   "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
   "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -179,6 +179,7 @@ module.exports = {
   "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
   "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
   "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
 }
 ;
