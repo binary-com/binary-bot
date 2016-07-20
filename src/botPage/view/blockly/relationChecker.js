@@ -48,7 +48,7 @@ var trade = function trade(_trade, ev) {
 		}
 	}
 	if (_trade.childBlocks_.length && !bot.symbol.findSymbol(_trade.childBlocks_[0].type)) {
-		observer.emit('ui.log.warning', translator.translateText('The trade block can only accept submarket blocks'));
+		observer.emit('ui.log.warn', translator.translateText('The trade block can only accept submarket blocks'));
 		Array.prototype.slice.apply(_trade.childBlocks_)
 			.forEach(function (child) {
 				child.unplug();
@@ -63,14 +63,14 @@ var trade = function trade(_trade, ev) {
 	var topParent = blockly.findTopParentBlock(_trade);
 	if (topParent !== null) {
 		if (bot.symbol.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
-			observer.emit('ui.log.warning', translator.translateText('The trade block cannot be inside binary blocks'));
+			observer.emit('ui.log.warn', translator.translateText('The trade block cannot be inside binary blocks'));
 			_trade.unplug();
 		}
 	}
 };
 var submarket = function submarket(_submarket, ev) {
 	if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
-		observer.emit('ui.log.warning', translator.translateText('Submarket blocks can only accept condition blocks'));
+		observer.emit('ui.log.warn', translator.translateText('Submarket blocks can only accept condition blocks'));
 		Array.prototype.slice.apply(_submarket.childBlocks_)
 			.forEach(function (child) {
 				child.unplug();
@@ -80,7 +80,7 @@ var submarket = function submarket(_submarket, ev) {
 	}
 	if (_submarket.parentBlock_ !== null) {
 		if (_submarket.parentBlock_.type !== 'trade') {
-			observer.emit('ui.log.warning', translator.translateText('Submarket blocks have to be added to the trade block'));
+			observer.emit('ui.log.warn', translator.translateText('Submarket blocks have to be added to the trade block'));
 			_submarket.unplug();
 		}
 	}
@@ -88,11 +88,11 @@ var submarket = function submarket(_submarket, ev) {
 var condition = function condition(_condition, ev, calledByParent) {
 	if (_condition.parentBlock_ !== null) {
 		if (!bot.symbol.findSymbol(_condition.parentBlock_.type)) {
-			observer.emit('ui.log.warning', translator.translateText('Condition blocks have to be added to submarket blocks'));
+			observer.emit('ui.log.warn', translator.translateText('Condition blocks have to be added to submarket blocks'));
 			_condition.unplug();
 		} else if ( !bot.symbol.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
 			var symbol = bot.symbol.findSymbol(_condition.parentBlock_.type);
-			observer.emit('ui.log.warning', symbol[Object.keys(symbol)[0]] + ' ' + translator.translateText('does not support category:') + 
+			observer.emit('ui.log.warn', symbol[Object.keys(symbol)[0]] + ' ' + translator.translateText('does not support category:') + 
 				' ' + bot.symbol.getCategoryNameForCondition(_condition.type) +
 				', ' + translator.translateText('Allowed categories are') + ' ' + bot.symbol.getAllowedCategoryNames(_condition.parentBlock_.type));
 			_condition.unplug();
@@ -104,7 +104,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 					var duration = getNumField(_condition, 'DURATION');
 					if (duration !== '') {
 						if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
-							observer.emit('ui.log.warning', translator.translateText('Number of ticks must be between 5 and 10'));
+							observer.emit('ui.log.warn', translator.translateText('Number of ticks must be between 5 and 10'));
 						} else {
 							observer.emit('tour:ticks');
 							added.push('DURATION');
@@ -117,7 +117,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 					var prediction = getNumField(_condition, 'PREDICTION');
 					if (prediction !== '') {
 						if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-							observer.emit('ui.log.warning', translator.translateText('Prediction must be one digit'));
+							observer.emit('ui.log.warn', translator.translateText('Prediction must be one digit'));
 						} else {
 							added.push('PREDICTION');
 						}
@@ -139,7 +139,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 var inside_strategy = function inside_strategy(blockObject, ev, name) {
 	var topParent = blockly.findTopParentBlock(blockObject);
 	if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
-		observer.emit('ui.log.warning', name + ' ' + translator.translateText('must be added inside the strategy block'));
+		observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
 		blockObject.unplug();
 	} else if (topParent !== null && topParent.type === 'on_strategy') {
 		if (blockObject.type === 'purchase') {
@@ -150,7 +150,7 @@ var inside_strategy = function inside_strategy(blockObject, ev, name) {
 var inside_finish = function inside_finish(blockObject, ev, name) {
 	var topParent = blockly.findTopParentBlock(blockObject);
 	if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
-		observer.emit('ui.log.warning', name + ' ' + translator.translateText('must be added inside the finish block'));
+		observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the finish block'));
 		blockObject.unplug();
 	} else if (topParent !== null && topParent.type === 'on_finish') {
 		if (blockObject.type === 'trade_again') {

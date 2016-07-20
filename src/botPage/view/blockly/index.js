@@ -195,7 +195,7 @@ _Blockly.prototype = Object.create(null, {
 				});
 			var xmlText = globalBlockly.Xml.domToPrettyText(xmlDom);
 			if (showOnly) {
-				botUtils.log(xmlText);
+				observer.emit('ui.log', xmlText);
 			} else {
 				var filename = 'binary-bot' + parseInt(new Date()
 					.getTime() / 1000) + '.xml';

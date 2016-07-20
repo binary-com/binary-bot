@@ -10,9 +10,6 @@ describe('Const', function(){
 			'conditionsCategory',
 			'conditionsCategoryName',
 			'conditions',
-			'version',
-			'uiComponents',
-			'doNotHide'
 		]);
 	});
 });

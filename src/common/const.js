@@ -77,26 +77,5 @@ module.exports = {
 		asian: translator.translateText('Asians'),
 		digits: translator.translateText('Digits'),
 	},
-	conditions: ['risefall', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
-	version: '1.2.0',
-	uiComponents: {
-		accountSelect: '#accountSelect',
-		tours: '#tours',
-		logout: '.logout',
-		workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
-		workspace: '.blocklyWorkspace',
-		toolbox: '.blocklyToolboxDiv',
-		group_load: '.group-load',
-		token: '.intro-token',
-		group_save: '.group-save',
-		group_undo_redo: '.group-undo-redo',
-		group_summary: '.group-summary',
-		group_start_stop: '.group-start-stop',
-		center: '#center',
-		flyout: '.blocklyFlyoutBackground',
-		submarket: ".blocklyDraggable:contains('Trade'):last",
-		strategy: ".blocklyDraggable:contains('Strategy'):last",
-		finish: ".blocklyDraggable:contains('Result'):last",
-	},
-	doNotHide: ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish']
+	conditions: ['risefall', 'asians', 'matchesdiffers', 'evenodd', 'overunder']
 };

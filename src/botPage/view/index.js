@@ -1,15 +1,14 @@
 var logger = require('./logger');
 var tradeInfo = require('./tradeInfo');
-var config = require('const');
 var account = require('binary-common-utils/account');
-var activeTutorial = null;
 var observer = require('binary-common-utils/observer');
 var Blockly = require('./blockly');
 var storageManager = require('binary-common-utils/storageManager');
 var Translator = require('translator');
 var Bot = require('../bot');
-var logger = require('./logger');
 var $ = require('jquery');
+var Introduction = require('./tours/introduction');
+var Welcome = require('./tours/welcome');
 window.Blockly = require('blockly');
 window.$ = window.jQuery = $;
 window.Backbone = require('backbone');
@@ -20,6 +19,10 @@ require('tourist');
 require('./utils/draggable');
 
 var View = function View(){
+	if ( View.instance ) {
+		return View.instance;
+	}
+	View.instance = this;
 	this.tours = {};
 	this.translator = new Translator();
 	this.addTranslationToUi();
@@ -28,10 +31,10 @@ var View = function View(){
 	window.Bot = this.bot = new Bot();
 	var that = this;
 	this.initPromise = new Promise(function(resolve, reject){
-		that.initTours();
 		that.updateTokenList();
 		that.bot.initPromise.then(function(){
 			that.blockly = new Blockly();
+			that.initTours();
 			resolve();
 		});
 	});
@@ -82,78 +85,21 @@ View.prototype = Object.create(null, {
 	},
 	initTours: {
 		value: function initTours() {
-			this.tours.introduction = require('./tours/introduction').init();
-			this.tours.welcome = require('./tours/welcome').init();
-			if ( this.tours.welcome.welcome() ){
-				this.activeTutorial = this.tours.welcome;
-			}
+			this.tours.introduction = new Introduction();
+			this.tours.welcome = new Welcome();
 		}
 	},
-	getUiComponent: {
-		value: function getUiComponent(component) {
-			return $(config.uiComponents[component]);
-		}
-	},
-	startTutorial: {
-		value: function startTutorial() {
+	startTour: {
+		value: function startTour() {
 			var that = this;
-			if (this.activeTutorial) {
-				this.activeTutorial.stop();
+			if (this.activeTour) {
+				this.activeTour.stop();
 			}
 			$('#tours').on('change', function(e) {
 					var value = $(this).val();
 					if (value === '') return;
-					that.activeTutorial = that.tours[value];
-					that.activeTutorial.start();
+					that.tours[value].start();
 			});
-		}
-	},
-	stopTutorial: {
-		value: function stopTutorial(e) {
-			if (this.activeTutorial) {
-					this.activeTutorial.stop();
-					this.activeTutorial = null;
-			}
-		}
-	},
-	setOpacityForAll: {
-		value: function setOpacityForAll(enabled, opacity) {
-			if (enabled) {
-				for (var key in config.uiComponents) {
-					if (config.doNotHide.indexOf(key) < 0) {
-						this.getUiComponent(key)
-							.css('opacity', opacity);
-						var disabled = +opacity < 1;
-						this.getUiComponent(key)
-							.find('button')
-							.prop('disabled', disabled);
-						this.getUiComponent(key)
-							.find('input')
-							.prop('disabled', disabled);
-						this.getUiComponent(key)
-							.find('select')
-							.prop('disabled', disabled);
-					}
-				}
-			}
-		}
-	},
-	setOpacity: {
-		value: function setOpacity(enabled, componentName, opacity) {
-			if (enabled) {
-				this.getUiComponent(componentName)
-					.css('opacity', opacity);
-				var disabled = +opacity < 1;
-				this.getUiComponent(componentName)
-					.find('button')
-					.prop('disabled', disabled);
-				this.getUiComponent(componentName)
-					.find('input')
-					.prop('disabled', disabled);
-				this.getUiComponent(componentName)
-					.find('select')
-					.prop('disabled', disabled);
-			}
 		}
 	},
 	errorAndLogHandling: {
@@ -294,7 +240,7 @@ View.prototype = Object.create(null, {
 	setElementActions: {
 		value: function setElementActions(){
 			this.setFileBrowser();
-			this.startTutorial();
+			this.startTour();
 			this.addBindings();
 			tradeInfo.show();
 		}
@@ -389,8 +335,5 @@ View.prototype = Object.create(null, {
 		}
 	}
 });
-
-
-
 
 module.exports = View;
