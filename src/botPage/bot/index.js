@@ -32,7 +32,9 @@ Bot.prototype = Object.create(null, {
 			}
 			this.strategy = strategy;
 			this.finish = finish;
+			this.token = token;
 			if (!_.isEmpty(tradeOption)) {
+				this.pip = this.symbol.activeSymbols.getSymbols()[tradeOption.symbol].pip;
 				var opposites = config.opposites[tradeOption.condition];
 				this.tradeOptions = [];
 				for (var key in opposites) {
@@ -45,7 +47,6 @@ Bot.prototype = Object.create(null, {
 			} else {
 				this.tradeOptions = [];
 			}
-			this.token = token;
 			var that = this;
 			asyncChain()
 			.pipe(function(chainDone){
@@ -55,15 +56,36 @@ Bot.prototype = Object.create(null, {
 				that.api.authorize(that.token);
 			})
 			.pipe(function(chainDone){
-				observer.registerOnce('api.history', function(history){
-					that.ticks.concat(history);					
+				if ( _.isEmpty(tradeOption) || ( that.symbolStr && that.symbolStr === tradeOption.symbol ) ) {
 					chainDone();
-				});
-				that.api.history(tradeOption.symbol, {
-					end: 'latest',
-					count: 600,
-					subscribe: 1
-				});
+				} else {
+					that.symbolStr = tradeOption.symbol;
+					asyncChain()
+						.pipe(function(chainDone2){
+							if ( _.isEmpty(that.ticks) ) {
+								chainDone2();
+							} else {
+								that.api._originalApi.unsubscribeFromAllTicks().then(function(response){
+									chainDone2();
+								});
+							}
+						})
+						.pipe(function(chainDone2){
+							observer.registerOnce('api.history', function(history){
+								that.ticks = history;
+								chainDone2();
+							});
+							that.api.history(tradeOption.symbol, {
+								end: 'latest',
+								count: 600,
+								subscribe: 1
+							});
+						})
+						.pipe(function(chainDone2){
+							chainDone();
+						})
+						.exec();
+				}
 			})
 			.pipe(function(chainDone){
 				that._startTrading();
@@ -102,22 +124,25 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			observer.register('api.tick', function(tick){
 				observer.emit('ui.log', translator.translateText('tick received at:') + ' ' + tick.epoch);
-				that.ticks.concat(tick);
+				that.ticks = that.ticks.concat(tick);
 				that.strategyCtrl.updateTicks(that.ticks);
+				observer.emit('bot.tickUpdate', {
+					ticks: that.ticks,
+					pip: that.pip
+				});
 			});
 		}
 	},
 	stop: {
 		value: function stop(contract){
-			if ( this.running ) {
-				this.running = false;
-			} else {
+			if ( !this.running ) {
 				observer.emit('bot.stop', contract);
 				return;
 			}
 			if ( this.strategyCtrl ) {
 				this.strategyCtrl.destroy();
 			}
+			this.ticks = [];
 			observer.unregisterAll('api.authorize');
 			observer.unregisterAll('api.history');
 			observer.unregisterAll('api.proposal');
@@ -127,21 +152,12 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			asyncChain()
 			.pipe(function(done){
-				that.api._originalApi.unsubscribeFromAllTicks().then(function(response){
-					done();
-				});
-			})
-			.pipe(function(done){
 				that.api._originalApi.unsubscribeFromAllProposals().then(function(response){
 					done();
 				});
 			})
 			.pipe(function(done){
-				that.api._originalApi.unsubscribeFromAlProposals().then(function(response){
-					done();
-				});
-			})
-			.pipe(function(done){
+				that.running = false;
 				observer.emit('bot.stop', contract);
 			})
 			.exec();

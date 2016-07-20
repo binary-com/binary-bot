@@ -1,5 +1,5 @@
 var logger = require('./logger');
-var tradeInfo = require('./tradeInfo');
+var TradeInfo = require('./tradeInfo');
 var account = require('binary-common-utils/account');
 var observer = require('binary-common-utils/observer');
 var Blockly = require('./blockly');
@@ -9,6 +9,8 @@ var Bot = require('../bot');
 var $ = require('jquery');
 var Introduction = require('./tours/introduction');
 var Welcome = require('./tours/welcome');
+var Chart = require('binary-charts')
+	.PlainChart;
 window.Blockly = require('blockly');
 window.$ = window.jQuery = $;
 window.Backbone = require('backbone');
@@ -25,18 +27,17 @@ var View = function View(){
 	View.instance = this;
 	this.tours = {};
 	this.translator = new Translator();
+	this.tradeInfo = new TradeInfo();
 	this.addTranslationToUi();
 	this.errorAndLogHandling();
 	this.setElementActions();
-	window.Bot = this.bot = new Bot();
 	var that = this;
+	this.bot = new Bot();
 	this.initPromise = new Promise(function(resolve, reject){
 		that.updateTokenList();
-		that.bot.initPromise.then(function(){
-			that.blockly = new Blockly();
-			that.initTours();
-			resolve();
-		});
+		that.blockly = new Blockly();
+		that.initTours();
+		resolve();
 	});
 };
 
@@ -155,12 +156,6 @@ View.prototype = Object.create(null, {
 				observeForLog(type, 'left');
 			});
 
-			observer.register('api.error', function(error){
-				if (error.code === 'InvalidToken'){
-					storageManager.removeAllTokens();
-					that.updateTokenList();
-				}
-			});
 		}
 	},
 	setFileBrowser: {
@@ -245,7 +240,8 @@ View.prototype = Object.create(null, {
 			this.setFileBrowser();
 			this.startTour();
 			this.addBindings();
-			tradeInfo.show();
+			this.addEventHandlers();
+			this.tradeInfo.show();
 		}
 	},
 	addBindings: {
@@ -359,6 +355,49 @@ View.prototype = Object.create(null, {
 				e.preventDefault(); // prevent the default action (scroll / move caret)
 			});
 
+		}
+	},
+	addEventHandlers: {
+		value: function addEventHandlers() {
+			var that = this;
+
+			observer.register('api.error', function(error){
+				if (error.code === 'InvalidToken'){
+					storageManager.removeAllTokens();
+					that.updateTokenList();
+				}
+			});
+			
+			observer.register('trade.finish', function(contract){
+				that.tradeInfo.add(contract);
+			});
+
+			observer.register('trade.update', function(contract){
+				that.latestOpenContract = contract;
+			});
+
+			observer.register('bot.tickUpdate', function(obj){
+				var chartOptions = {
+					type: 'area',
+					theme: 'light',
+					ticks: obj.ticks,
+				};
+				if (that.latestOpenContract) {
+					chartOptions.contract = that.latestOpenContract;
+					if (that.latestOpenContract.is_sold) {
+						delete that.latestOpenContract;
+					}
+				}
+				if (!that.chart) {
+					chartOptions.pipSize = Number(Number(obj.pip)
+						.toExponential()
+						.substring(3));
+					that.chart = Chart('chart', chartOptions);
+				} else {
+					that.chart.updateChart(chartOptions);
+				}
+
+			});
 		}
 	}
 });
