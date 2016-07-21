@@ -2,7 +2,7 @@
 var Translator = require('../translator');
 var tools = require('binary-common-utils/tools');
 import {expect} from 'chai';
-require('binary-common-utils/compatibility');
+import 'binary-common-utils/compatibility';
 
 describe('Translation', function(){
 	describe('Translate Functions', function(){

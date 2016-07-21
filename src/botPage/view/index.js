@@ -17,9 +17,9 @@ window.$ = window.jQuery = $;
 window.Backbone = require('backbone');
 window.logger = logger;
 window._ = require('underscore');
-require('notifyjs-browser');
-require('tourist');
-require('./utils/draggable');
+import 'notifyjs-browser';
+import 'tourist';
+import './utils/draggable';
 
 var View = function View(){
 	if ( View.instance ) {

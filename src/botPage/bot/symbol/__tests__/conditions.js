@@ -1,7 +1,7 @@
 'use strict';
 import {addPath} from 'app-module-path';
 addPath(__dirname + '/../../../../common/');
-require('binary-common-utils/compatibility');
+import 'binary-common-utils/compatibility';
 
 var conditions = require('../conditions');
 import {expect} from 'chai';
