@@ -1,15 +1,15 @@
 'use strict';
-var logger = require('./logger');
-var TradeInfo = require('./tradeInfo');
-var account = require('binary-common-utils/account');
-var observer = require('binary-common-utils/observer');
-var Blockly = require('./blockly');
-var storageManager = require('binary-common-utils/storageManager');
-var Translator = require('translator');
-var Bot = require('../bot');
-var $ = require('jquery');
-var Introduction = require('./tours/introduction');
-var Welcome = require('./tours/welcome');
+import logger from './logger';
+import TradeInfo from './tradeInfo';
+import account from 'binary-common-utils/account';
+import observer from 'binary-common-utils/observer';
+import Blockly from './blockly';
+import storageManager from 'binary-common-utils/storageManager';
+import Translator from 'translator';
+import Bot from '../bot';
+import $ from 'jquery';
+import Introduction from './tours/introduction';
+import Welcome from './tours/welcome';
 var Chart = require('binary-charts')
 	.PlainChart;
 window.Blockly = require('blockly');

@@ -1,8 +1,8 @@
 'use strict';
-var Components = require('../components');
-var observer = require('binary-common-utils/observer');
-var globalBlockly = require('blockly');
-var Translator = require('translator');
+import Components from '../components';
+import observer from 'binary-common-utils/observer';
+import globalBlockly from 'blockly';
+import Translator from 'translator';
 var translator = new Translator();
 
 var Introduction = function Introduction(){

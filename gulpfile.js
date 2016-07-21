@@ -1,5 +1,5 @@
 'use strict';
-require('babel-register')();
+require('./src/common/mochaHelper');
 var gulp = require('gulp'),
 		ghPages = require('gulp-gh-pages'),
 		jshint = require('gulp-jshint'),
@@ -111,7 +111,6 @@ gulp.task('static', ['static-css'], function() {
 gulp.task('mocha', ['i18n'], function() {
     return gulp.src(['./src/**/__tests__/*.js'])
 			.pipe(mocha({
-				require: __dirname + '/src/common/mochaHelper',
 				reporter: 'nyan'
 			}));
 });

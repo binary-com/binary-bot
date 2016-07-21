@@ -1,7 +1,7 @@
 'use strict';
-var i18n = require('./i18n');
-var tools = require('binary-common-utils/tools');
-var storageManager = require('binary-common-utils/storageManager');
+import i18n from './i18n';
+import tools from 'binary-common-utils/tools';
+import storageManager from 'binary-common-utils/storageManager';
 
 var Translator = function Translator() {
 	if ( Translator.instance ) {

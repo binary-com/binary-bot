@@ -1,8 +1,8 @@
 'use strict';
-var blockly = require('blockly');
-var config = require('const');
-var relationChecker = require('../../relationChecker');
-var Translator = require('translator');
+import blockly from 'blockly';
+import config from 'const';
+import relationChecker from '../../relationChecker';
+import Translator from 'translator';
 var translator = new Translator();
 blockly.Blocks.contract_check_result = {
   init: function() {

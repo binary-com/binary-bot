@@ -1,9 +1,9 @@
 'use strict';
 var Translator = require('translator'); // must be on top
-var i18n = require('i18n');
-var appId = require('./appId');
+import i18n from 'i18n';
+import appId from './appId';
 var asyncChain= require('binary-common-utils/tools').asyncChain;
-var $ = require('jquery');
+import $ from 'jquery';
 
 asyncChain()
 .pipe(function checkOauthLogin(done){

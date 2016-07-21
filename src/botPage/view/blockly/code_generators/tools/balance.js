@@ -1,5 +1,5 @@
 'use strict';
-var blockly = require('blockly');
+import blockly from 'blockly';
 blockly.JavaScript.balance = function(block) {
   var balance_type = block.getFieldValue('BALANCE_TYPE');
 	var code = 'Bot.trade.getBalance(\''+ balance_type +'\')';

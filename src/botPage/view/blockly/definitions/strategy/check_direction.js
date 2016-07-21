@@ -1,9 +1,9 @@
 'use strict';
-var blockly = require('blockly');
-var Translator = require('translator');
+import blockly from 'blockly';
+import Translator from 'translator';
 var translator = new Translator();
-var relationChecker = require('../../relationChecker');
-var config = require('const');
+import relationChecker from '../../relationChecker';
+import config from 'const';
 blockly.Blocks.check_direction = {
   init: function() {
     this.appendDummyInput()

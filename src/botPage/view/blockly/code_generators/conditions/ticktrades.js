@@ -1,6 +1,6 @@
 'use strict';
-var blockly = require('blockly');
-var config = require('const');
+import blockly from 'blockly';
+import config from 'const';
 Object.keys(config.opposites).forEach(function(opposites){
 	blockly.JavaScript[opposites.toLowerCase()] = function(block) {
 		if ( this.parentBlock_ === null ) {

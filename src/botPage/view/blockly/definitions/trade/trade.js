@@ -1,8 +1,8 @@
 'use strict';
-var blockly = require('blockly');
-var Translator = require('translator');
+import blockly from 'blockly';
+import Translator from 'translator';
 var translator = new Translator();
-var relationChecker = require('../../relationChecker');
+import relationChecker from '../../relationChecker';
 blockly.Blocks.trade = {
 	init: function () {
 		this.appendDummyInput()

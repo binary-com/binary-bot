@@ -1,8 +1,8 @@
 'use strict';
-var tools = require('binary-common-utils/tools');
-var $ = require('jquery');
-var accounts = require('binary-common-utils/account');
-var storageManager = require('binary-common-utils/storageManager');
+import tools from 'binary-common-utils/tools';
+import $ from 'jquery';
+import accounts from 'binary-common-utils/account';
+import storageManager from 'binary-common-utils/storageManager';
 var appId = 0;
 if ( document.location.port === '8080' ) {
 	appId = 1168; // binary bot on localhost

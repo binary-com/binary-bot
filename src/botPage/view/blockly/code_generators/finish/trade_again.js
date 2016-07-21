@@ -1,5 +1,5 @@
 'use strict';
-var blockly = require('blockly');
+import blockly from 'blockly';
 blockly.JavaScript.trade_again = function(block) {
 	if ( this.parentBlock_ === null ) {
 		return '';

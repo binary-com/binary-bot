@@ -1,6 +1,6 @@
 'use strict';
-var blockly = require('blockly');
-var Bot = require('../../../../bot');
+import blockly from 'blockly';
+import Bot from '../../../../bot';
 var bot = new Bot();
 var symbolNames = bot.symbol.activeSymbols.getSymbolNames();
 Object.keys(symbolNames).forEach(function(symbol){

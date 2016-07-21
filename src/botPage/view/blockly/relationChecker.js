@@ -1,12 +1,12 @@
 'use strict';
-var globalBlockly = require('blockly');
-var config = require('const');
-var Bot = require('../../bot');
-var Translator = require('translator');
+import globalBlockly from 'blockly';
+import config from 'const';
+import Bot from '../../bot';
+import Translator from 'translator';
 var translator = new Translator();
 var bot = new Bot();
-var observer = require('binary-common-utils/observer');
-var Blockly = require('./');
+import observer from 'binary-common-utils/observer';
+import Blockly from './';
 var blockly = new Blockly();
 var getNumField = function getNumField(block, fieldName) {
 	var field = block.getInputTargetBlock(fieldName);

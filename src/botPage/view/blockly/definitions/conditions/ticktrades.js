@@ -1,11 +1,11 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zuc7w9
-var blockly = require('blockly');
-var config = require('const');
-var Bot = require('../../../../bot');
-var relationChecker = require('../../relationChecker');
+import blockly from 'blockly';
+import config from 'const';
+import Bot from '../../../../bot';
+import relationChecker from '../../relationChecker';
 var bot = new Bot();
-var Translator = require('translator');
+import Translator from 'translator';
 var translator = new Translator();
 
 Object.keys(config.opposites).forEach(function(opposites){

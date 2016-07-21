@@ -1,3 +1,4 @@
 'use strict';
-import "app-module-path/register";
+require('babel-register')();
+require('app-module-path/register');
 require('binary-common-utils/compatibility');

@@ -1,6 +1,6 @@
 'use strict';
-var $ = require('jquery');
-var _ = require('underscore');
+import $ from 'jquery';
+import _ from 'underscore';
 
 var tradeInfoSkel = {
 	numOfRuns: 0,

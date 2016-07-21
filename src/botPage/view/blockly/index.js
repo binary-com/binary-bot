@@ -1,11 +1,11 @@
 'use strict';
-var globalBlockly = require('blockly');
-var fileSaver = require('filesaverjs');
-var config = require('const');
-var Translator = require('translator');
-var tools = require('binary-common-utils/tools');
-var observer = require('binary-common-utils/observer');
-var Bot = require('../../bot');
+import globalBlockly from 'blockly';
+import fileSaver from 'filesaverjs';
+import config from 'const';
+import Translator from 'translator';
+import tools from 'binary-common-utils/tools';
+import observer from 'binary-common-utils/observer';
+import Bot from '../../bot';
 var bot = new Bot();
 
 var _Blockly = function _Blockly(){

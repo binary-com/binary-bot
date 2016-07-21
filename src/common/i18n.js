@@ -1,5 +1,5 @@
 'use strict';
-var sha1 = require('sha1');
+import sha1 from 'sha1';
 
 module.exports = {
 	translation: null,

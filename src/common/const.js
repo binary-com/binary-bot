@@ -1,5 +1,5 @@
 'use strict';
-var Translator = require('./translator');
+import Translator from './translator';
 var translator = new Translator();
 
 module.exports = {

@@ -1,10 +1,10 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-var globalBlockly = require('blockly');
-var Blockly = require('../../../blockly');
+import globalBlockly from 'blockly';
+import Blockly from '../../../blockly';
 var blockly = new Blockly();
-var relationChecker = require('../../relationChecker');
-var Translator = require('translator');
+import relationChecker from '../../relationChecker';
+import Translator from 'translator';
 var translator = new Translator();
 
 globalBlockly.Blocks.purchase = {

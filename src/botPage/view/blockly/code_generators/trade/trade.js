@@ -1,6 +1,6 @@
 'use strict';
-var blockly = require('blockly');
-var Translator = require('translator');
+import blockly from 'blockly';
+import Translator from 'translator';
 var translator = new Translator();
 blockly.JavaScript.trade = function (block) {
 	var account = $('#accountSelect').val();

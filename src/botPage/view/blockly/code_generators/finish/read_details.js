@@ -1,5 +1,5 @@
 'use strict';
-var blockly = require('blockly');
+import blockly from 'blockly';
 blockly.JavaScript.read_details = function(block) {
   var detail_index = block.getFieldValue('DETAIL_INDEX');
   // TODO: Assemble JavaScript into code variable.

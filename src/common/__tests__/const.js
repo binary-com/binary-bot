@@ -1,5 +1,5 @@
 'use strict';
-var _const = require('../const');
+import _const from '../const';
 import {expect} from 'chai';
 
 describe('Const', function(){

@@ -1,9 +1,9 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 
-var blockly = require('blockly');
-var relationChecker = require('../../relationChecker');
-var Translator = require('translator');
+import blockly from 'blockly';
+import relationChecker from '../../relationChecker';
+import Translator from 'translator';
 var translator = new Translator();
 
 blockly.Blocks.tick = {

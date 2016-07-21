@@ -1,12 +1,8 @@
 'use strict';
-import {addPath} from 'app-module-path';
-addPath(__dirname + '/../../../common/');
-import 'binary-common-utils/compatibility';
-
-var Bot = require('../index');
-var CustomApi = require('binary-common-utils/customApi');
+import Bot from '../index';
+import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
-var observer = require('binary-common-utils/observer');
+import observer from 'binary-common-utils/observer';
 import {asyncChain} from 'binary-common-utils/tools';
 
 var option = {"amount":"1.00","basis":"stake","condition":"EVENODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"};

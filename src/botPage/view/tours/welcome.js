@@ -1,9 +1,9 @@
 'use strict';
-var Components = require('../components');
-var View = require('../');
-var storageManager = require('binary-common-utils/storageManager');
-var globalBlockly = require('blockly');
-var Translator = require('translator');
+import Components from '../components';
+import View from '../';
+import storageManager from 'binary-common-utils/storageManager';
+import globalBlockly from 'blockly';
+import Translator from 'translator';
 var translator = new Translator();
 
 var Welcome = function Welcome(){
