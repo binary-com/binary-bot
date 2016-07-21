@@ -67,18 +67,19 @@ View.prototype = Object.create(null, {
 	},
 	addTranslationToUi: {
 		value: function addTranslationToUi(){
+			var that = this;
 			$('[data-i18n-text]')
 				.each(function() {
 						var contents = $(this).contents();
 						if (contents.length > 0) {
 								if (contents.get(0).nodeType == Node.TEXT_NODE) {
-										$(this).text(translator.translateText($(this)
+										$(this).text(that.translator.translateText($(this)
 								.attr('data-i18n-text')))
 								.append(contents.slice(1));
 								}
 						} else {
 						$(this)
-							.text(translator.translateText($(this)
+							.text(that.translator.translateText($(this)
 								.attr('data-i18n-text')));
 					}
 				});
@@ -176,7 +177,7 @@ View.prototype = Object.create(null, {
 					if (file.type.match('text/xml')) {
 						readFile(file);
 					} else {
-						observer.emit('ui.log.info', translator.translateText('File is not supported:' + ' ') + file.name);
+						observer.emit('ui.log.info', that.translator.translateText('File is not supported:' + ' ') + file.name);
 					}
 				}
 			};
@@ -188,7 +189,7 @@ View.prototype = Object.create(null, {
 					return function (e) {
 						try {
 							that.blockly.loadBlocksFile(e.target.result);
-							observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'));
+							observer.emit('ui.log.success', that.translator.translateText('Blocks are loaded successfully'));
 						} catch (err) {
 							observer.emit('ui.error', err);
 						}
@@ -257,7 +258,7 @@ View.prototype = Object.create(null, {
 			var logout = function logout() {
 				account.logoutAllTokens(function(){
 					that.updateTokenList();
-					observer.emit('ui.log.info', translator.translateText('Logged you out!'));
+					observer.emit('ui.log.info', that.translator.translateText('Logged you out!'));
 				});
 			};
 
@@ -327,7 +328,7 @@ View.prototype = Object.create(null, {
 			
 			$('#login')
 				.bind('click.login', function(e){
-					document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + translator.getLanguage().toUpperCase();
+					document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + that.translator.getLanguage().toUpperCase();
 				})
 				.text('Log in');
 

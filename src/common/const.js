@@ -1,6 +1,6 @@
 var Translator = require('./translator');
+var translator = new Translator();
 
-translator = new Translator();
 module.exports = {
 	lists: {
 		PAYOUTTYPE: [

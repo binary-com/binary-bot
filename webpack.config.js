@@ -1,7 +1,17 @@
 module.exports = {
   devtool: 'source-map',
 	module: {
-		noParse: ['ws']
+		noParse: ['ws'],
+		loaders: [
+			{
+				test: /\.js$/,
+				exclude: /(node_modules|bower_components)/,
+				loader: 'babel', // 'babel-loader' is also a legal name to reference
+				query: {
+					presets: ['es2015']
+				}
+			}
+		]
 	},
   resolveLoader: {
     root: __dirname + "/node_modules",

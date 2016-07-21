@@ -1,5 +1,5 @@
 {
 	"expr": true,
-	"es5": true,
+	"esversion": 6,
 	"multistr": true
 }

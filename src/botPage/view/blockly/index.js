@@ -11,9 +11,9 @@ var _Blockly = function _Blockly(){
 	if ( _Blockly.instance ) {
 		return _Blockly.instance;
 	}
-	this.purchase_choices = [[translator.translateText('Click to select'), '']];
 	_Blockly.instance = this;
 	this.translator = new Translator();
+	this.purchase_choices = [[this.translator.translateText('Click to select'), '']];
 	this.addBlocklyTranslation();
 	var that = this;
 	this.initPromise = new Promise(function(resolve, reject){
@@ -22,7 +22,7 @@ var _Blockly = function _Blockly(){
 			require('./definitions');
 			var workspace = globalBlockly.inject('blocklyDiv', {
 				media: 'js/blockly/media/',
-				toolbox: that.xmlToStr(translator.translateXml($.parseXML(that.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
+				toolbox: that.xmlToStr(that.translator.translateXml($.parseXML(that.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
 				zoom: {
 					wheel: false,
 				},
@@ -230,7 +230,7 @@ _Blockly.prototype = Object.create(null, {
 			});
 			var script = document.createElement('script');
 			script.type = 'text/javascript';
-			script.src = 'js/blockly/msg/js/' + translator.getLanguage() + '.js';		
+			script.src = 'js/blockly/msg/js/' + this.translator.getLanguage() + '.js';		
 			$('body').append(script);
 		}
 	},
