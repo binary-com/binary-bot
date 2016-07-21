@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('underscore');
+import _ from 'underscore';
 
 var ActiveSymbols = function ActiveSymbols(activeSymbols) {
     if ( ActiveSymbols.instance ) {

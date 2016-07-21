@@ -3,7 +3,7 @@ import {addPath} from 'app-module-path';
 addPath(__dirname + '/../../../../common/');
 import 'binary-common-utils/compatibility';
 
-var conditions = require('../conditions');
+import conditions from '../conditions';
 import {expect} from 'chai';
 
 describe('Conditions', function() {

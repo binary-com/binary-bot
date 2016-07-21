@@ -1,10 +1,10 @@
 'use strict';
-var tools = require('binary-common-utils/tools');
-var config = require('const');
+import tools from 'binary-common-utils/tools';
+import config from 'const';
 import {asyncChain} from 'binary-common-utils/tools';
 
-var ActiveSymbols = require('./activeSymbols');
-var _ = require('underscore');
+import ActiveSymbols from './activeSymbols';
+import _ from 'underscore';
 
 var _Symbol = function _Symbol(api) {
 	if ( _Symbol.instance ) {

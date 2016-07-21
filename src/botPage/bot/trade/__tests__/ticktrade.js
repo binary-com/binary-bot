@@ -5,11 +5,11 @@ import 'binary-common-utils/compatibility';
 
 
 import {asyncChain} from 'binary-common-utils/tools';
-var Ticktrade = require('../ticktrade');
-var ws = require('mock/websocket');
-var CustomApi = require('binary-common-utils/customApi');
+import Ticktrade from '../ticktrade';
+import ws from 'mock/websocket';
+import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
-var observer = require('binary-common-utils/observer');
+import observer from 'binary-common-utils/observer';
 
 describe('TickTrade', function() {
 	var api = new CustomApi(ws);

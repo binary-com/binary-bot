@@ -1,6 +1,6 @@
 'use strict';
-var config = require('const');
-var tools = require('binary-common-utils/tools');
+import config from 'const';
+import tools from 'binary-common-utils/tools';
 
 module.exports = {
 	ticktrade: function ticktrade(parameters) {

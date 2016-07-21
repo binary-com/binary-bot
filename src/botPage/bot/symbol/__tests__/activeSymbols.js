@@ -5,11 +5,11 @@ import 'binary-common-utils/compatibility';
 
 import {expect} from 'chai';
 
-var ActiveSymbols = require('../activeSymbols');
-var CustomApi = require('binary-common-utils/customApi');
-var ws = require('mock/websocket');
+import ActiveSymbols from '../activeSymbols';
+import CustomApi from 'binary-common-utils/customApi';
+import ws from 'mock/websocket';
 var api = new CustomApi(ws)._originalApi;
-var deep = require('deep-diff');
+import deep from 'deep-diff';
 
 /* 
 	There is a market called forex, which has a submarket called major_pairs, which has a symbol called frxEURUSD

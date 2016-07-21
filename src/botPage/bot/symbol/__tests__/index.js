@@ -3,12 +3,12 @@ import {addPath} from 'app-module-path';
 addPath(__dirname + '/../../../../common/');
 import 'binary-common-utils/compatibility';
 
-var conditions = require('../conditions');
-var _Symbol = require('../index');
-var tools = require('binary-common-utils/tools');
+import conditions from '../conditions';
+import _Symbol from '../index';
+import tools from 'binary-common-utils/tools';
 import {expect} from 'chai';
-var ws = require('mock/websocket');
-var CustomApi = require('binary-common-utils/customApi');
+import ws from 'mock/websocket';
+import CustomApi from 'binary-common-utils/customApi';
 
 describe('symbol', function() {
 	describe('Error Handling', function(){

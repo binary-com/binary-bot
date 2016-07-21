@@ -1,6 +1,6 @@
 'use strict';
-var observer = require('binary-common-utils/observer');
-var Translator = require('translator');
+import observer from 'binary-common-utils/observer';
+import Translator from 'translator';
 
 var Ticktrade = function Ticktrade(api) {
 	this.api = api;
