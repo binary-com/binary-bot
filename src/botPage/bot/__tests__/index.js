@@ -4,6 +4,7 @@ import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
 import observer from 'binary-common-utils/observer';
 import {asyncChain} from 'binary-common-utils/tools';
+import mockWebsocket from 'mock/websocket';
 
 var option = {"amount":"1.00","basis":"stake","condition":"EVENODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"};
 
@@ -12,7 +13,7 @@ describe('Bot', function() {
 	var token = 'c9A3gPFcqQtAQDW';
 	before(function(done){
 		this.timeout('10000');
-		var api = new CustomApi(require('mock/websocket'));
+		var api = new CustomApi(mockWebsocket);
 		bot = new Bot(api);
 		bot.initPromise.then(function(){
 			done();

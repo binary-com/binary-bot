@@ -10,13 +10,11 @@ import Bot from '../bot';
 import $ from 'jquery';
 import Introduction from './tours/introduction';
 import Welcome from './tours/welcome';
-var Chart = require('binary-charts')
-	.PlainChart;
+import {PlainChart as Chart} from 'binary-charts';
+import _ from 'underscore';
 window.Blockly = require('blockly');
 window.$ = window.jQuery = $;
 window.Backbone = require('backbone');
-window.logger = logger;
-window._ = require('underscore');
 import 'notifyjs-browser';
 import 'tourist';
 import './utils/draggable';
