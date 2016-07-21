@@ -1,3 +1,4 @@
+'use strict';
 var Components = function Components(){
 	this.uiComponents = {
 		accountSelect: '#accountSelect',

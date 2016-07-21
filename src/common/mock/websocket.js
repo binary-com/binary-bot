@@ -1,3 +1,4 @@
+'use strict';
 /*jshint loopfunc: true */
 var tools = require('binary-common-utils/tools');
 var WS = require('ws');

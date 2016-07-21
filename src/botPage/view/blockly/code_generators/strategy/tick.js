@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 blockly.JavaScript.tick = function(block) {
 	var code = 'tick';

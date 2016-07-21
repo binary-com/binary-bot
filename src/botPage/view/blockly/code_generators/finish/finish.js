@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 blockly.JavaScript.on_finish = function(block) {
   var stack = blockly.JavaScript.statementToCode(block, 'FINISH_STACK');

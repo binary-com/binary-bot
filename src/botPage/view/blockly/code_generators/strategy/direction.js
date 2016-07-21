@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 blockly.JavaScript.direction = function(block) {
 	var code = 'direction';

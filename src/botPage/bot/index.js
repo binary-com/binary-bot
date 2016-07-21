@@ -1,3 +1,4 @@
+'use strict';
 var observer = require('binary-common-utils/observer');
 var _ = require('underscore');
 var _Symbol = require('./symbol');
@@ -123,7 +124,6 @@ Bot.prototype = Object.create(null, {
 		value: function _observeTicks() {
 			var that = this;
 			observer.register('api.tick', function(tick){
-				observer.emit('ui.log', translator.translateText('tick received at:') + ' ' + tick.epoch);
 				that.ticks = that.ticks.concat(tick);
 				that.strategyCtrl.updateTicks(that.ticks);
 				observer.emit('bot.tickUpdate', {

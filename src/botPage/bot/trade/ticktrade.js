@@ -1,3 +1,4 @@
+'use strict';
 var observer = require('binary-common-utils/observer');
 var Translator = require('translator');
 

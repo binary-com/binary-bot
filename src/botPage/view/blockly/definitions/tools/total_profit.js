@@ -1,6 +1,8 @@
+'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
 var blockly = require('blockly');
-var i18n = require('i18n');
+var Translator = require('translator');
+var translator = new Translator();
 
 blockly.Blocks.total_profit = {
   init: function() {

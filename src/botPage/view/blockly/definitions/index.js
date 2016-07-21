@@ -1,3 +1,4 @@
+'use strict';
 require('./trade/trade');
 require('./tools/balance');
 require('./tools/notify');

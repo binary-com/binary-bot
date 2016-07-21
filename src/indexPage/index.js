@@ -1,7 +1,4 @@
-window.Blockly = {};
-if ( top !== self ) {
-	top.location = self.location;
-}
+'use strict';
 var Translator = require('translator'); // must be on top
 var i18n = require('i18n');
 var appId = require('./appId');

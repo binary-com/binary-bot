@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 blockly.JavaScript.balance = function(block) {
   var balance_type = block.getFieldValue('BALANCE_TYPE');

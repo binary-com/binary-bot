@@ -1,3 +1,4 @@
+'use strict';
 var _const = require('../const');
 var expect = require('chai').expect;
 

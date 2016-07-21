@@ -1,3 +1,4 @@
+'use strict';
 var i18n = require('./i18n');
 var tools = require('binary-common-utils/tools');
 var storageManager = require('binary-common-utils/storageManager');

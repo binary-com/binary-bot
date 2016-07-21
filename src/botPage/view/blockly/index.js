@@ -1,3 +1,4 @@
+'use strict';
 var globalBlockly = require('blockly');
 var fileSaver = require('filesaverjs');
 var config = require('const');

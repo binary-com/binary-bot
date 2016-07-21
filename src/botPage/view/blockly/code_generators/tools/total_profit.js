@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 blockly.JavaScript.total_profit = function(block) {
 	var code = 'Bot.trade.getTotalProfit()';

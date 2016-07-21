@@ -1,5 +1,7 @@
+'use strict';
 var blockly = require('blockly');
-var i18n = require('i18n');
+var Translator = require('translator');
+var translator = new Translator();
 blockly.JavaScript.trade = function (block) {
 	var account = $('#accountSelect').val();
 	var submarket = blockly.JavaScript.statementToCode(block, 'SUBMARKET');

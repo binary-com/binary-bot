@@ -1,5 +1,7 @@
+'use strict';
 var blockly = require('blockly');
-var i18n = require('i18n');
+var Translator = require('translator');
+var translator = new Translator();
 var relationChecker = require('../../relationChecker');
 var config = require('const');
 blockly.Blocks.check_direction = {

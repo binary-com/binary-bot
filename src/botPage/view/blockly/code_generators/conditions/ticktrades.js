@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 var config = require('const');
 Object.keys(config.opposites).forEach(function(opposites){

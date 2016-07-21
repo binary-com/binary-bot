@@ -23,8 +23,8 @@ module.exports = {
     root: __dirname + '/src/common'
   },
   entry: {
-    bot: __dirname + '/src/botPage',
-    index: __dirname + '/src/indexPage',
+    bot: ['babel-polyfill', __dirname + '/src/botPage'],
+    index: __dirname + '/src/indexPage'
   },
 	externals: [
 		{

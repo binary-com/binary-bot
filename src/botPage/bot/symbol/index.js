@@ -1,3 +1,4 @@
+'use strict';
 var tools = require('binary-common-utils/tools');
 var config = require('const');
 var asyncChain = require('binary-common-utils/tools').asyncChain;

@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 blockly.JavaScript.purchase = function(block) {
 	if ( this.parentBlock_ === null ) {

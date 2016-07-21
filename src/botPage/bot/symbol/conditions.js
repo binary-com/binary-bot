@@ -1,3 +1,4 @@
+'use strict';
 var config = require('const');
 var tools = require('binary-common-utils/tools');
 

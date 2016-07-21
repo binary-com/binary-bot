@@ -1,7 +1,10 @@
+'use strict';
 var Components = require('../components');
 var View = require('../');
 var storageManager = require('binary-common-utils/storageManager');
 var globalBlockly = require('blockly');
+var Translator = require('translator');
+var translator = new Translator();
 
 var Welcome = function Welcome(){
 	if ( Welcome.instance ) {

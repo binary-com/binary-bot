@@ -1,3 +1,4 @@
+'use strict';
 require('app-module-path').addPath(__dirname + '/../../../../common/');
 require('binary-common-utils/compatibility');
 

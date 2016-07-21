@@ -1,3 +1,4 @@
+'use strict';
 var tools = require('binary-common-utils/tools');
 var $ = require('jquery');
 var accounts = require('binary-common-utils/account');

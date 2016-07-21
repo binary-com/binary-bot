@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 var Translator = require('translator');
 var translator = new Translator();

@@ -1,3 +1,4 @@
+'use strict';
 var globalBlockly = require('blockly');
 var config = require('const');
 var Bot = require('../../bot');

@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 blockly.JavaScript.on_strategy = function(block) {
   var stack = blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');

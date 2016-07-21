@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('./logger');
 var TradeInfo = require('./tradeInfo');
 var account = require('binary-common-utils/account');
@@ -183,7 +184,7 @@ View.prototype = Object.create(null, {
 			};
 
 			var readFile = function readFile(f) {
-				reader = new FileReader();
+				var reader = new FileReader();
 				reader.onload = (function (theFile) {
 					$('#fileBrowser').hide();
 					return function (e) {

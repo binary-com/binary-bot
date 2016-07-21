@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 var Bot = require('../../../../bot');
 var bot = new Bot();

@@ -1,7 +1,9 @@
+'use strict';
 var blockly = require('blockly');
-var i18n = require('i18n');
 var config = require('const');
 var relationChecker = require('../../relationChecker');
+var Translator = require('translator');
+var translator = new Translator();
 blockly.Blocks.contract_check_result = {
   init: function() {
     this.appendDummyInput()

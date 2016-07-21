@@ -76,7 +76,6 @@ module.exports = {
   "dc28f5f3c65ec611f0f30022650d24382d27448e": "Odd",
   "18a63f5512afb5573e5b44deba78d629f0635317": "Over",
   "2a268b89b83f8cb38ea48e46e93dd8840db512f9": "Under",
-  "f977a1b8eb64b809abfcaf7ca75f1a2377bed426": "tick received at:",
   "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
   "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
   "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
@@ -136,7 +135,6 @@ module.exports = {
   "3f71217a42b6920b422b3d9a6b37c5d39cdbbf19": "Open the summary panel.",
   "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
   "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
-  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
   "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
   "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
   "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -180,6 +178,7 @@ module.exports = {
   "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
   "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
   "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
 }
 ;

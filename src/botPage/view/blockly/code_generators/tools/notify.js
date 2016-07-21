@@ -1,3 +1,4 @@
+'use strict';
 var blockly = require('blockly');
 blockly.JavaScript.notify = function(block) {
   var notification_type = block.getFieldValue('NOTIFICATION_TYPE');

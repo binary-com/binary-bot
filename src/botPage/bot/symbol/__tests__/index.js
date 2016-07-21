@@ -1,8 +1,9 @@
+'use strict';
 require('app-module-path').addPath(__dirname + '/../../../../common/');
 require('binary-common-utils/compatibility');
 
 var conditions = require('../conditions');
-var Symbol = require('../index');
+var _Symbol = require('../index');
 var tools = require('binary-common-utils/tools');
 var expect = require('chai').expect;
 var ws = require('mock/websocket');
@@ -11,22 +12,22 @@ var CustomApi = require('binary-common-utils/customApi');
 describe('symbol', function() {
 	describe('Error Handling', function(){
 		it('initializing is needed for symbol functions', function(){
-			expect(function(){Symbol.getAllowedConditions();}).to.throw(Error);
-			expect(function(){Symbol.isConditionAllowedInSymbol();}).to.throw(Error);
-			expect(function(){Symbol.getConditionName();}).to.throw(Error);
-			expect(function(){Symbol.getCategoryForCondition();}).to.throw(Error);
-			expect(function(){Symbol.getCategoryNameForCondition();}).to.throw(Error);
-			expect(function(){Symbol.getAllowedCategoryNames();}).to.throw(Error);
-			expect(function(){Symbol.findSymbol();}).to.throw(Error);
-			expect(function(){Symbol.addMarketsToXml();}).to.throw(Error);
-			expect(function(){Symbol.makeProposalsFromOptions();}).to.throw(Error);
+			expect(function(){_Symbol.getAllowedConditions();}).to.throw(Error);
+			expect(function(){_Symbol.isConditionAllowedInSymbol();}).to.throw(Error);
+			expect(function(){_Symbol.getConditionName();}).to.throw(Error);
+			expect(function(){_Symbol.getCategoryForCondition();}).to.throw(Error);
+			expect(function(){_Symbol.getCategoryNameForCondition();}).to.throw(Error);
+			expect(function(){_Symbol.getAllowedCategoryNames();}).to.throw(Error);
+			expect(function(){_Symbol.findSymbol();}).to.throw(Error);
+			expect(function(){_Symbol.addMarketsToXml();}).to.throw(Error);
+			expect(function(){_Symbol.makeProposalsFromOptions();}).to.throw(Error);
 		});
 	});
 	describe('Checking functions', function(){
 		this.timeout('10000');
 		var symbol;
 		before(function(done){
-			symbol = new Symbol(new CustomApi(ws));
+			symbol = new _Symbol(new CustomApi(ws));
 			symbol.initPromise.then(function(){
 				done();
 			});

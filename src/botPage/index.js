@@ -1,5 +1,7 @@
-var Bot = require('./bot');
-var View = require('./view'); 
+'use strict';
+import 'babel-polyfill';
+import Bot from './bot';
+import View from './view';
 
 window.Bot = new Bot();
 window.Bot.initPromise.then(function(){

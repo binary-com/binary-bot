@@ -1,3 +1,4 @@
+'use strict';
 var Translator = require('../translator');
 var tools = require('binary-common-utils/tools');
 var expect = require('chai').expect;
@@ -6,24 +7,15 @@ require('binary-common-utils/compatibility');
 describe('Translation', function(){
 	describe('Translate Functions', function(){
 		var toolbox;
+		var translator;
 		before(function(){
-			window = {
-				location: {
-					search: '',
-					hash: '',
-					pathname: '/',
-					port: '',
-					hostname: 'localhost.localdomain'
-				}
-			};
-			localStorage = {};
-			toolbox = tools.strToXml('\
-				<category name="fake1" colour="15" i18n-text="Conditions">\
-					<category name="fake2" colour="15" i18n-text="Up/Down">\
-						<block type="risefall"></block>\
-					</category>\
-				</category>\
-					', 'text/xml');
+			toolbox = tools.strToXml(`
+				<category name="fake1" colour="15" i18n-text="Conditions">
+					<category name="fake2" colour="15" i18n-text="Up/Down">
+						<block type="risefall"></block>
+					</category>
+				</category>
+					`, 'text/xml');
 			translator = new Translator();
 		});
 		it('translateText', function(){

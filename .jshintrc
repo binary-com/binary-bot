@@ -1,5 +1,19 @@
 {
 	"expr": true,
+	"mocha": true,
 	"esversion": 6,
-	"multistr": true
+	"globalstrict": true,
+	"node": true,
+	"globals": {
+		"$": false,
+		"window": false,
+		"require": false,
+		"document": false,
+		"Node": false,
+		"XMLSerializer": false,
+		"Blockly": false,
+		"Blob": false,
+		"Tourist": false,
+		"FileReader": false
+	}
 }
