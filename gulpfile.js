@@ -1,3 +1,5 @@
+'use strict';
+require('babel-register')();
 var gulp = require('gulp'),
 		ghPages = require('gulp-gh-pages'),
 		jshint = require('gulp-jshint'),
@@ -108,7 +110,9 @@ gulp.task('static', ['static-css'], function() {
 
 gulp.task('mocha', ['i18n'], function() {
     return gulp.src(['./src/**/__tests__/*.js'])
-        .pipe(mocha({reporter: 'nyan'}));
+			.pipe(mocha({
+				reporter: 'nyan'
+			}));
 });
 
 gulp.task('lint', function() {

@@ -1,11 +1,11 @@
 'use strict';
-var observer = require('binary-common-utils/observer');
-var _ = require('underscore');
-var _Symbol = require('./symbol');
-var StrategyCtrl = require('./strategyCtrl');
-var asyncChain = require('binary-common-utils/tools').asyncChain;
-var CustomApi = require('binary-common-utils/customApi');
-var config = require('const');
+import observer from 'binary-common-utils/observer';
+import _ from 'underscore';
+import _Symbol from './symbol';
+import StrategyCtrl from './strategyCtrl';
+import {asyncChain} from 'binary-common-utils/tools';
+import CustomApi from 'binary-common-utils/customApi';
+import config from 'const';
 
 var Bot = function Bot(api) {
 	if (Bot.instance) {
@@ -99,8 +99,7 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
 			observer.registerOnce('strategy.finish', function(contract){
-				that.finish(contract);
-				that.stop(contract);
+				that._finish(contract);
 			});
 			this._subscribeProposals();
 			this._observeTicks();
@@ -131,6 +130,23 @@ Bot.prototype = Object.create(null, {
 					pip: that.pip
 				});
 			});
+		}
+	},
+	_finish: {
+		value: function _finish(contract){
+			var that = this;
+			asyncChain()
+			.pipe(function(done){
+				that.api._originalApi.unsubscribeFromAllProposals().then(function(response){
+					done();
+				});
+			})
+			.pipe(function(done){
+				that.running = false;
+				that.finish(contract);
+				observer.emit('bot.finish', contract);
+			})
+			.exec();
 		}
 	},
 	stop: {
