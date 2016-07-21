@@ -6,7 +6,7 @@ require('binary-common-utils/compatibility');
 var conditions = require('../conditions');
 var _Symbol = require('../index');
 var tools = require('binary-common-utils/tools');
-var expect = require('chai').expect;
+import {expect} from 'chai';
 var ws = require('mock/websocket');
 var CustomApi = require('binary-common-utils/customApi');
 

@@ -1,6 +1,6 @@
 'use strict';
 var _const = require('../const');
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 describe('Const', function(){
 	it('Const should contain lists, opposites, oppositesHaveBarrier, conditionsCategory, conditionsCategoryName, conditions, version', function(){

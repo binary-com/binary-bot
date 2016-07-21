@@ -5,9 +5,9 @@ require('binary-common-utils/compatibility');
 
 var Bot = require('../index');
 var CustomApi = require('binary-common-utils/customApi');
-var expect = require('chai').expect;
+import {expect} from 'chai';
 var observer = require('binary-common-utils/observer');
-var asyncChain = require('binary-common-utils/tools').asyncChain;
+import {asyncChain} from 'binary-common-utils/tools';
 
 var option = {"amount":"1.00","basis":"stake","condition":"EVENODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"};
 

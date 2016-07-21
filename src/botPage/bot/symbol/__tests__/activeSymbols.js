@@ -3,7 +3,7 @@ import {addPath} from 'app-module-path';
 addPath(__dirname + '/../../../../common/');
 require('binary-common-utils/compatibility');
 
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 var ActiveSymbols = require('../activeSymbols');
 var CustomApi = require('binary-common-utils/customApi');

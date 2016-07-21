@@ -1,7 +1,7 @@
 'use strict';
 var tools = require('binary-common-utils/tools');
 var config = require('const');
-var asyncChain = require('binary-common-utils/tools').asyncChain;
+import {asyncChain} from 'binary-common-utils/tools';
 
 var ActiveSymbols = require('./activeSymbols');
 var _ = require('underscore');

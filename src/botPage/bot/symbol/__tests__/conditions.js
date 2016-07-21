@@ -4,7 +4,7 @@ addPath(__dirname + '/../../../../common/');
 require('binary-common-utils/compatibility');
 
 var conditions = require('../conditions');
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 describe('Conditions', function() {
 	it('returns correct options for ticktrade', function() {

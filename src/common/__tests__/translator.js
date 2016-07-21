@@ -1,7 +1,7 @@
 'use strict';
 var Translator = require('../translator');
 var tools = require('binary-common-utils/tools');
-var expect = require('chai').expect;
+import {expect} from 'chai';
 require('binary-common-utils/compatibility');
 
 describe('Translation', function(){

@@ -3,11 +3,11 @@ import {addPath} from 'app-module-path';
 addPath(__dirname + '/../../../common/');
 require('binary-common-utils/compatibility');
 
-var asyncChain = require('binary-common-utils/tools').asyncChain;
+import {asyncChain} from 'binary-common-utils/tools';
 var StrategyCtrl = require('../strategyCtrl');
 var ws = require('mock/websocket');
 var CustomApi = require('binary-common-utils/customApi');
-var expect = require('chai').expect;
+import {expect} from 'chai';
 var observer = require('binary-common-utils/observer');
 var api;
 var proposals = [];
