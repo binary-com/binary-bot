@@ -111,6 +111,7 @@ gulp.task('static', ['static-css'], function() {
 gulp.task('mocha', ['i18n'], function() {
     return gulp.src(['./src/**/__tests__/*.js'])
 			.pipe(mocha({
+				require: __dirname + '/src/common/mochaHelper',
 				reporter: 'nyan'
 			}));
 });
