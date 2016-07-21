@@ -1,6 +1,6 @@
 'use strict';
-var observer = require('binary-common-utils/observer');
-var Ticktrade = require('./trade/ticktrade');
+import observer from 'binary-common-utils/observer';
+import Ticktrade from './trade/ticktrade';
 
 var StrategyCtrl = function StrategyCtrl(api, strategy) {
 	this.api = api;

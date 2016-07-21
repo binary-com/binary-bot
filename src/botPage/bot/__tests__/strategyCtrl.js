@@ -4,11 +4,11 @@ addPath(__dirname + '/../../../common/');
 import 'binary-common-utils/compatibility';
 
 import {asyncChain} from 'binary-common-utils/tools';
-var StrategyCtrl = require('../strategyCtrl');
-var ws = require('mock/websocket');
-var CustomApi = require('binary-common-utils/customApi');
+import StrategyCtrl from '../strategyCtrl';
+import ws from 'mock/websocket';
+import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
-var observer = require('binary-common-utils/observer');
+import observer from 'binary-common-utils/observer';
 var api;
 var proposals = [];
 var firstAttemptDetected = true;
