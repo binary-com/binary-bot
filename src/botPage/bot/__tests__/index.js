@@ -1,5 +1,6 @@
 'use strict';
-require('app-module-path').addPath(__dirname + '/../../../common/');
+import {addPath} from 'app-module-path';
+addPath(__dirname + '/../../../common/');
 require('binary-common-utils/compatibility');
 
 var Bot = require('../index');
