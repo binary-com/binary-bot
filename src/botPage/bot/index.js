@@ -13,6 +13,7 @@ var Bot = function Bot(api) {
 	}
 	Bot.instance = this;
 	this.ticks = [];
+	this.symbolStr = '';
 	if ( typeof api === 'undefined' ) {
 		this.api = new CustomApi();
 	} else {
@@ -49,6 +50,14 @@ Bot.prototype = Object.create(null, {
 				this.tradeOptions = [];
 			}
 			var that = this;
+			observer.register('api.tick', function(tick){
+				that.ticks = that.ticks.concat(tick);
+				that.strategyCtrl.updateTicks(that.ticks);
+				observer.emit('bot.tickUpdate', {
+					ticks: that.ticks,
+					pip: that.pip
+				});
+			});
 			asyncChain()
 			.pipe(function(chainDone){
 				observer.registerOnce('api.authorize', function(){	
@@ -57,7 +66,7 @@ Bot.prototype = Object.create(null, {
 				that.api.authorize(that.token);
 			})
 			.pipe(function(chainDone){
-				if ( _.isEmpty(tradeOption) || ( that.symbolStr && that.symbolStr === tradeOption.symbol ) ) {
+				if ( _.isEmpty(tradeOption) || that.symbolStr === tradeOption.symbol ) {
 					chainDone();
 				} else {
 					that.symbolStr = tradeOption.symbol;
@@ -119,19 +128,6 @@ Bot.prototype = Object.create(null, {
 			});
 		}
 	},
-	_observeTicks: {
-		value: function _observeTicks() {
-			var that = this;
-			observer.register('api.tick', function(tick){
-				that.ticks = that.ticks.concat(tick);
-				that.strategyCtrl.updateTicks(that.ticks);
-				observer.emit('bot.tickUpdate', {
-					ticks: that.ticks,
-					pip: that.pip
-				});
-			});
-		}
-	},
 	_finish: {
 		value: function _finish(contract){
 			var that = this;
@@ -159,12 +155,10 @@ Bot.prototype = Object.create(null, {
 				this.strategyCtrl.destroy();
 			}
 			this.ticks = [];
-			observer.unregisterAll('api.authorize');
-			observer.unregisterAll('api.history');
+			this.symbolStr = '';
 			observer.unregisterAll('api.proposal');
 			observer.unregisterAll('api.tick');
 			observer.unregisterAll('strategy.ready');
-			observer.unregisterAll('strategy.finish');
 			var that = this;
 			asyncChain()
 			.pipe(function(done){

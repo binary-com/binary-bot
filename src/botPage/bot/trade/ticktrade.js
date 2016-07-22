@@ -49,7 +49,6 @@ Ticktrade.prototype = Object.create(null, {
 		value: function destroy(){
 			this.purchaseInProgress = false;
 			observer.unregisterAll('api.proposal_open_contract');
-			observer.unregisterAll('api.buy');
 			this.api._originalApi.unsubscribeFromAlProposals();
 		}
 	}

@@ -63,6 +63,7 @@ describe('TickTrade', function() {
 			});
 		});
 		it('Emits the update signal', function(){
+			observer.unregisterAll('trade.update');
 		});
 	});
 	describe('Calling finish', function(){

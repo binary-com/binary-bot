@@ -54,13 +54,11 @@ describe('Bot', function() {
 		});
 	});
 	describe('Start the trade without real finish and strategy functions', function(){
-		var finishedContract;
 		before(function(done){
 			this.timeout('10000');
 			asyncChain()
 			.pipe(function(chainDone){
-				observer.registerOnce('bot.stop', function(_finishedContract){
-					finishedContract = _finishedContract;
+				observer.registerOnce('bot.stop', function(){
 					chainDone();
 				});
 				bot.stop();
@@ -77,7 +75,6 @@ describe('Bot', function() {
 			.exec();			
 		});
 		it('It is possible to restart the trade', function(){
-			expect(finishedContract).not.to.be.ok;
 		});
 	});
 	describe('Start the trade with real finish and strategy functions', function(){
@@ -86,20 +83,25 @@ describe('Bot', function() {
 		var numOfTicks = 0;
 		before(function(done){
 			this.timeout('10000');
-			bot.start(token, option, function strategy(tick, proposals, _strategyCtrl){
-				if ( ++numOfTicks === 3 ) {
-					_strategyCtrl.purchase('DIGITEVEN');
-				}
-			}, function finish(_finishedContract){
-				finishedContractFromFinishFunction = _finishedContract;
-			});
 			asyncChain()
 			.pipe(function(chainDone){
-				observer.registerOnce('bot.stop', function(_finishedContractFromFinishSignal){
-					finishedContractFromFinishSignal = _finishedContractFromFinishSignal;
+				observer.registerOnce('bot.stop', function(){
 					chainDone();
 				});
 				bot.stop();
+			})
+			.pipe(function(chainDone){
+				observer.registerOnce('bot.finish', function(_finishedContractFromFinishSignal){
+					finishedContractFromFinishSignal = _finishedContractFromFinishSignal;
+					chainDone();
+				});
+				bot.start(token, option, function strategy(tick, proposals, _strategyCtrl){
+					if ( ++numOfTicks === 3 ) {
+						_strategyCtrl.purchase('DIGITEVEN');
+					}
+				}, function finish(_finishedContract){
+					finishedContractFromFinishFunction = _finishedContract;
+				});
 			})
 			.pipe(function(chainDone){
 				done();
