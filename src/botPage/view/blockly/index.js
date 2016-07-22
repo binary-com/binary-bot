@@ -1,5 +1,4 @@
 'use strict';
-import globalBlockly from 'blockly';
 import fileSaver from 'filesaverjs';
 import config from 'const';
 import Translator from 'translator';
@@ -21,7 +20,7 @@ var _Blockly = function _Blockly(){
 		$.get('xml/toolbox.xml', function (toolbox) {
 			require('./code_generators');
 			require('./definitions');
-			var workspace = globalBlockly.inject('blocklyDiv', {
+			var workspace = Blockly.inject('blocklyDiv', {
 				media: 'js/blockly/media/',
 				toolbox: that.xmlToStr(that.translator.translateXml($.parseXML(that.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
 				zoom: {
@@ -30,10 +29,10 @@ var _Blockly = function _Blockly(){
 				trashcan: false,
 			});
 			$.get('xml/main.xml', function (main) {
-				globalBlockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+				Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
 				that.disableDeleteForMainBlocks();
 				that.overrideBlocklyDefaultShape();
-				globalBlockly.mainWorkspace.clearUndo();
+				Blockly.mainWorkspace.clearUndo();
 				that.addPurchaseOptions();
 				resolve();
 			});
@@ -93,11 +92,11 @@ _Blockly.prototype = Object.create(null, {
 	},
 	disableDeleteForMainBlocks: {
 		value: function disableDeleteForMainBlocks(){
-			globalBlockly.mainWorkspace.getBlockById('trade')
+			Blockly.mainWorkspace.getBlockById('trade')
 				.setDeletable(false);
-			globalBlockly.mainWorkspace.getBlockById('strategy')
+			Blockly.mainWorkspace.getBlockById('strategy')
 				.setDeletable(false);
-			globalBlockly.mainWorkspace.getBlockById('finish')
+			Blockly.mainWorkspace.getBlockById('finish')
 				.setDeletable(false);
 		}
 	},
@@ -123,16 +122,16 @@ _Blockly.prototype = Object.create(null, {
 	},
 	loadBlocksFile: {
 		value: function loadBlocksFile(str){
-			globalBlockly.mainWorkspace.clear();
-			var xml = globalBlockly.Xml.textToDom(str);
-			globalBlockly.Xml.domToWorkspace(xml, globalBlockly.mainWorkspace);
+			Blockly.mainWorkspace.clear();
+			var xml = Blockly.Xml.textToDom(str);
+			Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
 			this.reconfigureBlocklyAfterLoad();
 		}
 	},
 	reconfigureBlocklyAfterLoad: {
 		value: function reconfigureBlocklyAfterLoad(){
-			globalBlockly.mainWorkspace.clearUndo();
-			globalBlockly.mainWorkspace.zoomToFit();
+			Blockly.mainWorkspace.clearUndo();
+			Blockly.mainWorkspace.zoomToFit();
 			this.setBlockColors();
 			this.addPurchaseOptions();
 		}
@@ -168,7 +167,7 @@ _Blockly.prototype = Object.create(null, {
 	},
 	saveXml: {
 		value: function saveXml(showOnly) {
-			var xmlDom = globalBlockly.Xml.workspaceToDom(globalBlockly.mainWorkspace);
+			var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 			Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))
 				.forEach(function (field) {
 					if (field.getAttribute('name') === 'ACCOUNT_LIST') {
@@ -194,7 +193,7 @@ _Blockly.prototype = Object.create(null, {
 						break;
 					}
 				});
-			var xmlText = globalBlockly.Xml.domToPrettyText(xmlDom);
+			var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
 			if (showOnly) {
 				observer.emit('ui.log', xmlText);
 			} else {
@@ -211,10 +210,10 @@ _Blockly.prototype = Object.create(null, {
 		value: function run() {
 			try {
 				window.LoopTrap = 1000;
-				globalBlockly.JavaScript.INFINITE_LOOP_TRAP =
+				Blockly.JavaScript.INFINITE_LOOP_TRAP =
 					'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-				var code = globalBlockly.JavaScript.workspaceToCode(globalBlockly.mainWorkspace);
-				globalBlockly.JavaScript.INFINITE_LOOP_TRAP = null;
+				var code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
+				Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 				var EVAL_BLOCKLY_CODE = eval;
 				EVAL_BLOCKLY_CODE(code);
 				$('#summaryPanel')
@@ -239,7 +238,7 @@ _Blockly.prototype = Object.create(null, {
 		value: function addPurchaseOptions() {
 			var firstOption = {};
 			var secondOption = {};
-			var trade = globalBlockly.mainWorkspace.getBlockById('trade');
+			var trade = Blockly.mainWorkspace.getBlockById('trade');
 			if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
 				.getInputTargetBlock('CONDITION') !== null) {
 				var condition_type = trade.getInputTargetBlock('SUBMARKET')
@@ -263,7 +262,7 @@ _Blockly.prototype = Object.create(null, {
 					that.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
 				});
 				var purchases = [];
-				globalBlockly.mainWorkspace.getAllBlocks()
+				Blockly.mainWorkspace.getAllBlocks()
 					.forEach(function (block) {
 						if (block.type === 'purchase') {
 							purchases.push(block);
@@ -272,7 +271,7 @@ _Blockly.prototype = Object.create(null, {
 				purchases.forEach(function (purchase) {
 					var value = purchase.getField('PURCHASE_LIST')
 						.getValue();
-					globalBlockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
+					Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
 					if (value === firstOption.condition) {
 						purchase.getField('PURCHASE_LIST')
 							.setText(firstOption.name);
@@ -291,12 +290,12 @@ _Blockly.prototype = Object.create(null, {
 	},
 	undo: {
 		value: function undo(){
-			globalBlockly.mainWorkspace.undo();
+			Blockly.mainWorkspace.undo();
 		}
 	},
 	redo: {
 		value: function redo(){
-			globalBlockly.mainWorkspace.undo(true);
+			Blockly.mainWorkspace.undo(true);
 		}
 	}
 });

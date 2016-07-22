@@ -1,7 +1,6 @@
 'use strict';
 import Components from '../components';
 import observer from 'binary-common-utils/observer';
-import globalBlockly from 'blockly';
 import Translator from 'translator';
 var translator = new Translator();
 
@@ -70,8 +69,8 @@ Introduction.prototype = Object.create(null, {
 				},
 				setup: function (tour, options) {
 					observer.registerOnce('tour:submarket_created', this.tour_submarket_created);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].reveal(true);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].select();
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].reveal(true);
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].select();
 					that.components.setOpacity('toolbox', 1);
 				},
 				teardown: function (tour, options) {
@@ -93,7 +92,7 @@ Introduction.prototype = Object.create(null, {
 					observer.registerOnce('tour:submarket', this.tour_submarket_added);
 				},
 				teardown: function (tour, options) {
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
 				},
 			}, {
 				content: '<p>' + translator.translateText("Alright! Now pick a <b>condition</b> block.") + '</p>',
@@ -108,8 +107,8 @@ Introduction.prototype = Object.create(null, {
 				},
 				setup: function (tour, options) {
 					observer.registerOnce('tour:condition_created', this.tour_condition_created);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].reveal(true);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].select();
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].reveal(true);
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].select();
 					that.components.setOpacity('toolbox', 1);
 				},
 				teardown: function (tour, options) {
@@ -131,7 +130,7 @@ Introduction.prototype = Object.create(null, {
 					observer.registerOnce('tour:condition', this.tour_condition_added);
 				},
 				teardown: function (tour, options) {
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 				},
 			}, {
 				content: '<p>' + translator.translateText("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="image/number.png"/>) ' + translator.translateText("from the Math menu") + '</p>',
@@ -146,7 +145,7 @@ Introduction.prototype = Object.create(null, {
 				},
 				setup: function (tour, options) {
 					observer.registerOnce('tour:number', this.tour_number_created);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[1].select();
+					Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
 					that.components.setOpacity('toolbox', 1);
 				},
 				teardown: function (tour, options) {
@@ -180,7 +179,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[1].select();
+					Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
 					observer.registerOnce('tour:options', this.tour_options_added);
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 1);
@@ -218,8 +217,8 @@ Introduction.prototype = Object.create(null, {
 				setup: function (tour, options) {
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 1);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
 				},
 				teardown: function (tour, options) {
 					that.components.getUiComponent('toolbox')
@@ -237,8 +236,8 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 1);
 					observer.registerOnce('tour:purchase_created', this.tour_purchase_created);
@@ -310,8 +309,8 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 1);
 					observer.registerOnce('tour:trade_again_created', this.tour_trade_again_created);
@@ -336,7 +335,7 @@ Introduction.prototype = Object.create(null, {
 					observer.registerOnce('tour:trade_again', this.tour_trade_again);
 				},
 				teardown: function (tour, options) {
-					globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+					Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 				},
 			}, {
 				content: '<p>' + translator.translateText("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
@@ -449,7 +448,7 @@ Introduction.prototype = Object.create(null, {
 		value: function stop(){
 			this.components.setOpacityForAll(true, 1);
 			this.tour.stop();
-			globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete this.tour;
 			if ( this.stopCallback ) {
 				this.stopCallback();

@@ -2,7 +2,6 @@
 import Components from '../components';
 import View from '../';
 import storageManager from 'binary-common-utils/storageManager';
-import globalBlockly from 'blockly';
 import Translator from 'translator';
 var translator = new Translator();
 
@@ -176,7 +175,7 @@ Welcome.prototype = Object.create(null, {
 		value: function stop(){
 			this.components.setOpacityForAll(true, 1);
 			this.tour.stop();
-			globalBlockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete this.tour;
 			if ( this.stopCallback ) {
 				this.stopCallback();
