@@ -3,7 +3,7 @@ import Observer from 'binary-common-utils/observer';
 import _ from 'underscore';
 import _Symbol from './symbol';
 import StrategyCtrl from './strategyCtrl';
-import {asyncChain} from 'binary-common-utils/tools';
+import {getUTCTime, asyncChain} from 'binary-common-utils/tools';
 import CustomApi from 'binary-common-utils/customApi';
 import config from 'const';
 
@@ -104,6 +104,18 @@ Bot.prototype = Object.create(null, {
 			.exec();
 		}
 	},
+	_createDetails: {
+		value: function _createDetails(contract) {
+			var result = (+contract.sell_price === 0) ? 'loss' : 'win';
+			return [ 
+				contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
+				result,
+				contract.contract_type, +contract.entry_tick,
+				getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.exit_tick,
+				getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +((contract.barrier) ? contract.barrier : 0), 
+			];  
+		}
+	},
 	_startTrading: {
 		value: function _startTrading() {
 			var that = this;
@@ -140,7 +152,7 @@ Bot.prototype = Object.create(null, {
 			})
 			.pipe(function(done){
 				that.running = false;
-				that.finish(contract);
+				that.finish(contract, that._createDetails(contract));
 				observer.emit('bot.finish', contract);
 			})
 			.exec();

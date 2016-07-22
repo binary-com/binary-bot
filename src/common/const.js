@@ -18,7 +18,7 @@ module.exports = {
 			[translator.translateText('statement'), '1'],
 			[translator.translateText('ask price'), '2'],
 			[translator.translateText('payout'), '3'],
-			[translator.translateText('profit'), '4'],
+			[translator.translateText('result'), '4'],
 			[translator.translateText('contract type'), '5'],
 			[translator.translateText('entry spot'), '6'],
 			[translator.translateText('entry value'), '7'],
