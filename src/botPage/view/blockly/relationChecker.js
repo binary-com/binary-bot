@@ -5,8 +5,8 @@ import Translator from 'translator';
 var translator = new Translator();
 var bot = new Bot();
 import observer from 'binary-common-utils/observer';
-import _Blockly from './';
-var blockly = new _Blockly();
+import Utils from './utils';
+var utils = new Utils();
 var getNumField = function getNumField(block, fieldName) {
 	var field = block.getInputTargetBlock(fieldName);
 	if (field !== null && field.type === 'math_number') {
@@ -57,10 +57,10 @@ var trade = function trade(_trade, ev) {
 		submarket(_trade.childBlocks_[0], ev);
 		observer.emit('tour:submarket');
 		if (ev.hasOwnProperty('newInputName')) {
-			blockly.addPurchaseOptions();
+			utils.addPurchaseOptions();
 		}
 	}
-	var topParent = blockly.findTopParentBlock(_trade);
+	var topParent = utils.findTopParentBlock(_trade);
 	if (topParent !== null) {
 		if (bot.symbol.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
 			observer.emit('ui.log.warn', translator.translateText('The trade block cannot be inside binary blocks'));
@@ -137,7 +137,7 @@ var condition = function condition(_condition, ev, calledByParent) {
 	}
 };
 var inside_strategy = function inside_strategy(blockObject, ev, name) {
-	var topParent = blockly.findTopParentBlock(blockObject);
+	var topParent = utils.findTopParentBlock(blockObject);
 	if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
 		observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
 		blockObject.unplug();
@@ -148,7 +148,7 @@ var inside_strategy = function inside_strategy(blockObject, ev, name) {
 	}
 };
 var inside_finish = function inside_finish(blockObject, ev, name) {
-	var topParent = blockly.findTopParentBlock(blockObject);
+	var topParent = utils.findTopParentBlock(blockObject);
 	if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
 		observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the finish block'));
 		blockObject.unplug();

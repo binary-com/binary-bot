@@ -3,7 +3,7 @@ import './trade/trade';
 import './tools/balance';
 import './tools/notify';
 import './tools/total_profit';
-import './markets';
+import markets from './markets';
 import './strategy/check_direction';
 import './strategy/direction';
 import './strategy/purchase';
@@ -15,4 +15,8 @@ import './finish/finish';
 import './finish/read_details';
 import './finish/result';
 import './finish/trade_again';
-import './conditions/ticktrades';
+import ticktrades from './conditions/ticktrades';
+module.exports = function init(){
+	markets();
+	ticktrades();
+};

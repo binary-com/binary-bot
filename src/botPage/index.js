@@ -2,6 +2,9 @@
 import 'babel-polyfill';
 import 'blockly';
 import './utils/draggable';
+$.ajaxSetup({
+	cache: false
+});
 
 import Bot from './bot';
 import View from './view';

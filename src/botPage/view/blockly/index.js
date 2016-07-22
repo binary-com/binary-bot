@@ -5,21 +5,24 @@ import Translator from 'translator';
 import tools from 'binary-common-utils/tools';
 import observer from 'binary-common-utils/observer';
 import Bot from '../../bot';
-var bot = new Bot();
+import Utils from './utils.js';
+import codeGenerators from './code_generators';
+import definitions from './definitions';
 
 var _Blockly = function _Blockly(){
 	if ( _Blockly.instance ) {
 		return _Blockly.instance;
 	}
 	_Blockly.instance = this;
+	this.bot = new Bot();
+	this.utils = new Utils();
 	this.translator = new Translator();
-	this.purchase_choices = [[this.translator.translateText('Click to select'), '']];
 	this.addBlocklyTranslation();
 	var that = this;
 	this.initPromise = new Promise(function(resolve, reject){
 		$.get('xml/toolbox.xml', function (toolbox) {
-			require('./code_generators');
-			require('./definitions');
+			codeGenerators();
+			definitions();
 			var workspace = Blockly.inject('blocklyDiv', {
 				media: 'js/blockly/media/',
 				toolbox: that.xmlToStr(that.translator.translateXml($.parseXML(that.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
@@ -33,7 +36,7 @@ var _Blockly = function _Blockly(){
 				that.disableDeleteForMainBlocks();
 				that.overrideBlocklyDefaultShape();
 				Blockly.mainWorkspace.clearUndo();
-				that.addPurchaseOptions();
+				that.utils.addPurchaseOptions();
 				resolve();
 			});
 		});
@@ -41,24 +44,6 @@ var _Blockly = function _Blockly(){
 };
 
 _Blockly.prototype = Object.create(null, {
-	getPurchaseChoices: {
-		value: function getPurchaseChoices(){
-			return this.purchase_choices;
-		}
-	},
-	findTopParentBlock: {
-		value: function findTopParentBlock(block) {
-			 var pblock = block.parentBlock_;
-			 if (pblock === null) {
-							 return null;
-			 }
-			 while (pblock !== null) {
-							 block = pblock;
-							 pblock = block.parentBlock_;
-			 }
-			 return block;
-		}
-	},
 	createXmlTag: {
 		value: function createXmlTag(obj) {
 			var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
@@ -86,7 +71,7 @@ _Blockly.prototype = Object.create(null, {
 	marketsToXml: {
 		value: function marketsToXml(xml){
 			var xmlStr = this.xmlToStr(xml);
-			var marketXml = this.createXmlTag(bot.symbol.activeSymbols.getMarkets());
+			var marketXml = this.createXmlTag(this.bot.symbol.activeSymbols.getMarkets());
 			return xmlStr.replace('<!--Markets-->', marketXml);
 		}
 	},
@@ -133,7 +118,7 @@ _Blockly.prototype = Object.create(null, {
 			Blockly.mainWorkspace.clearUndo();
 			Blockly.mainWorkspace.zoomToFit();
 			this.setBlockColors();
-			this.addPurchaseOptions();
+			this.utils.addPurchaseOptions();
 		}
 	},
 	selectBlockByText: {
@@ -225,67 +210,13 @@ _Blockly.prototype = Object.create(null, {
 	},
 	addBlocklyTranslation: {
 		value: function addBlocklyTranslation(){
-			$.ajaxSetup({
-				cache: false
+			$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+				 options.async = true;
 			});
 			var script = document.createElement('script');
 			script.type = 'text/javascript';
 			script.src = 'js/blockly/msg/js/' + this.translator.getLanguage() + '.js';		
 			$('body').append(script);
-		}
-	},
-	addPurchaseOptions: {
-		value: function addPurchaseOptions() {
-			var firstOption = {};
-			var secondOption = {};
-			var trade = Blockly.mainWorkspace.getBlockById('trade');
-			if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
-				.getInputTargetBlock('CONDITION') !== null) {
-				var condition_type = trade.getInputTargetBlock('SUBMARKET')
-					.getInputTargetBlock('CONDITION')
-					.type;
-				var opposites = config.opposites[condition_type.toUpperCase()];
-				this.purchase_choices = [];
-				var that = this;
-				opposites.forEach(function (option, index) {
-					if (index === 0) {
-						firstOption = {
-							condition: Object.keys(option)[0],
-							name: option[Object.keys(option)[0]],
-						};
-					} else {
-						secondOption = {
-							condition: Object.keys(option)[0],
-							name: option[Object.keys(option)[0]],
-						};
-					}
-					that.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
-				});
-				var purchases = [];
-				Blockly.mainWorkspace.getAllBlocks()
-					.forEach(function (block) {
-						if (block.type === 'purchase') {
-							purchases.push(block);
-						}
-					});
-				purchases.forEach(function (purchase) {
-					var value = purchase.getField('PURCHASE_LIST')
-						.getValue();
-					Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-					if (value === firstOption.condition) {
-						purchase.getField('PURCHASE_LIST')
-							.setText(firstOption.name);
-					} else if (value === secondOption.condition) {
-						purchase.getField('PURCHASE_LIST')
-							.setText(secondOption.name);
-					} else {
-						purchase.getField('PURCHASE_LIST')
-							.setValue(firstOption.condition);
-						purchase.getField('PURCHASE_LIST')
-							.setText(firstOption.name);
-					}
-				});
-			}
 		}
 	},
 	undo: {

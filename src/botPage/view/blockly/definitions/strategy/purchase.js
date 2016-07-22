@@ -1,7 +1,7 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-import _Blockly from '../../../blockly';
-var blockly = new _Blockly();
+import Utils from '../../../blockly/utils';
+var utils = new Utils();
 import relationChecker from '../../relationChecker';
 import Translator from 'translator';
 var translator = new Translator();
@@ -11,7 +11,7 @@ Blockly.Blocks.purchase = {
 		this.appendDummyInput()
 			.appendField(translator.translateText("Purchase"))
 			.appendField(new Blockly.FieldDropdown(function(){
-				return blockly.getPurchaseChoices();
+				return utils.getPurchaseChoices();
 			}), "PURCHASE_LIST");
 		this.setPreviousStatement(true, 'Purchase');
 		this.setColour("#f2f2f2");
