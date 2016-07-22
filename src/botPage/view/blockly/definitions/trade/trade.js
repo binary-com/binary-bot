@@ -1,9 +1,9 @@
 'use strict';
-import blockly from 'blockly';
+
 import Translator from 'translator';
 var translator = new Translator();
 import relationChecker from '../../relationChecker';
-blockly.Blocks.trade = {
+Blockly.Blocks.trade = {
 	init: function () {
 		this.appendDummyInput()
 	        .appendField(translator.translateText("Step 1: Define Trade"));

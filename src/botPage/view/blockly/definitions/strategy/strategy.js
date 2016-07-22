@@ -1,10 +1,10 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
-import blockly from 'blockly';
+
 import Translator from 'translator';
 var translator = new Translator();
 
-blockly.Blocks.on_strategy = {
+Blockly.Blocks.on_strategy = {
   init: function() {
     this.appendDummyInput()
         .appendField(translator.translateText("Step 2: Strategy"));

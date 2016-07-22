@@ -1,10 +1,10 @@
 'use strict';
-import blockly from 'blockly';
+
 import Translator from 'translator';
 var translator = new Translator();
-blockly.JavaScript.trade = function (block) {
+Blockly.JavaScript.trade = function (block) {
 	var account = $('#accountSelect').val();
-	var submarket = blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+	var submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 	if (submarket === '') {
 		throw {
 			message: translator.translateText('You have to add a submarket first')

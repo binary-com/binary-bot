@@ -1,14 +1,14 @@
 'use strict';
-import blockly from 'blockly';
+
 import config from 'const';
 import relationChecker from '../../relationChecker';
 import Translator from 'translator';
 var translator = new Translator();
-blockly.Blocks.contract_check_result = {
+Blockly.Blocks.contract_check_result = {
   init: function() {
     this.appendDummyInput()
         .appendField(translator.translateText("Result is"))
-				.appendField(new blockly.FieldDropdown(config.lists.CHECK_RESULT), "CHECK_RESULT");
+				.appendField(new Blockly.FieldDropdown(config.lists.CHECK_RESULT), "CHECK_RESULT");
     this.setOutput(true, "Boolean");
     this.setColour("#f2f2f2");
     this.setTooltip(translator.translateText('True if the result matches the selection'));

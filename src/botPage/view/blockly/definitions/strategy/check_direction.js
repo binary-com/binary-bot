@@ -1,14 +1,14 @@
 'use strict';
-import blockly from 'blockly';
+
 import Translator from 'translator';
 var translator = new Translator();
 import relationChecker from '../../relationChecker';
 import config from 'const';
-blockly.Blocks.check_direction = {
+Blockly.Blocks.check_direction = {
   init: function() {
     this.appendDummyInput()
         .appendField(translator.translateText("Direction is"))
-				.appendField(new blockly.FieldDropdown(config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
+				.appendField(new Blockly.FieldDropdown(config.lists.CHECK_DIRECTION), "CHECK_DIRECTION");
     this.setOutput(true, "Boolean");
     this.setColour("#f2f2f2");
     this.setTooltip(translator.translateText('True if the direction matches the selection'));

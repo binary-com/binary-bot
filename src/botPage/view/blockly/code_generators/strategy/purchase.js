@@ -1,6 +1,6 @@
 'use strict';
-import blockly from 'blockly';
-blockly.JavaScript.purchase = function(block) {
+
+Blockly.JavaScript.purchase = function(block) {
 	if ( this.parentBlock_ === null ) {
 		return '';
 	}

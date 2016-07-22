@@ -1,11 +1,11 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
-import blockly from 'blockly';
+
 import Translator from 'translator';
 var translator = new Translator();
 import relationChecker from '../../relationChecker';
 
-blockly.Blocks.direction = {
+Blockly.Blocks.direction = {
   init: function() {
     this.appendDummyInput()
         .appendField(translator.translateText("Tick Direction"));

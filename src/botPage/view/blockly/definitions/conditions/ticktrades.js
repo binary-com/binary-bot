@@ -1,6 +1,6 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zuc7w9
-import blockly from 'blockly';
+
 import config from 'const';
 import Bot from '../../../../bot';
 import relationChecker from '../../relationChecker';
@@ -9,7 +9,7 @@ import Translator from 'translator';
 var translator = new Translator();
 
 Object.keys(config.opposites).forEach(function(opposites){
-	blockly.Blocks[opposites.toLowerCase()] = {
+	Blockly.Blocks[opposites.toLowerCase()] = {
 		init: function() {
 			var option_names = [];
 			config.opposites[opposites].forEach(function(options){
@@ -27,10 +27,10 @@ Object.keys(config.opposites).forEach(function(opposites){
 				.appendField(translator.translateText("Ticks:"));
 			this.appendDummyInput()
 				.appendField(translator.translateText("Payout:"))
-				.appendField(new blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
+				.appendField(new Blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");
 			this.appendDummyInput()
 				.appendField(translator.translateText("Currency:"))
-				.appendField(new blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
+				.appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
 			this.appendValueInput("AMOUNT")
 				.setCheck("Number")
 				.appendField(translator.translateText("Amount:"));

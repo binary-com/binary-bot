@@ -1,18 +1,18 @@
 'use strict';
-import blockly from 'blockly';
+
 import config from 'const';
 Object.keys(config.opposites).forEach(function(opposites){
-	blockly.JavaScript[opposites.toLowerCase()] = function(block) {
+	Blockly.JavaScript[opposites.toLowerCase()] = function(block) {
 		if ( this.parentBlock_ === null ) {
 			return '';
 		}
-		var duration = blockly.JavaScript.valueToCode(block, 'DURATION', blockly.JavaScript.ORDER_ATOMIC);
+		var duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
 		var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
 		var currency = block.getFieldValue('CURRENCY_LIST');
-		var amount = blockly.JavaScript.valueToCode(block, 'AMOUNT', blockly.JavaScript.ORDER_ATOMIC);
+		var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
 		var prediction;
 		if ( config.oppositesHaveBarrier.indexOf(opposites) > -1 ) {
-			prediction = blockly.JavaScript.valueToCode(block, 'PREDICTION', blockly.JavaScript.ORDER_ATOMIC);
+			prediction = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
 			if ( prediction === '' ) {
 				throw {message: 'All condition options are required'};
 			}

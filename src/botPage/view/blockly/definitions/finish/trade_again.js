@@ -1,11 +1,11 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
-import blockly from 'blockly';
+
 import Translator from 'translator';
 var translator = new Translator();
 import relationChecker from '../../relationChecker';
 
-blockly.Blocks.trade_again = {
+Blockly.Blocks.trade_again = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(translator.translateText("Trade Again"));

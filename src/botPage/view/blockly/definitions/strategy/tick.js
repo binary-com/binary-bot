@@ -1,12 +1,12 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 
-import blockly from 'blockly';
+
 import relationChecker from '../../relationChecker';
 import Translator from 'translator';
 var translator = new Translator();
 
-blockly.Blocks.tick = {
+Blockly.Blocks.tick = {
   init: function() {
     this.appendDummyInput()
         .appendField(translator.translateText("Tick Value"));

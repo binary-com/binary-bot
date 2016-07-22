@@ -1,6 +1,6 @@
 'use strict';
-import blockly from 'blockly';
-blockly.JavaScript.direction = function(block) {
+
+Blockly.JavaScript.direction = function(block) {
 	var code = 'direction';
-  return [code, blockly.JavaScript.ORDER_ATOMIC];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

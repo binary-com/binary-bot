@@ -1,16 +1,16 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
-import blockly from 'blockly';
+
 import Translator from 'translator';
 var translator = new Translator();
 import relationChecker from '../../relationChecker';
 import config from 'const';
 
-blockly.Blocks.read_details = {
+Blockly.Blocks.read_details = {
   init: function() {
     this.appendDummyInput()
         .appendField(translator.translateText("Contract Detail:"))
-        .appendField(new blockly.FieldDropdown(config.lists.DETAILS), "DETAIL_INDEX");
+        .appendField(new Blockly.FieldDropdown(config.lists.DETAILS), "DETAIL_INDEX");
 		this.setOutput(true, null);
     this.setColour("#f2f2f2");
     this.setTooltip(translator.translateText('Reads a selected option from contract details list'));
