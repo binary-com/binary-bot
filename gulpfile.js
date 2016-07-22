@@ -176,12 +176,24 @@ gulp.task('blockly-js', ['static'], function(){
 gulp.task('blockly', ['blockly-msg', 'blockly-media', 'blockly-js'], function () {
 });
 
+gulp.task('bundle', ['blockly'], function () {
+	return gulp.src([
+		'./node_modules/jquery/dist/jquery.min.js', 
+		'./node_modules/underscore/underscore-min.js', 
+		'./node_modules/backbone/backbone-min.js', 
+		'./node_modules/tourist/tourist.min.js',
+		'./node_modules/notifyjs-browser/dist/notify.js'
+		])
+		.pipe(concat('bundle.js'))
+		.pipe(gulp.dest('www/js/'));
+});
+
 gulp.task('clean-webpack', function() {
 	return gulp.src(['./www/js/*-*.{js,map}'])
 		.pipe(vinyl_paths(del));
 });
 
-gulp.task('webpack', ['i18n', 'clean-webpack', 'test', 'blockly'], function(){
+gulp.task('webpack', ['i18n', 'clean-webpack', 'test', 'bundle'], function(){
 	return webpack(require('./webpack.config.js'))
 		.pipe(through.obj(addToManifest))
 		.pipe(gulp.dest('www/js'));

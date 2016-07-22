@@ -2,6 +2,19 @@
 import i18n from './i18n';
 import tools from 'binary-common-utils/tools';
 import storageManager from 'binary-common-utils/storageManager';
+import zh_tw from './translations/zh_tw';
+import de from './translations/de';
+import id from './translations/id';
+import zh_cn from './translations/zh_cn';
+import it from './translations/it';
+import vi from './translations/vi';
+import ar from './translations/ar';
+import pl from './translations/pl';
+import ru from './translations/ru';
+import pt from './translations/pt';
+import es from './translations/es';
+import fr from './translations/fr';
+import en from './translations/en';
 
 var Translator = function Translator() {
 	if ( Translator.instance ) {
@@ -31,19 +44,19 @@ var Translator = function Translator() {
 Translator.prototype = Object.create(null, {
 	_supportedLanguages: {
 		value: {
-			zh_tw: require('./translations/zh_tw'),
-			de: require('./translations/de'),
-			id: require('./translations/id'),
-			zh_cn: require('./translations/zh_cn'),
-			it: require('./translations/it'),
-			vi: require('./translations/vi'),
-			ar: require('./translations/ar'),
-			pl: require('./translations/pl'),
-			ru: require('./translations/ru'),
-			pt: require('./translations/pt'),
-			es: require('./translations/es'),
-			fr: require('./translations/fr'),
-			en: require('./translations/en')
+			zh_tw: zh_tw,
+			de: de,
+			id: id,
+			zh_cn: zh_cn,
+			it: it,
+			vi: vi,
+			ar: ar,
+			pl: pl,
+			ru: ru,
+			pt: pt,
+			es: es,
+			fr: fr,
+			en: en
 		}
 	},
 	getLanguage: {

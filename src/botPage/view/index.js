@@ -7,17 +7,9 @@ import Blockly from './blockly';
 import storageManager from 'binary-common-utils/storageManager';
 import Translator from 'translator';
 import Bot from '../bot';
-import $ from 'jquery';
 import Introduction from './tours/introduction';
 import Welcome from './tours/welcome';
 import {PlainChart as Chart} from 'binary-charts';
-import _ from 'underscore';
-window.Blockly = require('blockly');
-window.$ = window.jQuery = $;
-window.Backbone = require('backbone');
-import 'notifyjs-browser';
-import 'tourist';
-import './utils/draggable';
 
 var View = function View(){
 	if ( View.instance ) {

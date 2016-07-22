@@ -1,6 +1,5 @@
 'use strict';
 import tools from 'binary-common-utils/tools';
-import $ from 'jquery';
 import accounts from 'binary-common-utils/account';
 import storageManager from 'binary-common-utils/storageManager';
 var appId = 0;

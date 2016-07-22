@@ -1,13 +1,10 @@
 'use strict';
 import 'babel-polyfill';
+import 'blockly';
+import './utils/draggable';
+
 import Bot from './bot';
 import View from './view';
-import Blockly from 'blockly';
-import jQuery from 'jquery';
-import Backbone from 'backbone';
-window.Blockly = Blockly;
-window.jQuery = window.$ = jQuery;
-window.Backbone = Backbone;
 
 window.Bot = new Bot();
 window.Bot.initPromise.then(function(){

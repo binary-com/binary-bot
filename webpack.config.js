@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   devtool: 'source-map',
 	module: {
@@ -17,9 +18,6 @@ module.exports = {
     root: __dirname + "/node_modules",
 	},
 	resolve: {
-		alias: {
-      tourist: 'tourist/tourist.js',
-		},
     root: __dirname + '/src/common'
   },
   entry: {
@@ -29,6 +27,8 @@ module.exports = {
 	externals: [
 		{
 			blockly: 'Blockly',
+			tourist: 'Tourist',
+			$: 'jquery',
 		},
 		'ws'
 	],
