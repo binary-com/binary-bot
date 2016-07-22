@@ -109,10 +109,10 @@ Bot.prototype = Object.create(null, {
 			var result = (+contract.sell_price === 0) ? 'loss' : 'win';
 			return [ 
 				contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
-				result,
-				contract.contract_type, +contract.entry_tick,
-				getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.exit_tick,
-				getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +((contract.barrier) ? contract.barrier : 0), 
+				result, contract.contract_type, 
+				getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.entry_tick,
+				getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +contract.exit_tick,
+				+((contract.barrier) ? contract.barrier : 0), 
 			];  
 		}
 	},
