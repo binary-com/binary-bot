@@ -3,8 +3,7 @@ import Translator from 'translator';
 import i18n from 'i18n';
 import appId from './appId';
 import {asyncChain} from 'binary-common-utils/tools';
-import jQuery from 'jquery';
-window.jQuery = window.$ = jQuery;
+import $ from 'jquery';
 
 asyncChain()
 .pipe(function checkOauthLogin(done){
