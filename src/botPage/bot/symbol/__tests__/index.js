@@ -1,8 +1,4 @@
 'use strict';
-import {addPath} from 'app-module-path';
-addPath(__dirname + '/../../../../common/');
-import 'binary-common-utils/compatibility';
-
 import conditions from '../conditions';
 import _Symbol from '../index';
 import tools from 'binary-common-utils/tools';

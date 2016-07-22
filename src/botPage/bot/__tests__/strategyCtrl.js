@@ -1,8 +1,4 @@
 'use strict';
-import {addPath} from 'app-module-path';
-addPath(__dirname + '/../../../common/');
-import 'binary-common-utils/compatibility';
-
 import {asyncChain} from 'binary-common-utils/tools';
 import StrategyCtrl from '../strategyCtrl';
 import ws from 'mock/websocket';

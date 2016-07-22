@@ -1,8 +1,10 @@
 'use strict';
 import Components from '../components';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
 import Translator from 'translator';
+
 var translator = new Translator();
+var observer = new Observer();
 
 var Introduction = function Introduction(){
 	if ( Introduction.instance ) {

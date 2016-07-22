@@ -2,10 +2,11 @@
 import config from 'const';
 import Bot from '../../bot';
 import Translator from 'translator';
+import Observer from 'binary-common-utils/observer';
+import Utils from './utils';
 var translator = new Translator();
 var bot = new Bot();
-import observer from 'binary-common-utils/observer';
-import Utils from './utils';
+var observer = new Observer();
 var utils = new Utils();
 var getNumField = function getNumField(block, fieldName) {
 	var field = block.getInputTargetBlock(fieldName);

@@ -3,12 +3,13 @@ import fileSaver from 'filesaverjs';
 import config from 'const';
 import Translator from 'translator';
 import tools from 'binary-common-utils/tools';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
 import Bot from '../../bot';
 import Utils from './utils.js';
 import codeGenerators from './code_generators';
 import definitions from './definitions';
 
+var observer = new Observer();
 var _Blockly = function _Blockly(){
 	if ( _Blockly.instance ) {
 		return _Blockly.instance;

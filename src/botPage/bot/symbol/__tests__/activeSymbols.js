@@ -1,15 +1,11 @@
 'use strict';
-import {addPath} from 'app-module-path';
-addPath(__dirname + '/../../../../common/');
-import 'binary-common-utils/compatibility';
-
 import {expect} from 'chai';
-
 import ActiveSymbols from '../activeSymbols';
 import CustomApi from 'binary-common-utils/customApi';
 import ws from 'mock/websocket';
-var api = new CustomApi(ws)._originalApi;
 import deep from 'deep-diff';
+
+var api = new CustomApi(ws)._originalApi;
 
 /* 
 	There is a market called forex, which has a submarket called major_pairs, which has a symbol called frxEURUSD

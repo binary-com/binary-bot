@@ -2,7 +2,7 @@
 import logger from './logger';
 import TradeInfo from './tradeInfo';
 import account from 'binary-common-utils/account';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
 import _Blockly from './blockly';
 import storageManager from 'binary-common-utils/storageManager';
 import Translator from 'translator';
@@ -10,6 +10,8 @@ import Bot from '../bot';
 import Introduction from './tours/introduction';
 import Welcome from './tours/welcome';
 import {PlainChart as Chart} from 'binary-charts';
+
+var observer = new Observer();
 
 var View = function View(){
 	if ( View.instance ) {

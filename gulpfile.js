@@ -303,7 +303,7 @@ gulp.task('test-deploy', ['build-min', 'serve'], function () {
 });
 
 gulp.task('watch', ['build', 'serve'], function () {
-	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/common/translations/*.js'], {debounceDelay: 5000}, function(){
+	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/common/translations/*.js'], {debounceDelay: 15000}, function(){
 		gulp.run(['build']);
 	});
 });
