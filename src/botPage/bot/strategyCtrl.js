@@ -1,7 +1,8 @@
 'use strict';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
 import Ticktrade from './trade/ticktrade';
 
+var observer = new Observer();
 var StrategyCtrl = function StrategyCtrl(api, strategy) {
 	this.api = api;
 	this.strategy = strategy;

@@ -100,4 +100,7 @@ describe('symbol', function() {
 				.to.be.empty;
 		});
 	});
+	after(function(){
+		delete _Symbol.instance;
+	});
 });

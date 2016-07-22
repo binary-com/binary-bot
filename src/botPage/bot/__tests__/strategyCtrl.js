@@ -8,7 +8,8 @@ import StrategyCtrl from '../strategyCtrl';
 import ws from 'mock/websocket';
 import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
+var observer = new Observer();
 var api;
 var proposals = [];
 var firstAttemptDetected = true;
@@ -40,22 +41,22 @@ describe('TickTrade', function() {
 			});
 			asyncChain()
 			.pipe(function(chainDone){
-				api.authorize('c9A3gPFcqQtAQDW');
 				observer.registerOnce('api.authorize', function(){
 					chainDone();
 				});
+				api.authorize('c9A3gPFcqQtAQDW');
 			})
 			.pipe(function(chainDone){
+				observer.registerOnce('api.proposal', function (_proposal){
+					chainDone();
+				});
 				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
-				observer.registerOnce('api.proposal', function (_proposal){
-					chainDone();
-				});
 			})
 			.pipe(function(chainDone){
-				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 				observer.registerOnce('api.proposal', function (_proposal){
 					chainDone();
 				});
+				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 			})
 			.exec();
 		});
@@ -119,6 +120,7 @@ describe('TickTrade', function() {
 		});
 	});
 	after(function(){
+		observer.destroy();
 		observer.unregisterAll('api.proposal');
 	});
 });

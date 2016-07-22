@@ -1,7 +1,8 @@
 'use strict';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
 import Translator from 'translator';
 
+var observer = new Observer();
 var Ticktrade = function Ticktrade(api) {
 	this.api = api;
 	this.purchaseInProgress = false;

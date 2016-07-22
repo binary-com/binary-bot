@@ -1,16 +1,12 @@
 'use strict';
-import {addPath} from 'app-module-path';
-addPath(__dirname + '/../../../../common/');
-import 'binary-common-utils/compatibility';
-
-
 import {asyncChain} from 'binary-common-utils/tools';
 import Ticktrade from '../ticktrade';
 import ws from 'mock/websocket';
 import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
 
+var observer = new Observer();
 describe('TickTrade', function() {
 	var api = new CustomApi(ws);
 	var ticktrade = new Ticktrade(api);
@@ -71,5 +67,8 @@ describe('TickTrade', function() {
 			expect(finishedContract).to.have.property('sell_price')
 				.that.satisfy(function(el){return !isNaN(el);});
 		});
+	});
+	after(function(){
+		observer.destroy();
 	});
 });

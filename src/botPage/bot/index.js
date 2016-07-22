@@ -1,5 +1,5 @@
 'use strict';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
 import _ from 'underscore';
 import _Symbol from './symbol';
 import StrategyCtrl from './strategyCtrl';
@@ -7,6 +7,7 @@ import {asyncChain} from 'binary-common-utils/tools';
 import CustomApi from 'binary-common-utils/customApi';
 import config from 'const';
 
+var observer = new Observer();
 var Bot = function Bot(api) {
 	if (Bot.instance) {
 		return Bot.instance;

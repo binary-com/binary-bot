@@ -2,10 +2,11 @@
 import Bot from '../index';
 import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
-import observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/observer';
 import {asyncChain} from 'binary-common-utils/tools';
 import mockWebsocket from 'mock/websocket';
 
+var observer = new Observer();
 var option = {"amount":"1.00","basis":"stake","condition":"EVENODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"};
 
 describe('Bot', function() {
@@ -145,5 +146,9 @@ describe('Bot', function() {
 		it('Calls the finish function when trade is finished', function(){
 			expect(finishedContractFromFinishSignal).to.be.equal(finishedContractFromFinishFunction);
 		});
+	});
+	after(function(){
+		observer.destroy();
+		delete Bot.instance;
 	});
 });

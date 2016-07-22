@@ -88,4 +88,7 @@ describe('ActiveSymbols', function() {
 			});
 		}
 	});
+	after(function(){
+		delete ActiveSymbols.instance;
+	});
 });
