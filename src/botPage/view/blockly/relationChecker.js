@@ -1,13 +1,12 @@
 'use strict';
-import globalBlockly from 'blockly';
 import config from 'const';
 import Bot from '../../bot';
 import Translator from 'translator';
 var translator = new Translator();
 var bot = new Bot();
 import observer from 'binary-common-utils/observer';
-import Blockly from './';
-var blockly = new Blockly();
+import _Blockly from './';
+var blockly = new _Blockly();
 var getNumField = function getNumField(block, fieldName) {
 	var field = block.getInputTargetBlock(fieldName);
 	if (field !== null && field.type === 'math_number') {
@@ -28,22 +27,22 @@ var isInRange = function isInRange(amount, min, max) {
 
 var trade = function trade(_trade, ev) {
 	if (ev.type === 'create') {
-		if (bot.symbol.findSymbol(globalBlockly.mainWorkspace.getBlockById(ev.blockId).type)) {
+		if (bot.symbol.findSymbol(Blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
 			observer.emit('tour:submarket_created');
 		}
-		if (config.conditions.indexOf(globalBlockly.mainWorkspace.getBlockById(ev.blockId)
+		if (config.conditions.indexOf(Blockly.mainWorkspace.getBlockById(ev.blockId)
 				.type) >= 0) {
 			observer.emit('tour:condition_created');
 		}
-		if (globalBlockly.mainWorkspace.getBlockById(ev.blockId)
+		if (Blockly.mainWorkspace.getBlockById(ev.blockId)
 			.type === 'math_number') {
 			observer.emit('tour:number');
 		}
-		if (globalBlockly.mainWorkspace.getBlockById(ev.blockId)
+		if (Blockly.mainWorkspace.getBlockById(ev.blockId)
 			.type === 'purchase') {
 			observer.emit('tour:purchase_created');
 		}
-		if (globalBlockly.mainWorkspace.getBlockById(ev.blockId)
+		if (Blockly.mainWorkspace.getBlockById(ev.blockId)
 			.type === 'trade_again') {
 			observer.emit('tour:trade_again_created');
 		}

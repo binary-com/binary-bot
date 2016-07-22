@@ -3,7 +3,7 @@ import logger from './logger';
 import TradeInfo from './tradeInfo';
 import account from 'binary-common-utils/account';
 import observer from 'binary-common-utils/observer';
-import Blockly from './blockly';
+import _Blockly from './blockly';
 import storageManager from 'binary-common-utils/storageManager';
 import Translator from 'translator';
 import Bot from '../bot';
@@ -26,7 +26,7 @@ var View = function View(){
 	this.bot = new Bot();
 	this.initPromise = new Promise(function(resolve, reject){
 		that.updateTokenList();
-		that.blockly = new Blockly();
+		that.blockly = new _Blockly();
 		that.initTours();
 		resolve();
 	});
