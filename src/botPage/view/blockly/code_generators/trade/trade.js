@@ -11,6 +11,6 @@ Blockly.JavaScript.trade = function (block) {
 		};
 	}
 	// TODO: Assemble JavaScript into code variable.
-	var code = 'Bot.start(\'' + account.trim() + '\', ' + submarket.trim() + ', on_strategy, on_finish);\n';
+	var code = 'function trade(again){\nBot.start(\'' + account.trim() + '\', ' + submarket.trim() + ', on_strategy, on_finish, again);\n}\ntrade();';
 	return code;
 };

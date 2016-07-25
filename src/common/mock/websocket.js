@@ -1,8 +1,8 @@
-'use strict';
 /*jshint loopfunc: true */
-import tools from 'binary-common-utils/tools';
-import WS from 'ws';
-import _ from 'underscore';
+'use strict';
+var tools = require('binary-common-utils/tools');
+var WS = require('ws');
+var _ = require('underscore');
 
 var WebSocket = function WebSocket(url) {
 	WS.prototype.constructor.call(this, url);

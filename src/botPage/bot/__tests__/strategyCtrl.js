@@ -9,7 +9,7 @@ var observer = new Observer();
 var api;
 var proposals = [];
 var firstAttemptDetected = true;
-describe('TickTrade', function() {
+describe('StrategyCtrl', function() {
 	api = new CustomApi(ws);
 	var strategy = function strategy(ticks, proposals, _strategyCtrl) {
 		if ( proposals ) {
@@ -117,6 +117,5 @@ describe('TickTrade', function() {
 	});
 	after(function(){
 		observer.destroy();
-		observer.unregisterAll('api.proposal');
 	});
 });

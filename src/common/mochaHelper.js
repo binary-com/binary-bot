@@ -1,4 +1,4 @@
 'use strict';
-require('babel-register')();
+require('binary-common-utils/mochaHelper');
 require('app-module-path/register');
-require('binary-common-utils/compatibility');
+

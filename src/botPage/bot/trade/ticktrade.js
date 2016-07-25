@@ -16,6 +16,7 @@ Ticktrade.prototype = Object.create(null, {
 			var that = this;
 			this.api.buy(contract.id, contract.ask_price);
 			observer.registerOnce('api.buy', function(purchasedContract){
+				observer.emit('trade.purchase', purchasedContract);
 				that.contractId = purchasedContract.contract_id;
 				that.purchaseInProgress = true;
 				that.api._originalApi.unsubscribeFromAllProposals();

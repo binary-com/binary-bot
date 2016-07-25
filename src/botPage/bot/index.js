@@ -14,7 +14,6 @@ var Bot = function Bot(api) {
 	}
 	Bot.instance = this;
 	this.ticks = [];
-	this.symbolStr = '';
 	if ( typeof api === 'undefined' ) {
 		this.api = new CustomApi();
 	} else {
@@ -23,18 +22,28 @@ var Bot = function Bot(api) {
 	this.symbol = new _Symbol(this.api);
 	this.initPromise = this.symbol.initPromise;
 	this.running = false;
+	this.totalProfit = 0;
+	this.totalRuns = 0;
+	this.totalStake = 0;
+	this.totalPayout = 0;
+	this.balance = 0;
+	this.balanceStr = '';
 };
 
 Bot.prototype = Object.create(null, {
 	start: {
-		value: function start(token, tradeOption, strategy, finish){
-			if ( !this.running ) {
+		value: function start(token, tradeOption, strategy, finish, again){
+			if ( !this.running || again ) {
 				this.running = true;
 			} else {
 				return;
 			}
 			this.strategy = strategy;
 			this.finish = finish;
+			if ( again ) {
+				this._startTrading();
+				return;
+			}
 			this.token = token;
 			if (!_.isEmpty(tradeOption)) {
 				this.pip = this.symbol.activeSymbols.getSymbols()[tradeOption.symbol].pip;
@@ -51,14 +60,6 @@ Bot.prototype = Object.create(null, {
 				this.tradeOptions = [];
 			}
 			var that = this;
-			observer.register('api.tick', function(tick){
-				that.ticks = that.ticks.concat(tick);
-				that.strategyCtrl.updateTicks(that.ticks);
-				observer.emit('bot.tickUpdate', {
-					ticks: that.ticks,
-					pip: that.pip
-				});
-			});
 			asyncChain()
 			.pipe(function(chainDone){
 				observer.registerOnce('api.authorize', function(){	
@@ -67,35 +68,18 @@ Bot.prototype = Object.create(null, {
 				that.api.authorize(that.token);
 			})
 			.pipe(function(chainDone){
-				if ( _.isEmpty(tradeOption) || that.symbolStr === tradeOption.symbol ) {
+				if ( _.isEmpty(tradeOption) ) {
 					chainDone();
 				} else {
-					that.symbolStr = tradeOption.symbol;
-					asyncChain()
-						.pipe(function(chainDone2){
-							if ( _.isEmpty(that.ticks) ) {
-								chainDone2();
-							} else {
-								that.api._originalApi.unsubscribeFromAllTicks().then(function(response){
-									chainDone2();
-								});
-							}
-						})
-						.pipe(function(chainDone2){
-							observer.registerOnce('api.history', function(history){
-								that.ticks = history;
-								chainDone2();
-							});
-							that.api.history(tradeOption.symbol, {
-								end: 'latest',
-								count: 600,
-								subscribe: 1
-							});
-						})
-						.pipe(function(chainDone2){
-							chainDone();
-						})
-						.exec();
+					observer.registerOnce('api.history', function(history){
+						that.ticks = history;
+						chainDone();
+					});
+					that.api.history(tradeOption.symbol, {
+						end: 'latest',
+						count: 600,
+						subscribe: 1
+					});
 				}
 			})
 			.pipe(function(chainDone){
@@ -104,41 +88,83 @@ Bot.prototype = Object.create(null, {
 			.exec();
 		}
 	},
-	_createDetails: {
-		value: function _createDetails(contract) {
-			var result = (+contract.sell_price === 0) ? 'loss' : 'win';
-			return [ 
-				contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
-				result, contract.contract_type, 
-				getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.entry_tick,
-				getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +contract.exit_tick,
-				+((contract.barrier) ? contract.barrier : 0), 
-			];  
-		}
-	},
-	_startTrading: {
-		value: function _startTrading() {
+	_observeStreams: {
+		value: function _observeStreams(){
 			var that = this;
-			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
-			observer.registerOnce('strategy.finish', function(contract){
-				that._finish(contract);
+			observer.register('api.tick', function(tick){
+				that.ticks = that.ticks.concat(tick);
+				that.strategyCtrl.updateTicks(that.ticks);
+				observer.emit('bot.tickUpdate', {
+					ticks: that.ticks,
+					pip: that.pip
+				});
 			});
-			this._subscribeProposals();
-			this._observeTicks();
+			observer.register('api.balance', function(balance){
+				that.balance = balance.balance;
+				that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
+				observer.emit('bot.tradeInfo', {
+					balance: that.balanceStr
+				});
+			});
+			this.api.balance();
 		}
 	},
 	_subscribeProposals: {
 		value: function _subscribeProposals() {
 			var that = this;
-			for (var i in this.tradeOptions) {
-				this.api.proposal(this.tradeOptions[i]);
-			}
 			observer.register('api.proposal', function(proposal){
 				that.strategyCtrl.updateProposal(proposal);
 			});
 			observer.register('strategy.ready', function(){
 				observer.emit('bot.waiting_for_purchase');
 			});
+			for (var i in this.tradeOptions) {
+				this.api.proposal(this.tradeOptions[i]);
+			}
+		}
+	},
+	_startTrading: {
+		value: function _startTrading() {
+			var that = this;
+			observer.registerOnce('strategy.finish', function(contract){
+				that._finish(contract);
+			});
+			observer.registerOnce('trade.purchase', function(){
+				that.totalRuns += 1;
+				observer.emit('bot.tradeInfo', {
+					totalRuns: that.totalRuns
+				});
+			});
+			this._observeStreams();
+			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
+			this._subscribeProposals();
+		}
+	},
+	_updateTotals: {
+		value: function _updateTotals(contract){
+			var profit = Number(contract.sell_price) - Number(contract.buy_price);
+			this.totalProfit = +(this.totalProfit + profit).toFixed(2);
+			this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
+			this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);
+			var that = this;
+			observer.emit('bot.tradeInfo', {
+				totalProfit: that.totalProfit,
+				totalStake: that.totalStake,
+				totalPayout: that.totalPayout
+			});
+		}
+	},
+	_createDetails: {
+		value: function _createDetails(contract) {
+			var result = (+contract.sell_price === 0) ? 'loss' : 'win';
+			var profit = Number(contract.sell_price) - Number(contract.buy_price);
+			return [ 
+				contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
+				profit, contract.contract_type, 
+				getUTCTime(new Date(parseInt(contract.entry_tick_time + '000'))), +contract.entry_tick,
+				getUTCTime(new Date(parseInt(contract.exit_tick_time + '000'))), +contract.exit_tick,
+				+((contract.barrier) ? contract.barrier : 0), result
+			];  
 		}
 	},
 	_finish: {
@@ -152,6 +178,7 @@ Bot.prototype = Object.create(null, {
 			})
 			.pipe(function(done){
 				that.running = false;
+				that._updateTotals(contract);
 				that.finish(contract, that._createDetails(contract));
 				observer.emit('bot.finish', contract);
 			})
@@ -167,9 +194,8 @@ Bot.prototype = Object.create(null, {
 			if ( this.strategyCtrl ) {
 				this.strategyCtrl.destroy();
 			}
-			this.ticks = [];
-			this.symbolStr = '';
 			observer.unregisterAll('api.proposal');
+			observer.unregisterAll('api.balance');
 			observer.unregisterAll('api.tick');
 			observer.unregisterAll('strategy.ready');
 			var that = this;
@@ -184,6 +210,11 @@ Bot.prototype = Object.create(null, {
 				observer.emit('bot.stop', contract);
 			})
 			.exec();
+		}
+	},
+	getBalance: {
+		value: function getBalance(balanceType){
+			return (balanceType === 'STR') ? this.balanceStr : this.balance ;
 		}
 	}
 });

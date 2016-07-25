@@ -10,6 +10,7 @@ import Bot from '../bot';
 import Introduction from './tours/introduction';
 import Welcome from './tours/welcome';
 import {PlainChart as Chart} from 'binary-charts';
+import _ from 'underscore';
 
 var observer = new Observer();
 
@@ -351,6 +352,29 @@ View.prototype = Object.create(null, {
 
 		}
 	},
+	updateChart: {
+		value: function updateChart(info) {
+			var chartOptions = {
+				type: 'area',
+				theme: 'light',
+				ticks: info.ticks,
+			};
+			if (this.latestOpenContract) {
+				chartOptions.contract = this.latestOpenContract;
+				if (this.latestOpenContract.is_sold) {
+					delete this.latestOpenContract;
+				}
+			}
+			if (!this.chart) {
+				chartOptions.pipSize = Number(Number(info.pip)
+					.toExponential()
+					.substring(3));
+				this.chart = Chart('chart', chartOptions);
+			} else {
+				this.chart.updateChart(chartOptions);
+			}
+		}
+	},
 	addEventHandlers: {
 		value: function addEventHandlers() {
 			var that = this;
@@ -362,35 +386,21 @@ View.prototype = Object.create(null, {
 				}
 			});
 			
-			observer.register('trade.finish', function(contract){
-				that.tradeInfo.add(contract);
+			observer.register('bot.tradeInfo', function(tradeInfo){
+				_.extend(that.tradeInfo.tradeInfo, tradeInfo);
+				that.tradeInfo.update();
 			});
 
 			observer.register('trade.update', function(contract){
 				that.latestOpenContract = contract;
 			});
 
-			observer.register('bot.tickUpdate', function(obj){
-				var chartOptions = {
-					type: 'area',
-					theme: 'light',
-					ticks: obj.ticks,
-				};
-				if (that.latestOpenContract) {
-					chartOptions.contract = that.latestOpenContract;
-					if (that.latestOpenContract.is_sold) {
-						delete that.latestOpenContract;
-					}
-				}
-				if (!that.chart) {
-					chartOptions.pipSize = Number(Number(obj.pip)
-						.toExponential()
-						.substring(3));
-					that.chart = Chart('chart', chartOptions);
-				} else {
-					that.chart.updateChart(chartOptions);
-				}
+			observer.register('trade.finish', function(contract){
+				that.tradeInfo.add(contract);
+			});
 
+			observer.register('bot.tickUpdate', function(info){
+				that.updateChart(info);
 			});
 		}
 	}

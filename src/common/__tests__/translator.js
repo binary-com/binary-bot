@@ -2,7 +2,6 @@
 import Translator from '../translator';
 import tools from 'binary-common-utils/tools';
 import {expect} from 'chai';
-import 'binary-common-utils/compatibility';
 
 describe('Translation', function(){
 	describe('Translate Functions', function(){

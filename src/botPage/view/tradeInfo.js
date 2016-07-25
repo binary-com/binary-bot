@@ -2,12 +2,10 @@
 import _ from 'underscore';
 
 var tradeInfoSkel = {
-	numOfRuns: 0,
+	totalRuns: 0,
 	totalProfit: '',
 	totalPayout: '',
 	totalStake: '',
-	lastProfit: '',
-	lastResult: '',
 	balance: '',
 	tradeTable: [],
 	tradesCount: 10000,
@@ -23,7 +21,6 @@ TradeInfo.prototype = Object.create(null, {
 		value: function reset() {
 			this.tradeInfo = _.clone(tradeInfoSkel);
 			this.update();
-			this.show();
 		}
 	},
 	update: {
@@ -31,7 +28,7 @@ TradeInfo.prototype = Object.create(null, {
 			for (var key in this.tradeInfo){
 				$('.' + key)
 					.text(this.tradeInfo[key]);
-				if (key === 'totalProfit' || key === 'lastProfit') {
+				if (key === 'totalProfit') {
 					if (+this.tradeInfo[key] > 0) {
 						$('.' + key)
 							.css('color', 'green');
@@ -44,18 +41,18 @@ TradeInfo.prototype = Object.create(null, {
 					}
 				}
 			}
+			this.show();
 		}
 	},
 	add: {
 		value: function add(_trade) {
 			var trade = _.clone(_trade);
-			trade.number = this.tradeInfo.numOfRuns;
+			trade.number = this.tradeInfo.totalRuns;
 			if (this.tradeInfo.tradeTable.length > this.tradeInfo.tradesCount) {
 				this.tradeInfo.tradeTable.shift();
 			}
 			this.tradeInfo.tradeTable.push(trade);
 			this.update();
-			this.show();
 		}
 	},
 	show: {
@@ -64,9 +61,9 @@ TradeInfo.prototype = Object.create(null, {
 				.children()
 				.remove();
 			this.tradeInfo.tradeTable.forEach(function (trade, index) {
-				var lastProfit = +(+trade.sell_price - (+trade.buy_price))
-					.toFixed(2);
-				var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.sell_price + '</td>' + '<td>' + lastProfit + '</td>' + '</tr>';
+				var profit = +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2);
+				var profitColor = (profit<0) ? 'red' : 'green';
+				var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.sell_price + '</td>' + '<td style="color: ' + profitColor + '">' + profit + '</td>' + '</tr>';
 				$('#tradesDisplay tbody')
 					.append(element);
 			});

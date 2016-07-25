@@ -183,4 +183,14 @@ module.exports = {
 			}
 		}
 	},
+	balance: {
+		subscriptions: {
+			balance: {
+				func: function balance(api) {
+					api.subscribeToBalance();
+				},
+				maxResponse: 1
+			}
+		}
+	},
 };

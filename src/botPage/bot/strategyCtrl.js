@@ -57,7 +57,6 @@ StrategyCtrl.prototype = Object.create(null, {
 			if ( this.trade ) {
 				this.trade.destroy();
 			}
-			observer.unregisterAll('trade.finish');
 			this.proposals = [];
 			this.ready = false;
 			this.strategy = null;
