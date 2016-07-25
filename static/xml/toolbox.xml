@@ -256,7 +256,6 @@
 			<block type="purchase"></block>
 		</category>
 		<category name="Finish" colour="#2a3052" i18n-text="Finish">
-			<block type="contract_result"></block>
 			<block type="contract_details"></block>
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
