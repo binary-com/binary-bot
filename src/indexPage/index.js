@@ -5,6 +5,7 @@ import appId from './appId';
 import {asyncChain} from 'binary-common-utils/tools';
 import $ from 'jquery';
 
+window.$ = $;
 asyncChain()
 .pipe(function checkOauthLogin(done){
 	appId.oauthLogin(done);

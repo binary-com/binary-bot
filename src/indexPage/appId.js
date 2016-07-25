@@ -27,7 +27,7 @@ var AppId = {
 					next();
 				});
 			}, function(){
-				document.location = '/bot.html';
+				document.location = 'bot.html';
 			});
 		} else {
 			if (done) {
