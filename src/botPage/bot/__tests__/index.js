@@ -65,6 +65,14 @@ describe('Bot', function() {
 				bot.stop();
 			})
 			.pipe(function(chainDone){
+				var api = new CustomApi(mockWebsocket);
+				delete Bot.instance;
+				bot = new Bot(api);
+				bot.initPromise.then(function(){
+					done();
+				});
+			})
+			.pipe(function(chainDone){
 				observer.registerOnce('bot.waiting_for_purchase', function(){
 					chainDone();
 				});
@@ -90,6 +98,14 @@ describe('Bot', function() {
 					chainDone();
 				});
 				bot.stop();
+			})
+			.pipe(function(chainDone){
+				var api = new CustomApi(mockWebsocket);
+				delete Bot.instance;
+				bot = new Bot(api);
+				bot.initPromise.then(function(){
+					done();
+				});
 			})
 			.pipe(function(chainDone){
 				observer.registerOnce('bot.finish', function(_finishedContractFromFinishSignal){

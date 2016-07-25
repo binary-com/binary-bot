@@ -12,6 +12,7 @@ var Bot = function Bot(api) {
 	if (Bot.instance) {
 		return Bot.instance;
 	}
+	this.authorized = false;
 	Bot.instance = this;
 	this.ticks = [];
 	if ( typeof api === 'undefined' ) {
@@ -59,13 +60,22 @@ Bot.prototype = Object.create(null, {
 			} else {
 				this.tradeOptions = [];
 			}
+			if ( this.authorized ) {
+				this._startTrading();
+				return;
+			}
 			var that = this;
 			asyncChain()
 			.pipe(function(chainDone){
 				observer.registerOnce('api.authorize', function(){	
+					that.authorized = true;
 					chainDone();
 				});
 				that.api.authorize(that.token);
+			})
+			.pipe(function(chainDone){
+				that._observeOnceAndForever();
+				chainDone();
 			})
 			.pipe(function(chainDone){
 				if ( _.isEmpty(tradeOption) ) {
@@ -88,6 +98,19 @@ Bot.prototype = Object.create(null, {
 			.exec();
 		}
 	},
+	_observeOnceAndForever: {
+		value: function _observeOnceAndForever(){
+			var that = this;
+			observer.register('api.balance', function(balance){
+				that.balance = balance.balance;
+				that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
+				observer.emit('bot.tradeInfo', {
+					balance: that.balanceStr
+				});
+			});
+			this.api.balance();
+		}
+	},
 	_observeStreams: {
 		value: function _observeStreams(){
 			var that = this;
@@ -99,14 +122,6 @@ Bot.prototype = Object.create(null, {
 					pip: that.pip
 				});
 			});
-			observer.register('api.balance', function(balance){
-				that.balance = balance.balance;
-				that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
-				observer.emit('bot.tradeInfo', {
-					balance: that.balanceStr
-				});
-			});
-			this.api.balance();
 		}
 	},
 	_subscribeProposals: {
