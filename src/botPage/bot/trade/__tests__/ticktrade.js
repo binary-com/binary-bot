@@ -24,22 +24,22 @@ describe('TickTrade', function() {
 			asyncChain()
 				.pipe(function(chainDone){
 					api.authorize('c9A3gPFcqQtAQDW');
-					observer.registerOnce('api.authorize', function(){
+					observer.register('api.authorize', function(){
 						chainDone();
-					});
+					}, true);
 				})
 				.pipe(function(chainDone){
-					observer.registerOnce('api.proposal', function(_proposal){
+					observer.register('api.proposal', function(_proposal){
 						proposal = _proposal;
 						chainDone();
-					});
+					}, true);
 					api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 				})
 				.pipe(function(chainDone){
-					observer.registerOnce('api.buy', function(_purchasedContract){
+					observer.register('api.buy', function(_purchasedContract){
 						purchasedContract = _purchasedContract;
 						done();
-					});
+					}, true);
 					ticktrade.purchase(proposal);
 				})
 				.exec();
@@ -53,9 +53,9 @@ describe('TickTrade', function() {
 		var contractUpdates = [];
 		before(function(done){
 			this.timeout('25000');
-			observer.registerOnce('trade.finish', function(_contract){
+			observer.register('trade.finish', function(_contract){
 				finishedContract = _contract;
-			});
+			}, true);
 			observer.register('trade.update', function(contractUpdate){
 				contractUpdates.push(contractUpdate);
 				if (contractUpdates.slice(-1)[0].is_sold) {

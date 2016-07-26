@@ -70,10 +70,10 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			asyncChain()
 			.pipe(function(chainDone){
-				that.observer.registerOnce('api.authorize', function(){	
+				that.observer.register('api.authorize', function(){	
 					that.authorizedToken = that.token;
 					chainDone();
-				});
+				}, true);
 				that.api.authorize(that.token);
 			})
 			.pipe(function(chainDone){
@@ -88,11 +88,11 @@ Bot.prototype = Object.create(null, {
 				if ( _.isEmpty(tradeOption) || tradeOption.symbol === that.symbolStr ) {
 					chainDone();
 				} else {
-					that.observer.registerOnce('api.history', function(history){
+					that.observer.register('api.history', function(history){
 						that.symbolStr = tradeOption.symbol;
 						that.ticks = history;
 						chainDone();
-					});
+					}, true);
 					that.api.history(tradeOption.symbol, {
 						end: 'latest',
 						count: 600,
@@ -110,6 +110,7 @@ Bot.prototype = Object.create(null, {
 		value: function _observeOnceAndForever(){
 			var that = this;
 			var apiBalance = function(balance){
+				that.runningObservations.push(['api.balance', apiBalance]);
 				that.balance = balance.balance;
 				that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
 				that.observer.emit('bot.tradeInfo', {
@@ -117,7 +118,6 @@ Bot.prototype = Object.create(null, {
 				});
 			};
 			this.observer.register('api.balance', apiBalance);
-			this.runningObservations.push(['api.balance', apiBalance]);
 			this.api.balance();
 		}
 	},
@@ -125,6 +125,7 @@ Bot.prototype = Object.create(null, {
 		value: function _observeStreams(){
 			var that = this;
 			var apiTick = function(tick){
+				that.runningObservations.push(['api.tick', apiTick]);
 				that.ticks = that.ticks.concat(tick);
 				that.strategyCtrl.updateTicks(that.ticks);
 				that.observer.emit('bot.tickUpdate', {
@@ -133,22 +134,21 @@ Bot.prototype = Object.create(null, {
 				});
 			};
 			this.observer.register('api.tick', apiTick);
-			this.runningObservations.push(['api.tick', apiTick]);
 		}
 	},
 	_subscribeProposals: {
 		value: function _subscribeProposals() {
 			var that = this;
 			var apiProposal = function(proposal){
+				that.runningObservations.push(['api.proposal', apiProposal]);
 				that.strategyCtrl.updateProposal(proposal);
 			};
 			var strategyReady = function(){
+				that.runningObservations.push(['strategy.ready', strategyReady]);
 				that.observer.emit('bot.waiting_for_purchase');
 			};
 			this.observer.register('api.proposal', apiProposal);
 			this.observer.register('strategy.ready', strategyReady);
-			this.runningObservations.push(['api.proposal', apiProposal]);
-			this.runningObservations.push(['strategy.ready', strategyReady]);
 			for (var i in this.tradeOptions) {
 				this.api.proposal(this.tradeOptions[i]);
 			}
@@ -171,9 +171,9 @@ Bot.prototype = Object.create(null, {
 				that.observer.unregister('strategy.finish', strategyFinish);
 				that.observer.unregister('trade.purchase', tradePurchase);
 			};
-			this.observer.registerOnce('strategy.finish', strategyFinish);
-			this.observer.registerOnce('trade.purchase', tradePurchase);
-			this.observer.registerOnce('api.error', onError);
+			this.observer.register('strategy.finish', strategyFinish, true);
+			this.observer.register('trade.purchase', tradePurchase, true);
+			this.observer.register('api.error', onError, true);
 			this._observeStreams();
 			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
 			this._subscribeProposals();

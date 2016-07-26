@@ -32,30 +32,30 @@ describe('StrategyCtrl', function() {
 	describe('Make the strategy ready...', function(){
 		before(function(done){
 			this.timeout('10000');
-			observer.registerOnce('strategy.ready', function() {
+			observer.register('strategy.ready', function() {
 				done();
-			});
+			}, true);
 			observer.register('api.proposal', function(_proposal){
 				proposals.push(_proposal);
 				strategyCtrl.updateProposal(_proposal);
 			});
 			asyncChain()
 			.pipe(function(chainDone){
-				observer.registerOnce('api.authorize', function(){
+				observer.register('api.authorize', function(){
 					chainDone();
-				});
+				}, true);
 				api.authorize('c9A3gPFcqQtAQDW');
 			})
 			.pipe(function(chainDone){
-				observer.registerOnce('api.proposal', function (_proposal){
+				observer.register('api.proposal', function (_proposal){
 					chainDone();
-				});
+				}, true);
 				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 			})
 			.pipe(function(chainDone){
-				observer.registerOnce('api.proposal', function (_proposal){
+				observer.register('api.proposal', function (_proposal){
 					chainDone();
-				});
+				}, true);
 				api.proposal({"amount":"1.00","basis":"stake","contract_type":"DIGITEVEN","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"});
 			})
 			.exec();
@@ -66,10 +66,10 @@ describe('StrategyCtrl', function() {
 	describe('Adding the ticks to the strategy...', function(){
 		var strategyArgs;
 		before(function(done){
-			observer.registerOnce('test.strategy', function (_strategyArgs) {
+			observer.register('test.strategy', function (_strategyArgs) {
 				strategyArgs = _strategyArgs;
 				done();
-			});
+			}, true);
 			strategyCtrl.updateTicks({epoch: 'some time'});
 		});
 		it('strategyCtrl passes ticks and send the proposals if ready', function(){
@@ -81,10 +81,10 @@ describe('StrategyCtrl', function() {
 	describe('Giving a new proposal', function(){
 		var strategyArgs;
 		before(function(done){
-			observer.registerOnce('test.strategy', function (_strategyArgs) {
+			observer.register('test.strategy', function (_strategyArgs) {
 				strategyArgs = _strategyArgs;
 				done();
-			});
+			}, true);
 			strategyCtrl.updateProposal(proposals[0]);
 			strategyCtrl.updateTicks({epoch: 'some time'});
 		});
@@ -95,9 +95,9 @@ describe('StrategyCtrl', function() {
 	});
 	describe('Waiting for strategy to purchase the contract', function(){
 		before(function(done){
-			observer.registerOnce('test.purchase', function(){
+			observer.register('test.purchase', function(){
 				done();
-			});
+			}, true);
 			strategyCtrl.updateProposal(proposals[1]);
 			strategyCtrl.updateTicks({epoch: 'some time'});
 		});
@@ -108,10 +108,10 @@ describe('StrategyCtrl', function() {
 		var finishedContract;
 		before(function(done){
 			this.timeout('20000');
-			observer.registerOnce('strategy.finish', function(_finishedContract){
+			observer.register('strategy.finish', function(_finishedContract){
 				finishedContract = _finishedContract;
 				done();
-			});
+			}, true);
 			strategyCtrl.updateTicks({epoch: 'some time'});
 		});
 		it('finish is called whenever the purchase is finished', function(){

@@ -31,10 +31,10 @@ describe('Bot', function() {
 		var error;
 		before(function(done){
 			this.timeout('5000');
-			observer.registerOnce('api.error', function(_error){
+			observer.register('api.error', function(_error){
 				error = _error;
 				done();
-			});
+			}, true);
 			bot.start('FakeToken', null, null, null);
 		});
 		it('fake token should cause an error', function(){
@@ -45,12 +45,12 @@ describe('Bot', function() {
 	describe('Start trading', function(){
 		before(function(done){
 			this.timeout('5000');
-			observer.registerOnce('bot.waiting_for_purchase', function(){
+			observer.register('bot.waiting_for_purchase', function(){
 				done();
-			});
-			observer.registerOnce('bot.stop', function(){
+			}, true);
+			observer.register('bot.stop', function(){
 				bot.start(token, option, null, null);
-			});
+			}, true);
 			bot.stop();
 		});
 		it('start bot with the token, option', function(){
@@ -61,9 +61,9 @@ describe('Bot', function() {
 			this.timeout('10000');
 			asyncChain()
 			.pipe(function(chainDone){
-				observer.registerOnce('bot.stop', function(){
+				observer.register('bot.stop', function(){
 					chainDone();
-				});
+				}, true);
 				bot.stop();
 			})
 			.pipe(function(chainDone){
@@ -74,9 +74,9 @@ describe('Bot', function() {
 				});
 			})
 			.pipe(function(chainDone){
-				observer.registerOnce('bot.waiting_for_purchase', function(){
+				observer.register('bot.waiting_for_purchase', function(){
 					chainDone();
-				});
+				}, true);
 				bot.start(token, option, null, null);
 			})
 			.pipe(function(chainDone){
@@ -95,9 +95,9 @@ describe('Bot', function() {
 			this.timeout('10000');
 			asyncChain()
 			.pipe(function(chainDone){
-				observer.registerOnce('bot.stop', function(){
+				observer.register('bot.stop', function(){
 					chainDone();
-				});
+				}, true);
 				bot.stop();
 			})
 			.pipe(function(chainDone){
@@ -108,10 +108,10 @@ describe('Bot', function() {
 				});
 			})
 			.pipe(function(chainDone){
-				observer.registerOnce('bot.finish', function(_finishedContractFromFinishSignal){
+				observer.register('bot.finish', function(_finishedContractFromFinishSignal){
 					finishedContractFromFinishSignal = _finishedContractFromFinishSignal;
 					chainDone();
-				});
+				}, true);
 				bot.start(token, option, function strategy(tick, proposals, _strategyCtrl){
 					if ( ++numOfTicks === 3 ) {
 						_strategyCtrl.purchase('DIGITEVEN');
@@ -146,10 +146,10 @@ describe('Bot', function() {
 			});
 			asyncChain()
 			.pipe(function(chainDone){
-				observer.registerOnce('bot.stop', function(_finishedContractFromFinishSignal){
+				observer.register('bot.stop', function(_finishedContractFromFinishSignal){
 					finishedContractFromFinishSignal = _finishedContractFromFinishSignal;
 					chainDone();
-				});
+				}, true);
 				bot.stop();
 			})
 			.pipe(function(chainDone){

@@ -16,12 +16,16 @@ Ticktrade.prototype = Object.create(null, {
 			this.observer.emit('ui.log.info', this.translator.translateText('Purchased') + ': ' + contract.longcode);
 			var that = this;
 			this.api.buy(contract.id, contract.ask_price);
-			this.observer.registerOnce('api.buy', function(purchasedContract){
+			var apiBuy = function apiBuy(purchasedContract){
 				that.observer.emit('trade.purchase', purchasedContract);
 				that.contractId = purchasedContract.contract_id;
 				that.purchaseInProgress = true;
 				that.api._originalApi.unsubscribeFromAllProposals();
 				that.subscribeToOpenContract();
+			};
+			this.observer.register('api.buy', apiBuy, true, {
+				type: 'buy',
+				unregister: [['api.buy', apiBuy], 'trade.purchase']
 			});
 		}
 	},
@@ -30,6 +34,7 @@ Ticktrade.prototype = Object.create(null, {
 			this.api.proposal_open_contract(this.contractId);
 			var that = this;
 			var apiProposalOpenContract = function(contract){
+				that.runningObservations.push(['api.proposal_open_contract', apiProposalOpenContract]);
 				// detect changes and decide what to do when proposal is updated
 				if (contract.is_expired) {
 					that.api._originalApi.sellExpiredContracts();
@@ -42,7 +47,6 @@ Ticktrade.prototype = Object.create(null, {
 				that.observer.emit('trade.update', contract);
 			};
 			this.observer.register('api.proposal_open_contract', apiProposalOpenContract);
-			this.runningObservations.push(['api.proposal_open_contract', apiProposalOpenContract]);
 		}
 	},
 	getTheContractInfoAfterSell: {
