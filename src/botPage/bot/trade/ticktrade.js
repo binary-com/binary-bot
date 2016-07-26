@@ -48,7 +48,13 @@ Ticktrade.prototype = Object.create(null, {
 			};
 			this.observer.register('api.proposal_open_contract', apiProposalOpenContract, false, {
 				type: 'proposal_open_contract',
-				unregister: [['api.proposal_open_contract', apiProposalOpenContract]]
+				unregister: [
+					['api.proposal_open_contract', apiProposalOpenContract],
+					'trade.update',
+					'trade.finish',
+					'strategy.finish',
+					'bot.finish'
+				]
 			});
 		}
 	},

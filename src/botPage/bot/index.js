@@ -99,7 +99,7 @@ Bot.prototype = Object.create(null, {
 					};
 					that.observer.register('api.history', apiHistory, true, {
 						type: 'history',
-						unregister: [['api.history', apiHistory]]
+						unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate']
 					});
 					that.api.history(tradeOption.symbol, {
 						end: 'latest',
@@ -160,7 +160,11 @@ Bot.prototype = Object.create(null, {
 			};
 			this.observer.register('api.proposal', apiProposal, false, {
 				type: 'proposal',
-				unregister: [['api.proposal', apiProposal], 'strategy.ready']
+				unregister: [
+					['api.proposal', apiProposal], 
+					'strategy.ready', 
+					'bot.waiting_for_purchase'
+				]
 			});
 			this.observer.register('strategy.ready', strategyReady);
 			for (var i in this.tradeOptions) {
@@ -175,19 +179,13 @@ Bot.prototype = Object.create(null, {
 				that._finish(contract);
 			};
 			var tradePurchase = function(){
-				that.observer.unregister('api.error', onError);
 				that.totalRuns += 1;
 				that.observer.emit('bot.tradeInfo', {
 					totalRuns: that.totalRuns
 				});
 			};
-			var onError = function(error){
-				that.observer.unregister('strategy.finish', strategyFinish);
-				that.observer.unregister('trade.purchase', tradePurchase);
-			};
 			this.observer.register('strategy.finish', strategyFinish, true);
 			this.observer.register('trade.purchase', tradePurchase, true);
-			this.observer.register('api.error', onError, true);
 			this._observeStreams();
 			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
 			this._subscribeProposals();
