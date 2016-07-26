@@ -7,7 +7,6 @@ import {getUTCTime, asyncChain} from 'binary-common-utils/tools';
 import CustomApi from 'binary-common-utils/customApi';
 import config from 'const';
 
-var observer = new Observer();
 var Bot = function Bot(api) {
 	if (Bot.instance) {
 		return Bot.instance;
@@ -19,6 +18,7 @@ var Bot = function Bot(api) {
 	} else {
 		this.api = api;
 	}
+	this.observer = new Observer();
 	this.firstCall = true;
 	this.authorizedToken = '';
 	this.symbol = new _Symbol(this.api);
@@ -31,6 +31,7 @@ var Bot = function Bot(api) {
 	this.balance = 0;
 	this.balanceStr = '';
 	this.symbolStr = '';
+	this.runningObservations = [];
 };
 
 Bot.prototype = Object.create(null, {
@@ -69,7 +70,7 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			asyncChain()
 			.pipe(function(chainDone){
-				observer.registerOnce('api.authorize', function(){	
+				that.observer.registerOnce('api.authorize', function(){	
 					that.authorizedToken = that.token;
 					chainDone();
 				});
@@ -77,7 +78,6 @@ Bot.prototype = Object.create(null, {
 			})
 			.pipe(function(chainDone){
 				if ( that.firstCall ) {
-					that._observeOnceAndForever();
 					that.firstCall = false;
 				}
 				chainDone();
@@ -88,7 +88,7 @@ Bot.prototype = Object.create(null, {
 				if ( _.isEmpty(tradeOption) || tradeOption.symbol === that.symbolStr ) {
 					chainDone();
 				} else {
-					observer.registerOnce('api.history', function(history){
+					that.observer.registerOnce('api.history', function(history){
 						that.symbolStr = tradeOption.symbol;
 						that.ticks = history;
 						chainDone();
@@ -109,38 +109,46 @@ Bot.prototype = Object.create(null, {
 	_observeOnceAndForever: {
 		value: function _observeOnceAndForever(){
 			var that = this;
-			observer.register('api.balance', function(balance){
+			var apiBalance = function(balance){
 				that.balance = balance.balance;
 				that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
-				observer.emit('bot.tradeInfo', {
+				that.observer.emit('bot.tradeInfo', {
 					balance: that.balanceStr
 				});
-			});
+			};
+			this.observer.register('api.balance', apiBalance);
+			this.runningObservations.push(['api.balance', apiBalance]);
 			this.api.balance();
 		}
 	},
 	_observeStreams: {
 		value: function _observeStreams(){
 			var that = this;
-			observer.register('api.tick', function(tick){
+			var apiTick = function(tick){
 				that.ticks = that.ticks.concat(tick);
 				that.strategyCtrl.updateTicks(that.ticks);
-				observer.emit('bot.tickUpdate', {
+				that.observer.emit('bot.tickUpdate', {
 					ticks: that.ticks,
 					pip: that.pip
 				});
-			});
+			};
+			this.observer.register('api.tick', apiTick);
+			this.runningObservations.push(['api.tick', apiTick]);
 		}
 	},
 	_subscribeProposals: {
 		value: function _subscribeProposals() {
 			var that = this;
-			observer.register('api.proposal', function(proposal){
+			var apiProposal = function(proposal){
 				that.strategyCtrl.updateProposal(proposal);
-			});
-			observer.register('strategy.ready', function(){
-				observer.emit('bot.waiting_for_purchase');
-			});
+			};
+			var strategyReady = function(){
+				that.observer.emit('bot.waiting_for_purchase');
+			};
+			this.observer.register('api.proposal', apiProposal);
+			this.observer.register('strategy.ready', strategyReady);
+			this.runningObservations.push(['api.proposal', apiProposal]);
+			this.runningObservations.push(['strategy.ready', strategyReady]);
 			for (var i in this.tradeOptions) {
 				this.api.proposal(this.tradeOptions[i]);
 			}
@@ -149,15 +157,23 @@ Bot.prototype = Object.create(null, {
 	_startTrading: {
 		value: function _startTrading() {
 			var that = this;
-			observer.registerOnce('strategy.finish', function(contract){
+			var strategyFinish = function(contract){
 				that._finish(contract);
-			});
-			observer.registerOnce('trade.purchase', function(){
+			};
+			var tradePurchase = function(){
+				that.observer.unregister('api.error', onError);
 				that.totalRuns += 1;
-				observer.emit('bot.tradeInfo', {
+				that.observer.emit('bot.tradeInfo', {
 					totalRuns: that.totalRuns
 				});
-			});
+			};
+			var onError = function(error){
+				that.observer.unregister('strategy.finish', strategyFinish);
+				that.observer.unregister('trade.purchase', tradePurchase);
+			};
+			this.observer.registerOnce('strategy.finish', strategyFinish);
+			this.observer.registerOnce('trade.purchase', tradePurchase);
+			this.observer.registerOnce('api.error', onError);
 			this._observeStreams();
 			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
 			this._subscribeProposals();
@@ -170,7 +186,7 @@ Bot.prototype = Object.create(null, {
 			this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
 			this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);
 			var that = this;
-			observer.emit('bot.tradeInfo', {
+			this.observer.emit('bot.tradeInfo', {
 				totalProfit: that.totalProfit,
 				totalStake: that.totalStake,
 				totalPayout: that.totalPayout
@@ -203,7 +219,7 @@ Bot.prototype = Object.create(null, {
 				that.running = false;
 				that._updateTotals(contract);
 				that.finish(contract, that._createDetails(contract));
-				observer.emit('bot.finish', contract);
+				that.observer.emit('bot.finish', contract);
 			})
 			.exec();
 		}
@@ -211,16 +227,15 @@ Bot.prototype = Object.create(null, {
 	stop: {
 		value: function stop(contract){
 			if ( !this.running ) {
-				observer.emit('bot.stop', contract);
+				this.observer.emit('bot.stop', contract);
 				return;
 			}
 			if ( this.strategyCtrl ) {
 				this.strategyCtrl.destroy();
 			}
-			observer.unregisterAll('api.proposal');
-			observer.unregisterAll('api.balance');
-			observer.unregisterAll('api.tick');
-			observer.unregisterAll('strategy.ready');
+			for ( var i in this.runningObservations ) {
+				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
+			}
 			var that = this;
 			asyncChain()
 			.pipe(function(done){
@@ -230,7 +245,7 @@ Bot.prototype = Object.create(null, {
 			})
 			.pipe(function(done){
 				that.running = false;
-				observer.emit('bot.stop', contract);
+				that.observer.emit('bot.stop', contract);
 			})
 			.exec();
 		}

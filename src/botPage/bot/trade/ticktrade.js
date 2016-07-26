@@ -7,6 +7,7 @@ var Ticktrade = function Ticktrade(api) {
 	this.api = api;
 	this.purchaseInProgress = false;
 	this.translator = new Translator();
+	this.runningObservations = [];
 };
 
 Ticktrade.prototype = Object.create(null, {
@@ -28,7 +29,7 @@ Ticktrade.prototype = Object.create(null, {
 		value: function subscribeToOpenContract(){
 			this.api.proposal_open_contract(this.contractId);
 			var that = this;
-			this.observer.register('api.proposal_open_contract', function(contract){
+			var apiProposalOpenContract = function(contract){
 				// detect changes and decide what to do when proposal is updated
 				if (contract.is_expired) {
 					that.api._originalApi.sellExpiredContracts();
@@ -39,7 +40,9 @@ Ticktrade.prototype = Object.create(null, {
 					that.destroy();
 				}
 				that.observer.emit('trade.update', contract);
-			});
+			};
+			this.observer.register('api.proposal_open_contract', apiProposalOpenContract);
+			this.runningObservations.push(['api.proposal_open_contract', apiProposalOpenContract]);
 		}
 	},
 	getTheContractInfoAfterSell: {
@@ -50,7 +53,9 @@ Ticktrade.prototype = Object.create(null, {
 	destroy: {
 		value: function destroy(){
 			this.purchaseInProgress = false;
-			this.observer.unregisterAll('api.proposal_open_contract');
+			for ( var i in this.runningObservations  ) {
+				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
+			}
 			this.api._originalApi.unsubscribeFromAlProposals();
 		}
 	}
