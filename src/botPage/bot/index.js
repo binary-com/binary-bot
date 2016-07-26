@@ -70,10 +70,14 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			asyncChain()
 			.pipe(function(chainDone){
-				that.observer.register('api.authorize', function(){	
+				var apiAuthorize = function(){	
 					that.authorizedToken = that.token;
 					chainDone();
-				}, true);
+				};
+				that.observer.register('api.authorize', apiAuthorize, true, {
+					type: 'authorize',
+					unregister: [['api.authorize', apiAuthorize]]
+				});
 				that.api.authorize(that.token);
 			})
 			.pipe(function(chainDone){
@@ -88,11 +92,15 @@ Bot.prototype = Object.create(null, {
 				if ( _.isEmpty(tradeOption) || tradeOption.symbol === that.symbolStr ) {
 					chainDone();
 				} else {
-					that.observer.register('api.history', function(history){
+					var apiHistory = function(history){
 						that.symbolStr = tradeOption.symbol;
 						that.ticks = history;
 						chainDone();
-					}, true);
+					};
+					that.observer.register('api.history', apiHistory, true, {
+						type: 'history',
+						unregister: [['api.history', apiHistory]]
+					});
 					that.api.history(tradeOption.symbol, {
 						end: 'latest',
 						count: 600,
@@ -117,7 +125,10 @@ Bot.prototype = Object.create(null, {
 					balance: that.balanceStr
 				});
 			};
-			this.observer.register('api.balance', apiBalance);
+			this.observer.register('api.balance', apiBalance, false, {
+				type: 'balance',
+				unregister: [['api.balance', apiBalance]]
+			});
 			this.api.balance();
 		}
 	},
@@ -147,7 +158,10 @@ Bot.prototype = Object.create(null, {
 				that.runningObservations.push(['strategy.ready', strategyReady]);
 				that.observer.emit('bot.waiting_for_purchase');
 			};
-			this.observer.register('api.proposal', apiProposal);
+			this.observer.register('api.proposal', apiProposal, false, {
+				type: 'proposal',
+				unregister: [['api.proposal', apiProposal], 'strategy.ready']
+			});
 			this.observer.register('strategy.ready', strategyReady);
 			for (var i in this.tradeOptions) {
 				this.api.proposal(this.tradeOptions[i]);

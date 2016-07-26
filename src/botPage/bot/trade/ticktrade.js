@@ -46,7 +46,10 @@ Ticktrade.prototype = Object.create(null, {
 				}
 				that.observer.emit('trade.update', contract);
 			};
-			this.observer.register('api.proposal_open_contract', apiProposalOpenContract);
+			this.observer.register('api.proposal_open_contract', apiProposalOpenContract, false, {
+				type: 'proposal_open_contract',
+				unregister: [['api.proposal_open_contract', apiProposalOpenContract]]
+			});
 		}
 	},
 	getTheContractInfoAfterSell: {
