@@ -5,26 +5,30 @@ import ws from 'mock/websocket';
 import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
 import Observer from 'binary-common-utils/observer';
-var observer = new Observer();
-var api;
-var proposals = [];
-var firstAttemptDetected = true;
 describe('StrategyCtrl', function() {
-	api = new CustomApi(ws);
-	var strategy = function strategy(ticks, proposals, _strategyCtrl) {
-		if ( proposals ) {
-			if ( firstAttemptDetected ){
-				firstAttemptDetected = false;
-				observer.emit('test.strategy', {ticks: ticks, proposals: proposals});
+	var observer;
+	var api;
+	var proposals = [];
+	var firstAttemptDetected = true;
+	var strategyCtrl;
+	before(function(){
+		observer = new Observer();
+		api = new CustomApi(ws);
+		var strategy = function strategy(ticks, proposals, _strategyCtrl) {
+			if ( proposals ) {
+				if ( firstAttemptDetected ){
+					firstAttemptDetected = false;
+					observer.emit('test.strategy', {ticks: ticks, proposals: proposals});
+				} else {
+					observer.emit('test.purchase');
+					_strategyCtrl.purchase('DIGITEVEN');
+				}
 			} else {
-				observer.emit('test.purchase');
-				_strategyCtrl.purchase('DIGITEVEN');
+				observer.emit('test.strategy', {ticks: ticks, proposals: proposals});
 			}
-		} else {
-			observer.emit('test.strategy', {ticks: ticks, proposals: proposals});
-		}
-	};
-	var strategyCtrl = new StrategyCtrl(api, strategy);
+		};
+		strategyCtrl = new StrategyCtrl(api, strategy);
+	});
 	describe('Make the strategy ready...', function(){
 		before(function(done){
 			this.timeout('10000');
@@ -116,6 +120,7 @@ describe('StrategyCtrl', function() {
 		});
 	});
 	after(function(){
-		observer.destroy();
+		strategyCtrl.destroy();
+		observer._destroy();
 	});
 });

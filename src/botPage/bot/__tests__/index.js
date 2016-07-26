@@ -6,15 +6,17 @@ import Observer from 'binary-common-utils/observer';
 import {asyncChain} from 'binary-common-utils/tools';
 import mockWebsocket from 'mock/websocket';
 
-var observer = new Observer();
-var option = {"amount":"1.00","basis":"stake","condition":"EVENODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"};
-
 describe('Bot', function() {
+	var observer;
+	var option = {"amount":"1.00","basis":"stake","condition":"EVENODD","currency":"USD","duration":5,"duration_unit":"t","symbol":"R_100"};
+
+	var api;
 	var bot;
 	var token = 'c9A3gPFcqQtAQDW';
 	before(function(done){
 		this.timeout('10000');
-		var api = new CustomApi(mockWebsocket);
+		observer = new Observer();
+		api = new CustomApi(mockWebsocket);
 		bot = new Bot(api);
 		bot.initPromise.then(function(){
 			done();
@@ -65,8 +67,7 @@ describe('Bot', function() {
 				bot.stop();
 			})
 			.pipe(function(chainDone){
-				var api = new CustomApi(mockWebsocket);
-				delete Bot.instance;
+				api = new CustomApi(mockWebsocket);
 				bot = new Bot(api);
 				bot.initPromise.then(function(){
 					done();
@@ -100,8 +101,7 @@ describe('Bot', function() {
 				bot.stop();
 			})
 			.pipe(function(chainDone){
-				var api = new CustomApi(mockWebsocket);
-				delete Bot.instance;
+				api = new CustomApi(mockWebsocket);
 				bot = new Bot(api);
 				bot.initPromise.then(function(){
 					done();
@@ -164,7 +164,6 @@ describe('Bot', function() {
 		});
 	});
 	after(function(){
-		observer.destroy();
-		delete Bot.instance;
+		observer._destroy();
 	});
 });

@@ -6,12 +6,17 @@ import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
 import Observer from 'binary-common-utils/observer';
 
-var observer = new Observer();
 describe('TickTrade', function() {
-	var api = new CustomApi(ws);
-	var ticktrade = new Ticktrade(api);
+	var observer;
+	var api;
+	var ticktrade;
 	var proposal;
 	var finishedContract;
+	before(function(){
+		observer = new Observer();
+		api = new CustomApi(ws);
+		ticktrade = new Ticktrade(api);
+	});
 	describe('Purchasing...', function(){
 		var purchasedContract;
 		before(function(done){
@@ -69,6 +74,6 @@ describe('TickTrade', function() {
 		});
 	});
 	after(function(){
-		observer.destroy();
+		observer._destroy();
 	});
 });

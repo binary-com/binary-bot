@@ -12,7 +12,6 @@ var Bot = function Bot(api) {
 	if (Bot.instance) {
 		return Bot.instance;
 	}
-	this.authorized = false;
 	Bot.instance = this;
 	this.ticks = [];
 	if ( typeof api === 'undefined' ) {
@@ -20,6 +19,8 @@ var Bot = function Bot(api) {
 	} else {
 		this.api = api;
 	}
+	this.firstCall = true;
+	this.authorizedToken = '';
 	this.symbol = new _Symbol(this.api);
 	this.initPromise = this.symbol.initPromise;
 	this.running = false;
@@ -29,6 +30,7 @@ var Bot = function Bot(api) {
 	this.totalPayout = 0;
 	this.balance = 0;
 	this.balanceStr = '';
+	this.symbolStr = '';
 };
 
 Bot.prototype = Object.create(null, {
@@ -60,7 +62,7 @@ Bot.prototype = Object.create(null, {
 			} else {
 				this.tradeOptions = [];
 			}
-			if ( this.authorized ) {
+			if ( this.authorizedToken === this.token ) {
 				this._startTrading();
 				return;
 			}
@@ -68,20 +70,26 @@ Bot.prototype = Object.create(null, {
 			asyncChain()
 			.pipe(function(chainDone){
 				observer.registerOnce('api.authorize', function(){	
-					that.authorized = true;
+					that.authorizedToken = that.token;
 					chainDone();
 				});
 				that.api.authorize(that.token);
 			})
 			.pipe(function(chainDone){
-				that._observeOnceAndForever();
+				if ( that.firstCall ) {
+					that._observeOnceAndForever();
+					that.firstCall = false;
+				}
 				chainDone();
 			})
+			.exec();
+			asyncChain()
 			.pipe(function(chainDone){
-				if ( _.isEmpty(tradeOption) ) {
+				if ( _.isEmpty(tradeOption) || tradeOption.symbol === that.symbolStr ) {
 					chainDone();
 				} else {
 					observer.registerOnce('api.history', function(history){
+						that.symbolStr = tradeOption.symbol;
 						that.ticks = history;
 						chainDone();
 					});
@@ -231,7 +239,7 @@ Bot.prototype = Object.create(null, {
 		value: function getBalance(balanceType){
 			return (balanceType === 'STR') ? this.balanceStr : this.balance ;
 		}
-	}
+	},
 });
 
 module.exports = Bot;

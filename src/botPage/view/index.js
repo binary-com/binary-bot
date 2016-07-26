@@ -12,12 +12,12 @@ import Welcome from './tours/welcome';
 import {PlainChart as Chart} from 'binary-charts';
 import _ from 'underscore';
 
-var observer = new Observer();
 
 var View = function View(){
 	if ( View.instance ) {
 		return View.instance;
 	}
+	this.observer = new Observer();
 	View.instance = this;
 	this.tours = {};
 	this.translator = new Translator();
@@ -106,7 +106,7 @@ View.prototype = Object.create(null, {
 
 			var that = this;
 
-			observer.register('ui.error', function showError(error) {
+			this.observer.register('ui.error', function showError(error) {
 				if (error.stack) {
 					if (logger.isDebug()) {
 						console.log('%c' + error.stack, 'color: red');
@@ -133,7 +133,7 @@ View.prototype = Object.create(null, {
 
 			var observeForLog = function observeForLog(type, position) {
 				var subtype = ( position === 'left' )? '.left' : '';
-				observer.register('ui.log.' + type + subtype , function(message){
+				that.observer.register('ui.log.' + type + subtype , function(message){
 					$.notify(message, {
 						position: 'bottom ' + position,
 						className: type,
@@ -171,7 +171,7 @@ View.prototype = Object.create(null, {
 					if (file.type.match('text/xml')) {
 						readFile(file);
 					} else {
-						observer.emit('ui.log.info', that.translator.translateText('File is not supported:' + ' ') + file.name);
+						that.observer.emit('ui.log.info', that.translator.translateText('File is not supported:' + ' ') + file.name);
 					}
 				}
 			};
@@ -183,9 +183,9 @@ View.prototype = Object.create(null, {
 					return function (e) {
 						try {
 							that.blockly.loadBlocksFile(e.target.result);
-							observer.emit('ui.log.success', that.translator.translateText('Blocks are loaded successfully'));
+							that.observer.emit('ui.log.success', that.translator.translateText('Blocks are loaded successfully'));
 						} catch (err) {
-							observer.emit('ui.error', err);
+							that.observer.emit('ui.error', err);
 						}
 					};
 				})(f);
@@ -252,7 +252,7 @@ View.prototype = Object.create(null, {
 			var logout = function logout() {
 				account.logoutAllTokens(function(){
 					that.updateTokenList();
-					observer.emit('ui.log.info', that.translator.translateText('Logged you out!'));
+					that.observer.emit('ui.log.info', that.translator.translateText('Logged you out!'));
 				});
 			};
 
@@ -379,27 +379,28 @@ View.prototype = Object.create(null, {
 		value: function addEventHandlers() {
 			var that = this;
 
-			observer.register('api.error', function(error){
+			this.observer.register('api.error', function(error){
 				if (error.code === 'InvalidToken'){
 					storageManager.removeAllTokens();
 					that.updateTokenList();
 				}
+				that.observer.emit('ui.error', error);
 			});
 			
-			observer.register('bot.tradeInfo', function(tradeInfo){
+			this.observer.register('bot.tradeInfo', function(tradeInfo){
 				_.extend(that.tradeInfo.tradeInfo, tradeInfo);
 				that.tradeInfo.update();
 			});
 
-			observer.register('trade.update', function(contract){
+			this.observer.register('trade.update', function(contract){
 				that.latestOpenContract = contract;
 			});
 
-			observer.register('trade.finish', function(contract){
+			this.observer.register('trade.finish', function(contract){
 				that.tradeInfo.add(contract);
 			});
 
-			observer.register('bot.tickUpdate', function(info){
+			this.observer.register('bot.tickUpdate', function(info){
 				that.updateChart(info);
 			});
 		}

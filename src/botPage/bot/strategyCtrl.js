@@ -2,8 +2,8 @@
 import Observer from 'binary-common-utils/observer';
 import Ticktrade from './trade/ticktrade';
 
-var observer = new Observer();
 var StrategyCtrl = function StrategyCtrl(api, strategy) {
+	this.observer = new Observer();
 	this.api = api;
 	this.strategy = strategy;
 	this.ready = false;
@@ -17,7 +17,7 @@ StrategyCtrl.prototype = Object.create(null, {
 			if ( !this.purchased ) {
 				if ( this.proposals.length === 1 ) {
 					this.proposals.push(proposal);
-					observer.emit('strategy.ready');
+					this.observer.emit('strategy.ready');
 					this.ready = true;
 				} else {
 					this.proposals = [proposal];
@@ -44,8 +44,8 @@ StrategyCtrl.prototype = Object.create(null, {
 				var contract = (option === this.proposals[1].contract_type) ? this.proposals[1] : this.proposals[0];
 				this.trade = new Ticktrade(this.api);
 				var that = this;
-				observer.registerOnce('trade.finish', function(contract){
-					observer.emit('strategy.finish', contract);
+				this.observer.registerOnce('trade.finish', function(contract){
+					that.observer.emit('strategy.finish', contract);
 					that.destroy();
 				});
 				this.trade.purchase(contract);

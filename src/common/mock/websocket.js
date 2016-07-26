@@ -1,17 +1,26 @@
 /*jshint loopfunc: true */
 'use strict';
 var tools = require('binary-common-utils/tools');
-var WS = require('ws');
 var _ = require('underscore');
 
 var WebSocket = function WebSocket(url) {
-	WS.prototype.constructor.call(this, url);
 	this.delay = 10;
 	this.bufferedResponse = [];
 	this.queuedRequest = [];
+	// providing ws interface
+	this.readyState = 0;
+	this.onopen = null;
+	this.onclose = null;
+	this.onerror = null;
+	this.onmessage = null;
+	var that = this;
+	setTimeout(function(){
+		that.readyState = 1;
+		that.onopen();
+	}, 100);
 };
 
-WebSocket.prototype = Object.create(WS.prototype, {
+WebSocket.prototype = Object.create(null, {
 	removeReqId:{
 		value: function removeReqId(_data) {
 			var data = _.clone(_data);
@@ -82,9 +91,13 @@ WebSocket.prototype = Object.create(WS.prototype, {
 	},
 	getResponse: {
 		value: function getResponse(data, onmessage) {
+			var that = this;
 			if ( data.hasOwnProperty('forget_all') || (data.hasOwnProperty('subscribe') && data.subscribe === 0) ) {
 				this.handleUnsubscribe(data);
 				setTimeout(function(){
+					if ( that.readyState === 0 ) {
+						return;
+					}
 					onmessage(JSON.stringify({ echo_req: {
 						req_id: data.req_id,
 						forget_all: 'ticks'
@@ -96,7 +109,6 @@ WebSocket.prototype = Object.create(WS.prototype, {
 				}, this.delay);
 				return;
 			}
-			var that = this;
 			var database = this.getResponseFromBuffer(data); 
 			if (_.isEmpty(database)) {
 				database = require('./database');
@@ -113,6 +125,9 @@ WebSocket.prototype = Object.create(WS.prototype, {
 								(function(responseData){
 									tools.asyncForEach(responseData.data, function(_responseData, index, done){
 										setTimeout(function(){
+											if ( that.readyState === 0 ) {
+												return;
+											}
 											if (index === 0 && !_.isEmpty(responseData.next)) {
 												that.addToResponseBuffer(responseData.next);
 											}
@@ -125,6 +140,9 @@ WebSocket.prototype = Object.create(WS.prototype, {
 							} else {
 								(function(responseData){
 									setTimeout(function(){
+										if ( that.readyState === 0 ) {
+											return;
+										}
 										if (!_.isEmpty(responseData.next)) {
 											that.addToResponseBuffer(responseData.next);
 										}
@@ -147,6 +165,9 @@ WebSocket.prototype = Object.create(WS.prototype, {
 	},
 	send: {
 		value: function send(rawData) {
+			if ( this.readyState === 0 ) {
+				return;
+			}
 			var data = JSON.parse(rawData);
 			var that = this;
 			this.getResponse(data, function(receivedData){
@@ -157,8 +178,10 @@ WebSocket.prototype = Object.create(WS.prototype, {
 		},
 	},
 	close: {
-		value: function close() {}
-	}
+		value: function close() {
+			this.readyState = 0;
+		}
+	},
 });
 
 module.exports = WebSocket;

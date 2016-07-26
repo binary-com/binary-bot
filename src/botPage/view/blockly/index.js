@@ -9,12 +9,12 @@ import Utils from './utils.js';
 import codeGenerators from './code_generators';
 import definitions from './definitions';
 
-var observer = new Observer();
 var _Blockly = function _Blockly(){
 	if ( _Blockly.instance ) {
 		return _Blockly.instance;
 	}
 	_Blockly.instance = this;
+	this.observer = new Observer();
 	this.bot = new Bot();
 	this.utils = new Utils();
 	this.translator = new Translator();
@@ -181,7 +181,7 @@ _Blockly.prototype = Object.create(null, {
 				});
 			var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
 			if (showOnly) {
-				observer.emit('ui.log', xmlText);
+				this.observer.emit('ui.log', xmlText);
 			} else {
 				var filename = 'binary-bot' + parseInt(new Date()
 					.getTime() / 1000) + '.xml';
@@ -205,7 +205,7 @@ _Blockly.prototype = Object.create(null, {
 				$('#summaryPanel')
 					.show();
 			} catch (e) {
-				observer.emit('ui.error', e);
+				this.observer.emit('ui.error', e);
 			}
 		}
 	},

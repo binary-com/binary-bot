@@ -4,7 +4,6 @@ import Observer from 'binary-common-utils/observer';
 import Translator from 'translator';
 
 var translator = new Translator();
-var observer = new Observer();
 
 var Introduction = function Introduction(){
 	if ( Introduction.instance ) {
@@ -12,6 +11,7 @@ var Introduction = function Introduction(){
 	}
 	Introduction.instance = this;
 	this.components = new Components();
+	this.observer = new Observer();
 };
 
 Introduction.prototype = Object.create(null, {
@@ -70,7 +70,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					observer.registerOnce('tour:submarket_created', this.tour_submarket_created);
+					that.observer.registerOnce('tour:submarket_created', this.tour_submarket_created);
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].reveal(true);
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].select();
 					that.components.setOpacity('toolbox', 1);
@@ -91,7 +91,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					observer.registerOnce('tour:submarket', this.tour_submarket_added);
+					that.observer.registerOnce('tour:submarket', this.tour_submarket_added);
 				},
 				teardown: function (tour, options) {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
@@ -108,7 +108,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					observer.registerOnce('tour:condition_created', this.tour_condition_created);
+					that.observer.registerOnce('tour:condition_created', this.tour_condition_created);
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].reveal(true);
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].select();
 					that.components.setOpacity('toolbox', 1);
@@ -129,7 +129,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					observer.registerOnce('tour:condition', this.tour_condition_added);
+					that.observer.registerOnce('tour:condition', this.tour_condition_added);
 				},
 				teardown: function (tour, options) {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
@@ -146,7 +146,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					observer.registerOnce('tour:number', this.tour_number_created);
+					that.observer.registerOnce('tour:number', this.tour_number_created);
 					Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
 					that.components.setOpacity('toolbox', 1);
 				},
@@ -166,7 +166,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					observer.registerOnce('tour:ticks', this.tour_ticks_added);
+					that.observer.registerOnce('tour:ticks', this.tour_ticks_added);
 				},
 			}, {
 				content: '<p>' + translator.translateText("OK, Now add all remaining options to the condition block") + '</p>',
@@ -182,7 +182,7 @@ Introduction.prototype = Object.create(null, {
 				},
 				setup: function (tour, options) {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
-					observer.registerOnce('tour:options', this.tour_options_added);
+					that.observer.registerOnce('tour:options', this.tour_options_added);
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 1);
 				},
@@ -242,7 +242,7 @@ Introduction.prototype = Object.create(null, {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 1);
-					observer.registerOnce('tour:purchase_created', this.tour_purchase_created);
+					that.observer.registerOnce('tour:purchase_created', this.tour_purchase_created);
 				},
 				teardown: function (tour, options) {
 					that.components.getUiComponent('toolbox')
@@ -261,7 +261,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					observer.registerOnce('tour:purchase', this.tour_purchase_added);
+					that.observer.registerOnce('tour:purchase', this.tour_purchase_added);
 				},
 			}, {
 				content: '<p>' + translator.translateText("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
@@ -315,7 +315,7 @@ Introduction.prototype = Object.create(null, {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 1);
-					observer.registerOnce('tour:trade_again_created', this.tour_trade_again_created);
+					that.observer.registerOnce('tour:trade_again_created', this.tour_trade_again_created);
 				},
 				teardown: function (tour, options) {
 					that.components.getUiComponent('toolbox')
@@ -334,7 +334,7 @@ Introduction.prototype = Object.create(null, {
 					tour.next();
 				},
 				setup: function (tour, options) {
-					observer.registerOnce('tour:trade_again', this.tour_trade_again);
+					that.observer.registerOnce('tour:trade_again', this.tour_trade_again);
 				},
 				teardown: function (tour, options) {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
