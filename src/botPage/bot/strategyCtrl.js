@@ -55,10 +55,26 @@ StrategyCtrl.prototype = Object.create(null, {
 	updateTicks: {
 		value: function updateTicks(ticks) {
 			if ( !this.purchased ) {
+				var direction = '';
+				var length = ticks.length;
+				if ( length >= 2 ) {
+					if ( ticks[length-1].quote > ticks[length-2].quote ) {
+						direction = 'rise';
+					}
+					if ( ticks[length-1].quote < ticks[length-2].quote ) {
+						direction = 'fall';
+					}
+				}
 				if ( this.ready ) {
-					this.strategy(ticks, this.proposals, this);
+					this.strategy({
+						direction: direction,
+						ticks: ticks
+					}, this.proposals, this);
 				} else {
-					this.strategy(ticks, null, null);
+					this.strategy({
+						direction: direction,
+						ticks: ticks
+					}, null, null);
 				}
 			}
 		}

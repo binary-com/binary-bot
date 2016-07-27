@@ -70,10 +70,10 @@ describe('StrategyCtrl', function() {
 				strategyArgs = _strategyArgs;
 				done();
 			}, true);
-			strategyCtrl.updateTicks({epoch: 'some time'});
+			strategyCtrl.updateTicks([{epoch: 'some time', quote: 1}, {epoch: 'some time', quote: 2}]);
 		});
 		it('strategyCtrl passes ticks and send the proposals if ready', function(){
-			expect(strategyArgs).to.have.deep.property('.ticks.epoch');
+			expect(strategyArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch');
 			expect(strategyArgs).to.have.deep.property('.proposals[0].longcode')
 				.that.is.equal('Win payout if the last digit of Volatility 100 Index is odd after 5 ticks.');
 		});
@@ -86,10 +86,10 @@ describe('StrategyCtrl', function() {
 				done();
 			}, true);
 			strategyCtrl.updateProposal(proposals[0]);
-			strategyCtrl.updateTicks({epoch: 'some time'});
+			strategyCtrl.updateTicks([{epoch: 'some time', quote: 1}, {epoch: 'some time', quote: 2}]);
 		});
 		it('strategy can check if the proposals are ready', function(){
-			expect(strategyArgs).to.have.deep.property('.ticks.epoch');
+			expect(strategyArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch');
 			expect(strategyArgs).to.have.deep.property('.proposals').not.to.be.ok;
 		});
 	});
@@ -99,7 +99,7 @@ describe('StrategyCtrl', function() {
 				done();
 			}, true);
 			strategyCtrl.updateProposal(proposals[1]);
-			strategyCtrl.updateTicks({epoch: 'some time'});
+			strategyCtrl.updateTicks([{epoch: 'some time', quote: 1}, {epoch: 'some time', quote: 2}]);
 		});
 		it('strategy will buy the proposal whenever decided', function(){
 		});
@@ -112,7 +112,7 @@ describe('StrategyCtrl', function() {
 				finishedContract = _finishedContract;
 				done();
 			}, true);
-			strategyCtrl.updateTicks({epoch: 'some time'});
+			strategyCtrl.updateTicks([{epoch: 'some time', quote: 1}, {epoch: 'some time', quote: 2}]);
 		});
 		it('finish is called whenever the purchase is finished', function(){
 			expect(finishedContract).to.have.property('sell_price')
