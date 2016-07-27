@@ -16,28 +16,26 @@ StrategyCtrl.prototype = Object.create(null, {
 	recoverFromDisconnect: {
 		value: function recoverFromDisconnect() {
 			var that = this;
-			return new Promise(function ( resolve, reject ) {
-				if ( that.trade ) {
-					var apiProposalOpenContract = function ( contract ) {
-						if ( contract.sell_price ) {
-							that.observer.emit('trade.finish', contract);
-							resolve();
-						}
-					};
-					that.observer.register('api.proposal_open_contract', apiProposalOpenContract, true, {
-						type: 'proposal_open_contract',
-						unregister: [
-							['api.proposal_open_contract', apiProposalOpenContract]
-						]
-					});
-					var promise = that.trade.getTheContractInfoAfterSell();
-					if ( !promise ) {
-						resolve();
-					}
-				} else {
-					resolve();
-				}
-			});
+			for ( var i in this.runningObservations ) {
+				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
+			}
+			this.runningObservations = [];
+
+			if ( !that.trade || !that.trade.recoverFromDisconnect() ) {
+				this.observer.emit('strategy.recovered', {
+					tradeWasRunning: false
+				});
+				return;
+			}
+			var tradeFinish = function(contract){
+				that.trade.destroy();
+				that.observer.emit('strategy.recovered', {
+					tradeWasRunning: true,
+					finishedContract: contract
+				});
+			};
+			this.observer.register('trade.finish', tradeFinish, true);
+			this.runningObservations.push(['trade.finish', tradeFinish]);
 		}
 	},
 	updateProposal: {
@@ -77,7 +75,6 @@ StrategyCtrl.prototype = Object.create(null, {
 				};
 				var tradeFinish = function(contract){
 					that.observer.emit('strategy.finish', contract);
-					that.destroy();
 				};
 				this.observer.register('trade.update', tradeUpdate);
 				this.observer.register('trade.finish', tradeFinish, true);
@@ -92,6 +89,7 @@ StrategyCtrl.prototype = Object.create(null, {
 			for ( var i in this.runningObservations ) {
 				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
 			}
+			this.runningObservations = [];
 			this.proposals = [];
 			this.ready = false;
 			this.strategy = null;

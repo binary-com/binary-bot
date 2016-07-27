@@ -11,12 +11,21 @@ var Ticktrade = function Ticktrade(api) {
 };
 
 Ticktrade.prototype = Object.create(null, {
+	recoverFromDisconnect: {
+		value: function recoverFromDisconnect(){
+			for ( var i in this.runningObservations  ) {
+				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
+			}
+			this.runningObservations = [];
+			return this.subscribeToOpenContract();
+		}
+	},
 	purchase: {
 		value: function purchase(contract) {
-			this.observer.emit('ui.log.info', this.translator.translateText('Purchased') + ': ' + contract.longcode);
 			var that = this;
 			this.api.buy(contract.id, contract.ask_price);
 			var apiBuy = function apiBuy(purchasedContract){
+				that.observer.emit('ui.log.info', that.translator.translateText('Purchased') + ': ' + contract.longcode);
 				that.observer.emit('trade.purchase', purchasedContract);
 				that.contractId = purchasedContract.contract_id;
 				that.api._originalApi.unsubscribeFromAllProposals();
@@ -31,11 +40,14 @@ Ticktrade.prototype = Object.create(null, {
 	},
 	subscribeToOpenContract: {
 		value: function subscribeToOpenContract(){
+			if ( !this.contractId ) {
+				return false;
+			}
 			this.api.proposal_open_contract(this.contractId);
 			var that = this;
 			var apiProposalOpenContract = function(contract){
 				// detect changes and decide what to do when proposal is updated
-				if (contract.is_expired && !that.contractIsSold ) {
+				if (contract.is_expired && contract.is_valid_to_sell &&!that.contractIsSold ) {
 					that.contractIsSold = true;
 					that.api._originalApi.sellExpiredContracts().then(function(){
 						that.getTheContractInfoAfterSell();
@@ -43,7 +55,6 @@ Ticktrade.prototype = Object.create(null, {
 				}
 				if ( contract.sell_price ) {
 					that.observer.emit('trade.finish', contract);
-					that.destroy();
 				}
 				that.observer.emit('trade.update', contract);
 			};
@@ -58,12 +69,13 @@ Ticktrade.prototype = Object.create(null, {
 				]
 			});
 			this.runningObservations.push(['api.proposal_open_contract', apiProposalOpenContract]);
+			return true;
 		}
 	},
 	getTheContractInfoAfterSell: {
 		value: function getTheContractInfoAfterSell() {
 			if ( this.contractId ) {
-				return this.api._originalApi.getContractInfo(this.contractId);
+				this.api._originalApi.getContractInfo(this.contractId);
 			}
 		}
 	},
@@ -72,6 +84,7 @@ Ticktrade.prototype = Object.create(null, {
 			for ( var i in this.runningObservations  ) {
 				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
 			}
+			this.runningObservations = [];
 			this.contractIsSold = false;
 			if ( !offline ) {
 				return this.api._originalApi.unsubscribeFromAlProposals();
