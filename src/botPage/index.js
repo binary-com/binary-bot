@@ -22,6 +22,9 @@ window.Bot = {
 	},
 	getTotalProfit: function getTotalProfit(){
 		return bot.totalProfit;
+	},
+	getBalance: function getBalance(balanceType){
+		return (balanceType === 'STR') ? bot.balanceStr : bot.balance ;
 	}
 };
 bot.initPromise.then(function(){

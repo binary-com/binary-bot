@@ -346,12 +346,7 @@ Bot.prototype = Object.create(null, {
 			})
 			.exec();
 		}
-	},
-	getBalance: {
-		value: function getBalance(balanceType){
-			return (balanceType === 'STR') ? this.balanceStr : this.balance ;
-		}
-	},
+	}
 });
 
 module.exports = Bot;
