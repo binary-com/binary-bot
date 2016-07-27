@@ -9,6 +9,7 @@ import './strategy/direction';
 import './strategy/purchase';
 import './strategy/strategy';
 import './strategy/tick';
+import './finish/result';
 import './finish/check_result';
 import './finish/details';
 import './finish/finish';

@@ -152,6 +152,8 @@ module.exports = {
   "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
   "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
   "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
+  "dc3f26688f5ef436999ab59f699bcda077e65738": "Contract Result",
+  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
   "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
   "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
   "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
