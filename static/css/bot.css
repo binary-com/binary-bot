@@ -333,3 +333,7 @@ button:focus {
     left: 0px;
     background: white;
 }
+
+#stopButton {
+    display: none;
+}

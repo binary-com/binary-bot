@@ -257,7 +257,8 @@ View.prototype = Object.create(null, {
 			};
 
 			$('#stopButton')
-				.click(stop);
+				.click(stop)
+				.hide();
 
 			$('.panelExitButton')
 				.click(function () {
@@ -317,6 +318,8 @@ View.prototype = Object.create(null, {
 
 			$('#runButton')
 				.click(function (e) {
+					$('#stopButton').show();
+					$('#runButton').hide();
 					that.blockly.run();
 				});
 			
@@ -384,9 +387,15 @@ View.prototype = Object.create(null, {
 					storageManager.removeAllTokens();
 					that.updateTokenList();
 				}
+				that.bot.stop();
 				that.observer.emit('ui.error', error);
 			});
 			
+			this.observer.register('bot.stop', function(tradeInfo){
+				$('#runButton').show();
+				$('#stopButton').hide();
+			});
+
 			this.observer.register('bot.tradeInfo', function(tradeInfo){
 				_.extend(that.tradeInfo.tradeInfo, tradeInfo);
 				that.tradeInfo.update();
