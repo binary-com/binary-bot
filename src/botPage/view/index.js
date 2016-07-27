@@ -392,11 +392,11 @@ View.prototype = Object.create(null, {
 				that.tradeInfo.update();
 			});
 
-			this.observer.register('trade.update', function(contract){
+			this.observer.register('bot.tradeUpdate', function(contract){
 				that.latestOpenContract = contract;
 			});
 
-			this.observer.register('trade.finish', function(contract){
+			this.observer.register('bot.finish', function(contract){
 				that.tradeInfo.add(contract);
 			});
 

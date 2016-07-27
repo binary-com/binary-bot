@@ -14,7 +14,7 @@ var Bot = function Bot(api) {
 	Bot.instance = this;
 	this.ticks = [];
 	if ( typeof api === 'undefined' ) {
-		this.api = new CustomApi();
+		this.api = new CustomApi(null, this.recoverFromDisconnect.bind(this));
 	} else {
 		this.api = api;
 	}
@@ -35,6 +35,103 @@ var Bot = function Bot(api) {
 };
 
 Bot.prototype = Object.create(null, {
+	startOver: {
+		value: function startOver(){
+			var that = this;
+			this.firstCall = true;
+			this.setTheInitialConditions().then(function(){
+				that._startTrading();
+			});
+		}
+	},
+	recoverFromDisconnect: {
+		value: function recoverFromDisconnect(){
+			this.api._originalApi.connect();
+			var that = this;
+			if ( this.authorizedToken ) {
+				this.api._originalApi.authorize();
+				if ( this.strategyCtrl ) {
+					this.strategyCtrl.recoverFromDisconnect().then(function(){
+						that.strategyCtrl.destroy(true);
+						that.startOver();
+					});
+				} else {
+					this.strategyCtrl.destroy(true);
+					this.startOver();
+				}
+			}
+		}
+	},
+	setTradeOptions: {
+		value: function setTradeOptions() {
+			if (!_.isEmpty(this.tradeOption)) {
+				this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
+				var opposites = config.opposites[this.tradeOption.condition];
+				this.tradeOptions = [];
+				for (var key in opposites) {
+					this.tradeOptions.push( _.extend(_.clone(this.tradeOption), {
+							contract_type: Object.keys(opposites[key])[0]
+						}));
+					this.tradeOptions.slice(-1)[0].duration_unit = 't';
+					delete this.tradeOptions.slice(-1)[0].condition;
+				}
+			} else {
+				this.tradeOptions = [];
+			}
+		}
+	},
+	setTheInitialConditions: {
+		value: function setTheInitialConditions(){
+			var that = this;
+			return new Promise(function(resolve, reject){
+				asyncChain()
+				.pipe(function(chainDone){
+					var apiAuthorize = function(){	
+						that.authorizedToken = that.token;
+						chainDone();
+					};
+					that.observer.register('api.authorize', apiAuthorize, true, {
+						type: 'authorize',
+						unregister: [['api.authorize', apiAuthorize]]
+					});
+					that.api.authorize(that.token);
+				})
+				.pipe(function(chainDone){
+					if ( that.firstCall ) {
+						that.firstCall = false;
+						that._observeOnceAndForever();
+					}
+					chainDone();
+				})
+				.exec();
+				asyncChain()
+				.pipe(function(chainDone){
+					if ( _.isEmpty(that.tradeOption) || that.tradeOption.symbol === that.symbolStr ) {
+						chainDone();
+					} else {
+						var apiHistory = function(history){
+							that.symbolStr = that.tradeOption.symbol;
+							that.ticks = history;
+							chainDone();
+						};
+						that.observer.register('api.history', apiHistory, true, {
+							type: 'history',
+							unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate']
+						});
+						that.api.history(that.tradeOption.symbol, {
+							end: 'latest',
+							count: 600,
+							subscribe: 1
+						});
+					}
+				})
+				.pipe(function(chainDone){
+					resolve();
+				})
+				.exec();
+			});
+		}
+	},
 	start: {
 		value: function start(token, tradeOption, strategy, finish, again){
 			if ( !this.running || again ) {
@@ -49,76 +146,22 @@ Bot.prototype = Object.create(null, {
 				return;
 			}
 			this.token = token;
-			if (!_.isEmpty(tradeOption)) {
-				this.pip = this.symbol.activeSymbols.getSymbols()[tradeOption.symbol].pip;
-				var opposites = config.opposites[tradeOption.condition];
-				this.tradeOptions = [];
-				for (var key in opposites) {
-					this.tradeOptions.push( _.extend(_.clone(tradeOption), {
-							contract_type: Object.keys(opposites[key])[0]
-						}));
-					this.tradeOptions.slice(-1)[0].duration_unit = 't';
-					delete this.tradeOptions.slice(-1)[0].condition;
-				}
-			} else {
-				this.tradeOptions = [];
-			}
+			this.tradeOption = tradeOption;
+			this.setTradeOptions();
 			if ( this.authorizedToken === this.token ) {
 				this._startTrading();
 				return;
 			}
 			var that = this;
-			asyncChain()
-			.pipe(function(chainDone){
-				var apiAuthorize = function(){	
-					that.authorizedToken = that.token;
-					chainDone();
-				};
-				that.observer.register('api.authorize', apiAuthorize, true, {
-					type: 'authorize',
-					unregister: [['api.authorize', apiAuthorize]]
-				});
-				that.api.authorize(that.token);
-			})
-			.pipe(function(chainDone){
-				if ( that.firstCall ) {
-					that.firstCall = false;
-				}
-				chainDone();
-			})
-			.exec();
-			asyncChain()
-			.pipe(function(chainDone){
-				if ( _.isEmpty(tradeOption) || tradeOption.symbol === that.symbolStr ) {
-					chainDone();
-				} else {
-					var apiHistory = function(history){
-						that.symbolStr = tradeOption.symbol;
-						that.ticks = history;
-						chainDone();
-					};
-					that.observer.register('api.history', apiHistory, true, {
-						type: 'history',
-						unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate']
-					});
-					that.api.history(tradeOption.symbol, {
-						end: 'latest',
-						count: 600,
-						subscribe: 1
-					});
-				}
-			})
-			.pipe(function(chainDone){
+			this.setTheInitialConditions().then(function(){
 				that._startTrading();
-			})
-			.exec();
+			});
 		}
 	},
 	_observeOnceAndForever: {
 		value: function _observeOnceAndForever(){
 			var that = this;
 			var apiBalance = function(balance){
-				that.runningObservations.push(['api.balance', apiBalance]);
 				that.balance = balance.balance;
 				that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
 				that.observer.emit('bot.tradeInfo', {
@@ -136,7 +179,6 @@ Bot.prototype = Object.create(null, {
 		value: function _observeStreams(){
 			var that = this;
 			var apiTick = function(tick){
-				that.runningObservations.push(['api.tick', apiTick]);
 				that.ticks = that.ticks.concat(tick);
 				that.strategyCtrl.updateTicks(that.ticks);
 				that.observer.emit('bot.tickUpdate', {
@@ -145,17 +187,16 @@ Bot.prototype = Object.create(null, {
 				});
 			};
 			this.observer.register('api.tick', apiTick);
+			this.runningObservations.push(['api.tick', apiTick]);
 		}
 	},
 	_subscribeProposals: {
 		value: function _subscribeProposals() {
 			var that = this;
 			var apiProposal = function(proposal){
-				that.runningObservations.push(['api.proposal', apiProposal]);
 				that.strategyCtrl.updateProposal(proposal);
 			};
 			var strategyReady = function(){
-				that.runningObservations.push(['strategy.ready', strategyReady]);
 				that.observer.emit('bot.waiting_for_purchase');
 			};
 			this.observer.register('api.proposal', apiProposal, false, {
@@ -167,6 +208,8 @@ Bot.prototype = Object.create(null, {
 				]
 			});
 			this.observer.register('strategy.ready', strategyReady);
+			this.runningObservations.push(['api.proposal', apiProposal]);
+			this.runningObservations.push(['strategy.ready', strategyReady]);
 			for (var i in this.tradeOptions) {
 				this.api.proposal(this.tradeOptions[i]);
 			}
@@ -175,6 +218,9 @@ Bot.prototype = Object.create(null, {
 	_startTrading: {
 		value: function _startTrading() {
 			var that = this;
+			var strategyTradeUpdate = function(contract){
+				that.observer.emit('bot.tradeUpdate', contract);
+			};
 			var strategyFinish = function(contract){
 				that._finish(contract);
 			};
@@ -184,8 +230,12 @@ Bot.prototype = Object.create(null, {
 					totalRuns: that.totalRuns
 				});
 			};
+			this.observer.register('strategy.tradeUpdate', strategyTradeUpdate);
 			this.observer.register('strategy.finish', strategyFinish, true);
 			this.observer.register('trade.purchase', tradePurchase, true);
+			this.runningObservations.push(['strategy.tradeUpdate', strategyTradeUpdate]);
+			this.runningObservations.push(['strategy.finish', strategyFinish]);
+			this.runningObservations.push(['trade.purchase', tradePurchase]);
 			this._observeStreams();
 			this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
 			this._subscribeProposals();
@@ -220,20 +270,13 @@ Bot.prototype = Object.create(null, {
 	},
 	_finish: {
 		value: function _finish(contract){
-			var that = this;
-			asyncChain()
-			.pipe(function(done){
-				that.api._originalApi.unsubscribeFromAllProposals().then(function(response){
-					done();
-				});
-			})
-			.pipe(function(done){
-				that.running = false;
-				that._updateTotals(contract);
-				that.finish(contract, that._createDetails(contract));
-				that.observer.emit('bot.finish', contract);
-			})
-			.exec();
+			for ( var i in this.runningObservations ) {
+				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
+			}
+			this._updateTotals(contract);
+			this.finish(contract, this._createDetails(contract));
+			this.observer.emit('bot.finish', contract);
+			this.running = false;
 		}
 	},
 	stop: {
@@ -242,14 +285,25 @@ Bot.prototype = Object.create(null, {
 				this.observer.emit('bot.stop', contract);
 				return;
 			}
-			if ( this.strategyCtrl ) {
-				this.strategyCtrl.destroy();
-			}
 			for ( var i in this.runningObservations ) {
 				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
 			}
 			var that = this;
 			asyncChain()
+			.pipe(function(done){
+				if ( that.strategyCtrl ) {
+					var promise = that.strategyCtrl.destroy();
+					if ( promise ) {
+						promise.then(function(){
+							done();
+						});
+					} else {
+						done();
+					}
+				} else {
+					done();
+				}
+			})
 			.pipe(function(done){
 				that.api._originalApi.unsubscribeFromAllProposals().then(function(response){
 					done();
