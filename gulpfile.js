@@ -165,9 +165,9 @@ gulp.task('blockly-media', ['static'], function(){
 
 gulp.task('blockly-js', ['static'], function(){
 	return gulp.src([
-		'node_modules/blockly/blockly_compressed', 
-		'node_modules/blockly/blocks_compressed',
-		'node_modules/blockly/javascript_compressed}.js'
+		'node_modules/blockly/blockly_compressed.js', 
+		'node_modules/blockly/blocks_compressed.js',
+		'node_modules/blockly/javascript_compressed.js'
 		])
 		.pipe(concat('blockly.js'))
 		.pipe(gulp.dest('www/js/blockly'));
