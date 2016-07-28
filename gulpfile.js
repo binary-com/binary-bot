@@ -289,14 +289,14 @@ gulp.task('build-min', ['build-bot-min', 'build-index-min', 'pack-css-min', 'mus
 		.pipe(connect.reload());
 });
 
-gulp.task('deploy', ['build-min'], function () {
-	return gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**'])
-		.pipe(ghPages());
-});
-
 gulp.task('serve', ['open', 'connect'], function () {
 	gp_watch(['www/*.html'], {debounceDelay: 1000})
 		.pipe(connect.reload());
+});
+
+gulp.task('deploy', ['build-min'], function () {
+	return gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', './beta/**'])
+		.pipe(ghPages());
 });
 
 gulp.task('test-deploy', ['build-min', 'serve'], function () {
