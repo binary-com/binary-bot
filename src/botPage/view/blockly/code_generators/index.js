@@ -1,0 +1,22 @@
+'use strict';
+import './trade/trade';
+import './tools/balance';
+import './tools/notify';
+import './tools/total_profit';
+import markets from './markets';
+import './strategy/check_direction';
+import './strategy/direction';
+import './strategy/purchase';
+import './strategy/strategy';
+import './strategy/tick';
+import './finish/result';
+import './finish/check_result';
+import './finish/details';
+import './finish/finish';
+import './finish/read_details';
+import './finish/trade_again';
+import ticktrades from './conditions/ticktrades';
+module.exports = function init(){
+	markets();
+	ticktrades();
+};
