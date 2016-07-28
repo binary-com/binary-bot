@@ -295,7 +295,7 @@ gulp.task('serve', ['open', 'connect'], function () {
 });
 
 gulp.task('deploy', ['build-min'], function () {
-	return gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', 'beta'])
+	return gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', './beta/**'], {base: './'})
 		.pipe(ghPages());
 });
 
