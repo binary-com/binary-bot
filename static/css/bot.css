@@ -78,9 +78,52 @@ h1 {
     margin: 0;
     text-align: center;
 }
+#statementPanel .exitPanel p{
+    color: white;
+    cursor: pointer;
+    width: 25px;
+    height: 22px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    text-align: center;
+    border: 1px solid #e98024;
+    border-radius: 0 0 0 4px;
+    background: #e98024;
+}
+#statementPanel{
+	display: none;
+	background-color: white;
+	z-index: 1001;
+	position: fixed;
+	width: 800px;
+	top: 50%;
+	left: 50%;
+	margin-top: -300px;
+	margin-left: -400px;
+    border: 1px solid #2a3052;
+    border-top-color: #ddd;
+	
+}
+#statementPanel .content{
+	padding: 0 15px 15px 15px;
+    background: white;
+	overflow: auto;
+	height: 500px;
+}
+#statementPanel .description {
+    padding: 5px;
+    background-color: #2a3052;
+    color: #fff;
+}
+#statementPanel .description h4 {
+    margin: 0;
+    text-align: center;
+}
 table {
 	overflow:auto;
 	width: 100%;
+	cursor: default;
 }
 table, th, td {
 	border-collapse: collapse;
@@ -95,7 +138,7 @@ th, td {
 	height: 25vh;
     padding-bottom: 1vh;
 }
-#chart, #tradesDisplay, #summaryDisplay {
+#chart, #tradesDisplay, #summaryDisplay, #statementPanel {
 	cursor: default;
 }
 #chart {

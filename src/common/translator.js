@@ -3,19 +3,7 @@ var i18n = require('i18n');
 var utils = require('utils');
 // handle language in localStorage and query string
 var supportedLanguages = {
-	zh_tw: require('json!../i18n/zh_tw.json'),
-	de: require('json!../i18n/de.json'),
-	id: require('json!../i18n/id.json'),
-	zh_cn: require('json!../i18n/zh_cn.json'),
-	it: require('json!../i18n/it.json'),
-	vi: require('json!../i18n/vi.json'),
-	ar: require('json!../i18n/ar.json'),
-	pl: require('json!../i18n/pl.json'),
-	ru: require('json!../i18n/ru.json'),
-	pt: require('json!../i18n/pt.json'),
-	es: require('json!../i18n/es.json'),
-	fr: require('json!../i18n/fr.json'),
-	en: require('json!../i18n/en.json')
+	en: require('json!..\\i18n\\en.json')
 };
 $('#language')
 	.change(function change(e) {

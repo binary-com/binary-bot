@@ -207,5 +207,10 @@
   "0a20a33acd1f9c31eaeb866b2e80fc191dc5ab2c": "Use this button to save your blocks",
   "7e39fa78566c634019a84603f84e15c5e0f5ba56": "Use this button to load blocks",
   "529d9fa8f773d3164f19697eebca2627b451d26a": "Go ahead and run the blocks. You can stop the code anytime you want using the stop button",
-  "23b3d90128fcabe7e299fb6f8301e6f2a4a7f477": "You can save your blocks using this button"
+  "23b3d90128fcabe7e299fb6f8301e6f2a4a7f477": "You can save your blocks using this button",
+  "a72ca256dc49e55a1a57b9a727fbde9834c9a3f7": "Statement",
+  "eb9a4bc1c0c153e4e4b042a79113b815b7e3021d": "Date",
+  "a3e791f9cb31adc2f50e56826993bc5279a0cb0d": "Potential Payout",
+  "97c89a4d6630adeb18fa12ba9976a31413fe293e": "Action",
+  "1980ceb9f02f881ccaaf00407af414d03d2e7713": "Credit/Debit"
 }

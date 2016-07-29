@@ -26,6 +26,8 @@ var chart;
 var finished = true;
 var purchased = false;
 
+var storageManager = require('storageManager');
+
 // influences display, calls on_finish
 var contractFinished = function contractFinished(contract) {
 	var result = (+contract.sell_price === 0) ? 'loss' : 'win';
@@ -349,6 +351,42 @@ var trade = function trade(_token, callback, trade_again) {
 	}
 };
 
+var statement = function statement(callback){
+	
+	token = Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').getValue();
+	api = new LiveApi({ appId: appId.getAppId() });
+	api.authorize(token).then(function(response){
+		api.getStatement((statementOptions = {
+  "statement": 1
+})).then(function(response){
+	var firstRow = $('#StatementDisplay tbody tr');
+		
+response.statement.transactions.forEach(function(elem, i){
+	if (i === 0) {
+				row = firstRow;
+			} else {
+				
+				row = firstRow.clone(true, true);
+			}
+			row.find('.statement-date').text(response.statement.transactions[i].purchase_time);
+			row.find('.statement-reference').text(response.statement.transactions[i].contract_id);
+			row.find('.statement-potential-payout').text(response.statement.transactions[i].payout);
+			row.find('.statement-action').text(response.statement.transactions[i].action_type);
+			row.find('.statement-credit-debit').text(response.statement.transactions[i].amount);
+			row.find('.statement-balance').text(response.statement.transactions[i].balance_after);
+						if (i !== 0) {
+				row.insertAfter(firstRow);
+			}
+			
+});
+});
+}); };
+
+
+
+
+
+
 globals.disableRun(false);
 
 module.exports = {
@@ -359,4 +397,5 @@ module.exports = {
 	purchase: purchase,
 	setSymbol: setSymbol,
 	trade: trade,
+	statement: statement,
 };
