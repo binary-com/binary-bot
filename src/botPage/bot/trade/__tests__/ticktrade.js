@@ -20,7 +20,7 @@ describe('TickTrade', function() {
 	describe('Purchasing...', function(){
 		var purchasedContract;
 		before(function(done){
-			this.timeout('15000');
+			
 			asyncChain()
 				.pipe(function(chainDone){
 					api.authorize('c9A3gPFcqQtAQDW');
@@ -52,7 +52,7 @@ describe('TickTrade', function() {
 	describe('Getting updates', function(){
 		var contractUpdates = [];
 		before(function(done){
-			this.timeout('25000');
+			
 			observer.register('trade.finish', function(_contract){
 				finishedContract = _contract;
 			}, true);

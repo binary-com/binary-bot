@@ -21,7 +21,7 @@ describe('symbol', function() {
 		});
 	});
 	describe('Checking functions', function(){
-		this.timeout('10000');
+		
 		var symbol;
 		before(function(done){
 			symbol = new _Symbol(new CustomApi(ws));

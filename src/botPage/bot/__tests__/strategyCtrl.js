@@ -31,7 +31,7 @@ describe('StrategyCtrl', function() {
 	});
 	describe('Make the strategy ready...', function(){
 		before(function(done){
-			this.timeout('10000');
+			
 			observer.register('strategy.ready', function() {
 				done();
 			}, true);
@@ -107,7 +107,7 @@ describe('StrategyCtrl', function() {
 	describe('Waiting for purchase to be finished', function(){
 		var finishedContract;
 		before(function(done){
-			this.timeout('20000');
+			
 			observer.register('strategy.finish', function(_finishedContract){
 				finishedContract = _finishedContract;
 				done();

@@ -28,7 +28,7 @@ var set_checks = function set_checks(obj) {
 describe('ActiveSymbols', function() {
 	var activeSymbols;
 	before(function(done){
-		this.timeout(5000);
+		
 		api.getActiveSymbolsBrief().then(function(response){
 			activeSymbols = new ActiveSymbols(response.active_symbols);
 			done();

@@ -14,7 +14,7 @@ describe('Bot', function() {
 	var bot;
 	var token = 'c9A3gPFcqQtAQDW';
 	before(function(done){
-		this.timeout('10000');
+		
 		observer = new Observer();
 		api = new CustomApi(mockWebsocket);
 		bot = new Bot(api);
@@ -30,7 +30,7 @@ describe('Bot', function() {
 	describe('Bot cannot initialize with a fake token', function(){
 		var error;
 		before(function(done){
-			this.timeout('5000');
+			
 			observer.register('api.error', function(_error){
 				error = _error;
 				done();
@@ -44,7 +44,7 @@ describe('Bot', function() {
 	});
 	describe('Start trading', function(){
 		before(function(done){
-			this.timeout('5000');
+			
 			observer.register('bot.waiting_for_purchase', function(){
 				done();
 			}, true);
@@ -58,7 +58,7 @@ describe('Bot', function() {
 	});
 	describe('Start the trade without real finish and strategy functions', function(){
 		before(function(done){
-			this.timeout('10000');
+			
 			asyncChain()
 			.pipe(function(chainDone){
 				observer.register('bot.stop', function(){
@@ -92,7 +92,7 @@ describe('Bot', function() {
 		var finishedContractFromFinishSignal;
 		var numOfTicks = 0;
 		before(function(done){
-			this.timeout('10000');
+			
 			asyncChain()
 			.pipe(function(chainDone){
 				observer.register('bot.stop', function(){
@@ -136,7 +136,7 @@ describe('Bot', function() {
 		var finishedContractFromFinishSignal;
 		var numOfTicks = 0;
 		before(function(done){
-			this.timeout('10000');
+			
 			bot.start(token, option, function strategy(tick, proposals, _strategyCtrl){
 				if ( ++numOfTicks === 3 ) {
 					_strategyCtrl.purchase('DIGITEVEN');
