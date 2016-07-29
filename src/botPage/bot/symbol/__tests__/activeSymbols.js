@@ -28,7 +28,6 @@ var set_checks = function set_checks(obj) {
 describe('ActiveSymbols', function() {
 	var activeSymbols;
 	before(function(done){
-		
 		api.getActiveSymbolsBrief().then(function(response){
 			activeSymbols = new ActiveSymbols(response.active_symbols);
 			done();
@@ -39,6 +38,7 @@ describe('ActiveSymbols', function() {
 	});
 	it('Should getMarkets have forex as a key', function() {
 		var markets = activeSymbols.getMarkets();
+		console.log(markets.forex);
 		expect(markets).to.be.an('Object')
 			.and.to.have.property('forex');
 		expect(markets.forex).to.have.property('name')

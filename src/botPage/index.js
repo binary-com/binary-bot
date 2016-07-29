@@ -14,6 +14,7 @@ $.ajaxSetup({
 var bot = new Bot();
 var observer = new Observer();
 window.Bot = {
+	bot: bot,
 	start: bot.start.bind(bot),
 	stop: bot.stop.bind(bot),
 	toggleDebug: logger.toggleDebug.bind(logger),
