@@ -283,12 +283,7 @@ var show = function show(done) {
       $(this)
         .parent()
         .hide();
-    $("#StatementDisplay").find(".statement-date").parent().empty();
-	$("#StatementDisplay").find(".statement-reference").parent().empty();
-	$("#StatementDisplay").find(".statement-potential-payout").parent().empty();
-	$("#StatementDisplay").find(".statement-action").parent().empty();
-	$("#StatementDisplay").find(".statement-credit-debit").parent().empty();
-	$("#StatementDisplay").find(".statement-balance").parent().empty();
+    $("#StatementDisplay tbody tr").remove();
 	$("#StatementDisplay tbody").append('<tr><td class="statement-date"></td><td class="statement-reference"></td><td class="statement-potential-payout"></td><td class="statement-action"></td><td class="statement-credit-debit"></td><td class="statement-balance"></td></tr>');
     });
   $('#summaryPanel')
