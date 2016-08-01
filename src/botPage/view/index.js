@@ -24,13 +24,13 @@ var View = function View(){
 	this.tradeInfo = new TradeInfo();
 	this.addTranslationToUi();
 	this.errorAndLogHandling();
-	this.setElementActions();
 	var that = this;
 	this.bot = new Bot();
 	this.initPromise = new Promise(function(resolve, reject){
 		that.updateTokenList();
 		that.blockly = new _Blockly();
 		that.blockly.initPromise.then(function(){
+			that.setElementActions();
 			that.initTours();
 			resolve();
 		});

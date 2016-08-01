@@ -165,9 +165,13 @@ Welcome.prototype = Object.create(null, {
 		}
 	},
 	welcome: {
-		value: function welcome(){
+		value: function welcome(stopCallback){
 			if (!storageManager.isDone('welcomeFinished')) {
-				this.start();
+				this.start(stopCallback);
+			} else {
+				if ( stopCallback ) {
+					stopCallback();
+				}
 			}
 		}
 	},
