@@ -145,11 +145,21 @@ Bot.prototype = Object.create(null, {
 							type: 'history',
 							unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate']
 						});
-						that.api.history(that.tradeOption.symbol, {
-							end: 'latest',
-							count: 600,
-							subscribe: 1
-						});
+						if ( that.tradeOption.symbol !== that.symbolStr ) {
+							that.api._originalApi.unsubscribeFromAllTicks().then(function(){
+								that.api.history(that.tradeOption.symbol, {
+									end: 'latest',
+									count: 600,
+									subscribe: 1
+								});
+							});							
+						} else {
+							that.api.history(that.tradeOption.symbol, {
+								end: 'latest',
+								count: 600,
+								subscribe: 1
+							});
+						}
 					}
 				})
 				.pipe(function(chainDone){
@@ -174,11 +184,13 @@ Bot.prototype = Object.create(null, {
 			}
 			this.token = token;
 			this.tradeOption = tradeOption;
+			var that = this;
 			if ( this.authorizedToken === this.token ) {
-				this._startTrading();
+				this.setTheInitialConditions().then(function(){
+					that._startTrading();
+				});
 				return;
 			}
-			var that = this;
 			this.login().then(function(){
 				that.setTheInitialConditions().then(function(){
 					that._startTrading();
