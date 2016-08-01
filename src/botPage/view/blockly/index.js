@@ -36,6 +36,7 @@ var _Blockly = function _Blockly(){
 				Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
 				that.disableDeleteForMainBlocks();
 				that.overrideBlocklyDefaultShape();
+				that.zoomOnPlusMinus();
 				Blockly.mainWorkspace.clearUndo();
 				that.utils.addPurchaseOptions();
 				resolve();
@@ -45,6 +46,16 @@ var _Blockly = function _Blockly(){
 };
 
 _Blockly.prototype = Object.create(null, {
+	zoomOnPlusMinus: {
+		value: function zoomOnPlusMinus(zoomIn){
+			var metrics = Blockly.mainWorkspace.getMetrics();
+			if ( zoomIn ) {
+				Blockly.mainWorkspace.zoom(metrics.viewWidth/2, metrics.viewHeight/2, 1);
+			} else {
+				Blockly.mainWorkspace.zoom(metrics.viewWidth/2, metrics.viewHeight/2, -1);
+			}
+		}
+	},
 	createXmlTag: {
 		value: function createXmlTag(obj) {
 			var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
@@ -118,6 +129,7 @@ _Blockly.prototype = Object.create(null, {
 		value: function reconfigureBlocklyAfterLoad(){
 			Blockly.mainWorkspace.clearUndo();
 			Blockly.mainWorkspace.zoomToFit();
+			Blockly.mainWorkspace.zoomCenter();
 			this.setBlockColors();
 			this.utils.addPurchaseOptions();
 		}

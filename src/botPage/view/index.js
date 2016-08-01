@@ -333,12 +333,16 @@ View.prototype = Object.create(null, {
 
 			$(document).keydown(function(e) {
 				switch(e.which) {
-					case 37: // left
+					case 189: // -
+						if ( e.ctrlKey ) {
+							that.blockly.zoomOnPlusMinus(false);
+						}
 						break;
-
-					case 38: // up
+					case 187: // +
+						if ( e.ctrlKey ) {
+							that.blockly.zoomOnPlusMinus(true);
+						}
 						break;
-
 					case 39: // right
 						if (that.activeTour) {
 							that.activeTour.next();
@@ -346,10 +350,6 @@ View.prototype = Object.create(null, {
 							return;
 						}
 						break;
-
-					case 40: // down
-						break;
-
 					default: return; // exit this handler for other keys
 				}
 				e.preventDefault(); // prevent the default action (scroll / move caret)
