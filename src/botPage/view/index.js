@@ -30,8 +30,10 @@ var View = function View(){
 	this.initPromise = new Promise(function(resolve, reject){
 		that.updateTokenList();
 		that.blockly = new _Blockly();
-		that.initTours();
-		resolve();
+		that.blockly.initPromise.then(function(){
+			that.initTours();
+			resolve();
+		});
 	});
 };
 
