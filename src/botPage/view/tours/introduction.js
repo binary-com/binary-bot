@@ -377,6 +377,13 @@ Introduction.prototype = Object.create(null, {
 				at: 'left center',
 				nextButton: true,
 			}, {
+				content: '<p>' + translator.translateText('Press Ctrl + -/+ to zoom out/in the blocks') + '</p>',
+				target: that.components.getUiComponent('center'),
+				closeButton: true,
+				nextButton: true,
+				my: 'top center',
+				at: 'bottom center',
+			}, {
 				content: '<p>' + translator.translateText("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',
 				target: that.components.getUiComponent('group_start_stop'),
 				closeButton: true,

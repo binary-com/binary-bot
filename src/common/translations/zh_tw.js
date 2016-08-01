@@ -123,6 +123,7 @@ module.exports = {
   "5670fb9533116ca78adec7a1bb8bc2f77212bf73": "OK, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.",
   "d4ab4221f6388023bec13302714e98a84bbfb4c9": "If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo",
   "21fe96f872d9140d436c194537e731ef280d3810": "You can save/load your blocks using these buttons",
+  "832de13f8c6c6b3374ff2f2b48061902b33b0ad5": "Press Ctrl + -/+ to zoom out/in the blocks",
   "fda3db9f6403aa2eb92dd93ce7ff60503aa4f7c0": "At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.",
   "f49c79f5e096ac6909e0fc364980583fd20c46b6": "You can choose the account you want by the <b>Account</b> dropdown. If you cannot see the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.",
   "2339707b37e938d193477cea66300cbfdd64a540": "Use this button to log in to your account",

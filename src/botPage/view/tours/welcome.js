@@ -84,6 +84,13 @@ Welcome.prototype = Object.create(null, {
 					that.components.setOpacity('group_save', 0.3);
 				},
 			}, {
+				content: '<p>' + translator.translateText('Press Ctrl + -/+ to zoom out/in the blocks') + '</p>',
+				target: that.components.getUiComponent('center'),
+				closeButton: true,
+				nextButton: true,
+				my: 'top center',
+				at: 'bottom center',
+			}, {
 				content: '<p>' + translator.translateText('Use these buttons to Undo/Redo changes to your blocks.') + '</p>',
 				target: that.components.getUiComponent('group_undo_redo'),
 				closeButton: true,
