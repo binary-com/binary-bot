@@ -370,10 +370,10 @@ View.prototype = Object.create(null, {
 					delete this.latestOpenContract;
 				}
 			}
+			chartOptions.pipSize = Number(Number(info.pip)
+				.toExponential()
+				.substring(3));
 			if (!this.chart) {
-				chartOptions.pipSize = Number(Number(info.pip)
-					.toExponential()
-					.substring(3));
 				this.chart = Chart('chart', chartOptions);
 			} else {
 				this.chart.updateChart(chartOptions);
