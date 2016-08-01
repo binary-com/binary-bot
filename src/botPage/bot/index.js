@@ -4,6 +4,7 @@ import _ from 'underscore';
 import _Symbol from './symbol';
 import StrategyCtrl from './strategyCtrl';
 import {getUTCTime, asyncChain} from 'binary-common-utils/tools';
+import tools from 'binary-common-utils/tools';
 import CustomApi from 'binary-common-utils/customApi';
 import config from 'const';
 import Translator from 'translator';
@@ -173,7 +174,6 @@ Bot.prototype = Object.create(null, {
 			}
 			this.token = token;
 			this.tradeOption = tradeOption;
-			this.setTradeOptions();
 			if ( this.authorizedToken === this.token ) {
 				this._startTrading();
 				return;
@@ -218,16 +218,18 @@ Bot.prototype = Object.create(null, {
 			this.runningObservations.push(['api.tick', apiTick]);
 		}
 	},
-	_subscribeProposals: {
-		value: function _subscribeProposals() {
+	_subscribeProposal: {
+		value: function _subscribeProposal(tradeOption, callback) {
 			var that = this;
 			var apiProposal = function(proposal){
-				that.strategyCtrl.updateProposal(proposal);
+				that.strategyCtrl.updateProposal(_.extend(proposal, {
+					contract_type: tradeOption.contract_type
+				}));
+				if ( callback ) {
+					callback();
+				}
 			};
-			var strategyReady = function(){
-				that.observer.emit('bot.waiting_for_purchase');
-			};
-			this.observer.register('api.proposal', apiProposal, false, {
+			this.observer.register('api.proposal', apiProposal, true, {
 				type: 'proposal',
 				unregister: [
 					['api.proposal', apiProposal], 
@@ -235,12 +237,22 @@ Bot.prototype = Object.create(null, {
 					'bot.waiting_for_purchase'
 				]
 			});
-			this.observer.register('strategy.ready', strategyReady);
 			this.runningObservations.push(['api.proposal', apiProposal]);
+			this.api.proposal(tradeOption);
+		}
+	},
+	_subscribeProposals: {
+		value: function _subscribeProposals() {
+			var that = this;
+			var strategyReady = function(){
+				that.observer.emit('bot.waiting_for_purchase');
+			};
+			this.observer.register('strategy.ready', strategyReady);
 			this.runningObservations.push(['strategy.ready', strategyReady]);
-			for (var i in this.tradeOptions) {
-				this.api.proposal(this.tradeOptions[i]);
-			}
+			this.setTradeOptions();
+			tools.asyncForEach(this.tradeOptions, function(tradeOption, i, next){
+				that._subscribeProposal(tradeOption, next);
+			}, function finish(){});
 		}
 	},
 	_startTrading: {
