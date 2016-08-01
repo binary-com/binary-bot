@@ -71,7 +71,7 @@ var trade = function trade(_trade, ev) {
 };
 var submarket = function submarket(_submarket, ev) {
 	if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
-		observer.emit('ui.log.warn', translator.translateText('Submarket blocks can only accept condition blocks'));
+		observer.emit('ui.log.warn', translator.translateText('Submarket blocks can only accept trade type blocks'));
 		Array.prototype.slice.apply(_submarket.childBlocks_)
 			.forEach(function (child) {
 				child.unplug();
@@ -89,7 +89,7 @@ var submarket = function submarket(_submarket, ev) {
 var condition = function condition(_condition, ev, calledByParent) {
 	if (_condition.parentBlock_ !== null) {
 		if (!bot.symbol.findSymbol(_condition.parentBlock_.type)) {
-			observer.emit('ui.log.warn', translator.translateText('Condition blocks have to be added to submarket blocks'));
+			observer.emit('ui.log.warn', translator.translateText('Trade Type blocks have to be added to submarket blocks'));
 			_condition.unplug();
 		} else if ( !bot.symbol.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
 			var symbol = bot.symbol.findSymbol(_condition.parentBlock_.type);

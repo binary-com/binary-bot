@@ -12,7 +12,7 @@ module.exports = function init(){
 			}
 			var condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
 			if ( !condition ) {
-				throw {message: 'A condition has to be defined for the symbol'};
+				throw {message: 'A trade type has to be defined for the symbol'};
 			}
 			var code = condition.trim()+'\n symbol: \'' + symbol + '\'}'; // opened by the condition block;
 			return code;

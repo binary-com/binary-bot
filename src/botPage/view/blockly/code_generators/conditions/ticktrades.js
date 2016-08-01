@@ -16,11 +16,11 @@ module.exports = function init(){
 			if ( config.oppositesHaveBarrier.indexOf(opposites) > -1 ) {
 				prediction = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
 				if ( prediction === '' ) {
-					throw {message: 'All condition options are required'};
+					throw {message: 'All trade types are required'};
 				}
 			}
 			if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === ''){
-				throw {message: 'All condition options are required'};
+				throw {message: 'All trade types are required'};
 			}
 			var code = '{\n'+
 				'condition: \'' + opposites + '\',\n'+

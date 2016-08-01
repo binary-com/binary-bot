@@ -97,7 +97,7 @@ Introduction.prototype = Object.create(null, {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
 				},
 			}, {
-				content: '<p>' + translator.translateText("Alright! Now pick a <b>condition</b> block.") + '</p>',
+				content: '<p>' + translator.translateText("Alright! Now pick a <b>trade type</b> block.") + '</p>',
 				target: that.components.getUiComponent('flyout'),
 				closeButton: true,
 				highlightTarget: true,
@@ -135,7 +135,7 @@ Introduction.prototype = Object.create(null, {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 				},
 			}, {
-				content: '<p>' + translator.translateText("Very good! It's time to add the options needed by the condition block, pick a number") + ' (<img src="image/number.png"/>) ' + translator.translateText("from the Math menu") + '</p>',
+				content: '<p>' + translator.translateText("Very good! It's time to add the options needed by the trade type block, pick a number") + ' (<img src="image/number.png"/>) ' + translator.translateText("from the Math menu") + '</p>',
 				target: that.components.getUiComponent('flyout'),
 				closeButton: true,
 				highlightTarget: true,
@@ -154,7 +154,7 @@ Introduction.prototype = Object.create(null, {
 					that.components.setOpacity('toolbox', 0.3);
 				},
 			}, {
-				content: '<p>' + translator.translateText("Click on the number block to edit its value") + ' (<img src="image/number_editing.png"/>), ' + translator.translateText("change the value to 5 and add it to the <b>ticks</b> field of the condition block") + '</p>',
+				content: '<p>' + translator.translateText("Click on the number block to edit its value") + ' (<img src="image/number_editing.png"/>), ' + translator.translateText("change the value to 5 and add it to the <b>ticks</b> field of the trade type block") + '</p>',
 				target: that.components.getUiComponent('workspace')
 					.find(that.components.uiComponents.submarket),
 				highlightTarget: true,
@@ -169,7 +169,7 @@ Introduction.prototype = Object.create(null, {
 					that.observer.register('tour:ticks', this.tour_ticks_added, true);
 				},
 			}, {
-				content: '<p>' + translator.translateText("OK, Now add all remaining options to the condition block") + '</p>',
+				content: '<p>' + translator.translateText("OK, Now add all remaining options to the trade type block") + '</p>',
 				target: that.components.getUiComponent('workspace')
 					.find(that.components.uiComponents.submarket),
 				closeButton: true,
@@ -264,7 +264,7 @@ Introduction.prototype = Object.create(null, {
 					that.observer.register('tour:purchase', this.tour_purchase_added, true);
 				},
 			}, {
-				content: '<p>' + translator.translateText("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your condition block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
+				content: '<p>' + translator.translateText("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
 				target: that.components.getUiComponent('workspace')
 					.find(that.components.uiComponents.strategy),
 				closeButton: true,
@@ -340,7 +340,7 @@ Introduction.prototype = Object.create(null, {
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 				},
 			}, {
-				content: '<p>' + translator.translateText("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its condition is unmet.") + '</p>',
+				content: '<p>' + translator.translateText("Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its trade type is unmet.") + '</p>',
 				target: that.components.getUiComponent('workspace')
 					.find(that.components.uiComponents.finish),
 				closeButton: true,

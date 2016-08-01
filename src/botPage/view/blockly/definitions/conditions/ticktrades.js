@@ -43,7 +43,7 @@ module.exports = function init(){
 				this.setInputsInline(false);
 				this.setPreviousStatement(true, "Condition");
 				this.setColour("#f2f2f2");
-				this.setTooltip(translator.translateText('Provides the contract conditions:') + ' ' + option_names[0] + '/' + option_names[1]);
+				this.setTooltip(translator.translateText('Provides the trade types:') + ' ' + option_names[0] + '/' + option_names[1]);
 				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 			},
 			onchange: function(ev){
