@@ -1,11 +1,11 @@
 'use strict';
 import Translator from 'translator';
-import i18n from 'i18n';
-import appId from './appId';
+import appId from 'appId';
 import {asyncChain} from 'binary-common-utils/tools';
 import $ from 'jquery';
 
 window.$ = $;
+appId.setAppId();
 asyncChain()
 .pipe(function checkOauthLogin(done){
 	appId.oauthLogin(done);

@@ -1,5 +1,5 @@
 'use strict';
-import i18n from './i18n';
+import i18n from './_i18n';
 import tools from 'binary-common-utils/tools';
 import storageManager from 'binary-common-utils/storageManager';
 import zh_tw from './translations/zh_tw';

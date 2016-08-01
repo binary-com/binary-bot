@@ -6,7 +6,9 @@ import Observer from 'binary-common-utils/observer';
 import Bot from './bot';
 import View from './view';
 import logger from './view/logger';
+import appId from 'appId';
 
+appId.setAppId();
 $.ajaxSetup({
 	cache: false
 });
