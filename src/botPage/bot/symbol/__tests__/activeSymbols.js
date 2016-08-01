@@ -38,7 +38,6 @@ describe('ActiveSymbols', function() {
 	});
 	it('Should getMarkets have forex as a key', function() {
 		var markets = activeSymbols.getMarkets();
-		console.log(markets.forex);
 		expect(markets).to.be.an('Object')
 			.and.to.have.property('forex');
 		expect(markets.forex).to.have.property('name')

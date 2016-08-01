@@ -18,7 +18,7 @@ ActiveSymbols.prototype = Object.create(null, {
 	getMarkets: {
 		value: function getMarkets() {
 			if ( !_.isEmpty(this.markets) ) {
-				return _.clone(this.markets);
+				return this.markets;
 			} else {
 				var markets = _.groupBy(this.activeSymbols, 'market');
 				for ( var marketName in markets ) {
@@ -28,14 +28,14 @@ ActiveSymbols.prototype = Object.create(null, {
 						name: symbol.market_display_name,
 						is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
 					};
-					this.getSubmarketsForMarket(marketName);
+					this._getSubmarketsForMarket(marketName);
 				}
-				return _.clone(this.markets);
+				return this.markets;
 			}
 		}
 	},
-	getSubmarketsForMarket: {
-		value: function getSubmarketsForMarket(marketName) {
+	_getSubmarketsForMarket: {
+		value: function _getSubmarketsForMarket(marketName) {
 			var market = this.markets[marketName];
 			market.submarkets = {};
 			var submarkets = _.groupBy(_.groupBy(this.activeSymbols, 'market')[marketName], 'submarket');
@@ -46,13 +46,13 @@ ActiveSymbols.prototype = Object.create(null, {
 					name: symbol.submarket_display_name,
 					is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
 				};
-				this.getSymbolsForSubmarket(submarketName);
+				this._getSymbolsForSubmarket(submarketName);
 			}
-			return _.clone(market.submarkets);
+			return market.submarkets;
 		}
 	},
-	getSymbolsForSubmarket: {
-		value: function getSymbolsForSubmarket(submarketName) {
+	_getSymbolsForSubmarket: {
+		value: function _getSymbolsForSubmarket(submarketName) {
 			var submarket = this.submarkets[submarketName];
 			submarket.symbols = {};
 			var symbols = _.groupBy(this.activeSymbols, 'submarket')[submarketName];
@@ -66,26 +66,26 @@ ActiveSymbols.prototype = Object.create(null, {
 					submarket: symbols[i].submarket
 				};
 			}
-			return _.clone(submarket.symbols);
+			return submarket.symbols;
 		}
 	},
 	getSubmarkets: {
 		value: function getSubmarkets() {
 			if ( !_.isEmpty(this.submarkets) ) {
-				return _.clone(this.submarkets);
+				return this.submarkets;
 			} else {
 				this.getMarkets();
-				return _.clone(this.submarkets);
+				return this.submarkets;
 			}
 		}
 	},
 	getSymbols: {
 		value: function getSymbols() {
 			if ( !_.isEmpty(this.symbols) ) {
-				return _.clone(this.symbols);
+				return this.symbols;
 			} else {
 				this.getMarkets();
-				return _.clone(this.symbols);
+				return this.symbols;
 			}
 		}
 	},
