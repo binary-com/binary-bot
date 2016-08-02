@@ -31,6 +31,7 @@ var _Blockly = function _Blockly(){
 					wheel: false,
 				},
 				trashcan: false,
+				collapse: false,
 			});
 			$.get('xml/main.xml', function (main) {
 				Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
