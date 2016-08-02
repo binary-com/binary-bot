@@ -12465,7 +12465,7 @@
 	/* 2 */
 	/***/ function(module, exports, __webpack_require__) {
 	
-		'use strict';
+		/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 		
 		Object.defineProperty(exports, "__esModule", {
 		    value: true
@@ -12474,10 +12474,6 @@
 		var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 		
 		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-		
-		var _getUniqueId = __webpack_require__(14);
-		
-		var _getUniqueId2 = _interopRequireDefault(_getUniqueId);
 		
 		var _LiveEvents = __webpack_require__(0);
 		
@@ -12505,7 +12501,6 @@
 		
 		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 		
-		(0, _getUniqueId2.default)(); // skip 0 value
 		var defaultApiUrl = 'wss://ws.binaryws.com/websockets/v3';
 		var MockWebSocket = function MockWebSocket() {};
 		var WebSocket = typeof window !== 'undefined' ? window.WebSocket : MockWebSocket;
@@ -12579,15 +12574,11 @@
 		        value: function connect(connection) {
 		            var urlPlusParams = this.apiUrl + '?l=' + this.language + '&app_id=' + this.appId;
 		
-		            try {
-		                this.socket = connection || new WebSocket(urlPlusParams);
-		            } catch (err) {
-		                // swallow connection error, we can't do anything about it
-		            } finally {
-		                this.socket.onopen = this.onOpen.bind(this);
-		                this.socket.onclose = this.onClose.bind(this);
-		                this.socket.onmessage = this.onMessage.bind(this);
-		            }
+		            this.socket = connection || new WebSocket(urlPlusParams);
+		            this.socket.onopen = this.onOpen.bind(this);
+		            this.socket.onclose = this.onClose.bind(this);
+		            this.socket.onerror = this.onError.bind(this);
+		            this.socket.onmessage = this.onMessage.bind(this);
 		        }
 		    }, {
 		        key: 'disconnect',
@@ -12680,18 +12671,23 @@
 		    }, {
 		        key: 'onClose',
 		        value: function onClose() {
-		            this.reconnect();
-		        }
-		    }, {
-		        key: 'reconnect',
-		        value: function reconnect() {
 		            this.connect();
 		            this.resubscribe();
 		        }
 		    }, {
+		        key: 'onError',
+		        value: function onError(error) {
+		            console.error(error); // eslint-disable-line no-console
+		
+		            // And also make process exiting to respawn.
+		            if (typeof process === 'function') {
+		                process.exit();
+		            }
+		        }
+		    }, {
 		        key: 'resolvePromiseForResponse',
 		        value: function resolvePromiseForResponse(json) {
-		            if (typeof json.req_id === 'undefined') {
+		            if (!json.req_id) {
 		                return Promise.resolve();
 		            }
 		
@@ -12749,14 +12745,14 @@
 		                this.bufferedSends.push(json);
 		            }
 		
-		            if (typeof json.req_id !== 'undefined') {
+		            if (json.req_id) {
 		                return this.generatePromiseForRequest(json);
 		            }
 		        }
 		    }, {
 		        key: 'send',
 		        value: function send(json) {
-		            var reqId = (0, _getUniqueId2.default)();
+		            var reqId = Math.floor(Math.random() * 1e15);
 		            return this.sendRaw(_extends({
 		                req_id: reqId
 		            }, json));
@@ -12780,6 +12776,7 @@
 		    Connected: 'connected'
 		};
 		exports.default = LiveApi;
+		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 	
 	/***/ },
 	/* 3 */
@@ -12898,14 +12895,6 @@
 		        api_token: 1,
 		        new_token: token,
 		        new_token_scopes: scopes
-		    };
-		};
-		
-		var changePassword = exports.changePassword = function changePassword(oldPw, newPw) {
-		    return {
-		        change_password: 1,
-		        old_password: oldPw,
-		        new_password: newPw
 		    };
 		};
 		
@@ -13455,12 +13444,10 @@
 		
 		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 		
-		var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-		
 		exports.getDataForSymbol = getDataForSymbol;
 		exports.getDataForContract = getDataForContract;
 		
-		var _nowAsEpoch = __webpack_require__(15);
+		var _nowAsEpoch = __webpack_require__(14);
 		
 		var _nowAsEpoch2 = _interopRequireDefault(_nowAsEpoch);
 		
@@ -13496,7 +13483,6 @@
 		var autoAdjustGetData = function autoAdjustGetData(api, symbol, start, end) {
 		    var style = arguments.length <= 4 || arguments[4] === undefined ? 'ticks' : arguments[4];
 		    var subscribe = arguments[5];
-		    var extra = arguments.length <= 6 || arguments[6] === undefined ? {} : arguments[6];
 		
 		    var secs = end - start;
 		    var ticksCount = secs / 2;
@@ -13521,15 +13507,15 @@
 		                    subscribe: subscribe ? 1 : undefined
 		                }).then(function (r) {
 		                    if (style === 'ticks') {
-		                        return _extends({}, extra, {
+		                        return {
 		                            ticks: ohlcDataToTicks(r.candles),
 		                            symbol: symbol
-		                        });
+		                        };
 		                    }
-		                    return _extends({}, extra, {
+		                    return {
 		                        candles: r.candles,
 		                        symbol: symbol
-		                    });
+		                    };
 		                })
 		            };
 		        }();
@@ -13548,10 +13534,10 @@
 		            var quote = r.history.prices[idx];
 		            return { epoch: +t, quote: +quote };
 		        });
-		        return _extends({}, extra, {
+		        return {
 		            ticks: ticks,
 		            symbol: symbol
-		        });
+		        };
 		    });
 		};
 		
@@ -13598,7 +13584,7 @@
 		                var _start = +contract.date_start - 5;
 		                var exitTime = +contract.exit_tick_time + 5;
 		                var _end = exitTime || (0, _nowAsEpoch2.default)();
-		                return autoAdjustGetData(api, symbol, _start, _end, style, subscribe, { isSold: !!contract.sell_time });
+		                return autoAdjustGetData(api, symbol, _start, _end, style, subscribe);
 		            }
 		
 		            var bufferSize = 0.05; // 5 % buffer
@@ -13615,7 +13601,7 @@
 		            var bufferedExitTime = contractEnd + buffer;
 		            var end = contractEnd ? bufferedExitTime : (0, _nowAsEpoch2.default)();
 		
-		            return autoAdjustGetData(api, symbol, Math.round(start), Math.round(end), style, subscribe, { isSold: !!contract.sell_time });
+		            return autoAdjustGetData(api, symbol, Math.round(start), Math.round(end), style, subscribe);
 		        });
 		    };
 		
@@ -13629,7 +13615,7 @@
 		
 		        // handle Contract not started yet
 		        if (startTime > (0, _nowAsEpoch2.default)()) {
-		            return autoAdjustGetData(api, symbol, (0, _nowAsEpoch2.default)() - 600, (0, _nowAsEpoch2.default)(), style, subscribe, { isSold: !!contract.sell_time });
+		            return autoAdjustGetData(api, symbol, (0, _nowAsEpoch2.default)() - 600, (0, _nowAsEpoch2.default)(), style, subscribe);
 		        }
 		
 		        var sellT = contract.sell_time;
@@ -13639,7 +13625,7 @@
 		
 		        var durationUnit = hcUnitConverter(durationType);
 		        var start = Math.min(startTime - buffer, end - (0, _durationToSecs2.default)(durationCount, durationUnit));
-		        return autoAdjustGetData(api, symbol, Math.round(start), Math.round(end), style, subscribe, { isSold: !!contract.sell_time });
+		        return autoAdjustGetData(api, symbol, Math.round(start), Math.round(end), style, subscribe);
 		    });
 		}
 	
@@ -13766,27 +13752,112 @@
 		"use strict";
 		
 		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-		var uniqueId = 0;
-		
-		exports.default = function () {
-		  return uniqueId++;
-		};
-	
-	/***/ },
-	/* 15 */
-	/***/ function(module, exports) {
-	
-		"use strict";
-		
-		Object.defineProperty(exports, "__esModule", {
 		    value: true
 		});
 		
 		exports.default = function () {
 		    return Math.floor(Date.now() / 1000);
 		};
+	
+	/***/ },
+	/* 15 */
+	/***/ function(module, exports) {
+	
+		// shim for using process in browser
+		
+		var process = module.exports = {};
+		var queue = [];
+		var draining = false;
+		var currentQueue;
+		var queueIndex = -1;
+		
+		function cleanUpNextTick() {
+		    if (!draining || !currentQueue) {
+		        return;
+		    }
+		    draining = false;
+		    if (currentQueue.length) {
+		        queue = currentQueue.concat(queue);
+		    } else {
+		        queueIndex = -1;
+		    }
+		    if (queue.length) {
+		        drainQueue();
+		    }
+		}
+		
+		function drainQueue() {
+		    if (draining) {
+		        return;
+		    }
+		    var timeout = setTimeout(cleanUpNextTick);
+		    draining = true;
+		
+		    var len = queue.length;
+		    while(len) {
+		        currentQueue = queue;
+		        queue = [];
+		        while (++queueIndex < len) {
+		            if (currentQueue) {
+		                currentQueue[queueIndex].run();
+		            }
+		        }
+		        queueIndex = -1;
+		        len = queue.length;
+		    }
+		    currentQueue = null;
+		    draining = false;
+		    clearTimeout(timeout);
+		}
+		
+		process.nextTick = function (fun) {
+		    var args = new Array(arguments.length - 1);
+		    if (arguments.length > 1) {
+		        for (var i = 1; i < arguments.length; i++) {
+		            args[i - 1] = arguments[i];
+		        }
+		    }
+		    queue.push(new Item(fun, args));
+		    if (queue.length === 1 && !draining) {
+		        setTimeout(drainQueue, 0);
+		    }
+		};
+		
+		// v8 likes predictible objects
+		function Item(fun, array) {
+		    this.fun = fun;
+		    this.array = array;
+		}
+		Item.prototype.run = function () {
+		    this.fun.apply(null, this.array);
+		};
+		process.title = 'browser';
+		process.browser = true;
+		process.env = {};
+		process.argv = [];
+		process.version = ''; // empty string to avoid regexp issues
+		process.versions = {};
+		
+		function noop() {}
+		
+		process.on = noop;
+		process.addListener = noop;
+		process.once = noop;
+		process.off = noop;
+		process.removeListener = noop;
+		process.removeAllListeners = noop;
+		process.emit = noop;
+		
+		process.binding = function (name) {
+		    throw new Error('process.binding is not supported');
+		};
+		
+		process.cwd = function () { return '/' };
+		process.chdir = function (dir) {
+		    throw new Error('process.chdir is not supported');
+		};
+		process.umask = function() { return 0; };
+	
 	
 	/***/ },
 	/* 16 */
@@ -25461,7 +25532,6 @@
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-	
 	var process = module.exports = {};
 	
 	// cached from whatever global is present so that test runners that stub it
@@ -25473,21 +25543,35 @@
 	var cachedClearTimeout;
 	
 	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
+	    try {
+	        cachedSetTimeout = setTimeout;
+	    } catch (e) {
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
+	    try {
+	        cachedClearTimeout = clearTimeout;
+	    } catch (e) {
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
-	  }
 	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        return setTimeout(fun, 0);
+	    } else {
+	        return cachedSetTimeout.call(null, fun, 0);
+	    }
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        clearTimeout(marker);
+	    } else {
+	        cachedClearTimeout.call(null, marker);
+	    }
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -25512,7 +25596,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -25529,7 +25613,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout.call(null, timeout);
+	    runClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -25541,7 +25625,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout.call(null, drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 	
@@ -29471,4 +29555,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-073fcd95bdc1c7f220d6.map
+//# sourceMappingURL=bot-03a861ebfd96ff533160.map
