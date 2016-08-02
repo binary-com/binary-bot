@@ -337,3 +337,7 @@ button:focus {
 #stopButton {
     display: none;
 }
+
+select.tour-highlight {
+    background: white;
+}
