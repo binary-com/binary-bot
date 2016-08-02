@@ -4,6 +4,7 @@ var i18n = require('i18n');
 var appId = require('appId');
 var commonUtils = require('utils');
 var $ = require('jquery');
+var storageManager = require('storageManager');
 $.ajaxSetup({
 	cache: false
 });
@@ -12,6 +13,7 @@ window.Backbone = require('backbone');
 window._ = require('underscore');
 require('notifyjs-browser');
 require('tourist');
+
 
 appId.removeTokenFromUrl();
 
@@ -60,5 +62,12 @@ commonUtils.asyncChain()
 		});
 	})
 	.pipe(function hideSpinner(done){
+		window._trackJs = { 
+			token: '346262e7ffef497d85874322fff3bbf8',
+			application: 'binary-bot',
+			enabled: window.location.hostname !== 'localhost',
+			userId: storageManager.getToken($('#accountSelect').val()).account_name,
+		};
+		require('trackjs');
 		$('.spinning').hide();
 	}).exec();

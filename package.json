@@ -30,6 +30,7 @@
     "react-dom": "^15.1.0",
     "sha1": "^1.1.1",
     "tourist": "easelinc/tourist.git#a31cf497cc7af8173513ea3f57f760894d5262cb",
+    "trackjs": "^2.4.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
