@@ -110,11 +110,14 @@ View.prototype = Object.create(null, {
 
 			this.observer.register('ui.error', function showError(error) {
 				if (error.stack) {
+					console.error(error.stack);
 					if (logger.isDebug()) {
 						console.log('%c' + error.stack, 'color: red');
 					} else {
 						logger.addLogToQueue('%c' + error.stack, 'color: red');
 					}
+				} else {
+					console.error(error);
 				}
 				var message;
 				if (error.message) {
@@ -136,6 +139,9 @@ View.prototype = Object.create(null, {
 			var observeForLog = function observeForLog(type, position) {
 				var subtype = ( position === 'left' )? '.left' : '';
 				that.observer.register('ui.log.' + type + subtype , function(message){
+					if ( type === 'warn' ) {
+						console.warn(message);
+					}
 					$.notify(message, {
 						position: 'bottom ' + position,
 						className: type,

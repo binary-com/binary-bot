@@ -217,8 +217,9 @@ _Blockly.prototype = Object.create(null, {
 				$('#summaryPanel')
 					.show();
 			} catch (e) {
-				this.observer.emit('ui.error', 'There was a problem running your blocks');
+				this.observer.emit('ui.log', 'There was a problem running your blocks');
 				this.observer.emit('ui.error', e);
+				this.bot.stop();
 			}
 		}
 	},
