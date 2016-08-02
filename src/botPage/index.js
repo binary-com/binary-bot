@@ -3,6 +3,7 @@ import 'babel-polyfill';
 import 'blockly';
 import './utils/draggable';
 import Observer from 'binary-common-utils/observer';
+import storageManager from 'binary-common-utils/storageManager';
 import Bot from './bot';
 import View from './view';
 import logger from './view/logger';
@@ -29,6 +30,15 @@ window.Bot = {
 		return (balanceType === 'STR') ? bot.balanceStr : bot.balance ;
 	}
 };
+
+window._trackJs = { 
+	token: '346262e7ffef497d85874322fff3bbf8',
+	application: 'binary-bot',
+	enabled: window.location.hostname !== 'localhost',
+	userId: storageManager.getToken($('#accountSelect').val()).account_name,
+};
+require('trackjs');
+
 bot.initPromise.then(function(){
 	var view = new View();
 	view.initPromise.then(function(){
