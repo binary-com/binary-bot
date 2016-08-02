@@ -12405,7 +12405,7 @@
 		
 		var _LiveApi3 = _interopRequireDefault(_LiveApi2);
 		
-		var _OAuth2 = __webpack_require__(4);
+		var _OAuth2 = __webpack_require__(3);
 		
 		var _OAuth = _interopRequireWildcard(_OAuth2);
 		
@@ -12421,7 +12421,7 @@
 	/* 2 */
 	/***/ function(module, exports, __webpack_require__) {
 	
-		/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+		'use strict';
 		
 		Object.defineProperty(exports, "__esModule", {
 		    value: true
@@ -12431,13 +12431,17 @@
 		
 		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 		
+		var _getUniqueId = __webpack_require__(14);
+		
+		var _getUniqueId2 = _interopRequireDefault(_getUniqueId);
+		
 		var _LiveEvents = __webpack_require__(0);
 		
 		var _LiveEvents2 = _interopRequireDefault(_LiveEvents);
 		
-		var _LiveError = __webpack_require__(3);
+		var _ServerError = __webpack_require__(4);
 		
-		var _LiveError2 = _interopRequireDefault(_LiveError);
+		var _ServerError2 = _interopRequireDefault(_ServerError);
 		
 		var _calls = __webpack_require__(6);
 		
@@ -12457,6 +12461,7 @@
 		
 		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 		
+		(0, _getUniqueId2.default)(); // skip 0 value
 		var defaultApiUrl = 'wss://ws.binaryws.com/websockets/v3';
 		var MockWebSocket = function MockWebSocket() {};
 		var WebSocket = typeof window !== 'undefined' ? window.WebSocket : MockWebSocket;
@@ -12467,6 +12472,8 @@
 		
 		var LiveApi = function () {
 		    function LiveApi() {
+		        var _this = this;
+		
 		        var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 		
 		        var _ref$apiUrl = _ref.apiUrl;
@@ -12477,12 +12484,18 @@
 		        var appId = _ref$appId === undefined ? 0 : _ref$appId;
 		        var websocket = _ref.websocket;
 		        var connection = _ref.connection;
+		        var keepAlive = _ref.keepAlive;
 		
 		        _classCallCheck(this, LiveApi);
 		
 		        this.apiUrl = apiUrl;
 		        this.language = language;
 		        this.appId = appId;
+		        if (keepAlive) {
+		            setInterval(function () {
+		                return _this.ping();
+		            }, 60 * 1000);
+		        }
 		
 		        if (websocket) {
 		            WebSocket = websocket;
@@ -12504,24 +12517,24 @@
 		    _createClass(LiveApi, [{
 		        key: 'bindCallsAndStateMutators',
 		        value: function bindCallsAndStateMutators() {
-		            var _this = this;
+		            var _this2 = this;
 		
 		            Object.keys(calls).forEach(function (callName) {
-		                _this[callName] = function () {
+		                _this2[callName] = function () {
 		                    if (stateful[callName]) {
 		                        stateful[callName].apply(stateful, arguments);
 		                    }
-		                    return _this.send(calls[callName].apply(calls, arguments));
+		                    return _this2.send(calls[callName].apply(calls, arguments));
 		                };
 		            });
 		
 		            Object.keys(customCalls).forEach(function (callName) {
-		                _this[callName] = function () {
+		                _this2[callName] = function () {
 		                    for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
 		                        params[_key] = arguments[_key];
 		                    }
 		
-		                    return customCalls[callName].apply(customCalls, [_this].concat(params));
+		                    return customCalls[callName].apply(customCalls, [_this2].concat(params));
 		                }; // seems to be a good place to do some simple cache
 		            });
 		        }
@@ -12530,11 +12543,15 @@
 		        value: function connect(connection) {
 		            var urlPlusParams = this.apiUrl + '?l=' + this.language + '&app_id=' + this.appId;
 		
-		            this.socket = connection || new WebSocket(urlPlusParams);
-		            this.socket.onopen = this.onOpen.bind(this);
-		            this.socket.onclose = this.onClose.bind(this);
-		            this.socket.onerror = this.onError.bind(this);
-		            this.socket.onmessage = this.onMessage.bind(this);
+		            try {
+		                this.socket = connection || new WebSocket(urlPlusParams);
+		            } catch (err) {
+		                // swallow connection error, we can't do anything about it
+		            } finally {
+		                this.socket.onopen = this.onOpen.bind(this);
+		                this.socket.onclose = this.onClose.bind(this);
+		                this.socket.onmessage = this.onMessage.bind(this);
+		            }
 		        }
 		    }, {
 		        key: 'disconnect',
@@ -12546,7 +12563,7 @@
 		    }, {
 		        key: 'resubscribe',
 		        value: function resubscribe() {
-		            var _this2 = this;
+		            var _this3 = this;
 		
 		            var _stateful$getState = stateful.getState();
 		
@@ -12560,18 +12577,18 @@
 		
 		            var delayedCallAfterAuthSuccess = function delayedCallAfterAuthSuccess() {
 		                if (balance) {
-		                    _this2.subscribeToBalance();
+		                    _this3.subscribeToBalance();
 		                }
 		
 		                if (transactions) {
-		                    _this2.subscribeToTransactions();
+		                    _this3.subscribeToTransactions();
 		                }
 		
 		                if (portfolio) {
-		                    _this2.subscribeToAllOpenContracts();
+		                    _this3.subscribeToAllOpenContracts();
 		                }
 		
-		                _this2.onAuth = undefined;
+		                _this3.onAuth = undefined;
 		            };
 		            this.onAuth = delayedCallAfterAuthSuccess;
 		
@@ -12580,11 +12597,11 @@
 		            }
 		
 		            ticks.forEach(function (tick) {
-		                return _this2.subscribeToTick(tick);
+		                return _this3.subscribeToTick(tick);
 		            });
 		
 		            proposals.forEach(function (proposal) {
-		                return _this2.subscribeToPriceForContractProposal(proposal);
+		                return _this3.subscribeToPriceForContractProposal(proposal);
 		            });
 		        }
 		    }, {
@@ -12627,23 +12644,18 @@
 		    }, {
 		        key: 'onClose',
 		        value: function onClose() {
+		            this.reconnect();
+		        }
+		    }, {
+		        key: 'reconnect',
+		        value: function reconnect() {
 		            this.connect();
 		            this.resubscribe();
 		        }
 		    }, {
-		        key: 'onError',
-		        value: function onError(error) {
-		            console.error(error); // eslint-disable-line no-console
-		
-		            // And also make process exiting to respawn.
-		            if (typeof process === 'function') {
-		                process.exit();
-		            }
-		        }
-		    }, {
 		        key: 'resolvePromiseForResponse',
 		        value: function resolvePromiseForResponse(json) {
-		            if (!json.req_id) {
+		            if (typeof json.req_id === 'undefined') {
 		                return Promise.resolve();
 		            }
 		
@@ -12660,7 +12672,7 @@
 		            }
 		
 		            if (!shouldIgnoreError(json.error)) {
-		                return promise.reject(new _LiveError2.default(json.error));
+		                return promise.reject(new _ServerError2.default(json));
 		            }
 		
 		            return Promise.resolve();
@@ -12684,12 +12696,12 @@
 		    }, {
 		        key: 'generatePromiseForRequest',
 		        value: function generatePromiseForRequest(json) {
-		            var _this3 = this;
+		            var _this4 = this;
 		
 		            var reqId = json.req_id.toString();
 		
 		            return new Promise(function (resolve, reject) {
-		                _this3.unresolvedPromises[reqId] = { resolve: resolve, reject: reject };
+		                _this4.unresolvedPromises[reqId] = { resolve: resolve, reject: reject };
 		            });
 		        }
 		    }, {
@@ -12701,14 +12713,14 @@
 		                this.bufferedSends.push(json);
 		            }
 		
-		            if (json.req_id) {
+		            if (typeof json.req_id !== 'undefined') {
 		                return this.generatePromiseForRequest(json);
 		            }
 		        }
 		    }, {
 		        key: 'send',
 		        value: function send(json) {
-		            var reqId = Math.floor(Math.random() * 1e15);
+		            var reqId = (0, _getUniqueId2.default)();
 		            return this.sendRaw(_extends({
 		                req_id: reqId
 		            }, json));
@@ -12732,61 +12744,9 @@
 		    Connected: 'connected'
 		};
 		exports.default = LiveApi;
-		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 	
 	/***/ },
 	/* 3 */
-	/***/ function(module, exports) {
-	
-		"use strict";
-		
-		Object.defineProperty(exports, "__esModule", {
-		    value: true
-		});
-		
-		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-		
-		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-		
-		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-		
-		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-		
-		var LiveError = function (_Error) {
-		    _inherits(LiveError, _Error);
-		
-		    function LiveError(errorObj) {
-		        _classCallCheck(this, LiveError);
-		
-		        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LiveError).call(this));
-		
-		        _this.message = errorObj.message;
-		        _this.stack = new Error().stack;
-		        _this.error = errorObj;
-		        _this.name = _this.constructor.name;
-		        return _this;
-		    }
-		
-		    _createClass(LiveError, [{
-		        key: "toString",
-		        value: function toString() {
-		            var _error = this.error;
-		            var message = _error.message;
-		            var _error$error = _error.error;
-		            var code = _error$error.code;
-		            var echo_req = _error$error.echo_req;
-		
-		            return "Server Error: (" + code + ") " + message + "\n" + JSON.stringify(echo_req, 2);
-		        }
-		    }]);
-		
-		    return LiveError;
-		}(Error);
-		
-		exports.default = LiveError;
-	
-	/***/ },
-	/* 4 */
 	/***/ function(module, exports) {
 	
 		'use strict';
@@ -12822,6 +12782,48 @@
 		};
 	
 	/***/ },
+	/* 4 */
+	/***/ function(module, exports) {
+	
+		"use strict";
+		
+		Object.defineProperty(exports, "__esModule", {
+		    value: true
+		});
+		
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+		
+		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+		
+		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+		
+		var ServerError = function (_Error) {
+		    _inherits(ServerError, _Error);
+		
+		    function ServerError() {
+		        var errorObj = arguments.length <= 0 || arguments[0] === undefined ? { error: {} } : arguments[0];
+		
+		        _classCallCheck(this, ServerError);
+		
+		        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerError).call(this, errorObj));
+		
+		        _this.stack = new Error().stack;
+		        _this.error = errorObj;
+		        _this.name = _this.constructor.name;
+		
+		        var message = errorObj.error.message;
+		        var echo_req = errorObj.echo_req;
+		
+		        _this.message = "[ServerError] " + message + "\n" + JSON.stringify(echo_req, 2);
+		        return _this;
+		    }
+		
+		    return ServerError;
+		}(Error);
+		
+		exports.default = ServerError;
+	
+	/***/ },
 	/* 5 */
 	/***/ function(module, exports) {
 	
@@ -12851,6 +12853,14 @@
 		        api_token: 1,
 		        new_token: token,
 		        new_token_scopes: scopes
+		    };
+		};
+		
+		var changePassword = exports.changePassword = function changePassword(oldPw, newPw) {
+		    return {
+		        change_password: 1,
+		        old_password: oldPw,
+		        new_password: newPw
 		    };
 		};
 		
@@ -13400,10 +13410,12 @@
 		
 		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 		
+		var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+		
 		exports.getDataForSymbol = getDataForSymbol;
 		exports.getDataForContract = getDataForContract;
 		
-		var _nowAsEpoch = __webpack_require__(14);
+		var _nowAsEpoch = __webpack_require__(15);
 		
 		var _nowAsEpoch2 = _interopRequireDefault(_nowAsEpoch);
 		
@@ -13439,6 +13451,7 @@
 		var autoAdjustGetData = function autoAdjustGetData(api, symbol, start, end) {
 		    var style = arguments.length <= 4 || arguments[4] === undefined ? 'ticks' : arguments[4];
 		    var subscribe = arguments[5];
+		    var extra = arguments.length <= 6 || arguments[6] === undefined ? {} : arguments[6];
 		
 		    var secs = end - start;
 		    var ticksCount = secs / 2;
@@ -13463,15 +13476,15 @@
 		                    subscribe: subscribe ? 1 : undefined
 		                }).then(function (r) {
 		                    if (style === 'ticks') {
-		                        return {
+		                        return _extends({}, extra, {
 		                            ticks: ohlcDataToTicks(r.candles),
 		                            symbol: symbol
-		                        };
+		                        });
 		                    }
-		                    return {
+		                    return _extends({}, extra, {
 		                        candles: r.candles,
 		                        symbol: symbol
-		                    };
+		                    });
 		                })
 		            };
 		        }();
@@ -13490,10 +13503,10 @@
 		            var quote = r.history.prices[idx];
 		            return { epoch: +t, quote: +quote };
 		        });
-		        return {
+		        return _extends({}, extra, {
 		            ticks: ticks,
 		            symbol: symbol
-		        };
+		        });
 		    });
 		};
 		
@@ -13540,7 +13553,7 @@
 		                var _start = +contract.date_start - 5;
 		                var exitTime = +contract.exit_tick_time + 5;
 		                var _end = exitTime || (0, _nowAsEpoch2.default)();
-		                return autoAdjustGetData(api, symbol, _start, _end, style, subscribe);
+		                return autoAdjustGetData(api, symbol, _start, _end, style, subscribe, { isSold: !!contract.sell_time });
 		            }
 		
 		            var bufferSize = 0.05; // 5 % buffer
@@ -13557,7 +13570,7 @@
 		            var bufferedExitTime = contractEnd + buffer;
 		            var end = contractEnd ? bufferedExitTime : (0, _nowAsEpoch2.default)();
 		
-		            return autoAdjustGetData(api, symbol, Math.round(start), Math.round(end), style, subscribe);
+		            return autoAdjustGetData(api, symbol, Math.round(start), Math.round(end), style, subscribe, { isSold: !!contract.sell_time });
 		        });
 		    };
 		
@@ -13571,7 +13584,7 @@
 		
 		        // handle Contract not started yet
 		        if (startTime > (0, _nowAsEpoch2.default)()) {
-		            return autoAdjustGetData(api, symbol, (0, _nowAsEpoch2.default)() - 600, (0, _nowAsEpoch2.default)(), style, subscribe);
+		            return autoAdjustGetData(api, symbol, (0, _nowAsEpoch2.default)() - 600, (0, _nowAsEpoch2.default)(), style, subscribe, { isSold: !!contract.sell_time });
 		        }
 		
 		        var sellT = contract.sell_time;
@@ -13581,7 +13594,7 @@
 		
 		        var durationUnit = hcUnitConverter(durationType);
 		        var start = Math.min(startTime - buffer, end - (0, _durationToSecs2.default)(durationCount, durationUnit));
-		        return autoAdjustGetData(api, symbol, Math.round(start), Math.round(end), style, subscribe);
+		        return autoAdjustGetData(api, symbol, Math.round(start), Math.round(end), style, subscribe, { isSold: !!contract.sell_time });
 		    });
 		}
 	
@@ -13708,112 +13721,27 @@
 		"use strict";
 		
 		Object.defineProperty(exports, "__esModule", {
-		    value: true
+		  value: true
 		});
+		var uniqueId = 0;
 		
 		exports.default = function () {
-		    return Math.floor(Date.now() / 1000);
+		  return uniqueId++;
 		};
 	
 	/***/ },
 	/* 15 */
 	/***/ function(module, exports) {
 	
-		// shim for using process in browser
+		"use strict";
 		
-		var process = module.exports = {};
-		var queue = [];
-		var draining = false;
-		var currentQueue;
-		var queueIndex = -1;
+		Object.defineProperty(exports, "__esModule", {
+		    value: true
+		});
 		
-		function cleanUpNextTick() {
-		    if (!draining || !currentQueue) {
-		        return;
-		    }
-		    draining = false;
-		    if (currentQueue.length) {
-		        queue = currentQueue.concat(queue);
-		    } else {
-		        queueIndex = -1;
-		    }
-		    if (queue.length) {
-		        drainQueue();
-		    }
-		}
-		
-		function drainQueue() {
-		    if (draining) {
-		        return;
-		    }
-		    var timeout = setTimeout(cleanUpNextTick);
-		    draining = true;
-		
-		    var len = queue.length;
-		    while(len) {
-		        currentQueue = queue;
-		        queue = [];
-		        while (++queueIndex < len) {
-		            if (currentQueue) {
-		                currentQueue[queueIndex].run();
-		            }
-		        }
-		        queueIndex = -1;
-		        len = queue.length;
-		    }
-		    currentQueue = null;
-		    draining = false;
-		    clearTimeout(timeout);
-		}
-		
-		process.nextTick = function (fun) {
-		    var args = new Array(arguments.length - 1);
-		    if (arguments.length > 1) {
-		        for (var i = 1; i < arguments.length; i++) {
-		            args[i - 1] = arguments[i];
-		        }
-		    }
-		    queue.push(new Item(fun, args));
-		    if (queue.length === 1 && !draining) {
-		        setTimeout(drainQueue, 0);
-		    }
+		exports.default = function () {
+		    return Math.floor(Date.now() / 1000);
 		};
-		
-		// v8 likes predictible objects
-		function Item(fun, array) {
-		    this.fun = fun;
-		    this.array = array;
-		}
-		Item.prototype.run = function () {
-		    this.fun.apply(null, this.array);
-		};
-		process.title = 'browser';
-		process.browser = true;
-		process.env = {};
-		process.argv = [];
-		process.version = ''; // empty string to avoid regexp issues
-		process.versions = {};
-		
-		function noop() {}
-		
-		process.on = noop;
-		process.addListener = noop;
-		process.once = noop;
-		process.off = noop;
-		process.removeListener = noop;
-		process.removeAllListeners = noop;
-		process.emit = noop;
-		
-		process.binding = function (name) {
-		    throw new Error('process.binding is not supported');
-		};
-		
-		process.cwd = function () { return '/' };
-		process.chdir = function (dir) {
-		    throw new Error('process.chdir is not supported');
-		};
-		process.umask = function() { return 0; };
-	
 	
 	/***/ },
 	/* 16 */
@@ -16773,4 +16701,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-80355074a5b170645885.map
+//# sourceMappingURL=index-86e8fd4ddc2ab12e0e9a.map
