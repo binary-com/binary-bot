@@ -31,17 +31,16 @@ window.Bot = {
 	}
 };
 
-window._trackJs = { 
-	token: '346262e7ffef497d85874322fff3bbf8',
-	application: 'binary-bot',
-	enabled: window.location.hostname !== 'localhost',
-	userId: storageManager.getToken($('#accountSelect').val()).account_name,
-};
-require('trackjs');
-
 bot.initPromise.then(function(){
 	var view = new View();
 	view.initPromise.then(function(){
+		window._trackJs = { 
+			token: '346262e7ffef497d85874322fff3bbf8',
+			application: 'binary-bot',
+			enabled: window.location.hostname !== 'localhost',
+			userId: storageManager.getToken($('#accountSelect').val()).account_name,
+		};
+		require('trackjs');
 		$('.spinning').hide();
 		view.activeTour = view.tours.welcome;
 		view.activeTour.welcome(function(){
