@@ -14,6 +14,11 @@ window._ = require('underscore');
 require('notifyjs-browser');
 require('tourist');
 
+window._trackJs = { 
+	token: '346262e7ffef497d85874322fff3bbf8',
+	application: 'binary-bot',
+};
+require('trackjs');
 
 appId.removeTokenFromUrl();
 
@@ -62,12 +67,8 @@ commonUtils.asyncChain()
 		});
 	})
 	.pipe(function hideSpinner(done){
-		window._trackJs = { 
-			token: '346262e7ffef497d85874322fff3bbf8',
-			application: 'binary-bot',
-			enabled: window.location.hostname !== 'localhost',
+		trackJs.configure({
 			userId: storageManager.getToken($('#accountSelect').val()).account_name,
-		};
-		require('trackjs');
+		});
 		$('.spinning').hide();
 	}).exec();
