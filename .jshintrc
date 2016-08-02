@@ -14,6 +14,7 @@
 		"Blockly": false,
 		"Blob": false,
 		"Tourist": false,
+		"trackJs": false,
 		"FileReader": false
 	}
 }
