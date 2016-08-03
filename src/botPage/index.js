@@ -18,6 +18,9 @@ window._trackJs = {
 	token: '346262e7ffef497d85874322fff3bbf8',
 	application: 'binary-bot',
 	enabled: window.location.hostname !== 'localhost',
+	console: {
+		display: false
+	}
 };
 require('trackjs');
 
