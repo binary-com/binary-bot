@@ -200,19 +200,6 @@ Bot.prototype = Object.create(null, {
 	},
 	_observeOnceAndForever: {
 		value: function _observeOnceAndForever(){
-			var that = this;
-			var apiBalance = function(balance){
-				that.balance = balance.balance;
-				that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
-				that.observer.emit('bot.tradeInfo', {
-					balance: that.balanceStr
-				});
-			};
-			this.observer.register('api.balance', apiBalance, false, {
-				type: 'balance',
-				unregister: [['api.balance', apiBalance]]
-			});
-			this.api.balance();
 		}
 	},
 	_observeStreams: {
@@ -228,6 +215,22 @@ Bot.prototype = Object.create(null, {
 			};
 			this.observer.register('api.tick', apiTick);
 			this.runningObservations.push(['api.tick', apiTick]);
+			var apiBalance = function(balance){
+				that.balance = balance.balance;
+				that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
+				that.observer.emit('bot.tradeInfo', {
+					balance: that.balanceStr
+				});
+			};
+			this.observer.register('api.balance', apiBalance, false, {
+				type: 'balance',
+				unregister: [['api.balance', apiBalance]]
+			});
+			this.api._originalApi.send({
+				forget_all: 'balance'
+			}).then(function(){
+				that.api.balance();
+			});
 		}
 	},
 	_subscribeProposal: {
