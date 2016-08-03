@@ -250,7 +250,9 @@ Bot.prototype = Object.create(null, {
 				]
 			});
 			this.runningObservations.push(['api.proposal', apiProposal]);
-			this.api.proposal(tradeOption);
+			this.api._originalApi.unsubscribeFromAllProposals().then(function(response){
+				that.api.proposal(tradeOption);
+			});
 		}
 	},
 	_subscribeProposals: {
