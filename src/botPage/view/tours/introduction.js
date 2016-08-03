@@ -76,6 +76,7 @@ Introduction.prototype = Object.create(null, {
 					that.components.setOpacity('toolbox', 1);
 				},
 				teardown: function (tour, options) {
+					that.observer.unregister('tour:submarket_created', this.tour_submarket_created);
 					that.components.setOpacity('toolbox', 0.3);
 				},
 			}, {
@@ -94,6 +95,7 @@ Introduction.prototype = Object.create(null, {
 					that.observer.register('tour:submarket', this.tour_submarket_added, true);
 				},
 				teardown: function (tour, options) {
+					that.observer.unregister('tour:submarket', this.tour_submarket_added);
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
 				},
 			}, {
@@ -114,6 +116,7 @@ Introduction.prototype = Object.create(null, {
 					that.components.setOpacity('toolbox', 1);
 				},
 				teardown: function (tour, options) {
+					that.observer.unregister('tour:condition_created', this.tour_condition_created);
 					that.components.setOpacity('toolbox', 0.3);
 				},
 			}, {
@@ -132,6 +135,7 @@ Introduction.prototype = Object.create(null, {
 					that.observer.register('tour:condition', this.tour_condition_added, true);
 				},
 				teardown: function (tour, options) {
+					that.observer.unregister('tour:condition', this.tour_condition_added);
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 				},
 			}, {
@@ -151,6 +155,7 @@ Introduction.prototype = Object.create(null, {
 					that.components.setOpacity('toolbox', 1);
 				},
 				teardown: function (tour, options) {
+					that.observer.unregister('tour:number', this.tour_number_created);
 					that.components.setOpacity('toolbox', 0.3);
 				},
 			}, {
@@ -167,6 +172,9 @@ Introduction.prototype = Object.create(null, {
 				},
 				setup: function (tour, options) {
 					that.observer.register('tour:ticks', this.tour_ticks_added, true);
+				},
+				teardown: function (tour, options) {
+					that.observer.unregister('tour:ticks', this.tour_ticks_added);
 				},
 			}, {
 				content: '<p>' + translator.translateText("OK, Now add all remaining options to the trade type block") + '</p>',
@@ -187,6 +195,7 @@ Introduction.prototype = Object.create(null, {
 						.css('opacity', 1);
 				},
 				teardown: function (tour, options) {
+					that.observer.unregister('tour:options', this.tour_options_added);
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 1);
 				},
@@ -245,6 +254,7 @@ Introduction.prototype = Object.create(null, {
 					that.observer.register('tour:purchase_created', this.tour_purchase_created, true);
 				},
 				teardown: function (tour, options) {
+					that.observer.unregister('tour:purchase_created', this.tour_purchase_created);
 					that.components.getUiComponent('toolbox')
 						.css('opacity', 0.3);
 				},
@@ -262,6 +272,9 @@ Introduction.prototype = Object.create(null, {
 				},
 				setup: function (tour, options) {
 					that.observer.register('tour:purchase', this.tour_purchase_added, true);
+				},
+				teardown: function (tour, options) {
+					that.observer.unregister('tour:purchase', this.tour_purchase_added);
 				},
 			}, {
 				content: '<p>' + translator.translateText("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
@@ -318,8 +331,7 @@ Introduction.prototype = Object.create(null, {
 					that.observer.register('tour:trade_again_created', this.tour_trade_again_created, true);
 				},
 				teardown: function (tour, options) {
-					that.components.getUiComponent('toolbox')
-						.css('opacity', 0.3);
+					that.observer.unregister('tour:trade_again_created', this.tour_trade_again_created);
 				},
 			}, {
 				content: '<p>' + translator.translateText("Now add it to the On Finish block") + '</p>',
@@ -337,6 +349,7 @@ Introduction.prototype = Object.create(null, {
 					that.observer.register('tour:trade_again', this.tour_trade_again, true);
 				},
 				teardown: function (tour, options) {
+					that.observer.unregister('tour:trade_again', this.tour_trade_again);
 					Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 				},
 			}, {
@@ -442,6 +455,17 @@ Introduction.prototype = Object.create(null, {
 					$('#blocker').hide();
 					that.components.setOpacityForAll(1);
 					that.tour._teardownCurrentStep = function(){};
+					that.observer.unregisterAll('tour:submarket_created');
+					that.observer.unregisterAll('tour:submarket');
+					that.observer.unregisterAll('tour:condition_created');
+					that.observer.unregisterAll('tour:condition');
+					that.observer.unregisterAll('tour:number');
+					that.observer.unregisterAll('tour:ticks');
+					that.observer.unregisterAll('tour:options');
+					that.observer.unregisterAll('tour:purchase_created');
+					that.observer.unregisterAll('tour:purchase');
+					that.observer.unregisterAll('tour:trade_again_created');
+					that.observer.unregisterAll('tour:trade_again');
 					that.stop();
 				},
 				successStep: function successStep(){
