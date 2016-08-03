@@ -12420,7 +12420,7 @@
 		
 		var _LiveApi3 = _interopRequireDefault(_LiveApi2);
 		
-		var _OAuth2 = __webpack_require__(3);
+		var _OAuth2 = __webpack_require__(4);
 		
 		var _OAuth = _interopRequireWildcard(_OAuth2);
 		
@@ -12454,9 +12454,9 @@
 		
 		var _LiveEvents2 = _interopRequireDefault(_LiveEvents);
 		
-		var _ServerError = __webpack_require__(4);
+		var _LiveError = __webpack_require__(3);
 		
-		var _ServerError2 = _interopRequireDefault(_ServerError);
+		var _LiveError2 = _interopRequireDefault(_LiveError);
 		
 		var _calls = __webpack_require__(6);
 		
@@ -12487,8 +12487,6 @@
 		
 		var LiveApi = function () {
 		    function LiveApi() {
-		        var _this = this;
-		
 		        var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 		
 		        var _ref$apiUrl = _ref.apiUrl;
@@ -12499,18 +12497,12 @@
 		        var appId = _ref$appId === undefined ? 0 : _ref$appId;
 		        var websocket = _ref.websocket;
 		        var connection = _ref.connection;
-		        var keepAlive = _ref.keepAlive;
 		
 		        _classCallCheck(this, LiveApi);
 		
 		        this.apiUrl = apiUrl;
 		        this.language = language;
 		        this.appId = appId;
-		        if (keepAlive) {
-		            setInterval(function () {
-		                return _this.ping();
-		            }, 60 * 1000);
-		        }
 		
 		        if (websocket) {
 		            WebSocket = websocket;
@@ -12532,24 +12524,24 @@
 		    _createClass(LiveApi, [{
 		        key: 'bindCallsAndStateMutators',
 		        value: function bindCallsAndStateMutators() {
-		            var _this2 = this;
+		            var _this = this;
 		
 		            Object.keys(calls).forEach(function (callName) {
-		                _this2[callName] = function () {
+		                _this[callName] = function () {
 		                    if (stateful[callName]) {
 		                        stateful[callName].apply(stateful, arguments);
 		                    }
-		                    return _this2.send(calls[callName].apply(calls, arguments));
+		                    return _this.send(calls[callName].apply(calls, arguments));
 		                };
 		            });
 		
 		            Object.keys(customCalls).forEach(function (callName) {
-		                _this2[callName] = function () {
+		                _this[callName] = function () {
 		                    for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
 		                        params[_key] = arguments[_key];
 		                    }
 		
-		                    return customCalls[callName].apply(customCalls, [_this2].concat(params));
+		                    return customCalls[callName].apply(customCalls, [_this].concat(params));
 		                }; // seems to be a good place to do some simple cache
 		            });
 		        }
@@ -12578,7 +12570,7 @@
 		    }, {
 		        key: 'resubscribe',
 		        value: function resubscribe() {
-		            var _this3 = this;
+		            var _this2 = this;
 		
 		            var _stateful$getState = stateful.getState();
 		
@@ -12592,18 +12584,18 @@
 		
 		            var delayedCallAfterAuthSuccess = function delayedCallAfterAuthSuccess() {
 		                if (balance) {
-		                    _this3.subscribeToBalance();
+		                    _this2.subscribeToBalance();
 		                }
 		
 		                if (transactions) {
-		                    _this3.subscribeToTransactions();
+		                    _this2.subscribeToTransactions();
 		                }
 		
 		                if (portfolio) {
-		                    _this3.subscribeToAllOpenContracts();
+		                    _this2.subscribeToAllOpenContracts();
 		                }
 		
-		                _this3.onAuth = undefined;
+		                _this2.onAuth = undefined;
 		            };
 		            this.onAuth = delayedCallAfterAuthSuccess;
 		
@@ -12612,11 +12604,11 @@
 		            }
 		
 		            ticks.forEach(function (tick) {
-		                return _this3.subscribeToTick(tick);
+		                return _this2.subscribeToTick(tick);
 		            });
 		
 		            proposals.forEach(function (proposal) {
-		                return _this3.subscribeToPriceForContractProposal(proposal);
+		                return _this2.subscribeToPriceForContractProposal(proposal);
 		            });
 		        }
 		    }, {
@@ -12687,7 +12679,7 @@
 		            }
 		
 		            if (!shouldIgnoreError(json.error)) {
-		                return promise.reject(new _ServerError2.default(json));
+		                return promise.reject(new _LiveError2.default(json.error));
 		            }
 		
 		            return Promise.resolve();
@@ -12711,12 +12703,12 @@
 		    }, {
 		        key: 'generatePromiseForRequest',
 		        value: function generatePromiseForRequest(json) {
-		            var _this4 = this;
+		            var _this3 = this;
 		
 		            var reqId = json.req_id.toString();
 		
 		            return new Promise(function (resolve, reject) {
-		                _this4.unresolvedPromises[reqId] = { resolve: resolve, reject: reject };
+		                _this3.unresolvedPromises[reqId] = { resolve: resolve, reject: reject };
 		            });
 		        }
 		    }, {
@@ -12764,6 +12756,57 @@
 	/* 3 */
 	/***/ function(module, exports) {
 	
+		"use strict";
+		
+		Object.defineProperty(exports, "__esModule", {
+		    value: true
+		});
+		
+		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+		
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+		
+		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+		
+		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+		
+		var LiveError = function (_Error) {
+		    _inherits(LiveError, _Error);
+		
+		    function LiveError(errorObj) {
+		        _classCallCheck(this, LiveError);
+		
+		        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LiveError).call(this));
+		
+		        _this.message = errorObj.message;
+		        _this.stack = new Error().stack;
+		        _this.error = errorObj;
+		        _this.name = _this.constructor.name;
+		        return _this;
+		    }
+		
+		    _createClass(LiveError, [{
+		        key: "toString",
+		        value: function toString() {
+		            var _error = this.error;
+		            var message = _error.message;
+		            var _error$error = _error.error;
+		            var code = _error$error.code;
+		            var echo_req = _error$error.echo_req;
+		
+		            return "Server Error: (" + code + ") " + message + "\n" + JSON.stringify(echo_req, 2);
+		        }
+		    }]);
+		
+		    return LiveError;
+		}(Error);
+		
+		exports.default = LiveError;
+	
+	/***/ },
+	/* 4 */
+	/***/ function(module, exports) {
+	
 		'use strict';
 		
 		Object.defineProperty(exports, "__esModule", {
@@ -12795,48 +12838,6 @@
 		
 		    return accounts;
 		};
-	
-	/***/ },
-	/* 4 */
-	/***/ function(module, exports) {
-	
-		"use strict";
-		
-		Object.defineProperty(exports, "__esModule", {
-		    value: true
-		});
-		
-		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-		
-		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-		
-		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-		
-		var ServerError = function (_Error) {
-		    _inherits(ServerError, _Error);
-		
-		    function ServerError() {
-		        var errorObj = arguments.length <= 0 || arguments[0] === undefined ? { error: {} } : arguments[0];
-		
-		        _classCallCheck(this, ServerError);
-		
-		        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ServerError).call(this, errorObj));
-		
-		        _this.stack = new Error().stack;
-		        _this.error = errorObj;
-		        _this.name = _this.constructor.name;
-		
-		        var message = errorObj.error.message;
-		        var echo_req = errorObj.echo_req;
-		
-		        _this.message = "[ServerError] " + message + "\n" + JSON.stringify(echo_req, 2);
-		        return _this;
-		    }
-		
-		    return ServerError;
-		}(Error);
-		
-		exports.default = ServerError;
 	
 	/***/ },
 	/* 5 */
@@ -16731,4 +16732,4 @@
 /***/ }
 
 /******/ });
-//# sourceMappingURL=index-89b8ba9f6a609f610725.map
+//# sourceMappingURL=index-d21f7facfe6534107d89.map
