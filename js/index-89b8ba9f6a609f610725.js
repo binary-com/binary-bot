@@ -40,19 +40,20 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
 	window.Blockly = {};
 	if ( top !== self ) {
 		top.location = self.location;
 	}
-	var translator = __webpack_require__(1); // must be on top
-	var i18n = __webpack_require__(3);
-	var appId = __webpack_require__(28);
-	var commonUtils = __webpack_require__(11);
-	var $ = __webpack_require__(2);
+	var translator = __webpack_require__(298); // must be on top
+	var i18n = __webpack_require__(300);
+	var appId = __webpack_require__(325);
+	var commonUtils = __webpack_require__(308);
+	var $ = __webpack_require__(299);
 	
 	commonUtils.asyncChain()
 	.pipe(function checkOauthLogin(done){
@@ -76,27 +77,28 @@
 
 
 /***/ },
-/* 1 */
+
+/***/ 298:
 /***/ function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(2);
-	var i18n = __webpack_require__(3);
-	var utils = __webpack_require__(11);
+	var $ = __webpack_require__(299);
+	var i18n = __webpack_require__(300);
+	var utils = __webpack_require__(308);
 	// handle language in localStorage and query string
 	var supportedLanguages = {
-		zh_tw: __webpack_require__(15),
-		de: __webpack_require__(16),
-		id: __webpack_require__(17),
-		zh_cn: __webpack_require__(18),
-		it: __webpack_require__(19),
-		vi: __webpack_require__(20),
-		ar: __webpack_require__(21),
-		pl: __webpack_require__(22),
-		ru: __webpack_require__(23),
-		pt: __webpack_require__(24),
-		es: __webpack_require__(25),
-		fr: __webpack_require__(26),
-		en: __webpack_require__(27)
+		zh_tw: __webpack_require__(312),
+		de: __webpack_require__(313),
+		id: __webpack_require__(314),
+		zh_cn: __webpack_require__(315),
+		it: __webpack_require__(316),
+		vi: __webpack_require__(317),
+		ar: __webpack_require__(318),
+		pl: __webpack_require__(319),
+		ru: __webpack_require__(320),
+		pt: __webpack_require__(321),
+		es: __webpack_require__(322),
+		fr: __webpack_require__(323),
+		en: __webpack_require__(324)
 	};
 	$('#language')
 		.change(function change(e) {
@@ -162,7 +164,8 @@
 
 
 /***/ },
-/* 2 */
+
+/***/ 299:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -9982,10 +9985,11 @@
 
 
 /***/ },
-/* 3 */
+
+/***/ 300:
 /***/ function(module, exports, __webpack_require__) {
 
-	var sha1 = __webpack_require__(4);
+	var sha1 = __webpack_require__(301);
 	
 	var I18n = {
 		translation: null,
@@ -10035,13 +10039,14 @@
 	module.exports = I18n;
 
 /***/ },
-/* 4 */
+
+/***/ 301:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {(function() {
-	  var crypt = __webpack_require__(9),
-	      utf8 = __webpack_require__(10).utf8,
-	      bin = __webpack_require__(10).bin,
+	  var crypt = __webpack_require__(306),
+	      utf8 = __webpack_require__(307).utf8,
+	      bin = __webpack_require__(307).bin,
 	
 	  // The core
 	  sha1 = function (message) {
@@ -10121,10 +10126,11 @@
 	  module.exports = api;
 	})();
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(302).Buffer))
 
 /***/ },
-/* 5 */
+
+/***/ 302:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -10137,9 +10143,9 @@
 	
 	'use strict'
 	
-	var base64 = __webpack_require__(6)
-	var ieee754 = __webpack_require__(7)
-	var isArray = __webpack_require__(8)
+	var base64 = __webpack_require__(303)
+	var ieee754 = __webpack_require__(304)
+	var isArray = __webpack_require__(305)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -11676,10 +11682,11 @@
 	  return i
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(302).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 6 */
+
+/***/ 303:
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -11809,7 +11816,8 @@
 
 
 /***/ },
-/* 7 */
+
+/***/ 304:
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -11899,7 +11907,8 @@
 
 
 /***/ },
-/* 8 */
+
+/***/ 305:
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -11910,7 +11919,8 @@
 
 
 /***/ },
-/* 9 */
+
+/***/ 306:
 /***/ function(module, exports) {
 
 	(function() {
@@ -12012,7 +12022,8 @@
 
 
 /***/ },
-/* 10 */
+
+/***/ 307:
 /***/ function(module, exports) {
 
 	var charenc = {
@@ -12051,11 +12062,12 @@
 
 
 /***/ },
-/* 11 */
+
+/***/ 308:
 /***/ function(module, exports, __webpack_require__) {
 
-	var storageManager = __webpack_require__(12);
-	var blockly = __webpack_require__(13);
+	var storageManager = __webpack_require__(309);
+	var blockly = __webpack_require__(310);
 	
 	var asyncChain = function asyncChain(){
 	  return {
@@ -12106,7 +12118,7 @@
 	};
 	
 	var addTokenIfValid = function addTokenIfValid(token, callback) {
-		var LiveApi = __webpack_require__(14)
+		var LiveApi = __webpack_require__(311)
 			.LiveApi;
 		var api = new LiveApi();
 		api.authorize(token)
@@ -12137,7 +12149,7 @@
 	
 	var logoutAllTokens = function logoutAllTokens(callback) {
 		var tokenList = storageManager.getTokenList();
-		var LiveApi = __webpack_require__(14)
+		var LiveApi = __webpack_require__(311)
 			.LiveApi;
 		var api = new LiveApi();
 		var token = tokenList[0].token;
@@ -12172,7 +12184,8 @@
 	};
 
 /***/ },
-/* 12 */
+
+/***/ 309:
 /***/ function(module, exports) {
 
 	var getTokenList = function getTokenList() {
@@ -12266,13 +12279,15 @@
 
 
 /***/ },
-/* 13 */
+
+/***/ 310:
 /***/ function(module, exports) {
 
 	module.exports = Blockly;
 
 /***/ },
-/* 14 */
+
+/***/ 311:
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -13757,7 +13772,8 @@
 	//# sourceMappingURL=binary-live-api.js.map
 
 /***/ },
-/* 15 */
+
+/***/ 312:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -13980,7 +13996,8 @@
 	};
 
 /***/ },
-/* 16 */
+
+/***/ 313:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -14203,7 +14220,8 @@
 	};
 
 /***/ },
-/* 17 */
+
+/***/ 314:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -14426,7 +14444,8 @@
 	};
 
 /***/ },
-/* 18 */
+
+/***/ 315:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -14649,7 +14668,8 @@
 	};
 
 /***/ },
-/* 19 */
+
+/***/ 316:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -14872,7 +14892,8 @@
 	};
 
 /***/ },
-/* 20 */
+
+/***/ 317:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -15095,7 +15116,8 @@
 	};
 
 /***/ },
-/* 21 */
+
+/***/ 318:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -15318,7 +15340,8 @@
 	};
 
 /***/ },
-/* 22 */
+
+/***/ 319:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -15541,7 +15564,8 @@
 	};
 
 /***/ },
-/* 23 */
+
+/***/ 320:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -15764,7 +15788,8 @@
 	};
 
 /***/ },
-/* 24 */
+
+/***/ 321:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -15987,7 +16012,8 @@
 	};
 
 /***/ },
-/* 25 */
+
+/***/ 322:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -16210,7 +16236,8 @@
 	};
 
 /***/ },
-/* 26 */
+
+/***/ 323:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -16433,7 +16460,8 @@
 	};
 
 /***/ },
-/* 27 */
+
+/***/ 324:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -16656,11 +16684,12 @@
 	};
 
 /***/ },
-/* 28 */
+
+/***/ 325:
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(11);
-	var $ = __webpack_require__(2);
+	var utils = __webpack_require__(308);
+	var $ = __webpack_require__(299);
 	
 	var AppId = {
 		app_id: ( document.location.port === '8080' ) ? 1168 : ( ( document.location.hostname.indexOf('github.io') >= 0 ) ? 1180 : 1169 ),
@@ -16700,5 +16729,6 @@
 	module.exports = AppId;
 
 /***/ }
-/******/ ]);
-//# sourceMappingURL=index-86e8fd4ddc2ab12e0e9a.map
+
+/******/ });
+//# sourceMappingURL=index-89b8ba9f6a609f610725.map
