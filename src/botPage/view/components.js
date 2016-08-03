@@ -8,6 +8,7 @@ var Components = function Components(){
 		workspace: '.blocklyWorkspace',
 		toolbox: '.blocklyToolboxDiv',
 		group_load: '.group-load',
+		group_reset: '.group-reset',
 		login_logout: '.intro-login-logout',
 		group_save: '.group-save',
 		group_undo_redo: '.group-undo-redo',

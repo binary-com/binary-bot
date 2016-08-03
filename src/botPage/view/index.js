@@ -190,7 +190,7 @@ View.prototype = Object.create(null, {
 					$('#fileBrowser').hide();
 					return function (e) {
 						try {
-							that.blockly.loadBlocksFile(e.target.result);
+							that.blockly.loadBlocks(e.target.result);
 							that.observer.emit('ui.log.success', that.translator.translateText('Blocks are loaded successfully'));
 						} catch (err) {
 							that.observer.emit('ui.error', err);
@@ -331,6 +331,11 @@ View.prototype = Object.create(null, {
 					that.blockly.run();
 				});
 			
+			$('#resetButton')
+				.click(function (e) {
+					that.blockly.loadBlocks();
+				});
+
 			$('#login')
 				.bind('click.login', function(e){
 					document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + that.translator.getLanguage().toUpperCase();

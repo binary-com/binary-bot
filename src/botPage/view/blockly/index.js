@@ -14,6 +14,7 @@ var _Blockly = function _Blockly(){
 		return _Blockly.instance;
 	}
 	_Blockly.instance = this;
+	this.blocksXmlStr = '';
 	this.observer = new Observer();
 	this.bot = new Bot();
 	this.utils = new Utils();
@@ -34,6 +35,7 @@ var _Blockly = function _Blockly(){
 				collapse: false,
 			});
 			$.get('xml/main.xml', function (main) {
+				that.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
 				Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
 				that.disableDeleteForMainBlocks();
 				that.overrideBlocklyDefaultShape();
@@ -118,10 +120,13 @@ _Blockly.prototype = Object.create(null, {
       this.setBlockColors();
 		}
 	},
-	loadBlocksFile: {
-		value: function loadBlocksFile(str){
+	loadBlocks: {
+		value: function loadBlocks(str){
+			if ( str ) {
+				this.blocksXmlStr = str;
+			}
 			Blockly.mainWorkspace.clear();
-			var xml = Blockly.Xml.textToDom(str);
+			var xml = Blockly.Xml.textToDom(this.blocksXmlStr);
 			Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
 			this.reconfigureBlocklyAfterLoad();
 		}
