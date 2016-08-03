@@ -9,7 +9,7 @@
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "test:full": "npm test && npm run coveralls",
     "dev": "gulp watch",
-    "deploy": "git checkout beta; npm update; gulp build-min; mkdir beta ; cp -r www/ beta/beta; git checkout -- src; git checkout master; npm update; gulp deploy",
+    "deploy": "git checkout beta; npm prune ; npm update ; gulp build-min; mkdir beta ; cp -r www/ beta/beta; git checkout -- src; git checkout master ; npm prune ; npm update ; gulp deploy",
     "hunspell": "gulp i18n; cd www/i18n ; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../known_words.txt en.txt; rm *.po *.txt"
   },
   "author": "Amin Marashi",
