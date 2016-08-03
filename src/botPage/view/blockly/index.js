@@ -129,8 +129,6 @@ _Blockly.prototype = Object.create(null, {
 	reconfigureBlocklyAfterLoad: {
 		value: function reconfigureBlocklyAfterLoad(){
 			Blockly.mainWorkspace.clearUndo();
-			Blockly.mainWorkspace.zoomToFit();
-			Blockly.mainWorkspace.zoomCenter();
 			this.setBlockColors();
 			this.utils.addPurchaseOptions();
 		}
