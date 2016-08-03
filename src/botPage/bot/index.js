@@ -250,9 +250,7 @@ Bot.prototype = Object.create(null, {
 				]
 			});
 			this.runningObservations.push(['api.proposal', apiProposal]);
-			this.api._originalApi.unsubscribeFromAllProposals().then(function(response){
-				that.api.proposal(tradeOption);
-			});
+			this.api.proposal(tradeOption);
 		}
 	},
 	_subscribeProposals: {
@@ -264,9 +262,11 @@ Bot.prototype = Object.create(null, {
 			this.observer.register('strategy.ready', strategyReady);
 			this.runningObservations.push(['strategy.ready', strategyReady]);
 			this.setTradeOptions();
-			tools.asyncForEach(this.tradeOptions, function(tradeOption, i, next){
-				that._subscribeProposal(tradeOption, next);
-			}, function finish(){});
+			this.api._originalApi.unsubscribeFromAllProposals().then(function(response){
+				tools.asyncForEach(that.tradeOptions, function(tradeOption, i, next){
+					that._subscribeProposal(tradeOption, next);
+				}, function finish(){});
+			});
 		}
 	},
 	_startTrading: {
