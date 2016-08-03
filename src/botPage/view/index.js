@@ -110,14 +110,22 @@ View.prototype = Object.create(null, {
 
 			this.observer.register('ui.error', function showError(error) {
 				if (error.stack) {
-					console.error(error.stack);
+					console.error({
+						stack: error.stack,
+						js: that.blockly.generatedJs,
+						xml: that.blockly.blocksXmlStr
+					});
 					if (logger.isDebug()) {
 						console.log('%c' + error.stack, 'color: red');
 					} else {
 						logger.addLogToQueue('%c' + error.stack, 'color: red');
 					}
 				} else {
-					console.error(error);
+					console.error({
+						error: error,
+						js: that.blockly.generatedJs,
+						xml: that.blockly.blocksXmlStr
+					});
 				}
 				var message;
 				if (error.error) {

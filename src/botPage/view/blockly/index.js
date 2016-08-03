@@ -15,6 +15,7 @@ var _Blockly = function _Blockly(){
 	}
 	_Blockly.instance = this;
 	this.blocksXmlStr = '';
+	this.generatedJs = '';
 	this.observer = new Observer();
 	this.bot = new Bot();
 	this.utils = new Utils();
@@ -217,6 +218,7 @@ _Blockly.prototype = Object.create(null, {
 				var code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
 				Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 				var EVAL_BLOCKLY_CODE = eval;
+				this.generatedJs = code;
 				EVAL_BLOCKLY_CODE(code);
 				$('#summaryPanel')
 					.show();
