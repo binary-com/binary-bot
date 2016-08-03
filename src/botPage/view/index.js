@@ -120,8 +120,8 @@ View.prototype = Object.create(null, {
 					console.error(error);
 				}
 				var message;
-				if (error.message) {
-					message = error.message;
+				if (error.error) {
+					message = error.error.message;
 				} else {
 					message = error;
 				}
