@@ -4,7 +4,6 @@ import _ from 'underscore';
 import _Symbol from './symbol';
 import StrategyCtrl from './strategyCtrl';
 import {getUTCTime, asyncChain} from 'binary-common-utils/tools';
-import tools from 'binary-common-utils/tools';
 import CustomApi from 'binary-common-utils/customApi';
 import config from 'const';
 import Translator from 'translator';
@@ -234,17 +233,12 @@ Bot.prototype = Object.create(null, {
 		}
 	},
 	_subscribeProposal: {
-		value: function _subscribeProposal(tradeOption, callback) {
+		value: function _subscribeProposal(tradeOption) {
 			var that = this;
 			var apiProposal = function(proposal){
-				that.strategyCtrl.updateProposal(_.extend(proposal, {
-					contract_type: tradeOption.contract_type
-				}));
-				if ( callback ) {
-					callback();
-				}
+				that.strategyCtrl.updateProposal(proposal);
 			};
-			this.observer.register('api.proposal', apiProposal, true, {
+			this.observer.register('api.proposal', apiProposal, false, {
 				type: 'proposal',
 				unregister: [
 					['api.proposal', apiProposal], 
@@ -266,9 +260,9 @@ Bot.prototype = Object.create(null, {
 			this.runningObservations.push(['strategy.ready', strategyReady]);
 			this.setTradeOptions();
 			this.api._originalApi.unsubscribeFromAllProposals().then(function(response){
-				tools.asyncForEach(that.tradeOptions, function(tradeOption, i, next){
-					that._subscribeProposal(tradeOption, next);
-				}, function finish(){});
+				for ( var i in that.tradeOptions ) {
+					that._subscribeProposal(that.tradeOptions[i]);
+				}
 			});
 		}
 	},

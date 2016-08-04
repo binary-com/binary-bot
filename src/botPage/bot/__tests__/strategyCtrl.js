@@ -9,15 +9,15 @@ describe('StrategyCtrl', function() {
 	var observer;
 	var api;
 	var proposals = [];
-	var firstAttemptDetected = true;
+	var firstAttempt = true;
 	var strategyCtrl;
 	before(function(){
 		observer = new Observer();
 		api = new CustomApi(ws);
 		var strategy = function strategy(ticks, proposals, _strategyCtrl) {
 			if ( proposals ) {
-				if ( firstAttemptDetected ){
-					firstAttemptDetected = false;
+				if ( firstAttempt ){
+					firstAttempt = false;
 					observer.emit('test.strategy', {ticks: ticks, proposals: proposals});
 				} else {
 					observer.emit('test.purchase');
@@ -74,23 +74,8 @@ describe('StrategyCtrl', function() {
 		});
 		it('strategyCtrl passes ticks and send the proposals if ready', function(){
 			expect(strategyArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch');
-			expect(strategyArgs).to.have.deep.property('.proposals[0].longcode')
+			expect(strategyArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
 				.that.is.equal('Win payout if the last digit of Volatility 100 Index is odd after 5 ticks.');
-		});
-	});
-	describe('Giving a new proposal', function(){
-		var strategyArgs;
-		before(function(done){
-			observer.register('test.strategy', function (_strategyArgs) {
-				strategyArgs = _strategyArgs;
-				done();
-			}, true);
-			strategyCtrl.updateProposal(proposals[0]);
-			strategyCtrl.updateTicks([{epoch: 'some time', quote: 1}, {epoch: 'some time', quote: 2}]);
-		});
-		it('strategy can check if the proposals are ready', function(){
-			expect(strategyArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch');
-			expect(strategyArgs).to.have.deep.property('.proposals').not.to.be.ok;
 		});
 	});
 	describe('Waiting for strategy to purchase the contract', function(){

@@ -67,6 +67,7 @@ describe('Bot', function() {
 				bot.stop();
 			})
 			.pipe(function(chainDone){
+				api.destroy();
 				api = new CustomApi(mockWebsocket);
 				bot = new Bot(api);
 				bot.initPromise.then(function(){
@@ -101,6 +102,7 @@ describe('Bot', function() {
 				bot.stop();
 			})
 			.pipe(function(chainDone){
+				api.destroy();
 				api = new CustomApi(mockWebsocket);
 				bot = new Bot(api);
 				bot.initPromise.then(function(){
@@ -165,5 +167,6 @@ describe('Bot', function() {
 	});
 	after(function(){
 		observer._destroy();
+		api.destroy();
 	});
 });

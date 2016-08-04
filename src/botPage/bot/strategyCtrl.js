@@ -9,7 +9,7 @@ var StrategyCtrl = function StrategyCtrl(api, strategy) {
 	this.ready = false;
 	this.purchased = false;
 	this.runningObservations = [];
-	this.proposals = [];
+	this.proposals = {};
 };
 
 StrategyCtrl.prototype = Object.create(null, {
@@ -41,13 +41,10 @@ StrategyCtrl.prototype = Object.create(null, {
 	updateProposal: {
 		value: function updateProposal(proposal) {
 			if ( !this.purchased ) {
-				if ( this.proposals.length === 1 ) {
-					this.proposals.push(proposal);
-					this.observer.emit('strategy.ready');
+				this.proposals[proposal.contract_type] = proposal;
+				if ( !this.ready && Object.keys(this.proposals).length === 2 ) {
 					this.ready = true;
-				} else {
-					this.proposals = [proposal];
-					this.ready = false;
+					this.observer.emit('strategy.ready');
 				}
 			}
 		}
@@ -83,7 +80,7 @@ StrategyCtrl.prototype = Object.create(null, {
 		value: function purchase(option) {
 			if ( !this.purchased ) {
 				this.purchased = true;
-				var contract = (option === this.proposals[1].contract_type) ? this.proposals[1] : this.proposals[0];
+				var contract = this.proposals[option];
 				this.trade = new Ticktrade(this.api);
 				var that = this;
 				var tradeUpdate = function(contract) {
@@ -106,7 +103,7 @@ StrategyCtrl.prototype = Object.create(null, {
 				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
 			}
 			this.runningObservations = [];
-			this.proposals = [];
+			this.proposals = {};
 			this.ready = false;
 			this.strategy = null;
 			if ( this.trade ) {
