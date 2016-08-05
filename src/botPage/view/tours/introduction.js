@@ -406,15 +406,7 @@ Introduction.prototype = Object.create(null, {
 				nextButton: true,
 			}, {
 				content: '<p>' + translator.translateText("You can choose the account you want by the <b>Account</b> dropdown. If you cannot see the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.") + '</p>',
-				target: that.components.getUiComponent('accountSelect'),
-				closeButton: true,
-				highlightTarget: true,
-				my: 'top center',
-				at: 'bottom center',
-				nextButton: true,
-			}, {
-				content: '<p>' + translator.translateText("Use this button to log in to your account") + '</p>',
-				target: that.components.getUiComponent('login_logout'),
+				target: that.components.getUiComponent('intro_login_logout'),
 				closeButton: true,
 				highlightTarget: true,
 				my: 'top center',

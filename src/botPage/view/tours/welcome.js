@@ -64,9 +64,11 @@ Welcome.prototype = Object.create(null, {
 				my: 'top center',
 				at: 'bottom center',
 				setup: function (tour, options) {
+					that.components.setOpacity('intro_login_logout', 1);
 					that.components.setOpacity('login_logout', 1);
 				},
 				teardown: function (tour, options) {
+					that.components.setOpacity('intro_login_logout', 0.3);
 					that.components.setOpacity('login_logout', 0.3);
 				},
 			}, {
