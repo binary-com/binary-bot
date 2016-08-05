@@ -2,7 +2,6 @@
 	"expr": true,
 	"mocha": true,
 	"esversion": 6,
-	"globalstrict": true,
 	"node": true,
 	"globals": {
 		"$": false,
