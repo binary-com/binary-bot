@@ -133,36 +133,6 @@ var findToken = function findToken(token) {
 	return index;
 };
 
-var logout = function logout() {
-	commonUtils.removeAllTokens(function(){
-		updateTokenList();
-		log(i18n._('Logged you out!'), 'info');
-	});
-};
-
-var addAccount = function addAccount() {
-	var token = prompt(i18n._('Please enter your token here:'), '');
-	var index = findToken(token);
-	if (index >= 0) {
-		log(i18n._('Token already added.'), 'info');
-		return;
-	}
-	if (token === '') {
-		showError(i18n._('Token cannot be empty'));
-	} else if (token !== null) {
-		commonUtils.addTokenIfValid(token, function(err){
-			if (err) {
-				showError(i18n._('Authentication failed using token:') + ' ' + token);
-				return;
-			} else {
-				log(i18n._('Your token was added successfully'), 'info');
-				updateTokenList(token);
-			}
-		});
-	}
-};
-
-
 var getUTCTime = function getUTCTime(date) {
 	var dateObject = new Date(date);
 	return ('0' + dateObject.getUTCHours())
@@ -230,62 +200,23 @@ var findTopParentBlock = function findTopParentBlock(block) {
 
 var updateTokenList = function updateTokenList(tokenToAdd) {
 	var tokenList = storageManager.getTokenList();
-	blockly.WidgetDiv.hideIfOwner(blockly.mainWorkspace.getBlockById('trade')
-		.getField('ACCOUNT_LIST'));
 	if (tokenList.length === 0) {
-		$('#addAccount')
-			.unbind('.addAccount')
-			.bind('click.login', function(e){
-				appId.redirectOauth();
-			})
-            .text('Log in');
-        $('.intro-token')
-            .removeClass('invisible');
-		globals.lists.accounts = [
-			[i18n._('Please add a token first'), '']
-		];
-		blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.setValue('');
-		blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.setText(i18n._('Please add a token first'));
+		$('#login').css('display', 'inline-block');
+		$('#accountSelect').css('display', 'none');
+		$('#logout').css('display', 'none');
 	} else {
-		$('#addAccount')
-			.unbind('.login')
-			.bind('click.addAccount', function(e){
-				addAccount();
-			})
-			.text('Add Token');
-        $('.intro-token')
-            .removeClass('invisible');
-		$('.logout')
-			.removeClass('invisible');
-		globals.lists.accounts = [];
+		$('#login').css('display', 'none');
+		$('#accountSelect').css('display', 'inline-block');
+		$('#logout').css('display', 'inline-block');
 		tokenList.forEach(function (tokenInfo) {
-			globals.lists.accounts.push([tokenInfo.account_name, tokenInfo.token]);
-		});
-		var tokenInfoToAdd = tokenList[0];
-		if (tokenToAdd !== undefined) {
-			var tokenInfoIndex = storageManager.findToken(tokenToAdd);
-			if (tokenInfoIndex >= 0) {
-				tokenInfoToAdd = tokenList[tokenInfoIndex];
+			var str;
+			if ( tokenInfo.hasOwnProperty('isVirtual') ) {
+				str = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
+			} else {
+				str = '';
 			}
-		}
-		if (blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.getValue() !== tokenInfoToAdd.token) {
-			blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.setValue(tokenInfoToAdd.token);
-		}
-		if (blockly.mainWorkspace.getBlockById('trade')
-			.getField('ACCOUNT_LIST')
-			.getText() !== tokenInfoToAdd.account_name) {
-			blockly.mainWorkspace.getBlockById('trade')
-				.getField('ACCOUNT_LIST')
-				.setText(tokenInfoToAdd.account_name);
-		}
+			$('#accountSelect').append('<option value="' + tokenInfo.token + '">'+str + ' (' + tokenInfo.account_name+ ') ' + '</option>');
+		});
 	}
 };
 
@@ -341,6 +272,11 @@ var addPurchaseOptions = function addPurchaseOptions() {
 	}
 };
 
+$('#login')
+	.bind('click.login', function(e){
+		appId.redirectOauth();
+	})
+	.text('Log in');
 module.exports = {
 	showError: showError,
 	log: log,
@@ -349,7 +285,6 @@ module.exports = {
 	findTopParentBlock: findTopParentBlock,
 	updateTokenList: updateTokenList,
 	addPurchaseOptions: addPurchaseOptions,
-	logout: logout,
 	getActiveSymbols: getActiveSymbols,
 	marketsToXml: marketsToXml,
 	xmlToStr: xmlToStr,

@@ -5,7 +5,7 @@ var i18n = require('i18n');
 blockly.Blocks.on_strategy = {
   init: function() {
     this.appendDummyInput()
-        .appendField(i18n._("Strategy (Decide when to purchase with each tick)"));
+        .appendField(i18n._("Step 2: Strategy"));
     this.appendStatementInput("STRATEGY_STACK")
         .setCheck('Purchase');
     this.setColour("#2a3052");

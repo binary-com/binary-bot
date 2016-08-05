@@ -1,7 +1,4 @@
 window.Bot = {};
-if ( top !== self ) {
-	top.location = self.location;
-}
 var translator = require('translator'); // must be on top
 var i18n = require('i18n');
 var appId = require('appId');

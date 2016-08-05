@@ -4,17 +4,20 @@
   "description": "Visual automation for binary.com",
   "main": "src/bot.js",
   "scripts": {
-    "start": "gulp serve",
-    "test": "gulp test",
+    "test": "./node_modules/.bin/mocha -r ./src/common/mochaHelper.js src/**/__tests__/*.js src/**/**/__tests__/*.js src/**/**/**/__tests__/*.js",
+    "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/babel-istanbul cover ./node_modules/.bin/_mocha -- -r ./src/common/mochaHelper.js src/**/__tests__/*.js src/**/**/__tests__/*.js src/**/**/**/__tests__/*.js",
+    "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test:full": "npm test && npm run coveralls",
     "dev": "gulp watch",
+    "deploy": "git checkout beta; gulp build-min; mkdir beta ; cp -r www/ beta/beta; git checkout -- src; git checkout master; gulp deploy; rm -rf beta",
     "hunspell": "gulp i18n; cd www/i18n ; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../known_words.txt en.txt; rm *.po *.txt"
   },
   "author": "Amin Marashi",
   "license": "MIT",
   "dependencies": {
     "backbone": "^1.3.3",
-    "binary-charts": "^7.3.4",
-    "binary-live-api": "~18.10.0",
+    "binary-charts": "^7.4.9",
+    "binary-live-api": "~19.0.1",
     "blockly": "google/blockly.git#ac0e704c699133e57e8a57bd49a971ce01014535",
     "bootstrap": "^3.3.6",
     "filesaverjs": "^0.2.2",
@@ -30,7 +33,17 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "app-module-path": "^1.1.0",
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.11.4",
+    "babel-istanbul": "^0.11.0",
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-register": "^6.9.0",
+    "binary-common-utils": "^1.0.34",
     "chai": "^3.5.0",
+    "coveralls": "^2.11.12",
     "deep-diff": "^0.3.4",
     "del": "^2.2.1",
     "gulp-clean-css": "^2.0.10",
@@ -46,12 +59,15 @@
     "gulp-watch": "^4.3.8",
     "gulp-webpack": "^1.5.0",
     "i18next-scanner": "^1.4.1",
+    "jsdom": "^9.4.1",
+    "jsdom-global": "^2.0.0",
     "jshint": "^2.9.2",
     "json-loader": "^0.5.4",
     "loader-utils": "^0.2.15",
     "mocha": "^2.5.3",
     "through2": "^2.0.1",
     "vinyl-paths": "^2.1.0",
-    "ws": "^1.1.0"
+    "ws": "^1.1.1",
+    "xmldom": "^0.1.22"
   }
 }

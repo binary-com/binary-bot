@@ -56,7 +56,7 @@ var addTokenIfValid = function addTokenIfValid(token, callback) {
 	api.authorize(token)
 		.then(function (response) {
 			api.disconnect();
-			storageManager.addToken(token, response.authorize.loginid);
+			storageManager.addToken(token, response.authorize.loginid, response.authorize.is_virtual);
 			if (callback) {
 				callback(null);
 			}
@@ -79,6 +79,23 @@ var addAllTokens = function addAllTokens(tokenList, callback) {
 	}
 };
 
+var logoutAllTokens = function logoutAllTokens(callback) {
+	var tokenList = storageManager.getTokenList();
+	var LiveApi = require('binary-live-api')
+		.LiveApi;
+	var api = new LiveApi();
+	var token = tokenList[0].token;
+	api.authorize(token)
+		.then(function (response) {
+			removeAllTokens();
+			api.logOut();
+			api.disconnect();
+			if ( callback ) {
+				callback();
+			}
+		});
+};
+
 var getAccountName = function getAccountName(token) {
 	var accountName = storageManager.getToken(token);
 	if (accountName instanceof Object) {
@@ -94,5 +111,6 @@ module.exports = {
 	addTokenIfValid: addTokenIfValid,
 	getAccountName: getAccountName,
 	addAllTokens: addAllTokens,
-	asyncChain: asyncChain
+	asyncChain: asyncChain,
+	logoutAllTokens: logoutAllTokens
 };

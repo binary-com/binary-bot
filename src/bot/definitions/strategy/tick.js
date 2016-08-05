@@ -9,7 +9,7 @@ blockly.Blocks.tick = {
     this.appendDummyInput()
         .appendField(i18n._("Tick Value"));
     this.setOutput(true, "Number");
-    this.setColour("#e98024");
+    this.setColour("#f2f2f2");
     this.setTooltip(i18n._('Returns the tick value received by a strategy block'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },

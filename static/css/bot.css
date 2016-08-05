@@ -1,34 +1,23 @@
 html, body {
-		height: 100%;
-		margin: 0px;
-}
-body {
-
-	backgroun-color: #fff;
-	font-family: sans-serif;
-}
-h1 {
-	font-weight: normal;
-	font-size: 140%;
-}
-#drop_zone{
 	height: 100%;
-	width: 100%;
+	margin: 0px;
+	max-width: 100%;
+	max-height: 100%;
+	overflow-x: hidden;
+	overflow-y: hidden;
 }
 .toolbox * {
 	margin: 2px;
 	float: left;
 }
 #blocklyDiv{
-	height: 100%;
+	height: calc(100% - 96px);
 	width: 100%;
 	right: 100px;
 	bottom: 0px;
 }
-.help{
-	float: right;
-}
-.logout, .intro-token{
+
+.intro-token{
 	float: right;
 	margin: 2px;
 }
@@ -39,44 +28,55 @@ h1 {
 	top: 50%;
 	left: 50%;
 }
-#summaryPanel .exitPanel p{
-    color: white;
-    cursor: pointer;
-    width: 25px;
-    height: 22px;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    text-align: center;
-    border: 1px solid #e98024;
-    border-radius: 0 0 0 4px;
-    background: #e98024;
+.panelExitButton p{
+	color: white;
+	cursor: pointer;
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	text-align: center;
+	border: 1px solid #e98024;
+	border-radius: 0 0 0 4px;
+	background: #e98024;
+	margin: 0px;
 }
-#summaryPanel{
-	display: none;
-	background-color: white;
-	z-index: 1001;
-	position: fixed;
+#summaryPanel {
 	width: 800px;
-	top: 50%;
-	left: 50%;
 	margin-top: -300px;
 	margin-left: -400px;
-    border: 1px solid #2a3052;
-    border-top-color: #ddd;
+	z-index: 1001;
 }
-#summaryPanel .content{
+#fileBrowser {
+	width: 500px;
+	height: 500px;
+	margin-top: -200px;
+	margin-left: -200px;
+	z-index: 1002;
+}
+.panel {
+	display: none;
+	background-color: white;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border: 1px solid #2a3052;
+	border-top-color: #ddd;
+}
+.panel .content{
 	padding: 0 15px 15px 15px;
-    background: white;
+	background: white;
 }
-#summaryPanel .description {
-    padding: 5px;
-    background-color: #2a3052;
-    color: #fff;
+.panel .description {
+	padding: 5px;
+	background-color: #2a3052;
+	color: #fff;
 }
-#summaryPanel .description h4 {
-    margin: 0;
-    text-align: center;
+.panel .description h4 {
+	color: white;
+	margin: 0;
+	text-align: center;
 }
 #statementPanel .exitPanel p{
     color: white;
@@ -134,9 +134,9 @@ th, td {
 	height: 2em;
 }
 .table-scroll {
-    overflow:auto;
+	overflow:auto;
 	height: 25vh;
-    padding-bottom: 1vh;
+	padding-bottom: 1vh;
 }
 #chart, #tradesDisplay, #summaryDisplay, #statementPanel {
 	cursor: default;
@@ -152,16 +152,16 @@ th, td {
 
 .spinning img{
 	cursor: pointer;
-    width: 200px;
-    height: 200px;
+	width: 200px;
+	height: 200px;
 	position: fixed;
 	left: 50%;
 	top: 50%;
 	margin-left: -5rem;
 	z-index: 9999;
-    -webkit-animation:spin 2s linear infinite;
-    -moz-animation:spin 2s linear infinite;
-    animation:spin 2s linear infinite;
+	-webkit-animation:spin 2s linear infinite;
+	-moz-animation:spin 2s linear infinite;
+	animation:spin 2s linear infinite;
 }
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
@@ -171,98 +171,208 @@ th, td {
 	content: 'X';
 }
 
-#topbar {
-    width: 100%;
-    color: #fff;
-    line-height: 1;
-    text-align: right;
-    padding: 3px 30px;
-}
-
-#tours {
+#header select, #topbar select{
 	color: #000;
+	font-size: 14px;
 }
 
 .dark-blue {
-    background: #15212d;
-}
-
-#header {
-    background: #2a3052;
-    border-top: 2px solid #394171;
-    border-bottom: 4px solid #e98024;
-    height: 75px;
-    font-size: 18px;
-    padding: 10px 0;
-}
-
-.header-split {
-    width: 33%;
-    padding: 0 10px;
-    float: left;
-    display: inline-block;
-    min-height: 1px;
-    box-sizing: border-box;
-}
-
-#addAccount, #logout {
-    color: #fff;
-    letter-spacing: .75px;
-    padding: 0 10px;
-    font-size: .8em;
-    line-height: 2em;
-    margin: .8em 0;
-}
-
-.invisible {
-    display: none;
-}
-
-#fixed-bar-bottom {
-    position: fixed;
-    z-index: 100;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 5px 110px;
-    background-color: #F2F2F2;
-}
-#fixed-bar-bottom * {
-    margin: 0 2px;
-}
-
-.intro-file-management {
-    display: table;
+	background: #15212d;
 }
 
 #files {
-    display: inline-flex;
-    vertical-align: middle;
-    background-color: #F2F2F2;
+	display: inline-flex;
+	vertical-align: middle;
 }
 
 #fixed-bar-right {
-    position: absolute;
-    z-index: 100;
-    top: 101px;
-    left: 90%;
-    width: 10%;
-    text-align: center;
-    padding: 10px;
-    margin-left: 12px;
+	position: absolute;
+	z-index: 100;
+	top: 110px;
+	left: 90%;
+	width: 10%;
+	text-align: center;
+	padding: 10px;
+	margin-left: 12px;
 }
 #fixed-bar-right * {
-    margin-bottom: 5px;
+	margin-bottom: 5px;
 }
 #fixed-bar-right button {
-    background-color: #F2F2F2;
-    border: 1px solid #ddd;
-    padding: 2.5px 6px;
+	background-color: #F2F2F2;
+	border: 1px solid #ddd;
+	padding: 2.5px 6px;
+	color: black;
 }
 #fixed-bar-right button:hover {
-    background-color: #ddd;
+	background-color: #ddd;
 }
 
 button:focus {
-    outline: none;
+	outline: none;
+}
+
+.blocklyText {
+	fill: black !important;
+}
+
+
+.blocklyTreeSelected .blocklyTreeLabel {
+	color: white !important;
+}
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+	background-color: #dedede !important;
+}
+
+.blocklyToolboxDiv .blocklyTreeRow{
+	color: black;
+}
+
+.blocklyEditableText tspan {
+	fill: black !important;
+}
+
+.blocklyEditableText rect {
+	fill-opacity: 1 !important;
+}
+
+.blocklyFlyoutBackground {
+	fill: white !important;
+	fill-opacity: 1 !important;
+	stroke: #dedede;
+	stroke-width: 1px;
+}
+
+.blocklyToolboxDiv {
+	background-color: #f2f2f2 !important;
+	border-width: thin;
+	color: #dedede;
+	border-right: 1px solid;
+}
+
+.blocklyIconShape {
+	fill: #2a3052 !important;
+}
+
+.blocklyIconGroup:not(:hover), .blocklyIconGroupReadonly {
+	opacity: 1 !important;
+}
+
+.blocklyScrollbarVertical, .blocklyScrollbarHorizontal{
+	display: none;
+}
+
+.box.is-dragover {
+	background-color: grey;
+}
+
+#dropZone {
+	font-weight: bold;
+	text-align: center;
+	padding: 1em 0;
+	margin: 0px;
+	color: #555;
+	border: 2px dashed #555;
+	border-radius: 7px;
+	cursor: default;
+	height: 425px;
+	line-height: 350px;
+}
+
+#dropZone.hover {
+	color: #f00;
+	border-color: #f00;
+	border-style: solid;
+	box-shadow: inset 0 3px 4px #888;
+}
+
+#header {
+	height: 75px;
+	width: 100%;
+	background-color: #2a3052;
+	border-top: 2px solid #394171;
+	border-bottom: 4px solid #e98024;
+	font-size: 18px;
+	padding: 0 20px;
+}
+#header #logo div {
+	display: inline-block;
+}
+#topbar {
+	background-color: #15212d;
+	width: 100%;
+	color: #fff;
+	line-height: 1;
+	font-size: 70%;
+	text-align: right;
+	padding: 3px 20px;
+	display: table;
+}
+#logo {
+	display: inline-block;
+	margin-top: 5px;
+}
+.symbol-logo {
+	width: 22%;
+}
+.type-logo {
+	width: 57%;
+	margin-left: 8px;
+}
+
+.left-header {
+	float: left;
+}
+
+.right-header {
+	float: right;
+}
+
+#header .right-header {
+	margin-top: 5px;
+}
+
+#logout, #login, #accountSelect {
+	display: none;
+}
+
+#logout, #login{
+	letter-spacing: .75px;
+	padding: 6px;
+	text-transform: uppercase;
+	font-size: 0.7em;
+}
+
+#login {
+	padding: 0 10px;
+	font-size: 0.8em;
+	line-height: 2em;
+	margin: 0.8em 0;
+}
+
+.btn-primary {
+	color: #FFF !important;
+	text-decoration: none !important;
+	background: #2E8836 !important;
+	border-color: #2E8836 !important;
+}
+
+.btn-primary:active, .btn-primary:hover {
+	color: #FFF !important;
+	text-decoration: none !important;
+	background-color: #14602B !important;
+	border-color: #14602B !important;
+}
+
+#blocker {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    top: 0px;
+    opacity: 0;
+    left: 0px;
+    background: white;
 }

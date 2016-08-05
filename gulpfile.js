@@ -261,12 +261,12 @@ gulp.task('build-min', ['build-bot-min', 'build-index-min', 'pack-css-min', 'mus
 });
 
 gulp.task('deploy', ['build-min'], function () {
-	return gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**'])
+	return gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', './beta/**'])
 		.pipe(ghPages());
 });
 
 gulp.task('serve', ['open', 'connect'], function () {
-	gp_watch(['www/*.html'])
+	gp_watch(['www/*.html'], {debounceDelay: 1000})
 		.pipe(connect.reload());
 });
 
@@ -274,7 +274,7 @@ gulp.task('test-deploy', ['build-min', 'serve'], function () {
 });
 
 gulp.task('watch', ['build', 'serve'], function () {
-	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/i18n/*.js'], function(){
+	gp_watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/i18n/*.js'], {debounceDelay: 5000}, function(){
 		gulp.run(['build']);
 	});
 });

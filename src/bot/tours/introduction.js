@@ -4,13 +4,14 @@ var blockly = require('blockly');
 var i18n = require('i18n');
 var init = function init(){
 	var steps = [{
-		content: '<p>' + i18n._("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>Stop!</b> button at the top right of the page.") + '</p>',
+		content: '<p>' + i18n._("Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. If you want to skip this tutorial click on the <b>X</b> button.") + '</p>',
 		closeButton: true,
 		target: view.getUiComponent('center'),
 		nextButton: true,
 		my: 'top center',
 		at: 'bottom center',
 		setup: function (tour, options) {
+			$('#blocker').show();
 			view.setOpacityForAll(started, 0.3);
 		},
 	}, {
@@ -23,7 +24,25 @@ var init = function init(){
 		setup: function (tour, options) {
 			view.setOpacity(started, 'workspace', 1);
 		},
-		teardown: function (tour, options) {},
+		teardown: function (tour, options) {
+		},
+	}, {
+		content: '<p>' + i18n._("You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.") + '</p>',
+		target: view.getUiComponent('center'),
+		closeButton: true,
+		nextButton: true,
+		my: 'top center',
+		at: 'bottom center',
+	}, {
+		content: '<p>' + i18n._("You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.") + '</p>',
+		target: view.getUiComponent('center'),
+		closeButton: true,
+		nextButton: true,
+		my: 'top center',
+		at: 'bottom center',
+		setup: function (tour, options) {
+			$('#blocker').hide();
+		},
 	}, {
 		content: '<p>' + i18n._("To start pick a <b>symbol</b> block from markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)") + '</p>',
 		target: view.getUiComponent('flyout'),
@@ -46,7 +65,7 @@ var init = function init(){
 			view.setOpacity(started, 'toolbox', 0.3);
 		},
 	}, {
-		content: '<p>' + i18n._("Great! Now add it to the <b>trade</b> block.") + '</p>',
+		content: '<p>' + i18n._("Great! Now add it to the <b>Define Trade</b> block.") + '</p>',
 		target: view.getUiComponent('workspace')
 			.find(view.uiComponents.submarket),
 		closeButton: true,
@@ -350,20 +369,12 @@ var init = function init(){
 		at: 'left center',
 		nextButton: true,
 	}, {
-		content: '<p>' + i18n._("You can save your blocks using this button") + '</p>',
+		content: '<p>' + i18n._("You can save/load your blocks using these buttons") + '</p>',
 		target: view.getUiComponent('group_save'),
 		closeButton: true,
 		highlightTarget: true,
 		my: 'right center',
 		at: 'left center',
-		nextButton: true,
-	}, {
-		content: '<p>' + i18n._("You can load your blocks using these tools") + '</p>',
-		target: view.getUiComponent('group_load'),
-		closeButton: true,
-		highlightTarget: true,
-		my: 'bottom center',
-		at: 'top center',
 		nextButton: true,
 	}, {
 		content: '<p>' + i18n._("At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons in this menu. Please make sure you have chosen a Virtual Account before running the blocks.") + '</p>',

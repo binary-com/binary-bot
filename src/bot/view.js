@@ -19,27 +19,53 @@ var initTours = function initTours() {
   }
 };
 
+var selectBlockByText = function selectBlockByText(text) {
+  var returnVal;
+  $('.blocklyText').each(function(){
+    if ( this.innerHTML.indexOf(text) >= 0 ){
+      returnVal = $(this).parent()[0];
+    }
+  });
+  return returnVal;
+};
+
+var selectTextBlock = function selectTextBlock(text) {
+  var returnVal;
+  $('.blocklyText').each(function(){
+    if ( this.innerHTML === text ){
+      returnVal = this;
+    }
+  });
+  return returnVal;
+};
+
+var setBlockColors = function setBlockColors() {
+  selectTextBlock('Step&nbsp;1:&nbsp;Define&nbsp;Trade').style.setProperty('fill', 'white', 'important');
+  selectTextBlock('Step&nbsp;2:&nbsp;Strategy').style.setProperty('fill', 'white', 'important');
+  selectTextBlock('Step&nbsp;3:&nbsp;Result').style.setProperty('fill', 'white', 'important');
+};
+
 var uiComponents = {
-  tutorialList: '.tutorialList',
+  accountSelect: '#accountSelect',
+  tours: '#tours',
   logout: '.logout',
   workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
   workspace: '.blocklyWorkspace',
   toolbox: '.blocklyToolboxDiv',
   group_load: '.group-load',
   token: '.intro-token',
-  trash: '.blocklyTrash',
   group_save: '.group-save',
   group_undo_redo: '.group-undo-redo',
   group_summary: '.group-summary',
   group_start_stop: '.group-start-stop',
   center: '#center',
   flyout: '.blocklyFlyoutBackground',
-  submarket: ".blocklyDraggable:contains('Submarket'):last",
+  submarket: ".blocklyDraggable:contains('Trade'):last",
   strategy: ".blocklyDraggable:contains('Strategy'):last",
-  finish: ".blocklyDraggable:contains('Finish'):last",
+  finish: ".blocklyDraggable:contains('Result'):last",
 };
 
-var doNotHide = ['center', 'flyout', 'workspace_inside', 'trash', 'submarket', 'strategy', 'finish'];
+var doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
 
 var getUiComponent = function getUiComponent(component) {
   return $(uiComponents[component]);
@@ -162,8 +188,6 @@ var run = function run() {
 		$('#summaryPanel')
 			.show();
 		$('#stopButton')
-			.unbind('click', reset);
-		$('#stopButton')
 			.bind('click', stop);
 	} catch (e) {
 		botUtils.showError(e);
@@ -193,23 +217,16 @@ var handleFileSelect = function handleFileSelect(e) {
 var readFile = function readFile(f) {
 	reader = new FileReader();
 	reader.onload = (function (theFile) {
+    $('#fileBrowser').hide();
 		return function (e) {
 			try {
 				blockly.mainWorkspace.clear();
 				var xml = blockly.Xml.textToDom(e.target.result);
 				blockly.Xml.domToWorkspace(xml, blockly.mainWorkspace);
 				botUtils.addPurchaseOptions();
-				var tokenList = storageManager.getTokenList();
-				if (tokenList.length !== 0) {
-					blockly.mainWorkspace.getBlockById('trade')
-						.getField('ACCOUNT_LIST')
-						.setValue(tokenList[0].token);
-					blockly.mainWorkspace.getBlockById('trade')
-						.getField('ACCOUNT_LIST')
-						.setText(tokenList[0].account_name);
-				}
 				blockly.mainWorkspace.clearUndo();
 				blockly.mainWorkspace.zoomToFit();
+        setBlockColors();
 				botUtils.log(i18n._('Blocks are loaded successfully'), 'success');
 			} catch (err) {
 				botUtils.showError(err);
@@ -225,15 +242,7 @@ var handleDragOver = function handleDragOver(e) {
 	e.dataTransfer.dropEffect = 'copy';
 };
 
-var dropZone = document.getElementById('drop_zone');
-
-var reset = function reset(e) {
-	if (e) {
-		e.preventDefault();
-	}
-	globals.resetTradeInfo();
-	botUtils.log(i18n._('Reset successful'), 'success');
-};
+var dropZone = document.getElementById('dropZone');
 
 var stop = function stop(e) {
 	if (e) {
@@ -242,6 +251,15 @@ var stop = function stop(e) {
 	var trade = require('./trade/trade');
 	trade.stop();
 	globals.disableRun(false);
+};
+
+var logout = function logout() {
+  commonUtils.logoutAllTokens(function(){
+    commonUtils.removeAllTokens(function(){
+      botUtils.updateTokenList();
+      botUtils.log(i18n._('Logged you out!'), 'info');
+    });
+  });
 };
 
 var show = function show(done) {
@@ -275,10 +293,8 @@ var show = function show(done) {
         });
 
   startTutorial();
-  $('#stopButton')
-    .bind('click', reset);
-
-  $('.exitPanel')
+  
+  $('.panelExitButton')
     .click(function () {
       $(this)
         .parent()
@@ -286,11 +302,10 @@ var show = function show(done) {
     $("#StatementDisplay tbody tr").remove();
 	$("#StatementDisplay tbody").append('<tr><td class="statement-date"></td><td class="statement-reference"></td><td class="statement-potential-payout"></td><td class="statement-action"></td><td class="statement-credit-debit"></td><td class="statement-balance"></td></tr>');
     });
-  $('#summaryPanel')
-    .drags();
-	
-  $('#statementPanel')
-    .drags();
+
+  $('.panel')
+    .drags()
+    .hide();
 	
   $('#chart')
     .mousedown(function (e) { // prevent chart to trigger draggable
@@ -332,6 +347,13 @@ var show = function show(done) {
 		trade.statement();
 
     });
+
+ $('#loadXml')
+    .click(function (e) {
+      $('#fileBrowser')
+        .show();
+    });
+
   $('#run')
     .click(function (e) {
       run();
@@ -339,8 +361,8 @@ var show = function show(done) {
 
   $('#logout')
     .click(function (e) {
-      botUtils.logout();
-      $('.logout').addClass('invisible');
+      logout();
+      $('.logout').hide();
     });
 
   $('#runButton')
@@ -353,18 +375,24 @@ var show = function show(done) {
   $.get('xml/toolbox.xml', function (toolbox) {
     require('./code_generators');
     require('./definitions');
+    Blockly.Blocks.text.newQuote_ = function(open) {
+      var file;
+      
+      if (open == this.RTL) {
+        file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFpJREFUeNpiZGBg+M+ACRyh9H50CSYGEsEg1AACDlB8HxoAIKwAxAJIcu+h4u+RNcEUz0czMAFJroEBKfiQTUcG95FMF2BBUnAAiA8C8QM05z6A4o1A/AEgwACTSBqO/l02SwAAAABJRU5ErkJggg==';
+      } else {
+        file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAAXNSR0IArs4c6QAAActpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx4bXA6Q3JlYXRvclRvb2w+QWRvYmUgSW1hZ2VSZWFkeTwveG1wOkNyZWF0b3JUb29sPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KKS7NPQAAAHFJREFUGBljYICAAiC1H4odIEJwsgHIgskpgEQFgPg9EP8H4vtAjAwUgByQOAjvB2IwaACSMMEEsAiCmI8k5wASZgRikOkgWz4AcSAQg8AFIAaJ3QdxgOABECeCGCANINPRgSNUYD+6BBO6ACH+INQAAKsvFws0VtvEAAAAAElFTkSuQmCC';
+      }
+      return new Blockly.FieldImage(file, 12, 12, '"');
+    };
+
     var workspace = blockly.inject('blocklyDiv', {
       media: 'js/blockly/media/',
       toolbox: botUtils.xmlToStr(i18n.xml($.parseXML(botUtils.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
       zoom: {
-        controls: true,
         wheel: false,
-        startScale: 1.0,
-        maxScale: 3,
-        minScale: 0.3,
-        scaleSpeed: 1.2
       },
-      trashcan: true,
+      trashcan: false,
     });
     $.get('xml/main.xml', function (main) {
       blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
@@ -378,12 +406,13 @@ var show = function show(done) {
       botUtils.addPurchaseOptions();
       blockly.mainWorkspace.clearUndo();
       initTours();
-      Blockly.Blocks.texts.HUE = '#15212d';
-      Blockly.Blocks.math.HUE = '#15212d';
-      Blockly.Blocks.logic.HUE = '#15212d';
-      Blockly.Blocks.lists.HUE = '#15212d';
-      Blockly.Blocks.variables.HUE = '#15212d';
-      Blockly.Blocks.procedures.HUE = '#15212d';
+      Blockly.Blocks.texts.HUE = '#dedede';
+      Blockly.Blocks.math.HUE = '#dedede';
+      Blockly.Blocks.logic.HUE = '#dedede';
+      Blockly.Blocks.lists.HUE = '#dedede';
+      Blockly.Blocks.variables.HUE = '#dedede';
+      Blockly.Blocks.procedures.HUE = '#dedede';
+      setBlockColors();
       done();
     });
   });
@@ -397,5 +426,6 @@ module.exports = {
   stopTutorial: stopTutorial,
   startTutorial: startTutorial,
   initTours: initTours,
-  show: show
+  show: show,
+  selectBlockByText: selectBlockByText
 };
