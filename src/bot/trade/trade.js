@@ -353,7 +353,7 @@ var trade = function trade(_token, callback, trade_again) {
 };
 
 var statement = function statement(){
-	token = Blockly.mainWorkspace.getBlockById('trade').getField('ACCOUNT_LIST').getValue();
+	token = $("#accountSelect option:first").val();
 	api = new LiveApi({ appId: appId.getAppId() });
 	api.authorize(token).then(function(response){
 		api.getStatement((statementOptions = {
