@@ -17,7 +17,7 @@ module.exports = {
   "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
   "2473e96bc614a911821242119918a241a41836d6": "Introduction",
   "6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
-  "4e5a2893bdcc7d239c1db72e4c4ffbe4bea73174": "Login",
+  "f7c400ed695f898b8ee9d21664aa17b5bb693828": "Log in",
   "612e12d29278b5519294bc25cdaddffec6d0f1c6": "Results",
   "12b71c3e0fe5f7c0b8d17cc03186e281412da4a8": "Summary",
   "d847919a30d31c0be624087f3370492b3fdf80c6": "No. of runs",

@@ -128,8 +128,8 @@ View.prototype = Object.create(null, {
 					});
 				}
 				var message;
-				if (error.error) {
-					message = error.error.message;
+				if ( error.message ) {
+					message = error.message;
 				} else {
 					message = error;
 				}
@@ -404,7 +404,7 @@ View.prototype = Object.create(null, {
 			var that = this;
 
 			this.observer.register('api.error', function(error){
-				if (error.error.code === 'InvalidToken'){
+				if (error.code === 'InvalidToken'){
 					storageManager.removeAllTokens();
 					that.updateTokenList();
 				}

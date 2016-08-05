@@ -38,7 +38,7 @@ describe('Bot', function() {
 			bot.start('FakeToken', null, null, null);
 		});
 		it('fake token should cause an error', function(){
-			expect(error).to.have.deep.property('.error.code')
+			expect(error).to.have.deep.property('.code')
 				.that.is.equal('InvalidToken');
 		});
 	});
