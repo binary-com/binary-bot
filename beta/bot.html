@@ -30,7 +30,7 @@
 	<title>Binary Bot</title>
 
 <link href="css/fontello-4726b73131.css" rel="stylesheet" />
-<link href="css/bundle-684fef1268.min.css" rel="stylesheet" /><link href="css/bot-aec7ea6498.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
+<link href="css/bundle-684fef1268.min.css" rel="stylesheet" /><link href="css/bot-3a3fc8d812.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
 
 </head>
 <body>
@@ -73,12 +73,14 @@
         </a>
       </div>
       <div class="right-header">
-        <div>
-          <select id="accountSelect"></select>
-        </div>
         <div class="intro-login-logout">
-          <button id="logout" data-i18n-text="Log out"></button>
-          <button title="Add your tokens to the bot" id="login" data-i18n-text="Log in"></button>
+          <div>
+            <select id="accountSelect"></select>
+          </div>
+          <div class="login-logout">
+            <button id="logout" data-i18n-text="Log out"></button>
+            <button title="Add your tokens to the bot" id="login" data-i18n-text="Log in"></button>
+          </div>
         </div>
       </div>
   </div>
@@ -160,17 +162,17 @@
       <div class="group-summary">
         <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
       </div>
+      <div class="group-reset">
+        <div><button title="Reset the blocks" id="resetButton" class="icon-reset"></button></div>
+      </div>
       <div class="group-start-stop">
         <div><button title="Run the blocks" id="runButton" class="icon-run"></button></div>
         <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
-      </div>
-      <div class="group-reset">
-        <div><button title="Reset the blocks" id="resetButton" class="icon-reset"></button></div>
       </div>
   </div>
 
   <script src="js/blockly/blockly.js"></script>
   <script src="js/bundle.js"></script>
-<script src="js/bot-164a01e97b.min.js"></script>
+<script src="js/bot-c048e306d9.min.js"></script>
 </body>
 </html>
