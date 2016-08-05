@@ -1,4 +1,5 @@
 'use strict';
+import 'babel-polyfill';
 import Translator from 'translator';
 import appId from 'appId';
 import {asyncChain} from 'binary-common-utils/tools';

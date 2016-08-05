@@ -143,7 +143,7 @@ _Blockly.prototype = Object.create(null, {
 		value: function selectBlockByText(text) {
 			var returnVal;
 			$('.blocklyText').each(function(){
-				if ( this.innerHTML.indexOf(text) >= 0 ){
+				if ( $(this).text().indexOf(text) >= 0 ){
 					returnVal = $(this).parent()[0];
 				}
 			});
@@ -154,7 +154,7 @@ _Blockly.prototype = Object.create(null, {
 		value: function selectTextBlock(text) {
 			var returnVal;
 			$('.blocklyText').each(function(){
-				if ( this.innerHTML === text ){
+				if ( $(this).text() === text ){
 					returnVal = this;
 				}
 			});
@@ -163,9 +163,9 @@ _Blockly.prototype = Object.create(null, {
 	},
 	setBlockColors: {
 		value: function setBlockColors() {
-			this.selectTextBlock('Step&nbsp;1:&nbsp;Define&nbsp;Trade').style.setProperty('fill', 'white', 'important');
-			this.selectTextBlock('Step&nbsp;2:&nbsp;Strategy').style.setProperty('fill', 'white', 'important');
-			this.selectTextBlock('Step&nbsp;3:&nbsp;Result').style.setProperty('fill', 'white', 'important');
+			this.selectTextBlock('Step 1: Define Trade').style.setProperty('fill', 'white', 'important');
+			this.selectTextBlock('Step 2: Strategy').style.setProperty('fill', 'white', 'important');
+			this.selectTextBlock('Step 3: Result').style.setProperty('fill', 'white', 'important');
 		}
 	},
 	saveXml: {
