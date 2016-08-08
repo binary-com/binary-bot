@@ -295,7 +295,7 @@ Bot.prototype = Object.create(null, {
 	},
 	_updateTotals: {
 		value: function _updateTotals(contract){
-			var profit = Number(contract.sell_price) - Number(contract.buy_price);
+			var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
 			this.totalProfit = +(this.totalProfit + profit).toFixed(2);
 			this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
 			this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);
@@ -310,7 +310,7 @@ Bot.prototype = Object.create(null, {
 	_createDetails: {
 		value: function _createDetails(contract) {
 			var result = (+contract.sell_price === 0) ? 'loss' : 'win';
-			var profit = Number(contract.sell_price) - Number(contract.buy_price);
+			var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
 			return [ 
 				contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
 				profit, contract.contract_type, 
