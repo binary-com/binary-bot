@@ -8189,7 +8189,7 @@
 		stop: bot.stop.bind(bot),
 		toggleDebug: _logger2.default.toggleDebug.bind(_logger2.default),
 		log: function log(message, type) {
-			observer.emit('ui.log.' + type, message);
+			observer.emit('ui.log.' + type + '.left', message);
 		},
 		getTotalProfit: function getTotalProfit() {
 			return bot.totalProfit;
@@ -24721,4 +24721,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-c0eb96aedb53b434aa7b.map
+//# sourceMappingURL=bot-8d942b2781538cdd8493.map
