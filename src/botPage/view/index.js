@@ -10,6 +10,7 @@ import Bot from '../bot';
 import Introduction from './tours/introduction';
 import Welcome from './tours/welcome';
 import {PlainChart as Chart} from 'binary-charts';
+import lzString from 'lz-string';
 import _ from 'underscore';
 
 
@@ -111,9 +112,10 @@ View.prototype = Object.create(null, {
 			this.observer.register('ui.error', function showError(error) {
 				if (error.stack) {
 					console.error({
-						stack: error.stack,
-						js: that.blockly.generatedJs,
-						xml: that.blockly.blocksXmlStr
+						api: false,
+						0: lzString.compressToBase64(JSON.stringify(error.stack)),
+						1: lzString.compressToBase64(that.blockly.generatedJs),
+						2: lzString.compressToBase64(that.blockly.blocksXmlStr)
 					});
 					if (logger.isDebug()) {
 						console.log('%c' + error.stack, 'color: red');
@@ -122,9 +124,10 @@ View.prototype = Object.create(null, {
 					}
 				} else {
 					console.error({
-						error: error,
-						js: that.blockly.generatedJs,
-						xml: that.blockly.blocksXmlStr
+						api: true,
+						0: lzString.compressToBase64(JSON.stringify(error)),
+						1: lzString.compressToBase64(that.blockly.generatedJs),
+						2: lzString.compressToBase64(that.blockly.blocksXmlStr)
 					});
 				}
 				var message;
