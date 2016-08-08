@@ -17629,22 +17629,14 @@
 	
 				this.observer.register('ui.error', function showError(error) {
 					if (error.stack) {
-						console.error({
-							stack: error.stack,
-							js: that.blockly.generatedJs,
-							xml: that.blockly.blocksXmlStr
-						});
+						console.error(error.stack);
 						if (_logger2.default.isDebug()) {
 							console.log('%c' + error.stack, 'color: red');
 						} else {
 							_logger2.default.addLogToQueue('%c' + error.stack, 'color: red');
 						}
 					} else {
-						console.error({
-							error: error,
-							js: that.blockly.generatedJs,
-							xml: that.blockly.blocksXmlStr
-						});
+						console.error(error);
 					}
 					var message;
 					if (error.message) {
@@ -24729,4 +24721,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-c807690e74c5deb6e4c3.map
+//# sourceMappingURL=bot-621992898e82782e21ca.map
