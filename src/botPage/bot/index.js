@@ -206,6 +206,7 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			var apiTick = function(tick){
 				that.ticks = that.ticks.concat(tick);
+				that.ticks.splice(0,1);
 				that.strategyCtrl.updateTicks(that.ticks);
 				that.observer.emit('bot.tickUpdate', {
 					ticks: that.ticks,
