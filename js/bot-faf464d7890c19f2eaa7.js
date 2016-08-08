@@ -8664,12 +8664,12 @@
 				}
 				this.strategy = strategy;
 				this.finish = finish;
+				this.tradeOption = tradeOption;
 				if (again) {
 					this._startTrading();
 					return;
 				}
 				this.token = token;
-				this.tradeOption = tradeOption;
 				var that = this;
 				if (this.authorizedToken === this.token) {
 					this.setTheInitialConditions().then(function () {
@@ -24721,4 +24721,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-621992898e82782e21ca.map
+//# sourceMappingURL=bot-faf464d7890c19f2eaa7.map
