@@ -17,7 +17,7 @@ html, body {
 	bottom: 0px;
 }
 
-.intro-token{
+.login-logout{
 	float: right;
 	margin: 2px;
 }
@@ -331,5 +331,13 @@ button:focus {
     top: 0px;
     opacity: 0;
     left: 0px;
+    background: white;
+}
+
+#stopButton {
+    display: none;
+}
+
+select.tour-highlight {
     background: white;
 }

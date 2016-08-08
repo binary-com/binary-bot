@@ -2,6 +2,7 @@
 	"expr": true,
 	"mocha": true,
 	"esversion": 6,
+	"globalstrict": true,
 	"node": true,
 	"globals": {
 		"$": false,
@@ -13,6 +14,7 @@
 		"Blockly": false,
 		"Blob": false,
 		"Tourist": false,
+		"trackJs": false,
 		"FileReader": false
 	}
 }

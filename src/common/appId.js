@@ -1,13 +1,23 @@
-var utils = require('utils');
-var $ = require('jquery');
-
+'use strict';
+import tools from 'binary-common-utils/tools';
+import accounts from 'binary-common-utils/account';
+import storageManager from 'binary-common-utils/storageManager';
 var AppId = {
-	app_id: ( document.location.port === '8080' ) ? 1168 : ( ( document.location.hostname.indexOf('github.io') >= 0 ) ? 1180 : 1169 ),
-	redirectOauth: function oauthLogin(){
-		document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + this.app_id + '&l=' + window.lang.toUpperCase();
+	setAppId: function setAppId() {
+		var appId = 0;
+		if ( document.location.port === '8080' ) {
+			appId = 1168; // binary bot on localhost
+		} else if ( document.location.hostname.indexOf('github.io') >= 0 ) {
+			appId = 1180; // binary bot github.io
+		} else if ( document.location.pathname.indexOf('/beta') >= 0 ) {
+			appId = 1261; // binary bot beta
+		} else {
+			appId = 1169; // binary bot 
+		}
+		storageManager.set('appId', appId);
 	},
 	oauthLogin: function getToken(done) {
-		var queryStr = utils.parseQueryString();
+		var queryStr = tools.parseQueryString();
 		var tokenList = [];
 		Object.keys(queryStr).forEach(function(key){
 			if ( key.indexOf('token') === 0 ) {
@@ -16,23 +26,18 @@ var AppId = {
 		});
 		if (tokenList.length) {
 			$('#main').hide();
-			utils.addAllTokens(tokenList, function(){
-				document.location.pathname += ((document.location.pathname.slice(-1) === '/')?'':'/') + 'bot.html';
+			tools.asyncForEach(tokenList, function(token, index, next){
+				accounts.addTokenIfValid(token, function(){
+					next();
+				});
+			}, function(){
+				document.location = 'bot.html';
 			});
 		} else {
 			if (done) {
 				done();
 			}
 		}
-	},
-	removeTokenFromUrl: function removeTokenFromUrl(){
-		var queryStr = utils.parseQueryString();
-		if (queryStr.token1) {
-			document.location.href = document.location.href.split('?')[0];
-		}
-	},
-	getAppId: function getAppId(){
-		return this.app_id;
 	}
 };
 
