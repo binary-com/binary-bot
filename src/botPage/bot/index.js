@@ -177,12 +177,12 @@ Bot.prototype = Object.create(null, {
 			}
 			this.strategy = strategy;
 			this.finish = finish;
+			this.tradeOption = tradeOption;
 			if ( again ) {
 				this._startTrading();
 				return;
 			}
 			this.token = token;
-			this.tradeOption = tradeOption;
 			var that = this;
 			if ( this.authorizedToken === this.token ) {
 				this.setTheInitialConditions().then(function(){
