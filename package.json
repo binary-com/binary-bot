@@ -68,6 +68,7 @@
     "jshint": "^2.9.2",
     "json-loader": "^0.5.4",
     "loader-utils": "^0.2.15",
+    "lz-string": "^1.4.4",
     "mocha": "^3.0.0",
     "through2": "^2.0.1",
     "underscore": "^1.8.3",
