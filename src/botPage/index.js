@@ -31,7 +31,7 @@ window.Bot = {
 	stop: bot.stop.bind(bot),
 	toggleDebug: logger.toggleDebug.bind(logger),
 	log: function (message, type) {
-		observer.emit('ui.log.'+ type, message );
+		observer.emit('ui.log.'+ type + '.left', message );
 	},
 	getTotalProfit: function getTotalProfit(){
 		return bot.totalProfit;
