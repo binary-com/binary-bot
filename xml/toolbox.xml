@@ -236,7 +236,7 @@
 	<category name="Functions" id="Functions" colour="#2a3052" custom="PROCEDURE" i18n-text="Functions"></category>
 	<category name="Binary" colour="#2a3052" i18n-text="Binary">
 		<!--Markets-->
-		<category name="Conditions" colour="#2a3052" i18n-text="Conditions">
+		<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
 			<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
 				<block type="risefall"></block>
 			</category>
@@ -256,7 +256,6 @@
 			<block type="purchase"></block>
 		</category>
 		<category name="Finish" colour="#2a3052" i18n-text="Finish">
-			<block type="contract_result"></block>
 			<block type="contract_details"></block>
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
