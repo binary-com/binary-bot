@@ -20,6 +20,7 @@ var View = function View(){
 	}
 	this.observer = new Observer();
 	View.instance = this;
+	this.chartType = 'area';
 	this.tours = {};
 	this.translator = new Translator();
 	this.tradeInfo = new TradeInfo();
@@ -381,11 +382,20 @@ View.prototype = Object.create(null, {
 	},
 	updateChart: {
 		value: function updateChart(info) {
+			var that = this;
 			var chartOptions = {
-				type: 'area',
+				type: this.chartType,
 				theme: 'light',
-				ticks: info.ticks,
+				typeChange: function ( type ) {
+					that.chartType = type;
+				}
 			};
+			if ( this.chartType === 'candlestick' ) {
+				console.log(info.candles);
+				chartOptions.ticks = info.candles;
+			} else {
+				chartOptions.ticks = info.ticks;
+			}
 			if (this.latestOpenContract) {
 				chartOptions.contract = this.latestOpenContract;
 				if (this.latestOpenContract.is_sold) {

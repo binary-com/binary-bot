@@ -14,6 +14,7 @@ var Bot = function Bot(api) {
 	}
 	Bot.instance = this;
 	this.ticks = [];
+	this.candles = [];
 	if ( typeof api === 'undefined' ) {
 		this.api = new CustomApi(null, this.recoverFromDisconnect.bind(this));
 	} else {
@@ -225,9 +226,13 @@ Bot.prototype = Object.create(null, {
 			var apiTick = function(tick){
 				that.ticks = that.ticks.concat(tick);
 				that.ticks.splice(0,1);
-				that.strategyCtrl.updateTicks(that.ticks);
+				that.strategyCtrl.updateTicks({
+					ticks: that.ticks,
+					candles: that.candles,
+				});
 				that.observer.emit('bot.tickUpdate', {
 					ticks: that.ticks,
+					candles: that.candles,
 					pip: that.pip
 				});
 			};
@@ -259,18 +264,19 @@ Bot.prototype = Object.create(null, {
 	_observeCandles: {
 		value: function _observeCandles(){
 			var that = this;
-			var apiCandles = function(candle){
-				console.log(candle);
+			var apiCandles = function(candles){
+				that.candles = candles;
+			};
+			that.observer.register('api.candles', apiCandles, true, {
+				type: 'candles',
+				unregister: [['api.candles', apiCandles], 'api.tick', 'bot.tickUpdate']
+			});
+			var apiOHLC = function(candle){
 				that.candles = that.candles.concat(candle);
 				that.candles.splice(0,1);
-				//that.strategyCtrl.updateCandless(that.candles);
-				that.observer.emit('bot.candleUpdate', {
-					candles: that.candles,
-					pip: that.pip
-				});
 			};
-			this.observer.register('api.ohlc', apiCandles);
-			this.runningObservations.push(['api.ohlc', apiCandles]);
+			this.observer.register('api.ohlc', apiOHLC);
+			this.runningObservations.push(['api.ohlc', apiOHLC]);
 		}
 	},
 	_observeStreams: {
