@@ -132,11 +132,11 @@ View.prototype = Object.create(null, {
 				}
 				var customError = new Error(JSON.stringify({
 					api: api,
-					0: error.message,
+					0: error.message || error,
 					1: lzString.compressToBase64(that.blockly.generatedJs),
 					2: lzString.compressToBase64(that.blockly.blocksXmlStr)
 				}));
-				customError.stack = error.stack;
+				customError.stack = error.stack || 'No stack data';
 				trackJs.track(customError);
 			});
 
