@@ -120,13 +120,6 @@ View.prototype = Object.create(null, {
 						logger.addLogToQueue('%c' + error.stack, 'color: red');
 					}
 				}
-				console.error({
-					api: api,
-					0: error.message,
-					1: lzString.compressToBase64(JSON.stringify(error.stack)),
-					2: lzString.compressToBase64(that.blockly.generatedJs),
-					3: lzString.compressToBase64(that.blockly.blocksXmlStr)
-				});
 				var message = error.message;
 				$.notify(message, {
 					position: 'bottom right',
@@ -137,6 +130,14 @@ View.prototype = Object.create(null, {
 				} else {
 					logger.addLogToQueue('%cError: ' + message, 'color: red');
 				}
+				var customError = new Error(JSON.stringify({
+					api: api,
+					0: error.message,
+					1: lzString.compressToBase64(that.blockly.generatedJs),
+					2: lzString.compressToBase64(that.blockly.blocksXmlStr)
+				}));
+				customError.stack = error.stack;
+				trackJs.track(customError);
 			});
 
 			var observeForLog = function observeForLog(type, position) {
