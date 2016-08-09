@@ -18011,7 +18011,7 @@
 		totalStake: '',
 		balance: '',
 		tradeTable: [],
-		tradesCount: 10000,
+		tradesCount: 50,
 		tableSize: 5
 	};
 	
@@ -25267,4 +25267,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-03afca52fbbdc8c8fadd.map
+//# sourceMappingURL=bot-c4e2b2277cddd4f470ab.map
