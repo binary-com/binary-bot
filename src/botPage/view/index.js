@@ -111,32 +111,23 @@ View.prototype = Object.create(null, {
 			var that = this;
 
 			this.observer.register('ui.error', function showError(error) {
+				var api = true;
 				if (error.stack) {
-					console.error({
-						api: false,
-						0: lzString.compressToBase64(JSON.stringify(error.stack)),
-						1: lzString.compressToBase64(that.blockly.generatedJs),
-						2: lzString.compressToBase64(that.blockly.blocksXmlStr)
-					});
+					api = false;
 					if (logger.isDebug()) {
 						console.log('%c' + error.stack, 'color: red');
 					} else {
 						logger.addLogToQueue('%c' + error.stack, 'color: red');
 					}
-				} else {
-					console.error({
-						api: true,
-						0: lzString.compressToBase64(JSON.stringify(error)),
-						1: lzString.compressToBase64(that.blockly.generatedJs),
-						2: lzString.compressToBase64(that.blockly.blocksXmlStr)
-					});
 				}
-				var message;
-				if ( error.message ) {
-					message = error.message;
-				} else {
-					message = error;
-				}
+				console.error({
+					api: api,
+					0: error.message,
+					1: lzString.compressToBase64(JSON.stringify(error.stack)),
+					2: lzString.compressToBase64(that.blockly.generatedJs),
+					3: lzString.compressToBase64(that.blockly.blocksXmlStr)
+				});
+				var message = error.message;
 				$.notify(message, {
 					position: 'bottom right',
 					className: 'error',
