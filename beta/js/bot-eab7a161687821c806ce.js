@@ -8505,6 +8505,7 @@
 		}
 		Bot.instance = this;
 		this.ticks = [];
+		this.candles = [];
 		if (typeof api === 'undefined') {
 			this.api = new _customApi2.default(null, this.recoverFromDisconnect.bind(this));
 		} else {
@@ -8610,6 +8611,51 @@
 				});
 			}
 		},
+		subscribeToCandles: {
+			value: function subscribeToCandles() {
+				this.api.history(this.tradeOption.symbol, {
+					end: 'latest',
+					count: 600,
+					granularity: 60,
+					style: "candles",
+					subscribe: 1
+				});
+			}
+		},
+		subscribeToTicks: {
+			value: function subscribeToTicks(done) {
+				var that = this;
+				if (_underscore2.default.isEmpty(that.tradeOption) || that.tradeOption.symbol === that.symbolStr) {
+					done();
+				} else {
+					var apiHistory = function apiHistory(history) {
+						that.symbolStr = that.tradeOption.symbol;
+						that.ticks = history;
+						that.subscribeToCandles();
+						done();
+					};
+					that.observer.register('api.history', apiHistory, true, {
+						type: 'history',
+						unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate']
+					});
+					if (that.tradeOption.symbol !== that.symbolStr) {
+						that.api._originalApi.unsubscribeFromAllTicks().then(function () {
+							that.api.history(that.tradeOption.symbol, {
+								end: 'latest',
+								count: 600,
+								subscribe: 1
+							});
+						});
+					} else {
+						that.api.history(that.tradeOption.symbol, {
+							end: 'latest',
+							count: 600,
+							subscribe: 1
+						});
+					}
+				}
+			}
+		},
 		setTheInitialConditions: {
 			value: function setTheInitialConditions() {
 				var that = this;
@@ -8621,34 +8667,7 @@
 						}
 						chainDone();
 					}).pipe(function (chainDone) {
-						if (_underscore2.default.isEmpty(that.tradeOption) || that.tradeOption.symbol === that.symbolStr) {
-							chainDone();
-						} else {
-							var apiHistory = function apiHistory(history) {
-								that.symbolStr = that.tradeOption.symbol;
-								that.ticks = history;
-								chainDone();
-							};
-							that.observer.register('api.history', apiHistory, true, {
-								type: 'history',
-								unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate']
-							});
-							if (that.tradeOption.symbol !== that.symbolStr) {
-								that.api._originalApi.unsubscribeFromAllTicks().then(function () {
-									that.api.history(that.tradeOption.symbol, {
-										end: 'latest',
-										count: 600,
-										subscribe: 1
-									});
-								});
-							} else {
-								that.api.history(that.tradeOption.symbol, {
-									end: 'latest',
-									count: 600,
-									subscribe: 1
-								});
-							}
-						}
+						that.subscribeToTicks(chainDone);
 					}).pipe(function (chainDone) {
 						resolve();
 					}).exec();
@@ -8687,19 +8706,29 @@
 		_observeOnceAndForever: {
 			value: function _observeOnceAndForever() {}
 		},
-		_observeStreams: {
-			value: function _observeStreams() {
+		_observeTicks: {
+			value: function _observeTicks() {
 				var that = this;
 				var apiTick = function apiTick(tick) {
 					that.ticks = that.ticks.concat(tick);
-					that.strategyCtrl.updateTicks(that.ticks);
+					that.ticks.splice(0, 1);
+					that.strategyCtrl.updateTicks({
+						ticks: that.ticks,
+						candles: that.candles
+					});
 					that.observer.emit('bot.tickUpdate', {
 						ticks: that.ticks,
+						candles: that.candles,
 						pip: that.pip
 					});
 				};
 				this.observer.register('api.tick', apiTick);
 				this.runningObservations.push(['api.tick', apiTick]);
+			}
+		},
+		_observeBalance: {
+			value: function _observeBalance() {
+				var that = this;
 				var apiBalance = function apiBalance(balance) {
 					that.balance = balance.balance;
 					that.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
@@ -8716,6 +8745,31 @@
 				}).then(function () {
 					that.api.balance();
 				});
+			}
+		},
+		_observeCandles: {
+			value: function _observeCandles() {
+				var that = this;
+				var apiCandles = function apiCandles(candles) {
+					that.candles = candles;
+				};
+				that.observer.register('api.candles', apiCandles, true, {
+					type: 'candles',
+					unregister: [['api.candles', apiCandles], 'api.tick', 'bot.tickUpdate']
+				});
+				var apiOHLC = function apiOHLC(candle) {
+					that.candles = that.candles.concat(candle);
+					that.candles.splice(0, 1);
+				};
+				this.observer.register('api.ohlc', apiOHLC);
+				this.runningObservations.push(['api.ohlc', apiOHLC]);
+			}
+		},
+		_observeStreams: {
+			value: function _observeStreams() {
+				this._observeTicks();
+				this._observeCandles();
+				this._observeBalance();
 			}
 		},
 		_subscribeProposal: {
@@ -15678,7 +15732,9 @@
 			}
 		},
 		updateTicks: {
-			value: function updateTicks(ticks) {
+			value: function updateTicks(data) {
+				var ticks = data.ticks;
+				var candles = data.candles;
 				if (!this.purchased) {
 					var direction = '';
 					var length = ticks.length;
@@ -15693,11 +15749,13 @@
 					if (this.ready) {
 						this.strategy({
 							direction: direction,
+							candles: candles,
 							ticks: ticks
 						}, this.proposals, this);
 					} else {
 						this.strategy({
 							direction: direction,
+							candles: candles,
 							ticks: ticks
 						}, null, null);
 					}
@@ -17573,6 +17631,7 @@
 		}
 		this.observer = new _observer2.default();
 		View.instance = this;
+		this.chartType = 'area';
 		this.tours = {};
 		this.translator = new _translator2.default();
 		this.tradeInfo = new _tradeInfo2.default();
@@ -17667,13 +17726,6 @@
 							_logger2.default.addLogToQueue('%c' + error.stack, 'color: red');
 						}
 					}
-					console.error({
-						api: api,
-						0: error.message,
-						1: _lzString2.default.compressToBase64(JSON.stringify(error.stack)),
-						2: _lzString2.default.compressToBase64(that.blockly.generatedJs),
-						3: _lzString2.default.compressToBase64(that.blockly.blocksXmlStr)
-					});
 					var message = error.message;
 					$.notify(message, {
 						position: 'bottom right',
@@ -17684,6 +17736,14 @@
 					} else {
 						_logger2.default.addLogToQueue('%cError: ' + message, 'color: red');
 					}
+					var customError = new Error(JSON.stringify({
+						api: api,
+						0: error.message,
+						1: _lzString2.default.compressToBase64(that.blockly.generatedJs),
+						2: _lzString2.default.compressToBase64(that.blockly.blocksXmlStr)
+					}));
+					customError.stack = error.stack;
+					trackJs.track(customError);
 				});
 	
 				var observeForLog = function observeForLog(type, position) {
@@ -17899,11 +17959,16 @@
 		},
 		updateChart: {
 			value: function updateChart(info) {
+				var that = this;
 				var chartOptions = {
-					type: 'area',
-					theme: 'light',
-					ticks: info.ticks
+					type: this.chartType,
+					theme: 'light'
 				};
+				if (this.chartType === 'candlestick') {
+					chartOptions.ticks = info.candles;
+				} else {
+					chartOptions.ticks = info.ticks;
+				}
 				if (this.latestOpenContract) {
 					chartOptions.contract = this.latestOpenContract;
 					if (this.latestOpenContract.is_sold) {
@@ -18010,7 +18075,7 @@
 		totalStake: '',
 		balance: '',
 		tradeTable: [],
-		tradesCount: 10000,
+		tradesCount: 100,
 		tableSize: 5
 	};
 	
@@ -25266,4 +25331,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-478ff3c4f194f001696b.map
+//# sourceMappingURL=bot-eab7a161687821c806ce.map
