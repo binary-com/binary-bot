@@ -52,7 +52,7 @@ StrategyCtrl.prototype = Object.create(null, {
 	updateTicks: {
 		value: function updateTicks(data) {
 			var ticks = data.ticks; 
-			var candles = data.candles; 
+			var ohlc = data.candles; 
 			if ( !this.purchased ) {
 				var direction = '';
 				var length = ticks.length;
@@ -67,13 +67,13 @@ StrategyCtrl.prototype = Object.create(null, {
 				if ( this.ready ) {
 					this.strategy({
 						direction: direction,
-						candles: candles,
+						ohlc: ohlc,
 						ticks: ticks
 					}, this.proposals, this);
 				} else {
 					this.strategy({
 						direction: direction,
-						candles: candles,
+						ohlc: ohlc,
 						ticks: ticks
 					}, null, null);
 				}

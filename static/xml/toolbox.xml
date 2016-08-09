@@ -251,6 +251,8 @@
 		</category>
 		<category name="Strategy" colour="#2a3052" i18n-text="Strategy">
 			<block type="tick"></block>
+			<block type="ticks"></block>
+			<block type="ohlc"></block>
 			<block type="direction"></block>
 			<block type="check_direction"></block>
 			<block type="purchase"></block>

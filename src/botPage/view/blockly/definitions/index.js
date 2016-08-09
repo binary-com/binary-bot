@@ -9,6 +9,8 @@ import './strategy/direction';
 import './strategy/purchase';
 import './strategy/strategy';
 import './strategy/tick';
+import './strategy/ticks';
+import './strategy/ohlc';
 import './finish/result';
 import './finish/check_result';
 import './finish/details';
