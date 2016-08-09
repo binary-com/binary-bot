@@ -377,12 +377,8 @@ View.prototype = Object.create(null, {
 			var chartOptions = {
 				type: this.chartType,
 				theme: 'light',
-				typeChange: function ( type ) {
-					that.chartType = type;
-				}
 			};
 			if ( this.chartType === 'candlestick' ) {
-				console.log(info.candles);
 				chartOptions.ticks = info.candles;
 			} else {
 				chartOptions.ticks = info.ticks;
