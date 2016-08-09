@@ -8,7 +8,7 @@ var tradeInfoSkel = {
 	totalStake: '',
 	balance: '',
 	tradeTable: [],
-	tradesCount: 100,
+	tradesCount: 50,
 	tableSize: 5,
 };
 
