@@ -18108,6 +18108,13 @@
 				api = new LiveApi();
 			}
 			var tokenList = storageManager.getTokenList();
+			if ( tokenList.length === 0 ) {
+				storageManager.removeAllTokens();
+				if ( callback ) {
+					callback();
+				}
+				return;
+			}
 			var token = tokenList[0].token;
 			api.authorize(token)
 				.then(function (response) {
@@ -25259,4 +25266,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-c3ce242f3afbe13a82ff.map
+//# sourceMappingURL=bot-478ff3c4f194f001696b.map
