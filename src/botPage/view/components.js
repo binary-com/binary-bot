@@ -5,7 +5,7 @@ var Components = function Components(){
 		tours: '#tours',
 		logout: '.logout',
 		workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
-		workspace: '.blocklyWorkspace',
+		workspace: '.blocklyWorkspace:first',
 		toolbox: '.blocklyToolboxDiv',
 		group_load: '.group-load',
 		group_reset: '.group-reset',
