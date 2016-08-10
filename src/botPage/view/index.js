@@ -375,6 +375,7 @@ View.prototype = Object.create(null, {
 			var chartOptions = {
 				type: 'area',
 				theme: 'light',
+				defaultRange: 0,
 				ticks: info.ticks,
 			};
 			if (this.latestOpenContract) {
