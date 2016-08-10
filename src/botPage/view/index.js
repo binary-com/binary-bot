@@ -377,16 +377,20 @@ View.prototype = Object.create(null, {
 			var chartOptions = {
 				type: this.chartType,
 				theme: 'light',
+				defaultRange: 0,
+				typeChange: function(type){
+					that.chartType = type;
+				}
 			};
 			if ( this.chartType === 'candlestick' ) {
 				chartOptions.ticks = info.candles;
 			} else {
 				chartOptions.ticks = info.ticks;
-			}
-			if (this.latestOpenContract) {
-				chartOptions.contract = this.latestOpenContract;
-				if (this.latestOpenContract.is_sold) {
-					delete this.latestOpenContract;
+				if (this.latestOpenContract) {
+					chartOptions.contract = this.latestOpenContract;
+					if (this.latestOpenContract.is_sold) {
+						delete this.latestOpenContract;
+					}
 				}
 			}
 			chartOptions.pipSize = Number(Number(info.pip)
