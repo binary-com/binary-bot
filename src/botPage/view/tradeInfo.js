@@ -7,9 +7,8 @@ var tradeInfoSkel = {
 	totalPayout: '',
 	totalStake: '',
 	balance: '',
-	tradeTable: [],
-	tradesCount: 50,
-	tableSize: 5,
+	tradeCount: 0,
+	maxTradeCount: 50,
 };
 
 var TradeInfo = function TradeInfo() {
@@ -41,34 +40,25 @@ TradeInfo.prototype = Object.create(null, {
 					}
 				}
 			}
-			this.show();
 		}
 	},
 	add: {
 		value: function add(_trade) {
 			var trade = _.clone(_trade);
 			trade.number = this.tradeInfo.totalRuns;
-			if (this.tradeInfo.tradeTable.length > this.tradeInfo.tradesCount) {
-				this.tradeInfo.tradeTable.shift();
+			if (this.tradeInfo.tradeCount === this.tradeInfo.maxTradeCount) {
+				$('#tradesDisplay tbody tr:first').remove();
+				this.tradeInfo.tradeCount -= 1;
 			}
-			this.tradeInfo.tradeTable.push(trade);
-			this.update();
-		}
-	},
-	show: {
-		value: function show() {
+			this.tradeInfo.tradeCount += 1;
+			var profit = +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2);
+			var profitColor = (profit<0) ? 'red' : 'green';
+			var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.sell_price + '</td>' + '<td style="color: ' + profitColor + '">' + profit + '</td>' + '</tr>';
 			$('#tradesDisplay tbody')
-				.children()
-				.remove();
-			this.tradeInfo.tradeTable.forEach(function (trade, index) {
-				var profit = +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2);
-				var profitColor = (profit<0) ? 'red' : 'green';
-				var element = '<tr>' + '<td>' + trade.number + '</td>' + '<td>' + trade.transaction_ids.buy + '</td>' + '<td>' + trade.contract_type + '</td>' + '<td>' + trade.entry_tick + '</td>' + '<td>' + trade.exit_tick + '</td>' + '<td>' + trade.buy_price + '</td>' + '<td>' + trade.sell_price + '</td>' + '<td style="color: ' + profitColor + '">' + profit + '</td>' + '</tr>';
-				$('#tradesDisplay tbody')
-					.append(element);
-			});
+				.append(element);
 			$('.table-scroll')
 				.scrollTop($('.table-scroll')[0].scrollHeight);
+			this.update();
 		}
 	}
 });

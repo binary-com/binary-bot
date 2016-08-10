@@ -247,7 +247,6 @@ View.prototype = Object.create(null, {
 			this.startTour();
 			this.addBindings();
 			this.addEventHandlers();
-			this.tradeInfo.show();
 		}
 	},
 	addBindings: {
