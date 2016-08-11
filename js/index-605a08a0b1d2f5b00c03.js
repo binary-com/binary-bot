@@ -10760,6 +10760,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -10771,9 +10773,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -10955,6 +10955,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -10966,9 +10968,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -11150,6 +11150,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11161,9 +11163,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -11345,6 +11345,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11356,9 +11358,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -11540,6 +11540,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11551,9 +11553,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -11735,6 +11735,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11746,9 +11748,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -11930,6 +11930,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11941,9 +11943,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -12125,6 +12125,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12136,9 +12138,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -12320,6 +12320,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12331,9 +12333,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -12515,6 +12515,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12526,9 +12528,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -12710,6 +12710,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12721,9 +12723,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -12905,6 +12905,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12916,9 +12918,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -13100,6 +13100,8 @@
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -13111,9 +13113,7 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
 	};
 
 /***/ },
@@ -28253,4 +28253,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-14658e76650506fc9c39.map
+//# sourceMappingURL=index-605a08a0b1d2f5b00c03.map
