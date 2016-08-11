@@ -188,6 +188,6 @@ module.exports = {
   "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
   "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
   "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts."
+  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 }
 ;

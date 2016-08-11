@@ -11,7 +11,7 @@ Blockly.Blocks.trade = {
 	        .setCheck('Submarket');
 		this.setPreviousStatement(true, null);
 		this.setColour('#2a3052');
-		this.setTooltip(translator.translateText('The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.'));
+		this.setTooltip(translator.translateText('Use this block to choose markets and trade types.'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function (ev) {
