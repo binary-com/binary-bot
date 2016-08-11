@@ -154,7 +154,9 @@ Bot.prototype = Object.create(null, {
 							count: 600,
 							subscribe: 1
 						});
-					});							
+					}, function reject(error){
+						that.observer.emit('api.error', error);
+					});
 				} else {
 					that.api.history(that.tradeOption.symbol, {
 						end: 'latest',
@@ -258,6 +260,8 @@ Bot.prototype = Object.create(null, {
 				forget_all: 'balance'
 			}).then(function(){
 				that.api.balance();
+			}, function reject(error){
+				that.observer.emit('api.error', error);
 			});
 		}
 	},
@@ -317,6 +321,8 @@ Bot.prototype = Object.create(null, {
 				for ( var i in that.tradeOptions ) {
 					that._subscribeProposal(that.tradeOptions[i]);
 				}
+			}, function reject(error){
+				that.observer.emit('api.error', error);
 			});
 		}
 	},
@@ -415,6 +421,8 @@ Bot.prototype = Object.create(null, {
 			.pipe(function(done){
 				that.api._originalApi.unsubscribeFromAllProposals().then(function(response){
 					done();
+				}, function reject(error){
+					that.observer.emit('api.error', error);
 				});
 			})
 			.pipe(function(done){

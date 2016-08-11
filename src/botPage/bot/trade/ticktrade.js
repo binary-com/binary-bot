@@ -28,7 +28,9 @@ Ticktrade.prototype = Object.create(null, {
 				that.observer.emit('ui.log.info', that.translator.translateText('Purchased') + ': ' + contract.longcode);
 				that.observer.emit('trade.purchase', purchasedContract);
 				that.contractId = purchasedContract.contract_id;
-				that.api._originalApi.unsubscribeFromAllProposals();
+				that.api._originalApi.unsubscribeFromAllProposals().then(function(){}, function reject(error){
+					that.observer.emit('api.error', error);
+				});
 				that.subscribeToOpenContract();
 			};
 			this.observer.register('api.buy', apiBuy, true, {
@@ -51,6 +53,8 @@ Ticktrade.prototype = Object.create(null, {
 					that.contractIsSold = true;
 					that.api._originalApi.sellExpiredContracts().then(function(){
 						that.getTheContractInfoAfterSell();
+					}, function reject(error){
+						that.observer.emit('api.error', error);
 					});
 				}
 				if ( contract.sell_price ) {
