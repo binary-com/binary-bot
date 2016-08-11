@@ -15869,6 +15869,8 @@
 		}
 		if ( websocketMock ) {
 			option.websocket = websocketMock;
+		} else {
+			option.keepAlive = true;
 		}
 		var events = {
 			tick: function(){},
@@ -28866,4 +28868,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-fb3a325e2ae73434e904.map
+//# sourceMappingURL=bot-717389a957f4d3b34b1b.map
