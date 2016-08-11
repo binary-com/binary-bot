@@ -419,6 +419,8 @@ View.prototype = Object.create(null, {
 			this.observer.register('bot.stop', function(tradeInfo){
 				$('#runButton').show();
 				$('#stopButton').hide();
+				that.chart.destroy();
+				delete that.chart;
 			});
 
 			this.observer.register('bot.tradeInfo', function(tradeInfo){
