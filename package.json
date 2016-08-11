@@ -18,7 +18,7 @@
   "dependencies": {
     "backbone": "^1.3.3",
     "binary-charts": "^7.14.1",
-    "binary-common-utils": "~1.4.0",
+    "binary-common-utils": "~1.4.1",
     "binary-live-api": "~20.5.0",
     "blockly": "google/blockly.git#ac0e704c699133e57e8a57bd49a971ce01014535",
     "bootstrap": "^3.3.7",
@@ -44,7 +44,7 @@
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.13.2",
     "babel-register": "^6.11.6",
-    "binary-mock-websocket": "~1.1.7",
+    "binary-mock-websocket": "~1.1.8",
     "chai": "^3.5.0",
     "coveralls": "^2.11.12",
     "deep-diff": "^0.3.4",
