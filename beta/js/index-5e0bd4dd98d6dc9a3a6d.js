@@ -52,13 +52,13 @@
 	
 	var _translator2 = _interopRequireDefault(_translator);
 	
-	var _appId = __webpack_require__(420);
+	var _appId = __webpack_require__(424);
 	
 	var _appId2 = _interopRequireDefault(_appId);
 	
 	var _tools = __webpack_require__(306);
 	
-	var _jquery = __webpack_require__(422);
+	var _jquery = __webpack_require__(426);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -10754,14 +10754,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -10773,7 +10775,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -10949,14 +10953,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -10968,7 +10974,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11144,14 +11152,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11163,7 +11173,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11339,14 +11351,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11358,7 +11372,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11534,14 +11550,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11553,7 +11571,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11729,14 +11749,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11748,7 +11770,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11924,14 +11948,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -11943,7 +11969,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12119,14 +12147,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12138,7 +12168,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12314,14 +12346,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12333,7 +12367,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12509,14 +12545,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12528,7 +12566,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12704,14 +12744,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12723,7 +12765,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12899,14 +12943,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -12918,7 +12964,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -13094,14 +13142,16 @@
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
 	  "230b14492d37df00d7485b303e67078db37f5369": "Returns the tick direction received by a strategy block, its value could be \"up\" if the tick is more than before, \"down\" if less than before and empty (\"\") if the tick is equal to the previous tick",
+	  "9cbaeade9a2be956873b50ee394178e4da140740": "Ohlc List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "784ba27b2e50c4862a6b9505b0efdecf7e837c5c": "Purchases a chosen contract. Accepts index to choose between the contracts.",
 	  "910683f4207913f247c0d6987dd4d0ed15b8187f": "Step 2: Strategy",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "88c520a73a83c8dce589b07d01da0e032241e40b": "Tick Value",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "f9319cd2e3dca2de438eb9565eb196e2dc8f04e0": "The trade block that logs in to the binary API and makes the contracts defined by submarket blocks. Accepts index to choose between the accounts.",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "4a13f1d212ca9d79f61b83178afdd28e5cc50717": "Returns the list of ticks",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
@@ -13113,7 +13163,9 @@
 	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit"
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -18261,24 +18313,17 @@
 				return;
 			}
 			var token = tokenList[0].token;
+			var logout = function logout(){
+				storageManager.removeAllTokens();
+				api.disconnect();
+				if ( callback ) {
+					callback();
+				}
+			};
 			api.authorize(token)
 				.then(function (response) {
-					storageManager.removeAllTokens();
-					api.logOut().then(function(){
-						api.disconnect();
-						if ( callback ) {
-							callback();
-						}
-					});
-				}, function reject(response){
-					if ( response.error && response.error.code === 'InvalidToken' ) {
-						api.disconnect();
-						storageManager.removeAllTokens();
-						if ( callback ) {
-							callback();
-						}
-					}
-				});
+					api.logOut().then(logout, logout);
+				}, logout);
 		}
 	};
 
@@ -18370,7 +18415,11 @@
 /* 417 */,
 /* 418 */,
 /* 419 */,
-/* 420 */
+/* 420 */,
+/* 421 */,
+/* 422 */,
+/* 423 */,
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18431,8 +18480,8 @@
 	module.exports = AppId;
 
 /***/ },
-/* 421 */,
-/* 422 */
+/* 425 */,
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -28253,4 +28302,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-605a08a0b1d2f5b00c03.map
+//# sourceMappingURL=index-5e0bd4dd98d6dc9a3a6d.map
