@@ -141,14 +141,12 @@ var inside_strategy = function inside_strategy(blockObject, ev, name) {
 	var topParent = utils.findTopParentBlock(blockObject);
 	if (topParent === null){
 		if ( ev.type === 'move' && Blockly.mainWorkspace.getBlockById(blockObject.id) !== null && !ev.oldParentId ) {
-			console.log(ev);
 			observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
 			blockObject.dispose();
 		}
 	} else {
 		if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
 			observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
-			console.log('unplugged');
 			blockObject.unplug();
 		} else {
 			if (blockObject.type === 'purchase') {
@@ -169,7 +167,7 @@ var inside_finish = function inside_finish(blockObject, ev, name) {
 			observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the finish block'));
 			blockObject.unplug();
 		} else {
-			if (blockObject.type === 'purchase') {
+			if (blockObject.type === 'trade_again') {
 				observer.emit('tour:trade_again');
 			}
 		}

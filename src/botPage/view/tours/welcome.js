@@ -127,7 +127,7 @@ Welcome.prototype = Object.create(null, {
 					that.components.setOpacity('group_summary', 0.3);
 				},
 			}, {
-				content: '<p>' + translator.translateText('Reset your blocks.') + '</p>',
+				content: '<p>' + translator.translateText('Reset the blocks to their initial state.') + '</p>',
 				target: that.components.getUiComponent('group_reset'),
 				closeButton: true,
 				nextButton: true,
@@ -181,6 +181,7 @@ Welcome.prototype = Object.create(null, {
 					that.tour._teardownCurrentStep = function(){};
 					$('#blocker').hide();
 					that.components.setOpacityForAll(1);
+					storageManager.setDone('welcomeFinished');
 					that.stop();
 				},
 				successStep: function successStep(){

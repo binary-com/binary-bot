@@ -7,3 +7,5 @@ submarket
 dropdown
 Ctrl
 Indices
+workspace
+ohlc
