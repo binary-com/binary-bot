@@ -139,23 +139,37 @@ var condition = function condition(_condition, ev, calledByParent) {
 };
 var inside_strategy = function inside_strategy(blockObject, ev, name) {
 	var topParent = utils.findTopParentBlock(blockObject);
-	if (topParent !== null && (topParent.type === 'on_finish' || topParent.type === 'trade')) {
-		observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
-		blockObject.unplug();
-	} else if (topParent !== null && topParent.type === 'on_strategy') {
-		if (blockObject.type === 'purchase') {
-			observer.emit('tour:purchase');
+	if (topParent === null){
+		if ( ev.type === 'move' && Blockly.mainWorkspace.getBlockById(blockObject.id) !== null && !ev.oldParentId ) {
+			observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
+			blockObject.dispose();
+		}
+	} else {
+		if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
+			observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
+			blockObject.unplug();
+		} else {
+			if (blockObject.type === 'purchase') {
+				observer.emit('tour:purchase');
+			}
 		}
 	}
 };
 var inside_finish = function inside_finish(blockObject, ev, name) {
 	var topParent = utils.findTopParentBlock(blockObject);
-	if (topParent !== null && (topParent.type === 'on_strategy' || topParent.type === 'trade')) {
-		observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the finish block'));
-		blockObject.unplug();
-	} else if (topParent !== null && topParent.type === 'on_finish') {
-		if (blockObject.type === 'trade_again') {
-			observer.emit('tour:trade_again');
+	if (topParent === null){
+		if ( ev.type === 'move' && Blockly.mainWorkspace.getBlockById(blockObject.id) !== null && !ev.oldParentId ) {
+			observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the finish block'));
+			blockObject.dispose();
+		}
+	} else {
+		if (topParent.type !== 'on_finish' && !ev.oldParentId) {
+			observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the finish block'));
+			blockObject.unplug();
+		} else {
+			if (blockObject.type === 'trade_again') {
+				observer.emit('tour:trade_again');
+			}
 		}
 	}
 };

@@ -30,7 +30,7 @@ Introduction.prototype = Object.create(null, {
 					that.components.setOpacityForAll(0.3);
 				},
 			}, {
-				content: '<p>' + translator.translateText("You will need to add the blocks to this area which is called the <b>workspace</b>.") + '</p>',
+				content: '<p>' + translator.translateText("This is where you can define your blocks.") + '</p>',
 				target: that.components.getUiComponent('center'),
 				closeButton: true,
 				nextButton: true,
@@ -218,7 +218,7 @@ Introduction.prototype = Object.create(null, {
 				at: 'right center',
 				nextButton: true,
 			}, {
-				content: '<p>' + translator.translateText("The received tick value is in the block <b>tick</b> and the tick direction (up or down) is in the block <b>direction</b>. You can pick them from the <b>Strategy</b> menu") + '</p>',
+				content: '<p>' + translator.translateText("The received tick value is in the block <b>Tick Value</b> and the tick direction (up or down) is in the block <b>Tick Direction</b>. You can pick them from the <b>Strategy</b> menu") + '</p>',
 				target: that.components.getUiComponent('flyout'),
 				closeButton: true,
 				highlightTarget: true,
@@ -277,7 +277,7 @@ Introduction.prototype = Object.create(null, {
 					that.observer.unregister('tour:purchase', this.tour_purchase_added);
 				},
 			}, {
-				content: '<p>' + translator.translateText("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Up/Down</b> type you will have <b>Up</b> and <b>Down</b> options on the purchase block to select from.") + '</p>',
+				content: '<p>' + translator.translateText("Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.") + '</p>',
 				target: that.components.getUiComponent('workspace')
 					.find(that.components.uiComponents.strategy),
 				closeButton: true,

@@ -2,6 +2,7 @@
 import tools from 'binary-common-utils/tools';
 import config from 'const';
 import {asyncChain} from 'binary-common-utils/tools';
+import Observer from 'binary-common-utils/observer';
 
 import ActiveSymbols from './activeSymbols';
 import _ from 'underscore';
@@ -11,6 +12,7 @@ var _Symbol = function _Symbol(api) {
 		return _Symbol.instance;
 	}
 	_Symbol.instance = this;
+	this.observer = new Observer();
 	this.api = api._originalApi;
 	var that = this;
 	this.initPromise = new Promise(function(resolve){
@@ -19,12 +21,16 @@ var _Symbol = function _Symbol(api) {
 				that.api.getActiveSymbolsBrief().then(function(response){
 					that.activeSymbols = new ActiveSymbols(response.active_symbols);
 					done();
+				}, function reject(error){
+					that.observer.emit('api.error', error);
 				});
 			})
 			.pipe(function getAssetIndex(done){
 				that.api.getAssetIndex().then(function(response){
 					that.assetIndex = response.asset_index;
 					done();
+				}, function reject(error){
+					that.observer.emit('api.error', error);
 				});
 			})
 			.pipe(resolve)

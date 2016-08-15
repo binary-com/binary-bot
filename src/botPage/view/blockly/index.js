@@ -215,7 +215,7 @@ _Blockly.prototype = Object.create(null, {
 				window.LoopTrap = 1000;
 				Blockly.JavaScript.INFINITE_LOOP_TRAP =
 					'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-				var code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
+				var code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
 				Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 				var EVAL_BLOCKLY_CODE = eval;
 				this.generatedJs = code;
