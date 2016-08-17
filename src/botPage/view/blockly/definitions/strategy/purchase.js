@@ -2,7 +2,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 import Utils from '../../../blockly/utils';
 var utils = new Utils();
-import relationChecker from '../../relationChecker';
+import RelationChecker from '../../relationChecker';
 import Translator from 'translator';
 var translator = new Translator();
 
@@ -19,6 +19,7 @@ Blockly.Blocks.purchase = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
+		var relationChecker = new RelationChecker();
 		relationChecker.inside_strategy(this, ev, 'Purchase');
 	},
 };
