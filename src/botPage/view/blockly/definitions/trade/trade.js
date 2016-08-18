@@ -2,7 +2,7 @@
 
 import Translator from 'translator';
 var translator = new Translator();
-import relationChecker from '../../relationChecker';
+import RelationChecker from '../../relationChecker';
 Blockly.Blocks.trade = {
 	init: function () {
 		this.appendDummyInput()
@@ -15,6 +15,7 @@ Blockly.Blocks.trade = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function (ev) {
+		var relationChecker = new RelationChecker();
 		relationChecker.trade(this, ev);
 	},
 };

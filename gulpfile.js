@@ -308,10 +308,16 @@ gulp.task('watch', ['build', 'serve'], function () {
 	});
 });
 
-gulp.task('build-mock', function() {
+gulp.task('build-mock-testing', function() {
 	return gulp.src('./src/common/calls.js', {read: false})
 		.pipe(mock())
 		.pipe(gulp.dest('./src/common/mock'));
+});
+
+gulp.task('build-mock-debug', function() {
+	return gulp.src('./src/common/debugCalls.js', {read: false})
+		.pipe(mock())
+		.pipe(gulp.dest('./src/common/debugMock'));
 });
 
 gulp.task('default', ['watch']);

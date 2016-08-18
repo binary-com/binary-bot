@@ -3,7 +3,7 @@
 
 import Translator from 'translator';
 var translator = new Translator();
-import relationChecker from '../../relationChecker';
+import RelationChecker from '../../relationChecker';
 
 Blockly.Blocks.trade_again = {
 	init: function() {
@@ -15,6 +15,7 @@ Blockly.Blocks.trade_again = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
+		var relationChecker = new RelationChecker();
 		relationChecker.inside_finish(this, ev, 'Trade Again');
 	},
 };

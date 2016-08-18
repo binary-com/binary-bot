@@ -47,7 +47,7 @@ Ticktrade.prototype = Object.create(null, {
 			}
 			this.api.proposal_open_contract(this.contractId);
 			var that = this;
-			var apiProposalOpenContract = function(contract){
+			var apiProposalOpenContract = function apiProposalOpenContract(contract){
 				// detect changes and decide what to do when proposal is updated
 				if (contract.is_expired && contract.is_valid_to_sell &&!that.contractIsSold ) {
 					that.contractIsSold = true;

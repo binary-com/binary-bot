@@ -3,7 +3,7 @@
 
 import config from 'const';
 import Bot from '../../../../bot';
-import relationChecker from '../../relationChecker';
+import RelationChecker from '../../relationChecker';
 import Translator from 'translator';
 
 module.exports = function init(){
@@ -47,6 +47,7 @@ module.exports = function init(){
 				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 			},
 			onchange: function(ev){
+				var relationChecker = new RelationChecker();
 				relationChecker.condition(this, ev);
 			},
 		};

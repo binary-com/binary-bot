@@ -1,6 +1,5 @@
 'use strict';
 import 'babel-polyfill';
-import 'blockly';
 import './utils/draggable';
 import Observer from 'binary-common-utils/observer';
 import storageManager from 'binary-common-utils/storageManager';
@@ -24,11 +23,22 @@ window._trackJs = {
 };
 require('trackjs');
 
+/* 
+ * Debug:
+ * import debugWebsocket from 'debugMock/websocket';
+ * import CustomApi from 'binary-common-utils/customApi';
+ * var bot = new Bot(new CustomApi(debugWebsocket));
+ */
 var bot = new Bot();
 var observer = new Observer();
 window.Bot = {
 	start: bot.start.bind(bot),
 	stop: bot.stop.bind(bot),
+	showCode: function(){
+		var view = new View();
+		console.log(view.blockly.generatedJs);
+		console.log(view.blockly.blocksXmlStr);
+	},
 	toggleDebug: logger.toggleDebug.bind(logger),
 	log: function (message, type) {
 		observer.emit('ui.log.'+ type + '.left', message );
