@@ -1,6 +1,6 @@
 {
   "name": "binary-bot",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Visual automation for binary.com",
   "main": "src/bot.js",
   "scripts": {
