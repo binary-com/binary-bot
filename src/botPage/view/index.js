@@ -18,8 +18,8 @@ var View = function View(){
 	if ( View.instance ) {
 		return View.instance;
 	}
-	this.observer = new Observer();
 	View.instance = this;
+	this.observer = new Observer();
 	this.chartType = 'area';
 	this.tours = {};
 	this.translator = new Translator();
@@ -110,6 +110,7 @@ View.prototype = Object.create(null, {
 
 			var that = this;
 
+			/*
 			this.observer.register('ui.error', function showError(error) {
 				var api = true;
 				if (error.stack) {
@@ -162,6 +163,7 @@ View.prototype = Object.create(null, {
 				observeForLog(type, 'right');
 				observeForLog(type, 'left');
 			});
+			*/
 
 		}
 	},
@@ -403,6 +405,15 @@ View.prototype = Object.create(null, {
 			}
 		}
 	},
+	destroyChart: {
+		value: function destroyChart(){
+			if ( this.chart ) {
+				this.chart.destroy();
+				delete this.latestOpenContract;
+				delete this.chart;
+			}
+		}
+	},
 	addEventHandlers: {
 		value: function addEventHandlers() {
 			var that = this;
@@ -419,12 +430,13 @@ View.prototype = Object.create(null, {
 			this.observer.register('bot.stop', function(tradeInfo){
 				$('#runButton').show();
 				$('#stopButton').hide();
-				that.chart.destroy();
-				delete that.chart;
+				that.destroyChart();
 			});
 
 			this.observer.register('bot.tradeInfo', function(tradeInfo){
-				_.extend(that.tradeInfo.tradeInfo, tradeInfo);
+				for ( var key in tradeInfo ) {
+					that.tradeInfo.tradeInfo[key] = tradeInfo[key];
+				}
 				that.tradeInfo.update();
 			});
 

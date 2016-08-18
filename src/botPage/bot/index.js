@@ -88,16 +88,20 @@ Bot.prototype = Object.create(null, {
 	},
 	setTradeOptions: {
 		value: function setTradeOptions() {
+			var tradeOptionToClone;
 			if (!_.isEmpty(this.tradeOption)) {
 				this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
 				var opposites = config.opposites[this.tradeOption.condition];
 				this.tradeOptions = [];
 				for (var key in opposites) {
-					this.tradeOptions.push( _.extend(_.clone(this.tradeOption), {
-							contract_type: Object.keys(opposites[key])[0]
-						}));
-					this.tradeOptions.slice(-1)[0].duration_unit = 't';
-					delete this.tradeOptions.slice(-1)[0].condition;
+					tradeOptionToClone = {};
+					for ( var optKey in this.tradeOption ) {
+						tradeOptionToClone[optKey] = this.tradeOption[optKey];
+					}
+					tradeOptionToClone.contract_type = Object.keys(opposites[key])[0];
+					tradeOptionToClone.duration_unit = 't';
+					delete tradeOptionToClone.condition;
+					this.tradeOptions.push(tradeOptionToClone);
 				}
 			} else {
 				this.tradeOptions = [];
