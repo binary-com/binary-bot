@@ -27,7 +27,7 @@ StrategyCtrl.prototype = Object.create(null, {
 				});
 				return;
 			}
-			var tradeFinish = function(contract){
+			var tradeFinish = function tradeFinish(contract){
 				that.trade.destroy();
 				that.observer.emit('strategy.recovered', {
 					tradeWasRunning: true,
@@ -87,10 +87,10 @@ StrategyCtrl.prototype = Object.create(null, {
 				var contract = this.proposals[option];
 				this.trade = new Ticktrade(this.api);
 				var that = this;
-				var tradeUpdate = function(contract) {
+				var tradeUpdate = function tradeUpdate(contract) {
 					that.observer.emit('strategy.tradeUpdate', contract);
 				};
-				var tradeFinish = function(contract){
+				var tradeFinish = function tradeFinish(contract){
 					that.observer.emit('strategy.finish', contract);
 				};
 				this.observer.register('trade.update', tradeUpdate);

@@ -110,7 +110,6 @@ View.prototype = Object.create(null, {
 
 			var that = this;
 
-			/*
 			this.observer.register('ui.error', function showError(error) {
 				var api = true;
 				if (error.stack) {
@@ -163,7 +162,6 @@ View.prototype = Object.create(null, {
 				observeForLog(type, 'right');
 				observeForLog(type, 'left');
 			});
-			*/
 
 		}
 	},
