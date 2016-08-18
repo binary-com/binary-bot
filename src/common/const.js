@@ -65,6 +65,26 @@ module.exports = {
 			'DIGITUNDER': translator.translateText('Under')
 		}],
 	},
+	supportedDurationTypes: {
+		RISEFALL: [
+			[translator.translateText('Ticks'), 't'],
+			[translator.translateText('Seconds'), 's'],
+			[translator.translateText('Minutes'), 'm'],
+			[translator.translateText('Hours'), 'h'],
+		],
+		ASIANS: [
+			[translator.translateText('Ticks'), 't'],
+		],
+		MATCHESDIFFERS: [
+			[translator.translateText('Ticks'), 't'],
+		],
+		EVENODD: [
+			[translator.translateText('Ticks'), 't'],
+		],
+		OVERUNDER: [
+			[translator.translateText('Ticks'), 't'],
+		],
+	},
 	oppositesHaveBarrier: [
 		'MATCHESDIFFERS',
 		'OVERUNDER',

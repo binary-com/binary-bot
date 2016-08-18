@@ -9,6 +9,7 @@ module.exports = function init(){
 				return '';
 			}
 			var duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
+			var durationType = block.getFieldValue('DURATIONTYPE_LIST');
 			var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
 			var currency = block.getFieldValue('CURRENCY_LIST');
 			var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
@@ -25,6 +26,7 @@ module.exports = function init(){
 			var code = '{\n'+
 				'condition: \'' + opposites + '\',\n'+
 				'duration: ' + duration + ',\n'+
+				'duration_unit: \'' + durationType + '\',\n'+
 				'basis: \'' + payouttype + '\',\n'+
 				'currency: \'' + currency + '\',\n'+
 				'amount: (' + amount + ').toFixed(2),\n'+

@@ -1,5 +1,5 @@
 'use strict';
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zuc7w9
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#t4xqnz
 
 import config from 'const';
 import Bot from '../../../../bot';
@@ -25,7 +25,10 @@ module.exports = function init(){
 					.appendField('> ' + option_names[0] + '/' + option_names[1]);
 				this.appendValueInput("DURATION")
 					.setCheck("Number")
-					.appendField(translator.translateText("Ticks:"));
+					.appendField(translator.translateText("Duration:"));
+				this.appendDummyInput()
+					.appendField("Duration Type:")
+					.appendField(new Blockly.FieldDropdown(config.supportedDurationTypes[opposites]), "DURATIONTYPE_LIST");
 				this.appendDummyInput()
 					.appendField(translator.translateText("Payout:"))
 					.appendField(new Blockly.FieldDropdown(config.lists.PAYOUTTYPE), "PAYOUTTYPE_LIST");

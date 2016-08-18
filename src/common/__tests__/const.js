@@ -11,6 +11,7 @@ describe('Const', function(){
 			'conditionsCategory',
 			'conditionsCategoryName',
 			'conditions',
+			'supportedDurationTypes'
 		]);
 	});
 });

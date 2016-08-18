@@ -23,6 +23,10 @@ var getNumField = function getNumField(block, fieldName) {
 	return '';
 };
 
+var getListField = function getListField(block, fieldName) {
+	return block.getFieldValue(fieldName);
+};
+
 var RelationChecker = function RelationChecker(){
 	if ( RelationChecker.instance ) {
 		return RelationChecker.instance;
@@ -117,13 +121,24 @@ RelationChecker.prototype = Object.create(null, {
 						if ((ev.type === 'change' && ev.element && ev.element === 'field') || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
 							var added = [];
 							var duration = getNumField(_condition, 'DURATION');
-							if (duration !== '') {
-								if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
-									this.observer.emit('ui.log.warn', this.translator.translateText('Number of ticks must be between 5 and 10'));
+							var durationType = getListField(_condition, 'DURATIONTYPE_LIST');
+							if ( duration !== '' ) {
+								if (durationType === 't') {
+									if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
+										this.observer.emit('ui.log.warn', this.translator.translateText('Number of ticks must be between 5 and 10'));
+									} else {
+										this.observer.emit('tour:ticks');
+										added.push('DURATION');
+									}
 								} else {
-									this.observer.emit('tour:ticks');
-									added.push('DURATION');
+									if (!isInteger(duration) || duration < 1) {
+										this.observer.emit('ui.log.warn', this.translator.translateText('Expiry time cannot be equal to start time'));
+									} else {
+										this.observer.emit('tour:ticks');
+										added.push('DURATION');
+									}
 								}
+
 							}
 							var amount = getNumField(_condition, 'AMOUNT');
 							if (amount !== '') {
