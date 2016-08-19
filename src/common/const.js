@@ -44,6 +44,16 @@ module.exports = {
 		}, {
 			'PUT': translator.translateText('Fall')
 		}],
+		HIGHERLOWER: [{
+			'CALL': translator.translateText('Rise')
+		}, {
+			'PUT': translator.translateText('Fall')
+		}],
+		TOUCHNOTOUCH: [{
+			'ONETOUCH': translator.translateText('Touch')
+		}, {
+			'NOTOUCH': translator.translateText('No Touch')
+		}],
 		ASIANS: [{
 			'ASIANU': translator.translateText('Asian Up')
 		}, {
@@ -65,10 +75,25 @@ module.exports = {
 			'DIGITUNDER': translator.translateText('Under')
 		}],
 	},
-	supportedDurationTypes: {
+	barrierTypes: [
+		['Barrier Offset +', '+'],
+		['Barrier Offset -', '-'],
+		['Barrier', ''],
+	],
+	durationTypes: {
 		RISEFALL: [
 			[translator.translateText('Ticks'), 't'],
 			[translator.translateText('Seconds'), 's'],
+			[translator.translateText('Minutes'), 'm'],
+			[translator.translateText('Hours'), 'h'],
+		],
+		HIGHERLOWER: [
+			[translator.translateText('Ticks'), 't'],
+			[translator.translateText('Seconds'), 's'],
+			[translator.translateText('Minutes'), 'm'],
+			[translator.translateText('Hours'), 'h'],
+		],
+		TOUCHNOTOUCH: [
 			[translator.translateText('Minutes'), 'm'],
 			[translator.translateText('Hours'), 'h'],
 		],
@@ -85,12 +110,17 @@ module.exports = {
 			[translator.translateText('Ticks'), 't'],
 		],
 	},
-	oppositesHaveBarrier: [
+	hasPrediction: [
 		'MATCHESDIFFERS',
 		'OVERUNDER',
 	],
+	hasBarrierOffset: [
+		'HIGHERLOWER',
+		'TOUCHNOTOUCH',
+	],
 	conditionsCategory: {
-		callput: ['risefall'],
+		callput: ['risefall', 'higherlower'],
+		touchnotouch: ['touchnotouch'],
 		asian: ['asians'],
 		digits: ['matchesdiffers', 'evenodd', 'overunder']
 	},
@@ -98,6 +128,7 @@ module.exports = {
 		callput: translator.translateText('Up/Down'),
 		asian: translator.translateText('Asians'),
 		digits: translator.translateText('Digits'),
+		touchnotouch: translator.translateText('Touch/No Touch'),
 	},
-	conditions: ['risefall', 'asians', 'matchesdiffers', 'evenodd', 'overunder']
+	conditions: ['risefall', 'higherlower', 'touchnotouch', 'asians', 'matchesdiffers', 'evenodd', 'overunder']
 };

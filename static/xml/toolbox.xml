@@ -240,6 +240,9 @@
 			<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
 				<block type="risefall"></block>
 			</category>
+			<category name="Touch/No Touch" colour="#2a3052" i18n-text="Touch/No Touch">
+				<block type="touchnotouch"></block>
+			</category>
 			<category name="Asians" colour="#2a3052" i18n-text="Asians">
 				<block type="asians"></block>
 			</category>

@@ -58,7 +58,7 @@ describe('symbol', function() {
 		});
 		it('getAllowedCategoryNames returns allowed category names', function(){
 			expect(symbol.getAllowedCategoryNames('R_100')).to.be.ok
-				.and.to.have.all.members([ 'Up/Down', 'Digits', 'Asians' ]);
+				.and.to.have.all.members([ 'Up/Down', 'Digits', 'Asians', 'Touch/No Touch' ]);
 			expect(symbol.getAllowedCategoryNames('FAKE')).to.be.empty;
 		});
 		it('getCategoryNameForCondition returns category name of a condition', function(){
@@ -85,13 +85,13 @@ describe('symbol', function() {
 		});
 		it('getAllowedConditionsForSymbol returns allowed conditions for a symbol', function(){
 			expect(symbol.getAllowedConditionsForSymbol('R_100'))
-				.to.have.all.members([ 'risefall', 'matchesdiffers', 'evenodd', 'overunder', 'asians' ]);
+				.to.have.all.members([ 'risefall', 'higherlower', 'matchesdiffers', 'evenodd', 'overunder', 'asians', 'touchnotouch' ]);
 			expect(symbol.getAllowedConditionsForSymbol('fake'))
 				.to.be.empty;
 		});
 		it('getAllowedCategoriesForSymbol returns allowed categories for a symbol', function(){
 			expect(symbol.getAllowedCategoriesForSymbol('R_100'))
-				.to.have.all.members([ 'callput', 'digits', 'asian' ]);
+				.to.have.all.members([ 'callput', 'digits', 'asian', 'touchnotouch' ]);
 			expect(symbol.getAllowedCategoriesForSymbol('fake'))
 				.to.be.empty;
 		});
