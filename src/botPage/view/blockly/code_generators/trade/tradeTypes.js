@@ -13,7 +13,7 @@ module.exports = function init(){
 			var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
 			var currency = block.getFieldValue('CURRENCY_LIST');
 			var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
-			var prediction, barrierOffset, barrierOffsetType;
+			var prediction, barrierOffset, barrierOffsetType, secondBarrierOffset, secondBarrierOffsetType;
 			if ( config.hasPrediction.indexOf(opposites) > -1 ) {
 				prediction = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
 				if ( prediction === '' ) {
@@ -24,6 +24,13 @@ module.exports = function init(){
 				barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
 				barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
 				if ( barrierOffset === '' ) {
+					throw {message: 'All trade types are required'};
+				}
+			}
+			if ( config.hasSecondBarrierOffset.indexOf(opposites) > -1 ) {
+				secondBarrierOffset = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
+				secondBarrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
+				if ( secondBarrierOffset === '' ) {
 					throw {message: 'All trade types are required'};
 				}
 			}
@@ -39,6 +46,7 @@ module.exports = function init(){
 				'amount: (' + amount + ').toFixed(2),\n'+
 				((config.hasPrediction.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
 				((config.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffset !== '' )? 'barrier: \'' + barrierOffsetType + barrierOffset + '\',\n' : '' );
+				((config.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffset !== '' )? 'barrier: \'' + secondBarrierOffsetType + secondBarrierOffset + '\',\n' : '' );
 			return code;
 		};
 	});

@@ -243,6 +243,10 @@
 			<category name="Touch/No Touch" colour="#2a3052" i18n-text="Touch/No Touch">
 				<block type="touchnotouch"></block>
 			</category>
+			<category name="In/Out" colour="#2a3052" i18n-text="In/Out">
+				<block type="endsinout"></block>
+				<block type="staysinout"></block>
+			</category>
 			<category name="Asians" colour="#2a3052" i18n-text="Asians">
 				<block type="asians"></block>
 			</category>

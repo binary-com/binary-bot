@@ -4,7 +4,7 @@
 import config from 'const';
 import RelationChecker from '../../relationChecker';
 import Translator from 'translator';
-import {duration, payout, prediction, title, barrierOffset} from './components';
+import {duration, payout, prediction, title, barrierOffset, secondBarrierOffset} from './components';
 
 module.exports = function init(){
 	var translator = new Translator();
@@ -25,6 +25,10 @@ module.exports = function init(){
 				}
 				if ( config.hasBarrierOffset.indexOf(opposites) > -1 ) {
 					barrierOffset(this, opposites);
+				}
+				if ( config.hasSecondBarrierOffset.indexOf(opposites) > -1 ) {
+					barrierOffset(this, opposites);
+					secondBarrierOffset(this, opposites);
 				}
 				this.setInputsInline(false);
 				this.setPreviousStatement(true, "Condition");

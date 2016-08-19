@@ -54,6 +54,16 @@ module.exports = {
 		}, {
 			'NOTOUCH': translator.translateText('No Touch')
 		}],
+		ENDSINOUT: [{
+			'EXPIRYMISS': translator.translateText('Ends In')
+		}, {
+			'EXPIRYRANGE': translator.translateText('Ends Out')
+		}],
+		STAYSINOUT: [{
+			'RANGE': translator.translateText('Stays In')
+		}, {
+			'UPORDOWN': translator.translateText('Goes Out')
+		}],
 		ASIANS: [{
 			'ASIANU': translator.translateText('Asian Up')
 		}, {
@@ -97,6 +107,14 @@ module.exports = {
 			[translator.translateText('Minutes'), 'm'],
 			[translator.translateText('Hours'), 'h'],
 		],
+		ENDSINOUT: [
+			[translator.translateText('Minutes'), 'm'],
+			[translator.translateText('Hours'), 'h'],
+		],
+		STAYSINOUT: [
+			[translator.translateText('Minutes'), 'm'],
+			[translator.translateText('Hours'), 'h'],
+		],
 		ASIANS: [
 			[translator.translateText('Ticks'), 't'],
 		],
@@ -118,9 +136,15 @@ module.exports = {
 		'HIGHERLOWER',
 		'TOUCHNOTOUCH',
 	],
+	hasSecondBarrierOffset: [
+		'ENDSINOUT',
+		'STAYSINOUT',
+	],
 	conditionsCategory: {
 		callput: ['risefall', 'higherlower'],
 		touchnotouch: ['touchnotouch'],
+		endsinout: ['endsinout'],
+		staysinout: ['staysinout'],
 		asian: ['asians'],
 		digits: ['matchesdiffers', 'evenodd', 'overunder']
 	},
@@ -129,6 +153,8 @@ module.exports = {
 		asian: translator.translateText('Asians'),
 		digits: translator.translateText('Digits'),
 		touchnotouch: translator.translateText('Touch/No Touch'),
+		endsinout: translator.translateText('Ends In/Out'),
+		staysinout: translator.translateText('Stays In/Goes Out'),
 	},
-	conditions: ['risefall', 'higherlower', 'touchnotouch', 'asians', 'matchesdiffers', 'evenodd', 'overunder']
+	conditions: ['risefall', 'higherlower', 'touchnotouch', 'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder']
 };

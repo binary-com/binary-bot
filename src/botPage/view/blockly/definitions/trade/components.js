@@ -36,10 +36,16 @@ function barrierOffset(block, opposites) {
 		.appendField(new Blockly.FieldDropdown(config.barrierTypes), "BARRIEROFFSETTYPE_LIST");
 }
 
+function secondBarrierOffset(block, opposites) {
+	block.appendValueInput("SECONDBARRIEROFFSET")
+		.setCheck("Number")
+		.appendField(new Blockly.FieldDropdown(config.barrierTypes), "SECONDBARRIEROFFSETTYPE_LIST");
+}
+
 function prediction(block, opposites){
 	block.appendValueInput("PREDICTION")
 		.setCheck("Number")
 		.appendField(translator.translateText("Prediction:"));
 }
 
-export {duration, payout, prediction, title, barrierOffset};
+export {duration, payout, prediction, title, barrierOffset, secondBarrierOffset};
