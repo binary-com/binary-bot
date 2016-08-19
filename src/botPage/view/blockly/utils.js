@@ -19,15 +19,18 @@ Utils.prototype = Object.create(null, {
 	},
 	findTopParentBlock: {
 		value: function findTopParentBlock(block) {
-			 var pblock = block.parentBlock_;
-			 if (pblock === null) {
-							 return null;
-			 }
-			 while (pblock !== null) {
-							 block = pblock;
-							 pblock = block.parentBlock_;
-			 }
-			 return block;
+			var pblock = block.parentBlock_;
+			if (pblock === null) {
+				return null;
+			}
+			while (pblock !== null ) {
+				if ( pblock.type === 'trade' ) {
+					return pblock;
+				}
+				block = pblock;
+				pblock = block.parentBlock_;
+			}
+			return block;
 		}
 	},
 	addPurchaseOptions: {
