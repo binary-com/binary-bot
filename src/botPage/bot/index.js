@@ -64,21 +64,18 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			this.symbolStr = '';
 			this.balanceStr = '';
-				this.api._originalApi.send({
-					forget_all: 'balance'
-				}).then(function(){
-					that.api.balance().then(function (){
-						that.setTheInitialConditions().then(function(){
-							if ( __startTrading ) {
-								that._startTrading();
-							}
-						});
-					}, function reject(error){
-						that.observer.emit('api.error', error);
-					});
-				}, function reject(error){
-					that.observer.emit('api.error', error);
+			this.api._originalApi.send({
+				forget_all: 'balance'
+			}).then(function(){
+				that.api.balance();
+				that.setTheInitialConditions().then(function(){
+					if ( __startTrading ) {
+						that._startTrading();
+					}
 				});
+			}, function reject(error){
+				that.observer.emit('api.error', error);
+			});
 		}
 	},
 	recoverFromDisconnect: {
@@ -251,10 +248,12 @@ Bot.prototype = Object.create(null, {
 				var apiTick = function apiTick(tick){
 					that.ticks = that.ticks.concat(tick);
 					that.ticks.splice(0,1);
-					that.strategyCtrl.updateTicks({
-						ticks: that.ticks,
-						candles: that.candles,
-					});
+					if ( that.running ) {
+						that.strategyCtrl.updateTicks({
+							ticks: that.ticks,
+							candles: that.candles,
+						});
+					}
 					that.observer.emit('bot.tickUpdate', {
 						ticks: that.ticks,
 						candles: that.candles,
