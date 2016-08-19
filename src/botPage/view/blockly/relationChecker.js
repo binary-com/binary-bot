@@ -119,7 +119,6 @@ RelationChecker.prototype = Object.create(null, {
 					this.observer.emit('tour:condition');
 					if (!calledByParent) {
 						if ((ev.type === 'change' && ev.element && ev.element === 'field') || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
-							var added = [];
 							var duration = getNumField(_condition, 'DURATION');
 							var durationType = getListField(_condition, 'DURATIONTYPE_LIST');
 							if ( duration !== '' ) {
@@ -128,39 +127,29 @@ RelationChecker.prototype = Object.create(null, {
 										this.observer.emit('ui.log.warn', this.translator.translateText('Number of ticks must be between 5 and 10'));
 									} else {
 										this.observer.emit('tour:ticks');
-										added.push('DURATION');
 									}
 								} else {
 									if (!isInteger(duration) || duration < 1) {
 										this.observer.emit('ui.log.warn', this.translator.translateText('Expiry time cannot be equal to start time'));
 									} else {
 										this.observer.emit('tour:ticks');
-										added.push('DURATION');
 									}
 								}
 
-							}
-							var amount = getNumField(_condition, 'AMOUNT');
-							if (amount !== '') {
-								added.push('AMOUNT');
 							}
 							var prediction = getNumField(_condition, 'PREDICTION');
 							if (prediction !== '') {
 								if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
 									this.observer.emit('ui.log.warn', this.translator.translateText('Prediction must be one digit'));
-								} else {
-									added.push('PREDICTION');
 								}
 							}
-							if (added.indexOf('AMOUNT') >= 0 && added.indexOf('DURATION') >= 0) {
-								if (_condition.inputList.slice(-1)[0].name === 'PREDICTION') {
-									if (added.indexOf('PREDICTION') >= 0) {
-										this.observer.emit('tour:options');
-									}
-								} else {
-									this.observer.emit('tour:options');
+							for ( var i in _condition.inputList ) {
+								if ( _condition.inputList[i].name !== '' && _condition.getInputTargetBlock(_condition.inputList[i].name) === null ) {
+									this.observer.emit('ui.log.warn', this.translator.translateText('You must add all fields to the condition block'));
+									return;
 								}
 							}
+							this.observer.emit('tour:options');
 						}
 					}
 				}
