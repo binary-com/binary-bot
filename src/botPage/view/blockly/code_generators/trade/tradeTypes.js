@@ -13,23 +13,21 @@ module.exports = function init(){
 			var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
 			var currency = block.getFieldValue('CURRENCY_LIST');
 			var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
-			var prediction, barrierOffset, barrierOffsetType, secondBarrierOffset, secondBarrierOffsetType;
+			var prediction, barrierOffset, secondBarrierOffset;
 			if ( config.hasPrediction.indexOf(opposites) > -1 ) {
 				prediction = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
 				if ( prediction === '' ) {
 					throw {message: 'All trade types are required'};
 				}
 			}
-			if ( config.hasBarrierOffset.indexOf(opposites) > -1 ) {
+			if ( config.hasBarrierOffset.indexOf(opposites) > -1 || config.hasSecondBarrierOffset.indexOf(opposites) > -1 ) {
 				barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
-				barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
 				if ( barrierOffset === '' ) {
 					throw {message: 'All trade types are required'};
 				}
 			}
 			if ( config.hasSecondBarrierOffset.indexOf(opposites) > -1 ) {
 				secondBarrierOffset = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
-				secondBarrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
 				if ( secondBarrierOffset === '' ) {
 					throw {message: 'All trade types are required'};
 				}
@@ -45,8 +43,8 @@ module.exports = function init(){
 				'currency: \'' + currency + '\',\n'+
 				'amount: (' + amount + ').toFixed(2),\n'+
 				((config.hasPrediction.indexOf(opposites) > -1 && prediction !== '' )? 'barrier: ' + prediction + ',\n' : '' )+
-				((config.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffset !== '' )? 'barrier: \'' + barrierOffsetType + barrierOffset + '\',\n' : '' );
-				((config.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffset !== '' )? 'barrier: \'' + secondBarrierOffsetType + secondBarrierOffset + '\',\n' : '' );
+				((config.hasSecondBarrierOffset.indexOf(opposites) > -1 || config.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffset !== '' )? 'barrier: \'' + barrierOffset + '\',\n' : '' )+
+				((config.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffset !== '' )? 'barrier2: \'' + secondBarrierOffset + '\',\n' : '' );
 			return code;
 		};
 	});

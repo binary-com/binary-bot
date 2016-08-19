@@ -30,16 +30,19 @@ function payout(block, opposites){
 		.appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), "CURRENCY_LIST");
 }
 
-function barrierOffset(block, opposites) {
+function barrierOffset(block, opposites, name) {
+	if ( !name ) {
+		name = translator.translateText("Barrier Offset:");
+	}
 	block.appendValueInput("BARRIEROFFSET")
-		.setCheck("Number")
-		.appendField(new Blockly.FieldDropdown(config.barrierTypes), "BARRIEROFFSETTYPE_LIST");
+		.setCheck("BarrierOffset")
+		.appendField(name);
 }
 
 function secondBarrierOffset(block, opposites) {
 	block.appendValueInput("SECONDBARRIEROFFSET")
-		.setCheck("Number")
-		.appendField(new Blockly.FieldDropdown(config.barrierTypes), "SECONDBARRIEROFFSETTYPE_LIST");
+		.setCheck("BarrierOffset")
+		.appendField(translator.translateText("Low Barrier Offset:"));
 }
 
 function prediction(block, opposites){

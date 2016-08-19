@@ -238,12 +238,16 @@
 		<!--Markets-->
 		<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
 			<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
+				<block type="barrier_offset"></block>
 				<block type="risefall"></block>
+				<block type="higherlower"></block>
 			</category>
 			<category name="Touch/No Touch" colour="#2a3052" i18n-text="Touch/No Touch">
+				<block type="barrier_offset"></block>
 				<block type="touchnotouch"></block>
 			</category>
 			<category name="In/Out" colour="#2a3052" i18n-text="In/Out">
+				<block type="barrier_offset"></block>
 				<block type="endsinout"></block>
 				<block type="staysinout"></block>
 			</category>
@@ -269,6 +273,7 @@
 			<block type="trade_again"></block>
 		</category>
 		<category name="Tools" colour="#2a3052" i18n-text="Tools">
+			<block type="barrier_offset_sign"></block>
 			<block type="balance"></block>
 			<block type="total_profit"></block>
 			<block type="notify"></block>

@@ -71,6 +71,8 @@ module.exports = {
   "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
   "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
   "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
+  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
   "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
   "7d7932bcc2e262ae98cf09dc5445130fb3881769": "No Touch",
   "a16814a48ec58c2e24ba224a80921a5c02361abe": "Ends In",
@@ -194,13 +196,17 @@ module.exports = {
   "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
   "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
   "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
   "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
   "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
+  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
+  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
   "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
   "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
   "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
   "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
   "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
   "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
 }
 ;

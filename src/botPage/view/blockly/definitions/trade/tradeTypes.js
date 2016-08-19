@@ -27,7 +27,8 @@ module.exports = function init(){
 					barrierOffset(this, opposites);
 				}
 				if ( config.hasSecondBarrierOffset.indexOf(opposites) > -1 ) {
-					barrierOffset(this, opposites);
+					barrierOffset(this, opposites, translator.translateText('High Barrier Offset:'));
+					window.block = this;
 					secondBarrierOffset(this, opposites);
 				}
 				this.setInputsInline(false);

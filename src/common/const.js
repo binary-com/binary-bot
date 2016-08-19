@@ -45,9 +45,9 @@ module.exports = {
 			'PUT': translator.translateText('Fall')
 		}],
 		HIGHERLOWER: [{
-			'CALL': translator.translateText('Rise')
+			'CALL': translator.translateText('Higher')
 		}, {
-			'PUT': translator.translateText('Fall')
+			'PUT': translator.translateText('Lower')
 		}],
 		TOUCHNOTOUCH: [{
 			'ONETOUCH': translator.translateText('Touch')
@@ -86,9 +86,8 @@ module.exports = {
 		}],
 	},
 	barrierTypes: [
-		['Barrier Offset +', '+'],
-		['Barrier Offset -', '-'],
-		['Barrier', ''],
+		['+', '+'],
+		['-', '-'],
 	],
 	durationTypes: {
 		RISEFALL: [

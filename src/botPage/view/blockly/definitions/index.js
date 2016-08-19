@@ -1,5 +1,6 @@
 'use strict';
 import './trade/trade';
+import './trade/barrierOffset';
 import markets from './trade/markets';
 import tradeTypes from './trade/tradeTypes';
 import './tools/balance';
