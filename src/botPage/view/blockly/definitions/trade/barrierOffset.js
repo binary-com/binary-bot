@@ -16,5 +16,9 @@ Blockly.Blocks.barrier_offset = {
 		this.setColour("#dedede");
 		this.setTooltip(translator.translateText('Add sign to a number to make a Barrier Offset.'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	}
+	},
+	onchange: function(ev){
+		var relationChecker = new RelationChecker();
+		relationChecker.inside_trade(this, ev, 'Barrier Offset');
+	},
 };

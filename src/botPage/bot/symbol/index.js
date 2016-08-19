@@ -41,16 +41,16 @@ var _Symbol = function _Symbol(api) {
 _Symbol.prototype = Object.create(null, {
 	getAllowedConditionsForSymbol: {
 		value: function getAllowedConditionsForSymbol(symbol) {
-			return this.getAllowedForSymbol(symbol).conditions;
+			return this._getAllowedConditionsOrCategoriesForSymbol(symbol).conditions;
 		}
     },
     getAllowedCategoriesForSymbol: {
     	value: function getAllowedCategoriesForSymbol(symbol) {
-	    	return this.getAllowedForSymbol(symbol).categories;
+	    	return this._getAllowedConditionsOrCategoriesForSymbol(symbol).categories;
 	    }
     },
-	getAllowedForSymbol: {
-		value: function getAllowedForSymbol(symbol) {
+	_getAllowedConditionsOrCategoriesForSymbol: {
+		value: function _getAllowedConditionsOrCategoriesForSymbol(symbol) {
 			var allowedConditions = [];
 			var allowedCategories = [];
 			this.assetIndex.forEach(function(index){

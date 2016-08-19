@@ -109,6 +109,7 @@ module.exports = {
   "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
   "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
   "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
   "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
   "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
   "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",

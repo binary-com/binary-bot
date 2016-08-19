@@ -167,6 +167,22 @@ RelationChecker.prototype = Object.create(null, {
 			}
 		}
 	},
+	inside_trade: {
+		value: function inside_strategy(blockObject, ev, name) {
+			var topParent = this.utils.findTopParentBlock(blockObject);
+			if (topParent === null){
+				if ( ev.type === 'move' && Blockly.mainWorkspace.getBlockById(blockObject.id) !== null && !ev.oldParentId ) {
+					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the trade block'));
+					blockObject.dispose();
+				}
+			} else {
+				if (topParent.type !== 'trade' && !ev.oldParentId) {
+					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the trade block'));
+					blockObject.unplug();
+				}
+			}
+		}
+	},
 	inside_strategy: {
 		value: function inside_strategy(blockObject, ev, name) {
 			var topParent = this.utils.findTopParentBlock(blockObject);
