@@ -14,6 +14,7 @@ var _Symbol = function _Symbol(api) {
 	_Symbol.instance = this;
 	this.observer = new Observer();
 	this.api = api._originalApi;
+	this.assetIndex = {};
 	var that = this;
 	this.initPromise = new Promise(function(resolve){
 		tools.asyncChain()
@@ -27,7 +28,7 @@ var _Symbol = function _Symbol(api) {
 			})
 			.pipe(function getAssetIndex(done){
 				that.api.getAssetIndex().then(function(response){
-					that.assetIndex = response.asset_index;
+					that._parseAssetIndex(response.asset_index);
 					done();
 				}, function reject(error){
 					that.observer.emit('api.error', error);
@@ -39,31 +40,47 @@ var _Symbol = function _Symbol(api) {
 };
 
 _Symbol.prototype = Object.create(null, {
+	_parseAssetIndex: {
+		value: function _parseAssetIndex(assetIndex){
+			for ( var i in assetIndex ) {
+				this.assetIndex[assetIndex[i][0].toLowerCase()] = {};
+				for ( var j in assetIndex[i][2] ) {
+					this.assetIndex[assetIndex[i][0].toLowerCase()][assetIndex[i][2][j][0].toLowerCase()] = assetIndex[i][2][j][2];
+				}
+			}
+		}
+	},
+	getLimitation: {
+		value: function getLimitation(symbol, condition) {
+			var category = this.getCategoryForCondition(condition);
+			return {
+				minDuration: this.assetIndex[symbol][category],
+			};
+		}
+	},
 	getAllowedConditionsForSymbol: {
 		value: function getAllowedConditionsForSymbol(symbol) {
 			return this._getAllowedConditionsOrCategoriesForSymbol(symbol).conditions;
 		}
-    },
-    getAllowedCategoriesForSymbol: {
-    	value: function getAllowedCategoriesForSymbol(symbol) {
-	    	return this._getAllowedConditionsOrCategoriesForSymbol(symbol).categories;
-	    }
-    },
+	},
+	getAllowedCategoriesForSymbol: {
+		value: function getAllowedCategoriesForSymbol(symbol) {
+			return this._getAllowedConditionsOrCategoriesForSymbol(symbol).categories;
+		}
+	},
 	_getAllowedConditionsOrCategoriesForSymbol: {
 		value: function _getAllowedConditionsOrCategoriesForSymbol(symbol) {
 			var allowedConditions = [];
 			var allowedCategories = [];
-			this.assetIndex.forEach(function(index){
-				if (index[0].toLowerCase() === symbol.toLowerCase()) {
-					index[2].forEach(function(conditionInfo){
-						var conditionName = conditionInfo[0];
-						if ( config.conditionsCategory.hasOwnProperty(conditionName) ) {
-							allowedConditions = allowedConditions.concat(config.conditionsCategory[conditionName]);
-							allowedCategories.push(conditionName);
-						}
-					});
+			var index = this.assetIndex[symbol.toLowerCase()];
+			if ( index ) {
+				for ( var conditionName in config.conditionsCategory ) {
+					if ( index.hasOwnProperty(conditionName) ) {
+						allowedConditions = allowedConditions.concat(config.conditionsCategory[conditionName]);
+						allowedCategories.push(conditionName);
+					}
 				}
-			});
+			}
 			return {
 				conditions: allowedConditions,
 				categories: allowedCategories
@@ -119,28 +136,6 @@ _Symbol.prototype = Object.create(null, {
 			return result;
 		}
 	},
-	addMarketsToXml: {
-		value: function addMarketsToXml(xml){
-			var xmlStr = tools.xmlToStr(xml);
-			var marketXml = tools.createXmlFromMarket(this.activeSymbols.getMarkets());
-			return tools.strToXml(xmlStr.replace('<!--Markets-->', marketXml));
-		}
-	},
-	makeProposalsFromOptions: {
-		value: function makeProposalsFromOptions(options){
-			var proposals = {};
-			var symbols = this.activeSymbols.getSymbols();
-			for(var symbol in symbols) {
-				proposals[symbol] = [];
-				for(var option in options) {
-					var newOption = _.clone(options[option]);
-					newOption.symbol = symbol;
-					proposals[symbol].push(newOption);
-				}
-			}
-			return proposals;
-		}
-	}
 });
 
 module.exports = _Symbol;

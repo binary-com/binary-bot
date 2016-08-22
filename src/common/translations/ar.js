@@ -106,11 +106,11 @@ module.exports = {
   "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
   "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
   "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
   "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
   "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
   "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
-  "2407a958dfc506e6ae4a473147d542734065f387": "You must add all fields to the condition block",
-  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
+  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
   "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
   "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
   "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
@@ -159,6 +159,7 @@ module.exports = {
   "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
   "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
   "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
   "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
   "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
   "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -208,7 +209,6 @@ module.exports = {
   "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
   "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
   "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
 }
 ;

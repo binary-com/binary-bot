@@ -273,7 +273,7 @@
 			<block type="trade_again"></block>
 		</category>
 		<category name="Tools" colour="#2a3052" i18n-text="Tools">
-			<block type="barrier_offset_sign"></block>
+			<block type="barrier_offset"></block>
 			<block type="balance"></block>
 			<block type="total_profit"></block>
 			<block type="notify"></block>

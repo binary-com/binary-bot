@@ -3,6 +3,7 @@ import config from 'const';
 import Bot from '../../bot';
 import Translator from 'translator';
 import Observer from 'binary-common-utils/observer';
+import tools from 'binary-common-utils/tools';
 import Utils from './utils';
 
 var isInteger = function isInteger(amount) {
@@ -122,8 +123,14 @@ RelationChecker.prototype = Object.create(null, {
 							var duration = getNumField(_condition, 'DURATION');
 							var durationType = getListField(_condition, 'DURATIONTYPE_LIST');
 							if ( duration !== '' ) {
+								var minDuration = this.bot.symbol.getLimitation(_condition.parentBlock_.type, _condition.type).minDuration;
+								if ( !tools.durationAccepted(duration+durationType, minDuration) ) {
+									this.observer.emit('ui.log.warn', this.translator.translateText('Minimum duration is') + ' ' + tools.expandDuration(minDuration) );
+								} else {
+									this.observer.emit('tour:ticks');
+								}
 								if (durationType === 't') {
-									if (!isInteger(duration) || !isInRange(duration, 5, 15)) {
+									if (!isInteger(duration) || !isInRange(duration, 5, 10)) {
 										this.observer.emit('ui.log.warn', this.translator.translateText('Number of ticks must be between 5 and 10'));
 									} else {
 										this.observer.emit('tour:ticks');
@@ -131,11 +138,8 @@ RelationChecker.prototype = Object.create(null, {
 								} else {
 									if (!isInteger(duration) || duration < 1) {
 										this.observer.emit('ui.log.warn', this.translator.translateText('Expiry time cannot be equal to start time'));
-									} else {
-										this.observer.emit('tour:ticks');
 									}
 								}
-
 							}
 							var prediction = getNumField(_condition, 'PREDICTION');
 							if (prediction !== '') {
@@ -145,7 +149,6 @@ RelationChecker.prototype = Object.create(null, {
 							}
 							for ( var i in _condition.inputList ) {
 								if ( _condition.inputList[i].name !== '' && _condition.getInputTargetBlock(_condition.inputList[i].name) === null ) {
-									this.observer.emit('ui.log.warn', this.translator.translateText('You must add all fields to the condition block'));
 									return;
 								}
 							}
@@ -156,17 +159,12 @@ RelationChecker.prototype = Object.create(null, {
 			}
 		}
 	},
-	inside_trade: {
-		value: function inside_strategy(blockObject, ev, name) {
+	inside_condition: {
+		value: function inside_condition(blockObject, ev, name) {
 			var topParent = this.utils.findTopParentBlock(blockObject);
-			if (topParent === null){
-				if ( ev.type === 'move' && Blockly.mainWorkspace.getBlockById(blockObject.id) !== null && !ev.oldParentId ) {
-					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the trade block'));
-					blockObject.dispose();
-				}
-			} else {
-				if (topParent.type !== 'trade' && !ev.oldParentId) {
-					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the trade block'));
+			if (topParent !== null){
+				if (config.conditions.indexOf(blockObject.parentBlock_.type) < 0 && !ev.oldParentId) {
+					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added to the condition block'));
 					blockObject.unplug();
 				}
 			}
@@ -175,12 +173,7 @@ RelationChecker.prototype = Object.create(null, {
 	inside_strategy: {
 		value: function inside_strategy(blockObject, ev, name) {
 			var topParent = this.utils.findTopParentBlock(blockObject);
-			if (topParent === null){
-				if ( ev.type === 'move' && Blockly.mainWorkspace.getBlockById(blockObject.id) !== null && !ev.oldParentId ) {
-					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the strategy block'));
-					blockObject.dispose();
-				}
-			} else {
+			if (topParent !== null){
 				if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
 					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the strategy block'));
 					blockObject.unplug();
@@ -195,12 +188,7 @@ RelationChecker.prototype = Object.create(null, {
 	inside_finish: {
 		value: function inside_finish(blockObject, ev, name) {
 			var topParent = this.utils.findTopParentBlock(blockObject);
-			if (topParent === null){
-				if ( ev.type === 'move' && Blockly.mainWorkspace.getBlockById(blockObject.id) !== null && !ev.oldParentId ) {
-					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the finish block'));
-					blockObject.dispose();
-				}
-			} else {
+			if (topParent !== null){
 				if (topParent.type !== 'on_finish' && !ev.oldParentId) {
 					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the finish block'));
 					blockObject.unplug();

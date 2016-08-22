@@ -1,5 +1,4 @@
 'use strict';
-import conditions from '../conditions';
 import _Symbol from '../index';
 import tools from 'binary-common-utils/tools';
 import {expect} from 'chai';
@@ -16,8 +15,6 @@ describe('symbol', function() {
 			expect(function(){_Symbol.getCategoryNameForCondition();}).to.throw(Error);
 			expect(function(){_Symbol.getAllowedCategoryNames();}).to.throw(Error);
 			expect(function(){_Symbol.findSymbol();}).to.throw(Error);
-			expect(function(){_Symbol.addMarketsToXml();}).to.throw(Error);
-			expect(function(){_Symbol.makeProposalsFromOptions();}).to.throw(Error);
 		});
 	});
 	describe('Checking functions', function(){
@@ -28,28 +25,6 @@ describe('symbol', function() {
 			symbol.initPromise.then(function(){
 				done();
 			});
-		});
-		it('makeProposalsFromOptions creates proposals', function(){
-			var proposals = symbol.makeProposalsFromOptions(conditions.ticktrade({
-				condition: 'RISEFALL',
-				amount: 1,
-				basis: 'Stake',
-				currency: 'USD',
-				duration: 5,
-				duration_unit: 't'
-			}));
-			expect(proposals).to.have.deep.property('.R_100[1].symbol')
-				.that.be.equal('R_100');
-			expect(proposals).to.have.deep.property('.R_100[1].contract_type')
-				.that.be.equal('PUT');
-			expect(proposals).to.have.deep.property('.R_100[0].contract_type')
-				.that.be.equal('CALL');
-		});
-		it('addMarketsToXml adds market to the toolbox', function(){
-			var marketXml = tools.strToXml('<xml><!--Markets--></xml>');
-			expect(symbol.addMarketsToXml(marketXml))
-				.to.have.deep.property('.childNodes[0].childNodes[0].attributes[0].value')
-				.that.be.equal('Markets');
 		});
 		it('findSymbol returns symbol if exist', function(){
 			expect(symbol.findSymbol('R_100')).to.be.ok

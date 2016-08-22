@@ -19,6 +19,6 @@ Blockly.Blocks.barrier_offset = {
 	},
 	onchange: function(ev){
 		var relationChecker = new RelationChecker();
-		relationChecker.inside_trade(this, ev, 'Barrier Offset');
+		relationChecker.inside_condition(this, ev, 'Barrier Offset');
 	},
 };

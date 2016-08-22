@@ -61,8 +61,9 @@ _Blockly.prototype = Object.create(null, {
 		}
 	},
 	createXmlTag: {
-		value: function createXmlTag(obj) {
+		value: function createXmlTag(obj, assetIndex) {
 			var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
+			var that = this;
 			Object.keys(obj).forEach(function(market){
 				xmlStr += '\t<category name="'+ obj[market].name +'" colour="#2a3052">\n';
 					Object.keys(obj[market].submarkets).forEach(function(submarket){
@@ -87,7 +88,7 @@ _Blockly.prototype = Object.create(null, {
 	marketsToXml: {
 		value: function marketsToXml(xml){
 			var xmlStr = this.xmlToStr(xml);
-			var marketXml = this.createXmlTag(this.bot.symbol.activeSymbols.getMarkets());
+			var marketXml = this.createXmlTag(this.bot.symbol.activeSymbols.getMarkets(), this.bot.symbol.assetIndex);
 			return xmlStr.replace('<!--Markets-->', marketXml);
 		}
 	},
