@@ -7,7 +7,7 @@ var translator = new Translator();
 Blockly.Blocks.on_finish = {
   init: function() {
     this.appendDummyInput()
-        .appendField(translator.translateText("Step 3: Result"));
+        .appendField(translator.translateText("Step 3: After Purchase"));
     this.appendStatementInput("FINISH_STACK")
         .setCheck("TradeAgain");
     this.setColour('#2a3052');

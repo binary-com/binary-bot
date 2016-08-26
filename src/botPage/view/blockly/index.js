@@ -165,8 +165,8 @@ _Blockly.prototype = Object.create(null, {
 	setBlockColors: {
 		value: function setBlockColors() {
 			this.selectTextBlock('Step 1: Define Trade').style.setProperty('fill', 'white', 'important');
-			this.selectTextBlock('Step 2: Strategy').style.setProperty('fill', 'white', 'important');
-			this.selectTextBlock('Step 3: Result').style.setProperty('fill', 'white', 'important');
+			this.selectTextBlock('Step 2: Before Purchase').style.setProperty('fill', 'white', 'important');
+			this.selectTextBlock('Step 3: After Purchase').style.setProperty('fill', 'white', 'important');
 		}
 	},
 	saveXml: {

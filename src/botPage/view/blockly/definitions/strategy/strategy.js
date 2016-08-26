@@ -7,7 +7,7 @@ var translator = new Translator();
 Blockly.Blocks.on_strategy = {
   init: function() {
     this.appendDummyInput()
-        .appendField(translator.translateText("Step 2: Strategy"));
+        .appendField(translator.translateText("Step 2: Before Purchase"));
     this.appendStatementInput("STRATEGY_STACK")
         .setCheck('Purchase');
     this.setColour("#2a3052");
