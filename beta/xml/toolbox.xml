@@ -260,14 +260,15 @@
 				<block type="overunder"></block>
 			</category>
 		</category>
-		<category name="Strategy" colour="#2a3052" i18n-text="Strategy">
+		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
 			<block type="tick"></block>
-			<block type="direction"></block>
+			<block type="ticks"></block>
+			<block type="ohlc"></block>
+			<block type="read_ohlc_obj"></block>
 			<block type="check_direction"></block>
 			<block type="purchase"></block>
 		</category>
-		<category name="Finish" colour="#2a3052" i18n-text="Finish">
-			<block type="contract_details"></block>
+		<category name="After Purchase" colour="#2a3052" i18n-text="After Purchase">
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
 			<block type="trade_again"></block>
