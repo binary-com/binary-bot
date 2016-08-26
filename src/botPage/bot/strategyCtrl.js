@@ -64,6 +64,14 @@ StrategyCtrl.prototype = Object.create(null, {
 						direction = 'fall';
 					}
 				}
+				if ( ohlc ) {
+					let repr = function(){
+						return JSON.stringify(this);
+					};
+					for ( let o of ohlc ) {
+						o.toString = repr;
+					}
+				}
 				if ( this.ready ) {
 					this.strategy({
 						direction: direction,

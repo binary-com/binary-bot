@@ -450,7 +450,7 @@ View.prototype = Object.create(null, {
 				that.updateChart(info);
 			});
 		}
-	}
+	},
 });
 
 module.exports = View;
