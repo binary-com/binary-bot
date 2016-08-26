@@ -9,7 +9,7 @@ var translator = new Translator();
 Blockly.Blocks.tick = {
   init: function() {
     this.appendDummyInput()
-        .appendField(translator.translateText("Tick Value"));
+        .appendField(translator.translateText("Last Tick"));
     this.setOutput(true, "Number");
     this.setColour("#f2f2f2");
     this.setTooltip(translator.translateText('Returns the tick value received by a strategy block'));

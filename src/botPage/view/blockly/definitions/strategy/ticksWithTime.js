@@ -6,17 +6,17 @@ import RelationChecker from '../../relationChecker';
 import Translator from 'translator';
 var translator = new Translator();
 
-Blockly.Blocks.ticks = {
+Blockly.Blocks.ticks_with_time = {
   init: function() {
     this.appendDummyInput()
-        .appendField(translator.translateText("Ticks List"));
+        .appendField(translator.translateText("Ticks (Time, Value) List"));
     this.setOutput(true, "Array");
     this.setColour("#f2f2f2");
-    this.setTooltip(translator.translateText('Returns the list of tick values'));
+    this.setTooltip(translator.translateText('Returns the list of ticks'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
 		var relationChecker = new RelationChecker();
-		relationChecker.inside_strategy(this, ev, 'Ticks List');
+		relationChecker.inside_strategy(this, ev, 'Ticks (Time, Value) List');
 	},
 };

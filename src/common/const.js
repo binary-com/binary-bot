@@ -89,6 +89,10 @@ module.exports = {
 		['+', '+'],
 		['-', '-'],
 	],
+	tickFields: [
+		['Time', 'epoch'],
+		['Value', 'quote'],
+	],
 	durationTypes: {
 		RISEFALL: [
 			[translator.translateText('Ticks'), 't'],

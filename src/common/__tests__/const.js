@@ -7,6 +7,7 @@ describe('Const', function(){
 		expect(_const).to.have.all.keys([
 			'lists',
 			'opposites',
+			'tickFields',
 			'hasSecondBarrierOffset',
 			'hasBarrierOffset',
 			'hasPrediction',
