@@ -8,6 +8,7 @@ describe('Const', function(){
 			'lists',
 			'opposites',
 			'tickFields',
+			'ohlcFields',
 			'hasSecondBarrierOffset',
 			'hasBarrierOffset',
 			'hasPrediction',

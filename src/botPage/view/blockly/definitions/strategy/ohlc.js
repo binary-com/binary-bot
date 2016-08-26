@@ -9,7 +9,7 @@ var translator = new Translator();
 Blockly.Blocks.ohlc = {
   init: function() {
     this.appendDummyInput()
-        .appendField(translator.translateText("Ohlc List"));
+        .appendField(translator.translateText("Candles List"));
     this.setOutput(true, "Array");
     this.setColour("#f2f2f2");
     this.setTooltip(translator.translateText('Returns the ohlc list'));
@@ -17,6 +17,6 @@ Blockly.Blocks.ohlc = {
   },
 	onchange: function(ev) {
 		var relationChecker = new RelationChecker();
-		relationChecker.inside_strategy(this, ev, 'Ohlc List');
+		relationChecker.inside_strategy(this, ev, 'Candles List');
 	},
 };

@@ -93,6 +93,12 @@ module.exports = {
 		['Time', 'epoch'],
 		['Value', 'quote'],
 	],
+	ohlcFields: [
+		['Open', 'open'],
+		['High', 'high'],
+		['Low', 'low'],
+		['Close', 'close'],
+	],
 	durationTypes: {
 		RISEFALL: [
 			[translator.translateText('Ticks'), 't'],
