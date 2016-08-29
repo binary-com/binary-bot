@@ -216,6 +216,14 @@ _Blockly.prototype = Object.create(null, {
 				window.LoopTrap = 1000;
 				Blockly.JavaScript.INFINITE_LOOP_TRAP =
 					'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+				var topBlocks = Blockly.mainWorkspace.getTopBlocks();
+				for ( var block of topBlocks ) {
+					if (['on_strategy', 'on_finish', 'trade'].indexOf(block.type) >= 0 || block == this.utils.findTopParentBlock(Blockly.mainWorkspace.getBlockById('trade'))) {
+						continue;
+					} else {
+						block.dispose();
+					}
+				}
 				var code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
 				Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 				var EVAL_BLOCKLY_CODE = eval;

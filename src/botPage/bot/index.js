@@ -287,7 +287,6 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			if ( !this.observer.isRegistered('api.candles') ) {
 				var apiCandles = function apiCandles(candles){
-					console.log(candles);
 					that.candles = candles;
 				};
 				this.observer.register('api.candles', apiCandles, false, {
