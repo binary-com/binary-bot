@@ -287,6 +287,7 @@ Bot.prototype = Object.create(null, {
 			var that = this;
 			if ( !this.observer.isRegistered('api.candles') ) {
 				var apiCandles = function apiCandles(candles){
+					console.log(candles);
 					that.candles = candles;
 				};
 				this.observer.register('api.candles', apiCandles, false, {
@@ -294,8 +295,12 @@ Bot.prototype = Object.create(null, {
 					unregister: ['api.ohlc', 'api.candles', 'api.tick', 'bot.tickUpdate']
 				});
 				var apiOHLC = function apiOHLC(candle){
-					that.candles = that.candles.concat(candle);
-					that.candles.splice(0,1);
+					if ( that.candles.slice(-1)[0].epoch === candle.epoch ) {
+						that.candles = [...that.candles.slice(0, -1), candle];
+					} else {
+						that.candles = [...that.candles, candle];
+						that.candles.splice(0,1);
+					}
 				};
 				this.observer.register('api.ohlc', apiOHLC);
 			}
