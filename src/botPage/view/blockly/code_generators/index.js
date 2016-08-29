@@ -10,6 +10,8 @@ import './tools/total_runs';
 import './strategy/check_direction';
 import './strategy/direction';
 import './strategy/purchase';
+import './strategy/payout';
+import './strategy/ask_price';
 import './strategy/strategy';
 import './strategy/tick';
 import './strategy/ticks';

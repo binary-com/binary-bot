@@ -267,6 +267,8 @@
 			<block type="read_ohlc_obj"></block>
 			<block type="check_direction"></block>
 			<block type="purchase"></block>
+			<block type="payout"></block>
+			<block type="ask_price"></block>
 		</category>
 		<category name="After Purchase" colour="#2a3052" i18n-text="After Purchase">
 			<block type="contract_check_result"></block>

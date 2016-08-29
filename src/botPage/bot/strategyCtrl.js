@@ -109,6 +109,13 @@ StrategyCtrl.prototype = Object.create(null, {
 			}
 		}
 	},
+	getContract: {
+		value: function getContract(option) {
+			if ( !this.purchased ) {
+				return this.proposals[option];
+			}
+		}
+	},
 	destroy: {
 		value: function destroy(offline) {
 			for ( var i in this.runningObservations ) {

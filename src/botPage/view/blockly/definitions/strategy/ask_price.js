@@ -6,20 +6,20 @@ import RelationChecker from '../../relationChecker';
 import Translator from 'translator';
 var translator = new Translator();
 
-Blockly.Blocks.purchase = {
+Blockly.Blocks.ask_price = {
 	init: function() {
 		this.appendDummyInput()
-			.appendField(translator.translateText("Purchase"))
+			.appendField(translator.translateText("Ask Price"))
 			.appendField(new Blockly.FieldDropdown(function(){
 				return utils.getPurchaseChoices();
 			}), "PURCHASE_LIST");
-		this.setPreviousStatement(true, 'Purchase');
+		this.setOutput(true, 'Number');
 		this.setColour("#f2f2f2");
-		this.setTooltip(translator.translateText('Purchases a chosen contract.'));
+		this.setTooltip(translator.translateText('Ask Price for selected proposal'));
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
 		var relationChecker = new RelationChecker();
-		relationChecker.inside_strategy(this, ev, 'Purchase');
+		relationChecker.inside_strategy(this, ev, 'Ask Price');
 	},
 };
