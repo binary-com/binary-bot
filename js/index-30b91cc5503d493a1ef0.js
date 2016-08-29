@@ -10728,6 +10728,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -10775,8 +10776,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -10927,6 +10927,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -10974,8 +10975,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11126,6 +11126,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -11173,8 +11174,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11325,6 +11325,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -11372,8 +11373,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11524,6 +11524,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -11571,8 +11572,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11723,6 +11723,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -11770,8 +11771,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -11922,6 +11922,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -11969,8 +11970,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12121,6 +12121,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -12168,8 +12169,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12320,6 +12320,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -12367,8 +12368,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12519,6 +12519,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -12566,8 +12567,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12718,6 +12718,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -12765,8 +12766,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -12917,6 +12917,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -12964,8 +12965,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -13116,6 +13116,7 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "c70e6d2dae1e18a270c5932bbc604048773463de": "Ticks:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
@@ -13163,8 +13164,7 @@
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
 	  "c984e8501b46a2eaa045c3cda6840b1e96bc77b5": "Step 1: Define Trade",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types."
 	};
 
 /***/ },
@@ -28300,4 +28300,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=index-ec22d0698d25196b298f.map
+//# sourceMappingURL=index-30b91cc5503d493a1ef0.map
