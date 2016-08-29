@@ -277,6 +277,7 @@
 			<block type="barrier_offset"></block>
 			<block type="balance"></block>
 			<block type="total_profit"></block>
+			<block type="total_runs"></block>
 			<block type="notify"></block>
 		</category>
 	</category>

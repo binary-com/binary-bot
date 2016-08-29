@@ -43,6 +43,9 @@ window.Bot = {
 	log: function (message, type) {
 		observer.emit('ui.log.'+ type + '.left', message );
 	},
+	getTotalRuns: function getTotalRuns(){
+		return bot.totalRuns;
+	},
 	getTotalProfit: function getTotalProfit(){
 		return bot.totalProfit;
 	},

@@ -6,6 +6,7 @@ import tradeTypes from './trade/tradeTypes';
 import './tools/balance';
 import './tools/notify';
 import './tools/total_profit';
+import './tools/total_runs';
 import './strategy/check_direction';
 import './strategy/direction';
 import './strategy/purchase';
