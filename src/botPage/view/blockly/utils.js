@@ -63,7 +63,7 @@ Utils.prototype = Object.create(null, {
 				var purchases = [];
 				Blockly.mainWorkspace.getAllBlocks()
 					.forEach(function (block) {
-						if (block.type === 'purchase') {
+						if (['purchase', 'payout', 'ask_price'].indexOf(block.type) >= 0) {
 							purchases.push(block);
 						}
 					});
