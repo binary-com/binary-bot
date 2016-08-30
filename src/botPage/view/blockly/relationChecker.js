@@ -1,6 +1,6 @@
 'use strict';
 import config from 'const';
-import Bot from '../../bot';
+import { bot } from '../../bot';
 import Translator from 'translator';
 import Observer from 'binary-common-utils/observer';
 import tools from 'binary-common-utils/tools';
@@ -34,7 +34,6 @@ var RelationChecker = function RelationChecker(){
 	}
 	RelationChecker.instance = this;
 	this.translator = new Translator();
-	this.bot = new Bot();
 	this.observer = new Observer();
 	this.utils = new Utils();
 };
@@ -43,7 +42,7 @@ RelationChecker.prototype = Object.create(null, {
 	trade: {
 		value: function trade(_trade, ev) {
 			if (ev.type === 'create') {
-				if (this.bot.symbol.findSymbol(Blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
+				if (bot.symbol.findSymbol(Blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
 					this.observer.emit('tour:submarket_created');
 				}
 				if (config.conditions.indexOf(Blockly.mainWorkspace.getBlockById(ev.blockId)
@@ -63,7 +62,7 @@ RelationChecker.prototype = Object.create(null, {
 					this.observer.emit('tour:trade_again_created');
 				}
 			}
-			if (_trade.childBlocks_.length && !this.bot.symbol.findSymbol(_trade.childBlocks_[0].type)) {
+			if (_trade.childBlocks_.length && !bot.symbol.findSymbol(_trade.childBlocks_[0].type)) {
 				this.observer.emit('ui.log.warn', this.translator.translateText('The trade block can only accept submarket blocks'));
 				Array.prototype.slice.apply(_trade.childBlocks_)
 					.forEach(function (child) {
@@ -78,7 +77,7 @@ RelationChecker.prototype = Object.create(null, {
 			}
 			var topParent = this.utils.findTopParentBlock(_trade);
 			if (topParent !== null) {
-				if (this.bot.symbol.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
+				if (bot.symbol.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
 					this.observer.emit('ui.log.warn', this.translator.translateText('The trade block cannot be inside binary blocks'));
 					_trade.unplug();
 				}
@@ -107,14 +106,14 @@ RelationChecker.prototype = Object.create(null, {
 	condition: {
 		value: function condition(_condition, ev, calledByParent) {
 			if (_condition.parentBlock_ !== null) {
-				if (!this.bot.symbol.findSymbol(_condition.parentBlock_.type)) {
+				if (!bot.symbol.findSymbol(_condition.parentBlock_.type)) {
 					this.observer.emit('ui.log.warn', this.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
 					_condition.unplug();
-				} else if ( !this.bot.symbol.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
-					var symbol = this.bot.symbol.findSymbol(_condition.parentBlock_.type);
+				} else if ( !bot.symbol.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
+					var symbol = bot.symbol.findSymbol(_condition.parentBlock_.type);
 					this.observer.emit('ui.log.warn', symbol[Object.keys(symbol)[0]] + ' ' + this.translator.translateText('does not support category:') + 
-						' ' + this.bot.symbol.getCategoryNameForCondition(_condition.type) +
-						', ' + this.translator.translateText('Allowed categories are') + ' ' + this.bot.symbol.getAllowedCategoryNames(_condition.parentBlock_.type));
+						' ' + bot.symbol.getCategoryNameForCondition(_condition.type) +
+						', ' + this.translator.translateText('Allowed categories are') + ' ' + bot.symbol.getAllowedCategoryNames(_condition.parentBlock_.type));
 					_condition.unplug();
 				} else {
 					this.observer.emit('tour:condition');
@@ -123,7 +122,7 @@ RelationChecker.prototype = Object.create(null, {
 							var duration = getNumField(_condition, 'DURATION');
 							var durationType = getListField(_condition, 'DURATIONTYPE_LIST');
 							if ( duration !== '' ) {
-								var minDuration = this.bot.symbol.getLimitation(_condition.parentBlock_.type, _condition.type).minDuration;
+								var minDuration = bot.symbol.getLimitation(_condition.parentBlock_.type, _condition.type).minDuration;
 								if ( !tools.durationAccepted(duration+durationType, minDuration) ) {
 									this.observer.emit('ui.log.warn', this.translator.translateText('Minimum duration is') + ' ' + tools.expandDuration(minDuration) );
 								} else {

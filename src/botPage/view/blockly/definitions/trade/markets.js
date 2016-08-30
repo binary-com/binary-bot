@@ -3,10 +3,9 @@
 
 import Translator from 'translator';
 import RelationChecker from '../../relationChecker';
-import Bot from '../../../../bot';
+import { bot } from '../../../../bot';
 
 module.exports = function init(){
-	var bot = new Bot();
 	var translator = new Translator();
 	var symbolNames = bot.symbol.activeSymbols.getSymbolNames();
 

@@ -1,11 +1,10 @@
 'use strict';
 import config from 'const';
 import Translator from 'translator';
-import Bot from '../../../../bot';
+import { bot } from '../../../../bot';
 var translator = new Translator();
 
 function title(block, opposites, option_names) {
-	var bot = new Bot();
 	block.appendDummyInput()
 		.setAlign(Blockly.ALIGN_CENTRE)
 		.appendField(bot.symbol.getCategoryNameForCondition(opposites));

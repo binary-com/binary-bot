@@ -6,7 +6,7 @@ import Observer from 'binary-common-utils/observer';
 import _Blockly from './blockly';
 import storageManager from 'binary-common-utils/storageManager';
 import Translator from 'translator';
-import Bot from '../bot';
+import { bot } from '../bot';
 import Introduction from './tours/introduction';
 import Welcome from './tours/welcome';
 import {PlainChart as Chart} from 'binary-charts';
@@ -27,7 +27,6 @@ var View = function View(){
 	this.addTranslationToUi();
 	this.errorAndLogHandling();
 	var that = this;
-	this.bot = new Bot();
 	this.initPromise = new Promise(function(resolve, reject){
 		that.updateTokenList();
 		that.blockly = new _Blockly();
@@ -257,7 +256,7 @@ View.prototype = Object.create(null, {
 				if (e) {
 					e.preventDefault();
 				}
-				that.bot.stop();
+				bot.stop();
 			};
 
 			var logout = function logout() {
@@ -421,7 +420,7 @@ View.prototype = Object.create(null, {
 					storageManager.removeAllTokens();
 					that.updateTokenList();
 				}
-				that.bot.stop();
+				bot.stop();
 				that.observer.emit('ui.error', error);
 			});
 			

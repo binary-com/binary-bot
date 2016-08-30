@@ -4,7 +4,7 @@ import config from 'const';
 import Translator from 'translator';
 import tools from 'binary-common-utils/tools';
 import Observer from 'binary-common-utils/observer';
-import Bot from '../../bot';
+import { bot } from '../../bot';
 import Utils from './utils.js';
 import codeGenerators from './code_generators';
 import definitions from './definitions';
@@ -17,7 +17,6 @@ var _Blockly = function _Blockly(){
 	this.blocksXmlStr = '';
 	this.generatedJs = '';
 	this.observer = new Observer();
-	this.bot = new Bot();
 	this.utils = new Utils();
 	this.translator = new Translator();
 	this.addBlocklyTranslation();
@@ -88,7 +87,7 @@ _Blockly.prototype = Object.create(null, {
 	marketsToXml: {
 		value: function marketsToXml(xml){
 			var xmlStr = this.xmlToStr(xml);
-			var marketXml = this.createXmlTag(this.bot.symbol.activeSymbols.getMarkets(), this.bot.symbol.assetIndex);
+			var marketXml = this.createXmlTag(bot.symbol.activeSymbols.getMarkets(), bot.symbol.assetIndex);
 			return xmlStr.replace('<!--Markets-->', marketXml);
 		}
 	},
@@ -234,7 +233,7 @@ _Blockly.prototype = Object.create(null, {
 			} catch (e) {
 				this.observer.emit('ui.log', 'There was a problem running your blocks');
 				this.observer.emit('ui.error', e);
-				this.bot.stop();
+				bot.stop();
 			}
 		}
 	},
