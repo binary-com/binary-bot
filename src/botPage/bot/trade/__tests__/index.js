@@ -1,6 +1,6 @@
 'use strict';
 import {asyncChain} from 'binary-common-utils/tools';
-import Ticktrade from '../ticktrade';
+import Ticktrade from '../';
 import ws from 'mock/websocket';
 import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
