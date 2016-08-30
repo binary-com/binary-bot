@@ -2,7 +2,6 @@
 require('./src/common/mochaHelper');
 var gulp = require('gulp'),
 		ghPages = require('gulp-gh-pages'),
-		jshint = require('gulp-jshint'),
 		webpack = require('gulp-webpack'),
 		gp_rename = require('gulp-rename'),
 		gp_uglify = require('gulp-uglify'),
@@ -108,25 +107,11 @@ gulp.task('static', ['static-css'], function() {
 		.pipe(gulp.dest('./www'));
 });
 
-gulp.task('mocha', ['i18n'], function() {
+gulp.task('test', ['i18n'], function() {
     return gulp.src(['./src/**/__tests__/*.js'])
 			.pipe(mocha({
 				reporter: 'nyan'
 			}));
-});
-
-gulp.task('lint', function() {
-	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js', '!./src/common/translations/*.js'])
-		.pipe(jshint())
-		.pipe(jshint.reporter('default'))
-		.pipe(jshint.reporter('fail'));
-});
-
-gulp.task('test', ['mocha', 'lint'], function() {
-	return gulp.src(['./src/**/*.js', '!./src/**/*.min.js', '!./src/common/translations/*.js'])
-		.pipe(jshint())
-		.pipe(jshint.reporter('default'))
-		.pipe(jshint.reporter('fail'));
 });
 
 gulp.task('i18n-xml', ['static'], function () {
