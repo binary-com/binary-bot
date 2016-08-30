@@ -1,8 +1,8 @@
 'use strict';
 import config from 'const';
-import Translator from 'translator';
+import { translator } from 'translator';
 import { bot } from '../../../../bot';
-var translator = new Translator();
+
 
 function title(block, opposites, option_names) {
 	block.appendDummyInput()

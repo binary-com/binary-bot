@@ -1,7 +1,7 @@
 'use strict';
 import fileSaver from 'filesaverjs';
 import config from 'const';
-import Translator from 'translator';
+import { translator } from 'translator';
 import tools from 'binary-common-utils/tools';
 import Observer from 'binary-common-utils/observer';
 import { bot } from '../../bot';
@@ -18,7 +18,6 @@ var _Blockly = function _Blockly(){
 	this.generatedJs = '';
 	this.observer = new Observer();
 	this.utils = new Utils();
-	this.translator = new Translator();
 	this.addBlocklyTranslation();
 	var that = this;
 	this.initPromise = new Promise(function(resolve, reject){
@@ -27,7 +26,7 @@ var _Blockly = function _Blockly(){
 			definitions();
 			var workspace = Blockly.inject('blocklyDiv', {
 				media: 'js/blockly/media/',
-				toolbox: that.xmlToStr(that.translator.translateXml($.parseXML(that.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
+				toolbox: that.xmlToStr(translator.translateXml($.parseXML(that.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
 				zoom: {
 					wheel: false,
 				},
@@ -244,7 +243,7 @@ _Blockly.prototype = Object.create(null, {
 			});
 			var script = document.createElement('script');
 			script.type = 'text/javascript';
-			script.src = 'js/blockly/msg/js/' + this.translator.getLanguage() + '.js';		
+			script.src = 'js/blockly/msg/js/' + translator.getLanguage() + '.js';		
 			$('body').append(script);
 		}
 	},

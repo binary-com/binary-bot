@@ -1,14 +1,13 @@
 'use strict';
 import config from 'const';
-import Translator from 'translator';
+import { translator } from 'translator';
 
 var Utils = function Utils(){
 	if ( Utils.instance ){
 		return Utils.instance;
 	}
 	Utils.instance = this;
-	this.translator = new Translator();
-	this.purchase_choices = [[this.translator.translateText('Click to select'), '']];
+	this.purchase_choices = [[translator.translateText('Click to select'), '']];
 };
 
 Utils.prototype = Object.create(null, {

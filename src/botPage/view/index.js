@@ -5,7 +5,7 @@ import account from 'binary-common-utils/account';
 import Observer from 'binary-common-utils/observer';
 import _Blockly from './blockly';
 import storageManager from 'binary-common-utils/storageManager';
-import Translator from 'translator';
+import { translator } from 'translator';
 import { bot } from '../bot';
 import Introduction from './tours/introduction';
 import Welcome from './tours/welcome';
@@ -22,7 +22,6 @@ var View = function View(){
 	this.observer = new Observer();
 	this.chartType = 'area';
 	this.tours = {};
-	this.translator = new Translator();
 	this.tradeInfo = new TradeInfo();
 	this.addTranslationToUi();
 	this.errorAndLogHandling();
@@ -70,13 +69,13 @@ View.prototype = Object.create(null, {
 						var contents = $(this).contents();
 						if (contents.length > 0) {
 								if (contents.get(0).nodeType == Node.TEXT_NODE) {
-										$(this).text(that.translator.translateText($(this)
+										$(this).text(translator.translateText($(this)
 								.attr('data-i18n-text')))
 								.append(contents.slice(1));
 								}
 						} else {
 						$(this)
-							.text(that.translator.translateText($(this)
+							.text(translator.translateText($(this)
 								.attr('data-i18n-text')));
 					}
 				});
@@ -182,7 +181,7 @@ View.prototype = Object.create(null, {
 					if (file.type.match('text/xml')) {
 						readFile(file);
 					} else {
-						that.observer.emit('ui.log.info', that.translator.translateText('File is not supported:' + ' ') + file.name);
+						that.observer.emit('ui.log.info', translator.translateText('File is not supported:' + ' ') + file.name);
 					}
 				}
 			};
@@ -194,7 +193,7 @@ View.prototype = Object.create(null, {
 					return function (e) {
 						try {
 							that.blockly.loadBlocks(e.target.result);
-							that.observer.emit('ui.log.success', that.translator.translateText('Blocks are loaded successfully'));
+							that.observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'));
 						} catch (err) {
 							that.observer.emit('ui.error', err);
 						}
@@ -262,7 +261,7 @@ View.prototype = Object.create(null, {
 			var logout = function logout() {
 				account.logoutAllTokens(function(){
 					that.updateTokenList();
-					that.observer.emit('ui.log.info', that.translator.translateText('Logged you out!'));
+					that.observer.emit('ui.log.info', translator.translateText('Logged you out!'));
 				});
 			};
 
@@ -340,7 +339,7 @@ View.prototype = Object.create(null, {
 
 			$('#login')
 				.bind('click.login', function(e){
-					document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + that.translator.getLanguage().toUpperCase();
+					document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' + storageManager.get('appId') + '&l=' + translator.getLanguage().toUpperCase();
 				})
 				.text('Log in');
 

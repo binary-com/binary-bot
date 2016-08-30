@@ -1,8 +1,8 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
 
-import Translator from 'translator';
-var translator = new Translator();
+import { translator } from 'translator';
+
 
 Blockly.Blocks.total_profit = {
   init: function() {

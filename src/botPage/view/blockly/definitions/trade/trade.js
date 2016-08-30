@@ -1,7 +1,7 @@
 'use strict';
 
-import Translator from 'translator';
-var translator = new Translator();
+import { translator } from 'translator';
+
 import RelationChecker from '../../relationChecker';
 Blockly.Blocks.trade = {
 	init: function () {

@@ -11,7 +11,7 @@ export default class Bot {
   constructor(api = null) {
     this.ticks = [];
     this.candles = [];
-    if (api !== null) {
+    if (api === null) {
       this.api = new CustomApi(null, this.recoverFromDisconnect.bind(this));
     } else {
       this.api = api;
@@ -375,4 +375,4 @@ export default class Bot {
   }
 }
 
-export const bot = (typeof process === 'undefined') ? new Bot() : null;
+export const bot = process.browser ? new Bot() : null;

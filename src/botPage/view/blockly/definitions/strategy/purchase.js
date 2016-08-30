@@ -3,8 +3,8 @@
 import Utils from '../../../blockly/utils';
 var utils = new Utils();
 import RelationChecker from '../../relationChecker';
-import Translator from 'translator';
-var translator = new Translator();
+import { translator } from 'translator';
+
 
 Blockly.Blocks.purchase = {
 	init: function() {

@@ -2,8 +2,8 @@
 import Components from '../components';
 import View from '../';
 import storageManager from 'binary-common-utils/storageManager';
-import Translator from 'translator';
-var translator = new Translator();
+import { translator } from 'translator';
+
 
 var Welcome = function Welcome(){
 	if ( Welcome.instance ) {

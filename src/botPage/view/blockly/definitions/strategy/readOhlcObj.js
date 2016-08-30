@@ -2,8 +2,8 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 
 import config from 'const';
-import Translator from 'translator';
-var translator = new Translator();
+import { translator } from 'translator';
+
 import RelationChecker from '../../relationChecker';
 
 Blockly.Blocks.read_ohlc_obj = {

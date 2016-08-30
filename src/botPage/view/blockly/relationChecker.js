@@ -1,7 +1,7 @@
 'use strict';
 import config from 'const';
 import { bot } from '../../bot';
-import Translator from 'translator';
+import { translator } from 'translator';
 import Observer from 'binary-common-utils/observer';
 import tools from 'binary-common-utils/tools';
 import Utils from './utils';
@@ -33,7 +33,6 @@ var RelationChecker = function RelationChecker(){
 		return RelationChecker.instance;
 	}
 	RelationChecker.instance = this;
-	this.translator = new Translator();
 	this.observer = new Observer();
 	this.utils = new Utils();
 };
@@ -63,7 +62,7 @@ RelationChecker.prototype = Object.create(null, {
 				}
 			}
 			if (_trade.childBlocks_.length && !bot.symbol.findSymbol(_trade.childBlocks_[0].type)) {
-				this.observer.emit('ui.log.warn', this.translator.translateText('The trade block can only accept submarket blocks'));
+				this.observer.emit('ui.log.warn', translator.translateText('The trade block can only accept submarket blocks'));
 				Array.prototype.slice.apply(_trade.childBlocks_)
 					.forEach(function (child) {
 						child.unplug();
@@ -78,7 +77,7 @@ RelationChecker.prototype = Object.create(null, {
 			var topParent = this.utils.findTopParentBlock(_trade);
 			if (topParent !== null) {
 				if (bot.symbol.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
-					this.observer.emit('ui.log.warn', this.translator.translateText('The trade block cannot be inside binary blocks'));
+					this.observer.emit('ui.log.warn', translator.translateText('The trade block cannot be inside binary blocks'));
 					_trade.unplug();
 				}
 			}
@@ -87,7 +86,7 @@ RelationChecker.prototype = Object.create(null, {
 	submarket: {
 		value: function submarket(_submarket, ev) {
 			if (_submarket.childBlocks_.length > 0 && config.conditions.indexOf(_submarket.childBlocks_[0].type) < 0) {
-				this.observer.emit('ui.log.warn', this.translator.translateText('Submarket blocks can only accept trade type blocks'));
+				this.observer.emit('ui.log.warn', translator.translateText('Submarket blocks can only accept trade type blocks'));
 				Array.prototype.slice.apply(_submarket.childBlocks_)
 					.forEach(function (child) {
 						child.unplug();
@@ -97,7 +96,7 @@ RelationChecker.prototype = Object.create(null, {
 			}
 			if (_submarket.parentBlock_ !== null) {
 				if (_submarket.parentBlock_.type !== 'trade') {
-					this.observer.emit('ui.log.warn', this.translator.translateText('Submarket blocks have to be added to the trade block'));
+					this.observer.emit('ui.log.warn', translator.translateText('Submarket blocks have to be added to the trade block'));
 					_submarket.unplug();
 				}
 			}
@@ -107,13 +106,13 @@ RelationChecker.prototype = Object.create(null, {
 		value: function condition(_condition, ev, calledByParent) {
 			if (_condition.parentBlock_ !== null) {
 				if (!bot.symbol.findSymbol(_condition.parentBlock_.type)) {
-					this.observer.emit('ui.log.warn', this.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
+					this.observer.emit('ui.log.warn', translator.translateText('Trade Type blocks have to be added to submarket blocks'));
 					_condition.unplug();
 				} else if ( !bot.symbol.isConditionAllowedInSymbol(_condition.parentBlock_.type, _condition.type) ){
 					var symbol = bot.symbol.findSymbol(_condition.parentBlock_.type);
-					this.observer.emit('ui.log.warn', symbol[Object.keys(symbol)[0]] + ' ' + this.translator.translateText('does not support category:') + 
+					this.observer.emit('ui.log.warn', symbol[Object.keys(symbol)[0]] + ' ' + translator.translateText('does not support category:') + 
 						' ' + bot.symbol.getCategoryNameForCondition(_condition.type) +
-						', ' + this.translator.translateText('Allowed categories are') + ' ' + bot.symbol.getAllowedCategoryNames(_condition.parentBlock_.type));
+						', ' + translator.translateText('Allowed categories are') + ' ' + bot.symbol.getAllowedCategoryNames(_condition.parentBlock_.type));
 					_condition.unplug();
 				} else {
 					this.observer.emit('tour:condition');
@@ -124,26 +123,26 @@ RelationChecker.prototype = Object.create(null, {
 							if ( duration !== '' ) {
 								var minDuration = bot.symbol.getLimitation(_condition.parentBlock_.type, _condition.type).minDuration;
 								if ( !tools.durationAccepted(duration+durationType, minDuration) ) {
-									this.observer.emit('ui.log.warn', this.translator.translateText('Minimum duration is') + ' ' + tools.expandDuration(minDuration) );
+									this.observer.emit('ui.log.warn', translator.translateText('Minimum duration is') + ' ' + tools.expandDuration(minDuration) );
 								} else {
 									this.observer.emit('tour:ticks');
 								}
 								if (durationType === 't') {
 									if (!isInteger(duration) || !isInRange(duration, 5, 10)) {
-										this.observer.emit('ui.log.warn', this.translator.translateText('Number of ticks must be between 5 and 10'));
+										this.observer.emit('ui.log.warn', translator.translateText('Number of ticks must be between 5 and 10'));
 									} else {
 										this.observer.emit('tour:ticks');
 									}
 								} else {
 									if (!isInteger(duration) || duration < 1) {
-										this.observer.emit('ui.log.warn', this.translator.translateText('Expiry time cannot be equal to start time'));
+										this.observer.emit('ui.log.warn', translator.translateText('Expiry time cannot be equal to start time'));
 									}
 								}
 							}
 							var prediction = getNumField(_condition, 'PREDICTION');
 							if (prediction !== '') {
 								if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-									this.observer.emit('ui.log.warn', this.translator.translateText('Prediction must be one digit'));
+									this.observer.emit('ui.log.warn', translator.translateText('Prediction must be one digit'));
 								}
 							}
 							for ( var i in _condition.inputList ) {
@@ -163,7 +162,7 @@ RelationChecker.prototype = Object.create(null, {
 			var topParent = this.utils.findTopParentBlock(blockObject);
 			if (topParent !== null){
 				if (config.conditions.indexOf(blockObject.parentBlock_.type) < 0 && !ev.oldParentId) {
-					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added to the condition block'));
+					this.observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added to the condition block'));
 					blockObject.unplug();
 				}
 			}
@@ -174,7 +173,7 @@ RelationChecker.prototype = Object.create(null, {
 			var topParent = this.utils.findTopParentBlock(blockObject);
 			if (topParent !== null){
 				if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
-					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the strategy block'));
+					this.observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
 					blockObject.unplug();
 				} else {
 					if (blockObject.type === 'purchase') {
@@ -189,7 +188,7 @@ RelationChecker.prototype = Object.create(null, {
 			var topParent = this.utils.findTopParentBlock(blockObject);
 			if (topParent !== null){
 				if (topParent.type !== 'on_finish' && !ev.oldParentId) {
-					this.observer.emit('ui.log.warn', name + ' ' + this.translator.translateText('must be added inside the finish block'));
+					this.observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the finish block'));
 					blockObject.unplug();
 				} else {
 					if (blockObject.type === 'trade_again') {

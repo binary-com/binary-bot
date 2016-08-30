@@ -23,33 +23,39 @@ window._trackJs = {
 };
 require('trackjs');
 
-let observer = new Observer();
-let view = new View();
-window.Bot = {
-  start: bot.start.bind(bot),
-  stop: bot.stop.bind(bot),
-  showCode: () => {
-    console.log(view.blockly.generatedJs);
-    console.log(view.blockly.blocksXmlStr);
-  },
-  toggleDebug: logger.toggleDebug.bind(logger),
-  log: (message, type) => {
-    observer.emit('ui.log.' + type + '.left', message);
-  },
-  getTotalRuns: () => bot.totalRuns,
-  getTotalProfit: () => bot.totalProfit,
-  getBalance: (balanceType) => (balanceType === 'STR') ? bot.balanceStr : bot.balance,
-};
+class BotPage {
+	constructor() {
+		let observer = new Observer();
+		window.Bot = {
+			start: bot.start.bind(bot),
+			stop: bot.stop.bind(bot),
+			showCode: () => {
+				console.log(this.view.blockly.generatedJs);
+				console.log(this.view.blockly.blocksXmlStr);
+			},
+			toggleDebug: logger.toggleDebug.bind(logger),
+			log: (message, type) => {
+				observer.emit('ui.log.' + type + '.left', message);
+			},
+			getTotalRuns: () => bot.totalRuns,
+			getTotalProfit: () => bot.totalProfit,
+			getBalance: (balanceType) => (balanceType === 'STR') ? bot.balanceStr : bot.balance,
+		};
 
-bot.initPromise.then(() => {
-  view.initPromise.then(() => {
-    trackJs.configure({
-      userId: storageManager.getToken($('#accountSelect').val()).account_name,
-    });
-    $('.spinning').hide();
-    view.activeTour = view.tours.welcome;
-    view.activeTour.welcome(() => {
-      view.activeTour = null;
-    });
-  });
-});
+		bot.initPromise.then(() => {
+			this.view = new View();
+			this.view.initPromise.then(() => {
+				trackJs.configure({
+					userId: storageManager.getToken($('#accountSelect').val()).account_name,
+				});
+				$('.spinning').hide();
+				this.view.activeTour = this.view.tours.welcome;
+				this.view.activeTour.welcome(() => {
+					this.view.activeTour = null;
+				});
+			});
+		});
+	}
+}
+
+export default new BotPage();

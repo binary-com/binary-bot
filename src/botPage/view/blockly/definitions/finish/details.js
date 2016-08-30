@@ -2,8 +2,8 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
 
 import RelationChecker from '../../relationChecker';
-import Translator from 'translator';
-var translator = new Translator();
+import { translator } from 'translator';
+
 
 Blockly.Blocks.contract_details = {
   init: function() {

@@ -3,11 +3,11 @@
 
 import config from 'const';
 import RelationChecker from '../../relationChecker';
-import Translator from 'translator';
+import { translator } from 'translator';
 import {duration, payout, prediction, title, barrierOffset, secondBarrierOffset} from './components';
 
 module.exports = function init(){
-	var translator = new Translator();
+	
 	Object.keys(config.opposites).forEach(function(opposites){
 		Blockly.Blocks[opposites.toLowerCase()] = {
 			init: function() {
