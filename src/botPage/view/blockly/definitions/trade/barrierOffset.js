@@ -1,8 +1,8 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
 
-import config from 'const';
-import { translator } from 'translator';
+import config from '../../../../../common/const';
+import { translator } from '../../../../../common/translator';
 
 import RelationChecker from '../../relationChecker';
 

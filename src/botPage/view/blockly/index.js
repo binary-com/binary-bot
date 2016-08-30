@@ -1,9 +1,9 @@
 'use strict';
 import fileSaver from 'filesaverjs';
-import config from 'const';
-import { translator } from 'translator';
 import tools from 'binary-common-utils/tools';
 import Observer from 'binary-common-utils/observer';
+import config from '../../../common/const';
+import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
 import Utils from './utils.js';
 import codeGenerators from './code_generators';

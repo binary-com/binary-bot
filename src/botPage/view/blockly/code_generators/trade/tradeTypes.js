@@ -1,6 +1,6 @@
 'use strict';
 
-import config from 'const';
+import config from '../../../../../common/const';
 
 module.exports = function init(){
 	Object.keys(config.opposites).forEach(function(opposites){

@@ -1,9 +1,9 @@
 'use strict';
 
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 import RelationChecker from '../../relationChecker';
-import config from 'const';
+import config from '../../../../../common/const';
 Blockly.Blocks.check_direction = {
   init: function() {
     this.appendDummyInput()

@@ -1,4 +1,4 @@
-export default class Logger {
+class Logger {
 	constructor() {
 		this.logQueue = [];
 		this.debug = false;
@@ -19,3 +19,5 @@ export default class Logger {
 		return this.debug;
 	}
 }
+
+export const logger = new Logger();

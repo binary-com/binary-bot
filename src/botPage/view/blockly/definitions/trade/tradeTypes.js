@@ -1,9 +1,9 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#orvwcx
 
-import config from 'const';
+import config from '../../../../../common/const';
 import RelationChecker from '../../relationChecker';
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 import {duration, payout, prediction, title, barrierOffset, secondBarrierOffset} from './components';
 
 module.exports = function init(){

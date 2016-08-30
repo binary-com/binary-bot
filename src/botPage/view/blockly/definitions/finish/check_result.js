@@ -1,8 +1,8 @@
 'use strict';
 
-import config from 'const';
+import config from '../../../../../common/const';
 import RelationChecker from '../../relationChecker';
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.contract_check_result = {
   init: function() {

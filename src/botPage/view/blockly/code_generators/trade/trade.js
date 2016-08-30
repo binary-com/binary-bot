@@ -1,6 +1,6 @@
 'use strict';
 
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 Blockly.JavaScript.trade = function (block) {
 	var account = $('#accountSelect').val();

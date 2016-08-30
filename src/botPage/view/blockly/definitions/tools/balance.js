@@ -1,7 +1,7 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 
 Blockly.Blocks.balance = {

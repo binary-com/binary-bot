@@ -1,9 +1,8 @@
-'use strict';
-import config from 'const';
-import { bot } from '../../bot';
-import { translator } from 'translator';
 import Observer from 'binary-common-utils/observer';
 import tools from 'binary-common-utils/tools';
+import config from '../../../common/const';
+import { bot } from '../../bot';
+import { translator } from '../../../common/translator';
 import Utils from './utils';
 
 var isInteger = function isInteger(amount) {

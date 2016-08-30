@@ -1,10 +1,10 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
 
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 import RelationChecker from '../../relationChecker';
-import config from 'const';
+import config from '../../../../../common/const';
 
 Blockly.Blocks.read_details = {
   init: function() {

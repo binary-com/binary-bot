@@ -3,7 +3,7 @@
 import Utils from '../../../blockly/utils';
 var utils = new Utils();
 import RelationChecker from '../../relationChecker';
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 
 Blockly.Blocks.ask_price = {

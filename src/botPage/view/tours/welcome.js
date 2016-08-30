@@ -1,8 +1,8 @@
 'use strict';
+import storageManager from 'binary-common-utils/storageManager';
 import Components from '../components';
 import View from '../';
-import storageManager from 'binary-common-utils/storageManager';
-import { translator } from 'translator';
+import { translator } from '../../../common/translator';
 
 
 var Welcome = function Welcome(){

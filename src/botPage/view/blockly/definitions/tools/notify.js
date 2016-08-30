@@ -1,6 +1,6 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 
 Blockly.Blocks.notify = {

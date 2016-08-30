@@ -1,7 +1,7 @@
 'use strict';
-import Components from '../components';
 import Observer from 'binary-common-utils/observer';
-import { translator } from 'translator';
+import Components from '../components';
+import { translator } from '../../../common/translator';
 
 
 

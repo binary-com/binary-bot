@@ -5,7 +5,7 @@ import storageManager from 'binary-common-utils/storageManager';
 import './utils/draggable';
 import { bot } from './bot';
 import View from './view';
-import logger from './view/logger';
+import { logger } from './view/logger';
 import { setAppId } from '../common/appId';
 
 setAppId();

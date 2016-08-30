@@ -3,7 +3,7 @@
 
 
 import RelationChecker from '../../relationChecker';
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 
 Blockly.Blocks.ticks = {

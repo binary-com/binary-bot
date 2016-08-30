@@ -1,6 +1,6 @@
 'use strict';
-import config from 'const';
-import { translator } from 'translator';
+import config from '../../../../../common/const';
+import { translator } from '../../../../../common/translator';
 import { bot } from '../../../../bot';
 
 

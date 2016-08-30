@@ -1,7 +1,7 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 import RelationChecker from '../../relationChecker';
 import { bot } from '../../../../bot';
 

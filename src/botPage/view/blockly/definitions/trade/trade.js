@@ -1,6 +1,6 @@
 'use strict';
 
-import { translator } from 'translator';
+import { translator } from '../../../../../common/translator';
 
 import RelationChecker from '../../relationChecker';
 Blockly.Blocks.trade = {
