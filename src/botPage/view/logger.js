@@ -1,27 +1,21 @@
-'use strict';
-var logQueue = [];
-var debug = false;
-
-var toggleDebug = function toggleDebug() {
-	debug = !debug;
-	if (debug) {
-		logQueue.forEach(function (log) {
-			console.log.apply(console, log);
-		});
-		logQueue = [];
+export default class Logger {
+	constructor() {
+		this.logQueue = [];
+		this.debug = false;
 	}
-};
-
-var addLogToQueue = function addLogToQueue() {
-	logQueue.push(Array.prototype.slice.apply(arguments));
-};
-
-var isDebug = function isDebug() {
-	return debug;
-};
-
-module.exports = {
-	toggleDebug: toggleDebug,
-	addLogToQueue: addLogToQueue,
-	isDebug: isDebug,
-};
+	toggleDebug() {
+		this.debug = !this.debug;
+		if (this.debug) {
+			this.logQueue.forEach((log) => {
+				console.log(...log);
+			});
+			this.logQueue = [];
+		}
+	}
+	addLogToQueue(...args) {
+		this.logQueue.push(args);
+	}
+	isDebug() {
+		return this.debug;
+	}
+}
