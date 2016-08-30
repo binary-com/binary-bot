@@ -1,135 +1,115 @@
-'use strict';
 import Observer from 'binary-common-utils/observer';
-import Ticktrade from './trade';
+import Trade from './trade';
 
-var StrategyCtrl = function StrategyCtrl(api, strategy) {
-	this.observer = new Observer();
-	this.api = api;
-	this.strategy = strategy;
-	this.ready = false;
-	this.purchased = false;
-	this.runningObservations = [];
-	this.proposals = {};
-};
-
-StrategyCtrl.prototype = Object.create(null, {
-	recoverFromDisconnect: {
-		value: function recoverFromDisconnect() {
-			var that = this;
-			for ( var i in this.runningObservations ) {
-				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
-			}
-			this.runningObservations = [];
-
-			if ( !that.trade || !that.trade.recoverFromDisconnect() ) {
-				this.observer.emit('strategy.recovered', {
-					tradeWasRunning: false
-				});
-				return;
-			}
-			var tradeFinish = function tradeFinish(contract){
-				that.trade.destroy();
-				that.observer.emit('strategy.recovered', {
-					tradeWasRunning: true,
-					finishedContract: contract
-				});
+export default class StrategyCtrl {
+  constructor(api, strategy) {
+    this.observer = new Observer();
+    this.api = api;
+    this.strategy = strategy;
+    this.ready = false;
+    this.purchased = false;
+    this.runningObservations = [];
+    this.proposals = {};
+  }
+  recoverFromDisconnect() {
+    for (let obs of this.runningObservations) {
+      this.observer.unregisterAll(...obs);
+    }
+    this.runningObservations = [];
+    if (!this.trade || !this.trade.recoverFromDisconnect()) {
+      this.observer.emit('strategy.recovered', {
+        tradeWasRunning: false,
+      });
+      return;
+    }
+    let tradeFinish = function tradeFinish(contract) {
+      this.trade.destroy();
+      this.observer.emit('strategy.recovered', {
+        tradeWasRunning: true,
+        finishedContract: contract,
+      });
+    };
+    this.observer.register('trade.finish', tradeFinish, true);
+    this.runningObservations.push(['trade.finish', tradeFinish]);
+  }
+  updateProposal(proposal) {
+    if (!this.purchased) {
+      this.proposals[proposal.contract_type] = proposal;
+      if (!this.ready && Object.keys(this.proposals).length === 2) {
+        this.ready = true;
+        this.observer.emit('strategy.ready');
+      }
+    }
+  }
+  updateTicks(data) {
+    let ticks = data.ticks;
+    let ohlc = data.candles;
+    if (!this.purchased) {
+      let direction = '';
+      let length = ticks.length;
+      if (length >= 2) {
+        if (ticks[length - 1].quote > ticks[length - 2].quote) {
+          direction = 'rise';
+        }
+        if (ticks[length - 1].quote < ticks[length - 2].quote) {
+          direction = 'fall';
+        }
+      }
+      if (ohlc) {
+        let repr = function repr() {
+          return JSON.stringify(this);
+        };
+        for (let o of ohlc) {
+          o.toString = repr;
+        }
+      }
+			let tickObj = {
+				direction,
+				ohlc,
+				ticks,
 			};
-			this.observer.register('trade.finish', tradeFinish, true);
-			this.runningObservations.push(['trade.finish', tradeFinish]);
-		}
-	},
-	updateProposal: {
-		value: function updateProposal(proposal) {
-			if ( !this.purchased ) {
-				this.proposals[proposal.contract_type] = proposal;
-				if ( !this.ready && Object.keys(this.proposals).length === 2 ) {
-					this.ready = true;
-					this.observer.emit('strategy.ready');
-				}
-			}
-		}
-	},
-	updateTicks: {
-		value: function updateTicks(data) {
-			var ticks = data.ticks; 
-			var ohlc = data.candles; 
-			if ( !this.purchased ) {
-				var direction = '';
-				var length = ticks.length;
-				if ( length >= 2 ) {
-					if ( ticks[length-1].quote > ticks[length-2].quote ) {
-						direction = 'rise';
-					}
-					if ( ticks[length-1].quote < ticks[length-2].quote ) {
-						direction = 'fall';
-					}
-				}
-				if ( ohlc ) {
-					let repr = function(){
-						return JSON.stringify(this);
-					};
-					for ( let o of ohlc ) {
-						o.toString = repr;
-					}
-				}
-				if ( this.ready ) {
-					this.strategy({
-						direction: direction,
-						ohlc: ohlc,
-						ticks: ticks
-					}, this.proposals, this);
-				} else {
-					this.strategy({
-						direction: direction,
-						ohlc: ohlc,
-						ticks: ticks
-					}, null, null);
-				}
-			}
-		}
-	},
-	purchase: {
-		value: function purchase(option) {
-			if ( !this.purchased ) {
-				this.purchased = true;
-				var contract = this.proposals[option];
-				this.trade = new Ticktrade(this.api);
-				var that = this;
-				var tradeUpdate = function tradeUpdate(contract) {
-					that.observer.emit('strategy.tradeUpdate', contract);
-				};
-				var tradeFinish = function tradeFinish(contract){
-					that.observer.emit('strategy.finish', contract);
-				};
-				this.observer.register('trade.update', tradeUpdate);
-				this.observer.register('trade.finish', tradeFinish, true);
-				this.runningObservations.push(['trade.update', tradeUpdate]);
-				this.runningObservations.push(['trade.finish', tradeFinish]);
-				this.trade.purchase(contract, tradeFinish);
-			}
-		}
-	},
-	getContract: {
-		value: function getContract(option) {
-			if ( !this.purchased ) {
-				return this.proposals[option];
-			}
-		}
-	},
-	destroy: {
-		value: function destroy(offline) {
-			for ( var i in this.runningObservations ) {
-				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
-			}
-			this.runningObservations = [];
-			this.proposals = {};
-			this.ready = false;
-			this.strategy = null;
-			if ( this.trade ) {
-				return this.trade.destroy(offline);
-			}
-		}
-	}
-});
-
-module.exports = StrategyCtrl;
+      if (this.ready) {
+        this.strategy(tickObj, this.proposals, this);
+      } else {
+        this.strategy(tickObj, null, null);
+      }
+    }
+  }
+  purchase(option) {
+    if (!this.purchased) {
+      this.purchased = true;
+      let contract = this.proposals[option];
+      this.trade = new Trade(this.api);
+      let tradeUpdate = (updatedContract) => {
+        this.observer.emit('strategy.tradeUpdate', updatedContract);
+      };
+      let tradeFinish = (finishedContract) => {
+        this.observer.emit('strategy.finish', finishedContract);
+      };
+      this.observer.register('trade.update', tradeUpdate);
+      this.observer.register('trade.finish', tradeFinish, true);
+      this.runningObservations.push(['trade.update', tradeUpdate]);
+      this.runningObservations.push(['trade.finish', tradeFinish]);
+      this.trade.purchase(contract, tradeFinish);
+    }
+  }
+  getContract(option) {
+    if (!this.purchased) {
+      return this.proposals[option];
+    }
+		return null;
+  }
+  destroy(offline) {
+    for (let obs of this.runningObservations) {
+      this.observer.unregisterAll(...obs);
+    }
+    this.runningObservations = [];
+    this.proposals = {};
+    this.ready = false;
+    this.strategy = null;
+    if (this.trade) {
+      return this.trade.destroy(offline);
+    }
+		return null;
+  }
+}
