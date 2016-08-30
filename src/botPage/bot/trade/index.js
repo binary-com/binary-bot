@@ -2,7 +2,7 @@
 import Observer from 'binary-common-utils/observer';
 import Translator from 'translator';
 
-var Ticktrade = function Ticktrade(api) {
+var Trade = function Trade(api) {
 	this.observer = new Observer();
 	this.api = api;
 	this.contractIsSold = false;
@@ -10,7 +10,7 @@ var Ticktrade = function Ticktrade(api) {
 	this.runningObservations = [];
 };
 
-Ticktrade.prototype = Object.create(null, {
+Trade.prototype = Object.create(null, {
 	recoverFromDisconnect: {
 		value: function recoverFromDisconnect(){
 			for ( var i in this.runningObservations  ) {
@@ -97,4 +97,4 @@ Ticktrade.prototype = Object.create(null, {
 	}
 });
 
-module.exports = Ticktrade;
+module.exports = Trade;

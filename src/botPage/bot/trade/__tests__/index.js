@@ -6,7 +6,7 @@ import CustomApi from 'binary-common-utils/customApi';
 import {expect} from 'chai';
 import Observer from 'binary-common-utils/observer';
 
-describe('TickTrade', function() {
+describe('Trade', function() {
 	var observer;
 	var api;
 	var ticktrade;
