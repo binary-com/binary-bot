@@ -1,15 +1,15 @@
 'use strict';
 import 'babel-polyfill';
 import Translator from 'translator';
-import appId from 'appId';
+import { setAppId, oauthLogin } from 'appId';
 import {asyncChain} from 'binary-common-utils/tools';
 import $ from 'jquery';
 
 window.$ = $;
-appId.setAppId();
+setAppId();
 asyncChain()
 .pipe(function checkOauthLogin(done){
-	appId.oauthLogin(done);
+	oauthLogin(done);
 })
 .pipe(function translate(done){
 	var translator = new Translator();

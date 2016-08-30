@@ -6,9 +6,9 @@ import storageManager from 'binary-common-utils/storageManager';
 import Bot from './bot';
 import View from './view';
 import logger from './view/logger';
-import appId from 'appId';
+import { setAppId } from 'appId';
 
-appId.setAppId();
+setAppId();
 $.ajaxSetup({
 	cache: false
 });
