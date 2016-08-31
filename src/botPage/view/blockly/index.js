@@ -2,7 +2,7 @@ import fileSaver from 'filesaverjs';
 import Observer from 'binary-common-utils/observer';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import Utils from './utils.js';
+import { utils } from './utils.js';
 import codeGenerators from './code_generators';
 import definitions from './definitions';
 
@@ -11,7 +11,6 @@ export default class _Blockly {
     this.blocksXmlStr = '';
     this.generatedJs = '';
     this.observer = new Observer();
-    this.utils = new Utils();
     this.addBlocklyTranslation();
     this.initPromise = new Promise((resolve) => {
       $.get('xml/toolbox.xml', (toolbox) => {
@@ -35,7 +34,7 @@ export default class _Blockly {
           this.overrideBlocklyDefaultShape();
           this.zoomOnPlusMinus();
           Blockly.mainWorkspace.clearUndo();
-          this.utils.addPurchaseOptions();
+          utils.addPurchaseOptions();
           resolve();
         });
       });
@@ -112,7 +111,7 @@ export default class _Blockly {
   reconfigureBlocklyAfterLoad() {
     Blockly.mainWorkspace.clearUndo();
     this.setBlockColors();
-    this.utils.addPurchaseOptions();
+    utils.addPurchaseOptions();
   }
   selectBlockByText(text) {
     let returnVal;
@@ -181,7 +180,7 @@ export default class _Blockly {
       let topBlocks = Blockly.mainWorkspace.getTopBlocks();
       for (let block of topBlocks) {
         if (['on_strategy', 'on_finish', 'trade'].indexOf(block.type) < 0
-          && block !== this.utils.findTopParentBlock(Blockly.mainWorkspace.getBlockById('trade'))) {
+          && block !== utils.findTopParentBlock(Blockly.mainWorkspace.getBlockById('trade'))) {
           block.dispose();
         }
       }

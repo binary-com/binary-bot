@@ -1,7 +1,6 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-import Utils from '../../../blockly/utils';
-var utils = new Utils();
+import { utils } from '../../../blockly/utils';
 import RelationChecker from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 

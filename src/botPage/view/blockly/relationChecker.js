@@ -3,7 +3,7 @@ import tools from 'binary-common-utils/tools';
 import config from '../../../common/const';
 import { bot } from '../../bot';
 import { translator } from '../../../common/translator';
-import Utils from './utils';
+import { utils } from './utils';
 
 var isInteger = function isInteger(amount) {
 	return !isNaN(+amount) && parseInt(amount) === parseFloat(amount);
@@ -33,7 +33,6 @@ var RelationChecker = function RelationChecker(){
 	}
 	RelationChecker.instance = this;
 	this.observer = new Observer();
-	this.utils = new Utils();
 };
 
 RelationChecker.prototype = Object.create(null, {
@@ -70,10 +69,10 @@ RelationChecker.prototype = Object.create(null, {
 				this.submarket(_trade.childBlocks_[0], ev);
 				this.observer.emit('tour:submarket');
 				if (ev.hasOwnProperty('newInputName')) {
-					this.utils.addPurchaseOptions();
+					utils.addPurchaseOptions();
 				}
 			}
-			var topParent = this.utils.findTopParentBlock(_trade);
+			var topParent = utils.findTopParentBlock(_trade);
 			if (topParent !== null) {
 				if (bot.symbol.findSymbol(topParent.type) || topParent.type === 'on_strategy' || topParent.type === 'on_finish') {
 					this.observer.emit('ui.log.warn', translator.translateText('The trade block cannot be inside binary blocks'));
@@ -158,7 +157,7 @@ RelationChecker.prototype = Object.create(null, {
 	},
 	inside_condition: {
 		value: function inside_condition(blockObject, ev, name) {
-			var topParent = this.utils.findTopParentBlock(blockObject);
+			var topParent = utils.findTopParentBlock(blockObject);
 			if (topParent !== null){
 				if (config.conditions.indexOf(blockObject.parentBlock_.type) < 0 && !ev.oldParentId) {
 					this.observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added to the condition block'));
@@ -169,7 +168,7 @@ RelationChecker.prototype = Object.create(null, {
 	},
 	inside_strategy: {
 		value: function inside_strategy(blockObject, ev, name) {
-			var topParent = this.utils.findTopParentBlock(blockObject);
+			var topParent = utils.findTopParentBlock(blockObject);
 			if (topParent !== null){
 				if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
 					this.observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the strategy block'));
@@ -184,7 +183,7 @@ RelationChecker.prototype = Object.create(null, {
 	},
 	inside_finish: {
 		value: function inside_finish(blockObject, ev, name) {
-			var topParent = this.utils.findTopParentBlock(blockObject);
+			var topParent = utils.findTopParentBlock(blockObject);
 			if (topParent !== null){
 				if (topParent.type !== 'on_finish' && !ev.oldParentId) {
 					this.observer.emit('ui.log.warn', name + ' ' + translator.translateText('must be added inside the finish block'));
