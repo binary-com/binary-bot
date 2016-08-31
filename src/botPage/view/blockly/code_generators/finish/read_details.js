@@ -1,8 +1,5 @@
-'use strict';
-
 Blockly.JavaScript.read_details = function(block) {
-  var detail_index = block.getFieldValue('DETAIL_INDEX');
-  // TODO: Assemble JavaScript into code variable.
-  var code = 'details[' + ( parseInt(detail_index.trim()) - 1 ) + ']';
+  let detailIndex = block.getFieldValue('DETAIL_INDEX');
+  let code = `details[${parseInt(detailIndex.trim(), 10) - 1}]`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
