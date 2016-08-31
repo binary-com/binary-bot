@@ -10,10 +10,6 @@ import codeGenerators from './code_generators';
 import definitions from './definitions';
 
 var _Blockly = function _Blockly(){
-	if ( _Blockly.instance ) {
-		return _Blockly.instance;
-	}
-	_Blockly.instance = this;
 	this.blocksXmlStr = '';
 	this.generatedJs = '';
 	this.observer = new Observer();
