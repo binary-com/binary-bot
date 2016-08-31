@@ -87,7 +87,7 @@ export default class View {
     });
   }
   errorAndLogHandling() {
-    this.observer.register('ui.error', function showError(error) {
+    this.observer.register('ui.error', (error) => {
       let api = true;
       if (error.stack) {
         api = false;
@@ -117,7 +117,7 @@ export default class View {
       trackJs.track(customError);
     });
 
-    let observeForLog = function observeForLog(type, position) {
+    let observeForLog = (type, position) => {
       let subtype = (position === 'left') ? '.left' : '';
       this.observer.register('ui.log.' + type + subtype, (message) => {
         if (type === 'warn') {
@@ -142,7 +142,7 @@ export default class View {
   }
 
   setFileBrowser() {
-    let readFile = function readFile(f) {
+    let readFile = (f) => {
       let reader = new FileReader();
       reader.onload = (() => {
         $('#fileBrowser').hide();
@@ -158,7 +158,7 @@ export default class View {
       reader.readAsText(f);
     };
 
-    let handleFileSelect = function handleFileSelect(e) {
+    let handleFileSelect = (e) => {
       let files;
       if (e.type === 'drop') {
         e.stopPropagation();
@@ -178,7 +178,7 @@ export default class View {
       }
     };
 
-    let handleDragOver = function handleDragOver(e) {
+    let handleDragOver = (e) => {
       e.stopPropagation();
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy';
@@ -221,14 +221,14 @@ export default class View {
     this.addEventHandlers();
   }
   addBindings() {
-    let stop = function stop(e) {
+    let stop = (e) => {
       if (e) {
         e.preventDefault();
       }
       bot.stop();
     };
 
-    let logout = function logout() {
+    let logout = () => {
       account.logoutAllTokens(() => {
         this.updateTokenList();
         this.observer.emit('ui.log.info', translator.translateText('Logged you out!'));
