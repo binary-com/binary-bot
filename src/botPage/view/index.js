@@ -39,16 +39,16 @@ export default class View {
       $('#login').css('display', 'none');
       $('#accountSelect').css('display', 'inline-block');
       $('#logout').css('display', 'inline-block');
-      tokenList.forEach((tokenInfo) => {
+      for (let tokenInfo of tokenList) {
         let prefix;
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
         } else {
           prefix = '';
         }
-				$('#accountSelect').append(`<option value='${tokenInfo.token}'>`
-					+ ` ${prefix} ${tokenInfo.account_name} </option>`);
-      });
+        $('#accountSelect').append(`<option value='${tokenInfo.token}'>`
+          + ` ${prefix} ${tokenInfo.account_name} </option>`);
+      }
     }
   }
   addTranslationToUi() {
@@ -73,7 +73,7 @@ export default class View {
     this.tours.welcome = new Welcome();
   }
   startTour() {
-		let that = this;
+    let that = this;
     $('#tours').on('change', function() {
       let value = $(this).val();
       if (value === '') return;
@@ -135,10 +135,10 @@ export default class View {
       });
     };
 
-    ['success', 'info', 'warn', 'error'].forEach((type) => {
+    for (let type of ['success', 'info', 'warn', 'error']) {
       observeForLog(type, 'right');
       observeForLog(type, 'left');
-    });
+    }
   }
 
   setFileBrowser() {
@@ -309,8 +309,8 @@ export default class View {
 
     $('#login')
       .bind('click.login', () => {
-				document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' +
-				`${storageManager.get('appId')}&l=${translator.getLanguage().toUpperCase()}`;
+        document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' +
+          `${storageManager.get('appId')}&l=${translator.getLanguage().toUpperCase()}`;
       })
       .text('Log in');
 

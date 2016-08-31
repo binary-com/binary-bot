@@ -51,17 +51,17 @@ export default class _Blockly {
   }
   createXmlTag(obj) {
     let xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
-    Object.keys(obj).forEach((market) => {
+    for (let market of Object.keys(obj)) {
       xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">\n';
-      Object.keys(obj[market].submarkets).forEach((submarket) => {
+      for (let submarket of Object.keys(obj[market].submarkets)) {
         xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">\n';
-        Object.keys(obj[market].submarkets[submarket].symbols).forEach((symbol) => {
+        for (let symbol of Object.keys(obj[market].submarkets[submarket].symbols)) {
           xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>\n';
-        });
+        }
         xmlStr += '\t\t</category>\n';
-      });
+      }
       xmlStr += '\t</category>\n';
-    });
+    }
     xmlStr += '</category>\n';
     return xmlStr;
   }
@@ -139,31 +139,29 @@ export default class _Blockly {
   }
   saveXml(showOnly) {
     let xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))
-      .forEach((field) => {
-        if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-          if (field.childNodes.length >= 1) {
-            field.childNodes[0].nodeValue = '';
-          }
-        }
-      });
-    Array.prototype.slice.apply(xmlDom.getElementsByTagName('block'))
-      .forEach((block) => {
-        switch (block.getAttribute('type')) {
-          case 'trade':
-            block.setAttribute('id', 'trade');
-            break;
-          case 'on_strategy':
-            block.setAttribute('id', 'strategy');
-            break;
-          case 'on_finish':
-            block.setAttribute('id', 'finish');
-            break;
-          default:
-            block.removeAttribute('id');
-            break;
-        }
-      });
+		for (let field of Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))) {
+			if (field.getAttribute('name') === 'ACCOUNT_LIST') {
+				if (field.childNodes.length >= 1) {
+					field.childNodes[0].nodeValue = '';
+				}
+			}
+		}
+		for (let block of Array.prototype.slice.apply(xmlDom.getElementsByTagName('block'))) {
+			switch (block.getAttribute('type')) {
+				case 'trade':
+					block.setAttribute('id', 'trade');
+					break;
+				case 'on_strategy':
+					block.setAttribute('id', 'strategy');
+					break;
+				case 'on_finish':
+					block.setAttribute('id', 'finish');
+					break;
+				default:
+					block.removeAttribute('id');
+					break;
+			}
+		}
     let xmlText = Blockly.Xml.domToPrettyText(xmlDom);
     if (showOnly) {
       this.observer.emit('ui.log', xmlText);
@@ -182,8 +180,8 @@ export default class _Blockly {
       Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       let topBlocks = Blockly.mainWorkspace.getTopBlocks();
       for (let block of topBlocks) {
-				if (['on_strategy', 'on_finish', 'trade'].indexOf(block.type) < 0
-					&& block !== this.utils.findTopParentBlock(Blockly.mainWorkspace.getBlockById('trade'))) {
+        if (['on_strategy', 'on_finish', 'trade'].indexOf(block.type) < 0
+          && block !== this.utils.findTopParentBlock(Blockly.mainWorkspace.getBlockById('trade'))) {
           block.dispose();
         }
       }
