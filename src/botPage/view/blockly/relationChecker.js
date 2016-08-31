@@ -5,7 +5,7 @@ import { bot } from '../../bot';
 import { translator } from '../../../common/translator';
 import { utils } from './utils';
 
-class RelationChecker {
+export default class RelationChecker {
   constructor() {
     this.observer = new Observer();
   }
