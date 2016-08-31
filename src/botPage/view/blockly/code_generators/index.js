@@ -1,4 +1,3 @@
-'use strict';
 import './trade/trade';
 import './trade/barrierOffset';
 import markets from './trade/markets';
@@ -23,7 +22,8 @@ import './finish/details';
 import './finish/finish';
 import './finish/read_details';
 import './finish/trade_again';
-module.exports = function init(){
+
+export default () => {
 	markets();
 	tradeTypes();
 };
