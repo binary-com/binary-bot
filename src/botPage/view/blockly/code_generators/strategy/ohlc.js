@@ -1,6 +1,4 @@
-'use strict';
-
-Blockly.JavaScript.ohlc = function(block) {
-	var code = 'ticks.ohlc';
+Blockly.JavaScript.ohlc = function() {
+  let code = 'ticks.ohlc';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
