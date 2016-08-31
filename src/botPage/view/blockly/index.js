@@ -96,7 +96,7 @@ export default class _Blockly {
     Blockly.Blocks.math.HUE = '#dedede';
     Blockly.Blocks.logic.HUE = '#dedede';
     Blockly.Blocks.lists.HUE = '#dedede';
-    Blockly.Blocks.letiables.HUE = '#dedede';
+    Blockly.Blocks.variables.HUE = '#dedede';
     Blockly.Blocks.procedures.HUE = '#dedede';
     this.setBlockColors();
   }
@@ -116,7 +116,7 @@ export default class _Blockly {
   }
   selectBlockByText(text) {
     let returnVal;
-    $('.blocklyText').each(() => {
+    $('.blocklyText').each(function() {
       if ($(this).text().indexOf(text) >= 0) {
         returnVal = $(this).parent()[0];
       }
@@ -125,7 +125,7 @@ export default class _Blockly {
   }
   selectTextBlock(text) {
     let returnVal;
-    $('.blocklyText').each(() => {
+    $('.blocklyText').each(function() {
       if ($(this).text() === text) {
         returnVal = this;
       }
