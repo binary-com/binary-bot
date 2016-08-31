@@ -3,7 +3,7 @@ import { translator } from '../../../../../common/translator';
 import { relationChecker } from '../../relationChecker';
 import { bot } from '../../../../bot';
 
-module.exports = function init() {
+export default () => {
   let symbolNames = bot.symbol.activeSymbols.getSymbolNames();
   for (let symbol of Object.keys(symbolNames)) {
     Blockly.Blocks[symbol.toLowerCase()] = {
