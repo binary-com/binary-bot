@@ -95,6 +95,7 @@ module.exports = {
   "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
   "4f381a323fe782c731f91a730a921ef612663d8f": "Connection lost, recovering...",
   "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
   "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
   "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
   "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",

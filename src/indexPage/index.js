@@ -12,7 +12,6 @@ asyncChain()
     oauthLogin(done);
   })
   .pipe(function translate(done) {
-    var translator = new Translator();
     $('[data-i18n-text]')
       .each(function() {
         $(this)
