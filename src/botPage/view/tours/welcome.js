@@ -1,6 +1,6 @@
 'use strict';
 import storageManager from 'binary-common-utils/storageManager';
-import Components from '../components';
+import { components } from '../components';
 import View from '../';
 import { translator } from '../../../common/translator';
 
@@ -10,7 +10,6 @@ var Welcome = function Welcome(){
 		return Welcome.instance;
 	}
 	Welcome.instance = this;
-	this.components = new Components();
 };
 
 Welcome.prototype = Object.create(null, {
@@ -207,7 +206,7 @@ Welcome.prototype = Object.create(null, {
 	},
 	stop: {
 		value: function stop(){
-			this.components.setOpacityForAll(true, 1);
+			components.setOpacityForAll(true, 1);
 			this.tour.stop();
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete this.tour;

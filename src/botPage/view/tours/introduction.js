@@ -1,6 +1,6 @@
 'use strict';
 import Observer from 'binary-common-utils/observer';
-import Components from '../components';
+import { components } from '../components';
 import { translator } from '../../../common/translator';
 
 
@@ -10,7 +10,6 @@ var Introduction = function Introduction(){
 		return Introduction.instance;
 	}
 	Introduction.instance = this;
-	this.components = new Components();
 	this.observer = new Observer();
 };
 
@@ -472,7 +471,7 @@ Introduction.prototype = Object.create(null, {
 	},
 	stop: {
 		value: function stop(){
-			this.components.setOpacityForAll(true, 1);
+			components.setOpacityForAll(true, 1);
 			this.tour.stop();
 			Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
 			delete this.tour;
