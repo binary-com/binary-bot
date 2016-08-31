@@ -3,7 +3,7 @@
 
 import { translator } from '../../../../../common/translator';
 
-import RelationChecker from '../../relationChecker';
+import { relationChecker } from '../../relationChecker';
 
 Blockly.Blocks.direction = {
   init: function() {
@@ -15,8 +15,8 @@ Blockly.Blocks.direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		var relationChecker = new RelationChecker();
-		relationChecker.inside_strategy(this, ev, 'Tick Direction');
+		
+		relationChecker.insideStrategy(this, ev, 'Tick Direction');
 	},
 };
 

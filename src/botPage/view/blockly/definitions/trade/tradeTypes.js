@@ -2,7 +2,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#orvwcx
 
 import config from '../../../../../common/const';
-import RelationChecker from '../../relationChecker';
+import { relationChecker } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 import {duration, payout, prediction, title, barrierOffset, secondBarrierOffset} from './components';
 
@@ -38,7 +38,7 @@ module.exports = function init(){
 				this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 			},
 			onchange: function(ev){
-				var relationChecker = new RelationChecker();
+				
 				relationChecker.condition(this, ev);
 			},
 		};

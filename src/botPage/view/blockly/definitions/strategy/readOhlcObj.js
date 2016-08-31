@@ -4,7 +4,7 @@
 import config from '../../../../../common/const';
 import { translator } from '../../../../../common/translator';
 
-import RelationChecker from '../../relationChecker';
+import { relationChecker } from '../../relationChecker';
 
 Blockly.Blocks.read_ohlc_obj = {
 	init: function() {
@@ -19,7 +19,7 @@ Blockly.Blocks.read_ohlc_obj = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev){
-		var relationChecker = new RelationChecker();
-		relationChecker.inside_strategy(this, ev, 'Candles');
+		
+		relationChecker.insideStrategy(this, ev, 'Candles');
 	},
 };

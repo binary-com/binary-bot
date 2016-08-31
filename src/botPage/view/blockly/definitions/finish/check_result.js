@@ -1,7 +1,7 @@
 'use strict';
 
 import config from '../../../../../common/const';
-import RelationChecker from '../../relationChecker';
+import { relationChecker } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.contract_check_result = {
@@ -15,7 +15,7 @@ Blockly.Blocks.contract_check_result = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		var relationChecker = new RelationChecker();
-		relationChecker.inside_finish(this, ev, 'Check Result');
+		
+		relationChecker.insideFinish(this, ev, 'Check Result');
 	},
 };

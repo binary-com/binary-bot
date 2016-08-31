@@ -3,7 +3,7 @@
 
 import { translator } from '../../../../../common/translator';
 
-import RelationChecker from '../../relationChecker';
+import { relationChecker } from '../../relationChecker';
 
 Blockly.Blocks.contract_result = {
   init: function() {
@@ -15,8 +15,8 @@ Blockly.Blocks.contract_result = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		var relationChecker = new RelationChecker();
-		relationChecker.inside_finish(this, ev, 'Contract Result');
+		
+		relationChecker.insideFinish(this, ev, 'Contract Result');
 	},
 };
 

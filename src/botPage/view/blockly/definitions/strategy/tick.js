@@ -2,7 +2,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 
 
-import RelationChecker from '../../relationChecker';
+import { relationChecker } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 
@@ -16,7 +16,7 @@ Blockly.Blocks.tick = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 	onchange: function(ev) {
-		var relationChecker = new RelationChecker();
-		relationChecker.inside_strategy(this, ev, 'Tick Value');
+		
+		relationChecker.insideStrategy(this, ev, 'Tick Value');
 	},
 };

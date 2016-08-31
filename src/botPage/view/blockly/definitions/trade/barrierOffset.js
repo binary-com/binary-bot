@@ -4,7 +4,7 @@
 import config from '../../../../../common/const';
 import { translator } from '../../../../../common/translator';
 
-import RelationChecker from '../../relationChecker';
+import { relationChecker } from '../../relationChecker';
 
 Blockly.Blocks.barrier_offset = {
 	init: function() {
@@ -18,7 +18,7 @@ Blockly.Blocks.barrier_offset = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev){
-		var relationChecker = new RelationChecker();
-		relationChecker.inside_condition(this, ev, 'Barrier Offset');
+		
+		relationChecker.insideCondition(this, ev, 'Barrier Offset');
 	},
 };

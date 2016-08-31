@@ -1,7 +1,7 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 import { utils } from '../../../blockly/utils';
-import RelationChecker from '../../relationChecker';
+import { relationChecker } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 
@@ -18,7 +18,7 @@ Blockly.Blocks.payout = {
 		this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	},
 	onchange: function(ev) {
-		var relationChecker = new RelationChecker();
-		relationChecker.inside_strategy(this, ev, 'Payout');
+		
+		relationChecker.insideStrategy(this, ev, 'Payout');
 	},
 };
