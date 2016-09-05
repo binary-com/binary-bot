@@ -1,5 +1,5 @@
-import tools from 'binary-common-utils/tools';
-import Observer from 'binary-common-utils/observer';
+import tools from 'binary-common-utils/lib/tools';
+import Observer from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import ActiveSymbols from './activeSymbols';
 

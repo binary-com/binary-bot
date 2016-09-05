@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import 'babel-polyfill';
-import Observer from 'binary-common-utils/observer';
-import storageManager from 'binary-common-utils/storageManager';
+import Observer from 'binary-common-utils/lib/observer';
+import storageManager from 'binary-common-utils/lib/storageManager';
 import './utils/draggable';
 import { bot } from './bot';
 import View from './view';

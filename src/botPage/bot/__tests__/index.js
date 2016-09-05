@@ -1,8 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import CustomApi from 'binary-common-utils/customApi';
+import CustomApi from 'binary-common-utils/lib/customApi';
 import { expect } from 'chai';
-import Observer from 'binary-common-utils/observer';
-import { asyncChain } from 'binary-common-utils/tools';
+import Observer from 'binary-common-utils/lib/observer';
+import { asyncChain } from 'binary-common-utils/lib/tools';
 import Bot from '../index';
 import mockWebsocket from '../../../common/mock/websocket';
 

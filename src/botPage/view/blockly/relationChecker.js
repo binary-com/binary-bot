@@ -1,5 +1,5 @@
-import Observer from 'binary-common-utils/observer';
-import tools from 'binary-common-utils/tools';
+import Observer from 'binary-common-utils/lib/observer';
+import tools from 'binary-common-utils/lib/tools';
 import config from '../../../common/const';
 import { bot } from '../../bot';
 import { translator } from '../../../common/translator';

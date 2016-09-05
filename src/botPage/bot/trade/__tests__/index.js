@@ -1,8 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { asyncChain } from 'binary-common-utils/tools';
-import CustomApi from 'binary-common-utils/customApi';
+import { asyncChain } from 'binary-common-utils/lib/tools';
+import CustomApi from 'binary-common-utils/lib/customApi';
 import { expect } from 'chai';
-import Observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/lib/observer';
 import ws from '../../../../common/mock/websocket';
 import Ticktrade from '../';
 

@@ -2,7 +2,7 @@
 import 'babel-polyfill';
 import { translator } from '../common/translator';
 import { setAppId, oauthLogin } from '../common/appId';
-import { asyncChain } from 'binary-common-utils/tools';
+import { asyncChain } from 'binary-common-utils/lib/tools';
 import $ from 'jquery';
 
 window.$ = $;

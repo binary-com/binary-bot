@@ -25,7 +25,7 @@ module.exports = {
 		responses: {
 			realToken: {
 				func: function realToken(api){
-					api.authorize('c9A3gPFcqQtAQDW');
+					api.authorize('nmjKBPWxM00E8Fh');
 				}
 			}
 		},

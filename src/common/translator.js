@@ -1,5 +1,5 @@
-import { parseQueryString } from 'binary-common-utils/tools';
-import { set as setStorage, get as getStorage } from 'binary-common-utils/storageManager';
+import { parseQueryString } from 'binary-common-utils/lib/tools';
+import { set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager';
 import i18n from './_i18n';
 import zhTw from './translations/zh_tw';
 import de from './translations/de';

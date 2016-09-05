@@ -1,6 +1,6 @@
-import tools from 'binary-common-utils/tools';
-import accounts from 'binary-common-utils/account';
-import storageManager from 'binary-common-utils/storageManager';
+import tools from 'binary-common-utils/lib/tools';
+import accounts from 'binary-common-utils/lib/account';
+import storageManager from 'binary-common-utils/lib/storageManager';
 
 export function setAppId() {
   let appId = 0;

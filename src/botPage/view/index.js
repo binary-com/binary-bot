@@ -1,6 +1,6 @@
-import account from 'binary-common-utils/account';
-import Observer from 'binary-common-utils/observer';
-import storageManager from 'binary-common-utils/storageManager';
+import account from 'binary-common-utils/lib/account';
+import Observer from 'binary-common-utils/lib/observer';
+import storageManager from 'binary-common-utils/lib/storageManager';
 import lzString from 'lz-string';
 import { PlainChart as Chart } from 'binary-charts';
 import { logger } from './logger';

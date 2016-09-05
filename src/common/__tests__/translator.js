@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { strToXml } from 'binary-common-utils/tools';
+import { strToXml } from 'binary-common-utils/lib/tools';
 import { expect } from 'chai';
 import { translator } from '../translator';
 

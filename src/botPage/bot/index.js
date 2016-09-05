@@ -1,7 +1,7 @@
-import Observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/lib/observer';
 import _ from 'underscore';
-import { getUTCTime, asyncChain } from 'binary-common-utils/tools';
-import CustomApi from 'binary-common-utils/customApi';
+import { getUTCTime, asyncChain } from 'binary-common-utils/lib/tools';
+import CustomApi from 'binary-common-utils/lib/customApi';
 import { translator } from '../../common/translator';
 import config from '../../common/const';
 import StrategyCtrl from './strategyCtrl';

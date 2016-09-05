@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { expect } from 'chai';
-import CustomApi from 'binary-common-utils/customApi';
+import CustomApi from 'binary-common-utils/lib/customApi';
 import deep from 'deep-diff';
 import ws from '../../../../common/mock/websocket';
 import ActiveSymbols from '../activeSymbols';

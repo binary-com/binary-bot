@@ -1,4 +1,4 @@
-import Observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/lib/observer';
 import { translator } from '../../../common/translator';
 
 export default class Trade {

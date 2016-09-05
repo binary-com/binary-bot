@@ -1,4 +1,4 @@
-import Observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/lib/observer';
 import Trade from './trade';
 
 export default class StrategyCtrl {

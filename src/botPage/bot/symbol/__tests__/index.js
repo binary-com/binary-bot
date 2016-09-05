@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import CustomApi from 'binary-common-utils/customApi';
+import CustomApi from 'binary-common-utils/lib/customApi';
 import ws from '../../../../common/mock/websocket';
 import _Symbol from '../index';
 

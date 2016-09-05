@@ -1,5 +1,5 @@
 import fileSaver from 'filesaverjs';
-import Observer from 'binary-common-utils/observer';
+import Observer from 'binary-common-utils/lib/observer';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
 import { utils } from './utils.js';
