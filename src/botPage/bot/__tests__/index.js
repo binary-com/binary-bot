@@ -2,7 +2,6 @@
 import CustomApi from 'binary-common-utils/lib/customApi';
 import { expect } from 'chai';
 import Observer from 'binary-common-utils/lib/observer';
-import { asyncChain } from 'binary-common-utils/lib/tools';
 import Bot from '../index';
 import mockWebsocket from '../../../common/mock/websocket';
 
@@ -21,7 +20,7 @@ describe('Bot', () => {
   let api;
   let bot;
   let token = 'c9A3gPFcqQtAQDW';
-  before(function(done) {
+  before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
     observer = new Observer();
     api = new CustomApi(mockWebsocket);
     bot = new Bot(api);
@@ -36,7 +35,7 @@ describe('Bot', () => {
   });
   describe('Bot cannot initialize with a fake token', () => {
     let error;
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('api.error', (_error) => {
         error = _error;
         done();
@@ -49,7 +48,7 @@ describe('Bot', () => {
     });
   });
   describe('Start trading', () => {
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('bot.waiting_for_purchase', () => {
         done();
       }, true);
@@ -61,33 +60,19 @@ describe('Bot', () => {
     it('start bot with the token, option', () => {});
   });
   describe('Start the trade without real finish and strategy functions', () => {
-    before(function(done) {
-
-      asyncChain()
-        .pipe((chainDone) => {
-          observer.register('bot.stop', () => {
-            chainDone();
-          }, true);
-          bot.stop();
-        })
-        .pipe(() => {
-          api.destroy();
-          api = new CustomApi(mockWebsocket);
-          bot = new Bot(api);
-          bot.initPromise.then(() => {
-            done();
-          });
-        })
-        .pipe((chainDone) => {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+      bot.stop();
+      new Promise((r) => observer.register('bot.stop', r, true)).then(() => {
+        api.destroy();
+        api = new CustomApi(mockWebsocket);
+        bot = new Bot(api);
+        bot.initPromise.then(() => {
           observer.register('bot.waiting_for_purchase', () => {
-            chainDone();
+            done();
           }, true);
           bot.start(token, option, null, null);
-        })
-        .pipe(() => {
-          done();
-        })
-        .exec();
+        });
+      });
     });
     it('It is possible to restart the trade', () => {});
   });
@@ -95,7 +80,7 @@ describe('Bot', () => {
     let finishedContractFromFinishFunction;
     let finishedContractFromFinishSignal;
     let numOfTicks = 0;
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       asyncChain()
         .pipe((chainDone) => {
           observer.register('bot.stop', () => {
@@ -136,7 +121,7 @@ describe('Bot', () => {
     let finishedContractFromFinishFunction;
     let finishedContractFromFinishSignal;
     let numOfTicks = 0;
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       bot.start(token, option, (tick, proposals, _strategyCtrl) => {
         if (++numOfTicks === 3) {
           _strategyCtrl.purchase('DIGITEVEN');

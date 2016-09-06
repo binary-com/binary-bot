@@ -18,6 +18,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// eslint-disable-line import/no-unresolved
+
 var WebSocket = function () {
   function WebSocket(url) {
     var _this = this;
@@ -44,10 +46,13 @@ var WebSocket = function () {
   _createClass(WebSocket, [{
     key: 'getResponse',
     value: function getResponse(reqData, onmessage) {
-      this.handleForget(reqData, onmessage);
-      var database = this.getResponseFromBuffer(reqData);
-      database = !this.isEmpty(database) ? database : _database2.default;
-      this.parseDb(database, reqData, onmessage);
+      if ('forget_all' in reqData || 'subscribe' in reqData && reqData.subscribe === 0) {
+        this.handleForget(reqData, onmessage);
+      } else {
+        var database = this.getResponseFromBuffer(reqData);
+        database = !this.isEmpty(database) ? database : _database2.default;
+        this.parseDb(database, reqData, onmessage);
+      }
     }
   }, {
     key: 'parseDb',
@@ -104,7 +109,7 @@ var WebSocket = function () {
                 return this.passMessageOn(reqData, respData, onmessage);
 
               case 21:
-                messageSuccess = _context.sent;
+                messageSuccess = true;
 
               case 22:
                 _iteratorNormalCompletion2 = true;
@@ -305,9 +310,6 @@ var WebSocket = function () {
 
       return new Promise(function (r) {
         setTimeout(function () {
-          if (_this2.readyState === 0) {
-            return;
-          }
           if (!_this2.isEmpty(next)) {
             _this2.addToResponseBuffer(next);
           }
@@ -320,25 +322,17 @@ var WebSocket = function () {
   }, {
     key: 'handleForget',
     value: function handleForget(reqData, onmessage) {
-      var _this3 = this;
-
-      if ('forget_all' in reqData || 'subscribe' in reqData && reqData.subscribe === 0) {
-        setTimeout(function () {
-          if (_this3.readyState === 0) {
-            return;
-          }
-          onmessage(JSON.stringify({
-            echo_req: {
-              req_id: reqData.req_id,
-              forget_all: 'ticks'
-            },
+      setTimeout(function () {
+        onmessage(JSON.stringify({
+          echo_req: {
             req_id: reqData.req_id,
-            forget_all: [],
-            msg_type: 'forget_all'
-          }));
-        }, this.delay);
-        return;
-      }
+            forget_all: 'ticks'
+          },
+          req_id: reqData.req_id,
+          forget_all: [],
+          msg_type: 'forget_all'
+        }));
+      }, this.delay);
     }
   }, {
     key: 'addToResponseBuffer',
@@ -376,10 +370,10 @@ var WebSocket = function () {
   }, {
     key: 'getResponseFromBuffer',
     value: function getResponseFromBuffer(reqData) {
-      var _this4 = this;
+      var _this3 = this;
 
       var index = this.bufferedResponse.findIndex(function (_data) {
-        return !_this4.isEmpty(_this4.findDataInBuffer(reqData, _data));
+        return !_this3.isEmpty(_this3.findDataInBuffer(reqData, _data));
       });
       return index < 0 ? null : this.bufferedResponse[index];
     }
@@ -492,14 +486,14 @@ var WebSocket = function () {
   }, {
     key: 'send',
     value: function send(rawData) {
-      var _this5 = this;
+      var _this4 = this;
 
       if (this.readyState === 0) {
         return;
       }
       var reqData = JSON.parse(rawData);
       this.getResponse(reqData, function (receivedData) {
-        _this5.onmessage({
+        _this4.onmessage({
           data: receivedData
         });
       });

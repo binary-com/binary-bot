@@ -5,7 +5,6 @@ import deep from 'deep-diff';
 import ws from '../../../../common/mock/websocket';
 import ActiveSymbols from '../activeSymbols';
 
-let api = new CustomApi(ws)._originalApi;
 
 /* 
 	There is a market called forex, which has a submarket called major_pairs, which has a symbol called frxEURUSD
@@ -28,6 +27,7 @@ let setChecks = (obj) => {
 describe('ActiveSymbols', () => {
   let activeSymbols;
   before(function(done) {
+    let api = new CustomApi(ws).originalApi;
     api.getActiveSymbolsBrief().then((response) => {
       activeSymbols = new ActiveSymbols(response.active_symbols);
       done();

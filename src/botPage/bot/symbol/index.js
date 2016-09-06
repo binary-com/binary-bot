@@ -1,33 +1,20 @@
-import tools from 'binary-common-utils/lib/tools';
-import Observer from 'binary-common-utils/lib/observer';
+import { getObjectValue } from 'binary-common-utils/lib/tools';
+import { observer } from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import ActiveSymbols from './activeSymbols';
 
 export default class _Symbol {
   constructor(api) {
-    this.observer = new Observer();
-    this.api = api._originalApi;
+    this.api = api.originalApi;
     this.assetIndex = {};
     this.initPromise = new Promise((resolve) => {
-      tools.asyncChain()
-        .pipe((done) => {
-          this.api.getActiveSymbolsBrief().then((response) => {
-            this.activeSymbols = new ActiveSymbols(response.active_symbols);
-            done();
-          }, (error) => {
-            this.observer.emit('api.error', error);
-          });
-        })
-        .pipe((done) => {
-          this.api.getAssetIndex().then((response) => {
-            this.parseAssetIndex(response.asset_index);
-            done();
-          }, (error) => {
-            this.observer.emit('api.error', error);
-          });
-        })
-        .pipe(resolve)
-        .exec();
+      this.api.getActiveSymbolsBrief().then((r) => {
+        this.activeSymbols = new ActiveSymbols(r.active_symbols);
+        this.api.getAssetIndex().then((r2) => {
+          this.parseAssetIndex(r2.asset_index);
+          resolve();
+        }, (error) => observer.emit('api.error', error));
+      }, (error) => observer.emit('api.error', error));
     });
   }
   parseAssetIndex(assetIndex) {
@@ -73,7 +60,7 @@ export default class _Symbol {
   }
   getConditionName(condition) {
     let opposites = config.opposites[condition.toUpperCase()];
-    return tools.getObjectValue(opposites[0]) + '/' + tools.getObjectValue(opposites[1]);
+    return getObjectValue(opposites[0]) + '/' + getObjectValue(opposites[1]);
   }
   getCategoryForCondition(condition) {
     for (let category of Object.keys(config.conditionsCategory)) {
