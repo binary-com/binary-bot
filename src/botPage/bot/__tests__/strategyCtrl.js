@@ -1,19 +1,15 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { asyncChain } from 'binary-common-utils/lib/tools';
 import CustomApi from 'binary-common-utils/lib/customApi';
-import { expect } from 'chai';
-import Observer from 'binary-common-utils/lib/observer';
+import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
+import { observer } from 'binary-common-utils/lib/observer';
 import ws from '../../../common/mock/websocket';
 import StrategyCtrl from '../strategyCtrl';
 
 describe('StrategyCtrl', () => {
-  let observer;
   let api;
   let proposals = [];
   let firstAttempt = true;
   let strategyCtrl;
   before(() => {
-    observer = new Observer();
     api = new CustomApi(ws);
     let strategy = (ticks, receivedProposals, _strategyCtrl) => {
       if (receivedProposals) {
@@ -37,7 +33,7 @@ describe('StrategyCtrl', () => {
     strategyCtrl = new StrategyCtrl(api, strategy);
   });
   describe('Make the strategy ready...', () => {
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('strategy.ready', () => {
         done();
       }, true);
@@ -45,30 +41,9 @@ describe('StrategyCtrl', () => {
         proposals.push(_proposal);
         strategyCtrl.updateProposal(_proposal);
       });
-      asyncChain()
-        .pipe((chainDone) => {
-          observer.register('api.authorize', () => {
-            chainDone();
-          }, true);
-          api.authorize('c9A3gPFcqQtAQDW');
-        })
-        .pipe((chainDone) => {
-          observer.register('api.proposal', (_proposal) => {
-            chainDone();
-          }, true);
-          api.proposal({
-            amount: '1.00',
-            basis: 'stake',
-            contract_type: 'DIGITODD',
-            currency: 'USD',
-            duration: 5,
-            duration_unit: 't',
-            symbol: 'R_100',
-          });
-        })
-        .pipe((chainDone) => {
-          observer.register('api.proposal', (_proposal) => {
-            chainDone();
+      observer.register('api.authorize', () => {
+        observer.register('api.proposal', () => {
+          observer.register('api.proposal', () => {
           }, true);
           api.proposal({
             amount: '1.00',
@@ -79,15 +54,25 @@ describe('StrategyCtrl', () => {
             duration_unit: 't',
             symbol: 'R_100',
           });
-        })
-        .exec();
+        }, true);
+        api.proposal({
+          amount: '1.00',
+          basis: 'stake',
+          contract_type: 'DIGITODD',
+          currency: 'USD',
+          duration: 5,
+          duration_unit: 't',
+          symbol: 'R_100',
+        });
+      }, true);
+      api.authorize('nmjKBPWxM00E8Fh');
     });
     it('Strategy gets ready when two proposals are available', () => {
     });
   });
   describe('Adding the ticks to the strategy...', () => {
     let strategyArgs;
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('test.strategy', (_strategyArgs) => {
         strategyArgs = _strategyArgs;
         done();
@@ -109,7 +94,7 @@ describe('StrategyCtrl', () => {
     });
   });
   describe('Waiting for strategy to purchase the contract', () => {
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('test.purchase', () => {
         done();
       }, true);
@@ -129,7 +114,7 @@ describe('StrategyCtrl', () => {
   });
   describe('Waiting for purchase to be finished', () => {
     let finishedContract;
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('strategy.finish', (_finishedContract) => {
         finishedContract = _finishedContract;
         done();
@@ -148,9 +133,5 @@ describe('StrategyCtrl', () => {
       expect(finishedContract).to.have.property('sell_price')
         .that.satisfy((price) => !isNaN(price));
     });
-  });
-  after(() => {
-    strategyCtrl.destroy();
-    observer._destroy();
   });
 });

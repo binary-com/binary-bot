@@ -1,12 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import CustomApi from 'binary-common-utils/lib/customApi';
 import { expect } from 'chai';
-import Observer from 'binary-common-utils/lib/observer';
+import { observer } from 'binary-common-utils/lib/observer';
 import Bot from '../index';
 import mockWebsocket from '../../../common/mock/websocket';
 
 describe('Bot', () => {
-  let observer;
   let option = {
     amount: '1.00',
     basis: 'stake',
@@ -19,9 +18,8 @@ describe('Bot', () => {
 
   let api;
   let bot;
-  let token = 'c9A3gPFcqQtAQDW';
+  let token = 'nmjKBPWxM00E8Fh';
   before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-    observer = new Observer();
     api = new CustomApi(mockWebsocket);
     bot = new Bot(api);
     bot.initPromise.then(() => {
@@ -33,7 +31,7 @@ describe('Bot', () => {
     expect(markets).to.be.an('Object')
       .and.to.have.property('forex');
   });
-  describe('Bot cannot initialize with a fake token', () => {
+  describe('Bot cannot start with a fake token', () => {
     let error;
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('api.error', (_error) => {
@@ -53,7 +51,7 @@ describe('Bot', () => {
         done();
       }, true);
       observer.register('bot.stop', () => {
-        bot.start(token, option, null, null);
+        bot.start(token, option, () => {}, () => {});
       }, true);
       bot.stop();
     });
@@ -61,18 +59,15 @@ describe('Bot', () => {
   });
   describe('Start the trade without real finish and strategy functions', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      bot.stop();
-      new Promise((r) => observer.register('bot.stop', r, true)).then(() => {
-        api.destroy();
-        api = new CustomApi(mockWebsocket);
-        bot = new Bot(api);
+      observer.register('bot.stop', () => {
         bot.initPromise.then(() => {
           observer.register('bot.waiting_for_purchase', () => {
             done();
           }, true);
-          bot.start(token, option, null, null);
+          bot.start(token, option, () => {}, () => {});
         });
-      });
+      }, true);
+      bot.stop();
     });
     it('It is possible to restart the trade', () => {});
   });
@@ -81,36 +76,23 @@ describe('Bot', () => {
     let finishedContractFromFinishSignal;
     let numOfTicks = 0;
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      asyncChain()
-        .pipe((chainDone) => {
-          observer.register('bot.stop', () => {
-            chainDone();
-          }, true);
-          bot.stop();
-        })
-        .pipe(() => {
-          api.destroy();
-          api = new CustomApi(mockWebsocket);
-          bot = new Bot(api);
-          bot.initPromise.then(() => {
-            done();
-          });
-        })
-        .pipe((chainDone) => {
+      this.timeout('20000');
+      observer.register('bot.stop', () => {
+        bot.initPromise.then(() => {
           observer.register('bot.finish', (_finishedContractFromFinishSignal) => {
             finishedContractFromFinishSignal = _finishedContractFromFinishSignal;
-            chainDone();
+            done();
           }, true);
           bot.start(token, option, (tick, proposals, _strategyCtrl) => {
             if (++numOfTicks === 3) {
               _strategyCtrl.purchase('DIGITEVEN');
             }
-          }, (_finishedContract) => finishedContractFromFinishFunction = _finishedContract);
-        })
-        .pipe(() => {
-          done();
-        })
-        .exec();
+          }, (_finishedContract) => {
+            finishedContractFromFinishFunction = _finishedContract;
+          });
+        });
+      }, true);
+      bot.stop();
     });
     it('Strategy decides to purchase the trade', () => {});
     it('Calls the finish function when trade is finished', () => {
@@ -126,27 +108,18 @@ describe('Bot', () => {
         if (++numOfTicks === 3) {
           _strategyCtrl.purchase('DIGITEVEN');
         }
-      }, (_finishedContract) => finishedContractFromFinishFunction = _finishedContract);
-      asyncChain()
-        .pipe((chainDone) => {
-          observer.register('bot.stop', (_finishedContractFromFinishSignal) => {
-            finishedContractFromFinishSignal = _finishedContractFromFinishSignal;
-            chainDone();
-          }, true);
-          bot.stop();
-        })
-        .pipe((chainDone) => {
-          done();
-        })
-        .exec();
+      }, (_finishedContract) => {
+        finishedContractFromFinishFunction = _finishedContract;
+      });
+      observer.register('bot.stop', (_finishedContractFromFinishSignal) => {
+        finishedContractFromFinishSignal = _finishedContractFromFinishSignal;
+        done();
+      }, true);
+      bot.stop();
     });
     it('Strategy decides to purchase the trade', () => {});
     it('Calls the finish function when trade is finished', () => {
       expect(finishedContractFromFinishSignal).to.be.equal(finishedContractFromFinishFunction);
     });
-  });
-  after(() => {
-    observer._destroy();
-    api.destroy();
   });
 });

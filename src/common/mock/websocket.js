@@ -8,6 +8,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
 var _database = require('./database');
 
 var _database2 = _interopRequireDefault(_database);
@@ -28,8 +32,7 @@ var WebSocket = function () {
 
     this.delay = 10;
     this.url = url;
-    this.bufferedResponse = [];
-    this.queuedRequest = [];
+    this.bufferedResponses = [];
     // providing ws interface
     this.readyState = 0;
     this.onopen = null;
@@ -49,7 +52,7 @@ var WebSocket = function () {
       if ('forget_all' in reqData || 'subscribe' in reqData && reqData.subscribe === 0) {
         this.handleForget(reqData, onmessage);
       } else {
-        var database = this.getResponseFromBuffer(reqData);
+        var database = this.findDataInBuffer(reqData);
         database = !this.isEmpty(database) ? database : _database2.default;
         this.parseDb(database, reqData, onmessage);
       }
@@ -58,29 +61,28 @@ var WebSocket = function () {
     key: 'parseDb',
     value: function () {
       var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(database, reqData, onmessage) {
-        var messageSuccess, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, callName, callResTypes, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, callResTypeName, respData;
+        var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, callName, callResTypes, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, callResTypeName, respData;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                messageSuccess = false;
                 _iteratorNormalCompletion = true;
                 _didIteratorError = false;
                 _iteratorError = undefined;
-                _context.prev = 4;
+                _context.prev = 3;
                 _iterator = Object.keys(database)[Symbol.iterator]();
 
-              case 6:
+              case 5:
                 if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                  _context.next = 42;
+                  _context.next = 40;
                   break;
                 }
 
                 callName = _step.value;
 
                 if (!(callName in reqData || callName === 'history' && 'ticks_history' in reqData)) {
-                  _context.next = 39;
+                  _context.next = 37;
                   break;
                 }
 
@@ -88,12 +90,12 @@ var WebSocket = function () {
                 _iteratorNormalCompletion2 = true;
                 _didIteratorError2 = false;
                 _iteratorError2 = undefined;
-                _context.prev = 13;
+                _context.prev = 12;
                 _iterator2 = Object.keys(callResTypes)[Symbol.iterator]();
 
-              case 15:
+              case 14:
                 if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-                  _context.next = 25;
+                  _context.next = 23;
                   break;
                 }
 
@@ -101,108 +103,97 @@ var WebSocket = function () {
                 respData = this.findKeyInObj(callResTypes[callResTypeName], reqData);
 
                 if (!respData) {
-                  _context.next = 22;
+                  _context.next = 20;
                   break;
                 }
 
-                _context.next = 21;
+                _context.next = 20;
                 return this.passMessageOn(reqData, respData, onmessage);
 
-              case 21:
-                messageSuccess = true;
-
-              case 22:
+              case 20:
                 _iteratorNormalCompletion2 = true;
-                _context.next = 15;
+                _context.next = 14;
+                break;
+
+              case 23:
+                _context.next = 29;
                 break;
 
               case 25:
-                _context.next = 31;
-                break;
-
-              case 27:
-                _context.prev = 27;
-                _context.t0 = _context['catch'](13);
+                _context.prev = 25;
+                _context.t0 = _context['catch'](12);
                 _didIteratorError2 = true;
                 _iteratorError2 = _context.t0;
 
-              case 31:
-                _context.prev = 31;
-                _context.prev = 32;
+              case 29:
+                _context.prev = 29;
+                _context.prev = 30;
 
                 if (!_iteratorNormalCompletion2 && _iterator2.return) {
                   _iterator2.return();
                 }
 
-              case 34:
-                _context.prev = 34;
+              case 32:
+                _context.prev = 32;
 
                 if (!_didIteratorError2) {
-                  _context.next = 37;
+                  _context.next = 35;
                   break;
                 }
 
                 throw _iteratorError2;
 
+              case 35:
+                return _context.finish(32);
+
+              case 36:
+                return _context.finish(29);
+
               case 37:
-                return _context.finish(34);
-
-              case 38:
-                return _context.finish(31);
-
-              case 39:
                 _iteratorNormalCompletion = true;
-                _context.next = 6;
+                _context.next = 5;
+                break;
+
+              case 40:
+                _context.next = 46;
                 break;
 
               case 42:
-                _context.next = 48;
-                break;
-
-              case 44:
-                _context.prev = 44;
-                _context.t1 = _context['catch'](4);
+                _context.prev = 42;
+                _context.t1 = _context['catch'](3);
                 _didIteratorError = true;
                 _iteratorError = _context.t1;
 
-              case 48:
-                _context.prev = 48;
-                _context.prev = 49;
+              case 46:
+                _context.prev = 46;
+                _context.prev = 47;
 
                 if (!_iteratorNormalCompletion && _iterator.return) {
                   _iterator.return();
                 }
 
-              case 51:
-                _context.prev = 51;
+              case 49:
+                _context.prev = 49;
 
                 if (!_didIteratorError) {
-                  _context.next = 54;
+                  _context.next = 52;
                   break;
                 }
 
                 throw _iteratorError;
 
+              case 52:
+                return _context.finish(49);
+
+              case 53:
+                return _context.finish(46);
+
               case 54:
-                return _context.finish(51);
-
-              case 55:
-                return _context.finish(48);
-
-              case 56:
-                if (!messageSuccess) {
-                  this.queuedRequest.push({
-                    data: reqData,
-                    onmessage: onmessage
-                  });
-                }
-
-              case 57:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[4, 44, 48, 56], [13, 27, 31, 39], [32,, 34, 38], [49,, 51, 55]]);
+        }, _callee, this, [[3, 42, 46, 54], [12, 25, 29, 37], [30,, 32, 36], [47,, 49, 53]]);
       }));
 
       function parseDb(_x, _x2, _x3) {
@@ -215,86 +206,128 @@ var WebSocket = function () {
     key: 'passMessageOn',
     value: function () {
       var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(reqData, respData, onmessage) {
-        var _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, rd;
+        var history, firstTick, i, newTick, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, rd;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                if (!this.isEmpty(respData.next)) {
+                  console.log(reqData);
+                  console.log(respData.next);
+                  this.bufferedResponses.push(respData.next);
+                }
+
                 if (!reqData.subscribe) {
-                  _context2.next = 29;
+                  _context2.next = 47;
                   break;
                 }
 
+                if (!('ticks_history' in reqData)) {
+                  _context2.next = 19;
+                  break;
+                }
+
+                history = respData.data[0];
+                firstTick = respData.data[1];
+                _context2.next = 7;
+                return this.delayedOnMessage(reqData, history, onmessage);
+
+              case 7:
+                i = 0;
+
+              case 8:
+                if (!(i < 60)) {
+                  _context2.next = 17;
+                  break;
+                }
+
+                newTick = _extends({}, firstTick);
+
+                newTick.tick.epoch = '' + (+firstTick.tick.epoch + i * 2);
+                newTick.tick.quote = '' + (+firstTick.tick.quote + i * 0.1);
+                _context2.next = 14;
+                return this.delayedOnMessage(reqData, newTick, onmessage);
+
+              case 14:
+                i++;
+                _context2.next = 8;
+                break;
+
+              case 17:
+                _context2.next = 45;
+                break;
+
+              case 19:
                 _iteratorNormalCompletion3 = true;
                 _didIteratorError3 = false;
                 _iteratorError3 = undefined;
-                _context2.prev = 4;
+                _context2.prev = 22;
                 _iterator3 = respData.data[Symbol.iterator]();
 
-              case 6:
+              case 24:
                 if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
-                  _context2.next = 13;
+                  _context2.next = 31;
                   break;
                 }
 
                 rd = _step3.value;
-                _context2.next = 10;
-                return this.delayedOnMessage(reqData, rd, onmessage, respData.next);
+                _context2.next = 28;
+                return this.delayedOnMessage(reqData, rd, onmessage);
 
-              case 10:
+              case 28:
                 _iteratorNormalCompletion3 = true;
-                _context2.next = 6;
+                _context2.next = 24;
                 break;
 
-              case 13:
-                _context2.next = 19;
+              case 31:
+                _context2.next = 37;
                 break;
 
-              case 15:
-                _context2.prev = 15;
-                _context2.t0 = _context2['catch'](4);
+              case 33:
+                _context2.prev = 33;
+                _context2.t0 = _context2['catch'](22);
                 _didIteratorError3 = true;
                 _iteratorError3 = _context2.t0;
 
-              case 19:
-                _context2.prev = 19;
-                _context2.prev = 20;
+              case 37:
+                _context2.prev = 37;
+                _context2.prev = 38;
 
                 if (!_iteratorNormalCompletion3 && _iterator3.return) {
                   _iterator3.return();
                 }
 
-              case 22:
-                _context2.prev = 22;
+              case 40:
+                _context2.prev = 40;
 
                 if (!_didIteratorError3) {
-                  _context2.next = 25;
+                  _context2.next = 43;
                   break;
                 }
 
                 throw _iteratorError3;
 
-              case 25:
-                return _context2.finish(22);
+              case 43:
+                return _context2.finish(40);
 
-              case 26:
-                return _context2.finish(19);
+              case 44:
+                return _context2.finish(37);
 
-              case 27:
-                _context2.next = 31;
+              case 45:
+                _context2.next = 49;
                 break;
 
-              case 29:
-                _context2.next = 31;
-                return this.delayedOnMessage(reqData, respData.data, onmessage, respData.next);
+              case 47:
+                _context2.next = 49;
+                return this.delayedOnMessage(reqData, respData.data, onmessage);
 
-              case 31:
+              case 49:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[4, 15, 19, 27], [20,, 22, 26]]);
+        }, _callee2, this, [[22, 33, 37, 45], [38,, 40, 44]]);
       }));
 
       function passMessageOn(_x4, _x5, _x6) {
@@ -305,14 +338,11 @@ var WebSocket = function () {
     }()
   }, {
     key: 'delayedOnMessage',
-    value: function delayedOnMessage(reqData, respData, onmessage, next) {
+    value: function delayedOnMessage(reqData, respData, onmessage) {
       var _this2 = this;
 
       return new Promise(function (r) {
         setTimeout(function () {
-          if (!_this2.isEmpty(next)) {
-            _this2.addToResponseBuffer(next);
-          }
           respData.echo_req.req_id = respData.req_id = reqData.req_id;
           onmessage(JSON.stringify(respData));
           r();
@@ -335,106 +365,86 @@ var WebSocket = function () {
       }, this.delay);
     }
   }, {
-    key: 'addToResponseBuffer',
-    value: function addToResponseBuffer(database) {
-      this.bufferedResponse.push(database);
-      if (!this.isEmpty(this.queuedRequest)) {
-        var _iteratorNormalCompletion4 = true;
-        var _didIteratorError4 = false;
-        var _iteratorError4 = undefined;
-
-        try {
-          for (var _iterator4 = this.queuedRequest[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-            var req = _step4.value;
-
-            this.getResponse(req.data, req.onmessage);
-          }
-        } catch (err) {
-          _didIteratorError4 = true;
-          _iteratorError4 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion4 && _iterator4.return) {
-              _iterator4.return();
-            }
-          } finally {
-            if (_didIteratorError4) {
-              throw _iteratorError4;
-            }
-          }
-        }
-
-        this.queuedRequest = [];
-      }
-    }
-  }, {
-    key: 'getResponseFromBuffer',
-    value: function getResponseFromBuffer(reqData) {
-      var _this3 = this;
-
-      var index = this.bufferedResponse.findIndex(function (_data) {
-        return !_this3.isEmpty(_this3.findDataInBuffer(reqData, _data));
-      });
-      return index < 0 ? null : this.bufferedResponse[index];
-    }
-  }, {
     key: 'findDataInBuffer',
-    value: function findDataInBuffer(reqData, database) {
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
+    value: function findDataInBuffer(reqData) {
+      var result = null;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator5 = Object.keys(database)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var callName = _step5.value;
+        for (var _iterator4 = this.bufferedResponses[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var database = _step4.value;
+          var _iteratorNormalCompletion5 = true;
+          var _didIteratorError5 = false;
+          var _iteratorError5 = undefined;
 
-          if (callName === 'history' && 'ticks_history' in reqData || callName in reqData) {
-            var callResTypes = database[callName];
-            var _iteratorNormalCompletion6 = true;
-            var _didIteratorError6 = false;
-            var _iteratorError6 = undefined;
+          try {
+            for (var _iterator5 = Object.keys(database)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+              var callName = _step5.value;
 
-            try {
-              for (var _iterator6 = Object.keys(callResTypes)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                var callResTypeName = _step6.value;
+              if (callName === 'history' && 'ticks_history' in reqData || callName in reqData) {
+                var callResTypes = database[callName];
+                var _iteratorNormalCompletion6 = true;
+                var _didIteratorError6 = false;
+                var _iteratorError6 = undefined;
 
-                var respData = this.findKeyInObj(callResTypes[callResTypeName], reqData);
-                if (respData) {
-                  return database;
+                try {
+                  for (var _iterator6 = Object.keys(callResTypes)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                    var callResTypeName = _step6.value;
+
+                    var respData = this.findKeyInObj(callResTypes[callResTypeName], reqData);
+                    if (respData) {
+                      result = database;
+                    }
+                  }
+                } catch (err) {
+                  _didIteratorError6 = true;
+                  _iteratorError6 = err;
+                } finally {
+                  try {
+                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                      _iterator6.return();
+                    }
+                  } finally {
+                    if (_didIteratorError6) {
+                      throw _iteratorError6;
+                    }
+                  }
                 }
               }
-            } catch (err) {
-              _didIteratorError6 = true;
-              _iteratorError6 = err;
+            }
+          } catch (err) {
+            _didIteratorError5 = true;
+            _iteratorError5 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                _iterator5.return();
+              }
             } finally {
-              try {
-                if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                  _iterator6.return();
-                }
-              } finally {
-                if (_didIteratorError6) {
-                  throw _iteratorError6;
-                }
+              if (_didIteratorError5) {
+                throw _iteratorError5;
               }
             }
           }
         }
       } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
           }
         } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
 
-      return null;
+      return result;
     }
   }, {
     key: 'removeReqId',
@@ -457,7 +467,7 @@ var WebSocket = function () {
         for (var _iterator7 = Object.keys(obj1)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
           var key = _step7.value;
 
-          if (JSON.stringify(this.removeReqId(JSON.parse(key))) === JSON.stringify(this.removeReqId(obj2))) {
+          if (_underscore2.default.isEqual(this.removeReqId(JSON.parse(key)), this.removeReqId(obj2))) {
             return obj1[key];
           }
         }
@@ -486,14 +496,14 @@ var WebSocket = function () {
   }, {
     key: 'send',
     value: function send(rawData) {
-      var _this4 = this;
+      var _this3 = this;
 
       if (this.readyState === 0) {
         return;
       }
       var reqData = JSON.parse(rawData);
       this.getResponse(reqData, function (receivedData) {
-        _this4.onmessage({
+        _this3.onmessage({
           data: receivedData
         });
       });

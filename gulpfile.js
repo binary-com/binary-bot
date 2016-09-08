@@ -1,5 +1,4 @@
 'use strict';
-import mock from 'binary-mock-websocket';
 require('./src/common/mochaHelper');
 var gulp = require('gulp'),
     ghPages = require('gulp-gh-pages'),
@@ -22,6 +21,7 @@ var gulp = require('gulp'),
 		through = require('through2'),
 		path = require('path'),
 		insert = require('gulp-insert'),
+		mock = require('binary-mock-websocket'),
 		mocha = require('gulp-mocha');
 
 var options = {

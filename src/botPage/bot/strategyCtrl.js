@@ -1,9 +1,8 @@
-import Observer from 'binary-common-utils/lib/observer';
+import { observer } from 'binary-common-utils/lib/observer';
 import Trade from './trade';
 
 export default class StrategyCtrl {
   constructor(api, strategy) {
-    this.observer = new Observer();
     this.api = api;
     this.strategy = strategy;
     this.ready = false;
@@ -13,23 +12,23 @@ export default class StrategyCtrl {
   }
   recoverFromDisconnect() {
     for (let obs of this.runningObservations) {
-      this.observer.unregisterAll(...obs);
+      observer.unregisterAll(...obs);
     }
     this.runningObservations = [];
     if (!this.trade || !this.trade.recoverFromDisconnect()) {
-      this.observer.emit('strategy.recovered', {
+      observer.emit('strategy.recovered', {
         tradeWasRunning: false,
       });
       return;
     }
     let tradeFinish = function tradeFinish(contract) {
       this.trade.destroy();
-      this.observer.emit('strategy.recovered', {
+      observer.emit('strategy.recovered', {
         tradeWasRunning: true,
         finishedContract: contract,
       });
     };
-    this.observer.register('trade.finish', tradeFinish, true);
+    observer.register('trade.finish', tradeFinish, true);
     this.runningObservations.push(['trade.finish', tradeFinish]);
   }
   updateProposal(proposal) {
@@ -37,7 +36,7 @@ export default class StrategyCtrl {
       this.proposals[proposal.contract_type] = proposal;
       if (!this.ready && Object.keys(this.proposals).length === 2) {
         this.ready = true;
-        this.observer.emit('strategy.ready');
+        observer.emit('strategy.ready');
       }
     }
   }
@@ -81,13 +80,13 @@ export default class StrategyCtrl {
       let contract = this.proposals[option];
       this.trade = new Trade(this.api);
       let tradeUpdate = (updatedContract) => {
-        this.observer.emit('strategy.tradeUpdate', updatedContract);
+        observer.emit('strategy.tradeUpdate', updatedContract);
       };
       let tradeFinish = (finishedContract) => {
-        this.observer.emit('strategy.finish', finishedContract);
+        observer.emit('strategy.finish', finishedContract);
       };
-      this.observer.register('trade.update', tradeUpdate);
-      this.observer.register('trade.finish', tradeFinish, true);
+      observer.register('trade.update', tradeUpdate);
+      observer.register('trade.finish', tradeFinish, true);
       this.runningObservations.push(['trade.update', tradeUpdate]);
       this.runningObservations.push(['trade.finish', tradeFinish]);
       this.trade.purchase(contract, tradeFinish);
@@ -101,15 +100,17 @@ export default class StrategyCtrl {
   }
   destroy(offline) {
     for (let obs of this.runningObservations) {
-      this.observer.unregisterAll(...obs);
+      observer.unregisterAll(...obs);
     }
     this.runningObservations = [];
     this.proposals = {};
     this.ready = false;
     this.strategy = null;
-    if (this.trade) {
-      return this.trade.destroy(offline);
-    }
-		return null;
+    return new Promise((r) => {
+      if (this.trade) {
+        this.trade.destroy(offline).then(r);
+      }
+      r();
+    });
   }
 }

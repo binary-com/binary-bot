@@ -61,7 +61,7 @@ export default class Trade {
   }
   getTheContractInfoAfterSell() {
     if (this.contractId) {
-      this.api.originalApi.getContractInfo(this.contractId);
+      this.api.originalApi.subscribeToOpenContract(this.contractId);
     }
   }
   destroy(offline) {
@@ -70,9 +70,11 @@ export default class Trade {
     }
     this.runningObservations = [];
     this.contractIsSold = false;
-    if (!offline) {
-      return this.api.originalApi.unsubscribeFromAlProposals();
-    }
-		return null;
+    return new Promise((r) => {
+      if (!offline) {
+        this.api.originalApi.unsubscribeFromAlProposals().then(r);
+      }
+      r();
+    });
   }
 }
