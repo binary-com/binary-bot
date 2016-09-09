@@ -140,7 +140,7 @@ module.exports = {
   "0ecb627b112c26389825381d5280f557345ab194": "A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.",
   "6d08f40f24b29cd87eaf796ece4852012ac1a76c": "Now add it to the On Finish block",
   "86aa77e65de8324cd6d0b7f9d5b7b74546786185": "Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its trade type is unmet.",
-  "5670fb9533116ca78adec7a1bb8bc2f77212bf73": "OK, that's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.",
+  "70c9ae0969c05b75bb0e837567153a3b5ce1d0aa": "OK, this's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.",
   "505f22f919520c4cd40739be12fb611c7d8b15d8": "You can use Ctrl + -/+ to zoom out/in the blocks",
   "f49c79f5e096ac6909e0fc364980583fd20c46b6": "You can choose the account you want by the <b>Account</b> dropdown. If you cannot see the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.",
   "21fe96f872d9140d436c194537e731ef280d3810": "You can save/load your blocks using these buttons",

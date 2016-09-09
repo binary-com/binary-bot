@@ -7,7 +7,8 @@
     "mocha": true
   },
   "globals": {
-	"Blockly": false
+    "Blockly": false,
+    "Tourist": false
   },
   "rules": {
     "no-empty-label": 0,
