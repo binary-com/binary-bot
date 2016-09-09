@@ -10,7 +10,6 @@ describe('StrategyCtrl', () => {
   let firstAttempt = true;
   let strategyCtrl;
   before(() => {
-    observer.eventActionMap = {};
     api = new CustomApi(ws);
     let strategy = (ticks, receivedProposals, _strategyCtrl) => {
       if (receivedProposals) {
@@ -134,5 +133,10 @@ describe('StrategyCtrl', () => {
       expect(finishedContract).to.have.property('sell_price')
         .that.satisfy((price) => !isNaN(price));
     });
+  });
+  after(() => {
+    strategyCtrl.destroy();
+    observer.destroy();
+    api.destroy();
   });
 });

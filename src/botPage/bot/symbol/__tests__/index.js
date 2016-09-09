@@ -4,6 +4,7 @@ import ws from '../../../../common/mock/websocket';
 import _Symbol from '../index';
 
 describe('symbol', () => {
+  const api = new CustomApi(ws);
   describe('Error Handling', () => {
     it('initializing is needed for symbol functions', () => {
       expect(() => {
@@ -32,7 +33,7 @@ describe('symbol', () => {
   describe('Checking functions', () => {
     let symbol;
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      symbol = new _Symbol(new CustomApi(ws));
+      symbol = new _Symbol(api);
       symbol.initPromise.then(() => {
         done();
       });
@@ -84,6 +85,6 @@ describe('symbol', () => {
     });
   });
   after(() => {
-    delete _Symbol.instance;
+    api.destroy();
   });
 });

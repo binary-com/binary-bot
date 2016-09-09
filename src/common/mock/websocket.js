@@ -501,15 +501,22 @@ var WebSocket = function () {
       }
       var reqData = JSON.parse(rawData);
       this.getResponse(reqData, function (receivedData) {
-        _this3.onmessage({
-          data: receivedData
-        });
+        if (_this3.readyState) {
+          _this3.onmessage({
+            data: receivedData
+          });
+        }
       });
     }
   }, {
     key: 'close',
     value: function close() {
       this.readyState = 0;
+      this.bufferedResponses = [];
+      this.onopen = null;
+      this.onclose = null;
+      this.onerror = null;
+      this.onmessage = null;
     }
   }]);
 

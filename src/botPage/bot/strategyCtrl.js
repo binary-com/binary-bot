@@ -98,7 +98,7 @@ export default class StrategyCtrl {
     }
 		return null;
   }
-  destroy(offline) {
+  destroy() {
     for (let obs of this.runningObservations) {
       observer.unregisterAll(...obs);
     }
@@ -106,11 +106,8 @@ export default class StrategyCtrl {
     this.proposals = {};
     this.ready = false;
     this.strategy = null;
-    return new Promise((r) => {
-      if (this.trade) {
-        this.trade.destroy(offline).then(r);
-      }
-      r();
-    });
+    if (this.trade) {
+      this.trade.destroy();
+    }
   }
 }

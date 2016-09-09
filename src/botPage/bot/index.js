@@ -353,17 +353,12 @@ export default class Bot {
     }
     this.unregisterOnFinish = [];
     this.running = false;
-    const strategyCtrl = this.strategyCtrl;
-    this.strategyCtrl = null;
-    const stopStrategy = () => {
-      if (strategyCtrl) {
-        strategyCtrl.destroy().then(() => observer.emit('bot.stop', contract));
-      } else {
-        observer.emit('bot.stop', contract);
-      }
-    };
-    this.api.originalApi.unsubscribeFromAllProposals()
-      .then(() => stopStrategy(), () => stopStrategy());
+    if (this.strategyCtrl) {
+      this.strategyCtrl.destroy();
+      this.strategyCtrl = null;
+    }
+    this.api.originalApi.unsubscribeFromAllProposals();
+    observer.emit('bot.stop', contract);
   }
 }
 

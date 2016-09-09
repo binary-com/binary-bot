@@ -64,17 +64,12 @@ export default class Trade {
       this.api.originalApi.subscribeToOpenContract(this.contractId);
     }
   }
-  destroy(offline) {
+  destroy() {
     for (let obs of this.runningObservations) {
       observer.unregisterAll(...obs);
     }
     this.runningObservations = [];
     this.contractIsSold = false;
-    return new Promise((r) => {
-      if (!offline) {
-        this.api.originalApi.unsubscribeFromAlProposals().then(r);
-      }
-      r();
-    });
+    this.api.originalApi.unsubscribeFromAllProposalsOpenContract();
   }
 }

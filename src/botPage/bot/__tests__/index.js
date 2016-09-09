@@ -122,8 +122,12 @@ describe('Bot', () => {
       expect(finishedContractFromFinishSignal).to.be.equal(finishedContractFromFinishFunction);
     });
   });
-  after(() => {
-    observer.eventActionMap = {};
-    console.log(observer.eventActionMap); // eslint-disable-line no-console
+  after(function afterAll(done) { // eslint-disable-line prefer-arrow-callback
+    observer.register('bot.stop', () => {
+      observer.destroy();
+      api.destroy();
+      done();
+    });
+    bot.stop();
   });
 });

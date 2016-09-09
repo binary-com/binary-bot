@@ -2,17 +2,17 @@ import CustomApi from 'binary-common-utils/lib/customApi';
 import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import { observer } from 'binary-common-utils/lib/observer';
 import ws from '../../../../common/mock/websocket';
-import Ticktrade from '../';
+import Trade from '../';
 
 describe('Trade', () => {
   let api;
-  let ticktrade;
+  let trade;
   let proposal;
   let finishedContract;
   before(() => {
     observer.eventActionMap = {};
     api = new CustomApi(ws);
-    ticktrade = new Ticktrade(api);
+    trade = new Trade(api);
   });
   describe('Purchasing...', () => {
     let purchasedContract;
@@ -24,7 +24,7 @@ describe('Trade', () => {
             purchasedContract = _purchasedContract;
             done();
           }, true);
-          ticktrade.purchase(proposal);
+          trade.purchase(proposal);
         }, true);
         api.proposal({
           amount: '1.00',
@@ -65,5 +65,10 @@ describe('Trade', () => {
       expect(finishedContract).to.have.property('sell_price')
         .that.satisfy((el) => !isNaN(el));
     });
+  });
+  after(() => {
+    trade.destroy();
+    observer.destroy();
+    api.destroy();
   });
 });
