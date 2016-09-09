@@ -1,6 +1,6 @@
 import account from 'binary-common-utils/lib/account';
-import Observer from 'binary-common-utils/lib/observer';
-import storageManager from 'binary-common-utils/lib/storageManager';
+import { observer } from 'binary-common-utils/lib/observer';
+import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
 import lzString from 'lz-string';
 import { PlainChart as Chart } from 'binary-charts';
 import { logger } from './logger';
@@ -13,7 +13,6 @@ import Welcome from './tours/welcome';
 
 export default class View {
   constructor() {
-    this.observer = new Observer();
     this.chartType = 'area';
     this.tours = {};
     this.tradeInfo = new TradeInfo();
@@ -30,7 +29,7 @@ export default class View {
     });
   }
   updateTokenList() {
-    let tokenList = storageManager.getTokenList();
+    let tokenList = getTokenList();
     if (tokenList.length === 0) {
       $('#login').css('display', 'inline-block');
       $('#accountSelect').css('display', 'none');
@@ -87,7 +86,7 @@ export default class View {
     });
   }
   errorAndLogHandling() {
-    this.observer.register('ui.error', (error) => {
+    observer.register('ui.error', (error) => {
       let api = true;
       if (error.stack) {
         api = false;
@@ -119,7 +118,7 @@ export default class View {
 
     let observeForLog = (type, position) => {
       let subtype = (position === 'left') ? '.left' : '';
-      this.observer.register('ui.log.' + type + subtype, (message) => {
+      observer.register('ui.log.' + type + subtype, (message) => {
         if (type === 'warn') {
           console.warn(message);
         }
@@ -149,9 +148,9 @@ export default class View {
         return (e) => {
           try {
             this.blockly.loadBlocks(e.target.result);
-            this.observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'));
+            observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'));
           } catch (err) {
-            this.observer.emit('ui.error', err);
+            observer.emit('ui.error', err);
           }
         };
       })(f);
@@ -173,7 +172,7 @@ export default class View {
         if (file.type.match('text/xml')) {
           readFile(file);
         } else {
-          this.observer.emit('ui.log.info', translator.translateText('File is not supported:') + ' ' + file.name);
+          observer.emit('ui.log.info', translator.translateText('File is not supported:') + ' ' + file.name);
         }
       }
     };
@@ -231,7 +230,7 @@ export default class View {
     let logout = () => {
       account.logoutAllTokens(() => {
         this.updateTokenList();
-        this.observer.emit('ui.log.info', translator.translateText('Logged you out!'));
+        observer.emit('ui.log.info', translator.translateText('Logged you out!'));
       });
     };
 
@@ -310,7 +309,7 @@ export default class View {
     $('#login')
       .bind('click.login', () => {
         document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' +
-          `${storageManager.get('appId')}&l=${translator.getLanguage().toUpperCase()}`;
+          `${getStorage('appId')}&l=${translator.getLanguage().toUpperCase()}`;
       })
       .text('Log in');
 
@@ -377,37 +376,37 @@ export default class View {
     }
   }
   addEventHandlers() {
-    this.observer.register('api.error', (error) => {
+    observer.register('api.error', (error) => {
       if (error.code === 'InvalidToken') {
-        storageManager.removeAllTokens();
+        removeAllTokens();
         this.updateTokenList();
       }
       bot.stop();
-      this.observer.emit('ui.error', error);
+      observer.emit('ui.error', error);
     });
 
-    this.observer.register('bot.stop', () => {
+    observer.register('bot.stop', () => {
       $('#runButton').show();
       $('#stopButton').hide();
       this.destroyChart();
     });
 
-    this.observer.register('bot.tradeInfo', (tradeInfo) => {
+    observer.register('bot.tradeInfo', (tradeInfo) => {
       for (let key of Object.keys(tradeInfo)) {
         this.tradeInfo.tradeInfo[key] = tradeInfo[key];
       }
       this.tradeInfo.update();
     });
 
-    this.observer.register('bot.tradeUpdate', (contract) => {
+    observer.register('bot.tradeUpdate', (contract) => {
       this.latestOpenContract = contract;
     });
 
-    this.observer.register('bot.finish', (contract) => {
+    observer.register('bot.finish', (contract) => {
       this.tradeInfo.add(contract);
     });
 
-    this.observer.register('bot.tickUpdate', (info) => {
+    observer.register('bot.tickUpdate', (info) => {
       this.updateChart(info);
     });
   }

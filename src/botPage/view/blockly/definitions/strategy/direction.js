@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 import { translator } from '../../../../../common/translator';
-import { relationChecker } from '../../relationChecker';
+import { insideStrategy } from '../../relationChecker';
 
 Blockly.Blocks.direction = {
   init: function() {
@@ -14,7 +14,7 @@ Blockly.Blocks.direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function(ev) {
-    relationChecker.insideStrategy(this, ev, 'Tick Direction');
+    insideStrategy(this, ev, 'Tick Direction');
   },
 };
 

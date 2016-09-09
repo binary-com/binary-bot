@@ -10,6 +10,7 @@ describe('Trade', () => {
   let proposal;
   let finishedContract;
   before(() => {
+    observer.eventActionMap = {};
     api = new CustomApi(ws);
     ticktrade = new Ticktrade(api);
   });

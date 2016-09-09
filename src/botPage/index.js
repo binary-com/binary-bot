@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import 'babel-polyfill';
-import Observer from 'binary-common-utils/lib/observer';
-import storageManager from 'binary-common-utils/lib/storageManager';
+import { observer } from 'binary-common-utils/lib/observer';
+import { getToken } from 'binary-common-utils/lib/storageManager';
 import './utils/draggable';
 import { bot } from './bot';
 import View from './view';
@@ -25,8 +25,8 @@ require('trackjs');
 
 class BotPage {
 	constructor() {
-		let observer = new Observer();
 		window.Bot = {
+      bot: bot,
 			start: bot.start.bind(bot),
 			stop: bot.stop.bind(bot),
 			showCode: () => {
@@ -46,7 +46,7 @@ class BotPage {
 			this.view = new View();
 			this.view.initPromise.then(() => {
 				trackJs.configure({
-					userId: storageManager.getToken($('#accountSelect').val()).account_name,
+					userId: getToken($('#accountSelect').val()).account_name,
 				});
 				$('.spinning').hide();
 				this.view.activeTour = this.view.tours.welcome;

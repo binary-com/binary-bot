@@ -1,6 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { strToXml } from 'binary-common-utils/lib/tools';
-import { expect } from 'chai';
+import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import { translator } from '../translator';
 
 describe('Translation', () => {

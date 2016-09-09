@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
 import config from '../../../../../common/const';
 import { translator } from '../../../../../common/translator';
-import { relationChecker } from '../../relationChecker';
+import { insideCondition } from '../../relationChecker';
 
 Blockly.Blocks.barrier_offset = {
   init: function() {
@@ -15,6 +15,6 @@ Blockly.Blocks.barrier_offset = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function(ev) {
-    relationChecker.insideCondition(this, ev, 'Barrier Offset');
+    insideCondition(this, ev, 'Barrier Offset');
   },
 };

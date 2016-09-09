@@ -1,4 +1,4 @@
-import storageManager from 'binary-common-utils/lib/storageManager';
+import { setDone, isDone } from 'binary-common-utils/lib/storageManager';
 import { components } from '../components';
 import { translator } from '../../../common/translator';
 
@@ -191,20 +191,20 @@ export default class Welcome {
 				};
 				$('#blocker').hide();
 				components.setOpacityForAll(1);
-				storageManager.setDone('welcomeFinished');
+				setDone('welcomeFinished');
 				this.stop();
 			},
 			successStep: () => {
 				$('#blocker').hide();
 				components.setOpacityForAll(1);
-				storageManager.setDone('welcomeFinished');
+				setDone('welcomeFinished');
 				this.stop();
 			},
 		});
 		this.tour.start();
 	}
 	welcome(stopCallback) {
-		if (!storageManager.isDone('welcomeFinished')) {
+		if (!isDone('welcomeFinished')) {
 			this.start(stopCallback);
 		} else if (stopCallback) {
 			stopCallback();

@@ -93,7 +93,9 @@ export default class ActiveSymbols {
   }
   getSymbolNames() {
     let symbols = _.clone(this.getSymbols());
-    Object.keys(symbols).map((key) => symbols[key] = symbols[key].display);
+    for (let key of Object.keys(symbols)) {
+      symbols[key] = symbols[key].display;
+    }
     return symbols;
   }
 }

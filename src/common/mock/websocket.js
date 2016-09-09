@@ -213,8 +213,6 @@ var WebSocket = function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 if (!this.isEmpty(respData.next)) {
-                  console.log(reqData);
-                  console.log(respData.next);
                   this.bufferedResponses.push(respData.next);
                 }
 

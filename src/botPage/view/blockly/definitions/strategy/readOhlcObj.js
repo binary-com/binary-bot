@@ -4,7 +4,7 @@
 import config from '../../../../../common/const';
 import { translator } from '../../../../../common/translator';
 
-import { relationChecker } from '../../relationChecker';
+import { insideStrategy } from '../../relationChecker';
 
 Blockly.Blocks.read_ohlc_obj = {
   init: function() {
@@ -20,6 +20,6 @@ Blockly.Blocks.read_ohlc_obj = {
   },
   onchange: function(ev) {
 
-    relationChecker.insideStrategy(this, ev, 'Candles');
+    insideStrategy(this, ev, 'Candles');
   },
 };

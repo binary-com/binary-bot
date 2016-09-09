@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 import { translator } from '../../../../../common/translator';
-import { relationChecker } from '../../relationChecker';
+import { submarket } from '../../relationChecker';
 import { bot } from '../../../../bot';
 
 export default () => {
@@ -21,7 +21,7 @@ export default () => {
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
       },
       onchange: function(ev) {
-        relationChecker.submarket(this, ev);
+        submarket(this, ev);
       },
     };
   }

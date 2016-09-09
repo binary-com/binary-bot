@@ -1,5 +1,5 @@
 import { translator } from '../../../../../common/translator';
-import { relationChecker } from '../../relationChecker';
+import { insideStrategy } from '../../relationChecker';
 import config from '../../../../../common/const';
 
 Blockly.Blocks.check_direction = {
@@ -13,6 +13,6 @@ Blockly.Blocks.check_direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function(ev) {
-    relationChecker.insideStrategy(this, ev, 'Check Direction');
+    insideStrategy(this, ev, 'Check Direction');
   },
 };

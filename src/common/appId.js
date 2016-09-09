@@ -1,6 +1,6 @@
-import tools from 'binary-common-utils/lib/tools';
+import { parseQueryString } from 'binary-common-utils/lib/tools';
 import accounts from 'binary-common-utils/lib/account';
-import storageManager from 'binary-common-utils/lib/storageManager';
+import { set as setStorage } from 'binary-common-utils/lib/storageManager';
 
 export function setAppId() {
   let appId = 0;
@@ -13,10 +13,10 @@ export function setAppId() {
   } else {
     appId = 1169; // binary bot
   }
-  storageManager.set('appId', appId);
+  setStorage('appId', appId);
 }
 export function oauthLogin(done = () => 0) {
-  let queryStr = tools.parseQueryString();
+  let queryStr = parseQueryString();
   let tokenList = [];
 	tokenList = Object.keys(queryStr)
 		.map((r) => (r.indexOf('token') === 0) ? queryStr[r] : null)

@@ -6,6 +6,9 @@
     "jquery": true,
     "mocha": true
   },
+  "globals": {
+	"Blockly": false
+  },
   "rules": {
     "no-empty-label": 0,
     "no-confusing-arrow": 0,

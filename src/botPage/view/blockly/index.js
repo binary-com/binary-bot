@@ -1,5 +1,5 @@
 import fileSaver from 'filesaverjs';
-import Observer from 'binary-common-utils/lib/observer';
+import { observer } from 'binary-common-utils/lib/observer';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
 import { utils } from './utils.js';
@@ -10,7 +10,6 @@ export default class _Blockly {
   constructor() {
     this.blocksXmlStr = '';
     this.generatedJs = '';
-    this.observer = new Observer();
     this.addBlocklyTranslation();
     this.initPromise = new Promise((resolve) => {
       $.get('xml/toolbox.xml', (toolbox) => {
@@ -163,7 +162,7 @@ export default class _Blockly {
 		}
     let xmlText = Blockly.Xml.domToPrettyText(xmlDom);
     if (showOnly) {
-      this.observer.emit('ui.log', xmlText);
+      observer.emit('ui.log', xmlText);
     } else {
       let filename = 'binary-bot' + parseInt(new Date()
             .getTime() / 1000, 10) + '.xml';
@@ -192,8 +191,8 @@ export default class _Blockly {
       $('#summaryPanel')
         .show();
     } catch (e) {
-      this.observer.emit('ui.log', 'There was a problem running your blocks');
-      this.observer.emit('ui.error', e);
+      observer.emit('ui.log', 'There was a problem running your blocks');
+      observer.emit('ui.error', e);
       bot.stop();
     }
   }

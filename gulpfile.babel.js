@@ -1,5 +1,4 @@
 'use strict';
-require('./src/common/mochaHelper');
 var gulp = require('gulp'),
     ghPages = require('gulp-gh-pages'),
 		webpack = require('gulp-webpack'),
@@ -110,7 +109,8 @@ gulp.task('static', ['static-css'], function() {
 gulp.task('test', ['i18n'], function() {
     return gulp.src(['./src/**/__tests__/*.js'])
 			.pipe(mocha({
-				reporter: 'nyan'
+        require: ['./src/common/mochaHelper.js'],
+				reporter: 'dot'
 			}));
 });
 

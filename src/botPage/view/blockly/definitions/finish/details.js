@@ -1,6 +1,6 @@
 'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
-import { relationChecker } from '../../relationChecker';
+import { insideFinish } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.contract_details = {
@@ -13,6 +13,6 @@ Blockly.Blocks.contract_details = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function(ev) {
-    relationChecker.insideFinish(this, ev, 'Contract Details');
+    insideFinish(this, ev, 'Contract Details');
   },
 };

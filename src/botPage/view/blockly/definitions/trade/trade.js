@@ -1,5 +1,5 @@
 import { translator } from '../../../../../common/translator';
-import { relationChecker } from '../../relationChecker';
+import { trade } from '../../relationChecker';
 
 Blockly.Blocks.trade = {
   init: function() {
@@ -13,6 +13,6 @@ Blockly.Blocks.trade = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function(ev) {
-    relationChecker.trade(this, ev);
+    trade(this, ev);
   },
 };

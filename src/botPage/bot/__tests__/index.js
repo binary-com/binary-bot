@@ -1,6 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import CustomApi from 'binary-common-utils/lib/customApi';
-import { expect } from 'chai';
+import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import { observer } from 'binary-common-utils/lib/observer';
 import Bot from '../index';
 import mockWebsocket from '../../../common/mock/websocket';
@@ -20,6 +19,7 @@ describe('Bot', () => {
   let bot;
   let token = 'nmjKBPWxM00E8Fh';
   before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    observer.eventActionMap = {};
     api = new CustomApi(mockWebsocket);
     bot = new Bot(api);
     bot.initPromise.then(() => {
@@ -121,5 +121,9 @@ describe('Bot', () => {
     it('Calls the finish function when trade is finished', () => {
       expect(finishedContractFromFinishSignal).to.be.equal(finishedContractFromFinishFunction);
     });
+  });
+  after(() => {
+    observer.eventActionMap = {};
+    console.log(observer.eventActionMap); // eslint-disable-line no-console
   });
 });

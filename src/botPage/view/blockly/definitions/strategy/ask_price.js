@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 import { utils } from '../../../blockly/utils';
-import { relationChecker } from '../../relationChecker';
+import { insideStrategy } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.ask_price = {
@@ -14,6 +14,6 @@ Blockly.Blocks.ask_price = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function(ev) {
-    relationChecker.insideStrategy(this, ev, 'Ask Price');
+    insideStrategy(this, ev, 'Ask Price');
   },
 };

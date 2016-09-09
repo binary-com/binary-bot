@@ -10,6 +10,7 @@ describe('StrategyCtrl', () => {
   let firstAttempt = true;
   let strategyCtrl;
   before(() => {
+    observer.eventActionMap = {};
     api = new CustomApi(ws);
     let strategy = (ticks, receivedProposals, _strategyCtrl) => {
       if (receivedProposals) {

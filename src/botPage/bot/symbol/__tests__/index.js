@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import CustomApi from 'binary-common-utils/lib/customApi';
 import ws from '../../../../common/mock/websocket';
 import _Symbol from '../index';
@@ -31,7 +31,7 @@ describe('symbol', () => {
   });
   describe('Checking functions', () => {
     let symbol;
-    before(function(done) {
+    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       symbol = new _Symbol(new CustomApi(ws));
       symbol.initPromise.then(() => {
         done();
