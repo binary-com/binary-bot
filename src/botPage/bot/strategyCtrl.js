@@ -10,27 +10,6 @@ export default class StrategyCtrl {
     this.runningObservations = [];
     this.proposals = {};
   }
-  recoverFromDisconnect() {
-    for (let obs of this.runningObservations) {
-      observer.unregisterAll(...obs);
-    }
-    this.runningObservations = [];
-    if (!this.trade || !this.trade.recoverFromDisconnect()) {
-      observer.emit('strategy.recovered', {
-        tradeWasRunning: false,
-      });
-      return;
-    }
-    let tradeFinish = function tradeFinish(contract) {
-      this.trade.destroy();
-      observer.emit('strategy.recovered', {
-        tradeWasRunning: true,
-        finishedContract: contract,
-      });
-    };
-    observer.register('trade.finish', tradeFinish, true);
-    this.runningObservations.push(['trade.finish', tradeFinish]);
-  }
   updateProposal(proposal) {
     if (!this.purchased) {
       this.proposals[proposal.contract_type] = proposal;

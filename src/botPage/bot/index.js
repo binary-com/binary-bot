@@ -2,7 +2,6 @@ import { observer } from 'binary-common-utils/lib/observer';
 import _ from 'underscore';
 import { getUTCTime } from 'binary-common-utils/lib/tools';
 import CustomApi from 'binary-common-utils/lib/customApi';
-import { translator } from '../../common/translator';
 import config from '../../common/const';
 import StrategyCtrl from './strategyCtrl';
 import _Symbol from './symbol';
@@ -12,7 +11,7 @@ export default class Bot {
     this.ticks = [];
     this.candles = [];
     if (api === null) {
-      this.api = new CustomApi(null, this.recoverFromDisconnect.bind(this));
+      this.api = new CustomApi();
     } else {
       this.api = api;
     }
@@ -65,39 +64,6 @@ export default class Bot {
       });
     }, (error) => observer.emit('api.error', error));
   }
-  recoverFromDisconnect() {
-    observer.emit('ui.log.warn', translator.translateText('Connection lost, recovering...'));
-    this.api.originalApi.connect();
-    for (let obs of this.unregisterOnFinish) {
-      observer.unregisterAll(obs);
-    }
-    this.unregisterOnFinish = [];
-    this.authorizedToken = '';
-    if (this.running) {
-      if (this.strategyCtrl) {
-        this.login().then(() => {
-          let strategyRecovered = (result) => {
-            if (!result.tradeWasRunning) {
-              this.startOver(true);
-            } else {
-              this.strategyCtrl.destroy();
-              this.strategyCtrl = null;
-              observer.unregister('strategy.finish', strategyRecovered);
-              this.startOver(false);
-              this.botFinish(result.finishedContract);
-            }
-          };
-          observer.register('strategy.recovered', strategyRecovered, true, null, true);
-          this.unregisterOnFinish.push(['strategy.recovered', strategyRecovered]);
-          this.strategyCtrl.recoverFromDisconnect();
-        });
-      } else {
-        this.login().then(() => {
-          this.startOver(true);
-        });
-      }
-    }
-  }
   setTradeOptions() {
     let tradeOptionToClone;
     if (!_.isEmpty(this.tradeOption)) {
@@ -131,6 +97,7 @@ export default class Bot {
     });
   }
   subscribeToCandles() {
+    /*
     this.api.history(this.tradeOption.symbol, {
       end: 'latest',
       count: 600,
@@ -138,6 +105,7 @@ export default class Bot {
       style: 'candles',
       subscribe: 1,
     });
+    */
   }
   subscribeToTicks(done) {
     if (_.isEmpty(this.tradeOption) || this.tradeOption.symbol === this.symbolStr) {

@@ -7,13 +7,6 @@ export default class Trade {
     this.contractIsSold = false;
     this.runningObservations = [];
   }
-  recoverFromDisconnect() {
-    for (let obs of this.runningObservations) {
-      observer.unregisterAll(...obs);
-    }
-    this.runningObservations = [];
-    return this.subscribeToOpenContract();
-  }
   purchase(contract) {
     this.api.buy(contract.id, contract.ask_price);
     let apiBuy = (purchasedContract) => {
