@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { observer } from 'binary-common-utils/lib/observer';
-import tools from 'binary-common-utils/lib/tools';
+import { durationAccepted, expandDuration } from 'binary-common-utils/lib/tools';
 import config from '../../../common/const';
 import { bot } from '../../bot';
 import { translator } from '../../../common/translator';
@@ -41,10 +41,10 @@ export const condition = (blockObj, ev, calledByParent) => {
           let durationType = getListField(blockObj, 'DURATIONTYPE_LIST');
           if (duration !== '') {
             let minDuration = bot.symbol.getLimitation(blockObj.parentBlock_.type, blockObj.type).minDuration;
-            if (!tools.durationAccepted(duration + durationType, minDuration)) {
+            if (!durationAccepted(duration + durationType, minDuration)) {
               observer.emit('ui.log.warn',
                 translator.translateText('Minimum duration is') +
-                ' ' + tools.expandDuration(minDuration));
+                ' ' + expandDuration(minDuration));
             } else {
               observer.emit('tour:ticks');
             }

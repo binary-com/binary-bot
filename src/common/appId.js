@@ -1,5 +1,5 @@
 import { parseQueryString } from 'binary-common-utils/lib/tools';
-import accounts from 'binary-common-utils/lib/account';
+import { addTokenIfValid } from 'binary-common-utils/lib/account';
 import { set as setStorage } from 'binary-common-utils/lib/storageManager';
 
 export function setAppId() {
@@ -15,6 +15,13 @@ export function setAppId() {
   }
   setStorage('appId', appId);
 }
+
+async function addAllTokens(tokenList) {
+  for (let token of tokenList) {
+    await new Promise((r) => addTokenIfValid(token, r));
+  }
+}
+
 export function oauthLogin(done = () => 0) {
   let queryStr = parseQueryString();
   let tokenList = [];
@@ -23,11 +30,7 @@ export function oauthLogin(done = () => 0) {
 		.filter((r) => r);
   if (tokenList.length) {
     $('#main').hide();
-    tools.asyncForEach(tokenList, (token, index, next) => {
-      accounts.addTokenIfValid(token, () => {
-        next();
-      });
-    }, () => {
+    addAllTokens(tokenList).then(() => {
       document.location = 'bot.html';
     });
   } else {

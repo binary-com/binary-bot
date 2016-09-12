@@ -1,4 +1,4 @@
-import account from 'binary-common-utils/lib/account';
+import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
 import lzString from 'lz-string';
@@ -228,7 +228,7 @@ export default class View {
     };
 
     let logout = () => {
-      account.logoutAllTokens(() => {
+      logoutAllTokens(() => {
         this.updateTokenList();
         observer.emit('ui.log.info', translator.translateText('Logged you out!'));
       });
