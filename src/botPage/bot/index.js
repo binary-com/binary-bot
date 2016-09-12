@@ -112,7 +112,6 @@ export default class Bot {
       let apiHistory = (history) => {
         this.symbolStr = this.tradeOption.symbol;
         this.ticks = history;
-        this.subscribeToCandles();
         done();
       };
       observer.register('api.history', apiHistory, true, {
@@ -121,6 +120,7 @@ export default class Bot {
       }, true);
       if (this.tradeOption.symbol !== this.symbolStr) {
         this.api.originalApi.unsubscribeFromAllTicks().then(() => {
+          this.subscribeToCandles();
           this.api.history(this.tradeOption.symbol, {
             end: 'latest',
             count: 600,
@@ -128,6 +128,7 @@ export default class Bot {
           });
         }, (error) => observer.emit('api.error', error));
       } else {
+        this.subscribeToCandles();
         this.api.history(this.tradeOption.symbol, {
           end: 'latest',
           count: 600,
