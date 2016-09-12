@@ -344,7 +344,7 @@ export default class View {
       type: this.chartType,
       theme: 'light',
       defaultRange: 0,
-      typeChange: (type) => {
+      onTypeChange: (type) => {
         this.chartType = type;
       },
     };

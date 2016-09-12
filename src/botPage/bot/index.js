@@ -97,7 +97,6 @@ export default class Bot {
     });
   }
   subscribeToCandles() {
-    /*
     this.api.history(this.tradeOption.symbol, {
       end: 'latest',
       count: 600,
@@ -105,7 +104,6 @@ export default class Bot {
       style: 'candles',
       subscribe: 1,
     });
-    */
   }
   subscribeToTicks(done) {
     if (_.isEmpty(this.tradeOption) || this.tradeOption.symbol === this.symbolStr) {
