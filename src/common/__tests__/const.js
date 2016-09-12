@@ -14,6 +14,7 @@ describe('Const', () => {
       'conditionsCategoryName',
       'conditions',
       'barrierTypes',
+      'ohlcFields',
       'durationTypes',
     ]);
   });

@@ -119,8 +119,10 @@ export default class Bot {
         unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles'],
       }, true);
       if (this.tradeOption.symbol !== this.symbolStr) {
+        this.api.originalApi.send({
+          forget_all: 'candles',
+        }).then(() => this.subscribeToCandles());
         this.api.originalApi.unsubscribeFromAllTicks().then(() => {
-          this.subscribeToCandles();
           this.api.history(this.tradeOption.symbol, {
             end: 'latest',
             count: 600,
