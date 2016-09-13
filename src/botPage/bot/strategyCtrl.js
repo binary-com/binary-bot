@@ -3,9 +3,10 @@ import { getUTCTime } from 'binary-common-utils/lib/tools';
 import Trade from './trade';
 
 export default class StrategyCtrl {
-  constructor(api, strategy, finish) {
+  constructor(api, strategy, duringPurchase, finish) {
     this.api = api;
     this.strategy = strategy;
+    this.duringPurchase = duringPurchase;
     this.finish = finish;
     this.ready = false;
     this.purchased = false;
@@ -22,11 +23,11 @@ export default class StrategyCtrl {
     }
   }
   updateTicks(data) {
-    let ticks = data.ticks;
-    let ohlc = data.candles;
+    const ticks = data.ticks;
+    const ohlc = data.candles;
     if (!this.purchased) {
       let direction = '';
-      let length = ticks.length;
+      const length = ticks.length;
       if (length >= 2) {
         if (ticks[length - 1].quote > ticks[length - 2].quote) {
           direction = 'rise';
@@ -36,14 +37,14 @@ export default class StrategyCtrl {
         }
       }
       if (ohlc) {
-        let repr = function repr() {
+        const repr = function repr() {
           return JSON.stringify(this);
         };
         for (let o of ohlc) {
           o.toString = repr;
         }
       }
-			let tickObj = {
+			const tickObj = {
 				direction,
 				ohlc,
 				ticks,
@@ -58,12 +59,13 @@ export default class StrategyCtrl {
   purchase(option) {
     if (!this.purchased) {
       this.purchased = true;
-      let contract = this.proposals[option];
+      const contract = this.proposals[option];
       this.trade = new Trade(this.api);
-      let tradeUpdate = (updatedContract) => {
-        observer.emit('strategy.tradeUpdate', updatedContract);
+      const tradeUpdate = (openContract) => {
+        this.duringPurchase(openContract, this);
+        observer.emit('strategy.tradeUpdate', openContract);
       };
-      let tradeFinish = (finishedContract) => {
+      const tradeFinish = (finishedContract) => {
         // order matters, needs fix
         observer.emit('strategy.finish', finishedContract);
         this.finish(finishedContract, this.createDetails(finishedContract));
@@ -82,8 +84,8 @@ export default class StrategyCtrl {
 		return null;
   }
   createDetails(contract) {
-    let result = (+contract.sell_price === 0) ? 'loss' : 'win';
-    let profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+    const result = (+contract.sell_price === 0) ? 'loss' : 'win';
+    const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
     return [
       contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
       profit, contract.contract_type,

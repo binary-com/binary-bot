@@ -30,7 +30,7 @@ describe('StrategyCtrl', () => {
         });
       }
     };
-    strategyCtrl = new StrategyCtrl(api, strategy, () => {});
+    strategyCtrl = new StrategyCtrl(api, strategy, () => {}, () => {});
   });
   describe('Make the strategy ready...', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback

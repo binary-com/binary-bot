@@ -38,7 +38,7 @@ describe('Bot', () => {
         error = _error;
         done();
       }, true);
-      bot.start('FakeToken', null, null, null);
+      bot.start('FakeToken', null, null, null, null);
     });
     it('fake token should cause an error', () => {
       expect(error).to.have.deep.property('.code')
@@ -51,7 +51,7 @@ describe('Bot', () => {
         done();
       }, true);
       observer.register('bot.stop', () => {
-        bot.start(token, option, () => {}, () => {});
+        bot.start(token, option, () => {}, () => {}, () => {});
       }, true);
       bot.stop();
     });
@@ -64,7 +64,7 @@ describe('Bot', () => {
           observer.register('bot.waiting_for_purchase', () => {
             done();
           }, true);
-          bot.start(token, option, () => {}, () => {});
+          bot.start(token, option, () => {}, () => {}, () => {});
         });
       }, true);
       bot.stop();
@@ -88,7 +88,7 @@ describe('Bot', () => {
             if (++numOfTicks === 3) {
               _strategyCtrl.purchase('DIGITEVEN');
             }
-          }, (_finishedContract) => {
+          }, () => {}, (_finishedContract) => {
             finishedContractFromFinishFunction = _finishedContract;
           });
         });
@@ -109,7 +109,7 @@ describe('Bot', () => {
         if (++numOfTicks === 3) {
           _strategyCtrl.purchase('DIGITEVEN');
         }
-      }, (_finishedContract) => {
+      }, () => {}, (_finishedContract) => {
         finishedContractFromFinishFunction = _finishedContract;
       });
       observer.register('bot.stop', (_finishedContractFromFinishSignal) => {

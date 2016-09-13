@@ -121,13 +121,13 @@ export default class Bot {
       this.subscribeToTicks(resolve);
     });
   }
-  start(token, tradeOption, strategy, finish, again) {
+  start(token, tradeOption, strategy, duringPurchase, finish, again) {
     if (!this.running || again) {
       this.running = true;
     } else {
       return;
     }
-    this.strategyCtrl = new StrategyCtrl(this.api, strategy, finish);
+    this.strategyCtrl = new StrategyCtrl(this.api, strategy, duringPurchase, finish);
     this.tradeOption = tradeOption;
     if (again) {
       this.startTrading();
