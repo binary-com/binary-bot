@@ -163,7 +163,6 @@ module.exports = {
   "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
   "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
   "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
-  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
   "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
   "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
   "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
@@ -220,6 +219,7 @@ module.exports = {
   "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
   "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
   "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first"
 }
 ;

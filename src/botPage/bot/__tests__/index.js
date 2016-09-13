@@ -84,6 +84,7 @@ describe('Bot', () => {
             done();
           }, true);
           bot.start(token, option, (tick, proposals, _strategyCtrl) => {
+            if (!_strategyCtrl) return;
             if (++numOfTicks === 3) {
               _strategyCtrl.purchase('DIGITEVEN');
             }

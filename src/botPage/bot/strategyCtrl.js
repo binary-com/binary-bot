@@ -1,10 +1,12 @@
 import { observer } from 'binary-common-utils/lib/observer';
+import { getUTCTime } from 'binary-common-utils/lib/tools';
 import Trade from './trade';
 
 export default class StrategyCtrl {
-  constructor(api, strategy) {
+  constructor(api, strategy, finish) {
     this.api = api;
     this.strategy = strategy;
+    this.finish = finish;
     this.ready = false;
     this.purchased = false;
     this.runningObservations = [];
@@ -62,7 +64,9 @@ export default class StrategyCtrl {
         observer.emit('strategy.tradeUpdate', updatedContract);
       };
       let tradeFinish = (finishedContract) => {
+        // order matters, needs fix
         observer.emit('strategy.finish', finishedContract);
+        this.finish(finishedContract, this.createDetails(finishedContract));
       };
       observer.register('trade.update', tradeUpdate);
       observer.register('trade.finish', tradeFinish, true);
@@ -76,6 +80,17 @@ export default class StrategyCtrl {
       return this.proposals[option];
     }
 		return null;
+  }
+  createDetails(contract) {
+    let result = (+contract.sell_price === 0) ? 'loss' : 'win';
+    let profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+    return [
+      contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
+      profit, contract.contract_type,
+      getUTCTime(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick,
+      getUTCTime(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick,
+      +((contract.barrier) ? contract.barrier : 0), result,
+    ];
   }
   destroy() {
     for (let obs of this.runningObservations) {

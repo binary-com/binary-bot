@@ -1,6 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer';
 import _ from 'underscore';
-import { getUTCTime } from 'binary-common-utils/lib/tools';
 import CustomApi from 'binary-common-utils/lib/customApi';
 import config from '../../common/const';
 import StrategyCtrl from './strategyCtrl';
@@ -15,28 +14,6 @@ export default class Bot {
     } else {
       this.api = api;
     }
-
-    this.strategyFinish = (contract) => {
-      this.strategyCtrl.destroy();
-      this.strategyCtrl = null;
-      this.botFinish(contract);
-    };
-
-    this.tradePurchase = () => {
-      this.totalRuns += 1;
-      observer.emit('bot.tradeInfo', {
-        totalRuns: this.totalRuns,
-      });
-    };
-
-    this.strategyReady = () => {
-      observer.emit('bot.waiting_for_purchase');
-    };
-
-    this.apiProposal = (proposal) => {
-      this.strategyCtrl.updateProposal(proposal);
-    };
-
     this.symbol = new _Symbol(this.api);
     this.initPromise = this.symbol.initPromise;
     this.running = false;
@@ -150,8 +127,7 @@ export default class Bot {
     } else {
       return;
     }
-    this.strategy = strategy;
-    this.finish = finish;
+    this.strategyCtrl = new StrategyCtrl(this.api, strategy, finish);
     this.tradeOption = tradeOption;
     if (again) {
       this.startTrading();
@@ -232,8 +208,11 @@ export default class Bot {
     }
   }
   observeStrategy() {
-    observer.register('strategy.ready', this.strategyReady, false, null, true);
-    this.unregisterOnFinish.push(['strategy.ready', this.strategyReady]);
+    const strategyReady = () => {
+      observer.emit('bot.waiting_for_purchase');
+    };
+    observer.register('strategy.ready', strategyReady, false, null, true);
+    this.unregisterOnFinish.push(['strategy.ready', strategyReady]);
   }
   observeTradeUpdate() {
     if (!observer.isRegistered('strategy.tradeUpdate')) {
@@ -251,15 +230,18 @@ export default class Bot {
     this.observeBalance();
   }
   subscribeProposal(tradeOption) {
-    observer.register('api.proposal', this.apiProposal, false, {
+    const apiProposal = (proposal) => {
+      this.strategyCtrl.updateProposal(proposal);
+    };
+    observer.register('api.proposal', apiProposal, false, {
       type: 'proposal',
       unregister: [
-        ['api.proposal', this.apiProposal],
+        ['api.proposal', apiProposal],
         'strategy.ready',
         'bot.waiting_for_purchase',
       ],
     });
-    this.unregisterOnFinish.push(['api.proposal', this.apiProposal]);
+    this.unregisterOnFinish.push(['api.proposal', apiProposal]);
     this.api.proposal(tradeOption);
   }
   subscribeProposals() {
@@ -272,12 +254,22 @@ export default class Bot {
     }, (error) => observer.emit('api.error', error));
   }
   startTrading() {
-    observer.register('strategy.finish', this.strategyFinish, true, null, true);
-    this.unregisterOnFinish.push(['strategy.finish', this.strategyFinish]);
-    observer.register('trade.purchase', this.tradePurchase, true, null, true);
-    this.unregisterOnFinish.push(['trade.purchase', this.tradePurchase]);
+    const strategyFinish = (contract) => {
+      this.strategyCtrl.destroy();
+      this.strategyCtrl = null;
+      this.botFinish(contract);
+    };
+    observer.register('strategy.finish', strategyFinish, true, null, true);
+    this.unregisterOnFinish.push(['strategy.finish', strategyFinish]);
+    const tradePurchase = () => {
+      this.totalRuns += 1;
+      observer.emit('bot.tradeInfo', {
+        totalRuns: this.totalRuns,
+      });
+    };
+    observer.register('trade.purchase', tradePurchase, true, null, true);
+    this.unregisterOnFinish.push(['trade.purchase', tradePurchase]);
     this.observeStreams();
-    this.strategyCtrl = new StrategyCtrl(this.api, this.strategy);
     this.subscribeProposals();
   }
   updateTotals(contract) {
@@ -291,17 +283,6 @@ export default class Bot {
       totalPayout: this.totalPayout,
     });
   }
-  createDetails(contract) {
-    let result = (+contract.sell_price === 0) ? 'loss' : 'win';
-    let profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
-    return [
-      contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
-      profit, contract.contract_type,
-      getUTCTime(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick,
-      getUTCTime(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick,
-      +((contract.barrier) ? contract.barrier : 0), result,
-    ];
-  }
   botFinish(contract) {
     for (let obs of this.unregisterOnFinish) {
       observer.unregisterAll(...obs);
@@ -310,7 +291,6 @@ export default class Bot {
     this.updateTotals(contract);
     observer.emit('bot.finish', contract);
     this.running = false;
-    this.finish(contract, this.createDetails(contract));
   }
   stop(contract) {
     if (!this.running) {
