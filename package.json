@@ -32,7 +32,7 @@
     "binary-charts": "^7.30.0",
     "binary-common-utils": "^4.0.1",
     "binary-live-api": "^25.1.0",
-    "blockly": "google/blockly.git#ac0e704c699133e57e8a57bd49a971ce01014535",
+    "blockly": "google/blockly.git#93168beb",
     "bootstrap": "^3.3.7",
     "filesaverjs": "^0.2.2",
     "gulp": "^3.9.1",
