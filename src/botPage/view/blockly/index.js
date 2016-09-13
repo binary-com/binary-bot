@@ -101,12 +101,14 @@ export default class _Blockly {
   }
   addMissingMainBlocks() {
     for (let mainBlock of config.mainBlocks) {
-      if (!utils.getBlockByType(mainBlock)) {
-        const block = Blockly.mainWorkspace.newBlock(mainBlock);
-        block.initSvg();
-        block.render();
-        this.setBlockColors();
-        block.setDeletable(false);
+      if (mainBlock !== 'during_purchase') {
+        if (!utils.getBlockByType(mainBlock)) {
+          const block = Blockly.mainWorkspace.newBlock(mainBlock);
+          block.initSvg();
+          block.render();
+          this.setBlockColors();
+          block.setDeletable(false);
+        }
       }
     }
   }
@@ -144,7 +146,7 @@ export default class _Blockly {
     return returnVal;
   }
   setBlockColors() {
-    const mainBlockUniqStrList = [/^\(1\)\s[\w\s]*$/i, /^\(2\)\s[\w\s]*$/i, /^\(3\)\s[\w\s]*$/i, /^\(4\)\s[\w\s]*$/i];
+    const mainBlockUniqStrList = [/^\(1\)\s[\w\s]*$/i, /^\(2\)\s[\w\s]*$/i, /^\(2.5\)\s[\w\s]*$/i, /^\(3\)\s[\w\s]*$/i];
     for (let regex of mainBlockUniqStrList) {
       const textBlock = this.selectTextBlock(regex);
       if (textBlock) {

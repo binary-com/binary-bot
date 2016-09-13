@@ -4,7 +4,7 @@ import { translator } from '../../../../../common/translator';
 Blockly.Blocks.during_purchase = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(translator.translateText('(3) things to do when trade is in progress'));
+      .appendField(translator.translateText('(2.5) things to do when trade is in progress'));
     this.appendStatementInput('DURING_PURCHASE_STACK')
       .setCheck('SellAtMarket');
     this.setColour('#2a3052');

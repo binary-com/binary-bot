@@ -97,6 +97,7 @@ export default {
     'trade',
     'on_strategy',
     'on_finish',
+    'during_purchase',
   ],
   durationTypes: {
     RISEFALL: [
