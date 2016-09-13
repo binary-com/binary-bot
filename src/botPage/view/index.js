@@ -378,7 +378,7 @@ View.prototype = Object.create(null, {
 				type: this.chartType,
 				theme: 'light',
 				defaultRange: 0,
-				typeChange: function(type){
+				onTypeChange: function(type){
 					that.chartType = type;
 				}
 			};
