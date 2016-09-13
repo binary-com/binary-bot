@@ -145,8 +145,8 @@ export default class _Blockly {
   }
   setBlockColors() {
     const mainBlockUniqStrList = [/^\(1\)\s[\w\s]*$/i, /^\(2\)\s[\w\s]*$/i, /^\(3\)\s[\w\s]*$/i, /^\(4\)\s[\w\s]*$/i];
-    for (let str of mainBlockUniqStrList) {
-      const textBlock = this.selectTextBlock(str);
+    for (let regex of mainBlockUniqStrList) {
+      const textBlock = this.selectTextBlock(regex);
       if (textBlock) {
         textBlock.style.setProperty('fill', 'white', 'important');
       }
