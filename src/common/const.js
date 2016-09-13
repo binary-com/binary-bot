@@ -93,6 +93,12 @@ export default {
     ['Low', 'low'],
     ['Close', 'close'],
   ],
+  mainBlocks: [
+    'trade',
+    'on_strategy',
+    'on_finish',
+    'during_purchase',
+  ],
   durationTypes: {
     RISEFALL: [
       [translator.translateText('Ticks'), 't'],

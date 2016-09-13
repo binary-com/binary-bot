@@ -5,6 +5,14 @@ export default class Utils {
   constructor() {
     this.purchase_choices = [[translator.translateText('Click to select'), '']];
   }
+  getBlockByType(type) {
+    for (let block of Blockly.mainWorkspace.getAllBlocks()) {
+      if (type === block.type) {
+        return block;
+      }
+    }
+    return null;
+  }
   getPurchaseChoices() {
     return this.purchase_choices;
   }
@@ -25,7 +33,7 @@ export default class Utils {
   addPurchaseOptions() {
     let firstOption = {};
     let secondOption = {};
-    let trade = Blockly.mainWorkspace.getBlockById('trade');
+    let trade = this.getBlockByType('trade');
     if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
         .getInputTargetBlock('CONDITION') !== null) {
       let conditionType = trade.getInputTargetBlock('SUBMARKET')

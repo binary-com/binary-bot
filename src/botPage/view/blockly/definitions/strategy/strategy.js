@@ -2,9 +2,9 @@
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.on_strategy = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
-      .appendField(translator.translateText('Step 2: Before Purchase'));
+      .appendField(translator.translateText('(2) things to do before purchase is made'));
     this.appendStatementInput('STRATEGY_STACK')
       .setCheck('Purchase');
     this.setColour('#2a3052');

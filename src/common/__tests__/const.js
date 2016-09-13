@@ -13,6 +13,7 @@ describe('Const', () => {
       'conditionsCategory',
       'conditionsCategoryName',
       'conditions',
+      'mainBlocks',
       'barrierTypes',
       'ohlcFields',
       'durationTypes',
