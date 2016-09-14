@@ -1,7 +1,5 @@
-'use strict';
-
 Blockly.JavaScript.check_direction = function(block) {
-	var check_with = block.getFieldValue('CHECK_DIRECTION');
-	var code = '(ticks.direction === \'' + check_with + '\')';
+  let checkWith = block.getFieldValue('CHECK_DIRECTION');
+  let code = `(ticks.direction === '${checkWith}')`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

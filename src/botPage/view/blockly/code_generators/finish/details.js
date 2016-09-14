@@ -1,6 +1,4 @@
-'use strict';
-
-Blockly.JavaScript.contract_details = function(block) {
-	var code = 'details';
+Blockly.JavaScript.contract_details = function() {
+  let code = 'details';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

@@ -17,9 +17,6 @@ module.exports = {
   resolveLoader: {
     root: __dirname + "/node_modules",
 	},
-	resolve: {
-    root: __dirname + '/src/common'
-  },
   entry: {
     bot: ['babel-polyfill', __dirname + '/src/botPage'],
     index: __dirname + '/src/indexPage'

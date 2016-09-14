@@ -1,7 +1,5 @@
-'use strict';
-
 Blockly.JavaScript.contract_check_result = function(block) {
-	var check_with = block.getFieldValue('CHECK_RESULT');
-	var code = '(details[10] === \'' + check_with + '\')';
+  let checkWith = block.getFieldValue('CHECK_RESULT');
+  let code = `(details[10] === '${checkWith}')`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

@@ -1,6 +1,4 @@
-'use strict';
-
-Blockly.JavaScript.direction = function(block) {
-	var code = "ticks.direction";
+Blockly.JavaScript.direction = function() {
+  let code = 'ticks.direction';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

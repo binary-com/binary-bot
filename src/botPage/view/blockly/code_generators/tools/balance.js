@@ -1,7 +1,5 @@
-'use strict';
-
 Blockly.JavaScript.balance = function(block) {
-  var balance_type = block.getFieldValue('BALANCE_TYPE');
-	var code = 'Bot.getBalance(\''+ balance_type +'\')';
+  let balanceType = block.getFieldValue('BALANCE_TYPE');
+  let code = `Bot.getBalance('${balanceType}')`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

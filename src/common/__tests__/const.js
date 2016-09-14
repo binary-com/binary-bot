@@ -1,16 +1,22 @@
-'use strict';
+/* eslint-disable import/no-extraneous-dependencies */
+import { expect } from 'chai';
 import _const from '../const';
-import {expect} from 'chai';
 
-describe('Const', function(){
-	it('Const should contain lists, opposites, oppositesHaveBarrier, conditionsCategory, conditionsCategoryName, conditions', function(){
-		expect(_const).to.have.all.keys([
-			'lists',
-			'opposites',
-			'oppositesHaveBarrier',
-			'conditionsCategory',
-			'conditionsCategoryName',
-			'conditions',
-		]);
-	});
+describe('Const', () => {
+  it('Const should contain all const defs', () => {
+    expect(_const).to.have.all.keys([
+      'lists',
+      'opposites',
+      'hasSecondBarrierOffset',
+      'hasBarrierOffset',
+      'hasPrediction',
+      'conditionsCategory',
+      'conditionsCategoryName',
+      'conditions',
+      'mainBlocks',
+      'barrierTypes',
+      'ohlcFields',
+      'durationTypes',
+    ]);
+  });
 });

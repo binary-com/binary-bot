@@ -14,6 +14,22 @@ module.exports = {
 			}
 		},
 	},
+	candles: {
+		subscriptions: {
+			r_100_candles: {
+				func: function r_100_candles(api){
+					api.getTickHistory('R_100', {
+						"end": "latest",
+						"count": 600,
+            "granularity": 60,
+            "style": "candles",
+						"subscribe": 1
+					});
+				},
+				maxResponse: 4
+			}
+		},
+	},
 	authorize: {
 		errors: {
 			InvalidToken: {
@@ -25,8 +41,8 @@ module.exports = {
 		responses: {
 			realToken: {
 				func: function realToken(api){
-					api.authorize('c9A3gPFcqQtAQDW');
-				}
+					api.authorize('nmjKBPWxM00E8Fh');
+				},
 			}
 		},
 	},
@@ -49,11 +65,7 @@ module.exports = {
 										subscriptions: {
 											digitoddPurchase: {
 												func: function digitoddPurchase(api, global){
-													api.send({
-														proposal_open_contract: 1,
-														contract_id: global.oddPurchasedContract,
-														subscribe: 1
-													});
+                          api.subscribeToOpenContract(global.oddPurchasedContract);
 												},
 												stopCondition: function(data){
 													if (data.proposal_open_contract.is_expired){
@@ -71,11 +83,12 @@ module.exports = {
 																},
 																next: {
 																	proposal_open_contract: {
-																		responses: {
+																		subscriptions: {
 																			expectOddContractResult: {
 																				func: function expectOddContractResult(api, global){
-																					api.getContractInfo(global.oddPurchasedContract);
+                                          api.subscribeToOpenContract(global.oddPurchasedContract);
 																				},
+                                        maxResponse: 1
 																			},
 																		},
 																	},
@@ -110,11 +123,7 @@ module.exports = {
 										subscriptions: {
 											digitevenPurchase: {
 												func: function digitevenPurchase(api, global){
-													api.send({
-														proposal_open_contract: 1,
-														contract_id: global.evenPurchasedContract,
-														subscribe: 1
-													});
+                          api.subscribeToOpenContract(global.evenPurchasedContract);
 												},
 												stopCondition: function(data){
 													if (data.proposal_open_contract.is_expired){
@@ -127,16 +136,17 @@ module.exports = {
 													sell_expired: {
 														responses: {
 															sellEvenContract: {
-																func: function sellEvenContract(api, global){
+																func: function sellEvenContract(api){
 																	api.sellExpiredContracts();
 																},
 																next: {
 																	proposal_open_contract: {
-																		responses: {
+																		subscriptions: {
 																			expectEvenContractResult: {
 																				func: function expectEvenContractResult(api, global){
-																					api.getContractInfo(global.evenPurchasedContract);
+                                          api.subscribeToOpenContract(global.evenPurchasedContract);
 																				},
+                                        maxResponse: 1
 																			},
 																		},
 																	},

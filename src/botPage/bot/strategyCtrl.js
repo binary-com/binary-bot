@@ -1,120 +1,109 @@
-'use strict';
-import Observer from 'binary-common-utils/observer';
-import Ticktrade from './trade/ticktrade';
+import { observer } from 'binary-common-utils/lib/observer';
+import { getUTCTime } from 'binary-common-utils/lib/tools';
+import Trade from './trade';
 
-var StrategyCtrl = function StrategyCtrl(api, strategy) {
-	this.observer = new Observer();
-	this.api = api;
-	this.strategy = strategy;
-	this.ready = false;
-	this.purchased = false;
-	this.runningObservations = [];
-	this.proposals = {};
-};
-
-StrategyCtrl.prototype = Object.create(null, {
-	recoverFromDisconnect: {
-		value: function recoverFromDisconnect() {
-			var that = this;
-			for ( var i in this.runningObservations ) {
-				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
-			}
-			this.runningObservations = [];
-
-			if ( !that.trade || !that.trade.recoverFromDisconnect() ) {
-				this.observer.emit('strategy.recovered', {
-					tradeWasRunning: false
-				});
-				return;
-			}
-			var tradeFinish = function tradeFinish(contract){
-				that.trade.destroy();
-				that.observer.emit('strategy.recovered', {
-					tradeWasRunning: true,
-					finishedContract: contract
-				});
+export default class StrategyCtrl {
+  constructor(api, strategy, duringPurchase, finish) {
+    this.api = api;
+    this.strategy = strategy;
+    this.duringPurchase = duringPurchase;
+    this.finish = finish;
+    this.ready = false;
+    this.purchased = false;
+    this.runningObservations = [];
+    this.proposals = {};
+  }
+  updateProposal(proposal) {
+    if (!this.purchased) {
+      this.proposals[proposal.contract_type] = proposal;
+      if (!this.ready && Object.keys(this.proposals).length === 2) {
+        this.ready = true;
+        observer.emit('strategy.ready');
+      }
+    }
+  }
+  updateTicks(data) {
+    const ticks = data.ticks;
+    const ohlc = data.candles;
+    if (!this.purchased) {
+      let direction = '';
+      const length = ticks.length;
+      if (length >= 2) {
+        if (ticks[length - 1].quote > ticks[length - 2].quote) {
+          direction = 'rise';
+        }
+        if (ticks[length - 1].quote < ticks[length - 2].quote) {
+          direction = 'fall';
+        }
+      }
+      if (ohlc) {
+        const repr = function repr() {
+          return JSON.stringify(this);
+        };
+        for (let o of ohlc) {
+          o.toString = repr;
+        }
+      }
+			const tickObj = {
+				direction,
+				ohlc,
+				ticks,
 			};
-			this.observer.register('trade.finish', tradeFinish, true);
-			this.runningObservations.push(['trade.finish', tradeFinish]);
-		}
-	},
-	updateProposal: {
-		value: function updateProposal(proposal) {
-			if ( !this.purchased ) {
-				this.proposals[proposal.contract_type] = proposal;
-				if ( !this.ready && Object.keys(this.proposals).length === 2 ) {
-					this.ready = true;
-					this.observer.emit('strategy.ready');
-				}
-			}
-		}
-	},
-	updateTicks: {
-		value: function updateTicks(data) {
-			var ticks = data.ticks; 
-			var ohlc = data.candles; 
-			if ( !this.purchased ) {
-				var direction = '';
-				var length = ticks.length;
-				if ( length >= 2 ) {
-					if ( ticks[length-1].quote > ticks[length-2].quote ) {
-						direction = 'rise';
-					}
-					if ( ticks[length-1].quote < ticks[length-2].quote ) {
-						direction = 'fall';
-					}
-				}
-				if ( this.ready ) {
-					this.strategy({
-						direction: direction,
-						ohlc: ohlc,
-						ticks: ticks
-					}, this.proposals, this);
-				} else {
-					this.strategy({
-						direction: direction,
-						ohlc: ohlc,
-						ticks: ticks
-					}, null, null);
-				}
-			}
-		}
-	},
-	purchase: {
-		value: function purchase(option) {
-			if ( !this.purchased ) {
-				this.purchased = true;
-				var contract = this.proposals[option];
-				this.trade = new Ticktrade(this.api);
-				var that = this;
-				var tradeUpdate = function tradeUpdate(contract) {
-					that.observer.emit('strategy.tradeUpdate', contract);
-				};
-				var tradeFinish = function tradeFinish(contract){
-					that.observer.emit('strategy.finish', contract);
-				};
-				this.observer.register('trade.update', tradeUpdate);
-				this.observer.register('trade.finish', tradeFinish, true);
-				this.runningObservations.push(['trade.update', tradeUpdate]);
-				this.runningObservations.push(['trade.finish', tradeFinish]);
-				this.trade.purchase(contract, tradeFinish);
-			}
-		}
-	},
-	destroy: {
-		value: function destroy(offline) {
-			for ( var i in this.runningObservations ) {
-				this.observer.unregisterAll.apply(this.observer, this.runningObservations[i]);
-			}
-			this.runningObservations = [];
-			this.proposals = {};
-			this.ready = false;
-			this.strategy = null;
-			if ( this.trade ) {
-				return this.trade.destroy(offline);
-			}
-		}
-	}
-});
-
-module.exports = StrategyCtrl;
+      if (this.ready) {
+        this.strategy(tickObj, this.proposals, this);
+      } else {
+        this.strategy(tickObj, null, null);
+      }
+    }
+  }
+  purchase(option) {
+    if (!this.purchased) {
+      this.purchased = true;
+      const contract = this.proposals[option];
+      this.trade = new Trade(this.api);
+      const tradeUpdate = (openContract) => {
+        this.duringPurchase(openContract, this);
+        observer.emit('strategy.tradeUpdate', openContract);
+      };
+      const tradeFinish = (finishedContract) => {
+        // order matters, needs fix
+        observer.emit('strategy.finish', finishedContract);
+        this.finish(finishedContract, this.createDetails(finishedContract));
+      };
+      observer.register('trade.update', tradeUpdate);
+      observer.register('trade.finish', tradeFinish, true);
+      this.runningObservations.push(['trade.update', tradeUpdate]);
+      this.runningObservations.push(['trade.finish', tradeFinish]);
+      this.trade.purchase(contract, tradeFinish);
+    }
+  }
+  getContract(option) {
+    if (!this.purchased) {
+      return this.proposals[option];
+    }
+		return null;
+  }
+  createDetails(contract) {
+    const result = (+contract.sell_price === 0) ? 'loss' : 'win';
+    const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+    return [
+      contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
+      profit, contract.contract_type,
+      getUTCTime(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick,
+      getUTCTime(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick,
+      +((contract.barrier) ? contract.barrier : 0), result,
+    ];
+  }
+  destroy() {
+    for (let obs of this.runningObservations) {
+      observer.unregisterAll(...obs);
+    }
+    this.runningObservations = [];
+    this.proposals = {};
+    this.ready = false;
+    this.strategy = null;
+    if (this.trade) {
+      this.trade.destroy();
+    }
+  }
+}
