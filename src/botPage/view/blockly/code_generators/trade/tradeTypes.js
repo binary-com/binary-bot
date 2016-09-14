@@ -4,9 +4,6 @@ import { translator } from '../../../../../common/translator';
 export default () => {
   for (const opposites of Object.keys(config.opposites)) {
     Blockly.JavaScript[opposites.toLowerCase()] = function condition(block) {
-      if (this.parentBlock_ === null) { // eslint-disable-line no-underscore-dangle
-        return '';
-      }
       const duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
       const durationType = block.getFieldValue('DURATIONTYPE_LIST');
       const payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
