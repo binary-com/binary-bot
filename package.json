@@ -17,7 +17,7 @@
     ]
   },
   "scripts": {
-    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/mocha --compilers js:babel-core/register -r babel-polyfill -r ./src/common/mochaHelper.js src/**/__tests__/*.js src/**/**/__tests__/*.js src/**/**/**/__tests__/*.js",
+    "test": "./node_modules/.bin/eslint src/ && ./node_modules/.bin/babel-node ./node_modules/.bin/mocha --compilers js:babel-core/register -r babel-polyfill -r ./src/common/mochaHelper.js src/**/__tests__/*.js src/**/**/__tests__/*.js src/**/**/**/__tests__/*.js",
     "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/babel-istanbul cover ./node_modules/.bin/_mocha --  --compilers js:babel-core/register -r babel-polyfill -r ./src/common/mochaHelper.js src/**/__tests__/*.js src/**/**/__tests__/*.js src/**/**/**/__tests__/*.js",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "test:full": "npm test && npm run coveralls",
@@ -78,7 +78,6 @@
     "gulp-debounced-watch": "^1.0.4",
     "gulp-gh-pages": "^0.5.4",
     "gulp-insert": "^0.5.0",
-    "gulp-jshint": "^2.0.1",
     "gulp-mocha": "^3.0.0",
     "gulp-mustache-plus": "^1.0.1",
     "gulp-rename": "^1.2.2",

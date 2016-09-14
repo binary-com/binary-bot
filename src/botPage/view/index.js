@@ -350,7 +350,7 @@ export default class View {
     ReactDOM.render(<BinaryChart
       style={{ height: 209 }}
       type={this.latestOpenContract ? 'area' : this.chartType}
-      onTypeChange={(type) => { console.log(type); this.chartType = type; }}
+      onTypeChange={(type) => { this.chartType = type; }}
       ticks={this.chartType === 'candlestick' ? info.candles : info.ticks}
       pipSize={Number(Number(info.pip).toExponential().substring(3))}
       contract={this.latestOpenContract}

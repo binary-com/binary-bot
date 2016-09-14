@@ -3,7 +3,7 @@ import { insideStrategy } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.tick = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Last Tick'));
     this.setOutput(true, 'Number');
@@ -11,7 +11,7 @@ Blockly.Blocks.tick = {
     this.setTooltip(translator.translateText('Returns the tick value received by a strategy block'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideStrategy(this, ev, 'Tick Value');
   },
 };

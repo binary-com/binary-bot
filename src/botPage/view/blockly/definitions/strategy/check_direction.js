@@ -3,7 +3,7 @@ import { insideStrategy } from '../../relationChecker';
 import config from '../../../../../common/const';
 
 Blockly.Blocks.check_direction = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Direction is'))
       .appendField(new Blockly.FieldDropdown(config.lists.CHECK_DIRECTION), 'CHECK_DIRECTION');
@@ -12,7 +12,7 @@ Blockly.Blocks.check_direction = {
     this.setTooltip(translator.translateText('True if the direction matches the selection'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideStrategy(this, ev, 'Check Direction');
   },
 };

@@ -2,7 +2,7 @@
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.balance = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Balance:'))
 			.appendField(new Blockly.FieldDropdown([

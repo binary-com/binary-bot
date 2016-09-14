@@ -12,10 +12,10 @@ export default class ActiveSymbols {
     if (!_.isEmpty(this.markets)) {
       return this.markets;
     }
-    let markets = _.groupBy(this.activeSymbols, 'market');
-    for (let marketName of Object.keys(markets)) {
-      let marketSymbols = markets[marketName];
-      let symbol = marketSymbols[0];
+    const markets = _.groupBy(this.activeSymbols, 'market');
+    for (const marketName of Object.keys(markets)) {
+      const marketSymbols = markets[marketName];
+      const symbol = marketSymbols[0];
       this.markets[marketName] = {
         name: symbol.market_display_name,
         is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
@@ -25,12 +25,12 @@ export default class ActiveSymbols {
     return this.markets;
   }
   getSubmarketsForMarket(marketName) {
-    let market = this.markets[marketName];
+    const market = this.markets[marketName];
     market.submarkets = {};
-    let submarkets = _.groupBy(_.groupBy(this.activeSymbols, 'market')[marketName], 'submarket');
-    for (let submarketName of Object.keys(submarkets)) {
-      let submarketSymbols = submarkets[submarketName];
-      let symbol = submarketSymbols[0];
+    const submarkets = _.groupBy(_.groupBy(this.activeSymbols, 'market')[marketName], 'submarket');
+    for (const submarketName of Object.keys(submarkets)) {
+      const submarketSymbols = submarkets[submarketName];
+      const symbol = submarketSymbols[0];
       this.submarkets[submarketName] = market.submarkets[submarketName] = {
         name: symbol.submarket_display_name,
         is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
@@ -40,10 +40,10 @@ export default class ActiveSymbols {
     return market.submarkets;
   }
   getSymbolsForSubmarket(submarketName) {
-    let submarket = this.submarkets[submarketName];
+    const submarket = this.submarkets[submarketName];
     submarket.symbols = {};
-    let symbols = _.groupBy(this.activeSymbols, 'submarket')[submarketName];
-    for (let symbol of symbols) {
+    const symbols = _.groupBy(this.activeSymbols, 'submarket')[submarketName];
+    for (const symbol of symbols) {
       this.symbols[symbol.symbol] = submarket.symbols[symbol.symbol] = {
         display: symbol.display_name,
         symbol_type: symbol.symbol_type,
@@ -70,16 +70,16 @@ export default class ActiveSymbols {
     return this.symbols;
   }
   getMarketsList() {
-    let tradeMarketsList = {};
+    const tradeMarketsList = {};
     _.extend(tradeMarketsList, this.getMarkets());
     _.extend(tradeMarketsList, this.getSubmarkets());
     return tradeMarketsList;
   }
   getTradeUnderlyings() {
-    let tradeUnderlyings = {};
-    let symbols = this.getSymbols();
-    for (let key of Object.keys(symbols)) {
-      let symbol = symbols[key];
+    const tradeUnderlyings = {};
+    const symbols = this.getSymbols();
+    for (const key of Object.keys(symbols)) {
+      const symbol = symbols[key];
       if (!tradeUnderlyings[symbol.market]) {
         tradeUnderlyings[symbol.market] = {};
       }
@@ -92,8 +92,8 @@ export default class ActiveSymbols {
     return tradeUnderlyings;
   }
   getSymbolNames() {
-    let symbols = _.clone(this.getSymbols());
-    for (let key of Object.keys(symbols)) {
+    const symbols = _.clone(this.getSymbols());
+    for (const key of Object.keys(symbols)) {
       symbols[key] = symbols[key].display;
     }
     return symbols;

@@ -9,7 +9,7 @@ export default class Trade {
   }
   purchase(contract) {
     this.api.buy(contract.id, contract.ask_price);
-    let apiBuy = (purchasedContract) => {
+    const apiBuy = (purchasedContract) => {
       observer.emit('ui.log.info', translator.translateText('Purchased') + ': ' + contract.longcode);
       observer.emit('trade.purchase', purchasedContract);
       this.contractId = purchasedContract.contract_id;
@@ -26,7 +26,7 @@ export default class Trade {
     if (!this.contractId) {
       return false;
     }
-    let apiProposalOpenContract = (contract) => {
+    const apiProposalOpenContract = (contract) => {
       // detect changes and decide what to do when proposal is updated
       if (contract.is_expired && contract.is_valid_to_sell && !this.contractIsSold) {
         this.contractIsSold = true;
@@ -58,7 +58,7 @@ export default class Trade {
     }
   }
   destroy() {
-    for (let obs of this.runningObservations) {
+    for (const obs of this.runningObservations) {
       observer.unregisterAll(...obs);
     }
     this.runningObservations = [];

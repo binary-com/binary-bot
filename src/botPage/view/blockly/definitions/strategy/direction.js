@@ -3,7 +3,7 @@ import { translator } from '../../../../../common/translator';
 import { insideStrategy } from '../../relationChecker';
 
 Blockly.Blocks.direction = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Tick Direction'));
     this.setOutput(true, 'String');
@@ -13,7 +13,7 @@ Blockly.Blocks.direction = {
 			and empty ('') if the tick is equal to the previous tick`));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideStrategy(this, ev, 'Tick Direction');
   },
 };

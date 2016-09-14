@@ -1,4 +1,4 @@
-/* jshint ignore:start */
+/* eslint-disable */
 $.fn.drags = function (opt) {
 
 	opt = $.extend({
@@ -58,4 +58,3 @@ $.fn.drags = function (opt) {
 			}
 		});
 };
-/* jshint ignore:end */

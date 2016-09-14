@@ -3,7 +3,7 @@ import { translator } from '../../../../../common/translator';
 import { insideFinish } from '../../relationChecker';
 
 Blockly.Blocks.trade_again = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Trade Again'));
     this.setPreviousStatement(true, 'TradeAgain');
@@ -11,7 +11,7 @@ Blockly.Blocks.trade_again = {
     this.setTooltip(translator.translateText('Runs the trade block again'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideFinish(this, ev, 'Trade Again');
   },
 };

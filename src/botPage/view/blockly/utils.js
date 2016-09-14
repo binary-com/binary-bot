@@ -6,7 +6,7 @@ export default class Utils {
     this.purchase_choices = [[translator.translateText('Click to select'), '']];
   }
   getBlockByType(type) {
-    for (let block of Blockly.mainWorkspace.getAllBlocks()) {
+    for (const block of Blockly.mainWorkspace.getAllBlocks()) {
       if (type === block.type) {
         return block;
       }
@@ -17,7 +17,7 @@ export default class Utils {
     return this.purchase_choices;
   }
   findTopParentBlock(block) {
-    let pblock = block.parentBlock_;
+    let pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
     if (pblock === null) {
       return null;
     }
@@ -26,20 +26,20 @@ export default class Utils {
         return pblock;
       }
       block = pblock;
-      pblock = block.parentBlock_;
+      pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
     }
     return block;
   }
   addPurchaseOptions() {
     let firstOption = {};
     let secondOption = {};
-    let trade = this.getBlockByType('trade');
+    const trade = this.getBlockByType('trade');
     if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
         .getInputTargetBlock('CONDITION') !== null) {
-      let conditionType = trade.getInputTargetBlock('SUBMARKET')
+      const conditionType = trade.getInputTargetBlock('SUBMARKET')
         .getInputTargetBlock('CONDITION')
         .type;
-      let opposites = config.opposites[conditionType.toUpperCase()];
+      const opposites = config.opposites[conditionType.toUpperCase()];
       this.purchase_choices = [];
       opposites.forEach((option, index) => {
         if (index === 0) {
@@ -55,10 +55,10 @@ export default class Utils {
         }
         this.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
       });
-      let purchases = Blockly.mainWorkspace.getAllBlocks()
+      const purchases = Blockly.mainWorkspace.getAllBlocks()
         .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0));
-      for (let purchase of purchases) {
-        let value = purchase.getField('PURCHASE_LIST')
+      for (const purchase of purchases) {
+        const value = purchase.getField('PURCHASE_LIST')
           .getValue();
         Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
         if (value === firstOption.condition) {

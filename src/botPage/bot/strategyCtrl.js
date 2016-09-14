@@ -40,7 +40,7 @@ export default class StrategyCtrl {
         const repr = function repr() {
           return JSON.stringify(this);
         };
-        for (let o of ohlc) {
+        for (const o of ohlc) {
           o.toString = repr;
         }
       }
@@ -95,7 +95,7 @@ export default class StrategyCtrl {
     ];
   }
   destroy() {
-    for (let obs of this.runningObservations) {
+    for (const obs of this.runningObservations) {
       observer.unregisterAll(...obs);
     }
     this.runningObservations = [];

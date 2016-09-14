@@ -1,8 +1,8 @@
-Blockly.JavaScript.purchase = function(block) {
-  if (this.parentBlock_ === null) {
+Blockly.JavaScript.purchase = function purchase(block) {
+  if (this.parentBlock_ === null) { // eslint-disable-line no-underscore-dangle
     return '';
   }
-  let purchaseList = block.getFieldValue('PURCHASE_LIST');
-  let code = `_strategyCtrl.purchase('${purchaseList}');\n`;
+  const purchaseList = block.getFieldValue('PURCHASE_LIST');
+  const code = `_strategyCtrl.purchase('${purchaseList}');\n`;
   return code;
 };

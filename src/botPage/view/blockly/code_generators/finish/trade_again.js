@@ -1,7 +1,7 @@
-Blockly.JavaScript.trade_again = function() {
-  if (this.parentBlock_ === null) {
+Blockly.JavaScript.trade_again = function trade_again() {
+  if (this.parentBlock_ === null) { // eslint-disable-line no-underscore-dangle
     return '';
   }
-  let code = 'trade(true);\nreturn;\n';
+  const code = 'trade(true);\nreturn;\n';
   return code;
 };

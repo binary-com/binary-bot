@@ -44,7 +44,7 @@ describe('Trade', () => {
     });
   });
   describe('Getting updates', () => {
-    let contractUpdates = [];
+    const contractUpdates = [];
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('trade.finish', (_contract) => {
         finishedContract = _contract;

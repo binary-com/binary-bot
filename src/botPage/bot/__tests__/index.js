@@ -1,11 +1,11 @@
 import CustomApi from 'binary-common-utils/lib/customApi';
 import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import { observer } from 'binary-common-utils/lib/observer';
-import Bot from '../index';
+import Bot from '../';
 import mockWebsocket from '../../../common/mock/websocket';
 
 describe('Bot', () => {
-  let option = {
+  const option = {
     amount: '1.00',
     basis: 'stake',
     condition: 'EVENODD',
@@ -17,7 +17,7 @@ describe('Bot', () => {
 
   let api;
   let bot;
-  let token = 'nmjKBPWxM00E8Fh';
+  const token = 'nmjKBPWxM00E8Fh';
   before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
     observer.eventActionMap = {};
     api = new CustomApi(mockWebsocket);
@@ -27,7 +27,7 @@ describe('Bot', () => {
     });
   });
   it('initialize bot with the symbols', () => {
-    let markets = bot.symbol.activeSymbols.getMarkets();
+    const markets = bot.symbol.activeSymbols.getMarkets();
     expect(markets).to.be.an('Object')
       .and.to.have.property('forex');
   });

@@ -1,8 +1,8 @@
-Blockly.JavaScript.payout = function(block) {
-  if (this.parentBlock_ === null) {
+Blockly.JavaScript.payout = function payout(block) {
+  if (this.parentBlock_ === null) { // eslint-disable-line no-underscore-dangle
     return '';
   }
-  let purchaseList = block.getFieldValue('PURCHASE_LIST');
-  let code = `Number(_strategyCtrl.getContract('${purchaseList}').payout)`;
+  const purchaseList = block.getFieldValue('PURCHASE_LIST');
+  const code = `Number(_strategyCtrl.getContract('${purchaseList}').payout)`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

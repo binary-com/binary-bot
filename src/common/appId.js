@@ -17,13 +17,13 @@ export function setAppId() {
 }
 
 async function addAllTokens(tokenList) {
-  for (let token of tokenList) {
+  for (const token of tokenList) {
     await new Promise((r) => addTokenIfValid(token, r));
   }
 }
 
 export function oauthLogin(done = () => 0) {
-  let queryStr = parseQueryString();
+  const queryStr = parseQueryString();
   let tokenList = [];
 	tokenList = Object.keys(queryStr)
 		.map((r) => (r.indexOf('token') === 0) ? queryStr[r] : null)

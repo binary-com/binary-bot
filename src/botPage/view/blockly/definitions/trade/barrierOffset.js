@@ -4,7 +4,7 @@ import { translator } from '../../../../../common/translator';
 import { insideCondition } from '../../relationChecker';
 
 Blockly.Blocks.barrier_offset = {
-  init: function() {
+  init: function init() {
     this.appendValueInput('BARRIEROFFSET_IN')
       .setCheck('Number')
       .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'BARRIEROFFSETTYPE_LIST');
@@ -14,7 +14,7 @@ Blockly.Blocks.barrier_offset = {
     this.setTooltip(translator.translateText('Add sign to a number to make a Barrier Offset.'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideCondition(this, ev, 'Barrier Offset');
   },
 };

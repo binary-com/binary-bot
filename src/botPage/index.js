@@ -13,7 +13,7 @@ $.ajaxSetup({
   cache: false,
 });
 
-window._trackJs = {
+window._trackJs = { // eslint-disable-line no-underscore-dangle
   token: '346262e7ffef497d85874322fff3bbf8',
   application: 'binary-bot',
   enabled: window.location.hostname !== 'localhost',
@@ -32,12 +32,12 @@ class BotPage {
         dp.render();
         this.view.blockly.setBlockColors();
       },
-      bot: bot,
+      bot,
 			start: bot.start.bind(bot),
 			stop: bot.stop.bind(bot),
 			showCode: () => {
-				console.log(this.view.blockly.generatedJs);
-				console.log(this.view.blockly.blocksXmlStr);
+				console.log(this.view.blockly.generatedJs); // eslint-disable-line no-console
+				console.log(this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
 			},
 			toggleDebug: logger.toggleDebug.bind(logger),
 			log: (message, type) => {

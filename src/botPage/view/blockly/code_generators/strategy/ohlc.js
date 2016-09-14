@@ -1,4 +1,4 @@
-Blockly.JavaScript.ohlc = function() {
-  let code = 'ticks.ohlc';
+Blockly.JavaScript.ohlc = function ohlc() {
+  const code = 'ticks.ohlc';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

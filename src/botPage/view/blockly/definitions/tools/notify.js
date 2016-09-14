@@ -2,7 +2,7 @@
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.notify = {
-  init: function() {
+  init: function init() {
     this.appendValueInput('MESSAGE')
       .setCheck(null)
       .appendField(translator.translateText('Notify type:'))
