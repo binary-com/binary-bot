@@ -2,6 +2,9 @@ import { translator } from '../../../../../common/translator';
 
 Blockly.JavaScript.trade = function trade(block) {
   let account = $('#accountSelect').val();
+  if (!account) {
+    throw Error(translator.translateText('Please login.'));
+  }
   let submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
   if (submarket === '') {
     throw Error(translator.translateText('You have to add a submarket first'));

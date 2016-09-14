@@ -27,20 +27,6 @@ export default class Bot {
     this.totalPayout = 0;
     this.balance = 0;
   }
-  startOver(_startTrading) {
-    this.symbolStr = '';
-    this.balanceStr = '';
-    this.api.originalApi.send({
-      forget_all: 'balance',
-    }).then(() => {
-      this.api.balance();
-      this.setTheInitialConditions().then(() => {
-        if (_startTrading) {
-          this.startTrading();
-        }
-      });
-    }, (error) => observer.emit('api.error', error));
-  }
   setTradeOptions() {
     let tradeOptionToClone;
     if (!_.isEmpty(this.tradeOption)) {
@@ -74,51 +60,44 @@ export default class Bot {
     });
   }
   subscribeToCandles() {
-    this.api.history(this.tradeOption.symbol, {
-      end: 'latest',
-      count: 600,
-      granularity: 60,
-      style: 'candles',
-      subscribe: 1,
+    return new Promise((resolve) => {
+      const apiCandles = (candles) => {
+        this.candles = candles;
+        resolve();
+      };
+      observer.register('api.candles', apiCandles, true, {
+        type: 'candles',
+        unregister: ['api.ohlc', 'api.candles', 'api.tick', 'bot.tickUpdate'],
+      });
+      this.api.history(this.tradeOption.symbol, {
+        end: 'latest',
+        count: 600,
+        granularity: 60,
+        style: 'candles',
+        subscribe: 1,
+      });
     });
   }
-  subscribeToTicks(done) {
-    if (_.isEmpty(this.tradeOption) || this.tradeOption.symbol === this.symbolStr) {
-      done();
-    } else {
-      let apiHistory = (history) => {
-        this.symbolStr = this.tradeOption.symbol;
-        this.ticks = history;
-        done();
-      };
-      observer.register('api.history', apiHistory, true, {
-        type: 'history',
-        unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles'],
-      }, true);
-      if (this.tradeOption.symbol !== this.symbolStr) {
-        this.api.originalApi.send({
-          forget_all: 'candles',
-        }).then(() => this.subscribeToCandles());
-        this.api.originalApi.unsubscribeFromAllTicks().then(() => {
-          this.api.history(this.tradeOption.symbol, {
-            end: 'latest',
-            count: 600,
-            subscribe: 1,
-          });
-        }, (error) => observer.emit('api.error', error));
+  subscribeToTickHistory() {
+    return new Promise((resolve) => {
+      if (_.isEmpty(this.tradeOption) || this.tradeOption.symbol === this.symbolStr) {
+        resolve();
       } else {
-        this.subscribeToCandles();
+        let apiHistory = (history) => {
+          this.symbolStr = this.tradeOption.symbol;
+          this.ticks = history;
+          resolve();
+        };
+        observer.register('api.history', apiHistory, true, {
+          type: 'history',
+          unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles'],
+        }, true);
         this.api.history(this.tradeOption.symbol, {
           end: 'latest',
           count: 600,
           subscribe: 1,
         });
       }
-    }
-  }
-  setTheInitialConditions() {
-    return new Promise((resolve) => {
-      this.subscribeToTicks(resolve);
     });
   }
   start(token, tradeOption, strategy, duringPurchase, finish, again) {
@@ -135,7 +114,7 @@ export default class Bot {
     }
     this.token = token;
     if (this.authorizedToken === this.token) {
-      this.setTheInitialConditions().then(() => {
+      Promise.all([this.subscribeToTickHistory(), this.subscribeToCandles()]).then(() => {
         this.startTrading();
       });
     } else {
@@ -144,7 +123,7 @@ export default class Bot {
           forget_all: 'balance',
         }).then(() => {
           this.api.balance();
-          this.setTheInitialConditions().then(() => {
+          Promise.all([this.subscribeToTickHistory(), this.subscribeToCandles()]).then(() => {
             this.startTrading();
           });
         }, (error) => observer.emit('api.error', error));
@@ -154,7 +133,7 @@ export default class Bot {
   observeTicks() {
     if (!observer.isRegistered('api.tick')) {
       let apiTick = (tick) => {
-        this.ticks = this.ticks.concat(tick);
+        this.ticks = [...this.ticks, tick];
         this.ticks.splice(0, 1);
         if (this.running) {
           this.strategyCtrl.updateTicks({
@@ -186,18 +165,10 @@ export default class Bot {
       });
     }
   }
-  observeCandles() {
-    if (!observer.isRegistered('api.candles')) {
-      let apiCandles = (candles) => {
-        this.candles = candles;
-        return candles;
-      };
-      observer.register('api.candles', apiCandles, false, {
-        type: 'candles',
-        unregister: ['api.ohlc', 'api.candles', 'api.tick', 'bot.tickUpdate'],
-      });
+  observeOhlc() {
+    if (!observer.isRegistered('api.ohlc')) {
       let apiOHLC = (candle) => {
-        if (this.candles.slice(-1)[0].epoch === candle.epoch) {
+        if (this.candles.length && this.candles.slice(-1)[0].epoch === candle.epoch) {
           this.candles = [...this.candles.slice(0, -1), candle];
         } else {
           this.candles = [...this.candles, candle];
@@ -226,7 +197,7 @@ export default class Bot {
     this.observeTradeUpdate();
     this.observeStrategy();
     this.observeTicks();
-    this.observeCandles();
+    this.observeOhlc();
     this.observeBalance();
   }
   subscribeProposal(tradeOption) {

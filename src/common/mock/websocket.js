@@ -83,7 +83,7 @@ var WebSocket = function () {
 
                 callName = _step.value;
 
-                if (!(callName in reqData || callName === 'history' && 'ticks_history' in reqData)) {
+                if (!(callName in reqData || (callName === 'candles' || callName === 'history') && 'ticks_history' in reqData)) {
                   _context.next = 37;
                   break;
                 }
@@ -208,7 +208,7 @@ var WebSocket = function () {
     key: 'passMessageOn',
     value: function () {
       var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(reqData, respData, onmessage) {
-        var history, firstTick, i, newTick, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, rd;
+        var first, i, newTick, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, rd;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -219,115 +219,119 @@ var WebSocket = function () {
                 }
 
                 if (!reqData.subscribe) {
-                  _context2.next = 47;
+                  _context2.next = 45;
                   break;
                 }
 
                 if (!('ticks_history' in reqData)) {
-                  _context2.next = 19;
-                  break;
-                }
-
-                history = respData.data[0];
-                firstTick = respData.data[1];
-                _context2.next = 7;
-                return this.delayedOnMessage(reqData, history, onmessage);
-
-              case 7:
-                i = 0;
-
-              case 8:
-                if (!(i < 60)) {
                   _context2.next = 17;
                   break;
                 }
 
-                newTick = _extends({}, firstTick);
+                _context2.next = 5;
+                return this.delayedOnMessage(reqData, respData.data[0], onmessage);
 
-                newTick.tick.epoch = '' + (+firstTick.tick.epoch + i * 2);
-                newTick.tick.quote = '' + (+firstTick.tick.quote + i * 0.1);
-                _context2.next = 14;
+              case 5:
+                first = respData.data[1];
+                i = 0;
+
+              case 7:
+                if (!(i < 60)) {
+                  _context2.next = 15;
+                  break;
+                }
+
+                newTick = _extends({}, first);
+
+                if ('ohlc' in first) {
+                  newTick.ohlc.close = '' + (+first.ohlc.close + i * 0.1);
+                  newTick.ohlc.epoch = '' + (+first.ohlc.epoch + i * 2);
+                } else {
+                  newTick.tick.epoch = '' + (+first.tick.epoch + i * 2);
+                  newTick.tick.quote = '' + (+first.tick.quote + i * 0.1);
+                }
+                _context2.next = 12;
                 return this.delayedOnMessage(reqData, newTick, onmessage);
 
-              case 14:
+              case 12:
                 i++;
-                _context2.next = 8;
+                _context2.next = 7;
+                break;
+
+              case 15:
+                _context2.next = 43;
                 break;
 
               case 17:
-                _context2.next = 45;
-                break;
-
-              case 19:
                 _iteratorNormalCompletion3 = true;
                 _didIteratorError3 = false;
                 _iteratorError3 = undefined;
-                _context2.prev = 22;
+                _context2.prev = 20;
                 _iterator3 = respData.data[Symbol.iterator]();
 
-              case 24:
+              case 22:
                 if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
-                  _context2.next = 31;
+                  _context2.next = 29;
                   break;
                 }
 
                 rd = _step3.value;
-                _context2.next = 28;
+                _context2.next = 26;
                 return this.delayedOnMessage(reqData, rd, onmessage);
 
-              case 28:
+              case 26:
                 _iteratorNormalCompletion3 = true;
-                _context2.next = 24;
+                _context2.next = 22;
+                break;
+
+              case 29:
+                _context2.next = 35;
                 break;
 
               case 31:
-                _context2.next = 37;
-                break;
-
-              case 33:
-                _context2.prev = 33;
-                _context2.t0 = _context2['catch'](22);
+                _context2.prev = 31;
+                _context2.t0 = _context2['catch'](20);
                 _didIteratorError3 = true;
                 _iteratorError3 = _context2.t0;
 
-              case 37:
-                _context2.prev = 37;
-                _context2.prev = 38;
+              case 35:
+                _context2.prev = 35;
+                _context2.prev = 36;
 
                 if (!_iteratorNormalCompletion3 && _iterator3.return) {
                   _iterator3.return();
                 }
 
-              case 40:
-                _context2.prev = 40;
+              case 38:
+                _context2.prev = 38;
 
                 if (!_didIteratorError3) {
-                  _context2.next = 43;
+                  _context2.next = 41;
                   break;
                 }
 
                 throw _iteratorError3;
 
+              case 41:
+                return _context2.finish(38);
+
+              case 42:
+                return _context2.finish(35);
+
               case 43:
-                return _context2.finish(40);
-
-              case 44:
-                return _context2.finish(37);
-
-              case 45:
-                _context2.next = 49;
+                _context2.next = 47;
                 break;
 
-              case 47:
-                _context2.next = 49;
+              case 45:
+                _context2.next = 47;
                 return this.delayedOnMessage(reqData, respData.data, onmessage);
 
-              case 49:
+              case 47:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[22, 33, 37, 45], [38,, 40, 44]]);
+        }, _callee2, this, [[20, 31, 35, 43], [36,, 38, 42]]);
       }));
 
       function passMessageOn(_x4, _x5, _x6) {
@@ -383,7 +387,7 @@ var WebSocket = function () {
             for (var _iterator5 = Object.keys(database)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
               var callName = _step5.value;
 
-              if (callName === 'history' && 'ticks_history' in reqData || callName in reqData) {
+              if ((callName === 'candles' || callName === 'history') && 'ticks_history' in reqData || callName in reqData) {
                 var callResTypes = database[callName];
                 var _iteratorNormalCompletion6 = true;
                 var _didIteratorError6 = false;
