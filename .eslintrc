@@ -9,6 +9,7 @@
   },
   "globals": {
     "Blockly": false,
+    "trackJs": false,
     "Tourist": false
   },
   "rules": {

@@ -52,7 +52,7 @@ export default class View {
   }
   addTranslationToUi() {
     $('[data-i18n-text]')
-      .each(function() {
+      .each(function each() {
         let contents = $(this).contents();
         if (contents.length > 0) {
           if (contents.get(0).nodeType === Node.TEXT_NODE) {
@@ -73,7 +73,7 @@ export default class View {
   }
   startTour() {
     let that = this;
-    $('#tours').on('change', function() {
+    $('#tours').on('change', function onChange() {
       let value = $(this).val();
       if (value === '') return;
       if (that.activeTour) {
@@ -91,7 +91,7 @@ export default class View {
       if (error.stack) {
         api = false;
         if (logger.isDebug()) {
-          console.log('%c' + error.stack, 'color: red');
+          console.log('%c' + error.stack, 'color: red'); // eslint-disable-line no-console
         } else {
           logger.addLogToQueue('%c' + error.stack, 'color: red');
         }
@@ -102,7 +102,7 @@ export default class View {
         className: 'error',
       });
       if (logger.isDebug()) {
-        console.log('%cError: ' + message, 'color: red');
+        console.log('%cError: ' + message, 'color: red'); // eslint-disable-line no-console
       } else {
         logger.addLogToQueue('%cError: ' + message, 'color: red');
       }
@@ -120,14 +120,14 @@ export default class View {
       let subtype = (position === 'left') ? '.left' : '';
       observer.register('ui.log.' + type + subtype, (message) => {
         if (type === 'warn') {
-          console.warn(message);
+          console.warn(message); // eslint-disable-line no-console
         }
         $.notify(message, {
           position: 'bottom ' + position,
           className: type,
         });
         if (logger.isDebug()) {
-          console.log(message);
+          console.log(message); // eslint-disable-line no-console
         } else {
           logger.addLogToQueue(message);
         }
@@ -193,7 +193,7 @@ export default class View {
     }
     $('#open_btn')
       .on('click', () => {
-        $.FileDialog({
+        $.FileDialog({ // eslint-disable-line new-cap
           accept: '.xml',
           cancelButton: 'Close',
           dragMessage: 'Drop files here',
@@ -239,7 +239,7 @@ export default class View {
       .hide();
 
     $('.panelExitButton')
-      .click(function() {
+      .click(function onClick() {
         $(this)
           .parent()
           .hide();
@@ -363,7 +363,7 @@ export default class View {
       .toExponential()
       .substring(3));
     if (!this.chart) {
-      this.chart = Chart('chart', chartOptions);
+      this.chart = Chart('chart', chartOptions); // eslint-disable-line new-cap
     } else {
       this.chart.updateChart(chartOptions);
     }
