@@ -1,8 +1,10 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
 import lzString from 'lz-string';
-import { PlainChart as Chart } from 'binary-charts';
+import { BinaryChart } from 'binary-charts';
 import { logger } from './logger';
 import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
@@ -29,7 +31,7 @@ export default class View {
     });
   }
   updateTokenList() {
-    let tokenList = getTokenList();
+    const tokenList = getTokenList();
     if (tokenList.length === 0) {
       $('#login').css('display', 'inline-block');
       $('#accountSelect').css('display', 'none');
@@ -38,7 +40,7 @@ export default class View {
       $('#login').css('display', 'none');
       $('#accountSelect').css('display', 'inline-block');
       $('#logout').css('display', 'inline-block');
-      for (let tokenInfo of tokenList) {
+      for (const tokenInfo of tokenList) {
         let prefix;
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
@@ -53,7 +55,7 @@ export default class View {
   addTranslationToUi() {
     $('[data-i18n-text]')
       .each(function each() {
-        let contents = $(this).contents();
+        const contents = $(this).contents();
         if (contents.length > 0) {
           if (contents.get(0).nodeType === Node.TEXT_NODE) {
             $(this).text(translator.translateText($(this)
@@ -72,16 +74,16 @@ export default class View {
     this.tours.welcome = new Welcome();
   }
   startTour() {
-    let that = this;
+    const viewScope = this;
     $('#tours').on('change', function onChange() {
-      let value = $(this).val();
+      const value = $(this).val();
       if (value === '') return;
-      if (that.activeTour) {
+      if (viewScope.activeTour) {
         that.activeTour.stop();
       }
       that.activeTour = that.tours[value];
       that.activeTour.start(() => {
-        that.activeTour = null;
+        viewScope.activeTour = null;
       });
     });
   }
@@ -96,7 +98,7 @@ export default class View {
           logger.addLogToQueue('%c' + error.stack, 'color: red');
         }
       }
-      let message = error.message;
+      const message = error.message;
       $.notify(message, {
         position: 'bottom right',
         className: 'error',
@@ -106,7 +108,7 @@ export default class View {
       } else {
         logger.addLogToQueue('%cError: ' + message, 'color: red');
       }
-      let customError = new Error(JSON.stringify({
+      const customError = new Error(JSON.stringify({
         api,
         0: error.message || error,
         1: lzString.compressToBase64(this.blockly.generatedJs),
@@ -116,8 +118,8 @@ export default class View {
       trackJs.track(customError);
     });
 
-    let observeForLog = (type, position) => {
-      let subtype = (position === 'left') ? '.left' : '';
+    const observeForLog = (type, position) => {
+      const subtype = (position === 'left') ? '.left' : '';
       observer.register('ui.log.' + type + subtype, (message) => {
         if (type === 'warn') {
           console.warn(message); // eslint-disable-line no-console
@@ -134,15 +136,15 @@ export default class View {
       });
     };
 
-    for (let type of ['success', 'info', 'warn', 'error']) {
+    for (const type of ['success', 'info', 'warn', 'error']) {
       observeForLog(type, 'right');
       observeForLog(type, 'left');
     }
   }
 
   setFileBrowser() {
-    let readFile = (f) => {
-      let reader = new FileReader();
+    const readFile = (f) => {
+      const reader = new FileReader();
       reader.onload = (() => {
         $('#fileBrowser').hide();
         return (e) => {
@@ -157,7 +159,7 @@ export default class View {
       reader.readAsText(f);
     };
 
-    let handleFileSelect = (e) => {
+    const handleFileSelect = (e) => {
       let files;
       if (e.type === 'drop') {
         e.stopPropagation();
@@ -167,7 +169,7 @@ export default class View {
         files = e.target.files;
       }
       files = Array.prototype.slice.apply(files);
-      let file = files[0];
+      const file = files[0];
       if (file) {
         if (file.type.match('text/xml')) {
           readFile(file);
@@ -177,13 +179,13 @@ export default class View {
       }
     };
 
-    let handleDragOver = (e) => {
+    const handleDragOver = (e) => {
       e.stopPropagation();
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy';
     };
 
-    let dropZone = document.getElementById('dropZone');
+    const dropZone = document.getElementById('dropZone');
 
     dropZone.addEventListener('dragover', handleDragOver, false);
     dropZone.addEventListener('drop', handleFileSelect, false);
@@ -220,14 +222,14 @@ export default class View {
     this.addEventHandlers();
   }
   addBindings() {
-    let stop = (e) => {
+    const stop = (e) => {
       if (e) {
         e.preventDefault();
       }
       bot.stop();
     };
 
-    let logout = () => {
+    const logout = () => {
       logoutAllTokens(() => {
         this.updateTokenList();
         observer.emit('ui.log.info', translator.translateText('Logged you out!'));
@@ -340,33 +342,19 @@ export default class View {
   }
 
   updateChart(info) {
-    let chartOptions = {
-      type: this.chartType,
-      theme: 'light',
-      defaultRange: 0,
-      onTypeChange: (type) => {
-        this.chartType = type;
-      },
-    };
-    if (this.chartType === 'candlestick') {
-      chartOptions.ticks = info.candles;
-    } else {
-      chartOptions.ticks = info.ticks;
-      if (this.latestOpenContract) {
-        chartOptions.contract = this.latestOpenContract;
-        if (this.latestOpenContract.is_sold) {
-          delete this.latestOpenContract;
-        }
+    if (this.latestOpenContract) {
+      if (this.latestOpenContract.is_sold) {
+        delete this.latestOpenContract;
       }
     }
-    chartOptions.pipSize = Number(Number(info.pip)
-      .toExponential()
-      .substring(3));
-    if (!this.chart) {
-      this.chart = Chart('chart', chartOptions); // eslint-disable-line new-cap
-    } else {
-      this.chart.updateChart(chartOptions);
-    }
+    ReactDOM.render(<BinaryChart
+      style={{ height: 209 }}
+      type={this.latestOpenContract ? 'area' : this.chartType}
+      onTypeChange={(type) => { console.log(type); this.chartType = type; }}
+      ticks={this.chartType === 'candlestick' ? info.candles : info.ticks}
+      pipSize={Number(Number(info.pip).toExponential().substring(3))}
+      contract={this.latestOpenContract}
+    />, $('#chart')[0]);
   }
   destroyChart() {
     if (this.chart) {
@@ -392,7 +380,7 @@ export default class View {
     });
 
     observer.register('bot.tradeInfo', (tradeInfo) => {
-      for (let key of Object.keys(tradeInfo)) {
+      for (const key of Object.keys(tradeInfo)) {
         this.tradeInfo.tradeInfo[key] = tradeInfo[key];
       }
       this.tradeInfo.update();
