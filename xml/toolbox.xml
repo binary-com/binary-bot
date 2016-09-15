@@ -238,7 +238,18 @@
 		<!--Markets-->
 		<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
 			<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
+				<block type="barrier_offset"></block>
 				<block type="risefall"></block>
+				<block type="higherlower"></block>
+			</category>
+			<category name="Touch/No Touch" colour="#2a3052" i18n-text="Touch/No Touch">
+				<block type="barrier_offset"></block>
+				<block type="touchnotouch"></block>
+			</category>
+			<category name="In/Out" colour="#2a3052" i18n-text="In/Out">
+				<block type="barrier_offset"></block>
+				<block type="endsinout"></block>
+				<block type="staysinout"></block>
 			</category>
 			<category name="Asians" colour="#2a3052" i18n-text="Asians">
 				<block type="asians"></block>
@@ -249,21 +260,26 @@
 				<block type="overunder"></block>
 			</category>
 		</category>
-		<category name="Strategy" colour="#2a3052" i18n-text="Strategy">
+		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
 			<block type="tick"></block>
-			<block type="direction"></block>
+			<block type="ticks"></block>
+			<block type="ohlc"></block>
+			<block type="read_ohlc_obj"></block>
 			<block type="check_direction"></block>
 			<block type="purchase"></block>
+			<block type="payout"></block>
+			<block type="ask_price"></block>
 		</category>
-		<category name="Finish" colour="#2a3052" i18n-text="Finish">
-			<block type="contract_details"></block>
+		<category name="After Purchase" colour="#2a3052" i18n-text="After Purchase">
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
 			<block type="trade_again"></block>
 		</category>
 		<category name="Tools" colour="#2a3052" i18n-text="Tools">
+			<block type="barrier_offset"></block>
 			<block type="balance"></block>
 			<block type="total_profit"></block>
+			<block type="total_runs"></block>
 			<block type="notify"></block>
 		</category>
 	</category>
