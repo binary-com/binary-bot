@@ -3,7 +3,6 @@ var gulp = require('gulp'),
     ghPages = require('gulp-gh-pages'),
 		webpack = require('gulp-webpack'),
 		gp_rename = require('gulp-rename'),
-		gp_uglify = require('gulp-uglify'),
 		cleanCSS = require('gulp-clean-css'),
     watch = require('gulp-debounced-watch'),
 		concat = require('gulp-concat-util'),
@@ -180,24 +179,12 @@ gulp.task('clean-webpack', function() {
 
 gulp.task('webpack', ['clean-webpack', 'test', 'bundle'], function(){
 	return webpack(require('./webpack.config.js'))
-		.pipe(through.obj(addToManifest))
 		.pipe(gulp.dest('www/js'));
 });
 
-gulp.task('build-bot-min', ['build'], function(){
-	return gulp.src(['www/js/bot-*.js'])
-		.pipe(gp_rename('bot.min.js'))
-		.pipe(gp_uglify())
-		.pipe(rev())
-		.pipe(through.obj(addToManifest))
-		.pipe(gulp.dest('www/js'));
-});
-
-gulp.task('build-index-min', ['build'], function(){
-	return gulp.src(['www/js/index-*.js'])
-		.pipe(gp_rename('index.min.js'))
-		.pipe(gp_uglify())
-		.pipe(rev())
+gulp.task('revision', ['webpack'], function(){
+	return gulp.src(['./www/js/*.js'])
+    .pipe(rev())
 		.pipe(through.obj(addToManifest))
 		.pipe(gulp.dest('www/js'));
 });
@@ -210,7 +197,7 @@ gulp.task('pack-css', ['static'], function(){
 		.pipe(gulp.dest('www/css'));
 });
 
-gulp.task('pack-css-min', ['build'], function(){
+gulp.task('pack-css-min', function(){
 	return gulp.src('www/css/bundle-*.css')
 		.pipe(gp_rename('bundle.min.css'))
 		.pipe(cleanCSS())
@@ -219,7 +206,7 @@ gulp.task('pack-css-min', ['build'], function(){
 		.pipe(gulp.dest('www/css'));
 });
 
-gulp.task('mustache-dev', ['static', 'webpack', 'pack-css'], function(){
+gulp.task('mustache-dev', ['static', 'revision', 'pack-css'], function(){
 	return gulp.src('templates/*.mustache')
 		.pipe(mustache({},{},{
 			index: '<script src="js/' + manifest['index.js'] + '"></script>',
@@ -235,7 +222,7 @@ gulp.task('mustache-dev', ['static', 'webpack', 'pack-css'], function(){
 		.pipe(gulp.dest('www'));
 });
 
-gulp.task('mustache-min', ['static', 'pack-css-min', 'build-bot-min', 'build-index-min'], function(){
+gulp.task('mustache-min', ['static', 'revision', 'pack-css-min'], function(){
 	return gulp.src('templates/*.mustache')
 		.pipe(mustache({},{},{
 			index: '<script src="js/' + manifest['index.min.js'] + '"></script>',
@@ -251,6 +238,16 @@ gulp.task('mustache-min', ['static', 'pack-css-min', 'build-bot-min', 'build-ind
 		.pipe(gulp.dest('www'));
 });
 
+gulp.task('build', ['pack-css', 'revision', 'mustache-dev'], function () {
+	gulp.src('www/**')
+		.pipe(connect.reload());
+});
+
+gulp.task('build-min', ['build', 'pack-css-min', 'mustache-min'], function () {
+	gulp.src('www/**')
+		.pipe(connect.reload());
+});
+
 gulp.task('connect', function () {
 	connect.server({
 		root: 'www',
@@ -262,16 +259,6 @@ gulp.task('connect', function () {
 gulp.task('open', function(){
 	gulp.src('www/index.html')
 		.pipe(open({uri: 'http://localhost:8080/'}));
-});
-
-gulp.task('build', ['pack-css', 'webpack', 'mustache-dev'], function () {
-	gulp.src('www/**')
-		.pipe(connect.reload());
-});
-
-gulp.task('build-min', ['build-bot-min', 'build-index-min', 'pack-css-min', 'mustache-min'], function () {
-	gulp.src('www/**')
-		.pipe(connect.reload());
 });
 
 gulp.task('serve', ['open', 'connect'], function () {
