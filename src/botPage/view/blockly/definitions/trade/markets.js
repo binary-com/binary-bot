@@ -4,10 +4,10 @@ import { submarket } from '../../relationChecker';
 import { bot } from '../../../../bot';
 
 export default () => {
-  let symbolNames = bot.symbol.activeSymbols.getSymbolNames();
-  for (let symbol of Object.keys(symbolNames)) {
+  const symbolNames = bot.symbol.activeSymbols.getSymbolNames();
+  for (const symbol of Object.keys(symbolNames)) {
     Blockly.Blocks[symbol.toLowerCase()] = {
-      init: function() {
+      init: function init() {
         this.appendDummyInput()
           .appendField(symbolNames[symbol]);
         this.appendDummyInput()
@@ -20,7 +20,7 @@ export default () => {
         this.setTooltip(translator.translateText('Chooses the symbol:') + ' ' + symbolNames[symbol]);
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
       },
-      onchange: function(ev) {
+      onchange: function onchange(ev) {
         submarket(this, ev);
       },
     };

@@ -6,12 +6,12 @@ import StrategyCtrl from '../strategyCtrl';
 
 describe('StrategyCtrl', () => {
   let api;
-  let proposals = [];
+  const proposals = [];
   let firstAttempt = true;
   let strategyCtrl;
   before(() => {
     api = new CustomApi(ws);
-    let strategy = (ticks, receivedProposals, _strategyCtrl) => {
+    const strategy = (ticks, receivedProposals, _strategyCtrl) => {
       if (receivedProposals) {
         if (firstAttempt) {
           firstAttempt = false;

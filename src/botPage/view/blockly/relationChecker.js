@@ -25,7 +25,7 @@ export const condition = (blockObj, ev, calledByParent) => {
         translator.translateText('Trade Type blocks have to be added to submarket blocks'));
       blockObj.unplug();
     } else if (!bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
-      let symbol = bot.symbol.findSymbol(blockObj.parentBlock_.type);
+      const symbol = bot.symbol.findSymbol(blockObj.parentBlock_.type);
       observer.emit('ui.log.warn',
         `${symbol[Object.keys(symbol)[0]]} ${translator.translateText('does not support category:')}`
         + ` ${bot.symbol.getCategoryNameForCondition(blockObj.type)}`
@@ -37,10 +37,10 @@ export const condition = (blockObj, ev, calledByParent) => {
       if (!calledByParent) {
         if ((ev.type === 'change' && ev.element && ev.element === 'field')
           || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
-          let duration = getNumField(blockObj, 'DURATION');
-          let durationType = getListField(blockObj, 'DURATIONTYPE_LIST');
+          const duration = getNumField(blockObj, 'DURATION');
+          const durationType = getListField(blockObj, 'DURATIONTYPE_LIST');
           if (duration !== '') {
-            let minDuration = bot.symbol.getLimitation(blockObj.parentBlock_.type, blockObj.type).minDuration;
+            const minDuration = bot.symbol.getLimitation(blockObj.parentBlock_.type, blockObj.type).minDuration;
             if (!durationAccepted(duration + durationType, minDuration)) {
               observer.emit('ui.log.warn',
                 translator.translateText('Minimum duration is') +
@@ -60,13 +60,13 @@ export const condition = (blockObj, ev, calledByParent) => {
                 translator.translateText('Expiry time cannot be equal to start time'));
             }
           }
-          let prediction = getNumField(blockObj, 'PREDICTION');
+          const prediction = getNumField(blockObj, 'PREDICTION');
           if (prediction !== '') {
             if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
               observer.emit('ui.log.warn', translator.translateText('Prediction must be one digit'));
             }
           }
-          for (let il of blockObj.inputList) {
+          for (const il of blockObj.inputList) {
             if (il.name !== '' && blockObj.getInputTargetBlock(il.name) === null) {
               return;
             }
@@ -80,7 +80,7 @@ export const condition = (blockObj, ev, calledByParent) => {
 export const submarket = (blockObj, ev) => {
   if (blockObj.childBlocks_.length > 0 && config.conditions.indexOf(blockObj.childBlocks_[0].type) < 0) {
     observer.emit('ui.log.warn', translator.translateText('Submarket blocks can only accept trade type blocks'));
-    for (let child of Array.prototype.slice.apply(blockObj.childBlocks_)) {
+    for (const child of Array.prototype.slice.apply(blockObj.childBlocks_)) {
       child.unplug();
     }
   } else if (blockObj.childBlocks_.length > 0) {
@@ -119,7 +119,7 @@ export const trade = (blockObj, ev) => {
   if (blockObj.childBlocks_.length && !bot.symbol.findSymbol(blockObj.childBlocks_[0].type)) {
     observer.emit('ui.log.warn',
       translator.translateText('The trade block can only accept submarket blocks'));
-    for (let child of Array.prototype.slice.apply(blockObj.childBlocks_)) {
+    for (const child of Array.prototype.slice.apply(blockObj.childBlocks_)) {
       child.unplug();
     }
   } else if (blockObj.childBlocks_.length > 0) {
@@ -129,7 +129,7 @@ export const trade = (blockObj, ev) => {
       utils.addPurchaseOptions();
     }
   }
-  let topParent = utils.findTopParentBlock(blockObj);
+  const topParent = utils.findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (bot.symbol.findSymbol(topParent.type)
       || ['on_strategy', 'on_finish'].indexOf(topParent.type) >= 0) {
@@ -140,7 +140,7 @@ export const trade = (blockObj, ev) => {
   }
 };
 export const insideCondition = (blockObj, ev, name) => {
-  let topParent = utils.findTopParentBlock(blockObj);
+  const topParent = utils.findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (config.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
       observer.emit('ui.log.warn',
@@ -150,7 +150,7 @@ export const insideCondition = (blockObj, ev, name) => {
   }
 };
 export const insideStrategy = (blockObj, ev, name) => {
-  let topParent = utils.findTopParentBlock(blockObj);
+  const topParent = utils.findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
@@ -162,7 +162,7 @@ export const insideStrategy = (blockObj, ev, name) => {
   }
 };
 export const insideFinish = (blockObj, ev, name) => {
-  let topParent = utils.findTopParentBlock(blockObj);
+  const topParent = utils.findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (topParent.type !== 'on_finish' && !ev.oldParentId) {
       observer.emit('ui.log.warn',

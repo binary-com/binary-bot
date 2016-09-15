@@ -1,10 +1,10 @@
-let clone = (obj) => {
+const clone = (obj) => { // eslint-disable-line arrow-body-style
   return {
     ...obj,
-  }
+  };
 };
 
-let tradeInfoSkel = {
+const tradeInfoSkel = {
   totalRuns: 0,
   totalProfit: '',
   totalPayout: '',
@@ -23,7 +23,7 @@ export default class TradeInfo {
     this.update();
   }
   update() {
-    for (let key of Object.keys(this.tradeInfo)) {
+    for (const key of Object.keys(this.tradeInfo)) {
       $('.' + key)
         .text(this.tradeInfo[key]);
       if (key === 'totalProfit') {
@@ -41,7 +41,7 @@ export default class TradeInfo {
     }
   }
   add(_trade) {
-    let trade = clone(_trade);
+    const trade = clone(_trade);
     trade.number = this.tradeInfo.totalRuns;
     if (this.tradeInfo.tradeCount === this.tradeInfo.maxTradeCount) {
       $('#tradesDisplay tbody tr:first').insertAfter($('#tradesDisplay tbody tr:last'));
@@ -52,8 +52,8 @@ export default class TradeInfo {
       $('.table-scroll')
         .scrollTop($('.table-scroll')[0].scrollHeight);
     }
-    let profit = +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2);
-    let profitColor = (profit < 0) ? 'red' : 'green';
+    const profit = +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2);
+    const profitColor = (profit < 0) ? 'red' : 'green';
     $('#tradesDisplay tbody tr:last td:nth-child(1)')
       .text(trade.number);
     $('#tradesDisplay tbody tr:last td:nth-child(2)')

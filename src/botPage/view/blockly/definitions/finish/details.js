@@ -1,10 +1,9 @@
-'use strict';
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
 import { insideFinish } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.contract_details = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Contract Details'));
     this.setOutput(true, 'Array');
@@ -12,7 +11,7 @@ Blockly.Blocks.contract_details = {
     this.setTooltip(translator.translateText('Returns the list of details for the finished contract'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideFinish(this, ev, 'Contract Details');
   },
 };

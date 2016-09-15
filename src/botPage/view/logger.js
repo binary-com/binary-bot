@@ -6,8 +6,8 @@ export default class Logger {
   toggleDebug() {
     this.debug = !this.debug;
     if (this.debug) {
-      for (let log of this.logQueue) {
-        console.log(...log);
+      for (const log of this.logQueue) {
+        console.log(...log); // eslint-disable-line no-console
       }
       this.logQueue = [];
     }

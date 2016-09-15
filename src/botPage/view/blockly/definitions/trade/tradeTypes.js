@@ -6,12 +6,12 @@ import { translator } from '../../../../../common/translator';
 import { duration, payout, prediction, title, barrierOffset, secondBarrierOffset } from './components';
 
 export default () => {
-  for (let opposites of Object.keys(config.opposites)) {
+  for (const opposites of Object.keys(config.opposites)) {
     Blockly.Blocks[opposites.toLowerCase()] = {
-      init: function () {
-        let optionNames = [];
-        for (let options of config.opposites[opposites]) {
-          let optionName = options[Object.keys(options)[0]];
+      init: function init() {
+        const optionNames = [];
+        for (const options of config.opposites[opposites]) {
+          const optionName = options[Object.keys(options)[0]];
           optionNames.push(optionName);
         }
         title(this, opposites, optionNames);
@@ -35,7 +35,7 @@ export default () => {
 					' ' + optionNames[0] + '/' + optionNames[1]);
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
       },
-      onchange: function (ev) {
+      onchange: function onchange(ev) {
         condition(this, ev);
       },
     };

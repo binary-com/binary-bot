@@ -2,7 +2,7 @@
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.total_profit = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
         .appendField(translator.translateText('Total Profit'));
     this.setOutput(true, 'Number');

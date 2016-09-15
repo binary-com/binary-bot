@@ -3,7 +3,7 @@ import { translator } from '../../../../../common/translator';
 import { insideFinish } from '../../relationChecker';
 
 Blockly.Blocks.contract_result = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Contract Result'));
     this.setOutput(true, 'String');
@@ -11,7 +11,7 @@ Blockly.Blocks.contract_result = {
     this.setTooltip(translator.translateText('Returns the result of the finished contract'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideFinish(this, ev, 'Contract Result');
   },
 };

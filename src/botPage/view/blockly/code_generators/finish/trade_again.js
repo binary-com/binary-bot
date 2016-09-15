@@ -1,7 +1,4 @@
-Blockly.JavaScript.trade_again = function() {
-  if (this.parentBlock_ === null) {
-    return '';
-  }
-  let code = 'trade(true);\nreturn;\n';
+Blockly.JavaScript.trade_again = function trade_again() {
+  const code = 'trade(true);\nreturn;\n';
   return code;
 };

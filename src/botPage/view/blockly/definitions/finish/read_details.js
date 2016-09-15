@@ -4,7 +4,7 @@ import { insideFinish } from '../../relationChecker';
 import config from '../../../../../common/const';
 
 Blockly.Blocks.read_details = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Contract Detail:'))
       .appendField(new Blockly.FieldDropdown(config.lists.DETAILS), 'DETAIL_INDEX');
@@ -13,7 +13,7 @@ Blockly.Blocks.read_details = {
     this.setTooltip(translator.translateText('Reads a selected option from contract details list'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideFinish(this, ev, 'Read Contract Details');
   },
 };

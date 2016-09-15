@@ -6,6 +6,7 @@
   "babel": {
     "presets": [
       "es2015",
+      "react",
       "stage-0"
     ],
     "plugins": [
@@ -16,7 +17,7 @@
     ]
   },
   "scripts": {
-    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/mocha --compilers js:babel-core/register -r babel-polyfill -r ./src/common/mochaHelper.js src/**/__tests__/*.js src/**/**/__tests__/*.js src/**/**/**/__tests__/*.js",
+    "test": "./node_modules/.bin/eslint src/ && ./node_modules/.bin/babel-node ./node_modules/.bin/mocha --compilers js:babel-core/register -r babel-polyfill -r ./src/common/mochaHelper.js src/**/__tests__/*.js src/**/**/__tests__/*.js src/**/**/**/__tests__/*.js",
     "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/babel-istanbul cover ./node_modules/.bin/_mocha --  --compilers js:babel-core/register -r babel-polyfill -r ./src/common/mochaHelper.js src/**/__tests__/*.js src/**/**/__tests__/*.js src/**/**/**/__tests__/*.js",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "test:full": "npm test && npm run coveralls",
@@ -28,6 +29,7 @@
   "author": "Amin Marashi",
   "license": "MIT",
   "dependencies": {
+    "babel-polyfill": "^6.13.0",
     "backbone": "^1.3.3",
     "binary-charts": "^7.30.0",
     "binary-common-utils": "^4.1.0",
@@ -39,14 +41,13 @@
     "gulp-connect": "^5.0.0",
     "gulp-open": "^2.0.0",
     "jquery": "2.2.4",
+    "lz-string": "^1.4.4",
     "notifyjs-browser": "^0.4.2",
     "react": "^15.3.1",
-    "lz-string": "^1.4.4",
     "react-dom": "^15.3.1",
     "sha1": "^1.1.1",
     "tourist": "easelinc/tourist.git#a31cf497cc7af8173513ea3f57f760894d5262cb",
     "trackjs": "^2.5.1",
-    "babel-polyfill": "^6.13.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -58,6 +59,7 @@
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.14.0",
     "binary-mock-websocket": "^4.1.0",
@@ -66,15 +68,16 @@
     "deep-diff": "^0.3.4",
     "del": "^2.2.1",
     "eslint": "^3.3.1",
-    "eslint-config-airbnb-base": "^5.0.3",
-    "eslint-plugin-import": "^1.14.0",
+    "eslint-config-airbnb": "^11.1.0",
+    "eslint-plugin-import": "^1.15.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.2.1",
     "gulp-clean-css": "^2.0.12",
     "gulp-concat-css": "^2.3.0",
     "gulp-concat-util": "^0.5.5",
     "gulp-debounced-watch": "^1.0.4",
     "gulp-gh-pages": "^0.5.4",
     "gulp-insert": "^0.5.0",
-    "gulp-jshint": "^2.0.1",
     "gulp-mocha": "^3.0.0",
     "gulp-mustache-plus": "^1.0.1",
     "gulp-rename": "^1.2.2",

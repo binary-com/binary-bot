@@ -18,15 +18,15 @@ export default class _Symbol {
     });
   }
   parseAssetIndex(assetIndex) {
-    for (let symbol of assetIndex) {
+    for (const symbol of assetIndex) {
       this.assetIndex[symbol[0].toLowerCase()] = {};
-      for (let category of symbol[2]) {
+      for (const category of symbol[2]) {
         this.assetIndex[symbol[0].toLowerCase()][category[0].toLowerCase()] = category[2];
       }
     }
   }
   getLimitation(symbol, condition) {
-    let category = this.getCategoryForCondition(condition);
+    const category = this.getCategoryForCondition(condition);
     return {
       minDuration: this.assetIndex[symbol][category],
     };
@@ -39,10 +39,10 @@ export default class _Symbol {
   }
   getAllowedConditionsOrCategoriesForSymbol(symbol) {
     let allowedConditions = [];
-    let allowedCategories = [];
-    let index = this.assetIndex[symbol.toLowerCase()];
+    const allowedCategories = [];
+    const index = this.assetIndex[symbol.toLowerCase()];
     if (index) {
-      for (let conditionName of Object.keys(config.conditionsCategory)) {
+      for (const conditionName of Object.keys(config.conditionsCategory)) {
         if (conditionName in index) {
           allowedConditions = allowedConditions.concat(config.conditionsCategory[conditionName]);
           allowedCategories.push(conditionName);
@@ -55,15 +55,15 @@ export default class _Symbol {
     };
   }
   isConditionAllowedInSymbol(symbol, condition) {
-    let allowedConditions = this.getAllowedConditionsForSymbol(symbol);
+    const allowedConditions = this.getAllowedConditionsForSymbol(symbol);
     return allowedConditions.indexOf(condition) >= 0;
   }
   getConditionName(condition) {
-    let opposites = config.opposites[condition.toUpperCase()];
+    const opposites = config.opposites[condition.toUpperCase()];
     return getObjectValue(opposites[0]) + '/' + getObjectValue(opposites[1]);
   }
   getCategoryForCondition(condition) {
-    for (let category of Object.keys(config.conditionsCategory)) {
+    for (const category of Object.keys(config.conditionsCategory)) {
       if (config.conditionsCategory[category].indexOf(condition.toLowerCase()) >= 0) {
         return category;
       }
@@ -74,11 +74,11 @@ export default class _Symbol {
     return config.conditionsCategoryName[this.getCategoryForCondition(condition)];
   }
   getAllowedCategoryNames(symbol) {
-    let allowedCategories = this.getAllowedCategoriesForSymbol(symbol);
+    const allowedCategories = this.getAllowedCategoriesForSymbol(symbol);
     return allowedCategories.map((el) => config.conditionsCategoryName[el]);
   }
   findSymbol(symbol) {
-    let activeSymbols = this.activeSymbols.getSymbolNames();
+    const activeSymbols = this.activeSymbols.getSymbolNames();
     let result;
     Object.keys(activeSymbols).forEach((key) => {
       if (key.toLowerCase() === symbol.toLowerCase()) {

@@ -4,7 +4,7 @@ import { insideStrategy } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.payout = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Payout'))
       .appendField(new Blockly.FieldDropdown(() => utils.getPurchaseChoices(), 'PURCHASE_LIST'));
@@ -13,7 +13,7 @@ Blockly.Blocks.payout = {
     this.setTooltip(translator.translateText('Payout for selected proposal'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function(ev) {
+  onchange: function onchange(ev) {
     insideStrategy(this, ev, 'Payout');
   },
 };

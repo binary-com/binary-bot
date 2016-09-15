@@ -2,7 +2,7 @@
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.total_runs = {
-  init: function() {
+  init: function init() {
     this.appendDummyInput()
         .appendField(translator.translateText('No. Of Runs'));
     this.setOutput(true, 'Number');

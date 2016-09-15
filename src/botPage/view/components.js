@@ -27,11 +27,11 @@ export const getComponentSelector = (component) => uiComponents[component];
 export const getUiComponent = (component) => $(uiComponents[component]);
 
 export const setOpacityForAll = (opacity) => {
-  for (let key of Object.keys(uiComponents)) {
+  for (const key of Object.keys(uiComponents)) {
     if (doNotHide.indexOf(key) < 0) {
       getUiComponent(key)
         .css('opacity', opacity);
-      let disabled = +opacity < 1;
+      const disabled = +opacity < 1;
       getUiComponent(key)
         .find('button')
         .prop('disabled', disabled);
@@ -48,7 +48,7 @@ export const setOpacityForAll = (opacity) => {
 export const setOpacity = (componentName, opacity) => {
   getUiComponent(componentName)
     .css('opacity', opacity);
-  let disabled = +opacity < 1;
+  const disabled = +opacity < 1;
   getUiComponent(componentName)
     .find('button')
     .prop('disabled', disabled);

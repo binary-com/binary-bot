@@ -11,15 +11,15 @@ class I18n {
     return this.translation[key];
   }
   _(str) {
-    let key = sha1(str);
-    let result = this.t(key);
+    const key = sha1(str);
+    const result = this.t(key);
     return (result === '') ? str : result;
   }
   xml(dom) {
-    let categories = dom.getElementsByTagName('category');
+    const categories = dom.getElementsByTagName('category');
     for (let i = 0; i < categories.length; i++) {
-      let child = categories[i];
-      let str = child.getAttribute('i18n-text');
+      const child = categories[i];
+      const str = child.getAttribute('i18n-text');
       let key;
       let hasTranslation = false;
       if (str === null) {
@@ -31,7 +31,7 @@ class I18n {
         key = sha1(str);
         hasTranslation = true;
       }
-      let result = this.t(key);
+      const result = this.t(key);
       if (hasTranslation) {
         child.setAttribute('name', (result === '') ? str : result);
       }

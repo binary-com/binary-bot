@@ -31,11 +31,11 @@ export default class Bot {
     let tradeOptionToClone;
     if (!_.isEmpty(this.tradeOption)) {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
-      let opposites = config.opposites[this.tradeOption.condition];
+      const opposites = config.opposites[this.tradeOption.condition];
       this.tradeOptions = [];
-      for (let key of Object.keys(opposites)) {
+      for (const key of Object.keys(opposites)) {
         tradeOptionToClone = {};
-        for (let optKey of Object.keys(this.tradeOption)) {
+        for (const optKey of Object.keys(this.tradeOption)) {
           tradeOptionToClone[optKey] = this.tradeOption[optKey];
         }
         tradeOptionToClone.contract_type = Object.keys(opposites[key])[0];
@@ -48,7 +48,7 @@ export default class Bot {
   }
   login() {
     return new Promise((resolve) => {
-      let apiAuthorize = () => {
+      const apiAuthorize = () => {
         this.authorizedToken = this.token;
         resolve();
       };
@@ -83,7 +83,7 @@ export default class Bot {
       if (_.isEmpty(this.tradeOption) || this.tradeOption.symbol === this.symbolStr) {
         resolve();
       } else {
-        let apiHistory = (history) => {
+        const apiHistory = (history) => {
           this.symbolStr = this.tradeOption.symbol;
           this.ticks = history;
           resolve();
@@ -132,7 +132,7 @@ export default class Bot {
   }
   observeTicks() {
     if (!observer.isRegistered('api.tick')) {
-      let apiTick = (tick) => {
+      const apiTick = (tick) => {
         this.ticks = [...this.ticks, tick];
         this.ticks.splice(0, 1);
         if (this.running) {
@@ -152,7 +152,7 @@ export default class Bot {
   }
   observeBalance() {
     if (!observer.isRegistered('api.balance')) {
-      let apiBalance = (balance) => {
+      const apiBalance = (balance) => {
         this.balance = balance.balance;
         this.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
         observer.emit('bot.tradeInfo', {
@@ -167,7 +167,7 @@ export default class Bot {
   }
   observeOhlc() {
     if (!observer.isRegistered('api.ohlc')) {
-      let apiOHLC = (candle) => {
+      const apiOHLC = (candle) => {
         if (this.candles.length && this.candles.slice(-1)[0].epoch === candle.epoch) {
           this.candles = [...this.candles.slice(0, -1), candle];
         } else {
@@ -187,7 +187,7 @@ export default class Bot {
   }
   observeTradeUpdate() {
     if (!observer.isRegistered('strategy.tradeUpdate')) {
-      let strategyTradeUpdate = (contract) => {
+      const strategyTradeUpdate = (contract) => {
         observer.emit('bot.tradeUpdate', contract);
       };
       observer.register('strategy.tradeUpdate', strategyTradeUpdate);
@@ -219,7 +219,7 @@ export default class Bot {
     this.setTradeOptions();
     observer.unregisterAll('api.proposal');
     this.api.originalApi.unsubscribeFromAllProposals().then(() => {
-      for (let to of this.tradeOptions) {
+      for (const to of this.tradeOptions) {
         this.subscribeProposal(to);
       }
     }, (error) => observer.emit('api.error', error));
@@ -244,7 +244,7 @@ export default class Bot {
     this.subscribeProposals();
   }
   updateTotals(contract) {
-    let profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+    const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
     this.totalProfit = +(this.totalProfit + profit).toFixed(2);
     this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);
@@ -255,7 +255,7 @@ export default class Bot {
     });
   }
   botFinish(contract) {
-    for (let obs of this.unregisterOnFinish) {
+    for (const obs of this.unregisterOnFinish) {
       observer.unregisterAll(...obs);
     }
     this.unregisterOnFinish = [];
@@ -268,7 +268,7 @@ export default class Bot {
       observer.emit('bot.stop', contract);
       return;
     }
-    for (let obs of this.unregisterOnFinish) {
+    for (const obs of this.unregisterOnFinish) {
       observer.unregisterAll(...obs);
     }
     this.unregisterOnFinish = [];

@@ -32,9 +32,9 @@ const supportedLanguages = {
 };
 export default class Translator {
   constructor() {
-    let lang = this.getLanguage();
-    let resources = {};
-    for (let slk of Object.keys(supportedLanguages)) {
+    const lang = this.getLanguage();
+    const resources = {};
+    for (const slk of Object.keys(supportedLanguages)) {
       resources[slk] = {
         translation: supportedLanguages[slk],
       };
@@ -52,7 +52,7 @@ export default class Translator {
     });
   }
   getLanguage() {
-    let queryStr = parseQueryString();
+    const queryStr = parseQueryString();
     let lang = 'en';
     if ('l' in queryStr && queryStr.l !== '' && queryStr.l in supportedLanguages) {
       lang = queryStr.l;
