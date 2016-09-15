@@ -106,7 +106,7 @@ gulp.task('static', ['static-css'], function() {
 		.pipe(gulp.dest('./www'));
 });
 
-gulp.task('test', ['i18n'], function() {
+gulp.task('test', function() {
     return gulp.src(['./src/**/__tests__/*.js'])
 			.pipe(mocha({
         require: ['./src/common/mochaHelper.js'],
@@ -178,7 +178,7 @@ gulp.task('clean-webpack', function() {
 		.pipe(vinyl_paths(del));
 });
 
-gulp.task('webpack', ['i18n', 'clean-webpack', 'test', 'bundle'], function(){
+gulp.task('webpack', ['clean-webpack', 'test', 'bundle'], function(){
 	return webpack(require('./webpack.config.js'))
 		.pipe(through.obj(addToManifest))
 		.pipe(gulp.dest('www/js'));
