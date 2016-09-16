@@ -1,8 +1,6 @@
-const clone = (obj) => { // eslint-disable-line arrow-body-style
-  return {
-    ...obj,
-  };
-};
+const clone = (obj) => ({
+  ...obj,
+});
 
 const tradeInfoSkel = {
   totalRuns: 0,

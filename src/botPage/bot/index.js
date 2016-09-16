@@ -9,55 +9,90 @@ export default class Bot {
   constructor(api = null) {
     this.ticks = [];
     this.candles = [];
-    if (api === null) {
-      this.api = new CustomApi();
-    } else {
-      this.api = api;
-    }
-    this.symbol = new _Symbol(this.api);
-    this.initPromise = this.symbol.initPromise;
     this.running = false;
-    this.authorizedToken = '';
+    this.currentToken = '';
     this.balanceStr = '';
-    this.symbolStr = '';
+    this.currentSymbol = '';
     this.unregisterOnFinish = [];
     this.totalProfit = 0;
     this.totalRuns = 0;
     this.totalStake = 0;
     this.totalPayout = 0;
     this.balance = 0;
+    this.api = (api === null) ? new CustomApi() : api;
+    this.symbol = new _Symbol(this.api);
+    this.initPromise = this.symbol.initPromise;
   }
-  setTradeOptions() {
-    let tradeOptionToClone;
-    if (!_.isEmpty(this.tradeOption)) {
-      this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
-      const opposites = config.opposites[this.tradeOption.condition];
-      this.tradeOptions = [];
-      for (const key of Object.keys(opposites)) {
-        tradeOptionToClone = {};
-        for (const optKey of Object.keys(this.tradeOption)) {
-          tradeOptionToClone[optKey] = this.tradeOption[optKey];
-        }
-        tradeOptionToClone.contract_type = Object.keys(opposites[key])[0];
-        delete tradeOptionToClone.condition;
-        this.tradeOptions.push(tradeOptionToClone);
+  start(token, tradeOption, strategy, duringPurchase, finish, sameTrade) {
+    if (!this.running || sameTrade) {
+      this.running = true;
+      if (this.strategyCtrl) {
+        this.strategyCtrl.destroy();
       }
-    } else {
-      this.tradeOptions = [];
+      this.strategyCtrl = new StrategyCtrl(this.api, strategy, duringPurchase, finish);
+      this.tradeOption = tradeOption;
+      if (sameTrade) {
+        this.startTrading();
+      } else {
+        const promises = [];
+        if (this.currentToken !== token) {
+          promises.push(this.login(token));
+        }
+        if (!_.isEmpty(this.tradeOption) && this.tradeOption.symbol !== this.currentSymbol) {
+          promises.push(this.subscribeToTickHistory());
+          promises.push(this.subscribeToCandles());
+        }
+        Promise.all(promises).then(() => {
+          this.startTrading();
+        });
+      }
     }
   }
-  login() {
+  login(token) {
     return new Promise((resolve) => {
       const apiAuthorize = () => {
-        this.authorizedToken = this.token;
+        this.currentToken = token;
+        this.subscribeToBalance();
+        this.observeStreams();
         resolve();
       };
       observer.register('api.authorize', apiAuthorize, true, {
         type: 'authorize',
         unregister: [['api.authorize', apiAuthorize]],
       }, true);
-      this.api.authorize(this.token);
+      this.api.authorize(token);
     });
+  }
+  setTradeOptions() {
+    if (!_.isEmpty(this.tradeOption)) {
+      this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
+      const opposites = config.opposites[this.tradeOption.condition];
+      this.tradeOptions = [];
+      for (const key of Object.keys(opposites)) {
+        const newTradeOption = {
+          ...this.tradeOption,
+          contract_type: Object.keys(opposites[key])[0],
+        };
+        delete newTradeOption.condition;
+        this.tradeOptions.push(newTradeOption);
+      }
+    } else {
+      this.tradeOptions = [];
+    }
+  }
+  subscribeToBalance() {
+    const apiBalance = (balance) => {
+      this.balance = balance.balance;
+      this.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
+      observer.emit('bot.tradeInfo', {
+        balance: this.balanceStr,
+      });
+    };
+    observer.register('api.balance', apiBalance, false, {
+      type: 'balance',
+      unregister: [['api.balance', apiBalance]],
+    });
+    this.api.balance();
   }
   subscribeToCandles() {
     return new Promise((resolve) => {
@@ -69,6 +104,7 @@ export default class Bot {
         type: 'candles',
         unregister: ['api.ohlc', 'api.candles', 'api.tick', 'bot.tickUpdate'],
       });
+      this.api.originalApi.unsubscribeFromAllCandles();
       this.api.history(this.tradeOption.symbol, {
         end: 'latest',
         count: 600,
@@ -80,55 +116,22 @@ export default class Bot {
   }
   subscribeToTickHistory() {
     return new Promise((resolve) => {
-      if (_.isEmpty(this.tradeOption) || this.tradeOption.symbol === this.symbolStr) {
+      const apiHistory = (history) => {
+        this.currentSymbol = this.tradeOption.symbol;
+        this.ticks = history;
         resolve();
-      } else {
-        const apiHistory = (history) => {
-          this.symbolStr = this.tradeOption.symbol;
-          this.ticks = history;
-          resolve();
-        };
-        observer.register('api.history', apiHistory, true, {
-          type: 'history',
-          unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles'],
-        }, true);
-        this.api.history(this.tradeOption.symbol, {
-          end: 'latest',
-          count: 600,
-          subscribe: 1,
-        });
-      }
+      };
+      observer.register('api.history', apiHistory, true, {
+        type: 'history',
+        unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles'],
+      }, true);
+      this.api.originalApi.unsubscribeFromAllTicks();
+      this.api.history(this.tradeOption.symbol, {
+        end: 'latest',
+        count: 600,
+        subscribe: 1,
+      });
     });
-  }
-  start(token, tradeOption, strategy, duringPurchase, finish, again) {
-    if (!this.running || again) {
-      this.running = true;
-    } else {
-      return;
-    }
-    this.strategyCtrl = new StrategyCtrl(this.api, strategy, duringPurchase, finish);
-    this.tradeOption = tradeOption;
-    if (again) {
-      this.startTrading();
-      return;
-    }
-    this.token = token;
-    if (this.authorizedToken === this.token) {
-      Promise.all([this.subscribeToTickHistory(), this.subscribeToCandles()]).then(() => {
-        this.startTrading();
-      });
-    } else {
-      this.login().then(() => {
-        this.api.originalApi.send({
-          forget_all: 'balance',
-        }).then(() => {
-          this.api.balance();
-          Promise.all([this.subscribeToTickHistory(), this.subscribeToCandles()]).then(() => {
-            this.startTrading();
-          });
-        }, (error) => observer.emit('api.error', error));
-      });
-    }
   }
   observeTicks() {
     if (!observer.isRegistered('api.tick')) {
@@ -150,21 +153,6 @@ export default class Bot {
       observer.register('api.tick', apiTick);
     }
   }
-  observeBalance() {
-    if (!observer.isRegistered('api.balance')) {
-      const apiBalance = (balance) => {
-        this.balance = balance.balance;
-        this.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
-        observer.emit('bot.tradeInfo', {
-          balance: this.balanceStr,
-        });
-      };
-      observer.register('api.balance', apiBalance, false, {
-        type: 'balance',
-        unregister: [['api.balance', apiBalance]],
-      });
-    }
-  }
   observeOhlc() {
     if (!observer.isRegistered('api.ohlc')) {
       const apiOHLC = (candle) => {
@@ -179,16 +167,21 @@ export default class Bot {
     }
   }
   observeStrategy() {
-    const strategyReady = () => {
-      observer.emit('bot.waiting_for_purchase');
-    };
-    observer.register('strategy.ready', strategyReady, false, null, true);
-    this.unregisterOnFinish.push(['strategy.ready', strategyReady]);
+    if (!observer.isRegistered('strategy.ready')) {
+      const strategyReady = () => {
+        if (this.running) {
+          observer.emit('bot.waiting_for_purchase');
+        }
+      };
+      observer.register('strategy.ready', strategyReady);
+    }
   }
   observeTradeUpdate() {
     if (!observer.isRegistered('strategy.tradeUpdate')) {
       const strategyTradeUpdate = (contract) => {
-        observer.emit('bot.tradeUpdate', contract);
+        if (this.running) {
+          observer.emit('bot.tradeUpdate', contract);
+        }
       };
       observer.register('strategy.tradeUpdate', strategyTradeUpdate);
     }
@@ -198,7 +191,6 @@ export default class Bot {
     this.observeStrategy();
     this.observeTicks();
     this.observeOhlc();
-    this.observeBalance();
   }
   subscribeProposal(tradeOption) {
     const apiProposal = (proposal) => {
@@ -224,7 +216,7 @@ export default class Bot {
       }
     }, (error) => observer.emit('api.error', error));
   }
-  startTrading() {
+  waitForStrategyFinish() {
     const strategyFinish = (contract) => {
       this.strategyCtrl.destroy();
       this.strategyCtrl = null;
@@ -232,6 +224,8 @@ export default class Bot {
     };
     observer.register('strategy.finish', strategyFinish, true, null, true);
     this.unregisterOnFinish.push(['strategy.finish', strategyFinish]);
+  }
+  waitForTradePurchase() {
     const tradePurchase = () => {
       this.totalRuns += 1;
       observer.emit('bot.tradeInfo', {
@@ -240,7 +234,10 @@ export default class Bot {
     };
     observer.register('trade.purchase', tradePurchase, true, null, true);
     this.unregisterOnFinish.push(['trade.purchase', tradePurchase]);
-    this.observeStreams();
+  }
+  startTrading() {
+    this.waitForStrategyFinish();
+    this.waitForTradePurchase();
     this.subscribeProposals();
   }
   updateTotals(contract) {
