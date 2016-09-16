@@ -8167,7 +8167,7 @@
 		cache: false
 	});
 	
-	window._trackJs = {
+	window._trackJs = { // eslint-disable-line no-underscore-dangle
 		token: '346262e7ffef497d85874322fff3bbf8',
 		application: 'binary-bot',
 		enabled: window.location.hostname !== 'localhost',
@@ -8193,8 +8193,8 @@
 			start: _bot.bot.start.bind(_bot.bot),
 			stop: _bot.bot.stop.bind(_bot.bot),
 			showCode: function showCode() {
-				console.log(_this.view.blockly.generatedJs);
-				console.log(_this.view.blockly.blocksXmlStr);
+				console.log(_this.view.blockly.generatedJs); // eslint-disable-line no-console
+				console.log(_this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
 			},
 			toggleDebug: _logger.logger.toggleDebug.bind(_logger.logger),
 			log: function log(message, type) {
@@ -8480,7 +8480,7 @@
 
 	"use strict";
 	
-	/* jshint ignore:start */
+	/* eslint-disable */
 	$.fn.drags = function (opt) {
 	
 		opt = $.extend({
@@ -8522,7 +8522,6 @@
 			}
 		});
 	};
-	/* jshint ignore:end */
 
 /***/ },
 /* 302 */
@@ -18560,8 +18559,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -18794,8 +18795,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19028,8 +19031,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19262,8 +19267,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19496,8 +19503,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19730,8 +19739,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19964,8 +19975,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -20198,8 +20211,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -20432,8 +20447,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -20666,8 +20683,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -20900,8 +20919,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -21134,8 +21155,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -21368,8 +21391,10 @@
 	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
 	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -22377,16 +22402,16 @@
 	  }, {
 	    key: 'startTour',
 	    value: function startTour() {
-	      var that = this;
+	      var viewScope = this;
 	      $('#tours').on('change', function onChange() {
 	        var value = $(this).val();
 	        if (value === '') return;
-	        if (that.activeTour) {
-	          that.activeTour.stop();
+	        if (viewScope.activeTour) {
+	          viewScope.activeTour.stop();
 	        }
-	        that.activeTour = that.tours[value];
-	        that.activeTour.start(function () {
-	          that.activeTour = null;
+	        viewScope.activeTour = viewScope.tours[value];
+	        viewScope.activeTour.start(function () {
+	          viewScope.activeTour = null;
 	        });
 	      });
 	    }
@@ -27376,7 +27401,7 @@
 	
 	            var log = _step.value;
 	
-	            (_console = console).log.apply(_console, _toConsumableArray(log));
+	            (_console = console).log.apply(_console, _toConsumableArray(log)); // eslint-disable-line no-console
 	          }
 	        } catch (err) {
 	          _didIteratorError = true;
@@ -27435,6 +27460,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var clone = function clone(obj) {
+	  // eslint-disable-line arrow-body-style
 	  return _extends({}, obj);
 	};
 	
@@ -27809,31 +27835,19 @@
 	      return returnVal;
 	    }
 	  }, {
-	    key: 'selectTextBlock',
-	    value: function selectTextBlock(regex) {
-	      var returnVal = void 0;
-	      $('.blocklyText').each(function each() {
-	        if ($(this).text().match(regex)) {
-	          returnVal = this;
-	        }
-	      });
-	      return returnVal;
-	    }
-	  }, {
 	    key: 'setBlockColors',
 	    value: function setBlockColors() {
-	      var mainBlockUniqStrList = [/^\(1\)\s[\w\s]*$/i, /^\(2\)\s[\w\s]*$/i, /^\(2.5\)\s[\w\s]*$/i, /^\(3\)\s[\w\s]*$/i];
 	      var _iteratorNormalCompletion5 = true;
 	      var _didIteratorError5 = false;
 	      var _iteratorError5 = undefined;
 	
 	      try {
-	        for (var _iterator5 = mainBlockUniqStrList[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	          var regex = _step5.value;
+	        for (var _iterator5 = _const2.default.mainBlocks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	          var blockType = _step5.value;
 	
-	          var textBlock = this.selectTextBlock(regex);
-	          if (textBlock) {
-	            textBlock.style.setProperty('fill', 'white', 'important');
+	          var block = _utils.utils.getBlockByType(blockType);
+	          if (block) {
+	            block.getField().getSvgRoot().style.setProperty('fill', 'white', 'important');
 	          }
 	        }
 	      } catch (err) {
@@ -27910,7 +27924,7 @@
 	          for (var _iterator7 = topBlocks[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
 	            var block = _step7.value;
 	
-	            if (_const2.default.mainBlocks.indexOf(block.type) < 0 && block !== _utils.utils.findTopParentBlock(_utils.utils.getBlockByType('trade'))) {
+	            if (!_utils.utils.isMainBlock(block.type) && block !== _utils.utils.findTopParentBlock(_utils.utils.getBlockByType('trade'))) {
 	              block.dispose();
 	            }
 	          }
@@ -28302,6 +28316,11 @@
 	  }
 	
 	  _createClass(Utils, [{
+	    key: 'isMainBlock',
+	    value: function isMainBlock(blockType) {
+	      return _const2.default.mainBlocks.indexOf(blockType) >= 0;
+	    }
+	  }, {
 	    key: 'getBlockByType',
 	    value: function getBlockByType(type) {
 	      var _iteratorNormalCompletion = true;
@@ -28341,7 +28360,7 @@
 	  }, {
 	    key: 'findTopParentBlock',
 	    value: function findTopParentBlock(block) {
-	      var pblock = block.parentBlock_;
+	      var pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
 	      if (pblock === null) {
 	        return null;
 	      }
@@ -28350,7 +28369,7 @@
 	          return pblock;
 	        }
 	        block = pblock;
-	        pblock = block.parentBlock_;
+	        pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
 	      }
 	      return block;
 	    }
@@ -28525,7 +28544,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.barrier_offset = function (block) {
+	Blockly.JavaScript.barrier_offset = function barrier_offset(block) {
 	  var barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
 	  var barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
 	  var code = barrierOffsetType + Number(barrierOffset);
@@ -28544,6 +28563,8 @@
 	
 	var _bot = __webpack_require__(302);
 	
+	var _translator = __webpack_require__(307);
+	
 	exports.default = function () {
 	  var symbolNames = _bot.bot.symbol.activeSymbols.getSymbolNames();
 	  var _iteratorNormalCompletion = true;
@@ -28554,15 +28575,10 @@
 	    var _loop = function _loop() {
 	      var symbol = _step.value;
 	
-	      Blockly.JavaScript[symbol.toLowerCase()] = function (block) {
-	        if (this.parentBlock_ === null) {
-	          return '';
-	        }
+	      Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
 	        var condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
 	        if (!condition) {
-	          throw {
-	            message: 'A trade type has to be defined for the symbol'
-	          };
+	          throw Error(_translator.translator.translateText('A trade type has to be defined for the symbol'));
 	        }
 	        var code = condition.trim() + '\n symbol: \'' + symbol + '\'}';
 	        return code;
@@ -28602,6 +28618,8 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
+	var _translator = __webpack_require__(307);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function () {
@@ -28613,10 +28631,7 @@
 	    var _loop = function _loop() {
 	      var opposites = _step.value;
 	
-	      Blockly.JavaScript[opposites.toLowerCase()] = function (block) {
-	        if (this.parentBlock_ === null) {
-	          return '';
-	        }
+	      Blockly.JavaScript[opposites.toLowerCase()] = function condition(block) {
 	        var duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
 	        var durationType = block.getFieldValue('DURATIONTYPE_LIST');
 	        var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
@@ -28628,31 +28643,23 @@
 	        if (_const2.default.hasPrediction.indexOf(opposites) > -1) {
 	          prediction = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
 	          if (prediction === '') {
-	            throw {
-	              message: 'All trade types are required'
-	            };
+	            throw Error(_translator.translator.translateText('All trade types are required'));
 	          }
 	        }
 	        if (_const2.default.hasBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
 	          barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
 	          if (barrierOffset === '') {
-	            throw {
-	              message: 'All trade types are required'
-	            };
+	            throw Error(_translator.translator.translateText('All trade types are required'));
 	          }
 	        }
 	        if (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
 	          secondBarrierOffset = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
 	          if (secondBarrierOffset === '') {
-	            throw {
-	              message: 'All trade types are required'
-	            };
+	            throw Error(_translator.translator.translateText('All trade types are required'));
 	          }
 	        }
 	        if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === '') {
-	          throw {
-	            message: 'All trade types are required'
-	          };
+	          throw Error(_translator.translator.translateText('All trade types are required'));
 	        }
 	        var code = '{\n' + 'condition: \'' + opposites + '\',\n' + 'duration: ' + duration + ',\n' + 'duration_unit: \'' + durationType + '\',\n' + 'basis: \'' + payouttype + '\',\n' + 'currency: \'' + currency + '\',\n' + 'amount: (' + amount + ').toFixed(2),\n' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && prediction !== '' ? 'barrier: ' + prediction + ',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffset !== '' ? 'barrier: \'' + barrierOffset + '\',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffset !== '' ? 'barrier2: \'' + secondBarrierOffset + '\',\n' : '');
 	        return code;
@@ -28684,7 +28691,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.balance = function (block) {
+	Blockly.JavaScript.balance = function balance(block) {
 	  var balanceType = block.getFieldValue('BALANCE_TYPE');
 	  var code = 'Bot.getBalance(\'' + balanceType + '\')';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
@@ -28696,7 +28703,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.notify = function (block) {
+	Blockly.JavaScript.notify = function notify(block) {
 	  var notificationType = block.getFieldValue('NOTIFICATION_TYPE');
 	  var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
 	  var code = 'Bot.log( ' + message + ', \'' + notificationType + '\');\n';
@@ -28709,7 +28716,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.total_profit = function (block) {
+	Blockly.JavaScript.total_profit = function total_profit() {
 	  var code = 'Bot.getTotalProfit()';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -28720,7 +28727,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.total_runs = function (block) {
+	Blockly.JavaScript.total_runs = function total_runs() {
 	  var code = 'Bot.getTotalRuns()';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -28731,7 +28738,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.check_direction = function (block) {
+	Blockly.JavaScript.check_direction = function check_direction(block) {
 	  var checkWith = block.getFieldValue('CHECK_DIRECTION');
 	  var code = '(ticks.direction === \'' + checkWith + '\')';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
@@ -28743,7 +28750,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.direction = function () {
+	Blockly.JavaScript.direction = function direction() {
 	  var code = 'ticks.direction';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -28754,10 +28761,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.purchase = function (block) {
-	  if (this.parentBlock_ === null) {
-	    return '';
-	  }
+	Blockly.JavaScript.purchase = function purchase(block) {
 	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
 	  var code = '_strategyCtrl.purchase(\'' + purchaseList + '\');\n';
 	  return code;
@@ -28769,10 +28773,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.payout = function (block) {
-	  if (this.parentBlock_ === null) {
-	    return '';
-	  }
+	Blockly.JavaScript.payout = function payout(block) {
 	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
 	  var code = 'Number(_strategyCtrl.getContract(\'' + purchaseList + '\').payout)';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
@@ -28784,10 +28785,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.ask_price = function (block) {
-	  if (this.parentBlock_ === null) {
-	    return '';
-	  }
+	Blockly.JavaScript.ask_price = function ask_price(block) {
 	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
 	  var code = 'Number(_strategyCtrl.getContract(\'' + purchaseList + '\').ask_price)';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
@@ -28799,7 +28797,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.on_strategy = function (block) {
+	Blockly.JavaScript.on_strategy = function on_strategy(block) {
 			var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
 			var code = 'function on_strategy(ticks, proposals, _strategyCtrl){\n\tif(_strategyCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
 			return code;
@@ -28811,7 +28809,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.tick = function (block) {
+	Blockly.JavaScript.tick = function tick() {
 	  var code = 'ticks.ticks.slice(-1)[0].quote';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -28822,7 +28820,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.ticks = function (block) {
+	Blockly.JavaScript.ticks = function ticks() {
 	  var code = 'ticks.ticks.map(function(i){return i.quote;})';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -28833,7 +28831,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.ohlc = function () {
+	Blockly.JavaScript.ohlc = function ohlc() {
 	  var code = 'ticks.ohlc';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -28844,7 +28842,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.read_ohlc_obj = function (block) {
+	Blockly.JavaScript.read_ohlc_obj = function read_ohlc_obj(block) {
 	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
 	  var code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
@@ -28869,7 +28867,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.contract_result = function () {
+	Blockly.JavaScript.contract_result = function contract_result() {
 	  var code = 'details[10]';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -28880,7 +28878,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.contract_check_result = function (block) {
+	Blockly.JavaScript.contract_check_result = function contract_check_result(block) {
 	  var checkWith = block.getFieldValue('CHECK_RESULT');
 	  var code = '(details[10] === \'' + checkWith + '\')';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
@@ -28892,7 +28890,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.contract_details = function () {
+	Blockly.JavaScript.contract_details = function contract_details() {
 	  var code = 'details';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
@@ -28903,7 +28901,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.on_finish = function (block) {
+	Blockly.JavaScript.on_finish = function on_finish(block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
 	  var code = 'function on_finish(_finishedContract, details){\n' + stack + '\nBot.stop();\n}\n';
 	  return code;
@@ -28915,7 +28913,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.read_details = function (block) {
+	Blockly.JavaScript.read_details = function read_details(block) {
 	  var detailIndex = block.getFieldValue('DETAIL_INDEX');
 	  var code = 'details[' + (parseInt(detailIndex.trim(), 10) - 1) + ']';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
@@ -28927,10 +28925,7 @@
 
 	'use strict';
 	
-	Blockly.JavaScript.trade_again = function () {
-	  if (this.parentBlock_ === null) {
-	    return '';
-	  }
+	Blockly.JavaScript.trade_again = function trade_again() {
 	  var code = 'trade(true);\nreturn;\n';
 	  return code;
 	};
@@ -29931,12 +29926,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
 	
 	var _relationChecker = __webpack_require__(406);
 	
 	var _translator = __webpack_require__(307);
 	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
 	Blockly.Blocks.contract_details = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Contract Details'));
@@ -30115,7 +30110,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Great! Now add it to the <b>Define Trade</b> block.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('submarket')),
+	        target: (0, _components.getUiComponent)('trade'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'top center',
@@ -30154,7 +30149,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('OK! Now add it to the symbol you added in the previous step.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('submarket')),
+	        target: (0, _components.getUiComponent)('trade'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30192,7 +30187,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Click on the number block to edit its value') + ' (<img src="image/number_editing.png"/>), ' + _translator.translator.translateText('change the value to 5 and add it to the <b>ticks</b> field of the trade type block') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('submarket')),
+	        target: (0, _components.getUiComponent)('trade'),
 	        highlightTarget: true,
 	        closeButton: true,
 	        my: 'left center',
@@ -30209,7 +30204,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('OK, Now add all remaining options to the trade type block') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('submarket')),
+	        target: (0, _components.getUiComponent)('trade'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30229,7 +30224,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('That\'s it, now you have a complete trade block with its options. It\'s time to define a strategy') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('submarket')),
+	        target: (0, _components.getUiComponent)('trade'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30237,7 +30232,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('strategy')),
+	        target: (0, _components.getUiComponent)('on_strategy'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30282,7 +30277,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Now add it to the Strategy block.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('strategy')),
+	        target: (0, _components.getUiComponent)('on_strategy'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30299,7 +30294,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('strategy')),
+	        target: (0, _components.getUiComponent)('on_strategy'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30307,7 +30302,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('strategy')),
+	        target: (0, _components.getUiComponent)('on_strategy'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30315,7 +30310,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('finish')),
+	        target: (0, _components.getUiComponent)('on_finish'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30323,7 +30318,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('finish')),
+	        target: (0, _components.getUiComponent)('on_finish'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30351,7 +30346,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Now add it to the On Finish block') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('finish')),
+	        target: (0, _components.getUiComponent)('on_finish'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30369,7 +30364,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn\'t called e.g. in a logic block which its trade type is unmet.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('finish')),
+	        target: (0, _components.getUiComponent)('on_finish'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30377,7 +30372,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('OK, this\'s it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.') + '</p>',
-	        target: (0, _components.getUiComponent)('workspace').find((0, _components.getComponentSelector)('finish')),
+	        target: (0, _components.getUiComponent)('on_finish'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -30503,13 +30498,17 @@
 
 /***/ },
 /* 433 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.setOpacity = exports.setOpacityForAll = exports.getUiComponent = undefined;
+	
+	var _utils = __webpack_require__(377);
+	
 	var uiComponents = {
 	  accountSelect: '#accountSelect',
 	  tours: '#tours',
@@ -30526,19 +30525,15 @@
 	  group_summary: '.group-summary',
 	  group_start_stop: '.group-start-stop',
 	  center: '#center',
-	  flyout: '.blocklyFlyoutBackground',
-	  submarket: ".blocklyDraggable:contains('Trade'):last",
-	  strategy: ".blocklyDraggable:contains('Before'):last",
-	  finish: ".blocklyDraggable:contains('After'):last"
+	  flyout: '.blocklyFlyoutBackground'
 	};
 	
 	var doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
 	
-	var getComponentSelector = exports.getComponentSelector = function getComponentSelector(component) {
-	  return uiComponents[component];
-	};
-	
 	var getUiComponent = exports.getUiComponent = function getUiComponent(component) {
+	  if (_utils.utils.isMainBlock(component)) {
+	    return $(_utils.utils.getBlockByType(component).getSvgRoot());
+	  }
 	  return $(uiComponents[component]);
 	};
 	
@@ -31022,4 +31017,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bot-b375a7d24578aab4b742.map
+//# sourceMappingURL=bot.map
