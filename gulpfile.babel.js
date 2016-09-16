@@ -243,7 +243,7 @@ gulp.task('build', ['pack-css', 'revision', 'mustache-dev'], function () {
 		.pipe(connect.reload());
 });
 
-gulp.task('build-min', ['build', 'pack-css-min', 'mustache-min'], function () {
+gulp.task('build-min', ['pack-css-min', 'revision', 'mustache-min'], function () {
 	gulp.src('www/**')
 		.pipe(connect.reload());
 });
