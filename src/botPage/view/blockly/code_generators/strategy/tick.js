@@ -1,4 +1,1 @@
-Blockly.JavaScript.tick = function tick() {
-  const code = 'ticks.ticks.slice(-1)[0].quote';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
+Blockly.JavaScript.tick = () => ['ticks.ticks.slice(-1)[0].quote', Blockly.JavaScript.ORDER_ATOMIC];

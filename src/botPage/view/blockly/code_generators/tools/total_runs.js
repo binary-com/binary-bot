@@ -1,4 +1,1 @@
-Blockly.JavaScript.total_runs = function total_runs() {
-  const code = 'Bot.getTotalRuns()';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
+Blockly.JavaScript.total_runs = () => ['Bot.getTotalRuns()', Blockly.JavaScript.ORDER_ATOMIC];

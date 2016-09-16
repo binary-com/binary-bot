@@ -1,4 +1,1 @@
-Blockly.JavaScript.direction = function direction() {
-  const code = 'ticks.direction';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
+Blockly.JavaScript.direction = () => ['ticks.direction', Blockly.JavaScript.ORDER_ATOMIC];
