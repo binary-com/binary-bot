@@ -181,7 +181,7 @@ export default class _Blockly {
       Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       const topBlocks = Blockly.mainWorkspace.getTopBlocks();
       for (const block of topBlocks) {
-        if (config.mainBlocks.indexOf(block.type) < 0
+        if (!utils.isMainBlock(block.type)
           && block !== utils.findTopParentBlock(utils.getBlockByType('trade'))) {
           block.dispose();
         }

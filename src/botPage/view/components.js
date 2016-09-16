@@ -1,3 +1,5 @@
+import { utils } from '../view/blockly/utils';
+
 const uiComponents = {
   accountSelect: '#accountSelect',
   tours: '#tours',
@@ -15,16 +17,16 @@ const uiComponents = {
   group_start_stop: '.group-start-stop',
   center: '#center',
   flyout: '.blocklyFlyoutBackground',
-  submarket: ".blocklyDraggable:contains('Trade'):last",
-  strategy: ".blocklyDraggable:contains('Before'):last",
-  finish: ".blocklyDraggable:contains('After'):last",
 };
 
 const doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
 
-export const getComponentSelector = (component) => uiComponents[component];
-
-export const getUiComponent = (component) => $(uiComponents[component]);
+export const getUiComponent = (component) => {
+  if (utils.isMainBlock(component)) {
+    return $(utils.getBlockByType(component).getSvgRoot());
+  }
+  return $(uiComponents[component]);
+};
 
 export const setOpacityForAll = (opacity) => {
   for (const key of Object.keys(uiComponents)) {

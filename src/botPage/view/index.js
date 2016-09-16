@@ -1,10 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
 import lzString from 'lz-string';
-import { BinaryChart } from 'binary-charts';
+import { PlainChart as Chart } from 'binary-charts';
 import { logger } from './logger';
 import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
@@ -79,10 +77,10 @@ export default class View {
       const value = $(this).val();
       if (value === '') return;
       if (viewScope.activeTour) {
-        that.activeTour.stop();
+        viewScope.activeTour.stop();
       }
-      that.activeTour = that.tours[value];
-      that.activeTour.start(() => {
+      viewScope.activeTour = viewScope.tours[value];
+      viewScope.activeTour.start(() => {
         viewScope.activeTour = null;
       });
     });
@@ -342,19 +340,33 @@ export default class View {
   }
 
   updateChart(info) {
-    if (this.latestOpenContract) {
-      if (this.latestOpenContract.is_sold) {
-        delete this.latestOpenContract;
+    const chartOptions = {
+      type: this.chartType,
+      theme: 'light',
+      defaultRange: 0,
+      onTypeChange: (type) => {
+        this.chartType = type;
+      },
+    };
+    if (this.chartType === 'candlestick') {
+      chartOptions.ticks = info.candles;
+    } else {
+      chartOptions.ticks = info.ticks;
+      if (this.latestOpenContract) {
+        chartOptions.contract = this.latestOpenContract;
+        if (this.latestOpenContract.is_sold) {
+          delete this.latestOpenContract;
+        }
       }
     }
-    ReactDOM.render(<BinaryChart
-      style={{ height: 209 }}
-      type={this.latestOpenContract ? 'area' : this.chartType}
-      onTypeChange={(type) => { this.chartType = type; }}
-      ticks={this.chartType === 'candlestick' ? info.candles : info.ticks}
-      pipSize={Number(Number(info.pip).toExponential().substring(3))}
-      contract={this.latestOpenContract}
-    />, $('#chart')[0]);
+    chartOptions.pipSize = Number(Number(info.pip)
+      .toExponential()
+      .substring(3));
+    if (!this.chart) {
+      this.chart = Chart('chart', chartOptions); // eslint-disable-line new-cap
+    } else {
+      this.chart.updateChart(chartOptions);
+    }
   }
   destroyChart() {
     if (this.chart) {

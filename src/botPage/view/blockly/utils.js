@@ -5,6 +5,9 @@ export default class Utils {
   constructor() {
     this.purchase_choices = [[translator.translateText('Click to select'), '']];
   }
+  isMainBlock(blockType) {
+    return config.mainBlocks.indexOf(blockType) >= 0;
+  }
   getBlockByType(type) {
     for (const block of Blockly.mainWorkspace.getAllBlocks()) {
       if (type === block.type) {
