@@ -2,16 +2,16 @@ import CustomApi from 'binary-common-utils/lib/customApi';
 import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import { observer } from 'binary-common-utils/lib/observer';
 import ws from '../../../common/mock/websocket';
-import StrategyCtrl from '../strategyCtrl';
+import PurchaseCtrl from '../PurchaseCtrl';
 
-describe('StrategyCtrl', () => {
+describe('PurchaseCtrl', () => {
   let api;
   const proposals = [];
   let firstAttempt = true;
-  let strategyCtrl;
+  let purchaseCtrl;
   before(() => {
     api = new CustomApi(ws);
-    const strategy = (ticks, receivedProposals, _strategyCtrl) => {
+    const strategy = (ticks, receivedProposals, _purchaseCtrl) => {
       if (receivedProposals) {
         if (firstAttempt) {
           firstAttempt = false;
@@ -21,7 +21,7 @@ describe('StrategyCtrl', () => {
           });
         } else {
           observer.emit('test.purchase');
-          _strategyCtrl.purchase('DIGITEVEN');
+          _purchaseCtrl.purchase('DIGITEVEN');
         }
       } else {
         observer.emit('test.strategy', {
@@ -30,7 +30,7 @@ describe('StrategyCtrl', () => {
         });
       }
     };
-    strategyCtrl = new StrategyCtrl(api, strategy, () => {}, () => {});
+    purchaseCtrl = new PurchaseCtrl(api, strategy, () => {}, () => {});
   });
   describe('Make the strategy ready...', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
@@ -39,7 +39,7 @@ describe('StrategyCtrl', () => {
       }, true);
       observer.register('api.proposal', (_proposal) => {
         proposals.push(_proposal);
-        strategyCtrl.updateProposal(_proposal);
+        purchaseCtrl.updateProposal(_proposal);
       });
       observer.register('api.authorize', () => {
         observer.register('api.proposal', () => {
@@ -77,7 +77,7 @@ describe('StrategyCtrl', () => {
         strategyArgs = _strategyArgs;
         done();
       }, true);
-      strategyCtrl.updateTicks({
+      purchaseCtrl.updateTicks({
         ticks: [{
           epoch: 'some time',
           quote: 1,
@@ -87,7 +87,7 @@ describe('StrategyCtrl', () => {
         }],
       });
     });
-    it('strategyCtrl passes ticks and send the proposals if ready', () => {
+    it('purchaseCtrl passes ticks and send the proposals if ready', () => {
       expect(strategyArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch');
       expect(strategyArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
         .that.is.equal('Win payout if the last digit of Volatility 100 Index is odd after 5 ticks.');
@@ -98,8 +98,8 @@ describe('StrategyCtrl', () => {
       observer.register('test.purchase', () => {
         done();
       }, true);
-      strategyCtrl.updateProposal(proposals[1]);
-      strategyCtrl.updateTicks({
+      purchaseCtrl.updateProposal(proposals[1]);
+      purchaseCtrl.updateTicks({
         ticks: [{
           epoch: 'some time',
           quote: 1,
@@ -119,7 +119,7 @@ describe('StrategyCtrl', () => {
         finishedContract = _finishedContract;
         done();
       }, true);
-      strategyCtrl.updateTicks({
+      purchaseCtrl.updateTicks({
         ticks: [{
           epoch: 'some time',
           quote: 1,
@@ -135,7 +135,7 @@ describe('StrategyCtrl', () => {
     });
   });
   after(() => {
-    strategyCtrl.destroy();
+    purchaseCtrl.destroy();
     observer.destroy();
     api.destroy();
   });

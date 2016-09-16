@@ -83,10 +83,10 @@ describe('Bot', () => {
             finishedContractFromFinishSignal = _finishedContractFromFinishSignal;
             done();
           }, true);
-          bot.start(token, option, (tick, proposals, _strategyCtrl) => {
-            if (!_strategyCtrl) return;
+          bot.start(token, option, (tick, proposals, _purchaseCtrl) => {
+            if (!_purchaseCtrl) return;
             if (++numOfTicks === 3) {
-              _strategyCtrl.purchase('DIGITEVEN');
+              _purchaseCtrl.purchase('DIGITEVEN');
             }
           }, () => {}, (_finishedContract) => {
             finishedContractFromFinishFunction = _finishedContract;
@@ -105,9 +105,9 @@ describe('Bot', () => {
     let finishedContractFromFinishSignal;
     let numOfTicks = 0;
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      bot.start(token, option, (tick, proposals, _strategyCtrl) => {
+      bot.start(token, option, (tick, proposals, _purchaseCtrl) => {
         if (++numOfTicks === 3) {
-          _strategyCtrl.purchase('DIGITEVEN');
+          _purchaseCtrl.purchase('DIGITEVEN');
         }
       }, () => {}, (_finishedContract) => {
         finishedContractFromFinishFunction = _finishedContract;

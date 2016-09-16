@@ -2,7 +2,7 @@ import { observer } from 'binary-common-utils/lib/observer';
 import _ from 'underscore';
 import CustomApi from 'binary-common-utils/lib/customApi';
 import config from '../../common/const';
-import StrategyCtrl from './strategyCtrl';
+import PurchaseCtrl from './PurchaseCtrl';
 import _Symbol from './symbol';
 
 export default class Bot {
@@ -26,10 +26,10 @@ export default class Bot {
   start(token, tradeOption, strategy, duringPurchase, finish, sameTrade) {
     if (!this.running || sameTrade) {
       this.running = true;
-      if (this.strategyCtrl) {
-        this.strategyCtrl.destroy();
+      if (this.purchaseCtrl) {
+        this.purchaseCtrl.destroy();
       }
-      this.strategyCtrl = new StrategyCtrl(this.api, strategy, duringPurchase, finish);
+      this.purchaseCtrl = new PurchaseCtrl(this.api, strategy, duringPurchase, finish);
       this.tradeOption = tradeOption;
       if (sameTrade) {
         this.startTrading();
@@ -139,7 +139,7 @@ export default class Bot {
         this.ticks = [...this.ticks, tick];
         this.ticks.splice(0, 1);
         if (this.running) {
-          this.strategyCtrl.updateTicks({
+          this.purchaseCtrl.updateTicks({
             ticks: this.ticks,
             candles: this.candles,
           });
@@ -194,7 +194,7 @@ export default class Bot {
   }
   subscribeProposal(tradeOption) {
     const apiProposal = (proposal) => {
-      this.strategyCtrl.updateProposal(proposal);
+      this.purchaseCtrl.updateProposal(proposal);
     };
     observer.register('api.proposal', apiProposal, false, {
       type: 'proposal',
@@ -218,8 +218,8 @@ export default class Bot {
   }
   waitForStrategyFinish() {
     const strategyFinish = (contract) => {
-      this.strategyCtrl.destroy();
-      this.strategyCtrl = null;
+      this.purchaseCtrl.destroy();
+      this.purchaseCtrl = null;
       this.botFinish(contract);
     };
     observer.register('strategy.finish', strategyFinish, true, null, true);
@@ -270,9 +270,9 @@ export default class Bot {
     }
     this.unregisterOnFinish = [];
     this.running = false;
-    if (this.strategyCtrl) {
-      this.strategyCtrl.destroy();
-      this.strategyCtrl = null;
+    if (this.purchaseCtrl) {
+      this.purchaseCtrl.destroy();
+      this.purchaseCtrl = null;
     }
     this.api.originalApi.unsubscribeFromAllProposals();
     observer.emit('bot.stop', contract);
