@@ -8534,6 +8534,8 @@
 	});
 	exports.bot = undefined;
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _observer = __webpack_require__(299);
@@ -8572,29 +8574,72 @@
 	
 	    this.ticks = [];
 	    this.candles = [];
-	    if (api === null) {
-	      this.api = new _customApi2.default();
-	    } else {
-	      this.api = api;
-	    }
-	    this.symbol = new _symbol2.default(this.api);
-	    this.initPromise = this.symbol.initPromise;
 	    this.running = false;
-	    this.authorizedToken = '';
+	    this.currentToken = '';
 	    this.balanceStr = '';
-	    this.symbolStr = '';
+	    this.currentSymbol = '';
 	    this.unregisterOnFinish = [];
 	    this.totalProfit = 0;
 	    this.totalRuns = 0;
 	    this.totalStake = 0;
 	    this.totalPayout = 0;
 	    this.balance = 0;
+	    this.api = api === null ? new _customApi2.default() : api;
+	    this.symbol = new _symbol2.default(this.api);
+	    this.initPromise = this.symbol.initPromise;
 	  }
 	
 	  _createClass(Bot, [{
+	    key: 'start',
+	    value: function start(token, tradeOption, strategy, duringPurchase, finish, sameTrade) {
+	      var _this = this;
+	
+	      if (!this.running || sameTrade) {
+	        this.running = true;
+	        if (this.strategyCtrl) {
+	          this.strategyCtrl.destroy();
+	        }
+	        this.strategyCtrl = new _strategyCtrl2.default(this.api, strategy, duringPurchase, finish);
+	        this.tradeOption = tradeOption;
+	        if (sameTrade) {
+	          this.startTrading();
+	        } else {
+	          var promises = [];
+	          if (this.currentToken !== token) {
+	            promises.push(this.login(token));
+	          }
+	          if (!_underscore2.default.isEmpty(this.tradeOption) && this.tradeOption.symbol !== this.currentSymbol) {
+	            promises.push(this.subscribeToTickHistory());
+	            promises.push(this.subscribeToCandles());
+	          }
+	          Promise.all(promises).then(function () {
+	            _this.startTrading();
+	          });
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'login',
+	    value: function login(token) {
+	      var _this2 = this;
+	
+	      return new Promise(function (resolve) {
+	        var apiAuthorize = function apiAuthorize() {
+	          _this2.currentToken = token;
+	          _this2.subscribeToBalance();
+	          _this2.observeStreams();
+	          resolve();
+	        };
+	        _observer.observer.register('api.authorize', apiAuthorize, true, {
+	          type: 'authorize',
+	          unregister: [['api.authorize', apiAuthorize]]
+	        }, true);
+	        _this2.api.authorize(token);
+	      });
+	    }
+	  }, {
 	    key: 'setTradeOptions',
 	    value: function setTradeOptions() {
-	      var tradeOptionToClone = void 0;
 	      if (!_underscore2.default.isEmpty(this.tradeOption)) {
 	        this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
 	        var opposites = _const2.default.opposites[this.tradeOption.condition];
@@ -8607,35 +8652,11 @@
 	          for (var _iterator = Object.keys(opposites)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	            var key = _step.value;
 	
-	            tradeOptionToClone = {};
-	            var _iteratorNormalCompletion2 = true;
-	            var _didIteratorError2 = false;
-	            var _iteratorError2 = undefined;
-	
-	            try {
-	              for (var _iterator2 = Object.keys(this.tradeOption)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	                var optKey = _step2.value;
-	
-	                tradeOptionToClone[optKey] = this.tradeOption[optKey];
-	              }
-	            } catch (err) {
-	              _didIteratorError2 = true;
-	              _iteratorError2 = err;
-	            } finally {
-	              try {
-	                if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	                  _iterator2.return();
-	                }
-	              } finally {
-	                if (_didIteratorError2) {
-	                  throw _iteratorError2;
-	                }
-	              }
-	            }
-	
-	            tradeOptionToClone.contract_type = Object.keys(opposites[key])[0];
-	            delete tradeOptionToClone.condition;
-	            this.tradeOptions.push(tradeOptionToClone);
+	            var newTradeOption = _extends({}, this.tradeOption, {
+	              contract_type: Object.keys(opposites[key])[0]
+	            });
+	            delete newTradeOption.condition;
+	            this.tradeOptions.push(newTradeOption);
 	          }
 	        } catch (err) {
 	          _didIteratorError = true;
@@ -8656,37 +8677,39 @@
 	      }
 	    }
 	  }, {
-	    key: 'login',
-	    value: function login() {
-	      var _this = this;
+	    key: 'subscribeToBalance',
+	    value: function subscribeToBalance() {
+	      var _this3 = this;
 	
-	      return new Promise(function (resolve) {
-	        var apiAuthorize = function apiAuthorize() {
-	          _this.authorizedToken = _this.token;
-	          resolve();
-	        };
-	        _observer.observer.register('api.authorize', apiAuthorize, true, {
-	          type: 'authorize',
-	          unregister: [['api.authorize', apiAuthorize]]
-	        }, true);
-	        _this.api.authorize(_this.token);
+	      var apiBalance = function apiBalance(balance) {
+	        _this3.balance = balance.balance;
+	        _this3.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
+	        _observer.observer.emit('bot.tradeInfo', {
+	          balance: _this3.balanceStr
+	        });
+	      };
+	      _observer.observer.register('api.balance', apiBalance, false, {
+	        type: 'balance',
+	        unregister: [['api.balance', apiBalance]]
 	      });
+	      this.api.balance();
 	    }
 	  }, {
 	    key: 'subscribeToCandles',
 	    value: function subscribeToCandles() {
-	      var _this2 = this;
+	      var _this4 = this;
 	
 	      return new Promise(function (resolve) {
 	        var apiCandles = function apiCandles(candles) {
-	          _this2.candles = candles;
+	          _this4.candles = candles;
 	          resolve();
 	        };
 	        _observer.observer.register('api.candles', apiCandles, true, {
 	          type: 'candles',
 	          unregister: ['api.ohlc', 'api.candles', 'api.tick', 'bot.tickUpdate']
 	        });
-	        _this2.api.history(_this2.tradeOption.symbol, {
+	        _this4.api.originalApi.unsubscribeFromAllCandles();
+	        _this4.api.history(_this4.tradeOption.symbol, {
 	          end: 'latest',
 	          count: 600,
 	          granularity: 60,
@@ -8698,106 +8721,48 @@
 	  }, {
 	    key: 'subscribeToTickHistory',
 	    value: function subscribeToTickHistory() {
-	      var _this3 = this;
+	      var _this5 = this;
 	
 	      return new Promise(function (resolve) {
-	        if (_underscore2.default.isEmpty(_this3.tradeOption) || _this3.tradeOption.symbol === _this3.symbolStr) {
+	        var apiHistory = function apiHistory(history) {
+	          _this5.currentSymbol = _this5.tradeOption.symbol;
+	          _this5.ticks = history;
 	          resolve();
-	        } else {
-	          var apiHistory = function apiHistory(history) {
-	            _this3.symbolStr = _this3.tradeOption.symbol;
-	            _this3.ticks = history;
-	            resolve();
-	          };
-	          _observer.observer.register('api.history', apiHistory, true, {
-	            type: 'history',
-	            unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles']
-	          }, true);
-	          _this3.api.history(_this3.tradeOption.symbol, {
-	            end: 'latest',
-	            count: 600,
-	            subscribe: 1
-	          });
-	        }
+	        };
+	        _observer.observer.register('api.history', apiHistory, true, {
+	          type: 'history',
+	          unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles']
+	        }, true);
+	        _this5.api.originalApi.unsubscribeFromAllTicks();
+	        _this5.api.history(_this5.tradeOption.symbol, {
+	          end: 'latest',
+	          count: 600,
+	          subscribe: 1
+	        });
 	      });
-	    }
-	  }, {
-	    key: 'start',
-	    value: function start(token, tradeOption, strategy, duringPurchase, finish, again) {
-	      var _this4 = this;
-	
-	      if (!this.running || again) {
-	        this.running = true;
-	      } else {
-	        return;
-	      }
-	      this.strategyCtrl = new _strategyCtrl2.default(this.api, strategy, duringPurchase, finish);
-	      this.tradeOption = tradeOption;
-	      if (again) {
-	        this.startTrading();
-	        return;
-	      }
-	      this.token = token;
-	      if (this.authorizedToken === this.token) {
-	        Promise.all([this.subscribeToTickHistory(), this.subscribeToCandles()]).then(function () {
-	          _this4.startTrading();
-	        });
-	      } else {
-	        this.login().then(function () {
-	          _this4.api.originalApi.send({
-	            forget_all: 'balance'
-	          }).then(function () {
-	            _this4.api.balance();
-	            Promise.all([_this4.subscribeToTickHistory(), _this4.subscribeToCandles()]).then(function () {
-	              _this4.startTrading();
-	            });
-	          }, function (error) {
-	            return _observer.observer.emit('api.error', error);
-	          });
-	        });
-	      }
 	    }
 	  }, {
 	    key: 'observeTicks',
 	    value: function observeTicks() {
-	      var _this5 = this;
+	      var _this6 = this;
 	
 	      if (!_observer.observer.isRegistered('api.tick')) {
 	        var apiTick = function apiTick(tick) {
-	          _this5.ticks = [].concat(_toConsumableArray(_this5.ticks), [tick]);
-	          _this5.ticks.splice(0, 1);
-	          if (_this5.running) {
-	            _this5.strategyCtrl.updateTicks({
-	              ticks: _this5.ticks,
-	              candles: _this5.candles
+	          _this6.ticks = [].concat(_toConsumableArray(_this6.ticks), [tick]);
+	          _this6.ticks.splice(0, 1);
+	          if (_this6.running) {
+	            _this6.strategyCtrl.updateTicks({
+	              ticks: _this6.ticks,
+	              candles: _this6.candles
 	            });
 	          }
 	          _observer.observer.emit('bot.tickUpdate', {
-	            ticks: _this5.ticks,
-	            candles: _this5.candles,
-	            pip: _this5.pip
+	            ticks: _this6.ticks,
+	            candles: _this6.candles,
+	            pip: _this6.pip
 	          });
 	        };
 	        _observer.observer.register('api.tick', apiTick);
-	      }
-	    }
-	  }, {
-	    key: 'observeBalance',
-	    value: function observeBalance() {
-	      var _this6 = this;
-	
-	      if (!_observer.observer.isRegistered('api.balance')) {
-	        var apiBalance = function apiBalance(balance) {
-	          _this6.balance = balance.balance;
-	          _this6.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
-	          _observer.observer.emit('bot.tradeInfo', {
-	            balance: _this6.balanceStr
-	          });
-	        };
-	        _observer.observer.register('api.balance', apiBalance, false, {
-	          type: 'balance',
-	          unregister: [['api.balance', apiBalance]]
-	        });
 	      }
 	    }
 	  }, {
@@ -8820,18 +8785,27 @@
 	  }, {
 	    key: 'observeStrategy',
 	    value: function observeStrategy() {
-	      var strategyReady = function strategyReady() {
-	        _observer.observer.emit('bot.waiting_for_purchase');
-	      };
-	      _observer.observer.register('strategy.ready', strategyReady, false, null, true);
-	      this.unregisterOnFinish.push(['strategy.ready', strategyReady]);
+	      var _this8 = this;
+	
+	      if (!_observer.observer.isRegistered('strategy.ready')) {
+	        var strategyReady = function strategyReady() {
+	          if (_this8.running) {
+	            _observer.observer.emit('bot.waiting_for_purchase');
+	          }
+	        };
+	        _observer.observer.register('strategy.ready', strategyReady);
+	      }
 	    }
 	  }, {
 	    key: 'observeTradeUpdate',
 	    value: function observeTradeUpdate() {
+	      var _this9 = this;
+	
 	      if (!_observer.observer.isRegistered('strategy.tradeUpdate')) {
 	        var strategyTradeUpdate = function strategyTradeUpdate(contract) {
-	          _observer.observer.emit('bot.tradeUpdate', contract);
+	          if (_this9.running) {
+	            _observer.observer.emit('bot.tradeUpdate', contract);
+	          }
 	        };
 	        _observer.observer.register('strategy.tradeUpdate', strategyTradeUpdate);
 	      }
@@ -8843,15 +8817,14 @@
 	      this.observeStrategy();
 	      this.observeTicks();
 	      this.observeOhlc();
-	      this.observeBalance();
 	    }
 	  }, {
 	    key: 'subscribeProposal',
 	    value: function subscribeProposal(tradeOption) {
-	      var _this8 = this;
+	      var _this10 = this;
 	
 	      var apiProposal = function apiProposal(proposal) {
-	        _this8.strategyCtrl.updateProposal(proposal);
+	        _this10.strategyCtrl.updateProposal(proposal);
 	      };
 	      _observer.observer.register('api.proposal', apiProposal, false, {
 	        type: 'proposal',
@@ -8863,32 +8836,32 @@
 	  }, {
 	    key: 'subscribeProposals',
 	    value: function subscribeProposals() {
-	      var _this9 = this;
+	      var _this11 = this;
 	
 	      this.setTradeOptions();
 	      _observer.observer.unregisterAll('api.proposal');
 	      this.api.originalApi.unsubscribeFromAllProposals().then(function () {
-	        var _iteratorNormalCompletion3 = true;
-	        var _didIteratorError3 = false;
-	        var _iteratorError3 = undefined;
+	        var _iteratorNormalCompletion2 = true;
+	        var _didIteratorError2 = false;
+	        var _iteratorError2 = undefined;
 	
 	        try {
-	          for (var _iterator3 = _this9.tradeOptions[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	            var to = _step3.value;
+	          for (var _iterator2 = _this11.tradeOptions[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	            var to = _step2.value;
 	
-	            _this9.subscribeProposal(to);
+	            _this11.subscribeProposal(to);
 	          }
 	        } catch (err) {
-	          _didIteratorError3 = true;
-	          _iteratorError3 = err;
+	          _didIteratorError2 = true;
+	          _iteratorError2 = err;
 	        } finally {
 	          try {
-	            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	              _iterator3.return();
+	            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	              _iterator2.return();
 	            }
 	          } finally {
-	            if (_didIteratorError3) {
-	              throw _iteratorError3;
+	            if (_didIteratorError2) {
+	              throw _iteratorError2;
 	            }
 	          }
 	        }
@@ -8897,26 +8870,37 @@
 	      });
 	    }
 	  }, {
-	    key: 'startTrading',
-	    value: function startTrading() {
-	      var _this10 = this;
+	    key: 'waitForStrategyFinish',
+	    value: function waitForStrategyFinish() {
+	      var _this12 = this;
 	
 	      var strategyFinish = function strategyFinish(contract) {
-	        _this10.strategyCtrl.destroy();
-	        _this10.strategyCtrl = null;
-	        _this10.botFinish(contract);
+	        _this12.strategyCtrl.destroy();
+	        _this12.strategyCtrl = null;
+	        _this12.botFinish(contract);
 	      };
 	      _observer.observer.register('strategy.finish', strategyFinish, true, null, true);
 	      this.unregisterOnFinish.push(['strategy.finish', strategyFinish]);
+	    }
+	  }, {
+	    key: 'waitForTradePurchase',
+	    value: function waitForTradePurchase() {
+	      var _this13 = this;
+	
 	      var tradePurchase = function tradePurchase() {
-	        _this10.totalRuns += 1;
+	        _this13.totalRuns += 1;
 	        _observer.observer.emit('bot.tradeInfo', {
-	          totalRuns: _this10.totalRuns
+	          totalRuns: _this13.totalRuns
 	        });
 	      };
 	      _observer.observer.register('trade.purchase', tradePurchase, true, null, true);
 	      this.unregisterOnFinish.push(['trade.purchase', tradePurchase]);
-	      this.observeStreams();
+	    }
+	  }, {
+	    key: 'startTrading',
+	    value: function startTrading() {
+	      this.waitForStrategyFinish();
+	      this.waitForTradePurchase();
 	      this.subscribeProposals();
 	    }
 	  }, {
@@ -8935,6 +8919,43 @@
 	  }, {
 	    key: 'botFinish',
 	    value: function botFinish(contract) {
+	      var _iteratorNormalCompletion3 = true;
+	      var _didIteratorError3 = false;
+	      var _iteratorError3 = undefined;
+	
+	      try {
+	        for (var _iterator3 = this.unregisterOnFinish[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	          var obs = _step3.value;
+	
+	          _observer.observer.unregisterAll.apply(_observer.observer, _toConsumableArray(obs));
+	        }
+	      } catch (err) {
+	        _didIteratorError3 = true;
+	        _iteratorError3 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	            _iterator3.return();
+	          }
+	        } finally {
+	          if (_didIteratorError3) {
+	            throw _iteratorError3;
+	          }
+	        }
+	      }
+	
+	      this.unregisterOnFinish = [];
+	      this.updateTotals(contract);
+	      _observer.observer.emit('bot.finish', contract);
+	      this.running = false;
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop(contract) {
+	      if (!this.running) {
+	        _observer.observer.emit('bot.stop', contract);
+	        return;
+	      }
 	      var _iteratorNormalCompletion4 = true;
 	      var _didIteratorError4 = false;
 	      var _iteratorError4 = undefined;
@@ -8956,43 +8977,6 @@
 	        } finally {
 	          if (_didIteratorError4) {
 	            throw _iteratorError4;
-	          }
-	        }
-	      }
-	
-	      this.unregisterOnFinish = [];
-	      this.updateTotals(contract);
-	      _observer.observer.emit('bot.finish', contract);
-	      this.running = false;
-	    }
-	  }, {
-	    key: 'stop',
-	    value: function stop(contract) {
-	      if (!this.running) {
-	        _observer.observer.emit('bot.stop', contract);
-	        return;
-	      }
-	      var _iteratorNormalCompletion5 = true;
-	      var _didIteratorError5 = false;
-	      var _iteratorError5 = undefined;
-	
-	      try {
-	        for (var _iterator5 = this.unregisterOnFinish[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	          var obs = _step5.value;
-	
-	          _observer.observer.unregisterAll.apply(_observer.observer, _toConsumableArray(obs));
-	        }
-	      } catch (err) {
-	        _didIteratorError5 = true;
-	        _iteratorError5 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-	            _iterator5.return();
-	          }
-	        } finally {
-	          if (_didIteratorError5) {
-	            throw _iteratorError5;
 	          }
 	        }
 	      }
@@ -11253,6 +11237,11 @@
 		                this.messageHandlers[msgType].push(callback);
 		            }
 		        }
+		    }, {
+		        key: 'ignoreAll',
+		        value: function ignoreAll(msgType) {
+		            delete this.messageHandlers[msgType];
+		        }
 		    }]);
 		
 		    return LiveEvents;
@@ -12864,7 +12853,7 @@
 	/* 32 */
 	/***/ function(module, exports) {
 	
-		"use strict";
+		'use strict';
 		
 		Object.defineProperty(exports, "__esModule", {
 		    value: true
@@ -12881,6 +12870,7 @@
 		        transactions: false,
 		        ticks: new Set(),
 		        ticksHistory: new Map(),
+		        candlesHistory: new Map(),
 		        proposals: new Set(),
 		        streamIdMapping: new Map()
 		    };
@@ -12944,23 +12934,23 @@
 		        symbols.forEach(_this.subscribeToTick);
 		    };
 		
-		    this.unsubscribeFromTick = function (symbol) {
-		        _this.state.ticks.delete(symbol);
-		        _this.state.ticksHistory.delete(symbol);
+		    this.unsubscribeFromAllTicks = function () {
+		        _this.state.ticks.clear();
+		        _this.state.ticksHistory.clear();
 		    };
 		
-		    this.unsubscribeFromTicks = function (symbols) {
-		        symbols.forEach(_this.unsubscribeFromTick);
+		    this.unsubscribeFromAllCandles = function () {
+		        _this.state.candlesHistory.clear();
 		    };
 		
 		    this.getTickHistory = function (symbol, params) {
 		        if (params && params.subscribe === 1) {
-		            _this.state.ticksHistory.set(symbol, params);
+		            if (params.style === 'candles') {
+		                _this.state.candlesHistory.set(symbol, params);
+		            } else {
+		                _this.state.ticksHistory.set(symbol, params);
+		            }
 		        }
-		    };
-		
-		    this.unsubscribeFromAllTicks = function () {
-		        _this.state.ticks.clear();
 		    };
 		
 		    this.subscribeToPriceForContractProposal = function (options, streamId) {
@@ -13072,6 +13062,7 @@
 		            var contracts = _apiState$getState.contracts;
 		            var balance = _apiState$getState.balance;
 		            var allContract = _apiState$getState.allContract;
+		            var candlesHistory = _apiState$getState.candlesHistory;
 		            var transactions = _apiState$getState.transactions;
 		            var ticks = _apiState$getState.ticks;
 		            var ticksHistory = _apiState$getState.ticksHistory;
@@ -13107,6 +13098,10 @@
 		            }
 		
 		            ticksHistory.forEach(function (param, symbol) {
+		                return _this.getTickHistory(symbol, param);
+		            });
+		
+		            candlesHistory.forEach(function (param, symbol) {
 		                return _this.getTickHistory(symbol, param);
 		            });
 		
@@ -13229,7 +13224,7 @@
 		                        var _apiState2;
 		
 		                        (_apiState2 = _this2.apiState)[callName].apply(_apiState2, _toConsumableArray(param).concat([r.proposal_open_contract.id]));
-		                    } else if (r.proposal) {
+		                    } else if (r.proposal && r.proposal.id) {
 		                        var _apiState3;
 		
 		                        (_apiState3 = _this2.apiState)[callName].apply(_apiState3, _toConsumableArray(param).concat([r.proposal.id]));
@@ -13886,6 +13881,12 @@
 		var unsubscribeFromAllTicks = exports.unsubscribeFromAllTicks = function unsubscribeFromAllTicks() {
 		    return {
 		        forget_all: 'ticks'
+		    };
+		};
+		
+		var unsubscribeFromAllCandles = exports.unsubscribeFromAllCandles = function unsubscribeFromAllCandles() {
+		    return {
+		        forget_all: 'candles'
 		    };
 		};
 		
@@ -27460,7 +27461,6 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var clone = function clone(obj) {
-	  // eslint-disable-line arrow-body-style
 	  return _extends({}, obj);
 	};
 	

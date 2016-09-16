@@ -8659,6 +8659,11 @@
 		                this.messageHandlers[msgType].push(callback);
 		            }
 		        }
+		    }, {
+		        key: 'ignoreAll',
+		        value: function ignoreAll(msgType) {
+		            delete this.messageHandlers[msgType];
+		        }
 		    }]);
 		
 		    return LiveEvents;
@@ -10270,7 +10275,7 @@
 	/* 32 */
 	/***/ function(module, exports) {
 	
-		"use strict";
+		'use strict';
 		
 		Object.defineProperty(exports, "__esModule", {
 		    value: true
@@ -10287,6 +10292,7 @@
 		        transactions: false,
 		        ticks: new Set(),
 		        ticksHistory: new Map(),
+		        candlesHistory: new Map(),
 		        proposals: new Set(),
 		        streamIdMapping: new Map()
 		    };
@@ -10350,23 +10356,23 @@
 		        symbols.forEach(_this.subscribeToTick);
 		    };
 		
-		    this.unsubscribeFromTick = function (symbol) {
-		        _this.state.ticks.delete(symbol);
-		        _this.state.ticksHistory.delete(symbol);
+		    this.unsubscribeFromAllTicks = function () {
+		        _this.state.ticks.clear();
+		        _this.state.ticksHistory.clear();
 		    };
 		
-		    this.unsubscribeFromTicks = function (symbols) {
-		        symbols.forEach(_this.unsubscribeFromTick);
+		    this.unsubscribeFromAllCandles = function () {
+		        _this.state.candlesHistory.clear();
 		    };
 		
 		    this.getTickHistory = function (symbol, params) {
 		        if (params && params.subscribe === 1) {
-		            _this.state.ticksHistory.set(symbol, params);
+		            if (params.style === 'candles') {
+		                _this.state.candlesHistory.set(symbol, params);
+		            } else {
+		                _this.state.ticksHistory.set(symbol, params);
+		            }
 		        }
-		    };
-		
-		    this.unsubscribeFromAllTicks = function () {
-		        _this.state.ticks.clear();
 		    };
 		
 		    this.subscribeToPriceForContractProposal = function (options, streamId) {
@@ -10478,6 +10484,7 @@
 		            var contracts = _apiState$getState.contracts;
 		            var balance = _apiState$getState.balance;
 		            var allContract = _apiState$getState.allContract;
+		            var candlesHistory = _apiState$getState.candlesHistory;
 		            var transactions = _apiState$getState.transactions;
 		            var ticks = _apiState$getState.ticks;
 		            var ticksHistory = _apiState$getState.ticksHistory;
@@ -10513,6 +10520,10 @@
 		            }
 		
 		            ticksHistory.forEach(function (param, symbol) {
+		                return _this.getTickHistory(symbol, param);
+		            });
+		
+		            candlesHistory.forEach(function (param, symbol) {
 		                return _this.getTickHistory(symbol, param);
 		            });
 		
@@ -10635,7 +10646,7 @@
 		                        var _apiState2;
 		
 		                        (_apiState2 = _this2.apiState)[callName].apply(_apiState2, _toConsumableArray(param).concat([r.proposal_open_contract.id]));
-		                    } else if (r.proposal) {
+		                    } else if (r.proposal && r.proposal.id) {
 		                        var _apiState3;
 		
 		                        (_apiState3 = _this2.apiState)[callName].apply(_apiState3, _toConsumableArray(param).concat([r.proposal.id]));
@@ -11292,6 +11303,12 @@
 		var unsubscribeFromAllTicks = exports.unsubscribeFromAllTicks = function unsubscribeFromAllTicks() {
 		    return {
 		        forget_all: 'ticks'
+		    };
+		};
+		
+		var unsubscribeFromAllCandles = exports.unsubscribeFromAllCandles = function unsubscribeFromAllCandles() {
+		    return {
+		        forget_all: 'candles'
 		    };
 		};
 		
