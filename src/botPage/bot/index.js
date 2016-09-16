@@ -2,7 +2,7 @@ import { observer } from 'binary-common-utils/lib/observer';
 import _ from 'underscore';
 import CustomApi from 'binary-common-utils/lib/customApi';
 import config from '../../common/const';
-import PurchaseCtrl from './PurchaseCtrl';
+import PurchaseCtrl from './purchaseCtrl';
 import _Symbol from './symbol';
 
 export default class Bot {

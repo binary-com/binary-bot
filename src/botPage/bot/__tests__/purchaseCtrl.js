@@ -2,7 +2,7 @@ import CustomApi from 'binary-common-utils/lib/customApi';
 import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import { observer } from 'binary-common-utils/lib/observer';
 import ws from '../../../common/mock/websocket';
-import PurchaseCtrl from '../PurchaseCtrl';
+import PurchaseCtrl from '../purchaseCtrl';
 
 describe('PurchaseCtrl', () => {
   let api;
