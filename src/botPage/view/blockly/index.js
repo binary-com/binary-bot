@@ -136,21 +136,12 @@ export default class _Blockly {
     });
     return returnVal;
   }
-  selectTextBlock(regex) {
-    let returnVal;
-    $('.blocklyText').each(function each() {
-      if ($(this).text().match(regex)) {
-        returnVal = this;
-      }
-    });
-    return returnVal;
-  }
   setBlockColors() {
-    const mainBlockUniqStrList = [/^\(1\)\s[\w\s]*$/i, /^\(2\)\s[\w\s]*$/i, /^\(2.5\)\s[\w\s]*$/i, /^\(3\)\s[\w\s]*$/i];
-    for (const regex of mainBlockUniqStrList) {
-      const textBlock = this.selectTextBlock(regex);
-      if (textBlock) {
-        textBlock.style.setProperty('fill', 'white', 'important');
+    for (const blockType of config.mainBlocks) {
+      const block = utils.getBlockByType(blockType);
+      if (block) {
+        block.getField().getSvgRoot()
+        .style.setProperty('fill', 'white', 'important');
       }
     }
   }
