@@ -2,7 +2,7 @@
 import 'babel-polyfill';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getToken } from 'binary-common-utils/lib/storageManager';
-import './utils/draggable';
+import './view/draggable';
 import { bot } from './bot';
 import View from './view';
 import { logger } from './view/logger';
