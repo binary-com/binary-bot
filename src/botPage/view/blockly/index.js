@@ -166,17 +166,22 @@ export default class _Blockly {
       fileSaver.saveAs(blob, filename);
     }
   }
+  deleteStrayBlocks() {
+    const topBlocks = Blockly.mainWorkspace.getTopBlocks();
+    for (const block of topBlocks) {
+      if (!utils.isMainBlock(block.type)
+        && block !== utils.findTopParentBlock(utils.getBlockByType('trade'))
+        && block.type.indexOf('procedures_def') < 0
+        && block.type !== 'block_holder') {
+        block.dispose();
+      }
+    }
+  }
   run() {
     try {
       window.LoopTrap = 1000;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-      const topBlocks = Blockly.mainWorkspace.getTopBlocks();
-      for (const block of topBlocks) {
-        if (!utils.isMainBlock(block.type)
-          && block !== utils.findTopParentBlock(utils.getBlockByType('trade'))) {
-          block.dispose();
-        }
-      }
+      this.deleteStrayBlocks();
       const code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       this.generatedJs = code;

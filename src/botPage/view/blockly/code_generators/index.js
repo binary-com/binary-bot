@@ -24,6 +24,7 @@ import './finish/details';
 import './finish/finish';
 import './finish/read_details';
 import './finish/trade_again';
+import './block_holder';
 
 export default () => {
 	markets();

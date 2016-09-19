@@ -17,8 +17,12 @@ const getNumField = (block, fieldName) => {
   }
   return '';
 };
+const insideHolder = (blockObj) => blockObj.parentBlock_ !== null && blockObj.parentBlock_.type === 'block_holder';
 const getListField = (block, fieldName) => block.getFieldValue(fieldName);
 export const condition = (blockObj, ev, calledByParent) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
   if (blockObj.parentBlock_ !== null) {
     if (!bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
       observer.emit('ui.log.warn',
@@ -78,6 +82,9 @@ export const condition = (blockObj, ev, calledByParent) => {
   }
 };
 export const submarket = (blockObj, ev) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
   if (blockObj.childBlocks_.length > 0 && config.conditions.indexOf(blockObj.childBlocks_[0].type) < 0) {
     observer.emit('ui.log.warn', translator.translateText('Submarket blocks can only accept trade type blocks'));
     for (const child of Array.prototype.slice.apply(blockObj.childBlocks_)) {
@@ -95,6 +102,9 @@ export const submarket = (blockObj, ev) => {
   }
 };
 export const trade = (blockObj, ev) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
   if (ev.type === 'create') {
     if (bot.symbol.findSymbol(Blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
       observer.emit('tour:submarket_created');
@@ -140,6 +150,9 @@ export const trade = (blockObj, ev) => {
   }
 };
 export const insideCondition = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
   const topParent = utils.findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (config.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
@@ -150,6 +163,9 @@ export const insideCondition = (blockObj, ev, name) => {
   }
 };
 export const insideStrategy = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
   const topParent = utils.findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
@@ -162,6 +178,9 @@ export const insideStrategy = (blockObj, ev, name) => {
   }
 };
 export const insideFinish = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
   const topParent = utils.findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (topParent.type !== 'on_finish' && !ev.oldParentId) {

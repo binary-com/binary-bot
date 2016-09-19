@@ -281,10 +281,6 @@ export default class Bot {
     this.running = false;
   }
   stop(contract) {
-    observer.emit('log.bot.stop', {
-      running: this.running,
-      contract,
-    });
     if (!this.running) {
       observer.emit('bot.stop', contract);
       return;
@@ -299,6 +295,9 @@ export default class Bot {
       this.purchaseCtrl = null;
     }
     this.api.originalApi.unsubscribeFromAllProposals();
+    if (contract) {
+      observer.emit('log.bot.stop', contract);
+    }
     observer.emit('bot.stop', contract);
   }
 }
