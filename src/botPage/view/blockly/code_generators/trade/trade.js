@@ -1,6 +1,6 @@
 import { translator } from '../../../../../common/translator';
 
-Blockly.JavaScript.trade = function trade(block) {
+Blockly.JavaScript.trade = (block) => {
   const account = $('#accountSelect').val();
   if (!account) {
     throw Error(translator.translateText('Please login.'));

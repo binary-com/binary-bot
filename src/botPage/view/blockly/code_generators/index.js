@@ -17,6 +17,7 @@ import './strategy/ticks';
 import './strategy/ohlc';
 import './strategy/readOhlcObj';
 import './during_purchase';
+import './during_purchase/sell_at_market.js';
 import './finish/result';
 import './finish/check_result';
 import './finish/details';

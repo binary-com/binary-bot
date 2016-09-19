@@ -6,6 +6,14 @@ export default class Trade {
     this.api = api;
     this.contractIsSold = false;
     this.runningObservations = [];
+    this.openContract = null;
+  }
+  sellAtMarket() {
+    this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(() => {
+      this.getTheContractInfoAfterSell();
+    }, (e) => {
+      observer.emit('ui.log.warning', translator.translateText('Contract sell failed: ') + e);
+    });
   }
   purchase(contract) {
     this.api.buy(contract.id, contract.ask_price);
@@ -35,8 +43,11 @@ export default class Trade {
         this.getTheContractInfoAfterSell();
       }
       if (contract.sell_price) {
+        this.openContract = null;
         observer.emit('log.trade.finish', contract);
         observer.emit('trade.finish', contract);
+      } else {
+        this.openContract = contract;
       }
       observer.emit('trade.update', contract);
     };

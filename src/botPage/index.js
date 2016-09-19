@@ -2,7 +2,7 @@
 import 'babel-polyfill';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getToken } from 'binary-common-utils/lib/storageManager';
-import './utils/draggable';
+import './view/draggable';
 import { bot } from './bot';
 import View from './view';
 import { logger } from './view/logger';
@@ -26,13 +26,12 @@ require('trackjs');
 class BotPage {
 	constructor() {
 		window.Bot = {
-      showDuringPurchase: () => {
-        const dp = Blockly.mainWorkspace.newBlock('during_purchase');
+      addBlockByMagic: (blockType) => {
+        const dp = Blockly.mainWorkspace.newBlock(blockType);
         dp.initSvg();
         dp.render();
         this.view.blockly.setBlockColors();
       },
-      bot,
 			start: bot.start.bind(bot),
 			stop: bot.stop.bind(bot),
 			showCode: () => {

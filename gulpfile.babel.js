@@ -20,6 +20,7 @@ var gulp = require('gulp'),
 		path = require('path'),
 		insert = require('gulp-insert'),
 		mock = require('binary-mock-websocket'),
+    eslint = require('gulp-eslint'),
 		mocha = require('gulp-mocha');
 
 var options = {
@@ -105,7 +106,15 @@ gulp.task('static', ['static-css'], function() {
 		.pipe(gulp.dest('./www'));
 });
 
-gulp.task('test', function() {
+
+gulp.task('eslint', function() {
+  return gulp.src(['./src/**/*.js', '!./src/common/mock/*', '!./src/calls.js'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+});
+
+gulp.task('test', ['eslint'], function() {
     return gulp.src(['./src/**/__tests__/*.js'])
 			.pipe(mocha({
         require: ['./src/common/mochaHelper.js'],

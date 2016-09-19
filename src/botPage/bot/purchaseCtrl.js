@@ -2,7 +2,7 @@ import { observer } from 'binary-common-utils/lib/observer';
 import { getUTCTime } from 'binary-common-utils/lib/tools';
 import Trade from './trade';
 
-export default class StrategyCtrl {
+export default class PurchaseCtrl {
   constructor(api, strategy, duringPurchase, finish) {
     this.api = api;
     this.strategy = strategy;
@@ -82,6 +82,11 @@ export default class StrategyCtrl {
       this.runningObservations.push(['trade.update', tradeUpdate]);
       this.runningObservations.push(['trade.finish', tradeFinish]);
       this.trade.purchase(contract, tradeFinish);
+    }
+  }
+  sellAtMarket() {
+    if (this.trade) {
+      this.trade.sellAtMarket();
     }
   }
   getContract(option) {

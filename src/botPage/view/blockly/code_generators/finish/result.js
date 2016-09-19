@@ -1,4 +1,1 @@
-Blockly.JavaScript.contract_result = function contract_result() {
-  const code = 'details[10]';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-};
+Blockly.JavaScript.contract_result = () => ['details[10]', Blockly.JavaScript.ORDER_ATOMIC];
