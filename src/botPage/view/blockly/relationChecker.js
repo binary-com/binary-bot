@@ -17,7 +17,13 @@ const getNumField = (block, fieldName) => {
   }
   return '';
 };
-const insideHolder = (blockObj) => blockObj.parentBlock_ !== null && blockObj.parentBlock_.type === 'block_holder';
+const insideHolder = (blockObj) => {
+  const parent = utils.findTopParentBlock(blockObj);
+  if (parent !== null && parent.type === 'block_holder') {
+    return true;
+  }
+  return false;
+};
 const getListField = (block, fieldName) => block.getFieldValue(fieldName);
 export const condition = (blockObj, ev, calledByParent) => {
   if (insideHolder(blockObj)) {
@@ -27,7 +33,8 @@ export const condition = (blockObj, ev, calledByParent) => {
     if (!bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
       observer.emit('ui.log.warn',
         translator.translateText('Trade Type blocks have to be added to submarket blocks'));
-      blockObj.unplug();
+      blockObj.setDisabled(true);
+      return;
     } else if (!bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
       const symbol = bot.symbol.findSymbol(blockObj.parentBlock_.type);
       observer.emit('ui.log.warn',
@@ -35,51 +42,52 @@ export const condition = (blockObj, ev, calledByParent) => {
         + ` ${bot.symbol.getCategoryNameForCondition(blockObj.type)}`
         + `, ${translator.translateText('Allowed categories are')}`
         + ` ${bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)}`);
-      blockObj.unplug();
-    } else {
-      observer.emit('tour:condition');
-      if (!calledByParent) {
-        if ((ev.type === 'change' && ev.element && ev.element === 'field')
-          || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
-          const duration = getNumField(blockObj, 'DURATION');
-          const durationType = getListField(blockObj, 'DURATIONTYPE_LIST');
-          if (duration !== '') {
-            const minDuration = bot.symbol.getLimitation(blockObj.parentBlock_.type, blockObj.type).minDuration;
-            if (!durationAccepted(duration + durationType, minDuration)) {
+      blockObj.setDisabled(true);
+      return;
+    }
+    observer.emit('tour:condition');
+    if (!calledByParent) {
+      if ((ev.type === 'change' && ev.element && ev.element === 'field')
+        || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
+        const duration = getNumField(blockObj, 'DURATION');
+        const durationType = getListField(blockObj, 'DURATIONTYPE_LIST');
+        if (duration !== '') {
+          const minDuration = bot.symbol.getLimitation(blockObj.parentBlock_.type, blockObj.type).minDuration;
+          if (!durationAccepted(duration + durationType, minDuration)) {
+            observer.emit('ui.log.warn',
+              translator.translateText('Minimum duration is') +
+              ' ' + expandDuration(minDuration));
+          } else {
+            observer.emit('tour:ticks');
+          }
+          if (durationType === 't') {
+            if (!isInteger(duration) || !isInRange(duration, 5, 10)) {
               observer.emit('ui.log.warn',
-                translator.translateText('Minimum duration is') +
-                ' ' + expandDuration(minDuration));
+                translator.translateText('Number of ticks must be between 5 and 10'));
             } else {
               observer.emit('tour:ticks');
             }
-            if (durationType === 't') {
-              if (!isInteger(duration) || !isInRange(duration, 5, 10)) {
-                observer.emit('ui.log.warn',
-                  translator.translateText('Number of ticks must be between 5 and 10'));
-              } else {
-                observer.emit('tour:ticks');
-              }
-            } else if (!isInteger(duration) || duration < 1) {
-              observer.emit('ui.log.warn',
-                translator.translateText('Expiry time cannot be equal to start time'));
-            }
+          } else if (!isInteger(duration) || duration < 1) {
+            observer.emit('ui.log.warn',
+              translator.translateText('Expiry time cannot be equal to start time'));
           }
-          const prediction = getNumField(blockObj, 'PREDICTION');
-          if (prediction !== '') {
-            if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-              observer.emit('ui.log.warn', translator.translateText('Prediction must be one digit'));
-            }
-          }
-          for (const il of blockObj.inputList) {
-            if (il.name !== '' && blockObj.getInputTargetBlock(il.name) === null) {
-              return;
-            }
-          }
-          observer.emit('tour:options');
         }
+        const prediction = getNumField(blockObj, 'PREDICTION');
+        if (prediction !== '') {
+          if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
+            observer.emit('ui.log.warn', translator.translateText('Prediction must be one digit'));
+          }
+        }
+        for (const il of blockObj.inputList) {
+          if (il.name !== '' && blockObj.getInputTargetBlock(il.name) === null) {
+            return;
+          }
+        }
+        observer.emit('tour:options');
       }
     }
   }
+  blockObj.setDisabled(false);
 };
 export const submarket = (blockObj, ev) => {
   if (insideHolder(blockObj)) {
@@ -97,9 +105,11 @@ export const submarket = (blockObj, ev) => {
     if (blockObj.parentBlock_.type !== 'trade') {
       observer.emit('ui.log.warn',
         translator.translateText('Submarket blocks have to be added to the trade block'));
-      blockObj.unplug();
+      blockObj.setDisabled(true);
+      return;
     }
   }
+  blockObj.setDisabled(false);
 };
 export const trade = (blockObj, ev) => {
   if (insideHolder(blockObj)) {
@@ -145,9 +155,11 @@ export const trade = (blockObj, ev) => {
       || ['on_strategy', 'on_finish'].indexOf(topParent.type) >= 0) {
       observer.emit('ui.log.warn',
         translator.translateText('The trade block cannot be inside binary blocks'));
-      blockObj.unplug();
+      blockObj.setDisabled(true);
+      return;
     }
   }
+  blockObj.setDisabled(false);
 };
 export const insideCondition = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
@@ -158,9 +170,11 @@ export const insideCondition = (blockObj, ev, name) => {
     if (config.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
       observer.emit('ui.log.warn',
         name + ' ' + translator.translateText('must be added to the condition block'));
-      blockObj.unplug();
+      blockObj.setDisabled(true);
+      return;
     }
   }
+  blockObj.setDisabled(false);
 };
 export const insideStrategy = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
@@ -171,11 +185,13 @@ export const insideStrategy = (blockObj, ev, name) => {
     if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
         name + ' ' + translator.translateText('must be added inside the strategy block'));
-      blockObj.unplug();
+      blockObj.setDisabled(true);
+      return;
     } else if (blockObj.type === 'purchase') {
       observer.emit('tour:purchase');
     }
   }
+  blockObj.setDisabled(false);
 };
 export const insideFinish = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
@@ -186,9 +202,12 @@ export const insideFinish = (blockObj, ev, name) => {
     if (topParent.type !== 'on_finish' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
         name + ' ' + translator.translateText('must be added inside the finish block'));
-      blockObj.unplug();
-    } else if (blockObj.type === 'trade_again') {
+      blockObj.setDisabled(true);
+      return;
+    }
+    if (blockObj.type === 'trade_again') {
       observer.emit('tour:trade_again');
     }
   }
+  blockObj.setDisabled(false);
 };
