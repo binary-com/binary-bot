@@ -9096,6 +9096,9 @@
 	      candles: function candles() {
 	        return 0;
 	      },
+	      forget_all: function forget_all() {
+	        return 0;
+	      },
 	      history: function history(symbol, args) {
 	        return _this.originalApi.getTickHistory(symbol, args);
 	      },
@@ -9236,6 +9239,8 @@
 	          }
 	          if ('error' in data) {
 	            _this.events.error(data, e);
+	            _this.proposalIdMap = {};
+	            _this.seenProposal = {};
 	          } else if (data.msg_type === 'proposal') {
 	            if (!(data.proposal.id in _this.seenProposal)) {
 	              _this.seenProposal[data.proposal.id] = true;
@@ -9244,6 +9249,12 @@
 	              event(data, e);
 	            }
 	          } else {
+	            if (e === 'forget_all') {
+	              if (data.echo_req && data.echo_req.forget_all === 'proposal') {
+	                _this.proposalIdMap = {};
+	                _this.seenProposal = {};
+	              }
+	            }
 	            event(data, e);
 	          }
 	        });

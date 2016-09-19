@@ -8605,8 +8605,14 @@
 	        _observer.observer.emit('log.bot.start', {
 	          again: !!sameTrade
 	        });
+	        var accountName = (0, _storageManager.getToken)(token).account_name;
 	        if (typeof amplitude !== 'undefined') {
-	          amplitude.getInstance().setUserId((0, _storageManager.getToken)(token).account_name);
+	          amplitude.getInstance().setUserId(accountName);
+	        }
+	        if (typeof trackJs !== 'undefined') {
+	          trackJs.configure({
+	            userId: accountName
+	          });
 	        }
 	        if (sameTrade) {
 	          this.startTrading();
@@ -8719,7 +8725,11 @@
 	          type: 'candles',
 	          unregister: ['api.ohlc', 'api.candles', 'api.tick', 'bot.tickUpdate']
 	        });
-	        _this4.api.originalApi.unsubscribeFromAllCandles();
+	        _this4.api.originalApi.unsubscribeFromAllCandles().then(function () {
+	          return 0;
+	        }, function () {
+	          return 0;
+	        });
 	        _this4.api.history(_this4.tradeOption.symbol, {
 	          end: 'latest',
 	          count: 600,
@@ -8744,7 +8754,11 @@
 	          type: 'history',
 	          unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles']
 	        }, true);
-	        _this5.api.originalApi.unsubscribeFromAllTicks();
+	        _this5.api.originalApi.unsubscribeFromAllTicks().then(function () {
+	          return 0;
+	        }, function () {
+	          return 0;
+	        });
 	        _this5.api.history(_this5.tradeOption.symbol, {
 	          end: 'latest',
 	          count: 600,
@@ -8877,8 +8891,8 @@
 	            }
 	          }
 	        }
-	      }, function (error) {
-	        return _observer.observer.emit('api.error', error);
+	      }, function () {
+	        return 0;
 	      });
 	    }
 	  }, {
@@ -8920,8 +8934,11 @@
 	    value: function updateTotals(contract) {
 	      var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
 	      if (typeof amplitude !== 'undefined') {
-	        var revenue = new amplitude.Revenue().setProductId(contract.underlying + '.' + contract.contract_type).setPrice(-profit).setRevenueType(profit < 0 ? 'loss' : 'win');
-	        amplitude.getInstance().logRevenueV2(revenue, contract);
+	        var user = (0, _storageManager.getToken)(this.currentToken);
+	        if (!user.isVirtual) {
+	          var revenue = new amplitude.Revenue().setProductId(contract.underlying + '.' + contract.contract_type).setPrice(-profit).setRevenueType(profit < 0 ? 'loss' : 'win');
+	          amplitude.getInstance().logRevenueV2(revenue, contract);
+	        }
 	      }
 	      this.totalProfit = +(this.totalProfit + profit).toFixed(2);
 	      this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
@@ -9004,7 +9021,11 @@
 	        this.purchaseCtrl.destroy();
 	        this.purchaseCtrl = null;
 	      }
-	      this.api.originalApi.unsubscribeFromAllProposals();
+	      this.api.originalApi.unsubscribeFromAllProposals().then(function () {
+	        return 0;
+	      }, function () {
+	        return 0;
+	      });
 	      if (contract) {
 	        _observer.observer.emit('log.bot.stop', contract);
 	      }
@@ -9073,6 +9094,9 @@
 	        return 0;
 	      },
 	      candles: function candles() {
+	        return 0;
+	      },
+	      forget_all: function forget_all() {
 	        return 0;
 	      },
 	      history: function history(symbol, args) {
@@ -9215,6 +9239,8 @@
 	          }
 	          if ('error' in data) {
 	            _this.events.error(data, e);
+	            _this.proposalIdMap = {};
+	            _this.seenProposal = {};
 	          } else if (data.msg_type === 'proposal') {
 	            if (!(data.proposal.id in _this.seenProposal)) {
 	              _this.seenProposal[data.proposal.id] = true;
@@ -9223,6 +9249,12 @@
 	              event(data, e);
 	            }
 	          } else {
+	            if (e === 'forget_all') {
+	              if (data.echo_req && data.echo_req.forget_all === 'proposal') {
+	                _this.proposalIdMap = {};
+	                _this.seenProposal = {};
+	              }
+	            }
 	            event(data, e);
 	          }
 	        });
@@ -21777,7 +21809,11 @@
 	        _observer.observer.emit('ui.log.info', _translator.translator.translateText('Purchased') + ': ' + contract.longcode);
 	        _observer.observer.emit('trade.purchase', purchasedContract);
 	        _this2.contractId = purchasedContract.contract_id;
-	        _this2.api.originalApi.unsubscribeFromAllProposals(); // no promise
+	        _this2.api.originalApi.unsubscribeFromAllProposals().then(function () {
+	          return 0;
+	        }, function () {
+	          return 0;
+	        });
 	        _this2.subscribeToOpenContract();
 	      };
 	      _observer.observer.register('api.buy', apiBuy, true, {
@@ -21798,7 +21834,11 @@
 	        // detect changes and decide what to do when proposal is updated
 	        if (contract.is_expired && contract.is_valid_to_sell && !_this3.contractIsSold) {
 	          _this3.contractIsSold = true;
-	          _this3.api.originalApi.sellExpiredContracts(); // no promise
+	          _this3.api.originalApi.sellExpiredContracts().then(function () {
+	            return 0;
+	          }, function () {
+	            return 0;
+	          });
 	          _this3.getTheContractInfoAfterSell();
 	        }
 	        if (contract.sell_price) {
@@ -21855,7 +21895,11 @@
 	
 	      this.runningObservations = [];
 	      this.contractIsSold = false;
-	      this.api.originalApi.unsubscribeFromAllProposalsOpenContract();
+	      this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(function () {
+	        return 0;
+	      }, function () {
+	        return 0;
+	      });
 	    }
 	  }]);
 	
@@ -21877,8 +21921,6 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _tools = __webpack_require__(308);
-	
-	var _observer = __webpack_require__(299);
 	
 	var _const = __webpack_require__(306);
 	
@@ -21906,11 +21948,11 @@
 	        _this.api.getAssetIndex().then(function (r2) {
 	          _this.parseAssetIndex(r2.asset_index);
 	          resolve();
-	        }, function (error) {
-	          return _observer.observer.emit('api.error', error);
+	        }, function () {
+	          return 0;
 	        });
-	      }, function (error) {
-	        return _observer.observer.emit('api.error', error);
+	      }, function () {
+	        return 0;
 	      });
 	    });
 	  }
@@ -22437,6 +22479,7 @@
 	      if (tokenList.length === 0) {
 	        $('#login').css('display', 'inline-block');
 	        $('#accountSelect').css('display', 'none');
+	        $('#accountSelect').children().remove();
 	        $('#logout').css('display', 'none');
 	      } else {
 	        $('#login').css('display', 'none');
@@ -22515,17 +22558,8 @@
 	    value: function errorAndLogHandling() {
 	      var _this2 = this;
 	
-	      _observer.observer.register('ui.error', function (error) {
-	        var api = true;
-	        if (error.stack) {
-	          api = false;
-	          if (_logger.logger.isDebug()) {
-	            console.log('%c' + error.stack, 'color: red'); // eslint-disable-line no-console
-	          } else {
-	            _logger.logger.addLogToQueue('%c' + error.stack, 'color: red');
-	          }
-	        }
-	        var message = error.message;
+	      var notifyError = function notifyError(error) {
+	        var message = error.error ? error.error.message : error.message || error;
 	        $.notify(message, {
 	          position: 'bottom right',
 	          className: 'error'
@@ -22535,19 +22569,38 @@
 	        } else {
 	          _logger.logger.addLogToQueue('%cError: ' + message, 'color: red');
 	        }
+	        return message;
+	      };
+	
+	      _observer.observer.register('api.error', function (error) {
+	        if (error.code === 'InvalidToken') {
+	          (0, _storageManager.removeAllTokens)();
+	          _this2.updateTokenList();
+	        }
+	        var message = notifyError(error);
+	        amplitude.getInstance().logEvent('ui.error', {
+	          message: message,
+	          1: _lzString2.default.compressToBase64(_this2.blockly.generatedJs),
+	          2: _lzString2.default.compressToBase64(_this2.blockly.blocksXmlStr)
+	        });
+	        _bot.bot.stop();
+	      });
+	
+	      _observer.observer.register('ui.error', function (error) {
+	        if (error.stack) {
+	          if (_logger.logger.isDebug()) {
+	            console.log('%c' + error.stack, 'color: red'); // eslint-disable-line no-console
+	          } else {
+	            _logger.logger.addLogToQueue('%c' + error.stack, 'color: red');
+	          }
+	        }
+	        var message = notifyError(error);
 	        var customError = new Error(JSON.stringify({
-	          api: api,
-	          0: error.message || error,
+	          message: message,
 	          1: _lzString2.default.compressToBase64(_this2.blockly.generatedJs),
 	          2: _lzString2.default.compressToBase64(_this2.blockly.blocksXmlStr)
 	        }));
 	        customError.stack = error.stack || 'No stack data';
-	        amplitude.getInstance().logEvent('ui.error', {
-	          api: api,
-	          errorMessage: error.message || error,
-	          jsCode: _this2.blockly.generatedJs,
-	          xmlCode: _this2.blockly.blocksXmlStr
-	        });
 	        trackJs.track(customError);
 	      });
 	
@@ -22824,15 +22877,6 @@
 	    key: 'addEventHandlers',
 	    value: function addEventHandlers() {
 	      var _this6 = this;
-	
-	      _observer.observer.register('api.error', function (error) {
-	        if (error.code === 'InvalidToken') {
-	          (0, _storageManager.removeAllTokens)();
-	          _this6.updateTokenList();
-	        }
-	        _bot.bot.stop();
-	        _observer.observer.emit('ui.error', error);
-	      });
 	
 	      _observer.observer.register('bot.stop', function () {
 	        $('#runButton').show();
