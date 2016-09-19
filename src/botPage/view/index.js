@@ -113,6 +113,12 @@ export default class View {
         2: lzString.compressToBase64(this.blockly.blocksXmlStr),
       }));
       customError.stack = error.stack || 'No stack data';
+      amplitude.getInstance().logEvent('ui.error', {
+        api,
+        errorMessage: error.message || error,
+        jsCode: this.blockly.generatedJs,
+        xmlCode: this.blockly.blocksXmlStr,
+      });
       trackJs.track(customError);
     });
 
@@ -126,6 +132,10 @@ export default class View {
           position: 'bottom ' + position,
           className: type,
         });
+        amplitude.getInstance().logEvent('ui.log.' + type, {
+          position,
+          message,
+        });
         if (logger.isDebug()) {
           console.log(message); // eslint-disable-line no-console
         } else {
@@ -137,6 +147,10 @@ export default class View {
     for (const type of ['success', 'info', 'warn', 'error']) {
       observeForLog(type, 'right');
       observeForLog(type, 'left');
+    }
+
+    for (const event of ['log.bot.start', 'log.bot.stop', 'log.bot.login', 'log.bot.proposal', 'log.strategy.start', 'log.strategy.purchase', 'log.trade.purchase', 'log.trade.finish', 'log.strategy.loss', 'log.strategy.win']) {
+      observer.register(event, (d) => amplitude.getInstance().logEvent('log.' + event, d));
     }
   }
 

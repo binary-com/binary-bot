@@ -1,6 +1,7 @@
 import { observer } from 'binary-common-utils/lib/observer';
-import _ from 'underscore';
 import CustomApi from 'binary-common-utils/lib/customApi';
+import { getToken } from 'binary-common-utils/lib/storageManager';
+import _ from 'underscore';
 import config from '../../common/const';
 import StrategyCtrl from './strategyCtrl';
 import _Symbol from './symbol';
@@ -31,6 +32,12 @@ export default class Bot {
       }
       this.strategyCtrl = new StrategyCtrl(this.api, strategy, duringPurchase, finish);
       this.tradeOption = tradeOption;
+      observer.emit('log.bot.start', {
+        again: !!sameTrade,
+      });
+      if (typeof amplitude !== 'undefined') {
+        amplitude.getInstance().setUserId(getToken(token).account_name);
+      }
       if (sameTrade) {
         this.startTrading();
       } else {
@@ -51,6 +58,10 @@ export default class Bot {
   login(token) {
     return new Promise((resolve) => {
       const apiAuthorize = () => {
+        observer.emit('log.bot.login', {
+          lastToken: this.currentToken,
+          token,
+        });
         this.currentToken = token;
         this.subscribeToBalance();
         this.observeStreams();
@@ -194,6 +205,7 @@ export default class Bot {
   }
   subscribeProposal(tradeOption) {
     const apiProposal = (proposal) => {
+      observer.emit('log.bot.proposal', proposal);
       this.strategyCtrl.updateProposal(proposal);
     };
     observer.register('api.proposal', apiProposal, false, {
@@ -242,9 +254,17 @@ export default class Bot {
   }
   updateTotals(contract) {
     const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+    if (typeof amplitude !== 'undefined') {
+      const revenue = new amplitude.Revenue()
+        .setProductId(`${contract.underlying}.${contract.contract_type}`)
+        .setPrice(-profit)
+        .setRevenueType((profit < 0) ? 'loss' : 'win');
+      amplitude.getInstance().logRevenueV2(revenue, contract);
+    }
     this.totalProfit = +(this.totalProfit + profit).toFixed(2);
     this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);
+
     observer.emit('bot.tradeInfo', {
       totalProfit: this.totalProfit,
       totalStake: this.totalStake,
@@ -261,6 +281,10 @@ export default class Bot {
     this.running = false;
   }
   stop(contract) {
+    observer.emit('log.bot.stop', {
+      running: this.running,
+      contract,
+    });
     if (!this.running) {
       observer.emit('bot.stop', contract);
       return;

@@ -50,6 +50,9 @@ export default class StrategyCtrl {
 				ticks,
 			};
       if (this.ready) {
+        observer.emit('log.strategy.start', {
+          proposals: this.proposals,
+        });
         this.strategy(tickObj, this.proposals, this);
       } else {
         this.strategy(tickObj, null, null);
@@ -57,6 +60,10 @@ export default class StrategyCtrl {
     }
   }
   purchase(option) {
+    observer.emit('log.strategy.purchase', {
+      proposals: this.proposals,
+      purchasing: option,
+    });
     if (!this.purchased) {
       this.purchased = true;
       const contract = this.proposals[option];
@@ -86,6 +93,10 @@ export default class StrategyCtrl {
   createDetails(contract) {
     const result = (+contract.sell_price === 0) ? 'loss' : 'win';
     const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+    observer.emit('log.strategy.' + result, {
+      profit,
+      transactionId: contract.transaction_ids.buy,
+    });
     return [
       contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
       profit, contract.contract_type,
