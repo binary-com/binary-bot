@@ -163,7 +163,7 @@ export default class View {
     }
 
     for (const event of ['log.bot.start', 'log.bot.stop', 'log.bot.login', 'log.bot.proposal', 'log.strategy.start', 'log.strategy.purchase', 'log.trade.purchase', 'log.trade.finish', 'log.strategy.loss', 'log.strategy.win']) {
-      observer.register(event, (d) => amplitude.getInstance().logEvent('log.' + event, d));
+      observer.register(event, (d) => amplitude.getInstance().logEvent(event, d));
     }
   }
 
