@@ -22638,7 +22638,7 @@
 	      var _loop = function _loop() {
 	        var event = _arr2[_i2];
 	        _observer.observer.register(event, function (d) {
-	          return amplitude.getInstance().logEvent('log.' + event, d);
+	          return amplitude.getInstance().logEvent(event, d);
 	        });
 	      };
 	
