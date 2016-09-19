@@ -1,5 +1,4 @@
 import { getObjectValue } from 'binary-common-utils/lib/tools';
-import { observer } from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import ActiveSymbols from './activeSymbols';
 
@@ -13,8 +12,8 @@ export default class _Symbol {
         this.api.getAssetIndex().then((r2) => {
           this.parseAssetIndex(r2.asset_index);
           resolve();
-        }, (error) => observer.emit('api.error', error));
-      }, (error) => observer.emit('api.error', error));
+        }, () => 0);
+      }, () => 0);
     });
   }
   parseAssetIndex(assetIndex) {

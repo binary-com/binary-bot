@@ -33,6 +33,7 @@ export default class View {
     if (tokenList.length === 0) {
       $('#login').css('display', 'inline-block');
       $('#accountSelect').css('display', 'none');
+      $('#accountSelect').children().remove();
       $('#logout').css('display', 'none');
     } else {
       $('#login').css('display', 'none');
@@ -86,17 +87,10 @@ export default class View {
     });
   }
   errorAndLogHandling() {
-    observer.register('ui.error', (error) => {
-      let api = true;
-      if (error.stack) {
-        api = false;
-        if (logger.isDebug()) {
-          console.log('%c' + error.stack, 'color: red'); // eslint-disable-line no-console
-        } else {
-          logger.addLogToQueue('%c' + error.stack, 'color: red');
-        }
-      }
-      const message = error.message;
+    const notifyError = (error) => {
+      const message = (error.error)
+        ? error.error.message
+        : error.message || error;
       $.notify(message, {
         position: 'bottom right',
         className: 'error',
@@ -106,19 +100,38 @@ export default class View {
       } else {
         logger.addLogToQueue('%cError: ' + message, 'color: red');
       }
+      return message;
+    };
+
+    observer.register('api.error', (error) => {
+      if (error.code === 'InvalidToken') {
+        removeAllTokens();
+        this.updateTokenList();
+      }
+      const message = notifyError(error);
+      amplitude.getInstance().logEvent('ui.error', {
+        message,
+        1: lzString.compressToBase64(this.blockly.generatedJs),
+        2: lzString.compressToBase64(this.blockly.blocksXmlStr),
+      });
+      bot.stop();
+    });
+
+    observer.register('ui.error', (error) => {
+      if (error.stack) {
+        if (logger.isDebug()) {
+          console.log('%c' + error.stack, 'color: red'); // eslint-disable-line no-console
+        } else {
+          logger.addLogToQueue('%c' + error.stack, 'color: red');
+        }
+      }
+      const message = notifyError(error);
       const customError = new Error(JSON.stringify({
-        api,
-        0: error.message || error,
+        message,
         1: lzString.compressToBase64(this.blockly.generatedJs),
         2: lzString.compressToBase64(this.blockly.blocksXmlStr),
       }));
       customError.stack = error.stack || 'No stack data';
-      amplitude.getInstance().logEvent('ui.error', {
-        api,
-        errorMessage: error.message || error,
-        jsCode: this.blockly.generatedJs,
-        xmlCode: this.blockly.blocksXmlStr,
-      });
       trackJs.track(customError);
     });
 
@@ -390,15 +403,6 @@ export default class View {
     }
   }
   addEventHandlers() {
-    observer.register('api.error', (error) => {
-      if (error.code === 'InvalidToken') {
-        removeAllTokens();
-        this.updateTokenList();
-      }
-      bot.stop();
-      observer.emit('ui.error', error);
-    });
-
     observer.register('bot.stop', () => {
       $('#runButton').show();
       $('#stopButton').hide();

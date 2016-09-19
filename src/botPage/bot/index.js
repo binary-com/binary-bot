@@ -35,8 +35,14 @@ export default class Bot {
       observer.emit('log.bot.start', {
         again: !!sameTrade,
       });
+      const accountName = getToken(token).account_name;
       if (typeof amplitude !== 'undefined') {
-        amplitude.getInstance().setUserId(getToken(token).account_name);
+        amplitude.getInstance().setUserId(accountName);
+      }
+      if (typeof trackJs !== 'undefined') {
+        trackJs.configure({
+          userId: accountName,
+        });
       }
       if (sameTrade) {
         this.startTrading();
@@ -115,7 +121,7 @@ export default class Bot {
         type: 'candles',
         unregister: ['api.ohlc', 'api.candles', 'api.tick', 'bot.tickUpdate'],
       });
-      this.api.originalApi.unsubscribeFromAllCandles();
+      this.api.originalApi.unsubscribeFromAllCandles().then(() => 0, () => 0);
       this.api.history(this.tradeOption.symbol, {
         end: 'latest',
         count: 600,
@@ -136,7 +142,7 @@ export default class Bot {
         type: 'history',
         unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles'],
       }, true);
-      this.api.originalApi.unsubscribeFromAllTicks();
+      this.api.originalApi.unsubscribeFromAllTicks().then(() => 0, () => 0);
       this.api.history(this.tradeOption.symbol, {
         end: 'latest',
         count: 600,
@@ -226,7 +232,7 @@ export default class Bot {
       for (const to of this.tradeOptions) {
         this.subscribeProposal(to);
       }
-    }, (error) => observer.emit('api.error', error));
+    }, () => 0);
   }
   waitForStrategyFinish() {
     const strategyFinish = (contract) => {
@@ -297,7 +303,7 @@ export default class Bot {
       this.purchaseCtrl.destroy();
       this.purchaseCtrl = null;
     }
-    this.api.originalApi.unsubscribeFromAllProposals();
+    this.api.originalApi.unsubscribeFromAllProposals().then(() => 0, () => 0);
     if (contract) {
       observer.emit('log.bot.stop', contract);
     }
