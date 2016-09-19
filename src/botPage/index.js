@@ -26,13 +26,12 @@ require('trackjs');
 class BotPage {
 	constructor() {
 		window.Bot = {
-      showDuringPurchase: () => {
-        const dp = Blockly.mainWorkspace.newBlock('during_purchase');
+      addBlockByMagic: (blockType) => {
+        const dp = Blockly.mainWorkspace.newBlock(blockType);
         dp.initSvg();
         dp.render();
         this.view.blockly.setBlockColors();
       },
-      bot,
 			start: bot.start.bind(bot),
 			stop: bot.stop.bind(bot),
 			showCode: () => {

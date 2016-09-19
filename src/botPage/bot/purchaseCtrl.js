@@ -77,6 +77,11 @@ export default class PurchaseCtrl {
       this.trade.purchase(contract, tradeFinish);
     }
   }
+  sellAtMarket() {
+    if (this.trade) {
+      this.trade.sellAtMarket();
+    }
+  }
   getContract(option) {
     if (!this.purchased) {
       return this.proposals[option];

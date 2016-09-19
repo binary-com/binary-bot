@@ -1,1 +1,1 @@
-Blockly.JavaScript.sell_at_market = () => `_purchaseCtrl.sellAtMarket();\n`;
+Blockly.JavaScript.sell_at_market = () => `purchaseCtrl.sellAtMarket();\n`;
