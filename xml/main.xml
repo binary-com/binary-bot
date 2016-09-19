@@ -2,5 +2,6 @@
   <block type="trade" deletable="false" x="0" y="0"></block>
   <block type="on_strategy" deletable="false" x="0" y="87"></block>
   <block type="on_finish" deletable="false" x="0" y="174"></block>
+  <block type="block_holder" deletable="false" x="0" y="261"></block>
 </xml>
 
