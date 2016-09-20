@@ -21868,7 +21868,11 @@
 	    key: 'getTheContractInfoAfterSell',
 	    value: function getTheContractInfoAfterSell() {
 	      if (this.contractId) {
-	        this.api.originalApi.subscribeToOpenContract(this.contractId);
+	        this.api.originalApi.subscribeToOpenContract(this.contractId).then(function () {
+	          return 0;
+	        }, function () {
+	          return 0;
+	        });
 	      }
 	    }
 	  }, {
@@ -22566,7 +22570,7 @@
 	
 	      var notifyError = function notifyError(error) {
 	        var message = error.error ? error.error.message : error.message || error;
-	        $.notify(message, {
+	        _logger.logger.notify(message, {
 	          position: 'bottom right',
 	          className: 'error'
 	        });
@@ -22607,10 +22611,17 @@
 	          if (type === 'warn') {
 	            console.warn(message); // eslint-disable-line no-console
 	          }
-	          $.notify(message, {
-	            position: 'bottom ' + position,
-	            className: type
-	          });
+	          if (position === 'left') {
+	            $.notify(message, {
+	              position: 'bottom ' + position,
+	              className: type
+	            });
+	          } else {
+	            _logger.logger.notify(message, {
+	              position: 'bottom ' + position,
+	              className: type
+	            });
+	          }
 	          amplitude.getInstance().logEvent('ui.log.' + type, {
 	            position: position,
 	            message: message
@@ -27543,9 +27554,31 @@
 	
 	    this.logQueue = [];
 	    this.debug = false;
+	    this.shown = [];
 	  }
 	
 	  _createClass(Logger, [{
+	    key: "isNew",
+	    value: function isNew(message) {
+	      var timestamp = parseInt(new Date().getTime() / 1000, 10);
+	      var index = this.shown.findIndex(function (e) {
+	        return e.message === message;
+	      });
+	      if (index >= 0) {
+	        var oldTimestamp = this.shown[index].timestamp;
+	        this.shown[index].timestamp = timestamp;
+	        if (timestamp - oldTimestamp >= 1) {
+	          return true;
+	        }
+	        return false;
+	      }
+	      this.shown.push({
+	        message: message,
+	        timestamp: timestamp
+	      });
+	      return true;
+	    }
+	  }, {
 	    key: "toggleDebug",
 	    value: function toggleDebug() {
 	      this.debug = !this.debug;
@@ -27593,6 +27626,19 @@
 	    key: "isDebug",
 	    value: function isDebug() {
 	      return this.debug;
+	    }
+	  }, {
+	    key: "notify",
+	    value: function notify(message) {
+	      if (this.isNew(message)) {
+	        var _$;
+	
+	        for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+	          args[_key2 - 1] = arguments[_key2];
+	        }
+	
+	        (_$ = $).notify.apply(_$, [message].concat(args));
+	      }
 	    }
 	  }]);
 	
