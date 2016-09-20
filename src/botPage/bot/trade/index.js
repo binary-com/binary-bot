@@ -67,7 +67,7 @@ export default class Trade {
   }
   getTheContractInfoAfterSell() {
     if (this.contractId) {
-      this.api.originalApi.subscribeToOpenContract(this.contractId);
+      this.api.originalApi.subscribeToOpenContract(this.contractId).then(() => 0, () => 0);
     }
   }
   destroy() {
