@@ -211,8 +211,10 @@ export default class Bot {
   }
   subscribeProposal(tradeOption) {
     const apiProposal = (proposal) => {
-      observer.emit('log.bot.proposal', proposal);
-      this.purchaseCtrl.updateProposal(proposal);
+      if (this.running) {
+        observer.emit('log.bot.proposal', proposal);
+        this.purchaseCtrl.updateProposal(proposal);
+      }
     };
     observer.register('api.proposal', apiProposal, false, {
       type: 'proposal',
@@ -236,8 +238,6 @@ export default class Bot {
   }
   waitForStrategyFinish() {
     const strategyFinish = (contract) => {
-      this.purchaseCtrl.destroy();
-      this.purchaseCtrl = null;
       this.botFinish(contract);
     };
     observer.register('strategy.finish', strategyFinish, true, null, true);
@@ -287,7 +287,11 @@ export default class Bot {
     this.unregisterOnFinish = [];
     this.updateTotals(contract);
     observer.emit('bot.finish', contract);
+    // order matters
     this.running = false;
+    this.purchaseCtrl.destroy();
+    this.purchaseCtrl = null;
+    //
   }
   stop(contract) {
     if (!this.running) {
@@ -298,11 +302,13 @@ export default class Bot {
       observer.unregisterAll(...obs);
     }
     this.unregisterOnFinish = [];
+    // order matters
     this.running = false;
     if (this.purchaseCtrl) {
       this.purchaseCtrl.destroy();
       this.purchaseCtrl = null;
     }
+    //
     this.api.originalApi.unsubscribeFromAllProposals().then(() => 0, () => 0);
     if (contract) {
       observer.emit('log.bot.stop', contract);
