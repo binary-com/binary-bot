@@ -8849,8 +8849,10 @@
 	      var _this10 = this;
 	
 	      var apiProposal = function apiProposal(proposal) {
-	        _observer.observer.emit('log.bot.proposal', proposal);
-	        _this10.purchaseCtrl.updateProposal(proposal);
+	        if (_this10.running) {
+	          _observer.observer.emit('log.bot.proposal', proposal);
+	          _this10.purchaseCtrl.updateProposal(proposal);
+	        }
 	      };
 	      _observer.observer.register('api.proposal', apiProposal, false, {
 	        type: 'proposal',
@@ -8901,8 +8903,6 @@
 	      var _this12 = this;
 	
 	      var strategyFinish = function strategyFinish(contract) {
-	        _this12.purchaseCtrl.destroy();
-	        _this12.purchaseCtrl = null;
 	        _this12.botFinish(contract);
 	      };
 	      _observer.observer.register('strategy.finish', strategyFinish, true, null, true);
@@ -8981,7 +8981,11 @@
 	      this.unregisterOnFinish = [];
 	      this.updateTotals(contract);
 	      _observer.observer.emit('bot.finish', contract);
+	      // order matters
 	      this.running = false;
+	      this.purchaseCtrl.destroy();
+	      this.purchaseCtrl = null;
+	      //
 	    }
 	  }, {
 	    key: 'stop',
@@ -9016,11 +9020,13 @@
 	      }
 	
 	      this.unregisterOnFinish = [];
+	      // order matters
 	      this.running = false;
 	      if (this.purchaseCtrl) {
 	        this.purchaseCtrl.destroy();
 	        this.purchaseCtrl = null;
 	      }
+	      //
 	      this.api.originalApi.unsubscribeFromAllProposals().then(function () {
 	        return 0;
 	      }, function () {
