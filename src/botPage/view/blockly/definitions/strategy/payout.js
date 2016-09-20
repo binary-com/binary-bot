@@ -7,7 +7,7 @@ Blockly.Blocks.payout = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Payout'))
-      .appendField(new Blockly.FieldDropdown(() => utils.getPurchaseChoices(), 'PURCHASE_LIST'));
+      .appendField(new Blockly.FieldDropdown(() => utils.getPurchaseChoices()), 'PURCHASE_LIST');
     this.setOutput(true, 'Number');
     this.setColour('#f2f2f2');
     this.setTooltip(translator.translateText('Payout for selected proposal'));
