@@ -91,7 +91,7 @@ export default class View {
       const message = (error.error)
         ? error.error.message
         : error.message || error;
-      $.notify(message, {
+      logger.notify(message, {
         position: 'bottom right',
         className: 'error',
       });
@@ -125,10 +125,17 @@ export default class View {
         if (type === 'warn') {
           console.warn(message); // eslint-disable-line no-console
         }
-        $.notify(message, {
-          position: 'bottom ' + position,
-          className: type,
-        });
+        if (position === 'left') {
+          $.notify(message, {
+            position: 'bottom ' + position,
+            className: type,
+          });
+        } else {
+          logger.notify(message, {
+            position: 'bottom ' + position,
+            className: type,
+          });
+        }
         amplitude.getInstance().logEvent('ui.log.' + type, {
           position,
           message,

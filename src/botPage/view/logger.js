@@ -2,6 +2,24 @@ export default class Logger {
   constructor() {
     this.logQueue = [];
     this.debug = false;
+    this.shown = [];
+  }
+  isNew(message) {
+    const timestamp = parseInt(new Date().getTime() / 1000, 10);
+    const index = this.shown.findIndex((e) => e.message === message);
+    if (index >= 0) {
+      const oldTimestamp = this.shown[index].timestamp;
+      this.shown[index].timestamp = timestamp;
+      if (timestamp - oldTimestamp >= 1) {
+        return true;
+      }
+      return false;
+    }
+    this.shown.push({
+      message,
+      timestamp,
+    });
+    return true;
   }
   toggleDebug() {
     this.debug = !this.debug;
@@ -17,6 +35,11 @@ export default class Logger {
   }
   isDebug() {
     return this.debug;
+  }
+  notify(message, ...args) {
+    if (this.isNew(message)) {
+      $.notify(message, ...args);
+    }
   }
 }
 
