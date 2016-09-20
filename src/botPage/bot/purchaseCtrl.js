@@ -10,6 +10,7 @@ export default class PurchaseCtrl {
     this.finish = finish;
     this.ready = false;
     this.purchased = false;
+    this.isSellAvailable = false;
     this.runningObservations = [];
     this.proposals = {};
   }
@@ -69,6 +70,11 @@ export default class PurchaseCtrl {
       const contract = this.proposals[option];
       this.trade = new Trade(this.api);
       const tradeUpdate = (openContract) => {
+        if (openContract.is_valid_to_sell === 1 && !openContract.is_expired) {
+          this.isSellAvailable = true;
+        } else {
+          this.isSellAvailable = false;
+        }
         this.duringPurchase(openContract, this);
         observer.emit('strategy.tradeUpdate', openContract);
       };
@@ -85,7 +91,7 @@ export default class PurchaseCtrl {
     }
   }
   sellAtMarket() {
-    if (this.trade) {
+    if (this.isSellAvailable) {
       this.trade.sellAtMarket();
     }
   }

@@ -11,9 +11,7 @@ export default class Trade {
   sellAtMarket() {
     this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(() => {
       this.getTheContractInfoAfterSell();
-    }, (e) => {
-      observer.emit('ui.log.warning', translator.translateText('Contract sell failed: ') + e);
-    });
+    }, () => 0);
   }
   purchase(contract) {
     this.api.buy(contract.id, contract.ask_price);
@@ -36,7 +34,6 @@ export default class Trade {
       return false;
     }
     const apiProposalOpenContract = (contract) => {
-      // detect changes and decide what to do when proposal is updated
       if (contract.is_expired && contract.is_valid_to_sell && !this.contractIsSold) {
         this.contractIsSold = true;
         this.api.originalApi.sellExpiredContracts().then(() => 0, () => 0);
