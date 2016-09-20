@@ -29940,7 +29940,7 @@
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Payout')).appendField(new Blockly.FieldDropdown(function () {
 	      return _utils.utils.getPurchaseChoices();
-	    }, 'PURCHASE_LIST'));
+	    }), 'PURCHASE_LIST');
 	    this.setOutput(true, 'Number');
 	    this.setColour('#f2f2f2');
 	    this.setTooltip(_translator.translator.translateText('Payout for selected proposal'));
