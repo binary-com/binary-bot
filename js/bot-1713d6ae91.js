@@ -22572,37 +22572,28 @@
 	        return message;
 	      };
 	
-	      _observer.observer.register('api.error', function (error) {
-	        if (error.code === 'InvalidToken') {
-	          (0, _storageManager.removeAllTokens)();
-	          _this2.updateTokenList();
-	        }
-	        var message = notifyError(error);
-	        amplitude.getInstance().logEvent('ui.error', {
-	          message: message,
-	          1: _lzString2.default.compressToBase64(_this2.blockly.generatedJs),
-	          2: _lzString2.default.compressToBase64(_this2.blockly.blocksXmlStr)
-	        });
-	        _bot.bot.stop();
-	      });
+	      var _arr = ['api.error', 'blockly.error', 'runtime.error'];
 	
-	      _observer.observer.register('ui.error', function (error) {
-	        if (error.stack) {
-	          if (_logger.logger.isDebug()) {
-	            console.log('%c' + error.stack, 'color: red'); // eslint-disable-line no-console
-	          } else {
-	            _logger.logger.addLogToQueue('%c' + error.stack, 'color: red');
+	      var _loop = function _loop() {
+	        var errorType = _arr[_i];
+	        _observer.observer.register(errorType, function (error) {
+	          if (error.code === 'InvalidToken') {
+	            (0, _storageManager.removeAllTokens)();
+	            _this2.updateTokenList();
 	          }
-	        }
-	        var message = notifyError(error);
-	        var customError = new Error(JSON.stringify({
-	          message: message,
-	          1: _lzString2.default.compressToBase64(_this2.blockly.generatedJs),
-	          2: _lzString2.default.compressToBase64(_this2.blockly.blocksXmlStr)
-	        }));
-	        customError.stack = error.stack || 'No stack data';
-	        trackJs.track(customError);
-	      });
+	          var message = notifyError(error);
+	          amplitude.getInstance().logEvent(errorType, {
+	            message: message,
+	            1: _lzString2.default.compressToBase64(_this2.blockly.generatedJs),
+	            2: _lzString2.default.compressToBase64(_this2.blockly.blocksXmlStr)
+	          });
+	          _bot.bot.stop();
+	        });
+	      };
+	
+	      for (var _i = 0; _i < _arr.length; _i++) {
+	        _loop();
+	      }
 	
 	      var observeForLog = function observeForLog(type, position) {
 	        var subtype = position === 'left' ? '.left' : '';
@@ -22626,24 +22617,24 @@
 	        });
 	      };
 	
-	      var _arr = ['success', 'info', 'warn', 'error'];
-	      for (var _i = 0; _i < _arr.length; _i++) {
-	        var type = _arr[_i];
+	      var _arr2 = ['success', 'info', 'warn', 'error'];
+	      for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
+	        var type = _arr2[_i2];
 	        observeForLog(type, 'right');
 	        observeForLog(type, 'left');
 	      }
 	
-	      var _arr2 = ['log.bot.start', 'log.bot.stop', 'log.bot.login', 'log.bot.proposal', 'log.strategy.start', 'log.strategy.purchase', 'log.trade.purchase', 'log.trade.finish', 'log.strategy.loss', 'log.strategy.win'];
+	      var _arr3 = ['log.bot.start', 'log.bot.stop', 'log.bot.login', 'log.bot.proposal', 'log.strategy.start', 'log.strategy.purchase', 'log.trade.purchase', 'log.trade.finish', 'log.strategy.loss', 'log.strategy.win'];
 	
-	      var _loop = function _loop() {
-	        var event = _arr2[_i2];
+	      var _loop2 = function _loop2() {
+	        var event = _arr3[_i3];
 	        _observer.observer.register(event, function (d) {
 	          return amplitude.getInstance().logEvent(event, d);
 	        });
 	      };
 	
-	      for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
-	        _loop();
+	      for (var _i3 = 0; _i3 < _arr3.length; _i3++) {
+	        _loop2();
 	      }
 	    }
 	  }, {
@@ -22660,7 +22651,7 @@
 	              _this3.blockly.loadBlocks(e.target.result);
 	              _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
 	            } catch (err) {
-	              _observer.observer.emit('ui.error', err);
+	              _observer.observer.emit('blockly.error', err);
 	            }
 	          };
 	        }(f);
@@ -28028,7 +28019,7 @@
 	    }
 	  }, {
 	    key: 'saveXml',
-	    value: function saveXml(showOnly) {
+	    value: function saveXml() {
 	      var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	      var _iteratorNormalCompletion6 = true;
 	      var _didIteratorError6 = false;
@@ -28060,15 +28051,11 @@
 	      }
 	
 	      var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-	      if (showOnly) {
-	        _observer.observer.emit('ui.log', xmlText);
-	      } else {
-	        var filename = 'binary-bot' + parseInt(new Date().getTime() / 1000, 10) + '.xml';
-	        var blob = new Blob([xmlText], {
-	          type: 'text/xml;charset=utf-8'
-	        });
-	        _filesaverjs2.default.saveAs(blob, filename);
-	      }
+	      var filename = 'binary-bot' + parseInt(new Date().getTime() / 1000, 10) + '.xml';
+	      var blob = new Blob([xmlText], {
+	        type: 'text/xml;charset=utf-8'
+	      });
+	      _filesaverjs2.default.saveAs(blob, filename);
 	    }
 	  }, {
 	    key: 'deleteStrayBlocks',
@@ -28104,19 +28091,24 @@
 	  }, {
 	    key: 'run',
 	    value: function run() {
+	      var code = void 0;
 	      try {
 	        window.LoopTrap = 1000;
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
 	        this.deleteStrayBlocks();
-	        var code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
+	        code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 	        this.generatedJs = code;
-	        eval(code); // eslint-disable-line no-eval
-	        $('#summaryPanel').show();
 	      } catch (e) {
-	        _observer.observer.emit('ui.log', 'There was a problem running your blocks');
-	        _observer.observer.emit('ui.error', e);
-	        _bot.bot.stop();
+	        _observer.observer.emit('blockly.error', e);
+	      }
+	      if (code) {
+	        try {
+	          eval(code); // eslint-disable-line no-eval
+	        } catch (e) {
+	          _observer.observer.emit('runtime.error', e);
+	        }
+	        $('#summaryPanel').show();
 	      }
 	    }
 	  }, {
@@ -28481,6 +28473,13 @@
 	  }
 	
 	  _createClass(Utils, [{
+	    key: 'throwError',
+	    value: function throwError(message) {
+	      var error = new Error(message);
+	      error.blockly = true;
+	      throw error;
+	    }
+	  }, {
 	    key: 'isMainBlock',
 	    value: function isMainBlock(blockType) {
 	      return _const2.default.mainBlocks.indexOf(blockType) >= 0;
