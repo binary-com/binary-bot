@@ -103,37 +103,21 @@ export default class View {
       return message;
     };
 
-    observer.register('api.error', (error) => {
-      if (error.code === 'InvalidToken') {
-        removeAllTokens();
-        this.updateTokenList();
-      }
-      const message = notifyError(error);
-      amplitude.getInstance().logEvent('ui.error', {
-        message,
-        1: lzString.compressToBase64(this.blockly.generatedJs),
-        2: lzString.compressToBase64(this.blockly.blocksXmlStr),
-      });
-      bot.stop();
-    });
-
-    observer.register('ui.error', (error) => {
-      if (error.stack) {
-        if (logger.isDebug()) {
-          console.log('%c' + error.stack, 'color: red'); // eslint-disable-line no-console
-        } else {
-          logger.addLogToQueue('%c' + error.stack, 'color: red');
+    for (const errorType of ['api.error', 'blockly.error', 'runtime.error']) {
+      observer.register(errorType, (error) => {
+        if (error.code === 'InvalidToken') {
+          removeAllTokens();
+          this.updateTokenList();
         }
-      }
-      const message = notifyError(error);
-      const customError = new Error(JSON.stringify({
-        message,
-        1: lzString.compressToBase64(this.blockly.generatedJs),
-        2: lzString.compressToBase64(this.blockly.blocksXmlStr),
-      }));
-      customError.stack = error.stack || 'No stack data';
-      trackJs.track(customError);
-    });
+        const message = notifyError(error);
+        amplitude.getInstance().logEvent(errorType, {
+          message,
+          1: lzString.compressToBase64(this.blockly.generatedJs),
+          2: lzString.compressToBase64(this.blockly.blocksXmlStr),
+        });
+        bot.stop();
+      });
+    }
 
     const observeForLog = (type, position) => {
       const subtype = (position === 'left') ? '.left' : '';
@@ -177,7 +161,7 @@ export default class View {
             this.blockly.loadBlocks(e.target.result);
             observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'));
           } catch (err) {
-            observer.emit('ui.error', err);
+            observer.emit('blockly.error', err);
           }
         };
       })(f);

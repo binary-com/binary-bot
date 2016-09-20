@@ -141,30 +141,26 @@ export default class _Blockly {
       const block = utils.getBlockByType(blockType);
       if (block) {
         block.getField().getSvgRoot()
-        .style.setProperty('fill', 'white', 'important');
+          .style.setProperty('fill', 'white', 'important');
       }
     }
   }
-  saveXml(showOnly) {
+  saveXml() {
     const xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-		for (const field of Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))) {
-			if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-				if (field.childNodes.length >= 1) {
-					field.childNodes[0].nodeValue = '';
-				}
-			}
-		}
-    const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    if (showOnly) {
-      observer.emit('ui.log', xmlText);
-    } else {
-      const filename = 'binary-bot' + parseInt(new Date()
-            .getTime() / 1000, 10) + '.xml';
-      const blob = new Blob([xmlText], {
-        type: 'text/xml;charset=utf-8',
-      });
-      fileSaver.saveAs(blob, filename);
+    for (const field of Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))) {
+      if (field.getAttribute('name') === 'ACCOUNT_LIST') {
+        if (field.childNodes.length >= 1) {
+          field.childNodes[0].nodeValue = '';
+        }
+      }
     }
+    const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+    const filename = 'binary-bot' + parseInt(new Date()
+          .getTime() / 1000, 10) + '.xml';
+    const blob = new Blob([xmlText], {
+      type: 'text/xml;charset=utf-8',
+    });
+    fileSaver.saveAs(blob, filename);
   }
   deleteStrayBlocks() {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -178,20 +174,25 @@ export default class _Blockly {
     }
   }
   run() {
+    let code;
     try {
       window.LoopTrap = 1000;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       this.deleteStrayBlocks();
-      const code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
+      code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       this.generatedJs = code;
-      eval(code); // eslint-disable-line no-eval
+    } catch (e) {
+      observer.emit('blockly.error', e);
+    }
+    if (code) {
+      try {
+        eval(code); // eslint-disable-line no-eval
+      } catch (e) {
+        observer.emit('runtime.error', e);
+      }
       $('#summaryPanel')
         .show();
-    } catch (e) {
-      observer.emit('ui.log', 'There was a problem running your blocks');
-      observer.emit('ui.error', e);
-      bot.stop();
     }
   }
   addBlocklyTranslation() {

@@ -5,6 +5,11 @@ export default class Utils {
   constructor() {
     this.purchase_choices = [[translator.translateText('Click to select'), '']];
   }
+  throwError(message) {
+    const error = new Error(message);
+    error.blockly = true;
+    throw error;
+  }
   isMainBlock(blockType) {
     return config.mainBlocks.indexOf(blockType) >= 0;
   }
