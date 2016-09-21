@@ -1,8 +1,10 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BinaryChart } from 'binary-charts';
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
 import lzString from 'lz-string';
-import { PlainChart as Chart } from 'binary-charts';
 import { logger } from './logger';
 import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
@@ -354,33 +356,19 @@ export default class View {
   }
 
   updateChart(info) {
-    const chartOptions = {
-      type: this.chartType,
-      theme: 'light',
-      defaultRange: 0,
-      onTypeChange: (type) => {
-        this.chartType = type;
-      },
-    };
-    if (this.chartType === 'candlestick') {
-      chartOptions.ticks = info.candles;
-    } else {
-      chartOptions.ticks = info.ticks;
-      if (this.latestOpenContract) {
-        chartOptions.contract = this.latestOpenContract;
-        if (this.latestOpenContract.is_sold) {
-          delete this.latestOpenContract;
-        }
-      }
-    }
-    chartOptions.pipSize = Number(Number(info.pip)
-      .toExponential()
-      .substring(3));
-    if (!this.chart) {
-      this.chart = Chart('chart', chartOptions); // eslint-disable-line new-cap
-    } else {
-      this.chart.updateChart(chartOptions);
-    }
+    ReactDOM.render(
+            <BinaryChart
+                className="trade-chart"
+                noData="true"
+                contract={this.latestOpenContract}
+                pipSize={Number(Number(info.pip).toExponential().substring(3))}
+                shiftMode={this.latestOpenContract ? 'dynamic' : 'fixed'}
+                ticks={(this.latestOpenContract || this.chartType === 'area') ? info.ticks : info.candles}
+                type={this.latestOpenContract ? 'area' : this.chartType}
+                onTypeChange={this.latestOpenContract ? undefined : (type) => {
+                  this.chartType = type;
+                }}
+            />, $('#chart')[0]);
   }
   destroyChart() {
     if (this.chart) {
