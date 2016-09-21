@@ -206,7 +206,7 @@ gulp.task('pack-css', ['static'], function(){
 		.pipe(gulp.dest('www/css'));
 });
 
-gulp.task('pack-css-min', function(){
+gulp.task('pack-css-min', ['pack-css'], function(){
 	return gulp.src('www/css/bundle-*.css')
 		.pipe(gp_rename('bundle.min.css'))
 		.pipe(cleanCSS())
