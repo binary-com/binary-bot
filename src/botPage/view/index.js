@@ -136,10 +136,6 @@ export default class View {
             className: type,
           });
         }
-        amplitude.getInstance().logEvent('ui.log.' + type, {
-          position,
-          message,
-        });
         if (logger.isDebug()) {
           console.log(message); // eslint-disable-line no-console
         } else {
