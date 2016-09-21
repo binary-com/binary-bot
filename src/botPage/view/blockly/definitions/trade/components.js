@@ -11,10 +11,16 @@ export function title(block, opposites, optionNames) {
     .appendField('> ' + optionNames[0] + '/' + optionNames[1]);
 }
 
+export function candleInterval(block) {
+  block.appendDummyInput()
+    .appendField(translator.translateText('Candle Interval:'))
+    .appendField(new Blockly.FieldDropdown(config.candleIntervals), 'CANDLEINTERVAL_LIST');
+}
+
 export function duration(block, opposites) {
   block.appendValueInput('DURATION')
     .setCheck('Number')
-    .appendField('Duration:')
+    .appendField(translator.translateText('Duration:'))
     .appendField(new Blockly.FieldDropdown(config.durationTypes[opposites]), 'DURATIONTYPE_LIST');
 }
 

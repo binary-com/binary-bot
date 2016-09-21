@@ -8,6 +8,7 @@ describe('Bot', () => {
   const option = {
     amount: '1.00',
     basis: 'stake',
+    candleInterval: 60,
     condition: 'EVENODD',
     currency: 'USD',
     duration: 5,

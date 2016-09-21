@@ -3,7 +3,7 @@
 import config from '../../../../../common/const';
 import { condition } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
-import { duration, payout, prediction, title, barrierOffset, secondBarrierOffset } from './components';
+import { duration, payout, prediction, title, barrierOffset, secondBarrierOffset, candleInterval } from './components';
 
 export default () => {
   for (const opposites of Object.keys(config.opposites)) {
@@ -15,6 +15,7 @@ export default () => {
           optionNames.push(optionName);
         }
         title(this, opposites, optionNames);
+        candleInterval(this);
         duration(this, opposites);
         payout(this, opposites);
         if (config.hasPrediction.indexOf(opposites) > -1) {

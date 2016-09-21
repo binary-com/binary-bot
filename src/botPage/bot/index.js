@@ -10,6 +10,7 @@ export default class Bot {
   constructor(api = null) {
     this.ticks = [];
     this.candles = [];
+    this.candleInterval = 60;
     this.running = false;
     this.currentToken = '';
     this.balanceStr = '';
@@ -51,9 +52,14 @@ export default class Bot {
         if (this.currentToken !== token) {
           promises.push(this.login(token));
         }
-        if (!_.isEmpty(this.tradeOption) && this.tradeOption.symbol !== this.currentSymbol) {
-          promises.push(this.subscribeToTickHistory());
-          promises.push(this.subscribeToCandles());
+        if (!_.isEmpty(this.tradeOption)) {
+          if (this.tradeOption.symbol !== this.currentSymbol) {
+            promises.push(this.subscribeToTickHistory());
+            promises.push(this.subscribeToCandles());
+          } else if (this.tradeOption.candleInterval !== this.candleInterval) {
+            this.candleInterval = this.tradeOption.candleInterval;
+            promises.push(this.subscribeToCandles());
+          }
         }
         Promise.all(promises).then(() => {
           this.startTrading();
@@ -84,6 +90,7 @@ export default class Bot {
     if (!_.isEmpty(this.tradeOption)) {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
       const opposites = config.opposites[this.tradeOption.condition];
+      this.candleInterval = this.tradeOption.candleInterval;
       this.tradeOptions = [];
       for (const key of Object.keys(opposites)) {
         const newTradeOption = {
@@ -91,6 +98,7 @@ export default class Bot {
           contract_type: Object.keys(opposites[key])[0],
         };
         delete newTradeOption.condition;
+        delete newTradeOption.candleInterval;
         this.tradeOptions.push(newTradeOption);
       }
     } else {
@@ -125,7 +133,7 @@ export default class Bot {
       this.api.history(this.tradeOption.symbol, {
         end: 'latest',
         count: 600,
-        granularity: 60,
+        granularity: this.candleInterval,
         style: 'candles',
         subscribe: 1,
       });

@@ -5,6 +5,7 @@ export default () => {
   for (const opposites of Object.keys(config.opposites)) {
     Blockly.JavaScript[opposites.toLowerCase()] = function condition(block) {
       const duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
+      const candleInterval = block.getFieldValue('CANDLEINTERVAL_LIST');
       const durationType = block.getFieldValue('DURATIONTYPE_LIST');
       const payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
       const currency = block.getFieldValue('CURRENCY_LIST');
@@ -35,6 +36,7 @@ export default () => {
       }
       const code = '{\n' +
       'condition: \'' + opposites + '\',\n' +
+      'candleInterval: \'' + candleInterval + '\',\n' +
       'duration: ' + duration + ',\n' +
       'duration_unit: \'' + durationType + '\',\n' +
       'basis: \'' + payouttype + '\',\n' +
