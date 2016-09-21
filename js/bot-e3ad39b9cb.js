@@ -22622,10 +22622,6 @@
 	              className: type
 	            });
 	          }
-	          amplitude.getInstance().logEvent('ui.log.' + type, {
-	            position: position,
-	            message: message
-	          });
 	          if (_logger.logger.isDebug()) {
 	            console.log(message); // eslint-disable-line no-console
 	          } else {
