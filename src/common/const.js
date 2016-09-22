@@ -34,6 +34,16 @@ export default {
       [translator.translateText('Fall'), 'fall'],
       [translator.translateText('No Change'), ''],
     ],
+    BALANCE_TYPE: [
+      [translator.translateText('string'), 'STR'],
+      [translator.translateText('number'), 'NUM'],
+    ],
+    NOTIFICATION_TYPE: [
+      [translator.translateText('green'), 'success'],
+      [translator.translateText('blue'), 'info'],
+      [translator.translateText('yellow'), 'warn'],
+      [translator.translateText('red'), 'error'],
+    ],
   },
 
   opposites: {

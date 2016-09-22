@@ -99,8 +99,8 @@ export default class PurchaseCtrl {
 		return null;
   }
   createDetails(contract) {
-    const result = (+contract.sell_price === 0) ? 'loss' : 'win';
     const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+    const result = (profit < 0) ? 'loss' : 'win';
     observer.emit('log.strategy.' + result, {
       profit,
       transactionId: contract.transaction_ids.buy,
