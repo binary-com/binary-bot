@@ -11,3 +11,8 @@ Blockly.Blocks.check_sell = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };
+
+Blockly.JavaScript.check_sell = () => {
+  const code = '(purchaseCtrl.isSellAvailable())';
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};

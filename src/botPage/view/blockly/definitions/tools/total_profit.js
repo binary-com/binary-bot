@@ -11,3 +11,4 @@ Blockly.Blocks.total_profit = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };
+Blockly.JavaScript.total_profit = () => ['Bot.getTotalProfit()', Blockly.JavaScript.ORDER_ATOMIC];

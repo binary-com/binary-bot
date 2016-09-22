@@ -4,7 +4,6 @@ import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
 import { utils } from './utils.js';
-import codeGenerators from './code_generators';
 import definitions from './definitions';
 
 export default class _Blockly {
@@ -14,7 +13,6 @@ export default class _Blockly {
     this.addBlocklyTranslation();
     this.initPromise = new Promise((resolve) => {
       $.get('xml/toolbox.xml', (toolbox) => {
-        codeGenerators();
         definitions();
         const workspace = Blockly.inject('blocklyDiv', {
           media: 'js/blockly/media/',

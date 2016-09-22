@@ -15,3 +15,4 @@ Blockly.Blocks.contract_details = {
     insideFinish(this, ev, 'Contract Details');
   },
 };
+Blockly.JavaScript.contract_details = () => ['details', Blockly.JavaScript.ORDER_ATOMIC];

@@ -12,3 +12,4 @@ Blockly.Blocks.block_holder = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };
+Blockly.JavaScript.block_holder = () => '';

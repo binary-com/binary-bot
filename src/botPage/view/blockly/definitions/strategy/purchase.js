@@ -17,3 +17,8 @@ Blockly.Blocks.purchase = {
     insideStrategy(this, ev, 'Purchase');
   },
 };
+Blockly.JavaScript.purchase = (block) => {
+  const purchaseList = block.getFieldValue('PURCHASE_LIST');
+  const code = `purchaseCtrl.purchase('${purchaseList}');\n`;
+  return code;
+};

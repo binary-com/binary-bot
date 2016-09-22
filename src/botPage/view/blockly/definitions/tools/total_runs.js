@@ -11,3 +11,4 @@ Blockly.Blocks.total_runs = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };
+Blockly.JavaScript.total_runs = () => ['Bot.getTotalRuns()', Blockly.JavaScript.ORDER_ATOMIC];

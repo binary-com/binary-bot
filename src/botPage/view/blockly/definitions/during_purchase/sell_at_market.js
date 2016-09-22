@@ -11,3 +11,4 @@ Blockly.Blocks.sell_at_market = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };
+Blockly.JavaScript.sell_at_market = () => `purchaseCtrl.sellAtMarket();\n`;
