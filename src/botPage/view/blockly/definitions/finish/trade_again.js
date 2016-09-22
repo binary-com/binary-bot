@@ -15,3 +15,4 @@ Blockly.Blocks.trade_again = {
     insideFinish(this, ev, 'Trade Again');
   },
 };
+Blockly.JavaScript.trade_again = () => 'trade(true);\nreturn;\n';

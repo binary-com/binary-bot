@@ -15,3 +15,4 @@ Blockly.Blocks.ohlc = {
     insideStrategy(this, ev, 'Candles List');
   },
 };
+Blockly.JavaScript.ohlc = () => ['ticks.ohlc', Blockly.JavaScript.ORDER_ATOMIC];

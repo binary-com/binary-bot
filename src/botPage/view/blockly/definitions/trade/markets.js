@@ -25,4 +25,15 @@ export default () => {
       },
     };
   }
+
+	for (const symbol of Object.keys(symbolNames)) {
+    Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
+      const condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
+      if (!condition) {
+        throw Error(translator.translateText('A trade type has to be defined for the symbol'));
+      }
+      const code = condition.trim() + '\n symbol: \'' + symbol + '\'}';
+      return code;
+    };
+  }
 };

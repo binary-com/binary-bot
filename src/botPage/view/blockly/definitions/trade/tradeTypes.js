@@ -41,4 +41,54 @@ export default () => {
       },
     };
   }
+  for (const opposites of Object.keys(config.opposites)) {
+    Blockly.JavaScript[opposites.toLowerCase()] = function tradeType(block) {
+      const durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
+      const candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST');
+      const durationType = block.getFieldValue('DURATIONTYPE_LIST');
+      const payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
+      const currency = block.getFieldValue('CURRENCY_LIST');
+      const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
+      let predictionValue;
+      let barrierOffsetValue;
+      let secondBarrierOffsetValue;
+      if (config.hasPrediction.indexOf(opposites) > -1) {
+        predictionValue = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
+        if (predictionValue === '') {
+					throw Error(translator.translateText('All trade types are required'));
+        }
+      }
+      if (config.hasBarrierOffset.indexOf(opposites) > -1 || config.hasSecondBarrierOffset.indexOf(opposites) > -1) {
+        barrierOffsetValue = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
+        if (barrierOffsetValue === '') {
+					throw Error(translator.translateText('All trade types are required'));
+        }
+      }
+      if (config.hasSecondBarrierOffset.indexOf(opposites) > -1) {
+        secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
+        if (secondBarrierOffsetValue === '') {
+					throw Error(translator.translateText('All trade types are required'));
+        }
+      }
+      if (opposites === '' || durationValue === '' || payouttype === '' || currency === '' || amount === '') {
+        throw Error(translator.translateText('All trade types are required'));
+      }
+      const code = '{\n' +
+      'condition: \'' + opposites + '\',\n' +
+      'candleInterval: \'' + candleIntervalValue + '\',\n' +
+      'duration: ' + durationValue + ',\n' +
+      'duration_unit: \'' + durationType + '\',\n' +
+      'basis: \'' + payouttype + '\',\n' +
+      'currency: \'' + currency + '\',\n' +
+      'amount: (' + amount + ').toFixed(2),\n' +
+			((config.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '')
+				? 'barrier: ' + predictionValue + ',\n' : '') +
+					((config.hasSecondBarrierOffset.indexOf(opposites) > -1
+						|| (config.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== ''))
+						? 'barrier: \'' + barrierOffsetValue + '\',\n' : '') +
+				((config.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '')
+					? 'barrier2: \'' + secondBarrierOffsetValue + '\',\n' : '');
+      return code;
+    };
+  }
 };

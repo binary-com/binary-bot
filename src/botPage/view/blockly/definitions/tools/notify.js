@@ -19,3 +19,9 @@ Blockly.Blocks.notify = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };
+Blockly.JavaScript.notify = (block) => {
+  const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
+  const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
+  const code = 'Bot.log( ' + message + ', \'' + notificationType + '\');\n';
+  return code;
+};

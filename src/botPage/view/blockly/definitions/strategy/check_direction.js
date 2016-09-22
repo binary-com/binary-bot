@@ -16,3 +16,8 @@ Blockly.Blocks.check_direction = {
     insideStrategy(this, ev, 'Check Direction');
   },
 };
+Blockly.JavaScript.check_direction = (block) => {
+  const checkWith = block.getFieldValue('CHECK_DIRECTION');
+  const code = `(ticks.direction === '${checkWith}')`;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
