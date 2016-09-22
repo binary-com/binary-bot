@@ -264,6 +264,7 @@
 			<block type="tick"></block>
 			<block type="ticks"></block>
 			<block type="ohlc"></block>
+			<block type="read_ohlc"></block>
 			<block type="read_ohlc_obj"></block>
 			<block type="check_direction"></block>
 			<block type="purchase"></block>

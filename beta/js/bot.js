@@ -8155,7 +8155,7 @@
 	
 	var _logger = __webpack_require__(371);
 	
-	var _appId = __webpack_require__(441);
+	var _appId = __webpack_require__(413);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8175,7 +8175,7 @@
 			display: false
 		}
 	};
-	__webpack_require__(442);
+	__webpack_require__(414);
 	
 	var BotPage = function BotPage() {
 		var _this = this;
@@ -18557,10 +18557,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18629,10 +18629,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -18661,6 +18657,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -18672,7 +18671,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -18692,10 +18691,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -18799,10 +18802,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18871,10 +18874,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -18903,6 +18902,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -18914,7 +18916,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -18934,10 +18936,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -19041,10 +19047,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19113,10 +19119,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -19145,6 +19147,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -19156,7 +19161,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -19176,10 +19181,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -19283,10 +19292,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19355,10 +19364,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -19387,6 +19392,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -19398,7 +19406,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -19418,10 +19426,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -19525,10 +19537,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19597,10 +19609,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -19629,6 +19637,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -19640,7 +19651,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -19660,10 +19671,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -19767,10 +19782,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19839,10 +19854,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -19871,6 +19882,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -19882,7 +19896,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -19902,10 +19916,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20009,10 +20027,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20081,10 +20099,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -20113,6 +20127,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -20124,7 +20141,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -20144,10 +20161,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20251,10 +20272,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20323,10 +20344,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -20355,6 +20372,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -20366,7 +20386,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -20386,10 +20406,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20493,10 +20517,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20565,10 +20589,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -20597,6 +20617,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -20608,7 +20631,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -20628,10 +20651,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20735,10 +20762,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20807,10 +20834,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -20839,6 +20862,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -20850,7 +20876,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -20870,10 +20896,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20977,10 +21007,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21049,10 +21079,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -21081,6 +21107,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -21092,7 +21121,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -21112,10 +21141,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -21219,10 +21252,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21291,10 +21324,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -21323,6 +21352,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -21334,7 +21366,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -21354,10 +21386,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -21461,10 +21497,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21533,10 +21569,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
@@ -21565,6 +21597,9 @@
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
@@ -21576,7 +21611,7 @@
 	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
 	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
 	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
 	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
 	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
@@ -21596,10 +21631,14 @@
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -21638,7 +21677,6 @@
 	    this.finish = finish;
 	    this.ready = false;
 	    this.purchased = false;
-	    this.isSellAvailable = false;
 	    this.runningObservations = [];
 	    this.proposals = {};
 	  }
@@ -21728,11 +21766,6 @@
 	        var contract = this.proposals[option];
 	        this.trade = new _trade2.default(this.api);
 	        var tradeUpdate = function tradeUpdate(openContract) {
-	          if (openContract.is_valid_to_sell === 1 && !openContract.is_expired) {
-	            _this.isSellAvailable = true;
-	          } else {
-	            _this.isSellAvailable = false;
-	          }
 	          _this.duringPurchase(openContract, _this);
 	          _observer.observer.emit('strategy.tradeUpdate', openContract);
 	        };
@@ -21749,9 +21782,14 @@
 	      }
 	    }
 	  }, {
+	    key: 'isSellAvailable',
+	    value: function isSellAvailable() {
+	      return this.trade && this.trade.isSellAvailable;
+	    }
+	  }, {
 	    key: 'sellAtMarket',
 	    value: function sellAtMarket() {
-	      if (this.isSellAvailable) {
+	      if (this.trade && this.trade.isSellAvailable) {
 	        this.trade.sellAtMarket();
 	      }
 	    }
@@ -21842,9 +21880,10 @@
 	    _classCallCheck(this, Trade);
 	
 	    this.api = api;
-	    this.contractIsSold = false;
 	    this.runningObservations = [];
 	    this.openContract = null;
+	    this.isSellAvailable = false;
+	    this.isSold = false;
 	  }
 	
 	  _createClass(Trade, [{
@@ -21852,11 +21891,14 @@
 	    value: function sellAtMarket() {
 	      var _this = this;
 	
-	      this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(function () {
-	        _this.getTheContractInfoAfterSell();
-	      }, function () {
-	        return 0;
-	      });
+	      if (!this.isSold) {
+	        this.isSold = true;
+	        this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(function () {
+	          _this.getTheContractInfoAfterSell();
+	        }, function () {
+	          return 0;
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'purchase',
@@ -21868,6 +21910,7 @@
 	        _observer.observer.emit('log.trade.purchase', purchasedContract);
 	        _observer.observer.emit('ui.log.info', _translator.translator.translateText('Purchased') + ': ' + contract.longcode);
 	        _observer.observer.emit('trade.purchase', purchasedContract);
+	        _this2.isSold = false;
 	        _this2.contractId = purchasedContract.contract_id;
 	        _this2.api.originalApi.unsubscribeFromAllProposals().then(function () {
 	          return 0;
@@ -21891,14 +21934,19 @@
 	        return false;
 	      }
 	      var apiProposalOpenContract = function apiProposalOpenContract(contract) {
-	        if (contract.is_expired && contract.is_valid_to_sell && !_this3.contractIsSold) {
-	          _this3.contractIsSold = true;
-	          _this3.api.originalApi.sellExpiredContracts().then(function () {
-	            return 0;
-	          }, function () {
-	            return 0;
-	          });
-	          _this3.getTheContractInfoAfterSell();
+	        if (!_this3.isSold && contract.is_valid_to_sell) {
+	          if (contract.is_expired) {
+	            _this3.isSold = true;
+	            _this3.isSellAvailable = false;
+	            _this3.api.originalApi.sellExpiredContracts().then(function () {
+	              return 0;
+	            }, function () {
+	              return 0;
+	            });
+	            _this3.getTheContractInfoAfterSell();
+	          } else {
+	            _this3.isSellAvailable = true;
+	          }
 	        }
 	        if (contract.sell_price) {
 	          _this3.openContract = null;
@@ -21957,7 +22005,7 @@
 	      }
 	
 	      this.runningObservations = [];
-	      this.contractIsSold = false;
+	      this.isSold = false;
 	      this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(function () {
 	        return 0;
 	      }, function () {
@@ -22501,11 +22549,11 @@
 	
 	var _bot = __webpack_require__(302);
 	
-	var _introduction = __webpack_require__(438);
+	var _introduction = __webpack_require__(410);
 	
 	var _introduction2 = _interopRequireDefault(_introduction);
 	
-	var _welcome = __webpack_require__(440);
+	var _welcome = __webpack_require__(412);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
 	
@@ -27820,11 +27868,7 @@
 	
 	var _utils = __webpack_require__(377);
 	
-	var _code_generators = __webpack_require__(378);
-	
-	var _code_generators2 = _interopRequireDefault(_code_generators);
-	
-	var _definitions = __webpack_require__(407);
+	var _definitions = __webpack_require__(378);
 	
 	var _definitions2 = _interopRequireDefault(_definitions);
 	
@@ -27843,7 +27887,6 @@
 	    this.addBlocklyTranslation();
 	    this.initPromise = new Promise(function (resolve) {
 	      $.get('xml/toolbox.xml', function (toolbox) {
-	        (0, _code_generators2.default)();
 	        (0, _definitions2.default)();
 	        var workspace = Blockly.inject('blocklyDiv', {
 	          media: 'js/blockly/media/',
@@ -28706,19 +28749,15 @@
 	
 	__webpack_require__(379);
 	
-	__webpack_require__(380);
+	__webpack_require__(381);
 	
-	var _markets = __webpack_require__(381);
+	var _markets = __webpack_require__(382);
 	
 	var _markets2 = _interopRequireDefault(_markets);
 	
-	var _tradeTypes = __webpack_require__(382);
+	var _tradeTypes = __webpack_require__(383);
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
-	
-	__webpack_require__(383);
-	
-	__webpack_require__(384);
 	
 	__webpack_require__(385);
 	
@@ -28764,6 +28803,12 @@
 	
 	__webpack_require__(406);
 	
+	__webpack_require__(407);
+	
+	__webpack_require__(408);
+	
+	__webpack_require__(409);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function () {
@@ -28778,6 +28823,22 @@
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
+	
+	var _relationChecker = __webpack_require__(380);
+	
+	Blockly.Blocks.trade = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('(1) Define your contract here'));
+	    this.appendStatementInput('SUBMARKET').setCheck('Submarket');
+	    this.setPreviousStatement(true, null);
+	    this.setColour('#2a3052');
+	    this.setTooltip(_translator.translator.translateText('Use this block to choose markets and trade types.'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.trade)(this, ev);
+	  }
+	};
 	
 	Blockly.JavaScript.trade = function (block) {
 	  var account = $('#accountSelect').val();
@@ -28795,527 +28856,6 @@
 
 /***/ },
 /* 380 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.barrier_offset = function (block) {
-	  var barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-	  var barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = barrierOffsetType + Number(barrierOffset);
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 381 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _bot = __webpack_require__(302);
-	
-	var _translator = __webpack_require__(307);
-	
-	exports.default = function () {
-	  var symbolNames = _bot.bot.symbol.activeSymbols.getSymbolNames();
-	  var _iteratorNormalCompletion = true;
-	  var _didIteratorError = false;
-	  var _iteratorError = undefined;
-	
-	  try {
-	    var _loop = function _loop() {
-	      var symbol = _step.value;
-	
-	      Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
-	        var condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
-	        if (!condition) {
-	          throw Error(_translator.translator.translateText('A trade type has to be defined for the symbol'));
-	        }
-	        var code = condition.trim() + '\n symbol: \'' + symbol + '\'}';
-	        return code;
-	      };
-	    };
-	
-	    for (var _iterator = Object.keys(symbolNames)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	      _loop();
-	    }
-	  } catch (err) {
-	    _didIteratorError = true;
-	    _iteratorError = err;
-	  } finally {
-	    try {
-	      if (!_iteratorNormalCompletion && _iterator.return) {
-	        _iterator.return();
-	      }
-	    } finally {
-	      if (_didIteratorError) {
-	        throw _iteratorError;
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 382 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _const = __webpack_require__(306);
-	
-	var _const2 = _interopRequireDefault(_const);
-	
-	var _translator = __webpack_require__(307);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function () {
-	  var _iteratorNormalCompletion = true;
-	  var _didIteratorError = false;
-	  var _iteratorError = undefined;
-	
-	  try {
-	    var _loop = function _loop() {
-	      var opposites = _step.value;
-	
-	      Blockly.JavaScript[opposites.toLowerCase()] = function condition(block) {
-	        var duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
-	        var candleInterval = block.getFieldValue('CANDLEINTERVAL_LIST');
-	        var durationType = block.getFieldValue('DURATIONTYPE_LIST');
-	        var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
-	        var currency = block.getFieldValue('CURRENCY_LIST');
-	        var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
-	        var prediction = void 0;
-	        var barrierOffset = void 0;
-	        var secondBarrierOffset = void 0;
-	        if (_const2.default.hasPrediction.indexOf(opposites) > -1) {
-	          prediction = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
-	          if (prediction === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
-	          }
-	        }
-	        if (_const2.default.hasBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
-	          barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
-	          if (barrierOffset === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
-	          }
-	        }
-	        if (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
-	          secondBarrierOffset = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
-	          if (secondBarrierOffset === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
-	          }
-	        }
-	        if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === '') {
-	          throw Error(_translator.translator.translateText('All trade types are required'));
-	        }
-	        var code = '{\n' + 'condition: \'' + opposites + '\',\n' + 'candleInterval: \'' + candleInterval + '\',\n' + 'duration: ' + duration + ',\n' + 'duration_unit: \'' + durationType + '\',\n' + 'basis: \'' + payouttype + '\',\n' + 'currency: \'' + currency + '\',\n' + 'amount: (' + amount + ').toFixed(2),\n' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && prediction !== '' ? 'barrier: ' + prediction + ',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffset !== '' ? 'barrier: \'' + barrierOffset + '\',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffset !== '' ? 'barrier2: \'' + secondBarrierOffset + '\',\n' : '');
-	        return code;
-	      };
-	    };
-	
-	    for (var _iterator = Object.keys(_const2.default.opposites)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	      _loop();
-	    }
-	  } catch (err) {
-	    _didIteratorError = true;
-	    _iteratorError = err;
-	  } finally {
-	    try {
-	      if (!_iteratorNormalCompletion && _iterator.return) {
-	        _iterator.return();
-	      }
-	    } finally {
-	      if (_didIteratorError) {
-	        throw _iteratorError;
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 383 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.balance = function (block) {
-	  var balanceType = block.getFieldValue('BALANCE_TYPE');
-	  var code = 'Bot.getBalance(\'' + balanceType + '\')';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 384 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.notify = function (block) {
-	  var notificationType = block.getFieldValue('NOTIFICATION_TYPE');
-	  var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = 'Bot.log( ' + message + ', \'' + notificationType + '\');\n';
-	  return code;
-	};
-
-/***/ },
-/* 385 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.total_profit = function () {
-	  return ['Bot.getTotalProfit()', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 386 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.total_runs = function () {
-	  return ['Bot.getTotalRuns()', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 387 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.check_direction = function (block) {
-	  var checkWith = block.getFieldValue('CHECK_DIRECTION');
-	  var code = '(ticks.direction === \'' + checkWith + '\')';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 388 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.direction = function () {
-	  return ['ticks.direction', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 389 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.purchase = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'purchaseCtrl.purchase(\'' + purchaseList + '\');\n';
-	  return code;
-	};
-
-/***/ },
-/* 390 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.payout = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').payout)';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 391 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.ask_price = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').ask_price)';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 392 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.on_strategy = function (block) {
-			var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
-			var code = 'function on_strategy(ticks, proposals, purchaseCtrl){\n\tif(purchaseCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
-			return code;
-	};
-
-/***/ },
-/* 393 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.tick = function () {
-	  return ['ticks.ticks.slice(-1)[0].quote', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 394 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.ticks = function () {
-	  return ['ticks.ticks.map(function(i){return i.quote;})', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 395 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.ohlc = function () {
-	  return ['ticks.ohlc', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 396 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.read_ohlc_obj = function (block) {
-	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
-	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = void 0;
-	  if (ohlcObj) {
-	    code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
-	  } else {
-	    code = 'ticks.ohlc.slice(-1)[0].' + ohlcField;
-	  }
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 397 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.during_purchase = function (block) {
-			var stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
-			var code = 'function during_purchase(openProposal, purchaseCtrl){\n\tif(purchaseCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
-			return code;
-	};
-
-/***/ },
-/* 398 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Blockly.JavaScript.sell_at_market = function () {
-	  return "purchaseCtrl.sellAtMarket();\n";
-	};
-
-/***/ },
-/* 399 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.check_sell = function () {
-	  var code = '(purchaseCtrl.isSellAvailable)';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 400 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.contract_result = function () {
-	  return ['details[10]', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 401 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.contract_check_result = function (block) {
-	  var checkWith = block.getFieldValue('CHECK_RESULT');
-	  var code = '(details[10] === \'' + checkWith + '\')';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 402 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.contract_details = function () {
-	  return ['details', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 403 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.on_finish = function (block) {
-	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-	  var code = 'function on_finish(_finishedContract, details){\n' + stack + '\nBot.stop();\n}\n';
-	  return code;
-	};
-
-/***/ },
-/* 404 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.read_details = function (block) {
-	  var detailIndex = block.getFieldValue('DETAIL_INDEX');
-	  var code = 'details[' + (parseInt(detailIndex.trim(), 10) - 1) + ']';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 405 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.trade_again = function () {
-	  return 'trade(true);\nreturn;\n';
-	};
-
-/***/ },
-/* 406 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.block_holder = function () {
-	  return '';
-	};
-
-/***/ },
-/* 407 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	__webpack_require__(408);
-	
-	__webpack_require__(410);
-	
-	var _markets = __webpack_require__(411);
-	
-	var _markets2 = _interopRequireDefault(_markets);
-	
-	var _tradeTypes = __webpack_require__(412);
-	
-	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
-	
-	__webpack_require__(414);
-	
-	__webpack_require__(415);
-	
-	__webpack_require__(416);
-	
-	__webpack_require__(417);
-	
-	__webpack_require__(418);
-	
-	__webpack_require__(419);
-	
-	__webpack_require__(420);
-	
-	__webpack_require__(421);
-	
-	__webpack_require__(422);
-	
-	__webpack_require__(423);
-	
-	__webpack_require__(424);
-	
-	__webpack_require__(425);
-	
-	__webpack_require__(426);
-	
-	__webpack_require__(427);
-	
-	__webpack_require__(428);
-	
-	__webpack_require__(429);
-	
-	__webpack_require__(430);
-	
-	__webpack_require__(431);
-	
-	__webpack_require__(432);
-	
-	__webpack_require__(433);
-	
-	__webpack_require__(434);
-	
-	__webpack_require__(435);
-	
-	__webpack_require__(436);
-	
-	__webpack_require__(437);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function () {
-		(0, _markets2.default)();
-		(0, _tradeTypes2.default)();
-	};
-
-/***/ },
-/* 408 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _translator = __webpack_require__(307);
-	
-	var _relationChecker = __webpack_require__(409);
-	
-	Blockly.Blocks.trade = {
-	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('(1) Define your contract here'));
-	    this.appendStatementInput('SUBMARKET').setCheck('Submarket');
-	    this.setPreviousStatement(true, null);
-	    this.setColour('#2a3052');
-	    this.setTooltip(_translator.translator.translateText('Use this block to choose markets and trade types.'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-	  onchange: function onchange(ev) {
-	    (0, _relationChecker.trade)(this, ev);
-	  }
-	};
-
-/***/ },
-/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29597,7 +29137,7 @@
 	};
 
 /***/ },
-/* 410 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29608,7 +29148,7 @@
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29625,9 +29165,16 @@
 	    (0, _relationChecker.insideCondition)(this, ev, 'Barrier Offset');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
+	
+	Blockly.JavaScript.barrier_offset = function (block) {
+	  var barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
+	  var barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
+	  var code = barrierOffsetType + Number(barrierOffset);
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 411 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29638,7 +29185,7 @@
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _bot = __webpack_require__(302);
 	
@@ -29686,10 +29233,46 @@
 	      }
 	    }
 	  }
+	
+	  var _iteratorNormalCompletion2 = true;
+	  var _didIteratorError2 = false;
+	  var _iteratorError2 = undefined;
+	
+	  try {
+	    var _loop2 = function _loop2() {
+	      var symbol = _step2.value;
+	
+	      Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
+	        var condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
+	        if (!condition) {
+	          throw Error(_translator.translator.translateText('A trade type has to be defined for the symbol'));
+	        }
+	        var code = condition.trim() + '\n symbol: \'' + symbol + '\'}';
+	        return code;
+	      };
+	    };
+	
+	    for (var _iterator2 = Object.keys(symbolNames)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	      _loop2();
+	    }
+	  } catch (err) {
+	    _didIteratorError2 = true;
+	    _iteratorError2 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	        _iterator2.return();
+	      }
+	    } finally {
+	      if (_didIteratorError2) {
+	        throw _iteratorError2;
+	      }
+	    }
+	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 
 /***/ },
-/* 412 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29702,11 +29285,11 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
-	var _components = __webpack_require__(413);
+	var _components = __webpack_require__(384);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29724,28 +29307,28 @@
 	      Blockly.Blocks[opposites.toLowerCase()] = {
 	        init: function init() {
 	          var optionNames = [];
-	          var _iteratorNormalCompletion2 = true;
-	          var _didIteratorError2 = false;
-	          var _iteratorError2 = undefined;
+	          var _iteratorNormalCompletion3 = true;
+	          var _didIteratorError3 = false;
+	          var _iteratorError3 = undefined;
 	
 	          try {
-	            for (var _iterator2 = _const2.default.opposites[opposites][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	              var options = _step2.value;
+	            for (var _iterator3 = _const2.default.opposites[opposites][Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	              var options = _step3.value;
 	
 	              var optionName = options[Object.keys(options)[0]];
 	              optionNames.push(optionName);
 	            }
 	          } catch (err) {
-	            _didIteratorError2 = true;
-	            _iteratorError2 = err;
+	            _didIteratorError3 = true;
+	            _iteratorError3 = err;
 	          } finally {
 	            try {
-	              if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	                _iterator2.return();
+	              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                _iterator3.return();
 	              }
 	            } finally {
-	              if (_didIteratorError2) {
-	                throw _iteratorError2;
+	              if (_didIteratorError3) {
+	                throw _iteratorError3;
 	              }
 	            }
 	          }
@@ -29794,10 +29377,72 @@
 	      }
 	    }
 	  }
+	
+	  var _iteratorNormalCompletion2 = true;
+	  var _didIteratorError2 = false;
+	  var _iteratorError2 = undefined;
+	
+	  try {
+	    var _loop2 = function _loop2() {
+	      var opposites = _step2.value;
+	
+	      Blockly.JavaScript[opposites.toLowerCase()] = function tradeType(block) {
+	        var durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
+	        var candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST');
+	        var durationType = block.getFieldValue('DURATIONTYPE_LIST');
+	        var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
+	        var currency = block.getFieldValue('CURRENCY_LIST');
+	        var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
+	        var predictionValue = void 0;
+	        var barrierOffsetValue = void 0;
+	        var secondBarrierOffsetValue = void 0;
+	        if (_const2.default.hasPrediction.indexOf(opposites) > -1) {
+	          predictionValue = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
+	          if (predictionValue === '') {
+	            throw Error(_translator.translator.translateText('All trade types are required'));
+	          }
+	        }
+	        if (_const2.default.hasBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
+	          barrierOffsetValue = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
+	          if (barrierOffsetValue === '') {
+	            throw Error(_translator.translator.translateText('All trade types are required'));
+	          }
+	        }
+	        if (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
+	          secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
+	          if (secondBarrierOffsetValue === '') {
+	            throw Error(_translator.translator.translateText('All trade types are required'));
+	          }
+	        }
+	        if (opposites === '' || durationValue === '' || payouttype === '' || currency === '' || amount === '') {
+	          throw Error(_translator.translator.translateText('All trade types are required'));
+	        }
+	        var code = '{\n' + 'condition: \'' + opposites + '\',\n' + 'candleInterval: \'' + candleIntervalValue + '\',\n' + 'duration: ' + durationValue + ',\n' + 'duration_unit: \'' + durationType + '\',\n' + 'basis: \'' + payouttype + '\',\n' + 'currency: \'' + currency + '\',\n' + 'amount: (' + amount + ').toFixed(2),\n' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'barrier: ' + predictionValue + ',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrier: \'' + barrierOffsetValue + '\',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'barrier2: \'' + secondBarrierOffsetValue + '\',\n' : '');
+	        return code;
+	      };
+	    };
+	
+	    for (var _iterator2 = Object.keys(_const2.default.opposites)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	      _loop2();
+	    }
+	  } catch (err) {
+	    _didIteratorError2 = true;
+	    _iteratorError2 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	        _iterator2.return();
+	      }
+	    } finally {
+	      if (_didIteratorError2) {
+	        throw _iteratorError2;
+	      }
+	    }
+	  }
 	};
 
 /***/ },
-/* 413 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29857,7 +29502,7 @@
 	}
 
 /***/ },
-/* 414 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29873,9 +29518,15 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
+	
+	Blockly.JavaScript.balance = function (block) {
+	  var balanceType = block.getFieldValue('BALANCE_TYPE');
+	  var code = 'Bot.getBalance(\'' + balanceType + '\')';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 415 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29884,7 +29535,7 @@
 	
 	Blockly.Blocks.notify = {
 	  init: function init() {
-	    this.appendValueInput('MESSAGE').setCheck(null).appendField(_translator.translator.translateText('Notify type:')).appendField(new Blockly.FieldDropdown([[_translator.translator.translateText('success'), 'success'], [_translator.translator.translateText('information'), 'info'], [_translator.translator.translateText('warning'), 'warn'], [_translator.translator.translateText('error'), 'error']]), 'NOTIFICATION_TYPE');
+	    this.appendValueInput('MESSAGE').setCheck(null).appendField(_translator.translator.translateText('Notify')).appendField(new Blockly.FieldDropdown([[_translator.translator.translateText('success'), 'success'], [_translator.translator.translateText('information'), 'info'], [_translator.translator.translateText('warning'), 'warn'], [_translator.translator.translateText('error'), 'error']]), 'NOTIFICATION_TYPE');
 	    this.setPreviousStatement(true, null);
 	    this.setNextStatement(true, null);
 	    this.setColour('#dedede');
@@ -29892,9 +29543,16 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
+	
+	Blockly.JavaScript.notify = function (block) {
+	  var notificationType = block.getFieldValue('NOTIFICATION_TYPE');
+	  var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
+	  var code = 'Bot.log( ' + message + ', \'' + notificationType + '\');\n';
+	  return code;
+	};
 
 /***/ },
-/* 416 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29910,9 +29568,13 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
+	
+	Blockly.JavaScript.total_profit = function () {
+	  return ['Bot.getTotalProfit()', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 417 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29928,16 +29590,20 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
+	
+	Blockly.JavaScript.total_runs = function () {
+	  return ['Bot.getTotalRuns()', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 418 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _const = __webpack_require__(306);
 	
@@ -29957,16 +29623,21 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Check Direction');
 	  }
 	};
+	Blockly.JavaScript.check_direction = function (block) {
+	  var checkWith = block.getFieldValue('CHECK_DIRECTION');
+	  var code = '(ticks.direction === \'' + checkWith + '\')';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 419 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 	Blockly.Blocks.direction = {
@@ -29981,16 +29652,20 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Tick Direction');
 	  }
 	};
+	
+	Blockly.JavaScript.direction = function () {
+	  return ['ticks.direction', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 420 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _utils = __webpack_require__(377);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30008,16 +29683,22 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Purchase');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.purchase = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'purchaseCtrl.purchase(\'' + purchaseList + '\');\n';
+	  return code;
+	};
 
 /***/ },
-/* 421 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _utils = __webpack_require__(377);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30035,16 +29716,22 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Ask Price');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.ask_price = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').ask_price)';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 422 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _utils = __webpack_require__(377);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30062,9 +29749,15 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Payout');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.payout = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').payout)';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 423 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30080,14 +29773,20 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
+	
+	Blockly.JavaScript.on_strategy = function (block) {
+	  var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
+	  var code = 'function on_strategy(ticks, proposals, purchaseCtrl){\n\tif(purchaseCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
+	  return code;
+	};
 
 /***/ },
-/* 424 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30104,14 +29803,17 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Tick Value');
 	  }
 	};
+	Blockly.JavaScript.tick = function () {
+	  return ['ticks.ticks.slice(-1)[0].quote', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 425 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30128,14 +29830,17 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Ticks List');
 	  }
 	};
+	Blockly.JavaScript.ticks = function () {
+	  return ['ticks.ticks.map(function(i){return i.quote;})', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 426 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30152,9 +29857,12 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Candles List');
 	  }
 	};
+	Blockly.JavaScript.ohlc = function () {
+	  return ['ticks.ohlc', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 427 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30165,7 +29873,7 @@
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30173,7 +29881,7 @@
 	  init: function init() {
 	    this.appendValueInput('OHLCOBJ').setCheck(null).appendField('Read').appendField(new Blockly.FieldDropdown(_const2.default.ohlcFields), 'OHLCFIELD_LIST').appendField('in Candles');
 	    this.setInputsInline(false);
-	    this.setOutput(true, null);
+	    this.setOutput(true, 'Number');
 	    this.setColour('#f2f2f2');
 	    this.setTooltip(_translator.translator.translateText('Read a field from a candle (received from Candles list)'));
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
@@ -30182,9 +29890,67 @@
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Candles');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
+	
+	Blockly.JavaScript.read_ohlc_obj = function (block) {
+	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
+	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
+	  var code = void 0;
+	  if (ohlcObj) {
+	    code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
+	  } else {
+	    code = 'ticks.ohlc.slice(-1)[0].' + ohlcField;
+	  }
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 428 */
+/* 399 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _const = __webpack_require__(306);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	var _translator = __webpack_require__(307);
+	
+	var _relationChecker = __webpack_require__(380);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	Blockly.Blocks.read_ohlc = {
+	  init: function init() {
+	    this.appendValueInput('CANDLEINDEX').setCheck('Number').appendField(_translator.translator.translateText('Read')).appendField(new Blockly.FieldDropdown(_const2.default.ohlcFields), 'OHLCFIELD_LIST').appendField('# ' + _translator.translator.translateText('latest'));
+	    this.setOutput(true, 'Number');
+	    this.setInputsInline(true);
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideStrategy)(this, ev, 'Candle');
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
+	
+	
+	Blockly.JavaScript.read_ohlc = function (block) {
+	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
+	  var index = Number(Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC));
+	  var code = void 0;
+	  if (!index) {
+	    index = 1;
+	  }
+	  if (index === 1) {
+	    code = '(ticks.ohlc.slice(-1)[0].' + ohlcField + ')';
+	  } else {
+	    code = '(ticks.ohlc.slice(-1*' + index + ', -1*' + (index - 1) + ')[0].' + ohlcField + ')';
+	  }
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30200,9 +29966,15 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
+	
+	Blockly.JavaScript.during_purchase = function (block) {
+	  var stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
+	  var code = 'function during_purchase(openProposal, purchaseCtrl){\n\tif(purchaseCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
+	  return code;
+	};
 
 /***/ },
-/* 429 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30218,9 +29990,13 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.sell_at_market = function () {
+	  return 'purchaseCtrl.sellAtMarket();\n';
+	};
 
 /***/ },
-/* 430 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30236,16 +30012,22 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
+	
+	
+	Blockly.JavaScript.check_sell = function () {
+	  var code = '(purchaseCtrl.isSellAvailable())';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 431 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
 	Blockly.Blocks.contract_result = {
@@ -30260,9 +30042,13 @@
 	    (0, _relationChecker.insideFinish)(this, ev, 'Contract Result');
 	  }
 	};
+	
+	Blockly.JavaScript.contract_result = function () {
+	  return ['details[10]', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 432 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30271,7 +30057,7 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30289,14 +30075,19 @@
 	    (0, _relationChecker.insideFinish)(this, ev, 'Check Result');
 	  }
 	};
+	Blockly.JavaScript.contract_check_result = function (block) {
+	  var checkWith = block.getFieldValue('CHECK_RESULT');
+	  var code = '(details[10] === \'' + checkWith + '\')';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 433 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30313,9 +30104,12 @@
 	    (0, _relationChecker.insideFinish)(this, ev, 'Contract Details');
 	  }
 	};
+	Blockly.JavaScript.contract_details = function () {
+	  return ['details', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 434 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30331,16 +30125,22 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
+	
+	Blockly.JavaScript.on_finish = function (block) {
+	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
+	  var code = 'function on_finish(_finishedContract, details){\n' + stack + '\nBot.stop();\n}\n';
+	  return code;
+	};
 
 /***/ },
-/* 435 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	var _const = __webpack_require__(306);
 	
@@ -30360,16 +30160,22 @@
 	    (0, _relationChecker.insideFinish)(this, ev, 'Read Contract Details');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
+	
+	Blockly.JavaScript.read_details = function (block) {
+	  var detailIndex = block.getFieldValue('DETAIL_INDEX');
+	  var code = 'details[' + (parseInt(detailIndex.trim(), 10) - 1) + ']';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 436 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(409);
+	var _relationChecker = __webpack_require__(380);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
 	Blockly.Blocks.trade_again = {
@@ -30384,9 +30190,12 @@
 	    (0, _relationChecker.insideFinish)(this, ev, 'Trade Again');
 	  }
 	};
+	Blockly.JavaScript.trade_again = function () {
+	  return 'trade(true);\nreturn;\n';
+	};
 
 /***/ },
-/* 437 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30402,9 +30211,13 @@
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
+	
+	Blockly.JavaScript.block_holder = function () {
+	  return '';
+	};
 
 /***/ },
-/* 438 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30418,7 +30231,7 @@
 	
 	var _observer = __webpack_require__(299);
 	
-	var _components = __webpack_require__(439);
+	var _components = __webpack_require__(411);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30884,7 +30697,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 439 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30966,7 +30779,7 @@
 	};
 
 /***/ },
-/* 440 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30980,7 +30793,7 @@
 	
 	var _storageManager = __webpack_require__(300);
 	
-	var _components = __webpack_require__(439);
+	var _components = __webpack_require__(411);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -31202,7 +31015,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 441 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31354,7 +31167,7 @@
 	}
 
 /***/ },
-/* 442 */
+/* 414 */
 /***/ function(module, exports) {
 
 	// COPYRIGHT (c) 2016 TrackJS LLC ALL RIGHTS RESERVED
