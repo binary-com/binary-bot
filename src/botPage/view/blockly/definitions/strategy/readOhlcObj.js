@@ -7,8 +7,9 @@ Blockly.Blocks.read_ohlc_obj = {
   init: function init() {
     this.appendValueInput('OHLCOBJ')
       .setCheck(null)
-      .appendField('Candles')
-      .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST');
+      .appendField('Read')
+      .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
+      .appendField('in Candles');
     this.setInputsInline(false);
     this.setOutput(true, null);
     this.setColour('#f2f2f2');
