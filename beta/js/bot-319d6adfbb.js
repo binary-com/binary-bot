@@ -8155,7 +8155,7 @@
 	
 	var _logger = __webpack_require__(371);
 	
-	var _appId = __webpack_require__(413);
+	var _appId = __webpack_require__(414);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8175,7 +8175,7 @@
 			display: false
 		}
 	};
-	__webpack_require__(414);
+	__webpack_require__(415);
 	
 	var BotPage = function BotPage() {
 		var _this = this;
@@ -16031,7 +16031,9 @@
 	    CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD']],
 	    DETAILS: [[_translator.translator.translateText('statement'), '1'], [_translator.translator.translateText('ask price'), '2'], [_translator.translator.translateText('payout'), '3'], [_translator.translator.translateText('profit'), '4'], [_translator.translator.translateText('contract type'), '5'], [_translator.translator.translateText('entry spot'), '6'], [_translator.translator.translateText('entry value'), '7'], [_translator.translator.translateText('exit spot'), '8'], [_translator.translator.translateText('exit value'), '9'], [_translator.translator.translateText('barrier'), '10'], [_translator.translator.translateText('result'), '11']],
 	    CHECK_RESULT: [[_translator.translator.translateText('Win'), 'win'], [_translator.translator.translateText('Loss'), 'loss']],
-	    CHECK_DIRECTION: [[_translator.translator.translateText('Rise'), 'rise'], [_translator.translator.translateText('Fall'), 'fall'], [_translator.translator.translateText('No Change'), '']]
+	    CHECK_DIRECTION: [[_translator.translator.translateText('Rise'), 'rise'], [_translator.translator.translateText('Fall'), 'fall'], [_translator.translator.translateText('No Change'), '']],
+	    BALANCE_TYPE: [[_translator.translator.translateText('string'), 'STR'], [_translator.translator.translateText('number'), 'NUM']],
+	    NOTIFICATION_TYPE: [[_translator.translator.translateText('green'), 'success'], [_translator.translator.translateText('blue'), 'info'], [_translator.translator.translateText('yellow'), 'warn'], [_translator.translator.translateText('red'), 'error']]
 	  },
 	
 	  opposites: {
@@ -18477,6 +18479,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -18535,6 +18538,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -18557,10 +18566,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18631,15 +18640,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -18668,14 +18679,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -18722,6 +18727,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -18780,6 +18786,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -18802,10 +18814,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18876,15 +18888,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -18913,14 +18927,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -18967,6 +18975,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19025,6 +19034,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19047,10 +19062,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19121,15 +19136,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -19158,14 +19175,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -19212,6 +19223,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19270,6 +19282,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19292,10 +19310,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19366,15 +19384,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -19403,14 +19423,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -19457,6 +19471,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19515,6 +19530,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19537,10 +19558,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19611,15 +19632,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -19648,14 +19671,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -19702,6 +19719,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19760,6 +19778,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19782,10 +19806,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19856,15 +19880,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -19893,14 +19919,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -19947,6 +19967,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20005,6 +20026,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -20027,10 +20054,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20101,15 +20128,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -20138,14 +20167,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -20192,6 +20215,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20250,6 +20274,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -20272,10 +20302,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20346,15 +20376,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -20383,14 +20415,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -20437,6 +20463,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20495,6 +20522,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -20517,10 +20550,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20591,15 +20624,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -20628,14 +20663,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -20682,6 +20711,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20740,6 +20770,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -20762,10 +20798,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20836,15 +20872,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -20873,14 +20911,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -20927,6 +20959,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20985,6 +21018,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -21007,10 +21046,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21081,15 +21120,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -21118,14 +21159,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -21172,6 +21207,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -21230,6 +21266,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -21252,10 +21294,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21326,15 +21368,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -21363,14 +21407,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -21417,6 +21455,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -21475,6 +21514,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -21497,10 +21542,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21571,15 +21616,17 @@
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
 	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
 	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
 	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -21608,14 +21655,8 @@
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
 	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
 	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
 	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
@@ -21804,8 +21845,8 @@
 	  }, {
 	    key: 'createDetails',
 	    value: function createDetails(contract) {
-	      var result = +contract.sell_price === 0 ? 'loss' : 'win';
 	      var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+	      var result = profit < 0 ? 'loss' : 'win';
 	      _observer.observer.emit('log.strategy.' + result, {
 	        profit: profit,
 	        transactionId: contract.transaction_ids.buy
@@ -22549,11 +22590,11 @@
 	
 	var _bot = __webpack_require__(302);
 	
-	var _introduction = __webpack_require__(410);
+	var _introduction = __webpack_require__(411);
 	
 	var _introduction2 = _interopRequireDefault(_introduction);
 	
-	var _welcome = __webpack_require__(412);
+	var _welcome = __webpack_require__(413);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
 	
@@ -28021,9 +28062,30 @@
 	  }, {
 	    key: 'disableDeleteForMainBlocks',
 	    value: function disableDeleteForMainBlocks() {
-	      _utils.utils.getBlockByType('trade').setDeletable(false);
-	      _utils.utils.getBlockByType('on_strategy').setDeletable(false);
-	      _utils.utils.getBlockByType('on_finish').setDeletable(false);
+	      var _iteratorNormalCompletion4 = true;
+	      var _didIteratorError4 = false;
+	      var _iteratorError4 = undefined;
+	
+	      try {
+	        for (var _iterator4 = _const2.default.mainBlocks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	          var blockType = _step4.value;
+	
+	          _utils.utils.getBlockByType(blockType).setDeletable(false);
+	        }
+	      } catch (err) {
+	        _didIteratorError4 = true;
+	        _iteratorError4 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	            _iterator4.return();
+	          }
+	        } finally {
+	          if (_didIteratorError4) {
+	            throw _iteratorError4;
+	          }
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'overrideBlocklyDefaultShape',
@@ -28051,35 +28113,33 @@
 	  }, {
 	    key: 'addMissingMainBlocks',
 	    value: function addMissingMainBlocks() {
-	      var _iteratorNormalCompletion4 = true;
-	      var _didIteratorError4 = false;
-	      var _iteratorError4 = undefined;
+	      var _iteratorNormalCompletion5 = true;
+	      var _didIteratorError5 = false;
+	      var _iteratorError5 = undefined;
 	
 	      try {
-	        for (var _iterator4 = _const2.default.mainBlocks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-	          var mainBlock = _step4.value;
+	        for (var _iterator5 = _const2.default.mainBlocks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	          var mainBlock = _step5.value;
 	
-	          if (mainBlock !== 'during_purchase') {
-	            if (!_utils.utils.getBlockByType(mainBlock)) {
-	              var block = Blockly.mainWorkspace.newBlock(mainBlock);
-	              block.initSvg();
-	              block.render();
-	              this.setBlockColors();
-	              block.setDeletable(false);
-	            }
+	          if (!_utils.utils.getBlockByType(mainBlock)) {
+	            var block = Blockly.mainWorkspace.newBlock(mainBlock);
+	            block.initSvg();
+	            block.render();
+	            this.setBlockColors();
+	            block.setDeletable(false);
 	          }
 	        }
 	      } catch (err) {
-	        _didIteratorError4 = true;
-	        _iteratorError4 = err;
+	        _didIteratorError5 = true;
+	        _iteratorError5 = err;
 	      } finally {
 	        try {
-	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-	            _iterator4.return();
+	          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	            _iterator5.return();
 	          }
 	        } finally {
-	          if (_didIteratorError4) {
-	            throw _iteratorError4;
+	          if (_didIteratorError5) {
+	            throw _iteratorError5;
 	          }
 	        }
 	      }
@@ -28117,50 +28177,17 @@
 	  }, {
 	    key: 'setBlockColors',
 	    value: function setBlockColors() {
-	      var _iteratorNormalCompletion5 = true;
-	      var _didIteratorError5 = false;
-	      var _iteratorError5 = undefined;
-	
-	      try {
-	        for (var _iterator5 = _const2.default.mainBlocks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	          var blockType = _step5.value;
-	
-	          var block = _utils.utils.getBlockByType(blockType);
-	          if (block) {
-	            block.getField().getSvgRoot().style.setProperty('fill', 'white', 'important');
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError5 = true;
-	        _iteratorError5 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-	            _iterator5.return();
-	          }
-	        } finally {
-	          if (_didIteratorError5) {
-	            throw _iteratorError5;
-	          }
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'saveXml',
-	    value: function saveXml() {
-	      var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	      var _iteratorNormalCompletion6 = true;
 	      var _didIteratorError6 = false;
 	      var _iteratorError6 = undefined;
 	
 	      try {
-	        for (var _iterator6 = Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-	          var field = _step6.value;
+	        for (var _iterator6 = _const2.default.mainBlocks[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	          var blockType = _step6.value;
 	
-	          if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-	            if (field.childNodes.length >= 1) {
-	              field.childNodes[0].nodeValue = '';
-	            }
+	          var block = _utils.utils.getBlockByType(blockType);
+	          if (block) {
+	            block.getField().getSvgRoot().style.setProperty('fill', 'white', 'important');
 	          }
 	        }
 	      } catch (err) {
@@ -28177,28 +28204,23 @@
 	          }
 	        }
 	      }
-	
-	      var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-	      var filename = 'binary-bot' + parseInt(new Date().getTime() / 1000, 10) + '.xml';
-	      var blob = new Blob([xmlText], {
-	        type: 'text/xml;charset=utf-8'
-	      });
-	      _filesaverjs2.default.saveAs(blob, filename);
 	    }
 	  }, {
-	    key: 'deleteStrayBlocks',
-	    value: function deleteStrayBlocks() {
-	      var topBlocks = Blockly.mainWorkspace.getTopBlocks();
+	    key: 'saveXml',
+	    value: function saveXml() {
+	      var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	      var _iteratorNormalCompletion7 = true;
 	      var _didIteratorError7 = false;
 	      var _iteratorError7 = undefined;
 	
 	      try {
-	        for (var _iterator7 = topBlocks[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-	          var block = _step7.value;
+	        for (var _iterator7 = Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+	          var field = _step7.value;
 	
-	          if (!_utils.utils.isMainBlock(block.type) && block !== _utils.utils.findTopParentBlock(_utils.utils.getBlockByType('trade')) && block.type.indexOf('procedures_def') < 0 && block.type !== 'block_holder') {
-	            block.dispose();
+	          if (field.getAttribute('name') === 'ACCOUNT_LIST') {
+	            if (field.childNodes.length >= 1) {
+	              field.childNodes[0].nodeValue = '';
+	            }
 	          }
 	        }
 	      } catch (err) {
@@ -28212,6 +28234,44 @@
 	        } finally {
 	          if (_didIteratorError7) {
 	            throw _iteratorError7;
+	          }
+	        }
+	      }
+	
+	      var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+	      var filename = 'binary-bot' + parseInt(new Date().getTime() / 1000, 10) + '.xml';
+	      var blob = new Blob([xmlText], {
+	        type: 'text/xml;charset=utf-8'
+	      });
+	      _filesaverjs2.default.saveAs(blob, filename);
+	    }
+	  }, {
+	    key: 'deleteStrayBlocks',
+	    value: function deleteStrayBlocks() {
+	      var topBlocks = Blockly.mainWorkspace.getTopBlocks();
+	      var _iteratorNormalCompletion8 = true;
+	      var _didIteratorError8 = false;
+	      var _iteratorError8 = undefined;
+	
+	      try {
+	        for (var _iterator8 = topBlocks[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+	          var block = _step8.value;
+	
+	          if (!_utils.utils.isMainBlock(block.type) && block !== _utils.utils.findTopParentBlock(_utils.utils.getBlockByType('trade')) && block.type.indexOf('procedures_def') < 0 && block.type !== 'block_holder') {
+	            block.dispose();
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError8 = true;
+	        _iteratorError8 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion8 && _iterator8.return) {
+	            _iterator8.return();
+	          }
+	        } finally {
+	          if (_didIteratorError8) {
+	            throw _iteratorError8;
 	          }
 	        }
 	      }
@@ -28808,6 +28868,8 @@
 	__webpack_require__(408);
 	
 	__webpack_require__(409);
+	
+	__webpack_require__(410);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29509,16 +29571,22 @@
 	
 	var _translator = __webpack_require__(307);
 	
+	var _const = __webpack_require__(306);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 	Blockly.Blocks.balance = {
 	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('Balance:')).appendField(new Blockly.FieldDropdown([[_translator.translator.translateText('string'), 'STR'], [_translator.translator.translateText('number'), 'NUM']]), 'BALANCE_TYPE');
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Balance:')).appendField(new Blockly.FieldDropdown(_const2.default.lists.BALANCE_TYPE), 'BALANCE_TYPE');
 	    this.setOutput(true, null);
 	    this.setColour('#dedede');
 	    this.setTooltip(_translator.translator.translateText('Get balance number or string'));
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
-	
+	};
 	Blockly.JavaScript.balance = function (block) {
 	  var balanceType = block.getFieldValue('BALANCE_TYPE');
 	  var code = 'Bot.getBalance(\'' + balanceType + '\')';
@@ -29533,17 +29601,23 @@
 	
 	var _translator = __webpack_require__(307);
 	
+	var _const = __webpack_require__(306);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
 	Blockly.Blocks.notify = {
 	  init: function init() {
-	    this.appendValueInput('MESSAGE').setCheck(null).appendField(_translator.translator.translateText('Notify')).appendField(new Blockly.FieldDropdown([[_translator.translator.translateText('success'), 'success'], [_translator.translator.translateText('information'), 'info'], [_translator.translator.translateText('warning'), 'warn'], [_translator.translator.translateText('error'), 'error']]), 'NOTIFICATION_TYPE');
+	    this.appendValueInput('MESSAGE').setCheck(null).appendField(_translator.translator.translateText('Notify')).appendField(new Blockly.FieldDropdown(_const2.default.lists.NOTIFICATION_TYPE), 'NOTIFICATION_TYPE');
 	    this.setPreviousStatement(true, null);
 	    this.setNextStatement(true, null);
 	    this.setColour('#dedede');
 	    this.setTooltip(_translator.translator.translateText('Creates notification'));
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
-	
+	};
 	Blockly.JavaScript.notify = function (block) {
 	  var notificationType = block.getFieldValue('NOTIFICATION_TYPE');
 	  var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
@@ -29959,7 +30033,7 @@
 	
 	Blockly.Blocks.during_purchase = {
 	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('(2.5) things to do when trade is in progress'));
+	    this.appendDummyInput().appendField(_translator.translator.translateText('(3) things to do when trade is in progress'));
 	    this.appendStatementInput('DURING_PURCHASE_STACK').setCheck('SellAtMarket');
 	    this.setColour('#2a3052');
 	    this.setTooltip(_translator.translator.translateText('Sell at market before a trade is finished'));
@@ -29969,7 +30043,7 @@
 	
 	Blockly.JavaScript.during_purchase = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
-	  var code = 'function during_purchase(openProposal, purchaseCtrl){\n\tif(purchaseCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
+	  var code = 'function during_purchase(openContract, purchaseCtrl){\n\tif(purchaseCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
 	  return code;
 	};
 
@@ -30027,6 +30101,28 @@
 	
 	var _translator = __webpack_require__(307);
 	
+	Blockly.Blocks.sell_price = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Sell profit/loss'));
+	    this.setOutput(true, 'Number');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('Returns the profit for sell at market.'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+	Blockly.JavaScript.sell_price = function () {
+	  var code = '(+(Number(openContract.bid_price) - Number(openContract.buy_price)).toFixed(2))';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 404 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(307);
+	
 	var _relationChecker = __webpack_require__(380);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
@@ -30048,7 +30144,7 @@
 	};
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30082,7 +30178,7 @@
 	};
 
 /***/ },
-/* 405 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30109,7 +30205,7 @@
 	};
 
 /***/ },
-/* 406 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30118,7 +30214,7 @@
 	
 	Blockly.Blocks.on_finish = {
 	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('(3) things to do after purchase is finished'));
+	    this.appendDummyInput().appendField(_translator.translator.translateText('(4) things to do after purchase is finished'));
 	    this.appendStatementInput('FINISH_STACK').setCheck('TradeAgain');
 	    this.setColour('#2a3052');
 	    this.setTooltip(_translator.translator.translateText('This block decides what to do when a purchased contract is finished'));
@@ -30133,7 +30229,7 @@
 	};
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30168,7 +30264,7 @@
 	};
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30195,7 +30291,7 @@
 	};
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30217,7 +30313,7 @@
 	};
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30231,7 +30327,7 @@
 	
 	var _observer = __webpack_require__(299);
 	
-	var _components = __webpack_require__(411);
+	var _components = __webpack_require__(412);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30697,7 +30793,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 411 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30779,7 +30875,7 @@
 	};
 
 /***/ },
-/* 412 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30793,7 +30889,7 @@
 	
 	var _storageManager = __webpack_require__(300);
 	
-	var _components = __webpack_require__(411);
+	var _components = __webpack_require__(412);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -31015,7 +31111,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 413 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31167,7 +31263,7 @@
 	}
 
 /***/ },
-/* 414 */
+/* 415 */
 /***/ function(module, exports) {
 
 	// COPYRIGHT (c) 2016 TrackJS LLC ALL RIGHTS RESERVED

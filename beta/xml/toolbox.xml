@@ -271,6 +271,11 @@
 			<block type="payout"></block>
 			<block type="ask_price"></block>
 		</category>
+		<category name="During Purchase" colour="#2a3052" i18n-text="During Purchase">
+			<block type="check_sell"></block>
+			<block type="sell_price"></block>
+			<block type="sell_at_market"></block>
+		</category>
 		<category name="After Purchase" colour="#2a3052" i18n-text="After Purchase">
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
