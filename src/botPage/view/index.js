@@ -149,7 +149,7 @@ export default class View {
       observeForLog(type, 'left');
     }
 
-    for (const event of ['log.bot.login', 'log.strategy.start', 'log.trade.purchase', 'log.trade.finish']) {
+    for (const event of ['log.bot.login', 'log.trade.finish']) {
       observer.register(event, (d) => amplitude.getInstance().logEvent(event, d));
     }
   }
