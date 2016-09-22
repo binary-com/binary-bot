@@ -5,7 +5,7 @@ Blockly.Blocks.notify = {
   init: function init() {
     this.appendValueInput('MESSAGE')
       .setCheck(null)
-      .appendField(translator.translateText('Notify type:'))
+      .appendField(translator.translateText('Notify'))
       .appendField(new Blockly.FieldDropdown([
         [translator.translateText('success'), 'success'],
         [translator.translateText('information'), 'info'],

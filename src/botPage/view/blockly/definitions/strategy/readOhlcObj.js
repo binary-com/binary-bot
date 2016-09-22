@@ -11,7 +11,7 @@ Blockly.Blocks.read_ohlc_obj = {
       .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
       .appendField('in Candles');
     this.setInputsInline(false);
-    this.setOutput(true, null);
+    this.setOutput(true, 'Number');
     this.setColour('#f2f2f2');
     this.setTooltip(translator.translateText('Read a field from a candle (received from Candles list)'));
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
