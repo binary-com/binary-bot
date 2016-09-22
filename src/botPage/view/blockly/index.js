@@ -72,12 +72,10 @@ export default class _Blockly {
     return xmlStr.replace('<!--Markets-->', marketXml);
   }
   disableDeleteForMainBlocks() {
-    utils.getBlockByType('trade')
-      .setDeletable(false);
-    utils.getBlockByType('on_strategy')
-      .setDeletable(false);
-    utils.getBlockByType('on_finish')
-      .setDeletable(false);
+    for (const blockType of config.mainBlocks) {
+      utils.getBlockByType(blockType)
+        .setDeletable(false);
+    }
   }
   overrideBlocklyDefaultShape() {
     Blockly.Blocks.text.newQuote_ = (open) => { // eslint-disable-line no-underscore-dangle
@@ -99,14 +97,12 @@ export default class _Blockly {
   }
   addMissingMainBlocks() {
     for (const mainBlock of config.mainBlocks) {
-      if (mainBlock !== 'during_purchase') {
-        if (!utils.getBlockByType(mainBlock)) {
-          const block = Blockly.mainWorkspace.newBlock(mainBlock);
-          block.initSvg();
-          block.render();
-          this.setBlockColors();
-          block.setDeletable(false);
-        }
+      if (!utils.getBlockByType(mainBlock)) {
+        const block = Blockly.mainWorkspace.newBlock(mainBlock);
+        block.initSvg();
+        block.render();
+        this.setBlockColors();
+        block.setDeletable(false);
       }
     }
   }
