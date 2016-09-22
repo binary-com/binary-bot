@@ -8155,7 +8155,7 @@
 	
 	var _logger = __webpack_require__(371);
 	
-	var _appId = __webpack_require__(439);
+	var _appId = __webpack_require__(441);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8175,7 +8175,7 @@
 			display: false
 		}
 	};
-	__webpack_require__(440);
+	__webpack_require__(442);
 	
 	var BotPage = function BotPage() {
 		var _this = this;
@@ -8575,6 +8575,7 @@
 	
 	    this.ticks = [];
 	    this.candles = [];
+	    this.candleInterval = 60;
 	    this.running = false;
 	    this.currentToken = '';
 	    this.balanceStr = '';
@@ -8621,9 +8622,14 @@
 	          if (this.currentToken !== token) {
 	            promises.push(this.login(token));
 	          }
-	          if (!_underscore2.default.isEmpty(this.tradeOption) && this.tradeOption.symbol !== this.currentSymbol) {
-	            promises.push(this.subscribeToTickHistory());
-	            promises.push(this.subscribeToCandles());
+	          if (!_underscore2.default.isEmpty(this.tradeOption)) {
+	            if (this.tradeOption.symbol !== this.currentSymbol) {
+	              promises.push(this.subscribeToTickHistory());
+	              promises.push(this.subscribeToCandles());
+	            } else if (this.tradeOption.candleInterval !== this.candleInterval) {
+	              this.candleInterval = this.tradeOption.candleInterval;
+	              promises.push(this.subscribeToCandles());
+	            }
 	          }
 	          Promise.all(promises).then(function () {
 	            _this.startTrading();
@@ -8660,6 +8666,7 @@
 	      if (!_underscore2.default.isEmpty(this.tradeOption)) {
 	        this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
 	        var opposites = _const2.default.opposites[this.tradeOption.condition];
+	        this.candleInterval = this.tradeOption.candleInterval;
 	        this.tradeOptions = [];
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
@@ -8673,6 +8680,7 @@
 	              contract_type: Object.keys(opposites[key])[0]
 	            });
 	            delete newTradeOption.condition;
+	            delete newTradeOption.candleInterval;
 	            this.tradeOptions.push(newTradeOption);
 	          }
 	        } catch (err) {
@@ -8733,7 +8741,7 @@
 	        _this4.api.history(_this4.tradeOption.symbol, {
 	          end: 'latest',
 	          count: 600,
-	          granularity: 60,
+	          granularity: _this4.candleInterval,
 	          style: 'candles',
 	          subscribe: 1
 	        });
@@ -16075,6 +16083,7 @@
 	  },
 	  barrierTypes: [['+', '+'], ['-', '-']],
 	  ohlcFields: [['Open', 'open'], ['High', 'high'], ['Low', 'low'], ['Close', 'close']],
+	  candleIntervals: [['1 minute', '60'], ['2 minutes', '120'], ['3 minutes', '180'], ['5 minutes', '300'], ['10 minutes', '600'], ['15 minutes', '900'], ['30 minutes', '1800'], ['1 hour', '3600'], ['2 hours', '7200'], ['4 hours', '14400'], ['8 hours', '28800'], ['1 day', '86400']],
 	  mainBlocks: ['trade', 'on_strategy', 'on_finish', 'during_purchase'],
 	  durationTypes: {
 	    RISEFALL: [[_translator.translator.translateText('Ticks'), 't'], [_translator.translator.translateText('Seconds'), 's'], [_translator.translator.translateText('Minutes'), 'm'], [_translator.translator.translateText('Hours'), 'h']],
@@ -18552,7 +18561,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18625,6 +18633,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -18673,6 +18683,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -18791,7 +18803,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18864,6 +18875,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -18912,6 +18925,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -19030,7 +19045,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19103,6 +19117,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19151,6 +19167,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -19269,7 +19287,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19342,6 +19359,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19390,6 +19409,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -19508,7 +19529,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19581,6 +19601,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19629,6 +19651,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -19747,7 +19771,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -19820,6 +19843,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -19868,6 +19893,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -19986,7 +20013,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20059,6 +20085,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -20107,6 +20135,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -20225,7 +20255,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20298,6 +20327,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -20346,6 +20377,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -20464,7 +20497,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20537,6 +20569,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -20585,6 +20619,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -20703,7 +20739,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -20776,6 +20811,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -20824,6 +20861,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -20942,7 +20981,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21015,6 +21053,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -21063,6 +21103,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -21181,7 +21223,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21254,6 +21295,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -21302,6 +21345,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -21420,7 +21465,6 @@
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -21493,6 +21537,8 @@
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
 	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
 	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
 	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
@@ -21541,6 +21587,8 @@
 	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
 	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
@@ -21590,6 +21638,7 @@
 	    this.finish = finish;
 	    this.ready = false;
 	    this.purchased = false;
+	    this.isSellAvailable = false;
 	    this.runningObservations = [];
 	    this.proposals = {};
 	  }
@@ -21679,6 +21728,11 @@
 	        var contract = this.proposals[option];
 	        this.trade = new _trade2.default(this.api);
 	        var tradeUpdate = function tradeUpdate(openContract) {
+	          if (openContract.is_valid_to_sell === 1 && !openContract.is_expired) {
+	            _this.isSellAvailable = true;
+	          } else {
+	            _this.isSellAvailable = false;
+	          }
 	          _this.duringPurchase(openContract, _this);
 	          _observer.observer.emit('strategy.tradeUpdate', openContract);
 	        };
@@ -21697,7 +21751,7 @@
 	  }, {
 	    key: 'sellAtMarket',
 	    value: function sellAtMarket() {
-	      if (this.trade) {
+	      if (this.isSellAvailable) {
 	        this.trade.sellAtMarket();
 	      }
 	    }
@@ -21800,8 +21854,8 @@
 	
 	      this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(function () {
 	        _this.getTheContractInfoAfterSell();
-	      }, function (e) {
-	        _observer.observer.emit('ui.log.warning', _translator.translator.translateText('Contract sell failed: ') + e);
+	      }, function () {
+	        return 0;
 	      });
 	    }
 	  }, {
@@ -21837,7 +21891,6 @@
 	        return false;
 	      }
 	      var apiProposalOpenContract = function apiProposalOpenContract(contract) {
-	        // detect changes and decide what to do when proposal is updated
 	        if (contract.is_expired && contract.is_valid_to_sell && !_this3.contractIsSold) {
 	          _this3.contractIsSold = true;
 	          _this3.api.originalApi.sellExpiredContracts().then(function () {
@@ -22448,11 +22501,11 @@
 	
 	var _bot = __webpack_require__(302);
 	
-	var _introduction = __webpack_require__(436);
+	var _introduction = __webpack_require__(438);
 	
 	var _introduction2 = _interopRequireDefault(_introduction);
 	
-	var _welcome = __webpack_require__(438);
+	var _welcome = __webpack_require__(440);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
 	
@@ -27771,7 +27824,7 @@
 	
 	var _code_generators2 = _interopRequireDefault(_code_generators);
 	
-	var _definitions = __webpack_require__(406);
+	var _definitions = __webpack_require__(407);
 	
 	var _definitions2 = _interopRequireDefault(_definitions);
 	
@@ -28709,6 +28762,8 @@
 	
 	__webpack_require__(405);
 	
+	__webpack_require__(406);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function () {
@@ -28833,6 +28888,7 @@
 	
 	      Blockly.JavaScript[opposites.toLowerCase()] = function condition(block) {
 	        var duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
+	        var candleInterval = block.getFieldValue('CANDLEINTERVAL_LIST');
 	        var durationType = block.getFieldValue('DURATIONTYPE_LIST');
 	        var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
 	        var currency = block.getFieldValue('CURRENCY_LIST');
@@ -28861,7 +28917,7 @@
 	        if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === '') {
 	          throw Error(_translator.translator.translateText('All trade types are required'));
 	        }
-	        var code = '{\n' + 'condition: \'' + opposites + '\',\n' + 'duration: ' + duration + ',\n' + 'duration_unit: \'' + durationType + '\',\n' + 'basis: \'' + payouttype + '\',\n' + 'currency: \'' + currency + '\',\n' + 'amount: (' + amount + ').toFixed(2),\n' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && prediction !== '' ? 'barrier: ' + prediction + ',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffset !== '' ? 'barrier: \'' + barrierOffset + '\',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffset !== '' ? 'barrier2: \'' + secondBarrierOffset + '\',\n' : '');
+	        var code = '{\n' + 'condition: \'' + opposites + '\',\n' + 'candleInterval: \'' + candleInterval + '\',\n' + 'duration: ' + duration + ',\n' + 'duration_unit: \'' + durationType + '\',\n' + 'basis: \'' + payouttype + '\',\n' + 'currency: \'' + currency + '\',\n' + 'amount: (' + amount + ').toFixed(2),\n' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && prediction !== '' ? 'barrier: ' + prediction + ',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffset !== '' ? 'barrier: \'' + barrierOffset + '\',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffset !== '' ? 'barrier2: \'' + secondBarrierOffset + '\',\n' : '');
 	        return code;
 	      };
 	    };
@@ -29039,7 +29095,12 @@
 	Blockly.JavaScript.read_ohlc_obj = function (block) {
 	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
+	  var code = void 0;
+	  if (ohlcObj) {
+	    code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
+	  } else {
+	    code = 'ticks.ohlc.slice(-1)[0].' + ohlcField;
+	  }
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
@@ -29071,12 +29132,23 @@
 
 	'use strict';
 	
+	Blockly.JavaScript.check_sell = function () {
+	  var code = '(purchaseCtrl.isSellAvailable)';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 400 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
 	Blockly.JavaScript.contract_result = function () {
 	  return ['details[10]', Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29088,7 +29160,7 @@
 	};
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29098,7 +29170,7 @@
 	};
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29110,7 +29182,7 @@
 	};
 
 /***/ },
-/* 403 */
+/* 404 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29122,7 +29194,7 @@
 	};
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29132,7 +29204,7 @@
 	};
 
 /***/ },
-/* 405 */
+/* 406 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29142,7 +29214,7 @@
 	};
 
 /***/ },
-/* 406 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29151,19 +29223,17 @@
 		value: true
 	});
 	
-	__webpack_require__(407);
+	__webpack_require__(408);
 	
-	__webpack_require__(409);
+	__webpack_require__(410);
 	
-	var _markets = __webpack_require__(410);
+	var _markets = __webpack_require__(411);
 	
 	var _markets2 = _interopRequireDefault(_markets);
 	
-	var _tradeTypes = __webpack_require__(411);
+	var _tradeTypes = __webpack_require__(412);
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
-	
-	__webpack_require__(413);
 	
 	__webpack_require__(414);
 	
@@ -29209,6 +29279,10 @@
 	
 	__webpack_require__(435);
 	
+	__webpack_require__(436);
+	
+	__webpack_require__(437);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function () {
@@ -29217,14 +29291,14 @@
 	};
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	Blockly.Blocks.trade = {
 	  init: function init() {
@@ -29241,7 +29315,7 @@
 	};
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29523,7 +29597,7 @@
 	};
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29534,7 +29608,7 @@
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29553,7 +29627,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29564,7 +29638,7 @@
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _bot = __webpack_require__(302);
 	
@@ -29615,7 +29689,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 
 /***/ },
-/* 411 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29628,11 +29702,11 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
-	var _components = __webpack_require__(412);
+	var _components = __webpack_require__(413);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29677,6 +29751,7 @@
 	          }
 	
 	          (0, _components.title)(this, opposites, optionNames);
+	          (0, _components.candleInterval)(this);
 	          (0, _components.duration)(this, opposites);
 	          (0, _components.payout)(this, opposites);
 	          if (_const2.default.hasPrediction.indexOf(opposites) > -1) {
@@ -29722,7 +29797,7 @@
 	};
 
 /***/ },
-/* 412 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29731,6 +29806,7 @@
 	  value: true
 	});
 	exports.title = title;
+	exports.candleInterval = candleInterval;
 	exports.duration = duration;
 	exports.payout = payout;
 	exports.barrierOffset = barrierOffset;
@@ -29752,8 +29828,12 @@
 	  block.appendDummyInput().appendField('> ' + optionNames[0] + '/' + optionNames[1]);
 	}
 	
+	function candleInterval(block) {
+	  block.appendDummyInput().appendField(_translator.translator.translateText('Candle Interval:')).appendField(new Blockly.FieldDropdown(_const2.default.candleIntervals), 'CANDLEINTERVAL_LIST');
+	}
+	
 	function duration(block, opposites) {
-	  block.appendValueInput('DURATION').setCheck('Number').appendField('Duration:').appendField(new Blockly.FieldDropdown(_const2.default.durationTypes[opposites]), 'DURATIONTYPE_LIST');
+	  block.appendValueInput('DURATION').setCheck('Number').appendField(_translator.translator.translateText('Duration:')).appendField(new Blockly.FieldDropdown(_const2.default.durationTypes[opposites]), 'DURATIONTYPE_LIST');
 	}
 	
 	function payout(block) {
@@ -29777,7 +29857,7 @@
 	}
 
 /***/ },
-/* 413 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29795,7 +29875,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 
 /***/ },
-/* 414 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29814,7 +29894,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
 
 /***/ },
-/* 415 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29832,7 +29912,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
 
 /***/ },
-/* 416 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29850,14 +29930,14 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
 
 /***/ },
-/* 417 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _const = __webpack_require__(306);
 	
@@ -29879,14 +29959,14 @@
 	};
 
 /***/ },
-/* 418 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 	Blockly.Blocks.direction = {
@@ -29903,14 +29983,14 @@
 	};
 
 /***/ },
-/* 419 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _utils = __webpack_require__(377);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -29930,14 +30010,14 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 
 /***/ },
-/* 420 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _utils = __webpack_require__(377);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -29957,14 +30037,14 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 
 /***/ },
-/* 421 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _utils = __webpack_require__(377);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -29984,7 +30064,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 
 /***/ },
-/* 422 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30002,12 +30082,12 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
 
 /***/ },
-/* 423 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30026,12 +30106,12 @@
 	};
 
 /***/ },
-/* 424 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30050,12 +30130,12 @@
 	};
 
 /***/ },
-/* 425 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30074,7 +30154,7 @@
 	};
 
 /***/ },
-/* 426 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30085,7 +30165,7 @@
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30104,7 +30184,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 
 /***/ },
-/* 427 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30122,7 +30202,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
 
 /***/ },
-/* 428 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30140,14 +30220,32 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 
 /***/ },
-/* 429 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	Blockly.Blocks.check_sell = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Sell is available'));
+	    this.setOutput(true, 'Boolean');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('True if sell at market is available'));
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
+
+/***/ },
+/* 431 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(307);
+	
+	var _relationChecker = __webpack_require__(409);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
 	Blockly.Blocks.contract_result = {
@@ -30164,7 +30262,7 @@
 	};
 
 /***/ },
-/* 430 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30173,7 +30271,7 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30193,12 +30291,12 @@
 	};
 
 /***/ },
-/* 431 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30217,7 +30315,7 @@
 	};
 
 /***/ },
-/* 432 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30235,14 +30333,14 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
 
 /***/ },
-/* 433 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	var _const = __webpack_require__(306);
 	
@@ -30264,14 +30362,14 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
 
 /***/ },
-/* 434 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(307);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(409);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
 	Blockly.Blocks.trade_again = {
@@ -30288,7 +30386,7 @@
 	};
 
 /***/ },
-/* 435 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30306,7 +30404,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
 
 /***/ },
-/* 436 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30320,7 +30418,7 @@
 	
 	var _observer = __webpack_require__(299);
 	
-	var _components = __webpack_require__(437);
+	var _components = __webpack_require__(439);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -30786,7 +30884,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 437 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30868,7 +30966,7 @@
 	};
 
 /***/ },
-/* 438 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30882,7 +30980,7 @@
 	
 	var _storageManager = __webpack_require__(300);
 	
-	var _components = __webpack_require__(437);
+	var _components = __webpack_require__(439);
 	
 	var _translator = __webpack_require__(307);
 	
@@ -31104,7 +31202,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 439 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31256,7 +31354,7 @@
 	}
 
 /***/ },
-/* 440 */
+/* 442 */
 /***/ function(module, exports) {
 
 	// COPYRIGHT (c) 2016 TrackJS LLC ALL RIGHTS RESERVED

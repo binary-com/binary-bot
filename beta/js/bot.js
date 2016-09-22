@@ -29095,7 +29095,12 @@
 	Blockly.JavaScript.read_ohlc_obj = function (block) {
 	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
+	  var code = void 0;
+	  if (ohlcObj) {
+	    code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
+	  } else {
+	    code = 'ticks.ohlc.slice(-1)[0].' + ohlcField;
+	  }
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
