@@ -8183,6 +8183,7 @@
 		_classCallCheck(this, BotPage);
 	
 		window.Bot = {
+			bot: _bot.bot,
 			addBlockByMagic: function addBlockByMagic(blockType) {
 				var dp = Blockly.mainWorkspace.newBlock(blockType);
 				dp.initSvg();
@@ -9072,6 +9073,8 @@
 	
 	var _storageManager = __webpack_require__(300);
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var CustomApi = function () {
@@ -9097,7 +9100,7 @@
 	    } else {
 	      option.keepAlive = true;
 	    }
-	    var events = {
+	    var requestHandlers = {
 	      tick: function tick() {
 	        return 0;
 	      },
@@ -9143,7 +9146,7 @@
 	    if (onClose) {
 	      _binaryLiveApi.LiveApi.prototype.onClose = onClose;
 	    }
-	    this.events = {
+	    this.responseHandlers = {
 	      history: function history(response, type) {
 	        if (!_this.apiFailed(response, type)) {
 	          (function () {
@@ -9246,13 +9249,13 @@
 	      var _loop = function _loop() {
 	        var e = _step2.value;
 	
-	        var event = !_this.events[e] ? _this.events._default : _this.events[e]; // eslint-disable-line no-underscore-dangle
+	        var responseHander = !_this.responseHandlers[e] ? _this.responseHandlers._default : _this.responseHandlers[e]; // eslint-disable-line no-underscore-dangle
 	        _this.originalApi.events.on(e, function (data) {
 	          if (_this.destroyed) {
 	            return;
 	          }
 	          if ('error' in data) {
-	            _this.events.error(data, e);
+	            _this.responseHandlers.error(data, e);
 	            _this.proposalIdMap = {};
 	            _this.seenProposal = {};
 	          } else if (data.msg_type === 'proposal') {
@@ -9260,7 +9263,7 @@
 	              _this.seenProposal[data.proposal.id] = true;
 	            } else {
 	              data.proposal.contract_type = _this.proposalIdMap[data.proposal.id];
-	              event(data, e);
+	              responseHander(data, e);
 	            }
 	          } else {
 	            if (e === 'forget_all') {
@@ -9269,7 +9272,7 @@
 	                _this.seenProposal = {};
 	              }
 	            }
-	            event(data, e);
+	            responseHander(data, e);
 	          }
 	        });
 	        _this[e] = function () {
@@ -9277,22 +9280,11 @@
 	            args[_key] = arguments[_key];
 	          }
 	
-	          var promise = events[e].apply(events, args);
-	          if (promise instanceof Promise) {
-	            promise.then(function (pd) {
-	              if (e === 'proposal') {
-	                _this.proposalIdMap[pd.proposal.id] = args[0].contract_type;
-	                pd.proposal.contract_type = args[0].contract_type;
-	                event(pd, e);
-	              }
-	            }, function () {
-	              return 0;
-	            });
-	          }
+	          _this.handlePromiseForCalls(e, args, requestHandlers, responseHander);
 	        };
 	      };
 	
-	      for (var _iterator2 = Object.keys(events)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	      for (var _iterator2 = Object.keys(requestHandlers)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	        _loop();
 	      }
 	    } catch (err) {
@@ -9312,6 +9304,26 @@
 	  }
 	
 	  _createClass(CustomApi, [{
+	    key: 'handlePromiseForCalls',
+	    value: function handlePromiseForCalls(e, args, requestHandlers, responseHander) {
+	      var _this2 = this;
+	
+	      var promise = requestHandlers[e].apply(requestHandlers, _toConsumableArray(args));
+	      if (promise instanceof Promise) {
+	        promise.then(function (pd) {
+	          if (e === 'proposal') {
+	            _this2.proposalIdMap[pd.proposal.id] = args[0].contract_type;
+	            pd.proposal.contract_type = args[0].contract_type;
+	            responseHander(pd, e);
+	          }
+	        }, function (err) {
+	          if (err.name === 'DisconnectError') {
+	            _this2.handlePromiseForCalls(e, args, requestHandlers, responseHander);
+	          }
+	        });
+	      }
+	    }
+	  }, {
 	    key: 'apiFailed',
 	    value: function apiFailed(response, type) {
 	      if (response.error) {
@@ -9882,11 +9894,6 @@
 		        var e = new RangeError('Contract ends time is earlier than start time');
 		        e.name = 'ContractEndsBeforeStart';
 		        throw e;
-		    }
-		
-		    if (contractStart > nowEpoch) {
-		        var _start2 = nowEpoch - 600;
-		        return { start: _start2, end: nowEpoch };
 		    }
 		
 		    var buffer = (contractEnd - contractStart) * bufferSize;
@@ -11415,9 +11422,8 @@
 		
 		    this.subscribeToOpenContract = function (contractId, streamId) {
 		        if (streamId) {
-		            _this.state.streamIdMapping.set(streamId, contractId);
-		        } else {
 		            _this.state.contracts.add(contractId);
+		            _this.state.streamIdMapping.set(streamId, contractId);
 		        }
 		    };
 		
@@ -11467,9 +11473,9 @@
 		
 		    this.subscribeToPriceForContractProposal = function (options, streamId) {
 		        if (streamId) {
+		            _this.state.proposals.add(options);
 		            _this.state.streamIdMapping.set(streamId, options);
 		        }
-		        _this.state.proposals.add(options);
 		    };
 		
 		    this.unsubscribeFromAllProposals = function () {
@@ -11557,7 +11563,6 @@
 		
 		        this.onOpen = function () {
 		            _this.resubscribe();
-		            _this.sendBufferedSends();
 		            _this.executeBufferedExecutes();
 		        };
 		
@@ -11603,6 +11608,8 @@
 		
 		            if (token) {
 		                _this.authorize(token);
+		            } else {
+		                _this.sendBufferedSends();
 		            }
 		
 		            if (ticks.size !== 0) {
@@ -11677,6 +11684,10 @@
 		
 		        this.onMessage = function (message) {
 		            var json = JSON.parse(message.data);
+		
+		            if (json.msg_type === 'authorize' && _this.onAuth) {
+		                _this.sendBufferedSends();
+		            }
 		
 		            if (!json.error) {
 		                if (json.msg_type === 'authorize' && _this.onAuth) {
@@ -11857,6 +11868,13 @@
 		
 		            var urlPlusParams = this.apiUrl + '?l=' + this.language + '&app_id=' + this.appId;
 		
+		            Object.keys(this.unresolvedPromises).forEach(function (reqId) {
+		                var disconnectedError = new Error('Websocket disconnected before response received.');
+		                disconnectedError.name = 'DisconnectError';
+		                _this4.unresolvedPromises[reqId].reject(disconnectedError);
+		                delete _this4.unresolvedPromises[reqId];
+		            });
+		
 		            try {
 		                this.socket = connection || new WebSocket(urlPlusParams);
 		            } catch (err) {
@@ -11944,10 +11962,11 @@
 		
 		        _this.stack = new Error().stack;
 		        _this.error = errorObj;
-		        _this.name = _this.constructor.name;
+		        _this.name = errorObj.error.code;
 		
 		        var message = errorObj.error.message;
 		        var echo_req = errorObj.echo_req;
+		
 		
 		        var echoStr = JSON.stringify(echo_req, null, 2);
 		        _this.message = "[ServerError] " + message + "\n" + echoStr;

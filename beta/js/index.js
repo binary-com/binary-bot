@@ -8793,11 +8793,6 @@
 		        throw e;
 		    }
 		
-		    if (contractStart > nowEpoch) {
-		        var _start2 = nowEpoch - 600;
-		        return { start: _start2, end: nowEpoch };
-		    }
-		
 		    var buffer = (contractEnd - contractStart) * bufferSize;
 		    var bufferedExitTime = contractEnd + buffer;
 		
@@ -10324,9 +10319,8 @@
 		
 		    this.subscribeToOpenContract = function (contractId, streamId) {
 		        if (streamId) {
-		            _this.state.streamIdMapping.set(streamId, contractId);
-		        } else {
 		            _this.state.contracts.add(contractId);
+		            _this.state.streamIdMapping.set(streamId, contractId);
 		        }
 		    };
 		
@@ -10376,9 +10370,9 @@
 		
 		    this.subscribeToPriceForContractProposal = function (options, streamId) {
 		        if (streamId) {
+		            _this.state.proposals.add(options);
 		            _this.state.streamIdMapping.set(streamId, options);
 		        }
-		        _this.state.proposals.add(options);
 		    };
 		
 		    this.unsubscribeFromAllProposals = function () {
@@ -10466,7 +10460,6 @@
 		
 		        this.onOpen = function () {
 		            _this.resubscribe();
-		            _this.sendBufferedSends();
 		            _this.executeBufferedExecutes();
 		        };
 		
@@ -10512,6 +10505,8 @@
 		
 		            if (token) {
 		                _this.authorize(token);
+		            } else {
+		                _this.sendBufferedSends();
 		            }
 		
 		            if (ticks.size !== 0) {
@@ -10586,6 +10581,10 @@
 		
 		        this.onMessage = function (message) {
 		            var json = JSON.parse(message.data);
+		
+		            if (json.msg_type === 'authorize' && _this.onAuth) {
+		                _this.sendBufferedSends();
+		            }
 		
 		            if (!json.error) {
 		                if (json.msg_type === 'authorize' && _this.onAuth) {
@@ -10766,6 +10765,13 @@
 		
 		            var urlPlusParams = this.apiUrl + '?l=' + this.language + '&app_id=' + this.appId;
 		
+		            Object.keys(this.unresolvedPromises).forEach(function (reqId) {
+		                var disconnectedError = new Error('Websocket disconnected before response received.');
+		                disconnectedError.name = 'DisconnectError';
+		                _this4.unresolvedPromises[reqId].reject(disconnectedError);
+		                delete _this4.unresolvedPromises[reqId];
+		            });
+		
 		            try {
 		                this.socket = connection || new WebSocket(urlPlusParams);
 		            } catch (err) {
@@ -10853,10 +10859,11 @@
 		
 		        _this.stack = new Error().stack;
 		        _this.error = errorObj;
-		        _this.name = _this.constructor.name;
+		        _this.name = errorObj.error.code;
 		
 		        var message = errorObj.error.message;
 		        var echo_req = errorObj.echo_req;
+		
 		
 		        var echoStr = JSON.stringify(echo_req, null, 2);
 		        _this.message = "[ServerError] " + message + "\n" + echoStr;
