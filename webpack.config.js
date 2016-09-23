@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 
+const production = process.env.NODE_ENV === 'production';
 module.exports = {
   devtool: 'source-map',
   module: {
@@ -20,10 +21,8 @@ module.exports = {
     root: path.join(__dirname, 'node_modules'),
   },
   entry: {
-    'bot.js': ['babel-polyfill', path.join(__dirname, 'src', 'botPage')],
-    'bot.min.js': ['babel-polyfill', path.join(__dirname, 'src', 'botPage')],
-    'index.js': path.join(__dirname, 'src', 'indexPage'),
-    'index.min.js': path.join(__dirname, 'src', 'indexPage'),
+    bot: ['babel-polyfill', path.join(__dirname, 'src', 'botPage')],
+    index: path.join(__dirname, 'src', 'indexPage'),
   },
   externals: [
     {
@@ -34,12 +33,12 @@ module.exports = {
     'ws',
   ],
   output: {
-    filename: '[name]',
-    sourceMapFilename: '[name].map',
+    filename: production ? '[name].min.js' : '[name].js',
+    sourceMapFilename: production ? '[name].min.js.map' : '[name].js.map',
   },
-  plugins: [
+  plugins: production && [
     new webpack.optimize.UglifyJsPlugin({
-      include: /\.min\.js$/,
+      include: /\.js$/,
       minimize: true,
       sourceMap: true,
       compress: {
