@@ -3,7 +3,7 @@ import ghPages from 'gulp-gh-pages';
 import webpack from 'gulp-webpack';
 import gp_rename from 'gulp-rename';
 import cleanCSS from 'gulp-clean-css';
-import watch from 'gulp-debounced-watch';
+import watch from 'gulp-watch';
 import concat from 'gulp-concat-util';
 import concatCss from 'gulp-concat-css';
 import del from 'del';
@@ -226,21 +226,25 @@ gulp.task('build', ['pack-css', 'revision-dev', 'mustache-dev'], () => gulp.src(
 gulp.task('build-min', ['pack-css-min', 'revision-prod', 'mustache-min'], () => gulp.src('www/**')
     .pipe(connect.reload()));
 
-gulp.task('connect', () => connect.server({
-  root: 'www',
-  port: 8080,
-  livereload: true,
-}));
+gulp.task('connect', () => {
+  connect.server({
+    root: 'www',
+    port: 8080,
+    livereload: true,
+  });
+});
 
 gulp.task('open', () => gulp.src('www/index.html')
   .pipe(open({
     uri: 'http://localhost:8080/',
   })));
 
-gulp.task('serve', ['open', 'connect'], () => watch(['www/*.html'], {
-  debounceTimeout: 1000,
-})
-  .pipe(connect.reload()));
+gulp.task('serve', ['open', 'connect'], () => {
+  watch(['www/*.html'], {
+    debounceTimeout: 1000,
+  })
+    .pipe(connect.reload());
+});
 
 gulp.task('deploy', ['build-min'], () => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', './beta/**'])
   .pipe(ghPages()));
@@ -248,9 +252,11 @@ gulp.task('deploy', ['build-min'], () => gulp.src(['404.md', 'LICENSE', 'README.
 gulp.task('test-deploy', ['build-min', 'serve'], () => {
 });
 
-gulp.task('watch', ['build', 'serve'], () => watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/common/translations/*.js'], {
-  debounceTimeout: 15000,
-}, () => gulp.run(['build'])));
+gulp.task('watch', ['build', 'serve'], () => {
+  watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/common/translations/*.js'], {
+    debounceTimeout: 1000,
+  }, () => gulp.run(['build']));
+});
 
 gulp.task('build-mock-testing', () => gulp.src('./src/common/calls.js', {
   read: false,
