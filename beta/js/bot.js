@@ -22241,6 +22241,16 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	var createDetails = function createDetails(contract) {
+	  var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+	  var result = profit < 0 ? 'loss' : 'win';
+	  _observer.observer.emit('log.strategy.' + result, {
+	    profit: profit,
+	    transactionId: contract.transaction_ids.buy
+	  });
+	  return [contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price, profit, contract.contract_type, (0, _tools.getUTCTime)(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick, (0, _tools.getUTCTime)(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick, +(contract.barrier ? contract.barrier : 0), result];
+	};
+	
 	var PurchaseCtrl = function () {
 	  function PurchaseCtrl(api, strategy, duringPurchase, finish) {
 	    _classCallCheck(this, PurchaseCtrl);
@@ -22346,7 +22356,7 @@
 	        var tradeFinish = function tradeFinish(finishedContract) {
 	          // order matters, needs fix
 	          _observer.observer.emit('strategy.finish', finishedContract);
-	          _this.finish(finishedContract, _this.createDetails(finishedContract));
+	          _this.finish(finishedContract, createDetails(finishedContract));
 	        };
 	        _observer.observer.register('trade.update', tradeUpdate);
 	        _observer.observer.register('trade.finish', tradeFinish, true);
@@ -22374,17 +22384,6 @@
 	        return this.proposals[option];
 	      }
 	      return null;
-	    }
-	  }, {
-	    key: 'createDetails',
-	    value: function createDetails(contract) {
-	      var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
-	      var result = profit < 0 ? 'loss' : 'win';
-	      _observer.observer.emit('log.strategy.' + result, {
-	        profit: profit,
-	        transactionId: contract.transaction_ids.buy
-	      });
-	      return [contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price, profit, contract.contract_type, (0, _tools.getUTCTime)(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick, (0, _tools.getUTCTime)(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick, +(contract.barrier ? contract.barrier : 0), result];
 	    }
 	  }, {
 	    key: 'destroy',
@@ -23466,12 +23465,19 @@
 	    value: function addEventHandlers() {
 	      var _this5 = this;
 	
-	      _observer.observer.register('api.error', function (error) {
-	        if (error.code === 'InvalidToken') {
-	          (0, _storageManager.removeAllTokens)();
-	          _this5.updateTokenList();
-	        }
-	      });
+	      var _arr = ['api.error', 'blockly.error'];
+	
+	      for (var _i = 0; _i < _arr.length; _i++) {
+	        var errorType = _arr[_i];
+	        _observer.observer.register(errorType, function (error) {
+	          // eslint-disable-line no-loop-func
+	          if (error.code === 'InvalidToken') {
+	            (0, _storageManager.removeAllTokens)();
+	            _this5.updateTokenList();
+	          }
+	          _bot.bot.stop();
+	        });
+	      }
 	
 	      _observer.observer.register('bot.stop', function () {
 	        $('#runButton').show();
@@ -27735,9 +27741,9 @@
 	
 	var _utils = __webpack_require__(376);
 	
-	var _definitions = __webpack_require__(377);
+	var _blocks = __webpack_require__(377);
 	
-	var _definitions2 = _interopRequireDefault(_definitions);
+	var _blocks2 = _interopRequireDefault(_blocks);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -27754,7 +27760,7 @@
 	    this.addBlocklyTranslation();
 	    this.initPromise = new Promise(function (resolve) {
 	      $.get('xml/toolbox.xml', function (toolbox) {
-	        (0, _definitions2.default)();
+	        (0, _blocks2.default)();
 	        var workspace = Blockly.inject('blocklyDiv', {
 	          media: 'js/blockly/media/',
 	          toolbox: _this.xmlToStr(_translator.translator.translateXml($.parseXML(_this.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
@@ -31011,7 +31017,6 @@
 	      amplitude.getInstance().logEvent(errorType, {
 	        message: message
 	      });
-	      bot.stop();
 	    });
 	  };
 	
