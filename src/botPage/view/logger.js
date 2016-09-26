@@ -46,7 +46,6 @@ export const logHandler = () => {
       amplitude.getInstance().logEvent(errorType, {
         message,
       });
-      bot.stop();
     });
   }
 
