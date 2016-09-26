@@ -4,7 +4,7 @@ import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
 import { utils } from './utils.js';
-import definitions from './definitions';
+import blocks from './blocks';
 
 export default class _Blockly {
   constructor() {
@@ -13,7 +13,7 @@ export default class _Blockly {
     this.addBlocklyTranslation();
     this.initPromise = new Promise((resolve) => {
       $.get('xml/toolbox.xml', (toolbox) => {
-        definitions();
+        blocks();
         const workspace = Blockly.inject('blocklyDiv', {
           media: 'js/blockly/media/',
           toolbox: this.xmlToStr(translator.translateXml($.parseXML(
