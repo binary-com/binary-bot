@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-import { utils } from '../../../blockly/utils';
+import { getPurchaseChoices } from '../../../blockly/utils';
 import { insideStrategy } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
@@ -7,7 +7,7 @@ Blockly.Blocks.ask_price = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Ask Price'))
-      .appendField(new Blockly.FieldDropdown(() => utils.getPurchaseChoices()), 'PURCHASE_LIST');
+      .appendField(new Blockly.FieldDropdown(() => getPurchaseChoices()), 'PURCHASE_LIST');
     this.setOutput(true, 'Number');
     this.setColour('#f2f2f2');
     this.setTooltip(translator.translateText('Ask Price for selected proposal'));

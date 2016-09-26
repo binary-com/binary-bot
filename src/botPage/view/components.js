@@ -1,4 +1,4 @@
-import { utils } from '../view/blockly/utils';
+import { isMainBlock, getBlockByType } from '../view/blockly/utils';
 
 const uiComponents = {
   accountSelect: '#accountSelect',
@@ -22,8 +22,8 @@ const uiComponents = {
 const doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
 
 export const getUiComponent = (component) => {
-  if (utils.isMainBlock(component)) {
-    return $(utils.getBlockByType(component).getSvgRoot());
+  if (isMainBlock(component)) {
+    return $(getBlockByType(component).getSvgRoot());
   }
   return $(uiComponents[component]);
 };
