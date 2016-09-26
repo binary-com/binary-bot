@@ -309,12 +309,15 @@ export default class View {
     }
   }
   addEventHandlers() {
-    observer.register('api.error', (error) => {
-      if (error.code === 'InvalidToken') {
-        removeAllTokens();
-        this.updateTokenList();
-      }
-    });
+    for (const errorType of ['api.error', 'blockly.error']) {
+      observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
+        if (error.code === 'InvalidToken') {
+          removeAllTokens();
+          this.updateTokenList();
+        }
+        bot.stop();
+      });
+    }
 
     observer.register('bot.stop', () => {
       $('#runButton').show();

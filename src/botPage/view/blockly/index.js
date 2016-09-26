@@ -3,8 +3,8 @@ import { observer } from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import { utils } from './utils.js';
-import definitions from './definitions';
+import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock } from './utils.js';
+import blocks from './blocks';
 
 export default class _Blockly {
   constructor() {
@@ -13,7 +13,7 @@ export default class _Blockly {
     this.addBlocklyTranslation();
     this.initPromise = new Promise((resolve) => {
       $.get('xml/toolbox.xml', (toolbox) => {
-        definitions();
+        blocks();
         const workspace = Blockly.inject('blocklyDiv', {
           media: 'js/blockly/media/',
           toolbox: this.xmlToStr(translator.translateXml($.parseXML(
@@ -32,7 +32,7 @@ export default class _Blockly {
           this.overrideBlocklyDefaultShape();
           this.zoomOnPlusMinus();
           Blockly.mainWorkspace.clearUndo();
-          utils.addPurchaseOptions();
+          addPurchaseOptions();
           resolve();
         });
       });
@@ -73,7 +73,7 @@ export default class _Blockly {
   }
   disableDeleteForMainBlocks() {
     for (const blockType of config.mainBlocks) {
-      utils.getBlockByType(blockType)
+      getBlockByType(blockType)
         .setDeletable(false);
     }
   }
@@ -97,7 +97,7 @@ export default class _Blockly {
   }
   addMissingMainBlocks() {
     for (const mainBlock of config.mainBlocks) {
-      if (!utils.getBlockByType(mainBlock)) {
+      if (!getBlockByType(mainBlock)) {
         const block = Blockly.mainWorkspace.newBlock(mainBlock);
         block.initSvg();
         block.render();
@@ -110,7 +110,7 @@ export default class _Blockly {
     this.addMissingMainBlocks();
     Blockly.mainWorkspace.clearUndo();
     this.setBlockColors();
-    utils.addPurchaseOptions();
+    addPurchaseOptions();
   }
   loadBlocks(str) {
     if (str) {
@@ -132,7 +132,7 @@ export default class _Blockly {
   }
   setBlockColors() {
     for (const blockType of config.mainBlocks) {
-      const block = utils.getBlockByType(blockType);
+      const block = getBlockByType(blockType);
       if (block) {
         block.getField().getSvgRoot()
           .style.setProperty('fill', 'white', 'important');
@@ -159,8 +159,8 @@ export default class _Blockly {
   deleteStrayBlocks() {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
     for (const block of topBlocks) {
-      if (!utils.isMainBlock(block.type)
-        && block !== utils.findTopParentBlock(utils.getBlockByType('trade'))
+      if (!isMainBlock(block.type)
+        && block !== findTopParentBlock(getBlockByType('trade'))
         && block.type.indexOf('procedures_def') < 0
         && block.type !== 'block_holder') {
         block.dispose();

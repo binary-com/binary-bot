@@ -4,7 +4,7 @@ import { durationAccepted, expandDuration } from 'binary-common-utils/lib/tools'
 import config from '../../../common/const';
 import { bot } from '../../bot';
 import { translator } from '../../../common/translator';
-import { utils } from './utils';
+import { findTopParentBlock, addPurchaseOptions } from './utils';
 
 const isInteger = (amount) => !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount);
 const isInRange = (amount, min, max) => !isNaN(+amount) && +amount >= min && +amount <= max;
@@ -18,7 +18,7 @@ const getNumField = (block, fieldName) => {
   return '';
 };
 const insideHolder = (blockObj) => {
-  const parent = utils.findTopParentBlock(blockObj);
+  const parent = findTopParentBlock(blockObj);
   if (parent !== null && parent.type === 'block_holder') {
     return true;
   }
@@ -156,10 +156,10 @@ export const trade = (blockObj, ev) => {
     submarket(blockObj.childBlocks_[0], ev);
     observer.emit('tour:submarket');
     if ('newInputName' in ev) {
-      utils.addPurchaseOptions();
+      addPurchaseOptions();
     }
   }
-  const topParent = utils.findTopParentBlock(blockObj);
+  const topParent = findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (bot.symbol.findSymbol(topParent.type)
       || ['on_strategy', 'on_finish'].indexOf(topParent.type) >= 0) {
@@ -175,7 +175,7 @@ export const insideCondition = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     return;
   }
-  const topParent = utils.findTopParentBlock(blockObj);
+  const topParent = findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (config.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
       observer.emit('ui.log.warn',
@@ -190,7 +190,7 @@ export const insideStrategy = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     return;
   }
-  const topParent = utils.findTopParentBlock(blockObj);
+  const topParent = findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
@@ -207,7 +207,7 @@ export const insideFinish = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     return;
   }
-  const topParent = utils.findTopParentBlock(blockObj);
+  const topParent = findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (topParent.type !== 'on_finish' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
