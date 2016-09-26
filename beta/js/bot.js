@@ -8183,7 +8183,6 @@
 		_classCallCheck(this, BotPage);
 	
 		window.Bot = {
-			bot: _bot.bot,
 			addBlockByMagic: function addBlockByMagic(blockType) {
 				var dp = Blockly.mainWorkspace.newBlock(blockType);
 				dp.initSvg();
@@ -9896,6 +9895,11 @@
 		        throw e;
 		    }
 		
+		    if (contractStart > nowEpoch) {
+		        var _start2 = nowEpoch - 600;
+		        return { start: _start2, end: nowEpoch };
+		    }
+		
 		    var buffer = (contractEnd - contractStart) * bufferSize;
 		    var bufferedExitTime = contractEnd + buffer;
 		
@@ -11422,8 +11426,9 @@
 		
 		    this.subscribeToOpenContract = function (contractId, streamId) {
 		        if (streamId) {
-		            _this.state.contracts.add(contractId);
 		            _this.state.streamIdMapping.set(streamId, contractId);
+		        } else {
+		            _this.state.contracts.add(contractId);
 		        }
 		    };
 		
@@ -11473,9 +11478,9 @@
 		
 		    this.subscribeToPriceForContractProposal = function (options, streamId) {
 		        if (streamId) {
-		            _this.state.proposals.add(options);
 		            _this.state.streamIdMapping.set(streamId, options);
 		        }
+		        _this.state.proposals.add(options);
 		    };
 		
 		    this.unsubscribeFromAllProposals = function () {
@@ -11563,6 +11568,7 @@
 		
 		        this.onOpen = function () {
 		            _this.resubscribe();
+		            _this.sendBufferedSends();
 		            _this.executeBufferedExecutes();
 		        };
 		
@@ -11608,8 +11614,6 @@
 		
 		            if (token) {
 		                _this.authorize(token);
-		            } else {
-		                _this.sendBufferedSends();
 		            }
 		
 		            if (ticks.size !== 0) {
@@ -11684,10 +11688,6 @@
 		
 		        this.onMessage = function (message) {
 		            var json = JSON.parse(message.data);
-		
-		            if (json.msg_type === 'authorize' && _this.onAuth) {
-		                _this.sendBufferedSends();
-		            }
 		
 		            if (!json.error) {
 		                if (json.msg_type === 'authorize' && _this.onAuth) {
@@ -11868,13 +11868,6 @@
 		
 		            var urlPlusParams = this.apiUrl + '?l=' + this.language + '&app_id=' + this.appId;
 		
-		            Object.keys(this.unresolvedPromises).forEach(function (reqId) {
-		                var disconnectedError = new Error('Websocket disconnected before response received.');
-		                disconnectedError.name = 'DisconnectError';
-		                _this4.unresolvedPromises[reqId].reject(disconnectedError);
-		                delete _this4.unresolvedPromises[reqId];
-		            });
-		
 		            try {
 		                this.socket = connection || new WebSocket(urlPlusParams);
 		            } catch (err) {
@@ -11962,11 +11955,10 @@
 		
 		        _this.stack = new Error().stack;
 		        _this.error = errorObj;
-		        _this.name = errorObj.error.code;
+		        _this.name = _this.constructor.name;
 		
 		        var message = errorObj.error.message;
 		        var echo_req = errorObj.echo_req;
-		
 		
 		        var echoStr = JSON.stringify(echo_req, null, 2);
 		        _this.message = "[ServerError] " + message + "\n" + echoStr;
@@ -28987,6 +28979,16 @@
 	var getListField = function getListField(block, fieldName) {
 	  return block.getFieldValue(fieldName);
 	};
+	var disable = function disable(blockObj) {
+	  Blockly.Events.recordUndo = false;
+	  blockObj.setDisabled(true);
+	  Blockly.Events.recordUndo = true;
+	};
+	var enable = function enable(blockObj) {
+	  Blockly.Events.recordUndo = false;
+	  blockObj.setDisabled(false);
+	  Blockly.Events.recordUndo = true;
+	};
 	var condition = exports.condition = function condition(blockObj, ev, calledByParent) {
 	  if (insideHolder(blockObj)) {
 	    return;
@@ -28994,12 +28996,12 @@
 	  if (blockObj.parentBlock_ !== null) {
 	    if (!_bot.bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
 	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    } else if (!_bot.bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
 	      var symbol = _bot.bot.symbol.findSymbol(blockObj.parentBlock_.type);
 	      _observer.observer.emit('ui.log.warn', symbol[Object.keys(symbol)[0]] + ' ' + _translator.translator.translateText('does not support category:') + (' ' + _bot.bot.symbol.getCategoryNameForCondition(blockObj.type)) + (', ' + _translator.translator.translateText('Allowed categories are')) + (' ' + _bot.bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	    _observer.observer.emit('tour:condition');
@@ -29061,7 +29063,7 @@
 	      }
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var submarket = exports.submarket = function submarket(blockObj, ev) {
 	  if (insideHolder(blockObj)) {
@@ -29099,11 +29101,11 @@
 	  if (blockObj.parentBlock_ !== null) {
 	    if (blockObj.parentBlock_.type !== 'trade') {
 	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Submarket blocks have to be added to the trade block'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var trade = exports.trade = function trade(blockObj, ev) {
 	  if (insideHolder(blockObj)) {
@@ -29163,11 +29165,11 @@
 	  if (topParent !== null) {
 	    if (_bot.bot.symbol.findSymbol(topParent.type) || ['on_strategy', 'on_finish'].indexOf(topParent.type) >= 0) {
 	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('The trade block cannot be inside binary blocks'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var insideCondition = exports.insideCondition = function insideCondition(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
@@ -29177,11 +29179,11 @@
 	  if (topParent !== null) {
 	    if (_const2.default.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
 	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added to the condition block'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var insideStrategy = exports.insideStrategy = function insideStrategy(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
@@ -29191,13 +29193,13 @@
 	  if (topParent !== null) {
 	    if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
 	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added inside the strategy block'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    } else if (blockObj.type === 'purchase') {
 	      _observer.observer.emit('tour:purchase');
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var insideFinish = exports.insideFinish = function insideFinish(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
@@ -29207,14 +29209,14 @@
 	  if (topParent !== null) {
 	    if (topParent.type !== 'on_finish' && !ev.oldParentId) {
 	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added inside the finish block'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	    if (blockObj.type === 'trade_again') {
 	      _observer.observer.emit('tour:trade_again');
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 
 /***/ },
