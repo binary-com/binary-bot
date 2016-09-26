@@ -8214,6 +8214,9 @@
 			_this.view = new _view2.default();
 			trackJs.configure({
 				onError: function onError(payload, error) {
+					if (error.message.indexOf('The play() request was interrupted by a call to pause()') >= 0) {
+						return false;
+					}
 					payload.console.push({
 						message: _lzString2.default.compressToBase64(_this.view.blockly.generatedJs),
 						severity: 'log',
