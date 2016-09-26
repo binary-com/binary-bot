@@ -25,6 +25,16 @@ const insideHolder = (blockObj) => {
   return false;
 };
 const getListField = (block, fieldName) => block.getFieldValue(fieldName);
+const disable = (blockObj) => {
+  Blockly.Events.recordUndo = false;
+  blockObj.setDisabled(true);
+  Blockly.Events.recordUndo = true;
+};
+const enable = (blockObj) => {
+  Blockly.Events.recordUndo = false;
+  blockObj.setDisabled(false);
+  Blockly.Events.recordUndo = true;
+};
 export const condition = (blockObj, ev, calledByParent) => {
   if (insideHolder(blockObj)) {
     return;
@@ -33,7 +43,7 @@ export const condition = (blockObj, ev, calledByParent) => {
     if (!bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
       observer.emit('ui.log.warn',
         translator.translateText('Trade Type blocks have to be added to submarket blocks'));
-      blockObj.setDisabled(true);
+      disable(blockObj);
       return;
     } else if (!bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
       const symbol = bot.symbol.findSymbol(blockObj.parentBlock_.type);
@@ -42,7 +52,7 @@ export const condition = (blockObj, ev, calledByParent) => {
         + ` ${bot.symbol.getCategoryNameForCondition(blockObj.type)}`
         + `, ${translator.translateText('Allowed categories are')}`
         + ` ${bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)}`);
-      blockObj.setDisabled(true);
+      disable(blockObj);
       return;
     }
     observer.emit('tour:condition');
@@ -87,7 +97,7 @@ export const condition = (blockObj, ev, calledByParent) => {
       }
     }
   }
-  blockObj.setDisabled(false);
+  enable(blockObj);
 };
 export const submarket = (blockObj, ev) => {
   if (insideHolder(blockObj)) {
@@ -105,11 +115,11 @@ export const submarket = (blockObj, ev) => {
     if (blockObj.parentBlock_.type !== 'trade') {
       observer.emit('ui.log.warn',
         translator.translateText('Submarket blocks have to be added to the trade block'));
-      blockObj.setDisabled(true);
+      disable(blockObj);
       return;
     }
   }
-  blockObj.setDisabled(false);
+  enable(blockObj);
 };
 export const trade = (blockObj, ev) => {
   if (insideHolder(blockObj)) {
@@ -155,11 +165,11 @@ export const trade = (blockObj, ev) => {
       || ['on_strategy', 'on_finish'].indexOf(topParent.type) >= 0) {
       observer.emit('ui.log.warn',
         translator.translateText('The trade block cannot be inside binary blocks'));
-      blockObj.setDisabled(true);
+      disable(blockObj);
       return;
     }
   }
-  blockObj.setDisabled(false);
+  enable(blockObj);
 };
 export const insideCondition = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
@@ -170,11 +180,11 @@ export const insideCondition = (blockObj, ev, name) => {
     if (config.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
       observer.emit('ui.log.warn',
         name + ' ' + translator.translateText('must be added to the condition block'));
-      blockObj.setDisabled(true);
+      disable(blockObj);
       return;
     }
   }
-  blockObj.setDisabled(false);
+  enable(blockObj);
 };
 export const insideStrategy = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
@@ -185,13 +195,13 @@ export const insideStrategy = (blockObj, ev, name) => {
     if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
         name + ' ' + translator.translateText('must be added inside the strategy block'));
-      blockObj.setDisabled(true);
+      disable(blockObj);
       return;
     } else if (blockObj.type === 'purchase') {
       observer.emit('tour:purchase');
     }
   }
-  blockObj.setDisabled(false);
+  enable(blockObj);
 };
 export const insideFinish = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
@@ -202,12 +212,12 @@ export const insideFinish = (blockObj, ev, name) => {
     if (topParent.type !== 'on_finish' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
         name + ' ' + translator.translateText('must be added inside the finish block'));
-      blockObj.setDisabled(true);
+      disable(blockObj);
       return;
     }
     if (blockObj.type === 'trade_again') {
       observer.emit('tour:trade_again');
     }
   }
-  blockObj.setDisabled(false);
+  enable(blockObj);
 };

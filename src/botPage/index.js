@@ -1,12 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import 'babel-polyfill';
+import lzString from 'lz-string';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getToken } from 'binary-common-utils/lib/storageManager';
 import './view/draggable';
 import { bot } from './bot';
 import View from './view';
-import { logger } from './view/logger';
 import { setAppId } from '../common/appId';
+import { notifyError } from './view/logger';
 
 setAppId();
 $.ajaxSetup({
@@ -16,11 +17,8 @@ $.ajaxSetup({
 window._trackJs = { // eslint-disable-line no-underscore-dangle
   token: '346262e7ffef497d85874322fff3bbf8',
   application: 'binary-bot',
-  enabled: window.location.hostname !== 'localhost',
-  console: {
-    display: false,
-  },
 };
+
 require('trackjs');
 
 class BotPage {
@@ -38,7 +36,6 @@ class BotPage {
 				console.log(this.view.blockly.generatedJs); // eslint-disable-line no-console
 				console.log(this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
 			},
-			toggleDebug: logger.toggleDebug.bind(logger),
 			log: (message, type) => {
 				observer.emit('ui.log.' + type + '.left', message);
 			},
@@ -49,6 +46,22 @@ class BotPage {
 
 		bot.initPromise.then(() => {
 			this.view = new View();
+      trackJs.configure({
+        onError: (payload, error) => {
+          payload.console.push({
+            message: lzString.compressToBase64(this.view.blockly.generatedJs),
+            severity: 'log',
+            timestamp: new Date().toISOString(),
+          });
+          payload.console.push({
+            message: lzString.compressToBase64(this.view.blockly.blocksXmlStr),
+            severity: 'log',
+            timestamp: new Date().toISOString(),
+          });
+          notifyError(error);
+          return true;
+        },
+      });
 			this.view.initPromise.then(() => {
 				trackJs.configure({
 					userId: getToken($('#accountSelect').val()).account_name,
