@@ -180,11 +180,7 @@ export default class _Blockly {
       observer.emit('blockly.error', e);
     }
     if (code) {
-      try {
-        eval(code); // eslint-disable-line no-eval
-      } catch (e) {
-        observer.emit('runtime.error', e);
-      }
+      eval(code); // eslint-disable-line no-eval
       $('#summaryPanel')
         .show();
     }

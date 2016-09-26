@@ -268,16 +268,12 @@ export default class Bot {
   }
   updateTotals(contract) {
     const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
-    if (typeof amplitude !== 'undefined') {
-      const user = getToken(this.currentToken);
-      if (!user.isVirtual) {
-        const revenue = new amplitude.Revenue()
-          .setProductId(`${contract.underlying}.${contract.contract_type}`)
-          .setPrice(-profit)
-          .setRevenueType((profit < 0) ? 'loss' : 'win');
-        amplitude.getInstance().logRevenueV2(revenue, contract);
-      }
-    }
+    const user = getToken(this.currentToken);
+    observer.emit('log.revenue', {
+      user,
+      profit,
+    });
+
     this.totalProfit = +(this.totalProfit + profit).toFixed(2);
     this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);

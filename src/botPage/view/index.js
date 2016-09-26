@@ -1,23 +1,22 @@
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
-import lzString from 'lz-string';
 import { PlainChart as Chart } from 'binary-charts';
-import { logger } from './logger';
 import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
 import { translator } from '../../common/translator';
 import { bot } from '../bot';
 import Introduction from './tours/introduction';
 import Welcome from './tours/welcome';
+import { logHandler } from './logger';
 
 export default class View {
   constructor() {
     this.chartType = 'area';
     this.tours = {};
+    logHandler();
     this.tradeInfo = new TradeInfo();
     this.addTranslationToUi();
-    this.errorAndLogHandling();
     this.initPromise = new Promise((resolve) => {
       this.updateTokenList();
       this.blockly = new _Blockly();
@@ -86,74 +85,6 @@ export default class View {
       });
     });
   }
-  errorAndLogHandling() {
-    const notifyError = (error) => {
-      const message = (error.error)
-        ? error.error.message
-        : error.message || error;
-      logger.notify(message, {
-        position: 'bottom right',
-        className: 'error',
-      });
-      if (logger.isDebug()) {
-        console.log('%cError: ' + message, 'color: red'); // eslint-disable-line no-console
-      } else {
-        logger.addLogToQueue('%cError: ' + message, 'color: red');
-      }
-      return message;
-    };
-
-    for (const errorType of ['api.error', 'blockly.error', 'runtime.error']) {
-      observer.register(errorType, (error) => {
-        if (error.code === 'InvalidToken') {
-          removeAllTokens();
-          this.updateTokenList();
-        }
-        const message = notifyError(error);
-        amplitude.getInstance().logEvent(errorType, {
-          message,
-          1: lzString.compressToBase64(this.blockly.generatedJs),
-          2: lzString.compressToBase64(this.blockly.blocksXmlStr),
-        });
-        bot.stop();
-      });
-    }
-
-    const observeForLog = (type, position) => {
-      const subtype = (position === 'left') ? '.left' : '';
-      observer.register('ui.log.' + type + subtype, (message) => {
-        if (type === 'warn') {
-          console.warn(message); // eslint-disable-line no-console
-        }
-        if (position === 'left') {
-          $.notify(message, {
-            position: 'bottom ' + position,
-            className: type,
-          });
-        } else {
-          logger.notify(message, {
-            position: 'bottom ' + position,
-            className: type,
-          });
-        }
-        if (logger.isDebug()) {
-          console.log(message); // eslint-disable-line no-console
-        } else {
-          logger.addLogToQueue(message);
-        }
-      });
-    };
-
-    for (const type of ['success', 'info', 'warn', 'error']) {
-      observeForLog(type, 'right');
-      observeForLog(type, 'left');
-    }
-
-    for (const event of ['log.bot.login', 'log.trade.finish']) {
-      observer.register(event, (d) => amplitude.getInstance().logEvent(event, d));
-    }
-  }
-
   setFileBrowser() {
     const readFile = (f) => {
       const reader = new FileReader();
@@ -390,6 +321,13 @@ export default class View {
     }
   }
   addEventHandlers() {
+    observer.register('api.error', (error) => {
+      if (error.code === 'InvalidToken') {
+        removeAllTokens();
+        this.updateTokenList();
+      }
+    });
+
     observer.register('bot.stop', () => {
       $('#runButton').show();
       $('#stopButton').hide();
