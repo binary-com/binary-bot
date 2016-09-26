@@ -48,6 +48,9 @@ class BotPage {
 			this.view = new View();
       trackJs.configure({
         onError: (payload, error) => {
+          if (error.message.indexOf('The play() request was interrupted by a call to pause()') >= 0) {
+            return false;
+          }
           payload.console.push({
             message: lzString.compressToBase64(this.view.blockly.generatedJs),
             severity: 'log',
