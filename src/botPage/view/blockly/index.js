@@ -3,7 +3,7 @@ import { observer } from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock } from './utils.js';
+import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock } from './utils';
 import blocks from './blocks';
 
 export default class _Blockly {
