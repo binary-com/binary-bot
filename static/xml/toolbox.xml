@@ -238,18 +238,45 @@
 		<!--Markets-->
 		<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
 			<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
-				<block type="barrier_offset"></block>
 				<block type="risefall"></block>
-				<block type="higherlower"></block>
+				<block type="higherlower">
+					<value name="BARRIEROFFSET">
+						<block type="barrier_offset"></block>
+					</value>
+				</block>
 			</category>
 			<category name="Touch/No Touch" colour="#2a3052" i18n-text="Touch/No Touch">
-				<block type="barrier_offset"></block>
-				<block type="touchnotouch"></block>
+				<block type="touchnotouch">
+					<value name="BARRIEROFFSET">
+						<block type="barrier_offset"></block>
+					</value>
+				</block>
 			</category>
 			<category name="In/Out" colour="#2a3052" i18n-text="In/Out">
-				<block type="barrier_offset"></block>
-				<block type="endsinout"></block>
-				<block type="staysinout"></block>
+				<block type="endsinout">
+					<value name="BARRIEROFFSET">
+						<block type="barrier_offset">
+							<field name="BARRIEROFFSETTYPE_LIST">+</field>
+						</block>
+					</value>
+					<value name="SECONDBARRIEROFFSET">
+						<block type="barrier_offset">
+							<field name="BARRIEROFFSETTYPE_LIST">-</field>
+						</block>
+					</value>
+				</block>
+				<block type="staysinout">
+					<value name="BARRIEROFFSET">
+						<block type="barrier_offset">
+							<field name="BARRIEROFFSETTYPE_LIST">+</field>
+						</block>
+					</value>
+					<value name="SECONDBARRIEROFFSET">
+						<block type="barrier_offset">
+							<field name="BARRIEROFFSETTYPE_LIST">-</field>
+						</block>
+					</value>
+				</block>
 			</category>
 			<category name="Asians" colour="#2a3052" i18n-text="Asians">
 				<block type="asians"></block>
