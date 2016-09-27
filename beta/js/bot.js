@@ -23196,8 +23196,6 @@
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
-	var _observer = __webpack_require__(300);
-	
 	var _translator = __webpack_require__(308);
 	
 	var _error = __webpack_require__(336);
@@ -23208,8 +23206,7 @@
 	  if (array && array instanceof Array && array.length) {
 	    return array;
 	  }
-	  _observer.observer.emit(CustomError.name, _translator.translator.translateText('Expected non-empty array, given:') + ' ' + (typeof array === 'undefined' ? 'undefined' : _typeof(array)));
-	  throw new CustomError();
+	  return new CustomError(_translator.translator.translateText('Expected non-empty array, given:') + ' ' + (typeof array === 'undefined' ? 'undefined' : _typeof(array))).emit();
 	};
 	
 	var expectOhlc = exports.expectOhlc = function expectOhlc(ohlc) {
@@ -23218,8 +23215,7 @@
 	  if (ohlc && ohlc instanceof Object && ohlc.open && ohlc.high && ohlc.low && ohlc.close) {
 	    return ohlc;
 	  }
-	  _observer.observer.emit(CustomError.name, _translator.translator.translateText('Expected candle object, given:') + ' ' + (typeof ohlc === 'undefined' ? 'undefined' : _typeof(ohlc)));
-	  throw new CustomError();
+	  return new CustomError(_translator.translator.translateText('Expected candle object, given:') + ' ' + (typeof ohlc === 'undefined' ? 'undefined' : _typeof(ohlc))).emit();
 	};
 	
 	// runtime
@@ -23228,8 +23224,7 @@
 	  var CustomError = arguments.length <= 2 || arguments[2] === undefined ? _error.BlocklyError : arguments[2];
 	
 	  if (isNaN(parseFloat(num)) || isNaN(Number(num))) {
-	    _observer.observer.emit(CustomError.name, name + ' ' + _translator.translator.translateText('must be a number, given:') + ' ' + (typeof num === 'undefined' ? 'undefined' : _typeof(num)));
-	    throw new CustomError();
+	    return new CustomError(name + ' ' + _translator.translator.translateText('must be a number, given:') + ' ' + (typeof num === 'undefined' ? 'undefined' : _typeof(num))).emit();
 	  }
 	  return Number(num);
 	};
@@ -23238,21 +23233,25 @@
 	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
 	
 	  if (barrier.match(/^[-+]\d+$/) === null) {
-	    _observer.observer.emit(CustomError.name, _translator.translator.translateText('Please use appropriate barrier offset block for barrier offsets'));
-	    throw new CustomError();
+	    return new CustomError(_translator.translator.translateText('Please use appropriate barrier offset block for barrier offsets')).emit();
 	  }
 	  return barrier;
 	};
 
 /***/ },
 /* 336 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.RuntimeError = exports.BlocklyError = exports.CustomError = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _observer = __webpack_require__(300);
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
@@ -23260,28 +23259,34 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var CustomError = exports.CustomError = function CustomError() {
-	  _classCallCheck(this, CustomError);
+	var CustomError = exports.CustomError = function () {
+	  function CustomError(message) {
+	    _classCallCheck(this, CustomError);
 	
-	  var template = Error.apply(undefined, arguments);
-	  this.name = 'GenericError';
-	  this.message = template.message;
-	  this.stack = template.stack;
-	};
+	    this.message = message;
+	    this.error = Error(message);
+	    this.name = 'GenericError';
+	  }
+	
+	  _createClass(CustomError, [{
+	    key: 'emit',
+	    value: function emit() {
+	      _observer.observer.emit(this.name, this.message);
+	      this.error.name = this.name;
+	      throw this.error;
+	    }
+	  }]);
+	
+	  return CustomError;
+	}();
 	
 	var BlocklyError = exports.BlocklyError = function (_CustomError) {
 	  _inherits(BlocklyError, _CustomError);
 	
-	  function BlocklyError() {
-	    var _ref;
-	
+	  function BlocklyError(message) {
 	    _classCallCheck(this, BlocklyError);
 	
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-	
-	    var _this = _possibleConstructorReturn(this, (_ref = BlocklyError.__proto__ || Object.getPrototypeOf(BlocklyError)).call.apply(_ref, [this].concat(args)));
+	    var _this = _possibleConstructorReturn(this, (BlocklyError.__proto__ || Object.getPrototypeOf(BlocklyError)).call(this, message));
 	
 	    _this.name = 'BlocklyError';
 	    return _this;
@@ -23293,16 +23298,10 @@
 	var RuntimeError = exports.RuntimeError = function (_CustomError2) {
 	  _inherits(RuntimeError, _CustomError2);
 	
-	  function RuntimeError() {
-	    var _ref2;
-	
+	  function RuntimeError(message) {
 	    _classCallCheck(this, RuntimeError);
 	
-	    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	      args[_key2] = arguments[_key2];
-	    }
-	
-	    var _this2 = _possibleConstructorReturn(this, (_ref2 = RuntimeError.__proto__ || Object.getPrototypeOf(RuntimeError)).call.apply(_ref2, [this].concat(args)));
+	    var _this2 = _possibleConstructorReturn(this, (RuntimeError.__proto__ || Object.getPrototypeOf(RuntimeError)).call(this, message));
 	
 	    _this2.name = 'RuntimeError';
 	    return _this2;
@@ -28921,6 +28920,8 @@
 	
 	var _relationChecker = __webpack_require__(381);
 	
+	var _error = __webpack_require__(336);
+	
 	Blockly.Blocks.trade = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('(1) Define your contract here'));
@@ -28938,11 +28939,11 @@
 	Blockly.JavaScript.trade = function (block) {
 	  var account = $('#accountSelect').val();
 	  if (!account) {
-	    throw Error(_translator.translator.translateText('Please login.'));
+	    return new _error.BlocklyError(_translator.translator.translateText('Please login.')).emit();
 	  }
 	  var submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 	  if (submarket === '') {
-	    throw Error(_translator.translator.translateText('You have to add a submarket first'));
+	    return new _error.BlocklyError(_translator.translator.translateText('You have to add a submarket first')).emit();
 	  }
 	  // TODO: Assemble JavaScript into code variable.
 	  var code = 'function trade(again){\n  Bot.start(\'' + account.trim() + '\', ' + submarket.trim() + ',\n  on_strategy, typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n  on_finish, again);\n}';
@@ -29294,6 +29295,9 @@
 	
 	var _bot = __webpack_require__(303);
 	
+	var _error = __webpack_require__(336);
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 	exports.default = function () {
 	  var symbolNames = _bot.bot.symbol.activeSymbols.getSymbolNames();
 	  var _iteratorNormalCompletion = true;
@@ -29350,7 +29354,7 @@
 	      Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
 	        var condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
 	        if (!condition) {
-	          throw Error(_translator.translator.translateText('A trade type has to be defined for the symbol'));
+	          return new _error.BlocklyError(_translator.translator.translateText('A trade type has to be defined for the symbol')).emit();
 	        }
 	        var code = condition.trim() + '\n      symbol: \'' + symbol + '\'}';
 	        return code;
@@ -29374,7 +29378,7 @@
 	      }
 	    }
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
+	};
 
 /***/ },
 /* 384 */
@@ -29396,9 +29400,9 @@
 	
 	var _components = __webpack_require__(385);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _error = __webpack_require__(336);
 	
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#orvwcx
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function () {
 	  var _iteratorNormalCompletion = true;
@@ -29505,23 +29509,23 @@
 	        if (_const2.default.hasPrediction.indexOf(opposites) > -1) {
 	          predictionValue = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
 	          if (predictionValue === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
+	            return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
 	          }
 	        }
 	        if (_const2.default.hasBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
 	          barrierOffsetValue = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
 	          if (barrierOffsetValue === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
+	            return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
 	          }
 	        }
 	        if (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
 	          secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
 	          if (secondBarrierOffsetValue === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
+	            return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
 	          }
 	        }
 	        if (opposites === '' || durationValue === '' || payouttype === '' || currency === '' || amount === '') {
-	          throw Error(_translator.translator.translateText('All trade types are required'));
+	          return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
 	        }
 	        var code = '{\n      condition: \'' + opposites + '\',\n      candleInterval: \'' + candleIntervalValue + '\',\n      duration: ' + durationValue + ',\n      duration_unit: \'' + durationType + '\',\n      basis: \'' + payouttype + '\',\n      currency: \'' + currency + '\',\n      amount: ' + amount + ',\n      ' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'barrier: ' + predictionValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrier: \'' + barrierOffsetValue + '\',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'barrier2: \'' + secondBarrierOffsetValue + '\',' : '');
 	        return code;
@@ -29545,7 +29549,7 @@
 	      }
 	    }
 	  }
-	};
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#orvwcx
 
 /***/ },
 /* 385 */
