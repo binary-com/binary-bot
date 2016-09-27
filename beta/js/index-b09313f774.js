@@ -48,13 +48,13 @@
 	
 	__webpack_require__(1);
 	
-	var _jquery = __webpack_require__(416);
+	var _jquery = __webpack_require__(418);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	var _translator = __webpack_require__(308);
 	
-	var _appId = __webpack_require__(414);
+	var _appId = __webpack_require__(416);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8794,6 +8794,11 @@
 		        throw e;
 		    }
 		
+		    if (contractStart > nowEpoch) {
+		        var _start2 = nowEpoch - 600;
+		        return { start: _start2, end: nowEpoch };
+		    }
+		
 		    var buffer = (contractEnd - contractStart) * bufferSize;
 		    var bufferedExitTime = contractEnd + buffer;
 		
@@ -10320,8 +10325,9 @@
 		
 		    this.subscribeToOpenContract = function (contractId, streamId) {
 		        if (streamId) {
-		            _this.state.contracts.add(contractId);
 		            _this.state.streamIdMapping.set(streamId, contractId);
+		        } else {
+		            _this.state.contracts.add(contractId);
 		        }
 		    };
 		
@@ -10371,9 +10377,9 @@
 		
 		    this.subscribeToPriceForContractProposal = function (options, streamId) {
 		        if (streamId) {
-		            _this.state.proposals.add(options);
 		            _this.state.streamIdMapping.set(streamId, options);
 		        }
+		        _this.state.proposals.add(options);
 		    };
 		
 		    this.unsubscribeFromAllProposals = function () {
@@ -10461,6 +10467,7 @@
 		
 		        this.onOpen = function () {
 		            _this.resubscribe();
+		            _this.sendBufferedSends();
 		            _this.executeBufferedExecutes();
 		        };
 		
@@ -10506,8 +10513,6 @@
 		
 		            if (token) {
 		                _this.authorize(token);
-		            } else {
-		                _this.sendBufferedSends();
 		            }
 		
 		            if (ticks.size !== 0) {
@@ -10582,10 +10587,6 @@
 		
 		        this.onMessage = function (message) {
 		            var json = JSON.parse(message.data);
-		
-		            if (json.msg_type === 'authorize' && _this.onAuth) {
-		                _this.sendBufferedSends();
-		            }
 		
 		            if (!json.error) {
 		                if (json.msg_type === 'authorize' && _this.onAuth) {
@@ -10766,13 +10767,6 @@
 		
 		            var urlPlusParams = this.apiUrl + '?l=' + this.language + '&app_id=' + this.appId;
 		
-		            Object.keys(this.unresolvedPromises).forEach(function (reqId) {
-		                var disconnectedError = new Error('Websocket disconnected before response received.');
-		                disconnectedError.name = 'DisconnectError';
-		                _this4.unresolvedPromises[reqId].reject(disconnectedError);
-		                delete _this4.unresolvedPromises[reqId];
-		            });
-		
 		            try {
 		                this.socket = connection || new WebSocket(urlPlusParams);
 		            } catch (err) {
@@ -10860,11 +10854,10 @@
 		
 		        _this.stack = new Error().stack;
 		        _this.error = errorObj;
-		        _this.name = errorObj.error.code;
+		        _this.name = _this.constructor.name;
 		
 		        var message = errorObj.error.message;
 		        var echo_req = errorObj.echo_req;
-		
 		
 		        var echoStr = JSON.stringify(echo_req, null, 2);
 		        _this.message = "[ServerError] " + message + "\n" + echoStr;
@@ -15824,11 +15817,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -16073,11 +16070,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -16322,11 +16323,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -16571,11 +16576,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -16820,11 +16829,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -17069,11 +17082,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -17318,11 +17335,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -17567,11 +17588,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -17816,11 +17841,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -18065,11 +18094,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -18314,11 +18347,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -18563,11 +18600,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -18812,11 +18853,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -18959,7 +19004,9 @@
 /* 333 */,
 /* 334 */,
 /* 335 */,
-/* 336 */
+/* 336 */,
+/* 337 */,
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18977,7 +19024,7 @@
 	  var callback = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
 	
 	  var option = typeof WebSocket === 'undefined' ? {
-	    websocket: __webpack_require__(337) } : {}; // eslint-disable-line import/newline-after-import
+	    websocket: __webpack_require__(339) } : {}; // eslint-disable-line import/newline-after-import
 	  var api = new _binaryLiveApi.LiveApi(option);
 	  api.authorize(token).then(function (response) {
 	    api.disconnect();
@@ -18992,7 +19039,7 @@
 	
 	var logoutAllTokens = exports.logoutAllTokens = function logoutAllTokens(callback) {
 	  var option = typeof WebSocket === 'undefined' ? {
-	    websocket: __webpack_require__(337) } : {}; // eslint-disable-line import/newline-after-import
+	    websocket: __webpack_require__(339) } : {}; // eslint-disable-line import/newline-after-import
 	  var api = new _binaryLiveApi.LiveApi(option);
 	  var tokenList = (0, _storageManager.getTokenList)();
 	  var logout = function logout() {
@@ -19010,14 +19057,12 @@
 	};
 
 /***/ },
-/* 337 */
+/* 339 */
 /***/ function(module, exports) {
 
 	module.exports = ws;
 
 /***/ },
-/* 338 */,
-/* 339 */,
 /* 340 */,
 /* 341 */,
 /* 342 */,
@@ -19092,7 +19137,9 @@
 /* 411 */,
 /* 412 */,
 /* 413 */,
-/* 414 */
+/* 414 */,
+/* 415 */,
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19201,7 +19248,7 @@
 	
 	var _tools = __webpack_require__(309);
 	
-	var _account = __webpack_require__(336);
+	var _account = __webpack_require__(338);
 	
 	var _storageManager = __webpack_require__(301);
 	
@@ -19244,8 +19291,8 @@
 	}
 
 /***/ },
-/* 415 */,
-/* 416 */
+/* 417 */,
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!

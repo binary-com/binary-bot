@@ -8153,13 +8153,15 @@
 	
 	var _bot = __webpack_require__(303);
 	
-	var _view = __webpack_require__(335);
+	var _view = __webpack_require__(337);
 	
 	var _view2 = _interopRequireDefault(_view);
 	
-	var _appId = __webpack_require__(414);
+	var _appId = __webpack_require__(416);
 	
-	var _logger = __webpack_require__(413);
+	var _logger = __webpack_require__(415);
+	
+	var _expect = __webpack_require__(335);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8180,7 +8182,7 @@
 	  }
 	};
 	
-	__webpack_require__(415);
+	__webpack_require__(417);
 	
 	var BotPage = function BotPage() {
 	  var _this = this;
@@ -8188,6 +8190,8 @@
 	  _classCallCheck(this, BotPage);
 	
 	  window.Bot = {
+	    expectNonEmptyArray: _expect.expectNonEmptyArray,
+	    expectOhlc: _expect.expectOhlc,
 	    addBlockByMagic: function addBlockByMagic(blockType) {
 	      var dp = Blockly.mainWorkspace.newBlock(blockType);
 	      dp.initSvg();
@@ -9091,11 +9095,31 @@
 	
 	var _symbol2 = _interopRequireDefault(_symbol);
 	
+	var _expect = __webpack_require__(335);
+	
+	var _error = __webpack_require__(336);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var checkTradeOptions = function checkTradeOptions(tradeOption) {
+	  if (tradeOption && tradeOption instanceof Object) {
+	    (0, _expect.expectNumber)('duration', tradeOption.duration, _error.RuntimeError);
+	    (0, _expect.expectNumber)('amount', tradeOption.amount, _error.RuntimeError).toFixed(2);
+	    if (tradeOption.barrier && typeof tradeOption.barrier === 'number') {
+	      (0, _expect.expectNumber)('prediction', tradeOption.barrier, _error.RuntimeError);
+	    }
+	    if (tradeOption.barrier && typeof tradeOption.barrier === 'string') {
+	      (0, _expect.expectBarrierOffset)(tradeOption.barrier, _error.RuntimeError);
+	    }
+	    if (tradeOption.barrier2 && typeof tradeOption.barrier2 === 'string') {
+	      (0, _expect.expectBarrierOffset)(tradeOption.barrier2, _error.RuntimeError);
+	    }
+	  }
+	};
 	
 	var Bot = function () {
 	  function Bot() {
@@ -9132,7 +9156,8 @@
 	          this.purchaseCtrl.destroy();
 	        }
 	        this.purchaseCtrl = new _purchaseCtrl2.default(this.api, strategy, duringPurchase, finish);
-	        this.tradeOption = tradeOption;
+	        checkTradeOptions(tradeOption);
+	        this.tradeOption = _extends({}, tradeOption);
 	        _observer.observer.emit('log.bot.start', {
 	          again: !!sameTrade
 	        });
@@ -9197,6 +9222,7 @@
 	        this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
 	        var opposites = _const2.default.opposites[this.tradeOption.condition];
 	        this.candleInterval = this.tradeOption.candleInterval;
+	        this.tradeOption.amount = this.tradeOption.amount.toFixed(2);
 	        this.tradeOptions = [];
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
@@ -10423,6 +10449,11 @@
 		        var e = new RangeError('Contract ends time is earlier than start time');
 		        e.name = 'ContractEndsBeforeStart';
 		        throw e;
+		    }
+		
+		    if (contractStart > nowEpoch) {
+		        var _start2 = nowEpoch - 600;
+		        return { start: _start2, end: nowEpoch };
 		    }
 		
 		    var buffer = (contractEnd - contractStart) * bufferSize;
@@ -11951,8 +11982,9 @@
 		
 		    this.subscribeToOpenContract = function (contractId, streamId) {
 		        if (streamId) {
-		            _this.state.contracts.add(contractId);
 		            _this.state.streamIdMapping.set(streamId, contractId);
+		        } else {
+		            _this.state.contracts.add(contractId);
 		        }
 		    };
 		
@@ -12002,9 +12034,9 @@
 		
 		    this.subscribeToPriceForContractProposal = function (options, streamId) {
 		        if (streamId) {
-		            _this.state.proposals.add(options);
 		            _this.state.streamIdMapping.set(streamId, options);
 		        }
+		        _this.state.proposals.add(options);
 		    };
 		
 		    this.unsubscribeFromAllProposals = function () {
@@ -12092,6 +12124,7 @@
 		
 		        this.onOpen = function () {
 		            _this.resubscribe();
+		            _this.sendBufferedSends();
 		            _this.executeBufferedExecutes();
 		        };
 		
@@ -12137,8 +12170,6 @@
 		
 		            if (token) {
 		                _this.authorize(token);
-		            } else {
-		                _this.sendBufferedSends();
 		            }
 		
 		            if (ticks.size !== 0) {
@@ -12213,10 +12244,6 @@
 		
 		        this.onMessage = function (message) {
 		            var json = JSON.parse(message.data);
-		
-		            if (json.msg_type === 'authorize' && _this.onAuth) {
-		                _this.sendBufferedSends();
-		            }
 		
 		            if (!json.error) {
 		                if (json.msg_type === 'authorize' && _this.onAuth) {
@@ -12397,13 +12424,6 @@
 		
 		            var urlPlusParams = this.apiUrl + '?l=' + this.language + '&app_id=' + this.appId;
 		
-		            Object.keys(this.unresolvedPromises).forEach(function (reqId) {
-		                var disconnectedError = new Error('Websocket disconnected before response received.');
-		                disconnectedError.name = 'DisconnectError';
-		                _this4.unresolvedPromises[reqId].reject(disconnectedError);
-		                delete _this4.unresolvedPromises[reqId];
-		            });
-		
 		            try {
 		                this.socket = connection || new WebSocket(urlPlusParams);
 		            } catch (err) {
@@ -12491,11 +12511,10 @@
 		
 		        _this.stack = new Error().stack;
 		        _this.error = errorObj;
-		        _this.name = errorObj.error.code;
+		        _this.name = _this.constructor.name;
 		
 		        var message = errorObj.error.message;
 		        var echo_req = errorObj.echo_req;
-		
 		
 		        var echoStr = JSON.stringify(echo_req, null, 2);
 		        _this.message = "[ServerError] " + message + "\n" + echoStr;
@@ -19114,11 +19133,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -19363,11 +19386,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -19612,11 +19639,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -19861,11 +19892,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20110,11 +20145,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20359,11 +20398,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20608,11 +20651,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20857,11 +20904,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -21106,11 +21157,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -21355,11 +21410,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -21604,11 +21663,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -21853,11 +21916,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -22102,11 +22169,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -23121,22 +23192,150 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.expectBarrierOffset = exports.expectNumber = exports.expectOhlc = exports.expectNonEmptyArray = undefined;
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	var _observer = __webpack_require__(300);
+	
+	var _translator = __webpack_require__(308);
+	
+	var _error = __webpack_require__(336);
+	
+	var expectNonEmptyArray = exports.expectNonEmptyArray = function expectNonEmptyArray(array) {
+	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
+	
+	  if (array && array instanceof Array && array.length) {
+	    return array;
+	  }
+	  _observer.observer.emit(CustomError.name, _translator.translator.translateText('Expected non-empty array, given:') + ' ' + (typeof array === 'undefined' ? 'undefined' : _typeof(array)));
+	  throw new CustomError();
+	};
+	
+	var expectOhlc = exports.expectOhlc = function expectOhlc(ohlc) {
+	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
+	
+	  if (ohlc && ohlc instanceof Object && ohlc.open && ohlc.high && ohlc.low && ohlc.close) {
+	    return ohlc;
+	  }
+	  _observer.observer.emit(CustomError.name, _translator.translator.translateText('Expected candle object, given:') + ' ' + (typeof ohlc === 'undefined' ? 'undefined' : _typeof(ohlc)));
+	  throw new CustomError();
+	};
+	
+	// runtime
+	
+	var expectNumber = exports.expectNumber = function expectNumber(name, num) {
+	  var CustomError = arguments.length <= 2 || arguments[2] === undefined ? _error.BlocklyError : arguments[2];
+	
+	  if (isNaN(parseFloat(num)) || isNaN(Number(num))) {
+	    _observer.observer.emit(CustomError.name, name + ' ' + _translator.translator.translateText('must be a number, given:') + ' ' + (typeof num === 'undefined' ? 'undefined' : _typeof(num)));
+	    throw new CustomError();
+	  }
+	  return Number(num);
+	};
+	
+	var expectBarrierOffset = exports.expectBarrierOffset = function expectBarrierOffset(barrier) {
+	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
+	
+	  if (barrier.match(/^[-+]\d+$/) === null) {
+	    _observer.observer.emit(CustomError.name, _translator.translator.translateText('Please use appropriate barrier offset block for barrier offsets'));
+	    throw new CustomError();
+	  }
+	  return barrier;
+	};
+
+/***/ },
+/* 336 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var CustomError = exports.CustomError = function CustomError() {
+	  _classCallCheck(this, CustomError);
+	
+	  var template = Error.apply(undefined, arguments);
+	  this.name = 'GenericError';
+	  this.message = template.message;
+	  this.stack = template.stack;
+	};
+	
+	var BlocklyError = exports.BlocklyError = function (_CustomError) {
+	  _inherits(BlocklyError, _CustomError);
+	
+	  function BlocklyError() {
+	    var _ref;
+	
+	    _classCallCheck(this, BlocklyError);
+	
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    var _this = _possibleConstructorReturn(this, (_ref = BlocklyError.__proto__ || Object.getPrototypeOf(BlocklyError)).call.apply(_ref, [this].concat(args)));
+	
+	    _this.name = 'BlocklyError';
+	    return _this;
+	  }
+	
+	  return BlocklyError;
+	}(CustomError);
+	
+	var RuntimeError = exports.RuntimeError = function (_CustomError2) {
+	  _inherits(RuntimeError, _CustomError2);
+	
+	  function RuntimeError() {
+	    var _ref2;
+	
+	    _classCallCheck(this, RuntimeError);
+	
+	    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	      args[_key2] = arguments[_key2];
+	    }
+	
+	    var _this2 = _possibleConstructorReturn(this, (_ref2 = RuntimeError.__proto__ || Object.getPrototypeOf(RuntimeError)).call.apply(_ref2, [this].concat(args)));
+	
+	    _this2.name = 'RuntimeError';
+	    return _this2;
+	  }
+	
+	  return RuntimeError;
+	}(CustomError);
+
+/***/ },
+/* 337 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _account = __webpack_require__(336);
+	var _account = __webpack_require__(338);
 	
 	var _observer = __webpack_require__(300);
 	
 	var _storageManager = __webpack_require__(301);
 	
-	var _binaryCharts = __webpack_require__(338);
+	var _binaryCharts = __webpack_require__(340);
 	
-	var _tradeInfo = __webpack_require__(371);
+	var _tradeInfo = __webpack_require__(373);
 	
 	var _tradeInfo2 = _interopRequireDefault(_tradeInfo);
 	
-	var _blockly = __webpack_require__(372);
+	var _blockly = __webpack_require__(374);
 	
 	var _blockly2 = _interopRequireDefault(_blockly);
 	
@@ -23144,15 +23343,15 @@
 	
 	var _bot = __webpack_require__(303);
 	
-	var _introduction = __webpack_require__(410);
+	var _introduction = __webpack_require__(412);
 	
 	var _introduction2 = _interopRequireDefault(_introduction);
 	
-	var _welcome = __webpack_require__(412);
+	var _welcome = __webpack_require__(414);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
 	
-	var _logger = __webpack_require__(413);
+	var _logger = __webpack_require__(415);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23271,12 +23470,7 @@
 	        reader.onload = function () {
 	          $('#fileBrowser').hide();
 	          return function (e) {
-	            try {
-	              _this2.blockly.loadBlocks(e.target.result);
-	              _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
-	            } catch (err) {
-	              _observer.observer.emit('blockly.error', err);
-	            }
+	            return _this2.blockly.loadBlocks(e.target.result);
 	          };
 	        }(f);
 	        reader.readAsText(f);
@@ -23493,7 +23687,7 @@
 	    value: function addEventHandlers() {
 	      var _this5 = this;
 	
-	      var _arr = ['api.error', 'blockly.error'];
+	      var _arr = ['api.error', 'BlocklyError', 'RuntimeError'];
 	
 	      for (var _i = 0; _i < _arr.length; _i++) {
 	        var errorType = _arr[_i];
@@ -23562,7 +23756,7 @@
 	exports.default = View;
 
 /***/ },
-/* 336 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23580,7 +23774,7 @@
 	  var callback = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
 	
 	  var option = typeof WebSocket === 'undefined' ? {
-	    websocket: __webpack_require__(337) } : {}; // eslint-disable-line import/newline-after-import
+	    websocket: __webpack_require__(339) } : {}; // eslint-disable-line import/newline-after-import
 	  var api = new _binaryLiveApi.LiveApi(option);
 	  api.authorize(token).then(function (response) {
 	    api.disconnect();
@@ -23595,7 +23789,7 @@
 	
 	var logoutAllTokens = exports.logoutAllTokens = function logoutAllTokens(callback) {
 	  var option = typeof WebSocket === 'undefined' ? {
-	    websocket: __webpack_require__(337) } : {}; // eslint-disable-line import/newline-after-import
+	    websocket: __webpack_require__(339) } : {}; // eslint-disable-line import/newline-after-import
 	  var api = new _binaryLiveApi.LiveApi(option);
 	  var tokenList = (0, _storageManager.getTokenList)();
 	  var logout = function logout() {
@@ -23613,16 +23807,16 @@
 	};
 
 /***/ },
-/* 337 */
+/* 339 */
 /***/ function(module, exports) {
 
 	module.exports = ws;
 
 /***/ },
-/* 338 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
-	!function(t,e){ true?module.exports=e(__webpack_require__(339)):"function"==typeof define&&define.amd?define(["react"],e):"object"==typeof exports?exports["binary-charts"]=e(require("react")):t["binary-charts"]=e(t.React)}(this,function(t){return function(t){function e(n){if(i[n])return i[n].exports;var r=i[n]={i:n,l:!1,exports:{}};return t[n].call(r.exports,r,r.exports,e),r.l=!0,r.exports}var i={};return e.m=t,e.c=i,e.i=function(t){return t},e.d=function(t,e,i){Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:i})},e.n=function(t){var i=t&&t.__esModule?function(){return t["default"]}:function(){return t};return e.d(i,"a",i),i},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=175)}(function(t){for(var e in t)if(Object.prototype.hasOwnProperty.call(t,e))switch(typeof t[e]){case"function":break;case"object":t[e]=function(e){var i=e.slice(1),n=t[e[0]];return function(t,e,r){n.apply(this,[t,e,r].concat(i))}}(t[e]);break;default:t[e]=t[t[e]]}return t}([function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});e.winPlotBand=function(t,e,i){return{id:t,from:e,to:i,color:"rgba(46, 136, 54, 0.2)",label:{style:{fontSize:"25px",fontWeight:"bold",color:"#2E8836"}}}},e.lossPlotBand=function(t,e,i){return{id:t,from:e,to:i,color:"rgba(204, 0, 51, 0.1)",label:{style:{fontSize:"25px",fontWeight:"bold",color:"#c03"}}}}},function(t,e,i){"use strict";(function(t){var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol?"symbol":typeof t};/**
+	!function(t,e){ true?module.exports=e(__webpack_require__(341)):"function"==typeof define&&define.amd?define(["react"],e):"object"==typeof exports?exports["binary-charts"]=e(require("react")):t["binary-charts"]=e(t.React)}(this,function(t){return function(t){function e(n){if(i[n])return i[n].exports;var r=i[n]={i:n,l:!1,exports:{}};return t[n].call(r.exports,r,r.exports,e),r.l=!0,r.exports}var i={};return e.m=t,e.c=i,e.i=function(t){return t},e.d=function(t,e,i){Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:i})},e.n=function(t){var i=t&&t.__esModule?function(){return t["default"]}:function(){return t};return e.d(i,"a",i),i},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=175)}(function(t){for(var e in t)if(Object.prototype.hasOwnProperty.call(t,e))switch(typeof t[e]){case"function":break;case"object":t[e]=function(e){var i=e.slice(1),n=t[e[0]];return function(t,e,r){n.apply(this,[t,e,r].concat(i))}}(t[e]);break;default:t[e]=t[t[e]]}return t}([function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});e.winPlotBand=function(t,e,i){return{id:t,from:e,to:i,color:"rgba(46, 136, 54, 0.2)",label:{style:{fontSize:"25px",fontWeight:"bold",color:"#2E8836"}}}},e.lossPlotBand=function(t,e,i){return{id:t,from:e,to:i,color:"rgba(204, 0, 51, 0.1)",label:{style:{fontSize:"25px",fontWeight:"bold",color:"#c03"}}}}},function(t,e,i){"use strict";(function(t){var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol?"symbol":typeof t};/**
 	 * @license Highstock JS v4.2.0 (2105-12-15)
 	 *
 	 * (c) 2009-2014 Torstein Honsi
@@ -23641,16 +23835,16 @@
 	}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(34),o=n(r);e["default"]=function(t,e){return e-((0,o["default"])()-t)%e}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(16),o=n(r),a=i(36),s=n(a);e["default"]=function(t,e,i){return(0,o["default"])(e,t)?(0,o["default"])(i,t)&&(0,s["default"])(i,e):!((0,o["default"])(i,e)&&(0,s["default"])(i,t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){var e=+t.slice(0,2),i=+t.slice(3,5);return 3600*e+60*i}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(5),o=n(r);e["default"]=function(){return(0,o["default"])(0)}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(4),o=n(r);e["default"]=function(){return(0,o["default"])(new Date)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(){return(new Date).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return new Date((new Date).setMonth((new Date).getMonth()+t))}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(4),o=n(r),a=i(17),s=n(a);e["default"]=function(){return(0,o["default"])(new Date(1e3*(0,s["default"])()))}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(17),o=n(r);e["default"]=function(){return new Date(1e3*(0,o["default"])()).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){document.addEventListener("fullscreenchange",function(){return t(document.fullscreen)}),document.addEventListener("webkitfullscreenchange",function(){return t(document.webkitIsFullScreen)}),document.addEventListener("mozfullscreenchange",function(){return t(document.mozFullScreen)}),document.addEventListener("MSFullscreenChange",function(){return t(document.msFullscreenElement)})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(){document.exitFullscreen?document.exitFullscreen():document.msExitFullscreen?document.msExitFullscreen():document.mozCancelFullScreen?document.mozCancelFullScreen():document.webkitExitFullscreen&&document.webkitExitFullscreen()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){document.removeEventListener("fullscreenchange",t),document.removeEventListener("webkitfullscreenchange",t),document.removeEventListener("mozfullscreenchange",t),document.removeEventListener("MSFullscreenChange",t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){t.requestFullscreen?t.requestFullscreen():t.msRequestFullscreen?t.msRequestFullscreen():t.mozRequestFullScreen?t.mozRequestFullScreen():t.webkitRequestFullscreen&&t.webkitRequestFullscreen()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]="undefined"!=typeof alert?alert:function(){}},129,function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(){"undefined"!=typeof window&&setTimeout(function(){return window.dispatchEvent(new Event("resize"))},100)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return{t:"Ticks",s:"Seconds",m:"Minutes",h:"Hours",d:"Days"}[t]}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(18),o=n(r);e["default"]=function(t,e){var i=t.filter(function(t){return t.contract_type===e}),n=i.filter(function(t){return!t.forward_starting_options});if(0!==n.length)return(0,o["default"])(n,e)}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var i=arguments[e];for(var n in i)Object.prototype.hasOwnProperty.call(i,n)&&(t[n]=i[n])}return t},o=i(31),a=n(o),s=i(9),l=n(s),u=i(18),c=n(u);e["default"]=function(t,e){var i=t.filter(function(t){return!!t.forward_starting_options&&t.contract_type===e});if(0!==i.length){if(i.length>1)throw new Error("Can not have more than one contract with forward starting options");var n=i[0].forward_starting_options,o=(0,l["default"])(n||[],"date"),s=[];Object.keys(o).sort(function(t,e){return+t-+e}).forEach(function(t){var e=o[t].map(function(t){var e=new Date(1e3*t.open),i=new Date(1e3*t.close);return{open:e,close:i}}),i=(0,a["default"])(e);s.push(r({date:new Date(1e3*t)},i))});var u=(0,c["default"])(i,e);return{range:s,options:u}}}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(40),o=n(r),a=i(8),s=n(a);e["default"]=function(t,e){return(0,o["default"])(e)||(0,s["default"])(t,e)<120}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e,i){var n=i.find(function(t){return t.unit===e});return!!n&&(t<=n.max&&t>=n.min)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i=function(){},n=function(t){return t||"undefined"!=typeof window&&window.ga||i};e.trackUserId=function(t,e){return n(e)("set","userId",t)},e.trackRoute=function(t,e){return n(e)("send","pageview",t)},e.trackEvent=function(t,e,i,r){return n(r)("send",{hitType:"event",eventCategory:t,eventAction:e,eventLabel:i})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return"rgba(42, 48, 82, "+t+")"}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t<0&&"number-negative"||t>0&&"number-positive"||""}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t.split(")").length>1?t.split(")")[1]:t}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i=0;e["default"]=function(){return i++}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(){return"undefined"!=typeof window&&/Mobile/.test(window.navigator.userAgent)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return/\S+@\S+\.\S+/.test(t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return/^[ -~]{6,25}$/.test(t)}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(41),o=n(r);e["default"]=function(t,e){return t.reduce(function(t,i){var n=(0,o["default"])(i.quote,e);return t[n]++,t},[0,0,0,0,0,0,0,0,0,0]).map(function(e){return t.length&&e/t.length*100})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return Math.pow(10,-t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){var e=t.toString();return e.includes(".")?e.split(".")[1].length:0}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t>0?"+"+t:t.toString()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){if(isNaN(t))return"0.01";var e=Array(t).join("0");return"0."+e+1}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return Math.abs(Math.log10(t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return(+t).toFixed(2)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e){return Object.keys(t).reduce(function(i,n){return e(t[n])&&(i[n]=t[n]),i},{})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol?"symbol":typeof t},n=function r(t,e){if("object"!==("undefined"==typeof t?"undefined":i(t))||null===t||void 0===t)return!1;var n=Object.keys(t).map(function(e){return t[e]}),o=n.map(function(t,i){return e(t,i)});if(o.indexOf(!0)>-1)return!0;var a=n.map(function(t){return r(t,e)});return a.indexOf(!0)>-1};e["default"]=n},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i=e.toPlainJS=function(t){return t&&("undefined"==typeof t.toJS?t:t.toJS())};e["default"]=function(t){return t&&Object.keys(t).reduce(function(e,n){return e[n]=i(t[n]),e},{})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e){return t.length===e.length&&t.every(function(t,i){return t===e[i]})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e){var i=t.length,n=e.length;if(i!==n)return!1;if(0===i)return!0;var r=t[i-1],o=e[n-1];return r.epoch===o.epoch&&r.close===o.close}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e){return t.length===e.length&&(0===t.length||t[t.length-1].epoch===e[e.length-1].epoch)}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(42),o=n(r),a=i(19),s=n(a);e["default"]=function(t,e){return(0,s["default"])(t,e,o["default"])}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(43),o=n(r),a=i(19),s=n(a);e["default"]=function(t,e){return(0,s["default"])(t,e,o["default"])}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t&&(0===t.length?void 0:+t[t.length-1].close)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t&&t.length>0?t[t.length-1].quote:void 0}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t.times.map(function(e,i){return{epoch:+e,quote:+t.prices[i]}})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return[1e3*+(t.open_time||t.epoch),+t.open,+t.high,+t.low,+t.close]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t.map(function(t){return{quote:+t.open,epoch:+t.epoch}})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return[1e3*t.epoch,t.quote]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t&&+t.ask_price}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return{callput:"Up/Down",risefall:"Rise/Fall",higherlower:"Higher/Lower",asian:"Asians",digits:"Digits",endsinout:"Ends In/Out",staysinout:"Stays In/Out",touchnotouch:"Touch/No Touch",spreads:"Spreads"}[t]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return{contract_id:"Contract ID",purchase_time:"Purchase Time",ask_price:"Ask Price",bid_price:"Bid Price",date_start:"Start Time",date_expiry:"Expiry Time",date_settlement:"Settlement Time",expiry_time:"Expiry Time",current_spot:"Current Spot",current_spot_time:"Current Spot Time",entry_spot:"Entry Spot",entry_tick_time:"Entry Spot Time",sell_price:"Sell Price",payout:"Potential Payout",buy_price:"Purchase Price",barrier:"Barrier",low_barrier:"Low Barrier",high_barrier:"High Barrier",sell_time:"Sell Time",exit_tick_time:"Exit Spot Time",exit_tick:"Exit Spot",sell_spot_time:"DO NOT USE",entry_tick:"DO NOT USE",sell_spot:"DO NOT USE"}[t]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return{amountPerPoint:t[0].amount_per_point,stopType:t[0].stop_type,stopLoss:t[0].stop_loss,stopProfit:t[0].stop_profit}}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(8),o=n(r);e["default"]=function(t,e){return(0,o["default"])(t,e)<86400}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(9),o=n(r);e["default"]=function(t){var e=t.map(function(t){return{amount_per_point:t.amount_per_point,barrier:t.barrier,barriers:t.barriers,contract_category:t.contract_category,contract_category_display:t.contract_category_display,contract_display:t.contract_display,contract_type:t.contract_type,expiry_type:t.expiry_type,forward_starting_options:t.forward_starting_options,high_barrier:t.high_barrier,last_digit_range:t.last_digit_range,low_barrier:t.low_barrier,min_contract_duration:t.min_contract_duration,max_contract_duration:t.max_contract_duration,stop_type:t.stop_type,stop_loss:t.stop_loss,stop_profit:t.stop_profit}}),i=(0,o["default"])(e,"contract_category"),n=Object.keys(i);return n.forEach(function(t){var e=i[t],n=(0,o["default"])(e,"contract_type");i[t]=n}),i}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(44),o=n(r),a=i(45),s=n(a);e["default"]=function(t,e){return(0,o["default"])(t)+((0,s["default"])(t)?" "+e:"")}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(10),o=n(r);e["default"]=function(t){return o["default"].find(function(e){return e.text===t}).value}},function(t,e){"use strict";function i(t,e){return t===e?0!==t||1/t===1/e:t!==t&&e!==e}function n(t,e){if(i(t,e))return!0;if("object"!=typeof t||null===t||"object"!=typeof e||null===e)return!1;var n=Object.keys(t),o=Object.keys(e);if(n.length!==o.length)return!1;for(var a=0;a<n.length;a++)if(!r.call(e,n[a])||!i(t[n[a]],e[n[a]]))return!1;return!0}var r=Object.prototype.hasOwnProperty;t.exports=n},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0}),e.BinaryChart=e.PlainChart=void 0;var r=i(47),o=n(r),a=i(46),s=n(a);e.PlainChart=o["default"],e.BinaryChart=s["default"]}]))});
 
 /***/ },
-/* 339 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(340);
+	module.exports = __webpack_require__(342);
 
 
 /***/ },
-/* 340 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -23666,26 +23860,26 @@
 	
 	'use strict';
 	
-	var _assign = __webpack_require__(341);
+	var _assign = __webpack_require__(343);
 	
-	var ReactChildren = __webpack_require__(342);
-	var ReactComponent = __webpack_require__(354);
-	var ReactPureComponent = __webpack_require__(357);
-	var ReactClass = __webpack_require__(358);
-	var ReactDOMFactories = __webpack_require__(363);
-	var ReactElement = __webpack_require__(346);
-	var ReactPropTypes = __webpack_require__(368);
-	var ReactVersion = __webpack_require__(369);
+	var ReactChildren = __webpack_require__(344);
+	var ReactComponent = __webpack_require__(356);
+	var ReactPureComponent = __webpack_require__(359);
+	var ReactClass = __webpack_require__(360);
+	var ReactDOMFactories = __webpack_require__(365);
+	var ReactElement = __webpack_require__(348);
+	var ReactPropTypes = __webpack_require__(370);
+	var ReactVersion = __webpack_require__(371);
 	
-	var onlyChild = __webpack_require__(370);
-	var warning = __webpack_require__(348);
+	var onlyChild = __webpack_require__(372);
+	var warning = __webpack_require__(350);
 	
 	var createElement = ReactElement.createElement;
 	var createFactory = ReactElement.createFactory;
 	var cloneElement = ReactElement.cloneElement;
 	
 	if (process.env.NODE_ENV !== 'production') {
-	  var ReactElementValidator = __webpack_require__(364);
+	  var ReactElementValidator = __webpack_require__(366);
 	  createElement = ReactElementValidator.createElement;
 	  createFactory = ReactElementValidator.createFactory;
 	  cloneElement = ReactElementValidator.cloneElement;
@@ -23745,7 +23939,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 341 */
+/* 343 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23834,7 +24028,7 @@
 
 
 /***/ },
-/* 342 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23850,11 +24044,11 @@
 	
 	'use strict';
 	
-	var PooledClass = __webpack_require__(343);
-	var ReactElement = __webpack_require__(346);
+	var PooledClass = __webpack_require__(345);
+	var ReactElement = __webpack_require__(348);
 	
-	var emptyFunction = __webpack_require__(349);
-	var traverseAllChildren = __webpack_require__(351);
+	var emptyFunction = __webpack_require__(351);
+	var traverseAllChildren = __webpack_require__(353);
 	
 	var twoArgumentPooler = PooledClass.twoArgumentPooler;
 	var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -24030,7 +24224,7 @@
 	module.exports = ReactChildren;
 
 /***/ },
-/* 343 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24046,9 +24240,9 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var invariant = __webpack_require__(345);
+	var invariant = __webpack_require__(347);
 	
 	/**
 	 * Static poolers. Several custom versions for each potential number of
@@ -24157,7 +24351,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 344 */
+/* 346 */
 /***/ function(module, exports) {
 
 	/**
@@ -24201,7 +24395,7 @@
 	module.exports = reactProdInvariant;
 
 /***/ },
-/* 345 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24256,7 +24450,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 346 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24272,12 +24466,12 @@
 	
 	'use strict';
 	
-	var _assign = __webpack_require__(341);
+	var _assign = __webpack_require__(343);
 	
-	var ReactCurrentOwner = __webpack_require__(347);
+	var ReactCurrentOwner = __webpack_require__(349);
 	
-	var warning = __webpack_require__(348);
-	var canDefineProperty = __webpack_require__(350);
+	var warning = __webpack_require__(350);
+	var canDefineProperty = __webpack_require__(352);
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	
 	// The Symbol used to tag the ReactElement type. If there is no native Symbol
@@ -24610,7 +24804,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 347 */
+/* 349 */
 /***/ function(module, exports) {
 
 	/**
@@ -24646,7 +24840,7 @@
 	module.exports = ReactCurrentOwner;
 
 /***/ },
-/* 348 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24661,7 +24855,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(349);
+	var emptyFunction = __webpack_require__(351);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -24718,7 +24912,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 349 */
+/* 351 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -24761,7 +24955,7 @@
 	module.exports = emptyFunction;
 
 /***/ },
-/* 350 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24791,7 +24985,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 351 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24807,15 +25001,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactCurrentOwner = __webpack_require__(347);
-	var ReactElement = __webpack_require__(346);
+	var ReactCurrentOwner = __webpack_require__(349);
+	var ReactElement = __webpack_require__(348);
 	
-	var getIteratorFn = __webpack_require__(352);
-	var invariant = __webpack_require__(345);
-	var KeyEscapeUtils = __webpack_require__(353);
-	var warning = __webpack_require__(348);
+	var getIteratorFn = __webpack_require__(354);
+	var invariant = __webpack_require__(347);
+	var KeyEscapeUtils = __webpack_require__(355);
+	var warning = __webpack_require__(350);
 	
 	var SEPARATOR = '.';
 	var SUBSEPARATOR = ':';
@@ -24964,7 +25158,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 352 */
+/* 354 */
 /***/ function(module, exports) {
 
 	/**
@@ -25010,7 +25204,7 @@
 	module.exports = getIteratorFn;
 
 /***/ },
-/* 353 */
+/* 355 */
 /***/ function(module, exports) {
 
 	/**
@@ -25074,7 +25268,7 @@
 	module.exports = KeyEscapeUtils;
 
 /***/ },
-/* 354 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25090,14 +25284,14 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactNoopUpdateQueue = __webpack_require__(355);
+	var ReactNoopUpdateQueue = __webpack_require__(357);
 	
-	var canDefineProperty = __webpack_require__(350);
-	var emptyObject = __webpack_require__(356);
-	var invariant = __webpack_require__(345);
-	var warning = __webpack_require__(348);
+	var canDefineProperty = __webpack_require__(352);
+	var emptyObject = __webpack_require__(358);
+	var invariant = __webpack_require__(347);
+	var warning = __webpack_require__(350);
 	
 	/**
 	 * Base class helpers for the updating state of a component.
@@ -25198,7 +25392,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 355 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25214,7 +25408,7 @@
 	
 	'use strict';
 	
-	var warning = __webpack_require__(348);
+	var warning = __webpack_require__(350);
 	
 	function warnNoop(publicInstance, callerName) {
 	  if (process.env.NODE_ENV !== 'production') {
@@ -25300,7 +25494,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 356 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25325,7 +25519,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 357 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25341,12 +25535,12 @@
 	
 	'use strict';
 	
-	var _assign = __webpack_require__(341);
+	var _assign = __webpack_require__(343);
 	
-	var ReactComponent = __webpack_require__(354);
-	var ReactNoopUpdateQueue = __webpack_require__(355);
+	var ReactComponent = __webpack_require__(356);
+	var ReactNoopUpdateQueue = __webpack_require__(357);
 	
-	var emptyObject = __webpack_require__(356);
+	var emptyObject = __webpack_require__(358);
 	
 	/**
 	 * Base class helpers for the updating state of a component.
@@ -25372,7 +25566,7 @@
 	module.exports = ReactPureComponent;
 
 /***/ },
-/* 358 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25388,20 +25582,20 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344),
-	    _assign = __webpack_require__(341);
+	var _prodInvariant = __webpack_require__(346),
+	    _assign = __webpack_require__(343);
 	
-	var ReactComponent = __webpack_require__(354);
-	var ReactElement = __webpack_require__(346);
-	var ReactPropTypeLocations = __webpack_require__(359);
-	var ReactPropTypeLocationNames = __webpack_require__(361);
-	var ReactNoopUpdateQueue = __webpack_require__(355);
+	var ReactComponent = __webpack_require__(356);
+	var ReactElement = __webpack_require__(348);
+	var ReactPropTypeLocations = __webpack_require__(361);
+	var ReactPropTypeLocationNames = __webpack_require__(363);
+	var ReactNoopUpdateQueue = __webpack_require__(357);
 	
-	var emptyObject = __webpack_require__(356);
-	var invariant = __webpack_require__(345);
-	var keyMirror = __webpack_require__(360);
-	var keyOf = __webpack_require__(362);
-	var warning = __webpack_require__(348);
+	var emptyObject = __webpack_require__(358);
+	var invariant = __webpack_require__(347);
+	var keyMirror = __webpack_require__(362);
+	var keyOf = __webpack_require__(364);
+	var warning = __webpack_require__(350);
 	
 	var MIXINS_KEY = keyOf({ mixins: null });
 	
@@ -26110,7 +26304,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 359 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26126,7 +26320,7 @@
 	
 	'use strict';
 	
-	var keyMirror = __webpack_require__(360);
+	var keyMirror = __webpack_require__(362);
 	
 	var ReactPropTypeLocations = keyMirror({
 	  prop: null,
@@ -26137,7 +26331,7 @@
 	module.exports = ReactPropTypeLocations;
 
 /***/ },
-/* 360 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26153,7 +26347,7 @@
 	
 	'use strict';
 	
-	var invariant = __webpack_require__(345);
+	var invariant = __webpack_require__(347);
 	
 	/**
 	 * Constructs an enumeration with keys equal to their value.
@@ -26190,7 +26384,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 361 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26220,7 +26414,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 362 */
+/* 364 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26259,7 +26453,7 @@
 	module.exports = keyOf;
 
 /***/ },
-/* 363 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26275,7 +26469,7 @@
 	
 	'use strict';
 	
-	var ReactElement = __webpack_require__(346);
+	var ReactElement = __webpack_require__(348);
 	
 	/**
 	 * Create a factory that creates HTML tag elements.
@@ -26284,7 +26478,7 @@
 	 */
 	var createDOMFactory = ReactElement.createFactory;
 	if (process.env.NODE_ENV !== 'production') {
-	  var ReactElementValidator = __webpack_require__(364);
+	  var ReactElementValidator = __webpack_require__(366);
 	  createDOMFactory = ReactElementValidator.createFactory;
 	}
 	
@@ -26435,7 +26629,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 364 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26458,16 +26652,16 @@
 	
 	'use strict';
 	
-	var ReactCurrentOwner = __webpack_require__(347);
-	var ReactComponentTreeHook = __webpack_require__(365);
-	var ReactElement = __webpack_require__(346);
-	var ReactPropTypeLocations = __webpack_require__(359);
+	var ReactCurrentOwner = __webpack_require__(349);
+	var ReactComponentTreeHook = __webpack_require__(367);
+	var ReactElement = __webpack_require__(348);
+	var ReactPropTypeLocations = __webpack_require__(361);
 	
-	var checkReactTypeSpec = __webpack_require__(366);
+	var checkReactTypeSpec = __webpack_require__(368);
 	
-	var canDefineProperty = __webpack_require__(350);
-	var getIteratorFn = __webpack_require__(352);
-	var warning = __webpack_require__(348);
+	var canDefineProperty = __webpack_require__(352);
+	var getIteratorFn = __webpack_require__(354);
+	var warning = __webpack_require__(350);
 	
 	function getDeclarationErrorAddendum() {
 	  if (ReactCurrentOwner.current) {
@@ -26669,7 +26863,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 365 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26685,12 +26879,12 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactCurrentOwner = __webpack_require__(347);
+	var ReactCurrentOwner = __webpack_require__(349);
 	
-	var invariant = __webpack_require__(345);
-	var warning = __webpack_require__(348);
+	var invariant = __webpack_require__(347);
+	var warning = __webpack_require__(350);
 	
 	function isNative(fn) {
 	  // Based on isNative() from Lodash
@@ -27017,7 +27211,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 366 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27033,13 +27227,13 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactPropTypeLocationNames = __webpack_require__(361);
-	var ReactPropTypesSecret = __webpack_require__(367);
+	var ReactPropTypeLocationNames = __webpack_require__(363);
+	var ReactPropTypesSecret = __webpack_require__(369);
 	
-	var invariant = __webpack_require__(345);
-	var warning = __webpack_require__(348);
+	var invariant = __webpack_require__(347);
+	var warning = __webpack_require__(350);
 	
 	var ReactComponentTreeHook;
 	
@@ -27049,7 +27243,7 @@
 	  // https://github.com/facebook/react/issues/7240
 	  // Remove the inline requires when we don't need them anymore:
 	  // https://github.com/facebook/react/pull/7178
-	  ReactComponentTreeHook = __webpack_require__(365);
+	  ReactComponentTreeHook = __webpack_require__(367);
 	}
 	
 	var loggedTypeFailures = {};
@@ -27091,7 +27285,7 @@
 	
 	        if (process.env.NODE_ENV !== 'production') {
 	          if (!ReactComponentTreeHook) {
-	            ReactComponentTreeHook = __webpack_require__(365);
+	            ReactComponentTreeHook = __webpack_require__(367);
 	          }
 	          if (debugID !== null) {
 	            componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -27110,7 +27304,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 367 */
+/* 369 */
 /***/ function(module, exports) {
 
 	/**
@@ -27131,7 +27325,7 @@
 	module.exports = ReactPropTypesSecret;
 
 /***/ },
-/* 368 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27147,13 +27341,13 @@
 	
 	'use strict';
 	
-	var ReactElement = __webpack_require__(346);
-	var ReactPropTypeLocationNames = __webpack_require__(361);
-	var ReactPropTypesSecret = __webpack_require__(367);
+	var ReactElement = __webpack_require__(348);
+	var ReactPropTypeLocationNames = __webpack_require__(363);
+	var ReactPropTypesSecret = __webpack_require__(369);
 	
-	var emptyFunction = __webpack_require__(349);
-	var getIteratorFn = __webpack_require__(352);
-	var warning = __webpack_require__(348);
+	var emptyFunction = __webpack_require__(351);
+	var getIteratorFn = __webpack_require__(354);
+	var warning = __webpack_require__(350);
 	
 	/**
 	 * Collection of methods that allow declaration and validation of props that are
@@ -27568,7 +27762,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 369 */
+/* 371 */
 /***/ function(module, exports) {
 
 	/**
@@ -27587,7 +27781,7 @@
 	module.exports = '15.3.2';
 
 /***/ },
-/* 370 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27602,11 +27796,11 @@
 	 */
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactElement = __webpack_require__(346);
+	var ReactElement = __webpack_require__(348);
 	
-	var invariant = __webpack_require__(345);
+	var invariant = __webpack_require__(347);
 	
 	/**
 	 * Returns the first child in a collection of children and verifies that there
@@ -27631,7 +27825,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 371 */
+/* 373 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27742,7 +27936,7 @@
 	exports.default = TradeInfo;
 
 /***/ },
-/* 372 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27753,7 +27947,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _filesaverjs = __webpack_require__(373);
+	var _filesaverjs = __webpack_require__(375);
 	
 	var _filesaverjs2 = _interopRequireDefault(_filesaverjs);
 	
@@ -27767,9 +27961,9 @@
 	
 	var _bot = __webpack_require__(303);
 	
-	var _utils = __webpack_require__(376);
+	var _utils = __webpack_require__(378);
 	
-	var _blocks = __webpack_require__(377);
+	var _blocks = __webpack_require__(379);
 	
 	var _blocks2 = _interopRequireDefault(_blocks);
 	
@@ -27834,7 +28028,7 @@
 	        for (var _iterator = Object.keys(obj)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	          var market = _step.value;
 	
-	          xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">\n';
+	          xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">';
 	          var _iteratorNormalCompletion2 = true;
 	          var _didIteratorError2 = false;
 	          var _iteratorError2 = undefined;
@@ -27843,7 +28037,7 @@
 	            for (var _iterator2 = Object.keys(obj[market].submarkets)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	              var submarket = _step2.value;
 	
-	              xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">\n';
+	              xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">';
 	              var _iteratorNormalCompletion3 = true;
 	              var _didIteratorError3 = false;
 	              var _iteratorError3 = undefined;
@@ -27852,7 +28046,7 @@
 	                for (var _iterator3 = Object.keys(obj[market].submarkets[submarket].symbols)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 	                  var symbol = _step3.value;
 	
-	                  xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>\n';
+	                  xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>';
 	                }
 	              } catch (err) {
 	                _didIteratorError3 = true;
@@ -28018,10 +28212,19 @@
 	      if (str) {
 	        this.blocksXmlStr = str;
 	      }
-	      Blockly.mainWorkspace.clear();
-	      var xml = Blockly.Xml.textToDom(this.blocksXmlStr);
-	      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-	      this.reconfigureBlocklyAfterLoad();
+	      try {
+	        Blockly.mainWorkspace.clear();
+	        var xml = Blockly.Xml.textToDom(this.blocksXmlStr);
+	        Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+	        this.reconfigureBlocklyAfterLoad();
+	        _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
+	      } catch (e) {
+	        if (e.name === 'BlocklyError') {
+	          // pass
+	        } else {
+	          throw e;
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'selectBlockByText',
@@ -28144,11 +28347,15 @@
 	        window.LoopTrap = 1000;
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
 	        this.deleteStrayBlocks();
-	        code = '\n      ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n      trade();';
+	        code = '\n        try {\n          ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n          trade();\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 	        this.generatedJs = code;
 	      } catch (e) {
-	        _observer.observer.emit('blockly.error', e);
+	        if (e.name === 'BlocklyError') {
+	          // pass
+	        } else {
+	          throw e;
+	        }
 	      }
 	      if (code) {
 	        eval(code); // eslint-disable-line no-eval
@@ -28186,7 +28393,7 @@
 	exports.default = _Blockly;
 
 /***/ },
-/* 373 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* FileSaver.js
@@ -28464,7 +28671,7 @@
 	
 	if (typeof module !== "undefined" && module.exports) {
 	  module.exports.saveAs = saveAs;
-	} else if (("function" !== "undefined" && __webpack_require__(374) !== null) && (__webpack_require__(375) !== null)) {
+	} else if (("function" !== "undefined" && __webpack_require__(376) !== null) && (__webpack_require__(377) !== null)) {
 	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
 	    return saveAs;
 	  }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -28472,14 +28679,14 @@
 
 
 /***/ },
-/* 374 */
+/* 376 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 375 */
+/* 377 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -28487,7 +28694,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ },
-/* 376 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28495,7 +28702,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.addPurchaseOptions = exports.findTopParentBlock = exports.getPurchaseChoices = exports.getBlockByType = exports.isMainBlock = exports.throwError = undefined;
+	exports.addPurchaseOptions = exports.findTopParentBlock = exports.getPurchaseChoices = exports.getBlockByType = exports.isMainBlock = undefined;
 	
 	var _const = __webpack_require__(307);
 	
@@ -28506,12 +28713,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var purchaseChoices = [[_translator.translator.translateText('Click to select'), '']];
-	
-	var throwError = exports.throwError = function throwError(message) {
-	  var error = new Error(message);
-	  error.blockly = true;
-	  throw error;
-	};
 	
 	var isMainBlock = exports.isMainBlock = function isMainBlock(blockType) {
 	  return _const2.default.mainBlocks.indexOf(blockType) >= 0;
@@ -28630,7 +28831,7 @@
 	};
 
 /***/ },
-/* 377 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28639,21 +28840,17 @@
 	  value: true
 	});
 	
-	__webpack_require__(378);
-	
 	__webpack_require__(380);
 	
-	var _markets = __webpack_require__(381);
+	__webpack_require__(382);
+	
+	var _markets = __webpack_require__(383);
 	
 	var _markets2 = _interopRequireDefault(_markets);
 	
-	var _tradeTypes = __webpack_require__(382);
+	var _tradeTypes = __webpack_require__(384);
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
-	
-	__webpack_require__(384);
-	
-	__webpack_require__(385);
 	
 	__webpack_require__(386);
 	
@@ -28703,6 +28900,10 @@
 	
 	__webpack_require__(409);
 	
+	__webpack_require__(410);
+	
+	__webpack_require__(411);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function () {
@@ -28711,14 +28912,14 @@
 	};
 
 /***/ },
-/* 378 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	Blockly.Blocks.trade = {
 	  init: function init() {
@@ -28749,7 +28950,7 @@
 	};
 
 /***/ },
-/* 379 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28771,7 +28972,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _utils = __webpack_require__(376);
+	var _utils = __webpack_require__(378);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29041,7 +29242,7 @@
 	};
 
 /***/ },
-/* 380 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29052,7 +29253,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29073,12 +29274,12 @@
 	Blockly.JavaScript.barrier_offset = function (block) {
 	  var barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
 	  var barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = barrierOffsetType + Number(barrierOffset);
+	  var code = '' + barrierOffsetType + barrierOffset;
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 381 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29089,7 +29290,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _bot = __webpack_require__(303);
 	
@@ -29176,7 +29377,7 @@
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 
 /***/ },
-/* 382 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29189,11 +29390,11 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
-	var _components = __webpack_require__(383);
+	var _components = __webpack_require__(385);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29291,6 +29492,7 @@
 	      var opposites = _step2.value;
 	
 	      Blockly.JavaScript[opposites.toLowerCase()] = function tradeType(block) {
+	        // eslint-disable-line no-loop-func, max-len
 	        var durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
 	        var candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST');
 	        var durationType = block.getFieldValue('DURATIONTYPE_LIST');
@@ -29321,7 +29523,7 @@
 	        if (opposites === '' || durationValue === '' || payouttype === '' || currency === '' || amount === '') {
 	          throw Error(_translator.translator.translateText('All trade types are required'));
 	        }
-	        var code = '{\n      condition: \'' + opposites + '\',\n      candleInterval: \'' + candleIntervalValue + '\',\n      duration: ' + durationValue + ',\n      duration_unit: \'' + durationType + '\',\n      basis: \'' + payouttype + '\',\n      currency: \'' + currency + '\',\n      amount: (' + amount + ').toFixed(2),\n      ' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'barrier: ' + predictionValue : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrier: \'' + barrierOffsetValue + '\'' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'barrier2: \'' + secondBarrierOffsetValue + '\'' : '');
+	        var code = '{\n      condition: \'' + opposites + '\',\n      candleInterval: \'' + candleIntervalValue + '\',\n      duration: ' + durationValue + ',\n      duration_unit: \'' + durationType + '\',\n      basis: \'' + payouttype + '\',\n      currency: \'' + currency + '\',\n      amount: ' + amount + ',\n      ' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'barrier: ' + predictionValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrier: \'' + barrierOffsetValue + '\',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'barrier2: \'' + secondBarrierOffsetValue + '\',' : '');
 	        return code;
 	      };
 	    };
@@ -29346,7 +29548,7 @@
 	};
 
 /***/ },
-/* 383 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29407,7 +29609,7 @@
 	}
 
 /***/ },
-/* 384 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29437,7 +29639,7 @@
 	};
 
 /***/ },
-/* 385 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29469,7 +29671,7 @@
 	};
 
 /***/ },
-/* 386 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29491,7 +29693,7 @@
 	};
 
 /***/ },
-/* 387 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29513,14 +29715,14 @@
 	};
 
 /***/ },
-/* 388 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _const = __webpack_require__(307);
 	
@@ -29547,14 +29749,14 @@
 	};
 
 /***/ },
-/* 389 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 	Blockly.Blocks.direction = {
@@ -29575,14 +29777,14 @@
 	};
 
 /***/ },
-/* 390 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _utils = __webpack_require__(376);
+	var _utils = __webpack_require__(378);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -29608,14 +29810,14 @@
 	};
 
 /***/ },
-/* 391 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _utils = __webpack_require__(376);
+	var _utils = __webpack_require__(378);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -29641,14 +29843,14 @@
 	};
 
 /***/ },
-/* 392 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _utils = __webpack_require__(376);
+	var _utils = __webpack_require__(378);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -29674,7 +29876,7 @@
 	};
 
 /***/ },
-/* 393 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29693,17 +29895,17 @@
 	
 	Blockly.JavaScript.on_strategy = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
-	  var code = 'function on_strategy(ticks, proposals, purchaseCtrl){\n  if(purchaseCtrl === null) return; \n  ' + stack + '\n  }\n  ';
+	  var code = 'function on_strategy(ticks, proposals, purchaseCtrl){\n    if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
 	  return code;
 	};
 
 /***/ },
-/* 394 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -29725,12 +29927,12 @@
 	};
 
 /***/ },
-/* 395 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -29752,12 +29954,12 @@
 	};
 
 /***/ },
-/* 396 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -29779,7 +29981,7 @@
 	};
 
 /***/ },
-/* 397 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29790,7 +29992,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29813,15 +30015,15 @@
 	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
 	  var code = void 0;
 	  if (ohlcObj) {
-	    code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
+	    code = 'Bot.expectOhlc((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
 	  } else {
-	    code = 'ticks.ohlc.slice(-1)[0].' + ohlcField;
+	    code = 'Bot.expectOhlc(ticks.ohlc.slice(-1)[0]).' + ohlcField;
 	  }
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 398 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29832,7 +30034,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29855,19 +30057,19 @@
 	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 	  var index = Number(Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC));
 	  var code = void 0;
-	  if (!index) {
+	  if (isNaN(index) || index < 1) {
 	    index = 1;
 	  }
 	  if (index === 1) {
-	    code = '(ticks.ohlc.slice(-1)[0].' + ohlcField + ')';
+	    code = '(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1)[0]).' + ohlcField + ')';
 	  } else {
-	    code = '(ticks.ohlc.slice(-1*' + index + ', -1*' + (index - 1) + ')[0].' + ohlcField + ')';
+	    code = '(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1*' + index + ', -1*' + (index - 1) + ')[0]).' + ohlcField + ')';
 	  }
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 399 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29886,12 +30088,12 @@
 	
 	Blockly.JavaScript.during_purchase = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
-	  var code = 'function during_purchase(openContract, purchaseCtrl){\n  if(purchaseCtrl === null) return; \n  ' + stack + '\n  }\n  ';
+	  var code = 'function during_purchase(openContract, purchaseCtrl){\n  if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
 	  return code;
 	};
 
 /***/ },
-/* 400 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29913,7 +30115,7 @@
 	};
 
 /***/ },
-/* 401 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29937,7 +30139,7 @@
 	};
 
 /***/ },
-/* 402 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29959,14 +30161,14 @@
 	};
 
 /***/ },
-/* 403 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
 	Blockly.Blocks.contract_result = {
@@ -29987,7 +30189,7 @@
 	};
 
 /***/ },
-/* 404 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29996,7 +30198,7 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -30021,12 +30223,12 @@
 	};
 
 /***/ },
-/* 405 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -30048,7 +30250,7 @@
 	};
 
 /***/ },
-/* 406 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30067,19 +30269,19 @@
 	
 	Blockly.JavaScript.on_finish = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-	  var code = 'function on_finish(_finishedContract, details){\n' + stack + '\nBot.stop();\n}\n';
+	  var code = 'function on_finish(_finishedContract, details){\n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n    Bot.stop();\n  }\n  ';
 	  return code;
 	};
 
 /***/ },
-/* 407 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	var _const = __webpack_require__(307);
 	
@@ -30107,14 +30309,14 @@
 	};
 
 /***/ },
-/* 408 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(379);
+	var _relationChecker = __webpack_require__(381);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
 	Blockly.Blocks.trade_again = {
@@ -30134,7 +30336,7 @@
 	};
 
 /***/ },
-/* 409 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30156,7 +30358,7 @@
 	};
 
 /***/ },
-/* 410 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30170,7 +30372,7 @@
 	
 	var _observer = __webpack_require__(300);
 	
-	var _components = __webpack_require__(411);
+	var _components = __webpack_require__(413);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -30636,7 +30838,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 411 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30646,7 +30848,7 @@
 	});
 	exports.setOpacity = exports.setOpacityForAll = exports.getUiComponent = undefined;
 	
-	var _utils = __webpack_require__(376);
+	var _utils = __webpack_require__(378);
 	
 	var uiComponents = {
 	  accountSelect: '#accountSelect',
@@ -30718,7 +30920,7 @@
 	};
 
 /***/ },
-/* 412 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30732,7 +30934,7 @@
 	
 	var _storageManager = __webpack_require__(301);
 	
-	var _components = __webpack_require__(411);
+	var _components = __webpack_require__(413);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -30954,7 +31156,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 413 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31012,7 +31214,7 @@
 	
 	var logHandler = exports.logHandler = function logHandler() {
 	  // catch known errors and log them
-	  var _arr = ['api.error', 'blockly.error'];
+	  var _arr = ['api.error', 'BlocklyError', 'RuntimeError'];
 	
 	  var _loop = function _loop() {
 	    var errorType = _arr[_i];
@@ -31101,7 +31303,7 @@
 	};
 
 /***/ },
-/* 414 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31210,7 +31412,7 @@
 	
 	var _tools = __webpack_require__(309);
 	
-	var _account = __webpack_require__(336);
+	var _account = __webpack_require__(338);
 	
 	var _storageManager = __webpack_require__(301);
 	
@@ -31253,7 +31455,7 @@
 	}
 
 /***/ },
-/* 415 */
+/* 417 */
 /***/ function(module, exports) {
 
 	// COPYRIGHT (c) 2016 TrackJS LLC ALL RIGHTS RESERVED
