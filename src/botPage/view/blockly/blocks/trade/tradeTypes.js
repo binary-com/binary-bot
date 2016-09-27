@@ -5,6 +5,7 @@ import { condition } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 import { duration, payout, prediction, title,
   barrierOffset, secondBarrierOffset, candleInterval } from './components';
+import { BlocklyError } from '../../../../../common/error';
 
 export default () => {
   for (const opposites of Object.keys(config.opposites)) {
@@ -59,7 +60,7 @@ export default () => {
         predictionValue = Blockly.JavaScript.valueToCode(block,
           'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
         if (predictionValue === '') {
-          throw Error(translator.translateText('All trade types are required'));
+          return new BlocklyError(translator.translateText('All trade types are required')).emit();
         }
       }
       if (config.hasBarrierOffset.indexOf(opposites) > -1 ||
@@ -67,19 +68,19 @@ export default () => {
         barrierOffsetValue = Blockly.JavaScript.valueToCode(block,
           'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
         if (barrierOffsetValue === '') {
-          throw Error(translator.translateText('All trade types are required'));
+          return new BlocklyError(translator.translateText('All trade types are required')).emit();
         }
       }
       if (config.hasSecondBarrierOffset.indexOf(opposites) > -1) {
         secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block,
           'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
         if (secondBarrierOffsetValue === '') {
-          throw Error(translator.translateText('All trade types are required'));
+          return new BlocklyError(translator.translateText('All trade types are required')).emit();
         }
       }
       if (opposites === '' || durationValue === '' ||
         payouttype === '' || currency === '' || amount === '') {
-        throw Error(translator.translateText('All trade types are required'));
+        return new BlocklyError(translator.translateText('All trade types are required')).emit();
       }
       const code = `{
       condition: '${opposites}',

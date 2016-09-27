@@ -1,5 +1,6 @@
 import { translator } from '../../../../../common/translator';
 import { trade } from '../../relationChecker';
+import { BlocklyError } from '../../../../../common/error';
 
 Blockly.Blocks.trade = {
   init: function init() {
@@ -20,11 +21,11 @@ Blockly.Blocks.trade = {
 Blockly.JavaScript.trade = (block) => {
   const account = $('#accountSelect').val();
   if (!account) {
-    throw Error(translator.translateText('Please login.'));
+    return new BlocklyError(translator.translateText('Please login.')).emit();
   }
   const submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
   if (submarket === '') {
-    throw Error(translator.translateText('You have to add a submarket first'));
+    return new BlocklyError(translator.translateText('You have to add a submarket first')).emit();
   }
   // TODO: Assemble JavaScript into code variable.
   const code = `function trade(again){

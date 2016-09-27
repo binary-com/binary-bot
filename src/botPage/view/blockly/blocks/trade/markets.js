@@ -2,6 +2,7 @@
 import { translator } from '../../../../../common/translator';
 import { submarket } from '../../relationChecker';
 import { bot } from '../../../../bot';
+import { BlocklyError } from '../../../../../common/error';
 
 export default () => {
   const symbolNames = bot.symbol.activeSymbols.getSymbolNames();
@@ -31,7 +32,8 @@ export default () => {
     Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
       const condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
       if (!condition) {
-        throw Error(translator.translateText('A trade type has to be defined for the symbol'));
+        return new BlocklyError(
+          translator.translateText('A trade type has to be defined for the symbol')).emit();
       }
       const code = `${condition.trim()}
       symbol: '${symbol}'}`;
