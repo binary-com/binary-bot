@@ -8,6 +8,7 @@ import { bot } from './bot';
 import View from './view';
 import { setAppId } from '../common/appId';
 import { notifyError } from './view/logger';
+import { expectNonEmptyArray, expectOhlc } from '../common/expect';
 
 setAppId();
 $.ajaxSetup({
@@ -28,6 +29,8 @@ require('trackjs');
 class BotPage {
   constructor() {
     window.Bot = {
+      expectNonEmptyArray,
+      expectOhlc,
       addBlockByMagic: (blockType) => {
         const dp = Blockly.mainWorkspace.newBlock(blockType);
         dp.initSvg();

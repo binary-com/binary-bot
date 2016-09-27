@@ -49,12 +49,12 @@ export default class _Blockly {
   createXmlTag(obj) {
     let xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
     for (const market of Object.keys(obj)) {
-      xmlStr += `\t<category name="${obj[market].name}" colour="#2a3052">\n`;
+      xmlStr += `\t<category name="${obj[market].name}" colour="#2a3052">`;
       for (const submarket of Object.keys(obj[market].submarkets)) {
         xmlStr += `\t\t<category name="${
-        obj[market].submarkets[submarket].name}" colour="#2a3052">\n`;
+        obj[market].submarkets[submarket].name}" colour="#2a3052">`;
         for (const symbol of Object.keys(obj[market].submarkets[submarket].symbols)) {
-          xmlStr += `\t\t\t<block type="${symbol.toLowerCase()}"></block>\n`;
+          xmlStr += `\t\t\t<block type="${symbol.toLowerCase()}"></block>`;
         }
         xmlStr += '\t\t</category>\n';
       }
@@ -118,10 +118,20 @@ export default class _Blockly {
     if (str) {
       this.blocksXmlStr = str;
     }
-    Blockly.mainWorkspace.clear();
-    const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-    this.reconfigureBlocklyAfterLoad();
+    try {
+      Blockly.mainWorkspace.clear();
+      const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
+      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+      this.reconfigureBlocklyAfterLoad();
+      observer.emit('ui.log.success',
+        translator.translateText('Blocks are loaded successfully'));
+    } catch (e) {
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        throw e;
+      }
+    }
   }
   selectBlockByText(text) {
     let returnVal;
@@ -176,12 +186,17 @@ export default class _Blockly {
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       this.deleteStrayBlocks();
       code = `
-      ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
-      trade();`;
+        ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+        trade();
+      `;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       this.generatedJs = code;
     } catch (e) {
-      observer.emit('blockly.error', e);
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        throw e;
+      }
     }
     if (code) {
       eval(code); // eslint-disable-line no-eval

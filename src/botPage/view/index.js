@@ -91,15 +91,7 @@ export default class View {
       const reader = new FileReader();
       reader.onload = (() => {
         $('#fileBrowser').hide();
-        return (e) => {
-          try {
-            this.blockly.loadBlocks(e.target.result);
-            observer.emit('ui.log.success',
-              translator.translateText('Blocks are loaded successfully'));
-          } catch (err) {
-            observer.emit('blockly.error', err);
-          }
-        };
+        return (e) => this.blockly.loadBlocks(e.target.result);
       })(f);
       reader.readAsText(f);
     };

@@ -3,12 +3,6 @@ import { translator } from '../../../common/translator';
 
 const purchaseChoices = [[translator.translateText('Click to select'), '']];
 
-export const throwError = (message) => {
-  const error = new Error(message);
-  error.blockly = true;
-  throw error;
-};
-
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0;
 
 export const getBlockByType = (type) => {

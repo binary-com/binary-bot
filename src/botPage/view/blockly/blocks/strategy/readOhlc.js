@@ -26,13 +26,14 @@ Blockly.JavaScript.read_ohlc = (block) => {
   let index = Number(Blockly.JavaScript.valueToCode(block,
     'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC));
   let code;
-  if (!index) {
+  if (isNaN(index) || index < 1) {
     index = 1;
   }
   if (index === 1) {
-    code = `(ticks.ohlc.slice(-1)[0].${ohlcField})`;
+    code = `(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1)[0]).${ohlcField})`;
   } else {
-    code = `(ticks.ohlc.slice(-1*${index}, -1*${index - 1})[0].${ohlcField})`;
+    code = `(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1*${
+    index}, -1*${index - 1})[0]).${ohlcField})`;
   }
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
