@@ -316,7 +316,7 @@ export default class View {
     }
   }
   addEventHandlers() {
-    for (const errorType of ['api.error', 'blockly.error']) {
+    for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
       observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
         if (error.code === 'InvalidToken') {
           removeAllTokens();

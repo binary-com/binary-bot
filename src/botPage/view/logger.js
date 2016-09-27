@@ -40,7 +40,7 @@ export const notifyError = (error) => {
 
 export const logHandler = () => {
   // catch known errors and log them
-  for (const errorType of ['api.error', 'blockly.error']) {
+  for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
     observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
       const message = notifyError(error);
       amplitude.getInstance().logEvent(errorType, {

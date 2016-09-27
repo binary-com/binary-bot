@@ -15,8 +15,16 @@ Blockly.Blocks.on_strategy = {
 Blockly.JavaScript.on_strategy = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
   const code = `function on_strategy(ticks, proposals, purchaseCtrl){
-  if(purchaseCtrl === null) return; 
-  ${stack}
+    if(purchaseCtrl === null) return; 
+    try {
+      ${stack}
+    } catch (e) { 
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        throw e;
+      }
+    }
   }
   `;
   return code;

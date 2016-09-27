@@ -2,7 +2,6 @@
 import config from '../../../../../common/const';
 import { translator } from '../../../../../common/translator';
 import { insideCondition } from '../../relationChecker';
-import { expectNumber } from '../../../../../common/expect';
 
 Blockly.Blocks.barrier_offset = {
   init: function init() {
@@ -21,9 +20,9 @@ Blockly.Blocks.barrier_offset = {
 };
 Blockly.JavaScript.barrier_offset = (block) => {
   const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-  const barrierOffset = expectNumber('barrier offset',
-    Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC));
-  const code = barrierOffsetType + barrierOffset;
+  const barrierOffset = Blockly.JavaScript.valueToCode(block,
+    'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
+  const code = `${barrierOffsetType}${barrierOffset}`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 

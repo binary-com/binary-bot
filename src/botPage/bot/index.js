@@ -5,6 +5,24 @@ import _ from 'underscore';
 import config from '../../common/const';
 import PurchaseCtrl from './purchaseCtrl';
 import _Symbol from './symbol';
+import { expectNumber, expectBarrierOffset } from '../../common/expect';
+import { RuntimeError } from '../../common/error';
+
+const checkTradeOptions = (tradeOption) => {
+  if (tradeOption && tradeOption instanceof Object) {
+    expectNumber('duration', tradeOption.duration, RuntimeError);
+    expectNumber('amount', tradeOption.amount, RuntimeError).toFixed(2);
+    if (tradeOption.barrier && typeof tradeOption.barrier === 'number') {
+      expectNumber('prediction', tradeOption.barrier, RuntimeError);
+    }
+    if (tradeOption.barrier && typeof tradeOption.barrier === 'string') {
+      expectBarrierOffset(tradeOption.barrier, RuntimeError);
+    }
+    if (tradeOption.barrier2 && typeof tradeOption.barrier2 === 'string') {
+      expectBarrierOffset(tradeOption.barrier2, RuntimeError);
+    }
+  }
+};
 
 export default class Bot {
   constructor(api = null) {
@@ -32,7 +50,8 @@ export default class Bot {
         this.purchaseCtrl.destroy();
       }
       this.purchaseCtrl = new PurchaseCtrl(this.api, strategy, duringPurchase, finish);
-      this.tradeOption = tradeOption;
+      checkTradeOptions(tradeOption);
+      this.tradeOption = { ...tradeOption };
       observer.emit('log.bot.start', {
         again: !!sameTrade,
       });
@@ -91,6 +110,7 @@ export default class Bot {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
       const opposites = config.opposites[this.tradeOption.condition];
       this.candleInterval = this.tradeOption.candleInterval;
+      this.tradeOption.amount = this.tradeOption.amount.toFixed(2);
       this.tradeOptions = [];
       for (const key of Object.keys(opposites)) {
         const newTradeOption = {
@@ -297,7 +317,7 @@ export default class Bot {
     this.running = false;
     this.purchaseCtrl.destroy();
     this.purchaseCtrl = null;
-    //
+  //
   }
   stop(contract) {
     if (!this.running) {

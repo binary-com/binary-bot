@@ -186,8 +186,16 @@ export default class _Blockly {
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       this.deleteStrayBlocks();
       code = `
-        ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
-        trade();
+        try {
+          ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+          trade();
+        } catch (e) {
+          if (e.name === 'RuntimeError') {
+            // pass
+          } else {
+            throw e;
+          }
+        }
       `;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       this.generatedJs = code;

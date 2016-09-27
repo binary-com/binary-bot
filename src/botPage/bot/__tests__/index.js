@@ -6,7 +6,7 @@ import mockWebsocket from '../../../common/mock/websocket';
 
 describe('Bot', () => {
   const option = {
-    amount: '1.00',
+    amount: 1,
     basis: 'stake',
     candleInterval: 60,
     condition: 'EVENODD',

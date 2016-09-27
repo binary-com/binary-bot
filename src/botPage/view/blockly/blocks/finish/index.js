@@ -14,6 +14,18 @@ Blockly.Blocks.on_finish = {
 };
 Blockly.JavaScript.on_finish = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-  const code = `function on_finish(_finishedContract, details){\n${stack}\nBot.stop();\n}\n`;
+  const code = `function on_finish(_finishedContract, details){
+    try {
+      ${stack}
+    } catch (e) { 
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        throw e;
+      }
+    }
+    Bot.stop();
+  }
+  `;
   return code;
 };

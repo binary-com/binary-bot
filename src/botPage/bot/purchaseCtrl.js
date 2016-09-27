@@ -65,21 +65,13 @@ export default class PurchaseCtrl {
         ohlc,
         ticks,
       };
-      try {
-        if (this.ready) {
-          observer.emit('log.strategy.start', {
-            proposals: this.proposals,
-          });
-          this.strategy(tickObj, this.proposals, this);
-        } else {
-          this.strategy(tickObj, null, null);
-        }
-      } catch (e) {
-        if (e.name === 'BlocklyError') {
-          // do nothing
-        } else {
-          throw e;
-        }
+      if (this.ready) {
+        observer.emit('log.strategy.start', {
+          proposals: this.proposals,
+        });
+        this.strategy(tickObj, this.proposals, this);
+      } else {
+        this.strategy(tickObj, null, null);
       }
     }
   }
@@ -93,29 +85,13 @@ export default class PurchaseCtrl {
       const contract = this.proposals[option];
       this.trade = new Trade(this.api);
       const tradeUpdate = (openContract) => {
-        try {
-          this.duringPurchase(openContract, this);
-        } catch (e) {
-          if (e.name === 'BlocklyError') {
-            // do nothing
-          } else {
-            throw e;
-          }
-        }
+        this.duringPurchase(openContract, this);
         observer.emit('strategy.tradeUpdate', openContract);
       };
       const tradeFinish = (finishedContract) => {
         // order matters, needs fix
         observer.emit('strategy.finish', finishedContract);
-        try {
-          this.finish(finishedContract, createDetails(finishedContract));
-        } catch (e) {
-          if (e.name === 'BlocklyError') {
-            // do nothing
-          } else {
-            throw e;
-          }
-        }
+        this.finish(finishedContract, createDetails(finishedContract));
       };
       observer.register('trade.update', tradeUpdate);
       observer.register('trade.finish', tradeFinish, true);
