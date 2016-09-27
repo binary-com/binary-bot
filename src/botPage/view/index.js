@@ -1,6 +1,7 @@
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
-import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
+import { getTokenList, removeAllTokens,
+  get as getStorage } from 'binary-common-utils/lib/storageManager';
 import { PlainChart as Chart } from 'binary-charts';
 import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
@@ -93,7 +94,8 @@ export default class View {
         return (e) => {
           try {
             this.blockly.loadBlocks(e.target.result);
-            observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'));
+            observer.emit('ui.log.success',
+              translator.translateText('Blocks are loaded successfully'));
           } catch (err) {
             observer.emit('blockly.error', err);
           }
@@ -117,7 +119,8 @@ export default class View {
         if (file.type.match('text/xml')) {
           readFile(file);
         } else {
-          observer.emit('ui.log.info', translator.translateText('File is not supported:') + ' ' + file.name);
+          observer.emit('ui.log.info', `${
+          translator.translateText('File is not supported:')} ${file.name}`);
         }
       }
     };
@@ -125,7 +128,7 @@ export default class View {
     const handleDragOver = (e) => {
       e.stopPropagation();
       e.preventDefault();
-      e.dataTransfer.dropEffect = 'copy';
+      e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
     };
 
     const dropZone = document.getElementById('dropZone');

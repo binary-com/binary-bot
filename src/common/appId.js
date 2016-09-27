@@ -26,7 +26,7 @@ export function oauthLogin(done = () => 0) {
   const queryStr = parseQueryString();
   let tokenList = [];
 	tokenList = Object.keys(queryStr)
-		.map((r) => (r.indexOf('token') === 0) ? queryStr[r] : null)
+		.map((r) => (r.indexOf('token') === 0 ? queryStr[r] : null))
 		.filter((r) => r);
   if (tokenList.length) {
     $('#main').hide();

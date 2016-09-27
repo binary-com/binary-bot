@@ -59,7 +59,7 @@ export default class _Symbol {
   }
   getConditionName(condition) {
     const opposites = config.opposites[condition.toUpperCase()];
-    return getObjectValue(opposites[0]) + '/' + getObjectValue(opposites[1]);
+    return `${getObjectValue(opposites[0])}/${getObjectValue(opposites[1])}`;
   }
   getCategoryForCondition(condition) {
     for (const category of Object.keys(config.conditionsCategory)) {

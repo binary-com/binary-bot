@@ -13,7 +13,7 @@ Blockly.Blocks.read_ohlc_obj = {
     this.setInputsInline(false);
     this.setOutput(true, 'Number');
     this.setColour('#f2f2f2');
-    this.setTooltip(translator.translateText('Read a field from a candle (received from Candles list)'));
+    this.setTooltip(translator.translateText('Read a field from a candle (received from Candles list)')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {

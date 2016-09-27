@@ -5,15 +5,15 @@ import Trade from './trade';
 const createDetails = (contract) => {
   const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
   const result = (profit < 0) ? 'loss' : 'win';
-  observer.emit('log.strategy.' + result, {
+  observer.emit(`log.strategy.${result}`, {
     profit,
     transactionId: contract.transaction_ids.buy,
   });
   return [
     contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
     profit, contract.contract_type,
-    getUTCTime(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick,
-    getUTCTime(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick,
+    getUTCTime(new Date(parseInt(`${contract.entry_tick_time}000`, 10))), +contract.entry_tick,
+    getUTCTime(new Date(parseInt(`${contract.exit_tick_time}000`, 10))), +contract.exit_tick,
     +((contract.barrier) ? contract.barrier : 0), result,
   ];
 };

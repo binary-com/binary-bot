@@ -22,17 +22,17 @@ export default class TradeInfo {
   }
   update() {
     for (const key of Object.keys(this.tradeInfo)) {
-      $('.' + key)
+      $(`.${key}`)
         .text(this.tradeInfo[key]);
       if (key === 'totalProfit') {
         if (+this.tradeInfo[key] > 0) {
-          $('.' + key)
+          $(`.${key}`)
             .css('color', 'green');
         } else if (+this.tradeInfo[key] < 0) {
-          $('.' + key)
+          $(`.${key}`)
             .css('color', 'red');
         } else {
-          $('.' + key)
+          $(`.${key}`)
             .css('color', 'black');
         }
       }
@@ -46,7 +46,8 @@ export default class TradeInfo {
     } else {
       this.tradeInfo.tradeCount += 1;
       $('#tradesDisplay tbody')
-        .append('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
+        .append(
+          '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
       $('.table-scroll')
         .scrollTop($('.table-scroll')[0].scrollHeight);
     }

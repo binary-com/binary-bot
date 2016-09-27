@@ -7,7 +7,7 @@ Blockly.Blocks.check_sell = {
       .appendField(translator.translateText('Sell is available'));
     this.setOutput(true, 'Boolean');
     this.setColour('#f2f2f2');
-    this.setTooltip(translator.translateText('True if sell at market is available'));
+    this.setTooltip(translator.translateText('True if sell at market is available')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };

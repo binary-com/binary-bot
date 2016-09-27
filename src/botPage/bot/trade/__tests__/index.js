@@ -40,7 +40,8 @@ describe('Trade', () => {
     });
     it('Purchased the proposal successfuly', () => {
       expect(purchasedContract).to.have.property('longcode')
-        .that.is.equal('Win payout if the last digit of Volatility 100 Index is odd after 5 ticks.');
+        .that.is.equal('Win payout if the last digit'
+        + ' of Volatility 100 Index is odd after 5 ticks.');
     });
   });
   describe('Getting updates', () => {

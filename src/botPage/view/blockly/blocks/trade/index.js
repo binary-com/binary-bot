@@ -9,7 +9,7 @@ Blockly.Blocks.trade = {
       .setCheck('Submarket');
     this.setPreviousStatement(true, null);
     this.setColour('#2a3052');
-    this.setTooltip(translator.translateText('Use this block to choose markets and trade types.'));
+    this.setTooltip(translator.translateText('Use this block to choose markets and trade types.')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
@@ -27,7 +27,10 @@ Blockly.JavaScript.trade = (block) => {
     throw Error(translator.translateText('You have to add a submarket first'));
   }
   // TODO: Assemble JavaScript into code variable.
-  const code = 'function trade(again){\nBot.start(\'' + account.trim() + '\', '
-    + submarket.trim() + ', on_strategy, typeof during_purchase === \'undefined\' ? function(){} : during_purchase, on_finish, again);\n}';
+  const code = `function trade(again){
+  Bot.start('${account.trim()}', ${submarket.trim()},
+  on_strategy, typeof during_purchase === 'undefined' ? function(){} : during_purchase,
+  on_finish, again);
+}`;
   return code;
 };

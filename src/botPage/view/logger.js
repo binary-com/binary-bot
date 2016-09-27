@@ -51,7 +51,7 @@ export const logHandler = () => {
 
   const observeForLog = (type, position) => {
     const subtype = (position === 'left') ? '.left' : '';
-    observer.register('ui.log.' + type + subtype, (message) => {
+    observer.register(`ui.log.${type}${subtype}`, (message) => {
       if (type === 'warn') {
         console.warn(message); // eslint-disable-line no-console
       } else {
@@ -59,12 +59,12 @@ export const logHandler = () => {
       }
       if (position === 'left') {
         $.notify(message, {
-          position: 'bottom ' + position,
+          position: `bottom ${position}`,
           className: type,
         });
       } else {
         notify(message, {
-          position: 'bottom ' + position,
+          position: `bottom ${position}`,
           className: type,
         });
       }
@@ -76,7 +76,10 @@ export const logHandler = () => {
     observeForLog(type, 'left');
   }
 
-  for (const event of ['log.bot.start', 'log.bot.login', 'log.bot.proposal', 'log.bot.stop', 'log.strategy.start', 'log.strategy.purchase', 'log.strategy.win', 'log.strategy.loss', 'log.trade.purchase', 'log.trade.finish']) {
+  for (const event of [
+    'log.bot.start', 'log.bot.login', 'log.bot.proposal',
+    'log.bot.stop', 'log.strategy.start', 'log.strategy.purchase',
+    'log.strategy.win', 'log.strategy.loss', 'log.trade.purchase', 'log.trade.finish']) {
     observer.register(event, (d) => console.log(event, d)); // eslint-disable-line no-console
   }
 
@@ -85,7 +88,7 @@ export const logHandler = () => {
   }
 
   observer.register('log.revenue', (data) => {
-    const { user, profit } = data;
+    const { user, profit, contract } = data;
     if (typeof amplitude !== 'undefined') {
       if (!user.isVirtual) {
         const revenue = new amplitude.Revenue()

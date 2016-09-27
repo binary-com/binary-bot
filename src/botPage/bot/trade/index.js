@@ -21,7 +21,8 @@ export default class Trade {
     this.api.buy(contract.id, contract.ask_price);
     const apiBuy = (purchasedContract) => {
       observer.emit('log.trade.purchase', purchasedContract);
-      observer.emit('ui.log.info', translator.translateText('Purchased') + ': ' + contract.longcode);
+      observer.emit('ui.log.info',
+        `${translator.translateText('Purchased')}: ${contract.longcode}`);
       observer.emit('trade.purchase', purchasedContract);
       this.isSold = false;
       this.contractId = purchasedContract.contract_id;

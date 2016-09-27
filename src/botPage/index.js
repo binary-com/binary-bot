@@ -41,18 +41,19 @@ class BotPage {
 				console.log(this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
 			},
 			log: (message, type) => {
-				observer.emit('ui.log.' + type + '.left', message);
+				observer.emit(`ui.log.${type}.left`, message);
 			},
 			getTotalRuns: () => bot.totalRuns,
 			getTotalProfit: () => bot.totalProfit,
-			getBalance: (balanceType) => (balanceType === 'STR') ? bot.balanceStr : bot.balance,
+			getBalance: (balanceType) => (balanceType === 'STR' ? bot.balanceStr : bot.balance),
 		};
 
 		bot.initPromise.then(() => {
 			this.view = new View();
       trackJs.configure({
         onError: (payload, error) => {
-          if (error.message.indexOf('The play() request was interrupted by a call to pause()') >= 0) {
+          if (error.message.indexOf('The play() request was'
+            + ' interrupted by a call to pause()') >= 0) {
             return false;
           }
           payload.console.push({

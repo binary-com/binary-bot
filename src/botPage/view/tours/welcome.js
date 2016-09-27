@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle, max-len */
 import { setDone, isDone } from 'binary-common-utils/lib/storageManager';
 import { getUiComponent, setOpacityForAll, setOpacity } from '../components';
 import { translator } from '../../../common/translator';

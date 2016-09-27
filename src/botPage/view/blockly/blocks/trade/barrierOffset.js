@@ -11,7 +11,7 @@ Blockly.Blocks.barrier_offset = {
     this.setInputsInline(false);
     this.setOutput(true, 'BarrierOffset');
     this.setColour('#dedede');
-    this.setTooltip(translator.translateText('Add sign to a number to make a Barrier Offset.'));
+    this.setTooltip(translator.translateText('Add sign to a number to make a Barrier Offset.')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
@@ -20,7 +20,8 @@ Blockly.Blocks.barrier_offset = {
 };
 Blockly.JavaScript.barrier_offset = (block) => {
   const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-  const barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
+  const barrierOffset = Blockly.JavaScript.valueToCode(block,
+    'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
   const code = barrierOffsetType + Number(barrierOffset);
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

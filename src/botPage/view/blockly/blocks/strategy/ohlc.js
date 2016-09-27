@@ -8,7 +8,7 @@ Blockly.Blocks.ohlc = {
       .appendField(translator.translateText('Candles List'));
     this.setOutput(true, 'Array');
     this.setColour('#f2f2f2');
-    this.setTooltip(translator.translateText('Returns the ohlc list'));
+    this.setTooltip(translator.translateText('Returns the ohlc list')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {

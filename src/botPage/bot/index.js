@@ -108,7 +108,7 @@ export default class Bot {
   subscribeToBalance() {
     const apiBalance = (balance) => {
       this.balance = balance.balance;
-      this.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
+      this.balanceStr = `${Number(balance.balance).toFixed(2)} ${balance.currency}`;
       observer.emit('bot.tradeInfo', {
         balance: this.balanceStr,
       });
@@ -148,7 +148,8 @@ export default class Bot {
       };
       observer.register('api.history', apiHistory, true, {
         type: 'history',
-        unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles'],
+        unregister: [['api.history', apiHistory], 'api.tick',
+          'bot.tickUpdate', 'api.ohlc', 'api.candles'],
       }, true);
       this.api.originalApi.unsubscribeFromAllTicks().then(() => 0, () => 0);
       this.api.history(this.tradeOption.symbol, {
@@ -272,6 +273,7 @@ export default class Bot {
     observer.emit('log.revenue', {
       user,
       profit,
+      contract,
     });
 
     this.totalProfit = +(this.totalProfit + profit).toFixed(2);

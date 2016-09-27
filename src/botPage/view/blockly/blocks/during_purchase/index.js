@@ -8,7 +8,7 @@ Blockly.Blocks.during_purchase = {
     this.appendStatementInput('DURING_PURCHASE_STACK')
       .setCheck('SellAtMarket');
     this.setColour('#2a3052');
-    this.setTooltip(translator.translateText('Sell at market before a trade is finished'));
+    this.setTooltip(translator.translateText('Sell at market before a trade is finished')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };
