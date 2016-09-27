@@ -74,8 +74,8 @@ describe('symbol', () => {
     });
     it('getAllowedConditionsForSymbol returns allowed conditions for a symbol', () => {
       expect(symbol.getAllowedConditionsForSymbol('R_100'))
-				.to.have.all.members(['risefall', 'higherlower', 'matchesdiffers',
-					'evenodd', 'overunder', 'asians', 'touchnotouch', 'endsinout', 'staysinout']);
+        .to.have.all.members(['risefall', 'higherlower', 'matchesdiffers',
+          'evenodd', 'overunder', 'asians', 'touchnotouch', 'endsinout', 'staysinout']);
       expect(symbol.getAllowedConditionsForSymbol('fake'))
         .to.be.empty;
     });

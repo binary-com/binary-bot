@@ -59,7 +59,7 @@ export default () => {
         predictionValue = Blockly.JavaScript.valueToCode(block,
           'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
         if (predictionValue === '') {
-					throw Error(translator.translateText('All trade types are required'));
+          throw Error(translator.translateText('All trade types are required'));
         }
       }
       if (config.hasBarrierOffset.indexOf(opposites) > -1 ||
@@ -67,14 +67,14 @@ export default () => {
         barrierOffsetValue = Blockly.JavaScript.valueToCode(block,
           'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
         if (barrierOffsetValue === '') {
-					throw Error(translator.translateText('All trade types are required'));
+          throw Error(translator.translateText('All trade types are required'));
         }
       }
       if (config.hasSecondBarrierOffset.indexOf(opposites) > -1) {
         secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block,
           'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
         if (secondBarrierOffsetValue === '') {
-					throw Error(translator.translateText('All trade types are required'));
+          throw Error(translator.translateText('All trade types are required'));
         }
       }
       if (opposites === '' || durationValue === '' ||
@@ -89,8 +89,8 @@ export default () => {
       basis: '${payouttype}',
       currency: '${currency}',
       amount: (${amount}).toFixed(2),
-			${((config.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '')
-				? `barrier: ${predictionValue}` : '')}
+      ${((config.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '')
+        ? `barrier: ${predictionValue}` : '')}
       ${((config.hasSecondBarrierOffset.indexOf(opposites) > -1
         || (config.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== ''))
         ? `barrier: '${barrierOffsetValue}'` : '')}

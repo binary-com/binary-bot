@@ -6,7 +6,7 @@ Blockly.Blocks.balance = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Balance:'))
-			.appendField(new Blockly.FieldDropdown(config.lists.BALANCE_TYPE), 'BALANCE_TYPE');
+      .appendField(new Blockly.FieldDropdown(config.lists.BALANCE_TYPE), 'BALANCE_TYPE');
     this.setOutput(true, null);
     this.setColour('#dedede');
     this.setTooltip(translator.translateText('Get balance number or string')); // eslint-disable-line max-len

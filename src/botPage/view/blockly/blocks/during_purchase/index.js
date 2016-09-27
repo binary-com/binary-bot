@@ -14,10 +14,10 @@ Blockly.Blocks.during_purchase = {
 };
 Blockly.JavaScript.during_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
-	const code = `function during_purchase(openContract, purchaseCtrl){
-	if(purchaseCtrl === null) return; 
-	${stack}
-	}
-	`;
+  const code = `function during_purchase(openContract, purchaseCtrl){
+  if(purchaseCtrl === null) return; 
+  ${stack}
+  }
+  `;
   return code;
 };

@@ -30,6 +30,6 @@ import './finish/trade_again';
 import './block_holder';
 
 export default () => {
-	markets();
-	tradeTypes();
+  markets();
+  tradeTypes();
 };

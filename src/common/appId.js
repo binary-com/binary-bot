@@ -25,15 +25,15 @@ async function addAllTokens(tokenList) {
 export function oauthLogin(done = () => 0) {
   const queryStr = parseQueryString();
   let tokenList = [];
-	tokenList = Object.keys(queryStr)
-		.map((r) => (r.indexOf('token') === 0 ? queryStr[r] : null))
-		.filter((r) => r);
+  tokenList = Object.keys(queryStr)
+    .map((r) => (r.indexOf('token') === 0 ? queryStr[r] : null))
+    .filter((r) => r);
   if (tokenList.length) {
     $('#main').hide();
     addAllTokens(tokenList).then(() => {
       document.location = 'bot.html';
     });
   } else {
-		done();
+    done();
   }
 }

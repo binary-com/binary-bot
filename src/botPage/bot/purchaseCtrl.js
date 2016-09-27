@@ -60,11 +60,11 @@ export default class PurchaseCtrl {
           o.toString = repr;
         }
       }
-			const tickObj = {
-				direction,
-				ohlc,
-				ticks,
-			};
+      const tickObj = {
+        direction,
+        ohlc,
+        ticks,
+      };
       if (this.ready) {
         observer.emit('log.strategy.start', {
           proposals: this.proposals,
@@ -112,7 +112,7 @@ export default class PurchaseCtrl {
     if (!this.purchased) {
       return this.proposals[option];
     }
-		return null;
+    return null;
   }
   destroy() {
     for (const obs of this.runningObservations) {

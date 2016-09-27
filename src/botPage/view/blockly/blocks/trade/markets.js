@@ -27,7 +27,7 @@ export default () => {
     };
   }
 
-	for (const symbol of Object.keys(symbolNames)) {
+  for (const symbol of Object.keys(symbolNames)) {
     Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
       const condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
       if (!condition) {
