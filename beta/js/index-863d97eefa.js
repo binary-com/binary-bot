@@ -8794,11 +8794,6 @@
 		        throw e;
 		    }
 		
-		    if (contractStart > nowEpoch) {
-		        var _start2 = nowEpoch - 600;
-		        return { start: _start2, end: nowEpoch };
-		    }
-		
 		    var buffer = (contractEnd - contractStart) * bufferSize;
 		    var bufferedExitTime = contractEnd + buffer;
 		
@@ -10325,9 +10320,8 @@
 		
 		    this.subscribeToOpenContract = function (contractId, streamId) {
 		        if (streamId) {
-		            _this.state.streamIdMapping.set(streamId, contractId);
-		        } else {
 		            _this.state.contracts.add(contractId);
+		            _this.state.streamIdMapping.set(streamId, contractId);
 		        }
 		    };
 		
@@ -10377,9 +10371,9 @@
 		
 		    this.subscribeToPriceForContractProposal = function (options, streamId) {
 		        if (streamId) {
+		            _this.state.proposals.add(options);
 		            _this.state.streamIdMapping.set(streamId, options);
 		        }
-		        _this.state.proposals.add(options);
 		    };
 		
 		    this.unsubscribeFromAllProposals = function () {
@@ -10467,7 +10461,6 @@
 		
 		        this.onOpen = function () {
 		            _this.resubscribe();
-		            _this.sendBufferedSends();
 		            _this.executeBufferedExecutes();
 		        };
 		
@@ -10513,6 +10506,8 @@
 		
 		            if (token) {
 		                _this.authorize(token);
+		            } else {
+		                _this.sendBufferedSends();
 		            }
 		
 		            if (ticks.size !== 0) {
@@ -10587,6 +10582,10 @@
 		
 		        this.onMessage = function (message) {
 		            var json = JSON.parse(message.data);
+		
+		            if (json.msg_type === 'authorize' && _this.onAuth) {
+		                _this.sendBufferedSends();
+		            }
 		
 		            if (!json.error) {
 		                if (json.msg_type === 'authorize' && _this.onAuth) {
@@ -10767,6 +10766,13 @@
 		
 		            var urlPlusParams = this.apiUrl + '?l=' + this.language + '&app_id=' + this.appId;
 		
+		            Object.keys(this.unresolvedPromises).forEach(function (reqId) {
+		                var disconnectedError = new Error('Websocket disconnected before response received.');
+		                disconnectedError.name = 'DisconnectError';
+		                _this4.unresolvedPromises[reqId].reject(disconnectedError);
+		                delete _this4.unresolvedPromises[reqId];
+		            });
+		
 		            try {
 		                this.socket = connection || new WebSocket(urlPlusParams);
 		            } catch (err) {
@@ -10854,10 +10860,11 @@
 		
 		        _this.stack = new Error().stack;
 		        _this.error = errorObj;
-		        _this.name = _this.constructor.name;
+		        _this.name = errorObj.error.code;
 		
 		        var message = errorObj.error.message;
 		        var echo_req = errorObj.echo_req;
+		
 		
 		        var echoStr = JSON.stringify(echo_req, null, 2);
 		        _this.message = "[ServerError] " + message + "\n" + echoStr;
@@ -15817,10 +15824,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -15914,6 +15921,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -15923,8 +15933,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -15945,13 +15953,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -16065,10 +16073,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -16162,6 +16170,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -16171,8 +16182,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -16193,13 +16202,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -16313,10 +16322,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -16410,6 +16419,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -16419,8 +16431,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -16441,13 +16451,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -16561,10 +16571,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -16658,6 +16668,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -16667,8 +16680,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -16689,13 +16700,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -16809,10 +16820,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -16906,6 +16917,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -16915,8 +16929,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -16937,13 +16949,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -17057,10 +17069,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -17154,6 +17166,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -17163,8 +17178,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -17185,13 +17198,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -17305,10 +17318,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -17402,6 +17415,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -17411,8 +17427,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -17433,13 +17447,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -17553,10 +17567,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -17650,6 +17664,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -17659,8 +17676,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -17681,13 +17696,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -17801,10 +17816,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -17898,6 +17913,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -17907,8 +17925,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -17929,13 +17945,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -18049,10 +18065,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18146,6 +18162,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -18155,8 +18174,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -18177,13 +18194,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -18297,10 +18314,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18394,6 +18411,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -18403,8 +18423,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -18425,13 +18443,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -18545,10 +18563,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18642,6 +18660,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -18651,8 +18672,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -18673,13 +18692,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
@@ -18793,10 +18812,10 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
@@ -18890,6 +18909,9 @@
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
@@ -18899,8 +18921,6 @@
 	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
 	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
@@ -18921,13 +18941,13 @@
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
 	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
