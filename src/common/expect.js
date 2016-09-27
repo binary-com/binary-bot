@@ -6,9 +6,9 @@ export const expectNonEmptyArray = (array, CustomError = BlocklyError) => {
   if (array && array instanceof Array && array.length) {
     return array;
   }
-  observer.emit(CustomError.name,
+  observer.emit(new CustomError().name,
     `${translator.translateText('Expected non-empty array, given:')} ${typeof array}`);
-  throw new CustomError();
+  return new CustomError().emit();
 };
 
 export const expectOhlc = (ohlc, CustomError = BlocklyError) => {
@@ -16,27 +16,27 @@ export const expectOhlc = (ohlc, CustomError = BlocklyError) => {
     ohlc.open && ohlc.high && ohlc.low && ohlc.close) {
     return ohlc;
   }
-  observer.emit(CustomError.name,
+  observer.emit(new CustomError().name,
     `${translator.translateText('Expected candle object, given:')} ${typeof ohlc}`);
-  throw new CustomError();
+  return new CustomError().emit();
 };
 
 // runtime
 
 export const expectNumber = (name, num, CustomError = BlocklyError) => {
   if (isNaN(parseFloat(num)) || isNaN(Number(num))) {
-    observer.emit(CustomError.name,
+    observer.emit(new CustomError().name,
       `${name} ${translator.translateText('must be a number, given:')} ${typeof num}`);
-    throw new CustomError();
+    return new CustomError().emit();
   }
   return Number(num);
 };
 
 export const expectBarrierOffset = (barrier, CustomError = BlocklyError) => {
   if (barrier.match(/^[-+]\d+$/) === null) {
-    observer.emit(CustomError.name,
+    observer.emit(new CustomError().name,
       translator.translateText('Please use appropriate barrier offset block for barrier offsets'));
-    throw new CustomError();
+    return new CustomError().emit();
   }
   return barrier;
 };

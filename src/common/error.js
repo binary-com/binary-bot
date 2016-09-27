@@ -1,9 +1,11 @@
 export class CustomError {
   constructor(...args) {
-    const template = Error(...args);
+    this.error = Error(...args);
     this.name = 'GenericError';
-    this.message = template.message;
-    this.stack = template.stack;
+  }
+  emit() {
+    this.error.name = this.name;
+    throw this.error;
   }
 }
 
