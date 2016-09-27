@@ -90,12 +90,12 @@ export default () => {
       currency: '${currency}',
       amount: ${amount},
       ${((config.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '')
-        ? `barrier: ${predictionValue}` : '')}
+        ? `barrier: ${predictionValue},` : '')}
       ${((config.hasSecondBarrierOffset.indexOf(opposites) > -1
         || (config.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== ''))
-        ? `barrier: '${barrierOffsetValue}'` : '')}
+        ? `barrier: '${barrierOffsetValue}',` : '')}
       ${((config.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '')
-        ? `barrier2: '${secondBarrierOffsetValue}'` : '')}`;
+        ? `barrier2: '${secondBarrierOffsetValue}',` : '')}`;
       return code;
     };
   }
