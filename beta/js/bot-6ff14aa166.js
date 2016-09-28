@@ -8157,9 +8157,9 @@
 	
 	var _view2 = _interopRequireDefault(_view);
 	
-	var _appId = __webpack_require__(416);
+	var _appId = __webpack_require__(417);
 	
-	var _logger = __webpack_require__(415);
+	var _logger = __webpack_require__(416);
 	
 	var _expect = __webpack_require__(335);
 	
@@ -8182,7 +8182,7 @@
 	  }
 	};
 	
-	__webpack_require__(417);
+	__webpack_require__(418);
 	
 	var BotPage = function BotPage() {
 	  var _this = this;
@@ -19340,9 +19340,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19442,7 +19442,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -19454,6 +19456,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19471,15 +19481,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -19594,9 +19596,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19696,7 +19698,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -19708,6 +19712,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19725,15 +19737,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -19848,9 +19852,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19950,7 +19954,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -19962,6 +19968,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19979,15 +19993,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20102,9 +20108,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20204,7 +20210,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -20216,6 +20224,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20233,15 +20249,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20356,9 +20364,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20458,7 +20466,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -20470,6 +20480,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20487,15 +20505,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20610,9 +20620,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20712,7 +20722,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -20724,6 +20736,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20741,15 +20761,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -20864,9 +20876,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20966,7 +20978,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -20978,6 +20992,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20995,15 +21017,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -21118,9 +21132,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21220,7 +21234,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -21232,6 +21248,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21249,15 +21273,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -21372,9 +21388,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21474,7 +21490,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -21486,6 +21504,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21503,15 +21529,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -21626,9 +21644,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21728,7 +21746,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -21740,6 +21760,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21757,15 +21785,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -21880,9 +21900,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21982,7 +22002,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -21994,6 +22016,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22011,15 +22041,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -22134,9 +22156,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -22236,7 +22258,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -22248,6 +22272,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22265,15 +22297,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -22388,9 +22412,9 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -22490,7 +22514,9 @@
 	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
 	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "95e552a40d3446c96905cd3ec7e3d123d0246ce8": "Returns the candle list",
+	  "5e9023e299575f2bc81242b931c10019b63f407a": "Candle Values",
+	  "cd8cdf3d47e921c8a72addae9269e66041d417c5": "Returns a list of the selected candle values",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
@@ -22502,6 +22528,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22519,15 +22553,7 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
 	};
 
 /***/ },
@@ -23558,15 +23584,15 @@
 	
 	var _bot = __webpack_require__(303);
 	
-	var _introduction = __webpack_require__(412);
+	var _introduction = __webpack_require__(413);
 	
 	var _introduction2 = _interopRequireDefault(_introduction);
 	
-	var _welcome = __webpack_require__(414);
+	var _welcome = __webpack_require__(415);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
 	
-	var _logger = __webpack_require__(415);
+	var _logger = __webpack_require__(416);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28559,7 +28585,7 @@
 	    value: function run() {
 	      var code = void 0;
 	      try {
-	        window.LoopTrap = 1000;
+	        window.LoopTrap = 99999999999;
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
 	        this.deleteStrayBlocks();
 	        this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
@@ -29119,6 +29145,8 @@
 	__webpack_require__(410);
 	
 	__webpack_require__(411);
+	
+	__webpack_require__(412);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30204,7 +30232,7 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Candles List'));
 	    this.setOutput(true, 'Array');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Returns the ohlc list')); // eslint-disable-line max-len
+	    this.setTooltip(_translator.translator.translateText('Returns the candle list')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
@@ -30217,6 +30245,42 @@
 
 /***/ },
 /* 399 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	var _translator = __webpack_require__(308);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	Blockly.Blocks.ohlc_values = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Candle Values')).appendField(new Blockly.FieldDropdown(_const2.default.ohlcFields), 'OHLCFIELD_LIST');
+	    this.setOutput(true, 'Array');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('Returns a list of the selected candle values')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideStrategy)(this, ev, 'Candles List');
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
+	
+	
+	Blockly.JavaScript.ohlc_values = function (block) {
+	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
+	  var code = '(Bot.expectNonEmptyArray(ticks.ohlc).map(function(e){return Bot.expectOhlc(e).' + ohlcField + '}))';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30245,6 +30309,7 @@
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 	
+	
 	Blockly.JavaScript.read_ohlc_obj = function (block) {
 	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
@@ -30258,7 +30323,7 @@
 	};
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30296,15 +30361,15 @@
 	    index = 1;
 	  }
 	  if (index === 1) {
-	    code = '(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1)[0]).' + ohlcField + ')';
+	    code = '(Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1)[0]).' + ohlcField + ')';
 	  } else {
-	    code = '(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1*' + index + ', -1*' + (index - 1) + ')[0]).' + ohlcField + ')';
+	    code = '(Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1*' + index + ', -1*' + (index - 1) + ')[0]).' + ohlcField + ')';
 	  }
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30328,7 +30393,7 @@
 	};
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30355,7 +30420,7 @@
 	};
 
 /***/ },
-/* 403 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30384,7 +30449,7 @@
 	};
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30411,7 +30476,7 @@
 	};
 
 /***/ },
-/* 405 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30439,7 +30504,7 @@
 	};
 
 /***/ },
-/* 406 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30473,7 +30538,7 @@
 	};
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30500,7 +30565,7 @@
 	};
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30524,7 +30589,7 @@
 	};
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30559,7 +30624,7 @@
 	};
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30586,7 +30651,7 @@
 	};
 
 /***/ },
-/* 411 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30608,7 +30673,7 @@
 	};
 
 /***/ },
-/* 412 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30622,7 +30687,7 @@
 	
 	var _observer = __webpack_require__(300);
 	
-	var _components = __webpack_require__(413);
+	var _components = __webpack_require__(414);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -31088,7 +31153,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 413 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31170,7 +31235,7 @@
 	};
 
 /***/ },
-/* 414 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31184,7 +31249,7 @@
 	
 	var _storageManager = __webpack_require__(301);
 	
-	var _components = __webpack_require__(413);
+	var _components = __webpack_require__(414);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -31406,7 +31471,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 415 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31553,7 +31618,7 @@
 	};
 
 /***/ },
-/* 416 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31705,7 +31770,7 @@
 	}
 
 /***/ },
-/* 417 */
+/* 418 */
 /***/ function(module, exports) {
 
 	// COPYRIGHT (c) 2016 TrackJS LLC ALL RIGHTS RESERVED
