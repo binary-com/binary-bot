@@ -185,6 +185,8 @@ export default class _Blockly {
       Blockly.JavaScript
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       this.deleteStrayBlocks();
+      this.blocksXmlStr = Blockly.Xml.domToPrettyText(
+        Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
       code = `
         try {
           ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
