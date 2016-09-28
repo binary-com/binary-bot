@@ -181,7 +181,7 @@ export default class _Blockly {
   run() {
     let code;
     try {
-      window.LoopTrap = 1000;
+      window.LoopTrap = 99999999999;
       Blockly.JavaScript
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       this.deleteStrayBlocks();
