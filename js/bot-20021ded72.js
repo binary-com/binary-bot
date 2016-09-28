@@ -8222,7 +8222,7 @@
 	    _this.view = new _view2.default();
 	    trackJs.configure({
 	      onError: function onError(payload, error) {
-	        if (error.message.indexOf('The play() request was' + ' interrupted by a call to pause()') >= 0) {
+	        if (error && error.message && error.message.indexOf('The play() request was' + ' interrupted by a call to pause()') >= 0) {
 	          return false;
 	        }
 	        payload.console.push({
@@ -28563,7 +28563,7 @@
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
 	        this.deleteStrayBlocks();
 	        this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-	        code = '\n        try {\n          ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n          trade();\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
+	        code = '\n        try {\n          ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n          if (typeof trade !== \'undefined\') {\n            trade();\n          }\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 	        this.generatedJs = code;
 	      } catch (e) {
