@@ -165,7 +165,7 @@ export const trade = (blockObj, ev) => {
   const topParent = findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (bot.symbol.findSymbol(topParent.type)
-      || ['on_strategy', 'on_finish'].indexOf(topParent.type) >= 0) {
+      || ['on_strategy', 'on_finish', 'during_purchase'].indexOf(topParent.type) >= 0) {
       observer.emit('ui.log.warn',
         translator.translateText('The trade block cannot be inside binary blocks'));
       disable(blockObj);
