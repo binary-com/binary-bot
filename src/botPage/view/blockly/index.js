@@ -190,7 +190,9 @@ export default class _Blockly {
       code = `
         try {
           ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
-          trade();
+          if (typeof trade !== 'undefined') {
+            trade();
+          }
         } catch (e) {
           if (e.name === 'RuntimeError') {
             // pass
