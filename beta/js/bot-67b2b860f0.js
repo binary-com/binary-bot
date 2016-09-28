@@ -23673,9 +23673,6 @@
 	        chartOptions.ticks = info.ticks;
 	        if (this.latestOpenContract) {
 	          chartOptions.contract = this.latestOpenContract;
-	          if (this.latestOpenContract.is_sold) {
-	            delete this.latestOpenContract;
-	          }
 	        }
 	      }
 	      chartOptions.pipSize = Number(Number(info.pip).toExponential().substring(3));
@@ -23754,6 +23751,9 @@
 	
 	      _observer.observer.register('bot.finish', function (contract) {
 	        _this5.tradeInfo.add(contract);
+	        setTimeout(function () {
+	          return delete _this5.latestOpenContract;
+	        }, 2000);
 	      });
 	
 	      _observer.observer.register('bot.tickUpdate', function (info) {
