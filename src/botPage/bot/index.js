@@ -5,11 +5,30 @@ import _ from 'underscore';
 import config from '../../common/const';
 import PurchaseCtrl from './purchaseCtrl';
 import _Symbol from './symbol';
+import { expectNumber, expectBarrierOffset } from '../../common/expect';
+import { RuntimeError } from '../../common/error';
+
+const checkTradeOptions = (tradeOption) => {
+  if (tradeOption && tradeOption instanceof Object) {
+    expectNumber('duration', tradeOption.duration, RuntimeError);
+    expectNumber('amount', tradeOption.amount, RuntimeError).toFixed(2);
+    if (tradeOption.barrier && typeof tradeOption.barrier === 'number') {
+      expectNumber('prediction', tradeOption.barrier, RuntimeError);
+    }
+    if (tradeOption.barrier && typeof tradeOption.barrier === 'string') {
+      expectBarrierOffset(tradeOption.barrier, RuntimeError);
+    }
+    if (tradeOption.barrier2 && typeof tradeOption.barrier2 === 'string') {
+      expectBarrierOffset(tradeOption.barrier2, RuntimeError);
+    }
+  }
+};
 
 export default class Bot {
   constructor(api = null) {
     this.ticks = [];
     this.candles = [];
+    this.candleInterval = 60;
     this.running = false;
     this.currentToken = '';
     this.balanceStr = '';
@@ -31,7 +50,8 @@ export default class Bot {
         this.purchaseCtrl.destroy();
       }
       this.purchaseCtrl = new PurchaseCtrl(this.api, strategy, duringPurchase, finish);
-      this.tradeOption = tradeOption;
+      checkTradeOptions(tradeOption);
+      this.tradeOption = { ...tradeOption };
       observer.emit('log.bot.start', {
         again: !!sameTrade,
       });
@@ -51,9 +71,14 @@ export default class Bot {
         if (this.currentToken !== token) {
           promises.push(this.login(token));
         }
-        if (!_.isEmpty(this.tradeOption) && this.tradeOption.symbol !== this.currentSymbol) {
-          promises.push(this.subscribeToTickHistory());
-          promises.push(this.subscribeToCandles());
+        if (!_.isEmpty(this.tradeOption)) {
+          if (this.tradeOption.symbol !== this.currentSymbol) {
+            promises.push(this.subscribeToTickHistory());
+            promises.push(this.subscribeToCandles());
+          } else if (this.tradeOption.candleInterval !== this.candleInterval) {
+            this.candleInterval = this.tradeOption.candleInterval;
+            promises.push(this.subscribeToCandles());
+          }
         }
         Promise.all(promises).then(() => {
           this.startTrading();
@@ -84,6 +109,8 @@ export default class Bot {
     if (!_.isEmpty(this.tradeOption)) {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
       const opposites = config.opposites[this.tradeOption.condition];
+      this.candleInterval = this.tradeOption.candleInterval;
+      this.tradeOption.amount = this.tradeOption.amount.toFixed(2);
       this.tradeOptions = [];
       for (const key of Object.keys(opposites)) {
         const newTradeOption = {
@@ -91,6 +118,7 @@ export default class Bot {
           contract_type: Object.keys(opposites[key])[0],
         };
         delete newTradeOption.condition;
+        delete newTradeOption.candleInterval;
         this.tradeOptions.push(newTradeOption);
       }
     } else {
@@ -100,7 +128,7 @@ export default class Bot {
   subscribeToBalance() {
     const apiBalance = (balance) => {
       this.balance = balance.balance;
-      this.balanceStr = Number(balance.balance).toFixed(2) + ' ' + balance.currency;
+      this.balanceStr = `${Number(balance.balance).toFixed(2)} ${balance.currency}`;
       observer.emit('bot.tradeInfo', {
         balance: this.balanceStr,
       });
@@ -125,7 +153,7 @@ export default class Bot {
       this.api.history(this.tradeOption.symbol, {
         end: 'latest',
         count: 600,
-        granularity: 60,
+        granularity: this.candleInterval,
         style: 'candles',
         subscribe: 1,
       });
@@ -140,7 +168,8 @@ export default class Bot {
       };
       observer.register('api.history', apiHistory, true, {
         type: 'history',
-        unregister: [['api.history', apiHistory], 'api.tick', 'bot.tickUpdate', 'api.ohlc', 'api.candles'],
+        unregister: [['api.history', apiHistory], 'api.tick',
+          'bot.tickUpdate', 'api.ohlc', 'api.candles'],
       }, true);
       this.api.originalApi.unsubscribeFromAllTicks().then(() => 0, () => 0);
       this.api.history(this.tradeOption.symbol, {
@@ -260,16 +289,13 @@ export default class Bot {
   }
   updateTotals(contract) {
     const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
-    if (typeof amplitude !== 'undefined') {
-      const user = getToken(this.currentToken);
-      if (!user.isVirtual) {
-        const revenue = new amplitude.Revenue()
-          .setProductId(`${contract.underlying}.${contract.contract_type}`)
-          .setPrice(-profit)
-          .setRevenueType((profit < 0) ? 'loss' : 'win');
-        amplitude.getInstance().logRevenueV2(revenue, contract);
-      }
-    }
+    const user = getToken(this.currentToken);
+    observer.emit('log.revenue', {
+      user,
+      profit,
+      contract,
+    });
+
     this.totalProfit = +(this.totalProfit + profit).toFixed(2);
     this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);
@@ -291,7 +317,7 @@ export default class Bot {
     this.running = false;
     this.purchaseCtrl.destroy();
     this.purchaseCtrl = null;
-    //
+  //
   }
   stop(contract) {
     if (!this.running) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
 import CustomApi from 'binary-common-utils/lib/customApi';
 import ws from '../../../../common/mock/websocket';
@@ -45,7 +46,8 @@ describe('symbol', () => {
     });
     it('getAllowedCategoryNames returns allowed category names', () => {
       expect(symbol.getAllowedCategoryNames('R_100')).to.be.ok
-        .and.to.have.all.members(['Up/Down', 'Digits', 'Asians', 'Touch/No Touch', 'Ends In/Out', 'Stays In/Goes Out']);
+        .and.to.have.all.members(['Up/Down', 'Digits', 'Asians',
+          'Touch/No Touch', 'Ends In/Out', 'Stays In/Goes Out']);
       expect(symbol.getAllowedCategoryNames('FAKE')).to.be.empty;
     });
     it('getCategoryNameForCondition returns category name of a condition', () => {
@@ -72,14 +74,15 @@ describe('symbol', () => {
     });
     it('getAllowedConditionsForSymbol returns allowed conditions for a symbol', () => {
       expect(symbol.getAllowedConditionsForSymbol('R_100'))
-				.to.have.all.members(['risefall', 'higherlower', 'matchesdiffers',
-					'evenodd', 'overunder', 'asians', 'touchnotouch', 'endsinout', 'staysinout']);
+        .to.have.all.members(['risefall', 'higherlower', 'matchesdiffers',
+          'evenodd', 'overunder', 'asians', 'touchnotouch', 'endsinout', 'staysinout']);
       expect(symbol.getAllowedConditionsForSymbol('fake'))
         .to.be.empty;
     });
     it('getAllowedCategoriesForSymbol returns allowed categories for a symbol', () => {
       expect(symbol.getAllowedCategoriesForSymbol('R_100'))
-        .to.have.all.members(['callput', 'digits', 'asian', 'touchnotouch', 'endsinout', 'staysinout']);
+        .to.have.all.members(['callput', 'digits', 'asian',
+          'touchnotouch', 'endsinout', 'staysinout']);
       expect(symbol.getAllowedCategoriesForSymbol('fake'))
         .to.be.empty;
     });

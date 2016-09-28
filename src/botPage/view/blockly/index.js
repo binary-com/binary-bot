@@ -3,9 +3,8 @@ import { observer } from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import { utils } from './utils.js';
-import codeGenerators from './code_generators';
-import definitions from './definitions';
+import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock } from './utils';
+import blocks from './blocks';
 
 export default class _Blockly {
   constructor() {
@@ -14,8 +13,7 @@ export default class _Blockly {
     this.addBlocklyTranslation();
     this.initPromise = new Promise((resolve) => {
       $.get('xml/toolbox.xml', (toolbox) => {
-        codeGenerators();
-        definitions();
+        blocks();
         const workspace = Blockly.inject('blocklyDiv', {
           media: 'js/blockly/media/',
           toolbox: this.xmlToStr(translator.translateXml($.parseXML(
@@ -34,7 +32,7 @@ export default class _Blockly {
           this.overrideBlocklyDefaultShape();
           this.zoomOnPlusMinus();
           Blockly.mainWorkspace.clearUndo();
-          utils.addPurchaseOptions();
+          addPurchaseOptions();
           resolve();
         });
       });
@@ -51,11 +49,12 @@ export default class _Blockly {
   createXmlTag(obj) {
     let xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
     for (const market of Object.keys(obj)) {
-      xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">\n';
+      xmlStr += `\t<category name="${obj[market].name}" colour="#2a3052">`;
       for (const submarket of Object.keys(obj[market].submarkets)) {
-        xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">\n';
+        xmlStr += `\t\t<category name="${
+        obj[market].submarkets[submarket].name}" colour="#2a3052">`;
         for (const symbol of Object.keys(obj[market].submarkets[submarket].symbols)) {
-          xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>\n';
+          xmlStr += `\t\t\t<block type="${symbol.toLowerCase()}"></block>`;
         }
         xmlStr += '\t\t</category>\n';
       }
@@ -70,16 +69,15 @@ export default class _Blockly {
   }
   marketsToXml(xml) {
     const xmlStr = this.xmlToStr(xml);
-    const marketXml = this.createXmlTag(bot.symbol.activeSymbols.getMarkets(), bot.symbol.assetIndex);
+    const marketXml = this.createXmlTag(
+      bot.symbol.activeSymbols.getMarkets(), bot.symbol.assetIndex);
     return xmlStr.replace('<!--Markets-->', marketXml);
   }
   disableDeleteForMainBlocks() {
-    utils.getBlockByType('trade')
-      .setDeletable(false);
-    utils.getBlockByType('on_strategy')
-      .setDeletable(false);
-    utils.getBlockByType('on_finish')
-      .setDeletable(false);
+    for (const blockType of config.mainBlocks) {
+      getBlockByType(blockType)
+        .setDeletable(false);
+    }
   }
   overrideBlocklyDefaultShape() {
     Blockly.Blocks.text.newQuote_ = (open) => { // eslint-disable-line no-underscore-dangle
@@ -101,14 +99,12 @@ export default class _Blockly {
   }
   addMissingMainBlocks() {
     for (const mainBlock of config.mainBlocks) {
-      if (mainBlock !== 'during_purchase') {
-        if (!utils.getBlockByType(mainBlock)) {
-          const block = Blockly.mainWorkspace.newBlock(mainBlock);
-          block.initSvg();
-          block.render();
-          this.setBlockColors();
-          block.setDeletable(false);
-        }
+      if (!getBlockByType(mainBlock)) {
+        const block = Blockly.mainWorkspace.newBlock(mainBlock);
+        block.initSvg();
+        block.render();
+        this.setBlockColors();
+        block.setDeletable(false);
       }
     }
   }
@@ -116,16 +112,26 @@ export default class _Blockly {
     this.addMissingMainBlocks();
     Blockly.mainWorkspace.clearUndo();
     this.setBlockColors();
-    utils.addPurchaseOptions();
+    addPurchaseOptions();
   }
   loadBlocks(str) {
     if (str) {
       this.blocksXmlStr = str;
     }
-    Blockly.mainWorkspace.clear();
-    const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-    this.reconfigureBlocklyAfterLoad();
+    try {
+      Blockly.mainWorkspace.clear();
+      const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
+      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+      this.reconfigureBlocklyAfterLoad();
+      observer.emit('ui.log.success',
+        translator.translateText('Blocks are loaded successfully'));
+    } catch (e) {
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        throw e;
+      }
+    }
   }
   selectBlockByText(text) {
     let returnVal;
@@ -138,7 +144,7 @@ export default class _Blockly {
   }
   setBlockColors() {
     for (const blockType of config.mainBlocks) {
-      const block = utils.getBlockByType(blockType);
+      const block = getBlockByType(blockType);
       if (block) {
         block.getField().getSvgRoot()
           .style.setProperty('fill', 'white', 'important');
@@ -155,8 +161,7 @@ export default class _Blockly {
       }
     }
     const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    const filename = 'binary-bot' + parseInt(new Date()
-          .getTime() / 1000, 10) + '.xml';
+    const filename = `binary-bot${parseInt(new Date().getTime() / 1000, 10)}.xml`;
     const blob = new Blob([xmlText], {
       type: 'text/xml;charset=utf-8',
     });
@@ -165,8 +170,8 @@ export default class _Blockly {
   deleteStrayBlocks() {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
     for (const block of topBlocks) {
-      if (!utils.isMainBlock(block.type)
-        && block !== utils.findTopParentBlock(utils.getBlockByType('trade'))
+      if (!isMainBlock(block.type)
+        && block !== findTopParentBlock(getBlockByType('trade'))
         && block.type.indexOf('procedures_def') < 0
         && block.type !== 'block_holder') {
         block.dispose();
@@ -177,31 +182,43 @@ export default class _Blockly {
     let code;
     try {
       window.LoopTrap = 1000;
-      Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      Blockly.JavaScript
+        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       this.deleteStrayBlocks();
-      code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
+      code = `
+        try {
+          ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+          trade();
+        } catch (e) {
+          if (e.name === 'RuntimeError') {
+            // pass
+          } else {
+            throw e;
+          }
+        }
+      `;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       this.generatedJs = code;
     } catch (e) {
-      observer.emit('blockly.error', e);
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        throw e;
+      }
     }
     if (code) {
-      try {
-        eval(code); // eslint-disable-line no-eval
-      } catch (e) {
-        observer.emit('runtime.error', e);
-      }
+      eval(code); // eslint-disable-line no-eval
       $('#summaryPanel')
         .show();
     }
   }
   addBlocklyTranslation() {
     $.ajaxPrefilter((options) => {
-      options.async = true;
+      options.async = true; // eslint-disable-line no-param-reassign
     });
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'js/blockly/msg/js/' + translator.getLanguage() + '.js';
+    script.src = `js/blockly/msg/js/${translator.getLanguage()}.js`;
     $('body').append(script);
   }
   undo() {

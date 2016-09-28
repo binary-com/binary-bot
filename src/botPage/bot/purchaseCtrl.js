@@ -2,6 +2,22 @@ import { observer } from 'binary-common-utils/lib/observer';
 import { getUTCTime } from 'binary-common-utils/lib/tools';
 import Trade from './trade';
 
+const createDetails = (contract) => {
+  const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+  const result = (profit < 0) ? 'loss' : 'win';
+  observer.emit(`log.strategy.${result}`, {
+    profit,
+    transactionId: contract.transaction_ids.buy,
+  });
+  return [
+    contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
+    profit, contract.contract_type,
+    getUTCTime(new Date(parseInt(`${contract.entry_tick_time}000`, 10))), +contract.entry_tick,
+    getUTCTime(new Date(parseInt(`${contract.exit_tick_time}000`, 10))), +contract.exit_tick,
+    +((contract.barrier) ? contract.barrier : 0), result,
+  ];
+};
+
 export default class PurchaseCtrl {
   constructor(api, strategy, duringPurchase, finish) {
     this.api = api;
@@ -44,11 +60,11 @@ export default class PurchaseCtrl {
           o.toString = repr;
         }
       }
-			const tickObj = {
-				direction,
-				ohlc,
-				ticks,
-			};
+      const tickObj = {
+        direction,
+        ohlc,
+        ticks,
+      };
       if (this.ready) {
         observer.emit('log.strategy.start', {
           proposals: this.proposals,
@@ -75,7 +91,7 @@ export default class PurchaseCtrl {
       const tradeFinish = (finishedContract) => {
         // order matters, needs fix
         observer.emit('strategy.finish', finishedContract);
-        this.finish(finishedContract, this.createDetails(finishedContract));
+        this.finish(finishedContract, createDetails(finishedContract));
       };
       observer.register('trade.update', tradeUpdate);
       observer.register('trade.finish', tradeFinish, true);
@@ -84,8 +100,11 @@ export default class PurchaseCtrl {
       this.trade.purchase(contract, tradeFinish);
     }
   }
+  isSellAvailable() {
+    return this.trade && this.trade.isSellAvailable;
+  }
   sellAtMarket() {
-    if (this.trade) {
+    if (this.trade && this.trade.isSellAvailable) {
       this.trade.sellAtMarket();
     }
   }
@@ -93,22 +112,7 @@ export default class PurchaseCtrl {
     if (!this.purchased) {
       return this.proposals[option];
     }
-		return null;
-  }
-  createDetails(contract) {
-    const result = (+contract.sell_price === 0) ? 'loss' : 'win';
-    const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
-    observer.emit('log.strategy.' + result, {
-      profit,
-      transactionId: contract.transaction_ids.buy,
-    });
-    return [
-      contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
-      profit, contract.contract_type,
-      getUTCTime(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick,
-      getUTCTime(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick,
-      +((contract.barrier) ? contract.barrier : 0), result,
-    ];
+    return null;
   }
   destroy() {
     for (const obs of this.runningObservations) {

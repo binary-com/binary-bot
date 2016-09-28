@@ -17,6 +17,7 @@ describe('Const', () => {
       'barrierTypes',
       'ohlcFields',
       'durationTypes',
+      'candleIntervals',
     ]);
   });
 });

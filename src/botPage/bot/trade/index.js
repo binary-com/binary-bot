@@ -4,23 +4,27 @@ import { translator } from '../../../common/translator';
 export default class Trade {
   constructor(api) {
     this.api = api;
-    this.contractIsSold = false;
     this.runningObservations = [];
     this.openContract = null;
+    this.isSellAvailable = false;
+    this.isSold = false;
   }
   sellAtMarket() {
-    this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(() => {
-      this.getTheContractInfoAfterSell();
-    }, (e) => {
-      observer.emit('ui.log.warning', translator.translateText('Contract sell failed: ') + e);
-    });
+    if (!this.isSold) {
+      this.isSold = true;
+      this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(() => {
+        this.getTheContractInfoAfterSell();
+      }, () => 0);
+    }
   }
   purchase(contract) {
     this.api.buy(contract.id, contract.ask_price);
     const apiBuy = (purchasedContract) => {
       observer.emit('log.trade.purchase', purchasedContract);
-      observer.emit('ui.log.info', translator.translateText('Purchased') + ': ' + contract.longcode);
+      observer.emit('ui.log.info',
+        `${translator.translateText('Purchased')}: ${contract.longcode}`);
       observer.emit('trade.purchase', purchasedContract);
+      this.isSold = false;
       this.contractId = purchasedContract.contract_id;
       this.api.originalApi.unsubscribeFromAllProposals().then(() => 0, () => 0);
       this.subscribeToOpenContract();
@@ -36,11 +40,15 @@ export default class Trade {
       return false;
     }
     const apiProposalOpenContract = (contract) => {
-      // detect changes and decide what to do when proposal is updated
-      if (contract.is_expired && contract.is_valid_to_sell && !this.contractIsSold) {
-        this.contractIsSold = true;
-        this.api.originalApi.sellExpiredContracts().then(() => 0, () => 0);
-        this.getTheContractInfoAfterSell();
+      if (!this.isSold && contract.is_valid_to_sell) {
+        if (contract.is_expired) {
+          this.isSold = true;
+          this.isSellAvailable = false;
+          this.api.originalApi.sellExpiredContracts().then(() => 0, () => 0);
+          this.getTheContractInfoAfterSell();
+        } else {
+          this.isSellAvailable = true;
+        }
       }
       if (contract.sell_price) {
         this.openContract = null;
@@ -75,7 +83,7 @@ export default class Trade {
       observer.unregisterAll(...obs);
     }
     this.runningObservations = [];
-    this.contractIsSold = false;
+    this.isSold = false;
     this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(() => 0, () => 0);
   }
 }

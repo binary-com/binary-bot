@@ -34,6 +34,16 @@ export default {
       [translator.translateText('Fall'), 'fall'],
       [translator.translateText('No Change'), ''],
     ],
+    BALANCE_TYPE: [
+      [translator.translateText('string'), 'STR'],
+      [translator.translateText('number'), 'NUM'],
+    ],
+    NOTIFICATION_TYPE: [
+      [translator.translateText('green'), 'success'],
+      [translator.translateText('blue'), 'info'],
+      [translator.translateText('yellow'), 'warn'],
+      [translator.translateText('red'), 'error'],
+    ],
   },
 
   opposites: {
@@ -92,6 +102,20 @@ export default {
     ['High', 'high'],
     ['Low', 'low'],
     ['Close', 'close'],
+  ],
+  candleIntervals: [
+    ['1 minute', '60'],
+    ['2 minutes', '120'],
+    ['3 minutes', '180'],
+    ['5 minutes', '300'],
+    ['10 minutes', '600'],
+    ['15 minutes', '900'],
+    ['30 minutes', '1800'],
+    ['1 hour', '3600'],
+    ['2 hours', '7200'],
+    ['4 hours', '14400'],
+    ['8 hours', '28800'],
+    ['1 day', '86400'],
   ],
   mainBlocks: [
     'trade',
@@ -165,6 +189,6 @@ export default {
     endsinout: translator.translateText('Ends In/Out'),
     staysinout: translator.translateText('Stays In/Goes Out'),
   },
-	conditions: ['risefall', 'higherlower', 'touchnotouch',
-		'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
+  conditions: ['risefall', 'higherlower', 'touchnotouch',
+    'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
 };
