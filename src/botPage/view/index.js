@@ -294,9 +294,6 @@ export default class View {
       chartOptions.ticks = info.ticks;
       if (this.latestOpenContract) {
         chartOptions.contract = this.latestOpenContract;
-        if (this.latestOpenContract.is_sold) {
-          delete this.latestOpenContract;
-        }
       }
     }
     chartOptions.pipSize = Number(Number(info.pip)
@@ -345,6 +342,7 @@ export default class View {
 
     observer.register('bot.finish', (contract) => {
       this.tradeInfo.add(contract);
+      setTimeout(() => delete this.latestOpenContract, 2000);
     });
 
     observer.register('bot.tickUpdate', (info) => {
