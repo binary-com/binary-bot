@@ -23474,7 +23474,7 @@
 	var expectBarrierOffset = exports.expectBarrierOffset = function expectBarrierOffset(barrier) {
 	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
 	
-	  if (barrier.match(/^[-+]\d+$/) === null) {
+	  if (barrier.match(/^[-+][\d.]+$/) === null) {
 	    return new CustomError(_translator.translator.translateText('Please use appropriate barrier offset block for barrier offsets')).emit();
 	  }
 	  return barrier;
