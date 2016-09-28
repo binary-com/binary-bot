@@ -30,9 +30,9 @@ Blockly.JavaScript.read_ohlc = (block) => {
     index = 1;
   }
   if (index === 1) {
-    code = `(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1)[0]).${ohlcField})`;
+    code = `(Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1)[0]).${ohlcField})`;
   } else {
-    code = `(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1*${
+    code = `(Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1*${
     index}, -1*${index - 1})[0]).${ohlcField})`;
   }
   return [code, Blockly.JavaScript.ORDER_ATOMIC];

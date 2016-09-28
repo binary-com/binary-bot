@@ -15,6 +15,7 @@ import './strategy';
 import './strategy/tick';
 import './strategy/ticks';
 import './strategy/ohlc';
+import './strategy/ohlc_values';
 import './strategy/readOhlcObj';
 import './strategy/readOhlc';
 import './during_purchase';
