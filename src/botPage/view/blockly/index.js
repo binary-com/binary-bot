@@ -188,8 +188,8 @@ export default class _Blockly {
       this.blocksXmlStr = Blockly.Xml.domToPrettyText(
         Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
       code = `
+        ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
         try {
-          ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
           if (typeof trade !== 'undefined') {
             trade();
           }
