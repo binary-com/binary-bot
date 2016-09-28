@@ -28563,7 +28563,7 @@
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
 	        this.deleteStrayBlocks();
 	        this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-	        code = '\n        try {\n          ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n          if (typeof trade !== \'undefined\') {\n            trade();\n          }\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
+	        code = '\n        ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n        try {\n          if (typeof trade !== \'undefined\') {\n            trade();\n          }\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 	        this.generatedJs = code;
 	      } catch (e) {
