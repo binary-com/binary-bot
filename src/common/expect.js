@@ -29,7 +29,7 @@ export const expectNumber = (name, num, CustomError = BlocklyError) => {
 };
 
 export const expectBarrierOffset = (barrier, CustomError = BlocklyError) => {
-  if (barrier.match(/^[-+]\d+$/) === null) {
+  if (barrier.match(/^[-+][\d.]+$/) === null) {
     return new CustomError(
       translator.translateText('Please use appropriate barrier offset block for barrier offsets'))
         .emit();
