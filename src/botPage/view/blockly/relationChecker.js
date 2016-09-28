@@ -206,6 +206,21 @@ export const insideStrategy = (blockObj, ev, name) => {
   }
   enable(blockObj);
 };
+export const insideDuringPurchase = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
+  const topParent = findTopParentBlock(blockObj);
+  if (topParent !== null) {
+    if (topParent.type !== 'during_purchase' && !ev.oldParentId) {
+      observer.emit('ui.log.warn',
+        `${name} ${translator.translateText('must be added inside the during purchase block')}`);
+      disable(blockObj);
+      return;
+    }
+  }
+  enable(blockObj);
+};
 export const insideFinish = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     return;
