@@ -238,18 +238,45 @@
 		<!--Markets-->
 		<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
 			<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
-				<block type="barrier_offset"></block>
 				<block type="risefall"></block>
-				<block type="higherlower"></block>
+				<block type="higherlower">
+					<value name="BARRIEROFFSET">
+						<block type="barrier_offset"></block>
+					</value>
+				</block>
 			</category>
 			<category name="Touch/No Touch" colour="#2a3052" i18n-text="Touch/No Touch">
-				<block type="barrier_offset"></block>
-				<block type="touchnotouch"></block>
+				<block type="touchnotouch">
+					<value name="BARRIEROFFSET">
+						<block type="barrier_offset"></block>
+					</value>
+				</block>
 			</category>
 			<category name="In/Out" colour="#2a3052" i18n-text="In/Out">
-				<block type="barrier_offset"></block>
-				<block type="endsinout"></block>
-				<block type="staysinout"></block>
+				<block type="endsinout">
+					<value name="BARRIEROFFSET">
+						<block type="barrier_offset">
+							<field name="BARRIEROFFSETTYPE_LIST">+</field>
+						</block>
+					</value>
+					<value name="SECONDBARRIEROFFSET">
+						<block type="barrier_offset">
+							<field name="BARRIEROFFSETTYPE_LIST">-</field>
+						</block>
+					</value>
+				</block>
+				<block type="staysinout">
+					<value name="BARRIEROFFSET">
+						<block type="barrier_offset">
+							<field name="BARRIEROFFSETTYPE_LIST">+</field>
+						</block>
+					</value>
+					<value name="SECONDBARRIEROFFSET">
+						<block type="barrier_offset">
+							<field name="BARRIEROFFSETTYPE_LIST">-</field>
+						</block>
+					</value>
+				</block>
 			</category>
 			<category name="Asians" colour="#2a3052" i18n-text="Asians">
 				<block type="asians"></block>
@@ -264,11 +291,17 @@
 			<block type="tick"></block>
 			<block type="ticks"></block>
 			<block type="ohlc"></block>
+			<block type="read_ohlc"></block>
 			<block type="read_ohlc_obj"></block>
 			<block type="check_direction"></block>
 			<block type="purchase"></block>
 			<block type="payout"></block>
 			<block type="ask_price"></block>
+		</category>
+		<category name="During Purchase" colour="#2a3052" i18n-text="During Purchase">
+			<block type="check_sell"></block>
+			<block type="sell_price"></block>
+			<block type="sell_at_market"></block>
 		</category>
 		<category name="After Purchase" colour="#2a3052" i18n-text="After Purchase">
 			<block type="contract_check_result"></block>

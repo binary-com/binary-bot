@@ -8136,26 +8136,32 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	
 	__webpack_require__(1);
 	
-	var _observer = __webpack_require__(299);
+	var _lzString = __webpack_require__(299);
 	
-	var _storageManager = __webpack_require__(300);
+	var _lzString2 = _interopRequireDefault(_lzString);
 	
-	__webpack_require__(301);
+	var _observer = __webpack_require__(300);
 	
-	var _bot = __webpack_require__(302);
+	var _storageManager = __webpack_require__(301);
 	
-	var _view = __webpack_require__(334);
+	__webpack_require__(302);
+	
+	var _bot = __webpack_require__(303);
+	
+	var _view = __webpack_require__(337);
 	
 	var _view2 = _interopRequireDefault(_view);
 	
-	var _logger = __webpack_require__(371);
+	var _appId = __webpack_require__(416);
 	
-	var _appId = __webpack_require__(439);
+	var _logger = __webpack_require__(415);
+	
+	var _expect = __webpack_require__(335);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8164,71 +8170,599 @@
 	
 	(0, _appId.setAppId)();
 	$.ajaxSetup({
-		cache: false
+	  cache: false
 	});
 	
 	window._trackJs = { // eslint-disable-line no-underscore-dangle
-		token: '346262e7ffef497d85874322fff3bbf8',
-		application: 'binary-bot',
-		enabled: window.location.hostname !== 'localhost',
-		console: {
-			display: false
-		}
+	  token: '346262e7ffef497d85874322fff3bbf8',
+	  application: 'binary-bot',
+	  enabled: window.location.hostname !== 'localhost',
+	  console: {
+	    display: false
+	  }
 	};
-	__webpack_require__(440);
+	
+	__webpack_require__(417);
 	
 	var BotPage = function BotPage() {
-		var _this = this;
+	  var _this = this;
 	
-		_classCallCheck(this, BotPage);
+	  _classCallCheck(this, BotPage);
 	
-		window.Bot = {
-			addBlockByMagic: function addBlockByMagic(blockType) {
-				var dp = Blockly.mainWorkspace.newBlock(blockType);
-				dp.initSvg();
-				dp.render();
-				_this.view.blockly.setBlockColors();
-			},
-			start: _bot.bot.start.bind(_bot.bot),
-			stop: _bot.bot.stop.bind(_bot.bot),
-			showCode: function showCode() {
-				console.log(_this.view.blockly.generatedJs); // eslint-disable-line no-console
-				console.log(_this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
-			},
-			toggleDebug: _logger.logger.toggleDebug.bind(_logger.logger),
-			log: function log(message, type) {
-				_observer.observer.emit('ui.log.' + type + '.left', message);
-			},
-			getTotalRuns: function getTotalRuns() {
-				return _bot.bot.totalRuns;
-			},
-			getTotalProfit: function getTotalProfit() {
-				return _bot.bot.totalProfit;
-			},
-			getBalance: function getBalance(balanceType) {
-				return balanceType === 'STR' ? _bot.bot.balanceStr : _bot.bot.balance;
-			}
-		};
+	  window.Bot = {
+	    expectNonEmptyArray: _expect.expectNonEmptyArray,
+	    expectOhlc: _expect.expectOhlc,
+	    addBlockByMagic: function addBlockByMagic(blockType) {
+	      var dp = Blockly.mainWorkspace.newBlock(blockType);
+	      dp.initSvg();
+	      dp.render();
+	      _this.view.blockly.setBlockColors();
+	    },
+	    start: _bot.bot.start.bind(_bot.bot),
+	    stop: _bot.bot.stop.bind(_bot.bot),
+	    showCode: function showCode() {
+	      console.log(_this.view.blockly.generatedJs); // eslint-disable-line no-console
+	      console.log(_this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
+	    },
+	    log: function log(message, type) {
+	      _observer.observer.emit('ui.log.' + type + '.left', message);
+	    },
+	    getTotalRuns: function getTotalRuns() {
+	      return _bot.bot.totalRuns;
+	    },
+	    getTotalProfit: function getTotalProfit() {
+	      return _bot.bot.totalProfit;
+	    },
+	    getBalance: function getBalance(balanceType) {
+	      return balanceType === 'STR' ? _bot.bot.balanceStr : _bot.bot.balance;
+	    }
+	  };
 	
-		_bot.bot.initPromise.then(function () {
-			_this.view = new _view2.default();
-			_this.view.initPromise.then(function () {
-				trackJs.configure({
-					userId: (0, _storageManager.getToken)($('#accountSelect').val()).account_name
-				});
-				$('.spinning').hide();
-				_this.view.activeTour = _this.view.tours.welcome;
-				_this.view.activeTour.welcome(function () {
-					_this.view.activeTour = null;
-				});
-			});
-		});
+	  _bot.bot.initPromise.then(function () {
+	    _this.view = new _view2.default();
+	    trackJs.configure({
+	      onError: function onError(payload, error) {
+	        if (error.message.indexOf('The play() request was' + ' interrupted by a call to pause()') >= 0) {
+	          return false;
+	        }
+	        payload.console.push({
+	          message: _lzString2.default.compressToBase64(_this.view.blockly.generatedJs),
+	          severity: 'log',
+	          timestamp: new Date().toISOString()
+	        });
+	        payload.console.push({
+	          message: _lzString2.default.compressToBase64(_this.view.blockly.blocksXmlStr),
+	          severity: 'log',
+	          timestamp: new Date().toISOString()
+	        });
+	        (0, _logger.notifyError)(error);
+	        return true;
+	      }
+	    });
+	    _this.view.initPromise.then(function () {
+	      trackJs.configure({
+	        userId: (0, _storageManager.getToken)($('#accountSelect').val()).account_name
+	      });
+	      $('.spinning').hide();
+	      _this.view.activeTour = _this.view.tours.welcome;
+	      _this.view.activeTour.welcome(function () {
+	        _this.view.activeTour = null;
+	      });
+	    });
+	  });
 	};
 	
 	exports.default = new BotPage();
 
 /***/ },
 /* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c) 2013 Pieroxy <pieroxy@pieroxy.net>
+	// This work is free. You can redistribute it and/or modify it
+	// under the terms of the WTFPL, Version 2
+	// For more information see LICENSE.txt or http://www.wtfpl.net/
+	//
+	// For more information, the home page:
+	// http://pieroxy.net/blog/pages/lz-string/testing.html
+	//
+	// LZ-based compression algorithm, version 1.4.4
+	var LZString = (function() {
+	
+	// private property
+	var f = String.fromCharCode;
+	var keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+	var keyStrUriSafe = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$";
+	var baseReverseDic = {};
+	
+	function getBaseValue(alphabet, character) {
+	  if (!baseReverseDic[alphabet]) {
+	    baseReverseDic[alphabet] = {};
+	    for (var i=0 ; i<alphabet.length ; i++) {
+	      baseReverseDic[alphabet][alphabet.charAt(i)] = i;
+	    }
+	  }
+	  return baseReverseDic[alphabet][character];
+	}
+	
+	var LZString = {
+	  compressToBase64 : function (input) {
+	    if (input == null) return "";
+	    var res = LZString._compress(input, 6, function(a){return keyStrBase64.charAt(a);});
+	    switch (res.length % 4) { // To produce valid Base64
+	    default: // When could this happen ?
+	    case 0 : return res;
+	    case 1 : return res+"===";
+	    case 2 : return res+"==";
+	    case 3 : return res+"=";
+	    }
+	  },
+	
+	  decompressFromBase64 : function (input) {
+	    if (input == null) return "";
+	    if (input == "") return null;
+	    return LZString._decompress(input.length, 32, function(index) { return getBaseValue(keyStrBase64, input.charAt(index)); });
+	  },
+	
+	  compressToUTF16 : function (input) {
+	    if (input == null) return "";
+	    return LZString._compress(input, 15, function(a){return f(a+32);}) + " ";
+	  },
+	
+	  decompressFromUTF16: function (compressed) {
+	    if (compressed == null) return "";
+	    if (compressed == "") return null;
+	    return LZString._decompress(compressed.length, 16384, function(index) { return compressed.charCodeAt(index) - 32; });
+	  },
+	
+	  //compress into uint8array (UCS-2 big endian format)
+	  compressToUint8Array: function (uncompressed) {
+	    var compressed = LZString.compress(uncompressed);
+	    var buf=new Uint8Array(compressed.length*2); // 2 bytes per character
+	
+	    for (var i=0, TotalLen=compressed.length; i<TotalLen; i++) {
+	      var current_value = compressed.charCodeAt(i);
+	      buf[i*2] = current_value >>> 8;
+	      buf[i*2+1] = current_value % 256;
+	    }
+	    return buf;
+	  },
+	
+	  //decompress from uint8array (UCS-2 big endian format)
+	  decompressFromUint8Array:function (compressed) {
+	    if (compressed===null || compressed===undefined){
+	        return LZString.decompress(compressed);
+	    } else {
+	        var buf=new Array(compressed.length/2); // 2 bytes per character
+	        for (var i=0, TotalLen=buf.length; i<TotalLen; i++) {
+	          buf[i]=compressed[i*2]*256+compressed[i*2+1];
+	        }
+	
+	        var result = [];
+	        buf.forEach(function (c) {
+	          result.push(f(c));
+	        });
+	        return LZString.decompress(result.join(''));
+	
+	    }
+	
+	  },
+	
+	
+	  //compress into a string that is already URI encoded
+	  compressToEncodedURIComponent: function (input) {
+	    if (input == null) return "";
+	    return LZString._compress(input, 6, function(a){return keyStrUriSafe.charAt(a);});
+	  },
+	
+	  //decompress from an output of compressToEncodedURIComponent
+	  decompressFromEncodedURIComponent:function (input) {
+	    if (input == null) return "";
+	    if (input == "") return null;
+	    input = input.replace(/ /g, "+");
+	    return LZString._decompress(input.length, 32, function(index) { return getBaseValue(keyStrUriSafe, input.charAt(index)); });
+	  },
+	
+	  compress: function (uncompressed) {
+	    return LZString._compress(uncompressed, 16, function(a){return f(a);});
+	  },
+	  _compress: function (uncompressed, bitsPerChar, getCharFromInt) {
+	    if (uncompressed == null) return "";
+	    var i, value,
+	        context_dictionary= {},
+	        context_dictionaryToCreate= {},
+	        context_c="",
+	        context_wc="",
+	        context_w="",
+	        context_enlargeIn= 2, // Compensate for the first entry which should not count
+	        context_dictSize= 3,
+	        context_numBits= 2,
+	        context_data=[],
+	        context_data_val=0,
+	        context_data_position=0,
+	        ii;
+	
+	    for (ii = 0; ii < uncompressed.length; ii += 1) {
+	      context_c = uncompressed.charAt(ii);
+	      if (!Object.prototype.hasOwnProperty.call(context_dictionary,context_c)) {
+	        context_dictionary[context_c] = context_dictSize++;
+	        context_dictionaryToCreate[context_c] = true;
+	      }
+	
+	      context_wc = context_w + context_c;
+	      if (Object.prototype.hasOwnProperty.call(context_dictionary,context_wc)) {
+	        context_w = context_wc;
+	      } else {
+	        if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate,context_w)) {
+	          if (context_w.charCodeAt(0)<256) {
+	            for (i=0 ; i<context_numBits ; i++) {
+	              context_data_val = (context_data_val << 1);
+	              if (context_data_position == bitsPerChar-1) {
+	                context_data_position = 0;
+	                context_data.push(getCharFromInt(context_data_val));
+	                context_data_val = 0;
+	              } else {
+	                context_data_position++;
+	              }
+	            }
+	            value = context_w.charCodeAt(0);
+	            for (i=0 ; i<8 ; i++) {
+	              context_data_val = (context_data_val << 1) | (value&1);
+	              if (context_data_position == bitsPerChar-1) {
+	                context_data_position = 0;
+	                context_data.push(getCharFromInt(context_data_val));
+	                context_data_val = 0;
+	              } else {
+	                context_data_position++;
+	              }
+	              value = value >> 1;
+	            }
+	          } else {
+	            value = 1;
+	            for (i=0 ; i<context_numBits ; i++) {
+	              context_data_val = (context_data_val << 1) | value;
+	              if (context_data_position ==bitsPerChar-1) {
+	                context_data_position = 0;
+	                context_data.push(getCharFromInt(context_data_val));
+	                context_data_val = 0;
+	              } else {
+	                context_data_position++;
+	              }
+	              value = 0;
+	            }
+	            value = context_w.charCodeAt(0);
+	            for (i=0 ; i<16 ; i++) {
+	              context_data_val = (context_data_val << 1) | (value&1);
+	              if (context_data_position == bitsPerChar-1) {
+	                context_data_position = 0;
+	                context_data.push(getCharFromInt(context_data_val));
+	                context_data_val = 0;
+	              } else {
+	                context_data_position++;
+	              }
+	              value = value >> 1;
+	            }
+	          }
+	          context_enlargeIn--;
+	          if (context_enlargeIn == 0) {
+	            context_enlargeIn = Math.pow(2, context_numBits);
+	            context_numBits++;
+	          }
+	          delete context_dictionaryToCreate[context_w];
+	        } else {
+	          value = context_dictionary[context_w];
+	          for (i=0 ; i<context_numBits ; i++) {
+	            context_data_val = (context_data_val << 1) | (value&1);
+	            if (context_data_position == bitsPerChar-1) {
+	              context_data_position = 0;
+	              context_data.push(getCharFromInt(context_data_val));
+	              context_data_val = 0;
+	            } else {
+	              context_data_position++;
+	            }
+	            value = value >> 1;
+	          }
+	
+	
+	        }
+	        context_enlargeIn--;
+	        if (context_enlargeIn == 0) {
+	          context_enlargeIn = Math.pow(2, context_numBits);
+	          context_numBits++;
+	        }
+	        // Add wc to the dictionary.
+	        context_dictionary[context_wc] = context_dictSize++;
+	        context_w = String(context_c);
+	      }
+	    }
+	
+	    // Output the code for w.
+	    if (context_w !== "") {
+	      if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate,context_w)) {
+	        if (context_w.charCodeAt(0)<256) {
+	          for (i=0 ; i<context_numBits ; i++) {
+	            context_data_val = (context_data_val << 1);
+	            if (context_data_position == bitsPerChar-1) {
+	              context_data_position = 0;
+	              context_data.push(getCharFromInt(context_data_val));
+	              context_data_val = 0;
+	            } else {
+	              context_data_position++;
+	            }
+	          }
+	          value = context_w.charCodeAt(0);
+	          for (i=0 ; i<8 ; i++) {
+	            context_data_val = (context_data_val << 1) | (value&1);
+	            if (context_data_position == bitsPerChar-1) {
+	              context_data_position = 0;
+	              context_data.push(getCharFromInt(context_data_val));
+	              context_data_val = 0;
+	            } else {
+	              context_data_position++;
+	            }
+	            value = value >> 1;
+	          }
+	        } else {
+	          value = 1;
+	          for (i=0 ; i<context_numBits ; i++) {
+	            context_data_val = (context_data_val << 1) | value;
+	            if (context_data_position == bitsPerChar-1) {
+	              context_data_position = 0;
+	              context_data.push(getCharFromInt(context_data_val));
+	              context_data_val = 0;
+	            } else {
+	              context_data_position++;
+	            }
+	            value = 0;
+	          }
+	          value = context_w.charCodeAt(0);
+	          for (i=0 ; i<16 ; i++) {
+	            context_data_val = (context_data_val << 1) | (value&1);
+	            if (context_data_position == bitsPerChar-1) {
+	              context_data_position = 0;
+	              context_data.push(getCharFromInt(context_data_val));
+	              context_data_val = 0;
+	            } else {
+	              context_data_position++;
+	            }
+	            value = value >> 1;
+	          }
+	        }
+	        context_enlargeIn--;
+	        if (context_enlargeIn == 0) {
+	          context_enlargeIn = Math.pow(2, context_numBits);
+	          context_numBits++;
+	        }
+	        delete context_dictionaryToCreate[context_w];
+	      } else {
+	        value = context_dictionary[context_w];
+	        for (i=0 ; i<context_numBits ; i++) {
+	          context_data_val = (context_data_val << 1) | (value&1);
+	          if (context_data_position == bitsPerChar-1) {
+	            context_data_position = 0;
+	            context_data.push(getCharFromInt(context_data_val));
+	            context_data_val = 0;
+	          } else {
+	            context_data_position++;
+	          }
+	          value = value >> 1;
+	        }
+	
+	
+	      }
+	      context_enlargeIn--;
+	      if (context_enlargeIn == 0) {
+	        context_enlargeIn = Math.pow(2, context_numBits);
+	        context_numBits++;
+	      }
+	    }
+	
+	    // Mark the end of the stream
+	    value = 2;
+	    for (i=0 ; i<context_numBits ; i++) {
+	      context_data_val = (context_data_val << 1) | (value&1);
+	      if (context_data_position == bitsPerChar-1) {
+	        context_data_position = 0;
+	        context_data.push(getCharFromInt(context_data_val));
+	        context_data_val = 0;
+	      } else {
+	        context_data_position++;
+	      }
+	      value = value >> 1;
+	    }
+	
+	    // Flush the last char
+	    while (true) {
+	      context_data_val = (context_data_val << 1);
+	      if (context_data_position == bitsPerChar-1) {
+	        context_data.push(getCharFromInt(context_data_val));
+	        break;
+	      }
+	      else context_data_position++;
+	    }
+	    return context_data.join('');
+	  },
+	
+	  decompress: function (compressed) {
+	    if (compressed == null) return "";
+	    if (compressed == "") return null;
+	    return LZString._decompress(compressed.length, 32768, function(index) { return compressed.charCodeAt(index); });
+	  },
+	
+	  _decompress: function (length, resetValue, getNextValue) {
+	    var dictionary = [],
+	        next,
+	        enlargeIn = 4,
+	        dictSize = 4,
+	        numBits = 3,
+	        entry = "",
+	        result = [],
+	        i,
+	        w,
+	        bits, resb, maxpower, power,
+	        c,
+	        data = {val:getNextValue(0), position:resetValue, index:1};
+	
+	    for (i = 0; i < 3; i += 1) {
+	      dictionary[i] = i;
+	    }
+	
+	    bits = 0;
+	    maxpower = Math.pow(2,2);
+	    power=1;
+	    while (power!=maxpower) {
+	      resb = data.val & data.position;
+	      data.position >>= 1;
+	      if (data.position == 0) {
+	        data.position = resetValue;
+	        data.val = getNextValue(data.index++);
+	      }
+	      bits |= (resb>0 ? 1 : 0) * power;
+	      power <<= 1;
+	    }
+	
+	    switch (next = bits) {
+	      case 0:
+	          bits = 0;
+	          maxpower = Math.pow(2,8);
+	          power=1;
+	          while (power!=maxpower) {
+	            resb = data.val & data.position;
+	            data.position >>= 1;
+	            if (data.position == 0) {
+	              data.position = resetValue;
+	              data.val = getNextValue(data.index++);
+	            }
+	            bits |= (resb>0 ? 1 : 0) * power;
+	            power <<= 1;
+	          }
+	        c = f(bits);
+	        break;
+	      case 1:
+	          bits = 0;
+	          maxpower = Math.pow(2,16);
+	          power=1;
+	          while (power!=maxpower) {
+	            resb = data.val & data.position;
+	            data.position >>= 1;
+	            if (data.position == 0) {
+	              data.position = resetValue;
+	              data.val = getNextValue(data.index++);
+	            }
+	            bits |= (resb>0 ? 1 : 0) * power;
+	            power <<= 1;
+	          }
+	        c = f(bits);
+	        break;
+	      case 2:
+	        return "";
+	    }
+	    dictionary[3] = c;
+	    w = c;
+	    result.push(c);
+	    while (true) {
+	      if (data.index > length) {
+	        return "";
+	      }
+	
+	      bits = 0;
+	      maxpower = Math.pow(2,numBits);
+	      power=1;
+	      while (power!=maxpower) {
+	        resb = data.val & data.position;
+	        data.position >>= 1;
+	        if (data.position == 0) {
+	          data.position = resetValue;
+	          data.val = getNextValue(data.index++);
+	        }
+	        bits |= (resb>0 ? 1 : 0) * power;
+	        power <<= 1;
+	      }
+	
+	      switch (c = bits) {
+	        case 0:
+	          bits = 0;
+	          maxpower = Math.pow(2,8);
+	          power=1;
+	          while (power!=maxpower) {
+	            resb = data.val & data.position;
+	            data.position >>= 1;
+	            if (data.position == 0) {
+	              data.position = resetValue;
+	              data.val = getNextValue(data.index++);
+	            }
+	            bits |= (resb>0 ? 1 : 0) * power;
+	            power <<= 1;
+	          }
+	
+	          dictionary[dictSize++] = f(bits);
+	          c = dictSize-1;
+	          enlargeIn--;
+	          break;
+	        case 1:
+	          bits = 0;
+	          maxpower = Math.pow(2,16);
+	          power=1;
+	          while (power!=maxpower) {
+	            resb = data.val & data.position;
+	            data.position >>= 1;
+	            if (data.position == 0) {
+	              data.position = resetValue;
+	              data.val = getNextValue(data.index++);
+	            }
+	            bits |= (resb>0 ? 1 : 0) * power;
+	            power <<= 1;
+	          }
+	          dictionary[dictSize++] = f(bits);
+	          c = dictSize-1;
+	          enlargeIn--;
+	          break;
+	        case 2:
+	          return result.join('');
+	      }
+	
+	      if (enlargeIn == 0) {
+	        enlargeIn = Math.pow(2, numBits);
+	        numBits++;
+	      }
+	
+	      if (dictionary[c]) {
+	        entry = dictionary[c];
+	      } else {
+	        if (c === dictSize) {
+	          entry = w + w.charAt(0);
+	        } else {
+	          return null;
+	        }
+	      }
+	      result.push(entry);
+	
+	      // Add w+entry[0] to the dictionary.
+	      dictionary[dictSize++] = w + entry.charAt(0);
+	      enlargeIn--;
+	
+	      w = entry;
+	
+	      if (enlargeIn == 0) {
+	        enlargeIn = Math.pow(2, numBits);
+	        numBits++;
+	      }
+	
+	    }
+	  }
+	};
+	  return LZString;
+	})();
+	
+	if (true) {
+	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function () { return LZString; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else if( typeof module !== 'undefined' && module != null ) {
+	  module.exports = LZString
+	}
+
+
+/***/ },
+/* 300 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8382,7 +8916,7 @@
 	var observer = exports.observer = new Observer();
 
 /***/ },
-/* 300 */
+/* 301 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8474,7 +9008,7 @@
 	};
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8482,48 +9016,48 @@
 	/* eslint-disable */
 	$.fn.drags = function (opt) {
 	
-		opt = $.extend({
-			handle: "",
-			cursor: "move"
-		}, opt);
+	  opt = $.extend({
+	    handle: "",
+	    cursor: "move"
+	  }, opt);
 	
-		if (opt.handle === "") {
-			var $el = this;
-		} else {
-			var $el = this.find(opt.handle);
-		}
+	  if (opt.handle === "") {
+	    var $el = this;
+	  } else {
+	    var $el = this.find(opt.handle);
+	  }
 	
-		return $el.css('cursor', opt.cursor).on("mousedown", function (e) {
-			if (opt.handle === "") {
-				var $drag = $(this).addClass('draggable');
-			} else {
-				var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
-			}
-			var z_idx = $drag.css('z-index'),
-			    drg_h = $drag.outerHeight(),
-			    drg_w = $drag.outerWidth(),
-			    pos_y = $drag.offset().top + drg_h - e.pageY,
-			    pos_x = $drag.offset().left + drg_w - e.pageX;
-			$drag.css('z-index', 9999).parents().on("mousemove", function (e) {
-				$('.draggable').offset({
-					top: e.pageY + pos_y - drg_h,
-					left: e.pageX + pos_x - drg_w
-				}).on("mouseup", function () {
-					$(this).removeClass('draggable').css('z-index', z_idx);
-				});
-			});
-			e.preventDefault(); // disable selection
-		}).on("mouseup", function () {
-			if (opt.handle === "") {
-				$(this).removeClass('draggable');
-			} else {
-				$(this).removeClass('active-handle').parent().removeClass('draggable');
-			}
-		});
+	  return $el.css('cursor', opt.cursor).on("mousedown", function (e) {
+	    if (opt.handle === "") {
+	      var $drag = $(this).addClass('draggable');
+	    } else {
+	      var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
+	    }
+	    var z_idx = $drag.css('z-index'),
+	        drg_h = $drag.outerHeight(),
+	        drg_w = $drag.outerWidth(),
+	        pos_y = $drag.offset().top + drg_h - e.pageY,
+	        pos_x = $drag.offset().left + drg_w - e.pageX;
+	    $drag.css('z-index', 9999).parents().on("mousemove", function (e) {
+	      $('.draggable').offset({
+	        top: e.pageY + pos_y - drg_h,
+	        left: e.pageX + pos_x - drg_w
+	      }).on("mouseup", function () {
+	        $(this).removeClass('draggable').css('z-index', z_idx);
+	      });
+	    });
+	    e.preventDefault(); // disable selection
+	  }).on("mouseup", function () {
+	    if (opt.handle === "") {
+	      $(this).removeClass('draggable');
+	    } else {
+	      $(this).removeClass('active-handle').parent().removeClass('draggable');
+	    }
+	  });
 	};
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -8537,35 +9071,55 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _observer = __webpack_require__(299);
+	var _observer = __webpack_require__(300);
 	
-	var _customApi = __webpack_require__(303);
+	var _customApi = __webpack_require__(304);
 	
 	var _customApi2 = _interopRequireDefault(_customApi);
 	
-	var _storageManager = __webpack_require__(300);
+	var _storageManager = __webpack_require__(301);
 	
-	var _underscore = __webpack_require__(305);
+	var _underscore = __webpack_require__(306);
 	
 	var _underscore2 = _interopRequireDefault(_underscore);
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _purchaseCtrl = __webpack_require__(330);
+	var _purchaseCtrl = __webpack_require__(331);
 	
 	var _purchaseCtrl2 = _interopRequireDefault(_purchaseCtrl);
 	
-	var _symbol = __webpack_require__(332);
+	var _symbol = __webpack_require__(333);
 	
 	var _symbol2 = _interopRequireDefault(_symbol);
+	
+	var _expect = __webpack_require__(335);
+	
+	var _error = __webpack_require__(336);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var checkTradeOptions = function checkTradeOptions(tradeOption) {
+	  if (tradeOption && tradeOption instanceof Object) {
+	    (0, _expect.expectNumber)('duration', tradeOption.duration, _error.RuntimeError);
+	    (0, _expect.expectNumber)('amount', tradeOption.amount, _error.RuntimeError).toFixed(2);
+	    if (tradeOption.barrier && typeof tradeOption.barrier === 'number') {
+	      (0, _expect.expectNumber)('prediction', tradeOption.barrier, _error.RuntimeError);
+	    }
+	    if (tradeOption.barrier && typeof tradeOption.barrier === 'string') {
+	      (0, _expect.expectBarrierOffset)(tradeOption.barrier, _error.RuntimeError);
+	    }
+	    if (tradeOption.barrier2 && typeof tradeOption.barrier2 === 'string') {
+	      (0, _expect.expectBarrierOffset)(tradeOption.barrier2, _error.RuntimeError);
+	    }
+	  }
+	};
 	
 	var Bot = function () {
 	  function Bot() {
@@ -8575,6 +9129,7 @@
 	
 	    this.ticks = [];
 	    this.candles = [];
+	    this.candleInterval = 60;
 	    this.running = false;
 	    this.currentToken = '';
 	    this.balanceStr = '';
@@ -8601,7 +9156,8 @@
 	          this.purchaseCtrl.destroy();
 	        }
 	        this.purchaseCtrl = new _purchaseCtrl2.default(this.api, strategy, duringPurchase, finish);
-	        this.tradeOption = tradeOption;
+	        checkTradeOptions(tradeOption);
+	        this.tradeOption = _extends({}, tradeOption);
 	        _observer.observer.emit('log.bot.start', {
 	          again: !!sameTrade
 	        });
@@ -8621,9 +9177,14 @@
 	          if (this.currentToken !== token) {
 	            promises.push(this.login(token));
 	          }
-	          if (!_underscore2.default.isEmpty(this.tradeOption) && this.tradeOption.symbol !== this.currentSymbol) {
-	            promises.push(this.subscribeToTickHistory());
-	            promises.push(this.subscribeToCandles());
+	          if (!_underscore2.default.isEmpty(this.tradeOption)) {
+	            if (this.tradeOption.symbol !== this.currentSymbol) {
+	              promises.push(this.subscribeToTickHistory());
+	              promises.push(this.subscribeToCandles());
+	            } else if (this.tradeOption.candleInterval !== this.candleInterval) {
+	              this.candleInterval = this.tradeOption.candleInterval;
+	              promises.push(this.subscribeToCandles());
+	            }
 	          }
 	          Promise.all(promises).then(function () {
 	            _this.startTrading();
@@ -8660,6 +9221,8 @@
 	      if (!_underscore2.default.isEmpty(this.tradeOption)) {
 	        this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
 	        var opposites = _const2.default.opposites[this.tradeOption.condition];
+	        this.candleInterval = this.tradeOption.candleInterval;
+	        this.tradeOption.amount = this.tradeOption.amount.toFixed(2);
 	        this.tradeOptions = [];
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
@@ -8673,6 +9236,7 @@
 	              contract_type: Object.keys(opposites[key])[0]
 	            });
 	            delete newTradeOption.condition;
+	            delete newTradeOption.candleInterval;
 	            this.tradeOptions.push(newTradeOption);
 	          }
 	        } catch (err) {
@@ -8733,7 +9297,7 @@
 	        _this4.api.history(_this4.tradeOption.symbol, {
 	          end: 'latest',
 	          count: 600,
-	          granularity: 60,
+	          granularity: _this4.candleInterval,
 	          style: 'candles',
 	          subscribe: 1
 	        });
@@ -8933,13 +9497,13 @@
 	    key: 'updateTotals',
 	    value: function updateTotals(contract) {
 	      var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
-	      if (typeof amplitude !== 'undefined') {
-	        var user = (0, _storageManager.getToken)(this.currentToken);
-	        if (!user.isVirtual) {
-	          var revenue = new amplitude.Revenue().setProductId(contract.underlying + '.' + contract.contract_type).setPrice(-profit).setRevenueType(profit < 0 ? 'loss' : 'win');
-	          amplitude.getInstance().logRevenueV2(revenue, contract);
-	        }
-	      }
+	      var user = (0, _storageManager.getToken)(this.currentToken);
+	      _observer.observer.emit('log.revenue', {
+	        user: user,
+	        profit: profit,
+	        contract: contract
+	      });
+	
 	      this.totalProfit = +(this.totalProfit + profit).toFixed(2);
 	      this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
 	      this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);
@@ -9047,7 +9611,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9058,11 +9622,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _binaryLiveApi = __webpack_require__(304);
+	var _binaryLiveApi = __webpack_require__(305);
 	
-	var _observer = __webpack_require__(299);
+	var _observer = __webpack_require__(300);
 	
-	var _storageManager = __webpack_require__(300);
+	var _storageManager = __webpack_require__(301);
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
@@ -9340,7 +9904,7 @@
 	exports.default = CustomApi;
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -14463,7 +15027,7 @@
 	//# sourceMappingURL=binary-live-api.js.map
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
@@ -16017,7 +16581,7 @@
 
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16026,7 +16590,7 @@
 	  value: true
 	});
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	exports.default = {
 	  lists: {
@@ -16034,7 +16598,9 @@
 	    CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD']],
 	    DETAILS: [[_translator.translator.translateText('statement'), '1'], [_translator.translator.translateText('ask price'), '2'], [_translator.translator.translateText('payout'), '3'], [_translator.translator.translateText('profit'), '4'], [_translator.translator.translateText('contract type'), '5'], [_translator.translator.translateText('entry spot'), '6'], [_translator.translator.translateText('entry value'), '7'], [_translator.translator.translateText('exit spot'), '8'], [_translator.translator.translateText('exit value'), '9'], [_translator.translator.translateText('barrier'), '10'], [_translator.translator.translateText('result'), '11']],
 	    CHECK_RESULT: [[_translator.translator.translateText('Win'), 'win'], [_translator.translator.translateText('Loss'), 'loss']],
-	    CHECK_DIRECTION: [[_translator.translator.translateText('Rise'), 'rise'], [_translator.translator.translateText('Fall'), 'fall'], [_translator.translator.translateText('No Change'), '']]
+	    CHECK_DIRECTION: [[_translator.translator.translateText('Rise'), 'rise'], [_translator.translator.translateText('Fall'), 'fall'], [_translator.translator.translateText('No Change'), '']],
+	    BALANCE_TYPE: [[_translator.translator.translateText('string'), 'STR'], [_translator.translator.translateText('number'), 'NUM']],
+	    NOTIFICATION_TYPE: [[_translator.translator.translateText('green'), 'success'], [_translator.translator.translateText('blue'), 'info'], [_translator.translator.translateText('yellow'), 'warn'], [_translator.translator.translateText('red'), 'error']]
 	  },
 	
 	  opposites: {
@@ -16086,6 +16652,7 @@
 	  },
 	  barrierTypes: [['+', '+'], ['-', '-']],
 	  ohlcFields: [['Open', 'open'], ['High', 'high'], ['Low', 'low'], ['Close', 'close']],
+	  candleIntervals: [['1 minute', '60'], ['2 minutes', '120'], ['3 minutes', '180'], ['5 minutes', '300'], ['10 minutes', '600'], ['15 minutes', '900'], ['30 minutes', '1800'], ['1 hour', '3600'], ['2 hours', '7200'], ['4 hours', '14400'], ['8 hours', '28800'], ['1 day', '86400']],
 	  mainBlocks: ['trade', 'on_strategy', 'on_finish', 'during_purchase'],
 	  durationTypes: {
 	    RISEFALL: [[_translator.translator.translateText('Ticks'), 't'], [_translator.translator.translateText('Seconds'), 's'], [_translator.translator.translateText('Minutes'), 'm'], [_translator.translator.translateText('Hours'), 'h']],
@@ -16121,7 +16688,7 @@
 	};
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16133,63 +16700,63 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _tools = __webpack_require__(308);
+	var _tools = __webpack_require__(309);
 	
-	var _storageManager = __webpack_require__(300);
+	var _storageManager = __webpack_require__(301);
 	
-	var _i18n = __webpack_require__(309);
+	var _i18n = __webpack_require__(310);
 	
 	var _i18n2 = _interopRequireDefault(_i18n);
 	
-	var _zh_tw = __webpack_require__(317);
+	var _zh_tw = __webpack_require__(318);
 	
 	var _zh_tw2 = _interopRequireDefault(_zh_tw);
 	
-	var _de = __webpack_require__(318);
+	var _de = __webpack_require__(319);
 	
 	var _de2 = _interopRequireDefault(_de);
 	
-	var _id = __webpack_require__(319);
+	var _id = __webpack_require__(320);
 	
 	var _id2 = _interopRequireDefault(_id);
 	
-	var _zh_cn = __webpack_require__(320);
+	var _zh_cn = __webpack_require__(321);
 	
 	var _zh_cn2 = _interopRequireDefault(_zh_cn);
 	
-	var _it = __webpack_require__(321);
+	var _it = __webpack_require__(322);
 	
 	var _it2 = _interopRequireDefault(_it);
 	
-	var _vi = __webpack_require__(322);
+	var _vi = __webpack_require__(323);
 	
 	var _vi2 = _interopRequireDefault(_vi);
 	
-	var _ar = __webpack_require__(323);
+	var _ar = __webpack_require__(324);
 	
 	var _ar2 = _interopRequireDefault(_ar);
 	
-	var _pl = __webpack_require__(324);
+	var _pl = __webpack_require__(325);
 	
 	var _pl2 = _interopRequireDefault(_pl);
 	
-	var _ru = __webpack_require__(325);
+	var _ru = __webpack_require__(326);
 	
 	var _ru2 = _interopRequireDefault(_ru);
 	
-	var _pt = __webpack_require__(326);
+	var _pt = __webpack_require__(327);
 	
 	var _pt2 = _interopRequireDefault(_pt);
 	
-	var _es = __webpack_require__(327);
+	var _es = __webpack_require__(328);
 	
 	var _es2 = _interopRequireDefault(_es);
 	
-	var _fr = __webpack_require__(328);
+	var _fr = __webpack_require__(329);
 	
 	var _fr2 = _interopRequireDefault(_fr);
 	
-	var _en = __webpack_require__(329);
+	var _en = __webpack_require__(330);
 	
 	var _en2 = _interopRequireDefault(_en);
 	
@@ -16291,7 +16858,7 @@
 	var translator = exports.translator = new Translator();
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -16364,7 +16931,7 @@
 	};
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16375,7 +16942,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _sha = __webpack_require__(310);
+	var _sha = __webpack_require__(311);
 	
 	var _sha2 = _interopRequireDefault(_sha);
 	
@@ -16443,13 +17010,13 @@
 	exports.default = new I18n();
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {(function() {
-	  var crypt = __webpack_require__(315),
-	      utf8 = __webpack_require__(316).utf8,
-	      bin = __webpack_require__(316).bin,
+	  var crypt = __webpack_require__(316),
+	      utf8 = __webpack_require__(317).utf8,
+	      bin = __webpack_require__(317).bin,
 	
 	  // The core
 	  sha1 = function (message) {
@@ -16529,10 +17096,10 @@
 	  module.exports = api;
 	})();
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(311).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(312).Buffer))
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -16545,9 +17112,9 @@
 	
 	'use strict'
 	
-	var base64 = __webpack_require__(312)
-	var ieee754 = __webpack_require__(313)
-	var isArray = __webpack_require__(314)
+	var base64 = __webpack_require__(313)
+	var ieee754 = __webpack_require__(314)
+	var isArray = __webpack_require__(315)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -18084,10 +18651,10 @@
 	  return i
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(311).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(312).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -18217,7 +18784,7 @@
 
 
 /***/ },
-/* 313 */
+/* 314 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -18307,7 +18874,7 @@
 
 
 /***/ },
-/* 314 */
+/* 315 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -18318,7 +18885,7 @@
 
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports) {
 
 	(function() {
@@ -18420,7 +18987,7 @@
 
 
 /***/ },
-/* 316 */
+/* 317 */
 /***/ function(module, exports) {
 
 	var charenc = {
@@ -18459,245 +19026,6 @@
 
 
 /***/ },
-/* 317 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	module.exports = {
-	  "3d52a6d8fedcc48a65297c07bf5f7e3e41aab5aa": "Logic",
-	  "3edf0df49942da6d11a1a217e4d3af4a5a8e64f2": "Math",
-	  "c3328c39b0e29f78e9ff45db674248b1d245887d": "Text",
-	  "a1fffaaafb7cc996685bceb829c053cc4f7de43d": "List",
-	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
-	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
-	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
-	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
-	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
-	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
-	  "1c4f7176f1358919ae0299276c8d93d700bc4822": "In/Out",
-	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
-	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
-	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
-	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
-	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
-	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
-	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
-	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
-	  "6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
-	  "f7c400ed695f898b8ee9d21664aa17b5bb693828": "Log in",
-	  "612e12d29278b5519294bc25cdaddffec6d0f1c6": "Results",
-	  "12b71c3e0fe5f7c0b8d17cc03186e281412da4a8": "Summary",
-	  "d847919a30d31c0be624087f3370492b3fdf80c6": "No. of runs",
-	  "1e5e614c900bd1584f0bb286450d6386955b486a": "Total Stake",
-	  "03969004b50f3f14cd77e318eaaca1945c128ed4": "Total Payout",
-	  "5405a1f68d262cc4d6f2b8dc93382afe6cf31778": "Total Profit/Loss",
-	  "90eef613042c5a51f542421065b68b886d473807": "Balance",
-	  "597b1092b35773a3b65fbcb4e6424c2bcc006dd1": "Trades",
-	  "b7baa1d40c4ea29afc9098732bffee2a861a6c44": "Number",
-	  "db1c784524e1b54011a95823026161f7c8517fe0": "Reference",
-	  "74751e67c3e1010c343095eaf543e7cb21ced2ef": "Trade Type",
-	  "6541776503f0f949109cde78e6634d07d3528cd3": "Entry Spot",
-	  "77bcdf0da628448afd03ab5259f31f56c9071ca6": "Exit Spot",
-	  "257d4c5a3f637e1a35bfc26330dd3ebee92f5dd0": "Buy Price",
-	  "8875c6d210e37a0772b7d1a37a48d345c90440d8": "Final Price",
-	  "772fbced18230220d2d9be1456be16fc1b271d25": "Profit/Loss",
-	  "18d76188e5c5d9df16ea3b7375c0da13c4fa8756": "Load block file",
-	  "56bb242d8211b81fb557f03bce8ef4c3dd4bc736": "Block file",
-	  "608061fb5aab975013fa70c5c814a1d8ba30c152": "Trade More Efficiently Than You Ever Thought Possible",
-	  "e4ce8dc3e416e69262ba642dc57d3975d6616980": "Interested in automating your preferred strategies for trading binary options?",
-	  "f261237ca8beec6f77b76c4121feb8da22818c56": "Binary Bot is our leading-edge programming tool which allows you to build trading apps with a simple “jigsaw puzzle-like” drag-and-drop function.",
-	  "f6c85c68616eeaaa15fcd53fdc52f6eb5c886357": "Dream up any number of binary options trading bots, from incredibly simple formulas to vastly complex algorithms. Then let them trade for you, even while you sleep.",
-	  "e6906a0d1c28b202f9bd49da4a6abbddca57399a": "Best of all, once you’ve built a bot, we can help you sell it to fellow traders in the",
-	  "1dd0cf79c572bcdbdfabbd54ee95710a21234d73": "Binary.com Shop",
-	  "abeef9a35ae6256796ba2462e4f64d308de42359": "Receive 80% of the sales revenue from every purchase of your bot in our app store.",
-	  "104f798e4ad21ffd30587ecac37a08a981a80474": "A basic background of programming is required to work with Blockly and therefore Binary Bot. You can find good material to get started and build your computational thinking skills here:",
-	  "e9d9b7307276b8a24685291fc134cbff636cab5b": "Learn Programming with Blockly",
-	  "4aaa021babcace3ae5f45193e347ce85b102c9e2": "Computational thinking and programming using blockly",
-	  "c9682cd9c0d26c6a70d2fd02ab46f490ad8b3335": "Computational Thinking Course",
-	  "f3aba0f8c31987cb145508d84e29ee64e7ea2794": "Or only the",
-	  "0606f0b7763ee6e8094a3dab7873d34c08fd3670": "Begin Building a Bot Now",
-	  "221acaf3a0290adafe08cdcb8c66121c73d8b4a3": "Need further assistance?",
-	  "4832e45812a2724f16a15f9ae87adfc8ae4168cf": "Contact us",
-	  "9bb396940adb9705fe57eba6ea8b578e6aafa792": "Payout",
-	  "78d7103a319e808455d397513279d99f3b3f3768": "Stake",
-	  "bbb930cc426507ed3f6b7c343c75dd0e041494b7": "statement",
-	  "e6e886cdcdefeb6d3edb4c31bed06dd183ac4153": "ask price",
-	  "50e72909992bdc37c7c07769d1b7efac5e52874c": "payout",
-	  "ecb5ba7044417916ba12de5fa9e6fccac3e5d475": "profit",
-	  "c980b910204c7babdffe8ff3f7e755f30133383c": "contract type",
-	  "a726c6955157f1b8b92f9932652434a7150f80f8": "entry spot",
-	  "a66d5c7ef2c63dbc9a8f9e6ae4e2bc575e74a36e": "entry value",
-	  "7674920c033ca14277c577e19c037a6754d4fa80": "exit spot",
-	  "e8b8bd9f2eabc12875605a37c93e7f04a713fcb8": "exit value",
-	  "779455ee3bde8494d9629b353e17b19e92357ba8": "barrier",
-	  "37a5301a88da334dc5afc5b63979daa0f3f45e68": "result",
-	  "4973f4c599d5f42cf7bde52d66c3ed8ef77accb1": "Win",
-	  "12e24a7d8ac40579e8a0aef4869288afe7ed6745": "Loss",
-	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
-	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
-	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
-	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
-	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
-	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
-	  "7d7932bcc2e262ae98cf09dc5445130fb3881769": "No Touch",
-	  "a16814a48ec58c2e24ba224a80921a5c02361abe": "Ends In",
-	  "391d02cd75ebcd6ed26f5f45ddf7d40bf13e9dc5": "Ends Out",
-	  "534ec5da4e82ec419abc170e1a8448f55a01664f": "Stays In",
-	  "98cbe1998effd8b1a8aefdcc538573055e99a5f5": "Goes Out",
-	  "93d13bad1d2c2841db127cb70cc35bfc98059fc9": "Asian Up",
-	  "c098658ce3d3a258e4d155949a60072966b36db7": "Asian Down",
-	  "ee2dbd5d6d82d0833069b07e7dd2848d3bf4d83a": "Matches",
-	  "8444b7ce28bbc3443cc5cf73359b8353989b2a4b": "Differs",
-	  "9e767ad03e5547f251044e0724dc1d9f3e75aeed": "Even",
-	  "dc28f5f3c65ec611f0f30022650d24382d27448e": "Odd",
-	  "18a63f5512afb5573e5b44deba78d629f0635317": "Over",
-	  "2a268b89b83f8cb38ea48e46e93dd8840db512f9": "Under",
-	  "53adebdc2b1cbbedb56395b19a73fe47b87cc554": "Ticks",
-	  "5fb1db527825d2996e37c655e5dec49d4da80c09": "Seconds",
-	  "092f99ea11a34a8490e7a767a83a42fc45634f82": "Minutes",
-	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
-	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
-	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
-	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
-	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
-	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
-	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
-	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
-	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
-	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
-	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
-	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
-	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
-	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
-	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
-	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
-	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
-	  "401ddc8376746eceaddf4dba5b8c91dc6d5f6fbe": ")</b> on the keyboard.",
-	  "b220ddf901eb3413d07d77926409ca33b10244e8": "This is where you can define your blocks.",
-	  "535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
-	  "3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.",
-	  "f4bad39e0da47ce1f413083ec703c9bdb4e821bc": "To start pick a <b>symbol</b> block from markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)",
-	  "befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
-	  "25d5b0a626412f2ba48c10ec8a56c9efc62b5a49": "Alright! Now pick a <b>trade type</b> block.",
-	  "a8ce204c869e6df24277611290801e35b787c870": "OK! Now add it to the symbol you added in the previous step.",
-	  "d518cd463b95acf6b2b42414c41f19408521cd00": "Very good! It's time to add the options needed by the trade type block, pick a number",
-	  "e20d6b63e449cc63246eb171e6d4368c060a60f5": "from the Math menu",
-	  "80f10315585e12fc0dd2f7b7faa8a09a8034b79c": "Click on the number block to edit its value",
-	  "fc8045d8d70d2ae8c31c79b57623fc59609135e7": "change the value to 5 and add it to the <b>ticks</b> field of the trade type block",
-	  "6e317f95b71981900a70cb465671f1021bbbf5a8": "OK, Now add all remaining options to the trade type block",
-	  "282ea251bdfda29ddf988b813e77ebb65c7d6c0d": "That's it, now you have a complete trade block with its options. It's time to define a strategy",
-	  "061c155afc9f43271499f20bcce319696f4aa313": "This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.",
-	  "dbf1a7aa30ed10d018559d296772a994b1ad45be": "The received tick value is in the block <b>Tick Value</b> and the tick direction (up or down) is in the block <b>Tick Direction</b>. You can pick them from the <b>Strategy</b> menu",
-	  "a4fda48ca1d26066926c0c7c007036585e797626": "For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block",
-	  "40cb4329c38e75111dfcf1c3a7d53f9ec44f63d2": "Now add it to the Strategy block.",
-	  "4a362e853d0afc9cca5f580cc02999ee0ea12f84": "Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.",
-	  "039b5485ec321d83859b48fc91bf895e52429312": "A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.",
-	  "6818232027fc3ec833d6aafc70e8814bde778205": "After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block",
-	  "2eb458fc248cf538e898779cd4814e28af5db24b": "Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.",
-	  "0ecb627b112c26389825381d5280f557345ab194": "A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.",
-	  "6d08f40f24b29cd87eaf796ece4852012ac1a76c": "Now add it to the On Finish block",
-	  "86aa77e65de8324cd6d0b7f9d5b7b74546786185": "Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its trade type is unmet.",
-	  "70c9ae0969c05b75bb0e837567153a3b5ce1d0aa": "OK, this's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.",
-	  "505f22f919520c4cd40739be12fb611c7d8b15d8": "You can use Ctrl + -/+ to zoom out/in the blocks",
-	  "f49c79f5e096ac6909e0fc364980583fd20c46b6": "You can choose the account you want by the <b>Account</b> dropdown. If you cannot see the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.",
-	  "21fe96f872d9140d436c194537e731ef280d3810": "You can save/load your blocks using these buttons",
-	  "d4ab4221f6388023bec13302714e98a84bbfb4c9": "If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo",
-	  "803adad740b5756a975629ac142e7f520af7303e": "You can see the summary of your trades in this menu.",
-	  "ac7be34f6a4c0ee0b7bce119b46b901c6723253c": "You can reset your blocks to their initial state.",
-	  "0350a7131fa13a57dc525910b2b5f691f10ae33f": "At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons. Please make sure you have chosen a Virtual Account before doing experiments.",
-	  "0d2d2ef95065f4155c72f8faccad6ab85373628a": "Welcome to the binary bot",
-	  "27f752f8ca631f5005555a1b49c14c57afab272f": "a blockly based automation tool for binary.com trades",
-	  "7d144a402b0ae170d6a5e3eea22926e25835e5a1": "Skip this tutorial by clicking on the <b>X</b> button",
-	  "dde27b8972ae198696283c4c2b9978b09e889884": "Skip each step by <b>Right Arrow (",
-	  "16c53af22e28d82ae4837c118147dd1cc6e7b2d8": "The blocks you put in here will create a binary bot code.",
-	  "bea4722929758a3b13e4b7337a3b1c1847794062": "You can then execute using the run button.",
-	  "cb5ec2c49b4eb83efeef0acf765d51003e0059af": "You can pick blocks from here to add to the workspace",
-	  "832de13f8c6c6b3374ff2f2b48061902b33b0ad5": "Press Ctrl + -/+ to zoom out/in the blocks",
-	  "129b4372ce84996fae10be0a001a0ca53d593737": "You need to login before running the bot.",
-	  "719c817f94ff88a1f89650ba01933e35bc7d0ceb": "Use these buttons to save/load your blocks",
-	  "18c372be48fb3fb91352cc721df2d256fea4e4e8": "Use these buttons to Undo/Redo changes to your blocks.",
-	  "3f71217a42b6920b422b3d9a6b37c5d39cdbbf19": "Open the summary panel.",
-	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
-	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
-	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
-	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
-	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
-	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
-	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
-	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
-	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
-	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
-	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
-	  "dc3f26688f5ef436999ab59f699bcda077e65738": "Contract Result",
-	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
-	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
-	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
-	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
-	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
-	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
-	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
-	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
-	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
-	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
-	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
-	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
-	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
-	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
-	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
-	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
-	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
-	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
-	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
-	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
-	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
-	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
-	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
-	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
-	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
-	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
-	};
-
-/***/ },
 /* 318 */
 /***/ function(module, exports) {
 
@@ -18718,6 +19046,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -18776,6 +19105,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -18798,12 +19133,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -18818,6 +19156,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -18871,19 +19210,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -18891,49 +19222,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -18957,6 +19300,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19015,6 +19359,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19037,12 +19387,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -19057,6 +19410,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -19110,19 +19464,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -19130,49 +19476,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -19196,6 +19554,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19254,6 +19613,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19276,12 +19641,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -19296,6 +19664,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -19349,19 +19718,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -19369,49 +19730,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -19435,6 +19808,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19493,6 +19867,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19515,12 +19895,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -19535,6 +19918,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -19588,19 +19972,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -19608,49 +19984,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -19674,6 +20062,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19732,6 +20121,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19754,12 +20149,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -19774,6 +20172,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -19827,19 +20226,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -19847,49 +20238,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -19913,6 +20316,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -19971,6 +20375,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -19993,12 +20403,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20013,6 +20426,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -20066,19 +20480,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -20086,49 +20492,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -20152,6 +20570,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20210,6 +20629,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -20232,12 +20657,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20252,6 +20680,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -20305,19 +20734,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -20325,49 +20746,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -20391,6 +20824,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20449,6 +20883,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -20471,12 +20911,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20491,6 +20934,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -20544,19 +20988,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -20564,49 +21000,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -20630,6 +21078,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20688,6 +21137,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -20710,12 +21165,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20730,6 +21188,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -20783,19 +21242,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -20803,49 +21254,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -20869,6 +21332,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -20927,6 +21391,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -20949,12 +21419,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -20969,6 +21442,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -21022,19 +21496,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -21042,49 +21508,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -21108,6 +21586,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -21166,6 +21645,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -21188,12 +21673,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -21208,6 +21696,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -21261,19 +21750,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -21281,49 +21762,61 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
@@ -21347,6 +21840,7 @@
 	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
 	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
 	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
@@ -21405,6 +21899,12 @@
 	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
 	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
 	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
 	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
 	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
 	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
@@ -21427,12 +21927,15 @@
 	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
 	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
 	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
-	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
-	  "a0017d11449089524c2c9c62249e9bfdd741640d": "Contract sell failed: ",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
 	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
 	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
@@ -21447,6 +21950,7 @@
 	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
 	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
 	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
 	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
@@ -21500,19 +22004,11 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
-	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "88b681fc27c5f9076400797d23027b560a2615ed": "(2.5) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
 	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
-	  "2b36a5c14a3bec99ce2074033ccfe0e1f7f8d4aa": "(3) things to do after purchase is finished",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
 	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
 	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
 	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
@@ -21520,53 +22016,319 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
 	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
 	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
 	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
 	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
 	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
 	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
 	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
-	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
-	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
 	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
-	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "4ed7e4dc35aee385ba2bd0078693e978f64b35f0": "Notify type:",
-	  "53a5687cb26dc41f2ab4033e97e13adefd3740d6": "success",
-	  "83dd9d6af43f8cbee08acd981417321e144b776b": "information",
-	  "383fd7bf84aa027bdc40159c5d7c5805664a8eb2": "warning",
-	  "11f9578d05e6f7bb58a3cdd00107e9f4e3882671": "error",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
 	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
 	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
 	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
 	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
 	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
-	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
-	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
-	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:"
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
 	};
 
 /***/ },
 /* 330 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  "3d52a6d8fedcc48a65297c07bf5f7e3e41aab5aa": "Logic",
+	  "3edf0df49942da6d11a1a217e4d3af4a5a8e64f2": "Math",
+	  "c3328c39b0e29f78e9ff45db674248b1d245887d": "Text",
+	  "a1fffaaafb7cc996685bceb829c053cc4f7de43d": "List",
+	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
+	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
+	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
+	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
+	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
+	  "1c4f7176f1358919ae0299276c8d93d700bc4822": "In/Out",
+	  "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
+	  "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
+	  "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
+	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
+	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
+	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
+	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
+	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
+	  "6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out",
+	  "f7c400ed695f898b8ee9d21664aa17b5bb693828": "Log in",
+	  "612e12d29278b5519294bc25cdaddffec6d0f1c6": "Results",
+	  "12b71c3e0fe5f7c0b8d17cc03186e281412da4a8": "Summary",
+	  "d847919a30d31c0be624087f3370492b3fdf80c6": "No. of runs",
+	  "1e5e614c900bd1584f0bb286450d6386955b486a": "Total Stake",
+	  "03969004b50f3f14cd77e318eaaca1945c128ed4": "Total Payout",
+	  "5405a1f68d262cc4d6f2b8dc93382afe6cf31778": "Total Profit/Loss",
+	  "90eef613042c5a51f542421065b68b886d473807": "Balance",
+	  "597b1092b35773a3b65fbcb4e6424c2bcc006dd1": "Trades",
+	  "b7baa1d40c4ea29afc9098732bffee2a861a6c44": "Number",
+	  "db1c784524e1b54011a95823026161f7c8517fe0": "Reference",
+	  "74751e67c3e1010c343095eaf543e7cb21ced2ef": "Trade Type",
+	  "6541776503f0f949109cde78e6634d07d3528cd3": "Entry Spot",
+	  "77bcdf0da628448afd03ab5259f31f56c9071ca6": "Exit Spot",
+	  "257d4c5a3f637e1a35bfc26330dd3ebee92f5dd0": "Buy Price",
+	  "8875c6d210e37a0772b7d1a37a48d345c90440d8": "Final Price",
+	  "772fbced18230220d2d9be1456be16fc1b271d25": "Profit/Loss",
+	  "18d76188e5c5d9df16ea3b7375c0da13c4fa8756": "Load block file",
+	  "56bb242d8211b81fb557f03bce8ef4c3dd4bc736": "Block file",
+	  "608061fb5aab975013fa70c5c814a1d8ba30c152": "Trade More Efficiently Than You Ever Thought Possible",
+	  "e4ce8dc3e416e69262ba642dc57d3975d6616980": "Interested in automating your preferred strategies for trading binary options?",
+	  "f261237ca8beec6f77b76c4121feb8da22818c56": "Binary Bot is our leading-edge programming tool which allows you to build trading apps with a simple “jigsaw puzzle-like” drag-and-drop function.",
+	  "f6c85c68616eeaaa15fcd53fdc52f6eb5c886357": "Dream up any number of binary options trading bots, from incredibly simple formulas to vastly complex algorithms. Then let them trade for you, even while you sleep.",
+	  "e6906a0d1c28b202f9bd49da4a6abbddca57399a": "Best of all, once you’ve built a bot, we can help you sell it to fellow traders in the",
+	  "1dd0cf79c572bcdbdfabbd54ee95710a21234d73": "Binary.com Shop",
+	  "abeef9a35ae6256796ba2462e4f64d308de42359": "Receive 80% of the sales revenue from every purchase of your bot in our app store.",
+	  "104f798e4ad21ffd30587ecac37a08a981a80474": "A basic background of programming is required to work with Blockly and therefore Binary Bot. You can find good material to get started and build your computational thinking skills here:",
+	  "e9d9b7307276b8a24685291fc134cbff636cab5b": "Learn Programming with Blockly",
+	  "4aaa021babcace3ae5f45193e347ce85b102c9e2": "Computational thinking and programming using blockly",
+	  "c9682cd9c0d26c6a70d2fd02ab46f490ad8b3335": "Computational Thinking Course",
+	  "f3aba0f8c31987cb145508d84e29ee64e7ea2794": "Or only the",
+	  "0606f0b7763ee6e8094a3dab7873d34c08fd3670": "Begin Building a Bot Now",
+	  "221acaf3a0290adafe08cdcb8c66121c73d8b4a3": "Need further assistance?",
+	  "4832e45812a2724f16a15f9ae87adfc8ae4168cf": "Contact us",
+	  "9bb396940adb9705fe57eba6ea8b578e6aafa792": "Payout",
+	  "78d7103a319e808455d397513279d99f3b3f3768": "Stake",
+	  "bbb930cc426507ed3f6b7c343c75dd0e041494b7": "statement",
+	  "e6e886cdcdefeb6d3edb4c31bed06dd183ac4153": "ask price",
+	  "50e72909992bdc37c7c07769d1b7efac5e52874c": "payout",
+	  "ecb5ba7044417916ba12de5fa9e6fccac3e5d475": "profit",
+	  "c980b910204c7babdffe8ff3f7e755f30133383c": "contract type",
+	  "a726c6955157f1b8b92f9932652434a7150f80f8": "entry spot",
+	  "a66d5c7ef2c63dbc9a8f9e6ae4e2bc575e74a36e": "entry value",
+	  "7674920c033ca14277c577e19c037a6754d4fa80": "exit spot",
+	  "e8b8bd9f2eabc12875605a37c93e7f04a713fcb8": "exit value",
+	  "779455ee3bde8494d9629b353e17b19e92357ba8": "barrier",
+	  "37a5301a88da334dc5afc5b63979daa0f3f45e68": "result",
+	  "4973f4c599d5f42cf7bde52d66c3ed8ef77accb1": "Win",
+	  "12e24a7d8ac40579e8a0aef4869288afe7ed6745": "Loss",
+	  "563339f82447b4e758ad76d5a0b63b5698594fba": "Rise",
+	  "5c1ae82c29543ac887703776bf3da2c7dcce683d": "Fall",
+	  "2fc096bb7b6596ab243d0286c9f43fdf2b9b406d": "No Change",
+	  "ecb252044b5ea0f679ee78ec1a12904739e2904d": "string",
+	  "53b0a1b2fadf4e040cdc2155a7340de24aca93cb": "number",
+	  "bc74f4f071a5a33f00ab88a6d6385b5e6638b86c": "green",
+	  "4c9a82ce72ca2519f38d0af0abbb4cecb9fceca9": "blue",
+	  "96de5543d183d7de52ac5fa21c46fc811f673f89": "yellow",
+	  "78988010b890ce6f4d2136481f392787ec6d6106": "red",
+	  "062787aa328047e189774b3703d983b83938f6e9": "Higher",
+	  "b91eed4b7a80cd9572a27e65ebdff9caa4b3b9a4": "Lower",
+	  "e3f139abb7a549a1210b36f7dbf89215ad6c9902": "Touch",
+	  "7d7932bcc2e262ae98cf09dc5445130fb3881769": "No Touch",
+	  "a16814a48ec58c2e24ba224a80921a5c02361abe": "Ends In",
+	  "391d02cd75ebcd6ed26f5f45ddf7d40bf13e9dc5": "Ends Out",
+	  "534ec5da4e82ec419abc170e1a8448f55a01664f": "Stays In",
+	  "98cbe1998effd8b1a8aefdcc538573055e99a5f5": "Goes Out",
+	  "93d13bad1d2c2841db127cb70cc35bfc98059fc9": "Asian Up",
+	  "c098658ce3d3a258e4d155949a60072966b36db7": "Asian Down",
+	  "ee2dbd5d6d82d0833069b07e7dd2848d3bf4d83a": "Matches",
+	  "8444b7ce28bbc3443cc5cf73359b8353989b2a4b": "Differs",
+	  "9e767ad03e5547f251044e0724dc1d9f3e75aeed": "Even",
+	  "dc28f5f3c65ec611f0f30022650d24382d27448e": "Odd",
+	  "18a63f5512afb5573e5b44deba78d629f0635317": "Over",
+	  "2a268b89b83f8cb38ea48e46e93dd8840db512f9": "Under",
+	  "53adebdc2b1cbbedb56395b19a73fe47b87cc554": "Ticks",
+	  "5fb1db527825d2996e37c655e5dec49d4da80c09": "Seconds",
+	  "092f99ea11a34a8490e7a767a83a42fc45634f82": "Minutes",
+	  "9e25a34e635a123f8958bbe26e7c4843278597fb": "Hours",
+	  "f7de1f66f0979667da275b7e8996e805395025a1": "Ends In/Out",
+	  "a431deecd4c2258097adae418d496fe9a8179fee": "Stays In/Goes Out",
+	  "518c0b5e4f32706ac0822f5f3c20e23f66045415": "Expected non-empty array, given:",
+	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
+	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
+	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
+	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
+	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
+	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
+	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
+	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
+	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
+	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
+	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
+	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
+	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
+	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
+	  "9a13790ed481fe5c946705cb2dc761a5252b1893": "must be added inside the finish block",
+	  "aac1569ccf6b1a11b0ad0fbefdb9ffc777b4c733": "Click to select",
+	  "1c89b0a9ffe86e1db3b9f926d215e57f5a7b445d": "Welcome to the introduction to the binary bot, we will go through the basic steps to create a working bot. Skip this tutorial by clicking on the <b>X</b> button. Skip each step by <b>Right Arrow (",
+	  "401ddc8376746eceaddf4dba5b8c91dc6d5f6fbe": ")</b> on the keyboard.",
+	  "b220ddf901eb3413d07d77926409ca33b10244e8": "This is where you can define your blocks.",
+	  "535d175b893509fc05cdb56e7e2376d4bb0ae7a5": "You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.",
+	  "3e2769027bf3c973c38103dcce6482586b993374": "You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.",
+	  "f4bad39e0da47ce1f413083ec703c9bdb4e821bc": "To start pick a <b>symbol</b> block from markets. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)",
+	  "befc05c5b14b4c155cea1552fc019fc100adeddb": "Great! Now add it to the <b>Define Trade</b> block.",
+	  "25d5b0a626412f2ba48c10ec8a56c9efc62b5a49": "Alright! Now pick a <b>trade type</b> block.",
+	  "a8ce204c869e6df24277611290801e35b787c870": "OK! Now add it to the symbol you added in the previous step.",
+	  "d518cd463b95acf6b2b42414c41f19408521cd00": "Very good! It's time to add the options needed by the trade type block, pick a number",
+	  "e20d6b63e449cc63246eb171e6d4368c060a60f5": "from the Math menu",
+	  "80f10315585e12fc0dd2f7b7faa8a09a8034b79c": "Click on the number block to edit its value",
+	  "fc8045d8d70d2ae8c31c79b57623fc59609135e7": "change the value to 5 and add it to the <b>ticks</b> field of the trade type block",
+	  "6e317f95b71981900a70cb465671f1021bbbf5a8": "OK, Now add all remaining options to the trade type block",
+	  "282ea251bdfda29ddf988b813e77ebb65c7d6c0d": "That's it, now you have a complete trade block with its options. It's time to define a strategy",
+	  "061c155afc9f43271499f20bcce319696f4aa313": "This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.",
+	  "dbf1a7aa30ed10d018559d296772a994b1ad45be": "The received tick value is in the block <b>Tick Value</b> and the tick direction (up or down) is in the block <b>Tick Direction</b>. You can pick them from the <b>Strategy</b> menu",
+	  "a4fda48ca1d26066926c0c7c007036585e797626": "For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block",
+	  "40cb4329c38e75111dfcf1c3a7d53f9ec44f63d2": "Now add it to the Strategy block.",
+	  "4a362e853d0afc9cca5f580cc02999ee0ea12f84": "Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.",
+	  "039b5485ec321d83859b48fc91bf895e52429312": "A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.",
+	  "6818232027fc3ec833d6aafc70e8814bde778205": "After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block",
+	  "2eb458fc248cf538e898779cd4814e28af5db24b": "Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.",
+	  "0ecb627b112c26389825381d5280f557345ab194": "A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.",
+	  "6d08f40f24b29cd87eaf796ece4852012ac1a76c": "Now add it to the On Finish block",
+	  "86aa77e65de8324cd6d0b7f9d5b7b74546786185": "Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn't called e.g. in a logic block which its trade type is unmet.",
+	  "70c9ae0969c05b75bb0e837567153a3b5ce1d0aa": "OK, this's it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.",
+	  "505f22f919520c4cd40739be12fb611c7d8b15d8": "You can use Ctrl + -/+ to zoom out/in the blocks",
+	  "f49c79f5e096ac6909e0fc364980583fd20c46b6": "You can choose the account you want by the <b>Account</b> dropdown. If you cannot see the dropdown please login using the <b>Login</b> button above. Please make sure to use Virtual Account tokens for testing.",
+	  "21fe96f872d9140d436c194537e731ef280d3810": "You can save/load your blocks using these buttons",
+	  "d4ab4221f6388023bec13302714e98a84bbfb4c9": "If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo",
+	  "803adad740b5756a975629ac142e7f520af7303e": "You can see the summary of your trades in this menu.",
+	  "ac7be34f6a4c0ee0b7bce119b46b901c6723253c": "You can reset your blocks to their initial state.",
+	  "0350a7131fa13a57dc525910b2b5f691f10ae33f": "At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons. Please make sure you have chosen a Virtual Account before doing experiments.",
+	  "0d2d2ef95065f4155c72f8faccad6ab85373628a": "Welcome to the binary bot",
+	  "27f752f8ca631f5005555a1b49c14c57afab272f": "a blockly based automation tool for binary.com trades",
+	  "7d144a402b0ae170d6a5e3eea22926e25835e5a1": "Skip this tutorial by clicking on the <b>X</b> button",
+	  "dde27b8972ae198696283c4c2b9978b09e889884": "Skip each step by <b>Right Arrow (",
+	  "16c53af22e28d82ae4837c118147dd1cc6e7b2d8": "The blocks you put in here will create a binary bot code.",
+	  "bea4722929758a3b13e4b7337a3b1c1847794062": "You can then execute using the run button.",
+	  "cb5ec2c49b4eb83efeef0acf765d51003e0059af": "You can pick blocks from here to add to the workspace",
+	  "832de13f8c6c6b3374ff2f2b48061902b33b0ad5": "Press Ctrl + -/+ to zoom out/in the blocks",
+	  "129b4372ce84996fae10be0a001a0ca53d593737": "You need to login before running the bot.",
+	  "719c817f94ff88a1f89650ba01933e35bc7d0ceb": "Use these buttons to save/load your blocks",
+	  "18c372be48fb3fb91352cc721df2d256fea4e4e8": "Use these buttons to Undo/Redo changes to your blocks.",
+	  "3f71217a42b6920b422b3d9a6b37c5d39cdbbf19": "Open the summary panel.",
+	  "7f9acbb6190e0bca7980c39a468d49677d55f190": "Reset the blocks to their initial state.",
+	  "d202d8ee13996bc1811c4ad42a4902070213f88f": "Use the run/stop buttons in this menu to run or stop your blocks.",
+	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
+	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
+	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
+	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
+	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
+	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
+	  "011b5c3886f99f18d9239534f3423849fd75450b": "Returns the list of details for the finished contract",
+	  "ceac916ff355db07990f3fe594931e375d03bb8f": "(4) things to do after purchase is finished",
+	  "ccf476d7438b63183405e945a10a1d9aca2b9a2b": "This block decides what to do when a purchased contract is finished",
+	  "5098e2bcc96ee227983c9f7eeddfd226c220ca00": "Contract Detail:",
+	  "251c830f8f869e0887e8b4dc4c30ba1738c7097e": "Reads a selected option from contract details list",
+	  "dc3f26688f5ef436999ab59f699bcda077e65738": "Contract Result",
+	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
+	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
+	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
+	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
+	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
+	  "ad47561efb1dcbd7246d9b64487f615647fda036": "True if the direction matches the selection",
+	  "05bef508aadd62bf3967dcf67d769da296f19989": "Tick Direction",
+	  "ea9907c06e0fe9402185dbb3422b2c8854a2b7d6": "Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick",
+	  "15635817eb91f7b0c1c84149b482491e0cc5f384": "(2) things to do before purchase is made",
+	  "8ee54ad5dcb2ec7a856487ea5bb324381394987b": "This block decides what to do each time a new tick is received",
+	  "d5fde4c9d5edf660f760fc226df4d2678d3334ab": "Candles List",
+	  "8e3f627e63637f2e3038c7d1323ee5e24d76744a": "Returns the ohlc list",
+	  "87da93a46d143f6019979b3548414d9d7adabb35": "Payout for selected proposal",
+	  "160f06d4799c85021a810f68c5b517eea37a2737": "Purchase",
+	  "4c2fdde3d9c1950498ed263d6ce21d4bf3d0800b": "Purchases a chosen contract.",
+	  "852b438f91ad9eb2cdd84419a675a216d543c687": "Read",
+	  "1481d0a0ceb16ea4672fed76a0710306eb9f3a33": "latest",
+	  "c5abcb64d530ea5805e6b4072a080ee335824870": "Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.",
+	  "b1bf745777b8e274f75dca1b1e1870ea734d928b": "Read a field from a candle (received from Candles list)",
+	  "e04b522218a181cf0223042dd18ae08dcc22d8d3": "Last Tick",
+	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
+	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
+	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
+	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
+	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
+	  "15edb47b74a0ecf67e8799087491cb5d6720ff00": "Payout:",
+	  "b66c8f6ee4d73f0dba18e50ae286261a97f3bf56": "Currency:",
+	  "6ef144e9a6b6667b6f5762048f912dc64c41fb7e": "Barrier Offset:",
+	  "a6dce6b3ea27cdc2deb6f38d5b17f01b2d7cb46e": "Low Barrier Offset:",
+	  "7b6c4800c92fc89b77fdb39901052847d12caf18": "Prediction:",
+	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
+	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
+	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
+	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
+	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
+	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
+	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
+	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
+	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning"
+	};
+
+/***/ },
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21577,11 +22339,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _observer = __webpack_require__(299);
+	var _observer = __webpack_require__(300);
 	
-	var _tools = __webpack_require__(308);
+	var _tools = __webpack_require__(309);
 	
-	var _trade = __webpack_require__(331);
+	var _trade = __webpack_require__(332);
 	
 	var _trade2 = _interopRequireDefault(_trade);
 	
@@ -21590,6 +22352,16 @@
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var createDetails = function createDetails(contract) {
+	  var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
+	  var result = profit < 0 ? 'loss' : 'win';
+	  _observer.observer.emit('log.strategy.' + result, {
+	    profit: profit,
+	    transactionId: contract.transaction_ids.buy
+	  });
+	  return [contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price, profit, contract.contract_type, (0, _tools.getUTCTime)(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick, (0, _tools.getUTCTime)(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick, +(contract.barrier ? contract.barrier : 0), result];
+	};
 	
 	var PurchaseCtrl = function () {
 	  function PurchaseCtrl(api, strategy, duringPurchase, finish) {
@@ -21696,7 +22468,7 @@
 	        var tradeFinish = function tradeFinish(finishedContract) {
 	          // order matters, needs fix
 	          _observer.observer.emit('strategy.finish', finishedContract);
-	          _this.finish(finishedContract, _this.createDetails(finishedContract));
+	          _this.finish(finishedContract, createDetails(finishedContract));
 	        };
 	        _observer.observer.register('trade.update', tradeUpdate);
 	        _observer.observer.register('trade.finish', tradeFinish, true);
@@ -21706,9 +22478,14 @@
 	      }
 	    }
 	  }, {
+	    key: 'isSellAvailable',
+	    value: function isSellAvailable() {
+	      return this.trade && this.trade.isSellAvailable;
+	    }
+	  }, {
 	    key: 'sellAtMarket',
 	    value: function sellAtMarket() {
-	      if (this.trade) {
+	      if (this.trade && this.trade.isSellAvailable) {
 	        this.trade.sellAtMarket();
 	      }
 	    }
@@ -21719,17 +22496,6 @@
 	        return this.proposals[option];
 	      }
 	      return null;
-	    }
-	  }, {
-	    key: 'createDetails',
-	    value: function createDetails(contract) {
-	      var result = +contract.sell_price === 0 ? 'loss' : 'win';
-	      var profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
-	      _observer.observer.emit('log.strategy.' + result, {
-	        profit: profit,
-	        transactionId: contract.transaction_ids.buy
-	      });
-	      return [contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price, profit, contract.contract_type, (0, _tools.getUTCTime)(new Date(parseInt(contract.entry_tick_time + '000', 10))), +contract.entry_tick, (0, _tools.getUTCTime)(new Date(parseInt(contract.exit_tick_time + '000', 10))), +contract.exit_tick, +(contract.barrier ? contract.barrier : 0), result];
 	    }
 	  }, {
 	    key: 'destroy',
@@ -21775,7 +22541,7 @@
 	exports.default = PurchaseCtrl;
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21786,9 +22552,9 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _observer = __webpack_require__(299);
+	var _observer = __webpack_require__(300);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
@@ -21799,9 +22565,10 @@
 	    _classCallCheck(this, Trade);
 	
 	    this.api = api;
-	    this.contractIsSold = false;
 	    this.runningObservations = [];
 	    this.openContract = null;
+	    this.isSellAvailable = false;
+	    this.isSold = false;
 	  }
 	
 	  _createClass(Trade, [{
@@ -21809,11 +22576,14 @@
 	    value: function sellAtMarket() {
 	      var _this = this;
 	
-	      this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(function () {
-	        _this.getTheContractInfoAfterSell();
-	      }, function (e) {
-	        _observer.observer.emit('ui.log.warning', _translator.translator.translateText('Contract sell failed: ') + e);
-	      });
+	      if (!this.isSold) {
+	        this.isSold = true;
+	        this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(function () {
+	          _this.getTheContractInfoAfterSell();
+	        }, function () {
+	          return 0;
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'purchase',
@@ -21825,6 +22595,7 @@
 	        _observer.observer.emit('log.trade.purchase', purchasedContract);
 	        _observer.observer.emit('ui.log.info', _translator.translator.translateText('Purchased') + ': ' + contract.longcode);
 	        _observer.observer.emit('trade.purchase', purchasedContract);
+	        _this2.isSold = false;
 	        _this2.contractId = purchasedContract.contract_id;
 	        _this2.api.originalApi.unsubscribeFromAllProposals().then(function () {
 	          return 0;
@@ -21848,15 +22619,19 @@
 	        return false;
 	      }
 	      var apiProposalOpenContract = function apiProposalOpenContract(contract) {
-	        // detect changes and decide what to do when proposal is updated
-	        if (contract.is_expired && contract.is_valid_to_sell && !_this3.contractIsSold) {
-	          _this3.contractIsSold = true;
-	          _this3.api.originalApi.sellExpiredContracts().then(function () {
-	            return 0;
-	          }, function () {
-	            return 0;
-	          });
-	          _this3.getTheContractInfoAfterSell();
+	        if (!_this3.isSold && contract.is_valid_to_sell) {
+	          if (contract.is_expired) {
+	            _this3.isSold = true;
+	            _this3.isSellAvailable = false;
+	            _this3.api.originalApi.sellExpiredContracts().then(function () {
+	              return 0;
+	            }, function () {
+	              return 0;
+	            });
+	            _this3.getTheContractInfoAfterSell();
+	          } else {
+	            _this3.isSellAvailable = true;
+	          }
 	        }
 	        if (contract.sell_price) {
 	          _this3.openContract = null;
@@ -21915,7 +22690,7 @@
 	      }
 	
 	      this.runningObservations = [];
-	      this.contractIsSold = false;
+	      this.isSold = false;
 	      this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(function () {
 	        return 0;
 	      }, function () {
@@ -21930,7 +22705,7 @@
 	exports.default = Trade;
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21941,13 +22716,13 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _tools = __webpack_require__(308);
+	var _tools = __webpack_require__(309);
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _activeSymbols = __webpack_require__(333);
+	var _activeSymbols = __webpack_require__(334);
 	
 	var _activeSymbols2 = _interopRequireDefault(_activeSymbols);
 	
@@ -22168,7 +22943,7 @@
 	exports.default = _Symbol;
 
 /***/ },
-/* 333 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22179,7 +22954,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _underscore = __webpack_require__(305);
+	var _underscore = __webpack_require__(306);
 	
 	var _underscore2 = _interopRequireDefault(_underscore);
 	
@@ -22422,7 +23197,134 @@
 	exports.default = ActiveSymbols;
 
 /***/ },
-/* 334 */
+/* 335 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.expectBarrierOffset = exports.expectNumber = exports.expectOhlc = exports.expectNonEmptyArray = undefined;
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	var _translator = __webpack_require__(308);
+	
+	var _error = __webpack_require__(336);
+	
+	var expectNonEmptyArray = exports.expectNonEmptyArray = function expectNonEmptyArray(array) {
+	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
+	
+	  if (array && array instanceof Array && array.length) {
+	    return array;
+	  }
+	  return new CustomError(_translator.translator.translateText('Expected non-empty array, given:') + ' ' + (typeof array === 'undefined' ? 'undefined' : _typeof(array))).emit();
+	};
+	
+	var expectOhlc = exports.expectOhlc = function expectOhlc(ohlc) {
+	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
+	
+	  if (ohlc && ohlc instanceof Object && ohlc.open && ohlc.high && ohlc.low && ohlc.close) {
+	    return ohlc;
+	  }
+	  return new CustomError(_translator.translator.translateText('Expected candle object, given:') + ' ' + (typeof ohlc === 'undefined' ? 'undefined' : _typeof(ohlc))).emit();
+	};
+	
+	// runtime
+	
+	var expectNumber = exports.expectNumber = function expectNumber(name, num) {
+	  var CustomError = arguments.length <= 2 || arguments[2] === undefined ? _error.BlocklyError : arguments[2];
+	
+	  if (isNaN(parseFloat(num)) || isNaN(Number(num))) {
+	    return new CustomError(name + ' ' + _translator.translator.translateText('must be a number, given:') + ' ' + (typeof num === 'undefined' ? 'undefined' : _typeof(num))).emit();
+	  }
+	  return Number(num);
+	};
+	
+	var expectBarrierOffset = exports.expectBarrierOffset = function expectBarrierOffset(barrier) {
+	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
+	
+	  if (barrier.match(/^[-+]\d+$/) === null) {
+	    return new CustomError(_translator.translator.translateText('Please use appropriate barrier offset block for barrier offsets')).emit();
+	  }
+	  return barrier;
+	};
+
+/***/ },
+/* 336 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.RuntimeError = exports.BlocklyError = exports.CustomError = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _observer = __webpack_require__(300);
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var CustomError = exports.CustomError = function () {
+	  function CustomError(message) {
+	    _classCallCheck(this, CustomError);
+	
+	    this.message = message;
+	    this.error = Error(message);
+	    this.name = 'GenericError';
+	  }
+	
+	  _createClass(CustomError, [{
+	    key: 'emit',
+	    value: function emit() {
+	      _observer.observer.emit(this.name, this.message);
+	      this.error.name = this.name;
+	      throw this.error;
+	    }
+	  }]);
+	
+	  return CustomError;
+	}();
+	
+	var BlocklyError = exports.BlocklyError = function (_CustomError) {
+	  _inherits(BlocklyError, _CustomError);
+	
+	  function BlocklyError(message) {
+	    _classCallCheck(this, BlocklyError);
+	
+	    var _this = _possibleConstructorReturn(this, (BlocklyError.__proto__ || Object.getPrototypeOf(BlocklyError)).call(this, message));
+	
+	    _this.name = 'BlocklyError';
+	    return _this;
+	  }
+	
+	  return BlocklyError;
+	}(CustomError);
+	
+	var RuntimeError = exports.RuntimeError = function (_CustomError2) {
+	  _inherits(RuntimeError, _CustomError2);
+	
+	  function RuntimeError(message) {
+	    _classCallCheck(this, RuntimeError);
+	
+	    var _this2 = _possibleConstructorReturn(this, (RuntimeError.__proto__ || Object.getPrototypeOf(RuntimeError)).call(this, message));
+	
+	    _this2.name = 'RuntimeError';
+	    return _this2;
+	  }
+	
+	  return RuntimeError;
+	}(CustomError);
+
+/***/ },
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22433,39 +23335,35 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _account = __webpack_require__(335);
+	var _account = __webpack_require__(338);
 	
-	var _observer = __webpack_require__(299);
+	var _observer = __webpack_require__(300);
 	
-	var _storageManager = __webpack_require__(300);
+	var _storageManager = __webpack_require__(301);
 	
-	var _lzString = __webpack_require__(337);
+	var _binaryCharts = __webpack_require__(340);
 	
-	var _lzString2 = _interopRequireDefault(_lzString);
-	
-	var _binaryCharts = __webpack_require__(338);
-	
-	var _logger = __webpack_require__(371);
-	
-	var _tradeInfo = __webpack_require__(372);
+	var _tradeInfo = __webpack_require__(373);
 	
 	var _tradeInfo2 = _interopRequireDefault(_tradeInfo);
 	
-	var _blockly = __webpack_require__(373);
+	var _blockly = __webpack_require__(374);
 	
 	var _blockly2 = _interopRequireDefault(_blockly);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _bot = __webpack_require__(302);
+	var _bot = __webpack_require__(303);
 	
-	var _introduction = __webpack_require__(436);
+	var _introduction = __webpack_require__(412);
 	
 	var _introduction2 = _interopRequireDefault(_introduction);
 	
-	var _welcome = __webpack_require__(438);
+	var _welcome = __webpack_require__(414);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
+	
+	var _logger = __webpack_require__(415);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -22479,9 +23377,9 @@
 	
 	    this.chartType = 'area';
 	    this.tours = {};
+	    (0, _logger.logHandler)();
 	    this.tradeInfo = new _tradeInfo2.default();
 	    this.addTranslationToUi();
-	    this.errorAndLogHandling();
 	    this.initPromise = new Promise(function (resolve) {
 	      _this.updateTokenList();
 	      _this.blockly = new _blockly2.default();
@@ -22575,108 +23473,16 @@
 	      });
 	    }
 	  }, {
-	    key: 'errorAndLogHandling',
-	    value: function errorAndLogHandling() {
-	      var _this2 = this;
-	
-	      var notifyError = function notifyError(error) {
-	        var message = error.error ? error.error.message : error.message || error;
-	        _logger.logger.notify(message, {
-	          position: 'bottom right',
-	          className: 'error'
-	        });
-	        if (_logger.logger.isDebug()) {
-	          console.log('%cError: ' + message, 'color: red'); // eslint-disable-line no-console
-	        } else {
-	          _logger.logger.addLogToQueue('%cError: ' + message, 'color: red');
-	        }
-	        return message;
-	      };
-	
-	      var _arr = ['api.error', 'blockly.error', 'runtime.error'];
-	
-	      var _loop = function _loop() {
-	        var errorType = _arr[_i];
-	        _observer.observer.register(errorType, function (error) {
-	          if (error.code === 'InvalidToken') {
-	            (0, _storageManager.removeAllTokens)();
-	            _this2.updateTokenList();
-	          }
-	          var message = notifyError(error);
-	          amplitude.getInstance().logEvent(errorType, {
-	            message: message,
-	            1: _lzString2.default.compressToBase64(_this2.blockly.generatedJs),
-	            2: _lzString2.default.compressToBase64(_this2.blockly.blocksXmlStr)
-	          });
-	          _bot.bot.stop();
-	        });
-	      };
-	
-	      for (var _i = 0; _i < _arr.length; _i++) {
-	        _loop();
-	      }
-	
-	      var observeForLog = function observeForLog(type, position) {
-	        var subtype = position === 'left' ? '.left' : '';
-	        _observer.observer.register('ui.log.' + type + subtype, function (message) {
-	          if (type === 'warn') {
-	            console.warn(message); // eslint-disable-line no-console
-	          }
-	          if (position === 'left') {
-	            $.notify(message, {
-	              position: 'bottom ' + position,
-	              className: type
-	            });
-	          } else {
-	            _logger.logger.notify(message, {
-	              position: 'bottom ' + position,
-	              className: type
-	            });
-	          }
-	          if (_logger.logger.isDebug()) {
-	            console.log(message); // eslint-disable-line no-console
-	          } else {
-	            _logger.logger.addLogToQueue(message);
-	          }
-	        });
-	      };
-	
-	      var _arr2 = ['success', 'info', 'warn', 'error'];
-	      for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
-	        var type = _arr2[_i2];
-	        observeForLog(type, 'right');
-	        observeForLog(type, 'left');
-	      }
-	
-	      var _arr3 = ['log.bot.login', 'log.trade.finish'];
-	
-	      var _loop2 = function _loop2() {
-	        var event = _arr3[_i3];
-	        _observer.observer.register(event, function (d) {
-	          return amplitude.getInstance().logEvent(event, d);
-	        });
-	      };
-	
-	      for (var _i3 = 0; _i3 < _arr3.length; _i3++) {
-	        _loop2();
-	      }
-	    }
-	  }, {
 	    key: 'setFileBrowser',
 	    value: function setFileBrowser() {
-	      var _this3 = this;
+	      var _this2 = this;
 	
 	      var readFile = function readFile(f) {
 	        var reader = new FileReader();
 	        reader.onload = function () {
 	          $('#fileBrowser').hide();
 	          return function (e) {
-	            try {
-	              _this3.blockly.loadBlocks(e.target.result);
-	              _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
-	            } catch (err) {
-	              _observer.observer.emit('blockly.error', err);
-	            }
+	            return _this2.blockly.loadBlocks(e.target.result);
 	          };
 	        }(f);
 	        reader.readAsText(f);
@@ -22705,7 +23511,7 @@
 	      var handleDragOver = function handleDragOver(e) {
 	        e.stopPropagation();
 	        e.preventDefault();
-	        e.dataTransfer.dropEffect = 'copy';
+	        e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
 	      };
 	
 	      var dropZone = document.getElementById('dropZone');
@@ -22745,7 +23551,7 @@
 	  }, {
 	    key: 'addBindings',
 	    value: function addBindings() {
-	      var _this4 = this;
+	      var _this3 = this;
 	
 	      var stop = function stop(e) {
 	        if (e) {
@@ -22756,7 +23562,7 @@
 	
 	      var logout = function logout() {
 	        (0, _account.logoutAllTokens)(function () {
-	          _this4.updateTokenList();
+	          _this3.updateTokenList();
 	          _observer.observer.emit('ui.log.info', _translator.translator.translateText('Logged you out!'));
 	        });
 	      };
@@ -22782,15 +23588,15 @@
 	      });
 	
 	      $('#saveXml').click(function () {
-	        _this4.blockly.saveXml();
+	        _this3.blockly.saveXml();
 	      });
 	
 	      $('#undo').click(function () {
-	        _this4.blockly.undo();
+	        _this3.blockly.undo();
 	      });
 	
 	      $('#redo').click(function () {
-	        _this4.blockly.redo();
+	        _this3.blockly.redo();
 	      });
 	
 	      $('#showSummary').click(function () {
@@ -22809,11 +23615,11 @@
 	      $('#runButton').click(function () {
 	        $('#stopButton').show();
 	        $('#runButton').hide();
-	        _this4.blockly.run();
+	        _this3.blockly.run();
 	      });
 	
 	      $('#resetButton').click(function () {
-	        _this4.blockly.loadBlocks();
+	        _this3.blockly.loadBlocks();
 	      });
 	
 	      $('#login').bind('click.login', function () {
@@ -22825,19 +23631,19 @@
 	          case 189:
 	            // -
 	            if (e.ctrlKey) {
-	              _this4.blockly.zoomOnPlusMinus(false);
+	              _this3.blockly.zoomOnPlusMinus(false);
 	            }
 	            break;
 	          case 187:
 	            // +
 	            if (e.ctrlKey) {
-	              _this4.blockly.zoomOnPlusMinus(true);
+	              _this3.blockly.zoomOnPlusMinus(true);
 	            }
 	            break;
 	          case 39:
 	            // right
-	            if (_this4.activeTour) {
-	              _this4.activeTour.next();
+	            if (_this3.activeTour) {
+	              _this3.activeTour.next();
 	            } else {
 	              return;
 	            }
@@ -22851,14 +23657,14 @@
 	  }, {
 	    key: 'updateChart',
 	    value: function updateChart(info) {
-	      var _this5 = this;
+	      var _this4 = this;
 	
 	      var chartOptions = {
 	        type: this.chartType,
 	        theme: 'light',
 	        defaultRange: 0,
 	        onTypeChange: function onTypeChange(type) {
-	          _this5.chartType = type;
+	          _this4.chartType = type;
 	        }
 	      };
 	      if (this.chartType === 'candlestick') {
@@ -22867,9 +23673,6 @@
 	        chartOptions.ticks = info.ticks;
 	        if (this.latestOpenContract) {
 	          chartOptions.contract = this.latestOpenContract;
-	          if (this.latestOpenContract.is_sold) {
-	            delete this.latestOpenContract;
-	          }
 	        }
 	      }
 	      chartOptions.pipSize = Number(Number(info.pip).toExponential().substring(3));
@@ -22891,12 +23694,26 @@
 	  }, {
 	    key: 'addEventHandlers',
 	    value: function addEventHandlers() {
-	      var _this6 = this;
+	      var _this5 = this;
+	
+	      var _arr = ['api.error', 'BlocklyError', 'RuntimeError'];
+	
+	      for (var _i = 0; _i < _arr.length; _i++) {
+	        var errorType = _arr[_i];
+	        _observer.observer.register(errorType, function (error) {
+	          // eslint-disable-line no-loop-func
+	          if (error.code === 'InvalidToken') {
+	            (0, _storageManager.removeAllTokens)();
+	            _this5.updateTokenList();
+	          }
+	          _bot.bot.stop();
+	        });
+	      }
 	
 	      _observer.observer.register('bot.stop', function () {
 	        $('#runButton').show();
 	        $('#stopButton').hide();
-	        _this6.destroyChart();
+	        _this5.destroyChart();
 	      });
 	
 	      _observer.observer.register('bot.tradeInfo', function (tradeInfo) {
@@ -22908,7 +23725,7 @@
 	          for (var _iterator2 = Object.keys(tradeInfo)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	            var key = _step2.value;
 	
-	            _this6.tradeInfo.tradeInfo[key] = tradeInfo[key];
+	            _this5.tradeInfo.tradeInfo[key] = tradeInfo[key];
 	          }
 	        } catch (err) {
 	          _didIteratorError2 = true;
@@ -22925,19 +23742,22 @@
 	          }
 	        }
 	
-	        _this6.tradeInfo.update();
+	        _this5.tradeInfo.update();
 	      });
 	
 	      _observer.observer.register('bot.tradeUpdate', function (contract) {
-	        _this6.latestOpenContract = contract;
+	        _this5.latestOpenContract = contract;
 	      });
 	
 	      _observer.observer.register('bot.finish', function (contract) {
-	        _this6.tradeInfo.add(contract);
+	        _this5.tradeInfo.add(contract);
+	        setTimeout(function () {
+	          return delete _this5.latestOpenContract;
+	        }, 2000);
 	      });
 	
 	      _observer.observer.register('bot.tickUpdate', function (info) {
-	        _this6.updateChart(info);
+	        _this5.updateChart(info);
 	      });
 	    }
 	  }]);
@@ -22948,7 +23768,7 @@
 	exports.default = View;
 
 /***/ },
-/* 335 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22958,15 +23778,15 @@
 	});
 	exports.logoutAllTokens = exports.addTokenIfValid = undefined;
 	
-	var _binaryLiveApi = __webpack_require__(304);
+	var _binaryLiveApi = __webpack_require__(305);
 	
-	var _storageManager = __webpack_require__(300);
+	var _storageManager = __webpack_require__(301);
 	
 	var addTokenIfValid = exports.addTokenIfValid = function addTokenIfValid(token) {
 	  var callback = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
 	
 	  var option = typeof WebSocket === 'undefined' ? {
-	    websocket: __webpack_require__(336) } : {}; // eslint-disable-line import/newline-after-import
+	    websocket: __webpack_require__(339) } : {}; // eslint-disable-line import/newline-after-import
 	  var api = new _binaryLiveApi.LiveApi(option);
 	  api.authorize(token).then(function (response) {
 	    api.disconnect();
@@ -22981,7 +23801,7 @@
 	
 	var logoutAllTokens = exports.logoutAllTokens = function logoutAllTokens(callback) {
 	  var option = typeof WebSocket === 'undefined' ? {
-	    websocket: __webpack_require__(336) } : {}; // eslint-disable-line import/newline-after-import
+	    websocket: __webpack_require__(339) } : {}; // eslint-disable-line import/newline-after-import
 	  var api = new _binaryLiveApi.LiveApi(option);
 	  var tokenList = (0, _storageManager.getTokenList)();
 	  var logout = function logout() {
@@ -22999,523 +23819,16 @@
 	};
 
 /***/ },
-/* 336 */
+/* 339 */
 /***/ function(module, exports) {
 
 	module.exports = ws;
 
 /***/ },
-/* 337 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c) 2013 Pieroxy <pieroxy@pieroxy.net>
-	// This work is free. You can redistribute it and/or modify it
-	// under the terms of the WTFPL, Version 2
-	// For more information see LICENSE.txt or http://www.wtfpl.net/
-	//
-	// For more information, the home page:
-	// http://pieroxy.net/blog/pages/lz-string/testing.html
-	//
-	// LZ-based compression algorithm, version 1.4.4
-	var LZString = (function() {
-	
-	// private property
-	var f = String.fromCharCode;
-	var keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-	var keyStrUriSafe = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$";
-	var baseReverseDic = {};
-	
-	function getBaseValue(alphabet, character) {
-	  if (!baseReverseDic[alphabet]) {
-	    baseReverseDic[alphabet] = {};
-	    for (var i=0 ; i<alphabet.length ; i++) {
-	      baseReverseDic[alphabet][alphabet.charAt(i)] = i;
-	    }
-	  }
-	  return baseReverseDic[alphabet][character];
-	}
-	
-	var LZString = {
-	  compressToBase64 : function (input) {
-	    if (input == null) return "";
-	    var res = LZString._compress(input, 6, function(a){return keyStrBase64.charAt(a);});
-	    switch (res.length % 4) { // To produce valid Base64
-	    default: // When could this happen ?
-	    case 0 : return res;
-	    case 1 : return res+"===";
-	    case 2 : return res+"==";
-	    case 3 : return res+"=";
-	    }
-	  },
-	
-	  decompressFromBase64 : function (input) {
-	    if (input == null) return "";
-	    if (input == "") return null;
-	    return LZString._decompress(input.length, 32, function(index) { return getBaseValue(keyStrBase64, input.charAt(index)); });
-	  },
-	
-	  compressToUTF16 : function (input) {
-	    if (input == null) return "";
-	    return LZString._compress(input, 15, function(a){return f(a+32);}) + " ";
-	  },
-	
-	  decompressFromUTF16: function (compressed) {
-	    if (compressed == null) return "";
-	    if (compressed == "") return null;
-	    return LZString._decompress(compressed.length, 16384, function(index) { return compressed.charCodeAt(index) - 32; });
-	  },
-	
-	  //compress into uint8array (UCS-2 big endian format)
-	  compressToUint8Array: function (uncompressed) {
-	    var compressed = LZString.compress(uncompressed);
-	    var buf=new Uint8Array(compressed.length*2); // 2 bytes per character
-	
-	    for (var i=0, TotalLen=compressed.length; i<TotalLen; i++) {
-	      var current_value = compressed.charCodeAt(i);
-	      buf[i*2] = current_value >>> 8;
-	      buf[i*2+1] = current_value % 256;
-	    }
-	    return buf;
-	  },
-	
-	  //decompress from uint8array (UCS-2 big endian format)
-	  decompressFromUint8Array:function (compressed) {
-	    if (compressed===null || compressed===undefined){
-	        return LZString.decompress(compressed);
-	    } else {
-	        var buf=new Array(compressed.length/2); // 2 bytes per character
-	        for (var i=0, TotalLen=buf.length; i<TotalLen; i++) {
-	          buf[i]=compressed[i*2]*256+compressed[i*2+1];
-	        }
-	
-	        var result = [];
-	        buf.forEach(function (c) {
-	          result.push(f(c));
-	        });
-	        return LZString.decompress(result.join(''));
-	
-	    }
-	
-	  },
-	
-	
-	  //compress into a string that is already URI encoded
-	  compressToEncodedURIComponent: function (input) {
-	    if (input == null) return "";
-	    return LZString._compress(input, 6, function(a){return keyStrUriSafe.charAt(a);});
-	  },
-	
-	  //decompress from an output of compressToEncodedURIComponent
-	  decompressFromEncodedURIComponent:function (input) {
-	    if (input == null) return "";
-	    if (input == "") return null;
-	    input = input.replace(/ /g, "+");
-	    return LZString._decompress(input.length, 32, function(index) { return getBaseValue(keyStrUriSafe, input.charAt(index)); });
-	  },
-	
-	  compress: function (uncompressed) {
-	    return LZString._compress(uncompressed, 16, function(a){return f(a);});
-	  },
-	  _compress: function (uncompressed, bitsPerChar, getCharFromInt) {
-	    if (uncompressed == null) return "";
-	    var i, value,
-	        context_dictionary= {},
-	        context_dictionaryToCreate= {},
-	        context_c="",
-	        context_wc="",
-	        context_w="",
-	        context_enlargeIn= 2, // Compensate for the first entry which should not count
-	        context_dictSize= 3,
-	        context_numBits= 2,
-	        context_data=[],
-	        context_data_val=0,
-	        context_data_position=0,
-	        ii;
-	
-	    for (ii = 0; ii < uncompressed.length; ii += 1) {
-	      context_c = uncompressed.charAt(ii);
-	      if (!Object.prototype.hasOwnProperty.call(context_dictionary,context_c)) {
-	        context_dictionary[context_c] = context_dictSize++;
-	        context_dictionaryToCreate[context_c] = true;
-	      }
-	
-	      context_wc = context_w + context_c;
-	      if (Object.prototype.hasOwnProperty.call(context_dictionary,context_wc)) {
-	        context_w = context_wc;
-	      } else {
-	        if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate,context_w)) {
-	          if (context_w.charCodeAt(0)<256) {
-	            for (i=0 ; i<context_numBits ; i++) {
-	              context_data_val = (context_data_val << 1);
-	              if (context_data_position == bitsPerChar-1) {
-	                context_data_position = 0;
-	                context_data.push(getCharFromInt(context_data_val));
-	                context_data_val = 0;
-	              } else {
-	                context_data_position++;
-	              }
-	            }
-	            value = context_w.charCodeAt(0);
-	            for (i=0 ; i<8 ; i++) {
-	              context_data_val = (context_data_val << 1) | (value&1);
-	              if (context_data_position == bitsPerChar-1) {
-	                context_data_position = 0;
-	                context_data.push(getCharFromInt(context_data_val));
-	                context_data_val = 0;
-	              } else {
-	                context_data_position++;
-	              }
-	              value = value >> 1;
-	            }
-	          } else {
-	            value = 1;
-	            for (i=0 ; i<context_numBits ; i++) {
-	              context_data_val = (context_data_val << 1) | value;
-	              if (context_data_position ==bitsPerChar-1) {
-	                context_data_position = 0;
-	                context_data.push(getCharFromInt(context_data_val));
-	                context_data_val = 0;
-	              } else {
-	                context_data_position++;
-	              }
-	              value = 0;
-	            }
-	            value = context_w.charCodeAt(0);
-	            for (i=0 ; i<16 ; i++) {
-	              context_data_val = (context_data_val << 1) | (value&1);
-	              if (context_data_position == bitsPerChar-1) {
-	                context_data_position = 0;
-	                context_data.push(getCharFromInt(context_data_val));
-	                context_data_val = 0;
-	              } else {
-	                context_data_position++;
-	              }
-	              value = value >> 1;
-	            }
-	          }
-	          context_enlargeIn--;
-	          if (context_enlargeIn == 0) {
-	            context_enlargeIn = Math.pow(2, context_numBits);
-	            context_numBits++;
-	          }
-	          delete context_dictionaryToCreate[context_w];
-	        } else {
-	          value = context_dictionary[context_w];
-	          for (i=0 ; i<context_numBits ; i++) {
-	            context_data_val = (context_data_val << 1) | (value&1);
-	            if (context_data_position == bitsPerChar-1) {
-	              context_data_position = 0;
-	              context_data.push(getCharFromInt(context_data_val));
-	              context_data_val = 0;
-	            } else {
-	              context_data_position++;
-	            }
-	            value = value >> 1;
-	          }
-	
-	
-	        }
-	        context_enlargeIn--;
-	        if (context_enlargeIn == 0) {
-	          context_enlargeIn = Math.pow(2, context_numBits);
-	          context_numBits++;
-	        }
-	        // Add wc to the dictionary.
-	        context_dictionary[context_wc] = context_dictSize++;
-	        context_w = String(context_c);
-	      }
-	    }
-	
-	    // Output the code for w.
-	    if (context_w !== "") {
-	      if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate,context_w)) {
-	        if (context_w.charCodeAt(0)<256) {
-	          for (i=0 ; i<context_numBits ; i++) {
-	            context_data_val = (context_data_val << 1);
-	            if (context_data_position == bitsPerChar-1) {
-	              context_data_position = 0;
-	              context_data.push(getCharFromInt(context_data_val));
-	              context_data_val = 0;
-	            } else {
-	              context_data_position++;
-	            }
-	          }
-	          value = context_w.charCodeAt(0);
-	          for (i=0 ; i<8 ; i++) {
-	            context_data_val = (context_data_val << 1) | (value&1);
-	            if (context_data_position == bitsPerChar-1) {
-	              context_data_position = 0;
-	              context_data.push(getCharFromInt(context_data_val));
-	              context_data_val = 0;
-	            } else {
-	              context_data_position++;
-	            }
-	            value = value >> 1;
-	          }
-	        } else {
-	          value = 1;
-	          for (i=0 ; i<context_numBits ; i++) {
-	            context_data_val = (context_data_val << 1) | value;
-	            if (context_data_position == bitsPerChar-1) {
-	              context_data_position = 0;
-	              context_data.push(getCharFromInt(context_data_val));
-	              context_data_val = 0;
-	            } else {
-	              context_data_position++;
-	            }
-	            value = 0;
-	          }
-	          value = context_w.charCodeAt(0);
-	          for (i=0 ; i<16 ; i++) {
-	            context_data_val = (context_data_val << 1) | (value&1);
-	            if (context_data_position == bitsPerChar-1) {
-	              context_data_position = 0;
-	              context_data.push(getCharFromInt(context_data_val));
-	              context_data_val = 0;
-	            } else {
-	              context_data_position++;
-	            }
-	            value = value >> 1;
-	          }
-	        }
-	        context_enlargeIn--;
-	        if (context_enlargeIn == 0) {
-	          context_enlargeIn = Math.pow(2, context_numBits);
-	          context_numBits++;
-	        }
-	        delete context_dictionaryToCreate[context_w];
-	      } else {
-	        value = context_dictionary[context_w];
-	        for (i=0 ; i<context_numBits ; i++) {
-	          context_data_val = (context_data_val << 1) | (value&1);
-	          if (context_data_position == bitsPerChar-1) {
-	            context_data_position = 0;
-	            context_data.push(getCharFromInt(context_data_val));
-	            context_data_val = 0;
-	          } else {
-	            context_data_position++;
-	          }
-	          value = value >> 1;
-	        }
-	
-	
-	      }
-	      context_enlargeIn--;
-	      if (context_enlargeIn == 0) {
-	        context_enlargeIn = Math.pow(2, context_numBits);
-	        context_numBits++;
-	      }
-	    }
-	
-	    // Mark the end of the stream
-	    value = 2;
-	    for (i=0 ; i<context_numBits ; i++) {
-	      context_data_val = (context_data_val << 1) | (value&1);
-	      if (context_data_position == bitsPerChar-1) {
-	        context_data_position = 0;
-	        context_data.push(getCharFromInt(context_data_val));
-	        context_data_val = 0;
-	      } else {
-	        context_data_position++;
-	      }
-	      value = value >> 1;
-	    }
-	
-	    // Flush the last char
-	    while (true) {
-	      context_data_val = (context_data_val << 1);
-	      if (context_data_position == bitsPerChar-1) {
-	        context_data.push(getCharFromInt(context_data_val));
-	        break;
-	      }
-	      else context_data_position++;
-	    }
-	    return context_data.join('');
-	  },
-	
-	  decompress: function (compressed) {
-	    if (compressed == null) return "";
-	    if (compressed == "") return null;
-	    return LZString._decompress(compressed.length, 32768, function(index) { return compressed.charCodeAt(index); });
-	  },
-	
-	  _decompress: function (length, resetValue, getNextValue) {
-	    var dictionary = [],
-	        next,
-	        enlargeIn = 4,
-	        dictSize = 4,
-	        numBits = 3,
-	        entry = "",
-	        result = [],
-	        i,
-	        w,
-	        bits, resb, maxpower, power,
-	        c,
-	        data = {val:getNextValue(0), position:resetValue, index:1};
-	
-	    for (i = 0; i < 3; i += 1) {
-	      dictionary[i] = i;
-	    }
-	
-	    bits = 0;
-	    maxpower = Math.pow(2,2);
-	    power=1;
-	    while (power!=maxpower) {
-	      resb = data.val & data.position;
-	      data.position >>= 1;
-	      if (data.position == 0) {
-	        data.position = resetValue;
-	        data.val = getNextValue(data.index++);
-	      }
-	      bits |= (resb>0 ? 1 : 0) * power;
-	      power <<= 1;
-	    }
-	
-	    switch (next = bits) {
-	      case 0:
-	          bits = 0;
-	          maxpower = Math.pow(2,8);
-	          power=1;
-	          while (power!=maxpower) {
-	            resb = data.val & data.position;
-	            data.position >>= 1;
-	            if (data.position == 0) {
-	              data.position = resetValue;
-	              data.val = getNextValue(data.index++);
-	            }
-	            bits |= (resb>0 ? 1 : 0) * power;
-	            power <<= 1;
-	          }
-	        c = f(bits);
-	        break;
-	      case 1:
-	          bits = 0;
-	          maxpower = Math.pow(2,16);
-	          power=1;
-	          while (power!=maxpower) {
-	            resb = data.val & data.position;
-	            data.position >>= 1;
-	            if (data.position == 0) {
-	              data.position = resetValue;
-	              data.val = getNextValue(data.index++);
-	            }
-	            bits |= (resb>0 ? 1 : 0) * power;
-	            power <<= 1;
-	          }
-	        c = f(bits);
-	        break;
-	      case 2:
-	        return "";
-	    }
-	    dictionary[3] = c;
-	    w = c;
-	    result.push(c);
-	    while (true) {
-	      if (data.index > length) {
-	        return "";
-	      }
-	
-	      bits = 0;
-	      maxpower = Math.pow(2,numBits);
-	      power=1;
-	      while (power!=maxpower) {
-	        resb = data.val & data.position;
-	        data.position >>= 1;
-	        if (data.position == 0) {
-	          data.position = resetValue;
-	          data.val = getNextValue(data.index++);
-	        }
-	        bits |= (resb>0 ? 1 : 0) * power;
-	        power <<= 1;
-	      }
-	
-	      switch (c = bits) {
-	        case 0:
-	          bits = 0;
-	          maxpower = Math.pow(2,8);
-	          power=1;
-	          while (power!=maxpower) {
-	            resb = data.val & data.position;
-	            data.position >>= 1;
-	            if (data.position == 0) {
-	              data.position = resetValue;
-	              data.val = getNextValue(data.index++);
-	            }
-	            bits |= (resb>0 ? 1 : 0) * power;
-	            power <<= 1;
-	          }
-	
-	          dictionary[dictSize++] = f(bits);
-	          c = dictSize-1;
-	          enlargeIn--;
-	          break;
-	        case 1:
-	          bits = 0;
-	          maxpower = Math.pow(2,16);
-	          power=1;
-	          while (power!=maxpower) {
-	            resb = data.val & data.position;
-	            data.position >>= 1;
-	            if (data.position == 0) {
-	              data.position = resetValue;
-	              data.val = getNextValue(data.index++);
-	            }
-	            bits |= (resb>0 ? 1 : 0) * power;
-	            power <<= 1;
-	          }
-	          dictionary[dictSize++] = f(bits);
-	          c = dictSize-1;
-	          enlargeIn--;
-	          break;
-	        case 2:
-	          return result.join('');
-	      }
-	
-	      if (enlargeIn == 0) {
-	        enlargeIn = Math.pow(2, numBits);
-	        numBits++;
-	      }
-	
-	      if (dictionary[c]) {
-	        entry = dictionary[c];
-	      } else {
-	        if (c === dictSize) {
-	          entry = w + w.charAt(0);
-	        } else {
-	          return null;
-	        }
-	      }
-	      result.push(entry);
-	
-	      // Add w+entry[0] to the dictionary.
-	      dictionary[dictSize++] = w + entry.charAt(0);
-	      enlargeIn--;
-	
-	      w = entry;
-	
-	      if (enlargeIn == 0) {
-	        enlargeIn = Math.pow(2, numBits);
-	        numBits++;
-	      }
-	
-	    }
-	  }
-	};
-	  return LZString;
-	})();
-	
-	if (true) {
-	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function () { return LZString; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else if( typeof module !== 'undefined' && module != null ) {
-	  module.exports = LZString
-	}
-
-
-/***/ },
-/* 338 */
-/***/ function(module, exports, __webpack_require__) {
-
-	!function(t,e){ true?module.exports=e(__webpack_require__(339)):"function"==typeof define&&define.amd?define(["react"],e):"object"==typeof exports?exports["binary-charts"]=e(require("react")):t["binary-charts"]=e(t.React)}(this,function(t){return function(t){function e(n){if(i[n])return i[n].exports;var r=i[n]={i:n,l:!1,exports:{}};return t[n].call(r.exports,r,r.exports,e),r.l=!0,r.exports}var i={};return e.m=t,e.c=i,e.i=function(t){return t},e.d=function(t,e,i){Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:i})},e.n=function(t){var i=t&&t.__esModule?function(){return t["default"]}:function(){return t};return e.d(i,"a",i),i},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=175)}(function(t){for(var e in t)if(Object.prototype.hasOwnProperty.call(t,e))switch(typeof t[e]){case"function":break;case"object":t[e]=function(e){var i=e.slice(1),n=t[e[0]];return function(t,e,r){n.apply(this,[t,e,r].concat(i))}}(t[e]);break;default:t[e]=t[t[e]]}return t}([function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});e.winPlotBand=function(t,e,i){return{id:t,from:e,to:i,color:"rgba(46, 136, 54, 0.2)",label:{style:{fontSize:"25px",fontWeight:"bold",color:"#2E8836"}}}},e.lossPlotBand=function(t,e,i){return{id:t,from:e,to:i,color:"rgba(204, 0, 51, 0.1)",label:{style:{fontSize:"25px",fontWeight:"bold",color:"#c03"}}}}},function(t,e,i){"use strict";(function(t){var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol?"symbol":typeof t};/**
+	!function(t,e){ true?module.exports=e(__webpack_require__(341)):"function"==typeof define&&define.amd?define(["react"],e):"object"==typeof exports?exports["binary-charts"]=e(require("react")):t["binary-charts"]=e(t.React)}(this,function(t){return function(t){function e(n){if(i[n])return i[n].exports;var r=i[n]={i:n,l:!1,exports:{}};return t[n].call(r.exports,r,r.exports,e),r.l=!0,r.exports}var i={};return e.m=t,e.c=i,e.i=function(t){return t},e.d=function(t,e,i){Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:i})},e.n=function(t){var i=t&&t.__esModule?function(){return t["default"]}:function(){return t};return e.d(i,"a",i),i},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=175)}(function(t){for(var e in t)if(Object.prototype.hasOwnProperty.call(t,e))switch(typeof t[e]){case"function":break;case"object":t[e]=function(e){var i=e.slice(1),n=t[e[0]];return function(t,e,r){n.apply(this,[t,e,r].concat(i))}}(t[e]);break;default:t[e]=t[t[e]]}return t}([function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});e.winPlotBand=function(t,e,i){return{id:t,from:e,to:i,color:"rgba(46, 136, 54, 0.2)",label:{style:{fontSize:"25px",fontWeight:"bold",color:"#2E8836"}}}},e.lossPlotBand=function(t,e,i){return{id:t,from:e,to:i,color:"rgba(204, 0, 51, 0.1)",label:{style:{fontSize:"25px",fontWeight:"bold",color:"#c03"}}}}},function(t,e,i){"use strict";(function(t){var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol?"symbol":typeof t};/**
 	 * @license Highstock JS v4.2.0 (2105-12-15)
 	 *
 	 * (c) 2009-2014 Torstein Honsi
@@ -23534,16 +23847,16 @@
 	}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(34),o=n(r);e["default"]=function(t,e){return e-((0,o["default"])()-t)%e}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(16),o=n(r),a=i(36),s=n(a);e["default"]=function(t,e,i){return(0,o["default"])(e,t)?(0,o["default"])(i,t)&&(0,s["default"])(i,e):!((0,o["default"])(i,e)&&(0,s["default"])(i,t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){var e=+t.slice(0,2),i=+t.slice(3,5);return 3600*e+60*i}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(5),o=n(r);e["default"]=function(){return(0,o["default"])(0)}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(4),o=n(r);e["default"]=function(){return(0,o["default"])(new Date)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(){return(new Date).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return new Date((new Date).setMonth((new Date).getMonth()+t))}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(4),o=n(r),a=i(17),s=n(a);e["default"]=function(){return(0,o["default"])(new Date(1e3*(0,s["default"])()))}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(17),o=n(r);e["default"]=function(){return new Date(1e3*(0,o["default"])()).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){document.addEventListener("fullscreenchange",function(){return t(document.fullscreen)}),document.addEventListener("webkitfullscreenchange",function(){return t(document.webkitIsFullScreen)}),document.addEventListener("mozfullscreenchange",function(){return t(document.mozFullScreen)}),document.addEventListener("MSFullscreenChange",function(){return t(document.msFullscreenElement)})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(){document.exitFullscreen?document.exitFullscreen():document.msExitFullscreen?document.msExitFullscreen():document.mozCancelFullScreen?document.mozCancelFullScreen():document.webkitExitFullscreen&&document.webkitExitFullscreen()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){document.removeEventListener("fullscreenchange",t),document.removeEventListener("webkitfullscreenchange",t),document.removeEventListener("mozfullscreenchange",t),document.removeEventListener("MSFullscreenChange",t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){t.requestFullscreen?t.requestFullscreen():t.msRequestFullscreen?t.msRequestFullscreen():t.mozRequestFullScreen?t.mozRequestFullScreen():t.webkitRequestFullscreen&&t.webkitRequestFullscreen()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]="undefined"!=typeof alert?alert:function(){}},129,function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(){"undefined"!=typeof window&&setTimeout(function(){return window.dispatchEvent(new Event("resize"))},100)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return{t:"Ticks",s:"Seconds",m:"Minutes",h:"Hours",d:"Days"}[t]}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(18),o=n(r);e["default"]=function(t,e){var i=t.filter(function(t){return t.contract_type===e}),n=i.filter(function(t){return!t.forward_starting_options});if(0!==n.length)return(0,o["default"])(n,e)}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var i=arguments[e];for(var n in i)Object.prototype.hasOwnProperty.call(i,n)&&(t[n]=i[n])}return t},o=i(31),a=n(o),s=i(9),l=n(s),u=i(18),c=n(u);e["default"]=function(t,e){var i=t.filter(function(t){return!!t.forward_starting_options&&t.contract_type===e});if(0!==i.length){if(i.length>1)throw new Error("Can not have more than one contract with forward starting options");var n=i[0].forward_starting_options,o=(0,l["default"])(n||[],"date"),s=[];Object.keys(o).sort(function(t,e){return+t-+e}).forEach(function(t){var e=o[t].map(function(t){var e=new Date(1e3*t.open),i=new Date(1e3*t.close);return{open:e,close:i}}),i=(0,a["default"])(e);s.push(r({date:new Date(1e3*t)},i))});var u=(0,c["default"])(i,e);return{range:s,options:u}}}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(40),o=n(r),a=i(8),s=n(a);e["default"]=function(t,e){return(0,o["default"])(e)||(0,s["default"])(t,e)<120}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e,i){var n=i.find(function(t){return t.unit===e});return!!n&&(t<=n.max&&t>=n.min)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i=function(){},n=function(t){return t||"undefined"!=typeof window&&window.ga||i};e.trackUserId=function(t,e){return n(e)("set","userId",t)},e.trackRoute=function(t,e){return n(e)("send","pageview",t)},e.trackEvent=function(t,e,i,r){return n(r)("send",{hitType:"event",eventCategory:t,eventAction:e,eventLabel:i})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return"rgba(42, 48, 82, "+t+")"}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t<0&&"number-negative"||t>0&&"number-positive"||""}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t.split(")").length>1?t.split(")")[1]:t}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i=0;e["default"]=function(){return i++}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(){return"undefined"!=typeof window&&/Mobile/.test(window.navigator.userAgent)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return/\S+@\S+\.\S+/.test(t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return/^[ -~]{6,25}$/.test(t)}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(41),o=n(r);e["default"]=function(t,e){return t.reduce(function(t,i){var n=(0,o["default"])(i.quote,e);return t[n]++,t},[0,0,0,0,0,0,0,0,0,0]).map(function(e){return t.length&&e/t.length*100})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return Math.pow(10,-t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){var e=t.toString();return e.includes(".")?e.split(".")[1].length:0}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t>0?"+"+t:t.toString()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){if(isNaN(t))return"0.01";var e=Array(t).join("0");return"0."+e+1}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return Math.abs(Math.log10(t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return(+t).toFixed(2)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e){return Object.keys(t).reduce(function(i,n){return e(t[n])&&(i[n]=t[n]),i},{})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol?"symbol":typeof t},n=function r(t,e){if("object"!==("undefined"==typeof t?"undefined":i(t))||null===t||void 0===t)return!1;var n=Object.keys(t).map(function(e){return t[e]}),o=n.map(function(t,i){return e(t,i)});if(o.indexOf(!0)>-1)return!0;var a=n.map(function(t){return r(t,e)});return a.indexOf(!0)>-1};e["default"]=n},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var i=e.toPlainJS=function(t){return t&&("undefined"==typeof t.toJS?t:t.toJS())};e["default"]=function(t){return t&&Object.keys(t).reduce(function(e,n){return e[n]=i(t[n]),e},{})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e){return t.length===e.length&&t.every(function(t,i){return t===e[i]})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e){var i=t.length,n=e.length;if(i!==n)return!1;if(0===i)return!0;var r=t[i-1],o=e[n-1];return r.epoch===o.epoch&&r.close===o.close}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t,e){return t.length===e.length&&(0===t.length||t[t.length-1].epoch===e[e.length-1].epoch)}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(42),o=n(r),a=i(19),s=n(a);e["default"]=function(t,e){return(0,s["default"])(t,e,o["default"])}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(43),o=n(r),a=i(19),s=n(a);e["default"]=function(t,e){return(0,s["default"])(t,e,o["default"])}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t&&(0===t.length?void 0:+t[t.length-1].close)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t&&t.length>0?t[t.length-1].quote:void 0}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t.times.map(function(e,i){return{epoch:+e,quote:+t.prices[i]}})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return[1e3*+(t.open_time||t.epoch),+t.open,+t.high,+t.low,+t.close]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t.map(function(t){return{quote:+t.open,epoch:+t.epoch}})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return[1e3*t.epoch,t.quote]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return t&&+t.ask_price}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return{callput:"Up/Down",risefall:"Rise/Fall",higherlower:"Higher/Lower",asian:"Asians",digits:"Digits",endsinout:"Ends In/Out",staysinout:"Stays In/Out",touchnotouch:"Touch/No Touch",spreads:"Spreads"}[t]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return{contract_id:"Contract ID",purchase_time:"Purchase Time",ask_price:"Ask Price",bid_price:"Bid Price",date_start:"Start Time",date_expiry:"Expiry Time",date_settlement:"Settlement Time",expiry_time:"Expiry Time",current_spot:"Current Spot",current_spot_time:"Current Spot Time",entry_spot:"Entry Spot",entry_tick_time:"Entry Spot Time",sell_price:"Sell Price",payout:"Potential Payout",buy_price:"Purchase Price",barrier:"Barrier",low_barrier:"Low Barrier",high_barrier:"High Barrier",sell_time:"Sell Time",exit_tick_time:"Exit Spot Time",exit_tick:"Exit Spot",sell_spot_time:"DO NOT USE",entry_tick:"DO NOT USE",sell_spot:"DO NOT USE"}[t]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=function(t){return{amountPerPoint:t[0].amount_per_point,stopType:t[0].stop_type,stopLoss:t[0].stop_loss,stopProfit:t[0].stop_profit}}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(8),o=n(r);e["default"]=function(t,e){return(0,o["default"])(t,e)<86400}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(9),o=n(r);e["default"]=function(t){var e=t.map(function(t){return{amount_per_point:t.amount_per_point,barrier:t.barrier,barriers:t.barriers,contract_category:t.contract_category,contract_category_display:t.contract_category_display,contract_display:t.contract_display,contract_type:t.contract_type,expiry_type:t.expiry_type,forward_starting_options:t.forward_starting_options,high_barrier:t.high_barrier,last_digit_range:t.last_digit_range,low_barrier:t.low_barrier,min_contract_duration:t.min_contract_duration,max_contract_duration:t.max_contract_duration,stop_type:t.stop_type,stop_loss:t.stop_loss,stop_profit:t.stop_profit}}),i=(0,o["default"])(e,"contract_category"),n=Object.keys(i);return n.forEach(function(t){var e=i[t],n=(0,o["default"])(e,"contract_type");i[t]=n}),i}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(44),o=n(r),a=i(45),s=n(a);e["default"]=function(t,e){return(0,o["default"])(t)+((0,s["default"])(t)?" "+e:"")}},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var r=i(10),o=n(r);e["default"]=function(t){return o["default"].find(function(e){return e.text===t}).value}},function(t,e){"use strict";function i(t,e){return t===e?0!==t||1/t===1/e:t!==t&&e!==e}function n(t,e){if(i(t,e))return!0;if("object"!=typeof t||null===t||"object"!=typeof e||null===e)return!1;var n=Object.keys(t),o=Object.keys(e);if(n.length!==o.length)return!1;for(var a=0;a<n.length;a++)if(!r.call(e,n[a])||!i(t[n[a]],e[n[a]]))return!1;return!0}var r=Object.prototype.hasOwnProperty;t.exports=n},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0}),e.BinaryChart=e.PlainChart=void 0;var r=i(47),o=n(r),a=i(46),s=n(a);e.PlainChart=o["default"],e.BinaryChart=s["default"]}]))});
 
 /***/ },
-/* 339 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(340);
+	module.exports = __webpack_require__(342);
 
 
 /***/ },
-/* 340 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -23559,26 +23872,26 @@
 	
 	'use strict';
 	
-	var _assign = __webpack_require__(341);
+	var _assign = __webpack_require__(343);
 	
-	var ReactChildren = __webpack_require__(342);
-	var ReactComponent = __webpack_require__(354);
-	var ReactPureComponent = __webpack_require__(357);
-	var ReactClass = __webpack_require__(358);
-	var ReactDOMFactories = __webpack_require__(363);
-	var ReactElement = __webpack_require__(346);
-	var ReactPropTypes = __webpack_require__(368);
-	var ReactVersion = __webpack_require__(369);
+	var ReactChildren = __webpack_require__(344);
+	var ReactComponent = __webpack_require__(356);
+	var ReactPureComponent = __webpack_require__(359);
+	var ReactClass = __webpack_require__(360);
+	var ReactDOMFactories = __webpack_require__(365);
+	var ReactElement = __webpack_require__(348);
+	var ReactPropTypes = __webpack_require__(370);
+	var ReactVersion = __webpack_require__(371);
 	
-	var onlyChild = __webpack_require__(370);
-	var warning = __webpack_require__(348);
+	var onlyChild = __webpack_require__(372);
+	var warning = __webpack_require__(350);
 	
 	var createElement = ReactElement.createElement;
 	var createFactory = ReactElement.createFactory;
 	var cloneElement = ReactElement.cloneElement;
 	
 	if (process.env.NODE_ENV !== 'production') {
-	  var ReactElementValidator = __webpack_require__(364);
+	  var ReactElementValidator = __webpack_require__(366);
 	  createElement = ReactElementValidator.createElement;
 	  createFactory = ReactElementValidator.createFactory;
 	  cloneElement = ReactElementValidator.cloneElement;
@@ -23638,7 +23951,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 341 */
+/* 343 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23727,7 +24040,7 @@
 
 
 /***/ },
-/* 342 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23743,11 +24056,11 @@
 	
 	'use strict';
 	
-	var PooledClass = __webpack_require__(343);
-	var ReactElement = __webpack_require__(346);
+	var PooledClass = __webpack_require__(345);
+	var ReactElement = __webpack_require__(348);
 	
-	var emptyFunction = __webpack_require__(349);
-	var traverseAllChildren = __webpack_require__(351);
+	var emptyFunction = __webpack_require__(351);
+	var traverseAllChildren = __webpack_require__(353);
 	
 	var twoArgumentPooler = PooledClass.twoArgumentPooler;
 	var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -23923,7 +24236,7 @@
 	module.exports = ReactChildren;
 
 /***/ },
-/* 343 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -23939,9 +24252,9 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var invariant = __webpack_require__(345);
+	var invariant = __webpack_require__(347);
 	
 	/**
 	 * Static poolers. Several custom versions for each potential number of
@@ -24050,7 +24363,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 344 */
+/* 346 */
 /***/ function(module, exports) {
 
 	/**
@@ -24094,7 +24407,7 @@
 	module.exports = reactProdInvariant;
 
 /***/ },
-/* 345 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24149,7 +24462,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 346 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24165,12 +24478,12 @@
 	
 	'use strict';
 	
-	var _assign = __webpack_require__(341);
+	var _assign = __webpack_require__(343);
 	
-	var ReactCurrentOwner = __webpack_require__(347);
+	var ReactCurrentOwner = __webpack_require__(349);
 	
-	var warning = __webpack_require__(348);
-	var canDefineProperty = __webpack_require__(350);
+	var warning = __webpack_require__(350);
+	var canDefineProperty = __webpack_require__(352);
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	
 	// The Symbol used to tag the ReactElement type. If there is no native Symbol
@@ -24503,7 +24816,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 347 */
+/* 349 */
 /***/ function(module, exports) {
 
 	/**
@@ -24539,7 +24852,7 @@
 	module.exports = ReactCurrentOwner;
 
 /***/ },
-/* 348 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24554,7 +24867,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(349);
+	var emptyFunction = __webpack_require__(351);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -24611,7 +24924,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 349 */
+/* 351 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -24654,7 +24967,7 @@
 	module.exports = emptyFunction;
 
 /***/ },
-/* 350 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24684,7 +24997,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 351 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24700,15 +25013,15 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactCurrentOwner = __webpack_require__(347);
-	var ReactElement = __webpack_require__(346);
+	var ReactCurrentOwner = __webpack_require__(349);
+	var ReactElement = __webpack_require__(348);
 	
-	var getIteratorFn = __webpack_require__(352);
-	var invariant = __webpack_require__(345);
-	var KeyEscapeUtils = __webpack_require__(353);
-	var warning = __webpack_require__(348);
+	var getIteratorFn = __webpack_require__(354);
+	var invariant = __webpack_require__(347);
+	var KeyEscapeUtils = __webpack_require__(355);
+	var warning = __webpack_require__(350);
 	
 	var SEPARATOR = '.';
 	var SUBSEPARATOR = ':';
@@ -24857,7 +25170,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 352 */
+/* 354 */
 /***/ function(module, exports) {
 
 	/**
@@ -24903,7 +25216,7 @@
 	module.exports = getIteratorFn;
 
 /***/ },
-/* 353 */
+/* 355 */
 /***/ function(module, exports) {
 
 	/**
@@ -24967,7 +25280,7 @@
 	module.exports = KeyEscapeUtils;
 
 /***/ },
-/* 354 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24983,14 +25296,14 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactNoopUpdateQueue = __webpack_require__(355);
+	var ReactNoopUpdateQueue = __webpack_require__(357);
 	
-	var canDefineProperty = __webpack_require__(350);
-	var emptyObject = __webpack_require__(356);
-	var invariant = __webpack_require__(345);
-	var warning = __webpack_require__(348);
+	var canDefineProperty = __webpack_require__(352);
+	var emptyObject = __webpack_require__(358);
+	var invariant = __webpack_require__(347);
+	var warning = __webpack_require__(350);
 	
 	/**
 	 * Base class helpers for the updating state of a component.
@@ -25091,7 +25404,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 355 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25107,7 +25420,7 @@
 	
 	'use strict';
 	
-	var warning = __webpack_require__(348);
+	var warning = __webpack_require__(350);
 	
 	function warnNoop(publicInstance, callerName) {
 	  if (process.env.NODE_ENV !== 'production') {
@@ -25193,7 +25506,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 356 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25218,7 +25531,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 357 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25234,12 +25547,12 @@
 	
 	'use strict';
 	
-	var _assign = __webpack_require__(341);
+	var _assign = __webpack_require__(343);
 	
-	var ReactComponent = __webpack_require__(354);
-	var ReactNoopUpdateQueue = __webpack_require__(355);
+	var ReactComponent = __webpack_require__(356);
+	var ReactNoopUpdateQueue = __webpack_require__(357);
 	
-	var emptyObject = __webpack_require__(356);
+	var emptyObject = __webpack_require__(358);
 	
 	/**
 	 * Base class helpers for the updating state of a component.
@@ -25265,7 +25578,7 @@
 	module.exports = ReactPureComponent;
 
 /***/ },
-/* 358 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25281,20 +25594,20 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344),
-	    _assign = __webpack_require__(341);
+	var _prodInvariant = __webpack_require__(346),
+	    _assign = __webpack_require__(343);
 	
-	var ReactComponent = __webpack_require__(354);
-	var ReactElement = __webpack_require__(346);
-	var ReactPropTypeLocations = __webpack_require__(359);
-	var ReactPropTypeLocationNames = __webpack_require__(361);
-	var ReactNoopUpdateQueue = __webpack_require__(355);
+	var ReactComponent = __webpack_require__(356);
+	var ReactElement = __webpack_require__(348);
+	var ReactPropTypeLocations = __webpack_require__(361);
+	var ReactPropTypeLocationNames = __webpack_require__(363);
+	var ReactNoopUpdateQueue = __webpack_require__(357);
 	
-	var emptyObject = __webpack_require__(356);
-	var invariant = __webpack_require__(345);
-	var keyMirror = __webpack_require__(360);
-	var keyOf = __webpack_require__(362);
-	var warning = __webpack_require__(348);
+	var emptyObject = __webpack_require__(358);
+	var invariant = __webpack_require__(347);
+	var keyMirror = __webpack_require__(362);
+	var keyOf = __webpack_require__(364);
+	var warning = __webpack_require__(350);
 	
 	var MIXINS_KEY = keyOf({ mixins: null });
 	
@@ -26003,7 +26316,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 359 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26019,7 +26332,7 @@
 	
 	'use strict';
 	
-	var keyMirror = __webpack_require__(360);
+	var keyMirror = __webpack_require__(362);
 	
 	var ReactPropTypeLocations = keyMirror({
 	  prop: null,
@@ -26030,7 +26343,7 @@
 	module.exports = ReactPropTypeLocations;
 
 /***/ },
-/* 360 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26046,7 +26359,7 @@
 	
 	'use strict';
 	
-	var invariant = __webpack_require__(345);
+	var invariant = __webpack_require__(347);
 	
 	/**
 	 * Constructs an enumeration with keys equal to their value.
@@ -26083,7 +26396,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 361 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26113,7 +26426,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 362 */
+/* 364 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26152,7 +26465,7 @@
 	module.exports = keyOf;
 
 /***/ },
-/* 363 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26168,7 +26481,7 @@
 	
 	'use strict';
 	
-	var ReactElement = __webpack_require__(346);
+	var ReactElement = __webpack_require__(348);
 	
 	/**
 	 * Create a factory that creates HTML tag elements.
@@ -26177,7 +26490,7 @@
 	 */
 	var createDOMFactory = ReactElement.createFactory;
 	if (process.env.NODE_ENV !== 'production') {
-	  var ReactElementValidator = __webpack_require__(364);
+	  var ReactElementValidator = __webpack_require__(366);
 	  createDOMFactory = ReactElementValidator.createFactory;
 	}
 	
@@ -26328,7 +26641,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 364 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26351,16 +26664,16 @@
 	
 	'use strict';
 	
-	var ReactCurrentOwner = __webpack_require__(347);
-	var ReactComponentTreeHook = __webpack_require__(365);
-	var ReactElement = __webpack_require__(346);
-	var ReactPropTypeLocations = __webpack_require__(359);
+	var ReactCurrentOwner = __webpack_require__(349);
+	var ReactComponentTreeHook = __webpack_require__(367);
+	var ReactElement = __webpack_require__(348);
+	var ReactPropTypeLocations = __webpack_require__(361);
 	
-	var checkReactTypeSpec = __webpack_require__(366);
+	var checkReactTypeSpec = __webpack_require__(368);
 	
-	var canDefineProperty = __webpack_require__(350);
-	var getIteratorFn = __webpack_require__(352);
-	var warning = __webpack_require__(348);
+	var canDefineProperty = __webpack_require__(352);
+	var getIteratorFn = __webpack_require__(354);
+	var warning = __webpack_require__(350);
 	
 	function getDeclarationErrorAddendum() {
 	  if (ReactCurrentOwner.current) {
@@ -26562,7 +26875,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 365 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26578,12 +26891,12 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactCurrentOwner = __webpack_require__(347);
+	var ReactCurrentOwner = __webpack_require__(349);
 	
-	var invariant = __webpack_require__(345);
-	var warning = __webpack_require__(348);
+	var invariant = __webpack_require__(347);
+	var warning = __webpack_require__(350);
 	
 	function isNative(fn) {
 	  // Based on isNative() from Lodash
@@ -26910,7 +27223,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 366 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26926,13 +27239,13 @@
 	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactPropTypeLocationNames = __webpack_require__(361);
-	var ReactPropTypesSecret = __webpack_require__(367);
+	var ReactPropTypeLocationNames = __webpack_require__(363);
+	var ReactPropTypesSecret = __webpack_require__(369);
 	
-	var invariant = __webpack_require__(345);
-	var warning = __webpack_require__(348);
+	var invariant = __webpack_require__(347);
+	var warning = __webpack_require__(350);
 	
 	var ReactComponentTreeHook;
 	
@@ -26942,7 +27255,7 @@
 	  // https://github.com/facebook/react/issues/7240
 	  // Remove the inline requires when we don't need them anymore:
 	  // https://github.com/facebook/react/pull/7178
-	  ReactComponentTreeHook = __webpack_require__(365);
+	  ReactComponentTreeHook = __webpack_require__(367);
 	}
 	
 	var loggedTypeFailures = {};
@@ -26984,7 +27297,7 @@
 	
 	        if (process.env.NODE_ENV !== 'production') {
 	          if (!ReactComponentTreeHook) {
-	            ReactComponentTreeHook = __webpack_require__(365);
+	            ReactComponentTreeHook = __webpack_require__(367);
 	          }
 	          if (debugID !== null) {
 	            componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -27003,7 +27316,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 367 */
+/* 369 */
 /***/ function(module, exports) {
 
 	/**
@@ -27024,7 +27337,7 @@
 	module.exports = ReactPropTypesSecret;
 
 /***/ },
-/* 368 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27040,13 +27353,13 @@
 	
 	'use strict';
 	
-	var ReactElement = __webpack_require__(346);
-	var ReactPropTypeLocationNames = __webpack_require__(361);
-	var ReactPropTypesSecret = __webpack_require__(367);
+	var ReactElement = __webpack_require__(348);
+	var ReactPropTypeLocationNames = __webpack_require__(363);
+	var ReactPropTypesSecret = __webpack_require__(369);
 	
-	var emptyFunction = __webpack_require__(349);
-	var getIteratorFn = __webpack_require__(352);
-	var warning = __webpack_require__(348);
+	var emptyFunction = __webpack_require__(351);
+	var getIteratorFn = __webpack_require__(354);
+	var warning = __webpack_require__(350);
 	
 	/**
 	 * Collection of methods that allow declaration and validation of props that are
@@ -27461,7 +27774,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 369 */
+/* 371 */
 /***/ function(module, exports) {
 
 	/**
@@ -27480,7 +27793,7 @@
 	module.exports = '15.3.2';
 
 /***/ },
-/* 370 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27495,11 +27808,11 @@
 	 */
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(344);
+	var _prodInvariant = __webpack_require__(346);
 	
-	var ReactElement = __webpack_require__(346);
+	var ReactElement = __webpack_require__(348);
 	
-	var invariant = __webpack_require__(345);
+	var invariant = __webpack_require__(347);
 	
 	/**
 	 * Returns the first child in a collection of children and verifies that there
@@ -27524,123 +27837,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(294)))
 
 /***/ },
-/* 371 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Logger = function () {
-	  function Logger() {
-	    _classCallCheck(this, Logger);
-	
-	    this.logQueue = [];
-	    this.debug = false;
-	    this.shown = [];
-	  }
-	
-	  _createClass(Logger, [{
-	    key: "isNew",
-	    value: function isNew(message) {
-	      var timestamp = parseInt(new Date().getTime() / 1000, 10);
-	      var index = this.shown.findIndex(function (e) {
-	        return e.message === message;
-	      });
-	      if (index >= 0) {
-	        var oldTimestamp = this.shown[index].timestamp;
-	        this.shown[index].timestamp = timestamp;
-	        if (timestamp - oldTimestamp >= 1) {
-	          return true;
-	        }
-	        return false;
-	      }
-	      this.shown.push({
-	        message: message,
-	        timestamp: timestamp
-	      });
-	      return true;
-	    }
-	  }, {
-	    key: "toggleDebug",
-	    value: function toggleDebug() {
-	      this.debug = !this.debug;
-	      if (this.debug) {
-	        var _iteratorNormalCompletion = true;
-	        var _didIteratorError = false;
-	        var _iteratorError = undefined;
-	
-	        try {
-	          for (var _iterator = this.logQueue[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	            var _console;
-	
-	            var log = _step.value;
-	
-	            (_console = console).log.apply(_console, _toConsumableArray(log)); // eslint-disable-line no-console
-	          }
-	        } catch (err) {
-	          _didIteratorError = true;
-	          _iteratorError = err;
-	        } finally {
-	          try {
-	            if (!_iteratorNormalCompletion && _iterator.return) {
-	              _iterator.return();
-	            }
-	          } finally {
-	            if (_didIteratorError) {
-	              throw _iteratorError;
-	            }
-	          }
-	        }
-	
-	        this.logQueue = [];
-	      }
-	    }
-	  }, {
-	    key: "addLogToQueue",
-	    value: function addLogToQueue() {
-	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
-	      }
-	
-	      this.logQueue.push(args);
-	    }
-	  }, {
-	    key: "isDebug",
-	    value: function isDebug() {
-	      return this.debug;
-	    }
-	  }, {
-	    key: "notify",
-	    value: function notify(message) {
-	      if (this.isNew(message)) {
-	        var _$;
-	
-	        for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-	          args[_key2 - 1] = arguments[_key2];
-	        }
-	
-	        (_$ = $).notify.apply(_$, [message].concat(args));
-	      }
-	    }
-	  }]);
-	
-	  return Logger;
-	}();
-	
-	exports.default = Logger;
-	var logger = exports.logger = new Logger();
-
-/***/ },
-/* 372 */
+/* 373 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27751,7 +27948,7 @@
 	exports.default = TradeInfo;
 
 /***/ },
-/* 373 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27762,29 +27959,25 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _filesaverjs = __webpack_require__(374);
+	var _filesaverjs = __webpack_require__(375);
 	
 	var _filesaverjs2 = _interopRequireDefault(_filesaverjs);
 	
-	var _observer = __webpack_require__(299);
+	var _observer = __webpack_require__(300);
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _bot = __webpack_require__(302);
+	var _bot = __webpack_require__(303);
 	
-	var _utils = __webpack_require__(377);
+	var _utils = __webpack_require__(378);
 	
-	var _code_generators = __webpack_require__(378);
+	var _blocks = __webpack_require__(379);
 	
-	var _code_generators2 = _interopRequireDefault(_code_generators);
-	
-	var _definitions = __webpack_require__(406);
-	
-	var _definitions2 = _interopRequireDefault(_definitions);
+	var _blocks2 = _interopRequireDefault(_blocks);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -27801,8 +27994,7 @@
 	    this.addBlocklyTranslation();
 	    this.initPromise = new Promise(function (resolve) {
 	      $.get('xml/toolbox.xml', function (toolbox) {
-	        (0, _code_generators2.default)();
-	        (0, _definitions2.default)();
+	        (0, _blocks2.default)();
 	        var workspace = Blockly.inject('blocklyDiv', {
 	          media: 'js/blockly/media/',
 	          toolbox: _this.xmlToStr(_translator.translator.translateXml($.parseXML(_this.marketsToXml(toolbox.getElementsByTagName('xml')[0])))),
@@ -27819,7 +28011,7 @@
 	          _this.overrideBlocklyDefaultShape();
 	          _this.zoomOnPlusMinus();
 	          Blockly.mainWorkspace.clearUndo();
-	          _utils.utils.addPurchaseOptions();
+	          (0, _utils.addPurchaseOptions)();
 	          resolve();
 	        });
 	      });
@@ -27848,7 +28040,7 @@
 	        for (var _iterator = Object.keys(obj)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	          var market = _step.value;
 	
-	          xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">\n';
+	          xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">';
 	          var _iteratorNormalCompletion2 = true;
 	          var _didIteratorError2 = false;
 	          var _iteratorError2 = undefined;
@@ -27857,7 +28049,7 @@
 	            for (var _iterator2 = Object.keys(obj[market].submarkets)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	              var submarket = _step2.value;
 	
-	              xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">\n';
+	              xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">';
 	              var _iteratorNormalCompletion3 = true;
 	              var _didIteratorError3 = false;
 	              var _iteratorError3 = undefined;
@@ -27866,7 +28058,7 @@
 	                for (var _iterator3 = Object.keys(obj[market].submarkets[submarket].symbols)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 	                  var symbol = _step3.value;
 	
-	                  xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>\n';
+	                  xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>';
 	                }
 	              } catch (err) {
 	                _didIteratorError3 = true;
@@ -27936,9 +28128,30 @@
 	  }, {
 	    key: 'disableDeleteForMainBlocks',
 	    value: function disableDeleteForMainBlocks() {
-	      _utils.utils.getBlockByType('trade').setDeletable(false);
-	      _utils.utils.getBlockByType('on_strategy').setDeletable(false);
-	      _utils.utils.getBlockByType('on_finish').setDeletable(false);
+	      var _iteratorNormalCompletion4 = true;
+	      var _didIteratorError4 = false;
+	      var _iteratorError4 = undefined;
+	
+	      try {
+	        for (var _iterator4 = _const2.default.mainBlocks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	          var blockType = _step4.value;
+	
+	          (0, _utils.getBlockByType)(blockType).setDeletable(false);
+	        }
+	      } catch (err) {
+	        _didIteratorError4 = true;
+	        _iteratorError4 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	            _iterator4.return();
+	          }
+	        } finally {
+	          if (_didIteratorError4) {
+	            throw _iteratorError4;
+	          }
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'overrideBlocklyDefaultShape',
@@ -27966,83 +28179,20 @@
 	  }, {
 	    key: 'addMissingMainBlocks',
 	    value: function addMissingMainBlocks() {
-	      var _iteratorNormalCompletion4 = true;
-	      var _didIteratorError4 = false;
-	      var _iteratorError4 = undefined;
-	
-	      try {
-	        for (var _iterator4 = _const2.default.mainBlocks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-	          var mainBlock = _step4.value;
-	
-	          if (mainBlock !== 'during_purchase') {
-	            if (!_utils.utils.getBlockByType(mainBlock)) {
-	              var block = Blockly.mainWorkspace.newBlock(mainBlock);
-	              block.initSvg();
-	              block.render();
-	              this.setBlockColors();
-	              block.setDeletable(false);
-	            }
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError4 = true;
-	        _iteratorError4 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-	            _iterator4.return();
-	          }
-	        } finally {
-	          if (_didIteratorError4) {
-	            throw _iteratorError4;
-	          }
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'reconfigureBlocklyAfterLoad',
-	    value: function reconfigureBlocklyAfterLoad() {
-	      this.addMissingMainBlocks();
-	      Blockly.mainWorkspace.clearUndo();
-	      this.setBlockColors();
-	      _utils.utils.addPurchaseOptions();
-	    }
-	  }, {
-	    key: 'loadBlocks',
-	    value: function loadBlocks(str) {
-	      if (str) {
-	        this.blocksXmlStr = str;
-	      }
-	      Blockly.mainWorkspace.clear();
-	      var xml = Blockly.Xml.textToDom(this.blocksXmlStr);
-	      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-	      this.reconfigureBlocklyAfterLoad();
-	    }
-	  }, {
-	    key: 'selectBlockByText',
-	    value: function selectBlockByText(text) {
-	      var returnVal = void 0;
-	      $('.blocklyText').each(function each() {
-	        if ($(this).text().indexOf(text) >= 0) {
-	          returnVal = $(this).parent()[0];
-	        }
-	      });
-	      return returnVal;
-	    }
-	  }, {
-	    key: 'setBlockColors',
-	    value: function setBlockColors() {
 	      var _iteratorNormalCompletion5 = true;
 	      var _didIteratorError5 = false;
 	      var _iteratorError5 = undefined;
 	
 	      try {
 	        for (var _iterator5 = _const2.default.mainBlocks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	          var blockType = _step5.value;
+	          var mainBlock = _step5.value;
 	
-	          var block = _utils.utils.getBlockByType(blockType);
-	          if (block) {
-	            block.getField().getSvgRoot().style.setProperty('fill', 'white', 'important');
+	          if (!(0, _utils.getBlockByType)(mainBlock)) {
+	            var block = Blockly.mainWorkspace.newBlock(mainBlock);
+	            block.initSvg();
+	            block.render();
+	            this.setBlockColors();
+	            block.setDeletable(false);
 	          }
 	        }
 	      } catch (err) {
@@ -28061,21 +28211,58 @@
 	      }
 	    }
 	  }, {
-	    key: 'saveXml',
-	    value: function saveXml() {
-	      var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+	    key: 'reconfigureBlocklyAfterLoad',
+	    value: function reconfigureBlocklyAfterLoad() {
+	      this.addMissingMainBlocks();
+	      Blockly.mainWorkspace.clearUndo();
+	      this.setBlockColors();
+	      (0, _utils.addPurchaseOptions)();
+	    }
+	  }, {
+	    key: 'loadBlocks',
+	    value: function loadBlocks(str) {
+	      if (str) {
+	        this.blocksXmlStr = str;
+	      }
+	      try {
+	        Blockly.mainWorkspace.clear();
+	        var xml = Blockly.Xml.textToDom(this.blocksXmlStr);
+	        Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+	        this.reconfigureBlocklyAfterLoad();
+	        _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
+	      } catch (e) {
+	        if (e.name === 'BlocklyError') {
+	          // pass
+	        } else {
+	          throw e;
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'selectBlockByText',
+	    value: function selectBlockByText(text) {
+	      var returnVal = void 0;
+	      $('.blocklyText').each(function each() {
+	        if ($(this).text().indexOf(text) >= 0) {
+	          returnVal = $(this).parent()[0];
+	        }
+	      });
+	      return returnVal;
+	    }
+	  }, {
+	    key: 'setBlockColors',
+	    value: function setBlockColors() {
 	      var _iteratorNormalCompletion6 = true;
 	      var _didIteratorError6 = false;
 	      var _iteratorError6 = undefined;
 	
 	      try {
-	        for (var _iterator6 = Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-	          var field = _step6.value;
+	        for (var _iterator6 = _const2.default.mainBlocks[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	          var blockType = _step6.value;
 	
-	          if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-	            if (field.childNodes.length >= 1) {
-	              field.childNodes[0].nodeValue = '';
-	            }
+	          var block = (0, _utils.getBlockByType)(blockType);
+	          if (block) {
+	            block.getField().getSvgRoot().style.setProperty('fill', 'white', 'important');
 	          }
 	        }
 	      } catch (err) {
@@ -28092,28 +28279,23 @@
 	          }
 	        }
 	      }
-	
-	      var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-	      var filename = 'binary-bot' + parseInt(new Date().getTime() / 1000, 10) + '.xml';
-	      var blob = new Blob([xmlText], {
-	        type: 'text/xml;charset=utf-8'
-	      });
-	      _filesaverjs2.default.saveAs(blob, filename);
 	    }
 	  }, {
-	    key: 'deleteStrayBlocks',
-	    value: function deleteStrayBlocks() {
-	      var topBlocks = Blockly.mainWorkspace.getTopBlocks();
+	    key: 'saveXml',
+	    value: function saveXml() {
+	      var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
 	      var _iteratorNormalCompletion7 = true;
 	      var _didIteratorError7 = false;
 	      var _iteratorError7 = undefined;
 	
 	      try {
-	        for (var _iterator7 = topBlocks[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-	          var block = _step7.value;
+	        for (var _iterator7 = Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+	          var field = _step7.value;
 	
-	          if (!_utils.utils.isMainBlock(block.type) && block !== _utils.utils.findTopParentBlock(_utils.utils.getBlockByType('trade')) && block.type.indexOf('procedures_def') < 0 && block.type !== 'block_holder') {
-	            block.dispose();
+	          if (field.getAttribute('name') === 'ACCOUNT_LIST') {
+	            if (field.childNodes.length >= 1) {
+	              field.childNodes[0].nodeValue = '';
+	            }
 	          }
 	        }
 	      } catch (err) {
@@ -28130,6 +28312,44 @@
 	          }
 	        }
 	      }
+	
+	      var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+	      var filename = 'binary-bot' + parseInt(new Date().getTime() / 1000, 10) + '.xml';
+	      var blob = new Blob([xmlText], {
+	        type: 'text/xml;charset=utf-8'
+	      });
+	      _filesaverjs2.default.saveAs(blob, filename);
+	    }
+	  }, {
+	    key: 'deleteStrayBlocks',
+	    value: function deleteStrayBlocks() {
+	      var topBlocks = Blockly.mainWorkspace.getTopBlocks();
+	      var _iteratorNormalCompletion8 = true;
+	      var _didIteratorError8 = false;
+	      var _iteratorError8 = undefined;
+	
+	      try {
+	        for (var _iterator8 = topBlocks[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+	          var block = _step8.value;
+	
+	          if (!(0, _utils.isMainBlock)(block.type) && block !== (0, _utils.findTopParentBlock)((0, _utils.getBlockByType)('trade')) && block.type.indexOf('procedures_def') < 0 && block.type !== 'block_holder') {
+	            block.dispose();
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError8 = true;
+	        _iteratorError8 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion8 && _iterator8.return) {
+	            _iterator8.return();
+	          }
+	        } finally {
+	          if (_didIteratorError8) {
+	            throw _iteratorError8;
+	          }
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'run',
@@ -28139,18 +28359,18 @@
 	        window.LoopTrap = 1000;
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
 	        this.deleteStrayBlocks();
-	        code = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n trade();';
+	        code = '\n        try {\n          ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n          trade();\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 	        this.generatedJs = code;
 	      } catch (e) {
-	        _observer.observer.emit('blockly.error', e);
+	        if (e.name === 'BlocklyError') {
+	          // pass
+	        } else {
+	          throw e;
+	        }
 	      }
 	      if (code) {
-	        try {
-	          eval(code); // eslint-disable-line no-eval
-	        } catch (e) {
-	          _observer.observer.emit('runtime.error', e);
-	        }
+	        eval(code); // eslint-disable-line no-eval
 	        $('#summaryPanel').show();
 	      }
 	    }
@@ -28158,7 +28378,7 @@
 	    key: 'addBlocklyTranslation',
 	    value: function addBlocklyTranslation() {
 	      $.ajaxPrefilter(function (options) {
-	        options.async = true;
+	        options.async = true; // eslint-disable-line no-param-reassign
 	      });
 	      var script = document.createElement('script');
 	      script.type = 'text/javascript';
@@ -28185,7 +28405,7 @@
 	exports.default = _Blockly;
 
 /***/ },
-/* 374 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* FileSaver.js
@@ -28463,7 +28683,7 @@
 	
 	if (typeof module !== "undefined" && module.exports) {
 	  module.exports.saveAs = saveAs;
-	} else if (("function" !== "undefined" && __webpack_require__(375) !== null) && (__webpack_require__(376) !== null)) {
+	} else if (("function" !== "undefined" && __webpack_require__(376) !== null) && (__webpack_require__(377) !== null)) {
 	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
 	    return saveAs;
 	  }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -28471,186 +28691,19 @@
 
 
 /***/ },
-/* 375 */
+/* 376 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 376 */
+/* 377 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
-
-/***/ },
-/* 377 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.utils = undefined;
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _const = __webpack_require__(306);
-	
-	var _const2 = _interopRequireDefault(_const);
-	
-	var _translator = __webpack_require__(307);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Utils = function () {
-	  function Utils() {
-	    _classCallCheck(this, Utils);
-	
-	    this.purchase_choices = [[_translator.translator.translateText('Click to select'), '']];
-	  }
-	
-	  _createClass(Utils, [{
-	    key: 'throwError',
-	    value: function throwError(message) {
-	      var error = new Error(message);
-	      error.blockly = true;
-	      throw error;
-	    }
-	  }, {
-	    key: 'isMainBlock',
-	    value: function isMainBlock(blockType) {
-	      return _const2.default.mainBlocks.indexOf(blockType) >= 0;
-	    }
-	  }, {
-	    key: 'getBlockByType',
-	    value: function getBlockByType(type) {
-	      var _iteratorNormalCompletion = true;
-	      var _didIteratorError = false;
-	      var _iteratorError = undefined;
-	
-	      try {
-	        for (var _iterator = Blockly.mainWorkspace.getAllBlocks()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	          var block = _step.value;
-	
-	          if (type === block.type) {
-	            return block;
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError = true;
-	        _iteratorError = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion && _iterator.return) {
-	            _iterator.return();
-	          }
-	        } finally {
-	          if (_didIteratorError) {
-	            throw _iteratorError;
-	          }
-	        }
-	      }
-	
-	      return null;
-	    }
-	  }, {
-	    key: 'getPurchaseChoices',
-	    value: function getPurchaseChoices() {
-	      return this.purchase_choices;
-	    }
-	  }, {
-	    key: 'findTopParentBlock',
-	    value: function findTopParentBlock(block) {
-	      var pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
-	      if (pblock === null) {
-	        return null;
-	      }
-	      while (pblock !== null) {
-	        if (pblock.type === 'trade') {
-	          return pblock;
-	        }
-	        block = pblock;
-	        pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
-	      }
-	      return block;
-	    }
-	  }, {
-	    key: 'addPurchaseOptions',
-	    value: function addPurchaseOptions() {
-	      var _this = this;
-	
-	      var firstOption = {};
-	      var secondOption = {};
-	      var trade = this.getBlockByType('trade');
-	      if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
-	        var conditionType = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
-	        var opposites = _const2.default.opposites[conditionType.toUpperCase()];
-	        this.purchase_choices = [];
-	        opposites.forEach(function (option, index) {
-	          if (index === 0) {
-	            firstOption = {
-	              condition: Object.keys(option)[0],
-	              name: option[Object.keys(option)[0]]
-	            };
-	          } else {
-	            secondOption = {
-	              condition: Object.keys(option)[0],
-	              name: option[Object.keys(option)[0]]
-	            };
-	          }
-	          _this.purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
-	        });
-	        var purchases = Blockly.mainWorkspace.getAllBlocks().filter(function (r) {
-	          return ['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0;
-	        });
-	        var _iteratorNormalCompletion2 = true;
-	        var _didIteratorError2 = false;
-	        var _iteratorError2 = undefined;
-	
-	        try {
-	          for (var _iterator2 = purchases[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	            var purchase = _step2.value;
-	
-	            var value = purchase.getField('PURCHASE_LIST').getValue();
-	            Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-	            if (value === firstOption.condition) {
-	              purchase.getField('PURCHASE_LIST').setText(firstOption.name);
-	            } else if (value === secondOption.condition) {
-	              purchase.getField('PURCHASE_LIST').setText(secondOption.name);
-	            } else {
-	              purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
-	              purchase.getField('PURCHASE_LIST').setText(firstOption.name);
-	            }
-	          }
-	        } catch (err) {
-	          _didIteratorError2 = true;
-	          _iteratorError2 = err;
-	        } finally {
-	          try {
-	            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	              _iterator2.return();
-	            }
-	          } finally {
-	            if (_didIteratorError2) {
-	              throw _iteratorError2;
-	            }
-	          }
-	        }
-	      }
-	    }
-	  }]);
-	
-	  return Utils;
-	}();
-	
-	exports.default = Utils;
-	var utils = exports.utils = new Utils();
 
 /***/ },
 /* 378 */
@@ -28659,26 +28712,157 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
+	exports.addPurchaseOptions = exports.findTopParentBlock = exports.getPurchaseChoices = exports.getBlockByType = exports.isMainBlock = undefined;
 	
-	__webpack_require__(379);
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	var _translator = __webpack_require__(308);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var purchaseChoices = [[_translator.translator.translateText('Click to select'), '']];
+	
+	var isMainBlock = exports.isMainBlock = function isMainBlock(blockType) {
+	  return _const2.default.mainBlocks.indexOf(blockType) >= 0;
+	};
+	
+	var getBlockByType = exports.getBlockByType = function getBlockByType(type) {
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+	
+	  try {
+	    for (var _iterator = Blockly.mainWorkspace.getAllBlocks()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var block = _step.value;
+	
+	      if (type === block.type) {
+	        return block;
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+	
+	  return null;
+	};
+	
+	var getPurchaseChoices = exports.getPurchaseChoices = function getPurchaseChoices() {
+	  return purchaseChoices;
+	};
+	
+	var findTopParentBlock = exports.findTopParentBlock = function findTopParentBlock(b) {
+	  var block = b;
+	  var pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
+	  if (pblock === null) {
+	    return null;
+	  }
+	  while (pblock !== null) {
+	    if (pblock.type === 'trade') {
+	      return pblock;
+	    }
+	    block = pblock;
+	    pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
+	  }
+	  return block;
+	};
+	
+	var addPurchaseOptions = exports.addPurchaseOptions = function addPurchaseOptions() {
+	  var firstOption = {};
+	  var secondOption = {};
+	  var trade = getBlockByType('trade');
+	  if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
+	    var conditionType = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
+	    var opposites = _const2.default.opposites[conditionType.toUpperCase()];
+	    purchaseChoices.length = 0;
+	    opposites.forEach(function (option, index) {
+	      if (index === 0) {
+	        firstOption = {
+	          condition: Object.keys(option)[0],
+	          name: option[Object.keys(option)[0]]
+	        };
+	      } else {
+	        secondOption = {
+	          condition: Object.keys(option)[0],
+	          name: option[Object.keys(option)[0]]
+	        };
+	      }
+	      purchaseChoices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+	    });
+	    var purchases = Blockly.mainWorkspace.getAllBlocks().filter(function (r) {
+	      return ['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0;
+	    });
+	    var _iteratorNormalCompletion2 = true;
+	    var _didIteratorError2 = false;
+	    var _iteratorError2 = undefined;
+	
+	    try {
+	      for (var _iterator2 = purchases[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	        var purchase = _step2.value;
+	
+	        var value = purchase.getField('PURCHASE_LIST').getValue();
+	        Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
+	        if (value === firstOption.condition) {
+	          purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+	        } else if (value === secondOption.condition) {
+	          purchase.getField('PURCHASE_LIST').setText(secondOption.name);
+	        } else {
+	          purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
+	          purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+	        }
+	      }
+	    } catch (err) {
+	      _didIteratorError2 = true;
+	      _iteratorError2 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	          _iterator2.return();
+	        }
+	      } finally {
+	        if (_didIteratorError2) {
+	          throw _iteratorError2;
+	        }
+	      }
+	    }
+	  }
+	};
+
+/***/ },
+/* 379 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
 	__webpack_require__(380);
 	
-	var _markets = __webpack_require__(381);
+	__webpack_require__(382);
+	
+	var _markets = __webpack_require__(383);
 	
 	var _markets2 = _interopRequireDefault(_markets);
 	
-	var _tradeTypes = __webpack_require__(382);
+	var _tradeTypes = __webpack_require__(384);
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
-	
-	__webpack_require__(383);
-	
-	__webpack_require__(384);
-	
-	__webpack_require__(385);
 	
 	__webpack_require__(386);
 	
@@ -28720,46 +28904,63 @@
 	
 	__webpack_require__(405);
 	
+	__webpack_require__(406);
+	
+	__webpack_require__(407);
+	
+	__webpack_require__(408);
+	
+	__webpack_require__(409);
+	
+	__webpack_require__(410);
+	
+	__webpack_require__(411);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function () {
-		(0, _markets2.default)();
-		(0, _tradeTypes2.default)();
-	};
-
-/***/ },
-/* 379 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _translator = __webpack_require__(307);
-	
-	Blockly.JavaScript.trade = function (block) {
-	  var account = $('#accountSelect').val();
-	  if (!account) {
-	    throw Error(_translator.translator.translateText('Please login.'));
-	  }
-	  var submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
-	  if (submarket === '') {
-	    throw Error(_translator.translator.translateText('You have to add a submarket first'));
-	  }
-	  // TODO: Assemble JavaScript into code variable.
-	  var code = 'function trade(again){\nBot.start(\'' + account.trim() + '\', ' + submarket.trim() + ', on_strategy, typeof during_purchase === \'undefined\' ? function(){} : during_purchase, on_finish, again);\n}';
-	  return code;
+	  (0, _markets2.default)();
+	  (0, _tradeTypes2.default)();
 	};
 
 /***/ },
 /* 380 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	Blockly.JavaScript.barrier_offset = function (block) {
-	  var barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-	  var barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = barrierOffsetType + Number(barrierOffset);
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	var _translator = __webpack_require__(308);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	var _error = __webpack_require__(336);
+	
+	Blockly.Blocks.trade = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('(1) Define your contract here'));
+	    this.appendStatementInput('SUBMARKET').setCheck('Submarket');
+	    this.setPreviousStatement(true, null);
+	    this.setColour('#2a3052');
+	    this.setTooltip(_translator.translator.translateText('Use this block to choose markets and trade types.')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.trade)(this, ev);
+	  }
+	};
+	
+	Blockly.JavaScript.trade = function (block) {
+	  var account = $('#accountSelect').val();
+	  if (!account) {
+	    return new _error.BlocklyError(_translator.translator.translateText('Please login.')).emit();
+	  }
+	  var submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+	  if (submarket === '') {
+	    return new _error.BlocklyError(_translator.translator.translateText('You have to add a submarket first')).emit();
+	  }
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = 'function trade(again){\n  Bot.start(\'' + account.trim() + '\', ' + submarket.trim() + ',\n  on_strategy, typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n  on_finish, again);\n}';
+	  return code;
 	};
 
 /***/ },
@@ -28771,515 +28972,21 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.insideFinish = exports.insideDuringPurchase = exports.insideStrategy = exports.insideCondition = exports.trade = exports.submarket = exports.condition = undefined;
 	
-	var _bot = __webpack_require__(302);
+	var _observer = __webpack_require__(300);
 	
-	var _translator = __webpack_require__(307);
+	var _tools = __webpack_require__(309);
 	
-	exports.default = function () {
-	  var symbolNames = _bot.bot.symbol.activeSymbols.getSymbolNames();
-	  var _iteratorNormalCompletion = true;
-	  var _didIteratorError = false;
-	  var _iteratorError = undefined;
-	
-	  try {
-	    var _loop = function _loop() {
-	      var symbol = _step.value;
-	
-	      Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
-	        var condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
-	        if (!condition) {
-	          throw Error(_translator.translator.translateText('A trade type has to be defined for the symbol'));
-	        }
-	        var code = condition.trim() + '\n symbol: \'' + symbol + '\'}';
-	        return code;
-	      };
-	    };
-	
-	    for (var _iterator = Object.keys(symbolNames)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	      _loop();
-	    }
-	  } catch (err) {
-	    _didIteratorError = true;
-	    _iteratorError = err;
-	  } finally {
-	    try {
-	      if (!_iteratorNormalCompletion && _iterator.return) {
-	        _iterator.return();
-	      }
-	    } finally {
-	      if (_didIteratorError) {
-	        throw _iteratorError;
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 382 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _translator = __webpack_require__(307);
+	var _bot = __webpack_require__(303);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _translator = __webpack_require__(308);
 	
-	exports.default = function () {
-	  var _iteratorNormalCompletion = true;
-	  var _didIteratorError = false;
-	  var _iteratorError = undefined;
-	
-	  try {
-	    var _loop = function _loop() {
-	      var opposites = _step.value;
-	
-	      Blockly.JavaScript[opposites.toLowerCase()] = function condition(block) {
-	        var duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
-	        var durationType = block.getFieldValue('DURATIONTYPE_LIST');
-	        var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
-	        var currency = block.getFieldValue('CURRENCY_LIST');
-	        var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
-	        var prediction = void 0;
-	        var barrierOffset = void 0;
-	        var secondBarrierOffset = void 0;
-	        if (_const2.default.hasPrediction.indexOf(opposites) > -1) {
-	          prediction = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
-	          if (prediction === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
-	          }
-	        }
-	        if (_const2.default.hasBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
-	          barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
-	          if (barrierOffset === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
-	          }
-	        }
-	        if (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
-	          secondBarrierOffset = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
-	          if (secondBarrierOffset === '') {
-	            throw Error(_translator.translator.translateText('All trade types are required'));
-	          }
-	        }
-	        if (opposites === '' || duration === '' || payouttype === '' || currency === '' || amount === '') {
-	          throw Error(_translator.translator.translateText('All trade types are required'));
-	        }
-	        var code = '{\n' + 'condition: \'' + opposites + '\',\n' + 'duration: ' + duration + ',\n' + 'duration_unit: \'' + durationType + '\',\n' + 'basis: \'' + payouttype + '\',\n' + 'currency: \'' + currency + '\',\n' + 'amount: (' + amount + ').toFixed(2),\n' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && prediction !== '' ? 'barrier: ' + prediction + ',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffset !== '' ? 'barrier: \'' + barrierOffset + '\',\n' : '') + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffset !== '' ? 'barrier2: \'' + secondBarrierOffset + '\',\n' : '');
-	        return code;
-	      };
-	    };
-	
-	    for (var _iterator = Object.keys(_const2.default.opposites)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	      _loop();
-	    }
-	  } catch (err) {
-	    _didIteratorError = true;
-	    _iteratorError = err;
-	  } finally {
-	    try {
-	      if (!_iteratorNormalCompletion && _iterator.return) {
-	        _iterator.return();
-	      }
-	    } finally {
-	      if (_didIteratorError) {
-	        throw _iteratorError;
-	      }
-	    }
-	  }
-	};
-
-/***/ },
-/* 383 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.balance = function (block) {
-	  var balanceType = block.getFieldValue('BALANCE_TYPE');
-	  var code = 'Bot.getBalance(\'' + balanceType + '\')';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 384 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.notify = function (block) {
-	  var notificationType = block.getFieldValue('NOTIFICATION_TYPE');
-	  var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = 'Bot.log( ' + message + ', \'' + notificationType + '\');\n';
-	  return code;
-	};
-
-/***/ },
-/* 385 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.total_profit = function () {
-	  return ['Bot.getTotalProfit()', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 386 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.total_runs = function () {
-	  return ['Bot.getTotalRuns()', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 387 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.check_direction = function (block) {
-	  var checkWith = block.getFieldValue('CHECK_DIRECTION');
-	  var code = '(ticks.direction === \'' + checkWith + '\')';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 388 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.direction = function () {
-	  return ['ticks.direction', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 389 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.purchase = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'purchaseCtrl.purchase(\'' + purchaseList + '\');\n';
-	  return code;
-	};
-
-/***/ },
-/* 390 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.payout = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').payout)';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 391 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.ask_price = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').ask_price)';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 392 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.on_strategy = function (block) {
-			var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
-			var code = 'function on_strategy(ticks, proposals, purchaseCtrl){\n\tif(purchaseCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
-			return code;
-	};
-
-/***/ },
-/* 393 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.tick = function () {
-	  return ['ticks.ticks.slice(-1)[0].quote', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 394 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.ticks = function () {
-	  return ['ticks.ticks.map(function(i){return i.quote;})', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 395 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.ohlc = function () {
-	  return ['ticks.ohlc', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 396 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.read_ohlc_obj = function (block) {
-	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
-	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = void 0;
-	  if (ohlcObj) {
-	    code = '((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
-	  } else {
-	    code = 'ticks.ohlc.slice(-1)[0].' + ohlcField;
-	  }
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 397 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.during_purchase = function (block) {
-			var stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
-			var code = 'function during_purchase(openProposal, purchaseCtrl){\n\tif(purchaseCtrl === null) return; \n\t' + stack + '\n\t}\n\t';
-			return code;
-	};
-
-/***/ },
-/* 398 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Blockly.JavaScript.sell_at_market = function () {
-	  return "purchaseCtrl.sellAtMarket();\n";
-	};
-
-/***/ },
-/* 399 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.contract_result = function () {
-	  return ['details[10]', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 400 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.contract_check_result = function (block) {
-	  var checkWith = block.getFieldValue('CHECK_RESULT');
-	  var code = '(details[10] === \'' + checkWith + '\')';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 401 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.contract_details = function () {
-	  return ['details', Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 402 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.on_finish = function (block) {
-	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-	  var code = 'function on_finish(_finishedContract, details){\n' + stack + '\nBot.stop();\n}\n';
-	  return code;
-	};
-
-/***/ },
-/* 403 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.read_details = function (block) {
-	  var detailIndex = block.getFieldValue('DETAIL_INDEX');
-	  var code = 'details[' + (parseInt(detailIndex.trim(), 10) - 1) + ']';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 404 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.trade_again = function () {
-	  return 'trade(true);\nreturn;\n';
-	};
-
-/***/ },
-/* 405 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Blockly.JavaScript.block_holder = function () {
-	  return '';
-	};
-
-/***/ },
-/* 406 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	__webpack_require__(407);
-	
-	__webpack_require__(409);
-	
-	var _markets = __webpack_require__(410);
-	
-	var _markets2 = _interopRequireDefault(_markets);
-	
-	var _tradeTypes = __webpack_require__(411);
-	
-	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
-	
-	__webpack_require__(413);
-	
-	__webpack_require__(414);
-	
-	__webpack_require__(415);
-	
-	__webpack_require__(416);
-	
-	__webpack_require__(417);
-	
-	__webpack_require__(418);
-	
-	__webpack_require__(419);
-	
-	__webpack_require__(420);
-	
-	__webpack_require__(421);
-	
-	__webpack_require__(422);
-	
-	__webpack_require__(423);
-	
-	__webpack_require__(424);
-	
-	__webpack_require__(425);
-	
-	__webpack_require__(426);
-	
-	__webpack_require__(427);
-	
-	__webpack_require__(428);
-	
-	__webpack_require__(429);
-	
-	__webpack_require__(430);
-	
-	__webpack_require__(431);
-	
-	__webpack_require__(432);
-	
-	__webpack_require__(433);
-	
-	__webpack_require__(434);
-	
-	__webpack_require__(435);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function () {
-		(0, _markets2.default)();
-		(0, _tradeTypes2.default)();
-	};
-
-/***/ },
-/* 407 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _translator = __webpack_require__(307);
-	
-	var _relationChecker = __webpack_require__(408);
-	
-	Blockly.Blocks.trade = {
-	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('(1) Define your contract here'));
-	    this.appendStatementInput('SUBMARKET').setCheck('Submarket');
-	    this.setPreviousStatement(true, null);
-	    this.setColour('#2a3052');
-	    this.setTooltip(_translator.translator.translateText('Use this block to choose markets and trade types.'));
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-	  onchange: function onchange(ev) {
-	    (0, _relationChecker.trade)(this, ev);
-	  }
-	};
-
-/***/ },
-/* 408 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.insideFinish = exports.insideStrategy = exports.insideCondition = exports.trade = exports.submarket = exports.condition = undefined;
-	
-	var _observer = __webpack_require__(299);
-	
-	var _tools = __webpack_require__(308);
-	
-	var _const = __webpack_require__(306);
-	
-	var _const2 = _interopRequireDefault(_const);
-	
-	var _bot = __webpack_require__(302);
-	
-	var _translator = __webpack_require__(307);
-	
-	var _utils = __webpack_require__(377);
+	var _utils = __webpack_require__(378);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29299,7 +29006,7 @@
 	  return '';
 	};
 	var insideHolder = function insideHolder(blockObj) {
-	  var parent = _utils.utils.findTopParentBlock(blockObj);
+	  var parent = (0, _utils.findTopParentBlock)(blockObj);
 	  if (parent !== null && parent.type === 'block_holder') {
 	    return true;
 	  }
@@ -29308,6 +29015,16 @@
 	var getListField = function getListField(block, fieldName) {
 	  return block.getFieldValue(fieldName);
 	};
+	var disable = function disable(blockObj) {
+	  Blockly.Events.recordUndo = false;
+	  blockObj.setDisabled(true);
+	  Blockly.Events.recordUndo = true;
+	};
+	var enable = function enable(blockObj) {
+	  Blockly.Events.recordUndo = false;
+	  blockObj.setDisabled(false);
+	  Blockly.Events.recordUndo = true;
+	};
 	var condition = exports.condition = function condition(blockObj, ev, calledByParent) {
 	  if (insideHolder(blockObj)) {
 	    return;
@@ -29315,12 +29032,12 @@
 	  if (blockObj.parentBlock_ !== null) {
 	    if (!_bot.bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
 	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    } else if (!_bot.bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
 	      var symbol = _bot.bot.symbol.findSymbol(blockObj.parentBlock_.type);
 	      _observer.observer.emit('ui.log.warn', symbol[Object.keys(symbol)[0]] + ' ' + _translator.translator.translateText('does not support category:') + (' ' + _bot.bot.symbol.getCategoryNameForCondition(blockObj.type)) + (', ' + _translator.translator.translateText('Allowed categories are')) + (' ' + _bot.bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	    _observer.observer.emit('tour:condition');
@@ -29382,7 +29099,7 @@
 	      }
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var submarket = exports.submarket = function submarket(blockObj, ev) {
 	  if (insideHolder(blockObj)) {
@@ -29420,11 +29137,11 @@
 	  if (blockObj.parentBlock_ !== null) {
 	    if (blockObj.parentBlock_.type !== 'trade') {
 	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Submarket blocks have to be added to the trade block'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var trade = exports.trade = function trade(blockObj, ev) {
 	  if (insideHolder(blockObj)) {
@@ -29477,80 +29194,94 @@
 	    submarket(blockObj.childBlocks_[0], ev);
 	    _observer.observer.emit('tour:submarket');
 	    if ('newInputName' in ev) {
-	      _utils.utils.addPurchaseOptions();
+	      (0, _utils.addPurchaseOptions)();
 	    }
 	  }
-	  var topParent = _utils.utils.findTopParentBlock(blockObj);
+	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
 	  if (topParent !== null) {
 	    if (_bot.bot.symbol.findSymbol(topParent.type) || ['on_strategy', 'on_finish'].indexOf(topParent.type) >= 0) {
 	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('The trade block cannot be inside binary blocks'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var insideCondition = exports.insideCondition = function insideCondition(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
 	    return;
 	  }
-	  var topParent = _utils.utils.findTopParentBlock(blockObj);
+	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
 	  if (topParent !== null) {
 	    if (_const2.default.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
 	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added to the condition block'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 	var insideStrategy = exports.insideStrategy = function insideStrategy(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
 	    return;
 	  }
-	  var topParent = _utils.utils.findTopParentBlock(blockObj);
+	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
 	  if (topParent !== null) {
 	    if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
 	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added inside the strategy block'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    } else if (blockObj.type === 'purchase') {
 	      _observer.observer.emit('tour:purchase');
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
+	};
+	var insideDuringPurchase = exports.insideDuringPurchase = function insideDuringPurchase(blockObj, ev, name) {
+	  if (insideHolder(blockObj)) {
+	    return;
+	  }
+	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
+	  if (topParent !== null) {
+	    if (topParent.type !== 'during_purchase' && !ev.oldParentId) {
+	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added inside the during purchase block'));
+	      disable(blockObj);
+	      return;
+	    }
+	  }
+	  enable(blockObj);
 	};
 	var insideFinish = exports.insideFinish = function insideFinish(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
 	    return;
 	  }
-	  var topParent = _utils.utils.findTopParentBlock(blockObj);
+	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
 	  if (topParent !== null) {
 	    if (topParent.type !== 'on_finish' && !ev.oldParentId) {
 	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added inside the finish block'));
-	      blockObj.setDisabled(true);
+	      disable(blockObj);
 	      return;
 	    }
 	    if (blockObj.type === 'trade_again') {
 	      _observer.observer.emit('tour:trade_again');
 	    }
 	  }
-	  blockObj.setDisabled(false);
+	  enable(blockObj);
 	};
 
 /***/ },
-/* 409 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29560,16 +29291,23 @@
 	    this.setInputsInline(false);
 	    this.setOutput(true, 'BarrierOffset');
 	    this.setColour('#dedede');
-	    this.setTooltip(_translator.translator.translateText('Add sign to a number to make a Barrier Offset.'));
+	    this.setTooltip(_translator.translator.translateText('Add sign to a number to make a Barrier Offset.')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideCondition)(this, ev, 'Barrier Offset');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
+	
+	Blockly.JavaScript.barrier_offset = function (block) {
+	  var barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
+	  var barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
+	  var code = '' + barrierOffsetType + barrierOffset;
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 410 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29578,12 +29316,15 @@
 	  value: true
 	});
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _bot = __webpack_require__(302);
+	var _bot = __webpack_require__(303);
 	
+	var _error = __webpack_require__(336);
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
 	exports.default = function () {
 	  var symbolNames = _bot.bot.symbol.activeSymbols.getSymbolNames();
 	  var _iteratorNormalCompletion = true;
@@ -29602,7 +29343,7 @@
 	          this.setInputsInline(false);
 	          this.setPreviousStatement(true, 'Submarket');
 	          this.setColour('#f2f2f2');
-	          this.setTooltip(_translator.translator.translateText('Chooses the symbol:') + ' ' + symbolNames[symbol]);
+	          this.setTooltip(_translator.translator.translateText('Chooses the symbol:') + ' ' + symbolNames[symbol]); // eslint-disable-line max-len
 	          this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	        },
 	        onchange: function onchange(ev) {
@@ -29628,10 +29369,46 @@
 	      }
 	    }
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
+	
+	  var _iteratorNormalCompletion2 = true;
+	  var _didIteratorError2 = false;
+	  var _iteratorError2 = undefined;
+	
+	  try {
+	    var _loop2 = function _loop2() {
+	      var symbol = _step2.value;
+	
+	      Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
+	        var condition = Blockly.JavaScript.statementToCode(block, 'CONDITION');
+	        if (!condition) {
+	          return new _error.BlocklyError(_translator.translator.translateText('A trade type has to be defined for the symbol')).emit();
+	        }
+	        var code = condition.trim() + '\n      symbol: \'' + symbol + '\'}';
+	        return code;
+	      };
+	    };
+	
+	    for (var _iterator2 = Object.keys(symbolNames)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	      _loop2();
+	    }
+	  } catch (err) {
+	    _didIteratorError2 = true;
+	    _iteratorError2 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	        _iterator2.return();
+	      }
+	    } finally {
+	      if (_didIteratorError2) {
+	        throw _iteratorError2;
+	      }
+	    }
+	  }
+	};
 
 /***/ },
-/* 411 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29640,19 +29417,19 @@
 	  value: true
 	});
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _components = __webpack_require__(412);
+	var _components = __webpack_require__(385);
+	
+	var _error = __webpack_require__(336);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#orvwcx
 	
 	exports.default = function () {
 	  var _iteratorNormalCompletion = true;
@@ -29666,33 +29443,34 @@
 	      Blockly.Blocks[opposites.toLowerCase()] = {
 	        init: function init() {
 	          var optionNames = [];
-	          var _iteratorNormalCompletion2 = true;
-	          var _didIteratorError2 = false;
-	          var _iteratorError2 = undefined;
+	          var _iteratorNormalCompletion3 = true;
+	          var _didIteratorError3 = false;
+	          var _iteratorError3 = undefined;
 	
 	          try {
-	            for (var _iterator2 = _const2.default.opposites[opposites][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	              var options = _step2.value;
+	            for (var _iterator3 = _const2.default.opposites[opposites][Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	              var options = _step3.value;
 	
 	              var optionName = options[Object.keys(options)[0]];
 	              optionNames.push(optionName);
 	            }
 	          } catch (err) {
-	            _didIteratorError2 = true;
-	            _iteratorError2 = err;
+	            _didIteratorError3 = true;
+	            _iteratorError3 = err;
 	          } finally {
 	            try {
-	              if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	                _iterator2.return();
+	              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                _iterator3.return();
 	              }
 	            } finally {
-	              if (_didIteratorError2) {
-	                throw _iteratorError2;
+	              if (_didIteratorError3) {
+	                throw _iteratorError3;
 	              }
 	            }
 	          }
 	
 	          (0, _components.title)(this, opposites, optionNames);
+	          (0, _components.candleInterval)(this);
 	          (0, _components.duration)(this, opposites);
 	          (0, _components.payout)(this, opposites);
 	          if (_const2.default.hasPrediction.indexOf(opposites) > -1) {
@@ -29735,10 +29513,73 @@
 	      }
 	    }
 	  }
-	};
+	
+	  var _iteratorNormalCompletion2 = true;
+	  var _didIteratorError2 = false;
+	  var _iteratorError2 = undefined;
+	
+	  try {
+	    var _loop2 = function _loop2() {
+	      var opposites = _step2.value;
+	
+	      Blockly.JavaScript[opposites.toLowerCase()] = function tradeType(block) {
+	        // eslint-disable-line no-loop-func, max-len
+	        var durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
+	        var candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST');
+	        var durationType = block.getFieldValue('DURATIONTYPE_LIST');
+	        var payouttype = block.getFieldValue('PAYOUTTYPE_LIST');
+	        var currency = block.getFieldValue('CURRENCY_LIST');
+	        var amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
+	        var predictionValue = void 0;
+	        var barrierOffsetValue = void 0;
+	        var secondBarrierOffsetValue = void 0;
+	        if (_const2.default.hasPrediction.indexOf(opposites) > -1) {
+	          predictionValue = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
+	          if (predictionValue === '') {
+	            return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
+	          }
+	        }
+	        if (_const2.default.hasBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
+	          barrierOffsetValue = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
+	          if (barrierOffsetValue === '') {
+	            return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
+	          }
+	        }
+	        if (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1) {
+	          secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC);
+	          if (secondBarrierOffsetValue === '') {
+	            return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
+	          }
+	        }
+	        if (opposites === '' || durationValue === '' || payouttype === '' || currency === '' || amount === '') {
+	          return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
+	        }
+	        var code = '{\n      condition: \'' + opposites + '\',\n      candleInterval: \'' + candleIntervalValue + '\',\n      duration: ' + durationValue + ',\n      duration_unit: \'' + durationType + '\',\n      basis: \'' + payouttype + '\',\n      currency: \'' + currency + '\',\n      amount: ' + amount + ',\n      ' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'barrier: ' + predictionValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrier: \'' + barrierOffsetValue + '\',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'barrier2: \'' + secondBarrierOffsetValue + '\',' : '');
+	        return code;
+	      };
+	    };
+	
+	    for (var _iterator2 = Object.keys(_const2.default.opposites)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	      _loop2();
+	    }
+	  } catch (err) {
+	    _didIteratorError2 = true;
+	    _iteratorError2 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	        _iterator2.return();
+	      }
+	    } finally {
+	      if (_didIteratorError2) {
+	        throw _iteratorError2;
+	      }
+	    }
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#orvwcx
 
 /***/ },
-/* 412 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29747,19 +29588,20 @@
 	  value: true
 	});
 	exports.title = title;
+	exports.candleInterval = candleInterval;
 	exports.duration = duration;
 	exports.payout = payout;
 	exports.barrierOffset = barrierOffset;
 	exports.secondBarrierOffset = secondBarrierOffset;
 	exports.prediction = prediction;
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _bot = __webpack_require__(302);
+	var _bot = __webpack_require__(303);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29768,8 +29610,12 @@
 	  block.appendDummyInput().appendField('> ' + optionNames[0] + '/' + optionNames[1]);
 	}
 	
+	function candleInterval(block) {
+	  block.appendDummyInput().appendField(_translator.translator.translateText('Candle Interval:')).appendField(new Blockly.FieldDropdown(_const2.default.candleIntervals), 'CANDLEINTERVAL_LIST');
+	}
+	
 	function duration(block, opposites) {
-	  block.appendValueInput('DURATION').setCheck('Number').appendField('Duration:').appendField(new Blockly.FieldDropdown(_const2.default.durationTypes[opposites]), 'DURATIONTYPE_LIST');
+	  block.appendValueInput('DURATION').setCheck('Number').appendField(_translator.translator.translateText('Duration:')).appendField(new Blockly.FieldDropdown(_const2.default.durationTypes[opposites]), 'DURATIONTYPE_LIST');
 	}
 	
 	function payout(block) {
@@ -29778,10 +29624,11 @@
 	}
 	
 	function barrierOffset(block, opposites, name) {
-	  if (!name) {
-	    name = _translator.translator.translateText('Barrier Offset:');
+	  var fieldName = _translator.translator.translateText('Barrier Offset:');
+	  if (name) {
+	    fieldName = name;
 	  }
-	  block.appendValueInput('BARRIEROFFSET').setCheck('BarrierOffset').appendField(name);
+	  block.appendValueInput('BARRIEROFFSET').setCheck('BarrierOffset').appendField(fieldName);
 	}
 	
 	function secondBarrierOffset(block) {
@@ -29793,89 +29640,122 @@
 	}
 
 /***/ },
-/* 413 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 	Blockly.Blocks.balance = {
 	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('Balance:')).appendField(new Blockly.FieldDropdown([[_translator.translator.translateText('string'), 'STR'], [_translator.translator.translateText('number'), 'NUM']]), 'BALANCE_TYPE');
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Balance:')).appendField(new Blockly.FieldDropdown(_const2.default.lists.BALANCE_TYPE), 'BALANCE_TYPE');
 	    this.setOutput(true, null);
 	    this.setColour('#dedede');
-	    this.setTooltip(_translator.translator.translateText('Get balance number or string'));
+	    this.setTooltip(_translator.translator.translateText('Get balance number or string')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
+	};
+	Blockly.JavaScript.balance = function (block) {
+	  var balanceType = block.getFieldValue('BALANCE_TYPE');
+	  var code = 'Bot.getBalance(\'' + balanceType + '\')';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 414 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
 	Blockly.Blocks.notify = {
 	  init: function init() {
-	    this.appendValueInput('MESSAGE').setCheck(null).appendField(_translator.translator.translateText('Notify type:')).appendField(new Blockly.FieldDropdown([[_translator.translator.translateText('success'), 'success'], [_translator.translator.translateText('information'), 'info'], [_translator.translator.translateText('warning'), 'warn'], [_translator.translator.translateText('error'), 'error']]), 'NOTIFICATION_TYPE');
+	    this.appendValueInput('MESSAGE').setCheck(null).appendField(_translator.translator.translateText('Notify')).appendField(new Blockly.FieldDropdown(_const2.default.lists.NOTIFICATION_TYPE), 'NOTIFICATION_TYPE');
 	    this.setPreviousStatement(true, null);
 	    this.setNextStatement(true, null);
 	    this.setColour('#dedede');
-	    this.setTooltip(_translator.translator.translateText('Creates notification'));
+	    this.setTooltip(_translator.translator.translateText('Creates notification')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
+	};
+	Blockly.JavaScript.notify = function (block) {
+	  var notificationType = block.getFieldValue('NOTIFICATION_TYPE');
+	  var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
+	  var code = 'Bot.log(' + message + ', \'' + notificationType + '\');\n';
+	  return code;
+	};
 
 /***/ },
-/* 415 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.total_profit = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Total Profit'));
 	    this.setOutput(true, 'Number');
 	    this.setColour('#dedede');
-	    this.setTooltip(_translator.translator.translateText('Returns the total profit'));
+	    this.setTooltip(_translator.translator.translateText('Returns the total profit')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
+	
+	Blockly.JavaScript.total_profit = function () {
+	  return ['Bot.getTotalProfit()', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 416 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.total_runs = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('No. Of Runs'));
 	    this.setOutput(true, 'Number');
 	    this.setColour('#dedede');
-	    this.setTooltip(_translator.translator.translateText('Returns the number of runs since the beginning'));
+	    this.setTooltip(_translator.translator.translateText('Returns the number of runs since the beginning')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
+	
+	Blockly.JavaScript.total_runs = function () {
+	  return ['Bot.getTotalRuns()', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 417 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
@@ -29886,23 +29766,28 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Direction is')).appendField(new Blockly.FieldDropdown(_const2.default.lists.CHECK_DIRECTION), 'CHECK_DIRECTION');
 	    this.setOutput(true, 'Boolean');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('True if the direction matches the selection'));
+	    this.setTooltip(_translator.translator.translateText('True if the direction matches the selection')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Check Direction');
 	  }
 	};
+	Blockly.JavaScript.check_direction = function (block) {
+	  var checkWith = block.getFieldValue('CHECK_DIRECTION');
+	  var code = '(ticks.direction === \'' + checkWith + '\')';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 418 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 	Blockly.Blocks.direction = {
@@ -29910,122 +29795,150 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Tick Direction'));
 	    this.setOutput(true, 'String');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Returns the tick direction received by a strategy block, \n\t\tits value could be \'up\' if the tick is more than before, \'down\' if less than before \n\t\t\tand empty (\'\') if the tick is equal to the previous tick'));
+	    this.setTooltip(_translator.translator.translateText("Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick")); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Tick Direction');
 	  }
 	};
+	
+	Blockly.JavaScript.direction = function () {
+	  return ['ticks.direction', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 419 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _utils = __webpack_require__(377);
+	var _utils = __webpack_require__(378);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.purchase = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Purchase')).appendField(new Blockly.FieldDropdown(function () {
-	      return _utils.utils.getPurchaseChoices();
+	      return (0, _utils.getPurchaseChoices)();
 	    }), 'PURCHASE_LIST');
 	    this.setPreviousStatement(true, 'Purchase');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Purchases a chosen contract.'));
+	    this.setTooltip(_translator.translator.translateText('Purchases a chosen contract.')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Purchase');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.purchase = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'purchaseCtrl.purchase(\'' + purchaseList + '\');\n';
+	  return code;
+	};
 
 /***/ },
-/* 420 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _utils = __webpack_require__(377);
+	var _utils = __webpack_require__(378);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.ask_price = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Ask Price')).appendField(new Blockly.FieldDropdown(function () {
-	      return _utils.utils.getPurchaseChoices();
+	      return (0, _utils.getPurchaseChoices)();
 	    }), 'PURCHASE_LIST');
 	    this.setOutput(true, 'Number');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Ask Price for selected proposal'));
+	    this.setTooltip(_translator.translator.translateText('Ask Price for selected proposal')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Ask Price');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.ask_price = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').ask_price)';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 421 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _utils = __webpack_require__(377);
+	var _utils = __webpack_require__(378);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.payout = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Payout')).appendField(new Blockly.FieldDropdown(function () {
-	      return _utils.utils.getPurchaseChoices();
+	      return (0, _utils.getPurchaseChoices)();
 	    }), 'PURCHASE_LIST');
 	    this.setOutput(true, 'Number');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Payout for selected proposal'));
+	    this.setTooltip(_translator.translator.translateText('Payout for selected proposal')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Payout');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.payout = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').payout)';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 422 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.on_strategy = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('(2) things to do before purchase is made'));
 	    this.appendStatementInput('STRATEGY_STACK').setCheck('Purchase');
 	    this.setColour('#2a3052');
-	    this.setTooltip(_translator.translator.translateText('This block decides what to do each time a new tick is received'));
+	    this.setTooltip(_translator.translator.translateText('This block decides what to do each time a new tick is received')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
+	
+	Blockly.JavaScript.on_strategy = function (block) {
+	  var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
+	  var code = 'function on_strategy(ticks, proposals, purchaseCtrl){\n    if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
+	  return code;
+	};
 
 /***/ },
-/* 423 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 	Blockly.Blocks.tick = {
@@ -30033,23 +29946,26 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Last Tick'));
 	    this.setOutput(true, 'Number');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Returns the tick value received by a strategy block'));
+	    this.setTooltip(_translator.translator.translateText('Returns the tick value received by a strategy block')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Tick Value');
 	  }
 	};
+	Blockly.JavaScript.tick = function () {
+	  return ['ticks.ticks.slice(-1)[0].quote', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 424 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 	Blockly.Blocks.ticks = {
@@ -30057,23 +29973,26 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Ticks List'));
 	    this.setOutput(true, 'Array');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Returns the list of tick values'));
+	    this.setTooltip(_translator.translator.translateText('Returns the list of tick values')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Ticks List');
 	  }
 	};
+	Blockly.JavaScript.ticks = function () {
+	  return ['ticks.ticks.map(function(i){return i.quote;})', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 425 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 	Blockly.Blocks.ohlc = {
@@ -30081,27 +30000,30 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Candles List'));
 	    this.setOutput(true, 'Array');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Returns the ohlc list'));
+	    this.setTooltip(_translator.translator.translateText('Returns the ohlc list')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Candles List');
 	  }
 	};
+	Blockly.JavaScript.ohlc = function () {
+	  return ['ticks.ohlc', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 426 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30109,61 +30031,190 @@
 	  init: function init() {
 	    this.appendValueInput('OHLCOBJ').setCheck(null).appendField('Read').appendField(new Blockly.FieldDropdown(_const2.default.ohlcFields), 'OHLCFIELD_LIST').appendField('in Candles');
 	    this.setInputsInline(false);
-	    this.setOutput(true, null);
+	    this.setOutput(true, 'Number');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Read a field from a candle (received from Candles list)'));
+	    this.setTooltip(_translator.translator.translateText('Read a field from a candle (received from Candles list)')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideStrategy)(this, ev, 'Candles');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
+	
+	Blockly.JavaScript.read_ohlc_obj = function (block) {
+	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
+	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
+	  var code = void 0;
+	  if (ohlcObj) {
+	    code = 'Bot.expectOhlc((' + ohlcObj + ' instanceof Array)? ' + ohlcObj + '.slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
+	  } else {
+	    code = 'Bot.expectOhlc(ticks.ohlc.slice(-1)[0]).' + ohlcField;
+	  }
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 427 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	var _translator = __webpack_require__(308);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	Blockly.Blocks.read_ohlc = {
+	  init: function init() {
+	    this.appendValueInput('CANDLEINDEX').setCheck('Number').appendField(_translator.translator.translateText('Read')).appendField(new Blockly.FieldDropdown(_const2.default.ohlcFields), 'OHLCFIELD_LIST').appendField('# ' + _translator.translator.translateText('latest'));
+	    this.setOutput(true, 'Number');
+	    this.setInputsInline(true);
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('Read a field from a candle selected by index from the last candle, 1 as the latest and 2 as the candle before that.')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideStrategy)(this, ev, 'Candle');
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
+	
+	
+	Blockly.JavaScript.read_ohlc = function (block) {
+	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
+	  var index = Number(Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC));
+	  var code = void 0;
+	  if (isNaN(index) || index < 1) {
+	    index = 1;
+	  }
+	  if (index === 1) {
+	    code = '(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1)[0]).' + ohlcField + ')';
+	  } else {
+	    code = '(Bot.expectNonEmptyArray(ticks.ohlc.slice(-1*' + index + ', -1*' + (index - 1) + ')[0]).' + ohlcField + ')';
+	  }
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 401 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.during_purchase = {
 	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('(2.5) things to do when trade is in progress'));
+	    this.appendDummyInput().appendField(_translator.translator.translateText('(3) things to do when trade is in progress'));
 	    this.appendStatementInput('DURING_PURCHASE_STACK').setCheck('SellAtMarket');
 	    this.setColour('#2a3052');
-	    this.setTooltip(_translator.translator.translateText('Sell at market before a trade is finished'));
+	    this.setTooltip(_translator.translator.translateText('Sell at market before a trade is finished')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
+	
+	Blockly.JavaScript.during_purchase = function (block) {
+	  var stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
+	  var code = 'function during_purchase(openContract, purchaseCtrl){\n  if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
+	  return code;
+	};
 
 /***/ },
-/* 428 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
+	var _relationChecker = __webpack_require__(381);
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 	Blockly.Blocks.sell_at_market = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Sell at market'));
 	    this.setPreviousStatement(true, 'SellAtMarket');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Sell at market.'));
+	    this.setTooltip(_translator.translator.translateText('Sell at market.')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideDuringPurchase)(this, ev, _translator.translator.translateText('Sell at market'));
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	};
+	Blockly.JavaScript.sell_at_market = function () {
+	  return 'purchaseCtrl.sellAtMarket();\n';
+	};
 
 /***/ },
-/* 429 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
+	Blockly.Blocks.check_sell = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Sell is available'));
+	    this.setOutput(true, 'Boolean');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('True if sell at market is available')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideDuringPurchase)(this, ev, _translator.translator.translateText('Sell is available'));
+	  }
+	};
+	
+	Blockly.JavaScript.check_sell = function () {
+	  var code = '(purchaseCtrl.isSellAvailable())';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 404 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(308);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	Blockly.Blocks.sell_price = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Sell profit/loss'));
+	    this.setOutput(true, 'Number');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('Returns the profit for sell at market.')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideDuringPurchase)(this, ev, _translator.translator.translateText('Sell profit/loss'));
+	  }
+	};
+	Blockly.JavaScript.sell_price = function () {
+	  var code = '(+(Number(openContract.bid_price) - Number(openContract.buy_price)).toFixed(2))';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 405 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(308);
+	
+	var _relationChecker = __webpack_require__(381);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
 	Blockly.Blocks.contract_result = {
@@ -30171,27 +30222,31 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Contract Result'));
 	    this.setOutput(true, 'String');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Returns the result of the finished contract'));
+	    this.setTooltip(_translator.translator.translateText('Returns the result of the finished contract')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideFinish)(this, ev, 'Contract Result');
 	  }
 	};
+	
+	Blockly.JavaScript.contract_result = function () {
+	  return ['details[10]', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 430 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30200,23 +30255,28 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Result is')).appendField(new Blockly.FieldDropdown(_const2.default.lists.CHECK_RESULT), 'CHECK_RESULT');
 	    this.setOutput(true, 'Boolean');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('True if the result matches the selection'));
+	    this.setTooltip(_translator.translator.translateText('True if the result matches the selection')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideFinish)(this, ev, 'Check Result');
 	  }
 	};
+	Blockly.JavaScript.contract_check_result = function (block) {
+	  var checkWith = block.getFieldValue('CHECK_RESULT');
+	  var code = '(details[10] === \'' + checkWith + '\')';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 431 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xq4ajc
 	Blockly.Blocks.contract_details = {
@@ -30224,43 +30284,52 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Contract Details'));
 	    this.setOutput(true, 'Array');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Returns the list of details for the finished contract'));
+	    this.setTooltip(_translator.translator.translateText('Returns the list of details for the finished contract')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideFinish)(this, ev, 'Contract Details');
 	  }
 	};
+	Blockly.JavaScript.contract_details = function () {
+	  return ['details', Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 432 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.on_finish = {
 	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('(3) things to do after purchase is finished'));
+	    this.appendDummyInput().appendField(_translator.translator.translateText('(4) things to do after purchase is finished'));
 	    this.appendStatementInput('FINISH_STACK').setCheck('TradeAgain');
 	    this.setColour('#2a3052');
-	    this.setTooltip(_translator.translator.translateText('This block decides what to do when a purchased contract is finished'));
+	    this.setTooltip(_translator.translator.translateText('This block decides what to do when a purchased contract is finished')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
+	
+	Blockly.JavaScript.on_finish = function (block) {
+	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
+	  var code = 'function on_finish(_finishedContract, details){\n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n    Bot.stop();\n  }\n  ';
+	  return code;
+	};
 
 /***/ },
-/* 433 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
-	var _const = __webpack_require__(306);
+	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
@@ -30271,23 +30340,29 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Contract Detail:')).appendField(new Blockly.FieldDropdown(_const2.default.lists.DETAILS), 'DETAIL_INDEX');
 	    this.setOutput(true, null);
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Reads a selected option from contract details list'));
+	    this.setTooltip(_translator.translator.translateText('Reads a selected option from contract details list')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideFinish)(this, ev, 'Read Contract Details');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
+	
+	Blockly.JavaScript.read_details = function (block) {
+	  var detailIndex = block.getFieldValue('DETAIL_INDEX');
+	  var code = 'details[' + (parseInt(detailIndex.trim(), 10) - 1) + ']';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
 
 /***/ },
-/* 434 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(408);
+	var _relationChecker = __webpack_require__(381);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
 	Blockly.Blocks.trade_again = {
@@ -30295,34 +30370,41 @@
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Trade Again'));
 	    this.setPreviousStatement(true, 'TradeAgain');
 	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Runs the trade block again'));
+	    this.setTooltip(_translator.translator.translateText('Runs the trade block again')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
 	    (0, _relationChecker.insideFinish)(this, ev, 'Trade Again');
 	  }
 	};
+	Blockly.JavaScript.trade_again = function () {
+	  return 'trade(true);\nreturn;\n';
+	};
 
 /***/ },
-/* 435 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	Blockly.Blocks.block_holder = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('Blocks in here have no effect!'));
 	    this.appendStatementInput('USELESS_STACK').setCheck(null);
 	    this.setColour('#fef1cf');
-	    this.setTooltip(_translator.translator.translateText('Put your blocks in here to prevent them from being removed'));
+	    this.setTooltip(_translator.translator.translateText('Put your blocks in here to prevent them from being removed')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
 	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
+	
+	Blockly.JavaScript.block_holder = function () {
+	  return '';
+	};
 
 /***/ },
-/* 436 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30331,14 +30413,14 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint-disable no-underscore-dangle, max-len, object-shorthand */
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint-disable no-underscore-dangle, max-len, object-shorthand, prefer-template */
 	
 	
-	var _observer = __webpack_require__(299);
+	var _observer = __webpack_require__(300);
 	
-	var _components = __webpack_require__(437);
+	var _components = __webpack_require__(413);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -30802,7 +30884,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 437 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30812,7 +30894,7 @@
 	});
 	exports.setOpacity = exports.setOpacityForAll = exports.getUiComponent = undefined;
 	
-	var _utils = __webpack_require__(377);
+	var _utils = __webpack_require__(378);
 	
 	var uiComponents = {
 	  accountSelect: '#accountSelect',
@@ -30836,8 +30918,8 @@
 	var doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
 	
 	var getUiComponent = exports.getUiComponent = function getUiComponent(component) {
-	  if (_utils.utils.isMainBlock(component)) {
-	    return $(_utils.utils.getBlockByType(component).getSvgRoot());
+	  if ((0, _utils.isMainBlock)(component)) {
+	    return $((0, _utils.getBlockByType)(component).getSvgRoot());
 	  }
 	  return $(uiComponents[component]);
 	};
@@ -30884,243 +30966,390 @@
 	};
 
 /***/ },
-/* 438 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint-disable no-underscore-dangle */
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint-disable no-underscore-dangle, max-len */
 	
 	
-	var _storageManager = __webpack_require__(300);
+	var _storageManager = __webpack_require__(301);
 	
-	var _components = __webpack_require__(437);
+	var _components = __webpack_require__(413);
 	
-	var _translator = __webpack_require__(307);
+	var _translator = __webpack_require__(308);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var Welcome = function () {
-		function Welcome() {
-			_classCallCheck(this, Welcome);
+	  function Welcome() {
+	    _classCallCheck(this, Welcome);
 	
-			this.tour = null;
-			this.stopCallback = null;
-		}
+	    this.tour = null;
+	    this.stopCallback = null;
+	  }
 	
-		_createClass(Welcome, [{
-			key: 'getSteps',
-			value: function getSteps() {
-				return [{
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('Welcome to the binary bot') + ',\n\t\t\t' + _translator.translator.translateText('a blockly based automation tool for binary.com trades') + '.\n\t\t\t' + _translator.translator.translateText('Skip this tutorial by clicking on the <b>X</b> button') + '.\n\t\t\t' + _translator.translator.translateText('Skip each step by <b>Right Arrow (') + ' &rarr;\n\t\t\t' + _translator.translator.translateText(')</b> on the keyboard.') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('center'),
-					closeButton: true,
-					nextButton: true,
-					my: 'top center',
-					at: 'bottom center',
-					setup: function setup() {
-						$('#blocker').show();
-						(0, _components.setOpacityForAll)(0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('The blocks you put in here will create a binary bot code.') + '\n\t\t\t' + _translator.translator.translateText('You can then execute using the run button.') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('center'),
-					closeButton: true,
-					nextButton: true,
-					my: 'top center',
-					at: 'bottom center',
-					setup: function setup() {
-						(0, _components.setOpacity)('workspace', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('workspace', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('You can pick blocks from here to add to the workspace') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('toolbox'),
-					closeButton: true,
-					nextButton: true,
-					highlightTarget: true,
-					my: 'left center',
-					at: 'right center',
-					setup: function setup() {
-						(0, _components.setOpacity)('toolbox', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('toolbox', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('Press Ctrl + -/+ to zoom out/in the blocks') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('center'),
-					closeButton: true,
-					nextButton: true,
-					my: 'top center',
-					at: 'bottom center',
-					setup: function setup() {
-						(0, _components.setOpacity)('workspace', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('workspace', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('You need to login before running the bot.') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('login_logout'),
-					closeButton: true,
-					nextButton: true,
-					highlightTarget: true,
-					my: 'top center',
-					at: 'bottom center',
-					setup: function setup() {
-						(0, _components.setOpacity)('intro_login_logout', 1);
-						(0, _components.setOpacity)('login_logout', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('intro_login_logout', 0.3);
-						(0, _components.setOpacity)('login_logout', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('Use these buttons to save/load your blocks') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('group_save'),
-					closeButton: true,
-					nextButton: true,
-					highlightTarget: true,
-					my: 'right center',
-					at: 'left center',
-					setup: function setup() {
-						(0, _components.setOpacity)('group_save', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('group_save', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('Use these buttons to Undo/Redo changes to your blocks.') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('group_undo_redo'),
-					closeButton: true,
-					nextButton: true,
-					highlightTarget: true,
-					my: 'right center',
-					at: 'left center',
-					setup: function setup() {
-						(0, _components.setOpacity)('group_undo_redo', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('group_undo_redo', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('Open the summary panel.') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('group_summary'),
-					closeButton: true,
-					nextButton: true,
-					highlightTarget: true,
-					my: 'right center',
-					at: 'left center',
-					setup: function setup() {
-						(0, _components.setOpacity)('group_summary', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('group_summary', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('Reset the blocks to their initial state.') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('group_reset'),
-					closeButton: true,
-					nextButton: true,
-					highlightTarget: true,
-					my: 'right center',
-					at: 'left center',
-					setup: function setup() {
-						(0, _components.setOpacity)('group_reset', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('group_reset', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('Use the run/stop buttons in this menu to run or stop your blocks.') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('group_start_stop'),
-					closeButton: true,
-					nextButton: true,
-					highlightTarget: true,
-					my: 'right center',
-					at: 'left center',
-					setup: function setup() {
-						(0, _components.setOpacity)('group_start_stop', 1);
-					},
-					teardown: function teardown() {
-						(0, _components.setOpacity)('group_start_stop', 0.3);
-					}
-				}, {
-					content: '<p>\n\t\t\t' + _translator.translator.translateText('Good Luck!') + '\n\t\t\t</p>',
-					target: (0, _components.getUiComponent)('center'),
-					nextButton: true,
-					highlightTarget: true,
-					my: 'top center',
-					at: 'bottom center'
-				}];
-			}
-		}, {
-			key: 'next',
-			value: function next() {
-				if (this.tour) {
-					this.tour.next();
-				}
-			}
-		}, {
-			key: 'start',
-			value: function start(stopCallback) {
-				var _this = this;
+	  _createClass(Welcome, [{
+	    key: 'getSteps',
+	    value: function getSteps() {
+	      return [{
+	        content: '<p>\n      ' + _translator.translator.translateText('Welcome to the binary bot') + ',\n      ' + _translator.translator.translateText('a blockly based automation tool for binary.com trades') + '.\n      ' + _translator.translator.translateText('Skip this tutorial by clicking on the <b>X</b> button') + '.\n      ' + _translator.translator.translateText('Skip each step by <b>Right Arrow (') + ' &rarr;\n      ' + _translator.translator.translateText(')</b> on the keyboard.') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('center'),
+	        closeButton: true,
+	        nextButton: true,
+	        my: 'top center',
+	        at: 'bottom center',
+	        setup: function setup() {
+	          $('#blocker').show();
+	          (0, _components.setOpacityForAll)(0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('The blocks you put in here will create a binary bot code.') + '\n      ' + _translator.translator.translateText('You can then execute using the run button.') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('center'),
+	        closeButton: true,
+	        nextButton: true,
+	        my: 'top center',
+	        at: 'bottom center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('workspace', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('workspace', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('You can pick blocks from here to add to the workspace') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('toolbox'),
+	        closeButton: true,
+	        nextButton: true,
+	        highlightTarget: true,
+	        my: 'left center',
+	        at: 'right center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('toolbox', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('toolbox', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('Press Ctrl + -/+ to zoom out/in the blocks') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('center'),
+	        closeButton: true,
+	        nextButton: true,
+	        my: 'top center',
+	        at: 'bottom center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('workspace', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('workspace', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('You need to login before running the bot.') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('login_logout'),
+	        closeButton: true,
+	        nextButton: true,
+	        highlightTarget: true,
+	        my: 'top center',
+	        at: 'bottom center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('intro_login_logout', 1);
+	          (0, _components.setOpacity)('login_logout', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('intro_login_logout', 0.3);
+	          (0, _components.setOpacity)('login_logout', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('Use these buttons to save/load your blocks') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('group_save'),
+	        closeButton: true,
+	        nextButton: true,
+	        highlightTarget: true,
+	        my: 'right center',
+	        at: 'left center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('group_save', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('group_save', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('Use these buttons to Undo/Redo changes to your blocks.') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('group_undo_redo'),
+	        closeButton: true,
+	        nextButton: true,
+	        highlightTarget: true,
+	        my: 'right center',
+	        at: 'left center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('group_undo_redo', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('group_undo_redo', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('Open the summary panel.') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('group_summary'),
+	        closeButton: true,
+	        nextButton: true,
+	        highlightTarget: true,
+	        my: 'right center',
+	        at: 'left center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('group_summary', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('group_summary', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('Reset the blocks to their initial state.') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('group_reset'),
+	        closeButton: true,
+	        nextButton: true,
+	        highlightTarget: true,
+	        my: 'right center',
+	        at: 'left center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('group_reset', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('group_reset', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('Use the run/stop buttons in this menu to run or stop your blocks.') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('group_start_stop'),
+	        closeButton: true,
+	        nextButton: true,
+	        highlightTarget: true,
+	        my: 'right center',
+	        at: 'left center',
+	        setup: function setup() {
+	          (0, _components.setOpacity)('group_start_stop', 1);
+	        },
+	        teardown: function teardown() {
+	          (0, _components.setOpacity)('group_start_stop', 0.3);
+	        }
+	      }, {
+	        content: '<p>\n      ' + _translator.translator.translateText('Good Luck!') + '\n      </p>',
+	        target: (0, _components.getUiComponent)('center'),
+	        nextButton: true,
+	        highlightTarget: true,
+	        my: 'top center',
+	        at: 'bottom center'
+	      }];
+	    }
+	  }, {
+	    key: 'next',
+	    value: function next() {
+	      if (this.tour) {
+	        this.tour.next();
+	      }
+	    }
+	  }, {
+	    key: 'start',
+	    value: function start(stopCallback) {
+	      var _this = this;
 	
-				this.stopCallback = stopCallback;
-				this.tour = new Tourist.Tour({
-					steps: this.getSteps(),
-					cancelStep: function cancelStep() {
-						_this.tour._teardownCurrentStep = function () {};
-						$('#blocker').hide();
-						(0, _components.setOpacityForAll)(1);
-						(0, _storageManager.setDone)('welcomeFinished');
-						_this.stop();
-					},
-					successStep: function successStep() {
-						$('#blocker').hide();
-						(0, _components.setOpacityForAll)(1);
-						(0, _storageManager.setDone)('welcomeFinished');
-						_this.stop();
-					}
-				});
-				this.tour.start();
-			}
-		}, {
-			key: 'welcome',
-			value: function welcome(stopCallback) {
-				if (!(0, _storageManager.isDone)('welcomeFinished')) {
-					this.start(stopCallback);
-				} else if (stopCallback) {
-					stopCallback();
-				}
-			}
-		}, {
-			key: 'stop',
-			value: function stop() {
-				(0, _components.setOpacityForAll)(true, 1);
-				this.tour.stop();
-				Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
-				delete this.tour;
-				if (this.stopCallback) {
-					this.stopCallback();
-				}
-			}
-		}]);
+	      this.stopCallback = stopCallback;
+	      this.tour = new Tourist.Tour({
+	        steps: this.getSteps(),
+	        cancelStep: function cancelStep() {
+	          _this.tour._teardownCurrentStep = function () {};
+	          $('#blocker').hide();
+	          (0, _components.setOpacityForAll)(1);
+	          (0, _storageManager.setDone)('welcomeFinished');
+	          _this.stop();
+	        },
+	        successStep: function successStep() {
+	          $('#blocker').hide();
+	          (0, _components.setOpacityForAll)(1);
+	          (0, _storageManager.setDone)('welcomeFinished');
+	          _this.stop();
+	        }
+	      });
+	      this.tour.start();
+	    }
+	  }, {
+	    key: 'welcome',
+	    value: function welcome(stopCallback) {
+	      if (!(0, _storageManager.isDone)('welcomeFinished')) {
+	        this.start(stopCallback);
+	      } else if (stopCallback) {
+	        stopCallback();
+	      }
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      (0, _components.setOpacityForAll)(true, 1);
+	      this.tour.stop();
+	      Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+	      delete this.tour;
+	      if (this.stopCallback) {
+	        this.stopCallback();
+	      }
+	    }
+	  }]);
 	
-		return Welcome;
+	  return Welcome;
 	}();
 	
 	exports.default = Welcome;
 
 /***/ },
-/* 439 */
+/* 415 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.logHandler = exports.notifyError = undefined;
+	
+	var _observer = __webpack_require__(300);
+	
+	var shown = [];
+	
+	var isNew = function isNew(message) {
+	  var timestamp = parseInt(new Date().getTime() / 1000, 10);
+	  var index = shown.findIndex(function (e) {
+	    return e.message === message;
+	  });
+	  if (index >= 0) {
+	    var oldTimestamp = shown[index].timestamp;
+	    shown[index].timestamp = timestamp;
+	    if (timestamp - oldTimestamp >= 1) {
+	      return true;
+	    }
+	    return false;
+	  }
+	  shown.push({
+	    message: message,
+	    timestamp: timestamp
+	  });
+	  return true;
+	};
+	
+	var notify = function notify(message) {
+	  for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	    args[_key - 1] = arguments[_key];
+	  }
+	
+	  if (isNew(message)) {
+	    var _$;
+	
+	    (_$ = $).notify.apply(_$, [message].concat(args));
+	  }
+	};
+	
+	var notifyError = exports.notifyError = function notifyError(error) {
+	  var message = error.error ? error.error.message : error.message || error;
+	  notify(message, {
+	    position: 'bottom right',
+	    className: 'error'
+	  });
+	  console.warn(message); // eslint-disable-line no-console
+	  return message;
+	};
+	
+	var logHandler = exports.logHandler = function logHandler() {
+	  // catch known errors and log them
+	  var _arr = ['api.error', 'BlocklyError', 'RuntimeError'];
+	
+	  var _loop = function _loop() {
+	    var errorType = _arr[_i];
+	    _observer.observer.register(errorType, function (error) {
+	      // eslint-disable-line no-loop-func
+	      var message = notifyError(error);
+	      amplitude.getInstance().logEvent(errorType, {
+	        message: message
+	      });
+	    });
+	  };
+	
+	  for (var _i = 0; _i < _arr.length; _i++) {
+	    _loop();
+	  }
+	
+	  var observeForLog = function observeForLog(type, position) {
+	    var subtype = position === 'left' ? '.left' : '';
+	    _observer.observer.register('ui.log.' + type + subtype, function (message) {
+	      if (type === 'warn') {
+	        console.warn(message); // eslint-disable-line no-console
+	      } else {
+	        console.log(message); // eslint-disable-line no-console
+	      }
+	      if (position === 'left') {
+	        $.notify(message, {
+	          position: 'bottom ' + position,
+	          className: type
+	        });
+	      } else {
+	        notify(message, {
+	          position: 'bottom ' + position,
+	          className: type
+	        });
+	      }
+	    });
+	  };
+	
+	  var _arr2 = ['success', 'info', 'warn', 'error'];
+	  for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
+	    var type = _arr2[_i2];
+	    observeForLog(type, 'right');
+	    observeForLog(type, 'left');
+	  }
+	
+	  var _arr3 = ['log.bot.start', 'log.bot.login', 'log.bot.proposal', 'log.bot.stop', 'log.strategy.start', 'log.strategy.purchase', 'log.strategy.win', 'log.strategy.loss', 'log.trade.purchase', 'log.trade.finish'];
+	
+	  var _loop2 = function _loop2() {
+	    var event = _arr3[_i3];
+	    _observer.observer.register(event, function (d) {
+	      return console.log(event, d);
+	    }); // eslint-disable-line no-console
+	  };
+	
+	  for (var _i3 = 0; _i3 < _arr3.length; _i3++) {
+	    _loop2();
+	  }
+	
+	  var _arr4 = ['log.bot.login', 'log.trade.finish'];
+	
+	  var _loop3 = function _loop3() {
+	    var event = _arr4[_i4];
+	    _observer.observer.register(event, function (d) {
+	      return amplitude.getInstance().logEvent(event, d);
+	    });
+	  };
+	
+	  for (var _i4 = 0; _i4 < _arr4.length; _i4++) {
+	    _loop3();
+	  }
+	
+	  _observer.observer.register('log.revenue', function (data) {
+	    var user = data.user;
+	    var profit = data.profit;
+	    var contract = data.contract;
+	
+	    if (typeof amplitude !== 'undefined') {
+	      if (!user.isVirtual) {
+	        var revenue = new amplitude.Revenue().setProductId(contract.underlying + '.' + contract.contract_type).setPrice(-profit).setRevenueType(profit < 0 ? 'loss' : 'win');
+	        amplitude.getInstance().logRevenueV2(revenue, {
+	          contract: contract
+	        });
+	      }
+	    }
+	  });
+	};
+
+/***/ },
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31227,11 +31456,11 @@
 	exports.setAppId = setAppId;
 	exports.oauthLogin = oauthLogin;
 	
-	var _tools = __webpack_require__(308);
+	var _tools = __webpack_require__(309);
 	
-	var _account = __webpack_require__(335);
+	var _account = __webpack_require__(338);
 	
-	var _storageManager = __webpack_require__(300);
+	var _storageManager = __webpack_require__(301);
 	
 	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 	
@@ -31272,7 +31501,7 @@
 	}
 
 /***/ },
-/* 440 */
+/* 417 */
 /***/ function(module, exports) {
 
 	// COPYRIGHT (c) 2016 TrackJS LLC ALL RIGHTS RESERVED
