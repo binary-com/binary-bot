@@ -8,7 +8,7 @@ import { bot } from './bot';
 import View from './view';
 import { setAppId } from '../common/appId';
 import { notifyError } from './view/logger';
-import { expectNonEmptyArray, expectOhlc } from '../common/expect';
+import { expectNonEmptyArray, expectOhlc, expectTick } from '../common/expect';
 
 setAppId();
 $.ajaxSetup({
@@ -31,6 +31,7 @@ class BotPage {
     window.Bot = {
       expectNonEmptyArray,
       expectOhlc,
+      expectTick,
       addBlockByMagic: (blockType) => {
         const dp = Blockly.mainWorkspace.newBlock(blockType);
         dp.initSvg();
