@@ -26,10 +26,10 @@ Blockly.JavaScript.read_ohlc_obj = (block) => {
   const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
   let code;
   if (ohlcObj) {
-    code = `Bot.expectOhlc((${ohlcObj} instanceof Array)? Bot.expectNonEmptyArray(${
+    code = `Bot.expect.ohlc((${ohlcObj} instanceof Array)? Bot.expect.notEmptyArray(${
     ohlcObj}).slice(-1)[0] : ${ohlcObj}).${ohlcField}`;
   } else {
-    code = `Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1)[0]).${ohlcField}`;
+    code = `Bot.expect.ohlc(Bot.expect.notEmptyArray(ticks.ohlc).slice(-1)[0]).${ohlcField}`;
   }
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
