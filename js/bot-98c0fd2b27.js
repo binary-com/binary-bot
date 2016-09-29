@@ -8157,11 +8157,17 @@
 	
 	var _view2 = _interopRequireDefault(_view);
 	
-	var _appId = __webpack_require__(417);
+	var _appId = __webpack_require__(420);
 	
-	var _logger = __webpack_require__(416);
+	var _logger = __webpack_require__(419);
 	
 	var _expect = __webpack_require__(335);
+	
+	var _expect2 = _interopRequireDefault(_expect);
+	
+	var _math = __webpack_require__(421);
+	
+	var _math2 = _interopRequireDefault(_math);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8182,7 +8188,7 @@
 	  }
 	};
 	
-	__webpack_require__(418);
+	__webpack_require__(541);
 	
 	var BotPage = function BotPage() {
 	  var _this = this;
@@ -8190,9 +8196,8 @@
 	  _classCallCheck(this, BotPage);
 	
 	  window.Bot = {
-	    expectNonEmptyArray: _expect.expectNonEmptyArray,
-	    expectOhlc: _expect.expectOhlc,
-	    expectTick: _expect.expectTick,
+	    expect: _expect2.default,
+	    math: _math2.default,
 	    addBlockByMagic: function addBlockByMagic(blockType) {
 	      var dp = Blockly.mainWorkspace.newBlock(blockType);
 	      dp.initSvg();
@@ -9115,16 +9120,16 @@
 	    currency: tradeOption.currency,
 	    symbol: tradeOption.symbol
 	  }, otherOptions);
-	  option.duration = (0, _expect.expectNumber)('duration', tradeOption.duration, _error.RuntimeError);
-	  option.amount = (0, _expect.expectNumber)('amount', tradeOption.amount, _error.RuntimeError).toFixed(2);
+	  option.duration = (0, _expect.number)('duration', tradeOption.duration, _error.RuntimeError);
+	  option.amount = (0, _expect.number)('amount', tradeOption.amount, _error.RuntimeError).toFixed(2);
 	  if ('prediction' in tradeOption) {
-	    option.barrier = (0, _expect.expectNumber)('prediction', tradeOption.prediction, _error.RuntimeError);
+	    option.barrier = (0, _expect.number)('prediction', tradeOption.prediction, _error.RuntimeError);
 	  }
 	  if ('barrierOffset' in tradeOption) {
-	    option.barrier = (0, _expect.expectBarrierOffset)(tradeOption.barrierOffset, _error.RuntimeError);
+	    option.barrier = (0, _expect.barrierOffset)(tradeOption.barrierOffset, _error.RuntimeError);
 	  }
 	  if ('secondBarrierOffset' in tradeOption) {
-	    option.barrier2 = (0, _expect.expectBarrierOffset)(tradeOption.secondBarrierOffset, _error.RuntimeError);
+	    option.barrier2 = (0, _expect.barrierOffset)(tradeOption.secondBarrierOffset, _error.RuntimeError);
 	  }
 	  return option;
 	};
@@ -19261,6 +19266,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -19350,9 +19356,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19443,6 +19449,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -19467,14 +19481,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19492,7 +19498,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -19519,6 +19529,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -19608,9 +19619,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19701,6 +19712,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -19725,14 +19744,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19750,7 +19761,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -19777,6 +19792,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -19866,9 +19882,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19959,6 +19975,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -19983,14 +20007,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20008,7 +20024,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -20035,6 +20055,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -20124,9 +20145,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20217,6 +20238,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20241,14 +20270,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20266,7 +20287,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -20293,6 +20318,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -20382,9 +20408,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20475,6 +20501,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20499,14 +20533,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20524,7 +20550,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -20551,6 +20581,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -20640,9 +20671,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20733,6 +20764,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20757,14 +20796,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20782,7 +20813,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -20809,6 +20844,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -20898,9 +20934,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20991,6 +21027,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21015,14 +21059,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21040,7 +21076,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -21067,6 +21107,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -21156,9 +21197,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21249,6 +21290,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21273,14 +21322,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21298,7 +21339,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -21325,6 +21370,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -21414,9 +21460,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21507,6 +21553,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21531,14 +21585,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21556,7 +21602,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -21583,6 +21633,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -21672,9 +21723,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21765,6 +21816,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21789,14 +21848,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21814,7 +21865,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -21841,6 +21896,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -21930,9 +21986,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -22023,6 +22079,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22047,14 +22111,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22072,7 +22128,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -22099,6 +22159,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -22188,9 +22249,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -22281,6 +22342,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22305,14 +22374,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22330,7 +22391,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -22357,6 +22422,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
 	  "2473e96bc614a911821242119918a241a41836d6": "Introduction",
@@ -22446,9 +22512,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -22539,6 +22605,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22563,14 +22637,6 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22588,7 +22654,11 @@
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
-	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required"
+	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
+	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
 /***/ },
@@ -23466,7 +23536,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.expectBarrierOffset = exports.expectNumber = exports.expectTick = exports.expectOhlc = exports.expectNonEmptyArray = undefined;
+	exports.barrierOffset = exports.number = exports.tick = exports.ohlc = exports.notEmptyArray = undefined;
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
@@ -23474,7 +23544,7 @@
 	
 	var _error = __webpack_require__(336);
 	
-	var expectNonEmptyArray = exports.expectNonEmptyArray = function expectNonEmptyArray(array) {
+	var notEmptyArray = exports.notEmptyArray = function notEmptyArray(array) {
 	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
 	
 	  if (array && array instanceof Array && array.length) {
@@ -23483,27 +23553,27 @@
 	  return new CustomError(_translator.translator.translateText('Expected non-empty array, given:') + ' ' + (typeof array === 'undefined' ? 'undefined' : _typeof(array))).emit();
 	};
 	
-	var expectOhlc = exports.expectOhlc = function expectOhlc(ohlc) {
+	var ohlc = exports.ohlc = function ohlc(obj) {
 	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
 	
-	  if (ohlc && ohlc instanceof Object && ohlc.open && ohlc.high && ohlc.low && ohlc.close) {
-	    return ohlc;
+	  if (obj && obj instanceof Object && obj.open && obj.high && obj.low && obj.close) {
+	    return obj;
 	  }
-	  return new CustomError(_translator.translator.translateText('Expected candle object, given:') + ' ' + (typeof ohlc === 'undefined' ? 'undefined' : _typeof(ohlc))).emit();
+	  return new CustomError(_translator.translator.translateText('Expected candle object, given:') + ' ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj))).emit();
 	};
 	
-	var expectTick = exports.expectTick = function expectTick(tick) {
+	var tick = exports.tick = function tick(obj) {
 	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
 	
-	  if (tick && tick instanceof Object && tick.quote) {
-	    return tick;
+	  if (obj && obj instanceof Object && obj.quote) {
+	    return obj;
 	  }
-	  return new CustomError(_translator.translator.translateText('Expected tick, given:') + ' ' + (typeof tick === 'undefined' ? 'undefined' : _typeof(tick))).emit();
+	  return new CustomError(_translator.translator.translateText('Expected tick, given:') + ' ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj))).emit();
 	};
 	
 	// runtime
 	
-	var expectNumber = exports.expectNumber = function expectNumber(name, num) {
+	var number = exports.number = function number(name, num) {
 	  var CustomError = arguments.length <= 2 || arguments[2] === undefined ? _error.BlocklyError : arguments[2];
 	
 	  if (isNaN(parseFloat(num)) || isNaN(Number(num))) {
@@ -23512,14 +23582,22 @@
 	  return Number(num);
 	};
 	
-	var expectBarrierOffset = exports.expectBarrierOffset = function expectBarrierOffset(num) {
+	var barrierOffset = exports.barrierOffset = function barrierOffset(num) {
 	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
 	
-	  expectNumber('barrier offset', num, CustomError);
+	  number('barrier offset', num, CustomError);
 	  if (num === 0) {
 	    return new CustomError('barrier offset ' + _translator.translator.translateText('cannot be zero.')).emit();
 	  }
 	  return '' + (num < 0 ? '-' : '+') + num;
+	};
+	
+	exports.default = {
+	  notEmptyArray: notEmptyArray,
+	  ohlc: ohlc,
+	  tick: tick,
+	  number: number,
+	  barrierOffset: barrierOffset
 	};
 
 /***/ },
@@ -23626,15 +23704,15 @@
 	
 	var _bot = __webpack_require__(303);
 	
-	var _introduction = __webpack_require__(413);
+	var _introduction = __webpack_require__(416);
 	
 	var _introduction2 = _interopRequireDefault(_introduction);
 	
-	var _welcome = __webpack_require__(415);
+	var _welcome = __webpack_require__(418);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
 	
-	var _logger = __webpack_require__(416);
+	var _logger = __webpack_require__(419);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29123,8 +29201,44 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = undefined;
 	
-	__webpack_require__(380);
+	var _trade = __webpack_require__(380);
+	
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_trade).default;
+	  }
+	});
+	
+	__webpack_require__(386);
+	
+	__webpack_require__(393);
+	
+	__webpack_require__(405);
+	
+	__webpack_require__(409);
+	
+	__webpack_require__(415);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 380 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _translator = __webpack_require__(308);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	var _error = __webpack_require__(336);
 	
 	__webpack_require__(382);
 	
@@ -29136,78 +29250,7 @@
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
 	
-	__webpack_require__(386);
-	
-	__webpack_require__(387);
-	
-	__webpack_require__(388);
-	
-	__webpack_require__(389);
-	
-	__webpack_require__(390);
-	
-	__webpack_require__(391);
-	
-	__webpack_require__(392);
-	
-	__webpack_require__(393);
-	
-	__webpack_require__(394);
-	
-	__webpack_require__(395);
-	
-	__webpack_require__(396);
-	
-	__webpack_require__(397);
-	
-	__webpack_require__(398);
-	
-	__webpack_require__(399);
-	
-	__webpack_require__(400);
-	
-	__webpack_require__(401);
-	
-	__webpack_require__(402);
-	
-	__webpack_require__(403);
-	
-	__webpack_require__(404);
-	
-	__webpack_require__(405);
-	
-	__webpack_require__(406);
-	
-	__webpack_require__(407);
-	
-	__webpack_require__(408);
-	
-	__webpack_require__(409);
-	
-	__webpack_require__(410);
-	
-	__webpack_require__(411);
-	
-	__webpack_require__(412);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function () {
-	  (0, _markets2.default)();
-	  (0, _tradeTypes2.default)();
-	};
-
-/***/ },
-/* 380 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _translator = __webpack_require__(308);
-	
-	var _relationChecker = __webpack_require__(381);
-	
-	var _error = __webpack_require__(336);
 	
 	Blockly.Blocks.trade = {
 	  init: function init() {
@@ -29235,6 +29278,11 @@
 	  // TODO: Assemble JavaScript into code variable.
 	  var code = 'function trade(again){\n  Bot.start(\'' + account.trim() + '\', ' + submarket.trim() + ',\n  on_strategy, typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n  on_finish, again);\n}';
 	  return code;
+	};
+	
+	exports.default = function () {
+	  (0, _markets2.default)();
+	  (0, _tradeTypes2.default)();
 	};
 
 /***/ },
@@ -29919,6 +29967,22 @@
 
 	'use strict';
 	
+	__webpack_require__(387);
+	
+	__webpack_require__(388);
+	
+	__webpack_require__(389);
+	
+	__webpack_require__(390);
+	
+	__webpack_require__(391);
+
+/***/ },
+/* 387 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var _translator = __webpack_require__(308);
 	
 	var _const = __webpack_require__(307);
@@ -29944,7 +30008,7 @@
 	};
 
 /***/ },
-/* 387 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29976,7 +30040,7 @@
 	};
 
 /***/ },
-/* 388 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29998,7 +30062,7 @@
 	};
 
 /***/ },
-/* 389 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30020,66 +30084,12 @@
 	};
 
 /***/ },
-/* 390 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _translator = __webpack_require__(308);
-	
-	var _relationChecker = __webpack_require__(381);
-	
-	var _const = __webpack_require__(307);
-	
-	var _const2 = _interopRequireDefault(_const);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	Blockly.Blocks.check_direction = {
-	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('Direction is')).appendField(new Blockly.FieldDropdown(_const2.default.lists.CHECK_DIRECTION), 'CHECK_DIRECTION');
-	    this.setOutput(true, 'Boolean');
-	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('True if the direction matches the selection')); // eslint-disable-line max-len
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-	  onchange: function onchange(ev) {
-	    (0, _relationChecker.insideStrategy)(this, ev, 'Check Direction');
-	  }
-	};
-	Blockly.JavaScript.check_direction = function (block) {
-	  var checkWith = block.getFieldValue('CHECK_DIRECTION');
-	  var code = '(ticks.direction === \'' + checkWith + '\')';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
 /* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _translator = __webpack_require__(308);
-	
-	var _relationChecker = __webpack_require__(381);
-	
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
-	Blockly.Blocks.direction = {
-	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('Tick Direction'));
-	    this.setOutput(true, 'String');
-	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText("Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick")); // eslint-disable-line max-len
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-	  onchange: function onchange(ev) {
-	    (0, _relationChecker.insideStrategy)(this, ev, 'Tick Direction');
-	  }
-	};
-	
-	Blockly.JavaScript.direction = function () {
-	  return ['ticks.direction', Blockly.JavaScript.ORDER_ATOMIC];
-	};
+	__webpack_require__(392);
 
 /***/ },
 /* 392 */
@@ -30087,31 +30097,26 @@
 
 	'use strict';
 	
-	var _utils = __webpack_require__(378);
-	
-	var _relationChecker = __webpack_require__(381);
-	
 	var _translator = __webpack_require__(308);
 	
-	Blockly.Blocks.purchase = {
+	Blockly.Blocks.sma = {
 	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('Purchase')).appendField(new Blockly.FieldDropdown(function () {
-	      return (0, _utils.getPurchaseChoices)();
-	    }), 'PURCHASE_LIST');
-	    this.setPreviousStatement(true, 'Purchase');
-	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Purchases a chosen contract.')); // eslint-disable-line max-len
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Simple Moving Average'));
+	    this.appendValueInput('INPUT').setCheck('Array').appendField(_translator.translator.translateText('Input List'));
+	    this.appendValueInput('PERIOD').setCheck('Number').appendField(_translator.translator.translateText('Period'));
+	    this.setOutput(true, 'Number');
+	    this.setColour('#dedede');
+	    this.setTooltip(_translator.translator.translateText('Calculates Simple Moving Average (SMA) from a list with a period')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-	  onchange: function onchange(ev) {
-	    (0, _relationChecker.insideStrategy)(this, ev, 'Purchase');
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
 	
-	Blockly.JavaScript.purchase = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'purchaseCtrl.purchase(\'' + purchaseList + '\');\n';
-	  return code;
+	
+	Blockly.JavaScript.sma = function (block) {
+	  var input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_ATOMIC);
+	  var period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC);
+	  var code = 'Bot.math.indicators.simpleMovingAverage(Bot.expect.notEmptyArray(' + input + '), { periods: Bot.expect.number(\'period\', ' + period + ') })';
+	  return [code, Blockly.JavaScript.ORDER_NONE];
 	};
 
 /***/ },
@@ -30120,74 +30125,31 @@
 
 	'use strict';
 	
-	var _utils = __webpack_require__(378);
-	
-	var _relationChecker = __webpack_require__(381);
-	
 	var _translator = __webpack_require__(308);
 	
-	Blockly.Blocks.ask_price = {
-	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('Ask Price')).appendField(new Blockly.FieldDropdown(function () {
-	      return (0, _utils.getPurchaseChoices)();
-	    }), 'PURCHASE_LIST');
-	    this.setOutput(true, 'Number');
-	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Ask Price for selected proposal')); // eslint-disable-line max-len
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-	  onchange: function onchange(ev) {
-	    (0, _relationChecker.insideStrategy)(this, ev, 'Ask Price');
-	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	__webpack_require__(394);
 	
-	Blockly.JavaScript.ask_price = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').ask_price)';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 394 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
+	__webpack_require__(395);
 	
-	var _utils = __webpack_require__(378);
+	__webpack_require__(396);
 	
-	var _relationChecker = __webpack_require__(381);
+	__webpack_require__(397);
 	
-	var _translator = __webpack_require__(308);
+	__webpack_require__(398);
 	
-	Blockly.Blocks.payout = {
-	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('Payout')).appendField(new Blockly.FieldDropdown(function () {
-	      return (0, _utils.getPurchaseChoices)();
-	    }), 'PURCHASE_LIST');
-	    this.setOutput(true, 'Number');
-	    this.setColour('#f2f2f2');
-	    this.setTooltip(_translator.translator.translateText('Payout for selected proposal')); // eslint-disable-line max-len
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  },
-	  onchange: function onchange(ev) {
-	    (0, _relationChecker.insideStrategy)(this, ev, 'Payout');
-	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	__webpack_require__(399);
 	
-	Blockly.JavaScript.payout = function (block) {
-	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
-	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').payout)';
-	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
-	};
-
-/***/ },
-/* 395 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
+	__webpack_require__(400);
 	
-	var _translator = __webpack_require__(308);
+	__webpack_require__(401);
 	
+	__webpack_require__(402);
+	
+	__webpack_require__(403);
+	
+	__webpack_require__(404);
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
 	Blockly.Blocks.on_strategy = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('(2) things to do before purchase is made'));
@@ -30196,8 +30158,7 @@
 	    this.setTooltip(_translator.translator.translateText('This block decides what to do each time a new tick is received')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
-	
+	};
 	Blockly.JavaScript.on_strategy = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
 	  var code = 'function on_strategy(ticks, proposals, purchaseCtrl){\n    if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
@@ -30205,7 +30166,7 @@
 	};
 
 /***/ },
-/* 396 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30228,11 +30189,11 @@
 	  }
 	};
 	Blockly.JavaScript.tick = function () {
-	  return ['Bot.expectTick(Bot.expectNonEmptyArray(ticks.ticks).slice(-1)[0]).quote', Blockly.JavaScript.ORDER_ATOMIC];
+	  return ['Bot.expect.tick(Bot.expect.notEmptyArray(ticks.ticks).slice(-1)[0]).quote', Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 397 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30255,11 +30216,11 @@
 	  }
 	};
 	Blockly.JavaScript.ticks = function () {
-	  return ['Bot.expectNonEmptyArray(ticks.ticks).map(function(i){return Bot.expectTick(i).quote;})', Blockly.JavaScript.ORDER_ATOMIC];
+	  return ['Bot.expect.notEmptyArray(ticks.ticks).map(function(i){return Bot.expect.tick(i).quote;})', Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 398 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30282,11 +30243,11 @@
 	  }
 	};
 	Blockly.JavaScript.ohlc = function () {
-	  return ['Bot.expectNonEmptyArray(ticks.ohlc)', Blockly.JavaScript.ORDER_ATOMIC];
+	  return ['Bot.expect.notEmptyArray(ticks.ohlc)', Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 399 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30317,12 +30278,12 @@
 	
 	Blockly.JavaScript.ohlc_values = function (block) {
 	  var ohlcField = block.getFieldValue('OHLCFIELD_LIST');
-	  var code = '(Bot.expectNonEmptyArray(ticks.ohlc).map(function(e){return Bot.expectOhlc(e).' + ohlcField + '}))';
+	  var code = '(Bot.expect.notEmptyArray(ticks.ohlc).map(function(e){return Bot.expect.ohlc(e).' + ohlcField + '}))';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 400 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30357,15 +30318,15 @@
 	  var ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
 	  var code = void 0;
 	  if (ohlcObj) {
-	    code = 'Bot.expectOhlc((' + ohlcObj + ' instanceof Array)? Bot.expectNonEmptyArray(' + ohlcObj + ').slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
+	    code = 'Bot.expect.ohlc((' + ohlcObj + ' instanceof Array)? Bot.expect.notEmptyArray(' + ohlcObj + ').slice(-1)[0] : ' + ohlcObj + ').' + ohlcField;
 	  } else {
-	    code = 'Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1)[0]).' + ohlcField;
+	    code = 'Bot.expect.ohlc(Bot.expect.notEmptyArray(ticks.ohlc).slice(-1)[0]).' + ohlcField;
 	  }
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
-/* 401 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30403,11 +30364,73 @@
 	    index = 1;
 	  }
 	  if (index === 1) {
-	    code = '(Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1)[0]).' + ohlcField + ')';
+	    code = '(Bot.expect.ohlc(Bot.expect.notEmptyArray(ticks.ohlc).slice(-1)[0]).' + ohlcField + ')';
 	  } else {
-	    code = '(Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1*' + index + ', -1*' + (index - 1) + ')[0]).' + ohlcField + ')';
+	    code = '(Bot.expect.ohlc(Bot.expect.notEmptyArray(ticks.ohlc).slice(-1*' + index + ', -1*' + (index - 1) + ')[0]).' + ohlcField + ')';
 	  }
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 400 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(308);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	Blockly.Blocks.check_direction = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Direction is')).appendField(new Blockly.FieldDropdown(_const2.default.lists.CHECK_DIRECTION), 'CHECK_DIRECTION');
+	    this.setOutput(true, 'Boolean');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('True if the direction matches the selection')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideStrategy)(this, ev, 'Check Direction');
+	  }
+	};
+	Blockly.JavaScript.check_direction = function (block) {
+	  var checkWith = block.getFieldValue('CHECK_DIRECTION');
+	  var code = '(ticks.direction === \'' + checkWith + '\')';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 401 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(308);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
+	Blockly.Blocks.direction = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Tick Direction'));
+	    this.setOutput(true, 'String');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText("Returns the tick direction received by a strategy block, its value could be 'up' if the tick is more than before, 'down' if less than before and empty ('') if the tick is equal to the previous tick")); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideStrategy)(this, ev, 'Tick Direction');
+	  }
+	};
+	
+	Blockly.JavaScript.direction = function () {
+	  return ['ticks.direction', Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
 /***/ },
@@ -30416,8 +30439,114 @@
 
 	'use strict';
 	
+	var _utils = __webpack_require__(378);
+	
+	var _relationChecker = __webpack_require__(381);
+	
 	var _translator = __webpack_require__(308);
 	
+	Blockly.Blocks.purchase = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Purchase')).appendField(new Blockly.FieldDropdown(function () {
+	      return (0, _utils.getPurchaseChoices)();
+	    }), 'PURCHASE_LIST');
+	    this.setPreviousStatement(true, 'Purchase');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('Purchases a chosen contract.')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideStrategy)(this, ev, 'Purchase');
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.purchase = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'purchaseCtrl.purchase(\'' + purchaseList + '\');\n';
+	  return code;
+	};
+
+/***/ },
+/* 403 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _utils = __webpack_require__(378);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	var _translator = __webpack_require__(308);
+	
+	Blockly.Blocks.ask_price = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Ask Price')).appendField(new Blockly.FieldDropdown(function () {
+	      return (0, _utils.getPurchaseChoices)();
+	    }), 'PURCHASE_LIST');
+	    this.setOutput(true, 'Number');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('Ask Price for selected proposal')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideStrategy)(this, ev, 'Ask Price');
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.ask_price = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').ask_price)';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 404 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _utils = __webpack_require__(378);
+	
+	var _relationChecker = __webpack_require__(381);
+	
+	var _translator = __webpack_require__(308);
+	
+	Blockly.Blocks.payout = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Payout')).appendField(new Blockly.FieldDropdown(function () {
+	      return (0, _utils.getPurchaseChoices)();
+	    }), 'PURCHASE_LIST');
+	    this.setOutput(true, 'Number');
+	    this.setColour('#f2f2f2');
+	    this.setTooltip(_translator.translator.translateText('Payout for selected proposal')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    (0, _relationChecker.insideStrategy)(this, ev, 'Payout');
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
+	
+	Blockly.JavaScript.payout = function (block) {
+	  var purchaseList = block.getFieldValue('PURCHASE_LIST');
+	  var code = 'Number(purchaseCtrl.getContract(\'' + purchaseList + '\').payout)';
+	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+
+/***/ },
+/* 405 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(308);
+	
+	__webpack_require__(406);
+	
+	__webpack_require__(407);
+	
+	__webpack_require__(408);
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
 	Blockly.Blocks.during_purchase = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('(3) things to do when trade is in progress'));
@@ -30426,8 +30555,7 @@
 	    this.setTooltip(_translator.translator.translateText('Sell at market before a trade is finished')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
-	
+	};
 	Blockly.JavaScript.during_purchase = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
 	  var code = 'function during_purchase(openContract, purchaseCtrl){\n  if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
@@ -30435,7 +30563,7 @@
 	};
 
 /***/ },
-/* 403 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30462,7 +30590,7 @@
 	};
 
 /***/ },
-/* 404 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30491,7 +30619,7 @@
 	};
 
 /***/ },
-/* 405 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30518,7 +30646,41 @@
 	};
 
 /***/ },
-/* 406 */
+/* 409 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(308);
+	
+	__webpack_require__(410);
+	
+	__webpack_require__(411);
+	
+	__webpack_require__(412);
+	
+	__webpack_require__(413);
+	
+	__webpack_require__(414);
+	
+	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
+	Blockly.Blocks.on_finish = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('(4) things to do after purchase is finished'));
+	    this.appendStatementInput('FINISH_STACK').setCheck('TradeAgain');
+	    this.setColour('#2a3052');
+	    this.setTooltip(_translator.translator.translateText('This block decides what to do when a purchased contract is finished')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	};
+	Blockly.JavaScript.on_finish = function (block) {
+	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
+	  var code = 'function on_finish(_finishedContract, details){\n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n    Bot.stop();\n  }\n  ';
+	  return code;
+	};
+
+/***/ },
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30546,7 +30708,7 @@
 	};
 
 /***/ },
-/* 407 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30580,7 +30742,7 @@
 	};
 
 /***/ },
-/* 408 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30607,31 +30769,7 @@
 	};
 
 /***/ },
-/* 409 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _translator = __webpack_require__(308);
-	
-	Blockly.Blocks.on_finish = {
-	  init: function init() {
-	    this.appendDummyInput().appendField(_translator.translator.translateText('(4) things to do after purchase is finished'));
-	    this.appendStatementInput('FINISH_STACK').setCheck('TradeAgain');
-	    this.setColour('#2a3052');
-	    this.setTooltip(_translator.translator.translateText('This block decides what to do when a purchased contract is finished')); // eslint-disable-line max-len
-	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-	  }
-	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
-	
-	Blockly.JavaScript.on_finish = function (block) {
-	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-	  var code = 'function on_finish(_finishedContract, details){\n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n    Bot.stop();\n  }\n  ';
-	  return code;
-	};
-
-/***/ },
-/* 410 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30666,7 +30804,7 @@
 	};
 
 /***/ },
-/* 411 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30693,7 +30831,7 @@
 	};
 
 /***/ },
-/* 412 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30715,7 +30853,7 @@
 	};
 
 /***/ },
-/* 413 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30729,7 +30867,7 @@
 	
 	var _observer = __webpack_require__(300);
 	
-	var _components = __webpack_require__(414);
+	var _components = __webpack_require__(417);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -31195,7 +31333,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 414 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31277,7 +31415,7 @@
 	};
 
 /***/ },
-/* 415 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31291,7 +31429,7 @@
 	
 	var _storageManager = __webpack_require__(301);
 	
-	var _components = __webpack_require__(414);
+	var _components = __webpack_require__(417);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -31513,7 +31651,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 416 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31660,7 +31798,7 @@
 	};
 
 /***/ },
-/* 417 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31812,7 +31950,3712 @@
 	}
 
 /***/ },
-/* 418 */
+/* 421 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _simpleMovingAverage = __webpack_require__(422);
+	
+	var _simpleMovingAverage2 = _interopRequireDefault(_simpleMovingAverage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  indicators: {
+	    simpleMovingAverage: _simpleMovingAverage2.default
+	  }
+	};
+
+/***/ },
+/* 422 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.simpleMovingAverageArray = undefined;
+	
+	var _binaryUtils = __webpack_require__(423);
+	
+	var _math = __webpack_require__(540);
+	
+	var simpleMovingAverage = function simpleMovingAverage(data, config) {
+	    var periods = config.periods;
+	    var field = config.field;
+	
+	
+	    if (data.length < periods) {
+	        throw new Error('Periods longer than data length');
+	    }
+	
+	    var vals = (0, _math.takeLast)(data, periods, field);
+	
+	    return (0, _math.sum)(vals) / periods;
+	};
+	
+	var simpleMovingAverageArray = exports.simpleMovingAverageArray = function simpleMovingAverageArray(data, config) {
+	    var periods = config.periods;
+	
+	    return (0, _binaryUtils.sequence)(data.length - periods + 1).map(function (x, i) {
+	        return simpleMovingAverage(data.slice(i, i + periods), config);
+	    });
+	};
+	
+	exports.default = simpleMovingAverage;
+
+/***/ },
+/* 423 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _arrayEqual = __webpack_require__(424);
+	
+	Object.defineProperty(exports, 'arrayEqual', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_arrayEqual).default;
+	  }
+	});
+	
+	var _arrayMax = __webpack_require__(425);
+	
+	Object.defineProperty(exports, 'arrayMax', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_arrayMax).default;
+	  }
+	});
+	
+	var _arrayMin = __webpack_require__(426);
+	
+	Object.defineProperty(exports, 'arrayMin', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_arrayMin).default;
+	  }
+	});
+	
+	var _arrayToObject = __webpack_require__(427);
+	
+	Object.defineProperty(exports, 'arrayToObject', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_arrayToObject).default;
+	  }
+	});
+	
+	var _getLast = __webpack_require__(428);
+	
+	Object.defineProperty(exports, 'getLast', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getLast).default;
+	  }
+	});
+	
+	var _mergeSortedArrays = __webpack_require__(429);
+	
+	Object.defineProperty(exports, 'mergeSortedArrays', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_mergeSortedArrays).default;
+	  }
+	});
+	
+	var _sequence = __webpack_require__(430);
+	
+	Object.defineProperty(exports, 'sequence', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_sequence).default;
+	  }
+	});
+	
+	var _groupArrayToNestedArray = __webpack_require__(431);
+	
+	Object.defineProperty(exports, 'groupArrayToNestedArray', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_groupArrayToNestedArray).default;
+	  }
+	});
+	
+	var _barrier2FromContract = __webpack_require__(432);
+	
+	Object.defineProperty(exports, 'barrier2FromContract', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_barrier2FromContract).default;
+	  }
+	});
+	
+	var _barrierFromContract = __webpack_require__(434);
+	
+	Object.defineProperty(exports, 'barrierFromContract', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_barrierFromContract).default;
+	  }
+	});
+	
+	var _callPutBarrier = __webpack_require__(435);
+	
+	Object.defineProperty(exports, 'callPutBarrier', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_callPutBarrier).default;
+	  }
+	});
+	
+	var _commonRelativeBarrier = __webpack_require__(437);
+	
+	Object.defineProperty(exports, 'commonRelativeBarrier', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_commonRelativeBarrier).default;
+	  }
+	});
+	
+	var _extractBarrier = __webpack_require__(438);
+	
+	Object.defineProperty(exports, 'extractBarrier', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_extractBarrier).default;
+	  }
+	});
+	
+	var _getAbsoluteBarrierFromContract = __webpack_require__(433);
+	
+	Object.defineProperty(exports, 'getAbsoluteBarrierFromContract', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getAbsoluteBarrierFromContract).default;
+	  }
+	});
+	
+	var _relativeBarrier = __webpack_require__(436);
+	
+	Object.defineProperty(exports, 'relativeBarrier', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_relativeBarrier).default;
+	  }
+	});
+	
+	var _relativeBarrier2 = __webpack_require__(440);
+	
+	Object.defineProperty(exports, 'relativeBarrier2', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_relativeBarrier2).default;
+	  }
+	});
+	
+	var _dateAsLocalISOString = __webpack_require__(441);
+	
+	Object.defineProperty(exports, 'dateAsLocalISOString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_dateAsLocalISOString).default;
+	  }
+	});
+	
+	var _dateToDateString = __webpack_require__(442);
+	
+	Object.defineProperty(exports, 'dateToDateString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_dateToDateString).default;
+	  }
+	});
+	
+	var _dateToEpoch = __webpack_require__(443);
+	
+	Object.defineProperty(exports, 'dateToEpoch', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_dateToEpoch).default;
+	  }
+	});
+	
+	var _dateToGMTString = __webpack_require__(444);
+	
+	Object.defineProperty(exports, 'dateToGMTString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_dateToGMTString).default;
+	  }
+	});
+	
+	var _dateToTimeString = __webpack_require__(445);
+	
+	Object.defineProperty(exports, 'dateToTimeString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_dateToTimeString).default;
+	  }
+	});
+	
+	var _dateToUTCTimeString = __webpack_require__(446);
+	
+	Object.defineProperty(exports, 'dateToUTCTimeString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_dateToUTCTimeString).default;
+	  }
+	});
+	
+	var _epochToDate = __webpack_require__(447);
+	
+	Object.defineProperty(exports, 'epochToDate', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_epochToDate).default;
+	  }
+	});
+	
+	var _epochToDateString = __webpack_require__(448);
+	
+	Object.defineProperty(exports, 'epochToDateString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_epochToDateString).default;
+	  }
+	});
+	
+	var _epochToDateTimeString = __webpack_require__(449);
+	
+	Object.defineProperty(exports, 'epochToDateTimeString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_epochToDateTimeString).default;
+	  }
+	});
+	
+	var _epochToTimeString = __webpack_require__(450);
+	
+	Object.defineProperty(exports, 'epochToTimeString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_epochToTimeString).default;
+	  }
+	});
+	
+	var _epochToUTCDateString = __webpack_require__(451);
+	
+	Object.defineProperty(exports, 'epochToUTCDateString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_epochToUTCDateString).default;
+	  }
+	});
+	
+	var _epochToUTCTimeString = __webpack_require__(452);
+	
+	Object.defineProperty(exports, 'epochToUTCTimeString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_epochToUTCTimeString).default;
+	  }
+	});
+	
+	var _getLastXMonthEpoch = __webpack_require__(453);
+	
+	Object.defineProperty(exports, 'getLastXMonthEpoch', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getLastXMonthEpoch).default;
+	  }
+	});
+	
+	var _isDateValid = __webpack_require__(454);
+	
+	Object.defineProperty(exports, 'isDateValid', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isDateValid).default;
+	  }
+	});
+	
+	var _last30DaysEpoch = __webpack_require__(455);
+	
+	Object.defineProperty(exports, 'last30DaysEpoch', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_last30DaysEpoch).default;
+	  }
+	});
+	
+	var _last7DaysEpoch = __webpack_require__(457);
+	
+	Object.defineProperty(exports, 'last7DaysEpoch', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_last7DaysEpoch).default;
+	  }
+	});
+	
+	var _nextXDay = __webpack_require__(458);
+	
+	Object.defineProperty(exports, 'nextXDay', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_nextXDay).default;
+	  }
+	});
+	
+	var _nowAsEpoch = __webpack_require__(459);
+	
+	Object.defineProperty(exports, 'nowAsEpoch', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_nowAsEpoch).default;
+	  }
+	});
+	
+	var _oneYearAfterStr = __webpack_require__(460);
+	
+	Object.defineProperty(exports, 'oneYearAfterStr', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_oneYearAfterStr).default;
+	  }
+	});
+	
+	var _secondsToTimeString = __webpack_require__(461);
+	
+	Object.defineProperty(exports, 'secondsToTimeString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_secondsToTimeString).default;
+	  }
+	});
+	
+	var _splitSecsToUnits = __webpack_require__(462);
+	
+	Object.defineProperty(exports, 'splitSecsToUnits', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_splitSecsToUnits).default;
+	  }
+	});
+	
+	var _timeStringBigger = __webpack_require__(463);
+	
+	Object.defineProperty(exports, 'timeStringBigger', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_timeStringBigger).default;
+	  }
+	});
+	
+	var _timeStringIsBetween = __webpack_require__(464);
+	
+	Object.defineProperty(exports, 'timeStringIsBetween', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_timeStringIsBetween).default;
+	  }
+	});
+	
+	var _timeStringSmaller = __webpack_require__(465);
+	
+	Object.defineProperty(exports, 'timeStringSmaller', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_timeStringSmaller).default;
+	  }
+	});
+	
+	var _timeStringToSeconds = __webpack_require__(466);
+	
+	Object.defineProperty(exports, 'timeStringToSeconds', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_timeStringToSeconds).default;
+	  }
+	});
+	
+	var _todayEpoch = __webpack_require__(467);
+	
+	Object.defineProperty(exports, 'todayEpoch', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_todayEpoch).default;
+	  }
+	});
+	
+	var _todayLocaleString = __webpack_require__(468);
+	
+	Object.defineProperty(exports, 'todayLocaleString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_todayLocaleString).default;
+	  }
+	});
+	
+	var _todayUTCString = __webpack_require__(469);
+	
+	Object.defineProperty(exports, 'todayUTCString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_todayUTCString).default;
+	  }
+	});
+	
+	var _xDayEpoch = __webpack_require__(456);
+	
+	Object.defineProperty(exports, 'xDayEpoch', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_xDayEpoch).default;
+	  }
+	});
+	
+	var _xMonthsAfter = __webpack_require__(470);
+	
+	Object.defineProperty(exports, 'xMonthsAfter', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_xMonthsAfter).default;
+	  }
+	});
+	
+	var _yesterdayEpoch = __webpack_require__(471);
+	
+	Object.defineProperty(exports, 'yesterdayEpoch', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_yesterdayEpoch).default;
+	  }
+	});
+	
+	var _yesterdayString = __webpack_require__(472);
+	
+	Object.defineProperty(exports, 'yesterdayString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_yesterdayString).default;
+	  }
+	});
+	
+	var _yesterdayUTCString = __webpack_require__(473);
+	
+	Object.defineProperty(exports, 'yesterdayUTCString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_yesterdayUTCString).default;
+	  }
+	});
+	
+	var _returnValidDate = __webpack_require__(474);
+	
+	Object.defineProperty(exports, 'returnValidDate', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_returnValidDate).default;
+	  }
+	});
+	
+	var _returnValidTime = __webpack_require__(475);
+	
+	Object.defineProperty(exports, 'returnValidTime', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_returnValidTime).default;
+	  }
+	});
+	
+	var _isValidTime = __webpack_require__(476);
+	
+	Object.defineProperty(exports, 'isValidTime', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isValidTime).default;
+	  }
+	});
+	
+	var _timeLeftToNextRealityCheck = __webpack_require__(477);
+	
+	Object.defineProperty(exports, 'timeLeftToNextRealityCheck', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_timeLeftToNextRealityCheck).default;
+	  }
+	});
+	
+	var _durationSecHelper = __webpack_require__(478);
+	
+	Object.defineProperty(exports, 'durationSecHelper', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_durationSecHelper).default;
+	  }
+	});
+	
+	var _durationText = __webpack_require__(480);
+	
+	Object.defineProperty(exports, 'durationText', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_durationText).default;
+	  }
+	});
+	
+	var _durationToSecs = __webpack_require__(479);
+	
+	Object.defineProperty(exports, 'durationToSecs', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_durationToSecs).default;
+	  }
+	});
+	
+	var _durationUnits = __webpack_require__(481);
+	
+	Object.defineProperty(exports, 'durationUnits', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_durationUnits).default;
+	  }
+	});
+	
+	var _extractDuration = __webpack_require__(482);
+	
+	Object.defineProperty(exports, 'extractDuration', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_extractDuration).default;
+	  }
+	});
+	
+	var _extractDurationHelper = __webpack_require__(483);
+	
+	Object.defineProperty(exports, 'extractDurationHelper', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_extractDurationHelper).default;
+	  }
+	});
+	
+	var _extractForwardStartingDuration = __webpack_require__(485);
+	
+	Object.defineProperty(exports, 'extractForwardStartingDuration', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_extractForwardStartingDuration).default;
+	  }
+	});
+	
+	var _extractMinMaxInUnits = __webpack_require__(484);
+	
+	Object.defineProperty(exports, 'extractMinMaxInUnits', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_extractMinMaxInUnits).default;
+	  }
+	});
+	
+	var _isDurationLessThan2Mins = __webpack_require__(486);
+	
+	Object.defineProperty(exports, 'isDurationLessThan2Mins', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isDurationLessThan2Mins).default;
+	  }
+	});
+	
+	var _isDurationTick = __webpack_require__(487);
+	
+	Object.defineProperty(exports, 'isDurationTick', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isDurationTick).default;
+	  }
+	});
+	
+	var _isDurationWithinRange = __webpack_require__(488);
+	
+	Object.defineProperty(exports, 'isDurationWithinRange', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isDurationWithinRange).default;
+	  }
+	});
+	
+	var _calculateLastDigitStats = __webpack_require__(489);
+	
+	Object.defineProperty(exports, 'calculateLastDigitStats', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_calculateLastDigitStats).default;
+	  }
+	});
+	
+	var _digitsToPips = __webpack_require__(491);
+	
+	Object.defineProperty(exports, 'digitsToPips', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_digitsToPips).default;
+	  }
+	});
+	
+	var _getLastDigit = __webpack_require__(490);
+	
+	Object.defineProperty(exports, 'getLastDigit', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getLastDigit).default;
+	  }
+	});
+	
+	var _noOfDecimals = __webpack_require__(492);
+	
+	Object.defineProperty(exports, 'noOfDecimals', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_noOfDecimals).default;
+	  }
+	});
+	
+	var _numberToSignedString = __webpack_require__(493);
+	
+	Object.defineProperty(exports, 'numberToSignedString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_numberToSignedString).default;
+	  }
+	});
+	
+	var _pipSizeToStepSize = __webpack_require__(494);
+	
+	Object.defineProperty(exports, 'pipSizeToStepSize', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_pipSizeToStepSize).default;
+	  }
+	});
+	
+	var _pipsToDigits = __webpack_require__(495);
+	
+	Object.defineProperty(exports, 'pipsToDigits', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_pipsToDigits).default;
+	  }
+	});
+	
+	var _toMoney = __webpack_require__(496);
+	
+	Object.defineProperty(exports, 'toMoney', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_toMoney).default;
+	  }
+	});
+	
+	var _filterDeep = __webpack_require__(497);
+	
+	Object.defineProperty(exports, 'filterDeep', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_filterDeep).default;
+	  }
+	});
+	
+	var _findDeep = __webpack_require__(498);
+	
+	Object.defineProperty(exports, 'findDeep', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_findDeep).default;
+	  }
+	});
+	
+	var _groupByKey = __webpack_require__(439);
+	
+	Object.defineProperty(exports, 'groupByKey', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_groupByKey).default;
+	  }
+	});
+	
+	var _immutableChildrenToJS = __webpack_require__(499);
+	
+	Object.defineProperty(exports, 'immutableChildrenToJS', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_immutableChildrenToJS).default;
+	  }
+	});
+	
+	var _areArraysEqual = __webpack_require__(500);
+	
+	Object.defineProperty(exports, 'areArraysEqual', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_areArraysEqual).default;
+	  }
+	});
+	
+	var _areCandleArrayEqual = __webpack_require__(501);
+	
+	Object.defineProperty(exports, 'areCandleArrayEqual', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_areCandleArrayEqual).default;
+	  }
+	});
+	
+	var _areTickArraysEqual = __webpack_require__(502);
+	
+	Object.defineProperty(exports, 'areTickArraysEqual', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_areTickArraysEqual).default;
+	  }
+	});
+	
+	var _doArrayDifferJustOneEntry = __webpack_require__(503);
+	
+	Object.defineProperty(exports, 'doArrayDifferJustOneEntry', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_doArrayDifferJustOneEntry).default;
+	  }
+	});
+	
+	var _doCandleEqual = __webpack_require__(504);
+	
+	Object.defineProperty(exports, 'doCandleEqual', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_doCandleEqual).default;
+	  }
+	});
+	
+	var _doCandlesDifferJustOneEntry = __webpack_require__(505);
+	
+	Object.defineProperty(exports, 'doCandlesDifferJustOneEntry', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_doCandlesDifferJustOneEntry).default;
+	  }
+	});
+	
+	var _doTicksDifferJustOneEntry = __webpack_require__(506);
+	
+	Object.defineProperty(exports, 'doTicksDifferJustOneEntry', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_doTicksDifferJustOneEntry).default;
+	  }
+	});
+	
+	var _doTicksEqual = __webpack_require__(507);
+	
+	Object.defineProperty(exports, 'doTicksEqual', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_doTicksEqual).default;
+	  }
+	});
+	
+	var _getLastOHLCTick = __webpack_require__(508);
+	
+	Object.defineProperty(exports, 'getLastOHLCTick', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getLastOHLCTick).default;
+	  }
+	});
+	
+	var _getLastTickQuote = __webpack_require__(509);
+	
+	Object.defineProperty(exports, 'getLastTickQuote', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getLastTickQuote).default;
+	  }
+	});
+	
+	var _historyToTicks = __webpack_require__(510);
+	
+	Object.defineProperty(exports, 'historyToTicks', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_historyToTicks).default;
+	  }
+	});
+	
+	var _ohlcToData = __webpack_require__(511);
+	
+	Object.defineProperty(exports, 'ohlcToData', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_ohlcToData).default;
+	  }
+	});
+	
+	var _ohlcToTicks = __webpack_require__(512);
+	
+	Object.defineProperty(exports, 'ohlcToTicks', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_ohlcToTicks).default;
+	  }
+	});
+	
+	var _tickToData = __webpack_require__(513);
+	
+	Object.defineProperty(exports, 'tickToData', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_tickToData).default;
+	  }
+	});
+	
+	var _askPriceFromProposal = __webpack_require__(514);
+	
+	Object.defineProperty(exports, 'askPriceFromProposal', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_askPriceFromProposal).default;
+	  }
+	});
+	
+	var _contractCategoryToText = __webpack_require__(515);
+	
+	Object.defineProperty(exports, 'contractCategoryToText', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_contractCategoryToText).default;
+	  }
+	});
+	
+	var _contractCodeToText = __webpack_require__(516);
+	
+	Object.defineProperty(exports, 'contractCodeToText', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_contractCodeToText).default;
+	  }
+	});
+	
+	var _extractSpreadInfo = __webpack_require__(517);
+	
+	Object.defineProperty(exports, 'extractSpreadInfo', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_extractSpreadInfo).default;
+	  }
+	});
+	
+	var _isIntraday = __webpack_require__(518);
+	
+	Object.defineProperty(exports, 'isIntraday', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isIntraday).default;
+	  }
+	});
+	
+	var _normalizedContractFor = __webpack_require__(519);
+	
+	Object.defineProperty(exports, 'normalizedContractFor', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_normalizedContractFor).default;
+	  }
+	});
+	
+	var _tradeToFriendlyType = __webpack_require__(520);
+	
+	Object.defineProperty(exports, 'tradeToFriendlyType', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_tradeToFriendlyType).default;
+	  }
+	});
+	
+	var _tradeTypeCodeToText = __webpack_require__(521);
+	
+	Object.defineProperty(exports, 'tradeTypeCodeToText', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_tradeTypeCodeToText).default;
+	  }
+	});
+	
+	var _tradeTypeTextToCode = __webpack_require__(524);
+	
+	Object.defineProperty(exports, 'tradeTypeTextToCode', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_tradeTypeTextToCode).default;
+	  }
+	});
+	
+	var _tradeTypes = __webpack_require__(522);
+	
+	Object.defineProperty(exports, 'tradeTypes', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_tradeTypes).default;
+	  }
+	});
+	
+	var _typeHasBarrier = __webpack_require__(523);
+	
+	Object.defineProperty(exports, 'typeHasBarrier', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_typeHasBarrier).default;
+	  }
+	});
+	
+	var _Analytics = __webpack_require__(525);
+	
+	Object.defineProperty(exports, 'Analytics', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Analytics).default;
+	  }
+	});
+	
+	var _brandColor = __webpack_require__(526);
+	
+	Object.defineProperty(exports, 'brandColor', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_brandColor).default;
+	  }
+	});
+	
+	var _directionClassName = __webpack_require__(527);
+	
+	Object.defineProperty(exports, 'directionClassName', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_directionClassName).default;
+	  }
+	});
+	
+	var _errorToString = __webpack_require__(528);
+	
+	Object.defineProperty(exports, 'errorToString', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_errorToString).default;
+	  }
+	});
+	
+	var _getUniqueId = __webpack_require__(529);
+	
+	Object.defineProperty(exports, 'getUniqueId', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getUniqueId).default;
+	  }
+	});
+	
+	var _isMobile = __webpack_require__(530);
+	
+	Object.defineProperty(exports, 'isMobile', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isMobile).default;
+	  }
+	});
+	
+	var _isValidEmail = __webpack_require__(531);
+	
+	Object.defineProperty(exports, 'isValidEmail', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isValidEmail).default;
+	  }
+	});
+	
+	var _isValidPassword = __webpack_require__(532);
+	
+	Object.defineProperty(exports, 'isValidPassword', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_isValidPassword).default;
+	  }
+	});
+	
+	var _addFullscreenEventListener = __webpack_require__(533);
+	
+	Object.defineProperty(exports, 'addFullscreenEventListener', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_addFullscreenEventListener).default;
+	  }
+	});
+	
+	var _exitFullscreen = __webpack_require__(534);
+	
+	Object.defineProperty(exports, 'exitFullscreen', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_exitFullscreen).default;
+	  }
+	});
+	
+	var _removeFullscreenEventListener = __webpack_require__(535);
+	
+	Object.defineProperty(exports, 'removeFullscreenEventListener', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_removeFullscreenEventListener).default;
+	  }
+	});
+	
+	var _requestFullscreen = __webpack_require__(536);
+	
+	Object.defineProperty(exports, 'requestFullscreen', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_requestFullscreen).default;
+	  }
+	});
+	
+	var _showInfo = __webpack_require__(537);
+	
+	Object.defineProperty(exports, 'showInfo', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_showInfo).default;
+	  }
+	});
+	
+	var _showError = __webpack_require__(538);
+	
+	Object.defineProperty(exports, 'showError', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_showError).default;
+	  }
+	});
+	
+	var _windowResizeEvent = __webpack_require__(539);
+	
+	Object.defineProperty(exports, 'windowResizeEvent', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_windowResizeEvent).default;
+	  }
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 424 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (a, b) {
+	    if (a.length !== b.length) {
+	        return false;
+	    }
+	
+	    return !a.some(function (x, idx) {
+	        return x !== b[idx];
+	    });
+	};
+
+/***/ },
+/* 425 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	exports.default = function (arr) {
+	    return Math.max.apply(Math, _toConsumableArray(arr));
+	};
+
+/***/ },
+/* 426 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	exports.default = function (arr) {
+	    return Math.min.apply(Math, _toConsumableArray(arr));
+	};
+
+/***/ },
+/* 427 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (arr) {
+	    return arr.reduce(function (obj, x) {
+	        Object.keys(x).forEach(function (key) {
+	            if (Array.isArray(obj[key])) {
+	                obj[key].push(x[key]);
+	            } else {
+	                obj[key] = [x[key]];
+	            }
+	        });
+	        return obj;
+	    }, {});
+	};
+
+/***/ },
+/* 428 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (arr) {
+	    return arr && (arr.length === 0 ? undefined : arr[arr.length - 1]);
+	};
+
+/***/ },
+/* 429 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (arr1, arr2) {
+	    var getter1 = arguments.length <= 2 || arguments[2] === undefined ? function (x) {
+	        return x;
+	    } : arguments[2];
+	    var getter2 = arguments.length <= 3 || arguments[3] === undefined ? function (x) {
+	        return x;
+	    } : arguments[3];
+	    var deduplication = arguments.length <= 4 || arguments[4] === undefined ? true : arguments[4];
+	
+	    /**
+	     * compare element using getter
+	     * @param a
+	     * @param b
+	     * @returns {number}
+	     *   0  -> equal
+	     *   1  -> `a` bigger than `b`
+	     *   -1 -> `b` bigger than `a`
+	     */
+	    var compare = function compare(a, b) {
+	        var valA = getter1(a);
+	        var valB = getter2(b);
+	
+	        if (valA > valB) {
+	            return 1;
+	        }
+	
+	        if (valA < valB) {
+	            return -1;
+	        }
+	
+	        return 0;
+	    };
+	
+	    // clone so that does not change arguments
+	    var a1Clone = arr1.slice(0);
+	    var a2Clone = arr2.slice(0);
+	
+	    var result = [];
+	
+	    // loop until both array is empty
+	    while (a1Clone.length > 0 || a2Clone.length > 0) {
+	        var a1Head = a1Clone[0];
+	        var a2Head = a2Clone[0];
+	
+	        if (!a1Head) {
+	            result = result.concat(a2Clone);
+	            break; // break if one of the array is empty
+	        }
+	
+	        if (!a2Head) {
+	            result = result.concat(a1Clone);
+	            break; // break if one of the array is empty
+	        }
+	
+	        var last = result.length > 0 && result[result.length - 1];
+	        var toAdd = void 0;
+	        switch (compare(a1Head, a2Head)) {
+	            case 0:
+	                {
+	                    if (deduplication) a2Clone.shift();
+	                    toAdd = a1Clone.shift();
+	                    break;
+	                }
+	            // a2Head is smaller
+	            case 1:
+	                {
+	                    toAdd = a2Clone.shift();
+	                    break;
+	                }
+	            // a1Head is smaller
+	            case -1:
+	                {
+	                    toAdd = a1Clone.shift();
+	                    break;
+	                }
+	            default: // impossible
+	        }
+	
+	        // if dedup is true, do not append same element
+	        if (deduplication && last && getter1(last) === getter2(toAdd)) {
+	            break;
+	        }
+	        result.push(toAdd);
+	    }
+	
+	    return result;
+	};
+
+/***/ },
+/* 430 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (n) {
+	    return Array.from(Array(n).keys());
+	};
+
+/***/ },
+/* 431 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (arr, key) {
+	    return arr.reduce(function (a, b) {
+	        var kv = b[key];
+	        var idx = a.findIndex(function (g) {
+	            return g.some(function (e) {
+	                return e[key] === kv;
+	            });
+	        });
+	
+	        if (idx > -1) {
+	            a[idx].push(b);
+	        } else {
+	            a.push([b]);
+	        }
+	        return a;
+	    }, []);
+	};
+
+/***/ },
+/* 432 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _getAbsoluteBarrierFromContract = __webpack_require__(433);
+	
+	var _getAbsoluteBarrierFromContract2 = _interopRequireDefault(_getAbsoluteBarrierFromContract);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contract, lastTickQuote) {
+	    return (0, _getAbsoluteBarrierFromContract2.default)(contract, lastTickQuote, 'barrier2');
+	};
+
+/***/ },
+/* 433 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (contract, lastTickQuote) {
+	    var barrierEntryName = arguments.length <= 2 || arguments[2] === undefined ? 'barrier' : arguments[2];
+	
+	    var barrierValue = +contract[barrierEntryName];
+	    if (!barrierValue) {
+	        return lastTickQuote;
+	    }
+	    if (contract.barrierType !== 'relative') {
+	        return barrierValue;
+	    }
+	    if (typeof contract.entry_spot === 'undefined' && typeof lastTickQuote === 'undefined') {
+	        throw new Error('Relative barrier can not be calculated');
+	    }
+	    return barrierValue + (+contract.entry_spot || lastTickQuote);
+	};
+
+/***/ },
+/* 434 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _getAbsoluteBarrierFromContract = __webpack_require__(433);
+	
+	var _getAbsoluteBarrierFromContract2 = _interopRequireDefault(_getAbsoluteBarrierFromContract);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contract, lastTickQuote) {
+	    return (0, _getAbsoluteBarrierFromContract2.default)(contract, lastTickQuote, 'barrier');
+	};
+
+/***/ },
+/* 435 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _relativeBarrier = __webpack_require__(436);
+	
+	var _relativeBarrier2 = _interopRequireDefault(_relativeBarrier);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contract, lastTickQuote) {
+	    return contract.barrier ? (0, _relativeBarrier2.default)(contract, lastTickQuote) : +contract.entry_spot || lastTickQuote;
+	};
+
+/***/ },
+/* 436 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _commonRelativeBarrier = __webpack_require__(437);
+	
+	var _commonRelativeBarrier2 = _interopRequireDefault(_commonRelativeBarrier);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contract, lastTickQuote) {
+	    return (0, _commonRelativeBarrier2.default)(contract.barrier, contract.entry_spot, lastTickQuote);
+	};
+
+/***/ },
+/* 437 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (barrier, entrySpot, lastTickQuote) {
+	    return +barrier + (+entrySpot || lastTickQuote);
+	};
+
+/***/ },
+/* 438 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _groupByKey = __webpack_require__(439);
+	
+	var _groupByKey2 = _interopRequireDefault(_groupByKey);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var extractDigitBarrierHelper = function extractDigitBarrierHelper(contractsGroupedByExpiry) {
+	    var expiryTypes = Object.keys(contractsGroupedByExpiry);
+	    var result = {};
+	    expiryTypes.forEach(function (et) {
+	        var contractsByExpiry = contractsGroupedByExpiry[et];
+	        result[et] = [{
+	            name: 'Digit',
+	            values: contractsByExpiry[0].last_digit_range,
+	            defaultValue: contractsByExpiry[0].last_digit_range[0]
+	        }];
+	    });
+	    return result;
+	};
+	
+	var extract2BarriersHelper = function extract2BarriersHelper(contractsGroupedByExpiry) {
+	    var expiryTypes = Object.keys(contractsGroupedByExpiry);
+	    var result = {};
+	    expiryTypes.forEach(function (et) {
+	        var contractsByExpiry = contractsGroupedByExpiry[et];
+	        result[et] = [{ name: 'High barrier', defaultValue: contractsByExpiry[0].high_barrier }, { name: 'Low barrier', defaultValue: contractsByExpiry[0].low_barrier }];
+	    });
+	    return result;
+	};
+	
+	var extract1BarrierHelper = function extract1BarrierHelper(contractGroupedByExpiry, barrierName) {
+	    var expiryTypes = Object.keys(contractGroupedByExpiry);
+	    var result = {};
+	    expiryTypes.forEach(function (et) {
+	        var contractsByExpiry = contractGroupedByExpiry[et];
+	        var contractWithBarrier = contractsByExpiry.find(function (c) {
+	            return !!c.barrier;
+	        });
+	        if (!contractWithBarrier) {
+	            return;
+	        }
+	        result[et] = [{ name: barrierName, defaultValue: contractWithBarrier.barrier }];
+	    });
+	    return result;
+	};
+	
+	exports.default = function (contracts, type) {
+	    var groupByExpiryType = (0, _groupByKey2.default)(contracts, 'expiry_type');
+	
+	    switch (type) {
+	        // types with 1 barrier
+	        case 'CALL':
+	            return extract1BarrierHelper(groupByExpiryType, 'Higher than');
+	        case 'PUT':
+	            return extract1BarrierHelper(groupByExpiryType, 'Lower than');
+	        case 'ONETOUCH':
+	        case 'NOTOUCH':
+	            return extract1BarrierHelper(groupByExpiryType, 'Touch spot');
+	
+	        // types with 2 barriers
+	        case 'EXPIRYMISS':
+	        case 'EXPIRYRANGE':
+	        case 'RANGE':
+	        case 'UPORDOWN':
+	            return extract2BarriersHelper(groupByExpiryType);
+	
+	        // special case: digit type
+	        case 'DIGITMATCH':
+	        case 'DIGITDIFF':
+	        case 'DIGITOVER':
+	        case 'DIGITUNDER':
+	            return extractDigitBarrierHelper(groupByExpiryType);
+	
+	        // These types do not have barrier
+	        case 'DIGITODD':
+	        case 'DIGITEVEN':
+	        case 'ASIANU':
+	        case 'ASIAND':
+	        case 'SPREADU':
+	        case 'SPREADD':
+	            return undefined;
+	        default:
+	            {
+	                throw new Error('Unknown trade type: ' + type);
+	            }
+	    }
+	};
+
+/***/ },
+/* 439 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (arr, key) {
+	    var result = {};
+	    arr.forEach(function (ele) {
+	        var kv = ele[key];
+	        if (!result[kv]) {
+	            result[kv] = [];
+	        }
+	        result[kv].push(ele);
+	    });
+	    return result;
+	};
+
+/***/ },
+/* 440 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _commonRelativeBarrier = __webpack_require__(437);
+	
+	var _commonRelativeBarrier2 = _interopRequireDefault(_commonRelativeBarrier);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contract, lastTickQuote) {
+	    return (0, _commonRelativeBarrier2.default)(contract.barrier2, contract.entry_spot, lastTickQuote);
+	};
+
+/***/ },
+/* 441 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (date) {
+	    return new Date(date - date.getTimezoneOffset() * 60 * 1000).toISOString();
+	};
+
+/***/ },
+/* 442 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _dateAsLocalISOString = __webpack_require__(441);
+	
+	var _dateAsLocalISOString2 = _interopRequireDefault(_dateAsLocalISOString);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (date) {
+	    return (0, _dateAsLocalISOString2.default)(date).slice(0, 10);
+	};
+
+/***/ },
+/* 443 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (date) {
+	    return Math.floor(date.getTime() / 1000);
+	};
+
+/***/ },
+/* 444 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (date) {
+	    return date.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+	};
+
+/***/ },
+/* 445 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _dateAsLocalISOString = __webpack_require__(441);
+	
+	var _dateAsLocalISOString2 = _interopRequireDefault(_dateAsLocalISOString);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (date) {
+	    return (0, _dateAsLocalISOString2.default)(date).slice(11, 19);
+	};
+
+/***/ },
+/* 446 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (date) {
+	    return date.toISOString().slice(11, 19);
+	};
+
+/***/ },
+/* 447 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (epoch) {
+	    return new Date(epoch * 1000);
+	};
+
+/***/ },
+/* 448 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _epochToDate = __webpack_require__(447);
+	
+	var _epochToDate2 = _interopRequireDefault(_epochToDate);
+	
+	var _dateToDateString = __webpack_require__(442);
+	
+	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	    var epoch = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+	    return (0, _dateToDateString2.default)((0, _epochToDate2.default)(epoch));
+	};
+
+/***/ },
+/* 449 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _epochToDate = __webpack_require__(447);
+	
+	var _epochToDate2 = _interopRequireDefault(_epochToDate);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (epoch) {
+	    return (0, _epochToDate2.default)(epoch).toUTCString();
+	};
+
+/***/ },
+/* 450 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _dateToTimeString = __webpack_require__(445);
+	
+	var _dateToTimeString2 = _interopRequireDefault(_dateToTimeString);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (epoch) {
+	    return (0, _dateToTimeString2.default)(new Date(epoch * 1000));
+	};
+
+/***/ },
+/* 451 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _epochToDate = __webpack_require__(447);
+	
+	var _epochToDate2 = _interopRequireDefault(_epochToDate);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	    var epoch = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+	    return (0, _epochToDate2.default)(epoch).toISOString().slice(0, 10);
+	};
+
+/***/ },
+/* 452 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (epoch) {
+	    return new Date(epoch * 1000).toISOString().slice(11, 19);
+	};
+
+/***/ },
+/* 453 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (x) {
+		var d = new Date();
+		d.setMonth(d.getMonth() - x);
+		return Math.floor(d.getTime() / 1000);
+	};
+
+/***/ },
+/* 454 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (date) {
+	    return !isNaN(date.getTime());
+	};
+
+/***/ },
+/* 455 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xDayEpoch = __webpack_require__(456);
+	
+	var _xDayEpoch2 = _interopRequireDefault(_xDayEpoch);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	  return (0, _xDayEpoch2.default)(-29);
+	};
+
+/***/ },
+/* 456 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (x) {
+	    var secsAway = x * 60 * 60 * 24;
+	    return Math.floor(Date.now() / 1000) + secsAway;
+	};
+
+/***/ },
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xDayEpoch = __webpack_require__(456);
+	
+	var _xDayEpoch2 = _interopRequireDefault(_xDayEpoch);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	  return (0, _xDayEpoch2.default)(-6);
+	};
+
+/***/ },
+/* 458 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (x) {
+	    var tmr = new Date();
+	    tmr.setDate(tmr.getDate() + x);
+	    return tmr;
+	};
+
+/***/ },
+/* 459 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function () {
+	    return Math.floor(Date.now() / 1000);
+	};
+
+/***/ },
+/* 460 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _dateToDateString = __webpack_require__(442);
+	
+	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+		var d = new Date();
+		d.setFullYear(new Date().getFullYear() + 1);
+		return (0, _dateToDateString2.default)(d);
+	};
+
+/***/ },
+/* 461 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (secs) {
+	    var days = Math.floor(secs / 60 / 60 / 24);
+	    var hours = Math.floor(secs % (60 * 60 * 24) / (60 * 60));
+	    var minutes = Math.floor(secs % (60 * 60) / 60);
+	    var seconds = Math.floor(secs % 60);
+	    return (days > 0 ? days + ' day(s)' : '') + (hours > 0 ? hours + ' hour(s)' : '') + (minutes > 0 ? minutes + ' minute(s)' : '') + (seconds > 0 ? seconds + ' second(s)' : '');
+	};
+
+/***/ },
+/* 462 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (sec) {
+	    var minute = Math.floor(sec / 60);
+	    var hour = Math.floor(minute / 60);
+	    var day = Math.floor(hour / 24);
+	
+	    return [sec, minute, hour, day];
+	};
+
+/***/ },
+/* 463 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (a, b) {
+	    var aH = +a.slice(0, 2);
+	    var aM = +a.slice(3, 5);
+	    var aS = +a.slice(6);
+	
+	    var bH = +b.slice(0, 2);
+	    var bM = +b.slice(3, 5);
+	    var bS = +b.slice(6);
+	
+	    if (aH !== bH) {
+	        return aH > bH;
+	    } else if (aM !== bM) {
+	        return aM > bM;
+	    }
+	    return aS > bS;
+	};
+
+/***/ },
+/* 464 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _timeStringBigger = __webpack_require__(463);
+	
+	var _timeStringBigger2 = _interopRequireDefault(_timeStringBigger);
+	
+	var _timeStringSmaller = __webpack_require__(465);
+	
+	var _timeStringSmaller2 = _interopRequireDefault(_timeStringSmaller);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (start, end, target) {
+	    if ((0, _timeStringBigger2.default)(end, start)) {
+	        return (0, _timeStringBigger2.default)(target, start) && (0, _timeStringSmaller2.default)(target, end);
+	    }
+	    /**
+	     * if open time is bigger than close time
+	     * target should not between close and open time
+	     * eg. '09:00:00' is not between '23:00:00' (start) and '08:00:00'(close)
+	     * because it is between '08:00:00' to '23:00:00'
+	     * */
+	
+	    return !((0, _timeStringBigger2.default)(target, end) && (0, _timeStringSmaller2.default)(target, start));
+	};
+
+/***/ },
+/* 465 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _timeStringBigger = __webpack_require__(463);
+	
+	var _timeStringBigger2 = _interopRequireDefault(_timeStringBigger);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (a, b) {
+	    if (a === b) {
+	        return false;
+	    }
+	    return !(0, _timeStringBigger2.default)(a, b);
+	};
+
+/***/ },
+/* 466 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	// only supported format = "hh:mm", seconds are not supported
+	exports.default = function (timeString) {
+	    var h = +timeString.slice(0, 2);
+	    var m = +timeString.slice(3, 5);
+	
+	    return h * 3600 + m * 60;
+	};
+
+/***/ },
+/* 467 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xDayEpoch = __webpack_require__(456);
+	
+	var _xDayEpoch2 = _interopRequireDefault(_xDayEpoch);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	  return (0, _xDayEpoch2.default)(0);
+	};
+
+/***/ },
+/* 468 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _dateToDateString = __webpack_require__(442);
+	
+	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	    return (0, _dateToDateString2.default)(new Date());
+	};
+
+/***/ },
+/* 469 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function () {
+	    return new Date().toISOString().slice(0, 10);
+	};
+
+/***/ },
+/* 470 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (m) {
+		return new Date(new Date().setMonth(new Date().getMonth() + m));
+	};
+
+/***/ },
+/* 471 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _xDayEpoch = __webpack_require__(456);
+	
+	var _xDayEpoch2 = _interopRequireDefault(_xDayEpoch);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	  return (0, _xDayEpoch2.default)(-1);
+	};
+
+/***/ },
+/* 472 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _dateToDateString = __webpack_require__(442);
+	
+	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
+	
+	var _yesterdayEpoch = __webpack_require__(471);
+	
+	var _yesterdayEpoch2 = _interopRequireDefault(_yesterdayEpoch);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	    return (0, _dateToDateString2.default)(new Date((0, _yesterdayEpoch2.default)() * 1000));
+	};
+
+/***/ },
+/* 473 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _yesterdayEpoch = __webpack_require__(471);
+	
+	var _yesterdayEpoch2 = _interopRequireDefault(_yesterdayEpoch);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	    return new Date((0, _yesterdayEpoch2.default)() * 1000).toISOString().slice(0, 10);
+	};
+
+/***/ },
+/* 474 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (inputValue, bridge) {
+	    return inputValue.split(bridge).map(function (obj) {
+	        switch (obj.length) {
+	            case 0:
+	                return '01';
+	            case 1:
+	                return '0' + (obj === '0' ? '1' : obj);
+	            default:
+	                return obj;
+	        }
+	    }).join(bridge);
+	};
+
+/***/ },
+/* 475 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (inputValue, bridge) {
+	    return inputValue.split(bridge).map(function (obj) {
+	        switch (obj.length) {
+	            case 0:
+	                return '00';
+	            case 1:
+	                return '0' + obj;
+	            default:
+	                return obj;
+	        }
+	    }).join(bridge);
+	};
+
+/***/ },
+/* 476 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (time) {
+	    return time.split(':').map(function (val, ind) {
+	        switch (ind) {
+	            case 0:
+	                return parseInt(val, 0) < 24;
+	            case 1:
+	                return parseInt(val, 0) <= 59;
+	            default:
+	                return parseInt(val, 0) <= 59;
+	        }
+	    }).indexOf(false) > -1;
+	};
+
+/***/ },
+/* 477 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _nowAsEpoch = __webpack_require__(459);
+	
+	var _nowAsEpoch2 = _interopRequireDefault(_nowAsEpoch);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (loginTime, interval) {
+	    return interval - ((0, _nowAsEpoch2.default)() - loginTime) % interval;
+	};
+
+/***/ },
+/* 478 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _durationToSecs = __webpack_require__(479);
+	
+	var _durationToSecs2 = _interopRequireDefault(_durationToSecs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (duration) {
+	    var d = +duration.slice(0, -1);
+	    var u = duration.slice(-1);
+	    return (0, _durationToSecs2.default)(d, u);
+	};
+
+/***/ },
+/* 479 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (duration, unit) {
+	    switch (unit) {
+	        case 't':
+	        case 's':
+	            return duration;
+	        case 'm':
+	            return 60 * duration;
+	        case 'h':
+	            return 3600 * duration;
+	        case 'd':
+	            return 86400 * duration;
+	        default:
+	            throw new Error('Duration unit not valid: ' + unit + ', only allow [\'t\', \'s\', \'m\', \'h\', \'d\']');
+	    }
+	};
+
+/***/ },
+/* 480 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (unit) {
+	    return {
+	        t: 'Ticks',
+	        s: 'Seconds',
+	        m: 'Minutes',
+	        h: 'Hours',
+	        d: 'Days'
+	    }[unit];
+	};
+
+/***/ },
+/* 481 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = ['t', 's', 'm', 'h', 'd'];
+
+/***/ },
+/* 482 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extractDurationHelper = __webpack_require__(483);
+	
+	var _extractDurationHelper2 = _interopRequireDefault(_extractDurationHelper);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contracts, type) {
+	    var contractsOfType = contracts.filter(function (c) {
+	        return c.contract_type === type;
+	    });
+	    var nonForwardStartingContracts = contractsOfType.filter(function (c) {
+	        return !c.forward_starting_options;
+	    });
+	
+	    if (nonForwardStartingContracts.length === 0) {
+	        return undefined;
+	    }
+	
+	    return (0, _extractDurationHelper2.default)(nonForwardStartingContracts, type);
+	};
+
+/***/ },
+/* 483 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _durationSecHelper = __webpack_require__(478);
+	
+	var _durationSecHelper2 = _interopRequireDefault(_durationSecHelper);
+	
+	var _extractMinMaxInUnits = __webpack_require__(484);
+	
+	var _extractMinMaxInUnits2 = _interopRequireDefault(_extractMinMaxInUnits);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contracts, type) {
+	    if (type.indexOf('SPREAD') > -1) {
+	        return [];
+	    }
+	
+	    var tickContracts = contracts.filter(function (c) {
+	        return c.min_contract_duration.slice(-1) === 't';
+	    });
+	    var tickDuration = tickContracts.length > 0 ? { min: 5, max: 10, unit: 't' } : undefined;
+	
+	    var nonTickContracts = contracts.filter(function (c) {
+	        return c.min_contract_duration.slice(-1) !== 't';
+	    });
+	    if (nonTickContracts.length === 0) {
+	        return tickDuration ? [tickDuration] : [];
+	    }
+	    var nonTickMinSec = nonTickContracts.map(function (c) {
+	        return (0, _durationSecHelper2.default)(c.min_contract_duration);
+	    }).filter(function (d) {
+	        return !!d;
+	    }).reduce(function (a, b) {
+	        return Math.min(a, b);
+	    });
+	
+	    var nonTickMaxSec = nonTickContracts.map(function (c) {
+	        return (0, _durationSecHelper2.default)(c.max_contract_duration);
+	    }).filter(function (d) {
+	        return !!d;
+	    }).reduce(function (a, b) {
+	        return Math.max(a, b);
+	    });
+	
+	    var nonTicksDuration = (0, _extractMinMaxInUnits2.default)(nonTickMinSec, nonTickMaxSec);
+	    if (tickDuration) {
+	        nonTicksDuration.unshift(tickDuration);
+	    }
+	
+	    return nonTicksDuration;
+	};
+
+/***/ },
+/* 484 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _durationUnits = __webpack_require__(481);
+	
+	var _durationUnits2 = _interopRequireDefault(_durationUnits);
+	
+	var _splitSecsToUnits = __webpack_require__(462);
+	
+	var _splitSecsToUnits2 = _interopRequireDefault(_splitSecsToUnits);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// block is a structure that describes min and max of specific time unit
+	var blockIsValid = function blockIsValid(minArg, maxArg, unit) {
+	    if (maxArg <= 1) {
+	        return false;
+	    }
+	    switch (unit) {
+	        case 's':
+	            return minArg < 60;
+	        case 'm':
+	            return minArg < 60;
+	        case 'h':
+	            return minArg < 24;
+	        case 'd':
+	        default:
+	            return true;
+	    }
+	};
+	
+	exports.default = function (minInSecs, maxInSecs) {
+	    var minInUnits = (0, _splitSecsToUnits2.default)(minInSecs);
+	    var maxInUnits = (0, _splitSecsToUnits2.default)(maxInSecs);
+	
+	    var durations = [];
+	    for (var i = 0; i < minInUnits.length; i++) {
+	        var unit = _durationUnits2.default[i + 1];
+	        var minI = minInUnits[i];
+	        var maxI = maxInUnits[i];
+	        if (blockIsValid(minI, maxI, unit)) {
+	            durations.push({
+	                unit: unit,
+	                min: minI > 0 ? minI : 1,
+	                max: maxI });
+	        }
+	    }
+	    return durations;
+	};
+
+/***/ },
+/* 485 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _arrayToObject = __webpack_require__(427);
+	
+	var _arrayToObject2 = _interopRequireDefault(_arrayToObject);
+	
+	var _groupByKey = __webpack_require__(439);
+	
+	var _groupByKey2 = _interopRequireDefault(_groupByKey);
+	
+	var _extractDurationHelper = __webpack_require__(483);
+	
+	var _extractDurationHelper2 = _interopRequireDefault(_extractDurationHelper);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contracts, type) {
+	    var forwardStartingContracts = contracts.filter(function (c) {
+	        return !!c.forward_starting_options && c.contract_type === type;
+	    });
+	    if (forwardStartingContracts.length === 0) {
+	        return undefined;
+	    }
+	
+	    if (forwardStartingContracts.length > 1) {
+	        throw new Error('Can not have more than one contract with forward starting options');
+	    }
+	
+	    var forwardOptions = forwardStartingContracts[0].forward_starting_options;
+	    var groupByDate = (0, _groupByKey2.default)(forwardOptions || [], 'date');
+	    var forwardStartingRange = [];
+	    Object.keys(groupByDate).sort(function (a, b) {
+	        return +a - +b;
+	    }).forEach(function (date) {
+	        var timesPerDateArr = groupByDate[date].map(function (obj) {
+	            var open = new Date(obj.open * 1000);
+	            var close = new Date(obj.close * 1000);
+	            return { open: open, close: close };
+	        });
+	        var timesPerDateObj = (0, _arrayToObject2.default)(timesPerDateArr);
+	        forwardStartingRange.push(_extends({ date: new Date(date * 1000) }, timesPerDateObj));
+	    });
+	
+	    var forwardStartingDurations = (0, _extractDurationHelper2.default)(forwardStartingContracts, type);
+	    return {
+	        range: forwardStartingRange,
+	        options: forwardStartingDurations
+	    };
+	};
+
+/***/ },
+/* 486 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _isDurationTick = __webpack_require__(487);
+	
+	var _isDurationTick2 = _interopRequireDefault(_isDurationTick);
+	
+	var _durationToSecs = __webpack_require__(479);
+	
+	var _durationToSecs2 = _interopRequireDefault(_durationToSecs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (duration, durationUnit) {
+	    return (0, _isDurationTick2.default)(durationUnit) || (0, _durationToSecs2.default)(duration, durationUnit) < 120;
+	};
+
+/***/ },
+/* 487 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (duration) {
+	    return !!duration && duration.slice(-1) === 't';
+	};
+
+/***/ },
+/* 488 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (duration, durationUnit, ranges) {
+	    var relatedBlock = ranges.find(function (r) {
+	        return r.unit === durationUnit;
+	    });
+	
+	    if (!relatedBlock) {
+	        return false;
+	    }
+	
+	    return duration <= relatedBlock.max && duration >= relatedBlock.min;
+	};
+
+/***/ },
+/* 489 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _getLastDigit = __webpack_require__(490);
+	
+	var _getLastDigit2 = _interopRequireDefault(_getLastDigit);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (ticks, pips) {
+	    return ticks.reduce(function (acc, x) {
+	        var digit = (0, _getLastDigit2.default)(x.quote, pips);
+	        acc[digit]++;
+	        return acc;
+	    }, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).map(function (x) {
+	        return ticks.length && x / ticks.length * 100;
+	    });
+	};
+
+/***/ },
+/* 490 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (value, pips) {
+	    return +value.toFixed(pips).slice(-1);
+	};
+
+/***/ },
+/* 491 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (digits) {
+	    return Math.pow(10, -digits);
+	};
+
+/***/ },
+/* 492 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (n) {
+	    var numStr = n.toString();
+	    return numStr.includes('.') ? numStr.split('.')[1].length : 0;
+	};
+
+/***/ },
+/* 493 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (n) {
+	    return n > 0 ? '+' + n : n.toString();
+	};
+
+/***/ },
+/* 494 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (pipSize) {
+	    if (isNaN(pipSize)) {
+	        return '0.01';
+	    }
+	    var zeros = Array(pipSize).join('0');
+	    return '0.' + zeros + 1;
+	};
+
+/***/ },
+/* 495 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (pips) {
+	    return Math.abs(Math.log10(pips));
+	};
+
+/***/ },
+/* 496 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (value) {
+	    return (+value).toFixed(2);
+	};
+
+/***/ },
+/* 497 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (obj, predicate) {
+	    return Object.keys(obj).reduce(function (acc, key) {
+	        if (predicate(obj[key])) {
+	            acc[key] = obj[key];
+	        }
+	        return acc;
+	    }, {});
+	};
+
+/***/ },
+/* 498 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	/**
+	 * Find if certain value is true in the object
+	 * @param obj
+	 * @param predicate     (object, index) => true|false
+	 * @returns {boolean}
+	 */
+	var findDeep = function findDeep(obj, predicate) {
+	    if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || obj === null || obj === undefined) {
+	        return false;
+	    }
+	
+	    var allChildren = Object.keys(obj).map(function (k) {
+	        return obj[k];
+	    });
+	    var childrenMeetPredicate = allChildren.map(function (child, k) {
+	        return predicate(child, k);
+	    });
+	    if (childrenMeetPredicate.indexOf(true) > -1) {
+	        return true;
+	    }
+	    var childrenResult = allChildren.map(function (child) {
+	        return findDeep(child, predicate);
+	    });
+	    return childrenResult.indexOf(true) > -1;
+	};
+	
+	exports.default = findDeep;
+
+/***/ },
+/* 499 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var toPlainJS = exports.toPlainJS = function toPlainJS(obj) {
+	    return obj && (typeof obj.toJS === 'undefined' ? obj : obj.toJS());
+	};
+	
+	exports.default = function (obj) {
+	    return obj && Object.keys(obj).reduce(function (acc, key) {
+	        acc[key] = toPlainJS(obj[key]);
+	        return acc;
+	    }, {});
+	};
+
+/***/ },
+/* 500 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (arr1, arr2) {
+	    return arr1.length === arr2.length && arr1.every(function (x, idx) {
+	        return x === arr2[idx];
+	    });
+	};
+
+/***/ },
+/* 501 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (ohlc1, ohlc2) {
+	    var o1Len = ohlc1.length;
+	    var o2Len = ohlc2.length;
+	
+	    if (o1Len !== o2Len) {
+	        return false;
+	    }
+	
+	    if (o1Len === 0) {
+	        return true;
+	    }
+	
+	    var o1Last = ohlc1[o1Len - 1];
+	    var o2Last = ohlc2[o2Len - 1];
+	
+	    return o1Last.epoch === o2Last.epoch && o1Last.close === o2Last.close;
+	};
+
+/***/ },
+/* 502 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (ticks1, ticks2) {
+	    return ticks1.length === ticks2.length && (ticks1.length === 0 || ticks1[ticks1.length - 1].epoch === ticks2[ticks2.length - 1].epoch);
+	};
+
+/***/ },
+/* 503 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (arr1, arr2) {
+	    var eq = arguments.length <= 2 || arguments[2] === undefined ? function (a, b) {
+	        return a === b;
+	    } : arguments[2];
+	
+	    var len1 = arr1.length;
+	    var len2 = arr2.length;
+	    var lengthDiff = Math.abs(len1 - len2);
+	
+	    switch (lengthDiff) {
+	        case 0:
+	            if (len1 === 0) return false;
+	            if (len1 === 1) return !eq(arr1[0], arr2[0]);
+	
+	            return eq(arr1[arr1.length - 1], arr2[arr2.length - 2]) || eq(arr1[arr1.length - 2], arr2[arr2.length - 1]);
+	
+	        case 1:
+	            if (len1 === 0 || len2 === 0) return true;
+	
+	            return eq(arr1[arr1.length - 1], arr2[arr2.length - 2]) || eq(arr1[arr1.length - 2], arr2[arr2.length - 1]);
+	
+	        default:
+	            return false;
+	    }
+	};
+
+/***/ },
+/* 504 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (ohlc1, ohlc2) {
+	    return !ohlc1 && ohlc1 === ohlc2 || !!ohlc1 && !!ohlc2 && ohlc1.epoch === ohlc2.epoch && ohlc1.close === ohlc2.close;
+	};
+
+/***/ },
+/* 505 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _doCandleEqual = __webpack_require__(504);
+	
+	var _doCandleEqual2 = _interopRequireDefault(_doCandleEqual);
+	
+	var _doArrayDifferJustOneEntry = __webpack_require__(503);
+	
+	var _doArrayDifferJustOneEntry2 = _interopRequireDefault(_doArrayDifferJustOneEntry);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (candles1, candles2) {
+	    return (0, _doArrayDifferJustOneEntry2.default)(candles1, candles2, _doCandleEqual2.default);
+	};
+
+/***/ },
+/* 506 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _doTicksEqual = __webpack_require__(507);
+	
+	var _doTicksEqual2 = _interopRequireDefault(_doTicksEqual);
+	
+	var _doArrayDifferJustOneEntry = __webpack_require__(503);
+	
+	var _doArrayDifferJustOneEntry2 = _interopRequireDefault(_doArrayDifferJustOneEntry);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (ticks1, ticks2) {
+	    return (0, _doArrayDifferJustOneEntry2.default)(ticks1, ticks2, _doTicksEqual2.default);
+	};
+
+/***/ },
+/* 507 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (tick1, tick2) {
+	    return !tick1 && tick1 === tick2 || !!tick1 && !!tick2 && tick1.epoch === tick2.epoch && tick1.quote === tick2.quote;
+	};
+
+/***/ },
+/* 508 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (candles) {
+	    return candles && (candles.length === 0 ? undefined : +candles[candles.length - 1].close);
+	};
+
+/***/ },
+/* 509 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (ticks) {
+	    return ticks && ticks.length > 0 ? ticks[ticks.length - 1].quote : undefined;
+	};
+
+/***/ },
+/* 510 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	// a zip + map, but I do not find we need it much, so no need to generalize
+	exports.default = function (history) {
+	    return history.times.map(function (t, idx) {
+	        return {
+	            epoch: +t,
+	            quote: +history.prices[idx]
+	        };
+	    });
+	};
+
+/***/ },
+/* 511 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	// open_time is used when data is stream
+	exports.default = function (candle) {
+	    return [+(candle.open_time || candle.epoch) * 1000, +candle.open, +candle.high, +candle.low, +candle.close];
+	};
+
+/***/ },
+/* 512 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (candles) {
+	    return candles.map(function (data) {
+	        return { quote: +data.open, epoch: +data.epoch };
+	    });
+	};
+
+/***/ },
+/* 513 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (tick) {
+	    return [tick.epoch * 1000, tick.quote];
+	};
+
+/***/ },
+/* 514 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (proposal) {
+	    return proposal && +proposal.ask_price;
+	};
+
+/***/ },
+/* 515 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (category) {
+	    return {
+	        callput: 'Up/Down',
+	        risefall: 'Rise/Fall',
+	        higherlower: 'Higher/Lower',
+	        asian: 'Asians',
+	        digits: 'Digits',
+	        endsinout: 'Ends In/Out',
+	        staysinout: 'Stays In/Out',
+	        touchnotouch: 'Touch/No Touch',
+	        spreads: 'Spreads'
+	    }[category];
+	};
+
+/***/ },
+/* 516 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	exports.default = function (code) {
+		return {
+			contract_id: 'Contract ID',
+			purchase_time: 'Purchase Time',
+			ask_price: 'Ask Price',
+			bid_price: 'Bid Price',
+			date_start: 'Start Time',
+			date_expiry: 'Expiry Time',
+			date_settlement: 'Settlement Time',
+			expiry_time: 'Expiry Time',
+	
+			current_spot: 'Current Spot',
+			current_spot_time: 'Current Spot Time',
+			entry_spot: 'Entry Spot',
+			entry_tick_time: 'Entry Spot Time',
+			sell_price: 'Sell Price',
+			payout: 'Potential Payout',
+			buy_price: 'Purchase Price',
+	
+			barrier: 'Barrier',
+			low_barrier: 'Low Barrier',
+			high_barrier: 'High Barrier',
+	
+			sell_time: 'Sell Time',
+	
+			exit_tick_time: 'Exit Spot Time', // to be confirmed
+			exit_tick: 'Exit Spot', // to show both or not?
+	
+			sell_spot_time: 'DO NOT USE',
+			entry_tick: 'DO NOT USE',
+			sell_spot: 'DO NOT USE'
+		}[code];
+	};
+
+/***/ },
+/* 517 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (contracts) {
+	    return {
+	        amountPerPoint: contracts[0].amount_per_point,
+	        stopType: contracts[0].stop_type,
+	        stopLoss: contracts[0].stop_loss,
+	        stopProfit: contracts[0].stop_profit
+	    };
+	};
+
+/***/ },
+/* 518 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _durationToSecs = __webpack_require__(479);
+	
+	var _durationToSecs2 = _interopRequireDefault(_durationToSecs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (duration, unit) {
+	    return (0, _durationToSecs2.default)(duration, unit) < 60 * 60 * 24;
+	};
+
+/***/ },
+/* 519 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _groupByKey = __webpack_require__(439);
+	
+	var _groupByKey2 = _interopRequireDefault(_groupByKey);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contracts) {
+	    var extraRemoved = contracts.map(function (contract) {
+	        return {
+	            amount_per_point: contract.amount_per_point,
+	            barrier: contract.barrier,
+	            barriers: contract.barriers,
+	            contract_category: contract.contract_category,
+	            contract_category_display: contract.contract_category_display,
+	            contract_display: contract.contract_display,
+	            contract_type: contract.contract_type,
+	            expiry_type: contract.expiry_type,
+	            forward_starting_options: contract.forward_starting_options,
+	            high_barrier: contract.high_barrier,
+	            last_digit_range: contract.last_digit_range,
+	            low_barrier: contract.low_barrier,
+	            min_contract_duration: contract.min_contract_duration,
+	            max_contract_duration: contract.max_contract_duration,
+	            stop_type: contract.stop_type,
+	            stop_loss: contract.stop_loss,
+	            stop_profit: contract.stop_profit
+	        };
+	    });
+	
+	    var groupByCategory = (0, _groupByKey2.default)(extraRemoved, 'contract_category');
+	    var allCategory = Object.keys(groupByCategory);
+	    allCategory.forEach(function (c) {
+	        var relatedContracts = groupByCategory[c];
+	        var groupByType = (0, _groupByKey2.default)(relatedContracts, 'contract_type');
+	        groupByCategory[c] = groupByType;
+	    });
+	
+	    return groupByCategory;
+	};
+
+/***/ },
+/* 520 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _tradeTypeCodeToText = __webpack_require__(521);
+	
+	var _tradeTypeCodeToText2 = _interopRequireDefault(_tradeTypeCodeToText);
+	
+	var _typeHasBarrier = __webpack_require__(523);
+	
+	var _typeHasBarrier2 = _interopRequireDefault(_typeHasBarrier);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (code, barrier) {
+	    return (0, _tradeTypeCodeToText2.default)(code) + ((0, _typeHasBarrier2.default)(code) ? ' ' + barrier : '');
+	};
+
+/***/ },
+/* 521 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _tradeTypes = __webpack_require__(522);
+	
+	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (code) {
+	    var tradeType = _tradeTypes2.default.find(function (x) {
+	        return x.value === code;
+	    });
+	    return tradeType ? tradeType.text : 'Unknown';
+	};
+
+/***/ },
+/* 522 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = [{ value: 'CALL', text: 'Rise', img: 'img/trade-call.svg', ticks: true, barrier: false }, { value: 'PUT', text: 'Fall', img: 'img/trade-put.svg', ticks: true, barrier: false }, { value: 'HIGHER', text: 'Higher', img: 'img/trade-higher.svg', ticks: false, barrier: false }, { value: 'LOWER', text: 'Lower', img: 'img/trade-lower.svg', ticks: false, barrier: false }, { value: 'DIGITMATCH', text: 'Digit Match', img: 'img/trade-digitmatch.svg', ticks: true, barrier: true }, { value: 'DIGITDIFF', text: 'Digit Differs', img: 'img/trade-digitdiff.svg', tick: true, barrier: true }, { value: 'DIGITOVER', text: 'Digit Over', img: 'img/trade-digitover.svg', tick: true, barrier: true }, { value: 'DIGITUNDER', text: 'Digit Under', img: 'img/trade-digitunder.svg', tick: true, barrier: true }, { value: 'DIGITEVEN', text: 'Digit Even', img: 'img/trade-digiteven.svg', tick: true, barrier: false }, { value: 'DIGITODD', text: 'Digit Odd', img: 'img/trade-digitodd.svg', tick: true, barrier: false }, { value: 'ASIANU', text: 'Asian Up', img: 'img/trade-asianu.svg', ticks: true, barrier: false }, { value: 'ASIAND', text: 'Asian Down', img: 'img/trade-asiand.svg', ticks: true, barrier: false }, { value: 'EXPIRYRANGE', text: 'Ends Between', img: 'img/trade-expiryrange.svg', ticks: false, barrier: false }, { value: 'EXPIRYMISS', text: 'Ends Outside', img: 'img/trade-expirymiss.svg', ticks: false, barrier: false }, { value: 'RANGE', text: 'Stays Between', img: 'img/trade-range.svg', ticks: false, barrier: false }, { value: 'UPORDOWN', text: 'Goes Outside', img: 'img/trade-upordown.svg', ticks: false, barrier: false }, { value: 'ONETOUCH', text: 'Touches', img: 'img/trade-onetouch.svg', ticks: false, barrier: false }, { value: 'NOTOUCH', text: 'Does Not Touch', img: 'img/trade-notouch.svg', ticks: false, barrier: false }, { value: 'SPREADU', text: 'Spread Long', img: 'img/trade-spreadu.svg', ticks: false, barrier: false }, { value: 'SPREADD', text: 'Spread Short', img: 'img/trade-spreadu.svg', ticks: false, barrier: false }];
+
+/***/ },
+/* 523 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _tradeTypes = __webpack_require__(522);
+	
+	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (type) {
+	    var typeDetails = _tradeTypes2.default.find(function (x) {
+	        return x.value === type;
+	    });
+	    return !!(typeDetails && typeDetails.barrier);
+	};
+
+/***/ },
+/* 524 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _tradeTypes = __webpack_require__(522);
+	
+	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (text) {
+	    var tradeType = _tradeTypes2.default.find(function (x) {
+	        return x.text === text;
+	    });
+	    return tradeType ? tradeType.value : 'Unknown';
+	};
+
+/***/ },
+/* 525 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	
+	var nullFunc = function nullFunc() {};
+	
+	var analytics = function analytics(ga) {
+	    return ga || typeof window !== 'undefined' && window.ga || nullFunc;
+	};
+	
+	var trackUserId = exports.trackUserId = function trackUserId(userId, ga) {
+	    return analytics(ga)('set', 'userId', userId);
+	};
+	
+	var trackRoute = exports.trackRoute = function trackRoute(route, ga) {
+	    return analytics(ga)('send', 'pageview', route);
+	};
+	
+	var trackEvent = exports.trackEvent = function trackEvent(category, action, label, ga) {
+	    return analytics(ga)('send', {
+	        hitType: 'event',
+	        eventCategory: category,
+	        eventAction: action,
+	        eventLabel: label
+	    });
+	};
+
+/***/ },
+/* 526 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (percentage) {
+	    return "rgba(42, 48, 82, " + percentage + ")";
+	};
+
+/***/ },
+/* 527 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (value) {
+	    return value < 0 && 'number-negative' || value > 0 && 'number-positive' || '';
+	};
+
+/***/ },
+/* 528 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (text) {
+	    return text.split(')').length > 1 ? text.split(')')[1] : text;
+	};
+
+/***/ },
+/* 529 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uniqueId = 0;
+	
+	exports.default = function () {
+	  return uniqueId++;
+	};
+
+/***/ },
+/* 530 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function () {
+	    return typeof window !== 'undefined' && /Mobile/.test(window.navigator.userAgent);
+	};
+
+/***/ },
+/* 531 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (email) {
+	    return (/\S+@\S+\.\S+/.test(email)
+	    );
+	};
+
+/***/ },
+/* 532 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (password) {
+	    return (/^[ -~]{6,25}$/.test(password)
+	    );
+	};
+
+/***/ },
+/* 533 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (handler) {
+	    document.addEventListener('fullscreenchange', function () {
+	        return handler(document.fullscreen);
+	    });
+	    document.addEventListener('webkitfullscreenchange', function () {
+	        return handler(document.webkitIsFullScreen);
+	    });
+	    document.addEventListener('mozfullscreenchange', function () {
+	        return handler(document.mozFullScreen);
+	    });
+	    document.addEventListener('MSFullscreenChange', function () {
+	        return handler(document.msFullscreenElement);
+	    });
+	};
+
+/***/ },
+/* 534 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function () {
+	    if (document.exitFullscreen) {
+	        document.exitFullscreen();
+	    } else if (document.msExitFullscreen) {
+	        document.msExitFullscreen();
+	    } else if (document.mozCancelFullScreen) {
+	        document.mozCancelFullScreen();
+	    } else if (document.webkitExitFullscreen) {
+	        document.webkitExitFullscreen();
+	    }
+	};
+
+/***/ },
+/* 535 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (handler) {
+	    document.removeEventListener('fullscreenchange', handler);
+	    document.removeEventListener('webkitfullscreenchange', handler);
+	    document.removeEventListener('mozfullscreenchange', handler);
+	    document.removeEventListener('MSFullscreenChange', handler);
+	};
+
+/***/ },
+/* 536 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function (elem) {
+	    if (elem.requestFullscreen) {
+	        elem.requestFullscreen();
+	    } else if (elem.msRequestFullscreen) {
+	        elem.msRequestFullscreen();
+	    } else if (elem.mozRequestFullScreen) {
+	        elem.mozRequestFullScreen();
+	    } else if (elem.webkitRequestFullscreen) {
+	        elem.webkitRequestFullscreen();
+	    }
+	};
+
+/***/ },
+/* 537 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = typeof alert !== 'undefined' ? alert : function () {};
+
+/***/ },
+/* 538 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = typeof alert !== 'undefined' ? alert : function () {};
+
+/***/ },
+/* 539 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function () {
+	    if (typeof window === 'undefined') return;
+	    setTimeout(function () {
+	        return window.dispatchEvent(new Event('resize'));
+	    }, 100);
+	};
+
+/***/ },
+/* 540 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var takeLast = exports.takeLast = function takeLast(arr, n, field) {
+	    return arr.slice(n > arr.length ? 0 : arr.length - n, arr.length).map(function (x) {
+	        return field ? x[field] : x;
+	    });
+	};
+	
+	var sum = exports.sum = function sum(data) {
+	    return data.reduce(function (acc, x) {
+	        return acc + x;
+	    });
+	};
+	
+	var weightingMultiplier = exports.weightingMultiplier = function weightingMultiplier(periods) {
+	    return 2 / (periods + 1);
+	};
+	
+	var mean = exports.mean = function mean(data) {
+	    return data.reduce(function (a, b) {
+	        return a + b;
+	    }) / data.length;
+	};
+	
+	var stddev = exports.stddev = function stddev(data) {
+	    var dataMean = mean(data);
+	    var sqDiff = data.map(function (n) {
+	        return Math.pow(n - dataMean, 2);
+	    });
+	    var avgSqDiff = mean(sqDiff);
+	    return Math.sqrt(avgSqDiff);
+	};
+
+/***/ },
+/* 541 */
 /***/ function(module, exports) {
 
 	// COPYRIGHT (c) 2016 TrackJS LLC ALL RIGHTS RESERVED
