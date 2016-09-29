@@ -15,4 +15,6 @@ Blockly.Blocks.tick = {
     insideStrategy(this, ev, 'Tick Value');
   },
 };
-Blockly.JavaScript.tick = () => ['ticks.ticks.slice(-1)[0].quote', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.tick = () => [
+  'Bot.expectTick(Bot.expectNonEmptyArray(ticks.ticks).slice(-1)[0]).quote',
+  Blockly.JavaScript.ORDER_ATOMIC];
