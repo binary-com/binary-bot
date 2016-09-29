@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, max-len, object-shorthand */
+/* eslint-disable no-underscore-dangle, max-len, object-shorthand, prefer-template */
 import { observer } from 'binary-common-utils/lib/observer';
 import { getUiComponent, setOpacityForAll, setOpacity } from '../components';
 import { translator } from '../../../common/translator';

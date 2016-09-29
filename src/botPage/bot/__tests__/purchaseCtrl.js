@@ -90,7 +90,8 @@ describe('PurchaseCtrl', () => {
     it('purchaseCtrl passes ticks and send the proposals if ready', () => {
       expect(strategyArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch');
       expect(strategyArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
-        .that.is.equal('Win payout if the last digit of Volatility 100 Index is odd after 5 ticks.');
+        .that.is.equal('Win payout if the last digit of Volatility 100 Index is'
+          + ' odd after 5 ticks.');
     });
   });
   describe('Waiting for strategy to purchase the contract', () => {

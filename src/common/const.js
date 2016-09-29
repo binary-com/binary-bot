@@ -189,6 +189,6 @@ export default {
     endsinout: translator.translateText('Ends In/Out'),
     staysinout: translator.translateText('Stays In/Goes Out'),
   },
-	conditions: ['risefall', 'higherlower', 'touchnotouch',
-		'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
+  conditions: ['risefall', 'higherlower', 'touchnotouch',
+    'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
 };

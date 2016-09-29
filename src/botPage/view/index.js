@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { BinaryChart } from 'binary-charts';
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
-import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
+import { getTokenList, removeAllTokens,
+  get as getStorage } from 'binary-common-utils/lib/storageManager';
 import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
 import { translator } from '../../common/translator';
@@ -92,14 +93,7 @@ export default class View {
       const reader = new FileReader();
       reader.onload = (() => {
         $('#fileBrowser').hide();
-        return (e) => {
-          try {
-            this.blockly.loadBlocks(e.target.result);
-            observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'));
-          } catch (err) {
-            observer.emit('blockly.error', err);
-          }
-        };
+        return (e) => this.blockly.loadBlocks(e.target.result);
       })(f);
       reader.readAsText(f);
     };
@@ -119,7 +113,8 @@ export default class View {
         if (file.type.match('text/xml')) {
           readFile(file);
         } else {
-          observer.emit('ui.log.info', translator.translateText('File is not supported:') + ' ' + file.name);
+          observer.emit('ui.log.info', `${
+          translator.translateText('File is not supported:')} ${file.name}`);
         }
       }
     };
@@ -127,7 +122,7 @@ export default class View {
     const handleDragOver = (e) => {
       e.stopPropagation();
       e.preventDefault();
-      e.dataTransfer.dropEffect = 'copy';
+      e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
     };
 
     const dropZone = document.getElementById('dropZone');
@@ -309,7 +304,7 @@ export default class View {
     }
   }
   addEventHandlers() {
-    for (const errorType of ['api.error', 'blockly.error']) {
+    for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
       observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
         if (error.code === 'InvalidToken') {
           removeAllTokens();
@@ -338,6 +333,7 @@ export default class View {
 
     observer.register('bot.finish', (contract) => {
       this.tradeInfo.add(contract);
+      setTimeout(() => delete this.latestOpenContract, 2000);
     });
 
     observer.register('bot.tickUpdate', (info) => {

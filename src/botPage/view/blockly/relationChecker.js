@@ -48,7 +48,8 @@ export const condition = (blockObj, ev, calledByParent) => {
     } else if (!bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
       const symbol = bot.symbol.findSymbol(blockObj.parentBlock_.type);
       observer.emit('ui.log.warn',
-        `${symbol[Object.keys(symbol)[0]]} ${translator.translateText('does not support category:')}`
+        `${symbol[Object.keys(symbol)[0]]} ${
+        translator.translateText('does not support category:')}`
         + ` ${bot.symbol.getCategoryNameForCondition(blockObj.type)}`
         + `, ${translator.translateText('Allowed categories are')}`
         + ` ${bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)}`);
@@ -62,11 +63,11 @@ export const condition = (blockObj, ev, calledByParent) => {
         const duration = getNumField(blockObj, 'DURATION');
         const durationType = getListField(blockObj, 'DURATIONTYPE_LIST');
         if (duration !== '') {
-          const minDuration = bot.symbol.getLimitation(blockObj.parentBlock_.type, blockObj.type).minDuration;
+          const minDuration = bot.symbol.getLimitation(
+            blockObj.parentBlock_.type, blockObj.type).minDuration;
           if (!durationAccepted(duration + durationType, minDuration)) {
             observer.emit('ui.log.warn',
-              translator.translateText('Minimum duration is') +
-              ' ' + expandDuration(minDuration));
+              `${translator.translateText('Minimum duration is')} ${expandDuration(minDuration)}`);
           } else {
             observer.emit('tour:ticks');
           }
@@ -103,8 +104,10 @@ export const submarket = (blockObj, ev) => {
   if (insideHolder(blockObj)) {
     return;
   }
-  if (blockObj.childBlocks_.length > 0 && config.conditions.indexOf(blockObj.childBlocks_[0].type) < 0) {
-    observer.emit('ui.log.warn', translator.translateText('Submarket blocks can only accept trade type blocks'));
+  if (blockObj.childBlocks_.length > 0 &&
+    config.conditions.indexOf(blockObj.childBlocks_[0].type) < 0) {
+    observer.emit('ui.log.warn',
+      translator.translateText('Submarket blocks can only accept trade type blocks'));
     for (const child of Array.prototype.slice.apply(blockObj.childBlocks_)) {
       child.unplug();
     }
@@ -162,7 +165,7 @@ export const trade = (blockObj, ev) => {
   const topParent = findTopParentBlock(blockObj);
   if (topParent !== null) {
     if (bot.symbol.findSymbol(topParent.type)
-      || ['on_strategy', 'on_finish'].indexOf(topParent.type) >= 0) {
+      || ['on_strategy', 'on_finish', 'during_purchase'].indexOf(topParent.type) >= 0) {
       observer.emit('ui.log.warn',
         translator.translateText('The trade block cannot be inside binary blocks'));
       disable(blockObj);
@@ -179,7 +182,7 @@ export const insideCondition = (blockObj, ev, name) => {
   if (topParent !== null) {
     if (config.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
       observer.emit('ui.log.warn',
-        name + ' ' + translator.translateText('must be added to the condition block'));
+        `${name} ${translator.translateText('must be added to the condition block')}`);
       disable(blockObj);
       return;
     }
@@ -194,11 +197,26 @@ export const insideStrategy = (blockObj, ev, name) => {
   if (topParent !== null) {
     if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
-        name + ' ' + translator.translateText('must be added inside the strategy block'));
+        `${name} ${translator.translateText('must be added inside the strategy block')}`);
       disable(blockObj);
       return;
     } else if (blockObj.type === 'purchase') {
       observer.emit('tour:purchase');
+    }
+  }
+  enable(blockObj);
+};
+export const insideDuringPurchase = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
+  const topParent = findTopParentBlock(blockObj);
+  if (topParent !== null) {
+    if (topParent.type !== 'during_purchase' && !ev.oldParentId) {
+      observer.emit('ui.log.warn',
+        `${name} ${translator.translateText('must be added inside the during purchase block')}`);
+      disable(blockObj);
+      return;
     }
   }
   enable(blockObj);
@@ -211,7 +229,7 @@ export const insideFinish = (blockObj, ev, name) => {
   if (topParent !== null) {
     if (topParent.type !== 'on_finish' && !ev.oldParentId) {
       observer.emit('ui.log.warn',
-        name + ' ' + translator.translateText('must be added inside the finish block'));
+        `${name} ${translator.translateText('must be added inside the finish block')}`);
       disable(blockObj);
       return;
     }

@@ -8,7 +8,7 @@ export function title(block, opposites, optionNames) {
     .setAlign(Blockly.ALIGN_CENTRE)
     .appendField(bot.symbol.getCategoryNameForCondition(opposites));
   block.appendDummyInput()
-    .appendField('> ' + optionNames[0] + '/' + optionNames[1]);
+    .appendField(`> ${optionNames[0]}/${optionNames[1]}`);
 }
 
 export function candleInterval(block) {
@@ -35,12 +35,13 @@ export function payout(block) {
 }
 
 export function barrierOffset(block, opposites, name) {
-  if (!name) {
-    name = translator.translateText('Barrier Offset:');
+  let fieldName = translator.translateText('Barrier Offset:');
+  if (name) {
+    fieldName = name;
   }
   block.appendValueInput('BARRIEROFFSET')
     .setCheck('BarrierOffset')
-    .appendField(name);
+    .appendField(fieldName);
 }
 
 export function secondBarrierOffset(block) {

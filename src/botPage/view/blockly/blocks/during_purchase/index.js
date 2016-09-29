@@ -8,16 +8,24 @@ Blockly.Blocks.during_purchase = {
     this.appendStatementInput('DURING_PURCHASE_STACK')
       .setCheck('SellAtMarket');
     this.setColour('#2a3052');
-    this.setTooltip(translator.translateText('Sell at market before a trade is finished'));
+    this.setTooltip(translator.translateText('Sell at market before a trade is finished')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };
 Blockly.JavaScript.during_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
-	const code = `function during_purchase(openContract, purchaseCtrl){
-	if(purchaseCtrl === null) return; 
-	${stack}
-	}
-	`;
+  const code = `function during_purchase(openContract, purchaseCtrl){
+  if(purchaseCtrl === null) return; 
+    try {
+      ${stack}
+    } catch (e) { 
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        throw e;
+      }
+    }
+  }
+  `;
   return code;
 };

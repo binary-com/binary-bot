@@ -15,6 +15,7 @@ import './strategy';
 import './strategy/tick';
 import './strategy/ticks';
 import './strategy/ohlc';
+import './strategy/ohlc_values';
 import './strategy/readOhlcObj';
 import './strategy/readOhlc';
 import './during_purchase';
@@ -30,6 +31,6 @@ import './finish/trade_again';
 import './block_holder';
 
 export default () => {
-	markets();
-	tradeTypes();
+  markets();
+  tradeTypes();
 };

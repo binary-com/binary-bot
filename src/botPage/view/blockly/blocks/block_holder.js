@@ -6,9 +6,9 @@ Blockly.Blocks.block_holder = {
     this.appendDummyInput()
       .appendField(translator.translateText('Blocks in here have no effect!'));
     this.appendStatementInput('USELESS_STACK')
-			.setCheck(null);
+      .setCheck(null);
     this.setColour('#fef1cf');
-    this.setTooltip(translator.translateText('Put your blocks in here to prevent them from being removed'));
+    this.setTooltip(translator.translateText('Put your blocks in here to prevent them from being removed')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
 };

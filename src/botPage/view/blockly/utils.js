@@ -1,13 +1,7 @@
 import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 
-const purchase_choices = [[translator.translateText('Click to select'), '']];
-
-export const throwError = (message) => {
-  const error = new Error(message);
-  error.blockly = true;
-  throw error;
-};
+const purchaseChoices = [[translator.translateText('Click to select'), '']];
 
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0;
 
@@ -20,9 +14,10 @@ export const getBlockByType = (type) => {
   return null;
 };
 
-export const getPurchaseChoices = () => purchase_choices;
+export const getPurchaseChoices = () => purchaseChoices;
 
-export const findTopParentBlock = (block) => {
+export const findTopParentBlock = (b) => {
+  let block = b;
   let pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
   if (pblock === null) {
     return null;
@@ -41,13 +36,14 @@ export const addPurchaseOptions = () => {
   let firstOption = {};
   let secondOption = {};
   const trade = getBlockByType('trade');
-  if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET')
+  if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null &&
+    trade.getInputTargetBlock('SUBMARKET')
       .getInputTargetBlock('CONDITION') !== null) {
     const conditionType = trade.getInputTargetBlock('SUBMARKET')
       .getInputTargetBlock('CONDITION')
       .type;
     const opposites = config.opposites[conditionType.toUpperCase()];
-    purchase_choices.length = 0;
+    purchaseChoices.length = 0;
     opposites.forEach((option, index) => {
       if (index === 0) {
         firstOption = {
@@ -60,7 +56,7 @@ export const addPurchaseOptions = () => {
           name: option[Object.keys(option)[0]],
         };
       }
-      purchase_choices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+      purchaseChoices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
     });
     const purchases = Blockly.mainWorkspace.getAllBlocks()
       .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0));

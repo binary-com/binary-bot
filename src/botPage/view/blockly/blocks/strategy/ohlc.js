@@ -8,11 +8,11 @@ Blockly.Blocks.ohlc = {
       .appendField(translator.translateText('Candles List'));
     this.setOutput(true, 'Array');
     this.setColour('#f2f2f2');
-    this.setTooltip(translator.translateText('Returns the ohlc list'));
+    this.setTooltip(translator.translateText('Returns the candle list')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
     insideStrategy(this, ev, 'Candles List');
   },
 };
-Blockly.JavaScript.ohlc = () => ['ticks.ohlc', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.ohlc = () => ['Bot.expectNonEmptyArray(ticks.ohlc)', Blockly.JavaScript.ORDER_ATOMIC];

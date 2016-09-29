@@ -7,12 +7,12 @@ describe('Translation', () => {
     let toolbox;
     before(() => {
       toolbox = strToXml(`
-				<category name="fake1" colour="15" i18n-text="Conditions">
-					<category name="fake2" colour="15" i18n-text="Up/Down">
-						<block type="risefall"></block>
-					</category>
-				</category>
-					`, 'text/xml');
+        <category name="fake1" colour="15" i18n-text="Conditions">
+          <category name="fake2" colour="15" i18n-text="Up/Down">
+            <block type="risefall"></block>
+          </category>
+        </category>
+          `, 'text/xml');
     });
     it('translateText', () => {
       expect(translator.translateText('Logic')).to.be.a('string')
