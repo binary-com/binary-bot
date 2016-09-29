@@ -9,6 +9,7 @@ import View from './view';
 import { setAppId } from '../common/appId';
 import { notifyError } from './view/logger';
 import expect from '../common/expect';
+import math from '../common/math';
 
 setAppId();
 $.ajaxSetup({
@@ -30,6 +31,7 @@ class BotPage {
   constructor() {
     window.Bot = {
       expect,
+      math,
       addBlockByMagic: (blockType) => {
         const dp = Blockly.mainWorkspace.newBlock(blockType);
         dp.initSvg();

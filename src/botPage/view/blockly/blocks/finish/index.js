@@ -1,5 +1,10 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
 import { translator } from '../../../../../common/translator';
+import './result';
+import './check_result';
+import './details';
+import './read_details';
+import './trade_again';
 
 Blockly.Blocks.on_finish = {
   init: function init() {

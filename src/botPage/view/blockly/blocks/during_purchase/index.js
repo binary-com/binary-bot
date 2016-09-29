@@ -1,5 +1,8 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
 import { translator } from '../../../../../common/translator';
+import './sell_at_market';
+import './check_sell';
+import './sell_price';
 
 Blockly.Blocks.during_purchase = {
   init: function init() {
