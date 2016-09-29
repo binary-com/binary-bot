@@ -87,6 +87,12 @@ export default class Bot {
         }
         Promise.all(promises).then(() => {
           this.startTrading();
+        }).catch((error) => {
+          if (error.name === 'RuntimeError') {
+            // pass
+          } else {
+            throw error;
+          }
         });
       }
     }
