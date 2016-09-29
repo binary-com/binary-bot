@@ -91,12 +91,12 @@ export default () => {
       currency: '${currency}',
       amount: ${amount},
       ${((config.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '')
-        ? `barrier: ${predictionValue},` : '')}
+        ? `prediction: ${predictionValue},` : '')}
       ${((config.hasSecondBarrierOffset.indexOf(opposites) > -1
         || (config.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== ''))
-        ? `barrier: '${barrierOffsetValue}',` : '')}
+        ? `barrierOffset: ${barrierOffsetValue},` : '')}
       ${((config.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '')
-        ? `barrier2: '${secondBarrierOffsetValue}',` : '')}`;
+        ? `secondBarrierOffset: ${secondBarrierOffsetValue},` : '')}`;
       return code;
     };
   }
