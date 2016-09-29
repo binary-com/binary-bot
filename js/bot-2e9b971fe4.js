@@ -9195,6 +9195,12 @@
 	          }
 	          Promise.all(promises).then(function () {
 	            _this.startTrading();
+	          }).catch(function (error) {
+	            if (error.name === 'RuntimeError') {
+	              // pass
+	            } else {
+	              throw error;
+	            }
 	          });
 	        }
 	      }
