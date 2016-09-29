@@ -8,20 +8,26 @@ import _Symbol from './symbol';
 import { expectNumber, expectBarrierOffset } from '../../common/expect';
 import { RuntimeError } from '../../common/error';
 
-const checkTradeOptions = (tradeOption) => {
-  if (tradeOption && tradeOption instanceof Object) {
-    expectNumber('duration', tradeOption.duration, RuntimeError);
-    expectNumber('amount', tradeOption.amount, RuntimeError).toFixed(2);
-    if (tradeOption.barrier && typeof tradeOption.barrier === 'number') {
-      expectNumber('prediction', tradeOption.barrier, RuntimeError);
-    }
-    if (tradeOption.barrier && typeof tradeOption.barrier === 'string') {
-      expectBarrierOffset(tradeOption.barrier, RuntimeError);
-    }
-    if (tradeOption.barrier2 && typeof tradeOption.barrier2 === 'string') {
-      expectBarrierOffset(tradeOption.barrier2, RuntimeError);
-    }
+const decorateTradeOptions = (tradeOption, otherOptions = {}) => {
+  const option = {
+    duration_unit: tradeOption.duration_unit,
+    basis: tradeOption.basis,
+    currency: tradeOption.currency,
+    symbol: tradeOption.symbol,
+    ...otherOptions,
+  };
+  option.duration = expectNumber('duration', tradeOption.duration, RuntimeError);
+  option.amount = expectNumber('amount', tradeOption.amount, RuntimeError).toFixed(2);
+  if ('prediction' in tradeOption) {
+    option.barrier = expectNumber('prediction', tradeOption.prediction, RuntimeError);
   }
+  if ('barrierOffset' in tradeOption) {
+    option.barrier = expectBarrierOffset(tradeOption.barrierOffset, RuntimeError);
+  }
+  if ('secondBarrierOffset' in tradeOption) {
+    option.barrier2 = expectBarrierOffset(tradeOption.secondBarrierOffset, RuntimeError);
+  }
+  return option;
 };
 
 export default class Bot {
@@ -50,8 +56,7 @@ export default class Bot {
         this.purchaseCtrl.destroy();
       }
       this.purchaseCtrl = new PurchaseCtrl(this.api, strategy, duringPurchase, finish);
-      checkTradeOptions(tradeOption);
-      this.tradeOption = { ...tradeOption };
+      this.tradeOption = tradeOption;
       observer.emit('log.bot.start', {
         again: !!sameTrade,
       });
@@ -110,16 +115,11 @@ export default class Bot {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
       const opposites = config.opposites[this.tradeOption.condition];
       this.candleInterval = this.tradeOption.candleInterval;
-      this.tradeOption.amount = this.tradeOption.amount.toFixed(2);
       this.tradeOptions = [];
       for (const key of Object.keys(opposites)) {
-        const newTradeOption = {
-          ...this.tradeOption,
+        this.tradeOptions.push(decorateTradeOptions(this.tradeOption, {
           contract_type: Object.keys(opposites[key])[0],
-        };
-        delete newTradeOption.condition;
-        delete newTradeOption.candleInterval;
-        this.tradeOptions.push(newTradeOption);
+        }));
       }
     } else {
       this.tradeOptions = [];
