@@ -9068,9 +9068,9 @@
 	});
 	exports.bot = undefined;
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _observer = __webpack_require__(300);
 	
@@ -9106,20 +9106,27 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var checkTradeOptions = function checkTradeOptions(tradeOption) {
-	  if (tradeOption && tradeOption instanceof Object) {
-	    (0, _expect.expectNumber)('duration', tradeOption.duration, _error.RuntimeError);
-	    (0, _expect.expectNumber)('amount', tradeOption.amount, _error.RuntimeError).toFixed(2);
-	    if (tradeOption.barrier && typeof tradeOption.barrier === 'number') {
-	      (0, _expect.expectNumber)('prediction', tradeOption.barrier, _error.RuntimeError);
-	    }
-	    if (tradeOption.barrier && typeof tradeOption.barrier === 'string') {
-	      (0, _expect.expectBarrierOffset)(tradeOption.barrier, _error.RuntimeError);
-	    }
-	    if (tradeOption.barrier2 && typeof tradeOption.barrier2 === 'string') {
-	      (0, _expect.expectBarrierOffset)(tradeOption.barrier2, _error.RuntimeError);
-	    }
+	var decorateTradeOptions = function decorateTradeOptions(tradeOption) {
+	  var otherOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  var option = _extends({
+	    duration_unit: tradeOption.duration_unit,
+	    basis: tradeOption.basis,
+	    currency: tradeOption.currency,
+	    symbol: tradeOption.symbol
+	  }, otherOptions);
+	  option.duration = (0, _expect.expectNumber)('duration', tradeOption.duration, _error.RuntimeError);
+	  option.amount = (0, _expect.expectNumber)('amount', tradeOption.amount, _error.RuntimeError).toFixed(2);
+	  if ('prediction' in tradeOption) {
+	    option.barrier = (0, _expect.expectNumber)('prediction', tradeOption.prediction, _error.RuntimeError);
 	  }
+	  if ('barrierOffset' in tradeOption) {
+	    option.barrier = (0, _expect.expectBarrierOffset)(tradeOption.barrierOffset, _error.RuntimeError);
+	  }
+	  if ('secondBarrierOffset' in tradeOption) {
+	    option.barrier2 = (0, _expect.expectBarrierOffset)(tradeOption.secondBarrierOffset, _error.RuntimeError);
+	  }
+	  return option;
 	};
 	
 	var Bot = function () {
@@ -9157,8 +9164,7 @@
 	          this.purchaseCtrl.destroy();
 	        }
 	        this.purchaseCtrl = new _purchaseCtrl2.default(this.api, strategy, duringPurchase, finish);
-	        checkTradeOptions(tradeOption);
-	        this.tradeOption = _extends({}, tradeOption);
+	        this.tradeOption = tradeOption;
 	        _observer.observer.emit('log.bot.start', {
 	          again: !!sameTrade
 	        });
@@ -9223,7 +9229,6 @@
 	        this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip;
 	        var opposites = _const2.default.opposites[this.tradeOption.condition];
 	        this.candleInterval = this.tradeOption.candleInterval;
-	        this.tradeOption.amount = this.tradeOption.amount.toFixed(2);
 	        this.tradeOptions = [];
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
@@ -9233,12 +9238,9 @@
 	          for (var _iterator = Object.keys(opposites)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	            var key = _step.value;
 	
-	            var newTradeOption = _extends({}, this.tradeOption, {
+	            this.tradeOptions.push(decorateTradeOptions(this.tradeOption, {
 	              contract_type: Object.keys(opposites[key])[0]
-	            });
-	            delete newTradeOption.condition;
-	            delete newTradeOption.candleInterval;
-	            this.tradeOptions.push(newTradeOption);
+	            }));
 	          }
 	        } catch (err) {
 	          _didIteratorError = true;
@@ -19341,7 +19343,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -19435,14 +19437,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -19467,6 +19461,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19599,7 +19601,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -19693,14 +19695,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -19725,6 +19719,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19857,7 +19859,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -19951,14 +19953,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -19983,6 +19977,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20115,7 +20117,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -20209,14 +20211,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20241,6 +20235,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20373,7 +20375,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -20467,14 +20469,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20499,6 +20493,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20631,7 +20633,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -20725,14 +20727,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20757,6 +20751,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20889,7 +20891,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -20983,14 +20985,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21015,6 +21009,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21147,7 +21149,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -21241,14 +21243,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21273,6 +21267,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21405,7 +21407,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -21499,14 +21501,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21531,6 +21525,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21663,7 +21665,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -21757,14 +21759,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21789,6 +21783,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21921,7 +21923,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -22015,14 +22017,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22047,6 +22041,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22179,7 +22181,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -22273,14 +22275,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22305,6 +22299,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22437,7 +22439,7 @@
 	  "ac5c071aab82d3c9bef52be71951a796e4cabe22": "Expected candle object, given:",
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
-	  "ae391d4af1740fb4c1917edd9cf7e85b5f7a2034": "Please use appropriate barrier offset block for barrier offsets",
+	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
@@ -22531,14 +22533,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22563,6 +22557,14 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -23504,13 +23506,14 @@
 	  return Number(num);
 	};
 	
-	var expectBarrierOffset = exports.expectBarrierOffset = function expectBarrierOffset(barrier) {
+	var expectBarrierOffset = exports.expectBarrierOffset = function expectBarrierOffset(num) {
 	  var CustomError = arguments.length <= 1 || arguments[1] === undefined ? _error.BlocklyError : arguments[1];
 	
-	  if (barrier.match(/^[-+][\d.]+$/) === null) {
-	    return new CustomError(_translator.translator.translateText('Please use appropriate barrier offset block for barrier offsets')).emit();
+	  expectNumber('barrier offset', num, CustomError);
+	  if (num === 0) {
+	    return new CustomError('barrier offset ' + _translator.translator.translateText('cannot be zero.')).emit();
 	  }
-	  return barrier;
+	  return '' + (num < 0 ? '-' : '+') + num;
 	};
 
 /***/ },
@@ -29567,7 +29570,7 @@
 	Blockly.JavaScript.barrier_offset = function (block) {
 	  var barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
 	  var barrierOffset = Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET_IN', Blockly.JavaScript.ORDER_ATOMIC);
-	  var code = '' + barrierOffsetType + barrierOffset;
+	  var code = barrierOffsetType + '(' + barrierOffset + ')';
 	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 	};
 
@@ -29819,7 +29822,7 @@
 	        if (opposites === '' || durationValue === '' || payouttype === '' || currency === '' || amount === '') {
 	          return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
 	        }
-	        var code = '{\n      condition: \'' + opposites + '\',\n      candleInterval: \'' + candleIntervalValue + '\',\n      duration: ' + durationValue + ',\n      duration_unit: \'' + durationType + '\',\n      basis: \'' + payouttype + '\',\n      currency: \'' + currency + '\',\n      amount: ' + amount + ',\n      ' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'barrier: ' + predictionValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrier: \'' + barrierOffsetValue + '\',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'barrier2: \'' + secondBarrierOffsetValue + '\',' : '');
+	        var code = '{\n      condition: \'' + opposites + '\',\n      candleInterval: \'' + candleIntervalValue + '\',\n      duration: ' + durationValue + ',\n      duration_unit: \'' + durationType + '\',\n      basis: \'' + payouttype + '\',\n      currency: \'' + currency + '\',\n      amount: ' + amount + ',\n      ' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'prediction: ' + predictionValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrierOffset: ' + barrierOffsetValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'secondBarrierOffset: ' + secondBarrierOffsetValue + ',' : '');
 	        return code;
 	      };
 	    };
