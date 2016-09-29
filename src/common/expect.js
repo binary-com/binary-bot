@@ -36,11 +36,11 @@ export const expectNumber = (name, num, CustomError = BlocklyError) => {
   return Number(num);
 };
 
-export const expectBarrierOffset = (barrier, CustomError = BlocklyError) => {
-  if (barrier.match(/^[-+][\d.]+$/) === null) {
+export const expectBarrierOffset = (num, CustomError = BlocklyError) => {
+  expectNumber('barrier offset', num, CustomError);
+  if (num === 0) {
     return new CustomError(
-      translator.translateText('Please use appropriate barrier offset block for barrier offsets'))
-        .emit();
+      `barrier offset ${translator.translateText('cannot be zero.')}`).emit();
   }
-  return barrier;
+  return `${num < 0 ? '-' : '+'}${num}`;
 };
