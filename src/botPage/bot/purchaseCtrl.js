@@ -82,7 +82,7 @@ export default class PurchaseCtrl {
     });
     if (!this.purchased) {
       this.purchased = true;
-      const contract = this.proposals[option];
+      const contract = this.getContract(option);
       this.trade = new Trade(this.api);
       const tradeUpdate = (openContract) => {
         this.duringPurchase(openContract, this);
@@ -109,10 +109,7 @@ export default class PurchaseCtrl {
     }
   }
   getContract(option) {
-    if (!this.purchased) {
-      return this.proposals[option];
-    }
-    return null;
+    return this.proposals[option];
   }
   destroy() {
     for (const obs of this.runningObservations) {
