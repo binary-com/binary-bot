@@ -15,4 +15,4 @@ Blockly.Blocks.ohlc = {
     insideStrategy(this, ev, 'Candles List');
   },
 };
-Blockly.JavaScript.ohlc = () => ['Bot.expectNonEmptyArray(ticks.ohlc)', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.ohlc = () => ['Bot.expect.notEmptyArray(ticks.ohlc)', Blockly.JavaScript.ORDER_ATOMIC];

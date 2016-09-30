@@ -9,9 +9,7 @@
       "react",
       "stage-0"
     ],
-    "plugins": [
-      "transform-async-to-generator"
-    ],
+    "plugins": [],
     "ignore": [
       "./src/common/mock/*"
     ]
@@ -57,11 +55,11 @@
     "babel-eslint": "^6.1.2",
     "babel-istanbul": "^0.11.0",
     "babel-loader": "^6.2.5",
-    "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.14.0",
+    "binary-indicators": "^1.3.0",
     "binary-mock-websocket": "^4.1.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.14",

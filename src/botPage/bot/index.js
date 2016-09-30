@@ -5,7 +5,7 @@ import _ from 'underscore';
 import config from '../../common/const';
 import PurchaseCtrl from './purchaseCtrl';
 import _Symbol from './symbol';
-import { expectNumber, expectBarrierOffset } from '../../common/expect';
+import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect';
 import { RuntimeError } from '../../common/error';
 
 const decorateTradeOptions = (tradeOption, otherOptions = {}) => {

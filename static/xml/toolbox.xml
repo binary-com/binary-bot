@@ -316,6 +316,10 @@
 			<block type="total_runs"></block>
 			<block type="notify"></block>
 			<block type="block_holder"></block>
+			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
+				<block type="sma"></block>
+				<block type="ema"></block>
+			</category>
 		</category>
 	</category>
 </xml>

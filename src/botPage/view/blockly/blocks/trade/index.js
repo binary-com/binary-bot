@@ -2,6 +2,10 @@ import { translator } from '../../../../../common/translator';
 import { trade } from '../../relationChecker';
 import { BlocklyError } from '../../../../../common/error';
 
+import './barrierOffset';
+import markets from './markets';
+import tradeTypes from './tradeTypes';
+
 Blockly.Blocks.trade = {
   init: function init() {
     this.appendDummyInput()
@@ -34,4 +38,9 @@ Blockly.JavaScript.trade = (block) => {
   on_finish, again);
 }`;
   return code;
+};
+
+export default () => {
+  markets();
+  tradeTypes();
 };

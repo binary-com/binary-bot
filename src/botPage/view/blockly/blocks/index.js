@@ -1,36 +1,7 @@
-import './trade';
-import './trade/barrierOffset';
-import markets from './trade/markets';
-import tradeTypes from './trade/tradeTypes';
-import './tools/balance';
-import './tools/notify';
-import './tools/total_profit';
-import './tools/total_runs';
-import './strategy/check_direction';
-import './strategy/direction';
-import './strategy/purchase';
-import './strategy/ask_price';
-import './strategy/payout';
+import './tools';
 import './strategy';
-import './strategy/tick';
-import './strategy/ticks';
-import './strategy/ohlc';
-import './strategy/ohlc_values';
-import './strategy/readOhlcObj';
-import './strategy/readOhlc';
 import './during_purchase';
-import './during_purchase/sell_at_market';
-import './during_purchase/check_sell';
-import './during_purchase/sell_price';
-import './finish/result';
-import './finish/check_result';
-import './finish/details';
 import './finish';
-import './finish/read_details';
-import './finish/trade_again';
 import './block_holder';
 
-export default () => {
-  markets();
-  tradeTypes();
-};
+export { default } from './trade';
