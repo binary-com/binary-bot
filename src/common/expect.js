@@ -42,7 +42,7 @@ export const barrierOffset = (num, CustomError = BlocklyError) => {
     return new CustomError(
       `barrier offset ${translator.translateText('cannot be zero.')}`).emit();
   }
-  return `${num < 0 ? '-' : '+'}${num}`;
+  return `${num < 0 ? '' : '+'}${num}`;
 };
 
 export default {
