@@ -23589,7 +23589,7 @@
 	  if (num === 0) {
 	    return new CustomError('barrier offset ' + _translator.translator.translateText('cannot be zero.')).emit();
 	  }
-	  return '' + (num < 0 ? '-' : '+') + num;
+	  return '' + (num < 0 ? '' : '+') + num;
 	};
 	
 	exports.default = {
