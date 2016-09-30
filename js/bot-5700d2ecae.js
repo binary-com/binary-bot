@@ -8157,15 +8157,15 @@
 	
 	var _view2 = _interopRequireDefault(_view);
 	
-	var _appId = __webpack_require__(420);
+	var _appId = __webpack_require__(421);
 	
-	var _logger = __webpack_require__(419);
+	var _logger = __webpack_require__(420);
 	
 	var _expect = __webpack_require__(335);
 	
 	var _expect2 = _interopRequireDefault(_expect);
 	
-	var _math = __webpack_require__(421);
+	var _math = __webpack_require__(422);
 	
 	var _math2 = _interopRequireDefault(_math);
 	
@@ -8188,7 +8188,7 @@
 	  }
 	};
 	
-	__webpack_require__(541);
+	__webpack_require__(543);
 	
 	var BotPage = function BotPage() {
 	  var _this = this;
@@ -19356,9 +19356,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19429,14 +19429,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -19449,6 +19441,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -19499,9 +19499,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -19619,9 +19621,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19692,14 +19694,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -19712,6 +19706,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -19762,9 +19764,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -19882,9 +19886,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -19955,14 +19959,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -19975,6 +19971,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -20025,9 +20029,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -20145,9 +20151,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20218,14 +20224,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -20238,6 +20236,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -20288,9 +20294,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -20408,9 +20416,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20481,14 +20489,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -20501,6 +20501,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -20551,9 +20559,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -20671,9 +20681,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -20744,14 +20754,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -20764,6 +20766,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -20814,9 +20824,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -20934,9 +20946,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21007,14 +21019,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -21027,6 +21031,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -21077,9 +21089,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -21197,9 +21211,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21270,14 +21284,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -21290,6 +21296,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -21340,9 +21354,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -21460,9 +21476,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21533,14 +21549,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -21553,6 +21561,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -21603,9 +21619,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -21723,9 +21741,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -21796,14 +21814,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -21816,6 +21826,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -21866,9 +21884,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -21986,9 +22006,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -22059,14 +22079,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -22079,6 +22091,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -22129,9 +22149,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -22249,9 +22271,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -22322,14 +22344,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -22342,6 +22356,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -22392,9 +22414,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -22512,9 +22536,9 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
@@ -22585,14 +22609,6 @@
 	  "e8077186267c1038681326ccb5ee9e7f97f8d8e5": "Good Luck!",
 	  "a5853df5728c4e8b0bb050c1ecee8314a6605345": "Blocks in here have no effect!",
 	  "d072c2ceeb5c1217722d14c74de7aeab945b4215": "Put your blocks in here to prevent them from being removed",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "cd5f85b6f187605f82386eacd680f93820af8d11": "Result is",
 	  "1e38ce3d180cefae485a6986ca7c67841e30376f": "True if the result matches the selection",
 	  "130859d75b98316e103257c1f3c21832b3e80dc4": "Contract Details",
@@ -22605,6 +22621,14 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
 	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
 	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
 	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
@@ -22655,9 +22679,11 @@
 	  "f36bc5db1b0f1f4e605345225330fa0dd81e6689": "High Barrier Offset:",
 	  "450f7c5ae87fc05ec200be3b2aa09706c4d003af": "Provides the trade types:",
 	  "559f682cbda9fdf635263a782b7c6125ec4e745a": "All trade types are required",
-	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
+	  "4bd99f76f1104229744455d93df0ff76b9eeed58": "Exponential Moving Average",
 	  "d6a2a207343bd83aacdc80b579ff4419713a256e": "Input List",
 	  "170a28a9db6d27d7212fc6dc249434a57517e7bc": "Period",
+	  "ea615c6d6a74e25a6d2f1bc9980b46e73508c2eb": "Calculates Exponential Moving Average (EMA) from a list with a period",
+	  "a9842c95766da40bf4ea6ee263cb5a5985847763": "Simple Moving Average",
 	  "347775a293c14362d492f019e677c965be1d6e7d": "Calculates Simple Moving Average (SMA) from a list with a period"
 	};
 
@@ -23704,15 +23730,15 @@
 	
 	var _bot = __webpack_require__(303);
 	
-	var _introduction = __webpack_require__(416);
+	var _introduction = __webpack_require__(417);
 	
 	var _introduction2 = _interopRequireDefault(_introduction);
 	
-	var _welcome = __webpack_require__(418);
+	var _welcome = __webpack_require__(419);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
 	
-	var _logger = __webpack_require__(419);
+	var _logger = __webpack_require__(420);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29214,13 +29240,13 @@
 	
 	__webpack_require__(386);
 	
-	__webpack_require__(393);
+	__webpack_require__(394);
 	
-	__webpack_require__(405);
+	__webpack_require__(406);
 	
-	__webpack_require__(409);
+	__webpack_require__(410);
 	
-	__webpack_require__(415);
+	__webpack_require__(416);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30090,6 +30116,8 @@
 	'use strict';
 	
 	__webpack_require__(392);
+	
+	__webpack_require__(393);
 
 /***/ },
 /* 392 */
@@ -30127,7 +30155,33 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	__webpack_require__(394);
+	Blockly.Blocks.ema = {
+	  init: function init() {
+	    this.appendDummyInput().appendField(_translator.translator.translateText('Exponential Moving Average'));
+	    this.appendValueInput('INPUT').setCheck('Array').appendField(_translator.translator.translateText('Input List'));
+	    this.appendValueInput('PERIOD').setCheck('Number').appendField(_translator.translator.translateText('Period'));
+	    this.setOutput(true, 'Number');
+	    this.setColour('#dedede');
+	    this.setTooltip(_translator.translator.translateText('Calculates Exponential Moving Average (EMA) from a list with a period')); // eslint-disable-line max-len
+	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  }
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
+	
+	
+	Blockly.JavaScript.ema = function (block) {
+	  var input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_ATOMIC);
+	  var period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC);
+	  var code = 'Bot.math.indicators.exponentialMovingAverage(Bot.expect.notEmptyArray(' + input + '), { periods: Bot.expect.number(\'period\', ' + period + ') })';
+	  return [code, Blockly.JavaScript.ORDER_NONE];
+	};
+
+/***/ },
+/* 394 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _translator = __webpack_require__(308);
 	
 	__webpack_require__(395);
 	
@@ -30149,6 +30203,8 @@
 	
 	__webpack_require__(404);
 	
+	__webpack_require__(405);
+	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
 	Blockly.Blocks.on_strategy = {
 	  init: function init() {
@@ -30166,7 +30222,7 @@
 	};
 
 /***/ },
-/* 394 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30193,7 +30249,7 @@
 	};
 
 /***/ },
-/* 395 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30220,7 +30276,7 @@
 	};
 
 /***/ },
-/* 396 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30247,7 +30303,7 @@
 	};
 
 /***/ },
-/* 397 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30283,7 +30339,7 @@
 	};
 
 /***/ },
-/* 398 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30326,7 +30382,7 @@
 	};
 
 /***/ },
-/* 399 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30372,7 +30428,7 @@
 	};
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30406,7 +30462,7 @@
 	};
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30434,7 +30490,7 @@
 	};
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30467,7 +30523,7 @@
 	};
 
 /***/ },
-/* 403 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30500,7 +30556,7 @@
 	};
 
 /***/ },
-/* 404 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30533,18 +30589,18 @@
 	};
 
 /***/ },
-/* 405 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(308);
 	
-	__webpack_require__(406);
-	
 	__webpack_require__(407);
 	
 	__webpack_require__(408);
+	
+	__webpack_require__(409);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
 	Blockly.Blocks.during_purchase = {
@@ -30563,7 +30619,7 @@
 	};
 
 /***/ },
-/* 406 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30590,7 +30646,7 @@
 	};
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30619,7 +30675,7 @@
 	};
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30646,14 +30702,12 @@
 	};
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _translator = __webpack_require__(308);
-	
-	__webpack_require__(410);
 	
 	__webpack_require__(411);
 	
@@ -30662,6 +30716,8 @@
 	__webpack_require__(413);
 	
 	__webpack_require__(414);
+	
+	__webpack_require__(415);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
 	Blockly.Blocks.on_finish = {
@@ -30680,7 +30736,7 @@
 	};
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30708,7 +30764,7 @@
 	};
 
 /***/ },
-/* 411 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30742,7 +30798,7 @@
 	};
 
 /***/ },
-/* 412 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30769,7 +30825,7 @@
 	};
 
 /***/ },
-/* 413 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30804,7 +30860,7 @@
 	};
 
 /***/ },
-/* 414 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30831,7 +30887,7 @@
 	};
 
 /***/ },
-/* 415 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30853,7 +30909,7 @@
 	};
 
 /***/ },
-/* 416 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30867,7 +30923,7 @@
 	
 	var _observer = __webpack_require__(300);
 	
-	var _components = __webpack_require__(417);
+	var _components = __webpack_require__(418);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -31333,7 +31389,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 417 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31415,7 +31471,7 @@
 	};
 
 /***/ },
-/* 418 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31429,7 +31485,7 @@
 	
 	var _storageManager = __webpack_require__(301);
 	
-	var _components = __webpack_require__(417);
+	var _components = __webpack_require__(418);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -31651,7 +31707,7 @@
 	exports.default = Welcome;
 
 /***/ },
-/* 419 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31798,7 +31854,7 @@
 	};
 
 /***/ },
-/* 420 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31950,7 +32006,7 @@
 	}
 
 /***/ },
-/* 421 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31959,20 +32015,25 @@
 	  value: true
 	});
 	
-	var _simpleMovingAverage = __webpack_require__(422);
+	var _simpleMovingAverage = __webpack_require__(423);
 	
 	var _simpleMovingAverage2 = _interopRequireDefault(_simpleMovingAverage);
+	
+	var _exponentialMovingAverage = __webpack_require__(542);
+	
+	var _exponentialMovingAverage2 = _interopRequireDefault(_exponentialMovingAverage);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = {
 	  indicators: {
-	    simpleMovingAverage: _simpleMovingAverage2.default
+	    simpleMovingAverage: _simpleMovingAverage2.default,
+	    exponentialMovingAverage: _exponentialMovingAverage2.default
 	  }
 	};
 
 /***/ },
-/* 422 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31982,9 +32043,9 @@
 	});
 	exports.simpleMovingAverageArray = undefined;
 	
-	var _binaryUtils = __webpack_require__(423);
+	var _binaryUtils = __webpack_require__(424);
 	
-	var _math = __webpack_require__(540);
+	var _math = __webpack_require__(541);
 	
 	var simpleMovingAverage = function simpleMovingAverage(data, config) {
 	    var periods = config.periods;
@@ -32011,7 +32072,7 @@
 	exports.default = simpleMovingAverage;
 
 /***/ },
-/* 423 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32020,7 +32081,7 @@
 	  value: true
 	});
 	
-	var _arrayEqual = __webpack_require__(424);
+	var _arrayEqual = __webpack_require__(425);
 	
 	Object.defineProperty(exports, 'arrayEqual', {
 	  enumerable: true,
@@ -32029,7 +32090,7 @@
 	  }
 	});
 	
-	var _arrayMax = __webpack_require__(425);
+	var _arrayMax = __webpack_require__(426);
 	
 	Object.defineProperty(exports, 'arrayMax', {
 	  enumerable: true,
@@ -32038,7 +32099,7 @@
 	  }
 	});
 	
-	var _arrayMin = __webpack_require__(426);
+	var _arrayMin = __webpack_require__(427);
 	
 	Object.defineProperty(exports, 'arrayMin', {
 	  enumerable: true,
@@ -32047,7 +32108,7 @@
 	  }
 	});
 	
-	var _arrayToObject = __webpack_require__(427);
+	var _arrayToObject = __webpack_require__(428);
 	
 	Object.defineProperty(exports, 'arrayToObject', {
 	  enumerable: true,
@@ -32056,7 +32117,7 @@
 	  }
 	});
 	
-	var _getLast = __webpack_require__(428);
+	var _getLast = __webpack_require__(429);
 	
 	Object.defineProperty(exports, 'getLast', {
 	  enumerable: true,
@@ -32065,7 +32126,7 @@
 	  }
 	});
 	
-	var _mergeSortedArrays = __webpack_require__(429);
+	var _mergeSortedArrays = __webpack_require__(430);
 	
 	Object.defineProperty(exports, 'mergeSortedArrays', {
 	  enumerable: true,
@@ -32074,7 +32135,7 @@
 	  }
 	});
 	
-	var _sequence = __webpack_require__(430);
+	var _sequence = __webpack_require__(431);
 	
 	Object.defineProperty(exports, 'sequence', {
 	  enumerable: true,
@@ -32083,7 +32144,7 @@
 	  }
 	});
 	
-	var _groupArrayToNestedArray = __webpack_require__(431);
+	var _groupArrayToNestedArray = __webpack_require__(432);
 	
 	Object.defineProperty(exports, 'groupArrayToNestedArray', {
 	  enumerable: true,
@@ -32092,7 +32153,7 @@
 	  }
 	});
 	
-	var _barrier2FromContract = __webpack_require__(432);
+	var _barrier2FromContract = __webpack_require__(433);
 	
 	Object.defineProperty(exports, 'barrier2FromContract', {
 	  enumerable: true,
@@ -32101,7 +32162,7 @@
 	  }
 	});
 	
-	var _barrierFromContract = __webpack_require__(434);
+	var _barrierFromContract = __webpack_require__(435);
 	
 	Object.defineProperty(exports, 'barrierFromContract', {
 	  enumerable: true,
@@ -32110,7 +32171,7 @@
 	  }
 	});
 	
-	var _callPutBarrier = __webpack_require__(435);
+	var _callPutBarrier = __webpack_require__(436);
 	
 	Object.defineProperty(exports, 'callPutBarrier', {
 	  enumerable: true,
@@ -32119,7 +32180,7 @@
 	  }
 	});
 	
-	var _commonRelativeBarrier = __webpack_require__(437);
+	var _commonRelativeBarrier = __webpack_require__(438);
 	
 	Object.defineProperty(exports, 'commonRelativeBarrier', {
 	  enumerable: true,
@@ -32128,7 +32189,7 @@
 	  }
 	});
 	
-	var _extractBarrier = __webpack_require__(438);
+	var _extractBarrier = __webpack_require__(439);
 	
 	Object.defineProperty(exports, 'extractBarrier', {
 	  enumerable: true,
@@ -32137,7 +32198,7 @@
 	  }
 	});
 	
-	var _getAbsoluteBarrierFromContract = __webpack_require__(433);
+	var _getAbsoluteBarrierFromContract = __webpack_require__(434);
 	
 	Object.defineProperty(exports, 'getAbsoluteBarrierFromContract', {
 	  enumerable: true,
@@ -32146,7 +32207,7 @@
 	  }
 	});
 	
-	var _relativeBarrier = __webpack_require__(436);
+	var _relativeBarrier = __webpack_require__(437);
 	
 	Object.defineProperty(exports, 'relativeBarrier', {
 	  enumerable: true,
@@ -32155,7 +32216,7 @@
 	  }
 	});
 	
-	var _relativeBarrier2 = __webpack_require__(440);
+	var _relativeBarrier2 = __webpack_require__(441);
 	
 	Object.defineProperty(exports, 'relativeBarrier2', {
 	  enumerable: true,
@@ -32164,7 +32225,7 @@
 	  }
 	});
 	
-	var _dateAsLocalISOString = __webpack_require__(441);
+	var _dateAsLocalISOString = __webpack_require__(442);
 	
 	Object.defineProperty(exports, 'dateAsLocalISOString', {
 	  enumerable: true,
@@ -32173,7 +32234,7 @@
 	  }
 	});
 	
-	var _dateToDateString = __webpack_require__(442);
+	var _dateToDateString = __webpack_require__(443);
 	
 	Object.defineProperty(exports, 'dateToDateString', {
 	  enumerable: true,
@@ -32182,7 +32243,7 @@
 	  }
 	});
 	
-	var _dateToEpoch = __webpack_require__(443);
+	var _dateToEpoch = __webpack_require__(444);
 	
 	Object.defineProperty(exports, 'dateToEpoch', {
 	  enumerable: true,
@@ -32191,7 +32252,7 @@
 	  }
 	});
 	
-	var _dateToGMTString = __webpack_require__(444);
+	var _dateToGMTString = __webpack_require__(445);
 	
 	Object.defineProperty(exports, 'dateToGMTString', {
 	  enumerable: true,
@@ -32200,7 +32261,7 @@
 	  }
 	});
 	
-	var _dateToTimeString = __webpack_require__(445);
+	var _dateToTimeString = __webpack_require__(446);
 	
 	Object.defineProperty(exports, 'dateToTimeString', {
 	  enumerable: true,
@@ -32209,7 +32270,7 @@
 	  }
 	});
 	
-	var _dateToUTCTimeString = __webpack_require__(446);
+	var _dateToUTCTimeString = __webpack_require__(447);
 	
 	Object.defineProperty(exports, 'dateToUTCTimeString', {
 	  enumerable: true,
@@ -32218,7 +32279,7 @@
 	  }
 	});
 	
-	var _epochToDate = __webpack_require__(447);
+	var _epochToDate = __webpack_require__(448);
 	
 	Object.defineProperty(exports, 'epochToDate', {
 	  enumerable: true,
@@ -32227,7 +32288,7 @@
 	  }
 	});
 	
-	var _epochToDateString = __webpack_require__(448);
+	var _epochToDateString = __webpack_require__(449);
 	
 	Object.defineProperty(exports, 'epochToDateString', {
 	  enumerable: true,
@@ -32236,7 +32297,7 @@
 	  }
 	});
 	
-	var _epochToDateTimeString = __webpack_require__(449);
+	var _epochToDateTimeString = __webpack_require__(450);
 	
 	Object.defineProperty(exports, 'epochToDateTimeString', {
 	  enumerable: true,
@@ -32245,7 +32306,7 @@
 	  }
 	});
 	
-	var _epochToTimeString = __webpack_require__(450);
+	var _epochToTimeString = __webpack_require__(451);
 	
 	Object.defineProperty(exports, 'epochToTimeString', {
 	  enumerable: true,
@@ -32254,7 +32315,7 @@
 	  }
 	});
 	
-	var _epochToUTCDateString = __webpack_require__(451);
+	var _epochToUTCDateString = __webpack_require__(452);
 	
 	Object.defineProperty(exports, 'epochToUTCDateString', {
 	  enumerable: true,
@@ -32263,7 +32324,7 @@
 	  }
 	});
 	
-	var _epochToUTCTimeString = __webpack_require__(452);
+	var _epochToUTCTimeString = __webpack_require__(453);
 	
 	Object.defineProperty(exports, 'epochToUTCTimeString', {
 	  enumerable: true,
@@ -32272,7 +32333,7 @@
 	  }
 	});
 	
-	var _getLastXMonthEpoch = __webpack_require__(453);
+	var _getLastXMonthEpoch = __webpack_require__(454);
 	
 	Object.defineProperty(exports, 'getLastXMonthEpoch', {
 	  enumerable: true,
@@ -32281,7 +32342,7 @@
 	  }
 	});
 	
-	var _isDateValid = __webpack_require__(454);
+	var _isDateValid = __webpack_require__(455);
 	
 	Object.defineProperty(exports, 'isDateValid', {
 	  enumerable: true,
@@ -32290,7 +32351,7 @@
 	  }
 	});
 	
-	var _last30DaysEpoch = __webpack_require__(455);
+	var _last30DaysEpoch = __webpack_require__(456);
 	
 	Object.defineProperty(exports, 'last30DaysEpoch', {
 	  enumerable: true,
@@ -32299,7 +32360,7 @@
 	  }
 	});
 	
-	var _last7DaysEpoch = __webpack_require__(457);
+	var _last7DaysEpoch = __webpack_require__(458);
 	
 	Object.defineProperty(exports, 'last7DaysEpoch', {
 	  enumerable: true,
@@ -32308,7 +32369,7 @@
 	  }
 	});
 	
-	var _nextXDay = __webpack_require__(458);
+	var _nextXDay = __webpack_require__(459);
 	
 	Object.defineProperty(exports, 'nextXDay', {
 	  enumerable: true,
@@ -32317,7 +32378,7 @@
 	  }
 	});
 	
-	var _nowAsEpoch = __webpack_require__(459);
+	var _nowAsEpoch = __webpack_require__(460);
 	
 	Object.defineProperty(exports, 'nowAsEpoch', {
 	  enumerable: true,
@@ -32326,7 +32387,7 @@
 	  }
 	});
 	
-	var _oneYearAfterStr = __webpack_require__(460);
+	var _oneYearAfterStr = __webpack_require__(461);
 	
 	Object.defineProperty(exports, 'oneYearAfterStr', {
 	  enumerable: true,
@@ -32335,7 +32396,7 @@
 	  }
 	});
 	
-	var _secondsToTimeString = __webpack_require__(461);
+	var _secondsToTimeString = __webpack_require__(462);
 	
 	Object.defineProperty(exports, 'secondsToTimeString', {
 	  enumerable: true,
@@ -32344,7 +32405,7 @@
 	  }
 	});
 	
-	var _splitSecsToUnits = __webpack_require__(462);
+	var _splitSecsToUnits = __webpack_require__(463);
 	
 	Object.defineProperty(exports, 'splitSecsToUnits', {
 	  enumerable: true,
@@ -32353,7 +32414,7 @@
 	  }
 	});
 	
-	var _timeStringBigger = __webpack_require__(463);
+	var _timeStringBigger = __webpack_require__(464);
 	
 	Object.defineProperty(exports, 'timeStringBigger', {
 	  enumerable: true,
@@ -32362,7 +32423,7 @@
 	  }
 	});
 	
-	var _timeStringIsBetween = __webpack_require__(464);
+	var _timeStringIsBetween = __webpack_require__(465);
 	
 	Object.defineProperty(exports, 'timeStringIsBetween', {
 	  enumerable: true,
@@ -32371,7 +32432,7 @@
 	  }
 	});
 	
-	var _timeStringSmaller = __webpack_require__(465);
+	var _timeStringSmaller = __webpack_require__(466);
 	
 	Object.defineProperty(exports, 'timeStringSmaller', {
 	  enumerable: true,
@@ -32380,7 +32441,7 @@
 	  }
 	});
 	
-	var _timeStringToSeconds = __webpack_require__(466);
+	var _timeStringToSeconds = __webpack_require__(467);
 	
 	Object.defineProperty(exports, 'timeStringToSeconds', {
 	  enumerable: true,
@@ -32389,7 +32450,7 @@
 	  }
 	});
 	
-	var _todayEpoch = __webpack_require__(467);
+	var _todayEpoch = __webpack_require__(468);
 	
 	Object.defineProperty(exports, 'todayEpoch', {
 	  enumerable: true,
@@ -32398,7 +32459,7 @@
 	  }
 	});
 	
-	var _todayLocaleString = __webpack_require__(468);
+	var _todayLocaleString = __webpack_require__(469);
 	
 	Object.defineProperty(exports, 'todayLocaleString', {
 	  enumerable: true,
@@ -32407,7 +32468,7 @@
 	  }
 	});
 	
-	var _todayUTCString = __webpack_require__(469);
+	var _todayUTCString = __webpack_require__(470);
 	
 	Object.defineProperty(exports, 'todayUTCString', {
 	  enumerable: true,
@@ -32416,7 +32477,7 @@
 	  }
 	});
 	
-	var _xDayEpoch = __webpack_require__(456);
+	var _xDayEpoch = __webpack_require__(457);
 	
 	Object.defineProperty(exports, 'xDayEpoch', {
 	  enumerable: true,
@@ -32425,7 +32486,7 @@
 	  }
 	});
 	
-	var _xMonthsAfter = __webpack_require__(470);
+	var _xMonthsAfter = __webpack_require__(471);
 	
 	Object.defineProperty(exports, 'xMonthsAfter', {
 	  enumerable: true,
@@ -32434,7 +32495,7 @@
 	  }
 	});
 	
-	var _yesterdayEpoch = __webpack_require__(471);
+	var _yesterdayEpoch = __webpack_require__(472);
 	
 	Object.defineProperty(exports, 'yesterdayEpoch', {
 	  enumerable: true,
@@ -32443,7 +32504,7 @@
 	  }
 	});
 	
-	var _yesterdayString = __webpack_require__(472);
+	var _yesterdayString = __webpack_require__(473);
 	
 	Object.defineProperty(exports, 'yesterdayString', {
 	  enumerable: true,
@@ -32452,7 +32513,7 @@
 	  }
 	});
 	
-	var _yesterdayUTCString = __webpack_require__(473);
+	var _yesterdayUTCString = __webpack_require__(474);
 	
 	Object.defineProperty(exports, 'yesterdayUTCString', {
 	  enumerable: true,
@@ -32461,7 +32522,7 @@
 	  }
 	});
 	
-	var _returnValidDate = __webpack_require__(474);
+	var _returnValidDate = __webpack_require__(475);
 	
 	Object.defineProperty(exports, 'returnValidDate', {
 	  enumerable: true,
@@ -32470,7 +32531,7 @@
 	  }
 	});
 	
-	var _returnValidTime = __webpack_require__(475);
+	var _returnValidTime = __webpack_require__(476);
 	
 	Object.defineProperty(exports, 'returnValidTime', {
 	  enumerable: true,
@@ -32479,7 +32540,7 @@
 	  }
 	});
 	
-	var _isValidTime = __webpack_require__(476);
+	var _isValidTime = __webpack_require__(477);
 	
 	Object.defineProperty(exports, 'isValidTime', {
 	  enumerable: true,
@@ -32488,7 +32549,7 @@
 	  }
 	});
 	
-	var _timeLeftToNextRealityCheck = __webpack_require__(477);
+	var _timeLeftToNextRealityCheck = __webpack_require__(478);
 	
 	Object.defineProperty(exports, 'timeLeftToNextRealityCheck', {
 	  enumerable: true,
@@ -32497,7 +32558,7 @@
 	  }
 	});
 	
-	var _durationSecHelper = __webpack_require__(478);
+	var _durationSecHelper = __webpack_require__(479);
 	
 	Object.defineProperty(exports, 'durationSecHelper', {
 	  enumerable: true,
@@ -32506,7 +32567,7 @@
 	  }
 	});
 	
-	var _durationText = __webpack_require__(480);
+	var _durationText = __webpack_require__(481);
 	
 	Object.defineProperty(exports, 'durationText', {
 	  enumerable: true,
@@ -32515,7 +32576,7 @@
 	  }
 	});
 	
-	var _durationToSecs = __webpack_require__(479);
+	var _durationToSecs = __webpack_require__(480);
 	
 	Object.defineProperty(exports, 'durationToSecs', {
 	  enumerable: true,
@@ -32524,7 +32585,7 @@
 	  }
 	});
 	
-	var _durationUnits = __webpack_require__(481);
+	var _durationUnits = __webpack_require__(482);
 	
 	Object.defineProperty(exports, 'durationUnits', {
 	  enumerable: true,
@@ -32533,7 +32594,7 @@
 	  }
 	});
 	
-	var _extractDuration = __webpack_require__(482);
+	var _extractDuration = __webpack_require__(483);
 	
 	Object.defineProperty(exports, 'extractDuration', {
 	  enumerable: true,
@@ -32542,7 +32603,7 @@
 	  }
 	});
 	
-	var _extractDurationHelper = __webpack_require__(483);
+	var _extractDurationHelper = __webpack_require__(484);
 	
 	Object.defineProperty(exports, 'extractDurationHelper', {
 	  enumerable: true,
@@ -32551,7 +32612,7 @@
 	  }
 	});
 	
-	var _extractForwardStartingDuration = __webpack_require__(485);
+	var _extractForwardStartingDuration = __webpack_require__(486);
 	
 	Object.defineProperty(exports, 'extractForwardStartingDuration', {
 	  enumerable: true,
@@ -32560,7 +32621,7 @@
 	  }
 	});
 	
-	var _extractMinMaxInUnits = __webpack_require__(484);
+	var _extractMinMaxInUnits = __webpack_require__(485);
 	
 	Object.defineProperty(exports, 'extractMinMaxInUnits', {
 	  enumerable: true,
@@ -32569,7 +32630,7 @@
 	  }
 	});
 	
-	var _isDurationLessThan2Mins = __webpack_require__(486);
+	var _isDurationLessThan2Mins = __webpack_require__(487);
 	
 	Object.defineProperty(exports, 'isDurationLessThan2Mins', {
 	  enumerable: true,
@@ -32578,7 +32639,7 @@
 	  }
 	});
 	
-	var _isDurationTick = __webpack_require__(487);
+	var _isDurationTick = __webpack_require__(488);
 	
 	Object.defineProperty(exports, 'isDurationTick', {
 	  enumerable: true,
@@ -32587,7 +32648,7 @@
 	  }
 	});
 	
-	var _isDurationWithinRange = __webpack_require__(488);
+	var _isDurationWithinRange = __webpack_require__(489);
 	
 	Object.defineProperty(exports, 'isDurationWithinRange', {
 	  enumerable: true,
@@ -32596,7 +32657,7 @@
 	  }
 	});
 	
-	var _calculateLastDigitStats = __webpack_require__(489);
+	var _calculateLastDigitStats = __webpack_require__(490);
 	
 	Object.defineProperty(exports, 'calculateLastDigitStats', {
 	  enumerable: true,
@@ -32605,7 +32666,7 @@
 	  }
 	});
 	
-	var _digitsToPips = __webpack_require__(491);
+	var _digitsToPips = __webpack_require__(492);
 	
 	Object.defineProperty(exports, 'digitsToPips', {
 	  enumerable: true,
@@ -32614,7 +32675,7 @@
 	  }
 	});
 	
-	var _getLastDigit = __webpack_require__(490);
+	var _getLastDigit = __webpack_require__(491);
 	
 	Object.defineProperty(exports, 'getLastDigit', {
 	  enumerable: true,
@@ -32623,7 +32684,7 @@
 	  }
 	});
 	
-	var _noOfDecimals = __webpack_require__(492);
+	var _noOfDecimals = __webpack_require__(493);
 	
 	Object.defineProperty(exports, 'noOfDecimals', {
 	  enumerable: true,
@@ -32632,7 +32693,7 @@
 	  }
 	});
 	
-	var _numberToSignedString = __webpack_require__(493);
+	var _numberToSignedString = __webpack_require__(494);
 	
 	Object.defineProperty(exports, 'numberToSignedString', {
 	  enumerable: true,
@@ -32641,7 +32702,7 @@
 	  }
 	});
 	
-	var _pipSizeToStepSize = __webpack_require__(494);
+	var _pipSizeToStepSize = __webpack_require__(495);
 	
 	Object.defineProperty(exports, 'pipSizeToStepSize', {
 	  enumerable: true,
@@ -32650,7 +32711,7 @@
 	  }
 	});
 	
-	var _pipsToDigits = __webpack_require__(495);
+	var _pipsToDigits = __webpack_require__(496);
 	
 	Object.defineProperty(exports, 'pipsToDigits', {
 	  enumerable: true,
@@ -32659,7 +32720,7 @@
 	  }
 	});
 	
-	var _toMoney = __webpack_require__(496);
+	var _toMoney = __webpack_require__(497);
 	
 	Object.defineProperty(exports, 'toMoney', {
 	  enumerable: true,
@@ -32668,7 +32729,7 @@
 	  }
 	});
 	
-	var _filterDeep = __webpack_require__(497);
+	var _filterDeep = __webpack_require__(498);
 	
 	Object.defineProperty(exports, 'filterDeep', {
 	  enumerable: true,
@@ -32677,7 +32738,7 @@
 	  }
 	});
 	
-	var _findDeep = __webpack_require__(498);
+	var _findDeep = __webpack_require__(499);
 	
 	Object.defineProperty(exports, 'findDeep', {
 	  enumerable: true,
@@ -32686,7 +32747,7 @@
 	  }
 	});
 	
-	var _groupByKey = __webpack_require__(439);
+	var _groupByKey = __webpack_require__(440);
 	
 	Object.defineProperty(exports, 'groupByKey', {
 	  enumerable: true,
@@ -32695,7 +32756,7 @@
 	  }
 	});
 	
-	var _immutableChildrenToJS = __webpack_require__(499);
+	var _immutableChildrenToJS = __webpack_require__(500);
 	
 	Object.defineProperty(exports, 'immutableChildrenToJS', {
 	  enumerable: true,
@@ -32704,7 +32765,7 @@
 	  }
 	});
 	
-	var _areArraysEqual = __webpack_require__(500);
+	var _areArraysEqual = __webpack_require__(501);
 	
 	Object.defineProperty(exports, 'areArraysEqual', {
 	  enumerable: true,
@@ -32713,7 +32774,7 @@
 	  }
 	});
 	
-	var _areCandleArrayEqual = __webpack_require__(501);
+	var _areCandleArrayEqual = __webpack_require__(502);
 	
 	Object.defineProperty(exports, 'areCandleArrayEqual', {
 	  enumerable: true,
@@ -32722,7 +32783,7 @@
 	  }
 	});
 	
-	var _areTickArraysEqual = __webpack_require__(502);
+	var _areTickArraysEqual = __webpack_require__(503);
 	
 	Object.defineProperty(exports, 'areTickArraysEqual', {
 	  enumerable: true,
@@ -32731,7 +32792,7 @@
 	  }
 	});
 	
-	var _doArrayDifferJustOneEntry = __webpack_require__(503);
+	var _doArrayDifferJustOneEntry = __webpack_require__(504);
 	
 	Object.defineProperty(exports, 'doArrayDifferJustOneEntry', {
 	  enumerable: true,
@@ -32740,7 +32801,7 @@
 	  }
 	});
 	
-	var _doCandleEqual = __webpack_require__(504);
+	var _doCandleEqual = __webpack_require__(505);
 	
 	Object.defineProperty(exports, 'doCandleEqual', {
 	  enumerable: true,
@@ -32749,7 +32810,7 @@
 	  }
 	});
 	
-	var _doCandlesDifferJustOneEntry = __webpack_require__(505);
+	var _doCandlesDifferJustOneEntry = __webpack_require__(506);
 	
 	Object.defineProperty(exports, 'doCandlesDifferJustOneEntry', {
 	  enumerable: true,
@@ -32758,7 +32819,7 @@
 	  }
 	});
 	
-	var _doTicksDifferJustOneEntry = __webpack_require__(506);
+	var _doTicksDifferJustOneEntry = __webpack_require__(507);
 	
 	Object.defineProperty(exports, 'doTicksDifferJustOneEntry', {
 	  enumerable: true,
@@ -32767,7 +32828,7 @@
 	  }
 	});
 	
-	var _doTicksEqual = __webpack_require__(507);
+	var _doTicksEqual = __webpack_require__(508);
 	
 	Object.defineProperty(exports, 'doTicksEqual', {
 	  enumerable: true,
@@ -32776,7 +32837,7 @@
 	  }
 	});
 	
-	var _getLastOHLCTick = __webpack_require__(508);
+	var _getLastOHLCTick = __webpack_require__(509);
 	
 	Object.defineProperty(exports, 'getLastOHLCTick', {
 	  enumerable: true,
@@ -32785,7 +32846,7 @@
 	  }
 	});
 	
-	var _getLastTickQuote = __webpack_require__(509);
+	var _getLastTickQuote = __webpack_require__(510);
 	
 	Object.defineProperty(exports, 'getLastTickQuote', {
 	  enumerable: true,
@@ -32794,7 +32855,7 @@
 	  }
 	});
 	
-	var _historyToTicks = __webpack_require__(510);
+	var _historyToTicks = __webpack_require__(511);
 	
 	Object.defineProperty(exports, 'historyToTicks', {
 	  enumerable: true,
@@ -32803,7 +32864,7 @@
 	  }
 	});
 	
-	var _ohlcToData = __webpack_require__(511);
+	var _ohlcToData = __webpack_require__(512);
 	
 	Object.defineProperty(exports, 'ohlcToData', {
 	  enumerable: true,
@@ -32812,7 +32873,7 @@
 	  }
 	});
 	
-	var _ohlcToTicks = __webpack_require__(512);
+	var _ohlcToTicks = __webpack_require__(513);
 	
 	Object.defineProperty(exports, 'ohlcToTicks', {
 	  enumerable: true,
@@ -32821,7 +32882,7 @@
 	  }
 	});
 	
-	var _tickToData = __webpack_require__(513);
+	var _tickToData = __webpack_require__(514);
 	
 	Object.defineProperty(exports, 'tickToData', {
 	  enumerable: true,
@@ -32830,7 +32891,7 @@
 	  }
 	});
 	
-	var _askPriceFromProposal = __webpack_require__(514);
+	var _askPriceFromProposal = __webpack_require__(515);
 	
 	Object.defineProperty(exports, 'askPriceFromProposal', {
 	  enumerable: true,
@@ -32839,7 +32900,7 @@
 	  }
 	});
 	
-	var _contractCategoryToText = __webpack_require__(515);
+	var _contractCategoryToText = __webpack_require__(516);
 	
 	Object.defineProperty(exports, 'contractCategoryToText', {
 	  enumerable: true,
@@ -32848,7 +32909,7 @@
 	  }
 	});
 	
-	var _contractCodeToText = __webpack_require__(516);
+	var _contractCodeToText = __webpack_require__(517);
 	
 	Object.defineProperty(exports, 'contractCodeToText', {
 	  enumerable: true,
@@ -32857,7 +32918,7 @@
 	  }
 	});
 	
-	var _extractSpreadInfo = __webpack_require__(517);
+	var _extractSpreadInfo = __webpack_require__(518);
 	
 	Object.defineProperty(exports, 'extractSpreadInfo', {
 	  enumerable: true,
@@ -32866,7 +32927,7 @@
 	  }
 	});
 	
-	var _isIntraday = __webpack_require__(518);
+	var _isIntraday = __webpack_require__(519);
 	
 	Object.defineProperty(exports, 'isIntraday', {
 	  enumerable: true,
@@ -32875,7 +32936,7 @@
 	  }
 	});
 	
-	var _normalizedContractFor = __webpack_require__(519);
+	var _normalizedContractFor = __webpack_require__(520);
 	
 	Object.defineProperty(exports, 'normalizedContractFor', {
 	  enumerable: true,
@@ -32884,7 +32945,7 @@
 	  }
 	});
 	
-	var _tradeToFriendlyType = __webpack_require__(520);
+	var _tradeToFriendlyType = __webpack_require__(521);
 	
 	Object.defineProperty(exports, 'tradeToFriendlyType', {
 	  enumerable: true,
@@ -32893,7 +32954,7 @@
 	  }
 	});
 	
-	var _tradeTypeCodeToText = __webpack_require__(521);
+	var _tradeTypeCodeToText = __webpack_require__(522);
 	
 	Object.defineProperty(exports, 'tradeTypeCodeToText', {
 	  enumerable: true,
@@ -32902,7 +32963,7 @@
 	  }
 	});
 	
-	var _tradeTypeTextToCode = __webpack_require__(524);
+	var _tradeTypeTextToCode = __webpack_require__(525);
 	
 	Object.defineProperty(exports, 'tradeTypeTextToCode', {
 	  enumerable: true,
@@ -32911,7 +32972,7 @@
 	  }
 	});
 	
-	var _tradeTypes = __webpack_require__(522);
+	var _tradeTypes = __webpack_require__(523);
 	
 	Object.defineProperty(exports, 'tradeTypes', {
 	  enumerable: true,
@@ -32920,7 +32981,7 @@
 	  }
 	});
 	
-	var _typeHasBarrier = __webpack_require__(523);
+	var _typeHasBarrier = __webpack_require__(524);
 	
 	Object.defineProperty(exports, 'typeHasBarrier', {
 	  enumerable: true,
@@ -32929,7 +32990,7 @@
 	  }
 	});
 	
-	var _Analytics = __webpack_require__(525);
+	var _Analytics = __webpack_require__(526);
 	
 	Object.defineProperty(exports, 'Analytics', {
 	  enumerable: true,
@@ -32938,7 +32999,7 @@
 	  }
 	});
 	
-	var _brandColor = __webpack_require__(526);
+	var _brandColor = __webpack_require__(527);
 	
 	Object.defineProperty(exports, 'brandColor', {
 	  enumerable: true,
@@ -32947,7 +33008,7 @@
 	  }
 	});
 	
-	var _directionClassName = __webpack_require__(527);
+	var _directionClassName = __webpack_require__(528);
 	
 	Object.defineProperty(exports, 'directionClassName', {
 	  enumerable: true,
@@ -32956,7 +33017,7 @@
 	  }
 	});
 	
-	var _errorToString = __webpack_require__(528);
+	var _errorToString = __webpack_require__(529);
 	
 	Object.defineProperty(exports, 'errorToString', {
 	  enumerable: true,
@@ -32965,7 +33026,7 @@
 	  }
 	});
 	
-	var _getUniqueId = __webpack_require__(529);
+	var _getUniqueId = __webpack_require__(530);
 	
 	Object.defineProperty(exports, 'getUniqueId', {
 	  enumerable: true,
@@ -32974,7 +33035,7 @@
 	  }
 	});
 	
-	var _isMobile = __webpack_require__(530);
+	var _isMobile = __webpack_require__(531);
 	
 	Object.defineProperty(exports, 'isMobile', {
 	  enumerable: true,
@@ -32983,7 +33044,7 @@
 	  }
 	});
 	
-	var _isValidEmail = __webpack_require__(531);
+	var _isValidEmail = __webpack_require__(532);
 	
 	Object.defineProperty(exports, 'isValidEmail', {
 	  enumerable: true,
@@ -32992,7 +33053,7 @@
 	  }
 	});
 	
-	var _isValidPassword = __webpack_require__(532);
+	var _isValidPassword = __webpack_require__(533);
 	
 	Object.defineProperty(exports, 'isValidPassword', {
 	  enumerable: true,
@@ -33001,7 +33062,7 @@
 	  }
 	});
 	
-	var _addFullscreenEventListener = __webpack_require__(533);
+	var _addFullscreenEventListener = __webpack_require__(534);
 	
 	Object.defineProperty(exports, 'addFullscreenEventListener', {
 	  enumerable: true,
@@ -33010,7 +33071,7 @@
 	  }
 	});
 	
-	var _exitFullscreen = __webpack_require__(534);
+	var _exitFullscreen = __webpack_require__(535);
 	
 	Object.defineProperty(exports, 'exitFullscreen', {
 	  enumerable: true,
@@ -33019,7 +33080,7 @@
 	  }
 	});
 	
-	var _removeFullscreenEventListener = __webpack_require__(535);
+	var _removeFullscreenEventListener = __webpack_require__(536);
 	
 	Object.defineProperty(exports, 'removeFullscreenEventListener', {
 	  enumerable: true,
@@ -33028,7 +33089,7 @@
 	  }
 	});
 	
-	var _requestFullscreen = __webpack_require__(536);
+	var _requestFullscreen = __webpack_require__(537);
 	
 	Object.defineProperty(exports, 'requestFullscreen', {
 	  enumerable: true,
@@ -33037,7 +33098,7 @@
 	  }
 	});
 	
-	var _showInfo = __webpack_require__(537);
+	var _showInfo = __webpack_require__(538);
 	
 	Object.defineProperty(exports, 'showInfo', {
 	  enumerable: true,
@@ -33046,7 +33107,7 @@
 	  }
 	});
 	
-	var _showError = __webpack_require__(538);
+	var _showError = __webpack_require__(539);
 	
 	Object.defineProperty(exports, 'showError', {
 	  enumerable: true,
@@ -33055,7 +33116,7 @@
 	  }
 	});
 	
-	var _windowResizeEvent = __webpack_require__(539);
+	var _windowResizeEvent = __webpack_require__(540);
 	
 	Object.defineProperty(exports, 'windowResizeEvent', {
 	  enumerable: true,
@@ -33067,7 +33128,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 424 */
+/* 425 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33087,7 +33148,7 @@
 	};
 
 /***/ },
-/* 425 */
+/* 426 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33103,7 +33164,7 @@
 	};
 
 /***/ },
-/* 426 */
+/* 427 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33119,7 +33180,7 @@
 	};
 
 /***/ },
-/* 427 */
+/* 428 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33142,7 +33203,7 @@
 	};
 
 /***/ },
-/* 428 */
+/* 429 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33156,7 +33217,7 @@
 	};
 
 /***/ },
-/* 429 */
+/* 430 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33254,7 +33315,7 @@
 	};
 
 /***/ },
-/* 430 */
+/* 431 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33268,7 +33329,7 @@
 	};
 
 /***/ },
-/* 431 */
+/* 432 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33296,7 +33357,7 @@
 	};
 
 /***/ },
-/* 432 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33305,7 +33366,7 @@
 	    value: true
 	});
 	
-	var _getAbsoluteBarrierFromContract = __webpack_require__(433);
+	var _getAbsoluteBarrierFromContract = __webpack_require__(434);
 	
 	var _getAbsoluteBarrierFromContract2 = _interopRequireDefault(_getAbsoluteBarrierFromContract);
 	
@@ -33316,7 +33377,7 @@
 	};
 
 /***/ },
-/* 433 */
+/* 434 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33342,26 +33403,6 @@
 	};
 
 /***/ },
-/* 434 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _getAbsoluteBarrierFromContract = __webpack_require__(433);
-	
-	var _getAbsoluteBarrierFromContract2 = _interopRequireDefault(_getAbsoluteBarrierFromContract);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (contract, lastTickQuote) {
-	    return (0, _getAbsoluteBarrierFromContract2.default)(contract, lastTickQuote, 'barrier');
-	};
-
-/***/ },
 /* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33371,14 +33412,14 @@
 	    value: true
 	});
 	
-	var _relativeBarrier = __webpack_require__(436);
+	var _getAbsoluteBarrierFromContract = __webpack_require__(434);
 	
-	var _relativeBarrier2 = _interopRequireDefault(_relativeBarrier);
+	var _getAbsoluteBarrierFromContract2 = _interopRequireDefault(_getAbsoluteBarrierFromContract);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function (contract, lastTickQuote) {
-	    return contract.barrier ? (0, _relativeBarrier2.default)(contract, lastTickQuote) : +contract.entry_spot || lastTickQuote;
+	    return (0, _getAbsoluteBarrierFromContract2.default)(contract, lastTickQuote, 'barrier');
 	};
 
 /***/ },
@@ -33391,7 +33432,27 @@
 	    value: true
 	});
 	
-	var _commonRelativeBarrier = __webpack_require__(437);
+	var _relativeBarrier = __webpack_require__(437);
+	
+	var _relativeBarrier2 = _interopRequireDefault(_relativeBarrier);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (contract, lastTickQuote) {
+	    return contract.barrier ? (0, _relativeBarrier2.default)(contract, lastTickQuote) : +contract.entry_spot || lastTickQuote;
+	};
+
+/***/ },
+/* 437 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _commonRelativeBarrier = __webpack_require__(438);
 	
 	var _commonRelativeBarrier2 = _interopRequireDefault(_commonRelativeBarrier);
 	
@@ -33402,7 +33463,7 @@
 	};
 
 /***/ },
-/* 437 */
+/* 438 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33416,7 +33477,7 @@
 	};
 
 /***/ },
-/* 438 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33425,7 +33486,7 @@
 	    value: true
 	});
 	
-	var _groupByKey = __webpack_require__(439);
+	var _groupByKey = __webpack_require__(440);
 	
 	var _groupByKey2 = _interopRequireDefault(_groupByKey);
 	
@@ -33514,7 +33575,7 @@
 	};
 
 /***/ },
-/* 439 */
+/* 440 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33536,7 +33597,7 @@
 	};
 
 /***/ },
-/* 440 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33545,7 +33606,7 @@
 	    value: true
 	});
 	
-	var _commonRelativeBarrier = __webpack_require__(437);
+	var _commonRelativeBarrier = __webpack_require__(438);
 	
 	var _commonRelativeBarrier2 = _interopRequireDefault(_commonRelativeBarrier);
 	
@@ -33556,7 +33617,7 @@
 	};
 
 /***/ },
-/* 441 */
+/* 442 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33570,7 +33631,7 @@
 	};
 
 /***/ },
-/* 442 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33579,7 +33640,7 @@
 	    value: true
 	});
 	
-	var _dateAsLocalISOString = __webpack_require__(441);
+	var _dateAsLocalISOString = __webpack_require__(442);
 	
 	var _dateAsLocalISOString2 = _interopRequireDefault(_dateAsLocalISOString);
 	
@@ -33590,7 +33651,7 @@
 	};
 
 /***/ },
-/* 443 */
+/* 444 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33604,7 +33665,7 @@
 	};
 
 /***/ },
-/* 444 */
+/* 445 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33618,7 +33679,7 @@
 	};
 
 /***/ },
-/* 445 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33627,7 +33688,7 @@
 	    value: true
 	});
 	
-	var _dateAsLocalISOString = __webpack_require__(441);
+	var _dateAsLocalISOString = __webpack_require__(442);
 	
 	var _dateAsLocalISOString2 = _interopRequireDefault(_dateAsLocalISOString);
 	
@@ -33638,7 +33699,7 @@
 	};
 
 /***/ },
-/* 446 */
+/* 447 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33652,7 +33713,7 @@
 	};
 
 /***/ },
-/* 447 */
+/* 448 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33666,31 +33727,6 @@
 	};
 
 /***/ },
-/* 448 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _epochToDate = __webpack_require__(447);
-	
-	var _epochToDate2 = _interopRequireDefault(_epochToDate);
-	
-	var _dateToDateString = __webpack_require__(442);
-	
-	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function () {
-	    var epoch = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-	    return (0, _dateToDateString2.default)((0, _epochToDate2.default)(epoch));
-	};
-
-/***/ },
 /* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33700,14 +33736,19 @@
 	    value: true
 	});
 	
-	var _epochToDate = __webpack_require__(447);
+	var _epochToDate = __webpack_require__(448);
 	
 	var _epochToDate2 = _interopRequireDefault(_epochToDate);
 	
+	var _dateToDateString = __webpack_require__(443);
+	
+	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports.default = function (epoch) {
-	    return (0, _epochToDate2.default)(epoch).toUTCString();
+	exports.default = function () {
+	    var epoch = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+	    return (0, _dateToDateString2.default)((0, _epochToDate2.default)(epoch));
 	};
 
 /***/ },
@@ -33720,14 +33761,14 @@
 	    value: true
 	});
 	
-	var _dateToTimeString = __webpack_require__(445);
+	var _epochToDate = __webpack_require__(448);
 	
-	var _dateToTimeString2 = _interopRequireDefault(_dateToTimeString);
+	var _epochToDate2 = _interopRequireDefault(_epochToDate);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function (epoch) {
-	    return (0, _dateToTimeString2.default)(new Date(epoch * 1000));
+	    return (0, _epochToDate2.default)(epoch).toUTCString();
 	};
 
 /***/ },
@@ -33740,7 +33781,27 @@
 	    value: true
 	});
 	
-	var _epochToDate = __webpack_require__(447);
+	var _dateToTimeString = __webpack_require__(446);
+	
+	var _dateToTimeString2 = _interopRequireDefault(_dateToTimeString);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (epoch) {
+	    return (0, _dateToTimeString2.default)(new Date(epoch * 1000));
+	};
+
+/***/ },
+/* 452 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _epochToDate = __webpack_require__(448);
 	
 	var _epochToDate2 = _interopRequireDefault(_epochToDate);
 	
@@ -33752,7 +33813,7 @@
 	};
 
 /***/ },
-/* 452 */
+/* 453 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33766,7 +33827,7 @@
 	};
 
 /***/ },
-/* 453 */
+/* 454 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33782,7 +33843,7 @@
 	};
 
 /***/ },
-/* 454 */
+/* 455 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33796,7 +33857,7 @@
 	};
 
 /***/ },
-/* 455 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33805,7 +33866,7 @@
 	  value: true
 	});
 	
-	var _xDayEpoch = __webpack_require__(456);
+	var _xDayEpoch = __webpack_require__(457);
 	
 	var _xDayEpoch2 = _interopRequireDefault(_xDayEpoch);
 	
@@ -33816,7 +33877,7 @@
 	};
 
 /***/ },
-/* 456 */
+/* 457 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33831,7 +33892,7 @@
 	};
 
 /***/ },
-/* 457 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33840,7 +33901,7 @@
 	  value: true
 	});
 	
-	var _xDayEpoch = __webpack_require__(456);
+	var _xDayEpoch = __webpack_require__(457);
 	
 	var _xDayEpoch2 = _interopRequireDefault(_xDayEpoch);
 	
@@ -33851,7 +33912,7 @@
 	};
 
 /***/ },
-/* 458 */
+/* 459 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33867,7 +33928,7 @@
 	};
 
 /***/ },
-/* 459 */
+/* 460 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33881,7 +33942,7 @@
 	};
 
 /***/ },
-/* 460 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33890,7 +33951,7 @@
 		value: true
 	});
 	
-	var _dateToDateString = __webpack_require__(442);
+	var _dateToDateString = __webpack_require__(443);
 	
 	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
 	
@@ -33903,7 +33964,7 @@
 	};
 
 /***/ },
-/* 461 */
+/* 462 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33921,7 +33982,7 @@
 	};
 
 /***/ },
-/* 462 */
+/* 463 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33939,7 +34000,7 @@
 	};
 
 /***/ },
-/* 463 */
+/* 464 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33966,7 +34027,7 @@
 	};
 
 /***/ },
-/* 464 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33975,11 +34036,11 @@
 	    value: true
 	});
 	
-	var _timeStringBigger = __webpack_require__(463);
+	var _timeStringBigger = __webpack_require__(464);
 	
 	var _timeStringBigger2 = _interopRequireDefault(_timeStringBigger);
 	
-	var _timeStringSmaller = __webpack_require__(465);
+	var _timeStringSmaller = __webpack_require__(466);
 	
 	var _timeStringSmaller2 = _interopRequireDefault(_timeStringSmaller);
 	
@@ -34000,7 +34061,7 @@
 	};
 
 /***/ },
-/* 465 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34009,7 +34070,7 @@
 	    value: true
 	});
 	
-	var _timeStringBigger = __webpack_require__(463);
+	var _timeStringBigger = __webpack_require__(464);
 	
 	var _timeStringBigger2 = _interopRequireDefault(_timeStringBigger);
 	
@@ -34023,7 +34084,7 @@
 	};
 
 /***/ },
-/* 466 */
+/* 467 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34041,7 +34102,7 @@
 	};
 
 /***/ },
-/* 467 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34050,7 +34111,7 @@
 	  value: true
 	});
 	
-	var _xDayEpoch = __webpack_require__(456);
+	var _xDayEpoch = __webpack_require__(457);
 	
 	var _xDayEpoch2 = _interopRequireDefault(_xDayEpoch);
 	
@@ -34061,7 +34122,7 @@
 	};
 
 /***/ },
-/* 468 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34070,7 +34131,7 @@
 	    value: true
 	});
 	
-	var _dateToDateString = __webpack_require__(442);
+	var _dateToDateString = __webpack_require__(443);
 	
 	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
 	
@@ -34081,7 +34142,7 @@
 	};
 
 /***/ },
-/* 469 */
+/* 470 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34095,7 +34156,7 @@
 	};
 
 /***/ },
-/* 470 */
+/* 471 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34109,7 +34170,7 @@
 	};
 
 /***/ },
-/* 471 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34118,7 +34179,7 @@
 	  value: true
 	});
 	
-	var _xDayEpoch = __webpack_require__(456);
+	var _xDayEpoch = __webpack_require__(457);
 	
 	var _xDayEpoch2 = _interopRequireDefault(_xDayEpoch);
 	
@@ -34126,30 +34187,6 @@
 	
 	exports.default = function () {
 	  return (0, _xDayEpoch2.default)(-1);
-	};
-
-/***/ },
-/* 472 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _dateToDateString = __webpack_require__(442);
-	
-	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
-	
-	var _yesterdayEpoch = __webpack_require__(471);
-	
-	var _yesterdayEpoch2 = _interopRequireDefault(_yesterdayEpoch);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function () {
-	    return (0, _dateToDateString2.default)(new Date((0, _yesterdayEpoch2.default)() * 1000));
 	};
 
 /***/ },
@@ -34162,7 +34199,31 @@
 	    value: true
 	});
 	
-	var _yesterdayEpoch = __webpack_require__(471);
+	var _dateToDateString = __webpack_require__(443);
+	
+	var _dateToDateString2 = _interopRequireDefault(_dateToDateString);
+	
+	var _yesterdayEpoch = __webpack_require__(472);
+	
+	var _yesterdayEpoch2 = _interopRequireDefault(_yesterdayEpoch);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	    return (0, _dateToDateString2.default)(new Date((0, _yesterdayEpoch2.default)() * 1000));
+	};
+
+/***/ },
+/* 474 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _yesterdayEpoch = __webpack_require__(472);
 	
 	var _yesterdayEpoch2 = _interopRequireDefault(_yesterdayEpoch);
 	
@@ -34173,7 +34234,7 @@
 	};
 
 /***/ },
-/* 474 */
+/* 475 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34196,7 +34257,7 @@
 	};
 
 /***/ },
-/* 475 */
+/* 476 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34219,7 +34280,7 @@
 	};
 
 /***/ },
-/* 476 */
+/* 477 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34242,7 +34303,7 @@
 	};
 
 /***/ },
-/* 477 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34251,7 +34312,7 @@
 	    value: true
 	});
 	
-	var _nowAsEpoch = __webpack_require__(459);
+	var _nowAsEpoch = __webpack_require__(460);
 	
 	var _nowAsEpoch2 = _interopRequireDefault(_nowAsEpoch);
 	
@@ -34262,7 +34323,7 @@
 	};
 
 /***/ },
-/* 478 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34271,7 +34332,7 @@
 	    value: true
 	});
 	
-	var _durationToSecs = __webpack_require__(479);
+	var _durationToSecs = __webpack_require__(480);
 	
 	var _durationToSecs2 = _interopRequireDefault(_durationToSecs);
 	
@@ -34284,7 +34345,7 @@
 	};
 
 /***/ },
-/* 479 */
+/* 480 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34310,7 +34371,7 @@
 	};
 
 /***/ },
-/* 480 */
+/* 481 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34330,7 +34391,7 @@
 	};
 
 /***/ },
-/* 481 */
+/* 482 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34341,7 +34402,7 @@
 	exports.default = ['t', 's', 'm', 'h', 'd'];
 
 /***/ },
-/* 482 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34350,7 +34411,7 @@
 	    value: true
 	});
 	
-	var _extractDurationHelper = __webpack_require__(483);
+	var _extractDurationHelper = __webpack_require__(484);
 	
 	var _extractDurationHelper2 = _interopRequireDefault(_extractDurationHelper);
 	
@@ -34372,7 +34433,7 @@
 	};
 
 /***/ },
-/* 483 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34381,11 +34442,11 @@
 	    value: true
 	});
 	
-	var _durationSecHelper = __webpack_require__(478);
+	var _durationSecHelper = __webpack_require__(479);
 	
 	var _durationSecHelper2 = _interopRequireDefault(_durationSecHelper);
 	
-	var _extractMinMaxInUnits = __webpack_require__(484);
+	var _extractMinMaxInUnits = __webpack_require__(485);
 	
 	var _extractMinMaxInUnits2 = _interopRequireDefault(_extractMinMaxInUnits);
 	
@@ -34432,7 +34493,7 @@
 	};
 
 /***/ },
-/* 484 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34441,11 +34502,11 @@
 	    value: true
 	});
 	
-	var _durationUnits = __webpack_require__(481);
+	var _durationUnits = __webpack_require__(482);
 	
 	var _durationUnits2 = _interopRequireDefault(_durationUnits);
 	
-	var _splitSecsToUnits = __webpack_require__(462);
+	var _splitSecsToUnits = __webpack_require__(463);
 	
 	var _splitSecsToUnits2 = _interopRequireDefault(_splitSecsToUnits);
 	
@@ -34489,7 +34550,7 @@
 	};
 
 /***/ },
-/* 485 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34500,15 +34561,15 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _arrayToObject = __webpack_require__(427);
+	var _arrayToObject = __webpack_require__(428);
 	
 	var _arrayToObject2 = _interopRequireDefault(_arrayToObject);
 	
-	var _groupByKey = __webpack_require__(439);
+	var _groupByKey = __webpack_require__(440);
 	
 	var _groupByKey2 = _interopRequireDefault(_groupByKey);
 	
-	var _extractDurationHelper = __webpack_require__(483);
+	var _extractDurationHelper = __webpack_require__(484);
 	
 	var _extractDurationHelper2 = _interopRequireDefault(_extractDurationHelper);
 	
@@ -34549,7 +34610,7 @@
 	};
 
 /***/ },
-/* 486 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34558,11 +34619,11 @@
 	    value: true
 	});
 	
-	var _isDurationTick = __webpack_require__(487);
+	var _isDurationTick = __webpack_require__(488);
 	
 	var _isDurationTick2 = _interopRequireDefault(_isDurationTick);
 	
-	var _durationToSecs = __webpack_require__(479);
+	var _durationToSecs = __webpack_require__(480);
 	
 	var _durationToSecs2 = _interopRequireDefault(_durationToSecs);
 	
@@ -34573,7 +34634,7 @@
 	};
 
 /***/ },
-/* 487 */
+/* 488 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34587,7 +34648,7 @@
 	};
 
 /***/ },
-/* 488 */
+/* 489 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34609,7 +34670,7 @@
 	};
 
 /***/ },
-/* 489 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34618,7 +34679,7 @@
 	    value: true
 	});
 	
-	var _getLastDigit = __webpack_require__(490);
+	var _getLastDigit = __webpack_require__(491);
 	
 	var _getLastDigit2 = _interopRequireDefault(_getLastDigit);
 	
@@ -34635,7 +34696,7 @@
 	};
 
 /***/ },
-/* 490 */
+/* 491 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34649,7 +34710,7 @@
 	};
 
 /***/ },
-/* 491 */
+/* 492 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34663,7 +34724,7 @@
 	};
 
 /***/ },
-/* 492 */
+/* 493 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34678,7 +34739,7 @@
 	};
 
 /***/ },
-/* 493 */
+/* 494 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34692,7 +34753,7 @@
 	};
 
 /***/ },
-/* 494 */
+/* 495 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34710,7 +34771,7 @@
 	};
 
 /***/ },
-/* 495 */
+/* 496 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34724,7 +34785,7 @@
 	};
 
 /***/ },
-/* 496 */
+/* 497 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34738,7 +34799,7 @@
 	};
 
 /***/ },
-/* 497 */
+/* 498 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34757,7 +34818,7 @@
 	};
 
 /***/ },
-/* 498 */
+/* 499 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34797,7 +34858,7 @@
 	exports.default = findDeep;
 
 /***/ },
-/* 499 */
+/* 500 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34817,7 +34878,7 @@
 	};
 
 /***/ },
-/* 500 */
+/* 501 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34833,7 +34894,7 @@
 	};
 
 /***/ },
-/* 501 */
+/* 502 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34861,7 +34922,7 @@
 	};
 
 /***/ },
-/* 502 */
+/* 503 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34875,7 +34936,7 @@
 	};
 
 /***/ },
-/* 503 */
+/* 504 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34911,7 +34972,7 @@
 	};
 
 /***/ },
-/* 504 */
+/* 505 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34925,7 +34986,7 @@
 	};
 
 /***/ },
-/* 505 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34934,11 +34995,11 @@
 	    value: true
 	});
 	
-	var _doCandleEqual = __webpack_require__(504);
+	var _doCandleEqual = __webpack_require__(505);
 	
 	var _doCandleEqual2 = _interopRequireDefault(_doCandleEqual);
 	
-	var _doArrayDifferJustOneEntry = __webpack_require__(503);
+	var _doArrayDifferJustOneEntry = __webpack_require__(504);
 	
 	var _doArrayDifferJustOneEntry2 = _interopRequireDefault(_doArrayDifferJustOneEntry);
 	
@@ -34949,7 +35010,7 @@
 	};
 
 /***/ },
-/* 506 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34958,11 +35019,11 @@
 	    value: true
 	});
 	
-	var _doTicksEqual = __webpack_require__(507);
+	var _doTicksEqual = __webpack_require__(508);
 	
 	var _doTicksEqual2 = _interopRequireDefault(_doTicksEqual);
 	
-	var _doArrayDifferJustOneEntry = __webpack_require__(503);
+	var _doArrayDifferJustOneEntry = __webpack_require__(504);
 	
 	var _doArrayDifferJustOneEntry2 = _interopRequireDefault(_doArrayDifferJustOneEntry);
 	
@@ -34973,7 +35034,7 @@
 	};
 
 /***/ },
-/* 507 */
+/* 508 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34987,7 +35048,7 @@
 	};
 
 /***/ },
-/* 508 */
+/* 509 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35001,7 +35062,7 @@
 	};
 
 /***/ },
-/* 509 */
+/* 510 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35015,7 +35076,7 @@
 	};
 
 /***/ },
-/* 510 */
+/* 511 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35035,7 +35096,7 @@
 	};
 
 /***/ },
-/* 511 */
+/* 512 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35050,7 +35111,7 @@
 	};
 
 /***/ },
-/* 512 */
+/* 513 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35066,7 +35127,7 @@
 	};
 
 /***/ },
-/* 513 */
+/* 514 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35080,7 +35141,7 @@
 	};
 
 /***/ },
-/* 514 */
+/* 515 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35094,7 +35155,7 @@
 	};
 
 /***/ },
-/* 515 */
+/* 516 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35118,7 +35179,7 @@
 	};
 
 /***/ },
-/* 516 */
+/* 517 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35162,7 +35223,7 @@
 	};
 
 /***/ },
-/* 517 */
+/* 518 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35181,7 +35242,7 @@
 	};
 
 /***/ },
-/* 518 */
+/* 519 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35190,7 +35251,7 @@
 	    value: true
 	});
 	
-	var _durationToSecs = __webpack_require__(479);
+	var _durationToSecs = __webpack_require__(480);
 	
 	var _durationToSecs2 = _interopRequireDefault(_durationToSecs);
 	
@@ -35201,7 +35262,7 @@
 	};
 
 /***/ },
-/* 519 */
+/* 520 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35210,7 +35271,7 @@
 	    value: true
 	});
 	
-	var _groupByKey = __webpack_require__(439);
+	var _groupByKey = __webpack_require__(440);
 	
 	var _groupByKey2 = _interopRequireDefault(_groupByKey);
 	
@@ -35251,7 +35312,7 @@
 	};
 
 /***/ },
-/* 520 */
+/* 521 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35260,11 +35321,11 @@
 	    value: true
 	});
 	
-	var _tradeTypeCodeToText = __webpack_require__(521);
+	var _tradeTypeCodeToText = __webpack_require__(522);
 	
 	var _tradeTypeCodeToText2 = _interopRequireDefault(_tradeTypeCodeToText);
 	
-	var _typeHasBarrier = __webpack_require__(523);
+	var _typeHasBarrier = __webpack_require__(524);
 	
 	var _typeHasBarrier2 = _interopRequireDefault(_typeHasBarrier);
 	
@@ -35275,7 +35336,7 @@
 	};
 
 /***/ },
-/* 521 */
+/* 522 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35284,7 +35345,7 @@
 	    value: true
 	});
 	
-	var _tradeTypes = __webpack_require__(522);
+	var _tradeTypes = __webpack_require__(523);
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
 	
@@ -35298,7 +35359,7 @@
 	};
 
 /***/ },
-/* 522 */
+/* 523 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35309,7 +35370,7 @@
 	exports.default = [{ value: 'CALL', text: 'Rise', img: 'img/trade-call.svg', ticks: true, barrier: false }, { value: 'PUT', text: 'Fall', img: 'img/trade-put.svg', ticks: true, barrier: false }, { value: 'HIGHER', text: 'Higher', img: 'img/trade-higher.svg', ticks: false, barrier: false }, { value: 'LOWER', text: 'Lower', img: 'img/trade-lower.svg', ticks: false, barrier: false }, { value: 'DIGITMATCH', text: 'Digit Match', img: 'img/trade-digitmatch.svg', ticks: true, barrier: true }, { value: 'DIGITDIFF', text: 'Digit Differs', img: 'img/trade-digitdiff.svg', tick: true, barrier: true }, { value: 'DIGITOVER', text: 'Digit Over', img: 'img/trade-digitover.svg', tick: true, barrier: true }, { value: 'DIGITUNDER', text: 'Digit Under', img: 'img/trade-digitunder.svg', tick: true, barrier: true }, { value: 'DIGITEVEN', text: 'Digit Even', img: 'img/trade-digiteven.svg', tick: true, barrier: false }, { value: 'DIGITODD', text: 'Digit Odd', img: 'img/trade-digitodd.svg', tick: true, barrier: false }, { value: 'ASIANU', text: 'Asian Up', img: 'img/trade-asianu.svg', ticks: true, barrier: false }, { value: 'ASIAND', text: 'Asian Down', img: 'img/trade-asiand.svg', ticks: true, barrier: false }, { value: 'EXPIRYRANGE', text: 'Ends Between', img: 'img/trade-expiryrange.svg', ticks: false, barrier: false }, { value: 'EXPIRYMISS', text: 'Ends Outside', img: 'img/trade-expirymiss.svg', ticks: false, barrier: false }, { value: 'RANGE', text: 'Stays Between', img: 'img/trade-range.svg', ticks: false, barrier: false }, { value: 'UPORDOWN', text: 'Goes Outside', img: 'img/trade-upordown.svg', ticks: false, barrier: false }, { value: 'ONETOUCH', text: 'Touches', img: 'img/trade-onetouch.svg', ticks: false, barrier: false }, { value: 'NOTOUCH', text: 'Does Not Touch', img: 'img/trade-notouch.svg', ticks: false, barrier: false }, { value: 'SPREADU', text: 'Spread Long', img: 'img/trade-spreadu.svg', ticks: false, barrier: false }, { value: 'SPREADD', text: 'Spread Short', img: 'img/trade-spreadu.svg', ticks: false, barrier: false }];
 
 /***/ },
-/* 523 */
+/* 524 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35318,7 +35379,7 @@
 	    value: true
 	});
 	
-	var _tradeTypes = __webpack_require__(522);
+	var _tradeTypes = __webpack_require__(523);
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
 	
@@ -35332,7 +35393,7 @@
 	};
 
 /***/ },
-/* 524 */
+/* 525 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35341,7 +35402,7 @@
 	    value: true
 	});
 	
-	var _tradeTypes = __webpack_require__(522);
+	var _tradeTypes = __webpack_require__(523);
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
 	
@@ -35355,7 +35416,7 @@
 	};
 
 /***/ },
-/* 525 */
+/* 526 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35389,7 +35450,7 @@
 	};
 
 /***/ },
-/* 526 */
+/* 527 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35403,7 +35464,7 @@
 	};
 
 /***/ },
-/* 527 */
+/* 528 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35417,7 +35478,7 @@
 	};
 
 /***/ },
-/* 528 */
+/* 529 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35431,7 +35492,7 @@
 	};
 
 /***/ },
-/* 529 */
+/* 530 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35446,7 +35507,7 @@
 	};
 
 /***/ },
-/* 530 */
+/* 531 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35460,7 +35521,7 @@
 	};
 
 /***/ },
-/* 531 */
+/* 532 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35475,7 +35536,7 @@
 	};
 
 /***/ },
-/* 532 */
+/* 533 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35490,7 +35551,7 @@
 	};
 
 /***/ },
-/* 533 */
+/* 534 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35515,7 +35576,7 @@
 	};
 
 /***/ },
-/* 534 */
+/* 535 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35537,7 +35598,7 @@
 	};
 
 /***/ },
-/* 535 */
+/* 536 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35554,7 +35615,7 @@
 	};
 
 /***/ },
-/* 536 */
+/* 537 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35576,17 +35637,6 @@
 	};
 
 /***/ },
-/* 537 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = typeof alert !== 'undefined' ? alert : function () {};
-
-/***/ },
 /* 538 */
 /***/ function(module, exports) {
 
@@ -35604,6 +35654,17 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = typeof alert !== 'undefined' ? alert : function () {};
+
+/***/ },
+/* 540 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
@@ -35615,7 +35676,7 @@
 	};
 
 /***/ },
-/* 540 */
+/* 541 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -35655,7 +35716,56 @@
 	};
 
 /***/ },
-/* 541 */
+/* 542 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.exponentialMovingAverageArray = undefined;
+	
+	var _binaryUtils = __webpack_require__(424);
+	
+	var _math = __webpack_require__(541);
+	
+	var ema = function ema(vals, periods) {
+	    if (vals.length === 1) {
+	        return vals[0];
+	    }
+	
+	    var prev = ema(vals.slice(0, vals.length - 1), periods);
+	
+	    return (vals.slice(-1)[0] - prev) * (0, _math.weightingMultiplier)(periods) + prev;
+	};
+	
+	var exponentialMovingAverage = function exponentialMovingAverage(data, config) {
+	    var periods = config.periods;
+	    var field = config.field;
+	
+	
+	    if (data.length < periods) {
+	        throw new Error('Periods longer than data length');
+	    }
+	
+	    var vals = (0, _math.takeLast)(data, periods, field);
+	
+	    return ema(vals, periods);
+	};
+	
+	var exponentialMovingAverageArray = exports.exponentialMovingAverageArray = function exponentialMovingAverageArray(data, config) {
+	    var periods = config.periods;
+	
+	    return (0, _binaryUtils.sequence)(data.length - periods + 1).map(function (x, i) {
+	        return exponentialMovingAverage(data.slice(i, i + periods), config);
+	    });
+	};
+	
+	exports.default = exponentialMovingAverage;
+
+/***/ },
+/* 543 */
 /***/ function(module, exports) {
 
 	// COPYRIGHT (c) 2016 TrackJS LLC ALL RIGHTS RESERVED

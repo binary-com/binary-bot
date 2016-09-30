@@ -318,6 +318,7 @@
 			<block type="block_holder"></block>
 			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
 				<block type="sma"></block>
+				<block type="ema"></block>
 			</category>
 		</category>
 	</category>
