@@ -1,1 +1,2 @@
 import './sma';
+import './ema';
