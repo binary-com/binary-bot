@@ -282,26 +282,23 @@ export default class View {
   }
 
   updateChart(info) {
+    const chartToDataType = {
+      area: 'ticks',
+      line: 'ticks',
+      candlestick: 'candles',
+      ohlc: 'candles',
+    };
     ReactDOM.render(
             <BinaryChart
                 className="trade-chart"
-                noData="true"
-                contract={this.latestOpenContract}
+                contract={['area', 'line'].indexOf(this.chartType) >= 0
+                  ? this.contractForChart : false}
                 pipSize={Number(Number(info.pip).toExponential().substring(3))}
-                shiftMode={this.latestOpenContract ? 'dynamic' : 'fixed'}
-                ticks={(this.latestOpenContract || this.chartType === 'area') ? info.ticks : info.candles}
-                type={this.latestOpenContract ? 'area' : this.chartType}
-                onTypeChange={this.latestOpenContract ? undefined : (type) => {
-                  this.chartType = type;
-                }}
+                ticks={info[chartToDataType[this.chartType]]}
+                type={this.chartType}
+                compactToolbar
+                onTypeChange={(type) => (this.chartType = type)}
             />, $('#chart')[0]);
-  }
-  destroyChart() {
-    if (this.chart) {
-      this.chart.destroy();
-      delete this.latestOpenContract;
-      delete this.chart;
-    }
   }
   addEventHandlers() {
     for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
@@ -317,7 +314,6 @@ export default class View {
     observer.register('bot.stop', () => {
       $('#runButton').show();
       $('#stopButton').hide();
-      this.destroyChart();
     });
 
     observer.register('bot.tradeInfo', (tradeInfo) => {
@@ -328,12 +324,16 @@ export default class View {
     });
 
     observer.register('bot.tradeUpdate', (contract) => {
-      this.latestOpenContract = contract;
+      this.contractForChart = {
+        ...contract,
+      };
+      this.contractForChart.date_expiry = Number(this.contractForChart.date_expiry);
+      this.contractForChart.date_start = Number(this.contractForChart.date_start);
     });
 
     observer.register('bot.finish', (contract) => {
       this.tradeInfo.add(contract);
-      setTimeout(() => delete this.latestOpenContract, 2000);
+      this.contractForChart = false;
     });
 
     observer.register('bot.tickUpdate', (info) => {
