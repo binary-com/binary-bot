@@ -1,3 +1,4 @@
+import fileSaver from 'filesaverjs';
 import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 
@@ -78,4 +79,13 @@ export const addPurchaseOptions = () => {
       }
     }
   }
+};
+
+export const save = (xmlDom, postfix = '-') => {
+  const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+  const filename = `binary-bot${postfix}${parseInt(new Date().getTime() / 1000, 10)}.xml`;
+  const blob = new Blob([xmlText], {
+    type: 'text/xml;charset=utf-8',
+  });
+  fileSaver.saveAs(blob, filename);
 };

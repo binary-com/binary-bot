@@ -1,9 +1,10 @@
-import fileSaver from 'filesaverjs';
 import { observer } from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock } from './utils';
+import {
+  addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock, save,
+} from './utils';
 import blocks from './blocks';
 
 export default class _Blockly {
@@ -152,20 +153,7 @@ export default class _Blockly {
     }
   }
   saveXml() {
-    const xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    for (const field of Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))) {
-      if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-        if (field.childNodes.length >= 1) {
-          field.childNodes[0].nodeValue = '';
-        }
-      }
-    }
-    const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    const filename = `binary-bot${parseInt(new Date().getTime() / 1000, 10)}.xml`;
-    const blob = new Blob([xmlText], {
-      type: 'text/xml;charset=utf-8',
-    });
-    fileSaver.saveAs(blob, filename);
+    save(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
   }
   deleteStrayBlocks() {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
