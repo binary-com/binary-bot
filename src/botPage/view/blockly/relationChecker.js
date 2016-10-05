@@ -100,6 +100,24 @@ export const condition = (blockObj, ev, calledByParent) => {
   }
   enable(blockObj);
 };
+export const insideTrade = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    return;
+  }
+  const topParent = findTopParentBlock(blockObj);
+  if (topParent !== null) {
+    if (topParent.type !== 'trade' && !ev.oldParentId) {
+      observer.emit('ui.log.warn',
+        `${name} ${translator.translateText('must be added inside the trade block')}`);
+      disable(blockObj);
+      return;
+    } else if (blockObj.type === 'submarket') {
+      observer.emit('tour:submarket');
+      addPurchaseOptions();
+    }
+  }
+  enable(blockObj);
+};
 export const submarket = (blockObj, ev) => {
   if (insideHolder(blockObj)) {
     return;
@@ -114,14 +132,7 @@ export const submarket = (blockObj, ev) => {
   } else if (blockObj.childBlocks_.length > 0) {
     condition(blockObj.childBlocks_[0], ev, true);
   }
-  if (blockObj.parentBlock_ !== null) {
-    if (blockObj.parentBlock_.type !== 'trade') {
-      observer.emit('ui.log.warn',
-        translator.translateText('Submarket blocks have to be added to the trade block'));
-      disable(blockObj);
-      return;
-    }
-  }
+  insideTrade(blockObj, ev, 'submarket');
   enable(blockObj);
 };
 export const trade = (blockObj, ev) => {
@@ -147,19 +158,6 @@ export const trade = (blockObj, ev) => {
     if (Blockly.mainWorkspace.getBlockById(ev.blockId)
         .type === 'trade_again') {
       observer.emit('tour:trade_again_created');
-    }
-  }
-  if (blockObj.childBlocks_.length && !bot.symbol.findSymbol(blockObj.childBlocks_[0].type)) {
-    observer.emit('ui.log.warn',
-      translator.translateText('The trade block can only accept submarket blocks'));
-    for (const child of Array.prototype.slice.apply(blockObj.childBlocks_)) {
-      child.unplug();
-    }
-  } else if (blockObj.childBlocks_.length > 0) {
-    submarket(blockObj.childBlocks_[0], ev);
-    observer.emit('tour:submarket');
-    if ('newInputName' in ev) {
-      addPurchaseOptions();
     }
   }
   const topParent = findTopParentBlock(blockObj);
