@@ -1,7 +1,6 @@
 import { translator } from '../../../../../common/translator';
 import { trade } from '../../relationChecker';
 import { BlocklyError } from '../../../../../common/error';
-import { save } from '../../utils';
 
 import './barrierOffset';
 import markets from './markets';
@@ -17,17 +16,6 @@ Blockly.Blocks.trade = {
     this.setColour('#2a3052');
     this.setTooltip(translator.translateText('Use this block to choose markets and trade types.')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-  customContextMenu: function customContextMenu(options) {
-    if (!this.isCollapsed()) {
-      options.push({
-        text: translator.translateText('download'),
-        enabled: true,
-        callback: () => {
-          save(Blockly.Xml.blockToDom(this), '-trade-');
-        },
-      });
-    }
   },
   onchange: function onchange(ev) {
     trade(this, ev);

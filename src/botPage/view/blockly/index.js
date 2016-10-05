@@ -27,10 +27,11 @@ export default class _Blockly {
           collapse: false,
         });
         $.get('xml/main.xml', (main) => {
+          this.overrideBlocklyDefaultShape();
           this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
           this.disableDeleteForMainBlocks();
-          this.overrideBlocklyDefaultShape();
+          this.setBlockColors();
           this.zoomOnPlusMinus();
           Blockly.mainWorkspace.clearUndo();
           addPurchaseOptions();
@@ -96,7 +97,24 @@ export default class _Blockly {
     Blockly.Blocks.lists.HUE = '#dedede';
     Blockly.Blocks.variables.HUE = '#dedede';
     Blockly.Blocks.procedures.HUE = '#dedede';
-    this.setBlockColors();
+    const addDownloadToMenu = (block) => {
+      if (block instanceof Object) {
+        block.customContextMenu = function customContextMenu(options) { // eslint-disable-line no-param-reassign, max-len
+          if (!this.isCollapsed()) {
+            options.push({
+              text: translator.translateText('Download'),
+              enabled: true,
+              callback: () => {
+                save(Blockly.Xml.blockToDom(this), '-block-');
+              },
+            });
+          }
+        };
+      }
+    };
+    for (const blockName of Object.keys(Blockly.Blocks)) {
+      addDownloadToMenu(Blockly.Blocks[blockName]);
+    }
   }
   addMissingMainBlocks() {
     for (const mainBlock of config.mainBlocks) {
