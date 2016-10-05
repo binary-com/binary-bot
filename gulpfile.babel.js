@@ -214,6 +214,7 @@ gulp.task('mustache-min', ['static', 'revision-prod', 'pack-css-min'], () => gul
     bundle_css: '<link href="css/' + manifest['bundle.min.css'] + '" rel="stylesheet" />',
     main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
     bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
+    chart_css: '<link href="css/' + manifest['chart.css'] + '" rel="stylesheet" />',
     fontello_css: '<link href="css/' + manifest['fontello.css'] + '" rel="stylesheet" />',
     head: 'templates/partials/head.mustache',
     security: 'templates/partials/security.mustache',
