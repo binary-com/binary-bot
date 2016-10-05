@@ -3,7 +3,7 @@ import { translator } from './translator';
 export default {
   lists: {
     PAYOUTTYPE: [
-      [translator.translateText('Payout'), 'payout'],
+      // [translator.translateText('Payout'), 'payout'],
       [translator.translateText('Stake'), 'stake'],
     ],
     CURRENCY: [
