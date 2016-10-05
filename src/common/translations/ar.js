@@ -106,6 +106,7 @@ module.exports = {
   "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
   "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
   "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
   "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
   "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
   "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",

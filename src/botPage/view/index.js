@@ -1,7 +1,7 @@
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
-import { getTokenList, removeAllTokens,
-  get as getStorage } from 'binary-common-utils/lib/storageManager';
+import {
+  getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
 import { PlainChart as Chart } from 'binary-charts';
 import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
@@ -91,7 +91,17 @@ export default class View {
       const reader = new FileReader();
       reader.onload = (() => {
         $('#fileBrowser').hide();
-        return (e) => this.blockly.loadBlocks(e.target.result);
+        return (e) => {
+          const blockText = e.target.result;
+          if (blockText.indexOf('<xml xmlns="http://www.w3.org/1999/xhtml">') >= 0) {
+            this.blockly.loadWorkspace(blockText);
+          } else if (blockText.indexOf('<block xmlns="http://www.w3.org/1999/xhtml"') >= 0) {
+            this.blockly.loadBlock(blockText);
+          } else {
+            observer.emit('ui.log.error',
+              translator.translateText('Unrecognized file format.'));
+          }
+        };
       })(f);
       reader.readAsText(f);
     };
@@ -243,7 +253,7 @@ export default class View {
 
     $('#resetButton')
       .click(() => {
-        this.blockly.loadBlocks();
+        this.blockly.loadWorkspace();
       });
 
     $('#login')
@@ -342,7 +352,8 @@ export default class View {
 
     observer.register('bot.finish', (contract) => {
       this.tradeInfo.add(contract);
-      setTimeout(() => delete this.latestOpenContract, 2000);
+      setTimeout(() => delete this.latestOpenContract
+        , 2000);
     });
 
     observer.register('bot.tickUpdate', (info) => {

@@ -133,7 +133,7 @@ export default class _Blockly {
     this.setBlockColors();
     addPurchaseOptions();
   }
-  loadBlocks(str) {
+  loadWorkspace(str) {
     if (str) {
       this.blocksXmlStr = str;
     }
@@ -142,6 +142,32 @@ export default class _Blockly {
       const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
       Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
       this.reconfigureBlocklyAfterLoad();
+      observer.emit('ui.log.success',
+        translator.translateText('Blocks are loaded successfully'));
+    } catch (e) {
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        throw e;
+      }
+    }
+  }
+  loadBlock(str) {
+    if (str) {
+      this.blocksXmlStr += str;
+    }
+    try {
+      const xml = Blockly.Xml.textToDom(str);
+      const block = Blockly.Xml.domToBlock(xml, Blockly.mainWorkspace);
+      if (isMainBlock(block.type)) {
+        for (const b of Blockly.mainWorkspace.getTopBlocks()) {
+          if (b.type === block.type && b.id !== block.id) {
+            b.dispose();
+          }
+        }
+      }
+      this.setBlockColors();
+      addPurchaseOptions();
       observer.emit('ui.log.success',
         translator.translateText('Blocks are loaded successfully'));
     } catch (e) {

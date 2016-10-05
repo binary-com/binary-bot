@@ -15,6 +15,16 @@ export const getBlockByType = (type) => {
   return null;
 };
 
+export const getBlocksByType = (type) => {
+  const result = [];
+  for (const block of Blockly.mainWorkspace.getAllBlocks()) {
+    if (type === block.type) {
+      result.push(block);
+    }
+  }
+  return result;
+};
+
 export const getPurchaseChoices = () => purchaseChoices;
 
 export const findTopParentBlock = (b) => {
