@@ -48,13 +48,13 @@
 	
 	__webpack_require__(1);
 	
-	var _jquery = __webpack_require__(544);
+	var _jquery = __webpack_require__(682);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	var _translator = __webpack_require__(308);
 	
-	var _appId = __webpack_require__(421);
+	var _appId = __webpack_require__(559);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -79,14 +79,10 @@
 	
 	__webpack_require__(295);
 	
-	/* eslint max-len: 0 */
-	
 	if (global._babelPolyfill) {
 	  throw new Error("only one instance of babel-polyfill is allowed");
 	}
 	global._babelPolyfill = true;
-	
-	// Should be removed in the next major release:
 	
 	var DEFINE_PROPERTY = "defineProperty";
 	function define(O, key, value) {
@@ -19365,63 +19361,8 @@
 /* 335 */,
 /* 336 */,
 /* 337 */,
-/* 338 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.logoutAllTokens = exports.addTokenIfValid = undefined;
-	
-	var _binaryLiveApi = __webpack_require__(305);
-	
-	var _storageManager = __webpack_require__(301);
-	
-	var addTokenIfValid = exports.addTokenIfValid = function addTokenIfValid(token) {
-	  var callback = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
-	
-	  var option = typeof WebSocket === 'undefined' ? {
-	    websocket: __webpack_require__(339) } : {}; // eslint-disable-line import/newline-after-import
-	  var api = new _binaryLiveApi.LiveApi(option);
-	  api.authorize(token).then(function (response) {
-	    api.disconnect();
-	    (0, _storageManager.addToken)(token, response.authorize.loginid, response.authorize.is_virtual);
-	    callback(null);
-	  }, function () {
-	    api.disconnect();
-	    (0, _storageManager.removeToken)(token);
-	    callback('Error');
-	  });
-	};
-	
-	var logoutAllTokens = exports.logoutAllTokens = function logoutAllTokens(callback) {
-	  var option = typeof WebSocket === 'undefined' ? {
-	    websocket: __webpack_require__(339) } : {}; // eslint-disable-line import/newline-after-import
-	  var api = new _binaryLiveApi.LiveApi(option);
-	  var tokenList = (0, _storageManager.getTokenList)();
-	  var logout = function logout() {
-	    (0, _storageManager.removeAllTokens)();
-	    api.disconnect();
-	    callback();
-	  };
-	  if (tokenList.length === 0) {
-	    logout();
-	  } else {
-	    api.authorize(tokenList[0].token).then(function () {
-	      api.logOut().then(logout, logout);
-	    }, logout);
-	  }
-	};
-
-/***/ },
-/* 339 */
-/***/ function(module, exports) {
-
-	module.exports = ws;
-
-/***/ },
+/* 338 */,
+/* 339 */,
 /* 340 */,
 /* 341 */,
 /* 342 */,
@@ -19503,7 +19444,200 @@
 /* 418 */,
 /* 419 */,
 /* 420 */,
-/* 421 */
+/* 421 */,
+/* 422 */,
+/* 423 */,
+/* 424 */,
+/* 425 */,
+/* 426 */,
+/* 427 */,
+/* 428 */,
+/* 429 */,
+/* 430 */,
+/* 431 */,
+/* 432 */,
+/* 433 */,
+/* 434 */,
+/* 435 */,
+/* 436 */,
+/* 437 */,
+/* 438 */,
+/* 439 */,
+/* 440 */,
+/* 441 */,
+/* 442 */,
+/* 443 */,
+/* 444 */,
+/* 445 */,
+/* 446 */,
+/* 447 */,
+/* 448 */,
+/* 449 */,
+/* 450 */,
+/* 451 */,
+/* 452 */,
+/* 453 */,
+/* 454 */,
+/* 455 */,
+/* 456 */,
+/* 457 */,
+/* 458 */,
+/* 459 */,
+/* 460 */,
+/* 461 */,
+/* 462 */,
+/* 463 */,
+/* 464 */,
+/* 465 */,
+/* 466 */,
+/* 467 */,
+/* 468 */,
+/* 469 */,
+/* 470 */,
+/* 471 */,
+/* 472 */,
+/* 473 */,
+/* 474 */,
+/* 475 */,
+/* 476 */,
+/* 477 */,
+/* 478 */,
+/* 479 */,
+/* 480 */,
+/* 481 */,
+/* 482 */,
+/* 483 */,
+/* 484 */,
+/* 485 */,
+/* 486 */,
+/* 487 */,
+/* 488 */,
+/* 489 */,
+/* 490 */,
+/* 491 */,
+/* 492 */,
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */,
+/* 497 */,
+/* 498 */,
+/* 499 */,
+/* 500 */,
+/* 501 */,
+/* 502 */,
+/* 503 */,
+/* 504 */,
+/* 505 */,
+/* 506 */,
+/* 507 */,
+/* 508 */,
+/* 509 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.logoutAllTokens = exports.addTokenIfValid = undefined;
+	
+	var _binaryLiveApi = __webpack_require__(305);
+	
+	var _storageManager = __webpack_require__(301);
+	
+	var addTokenIfValid = exports.addTokenIfValid = function addTokenIfValid(token) {
+	  var callback = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
+	
+	  var option = typeof WebSocket === 'undefined' ? {
+	    websocket: __webpack_require__(510) } : {}; // eslint-disable-line import/newline-after-import
+	  var api = new _binaryLiveApi.LiveApi(option);
+	  api.authorize(token).then(function (response) {
+	    api.disconnect();
+	    (0, _storageManager.addToken)(token, response.authorize.loginid, response.authorize.is_virtual);
+	    callback(null);
+	  }, function () {
+	    api.disconnect();
+	    (0, _storageManager.removeToken)(token);
+	    callback('Error');
+	  });
+	};
+	
+	var logoutAllTokens = exports.logoutAllTokens = function logoutAllTokens(callback) {
+	  var option = typeof WebSocket === 'undefined' ? {
+	    websocket: __webpack_require__(510) } : {}; // eslint-disable-line import/newline-after-import
+	  var api = new _binaryLiveApi.LiveApi(option);
+	  var tokenList = (0, _storageManager.getTokenList)();
+	  var logout = function logout() {
+	    (0, _storageManager.removeAllTokens)();
+	    api.disconnect();
+	    callback();
+	  };
+	  if (tokenList.length === 0) {
+	    logout();
+	  } else {
+	    api.authorize(tokenList[0].token).then(function () {
+	      api.logOut().then(logout, logout);
+	    }, logout);
+	  }
+	};
+
+/***/ },
+/* 510 */
+/***/ function(module, exports) {
+
+	module.exports = ws;
+
+/***/ },
+/* 511 */,
+/* 512 */,
+/* 513 */,
+/* 514 */,
+/* 515 */,
+/* 516 */,
+/* 517 */,
+/* 518 */,
+/* 519 */,
+/* 520 */,
+/* 521 */,
+/* 522 */,
+/* 523 */,
+/* 524 */,
+/* 525 */,
+/* 526 */,
+/* 527 */,
+/* 528 */,
+/* 529 */,
+/* 530 */,
+/* 531 */,
+/* 532 */,
+/* 533 */,
+/* 534 */,
+/* 535 */,
+/* 536 */,
+/* 537 */,
+/* 538 */,
+/* 539 */,
+/* 540 */,
+/* 541 */,
+/* 542 */,
+/* 543 */,
+/* 544 */,
+/* 545 */,
+/* 546 */,
+/* 547 */,
+/* 548 */,
+/* 549 */,
+/* 550 */,
+/* 551 */,
+/* 552 */,
+/* 553 */,
+/* 554 */,
+/* 555 */,
+/* 556 */,
+/* 557 */,
+/* 558 */,
+/* 559 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19612,11 +19746,11 @@
 	
 	var _tools = __webpack_require__(309);
 	
-	var _account = __webpack_require__(338);
+	var _account = __webpack_require__(509);
 	
 	var _storageManager = __webpack_require__(301);
 	
-	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 	
 	function setAppId() {
 	  var appId = 0;
@@ -19633,9 +19767,9 @@
 	}
 	
 	function oauthLogin() {
-	  var done = arguments.length <= 0 || arguments[0] === undefined ? function () {
+	  var done = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {
 	    return 0;
-	  } : arguments[0];
+	  };
 	
 	  var queryStr = (0, _tools.parseQueryString)();
 	  var tokenList = [];
@@ -19655,129 +19789,129 @@
 	}
 
 /***/ },
-/* 422 */,
-/* 423 */,
-/* 424 */,
-/* 425 */,
-/* 426 */,
-/* 427 */,
-/* 428 */,
-/* 429 */,
-/* 430 */,
-/* 431 */,
-/* 432 */,
-/* 433 */,
-/* 434 */,
-/* 435 */,
-/* 436 */,
-/* 437 */,
-/* 438 */,
-/* 439 */,
-/* 440 */,
-/* 441 */,
-/* 442 */,
-/* 443 */,
-/* 444 */,
-/* 445 */,
-/* 446 */,
-/* 447 */,
-/* 448 */,
-/* 449 */,
-/* 450 */,
-/* 451 */,
-/* 452 */,
-/* 453 */,
-/* 454 */,
-/* 455 */,
-/* 456 */,
-/* 457 */,
-/* 458 */,
-/* 459 */,
-/* 460 */,
-/* 461 */,
-/* 462 */,
-/* 463 */,
-/* 464 */,
-/* 465 */,
-/* 466 */,
-/* 467 */,
-/* 468 */,
-/* 469 */,
-/* 470 */,
-/* 471 */,
-/* 472 */,
-/* 473 */,
-/* 474 */,
-/* 475 */,
-/* 476 */,
-/* 477 */,
-/* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */,
-/* 482 */,
-/* 483 */,
-/* 484 */,
-/* 485 */,
-/* 486 */,
-/* 487 */,
-/* 488 */,
-/* 489 */,
-/* 490 */,
-/* 491 */,
-/* 492 */,
-/* 493 */,
-/* 494 */,
-/* 495 */,
-/* 496 */,
-/* 497 */,
-/* 498 */,
-/* 499 */,
-/* 500 */,
-/* 501 */,
-/* 502 */,
-/* 503 */,
-/* 504 */,
-/* 505 */,
-/* 506 */,
-/* 507 */,
-/* 508 */,
-/* 509 */,
-/* 510 */,
-/* 511 */,
-/* 512 */,
-/* 513 */,
-/* 514 */,
-/* 515 */,
-/* 516 */,
-/* 517 */,
-/* 518 */,
-/* 519 */,
-/* 520 */,
-/* 521 */,
-/* 522 */,
-/* 523 */,
-/* 524 */,
-/* 525 */,
-/* 526 */,
-/* 527 */,
-/* 528 */,
-/* 529 */,
-/* 530 */,
-/* 531 */,
-/* 532 */,
-/* 533 */,
-/* 534 */,
-/* 535 */,
-/* 536 */,
-/* 537 */,
-/* 538 */,
-/* 539 */,
-/* 540 */,
-/* 541 */,
-/* 542 */,
-/* 543 */,
-/* 544 */
+/* 560 */,
+/* 561 */,
+/* 562 */,
+/* 563 */,
+/* 564 */,
+/* 565 */,
+/* 566 */,
+/* 567 */,
+/* 568 */,
+/* 569 */,
+/* 570 */,
+/* 571 */,
+/* 572 */,
+/* 573 */,
+/* 574 */,
+/* 575 */,
+/* 576 */,
+/* 577 */,
+/* 578 */,
+/* 579 */,
+/* 580 */,
+/* 581 */,
+/* 582 */,
+/* 583 */,
+/* 584 */,
+/* 585 */,
+/* 586 */,
+/* 587 */,
+/* 588 */,
+/* 589 */,
+/* 590 */,
+/* 591 */,
+/* 592 */,
+/* 593 */,
+/* 594 */,
+/* 595 */,
+/* 596 */,
+/* 597 */,
+/* 598 */,
+/* 599 */,
+/* 600 */,
+/* 601 */,
+/* 602 */,
+/* 603 */,
+/* 604 */,
+/* 605 */,
+/* 606 */,
+/* 607 */,
+/* 608 */,
+/* 609 */,
+/* 610 */,
+/* 611 */,
+/* 612 */,
+/* 613 */,
+/* 614 */,
+/* 615 */,
+/* 616 */,
+/* 617 */,
+/* 618 */,
+/* 619 */,
+/* 620 */,
+/* 621 */,
+/* 622 */,
+/* 623 */,
+/* 624 */,
+/* 625 */,
+/* 626 */,
+/* 627 */,
+/* 628 */,
+/* 629 */,
+/* 630 */,
+/* 631 */,
+/* 632 */,
+/* 633 */,
+/* 634 */,
+/* 635 */,
+/* 636 */,
+/* 637 */,
+/* 638 */,
+/* 639 */,
+/* 640 */,
+/* 641 */,
+/* 642 */,
+/* 643 */,
+/* 644 */,
+/* 645 */,
+/* 646 */,
+/* 647 */,
+/* 648 */,
+/* 649 */,
+/* 650 */,
+/* 651 */,
+/* 652 */,
+/* 653 */,
+/* 654 */,
+/* 655 */,
+/* 656 */,
+/* 657 */,
+/* 658 */,
+/* 659 */,
+/* 660 */,
+/* 661 */,
+/* 662 */,
+/* 663 */,
+/* 664 */,
+/* 665 */,
+/* 666 */,
+/* 667 */,
+/* 668 */,
+/* 669 */,
+/* 670 */,
+/* 671 */,
+/* 672 */,
+/* 673 */,
+/* 674 */,
+/* 675 */,
+/* 676 */,
+/* 677 */,
+/* 678 */,
+/* 679 */,
+/* 680 */,
+/* 681 */,
+/* 682 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
