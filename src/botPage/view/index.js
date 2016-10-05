@@ -280,7 +280,6 @@ export default class View {
       e.preventDefault(); // prevent the default action (scroll / move caret)
     });
   }
-
   updateChart(info) {
     const chartToDataType = {
       area: 'ticks',
@@ -288,17 +287,42 @@ export default class View {
       candlestick: 'candles',
       ohlc: 'candles',
     };
+
+    const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0;
+
+    const zoomInMax = (ev, chart) => {
+      const { dataMax } = chart.xAxis[0].getExtremes();
+      const { minRange } = chart.xAxis[0].options;
+      chart.xAxis[0].setExtremes(dataMax - minRange, dataMax);
+    };
+
+    const events = [
+      {
+        type: 'zoom-in-max',
+        handler: zoomInMax,
+      },
+    ];
+
     ReactDOM.render(
             <BinaryChart
                 className="trade-chart"
-                contract={['area', 'line'].indexOf(this.chartType) >= 0
-                  ? this.contractForChart : false}
+                id="trade-chart0"
+                contract={isLine() ? this.contractForChart : false}
+                hideZoomControls={isLine() && this.contractForChart}
                 pipSize={Number(Number(info.pip).toExponential().substring(3))}
+                shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
                 ticks={info[chartToDataType[this.chartType]]}
                 type={this.chartType}
+                events={events}
                 compactToolbar
                 onTypeChange={(type) => (this.chartType = type)}
             />, $('#chart')[0]);
+    if (isLine() && this.contractForChart) {
+      const chartDiv = document.getElementById('trade-chart0');
+      if (chartDiv) {
+        chartDiv.dispatchEvent(new Event('zoom-in-max'));
+      }
+    }
   }
   addEventHandlers() {
     for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
@@ -328,6 +352,7 @@ export default class View {
         ...contract,
       };
       this.contractForChart.date_expiry = Number(this.contractForChart.date_expiry);
+      this.contractForChart.date_settlement = Number(this.contractForChart.date_settlement);
       this.contractForChart.date_start = Number(this.contractForChart.date_start);
     });
 
