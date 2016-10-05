@@ -16811,7 +16811,9 @@
 	
 	exports.default = {
 	  lists: {
-	    PAYOUTTYPE: [[_translator.translator.translateText('Payout'), 'payout'], [_translator.translator.translateText('Stake'), 'stake']],
+	    PAYOUTTYPE: [
+	    // [translator.translateText('Payout'), 'payout'],
+	    [_translator.translator.translateText('Stake'), 'stake']],
 	    CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD']],
 	    DETAILS: [[_translator.translator.translateText('statement'), '1'], [_translator.translator.translateText('ask price'), '2'], [_translator.translator.translateText('payout'), '3'], [_translator.translator.translateText('profit'), '4'], [_translator.translator.translateText('contract type'), '5'], [_translator.translator.translateText('entry spot'), '6'], [_translator.translator.translateText('entry value'), '7'], [_translator.translator.translateText('exit spot'), '8'], [_translator.translator.translateText('exit value'), '9'], [_translator.translator.translateText('barrier'), '10'], [_translator.translator.translateText('result'), '11']],
 	    CHECK_RESULT: [[_translator.translator.translateText('Win'), 'win'], [_translator.translator.translateText('Loss'), 'loss']],
