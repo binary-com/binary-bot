@@ -35,8 +35,9 @@ export default () => {
         return new BlocklyError(
           translator.translateText('A trade type has to be defined for the symbol')).emit();
       }
-      const code = `${condition.trim()}
-      symbol: '${symbol}'}`;
+      const code = `
+      tradeOption = ${condition.trim()};
+      tradeOption.symbol = '${symbol}'`;
       return code;
     };
   }

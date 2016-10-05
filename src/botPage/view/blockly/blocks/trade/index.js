@@ -27,16 +27,16 @@ Blockly.JavaScript.trade = (block) => {
   if (!account) {
     return new BlocklyError(translator.translateText('Please login.')).emit();
   }
-  const submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
-  if (submarket === '') {
-    return new BlocklyError(translator.translateText('You have to add a submarket first')).emit();
-  }
+  const initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
   // TODO: Assemble JavaScript into code variable.
-  const code = `function trade(again){
-  Bot.start('${account.trim()}', ${submarket.trim()},
-  on_strategy, typeof during_purchase === 'undefined' ? function(){} : during_purchase,
-  on_finish, again);
-}`;
+  const code = `
+  var tradeOption = {};
+  ${initialization.trim()};
+  function trade(again){
+    Bot.start('${account.trim()}', tradeOption,
+    on_strategy, typeof during_purchase === 'undefined' ? function(){} : during_purchase,
+    on_finish, again);
+  }`;
   return code;
 };
 
