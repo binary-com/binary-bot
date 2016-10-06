@@ -4,6 +4,11 @@ import { translator } from '../../../common/translator';
 
 const purchaseChoices = [[translator.translateText('Click to select'), '']];
 
+export const setBlockTextColor = (block) => {
+  block.getField().getSvgRoot()
+    .style.setProperty('fill', 'white', 'important');
+};
+
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0;
 
 export const getBlockByType = (type) => {

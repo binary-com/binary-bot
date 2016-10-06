@@ -2,10 +2,20 @@ import { observer } from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import {
-  addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock, save,
+import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock, save,
 } from './utils';
 import blocks from './blocks';
+
+const backwardCompatibility = (xml) => {
+  const blockElements = xml.getElementsByTagName('block');
+  for (const block of blockElements) {
+    if (block.getAttribute('type') === 'on_strategy') {
+      block.setAttribute('type', 'before_purchase');
+    } else if (block.getAttribute('type') === 'on_finish') {
+      block.setAttribute('type', 'after_purchase');
+    }
+  }
+};
 
 export default class _Blockly {
   constructor() {
@@ -30,8 +40,7 @@ export default class _Blockly {
           this.overrideBlocklyDefaultShape();
           this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-          this.disableDeleteForMainBlocks();
-          this.setBlockColors();
+          this.enableDeleteForMainBlocks();
           this.zoomOnPlusMinus();
           Blockly.mainWorkspace.clearUndo();
           addPurchaseOptions();
@@ -75,10 +84,10 @@ export default class _Blockly {
       bot.symbol.activeSymbols.getMarkets(), bot.symbol.assetIndex);
     return xmlStr.replace('<!--Markets-->', marketXml);
   }
-  disableDeleteForMainBlocks() {
+  enableDeleteForMainBlocks() {
     for (const blockType of config.mainBlocks) {
       getBlockByType(blockType)
-        .setDeletable(false);
+        .setDeletable(true);
     }
   }
   overrideBlocklyDefaultShape() {
@@ -122,15 +131,13 @@ export default class _Blockly {
         const block = Blockly.mainWorkspace.newBlock(mainBlock);
         block.initSvg();
         block.render();
-        this.setBlockColors();
-        block.setDeletable(false);
+        block.setDeletable(true);
       }
     }
   }
   reconfigureBlocklyAfterLoad() {
     this.addMissingMainBlocks();
     Blockly.mainWorkspace.clearUndo();
-    this.setBlockColors();
     addPurchaseOptions();
   }
   loadWorkspace(str) {
@@ -140,6 +147,7 @@ export default class _Blockly {
     try {
       Blockly.mainWorkspace.clear();
       const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
+      backwardCompatibility(xml);
       Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
       this.reconfigureBlocklyAfterLoad();
       observer.emit('ui.log.success',
@@ -153,9 +161,7 @@ export default class _Blockly {
     }
   }
   loadBlock(str) {
-    if (str) {
-      this.blocksXmlStr += str;
-    }
+    this.blocksXmlStr += str;
     try {
       const xml = Blockly.Xml.textToDom(str);
       const block = Blockly.Xml.domToBlock(xml, Blockly.mainWorkspace);
@@ -166,7 +172,6 @@ export default class _Blockly {
           }
         }
       }
-      this.setBlockColors();
       addPurchaseOptions();
       observer.emit('ui.log.success',
         translator.translateText('Blocks are loaded successfully'));
@@ -186,15 +191,6 @@ export default class _Blockly {
       }
     });
     return returnVal;
-  }
-  setBlockColors() {
-    for (const blockType of config.mainBlocks) {
-      const block = getBlockByType(blockType);
-      if (block) {
-        block.getField().getSvgRoot()
-          .style.setProperty('fill', 'white', 'important');
-      }
-    }
   }
   saveXml() {
     save(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
@@ -259,10 +255,8 @@ export default class _Blockly {
   }
   undo() {
     Blockly.mainWorkspace.undo();
-    this.setBlockColors();
   }
   redo() {
     Blockly.mainWorkspace.undo(true);
-    this.setBlockColors();
   }
 }

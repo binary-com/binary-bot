@@ -119,8 +119,8 @@ export default {
   ],
   mainBlocks: [
     'trade',
-    'on_strategy',
-    'on_finish',
+    'before_purchase',
+    'after_purchase',
     'during_purchase',
   ],
   durationTypes: {

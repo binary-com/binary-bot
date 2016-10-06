@@ -196,7 +196,7 @@ export default class Welcome {
       nextButton: true,
     }, {
       content: '<p>' + translator.translateText('This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.') + '</p>',
-      target: getUiComponent('on_strategy'),
+      target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -245,7 +245,7 @@ export default class Welcome {
       },
     }, {
       content: '<p>' + translator.translateText('Now add it to the Strategy block.') + '</p>',
-      target: getUiComponent('on_strategy'),
+      target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -262,7 +262,7 @@ export default class Welcome {
       },
     }, {
       content: '<p>' + translator.translateText('Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.') + '</p>',
-      target: getUiComponent('on_strategy'),
+      target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -270,7 +270,7 @@ export default class Welcome {
       nextButton: true,
     }, {
       content: '<p>' + translator.translateText('A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.') + '</p>',
-      target: getUiComponent('on_strategy'),
+      target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -278,7 +278,7 @@ export default class Welcome {
       nextButton: true,
     }, {
       content: '<p>' + translator.translateText('After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block') + '</p>',
-      target: getUiComponent('on_finish'),
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -286,7 +286,7 @@ export default class Welcome {
       nextButton: true,
     }, {
       content: '<p>' + translator.translateText('Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.') + '</p>',
-      target: getUiComponent('on_finish'),
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -315,7 +315,7 @@ export default class Welcome {
       },
     }, {
       content: '<p>' + translator.translateText('Now add it to the On Finish block') + '</p>',
-      target: getUiComponent('on_finish'),
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -333,7 +333,7 @@ export default class Welcome {
       },
     }, {
       content: '<p>' + translator.translateText('Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn\'t called e.g. in a logic block which its trade type is unmet.') + '</p>',
-      target: getUiComponent('on_finish'),
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -341,7 +341,7 @@ export default class Welcome {
       nextButton: true,
     }, {
       content: '<p>' + translator.translateText('OK, this\'s it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.') + '</p>',
-      target: getUiComponent('on_finish'),
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',

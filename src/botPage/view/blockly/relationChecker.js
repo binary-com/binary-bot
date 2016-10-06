@@ -19,6 +19,9 @@ const getNumField = (block, fieldName) => {
 };
 const insideHolder = (blockObj) => {
   const parent = findTopParentBlock(blockObj);
+  if (blockObj.isInFlyout) {
+    return true;
+  }
   if (parent !== null &&
     (parent.type === 'block_holder' || parent.type.indexOf('procedures_def') === 0)) {
     return true;
@@ -141,41 +144,6 @@ export const submarket = (blockObj, ev) => {
     enable(blockObj);
   }
 };
-export const trade = (blockObj, ev) => {
-  if (insideHolder(blockObj)) {
-    enable(blockObj);
-  } else {
-    if (ev.type === 'create') {
-      if (bot.symbol.findSymbol(Blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
-        observer.emit('tour:submarket_created');
-      }
-      if (config.conditions.indexOf(Blockly.mainWorkspace.getBlockById(ev.blockId)
-          .type) >= 0) {
-        observer.emit('tour:condition_created');
-      }
-      if (Blockly.mainWorkspace.getBlockById(ev.blockId)
-          .type === 'math_number') {
-        observer.emit('tour:number');
-      }
-      if (Blockly.mainWorkspace.getBlockById(ev.blockId)
-          .type === 'purchase') {
-        observer.emit('tour:purchase_created');
-      }
-      if (Blockly.mainWorkspace.getBlockById(ev.blockId)
-          .type === 'trade_again') {
-        observer.emit('tour:trade_again_created');
-      }
-    }
-    const topParent = findTopParentBlock(blockObj);
-    if (topParent && (bot.symbol.findSymbol(topParent.type)
-      || ['on_strategy', 'on_finish', 'during_purchase'].indexOf(topParent.type) >= 0)) {
-      disable(blockObj,
-        translator.translateText('The trade block cannot be inside binary blocks'));
-    } else {
-      enable(blockObj);
-    }
-  }
-};
 export const insideCondition = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     enable(blockObj);
@@ -191,7 +159,7 @@ export const insideStrategy = (blockObj, ev, name) => {
     enable(blockObj);
   } else {
     const topParent = findTopParentBlock(blockObj);
-    if (topParent && topParent.type !== 'on_strategy') {
+    if (topParent && topParent.type !== 'before_purchase') {
       disable(blockObj,
         `${name} ${translator.translateText('must be added inside the strategy block')}`);
     } else {
@@ -220,7 +188,7 @@ export const insideFinish = (blockObj, ev, name) => {
     enable(blockObj);
   } else {
     const topParent = findTopParentBlock(blockObj);
-    if (topParent && topParent.type !== 'on_finish') {
+    if (topParent && topParent.type !== 'after_purchase') {
       disable(blockObj,
         `${name} ${translator.translateText('must be added inside the finish block')}`);
     } else {

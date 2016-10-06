@@ -3,6 +3,7 @@ import { translator } from '../../../../../common/translator';
 import './sell_at_market';
 import './check_sell';
 import './sell_price';
+import { setBlockTextColor } from '../../utils';
 
 Blockly.Blocks.during_purchase = {
   init: function init() {
@@ -13,6 +14,9 @@ Blockly.Blocks.during_purchase = {
     this.setColour('#2a3052');
     this.setTooltip(translator.translateText('Sell at market before a trade is finished')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+  },
+  onchange: function onchange() {
+    setBlockTextColor(this);
   },
 };
 Blockly.JavaScript.during_purchase = (block) => {

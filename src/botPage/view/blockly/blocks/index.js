@@ -1,7 +1,7 @@
 import './tools';
-import './strategy';
+import './before_purchase';
 import './during_purchase';
-import './finish';
+import './after_purchase';
 import './block_holder';
 
 export { default } from './trade';

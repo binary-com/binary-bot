@@ -11,8 +11,9 @@ import './direction';
 import './purchase';
 import './ask_price';
 import './payout';
+import { setBlockTextColor } from '../../utils';
 
-Blockly.Blocks.on_strategy = {
+Blockly.Blocks.before_purchase = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('(2) things to do before purchase is made'));
@@ -22,10 +23,13 @@ Blockly.Blocks.on_strategy = {
     this.setTooltip(translator.translateText('This block decides what to do each time a new tick is received')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
+  onchange: function onchange() {
+    setBlockTextColor(this);
+  },
 };
-Blockly.JavaScript.on_strategy = (block) => {
+Blockly.JavaScript.before_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
-  const code = `function on_strategy(ticks, proposals, purchaseCtrl){
+  const code = `function before_purchase(ticks, proposals, purchaseCtrl){
     if(purchaseCtrl === null) return; 
     try {
       ${stack}

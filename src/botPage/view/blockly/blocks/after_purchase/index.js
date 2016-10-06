@@ -5,8 +5,9 @@ import './check_result';
 import './details';
 import './read_details';
 import './trade_again';
+import { setBlockTextColor } from '../../utils';
 
-Blockly.Blocks.on_finish = {
+Blockly.Blocks.after_purchase = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('(4) things to do after purchase is finished'));
@@ -16,10 +17,13 @@ Blockly.Blocks.on_finish = {
     this.setTooltip(translator.translateText('This block decides what to do when a purchased contract is finished')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
+  onchange: function onchange() {
+    setBlockTextColor(this);
+  },
 };
-Blockly.JavaScript.on_finish = (block) => {
+Blockly.JavaScript.after_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-  const code = `function on_finish(_finishedContract, details){
+  const code = `function after_purchase(_finishedContract, details){
     try {
       ${stack}
     } catch (e) { 
