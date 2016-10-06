@@ -1,5 +1,4 @@
 import { observer } from 'binary-common-utils/lib/observer';
-import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
 import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock, save,
@@ -13,6 +12,9 @@ const backwardCompatibility = (xml) => {
       block.setAttribute('type', 'before_purchase');
     } else if (block.getAttribute('type') === 'on_finish') {
       block.setAttribute('type', 'after_purchase');
+    }
+    if (block.getAttribute('deletable')) {
+      block.removeAttribute('deletable');
     }
   }
 };
@@ -40,7 +42,6 @@ export default class _Blockly {
           this.overrideBlocklyDefaultShape();
           this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-          this.enableDeleteForMainBlocks();
           this.zoomOnPlusMinus();
           Blockly.mainWorkspace.clearUndo();
           addPurchaseOptions();
@@ -84,12 +85,6 @@ export default class _Blockly {
       bot.symbol.activeSymbols.getMarkets(), bot.symbol.assetIndex);
     return xmlStr.replace('<!--Markets-->', marketXml);
   }
-  enableDeleteForMainBlocks() {
-    for (const blockType of config.mainBlocks) {
-      getBlockByType(blockType)
-        .setDeletable(true);
-    }
-  }
   overrideBlocklyDefaultShape() {
     Blockly.Blocks.text.newQuote_ = (open) => { // eslint-disable-line no-underscore-dangle
       let file;
@@ -125,21 +120,6 @@ export default class _Blockly {
       addDownloadToMenu(Blockly.Blocks[blockName]);
     }
   }
-  addMissingMainBlocks() {
-    for (const mainBlock of config.mainBlocks) {
-      if (!getBlockByType(mainBlock)) {
-        const block = Blockly.mainWorkspace.newBlock(mainBlock);
-        block.initSvg();
-        block.render();
-        block.setDeletable(true);
-      }
-    }
-  }
-  reconfigureBlocklyAfterLoad() {
-    this.addMissingMainBlocks();
-    Blockly.mainWorkspace.clearUndo();
-    addPurchaseOptions();
-  }
   loadWorkspace(str) {
     if (str) {
       this.blocksXmlStr = str;
@@ -149,7 +129,7 @@ export default class _Blockly {
       const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
       backwardCompatibility(xml);
       Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-      this.reconfigureBlocklyAfterLoad();
+      addPurchaseOptions();
       observer.emit('ui.log.success',
         translator.translateText('Blocks are loaded successfully'));
     } catch (e) {

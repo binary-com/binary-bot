@@ -1,7 +1,7 @@
 <xml id="startBlocks" style="display: none">
-  <block type="trade" deletable="false" x="0" y="0"></block>
-  <block type="before_purchase" deletable="false" x="0" y="87"></block>
-  <block type="during_purchase" deletable="false" x="0" y="174"></block>
-  <block type="after_purchase" deletable="false" x="0" y="261"></block>
+  <block type="trade" x="0" y="0"></block>
+  <block type="before_purchase" x="0" y="87"></block>
+  <block type="during_purchase" x="0" y="174"></block>
+  <block type="after_purchase" x="0" y="261"></block>
 </xml>
 
