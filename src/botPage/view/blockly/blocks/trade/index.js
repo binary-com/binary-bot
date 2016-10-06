@@ -6,12 +6,18 @@ import markets from './markets';
 import { bot } from '../../../../bot';
 import config from '../../../../../common/const';
 import tradeTypes from './tradeTypes';
-import { setBlockTextColor } from '../../utils';
+import { setBlockTextColor, findTopParentBlock } from '../../utils';
 
-const decorate = (block) => {
+const backwardCompatibility = (block) => {
   setTimeout(() => {
-    if (block.getParent()) {
-      block.unplug();
+    const parent = block.getParent();
+    if (parent) {
+      const submarketConnection = block.getInput('SUBMARKET').connection;
+      const targetConnection = submarketConnection.targetConnection;
+      if (targetConnection) {
+        parent.nextConnection.connect(targetConnection);
+      }
+      submarketConnection.connect(findTopParentBlock(parent).previousConnection);
     }
     block.setPreviousStatement(false);
   }, 0);
@@ -34,7 +40,7 @@ Blockly.Blocks.trade = {
       for (const blockId of ev.ids) {
         const block = Blockly.mainWorkspace.getBlockById(blockId);
         if (block.type === 'trade') {
-          decorate(block);
+          backwardCompatibility(block);
         }
         if (!this.isInFlyout) {
           if (bot.symbol.findSymbol(block.type)) {
