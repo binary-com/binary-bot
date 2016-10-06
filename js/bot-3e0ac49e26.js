@@ -16868,7 +16868,7 @@
 	  barrierTypes: [['+', '+'], ['-', '-']],
 	  ohlcFields: [['Open', 'open'], ['High', 'high'], ['Low', 'low'], ['Close', 'close']],
 	  candleIntervals: [['1 minute', '60'], ['2 minutes', '120'], ['3 minutes', '180'], ['5 minutes', '300'], ['10 minutes', '600'], ['15 minutes', '900'], ['30 minutes', '1800'], ['1 hour', '3600'], ['2 hours', '7200'], ['4 hours', '14400'], ['8 hours', '28800'], ['1 day', '86400']],
-	  mainBlocks: ['trade', 'on_strategy', 'on_finish', 'during_purchase'],
+	  mainBlocks: ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
 	  durationTypes: {
 	    RISEFALL: [[_translator.translator.translateText('Ticks'), 't'], [_translator.translator.translateText('Seconds'), 's'], [_translator.translator.translateText('Minutes'), 'm'], [_translator.translator.translateText('Hours'), 'h']],
 	    HIGHERLOWER: [[_translator.translator.translateText('Ticks'), 't'], [_translator.translator.translateText('Seconds'), 's'], [_translator.translator.translateText('Minutes'), 'm'], [_translator.translator.translateText('Hours'), 'h']],
@@ -19254,6 +19254,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -19264,6 +19265,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -19354,23 +19356,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -19439,22 +19441,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -19479,6 +19465,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19490,7 +19492,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -19519,6 +19520,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -19529,6 +19531,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -19619,23 +19622,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -19704,22 +19707,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -19744,6 +19731,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -19755,7 +19758,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -19784,6 +19786,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -19794,6 +19797,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -19884,23 +19888,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -19969,22 +19973,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20009,6 +19997,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20020,7 +20024,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -20049,6 +20052,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -20059,6 +20063,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -20149,23 +20154,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -20234,22 +20239,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20274,6 +20263,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20285,7 +20290,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -20314,6 +20318,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -20324,6 +20329,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -20414,23 +20420,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -20499,22 +20505,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20539,6 +20529,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20550,7 +20556,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -20579,6 +20584,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -20589,6 +20595,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -20679,23 +20686,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -20764,22 +20771,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -20804,6 +20795,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -20815,7 +20822,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -20844,6 +20850,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -20854,6 +20861,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -20944,23 +20952,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -21029,22 +21037,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21069,6 +21061,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21080,7 +21088,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -21109,6 +21116,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -21119,6 +21127,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -21209,23 +21218,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -21294,22 +21303,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21334,6 +21327,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21345,7 +21354,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -21374,6 +21382,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -21384,6 +21393,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -21474,23 +21484,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -21559,22 +21569,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21599,6 +21593,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21610,7 +21620,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -21639,6 +21648,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -21649,6 +21659,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -21739,23 +21750,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -21824,22 +21835,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -21864,6 +21859,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -21875,7 +21886,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -21904,6 +21914,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -21914,6 +21925,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -22004,23 +22016,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -22089,22 +22101,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22129,6 +22125,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22140,7 +22152,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -22169,6 +22180,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -22179,6 +22191,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -22269,23 +22282,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -22354,22 +22367,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22394,6 +22391,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22405,7 +22418,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -22434,6 +22446,7 @@
 	  "19de69cb601f53a4ea7af22a65c71ae63251365c": "Variable",
 	  "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483": "Functions",
 	  "66639f7d455dd71faa9147f5d69e5ce885d8bebd": "Binary",
+	  "b0811e470d6bf4c9665ed9f163c7fcb0644e38fe": "Trade",
 	  "753cb2a65ee92d0f86eba6da481d1f1ad1d933d8": "Trade Types",
 	  "f94510322ecd9b3a2af67a10bd51ecc4ac6a24e7": "Up/Down",
 	  "0186aa73a1b75fa8f0eb98bbd9ad01102bb09ec1": "Touch/No Touch",
@@ -22444,6 +22457,7 @@
 	  "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
 	  "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
 	  "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
+	  "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
 	  "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
 	  "d55369eede07dd2ab46a239e3c464ed09429a8a4": "Select a Tour",
 	  "e52e5e6cd50ef4de30d8a4fafbbfab41180cc200": "Welcome!",
@@ -22534,23 +22548,23 @@
 	  "897c7741dd9674730cb8304a4f5e241e4c40d6f5": "Expected tick, given:",
 	  "93576240acc9ffcd3e6a0aa259c7eb32f4c34c88": "must be a number, given:",
 	  "ccd81e42a5e36c2b44f7085b3d3997a4fa513a9e": "cannot be zero.",
+	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
+	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
 	  "629777b7d4d610ace6dee24442730f27d7d0853e": "File is not supported:",
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
-	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
-	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
-	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
-	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
 	  "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
 	  "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
 	  "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
 	  "fed3e7bd6696fb97a12d720845ab5388456bfc3b": "Prediction must be one digit",
+	  "9bec3db35af828e22b2b5e9702a359fa011b03e9": "Trade Type blocks have to be added to submarket blocks",
+	  "b3214afd299cfa3952efc8d8853c7b5a7f340405": "does not support category:",
+	  "4166e06fcdc703410a1edb28a7bcea9ed0a4bfdb": "Allowed categories are",
+	  "ab1e8d2323be79c5b0403065b088f428778c7605": "must be added inside the trade block",
 	  "762d334c830574af86dd1fc75ce6003b0e57548c": "Submarket blocks can only accept trade type blocks",
-	  "a8dc1b431f260fc1aed77d54595779c1b49c4f5b": "Submarket blocks have to be added to the trade block",
-	  "312677f238bced75f4a7998263a4cd831c007be9": "The trade block can only accept submarket blocks",
-	  "7386b7aecaf7dee307dffabf3024e6fea8b3e964": "The trade block cannot be inside binary blocks",
 	  "6e3674eaa8061ce7f428a6fa097209b1de96901d": "must be added to the condition block",
 	  "f561afb9f2cdb16af20dd7553a825e99f761d590": "must be added inside the strategy block",
 	  "61dd25992a554b74a613971ba52e49d66b2966ee": "must be added inside the during purchase block",
@@ -22619,22 +22633,6 @@
 	  "d645c153b95989901238e9e8b7f9bac49abd053d": "Returns the result of the finished contract",
 	  "b3b543c80063a116ced4965d8537b7b62d14c0b7": "Trade Again",
 	  "a1eeb7c1e92e9a5d9323ed8ebd7ca7ffed8b0232": "Runs the trade block again",
-	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
-	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
-	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
-	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
-	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
-	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
-	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
-	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
-	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
-	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
-	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
-	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
-	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
-	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
-	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
-	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "da3105e38c42a481ad7230ed393b0e12bebe9c4f": "Ask Price",
 	  "343fda69c73b78b84967055aae97f790c422adfd": "Ask Price for selected proposal",
 	  "e4bed3e67e58b2334ee4b9c6ce59ac7a95d80aaf": "Direction is",
@@ -22659,6 +22657,22 @@
 	  "ac53c550baa891c764bb707f3648d86ed115d009": "Returns the tick value received by a strategy block",
 	  "ebffc758056e6b2fc2af99af17fbc6853e5d3583": "Ticks List",
 	  "17649cac8739adcae95e641f794880272ad33bd1": "Returns the list of tick values",
+	  "ca5586bdb5bdc1a2c0baf53ed0ecd21fafabebe7": "Sell is available",
+	  "03bad10717e183b24829baf483dc715e1a44bf7b": "True if sell at market is available",
+	  "2721f74d9a7356adb7110cd220b7c2c7d26565dc": "(3) things to do when trade is in progress",
+	  "40c937036a5d3675969a56e8ecaebec4cb71c47c": "Sell at market before a trade is finished",
+	  "579607dc4f989ce2b94b558431666a0ab07ac1f3": "Sell at market",
+	  "e20afd5cf3811a42071c9a312abb2afdad4c590b": "Sell at market.",
+	  "4712cbff8e92822fc960ef9c0197293a19675eae": "Sell profit/loss",
+	  "df817b48c7a076561b4f8bedc52d65d2e351ab52": "Returns the profit for sell at market.",
+	  "802dc02469ae51067ca620ff57dfb5bdb3e524ac": "Balance:",
+	  "c4ee8e12b2484cd5b47cdf00bfa2c50b83e91d3d": "Get balance number or string",
+	  "6c03ee54ad3a51fc92a1d69943e99667847705b6": "Notify",
+	  "a2d0c89fdfff3176efd4a443eb0f6607067b93e7": "Creates notification",
+	  "45ebd38f4c641ebf6f72be8c3a79dfa50cf9f20e": "Total Profit",
+	  "ffb465875e1ff2b49bcaa7c6b70965ffe39fa59d": "Returns the total profit",
+	  "bc528d26f66fe8c4aa4bb24ec9c99dff12c055e0": "No. Of Runs",
+	  "bea5756b18644ccfab01c1c0dbd6fa9db7103379": "Returns the number of runs since the beginning",
 	  "c67ded6b64019212eb2bc69afd761f5b3f626040": "Add sign to a number to make a Barrier Offset.",
 	  "2faeb5c01923c3cb6c031146ea23fbf43d72b526": "Candle Interval:",
 	  "9693aeaaf68e3929b59b79306feaa0a847d01192": "Duration:",
@@ -22670,7 +22684,6 @@
 	  "ea1bbda9ce5f289cf710c4e41e2768dda649f03c": "(1) Define your contract here",
 	  "8b16483603e47f5538547508aa218d2f522aeed5": "Use this block to choose markets and trade types.",
 	  "eabf5342bcb460c4f8261faa18695d851712614a": "Please login.",
-	  "eb1b2e79531173699a9af8e770d43db39ae8dd0d": "You have to add a submarket first",
 	  "30de51af8df6b6a7f6b6d26a113fa5e2eea54415": "Accepts",
 	  "cc7695342b437bfe37baba92b657b8ad21b350d8": "Chooses the symbol:",
 	  "d8fa8d3722cb6f0f86bb21d732458c050087ac8a": "A trade type has to be defined for the symbol",
@@ -23865,7 +23878,14 @@
 	        reader.onload = function () {
 	          $('#fileBrowser').hide();
 	          return function (e) {
-	            return _this2.blockly.loadBlocks(e.target.result);
+	            var blockText = e.target.result;
+	            if (blockText.indexOf('<xml xmlns="http://www.w3.org/1999/xhtml">') >= 0) {
+	              _this2.blockly.loadWorkspace(blockText);
+	            } else if (blockText.indexOf('<block xmlns="http://www.w3.org/1999/xhtml"') >= 0) {
+	              _this2.blockly.loadBlock(blockText);
+	            } else {
+	              _observer.observer.emit('ui.log.error', _translator.translator.translateText('Unrecognized file format.'));
+	            }
 	          };
 	        }(f);
 	        reader.readAsText(f);
@@ -24002,7 +24022,7 @@
 	      });
 	
 	      $('#resetButton').click(function () {
-	        _this3.blockly.loadBlocks();
+	        _this3.blockly.loadWorkspace();
 	      });
 	
 	      $('#login').bind('click.login', function () {
@@ -45364,10 +45384,10 @@
 	h++;if(k>0){for(j=xt(O+M+k,g.plotHeight),D=bt(0,O-M-k);D<=j;D+=a)I.push(D);if(E=I.length,R>E){for(c=[].concat(z),c.sort(C),h=R;h--;)c[h].rank=h;for(h=R;h--;)z[h].rank>=E&&z.splice(h,1);R=z.length}for(h=0;h<R;h++){t=z[h],o=t.labelPos;var X,F,H=9999;for(F=0;F<E;F++)X=wt(I[F]-o[1]),X<H&&(H=X,L=F);if(L<h&&null!==I[h])L=h;else if(E<R-h+L&&null!==I[h])for(L=E-R+h;null===I[L];)L++;else for(;null===I[L];)L++;B.push({i:L,y:I[L]}),I[L]=null}B.sort(C)}for(h=0;h<R;h++){var W,G;t=z[h],o=t.labelPos,r=t.dataLabel,u=t.visible===!1?Ut:"inherit",G=o[1],k>0?(W=B.pop(),L=W.i,l=W.y,(G>l&&null!==I[L+1]||G<l&&null!==I[L-1])&&(l=xt(bt(0,G),g.plotHeight))):l=G,s=m.justify?P[0]+(d?-1:1)*(M+k):p.getX(l===O-M-k||l===O+M+k?G:l,d),r._attr={visibility:u,align:o[6]},r._pos={x:s+m.x+({left:v,right:-v}[o[6]]||0),y:l+m.y-10},r.connX=s,r.connY=l,null===this.options.size&&(i=r.width,s-i<v?T[3]=bt(mt(i-s+v),T[3]):s+i>b-v&&(T[1]=bt(mt(s+i-b+v),T[1])),l-a/2<0?T[0]=bt(mt(-l+a/2),T[0]):l+a/2>x&&(T[2]=bt(mt(l+a/2-x),T[2])))}}}(0===_(T)||this.verifyDataLabelOverflow(T))&&(this.placeDataLabels(),S&&y&&ue(this.points,function(t){e=t.connector,o=t.labelPos,r=t.dataLabel,r&&r._pos&&t.visible?(u=r._attr.visibility,s=r.connX,l=r.connY,n=w?[Jt,s+("left"===o[6]?5:-5),l,"C",s,l,2*o[2]-o[4],2*o[3]-o[5],o[2],o[3],Qt,o[4],o[5]]:[Jt,s+("left"===o[6]?5:-5),l,Qt,o[2],o[3],Qt,o[4],o[5]],e?(e.animate({d:n}),e.attr("visibility",u)):t.connector=e=p.chart.renderer.path(n).attr({"stroke-width":y,stroke:m.connectorColor||t.color||"#606060",visibility:u}).add(p.dataLabelsGroup)):e&&(t.connector=e.destroy())}))}},ae.pie.prototype.placeDataLabels=function(){ue(this.points,function(t){var e,n=t.dataLabel;n&&t.visible&&(e=n._pos,e?(n.attr(n._attr),n[n.moved?"animate":"attr"](e),n.moved=!0):n&&n.attr({y:-9999}))})},ae.pie.prototype.alignDataLabel=Xt,ae.pie.prototype.verifyDataLabelOverflow=function(t){var e,n=this.center,r=this.options,i=r.center,o=r.minSize||80,a=o;return null!==i[0]?a=bt(n[2]-bt(t[1],t[3]),o):(a=bt(n[2]-t[1]-t[3],o),n[0]+=(t[3]-t[1])/2),null!==i[1]?a=bt(xt(a,n[2]-bt(t[0],t[2])),o):(a=bt(xt(a,n[2]-t[0]-t[2]),o),n[1]+=(t[0]-t[2])/2),a<n[2]?(n[2]=a,n[3]=Math.min(m(r.innerSize||0,a),a),this.translate(n),this.drawDataLabels&&this.drawDataLabels()):e=!0,e}),ae.column&&(ae.column.prototype.alignDataLabel=function(t,e,n,i,o){var a,s=this.chart.inverted,l=t.series,u=t.dlBox||t.shapeArgs,c=ke(t.below,t.plotY>ke(this.translatedThreshold,l.yAxis.len)),d=ke(n.inside,!!this.options.stacking);u&&(i=r(u),i.y<0&&(i.height+=i.y,i.y=0),a=i.y+i.height-l.yAxis.len,a>0&&(i.height-=a),s&&(i={x:l.yAxis.len-i.y-i.height,y:l.xAxis.len-i.x-i.width,width:i.height,height:i.width}),d||(s?(i.x+=c?0:i.width,i.width=0):(i.y+=c?i.height:0,i.height=0))),n.align=ke(n.align,!s||d?"center":c?"right":"left"),n.verticalAlign=ke(n.verticalAlign,s||d?"middle":c?"top":"bottom"),Ye.prototype.alignDataLabel.call(this,t,e,n,i,o)}),function(t){var e=t.Chart,n=t.each,r=t.pick,i=t.addEvent;e.prototype.callbacks.push(function(t){function e(){var e=[];n(t.series,function(t){var i=t.options.dataLabels,o=t.dataLabelCollections||["dataLabel"];(i.enabled||t._hasPointLabels)&&!i.allowOverlap&&t.visible&&n(o,function(i){n(t.points,function(t){t[i]&&(t[i].labelrank=r(t.labelrank,t.shapeArgs&&t.shapeArgs.height),e.push(t[i]))})})}),t.hideOverlappingLabels(e)}e(),i(t,"redraw",e)}),e.prototype.hideOverlappingLabels=function(t){var e,r,i,o,a,s,l,u,c,d,h,p=t.length,f=function(t,e,n,r,i,o,a,s){return!(i>t+n||i+a<t||o>e+r||o+s<e)};for(r=0;r<p;r++)e=t[r],e&&(e.oldOpacity=e.opacity,e.newOpacity=1);for(t.sort(function(t,e){return(e.labelrank||0)-(t.labelrank||0)}),r=0;r<p;r++)for(o=t[r],i=r+1;i<p;++i)a=t[i],o&&a&&o.placed&&a.placed&&0!==o.newOpacity&&0!==a.newOpacity&&(l=o.alignAttr,u=a.alignAttr,c=o.parentGroup,d=a.parentGroup,h=2*(o.box?0:o.padding),s=f(l.x+c.translateX,l.y+c.translateY,o.width-h,o.height-h,u.x+d.translateX,u.y+d.translateY,a.width-h,a.height-h),s&&((o.labelrank<a.labelrank?o:a).newOpacity=0));n(t,function(t){var e,n;t&&(n=t.newOpacity,t.oldOpacity!==n&&t.placed&&(n?t.show(!0):e=function(){t.hide()},t.alignAttr.opacity=n,t[t.isOld?"animate":"attr"](t.alignAttr,null,e)),t.isOld=!0)})}}(pt);var nn=pt.TrackerMixin={drawTrackerPoint:function(){var t=this,e=t.chart,n=e.pointer,r=t.options.cursor,i=r&&{cursor:r},o=function(t){for(var n,r=t.target;r&&!n;)n=r.point,r=r.parentNode;n!==H&&n!==e.hoverPoint&&n.onMouseOver(t)};ue(t.points,function(t){t.graphic&&(t.graphic.element.point=t),t.dataLabel&&(t.dataLabel.element.point=t)}),t._hasTracking||(ue(t.trackerGroups,function(e){t[e]&&(t[e].addClass(qt+"tracker").on("mouseover",o).on("mouseout",function(t){n.onTrackerMouseOut(t)}).css(i),G&&t[e].on("touchstart",o))}),t._hasTracking=!0)},drawTrackerGraph:function(){var t,e=this,n=e.options,r=n.trackByArea,i=[].concat(r?e.areaPath:e.graphPath),o=i.length,a=e.chart,s=a.pointer,l=a.renderer,u=a.options.tooltip.snap,c=e.tracker,d=n.cursor,h=d&&{cursor:d},p=function(){a.hoverSeries!==e&&e.onMouseOver()},f="rgba(192,192,192,"+(Lt?1e-4:.002)+")";if(o&&!r)for(t=o+1;t--;)i[t]===Jt&&i.splice(t+1,0,i[t+1]-u,i[t+2],Qt),(t&&i[t]===Jt||t===o)&&i.splice(t,0,Qt,i[t-2]+u,i[t-1]);c?c.attr({d:i}):(e.tracker=l.path(i).attr({"stroke-linejoin":"round",visibility:e.visible?Zt:Ut,stroke:f,fill:r?f:$t,"stroke-width":n.lineWidth+(r?0:2*u),zIndex:2}).add(e.group),ue([e.tracker,e.markerGroup],function(t){t.addClass(qt+"tracker").on("mouseover",p).on("mouseout",function(t){s.onTrackerMouseOut(t)}).css(h),G&&t.on("touchstart",p)}))}};ae.column&&($e.prototype.drawTracker=nn.drawTrackerPoint),ae.pie&&(ae.pie.prototype.drawTracker=nn.drawTrackerPoint),ae.scatter&&(Qe.prototype.drawTracker=nn.drawTrackerPoint),be(Fe.prototype,{setItemEvents:function(t,e,n,r,i){var o=this;(n?e:t.legendGroup).on("mouseover",function(){t.setState(ne),e.css(o.options.itemHoverStyle)}).on("mouseout",function(){e.css(t.visible?r:i),t.setState()}).on("click",function(e){var n="legendItemClick",r=function(){t.setVisible&&t.setVisible()};e={browserEvent:e},t.firePointEvent?t.firePointEvent(n,e,r):ge(t,n,e,r)})},createCheckboxForItem:function(t){var e=this;t.checkbox=p("input",{type:"checkbox",checked:t.selected,defaultChecked:t.selected},e.options.itemCheckboxStyle,e.chart.container),pe(t.checkbox,"click",function(e){var n=e.target;ge(t.series||t,"checkboxClick",{checked:n.checked,item:t},function(){t.select()})})}}),Y.legend.itemStyle.cursor="pointer",be(We.prototype,{showResetZoom:function(){function t(){e.zoomOut()}var e=this,n=Y.lang,r=e.options.chart.resetZoomButton,i=r.theme,o=i.states,a="chart"===r.relativeTo?null:"plotBox";this.resetZoomButton=e.renderer.button(n.resetZoom,null,null,t,i,o&&o.hover).attr({align:r.position.align,title:n.resetZoomTitle}).add().align(r.position,!1,a)},zoomOut:function(){var t=this;ge(t,"selection",{resetSelection:!0},function(){t.zoom()})},zoom:function(t){var e,n,r=this,i=r.pointer,o=!1;!t||t.resetSelection?ue(r.axes,function(t){e=t.zoom()}):ue(t.xAxis.concat(t.yAxis),function(t){var n=t.axis,r=n.isXAxis;(i[r?"zoomX":"zoomY"]||i[r?"pinchX":"pinchY"])&&(e=n.zoom(t.min,t.max),n.displayBtn&&(o=!0))}),n=r.resetZoomButton,o&&!n?r.showResetZoom():!o&&xe(n)&&(r.resetZoomButton=n.destroy()),e&&r.redraw(ke(r.options.chart.animation,t&&t.animation,r.pointCount<100))},pan:function(t,e){var n,r=this,i=r.hoverPoints;i&&ue(i,function(t){t.setState()}),ue("xy"===e?[1,0]:[1],function(e){var i=r[e?"xAxis":"yAxis"][0],o=i.horiz,a=t[o?"chartX":"chartY"],s=o?"mouseDownX":"mouseDownY",l=r[s],u=(i.pointRange||0)/2,c=i.getExtremes(),d=i.toValue(l-a,!0)+u,h=i.toValue(l+i.len-a,!0)-u,p=l>a;i.series.length&&(p||d>xt(c.dataMin,c.min))&&(!p||h<bt(c.dataMax,c.max))&&(i.setExtremes(d,h,!1,!1,{trigger:"pan"}),n=!0),r[s]=a}),n&&r.redraw(!1),h(r.container,{cursor:"move"})}}),be(Ne.prototype,{select:function(t,e){var n=this,r=n.series,i=r.chart;t=ke(t,!n.selected),n.firePointEvent(t?"select":"unselect",{accumulate:e},function(){n.selected=n.options.selected=t,r.options.data[le(n,r.data)]=n.options,n.setState(t&&re),e||ue(i.getSelectedPoints(),function(t){t.selected&&t!==n&&(t.selected=t.options.selected=!1,r.options.data[le(t,r.data)]=t.options,t.setState(ee),t.firePointEvent("unselect"))})})},onMouseOver:function(t,e){var n=this,r=n.series,i=r.chart,o=i.tooltip,a=i.hoverPoint;i.hoverSeries!==r&&r.onMouseOver(),a&&a!==n&&a.onMouseOut(),n.series&&(n.firePointEvent("mouseOver"),!o||o.shared&&!r.noSharedTooltip||o.refresh(n,t),n.setState(ne),e||(i.hoverPoint=n))},onMouseOut:function(){var t=this.series.chart,e=t.hoverPoints;this.firePointEvent("mouseOut"),e&&le(this,e)!==-1||(this.setState(),t.hoverPoint=null)},importEvents:function(){if(!this.hasImportedEvents){var t,e=this,n=r(e.series.options.point,e.options),i=n.events;e.events=i;for(t in i)pe(e,t,i[t]);this.hasImportedEvents=!0}},setState:function(t,e){var n,i,o,a,s=this,l=vt(s.plotX),u=s.plotY,c=s.series,d=c.options.states,h=_e[c.type].marker&&c.options.marker,p=h&&!h.enabled,f=h&&h.states[t],g=f&&f.enabled===!1,m=c.stateMarkerGraphic,v=s.marker||{},y=c.chart,b=c.halo;t=t||ee,a=s.pointAttr[t]||c.pointAttr[t],t===s.state&&!e||s.selected&&t!==re||d[t]&&d[t].enabled===!1||t&&(g||p&&f.enabled===!1)||t&&v.states&&v.states[t]&&v.states[t].enabled===!1||(s.graphic?(n=h&&s.graphic.symbolName&&a.r,s.graphic.attr(r(a,n?{x:l-n,y:u-n,width:2*n,height:2*n}:{})),m&&m.hide()):(t&&f&&(n=f.radius,o=v.symbol||c.symbol,m&&m.currentSymbol!==o&&(m=m.destroy()),m?m[e?"animate":"attr"]({x:l-n,y:u-n}):o&&(c.stateMarkerGraphic=m=y.renderer.symbol(o,l-n,u-n,2*n,2*n).attr(a).add(c.markerGroup),m.currentSymbol=o)),m&&(m[t&&y.isInsidePlot(l,u,y.inverted)?"show":"hide"](),m.element.point=s)),i=d[t]&&d[t].halo,i&&i.size?(b||(c.halo=b=y.renderer.path().add(y.seriesGroup)),b.attr(be({fill:s.color||c.color,"fill-opacity":i.opacity,zIndex:-1},i.attributes))[e?"animate":"attr"]({d:s.haloPath(i.size)})):b&&b.attr({d:[]}),s.state=t)},haloPath:function(t){var e=this.series,n=e.chart,r=e.getPlotBox(),i=n.inverted,o=Math.floor(this.plotX);return n.renderer.symbols.circle(r.translateX+(i?e.yAxis.len-this.plotY:o)-t,r.translateY+(i?e.xAxis.len-o:this.plotY)-t,2*t,2*t)}}),be(Ye.prototype,{onMouseOver:function(){var t=this,e=t.chart,n=e.hoverSeries;n&&n!==t&&n.onMouseOut(),t.options.events.mouseOver&&ge(t,"mouseOver"),t.setState(ne),e.hoverSeries=t},onMouseOut:function(){var t=this,e=t.options,n=t.chart,r=n.tooltip,i=n.hoverPoint;n.hoverSeries=null,i&&i.onMouseOut(),t&&e.events.mouseOut&&ge(t,"mouseOut"),!r||e.stickyTracking||r.shared&&!t.noSharedTooltip||r.hide(),t.setState()},setState:function(t){var e,n=this,r=n.options,i=n.graph,o=r.states,a=r.lineWidth,s=0;if(t=t||ee,n.state!==t){if(n.state=t,o[t]&&o[t].enabled===!1)return;if(t&&(a=o[t].lineWidth||a+(o[t].lineWidthPlus||0)),i&&!i.dashstyle)for(e={"stroke-width":a},i.attr(e);n["zoneGraph"+s];)n["zoneGraph"+s].attr(e),s+=1}},setVisible:function(t,e){var n,r=this,i=r.chart,o=r.legendItem,a=i.options.chart.ignoreHiddenSeries,s=r.visible;r.visible=t=r.options.visible=r.userOptions.visible=void 0===t?!s:t,n=t?"show":"hide",ue(["group","dataLabelsGroup","markerGroup","tracker"],function(t){r[t]&&r[t][n]()}),i.hoverSeries!==r&&(i.hoverPoint&&i.hoverPoint.series)!==r||r.onMouseOut(),o&&i.legend.colorizeItem(r,t),r.isDirty=!0,r.options.stacking&&ue(i.series,function(t){t.options.stacking&&t.visible&&(t.isDirty=!0)}),ue(r.linkedSeries,function(e){e.setVisible(t,!1)}),a&&(i.isDirtyBox=!0),e!==!1&&i.redraw(),ge(r,n)},show:function(){this.setVisible(!0)},hide:function(){this.setVisible(!1)},select:function(t){var e=this;e.selected=t=t===H?!e.selected:t,e.checkbox&&(e.checkbox.checked=t),ge(e,t?"select":"unselect")},drawTracker:nn.drawTrackerGraph}),Pe(Ye.prototype,"init",function(t){var e,n=this;t.apply(this,Array.prototype.slice.call(arguments,1)),e=n.xAxis,e&&e.options.ordinal&&pe(n,"updatedData",function(){delete e.ordinalIndex})}),Pe(De.prototype,"getTimeTicks",function(t,e,n,r,i,o,a,s){var u,c,d,h,p,f,g=0,m={},v=[],y=-Number.MAX_VALUE,b=this.options.tickPixelInterval;if(!this.options.ordinal&&!this.options.breaks||!o||o.length<3||n===H)return t.call(this,e,n,r,i);for(p=o.length,u=0;u<p;u++){if(f=u&&o[u-1]>r,o[u]<n&&(g=u),u===p-1||o[u+1]-o[u]>5*a||f){if(o[u]>y){for(c=t.call(this,e,o[g],o[u],i);c.length&&c[0]<=y;)c.shift();c.length&&(y=c[c.length-1]),v=v.concat(c)}g=u+1}if(f)break}if(h=c.info,s&&h.unitRange<=q.hour){for(u=v.length-1,g=1;g<u;g++)V("%d",v[g])!==V("%d",v[g-1])&&(m[v[g]]="day",d=!0);d&&(m[v[0]]="day"),h.higherRanks=m}if(v.info=h,s&&l(b)){for(var x,w,k,P,_,M=v.length,O=M,S=[],A=[];O--;)w=this.translate(v[O]),k&&(A[O]=k-w),S[O]=k=w;for(A.sort(),P=A[vt(A.length/2)],P<.6*b&&(P=null),O=v[M-1]>r?M-1:M,k=void 0;O--;)w=S[O],_=k-w,k&&_<.8*b&&(null===P||_<.8*P)?(m[v[O]]&&!m[v[O+1]]?(x=O+1,k=w):x=O,v.splice(x,1)):k=w}return v}),be(De.prototype,{beforeSetTickPositions:function(){var t,e,n,r,i,o,a=this,s=[],l=!1,u=a.getExtremes(),c=u.min,d=u.max,h=a.isXAxis&&!!a.options.breaks,p=a.options.ordinal,f=a.chart.options.chart.ignoreHiddenSeries;if(p||h){if(ue(a.series,function(e,n){if((!f||e.visible!==!1)&&(e.takeOrdinalPosition!==!1||h)&&(s=s.concat(e.processedXData),t=s.length,s.sort(function(t,e){return t-e}),t))for(n=t-1;n--;)s[n]===s[n+1]&&s.splice(n,1)}),t=s.length,t>2){for(e=s[1]-s[0],o=t-1;o--&&!l;)s[o+1]-s[o]!==e&&(l=!0);!a.options.keepOrdinalPadding&&(s[0]-c>e||d-s[s.length-1]>e)&&(l=!0)}l?(a.ordinalPositions=s,n=a.val2lin(bt(c,s[0]),!0),r=bt(a.val2lin(xt(d,s[s.length-1]),!0),1),a.ordinalSlope=i=(d-c)/(r-n),a.ordinalOffset=c-n*i):a.ordinalPositions=a.ordinalSlope=a.ordinalOffset=H}a.isOrdinal=p&&l,a.groupIntervalFactor=null},val2lin:function(t,e){var n,r=this,i=r.ordinalPositions;if(i){var o,a,s,l=i.length;for(o=l;o--;)if(i[o]===t){s=o;break}for(o=l-1;o--;)if(t>i[o]||0===o){a=(t-i[o])/(i[o+1]-i[o]),s=o+a;break}n=e?s:r.ordinalSlope*(s||0)+r.ordinalOffset}else n=t;return n},lin2val:function(t,e){var n,r=this,i=r.ordinalPositions;if(i){var o,a,s,l=r.ordinalSlope,u=r.ordinalOffset,c=i.length-1;if(e)t<0?t=i[0]:t>c?t=i[c]:(c=vt(t),s=t-c);else for(;c--;)if(o=l*c+u,t>=o){a=l*(c+1)+u,s=(t-o)/(a-o);break}n=s!==H&&i[c]!==H?i[c]+(s?s*(i[c+1]-i[c]):0):t}else n=t;return n},getExtendedPositions:function(){var t,e,n=this,r=n.chart,i=n.series[0].currentDataGrouping,o=n.ordinalIndex,a=i?i.count+i.unitName:"raw",s=n.getExtremes();return o||(o=n.ordinalIndex={}),o[a]||(t={series:[],chart:r,getExtremes:function(){return{min:s.dataMin,max:s.dataMax}},options:{ordinal:!0},val2lin:De.prototype.val2lin},ue(n.series,function(n){e={xAxis:t,xData:n.xData,chart:r,destroyGroupedData:Xt},e.options={dataGrouping:i?{enabled:!0,forced:!0,approximation:"open",units:[[i.unitName,[i.count]]]}:{enabled:!1}},n.processData.apply(e),t.series.push(e)}),n.beforeSetTickPositions.apply(t),o[a]=t.ordinalPositions),o[a]},getGroupIntervalFactor:function(t,e,n){var r,i,o=n.processedXData,a=o.length,s=[],l=this.groupIntervalFactor;if(!l){for(r=0;r<a-1;r++)s[r]=o[r+1]-o[r];s.sort(function(t,e){return t-e}),i=s[vt(a/2)],t=bt(t,o[0]),e=xt(e,o[a-1]),this.groupIntervalFactor=l=a*i/(e-t)}return l},postProcessTickInterval:function(t){var e,n=this.ordinalSlope;return e=n?this.options.breaks?this.closestPointRange:t/(n/this.closestPointRange):t}}),Pe(We.prototype,"pan",function(t,e){var n=this,r=n.xAxis[0],i=e.chartX,o=!1;if(r.options.ordinal&&r.series.length){var a,s,l,u,c=n.mouseDownX,d=r.getExtremes(),p=d.dataMax,f=d.min,g=d.max,m=n.hoverPoints,v=r.closestPointRange,y=r.translationSlope*(r.ordinalSlope||v),b=(c-i)/y,x={ordinalPositions:r.getExtendedPositions()},w=r.lin2val,k=r.val2lin;x.ordinalPositions?wt(b)>1&&(m&&ue(m,function(t){t.setState()}),b<0?(l=x,u=r.ordinalPositions?r:x):(l=r.ordinalPositions?r:x,u=x),s=u.ordinalPositions,p>s[s.length-1]&&s.push(p),n.fixedRange=g-f,a=r.toFixedRange(null,null,w.apply(l,[k.apply(l,[f,!0])+b,!0]),w.apply(u,[k.apply(u,[g,!0])+b,!0])),a.min>=xt(d.dataMin,f)&&a.max<=bt(p,g)&&r.setExtremes(a.min,a.max,!0,!1,{trigger:"pan"}),n.mouseDownX=i,h(n.container,{cursor:"move"})):o=!0}else o=!0;o&&t.apply(this,Array.prototype.slice.call(arguments,1))}),Ye.prototype.gappedPath=function(){var t=this.options.gapSize,e=this.points.slice(),n=e.length-1;if(t&&n>0)for(;n--;)e[n+1].x-e[n].x>this.closestPointRange*t&&e.splice(n+1,0,{isNull:!0});return this.getGraphPath(e)},function(t){t(pt)}(function(t){"use strict";function e(){return Array.prototype.slice.call(arguments,1)}function n(t){t.apply(this),this.drawBreaks(this.xAxis,["x"]),this.drawBreaks(this.yAxis,r(this.pointArrayMap,["y"]))}var r=t.pick,i=t.wrap,o=t.each,a=t.extend,s=t.fireEvent,l=t.Axis,u=t.Series;a(l.prototype,{isInBreak:function(t,e){var n,r=t.repeat||1/0,i=t.from,o=t.to-t.from,a=e>=i?(e-i)%r:r-(i-e)%r;return n=t.inclusive?a<=o:a<o&&0!==a},isInAnyBreak:function(t,e){var n,i,o,a=this.options.breaks,s=a&&a.length;if(s){for(;s--;)this.isInBreak(a[s],t)&&(n=!0,i||(i=r(a[s].showPoints,!this.isXAxis)));o=n&&e?n&&!i:n}return o}}),i(l.prototype,"setTickPositions",function(t){if(t.apply(this,Array.prototype.slice.call(arguments,1)),this.options.breaks){var e,n=this,r=this.tickPositions,i=this.tickPositions.info,o=[];for(e=0;e<r.length;e++)n.isInAnyBreak(r[e])||o.push(r[e]);this.tickPositions=o,this.tickPositions.info=i}}),i(l.prototype,"init",function(t,e,n){if(n.breaks&&n.breaks.length&&(n.ordinal=!1),t.call(this,e,n),this.options.breaks){var r=this;r.isBroken=!0,this.val2lin=function(t){var e,n,i=t;for(n=0;n<r.breakArray.length;n++)if(e=r.breakArray[n],e.to<=t)i-=e.len;else{if(e.from>=t)break;if(r.isInBreak(e,t)){i-=t-e.from;break}}return i},this.lin2val=function(t){var e,n,i=t;for(n=0;n<r.breakArray.length&&(e=r.breakArray[n],!(e.from>=i));n++)e.to<i?i+=e.len:r.isInBreak(e,i)&&(i+=e.len);return i},this.setExtremes=function(t,e,n,r,i){for(;this.isInAnyBreak(t);)t-=this.closestPointRange;for(;this.isInAnyBreak(e);)e-=this.closestPointRange;l.prototype.setExtremes.call(this,t,e,n,r,i)},this.setAxisTranslation=function(t){l.prototype.setAxisTranslation.call(this,t);var e,n,i,o,a,u,c=r.options.breaks,d=[],h=[],p=0,f=r.userMin||r.min,g=r.userMax||r.max;for(a in c)i=c[a],n=i.repeat||1/0,r.isInBreak(i,f)&&(f+=i.to%n-f%n),r.isInBreak(i,g)&&(g-=g%n-i.from%n);for(a in c){for(i=c[a],o=i.from,n=i.repeat||1/0;o-n>f;)o-=n;for(;o<f;)o+=n;for(u=o;u<g;u+=n)d.push({value:u,move:"in"}),d.push({value:u+(i.to-i.from),move:"out",size:i.breakSize})}d.sort(function(t,e){var n;return n=t.value===e.value?("in"===t.move?0:1)-("in"===e.move?0:1):t.value-e.value}),e=0,o=f;for(a in d)i=d[a],e+="in"===i.move?1:-1,1===e&&"in"===i.move&&(o=i.value),0===e&&(h.push({from:o,to:i.value,len:i.value-o-(i.size||0)}),p+=i.value-o-(i.size||0));r.breakArray=h,s(r,"afterBreaks"),r.transA*=(g-r.min)/(g-f-p),r.min=f,r.max=g}}}),i(u.prototype,"generatePoints",function(t){t.apply(this,e(arguments));var n,r,i=this,o=i.xAxis,a=i.yAxis,s=i.points,l=s.length,u=i.options.connectNulls;if(o&&a&&(o.options.breaks||a.options.breaks))for(;l--;)n=s[l],r=null===n.y&&u===!1,r||!o.isInAnyBreak(n.x,!0)&&!a.isInAnyBreak(n.y,!0)||(s.splice(l,1),this.data[l]&&this.data[l].destroyElements())}),t.Series.prototype.drawBreaks=function(t,e){var n,i,a,l,u=this,c=u.points;o(e,function(e){n=t.breakArray||[],i=t.isXAxis?t.min:r(u.options.threshold,t.min),o(c,function(u){l=r(u["stack"+e.toUpperCase()],u[e]),o(n,function(e){a=!1,i<e.from&&l>e.to||i>e.from&&l<e.from?a="pointBreak":(i<e.from&&l>e.from&&l<e.to||i>e.from&&l>e.to&&l<e.from)&&(a="pointInBreak"),a&&s(t,a,{point:u,brk:e})})})})},i(t.seriesTypes.column.prototype,"drawPoints",n),i(t.Series.prototype,"drawPoints",n)});var rn="dataGrouping",on=Ye.prototype,an=on.processData,sn=on.generatePoints,ln=on.destroy,un={approximation:"average",groupPixelWidth:2,dateTimeLabelFormats:{millisecond:["%A, %b %e, %H:%M:%S.%L","%A, %b %e, %H:%M:%S.%L","-%H:%M:%S.%L"],second:["%A, %b %e, %H:%M:%S","%A, %b %e, %H:%M:%S","-%H:%M:%S"],minute:["%A, %b %e, %H:%M","%A, %b %e, %H:%M","-%H:%M"],hour:["%A, %b %e, %H:%M","%A, %b %e, %H:%M","-%H:%M"],day:["%A, %b %e, %Y","%A, %b %e","-%A, %b %e, %Y"],week:["Week from %A, %b %e, %Y","%A, %b %e","-%A, %b %e, %Y"],month:["%B %Y","%B","-%B %Y"],year:["%Y","%Y","-%Y"]}},cn={line:{},spline:{},area:{},areaspline:{},column:{approximation:"sum",groupPixelWidth:10},arearange:{approximation:"range"},areasplinerange:{approximation:"range"},columnrange:{approximation:"range",groupPixelWidth:10},candlestick:{approximation:"ohlc",groupPixelWidth:10},ohlc:{approximation:"ohlc",groupPixelWidth:5}},dn=[["millisecond",[1,2,5,10,20,25,50,100,200,500]],["second",[1,2,5,10,15,30]],["minute",[1,2,5,10,15,30]],["hour",[1,2,3,4,6,8,12]],["day",[1]],["week",[1]],["month",[1,3,6]],["year",null]],hn={sum:function(t){var e,n=t.length;if(!n&&t.hasNulls)e=null;else if(n)for(e=0;n--;)e+=t[n];return e},average:function(t){var e=t.length,n=hn.sum(t);return we(n)&&e&&(n/=e),n},open:function(t){return t.length?t[0]:t.hasNulls?null:H},high:function(t){return t.length?_(t):t.hasNulls?null:H},low:function(t){return t.length?P(t):t.hasNulls?null:H},close:function(t){return t.length?t[t.length-1]:t.hasNulls?null:H},ohlc:function(t,e,n,r){if(t=hn.open(t),e=hn.high(e),n=hn.low(n),r=hn.close(r),we(t)||we(e)||we(n)||we(r))return[t,e,n,r]},range:function(t,e){if(t=hn.low(t),e=hn.high(e),we(t)||we(e))return[t,e]}};on.groupData=function(t,e,n,r){var i,o,a,s,l=this,u=l.data,c=l.options.data,d=[],h=[],p=[],f=t.length,g=!!e,m=[[],[],[],[]],v="function"==typeof r?r:hn[r],y=l.pointArrayMap,b=y&&y.length,x=0,w=0;for(s=0;s<=f&&!(t[s]>=n[0]);s++);for(s;s<=f;s++){for(;(void 0!==n[x+1]&&t[s]>=n[x+1]||s===f)&&(i=n[x],l.dataGroupInfo={start:w,length:m[0].length},a=v.apply(l,m),a!==H&&(d.push(i),h.push(a),p.push(l.dataGroupInfo)),w=s,m[0]=[],m[1]=[],m[2]=[],m[3]=[],x+=1,s!==f););if(s===f)break;if(y){var k,P,_=l.cropStart+s,M=u&&u[_]||l.pointClass.prototype.applyOptions.apply({series:l},[c[_]]);for(k=0;k<b;k++)P=M[y[k]],we(P)?m[k].push(P):null===P&&(m[k].hasNulls=!0)}else o=g?e[s]:null,we(o)?m[0].push(o):null===o&&(m[0].hasNulls=!0)}return[d,h,p]},on.processData=function(){var t,e,n=this,r=n.chart,i=n.options,o=i[rn],a=n.allowDG!==!1&&o&&ke(o.enabled,r.options._stock);if(n.forceCrop=a,n.groupPixelWidth=null,n.hasProcessed=!0,e=an.apply(n,arguments)===!1||!a||!n.visible,!e){n.destroyGroupedData();var s,u=n.processedXData,c=n.processedYData,d=r.plotSizeX,h=n.xAxis,p=h.options.ordinal,f=n.groupPixelWidth=h.getGroupPixelWidth&&h.getGroupPixelWidth();if(f){t=!0,n.isDirty=!0;var g=h.getExtremes(),m=g.min,v=g.max,y=p&&h.getGroupIntervalFactor(m,v,n)||1,b=f*(v-m)/d*y,x=h.getTimeTicks(h.normalizeTimeTickInterval(b,o.units||dn),Math.min(m,u[0]),Math.max(v,u[u.length-1]),h.options.startOfWeek,u,n.closestPointRange),w=on.groupData.apply(n,[u,c,x,o.approximation]),k=w[0],P=w[1];if(o.smoothed){for(s=k.length-1,k[s]=Math.min(k[s],v);s--&&s>0;)k[s]+=b/2;k[0]=Math.max(k[0],m)}n.currentDataGrouping=x.info,n.closestPointRange=x.info.totalRange,n.groupMap=w[2],l(k[0])&&k[0]<h.dataMin&&(h.min===h.dataMin&&(h.min=k[0]),h.dataMin=k[0]),n.processedXData=k,n.processedYData=P}else n.currentDataGrouping=n.groupMap=null;n.hasGroupedData=t}},on.destroyGroupedData=function(){var t=this.groupedData;ue(t||[],function(e,n){e&&(t[n]=e.destroy?e.destroy():null)}),this.groupedData=null},on.generatePoints=function(){sn.apply(this),this.destroyGroupedData(),this.groupedData=this.hasGroupedData?this.points:null},Pe(Ne.prototype,"update",function(t){this.dataGroup?e(24):t.apply(this,[].slice.call(arguments,1))}),Pe(je.prototype,"tooltipFooterHeaderFormatter",function(t,e,n){var r,i,o,a,s,l=this,u=e.series,c=u.options,d=u.tooltipOptions,h=c.dataGrouping,p=d.xDateFormat,f=u.xAxis;return f&&"datetime"===f.options.type&&h&&we(e.key)?(i=u.currentDataGrouping,o=h.dateTimeLabelFormats,i?(a=o[i.unitName],1===i.count?p=a[0]:(p=a[1],r=a[2])):!p&&o&&(p=l.getXDateFormat(e,d,f)),s=V(p,e.key),r&&(s+=V(r,e.key+i.totalRange-1)),b(d[(n?"footer":"header")+"Format"],{point:be(e.point,{key:s}),series:u})):t.call(l,e,n)}),on.destroy=function(){for(var t=this,e=t.groupedData||[],n=e.length;n--;)e[n]&&e[n].destroy();ln.apply(t)},Pe(on,"setOptions",function(t,e){var n=t.call(this,e),i=this.type,o=this.chart.options.plotOptions,a=_e[i].dataGrouping;return cn[i]&&(a||(a=r(un,cn[i])),n.dataGrouping=r(a,o.series&&o.series.dataGrouping,o[i].dataGrouping,e.dataGrouping)),this.chart.options._stock&&(this.requireSorting=!0),n}),Pe(De.prototype,"setScale",function(t){t.call(this),ue(this.series,function(t){t.hasProcessed=!1})}),De.prototype.getGroupPixelWidth=function(){var t,e,n,r=this.series,i=r.length,o=0,a=!1;for(t=i;t--;)n=r[t].options.dataGrouping,n&&(o=bt(o,n.groupPixelWidth));for(t=i;t--;)n=r[t].options.dataGrouping,n&&r[t].hasProcessed&&(e=(r[t].processedXData||r[t].data).length,(r[t].groupPixelWidth||e>this.chart.plotSizeX/o||e&&n.forced)&&(a=!0));return a?o:0},De.prototype.setDataGrouping=function(t,e){var n;if(e=ke(e,!0),t||(t={forced:!1,units:null}),this instanceof De)for(n=this.series.length;n--;)this.series[n].update({dataGrouping:t},!1);else ue(this.chart.options.series,function(e){e.dataGrouping=t},!1);e&&this.chart.redraw()},_e.ohlc=r(_e.column,{lineWidth:1,tooltip:{pointFormat:'<span style="color:{point.color}">●</span> <b> {series.name}</b><br/>Open: {point.open}<br/>High: {point.high}<br/>Low: {point.low}<br/>Close: {point.close}<br/>'},states:{hover:{lineWidth:3}},threshold:null});var pn=f(ae.column,{type:"ohlc",pointArrayMap:["open","high","low","close"],toYData:function(t){return[t.open,t.high,t.low,t.close]},pointValKey:"high",pointAttrToOptions:{stroke:"color","stroke-width":"lineWidth"},upColorProp:"stroke",getAttribs:function(){ae.column.prototype.getAttribs.apply(this,arguments);var t=this,e=t.options,n=e.states,i=e.upColor||t.color,o=r(t.pointAttr),a=t.upColorProp;o[""][a]=i,o.hover[a]=n.hover.upColor||i,o.select[a]=n.select.upColor||i,ue(t.points,function(t){t.open<t.close&&!t.options.color&&(t.pointAttr=o)})},translate:function(){var t=this,e=t.yAxis,n=!!t.modifyValue,r=["plotOpen","yBottom","plotClose"];ae.column.prototype.translate.apply(t),ue(t.points,function(i){ue([i.open,i.low,i.close],function(o,a){null!==o&&(n&&(o=t.modifyValue(o)),i[r[a]]=e.toPixels(o,!0))})})},drawPoints:function(){var t,e,n,r,i,o,a,s,l=this,u=l.points,c=l.chart;ue(u,function(u){u.plotY!==H&&(a=u.graphic,t=u.pointAttr[u.selected?"selected":""]||l.pointAttr[ee],r=t["stroke-width"]%2/2,s=mt(u.plotX)-r,i=mt(u.shapeArgs.width/2),o=["M",s,mt(u.yBottom),"L",s,mt(u.plotY)],null!==u.open&&(e=mt(u.plotOpen)+r,o.push("M",s,e,"L",s-i,e)),null!==u.close&&(n=mt(u.plotClose)+r,o.push("M",s,n,"L",s+i,n)),a?a.attr(t).animate({d:o}):u.graphic=c.renderer.path(o).attr(t).add(l.group))})},animate:null});ae.ohlc=pn,_e.candlestick=r(_e.column,{lineColor:"black",lineWidth:1,states:{hover:{lineWidth:2}},tooltip:_e.ohlc.tooltip,threshold:null,upColor:"white"});var fn=f(pn,{type:"candlestick",pointAttrToOptions:{fill:"color",stroke:"lineColor","stroke-width":"lineWidth"},upColorProp:"fill",getAttribs:function(){ae.ohlc.prototype.getAttribs.apply(this,arguments);var t=this,e=t.options,n=e.states,i=e.upLineColor||e.lineColor,o=n.hover.upLineColor||i,a=n.select.upLineColor||i;ue(t.points,function(t){t.open<t.close&&(t.lineColor&&(t.pointAttr=r(t.pointAttr),i=t.lineColor),t.pointAttr[""].stroke=i,t.pointAttr.hover.stroke=o,t.pointAttr.select.stroke=a)})},drawPoints:function(){var t,e,n,r,i,o,a,s,l,u,c,d,h=this,p=h.points,f=h.chart,g=h.pointAttr[""];ue(p,function(p){u=p.graphic,p.plotY!==H&&(t=p.pointAttr[p.selected?"selected":""]||g,s=t["stroke-width"]%2/2,l=mt(p.plotX)-s,e=p.plotOpen,n=p.plotClose,r=gt.min(e,n),i=gt.max(e,n),d=mt(p.shapeArgs.width/2),o=mt(r)!==mt(p.plotY),a=i!==p.yBottom,r=mt(r)+s,i=mt(i)+s,c=[],c.push("M",l-d,i,"L",l-d,r,"L",l+d,r,"L",l+d,i,"Z","M",l,r,"L",l,o?mt(p.plotY):r,"M",l,i,"L",l,a?mt(p.yBottom):i),u?u.attr(t).animate({d:c}):p.graphic=f.renderer.path(c).attr(t).add(h.group).shadow(h.options.shadow))})}});ae.candlestick=fn;var gn=Oe.prototype.symbols;_e.flags=r(_e.column,{fillColor:"white",lineWidth:1,pointRange:0,shape:"flag",stackDistance:12,states:{hover:{lineColor:"black",fillColor:"#FCFFC5"}},style:{fontSize:"11px",fontWeight:"bold",textAlign:"center"},tooltip:{pointFormat:"{point.text}<br/>"},threshold:null,y:-30}),ae.flags=f(ae.column,{type:"flags",sorted:!1,noSharedTooltip:!0,allowDG:!1,takeOrdinalPosition:!1,trackerGroups:["markerGroup"],forceCrop:!0,init:Ye.prototype.init,pointAttrToOptions:{fill:"fillColor",stroke:"color","stroke-width":"lineWidth",r:"radius"},translate:function(){ae.column.prototype.translate.apply(this);var t,e,n,r,i,o,a=this,s=a.options,l=a.chart,u=a.points,c=u.length-1,d=s.onSeries,h=d&&l.get(d),p=s.onKey||"y",f=h&&h.options.step,g=h&&h.points,m=g&&g.length,v=a.xAxis,y=v.getExtremes(),b=0;if(h&&h.visible&&m)for(b=(h.pointXOffset||0)+(h.barW||0)/2,o=h.currentDataGrouping,r=g[m-1].x+(o?o.totalRange:0),u.sort(function(t,e){return t.x-e.x}),p="plot"+p[0].toUpperCase()+p.substr(1);m--&&u[c]&&(t=u[c],n=g[m],!(n.x<=t.x&&void 0!==n[p]&&(t.x<=r&&(t.plotY=n[p],n.x<t.x&&!f&&(i=g[m+1],i&&i[p]!==H&&(t.plotY+=(t.x-n.x)/(i.x-n.x)*(i[p]-n[p])))),c--,m++,c<0))););ue(u,function(t,n){var r;t.plotY===H&&(t.x>=y.min&&t.x<=y.max?t.plotY=l.chartHeight-v.bottom-(v.opposite?v.height:0)+v.offset-l.plotTop:t.shapeArgs={}),t.plotX+=b,e=u[n-1],e&&e.plotX===t.plotX&&(e.stackIndex===H&&(e.stackIndex=0),r=e.stackIndex+1),t.stackIndex=r})},drawPoints:function(){var t,e,n,i,o,a,s,l,u,c,d,h,p=this,f=p.pointAttr[""],g=p.points,m=p.chart,v=m.renderer,y=p.options,b=y.y,x=p.yAxis;for(o=g.length;o--;)a=g[o],d=a.plotX>p.xAxis.len,e=a.plotX,e>0&&(e-=ke(a.lineWidth,y.lineWidth)%2),l=a.stackIndex,i=a.options.shape||y.shape,n=a.plotY,n!==H&&(n=a.plotY+b-(l!==H&&l*y.stackDistance)),u=l?H:a.plotX,c=l?H:a.plotY,s=a.graphic,n!==H&&e>=0&&!d?(t=a.pointAttr[a.selected?"select":""]||f,h=ke(a.options.title,y.title,"A"),s?s.attr({text:h}).attr({x:e,y:n,r:t.r,anchorX:u,anchorY:c}):s=a.graphic=v.label(h,e,n,i,u,c,y.useHTML).css(r(y.style,a.style)).attr(t).attr({align:"flag"===i?"left":"center",width:y.width,height:y.height}).add(p.markerGroup).shadow(y.shadow),a.tooltipPos=m.inverted?[x.len+x.pos-m.plotLeft-n,p.xAxis.len-e]:[e,n]):s&&(a.graphic=s.destroy())},drawTracker:function(){var t=this,e=t.points;nn.drawTrackerPoint.apply(this),ue(e,function(t){var n=t.graphic;n&&pe(n.element,"mouseover",function(){t.stackIndex>0&&!t.raised&&(t._y=n.y,n.attr({y:t._y-8}),t.raised=!0),ue(e,function(e){e!==t&&e.raised&&e.graphic&&(e.graphic.attr({y:e._y}),e.raised=!1)})})})},animate:Xt,buildKDTree:Xt,setClip:Xt}),gn.flag=function(t,e,n,r,i){var o=i&&i.anchorX||t,a=i&&i.anchorY||e;return["M",o,a,"L",t,e+r,t,e,t+n,e,t+n,e+r,t,e+r,"Z"]},ue(["circle","square"],function(t){gn[t+"pin"]=function(e,n,r,i,o){var a,s,l=o&&o.anchorX,u=o&&o.anchorY;return"circle"===t&&i>r&&(e-=mt((i-r)/2),r=i),a=gn[t](e,n,r,i),l&&u&&(s=n>u?n:n+i,a.push("M",l,s,"L",l,u)),a}}),W===pt.VMLRenderer&&ue(["flag","circlepin","squarepin"],function(t){Se.prototype.symbols[t]=gn[t]});var mn={height:Dt?20:14,barBackgroundColor:"#bfc8d1",barBorderRadius:0,barBorderWidth:1,barBorderColor:"#bfc8d1",buttonArrowColor:"#666",buttonBackgroundColor:"#ebe7e8",buttonBorderColor:"#bbb",buttonBorderRadius:0,buttonBorderWidth:1,margin:10,minWidth:6,rifleColor:"#666",zIndex:3,step:.2,trackBackgroundColor:"#eeeeee",trackBorderColor:"#eeeeee",trackBorderWidth:1,liveRedraw:Lt&&!Dt};Y.scrollbar=r(!0,mn,Y.scrollbar),R.prototype={render:function(){var t,e=this,n=e.renderer,r=e.options,i=r.trackBorderWidth,o=r.barBorderWidth,a=e.size;e.group=t=n.g(qt+"scrollbar").attr({zIndex:r.zIndex,translateY:-99999}).add(),e.track=n.rect().attr({height:a,width:a,y:-i%2/2,x:-i%2/2,"stroke-width":i,fill:r.trackBackgroundColor,stroke:r.trackBorderColor,r:r.trackBorderRadius||0}).add(t),e.scrollbarGroup=n.g().add(t),e.scrollbar=n.rect().attr({height:a,width:a,y:-o%2/2,x:-o%2/2,"stroke-width":o,fill:r.barBackgroundColor,stroke:r.barBorderColor,r:r.barBorderRadius||0}).add(e.scrollbarGroup),e.scrollbarRifles=n.path(e.swapXY([Jt,-3,a/4,Qt,-3,2*a/3,Jt,0,a/4,Qt,0,2*a/3,Jt,3,a/4,Qt,3,2*a/3],r.vertical)).attr({
 	stroke:r.rifleColor,"stroke-width":1}).add(e.scrollbarGroup),e.drawScrollbarButton(0),e.drawScrollbarButton(1)},position:function(t,e,n,r){var i=this,o=i.options,a=o.vertical,s=r,l=0,u=i.rendered?"animate":"attr";i.x=t,i.y=e+o.trackBorderWidth,i.width=n,i.height=r,i.xOffset=s,i.yOffset=l,a?(i.width=i.yOffset=n=l=i.size,i.xOffset=s=0,i.barWidth=r-2*n,i.x=t+=i.options.margin):(i.height=i.xOffset=r=s=i.size,i.barWidth=n-2*r,i.y=i.y+i.options.margin),i.group[u]({translateX:t,translateY:i.y}),i.track[u]({width:n,height:r}),i.scrollbarButtons[1].attr({translateX:a?0:n-s,translateY:a?r-l:0})},drawScrollbarButton:function(t){var e,n=this,r=n.renderer,i=n.scrollbarButtons,o=n.options,a=n.size;e=r.g().add(n.group),i.push(e),r.rect(-.5,-.5,a+1,a+1,o.buttonBorderRadius,o.buttonBorderWidth).attr({stroke:o.buttonBorderColor,"stroke-width":o.buttonBorderWidth,fill:o.buttonBackgroundColor}).add(e),r.path(n.swapXY(["M",a/2+(t?-1:1),a/2-3,"L",a/2+(t?-1:1),a/2+3,"L",a/2+(t?2:-2),a/2],o.vertical)).attr({fill:o.buttonArrowColor}).add(e)},swapXY:function(t,e){var n,r,i=t.length;if(e)for(n=0;n<i;n+=3)r=t[n+1],t[n+1]=t[n+2],t[n+2]=r;return t},setRange:function(t,e){var n,r,i,o,a,s=this,u=s.options,c=u.vertical,d=u.minWidth,h=s.barWidth,p=this.rendered&&!this.hasDragged?"animate":"attr";l(h)&&(t=Math.max(t,0),n=h*t,r=h*Math.min(e,1),s.calculatedWidth=o=S(r-n),o<d&&(n=(h-d+o)*t,o=d),i=Math.floor(n+s.xOffset+s.yOffset),a=o/2-.5,s.from=t,s.to=e,c?(s.scrollbarGroup[p]({translateY:i}),s.scrollbar[p]({height:o}),s.scrollbarRifles[p]({translateY:a}),s.scrollbarTop=i,s.scrollbarLeft=0):(s.scrollbarGroup[p]({translateX:i}),s.scrollbar[p]({width:o}),s.scrollbarRifles[p]({translateX:a}),s.scrollbarLeft=i,s.scrollbarTop=0),o<=12?s.scrollbarRifles.hide():s.scrollbarRifles.show(!0),u.showFull===!1&&(t<=0&&e>=1?s.group.hide():s.group.show()),s.rendered=!0)},initEvents:function(){var t=this;t.mouseMoveHandler=function(e){var n,r,i,o=t.chart.pointer.normalize(e),a=t.options,s=a.vertical?"chartY":"chartX",l=t.initPositions;!t.grabbedCenter||e.touches&&0===e.touches[0][s]||(r=t.cursorToScrollbarPosition(o)[s],n=t[s],i=r-n,t.hasDragged=!0,t.updatePosition(l[0]+i,l[1]+i),t.hasDragged&&ge(t,"changed",{from:t.from,to:t.to,trigger:"scrollbar",DOMType:e.type,DOMEvent:e}))},t.mouseUpHandler=function(e){t.hasDragged&&ge(t,"changed",{from:t.from,to:t.to,trigger:"scrollbar",DOMType:e.type,DOMEvent:e}),t.grabbedCenter=t.hasDragged=t.chartX=t.chartY=null},t.mouseDownHandler=function(e){var n=t.chart.pointer.normalize(e),r=t.cursorToScrollbarPosition(n);t.chartX=r.chartX,t.chartY=r.chartY,t.initPositions=[t.from,t.to],t.grabbedCenter=!0},t.buttonToMinClick=function(e){var n=S(t.to-t.from)*t.options.step;t.updatePosition(S(t.from-n),S(t.to-n)),ge(t,"changed",{from:t.from,to:t.to,trigger:"scrollbar",DOMEvent:e})},t.buttonToMaxClick=function(e){var n=(t.to-t.from)*t.options.step;t.updatePosition(t.from+n,t.to+n),ge(t,"changed",{from:t.from,to:t.to,trigger:"scrollbar",DOMEvent:e})},t.trackClick=function(e){var n=t.chart.pointer.normalize(e),r=t.to-t.from,i=t.y+t.scrollbarTop,o=t.x+t.scrollbarLeft;t.options.vertical&&n.chartY>i||!t.options.vertical&&n.chartX>o?t.updatePosition(t.from+r,t.to+r):t.updatePosition(t.from-r,t.to-r),ge(t,"changed",{from:t.from,to:t.to,trigger:"scrollbar",DOMEvent:e})}},cursorToScrollbarPosition:function(t){var e=this,n=e.options,r=n.minWidth>e.calculatedWidth?n.minWidth:0;return{chartX:(t.chartX-e.x-e.xOffset)/(e.barWidth-r),chartY:(t.chartY-e.y-e.yOffset)/(e.barWidth-r)}},updatePosition:function(t,e){e>1&&(t=S(1-S(e-t)),e=1),t<0&&(e=S(e-t),t=0),this.from=t,this.to=e},addEvents:function(){var t,e=this.options.inverted?[1,0]:[0,1],n=this.scrollbarButtons,r=this.scrollbarGroup.element,i=this.track.element,o=this.mouseDownHandler,a=this.mouseMoveHandler,s=this.mouseUpHandler;t=[[n[e[0]].element,"click",this.buttonToMinClick],[n[e[1]].element,"click",this.buttonToMaxClick],[i,"click",this.trackClick],[r,"mousedown",o],[ft,"mousemove",a],[ft,"mouseup",s]],G&&t.push([r,"touchstart",o],[ft,"touchmove",a],[ft,"touchend",s]),ue(t,function(t){pe.apply(null,t)}),this._events=t},removeEvents:function(){ue(this._events,function(t){fe.apply(null,t)}),this._events=H},destroy:function(){var t=this;t.removeEvents(),ue([t.track,t.scrollbarRifles,t.scrollbar,t.scrollbarGroup,t.group],function(t){t&&t.destroy&&(t=t.destroy())}),M(t.scrollbarButtons)}},Pe(De.prototype,"init",function(t){var e=this;t.apply(e,[].slice.call(arguments,1)),e.options.scrollbar&&e.options.scrollbar.enabled&&(e.options.scrollbar.vertical=!e.horiz,e.options.startOnTick=e.options.endOnTick=!1,e.scrollbar=new R(e.chart.renderer,e.options.scrollbar,e.chart),pe(e.scrollbar,"changed",function(t){var n,r,i=Math.min(ke(e.options.min,e.min),e.min,e.dataMin),o=Math.max(ke(e.options.max,e.max),e.max,e.dataMax),a=o-i;e.horiz&&!e.reversed||!e.horiz&&e.reversed?(n=i+a*this.to,r=i+a*this.from):(n=i+a*(1-this.from),r=i+a*(1-this.to)),e.setExtremes(r,n,!0,!1,t)}))}),Pe(De.prototype,"render",function(t){var e,n,r=this,i=Math.min(ke(r.options.min,r.min),r.min,r.dataMin),o=Math.max(ke(r.options.max,r.max),r.max,r.dataMax),a=r.scrollbar;t.apply(r,[].slice.call(arguments,1)),a&&(r.horiz?a.position(r.left,r.top+r.height+r.offset+2+(r.opposite?0:r.axisTitleMargin),r.width,r.height):a.position(r.left+r.width+2+r.offset+(r.opposite?r.axisTitleMargin:0),r.top,r.width,r.height),isNaN(i)||isNaN(o)||!l(r.min)||!l(r.max)?a.setRange(0,0):(e=(r.min-i)/(o-i),n=(r.max-i)/(o-i),r.horiz&&!r.reversed||!r.horiz&&r.reversed?a.setRange(e,n):a.setRange(1-n,1-e)))}),Pe(De.prototype,"getOffset",function(t){var e=this,n=e.horiz?2:1,r=e.scrollbar;t.apply(e,[].slice.call(arguments,1)),r&&(e.chart.axisOffset[n]+=r.size+r.options.margin)}),Pe(De.prototype,"destroy",function(t){this.scrollbar&&(this.scrollbar=this.scrollbar.destroy()),t.apply(this,[].slice.call(arguments,1))}),pt.Scrollbar=R;var vn,yn=[].concat(dn),bn=function(t){var e=ce(arguments,we);if(e.length)return Math[t].apply(0,e)};yn[4]=["day",[1,2,3,4]],yn[5]=["week",[1,2,3]],vn=ae.areaspline===H?"line":"areaspline",be(Y,{navigator:{handles:{backgroundColor:"#ebe7e8",borderColor:"#b2b1b6"},height:40,margin:25,maskFill:"rgba(128,179,236,0.3)",maskInside:!0,outlineColor:"#b2b1b6",outlineWidth:1,series:{type:vn,color:"#4572A7",compare:null,fillOpacity:.05,dataGrouping:{approximation:"average",enabled:!0,groupPixelWidth:2,smoothed:!0,units:yn},dataLabels:{enabled:!1,zIndex:2},id:qt+"navigator-series",lineColor:null,lineWidth:1,marker:{enabled:!1},pointRange:0,shadow:!1,threshold:null},xAxis:{tickWidth:0,lineWidth:0,gridLineColor:"#EEE",gridLineWidth:1,tickPixelInterval:200,labels:{align:"left",style:{color:"#888"},x:3,y:-4},crosshair:!1},yAxis:{gridLineWidth:0,startOnTick:!1,endOnTick:!1,minPadding:.1,maxPadding:.1,labels:{enabled:!1},crosshair:!1,title:{text:null},tickWidth:0}}}),X.prototype={drawHandle:function(t,e){var n,r=this,i=r.chart,o=i.renderer,a=r.elementsToDestroy,s=r.handles,l=r.navigatorOptions.handles,u={fill:l.backgroundColor,stroke:l.borderColor,"stroke-width":1};r.rendered||(s[e]=o.g("navigator-handle-"+["left","right"][e]).css({cursor:"ew-resize"}).attr({zIndex:10-e}).add(),n=o.rect(-4.5,0,9,16,0,1).attr(u).add(s[e]),a.push(n),n=o.path(["M",-1.5,4,"L",-1.5,12,"M",.5,4,"L",.5,12]).attr(u).add(s[e]),a.push(n)),s[e][r.rendered&&!r.hasDragged?"animate":"attr"]({translateX:r.scrollerLeft+r.scrollbarHeight+parseInt(t,10),translateY:r.top+r.height/2-8})},render:function(t,e,n,r){var i,o,a,s,u,c,d,h=this,p=h.chart,f=p.renderer,g=h.navigatorGroup,m=h.scrollbarHeight,v=h.xAxis,y=h.navigatorOptions,b=h.height,x=h.top,w=h.navigatorEnabled,k=y.outlineWidth,P=k/2,_=h.outlineHeight,M=x+P,O=h.rendered;we(t)&&we(e)&&(!h.hasDragged||l(n))&&(h.navigatorLeft=i=ke(v.left,p.plotLeft+m),h.navigatorWidth=o=ke(v.len,p.plotWidth-2*m),h.scrollerLeft=a=i-m,h.scrollerWidth=s=s=o+2*m,n=ke(n,v.translate(t)),r=ke(r,v.translate(e)),we(n)&&wt(n)!==1/0||(n=0,r=s),v.translate(r,!0)-v.translate(n,!0)<p.xAxis[0].minRange||(h.zoomedMax=xt(bt(n,r,0),o),h.zoomedMin=xt(bt(h.fixedWidth?h.zoomedMax-h.fixedWidth:xt(n,r),0),o),h.range=h.zoomedMax-h.zoomedMin,c=mt(h.zoomedMax),u=mt(h.zoomedMin),O||w&&(h.navigatorGroup=g=f.g("navigator").attr({zIndex:3}).add(),h.leftShade=f.rect().attr({fill:y.maskFill}).add(g),y.maskInside?h.leftShade.css({cursor:"ew-resize"}):h.rightShade=f.rect().attr({fill:y.maskFill}).add(g),h.outline=f.path().attr({"stroke-width":k,stroke:y.outlineColor}).add(g)),d=O&&!h.hasDragged?"animate":"attr",w&&(h.leftShade[d](y.maskInside?{x:i+u,y:x,width:c-u,height:b}:{x:i,y:x,width:u,height:b}),h.rightShade&&h.rightShade[d]({x:i+c,y:x,width:o-c,height:b}),h.outline[d]({d:[Jt,a,M,Qt,i+u-P,M,i+u-P,M+_,Qt,i+c-P,M+_,Qt,i+c-P,M,a+s,M].concat(y.maskInside?[Jt,i+u+P,M,Qt,i+c-P,M]:[])}),h.drawHandle(u+P,0),h.drawHandle(c+P,1)),h.scrollbar&&(h.scrollbar.hasDragged=h.hasDragged,h.scrollbar.position(h.scrollerLeft,h.top+(w?h.height:-h.scrollbarHeight),h.scrollerWidth,h.scrollbarHeight),h.scrollbar.setRange(u/o,c/o)),h.rendered=!0))},addEvents:function(){var t,e=this.chart,n=e.container,r=this.mouseDownHandler,i=this.mouseMoveHandler,o=this.mouseUpHandler;t=[[n,"mousedown",r],[n,"mousemove",i],[ft,"mouseup",o]],G&&t.push([n,"touchstart",r],[n,"touchmove",i],[ft,"touchend",o]),ue(t,function(t){pe.apply(null,t)}),this._events=t,this.series&&pe(this.series.xAxis,"foundExtremes",function(){e.scroller.modifyNavigatorAxisExtremes()}),pe(e,"redraw",function(){var t=this.scroller,e=t&&t.baseSeries&&t.baseSeries.xAxis;e&&t.render(e.min,e.max)})},removeEvents:function(){ue(this._events,function(t){fe.apply(null,t)}),this._events=H,this.removeBaseSeriesEvents()},removeBaseSeriesEvents:function(){this.navigatorEnabled&&this.baseSeries&&this.baseSeries.xAxis&&this.navigatorOptions.adaptToUpdatedData!==!1&&(fe(this.baseSeries,"updatedData",this.updatedDataHandler),fe(this.baseSeries.xAxis,"foundExtremes",this.modifyBaseAxisExtremes))},init:function(){var t,e,n,i=this,o=i.chart,a=i.scrollbarHeight,s=i.navigatorOptions,u=i.height,c=i.top,d=i.baseSeries;i.mouseDownHandler=function(e){e=o.pointer.normalize(e);var r,a,s,l=i.zoomedMin,c=i.zoomedMax,d=i.top,h=i.scrollerLeft,p=i.scrollerWidth,f=i.navigatorLeft,g=i.navigatorWidth,m=i.scrollbarPad||0,v=i.range,y=e.chartX,b=e.chartY,x=o.xAxis[0],w=Dt?10:7;b>d&&b<d+u&&(gt.abs(y-l-f)<w?(i.grabbedLeft=!0,i.otherHandlePos=c,i.fixedExtreme=x.max,o.fixedRange=null):gt.abs(y-c-f)<w?(i.grabbedRight=!0,i.otherHandlePos=l,i.fixedExtreme=x.min,o.fixedRange=null):y>f+l-m&&y<f+c+m?(i.grabbedCenter=y,i.fixedWidth=v,n=y-l):y>h&&y<h+p&&(s=y-f-v/2,s<0?s=0:s+v>=g&&(s=g-v,r=i.getUnionExtremes().dataMax),s!==l&&(i.fixedWidth=v,a=t.toFixedRange(s,s+v,null,r),x.setExtremes(a.min,a.max,!0,null,{trigger:"navigator"}))))},i.mouseMoveHandler=function(t){var e,r=i.scrollbarHeight,a=i.navigatorLeft,s=i.navigatorWidth,l=i.scrollerLeft,u=i.scrollerWidth,c=i.range;t.touches&&0===t.touches[0].pageX||(t=o.pointer.normalize(t),e=t.chartX,e<a?e=a:e>l+u-r&&(e=l+u-r),i.grabbedLeft?(i.hasDragged=!0,i.render(0,0,e-a,i.otherHandlePos)):i.grabbedRight?(i.hasDragged=!0,i.render(0,0,i.otherHandlePos,e-a)):i.grabbedCenter&&(i.hasDragged=!0,e<n?e=n:e>s+n-c&&(e=s+n-c),i.render(0,0,e-n,e-n+c)),i.hasDragged&&i.scrollbar&&i.scrollbar.options.liveRedraw&&(t.DOMType=t.type,setTimeout(function(){i.mouseUpHandler(t)},0)))},i.mouseUpHandler=function(e){var r,a,s,u=e.DOMEvent||e;(i.hasDragged||"scrollbar"===e.trigger)&&(i.zoomedMin===i.otherHandlePos?a=i.fixedExtreme:i.zoomedMax===i.otherHandlePos&&(s=i.fixedExtreme),i.zoomedMax===i.navigatorWidth&&(s=i.getUnionExtremes().dataMax),r=t.toFixedRange(i.zoomedMin,i.zoomedMax,a,s),l(r.min)&&o.xAxis[0].setExtremes(r.min,r.max,!0,!i.hasDragged&&null,{trigger:"navigator",triggerOp:"navigator-drag",DOMEvent:u})),"mousemove"!==e.DOMType&&(i.grabbedLeft=i.grabbedRight=i.grabbedCenter=i.fixedWidth=i.fixedExtreme=i.otherHandlePos=i.hasDragged=n=null)};var h=o.xAxis.length,p=o.yAxis.length;o.extraBottomMargin=i.outlineHeight+s.margin,i.navigatorEnabled?(i.xAxis=t=new De(o,r({breaks:d&&d.xAxis.options.breaks,ordinal:d&&d.xAxis.options.ordinal},s.xAxis,{id:"navigator-x-axis",isX:!0,type:"datetime",index:h,height:u,offset:0,offsetLeft:a,offsetRight:-a,keepOrdinalPadding:!0,startOnTick:!1,endOnTick:!1,minPadding:0,maxPadding:0,zoomEnabled:!1})),i.yAxis=e=new De(o,r(s.yAxis,{id:"navigator-y-axis",alignTicks:!1,height:u,offset:0,index:p,zoomEnabled:!1})),d||s.series.data?i.addBaseSeries():0===o.series.length&&Pe(o,"redraw",function(t,e){o.series.length>0&&!i.series&&(i.setBaseSeries(),o.redraw=t),t.call(o,e)})):i.xAxis=t={translate:function(t,e){var n=o.xAxis[0],r=n.getExtremes(),i=o.plotWidth-2*a,s=bn("min",n.options.min,r.dataMin),l=bn("max",n.options.max,r.dataMax)-s;return e?t*l/i+s:i*(t-s)/l},toFixedRange:De.prototype.toFixedRange},o.options.scrollbar.enabled&&(i.scrollbar=new R(o.renderer,r(o.options.scrollbar,{margin:i.navigatorEnabled?0:10}),o),pe(i.scrollbar,"changed",function(t){var e=i.navigatorWidth,n=e*this.to,r=e*this.from;i.hasDragged=i.scrollbar.hasDragged,i.render(0,0,r,n),(o.options.scrollbar.liveRedraw||"mousemove"!==t.DOMType)&&setTimeout(function(){i.mouseUpHandler(t)})})),i.addBaseSeriesEvents(),Pe(o,"getMargins",function(n){var r=this.legend,o=r.options;n.apply(this,[].slice.call(arguments,1)),i.top=c=i.navigatorOptions.top||this.chartHeight-i.height-i.scrollbarHeight-this.spacing[2]-("bottom"===o.verticalAlign&&o.enabled&&!o.floating?r.legendHeight+ke(o.margin,10):0),t&&e&&(t.options.top=e.options.top=c,t.setAxisSize(),e.setAxisSize())}),i.addEvents()},getUnionExtremes:function(t){var e,n=this.chart.xAxis[0],r=this.xAxis,i=r.options,o=n.options;return t&&null===n.dataMin||(e={dataMin:ke(i&&i.min,bn("min",o.min,n.dataMin,r.dataMin,r.min)),dataMax:ke(i&&i.max,bn("max",o.max,n.dataMax,r.dataMax,r.max))}),e},setBaseSeries:function(t){var e=this.chart;t=t||e.options.navigator.baseSeries,this.series&&(this.removeBaseSeriesEvents(),this.series.remove()),this.baseSeries=e.series[t]||"string"==typeof t&&e.get(t)||e.series[0],this.xAxis&&this.addBaseSeries()},addBaseSeries:function(){var t,e,n=this.baseSeries,i=n?n.options:{},o=i.data,a=this.navigatorOptions.series;e=a.data,this.hasNavigatorData=!!e,t=r(i,a,{enableMouseTracking:!1,group:"nav",padXAxis:!1,xAxis:"navigator-x-axis",yAxis:"navigator-y-axis",name:"Navigator",showInLegend:!1,stacking:!1,isInternal:!0,visible:!0}),t.data=e||o.slice(0),this.series=this.chart.initSeries(t),this.addBaseSeriesEvents()},addBaseSeriesEvents:function(){var t=this.baseSeries;t&&t.xAxis&&this.navigatorOptions.adaptToUpdatedData!==!1&&(pe(t,"updatedData",this.updatedDataHandler),pe(t.xAxis,"foundExtremes",this.modifyBaseAxisExtremes),t.userOptions.events=be(t.userOptions.event,{updatedData:this.updatedDataHandler}))},modifyNavigatorAxisExtremes:function(){var t,e=this.xAxis;e.getExtremes&&(t=this.getUnionExtremes(!0),!t||t.dataMin===e.min&&t.dataMax===e.max||(e.min=t.dataMin,e.max=t.dataMax))},modifyBaseAxisExtremes:function(){if(this.chart.scroller.baseSeries&&this.chart.scroller.baseSeries.xAxis){var t,e,n=this,r=n.chart.scroller,i=n.getExtremes(),o=i.min,a=i.max,s=i.dataMin,l=i.dataMax,u=a-o,c=r.stickToMin,d=r.stickToMax,h=r.series,p=!!n.setExtremes,f=n.eventArgs&&"rangeSelectorButton"===n.eventArgs.trigger;f||(c&&(e=s,t=e+u),d&&(t=l,c||(e=bt(t-u,h&&h.xData?h.xData[0]:-Number.MAX_VALUE))),p&&(c||d)&&we(e)&&(n.min=n.userMin=e,n.max=n.userMax=t)),r.stickToMin=r.stickToMax=null}},updatedDataHandler:function(){var t=this.chart.scroller,e=t.baseSeries,n=t.series;t.stickToMin=we(e.xAxis.min)&&e.xAxis.min<=e.xData[0],t.stickToMax=Math.round(t.zoomedMax)>=Math.round(t.navigatorWidth),n&&!t.hasNavigatorData&&(n.options.pointStart=e.xData[0],n.setData(e.options.data,!1,null,!1))},destroy:function(){var t=this;t.removeEvents(),ue([t.scrollbar,t.xAxis,t.yAxis,t.leftShade,t.rightShade,t.outline],function(t){t&&t.destroy&&t.destroy()}),t.xAxis=t.yAxis=t.leftShade=t.rightShade=t.outline=null,ue([t.handles,t.elementsToDestroy],function(t){M(t)})}},pt.Navigator=X,Pe(De.prototype,"zoom",function(t,e,n){var r,i,o=this.chart,a=o.options,s=a.chart.zoomType,u=a.navigator,c=a.rangeSelector;return this.isXAxis&&(u&&u.enabled||c&&c.enabled)&&("x"===s?o.resetZoomButton="blocked":"y"===s?i=!1:"xy"===s&&(r=this.previousZoom,l(e)?this.previousZoom=[this.min,this.max]:r&&(e=r[0],n=r[1],delete this.previousZoom))),i!==H?i:t.call(this,e,n)}),Pe(We.prototype,"init",function(t,e,n){pe(this,"beforeRender",function(){var t=this.options;(t.navigator.enabled||t.scrollbar.enabled)&&(this.scroller=new X(this))}),t.call(this,e,n)}),Pe(Ye.prototype,"addPoint",function(t,n,r,i,o){var a=this.options.turboThreshold;a&&this.xData.length>a&&xe(n,!0)&&this.chart.scroller&&e(20,!0),t.call(this,n,r,i,o)}),be(Y,{rangeSelector:{buttonTheme:{width:28,height:18,fill:"#f7f7f7",padding:2,r:0,"stroke-width":0,style:{color:"#444",cursor:"pointer",fontWeight:"normal"},zIndex:7,states:{hover:{fill:"#e7e7e7"},select:{fill:"#e7f0f9",style:{color:"black",fontWeight:"bold"}}}},height:35,inputPosition:{align:"right"},labelStyle:{color:"#666"}}}),Y.lang=r(Y.lang,{rangeSelectorZoom:"Zoom",rangeSelectorFrom:"From",rangeSelectorTo:"To"}),F.prototype={clickButton:function(t,e){var n,r,i,o,a,s,l,u,d=this,h=d.selected,p=d.chart,f=d.buttons,g=d.buttonOptions[t],m=p.xAxis[0],v=p.scroller&&p.scroller.getUnionExtremes()||m||{},y=v.dataMin,b=v.dataMax,x=m&&mt(xt(m.max,ke(b,m.max))),w=g.type,k=g._range,P=g.dataGrouping;if(null!==y&&null!==b&&t!==d.selected){if(p.fixedRange=k,P&&(this.forcedDataGrouping=!0,De.prototype.setDataGrouping.call(m||{chart:this.chart},P,!1)),"month"===w||"year"===w)m?(u={range:g,max:x,dataMin:y,dataMax:b},n=m.minFromRange.call(u),we(u.newMax)&&(x=u.newMax)):k=g;else if(k)n=bt(x-k,y),x=xt(n+k,b);else if("ytd"===w){if(!m)return void pe(p,"beforeRender",function(){d.clickButton(t)});b===H&&(y=Number.MAX_VALUE,b=Number.MIN_VALUE,ue(p.series,function(t){var e=t.xData;y=xt(e[0],y),b=bt(e[e.length-1],b)}),e=!1),r=new K(b),a=r.getFullYear(),n=o=bt(y||0,K.UTC(a,0,1)),r=r.getTime(),x=xt(b||r,r)}else"all"===w&&m&&(n=y,x=b);f[h]&&f[h].setState(0),f[t]&&(f[t].setState(2),d.lastSelected=t),m?(m.setExtremes(n,x,ke(e,1),null,{trigger:"rangeSelectorButton",rangeSelectorButton:g}),d.setSelected(t)):(i=c(p.options.xAxis)[0],l=i.range,i.range=k,s=i.min,i.min=o,d.setSelected(t),pe(p,"load",function(){i.range=l,i.min=s}))}},setSelected:function(t){this.selected=this.options.selected=t},defaultButtons:[{type:"month",count:1,text:"1m"},{type:"month",count:3,text:"3m"},{type:"month",count:6,text:"6m"},{type:"ytd",text:"YTD"},{type:"year",count:1,text:"1y"},{type:"all",text:"All"}],init:function(t){var e=this,n=t.options.rangeSelector,r=n.buttons||[].concat(e.defaultButtons),i=n.selected,o=e.blurInputs=function(){var t=e.minInput,n=e.maxInput;t&&t.blur&&ge(t,"blur"),n&&n.blur&&ge(n,"blur")};e.chart=t,e.options=n,e.buttons=[],t.extraTopMargin=n.height,e.buttonOptions=r,pe(t.container,"mousedown",o),pe(t,"resize",o),ue(r,e.computeButtonRange),i!==H&&r[i]&&this.clickButton(i,!1),pe(t,"load",function(){pe(t.xAxis[0],"setExtremes",function(n){this.max-this.min!==t.fixedRange&&"rangeSelectorButton"!==n.trigger&&"updatedData"!==n.trigger&&e.forcedDataGrouping&&this.setDataGrouping(!1,!1)}),pe(t.xAxis[0],"afterSetExtremes",function(){e.updateButtonStates(!0)})})},updateButtonStates:function(t){var e=this,n=this.chart,r=n.xAxis[0],i=n.scroller&&n.scroller.getUnionExtremes()||r,o=i.dataMin,a=i.dataMax,s=e.selected,l=e.options.allButtonsEnabled,u=e.buttons;t&&n.fixedRange!==mt(r.max-r.min)&&(u[s]&&u[s].setState(0),e.setSelected(null)),ue(e.buttonOptions,function(t,i){var c=mt(r.max-r.min),d=t._range,h=t.type,p=t.count||1,f=d>a-o,g=d<r.minRange,m="all"===t.type&&r.max-r.min>=a-o&&2!==u[i].state,v=n.renderer.forExport&&i===s,y=d===c,b=!r.hasVisibleSeries;("month"===h||"year"===h)&&c>=24*{month:28,year:365}[h]*36e5*p&&c<=24*{month:31,year:366}[h]*36e5*p&&(y=!0),v||y&&i!==s&&i===e.lastSelected?(e.setSelected(i),u[i].setState(2)):!l&&(f||g||m||b)?u[i].setState(3):3===u[i].state&&u[i].setState(0)})},computeButtonRange:function(t){var e=t.type,n=t.count||1,r={millisecond:1,second:1e3,minute:6e4,hour:36e5,day:864e5,week:6048e5};r[e]?t._range=r[e]*n:"month"!==e&&"year"!==e||(t._range=24*{month:30,year:365}[e]*36e5*n)},setInputValue:function(t,e){var n=this.chart.options.rangeSelector;l(e)&&(this[t+"Input"].HCTime=e),this[t+"Input"].value=V(n.inputEditDateFormat||"%Y-%m-%d",this[t+"Input"].HCTime),this[t+"DateBox"].attr({text:V(n.inputDateFormat||"%b %e, %Y",this[t+"Input"].HCTime)})},showInput:function(t){var e=this.inputGroup,n=this[t+"DateBox"];h(this[t+"Input"],{left:e.translateX+n.x+Kt,top:e.translateY+Kt,width:n.width-2+Kt,height:n.height-2+Kt,border:"2px solid silver"})},hideInput:function(t){h(this[t+"Input"],{border:0,width:"1px",height:"1px"}),this.setInputValue(t)},drawInput:function(t){function e(){var t=n.value,e=(d.inputDateParser||K.parse)(t),r=l.scroller&&l.scroller.xAxis?l.scroller.xAxis:l.xAxis[0],o=r.dataMin,a=r.dataMax;e!==n.previousValue&&(n.previousValue=e,we(e)||(e=t.split("-"),e=K.UTC(i(e[0]),i(e[1])-1,i(e[2]))),we(e)&&(Y.global.useUTC||(e+=60*(new K).getTimezoneOffset()*1e3),g?e>s.maxInput.HCTime?e=H:e<o&&(e=o):e<s.minInput.HCTime?e=H:e>a&&(e=a),e!==H&&l.xAxis[0].setExtremes(g?e:r.min,g?r.max:e,H,H,{trigger:"rangeSelectorInput"})))}var n,o,a,s=this,l=s.chart,u=l.renderer.style,c=l.renderer,d=l.options.rangeSelector,h=Y.lang,f=s.div,g="min"===t,m=this.inputGroup;this[t+"Label"]=o=c.label(h[g?"rangeSelectorFrom":"rangeSelectorTo"],this.inputGroup.offset).attr({padding:2}).css(r(u,d.labelStyle)).add(m),m.offset+=o.width+5,this[t+"DateBox"]=a=c.label("",m.offset).attr({padding:2,width:d.inputBoxWidth||90,height:d.inputBoxHeight||17,stroke:d.inputBoxBorderColor||"silver","stroke-width":1}).css(r({textAlign:"center",color:"#444"},u,d.inputStyle)).on("click",function(){s.showInput(t),s[t+"Input"].focus()}).add(m),m.offset+=a.width+(g?10:0),this[t+"Input"]=n=p("input",{name:t,className:qt+"range-selector",type:"text"},be({position:Yt,border:0,width:"1px",height:"1px",padding:0,textAlign:"center",fontSize:u.fontSize,fontFamily:u.fontFamily,left:"-9em",top:l.plotTop+Kt},d.inputStyle),f),n.onfocus=function(){s.showInput(t)},n.onblur=function(){s.hideInput(t)},n.onchange=e,n.onkeypress=function(t){13===t.keyCode&&e()}},getPosition:function(){var t=this.chart,e=t.options.rangeSelector,n=ke((e.buttonPosition||{}).y,t.plotTop-t.axisOffset[0]-e.height);return{buttonTop:n,inputTop:n-10}},render:function(t,e){var n,r,i=this,o=i.chart,a=o.renderer,s=o.container,u=o.options,c=u.exporting&&u.exporting.enabled!==!1&&u.navigation&&u.navigation.buttonOptions,d=u.rangeSelector,h=i.buttons,f=Y.lang,g=i.div,m=i.inputGroup,v=d.buttonTheme,y=d.buttonPosition||{},b=d.inputEnabled,x=v&&v.states,w=o.plotLeft,k=this.getPosition(),P=i.group,_=i.rendered;_||(i.group=P=a.g("range-selector-buttons").add(),i.zoomText=a.text(f.rangeSelectorZoom,ke(y.x,w),15).css(d.labelStyle).add(P),n=ke(y.x,w)+i.zoomText.getBBox().width+5,ue(i.buttonOptions,function(t,e){h[e]=a.button(t.text,n,0,function(){i.clickButton(e),i.isActive=!0},v,x&&x.hover,x&&x.select,x&&x.disabled).css({textAlign:"center"}).add(P),n+=h[e].width+ke(d.buttonSpacing,5),i.selected===e&&h[e].setState(2)}),i.updateButtonStates(),b!==!1&&(i.div=g=p("div",null,{position:"relative",height:0,zIndex:1}),s.parentNode.insertBefore(g,s),i.inputGroup=m=a.g("input-group").add(),m.offset=0,i.drawInput("min"),i.drawInput("max"))),P[_?"animate":"attr"]({translateY:k.buttonTop}),b!==!1&&(m.align(be({y:k.inputTop,width:m.offset,x:c&&k.inputTop<(c.y||0)+c.height-o.spacing[0]?-40:0},d.inputPosition),!0,o.spacingBox),l(b)||(r=P.getBBox(),m[m.translateX<r.x+r.width+10?"hide":"show"]()),i.setInputValue("min",t),i.setInputValue("max",e)),i.rendered=!0},destroy:function(){var t,e=this.minInput,n=this.maxInput,r=this.chart,i=this.blurInputs;fe(r.container,"mousedown",i),fe(r,"resize",i),M(this.buttons),e&&(e.onfocus=e.onblur=e.onchange=null),n&&(n.onfocus=n.onblur=n.onchange=null);for(t in this)this[t]&&"chart"!==t&&(this[t].destroy?this[t].destroy():this[t].nodeType&&O(this[t])),this[t]=null}},De.prototype.toFixedRange=function(t,e,n,r){var i=this.chart&&this.chart.fixedRange,o=ke(n,this.translate(t,!0)),a=ke(r,this.translate(e,!0)),s=i&&(a-o)/i;return s>.7&&s<1.3&&(r?o=a-i:a=o+i),we(o)||(o=a=void 0),{min:o,max:a}},De.prototype.minFromRange=function(){var t,e,n,r=this.range,i=r.type,o={month:"Month",year:"FullYear"}[i],a=this.max,s=function(t,e){var n=new K(t);return n["set"+o](n["get"+o]()+e),n.getTime()-t};return we(r)?(t=this.max-r,n=r):t=a+s(a,-r.count),e=ke(this.dataMin,Number.MIN_VALUE),we(t)||(t=e),t<=e&&(t=e,void 0===n&&(n=s(t,r.count)),this.newMax=xt(t+n,this.dataMax)),we(a)||(t=void 0),t},Pe(We.prototype,"init",function(t,e,n){pe(this,"init",function(){this.options.rangeSelector.enabled&&(this.rangeSelector=new F(this))}),t.call(this,e,n)}),pt.RangeSelector=F,We.prototype.callbacks.push(function(t){function e(){i=t.xAxis[0].getExtremes(),we(i.min)&&a.render(i.min,i.max)}function n(t){a.render(t.min,t.max)}function r(){a&&(fe(t,"resize",e),fe(t.xAxis[0],"afterSetExtremes",n))}var i,o=t.scroller,a=t.rangeSelector;o&&(i=t.xAxis[0].getExtremes(),o.render(i.min,i.max)),a&&(pe(t.xAxis[0],"afterSetExtremes",n),pe(t,"resize",e),e()),pe(t,"destroy",r)}),pt.StockChart=pt.stockChart=function(t,e,n){var i,a=o(t)||t.nodeName,s=arguments[a?1:0],l=s.series,u=ke(s.navigator&&s.navigator.enabled,!0),d=u?{startOnTick:!1,endOnTick:!1}:null,h={marker:{enabled:!1,radius:2}},p={shadow:!1,borderWidth:0};return s.xAxis=he(c(s.xAxis||{}),function(t){return r({minPadding:0,maxPadding:0,ordinal:!0,title:{text:null},labels:{overflow:"justify"},showLastLabel:!0},t,{type:"datetime",categories:null},d)}),s.yAxis=he(c(s.yAxis||{}),function(t){return i=ke(t.opposite,!0),r({labels:{y:-2},opposite:i,showLastLabel:!1,title:{text:null}},t)}),s.series=null,s=r({chart:{panning:!0,pinchType:"x"},navigator:{enabled:!0},scrollbar:{enabled:!0},rangeSelector:{enabled:!0},title:{text:null,style:{fontSize:"16px"}},tooltip:{shared:!0,crosshairs:!0},legend:{enabled:!1},plotOptions:{line:h,spline:h,area:h,areaspline:h,arearange:h,areasplinerange:h,column:p,columnrange:p,candlestick:p,ohlc:p}},s,{_stock:!0,chart:{inverted:!1}}),s.series=l,a?new We(t,s,n):new We(s,e)},Pe(Ie.prototype,"init",function(t,e,n){var r=n.chart.pinchType||"";t.call(this,e,n),this.pinchX=this.pinchHor=r.indexOf("x")!==-1,this.pinchY=this.pinchVert=r.indexOf("y")!==-1,this.hasZoom=this.hasZoom||this.pinchHor||this.pinchVert}),Pe(De.prototype,"autoLabelAlign",function(t){var e,n=this.chart,r=this.options,i=n._labelPanes=n._labelPanes||{},o=this.options.labels;return this.chart.options._stock&&"yAxis"===this.coll&&(e=r.top+","+r.height,!i[e]&&o.enabled)?(15===o.x&&(o.x=0),void 0===o.align&&(o.align="right"),i[e]=1,"right"):t.call(this,[].slice.call(arguments,1))}),Pe(De.prototype,"getPlotLinePath",function(t,e,n,r,i,o){var a,s,u,c,d,h,p,f=this,g=this.isLinked&&!this.series?this.linkedParent.series:this.series,m=f.chart,v=m.renderer,y=f.left,b=f.top,x=[],w=[];return"colorAxis"===f.coll?t.apply(this,[].slice.call(arguments,1)):(w=f.isXAxis?l(f.options.yAxis)?[m.yAxis[f.options.yAxis]]:he(g,function(t){return t.yAxis}):l(f.options.xAxis)?[m.xAxis[f.options.xAxis]]:he(g,function(t){return t.xAxis}),d=f.isXAxis?m.yAxis:m.xAxis,ue(d,function(t){if(!l(t.options.id)||t.options.id.indexOf("navigator")===-1){var e=t.isXAxis?"yAxis":"xAxis",n=l(t.options[e])?m[e][t.options[e]]:m[e][0];f===n&&w.push(t)}}),h=w.length?[]:[f.isXAxis?m.yAxis[0]:m.xAxis[0]],ue(w,function(t){le(t,h)===-1&&h.push(t)}),p=ke(o,f.translate(e,null,null,r)),we(p)&&(f.horiz?ue(h,function(t){var e;s=t.pos,c=s+t.len,a=u=mt(p+f.transB),(a<y||a>y+f.width)&&(i?a=u=xt(bt(y,a),y+f.width):e=!0),e||x.push("M",a,s,"L",u,c)}):ue(h,function(t){var e;a=t.pos,u=a+t.len,s=c=mt(b+f.height-p),(s<b||s>b+f.height)&&(i?s=c=xt(bt(b,s),f.top+f.height):e=!0),e||x.push("M",a,s,"L",u,c)})),x.length>0?v.crispPolyLine(x,n||1):null)}),De.prototype.getPlotBandPath=function(t,e){var n,r=this.getPlotLinePath(e,null,null,!0),i=this.getPlotLinePath(t,null,null,!0),o=[];if(i&&r&&i.toString()!==r.toString())for(n=0;n<i.length;n+=6)o.push("M",i[n+1],i[n+2],"L",i[n+4],i[n+5],r[n+4],r[n+5],r[n+1],r[n+2]);else o=null;return o},Oe.prototype.crispPolyLine=function(t,e){var n;for(n=0;n<t.length;n+=6)t[n+1]===t[n+4]&&(t[n+1]=t[n+4]=mt(t[n+1])-e%2/2),t[n+2]===t[n+5]&&(t[n+2]=t[n+5]=mt(t[n+2])+e%2/2);return t},W===pt.VMLRenderer&&(Se.prototype.crispPolyLine=Oe.prototype.crispPolyLine),Pe(De.prototype,"hideCrosshair",function(t,e){t.call(this,e),this.crossLabel&&(this.crossLabel=this.crossLabel.hide())}),Pe(De.prototype,"drawCrosshair",function(t,e,n){if(t.call(this,e,n),l(this.crosshair.label)&&this.crosshair.label.enabled&&this.cross){var r,i,o,a,s,u,c=this.chart,d=this.options.crosshair.label,h=this.horiz,p=this.opposite,f=this.left,g=this.top,m=this.crossLabel,v=d.format,y="",x="inside"===this.options.tickPosition,w=this.crosshair.snap!==!1,k=0;e||(e=this.cross&&this.cross.e),s=h?"center":p?"right"===this.labelAlign?"right":"left":"left"===this.labelAlign?"left":"center",m||(m=this.crossLabel=c.renderer.label(null,null,null,d.shape||"callout").attr({align:d.align||s,zIndex:12,fill:d.backgroundColor||this.series[0]&&this.series[0].color||"gray",padding:ke(d.padding,8),stroke:d.borderColor||"","stroke-width":d.borderWidth||0,r:ke(d.borderRadius,3)}).css(be({color:"white",fontWeight:"normal",fontSize:"11px",textAlign:"center"},d.style)).add()),h?(r=w?n.plotX+f:e.chartX,i=g+(p?0:this.height)):(r=p?this.width+f:0,i=w?n.plotY+g:e.chartY),v||d.formatter||(this.isDatetimeAxis&&(y="%b %d, %Y"),v="{value"+(y?":"+y:"")+"}"),u=w?n[this.isXAxis?"x":"y"]:this.toValue(h?e.chartX:e.chartY),m.attr({text:v?b(v,{value:u}):d.formatter.call(this,u),x:r,y:i,visibility:"visible"}),o=m.getBBox(),h?(x&&!p||!x&&p)&&(i=m.y-o.height):i=m.y-o.height/2,a=h?{left:f-o.x,right:f+this.width-o.x}:{left:"left"===this.labelAlign?f:0,right:"right"===this.labelAlign?f+this.width:c.chartWidth},m.translateX<a.left&&(k=a.left-m.translateX),m.translateX+o.width>=a.right&&(k=-(m.translateX+o.width-a.right)),m.attr({x:r+k,y:i,anchorX:h?r:this.opposite?0:c.chartWidth,anchorY:h?this.opposite?c.chartHeight:0:i+o.height/2})}});var xn=on.init,wn=on.processData,kn=Ne.prototype.tooltipFormatter;return on.init=function(){xn.apply(this,arguments),this.setCompare(this.options.compare)},on.setCompare=function(t){this.modifyValue="value"===t||"percent"===t?function(e,n){var r=this.compareValue;return e!==H&&(e="value"===t?e-r:e=100*(e/r)-100,n&&(n.change=e)),e}:null,this.userOptions.compare=t,this.chart.hasRendered&&(this.isDirty=!0)},on.processData=function(){var t,e,n,r,i,o=this,a=-1;if(wn.apply(this,arguments),o.xAxis&&o.processedYData)for(e=o.processedXData,n=o.processedYData,r=n.length,o.pointArrayMap&&(a=le("close",o.pointArrayMap),a===-1&&(a=le(o.pointValKey||"y",o.pointArrayMap))),t=0;t<r-1;t++)if(i=a>-1?n[t][a]:n[t],we(i)&&e[t+1]>=o.xAxis.min&&0!==i){o.compareValue=i;break}},Pe(on,"getExtremes",function(t){var e;t.apply(this,[].slice.call(arguments,1)),this.modifyValue&&(e=[this.modifyValue(this.dataMin),this.modifyValue(this.dataMax)],this.dataMin=P(e),this.dataMax=_(e))}),De.prototype.setCompare=function(t,e){this.isXAxis||(ue(this.series,function(e){e.setCompare(t)}),ke(e,!0)&&this.chart.redraw())},Ne.prototype.tooltipFormatter=function(t){var e=this;return t=t.replace("{point.change}",(e.change>0?"+":"")+pt.numberFormat(e.change,ke(e.series.tooltipOptions.changeDecimals,2))),kn.apply(this,[t])},Pe(Ye.prototype,"render",function(t){this.chart.options._stock&&this.xAxis&&(!this.clipBox&&this.animate?(this.clipBox=r(this.chart.clipBox),this.clipBox.width=this.xAxis.len,this.clipBox.height=this.yAxis.len):this.chart[this.sharedClipKey]?(ve(this.chart[this.sharedClipKey]),this.chart[this.sharedClipKey].attr({width:this.xAxis.len,height:this.yAxis.len})):this.clipBox&&(this.clipBox.width=this.xAxis.len,
 	this.clipBox.height=this.yAxis.len)),t.call(this)}),be(pt,{Color:j,Point:Ne,Tick:B,Renderer:W,SVGElement:L,SVGRenderer:Oe,arrayMin:P,arrayMax:_,charts:Ft,correctFloat:S,dateFormat:V,error:e,format:b,pathAnim:U,getOptions:D,hasBidiBug:It,isTouchDevice:Dt,setOptions:E,addEvent:pe,removeEvent:fe,createElement:p,discardElement:O,css:h,each:ue,map:he,merge:r,splat:c,stableSort:k,extendClass:f,pInt:i,svg:Lt,canvas:Bt,vml:!Lt&&!Bt,product:Wt,version:Gt}),pt})},function(t,e){var n=Array.isArray;t.exports=n},function(t,e,n){function r(t,e){var n=o(t,e);return i(n)?n:void 0}var i=n(256),o=n(275);t.exports=r},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(32),o=r(i);e.default=function(t){return(0,o.default)(t).slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=60*t*60*24;return Math.floor(Date.now()/1e3)+e}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(130);Object.defineProperty(e,"AddIcon",{enumerable:!0,get:function(){return r(i).default}});var o=n(131);Object.defineProperty(e,"AnalysisIcon",{enumerable:!0,get:function(){return r(o).default}});var a=n(132);Object.defineProperty(e,"AreaIcon",{enumerable:!0,get:function(){return r(a).default}});var s=n(133);Object.defineProperty(e,"BarIcon",{enumerable:!0,get:function(){return r(s).default}});var l=n(134);Object.defineProperty(e,"CandlestickIcon",{enumerable:!0,get:function(){return r(l).default}});var u=n(135);Object.defineProperty(e,"CheckboxIcon",{enumerable:!0,get:function(){return r(u).default}});var c=n(136);Object.defineProperty(e,"CheckboxOutlineIcon",{enumerable:!0,get:function(){return r(c).default}});var d=n(137);Object.defineProperty(e,"ChevronLeftIcon",{enumerable:!0,get:function(){return r(d).default}});var h=n(138);Object.defineProperty(e,"ChevronRightIcon",{enumerable:!0,get:function(){return r(h).default}});var p=n(139);Object.defineProperty(e,"CrosshairIcon",{enumerable:!0,get:function(){return r(p).default}});var f=n(140);Object.defineProperty(e,"FitAllIcon",{enumerable:!0,get:function(){return r(f).default}});var g=n(141);Object.defineProperty(e,"LastPageIcon",{enumerable:!0,get:function(){return r(g).default}});var m=n(142);Object.defineProperty(e,"LineIcon",{enumerable:!0,get:function(){return r(m).default}});var v=n(143);Object.defineProperty(e,"RemoveIcon",{enumerable:!0,get:function(){return r(v).default}});var y=n(144);Object.defineProperty(e,"SettingsIcon",{enumerable:!0,get:function(){return r(y).default}});var b=n(145);Object.defineProperty(e,"ShareIcon",{enumerable:!0,get:function(){return r(b).default}})},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},l=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),u=n(0),c=r(u),d=n(121),h=r(d),p=n(4),f=r(p),g=function(t){function e(t){i(this,e);var n=o(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t));return n.defaultProps={items:[]},n.expand=function(t){n.props.onExpand(t),t.stopPropagation()},n.state={expanded:!1},n}return a(e,t),l(e,[{key:"render",value:function(){var t=this.props,e=t.expanded,n=t.text,r=t.tooltip,i=t.img,o=t.items,a=t.onChange;return c.default.createElement("div",{className:"binary-chart-picker"},c.default.createElement("a",{style:f.default.pickerButton,className:"binary-chart-button",onClick:this.expand},i,n&&c.default.createElement("span",null,n)),r&&c.default.createElement("div",{className:"tooltip"},r),e&&c.default.createElement("div",{style:f.default.submenu,className:"binary-chart-submenu"},o.map(function(t,e){return c.default.createElement(h.default,s({key:e},t,{onClick:a}))})))}}]),e}(u.PureComponent);e.default=g},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return new Date(1e3*t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){switch(e){case"t":case"s":return t;case"m":return 60*t;case"h":return 3600*t;case"d":return 86400*t;default:throw new Error("Duration unit not valid: "+e+", only allow ['t', 's', 'm', 'h', 'd']")}}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){var n={};return t.forEach(function(t){var r=t[e];n[r]||(n[r]=[]),n[r].push(t)}),n}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=[{value:"CALL",text:"Rise",img:"img/trade-call.svg",ticks:!0,barrier:!1},{value:"PUT",text:"Fall",img:"img/trade-put.svg",ticks:!0,barrier:!1},{value:"HIGHER",text:"Higher",img:"img/trade-higher.svg",ticks:!1,barrier:!1},{value:"LOWER",text:"Lower",img:"img/trade-lower.svg",ticks:!1,barrier:!1},{value:"DIGITMATCH",text:"Digit Match",img:"img/trade-digitmatch.svg",ticks:!0,barrier:!0},{value:"DIGITDIFF",text:"Digit Differs",img:"img/trade-digitdiff.svg",tick:!0,barrier:!0},{value:"DIGITOVER",text:"Digit Over",img:"img/trade-digitover.svg",tick:!0,barrier:!0},{value:"DIGITUNDER",text:"Digit Under",img:"img/trade-digitunder.svg",tick:!0,barrier:!0},{value:"DIGITEVEN",text:"Digit Even",img:"img/trade-digiteven.svg",tick:!0,barrier:!1},{value:"DIGITODD",text:"Digit Odd",img:"img/trade-digitodd.svg",tick:!0,barrier:!1},{value:"ASIANU",text:"Asian Up",img:"img/trade-asianu.svg",ticks:!0,barrier:!1},{value:"ASIAND",text:"Asian Down",img:"img/trade-asiand.svg",ticks:!0,barrier:!1},{value:"EXPIRYRANGE",text:"Ends Between",img:"img/trade-expiryrange.svg",ticks:!1,barrier:!1},{value:"EXPIRYMISS",text:"Ends Outside",img:"img/trade-expirymiss.svg",ticks:!1,barrier:!1},{value:"RANGE",text:"Stays Between",img:"img/trade-range.svg",ticks:!1,barrier:!1},{value:"UPORDOWN",text:"Goes Outside",img:"img/trade-upordown.svg",ticks:!1,barrier:!1},{value:"ONETOUCH",text:"Touches",img:"img/trade-onetouch.svg",ticks:!1,barrier:!1},{value:"NOTOUCH",text:"Does Not Touch",img:"img/trade-notouch.svg",ticks:!1,barrier:!1},{value:"SPREADU",text:"Spread Long",img:"img/trade-spreadu.svg",ticks:!1,barrier:!1},{value:"SPREADD",text:"Spread Short",img:"img/trade-spreadu.svg",ticks:!1,barrier:!1}]},function(t,e,n){function r(t){var e=-1,n=t?t.length:0;for(this.clear();++e<n;){var r=t[e];this.set(r[0],r[1])}}var i=n(285),o=n(286),a=n(287),s=n(288),l=n(289);r.prototype.clear=i,r.prototype.delete=o,r.prototype.get=a,r.prototype.has=s,r.prototype.set=l,t.exports=r},function(t,e,n){function r(t,e){for(var n=t.length;n--;)if(i(t[n][0],e))return n;return-1}var i=n(80);t.exports=r},function(t,e,n){function r(t,e){var n=t.__data__;return i(e)?n["string"==typeof e?"string":"hash"]:n.map}var i=n(282);t.exports=r},function(t,e,n){function r(t,e){if(i(t))return!1;var n=typeof t;return!("number"!=n&&"symbol"!=n&&"boolean"!=n&&null!=t&&!o(t))||(s.test(t)||!a.test(t)||null!=e&&t in Object(e))}var i=n(9),o=n(41),a=/\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,s=/^\w*$/;t.exports=r},function(t,e,n){var r=n(10),i=r(Object,"create");t.exports=i},function(t,e,n){function r(t){if("string"==typeof t||i(t))return t;var e=t+"";return"0"==e&&1/t==-o?"-0":e}var i=n(41),o=1/0;t.exports=r},function(t,e){function n(t){var e=typeof t;return null!=t&&("object"==e||"function"==e)}t.exports=n},function(t,e){function n(t){return null!=t&&"object"==typeof t}t.exports=n},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(89),o=r(i);e.default=function(t,e,n,r,i){return{name:t,type:e,data:n,id:i||"main",point:{events:(0,o.default)(r)},fillOpacity:.1,threshold:null,zoneAxis:"x",dataGrouping:{enabled:!0}}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.computeMinRange=void 0;var i=n(1),o=n(7),a=r(o),s=e.computeMinRange=function(t,e){var n=(0,a.default)(t),r=t.get("future"),o=e.max,s=(0,i.getLast)(n.options.data),l=n.options.data.length,u=n.options.data[l-3],c=n.options.data[l-2],d=c[0]-u[0];if(o&&r&&o>s[0]){var h=o-s[0];return 10*d+h}return 10*d};e.default=function(t){var e=(0,a.default)(t);if(!e)return!1;var n=e.options.data.length;if(n>1){var r=t.xAxis[0].options.minRange,i=s(t,t.xAxis[0].getExtremes());if(r!==i)return t.xAxis[0].update({minRange:i},!1),!0}return!1}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=(e.takeLast=function(t,e,n){return t.slice(e>t.length?0:t.length-e,t.length).map(function(t){return n?t[n]:t})},e.sum=function(t){return t.reduce(function(t,e){return t+e})},e.weightingMultiplier=function(t){return 2/(t+1)},e.mean=function(t){return t.reduce(function(t,e){return t+e})/t.length});e.stddev=function(t){var e=n(t),r=t.map(function(t){return Math.pow(t-e,2)}),i=n(r);return Math.sqrt(i)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e,n){return+t+(+e||n)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){var n=arguments.length<=2||void 0===arguments[2]?"barrier":arguments[2],r=+t[n];if(!r)return e;if("relative"!==t.barrierType)return r;if("undefined"==typeof t.entry_spot&&"undefined"==typeof e)throw new Error("Relative barrier can not be calculated");return r+(+t.entry_spot||e)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return new Date(t-60*t.getTimezoneOffset()*1e3).toISOString()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){var n=+t.slice(0,2),r=+t.slice(3,5),i=+t.slice(6),o=+e.slice(0,2),a=+e.slice(3,5),s=+e.slice(6);return n!==o?n>o:r!==a?r>a:i>s}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(12),o=r(i);e.default=function(){return(0,o.default)(-1)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(60),o=r(i),a=n(62),s=r(a);e.default=function(t,e){if(e.indexOf("SPREAD")>-1)return[];var n=t.filter(function(t){return"t"===t.min_contract_duration.slice(-1)}),r=n.length>0?{min:5,max:10,unit:"t"}:void 0,i=t.filter(function(t){return"t"!==t.min_contract_duration.slice(-1)});if(0===i.length)return r?[r]:[];var a=i.map(function(t){return(0,o.default)(t.min_contract_duration)}).filter(function(t){return!!t}).reduce(function(t,e){return Math.min(t,e)}),l=i.map(function(t){return(0,o.default)(t.max_contract_duration)}).filter(function(t){return!!t}).reduce(function(t,e){return Math.max(t,e)}),u=(0,s.default)(a,l);return r&&u.unshift(r),u}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){var n=arguments.length<=2||void 0===arguments[2]?function(t,e){return t===e}:arguments[2],r=t.length,i=e.length,o=Math.abs(r-i);switch(o){case 0:return 0!==r&&(1===r?!n(t[0],e[0]):n(t[t.length-1],e[e.length-2])||n(t[t.length-2],e[e.length-1]));case 1:return 0===r||0===i||(n(t[t.length-1],e[e.length-2])||n(t[t.length-2],e[e.length-1]));default:return!1}}},function(t,e,n){var r=n(10),i=n(5),o=r(i,"Map");t.exports=o},function(t,e,n){function r(t){var e=-1,n=t?t.length:0;for(this.clear();++e<n;){var r=t[e];this.set(r[0],r[1])}}var i=n(290),o=n(291),a=n(292),s=n(293),l=n(294);r.prototype.clear=i,r.prototype.delete=o,r.prototype.get=a,r.prototype.has=s,r.prototype.set=l,t.exports=r},function(t,e,n){function r(t){return null!=t&&o(t.length)&&!i(t)}var i=n(82),o=n(40);t.exports=r},function(t,e){function n(t){return"number"==typeof t&&t>-1&&t%1==0&&t<=r}var r=9007199254740991;t.exports=n},function(t,e,n){function r(t){return"symbol"==typeof t||i(t)&&s.call(t)==o}var i=n(26),o="[object Symbol]",a=Object.prototype,s=a.toString;t.exports=r},function(t,e,n){function r(t){return a(t)?i(t):o(t)}var i=n(247),o=n(259),a=n(39);t.exports=r},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return{name:name,type:"line",data:t,id:e,lineWidth:0,enableMouseTracking:!1,dataGrouping:{enabled:!1}}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(8),o=n(1),a=n(27),s=r(a),l=n(28),u=n(118),c=n(4),d=function(t,e){return{snap:!1,color:(0,c.colorBg)(t,1),dashStyle:"LongDashDot",zIndex:50,label:{enabled:!0,padding:5,fontSize:11,shape:"rect",formatter:e,style:{color:(0,c.colorText)(t,1)}}}};e.default=function(t){var e=t.pipSize,n=void 0===e?0:e,r=t.type,a=void 0===r?"area":r,h=t.noData,p=void 0!==h&&h,f=t.theme,g=void 0===f?"light":f,m=t.shiftMode,v=void 0===m?"fixed":m,y=t.assetName,b=t.hideEndButton,x=void 0===b?function(){}:b;return(0,i.merge)("light"===g?u.lightTheme:u.darkTheme,{binary:{pipSize:n,theme:g,lastYExtremes:{},shiftMode:v,type:a},animation:!1,scrollbar:{enabled:!1},credits:{enabled:!1},legend:{enabled:!1},rangeSelector:{enabled:!1},title:{text:null},navigator:{enabled:!1},noData:{style:p?{}:{display:"none"}},chart:{spacingBottom:10,spacingTop:0,spacingLeft:0,spacingRight:0,events:{load:function(){this.xAxis[0].chart=this}}},plotOptions:{series:{connectNulls:!1,marker:{enabled:!1},gapSize:144e5}},xAxis:{type:"datetime",tickWidth:0,startOnTick:!1,endOnTick:!1,crosshair:d(g),events:{setExtremes:function(t){var e=this.chart.get("future");if(e){var n=(0,l.computeMinRange)(this.chart,t);this.update({minRange:n},!1)}},afterSetExtremes:function(t){var e=t.max,n=t.dataMax;x(e>=n)}},ordinal:!0},yAxis:{opposite:!0,labels:{align:"left",formatter:function(){return this.value.toFixed(this.chart.userOptions.binary.pipSize)}},crosshair:d(g,function(t){return t.toFixed(this.chart.userOptions.binary.pipSize)}),tickWidth:0,title:{text:null},floor:0,minTickInterval:(0,o.digitsToPips)(n)},series:[(0,s.default)(y,a,[],n)],exporting:{enabled:!1,chartOptions:{chart:{backgroundColor:(0,c.colorText)(g,1),margin:60}}},responsive:{rules:[{condition:{maxWidth:400},chartOptions:{}}]}})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(236),o=r(i),a=n(1),s=n(94),l=r(s),u=n(91),c=r(u),d=n(95),h=r(d),p=n(96),f=r(p),g=n(93),m=r(g),v=n(28),y=r(v),b=n(87),x=r(b),w=n(92),k=r(w),P=function(t,e){return t.symbol===e.symbol&&t.type===e.type&&(0,a.areTickArraysEqual)(t.ticks,e.ticks)},_=function(t,e){return t.symbol===e.symbol&&t.type===e.type&&(0,a.areCandleArrayEqual)(t.ticks,e.ticks)},M=function(t,e){return(0,o.default)(t.contract,e.contract)&&(0,o.default)(t.trade,e.trade)},O=function(t,e){return(0,o.default)(e.tradingTimes,t.tradingTimes)},S=function(t,e){return e.pipSize===t.pipSize},A=function(t,e){return(0,o.default)(e.indicators,t.indicators)};e.default=function(t,e,n){var r=!M(e,n),i=n.contract,o=n.pipSize,s=n.theme,u=n.trade,d=n.ticks,p=n.type,g=n.shiftMode,v={},b=!0;switch(p){case"line":case"area":v=(0,a.getLastTickQuote)(d),b=!P(e,n);break;case"ohlc":case"candlestick":v=(0,a.getLastOHLCTick)(d),b=!_(e,n);break;default:throw new Error("Not recognized chart type: ",p)}var w=(0,x.default)(u,i,v);t.userOptions.binary=Object.assign(t.userOptions.binary,{contract:w,ticks:d,pipSize:o,theme:s,shiftMode:g||t.userOptions.binary.shiftMode,type:p}),b&&((0,l.default)(t,n),d.length>0&&t.hideLoading());var T=!1;w&&(T=(0,h.default)(t,w,(0,a.getLast)(d))),(r||b)&&(0,c.default)(t,w,s);var C=!O(e,n);if(C){var E=n.tradingTimes;(0,f.default)(t,E)}var D=!S(e,n);D&&(0,m.default)(t,n);var j=(0,y.default)(t);A(e,n)&&!b||(0,k.default)(t,d,n.indicators),(b||r||C||D||T||j)&&t.redraw(!1)}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.low_barrier,n=t.high_barrier;return[(0,r.winPlotBand)("win1",e,n)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.low_barrier,n=t.high_barrier;return[(0,r.winPlotBand)("win1",0,e),(0,r.winPlotBand)("win2",n,Number.MAX_VALUE)]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=[{id:"purchase_time",position:"right"},{id:"date_start",position:"left"},{id:"entry_tick_time",position:"right"},{id:"exit_tick_time",position:"left"},{id:"date_expiry",position:"right"},{id:"date_settlement",position:"right"},{id:"sell_time",position:"right"}]},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(4);e.default=function(t,e,n,i,o){return{id:t,value:1e3*e,color:(0,r.colorBg)(o,.5),width:1,label:{text:n,rotation:"left"===i?270:90,x:"left"===i?-5:5,textAlign:"left"===i?"right":"left",verticalAlign:"top",style:{color:(0,r.colorBg)(o,1),fontWeight:"bold",letterSpacing:".2px"}}}}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default={type:"Chart Type",interval:"Interval",indicators:"Indicators",share:"Share / Download",settings:"Settings",moveLeft:"Move Left",zoomOut:"Zoom Out",resetZoom:"Reset Zoom",zoomIn:"Zoom In",moveRight:"Move Right",moveToEnd:"Move to Latest"}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=["barrier","barrier2","low_barrier","high_barrier"]},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){switch(t){case"area":case"line":return"ticks";case"ohlc":case"candlestick":return"candles";default:throw new Error("Unknown chart type: "+t)}}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.simpleMovingAverageArray=void 0;var r=n(1),i=n(29),o=function(t,e){var n=e.periods,r=e.field;if(t.length<n)throw new Error("Periods longer than data length");var o=(0,i.takeLast)(t,n,r);return(0,i.sum)(o)/n};e.simpleMovingAverageArray=function(t,e){var n=e.periods;return(0,r.sequence)(t.length-n+1).map(function(r,i){return o(t.slice(i,i+n),e)})};e.default=o},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.reduce(function(t,e){return Object.keys(e).forEach(function(n){Array.isArray(t[n])?t[n].push(e[n]):t[n]=[e[n]]}),t},{})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(30),o=r(i);e.default=function(t,e){return(0,o.default)(t.barrier,t.entry_spot,e)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(32),o=r(i);e.default=function(t){return(0,o.default)(t).slice(11,19)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){return Math.floor(Date.now()/1e3)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=Math.floor(t/60),n=Math.floor(e/60),r=Math.floor(n/24);return[t,e,n,r]}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(33),o=r(i);e.default=function(t,e){return t!==e&&!(0,o.default)(t,e)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(16),o=r(i);e.default=function(t){var e=+t.slice(0,-1),n=t.slice(-1);return(0,o.default)(e,n)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=["t","s","m","h","d"]},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(61),o=r(i),a=n(58),s=r(a),l=function(t,e,n){if(e<=1)return!1;switch(n){case"s":return t<60;case"m":return t<60;case"h":return t<24;case"d":default:return!0}};e.default=function(t,e){for(var n=(0,s.default)(t),r=(0,s.default)(e),i=[],a=0;a<n.length;a++){var u=o.default[a+1],c=n[a],d=r[a];l(c,d,u)&&i.push({unit:u,min:c>0?c:1,max:d})}return i}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return!!t&&"t"===t.slice(-1)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return+t.toFixed(e).slice(-1)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return!t&&t===e||!!t&&!!e&&t.epoch===e.epoch&&t.close===e.close}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return!t&&t===e||!!t&&!!e&&t.epoch===e.epoch&&t.quote===e.quote}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(18),o=r(i);e.default=function(t){var e=o.default.find(function(e){return e.value===t});return e?e.text:"Unknown"}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(18),o=r(i);e.default=function(t){var e=o.default.find(function(e){return e.value===t});return!(!e||!e.barrier)}},function(t,e,n){function r(t){var e=this.__data__=new i(t);this.size=e.size}var i=n(19),o=n(303),a=n(304),s=n(305),l=n(306),u=n(307);r.prototype.clear=o,r.prototype.delete=a,r.prototype.get=s,r.prototype.has=l,r.prototype.set=u,t.exports=r},function(t,e,n){var r=n(5),i=r.Symbol;t.exports=i},function(t,e,n){function r(t,e){e=o(e,t)?[e]:i(e);for(var n=0,r=e.length;null!=t&&n<r;)t=t[a(e[n++])];return n&&n==r?t:void 0}var i=n(73),o=n(22),a=n(24);t.exports=r},function(t,e,n){function r(t,e,n,s,l){return t===e||(null==t||null==e||!o(t)&&!a(e)?t!==t&&e!==e:i(t,e,r,n,s,l))}var i=n(254),o=n(25),a=n(26);t.exports=r},function(t,e,n){function r(t){return i(t)?t:o(t)}var i=n(9),o=n(308);t.exports=r},function(t,e,n){function r(t,e,n,r,u,c){var d=u&l,h=t.length,p=e.length;if(h!=p&&!(d&&p>h))return!1;var f=c.get(t);if(f&&c.get(e))return f==e;var g=-1,m=!0,v=u&s?new i:void 0;for(c.set(t,e),c.set(e,t);++g<h;){var y=t[g],b=e[g];if(r)var x=d?r(b,y,g,e,t,c):r(y,b,g,t,e,c);if(void 0!==x){if(x)continue;m=!1;break}if(v){if(!o(e,function(t,e){if(!a(v,e)&&(y===t||n(y,t,r,u,c)))return v.push(e)})){m=!1;break}}else if(y!==b&&!n(y,b,r,u,c)){m=!1;break}}return c.delete(t),c.delete(e),m}var i=n(243),o=n(248),a=n(267),s=1,l=2;t.exports=r},function(t,e,n){(function(e){var n="object"==typeof e&&e&&e.Object===Object&&e;t.exports=n}).call(e,n(320))},function(t,e){function n(t,e){return e=null==e?r:e,!!e&&("number"==typeof t||i.test(t))&&t>-1&&t%1==0&&t<e}var r=9007199254740991,i=/^(?:0|[1-9]\d*)$/;t.exports=n},function(t,e,n){function r(t){return t===t&&!i(t)}var i=n(25);t.exports=r},function(t,e){function n(t,e){return function(n){return null!=n&&(n[t]===e&&(void 0!==e||t in Object(n)))}}t.exports=n},function(t,e){function n(t){if(null!=t){try{return i.call(t)}catch(t){}try{return t+""}catch(t){}}return""}var r=Function.prototype,i=r.toString;t.exports=n},function(t,e){function n(t,e){return t===e||t!==t&&e!==e}t.exports=n},function(t,e,n){function r(t){return i(t)&&s.call(t,"callee")&&(!u.call(t,"callee")||l.call(t)==o)}var i=n(313),o="[object Arguments]",a=Object.prototype,s=a.hasOwnProperty,l=a.toString,u=a.propertyIsEnumerable;t.exports=r},function(t,e,n){function r(t){var e=i(t)?u.call(t):"";return e==o||e==a||e==s}var i=n(25),o="[object Function]",a="[object GeneratorFunction]",s="[object Proxy]",l=Object.prototype,u=l.toString;t.exports=r},function(t,e){t.exports=function(t){return t.webpackPolyfill||(t.deprecate=function(){},t.paths=[],t.children||(t.children=[]),Object.defineProperty(t,"loaded",{enumerable:!0,configurable:!1,get:function(){return t.l}}),Object.defineProperty(t,"id",{enumerable:!0,configurable:!1,get:function(){return t.i}}),t.webpackPolyfill=1),t}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(1),d=n(86),h=r(d),p=n(124),f=r(p),g=n(123),m=r(g),v=n(127),y=r(v),b=n(52),x=r(b),w=n(7),k=r(w),P=n(4),_=r(P),M=function(t){function e(t){i(this,e);var n=o(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t));return n.getCurrentStartEnd=function(){var t=n.getXAxis().getExtremes(),e=t.dataMin,r=t.dataMax,i=Math.round(e/1e3),o=Math.round(r/1e3);return{start:i,end:o}},n.onTypeChange=function(t){var e=n.props,r=e.getData,i=e.onTypeChange,o=e.type,a=n.getCurrentStartEnd(),s=a.start,l=a.end;if(!n.chart.isLoading){var u=(0,x.default)(o),d=(0,x.default)(t);if(u===d)return void i(t);var h="ticks"===d?void 0:60;n.setState({interval:h}),n.chart.showLoading(),r(s,l,d,h).then(function(e){if(i(t),n.chart.hideLoading(),e&&0!==e.length){var r=n.getXAxis(),o=r.getExtremes(),a=o.min,s=o.max,l=Math.max(a,1e3*e[0].epoch),u=Math.min(s,1e3*(0,c.getLast)(e).epoch);r.setExtremes(l,u,!0,!1)}})}},n.onIntervalChange=function(t){var e=n.props,r=e.getData,i=e.type,o=e.onTypeChange,a=n.getCurrentStartEnd(),s=a.start,l=a.end,u=(0,x.default)(i);t?r(s,l,"candles",t).then(function(){"ticks"===u&&o("candlestick"),n.chart.xAxis[0].update({minRange:10*t*1e3})}):"ticks"!==u&&r(s,l,"ticks").then(function(){return o("area")}),n.setState({interval:t})},n.getChart=function(){return n.chart},n.getSeries=function(){return(0,k.default)(n.chart)},n.getXAxis=function(){return n.chart.xAxis[0]},n.getYAxis=function(){return n.chart.yAxis[0]},n.getDataByStartEnd=function(t,e){var r=(0,x.default)(n.props.type),i=n.state.interval;return"candles"===r?n.props.getData(t,e,r,i):n.props.getData(t,e,r)},n.onShowPicker=function(t){t===n.state.pickerShown?n.setState({pickerShown:void 0}):n.setState({pickerShown:t})},n.state={range:{},endButtonShown:!0,interval:void 0},n}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.allowOHLC,n=t.assetName,r=t.className,i=t.compactToolbar,o=t.hideTimeFrame,a=t.hideToolbar,s=t.showTooltips,l=t.hideZoomControls,c=t.showAllTimeFrame,d=t.theme,p=t.ticks,g=t.type,v=t.indicators,b=t.id,w=t.symbol,k=t.noData,P=t.pipSize,M=t.events,O=t.shiftMode,S=t.contract,A=t.trade,T=t.hideIntervalPicker,C=this.state,E=C.endButtonShown,D=C.pickerShown,j=C.interval;return u.default.createElement("div",{style:_.default.container,className:r,onClick:this.onShowPicker},u.default.createElement("div",{id:"binary-chart-info-container",style:_.default.infobar}),!a&&u.default.createElement(f.default,{allowOHLC:e,assetName:n,compact:i,interval:j,hasInterval:"candles"===(0,x.default)(g),getChart:this.getChart,getXAxis:this.getXAxis,getYAxis:this.getYAxis,hideIntervalPicker:T,onIntervalChange:this.onIntervalChange,onTypeChange:this.onTypeChange,onShowPicker:this.onShowPicker,pickerShown:D,showTooltips:s,theme:d,type:g}),u.default.createElement(h.default,{parent:this,id:b,indicators:v,contract:S,symbol:w,noData:k,pipSize:P,type:g,ticks:p,events:M,theme:d,trade:A,shiftMode:O}),!l&&u.default.createElement(y.default,{endButtonShown:E,showTooltips:s,getChart:this.getChart,getXAxis:this.getXAxis,getData:this.getDataByStartEnd,getSeries:this.getSeries}),!o&&u.default.createElement(m.default,{data:p,getChart:this.getChart,getXAxis:this.getXAxis,getData:this.getDataByStartEnd,getSeries:this.getSeries,interval:j,showAllTimeFrame:c}))}}]),e}(l.Component);M.defaultProps={allowOHLC:!0,events:[],getData:function(){return Promise.resolve()},hideTimeFrame:!1,hideIntervalPicker:!1,hideToolbar:!1,hideZoomControls:!1,indicators:[],onTypeChange:function(){},onIntervalChange:function(){},pipSize:0,showAllTimeFrame:!0,theme:"light",ticks:[],type:"area"},e.default=M},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(8),o=r(i),a=n(44),s=r(a),l=n(45),u=r(l),c=function(t,e){var n=(0,s.default)(e),r=new o.default.StockChart(t,n);return"candlestick"===e.type&&r.xAxis[0].update({minRange:6e5}),r};e.default=function(t,e){var n=c(t,e);(0,u.default)(n,{ticks:[]},e);var r=e,i=function(e){r.symbol===e.symbol&&r.type===e.type&&r.noData===e.noData||(n.destroy(),n=c(t,e)),(0,u.default)(n,r,e),r=e},o=function(){return n.destroy()};return{updateChart:i,destroy:o}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(8),d=r(c),h=n(237),p=r(h),f=n(238),g=r(f),m=n(44),v=r(m),y=n(45),b=r(y),x=n(117),w=r(x),k=n(116),P=r(k),_=n(4),M=r(_);Object.keys(d.default).length>0&&((0,p.default)(d.default),(0,g.default)(d.default),(0,w.default)(),(0,P.default)());var O=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"componentDidMount",value:function(){this.createChart(),(0,b.default)(this.chart,{ticks:[]},this.props)}},{key:"componentDidUpdate",value:function(t){this.props.symbol===t.symbol&&this.props.noData===t.noData||(this.destroyChart(),this.createChart(this.props)),(0,b.default)(this.chart,t,this.props)}},{key:"componentWillUnmount",value:function(){this.destroyChart()}},{key:"createChart",value:function(t){var e=this,n=t||this.props,r=(0,v.default)(Object.assign({hideEndButton:function(t){return e.props.parent.setState({endButtonShown:!t})}},n));this.chart=this.props.parent.chart=new d.default.StockChart(this.chartDiv,r,function(t){n.noData||0!==n.ticks.length||t.showLoading()}),this.eventListeners=n.events.map(function(t){return{type:t.type,handler:function(n){return t.handler(n,e.chart)}}}),this.eventListeners.forEach(function(t){return e.chartDiv.addEventListener(t.type,t.handler);
-	})}},{key:"destroyChart",value:function(){var t=this;this.eventListeners&&this.eventListeners.forEach(function(e){return t.chartDiv.removeEventListener(e.type,e.handler)}),this.chart&&this.chart.destroy()}},{key:"render",value:function(){var t=this,e=this.props.id;return u.default.createElement("div",{style:M.default.chartCore,ref:function(e){t.chartDiv=e},id:e})}}]),e}(l.PureComponent);e.default=O},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t};e.default=function(t,e,r){if(e){var i=Object.assign({},e),o=e.barrier_count,a=e.barrier,s=e.low_barrier,l=e.high_barrier;switch(o){case 1:return a?i.barrier=+a:i.barrier=+r,i;case 2:if(s&&l)return i.low_barrier=+s,i.high_barrier=+l,i;break;case void 0:return i;default:throw new Error("Unexpected barrier_count from contract: ",e)}}if(t){var u=Object.assign({entry_tick:+r},t),c=t.barrier,d=t.barrier2,h=t.barrierType;if(delete u.barrier,delete u.barrier2,delete u.low_barrier,delete u.high_barrier,delete u.barrierType,!c)return u.barrier=+r,u;switch(h){case"absolute":return c&&d?(u.low_barrier=+d,u.high_barrier=+c):d||(u.barrier=+c),u;case"digit":return n({},u,{barrier:+c});case"relative":default:var p=+c+r,f=+d+r;return c&&d?(u.low_barrier=f,u.high_barrier=p):d||(u.barrier=p),u}}}},function(t,e,n){"use strict";function r(t){if(t&&t.__esModule)return t;var e={};if(null!=t)for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n]);return e.default=t,e}Object.defineProperty(e,"__esModule",{value:!0}),e.plotBandForContract=void 0;var i=n(109),o=r(i);e.plotBandForContract=function(t){if(!t)return[];var e=t.contract_type;if(!e)return[];var n=o[e.toLowerCase()+"PlotBand"];if(!n)throw Error("Not a known type: "+e);var r=t.barrier,i=t.low_barrier,a=t.high_barrier,s=t.entry_tick;return n({barrier:r,low_barrier:i,high_barrier:a,entry_tick:s})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(8),o=r(i),a=function(t){return o.default.dateFormat("%a %d %b %H:%M:%S",t)},s=function(t){return'<div class="date-row">'+a(t.x)+'</div>\n  <div class="date-row">'+a(t.x+t.series.closestPointRange)+"</div>"},l=function(t,e){return'\n    <div class="binary-chart-info-bar">\n        '+s(t)+'\n        <div class="value-row"><span>'+t.series.name+"</span><span>"+t.y.toFixed(e)+"</span></div>\n    </div>\n"},u=function(t,e){return'\n    <div class="binary-chart-info-bar">\n        '+s(t)+'\n        <div class="value-row">'+t.series.name+'</div>\n        <div class="ohlc-row"><span>Open</span><span>'+t.open.toFixed(e)+'</span></div>\n        <div class="ohlc-row"><span>High</span><span>'+t.high.toFixed(e)+'</span></div>\n        <div class="ohlc-row"><span>Low</span><span>'+t.low.toFixed(e)+'</span></div>\n        <div class="ohlc-row"><span>Close</span><span>'+t.close.toFixed(e)+"</span></div>\n    </div>\n"};e.default=function(t){return{mouseOut:function(){document.getElementById("binary-chart-info-container").innerHTML=""},mouseOver:function(){var e="line"===this.series.type||"area"===this.series.type?l:u;document.getElementById("binary-chart-info-container").innerHTML=e(this,t)}}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(43),a=r(o),s=n(7),l=r(s),u=n(51),c=r(u),d=function(t,e){var n=(0,l.default)(t);return c.default.filter(function(t){return e&&e[t]&&!e.contract_type.includes("DIGIT")}).sort(function(t,n){return+e[t]-+e[n]}).map(function(t){return n.options.data.map(function(n){return[n[0],+e[t]]})})},h=function(t,e){var n=d(t,e);if(0!==n.length){for(;n.length<3;)n.push((0,i.getLast)(n));n.forEach(function(e,n){var r="b"+n,i=t.get(r);i.setData(e,!1)})}},p=function(t){var e=(0,l.default)(t),n=(0,i.getLast)(e.options.data),r=[n];t.addSeries((0,a.default)(r,"b0")),t.addSeries((0,a.default)(r,"b1")),t.addSeries((0,a.default)(r,"b2"))};e.default=function(t,e){var n=(0,l.default)(t);if(n){var r=t.get("b0");r||p(t,e),h(t,e)}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.updatePlotBands=void 0;var i=n(88),o=n(115),a=r(o),s=n(48),l=r(s),u=n(97),c=r(u),d=n(90),h=r(d),p=function(t,e,n,r,i){e.forEach(function(e){var o=n.find(function(t){return t.id===e.id});if(o){var a=t.plotLinesAndBands.find(function(t){return t.id===e.id}),s=!0;a&&a.value?s=a.options.value!==o.value:a&&a.from&&(s=a.from!==o.from||a.to!==o.to),s&&(t[i](e.id),t[r](o))}else t[i](e.id)})},f=function(t,e){var n=[{id:"win1"},{id:"loss1"},{id:"win2"},{id:"loss2"}];p(t,n,e,"addPlotBand","removePlotBand")},g=function(t,e){p(t,l.default,e,"addPlotLine","removePlotLine")},m=e.updatePlotBands=function(t,e){var n=(0,i.plotBandForContract)(e);f(t.yAxis[0],n)};e.default=function(t,e,n){m(t,e),(0,h.default)(t,e);var r=(0,a.default)(e,n);g(t.xAxis[0],r),(0,c.default)(t,r)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(53),o=n(147),a=n(146),s=n(27),l=r(s);e.default=function(t,e,n){if(e&&0!==e.length){if(!t.get("indicator0")){var r=t.userOptions.binary.pipSize;t.addSeries((0,l.default)("indicator","line",[],r,"indicator0")),t.addSeries((0,l.default)("indicator","line",[],r,"indicator1"))}n.forEach(function(n,r){var s=!!e[0].open,l=s?e.map(function(t){return+t.close}):e.map(function(t){return+t.quote}),u=[];switch(n.type.toLowerCase()){case"sma":u=(0,i.simpleMovingAverageArray)(l,n);break;case"ema":u=(0,o.exponentialMovingAverageArray)(l,n);break;case"bb":u=(0,a.bollingerBandsArray)(l,n)}var c=e.length-u.length,d=u.map(function(t,n){return[1e3*+e[n+c].epoch,t]}),h=t.get("indicator"+r);h.update({name:n.name||n.type}),h.setData(d)})}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(7),a=r(o);e.default=function(t,e){var n=e.pipSize,r=(0,a.default)(t);r&&t.yAxis[0].update({minTickInterval:(0,i.digitsToPips)(n)},!1)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(27),a=r(o),s=n(52),l=r(s),u=n(7),c=r(u),d=function(t,e){var n=(0,c.default)(t);n&&n.options.type!==e&&n.remove()};e.default=function(t,e){var n=e.type;d(t,n);var r=(0,l.default)(n),o=t.xAxis[0].getExtremes(),s=o.dataMax,u=o.min,h=o.max,p=(0,c.default)(t),f=p?p.options.data:[],g=t.userOptions.binary.pipSize,m=e.ticks.map("ticks"===r?i.tickToData:i.ohlcToData),v=(0,i.getLast)(m);if(v){var y=(0,i.doArrayDifferJustOneEntry)(f,m,function(t,e){return t&&e&&(t===e||t[0]===e[0])}),b="ticks"===r?2e3:1e5,x=function(r){return t.addSeries((0,a.default)(e.assetName,n,r,g),!1)},w=function(e,n){var r=t.get("future");if(r)t.xAxis[0].setExtremes(u,h,!1);else{var i=s-h<=n;if(i){var o=u+(e-s),a="fixed"===t.userOptions.binary.shiftMode;t.xAxis[0].setExtremes(a?o:u,e,!1)}}};y?(p?p.addPoint(v,!1):x([v]),w(v[0],b)):p?p.setData(m,!1):x(m)}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(43),a=r(o),s=n(7),l=r(s);e.default=function(t,e,n){function r(t,e){for(var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:1e4,r=arguments.length>3&&void 0!==arguments[3]?arguments[3]:8,i=r;i>=0;i-=1)t.push([e-i*n,d]);return t}if(!n)return!1;var o=e.date_start,s=e.date_expiry,u=t.xAxis[0],c=u.getExtremes(),d=2===Object.keys(n).length?n.quote:n.close,h=c.min||t.series[0].options.data[0][0],p=c.max||d,f=n.epoch,g=o&&o>f,m=s&&s>f,v=g||m,y=t.get("future");if(!v||e.tick_count){if(y){y.remove();var b=(0,l.default)(t);b.update({dataGrouping:{enabled:!0}});var x=b&&(0,i.getLast)(b.options.data)[0];if(x&&p>x)return u.setExtremes(h,x,!1),!0}return!1}var w=40,k=o&&1e3*(o+w),P=s&&1e3*(s+w);if(y){var _=(0,i.getLast)(y.options.data)[0],M=[];if(g&&_<1e3*o&&r(M,k),m&&_<1e3*s&&r(M,P),M.length>0)return y.setData(M),u.setExtremes(h,(0,i.getLast)(M)[0],!1),!0}else{(0,l.default)(t).update({dataGrouping:{enabled:!1}});var O=[];if(g&&r(O,k),m&&r(O,P),O.length>0){var S=(0,a.default)(O,"future");return t.addSeries(S),u.setExtremes(h,(0,i.getLast)(O)[0],!1),!0}}return!1}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.flattenTradingTimes=e.strTimePlusDayAsEpoch=void 0;var i=n(1),o=n(49),a=r(o),s=function(t){var e=t.split(":");return 60*+e[0]*60+60*+e[1]+ +e[2]},l=e.strTimePlusDayAsEpoch=function(t,e){return(0,i.dateToEpoch)(t)+s(e)},u=e.flattenTradingTimes=function(t,e){if(!e)return[];var n=new Date;n.setUTCHours(0,0,0,0);var r=e.open.map(function(t){return{name:"open",epoch:l(n,t)}}),i=e.close.map(function(t){return{name:"close",epoch:l(n,t)}}),o=e.settlement,a=r.concat(i);return a.push({name:"settlement",epoch:l(n,o)}),a},c=function(t){var e=new Date;return e.setUTCHours(0,0,0,0),u(e,t).map(function(t){return(0,a.default)("trading-times-line",t.epoch,t.name,"left","light")})};e.default=function(t,e){var n=t.xAxis[0];n.removePlotLine("trading-times-line");var r=c(e);r.forEach(function(t){return n.addPlotLine(t)})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},o=n(7),a=r(o),s={color:"lightgrey",fillColor:"none",lineWidth:5},l={dashStyle:"solid"};e.default=function(t,e){var n=e.find(function(t){return"entry_tick_time"===t.id}),r=e.find(function(t){return"exit_tick_time"===t.id}),o=[];n&&o.push(i({value:n.value},s)),r&&(o.push(i({value:r.value},l)),o.push(s));var u=(0,a.default)(t);if(u){var c=u.options.type,d=u.options.zones,h=(!d||0===d.length)&&0===o.length;h||"line"!==c&&"area"!==c||u.update({zones:o},!1)}}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier;return[(0,r.winPlotBand)("win1",0,e)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier;return[(0,r.winPlotBand)("win1",e,Number.MAX_VALUE)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier;return[(0,r.winPlotBand)("win1",e,Number.MAX_VALUE)]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){return[]}},101,101,101,101,101,function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(47),o=r(i);e.default=o.default},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(46),o=r(i);e.default=o.default},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.upordownPlotBand=e.spreaduPlotBand=e.spreaddPlotBand=e.rangePlotBand=e.putPlotBand=e.onetouchPlotBand=e.notouchPlotBand=e.expiryrangePlotBand=e.expirymissPlotBand=e.digitunderPlotBand=e.digitoverPlotBand=e.digitoddPlotBand=e.digitmatchPlotBand=e.digitevenPlotBand=e.digitdiffPlotBand=e.callPlotBand=e.asianuPlotBand=e.asiandPlotBand=void 0;var i=n(98),o=r(i),a=n(99),s=r(a),l=n(100),u=r(l),c=n(101),d=r(c),h=n(102),p=r(h),f=n(103),g=r(f),m=n(104),v=r(m),y=n(105),b=r(y),x=n(106),w=r(x),k=n(107),P=r(k),_=n(108),M=r(_),O=n(110),S=r(O),A=n(111),T=r(A),C=n(112),E=r(C),D=n(46),j=r(D),L=n(113),I=r(L),B=n(114),z=r(B),R=n(47),X=r(R);e.asiandPlotBand=o.default,e.asianuPlotBand=s.default,e.callPlotBand=u.default,e.digitdiffPlotBand=d.default,e.digitevenPlotBand=p.default,e.digitmatchPlotBand=g.default,e.digitoddPlotBand=v.default,e.digitoverPlotBand=b.default,e.digitunderPlotBand=w.default,e.expirymissPlotBand=P.default,e.expiryrangePlotBand=M.default,e.notouchPlotBand=S.default,e.onetouchPlotBand=T.default,e.putPlotBand=E.default,e.rangePlotBand=j.default,e.spreaddPlotBand=I.default,e.spreaduPlotBand=z.default,e.upordownPlotBand=X.default},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier,n=t.entry_tick;return e<n?[(0,r.winPlotBand)("win1",e,Number.MAX_VALUE)]:[(0,r.winPlotBand)("win1",0,e)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier,n=t.entry_tick;return e>n?[(0,r.winPlotBand)("win1",e,Number.MAX_VALUE)]:[(0,r.winPlotBand)("win1",0,e)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier;return[(0,r.winPlotBand)("win1",0,e)]}},101,101,function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(49),a=r(o),s=n(48),l=r(s),u=function(t){return+t.purchase_time!==+t.entry_tick_time&&+t.purchase_time!==+t.date_start},c=function(t){return!t.tick_count},d=function(t){return+t.date_settlement!==+t.date_expiry},h=function(t){return!t.exit_tick_time&&t.sell_time};e.default=function(t,e){return t?l.default.filter(function(e){return t[e.id]}).filter(function(e){return"purchase_time"!==e.id||u(t)}).filter(function(e){return"date_expiry"!==e.id||c(t)}).filter(function(e){return"date_settlement"!==e.id||d(t)}).filter(function(e){return"sell_time"!==e.id||h(t)}).map(function(n){return(0,a.default)(n.id,t[n.id],(0,i.contractCodeToText)("sell_time"===n.id?"exit_tick_time":n.id),n.position,e)}):[]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(8);e.default=function(){(0,r.wrap)(r.Chart.prototype,"showLoading",function(t){if(0!==Object.keys(this).length){for(var e=arguments.length,n=Array(e>1?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];t.apply(this,n),this.isLoading=!0}}),(0,r.wrap)(r.Chart.prototype,"hideLoading",function(t){for(var e=arguments.length,n=Array(e>1?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];t.apply(this,n),this.isLoading=!1})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(8),o=n(4),a=n(7),s=r(a),l=n(129),u=r(l),c=n(51),d=r(c),h=function(t,e){return["M",t-5,e,"L",t+5,e-7,t+65,e-7,t+65,e+7,t+5,e+7]},p=function(t){var e=t.renderer,n=t.pipSize,r=t.background,i=t.text,o=t.value,a=t.x,s=t.y,l=t.indicator,u=t.yAxis,c=t.zIndex;l.group=e.g(l).attr({zIndex:c}).add(),l.line=e.rect(0,s,a+10,1).attr({fill:r,opacity:.75}).add(l.group),l.poly=e.path(h(a+10,s)).attr({fill:r}).add(l.group),l.label=e.label((+o).toFixed(n),a-3+u.chart.marginRight,s-9).attr({padding:2}).css({cursor:"default",fontSize:11,textAnchor:"end",color:i}).add(l.group)},f=function(t){var e=t.pipSize,n=t.value,r=t.x,i=t.y,o=t.indicator,a=t.yAxis;o.label.attr({text:(+n).toFixed(e)}),o.line.attr({y:i,width:r+10}),o.label.attr({x:r-3+a.chart.marginRight,y:i-9}),o.poly.attr({d:h(r+10,i)});var s=a.getExtremes();n>s.min&&n<s.max?o.group.show():o.group.hide()},g=function(t){var e=t.chart,n=t.indicator,r=t.value,i=t.x,o=t.pipSize,a=t.yAxis,s=t.background,l=t.text,u=t.zIndex,c=a.toPixels(r)||0,d=a[n]?f:p;a[n]||(a[n]={}),d({renderer:e.renderer,pipSize:o,background:s,text:l,value:r,x:i,y:c,indicator:a[n],yAxis:a,zIndex:u})},m=function(t){var e=t.userOptions.binary,n=e.contract,r=e.pipSize,i=e.theme,a=t.yAxis[0],l=(0,s.default)(t);if(l&&0!==l.yData.length){var c=(0,u.default)(l),h=a.width,p=n&&(n.exit_tick||n.sell_spot);g(p?{chart:t,indicator:"spot",value:+p,x:h,pipSize:r,yAxis:a,background:"#c03",text:"white",zIndex:11}:{chart:t,indicator:"spot",value:+c,x:h,pipSize:r,yAxis:a,background:"#c03",text:"white",zIndex:11}),d.default.forEach(function(e){n&&n[e]?g({chart:t,indicator:e,value:+n[e],x:h,pipSize:r,yAxis:a,background:(0,o.colorBg)(i,1),text:(0,o.colorText)(i,1),zIndex:10}):a[e]&&a[e].group.hide()})}};e.default=function(){(0,i.wrap)(i.Chart.prototype,"init",function(t){for(var e=arguments.length,n=Array(e>1?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];t.apply(this,n),m(this)}),(0,i.wrap)(i.Chart.prototype,"redraw",function(t){for(var e=arguments.length,n=Array(e>1?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];t.apply(this,n),m(this)})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){return a.default.merge(t,e)}Object.defineProperty(e,"__esModule",{value:!0}),e.darkTheme=e.lightTheme=void 0;var o=n(8),a=r(o),s=n(4),l="#c03",u="#2E8836",c=function(t){return{spacing:[100,10,15,10],plotOptions:{line:{color:(0,s.colorBg)(t,1)},area:{color:(0,s.colorBg)(t,1)}},xAxis:{gridLineColor:(0,s.colorBg)(t,.25),labels:{style:{color:(0,s.colorBg)(t,.75)}},lineColor:(0,s.colorBg)(t,.25),title:{style:{color:(0,s.colorBg)(t,.75)}}},yAxis:{gridLineColor:(0,s.colorBg)(t,.2),labels:{style:{color:(0,s.colorBg)(t,.75)}},tickColor:(0,s.colorBg)(t,.2),title:{style:{color:(0,s.colorBg)(t,.75)}}},noData:{style:{color:(0,s.colorBg)(t,.5)}}}},d={chart:{style:{fontFamily:"'Roboto', sans-serif"},backgroundColor:"transparent",resetZoomButton:{theme:{display:"none"}}},plotOptions:{series:{states:{hover:{lineWidth:1.5}}},area:{lineWidth:1.5},ohlc:{color:l,upColor:u,lineWidth:1.5},candlestick:{color:"rgba(204, 0, 51, 0.75)",lineColor:l,lineWidth:1.5,upColor:"rgba(46, 136, 54, 0.75)",upLineColor:u}},xAxis:{labels:{y:15}},yAxis:{tickWidth:1},noData:{style:{fontSize:"20px",fontWeight:"bold"}},lang:{noData:"Data not available"}};e.lightTheme=i(d,c("light")),e.darkTheme=i(d,c("dark"))},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(13),d=n(14),h=r(d),p=[{text:"Simple Moving Average (SMA)",value:"sma",img:u.default.createElement(c.CheckboxIcon,null)},{text:"Exponenital Moving Average (EMA)",value:"ema",img:u.default.createElement(c.CheckboxOutlineIcon,null)},{text:"Bollinger Band (BB)",value:"bb",img:u.default.createElement(c.CheckboxOutlineIcon,null)}],f=function(t){function e(){var t,n,r,a;i(this,e);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return n=r=o(this,(t=e.__proto__||Object.getPrototypeOf(e)).call.apply(t,[this].concat(l))),r.onChange=function(){},a=n,o(r,a)}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.expanded,n=t.tooltip,r=t.onExpand;return u.default.createElement(h.default,{expanded:e,tooltip:n,img:u.default.createElement(c.AnalysisIcon,{width:"16px",height:"16px"}),text:"Indicators",items:p,onExpand:r,onChange:this.onChange})}}]),e}(l.PureComponent);f.defaultProps={},e.default=f},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(14),d=r(c),h=n(128),p=r(h),f=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.value,n=t.tooltip,r=t.expanded,i=t.onExpand,o=t.onChange,a=p.default.find(function(t){return t.value===e}).text;return u.default.createElement(d.default,{expanded:r,tooltip:n,text:a,items:p.default,onExpand:i,onChange:o})}}]),e}(l.PureComponent);e.default=f},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(4),d=r(c),h=function(t){function e(){var t,n,r,a;i(this,e);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return n=r=o(this,(t=e.__proto__||Object.getPrototypeOf(e)).call.apply(t,[this].concat(l))),r.onClick=function(){var t=r.props,e=t.value,n=t.onClick;n(e)},a=n,o(r,a)}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.text,n=t.img;return u.default.createElement("a",{key:e,style:d.default.pickerItem,className:"binary-chart-picker-item",onClick:this.onClick},n,e&&u.default.createElement("span",null,e))}}]),e}(l.PureComponent);e.default=h},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(13),d=n(14),h=r(d),p=function(t){function e(t){i(this,e);var n=o(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t));return n.showMenu=function(){return n.setState({expanded:!n.state.expanded})},n.download=function(t){var e=n.props.getChart();e.exportChart({type:t,filename:n.props.assetName})},n.downloadPng=function(){return n.download("image/png")},n.downloadSvg=function(){return n.download("image/svg+xml")},n.downloadPdf=function(){return n.download("application/pdf")},n.onDownload=function(t){return t()},n.state={expanded:!1},n}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.expanded,n=t.tooltip,r=t.onExpand;return u.default.createElement(h.default,{expanded:e,tooltip:n,text:"Share",img:u.default.createElement(c.ShareIcon,null),items:[{text:"Download PNG Image",value:this.downloadPng},{text:"Download SVG Image",value:this.downloadSvg},{text:"Download PDF Document",value:this.downloadPdf}],onExpand:r,onChange:this.onDownload})}}]),e}(l.PureComponent);p.defaultProps={assetName:"Chart"},e.default=p},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(1),d=n(4),h=r(d),p=[{text:"5m",seconds:300},{text:"15m",seconds:900},{text:"1h",seconds:3600},{text:"3h",seconds:10800},{text:"12h",seconds:43200},{text:"1d",seconds:86400},{text:"1w",seconds:604800},{text:"30d",seconds:27e5}],f=function(t){function e(){var t,n,r,a;i(this,e);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return n=r=o(this,(t=e.__proto__||Object.getPrototypeOf(e)).call.apply(t,[this].concat(l))),r.setRange=function(t){var e=r.props,n=e.getSeries,i=e.getXAxis,o=e.getChart,a=n(),s=i(),l=o(),u=s.getExtremes(),d=u.min,h=u.max,p=l.get("future"),f=h,g=h-1e3*t;if(p){var m=p.options.data[0][0];if(m<=h){var v=(0,c.getLast)(a.options.data)[0];g=v-1e3*t}}var y=a.options.data[0][0],b=g-y;if(b<0){var x=r.props.getData(Math.round(g/1e3),Math.round(y/1e3));x.then&&x.then(function(t){if(!t||0===t.length)return void s.setExtremes(d,f,!0,!1);var e=1e3*t[0].epoch,n=e<g?g:e;s.setExtremes(n,f,!0,!1)})}else s.setExtremes(g,f,!0,!1)},r.setRangeToMax=function(){var t=r.props.getXAxis(),e=t.getExtremes(),n=e.dataMin,i=e.dataMax;t.setExtremes(n,i,!0,!1)},a=n,o(r,a)}return a(e,t),s(e,[{key:"render",value:function(){var t=this,e=this.props,n=e.data,r=e.showAllTimeFrame,i=e.interval,o=p;return n.length>0&&!function(){var t=(0,c.getLast)(n).epoch,e=n[0].epoch;o=r?i?p.filter(function(n){return n.seconds<=t-e+500*i}):p.filter(function(n){return n.seconds<=t-e+1e3}):p.filter(function(n){return n.seconds<=t-e})}(),u.default.createElement("div",{style:h.default.timeFramePicker,className:"binary-chart-time-frame-picker"},o.map(function(e){return u.default.createElement("button",{key:e.text,style:h.default.timeFrameButton,className:"binary-chart-time-frame-button",onClick:function(){return t.setRange(e.seconds)}},e.text)}),u.default.createElement("button",{style:h.default.timeFrameButton,className:"binary-chart-time-frame-button",onClick:this.setRangeToMax},"Max"))}}]),e}(l.PureComponent);f.defaultProps={maxTimeRange:604800},e.default=f},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(4),d=r(c),h=n(50),p=r(h),f=n(120),g=r(f),m=n(125),v=r(m),y=n(119),b=(r(y),n(122)),x=r(b),w=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.allowOHLC,n=t.assetName,r=t.compact,i=t.type,o=t.getChart,a=t.pickerShown,s=t.interval,l=t.showTooltips,c=t.onShowPicker,h=t.onIntervalChange,f=t.onTypeChange,m=t.hideIntervalPicker,y=l?p.default:{};return u.default.createElement("div",{style:d.default.toolbar,className:"binary-chart-toolbar"},u.default.createElement(v.default,{allowOHLC:e,value:i,tooltip:y.type,expanded:"type"===a,onExpand:function(){return c("type")},onChange:f}),(e||!r&&!m)&&u.default.createElement(g.default,{value:s,tooltip:y.interval,expanded:"interval"===a,onExpand:function(){return c("interval")},onChange:h}),u.default.createElement(x.default,{assetName:n,tooltip:y.share,expanded:"share"===a,onExpand:function(){return c("share")},getChart:o}))}}]),e}(l.PureComponent);w.defaultProps={type:"area",compact:!1,hasInterval:!1,hideIntervalPicker:!1},e.default=w},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(13),d=n(14),h=r(d),p=[{text:"Area",value:"area",img:u.default.createElement(c.AreaIcon,null)},{text:"Line",value:"line",img:u.default.createElement(c.LineIcon,null)},{text:"Candlestick",value:"candlestick",img:u.default.createElement(c.CandlestickIcon,null)},{text:"Bars",value:"ohlc",img:u.default.createElement(c.BarIcon,null)}],f={line:"Line",area:"Area",candlestick:"Candlestick",ohlc:"Bars"},g=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.allowOHLC,n=t.expanded,r=t.tooltip,i=t.value,o=t.onExpand,a=t.onChange,s=e?p:p.slice(0,2);return u.default.createElement(h.default,{expanded:n,tooltip:r,text:f[i],img:s.find(function(t){return t.value===i}).img,items:s,onExpand:o,onChange:a})}}]),e}(l.PureComponent);e.default=g},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);
-	t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(4),d=r(c),h=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.img,n=t.tooltip,r=t.onClick;return u.default.createElement("a",{style:d.default.zoomButton,className:"binary-chart-zoom-button",onClick:r},e,n&&u.default.createElement("div",{className:"tooltip"},n))}}]),e}(l.PureComponent);e.default=h},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(1),d=n(13),h=n(126),p=r(h),f=n(50),g=r(f),m=n(4),v=r(m),y=n(28),b=function(t){function e(){var t,n,r,a;i(this,e);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return n=r=o(this,(t=e.__proto__||Object.getPrototypeOf(e)).call.apply(t,[this].concat(l))),r.moveOffset=function(t){var e=r.props,n=e.getData,i=e.getXAxis,o=e.getSeries,a=e.getChart,s=a(),l=i(),u=l.getExtremes(),d=u.min,h=u.max,p=u.dataMin,f=u.dataMax,g=o(),m=(0,c.getLast)(g.options.data),v=s.get("future"),b=v&&v.options.data[8][0],x=h-d,w=x/5*t,k=t>0,P=v&&b<=h,_=void 0,M=void 0;if(k){if(h===f)return;if(P)return;var O=Math.min(f,h+w),S=O-x,A=O>m[0];A?(_=S,M=f):(_=S,M=O)}else!function(){var e=d+w;if(P){var r=m[0]-d,i=r/5*t;e=d+i,M=m[0],_=e<p?d:Math.max(e,p),l.update({minRange:(0,y.computeMinRange)(s,{min:_,max:M})})}else e<p?(_=d,M=h):(_=Math.max(p,e),M=_+x);if(e<p){var o=Math.round(e/1e3),a=Math.round(p/1e3);n(o,a).then(function(t){if(!t||0===t.length)return void l.setExtremes(d,M,!0);var n=1e3*t[0].epoch,r=n<e?e:n;l.setExtremes(r,M,!0)})}}();_===d&&M===h||l.setExtremes(_,M,!0)},r.moveLeft=function(){return r.moveOffset(-1)},r.moveRight=function(){return r.moveOffset(1)},r.zoomIn=function(){var t=r.props,e=t.getChart,n=t.getSeries,i=t.getXAxis,o=e(),a=i(),s=a.getExtremes(),l=s.min,u=s.max,d=o.get("future"),h=(u-l)/2;if(d){var p=d.options.data[8][0];if(p<=u){var f=n(),g=(0,c.getLast)(f.options.data)[0];h=(g-l)/2}}a.setExtremes(l+h,u,!0)},r.resetZoom=function(){var t=r.props.getXAxis(),e=t.getExtremes(),n=e.dataMin,i=e.dataMax;t.setExtremes(n,i,!0)},r.zoomOut=function(){var t=r.props.getSeries(),e=r.props.getXAxis(),n=e.getExtremes(),i=n.dataMin,o=n.min,a=n.max,s=Math.min(a,(0,c.getLast)(t.options.data)[0]),l=s-o,u=Math.max(i,o-l);e.setExtremes(u,a,!0)},r.moveToEnd=function(){var t=r.props,e=t.getChart,n=t.getSeries,i=t.getXAxis,o=e(),a=i(),s=a.getExtremes(),l=s.dataMax,u=s.min,d=s.max,h=o.get("future"),p=l-d;if(h){var f=n(),g=(0,c.getLast)(f.options.data)[0];d>g?p=0:p-=l-g}a.setExtremes(u+p,l,!0)},a=n,o(r,a)}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.endButtonShown,n=t.showTooltips,r=n?g.default:{};return u.default.createElement("span",{style:v.default.zoomControls,className:"binary-chart-zoom-controls"},u.default.createElement("div",{style:v.default.zoomSpacer}),u.default.createElement(p.default,{img:u.default.createElement(d.ChevronLeftIcon,null),onClick:this.moveLeft,tooltip:r.moveLeft}),u.default.createElement(p.default,{img:u.default.createElement(d.RemoveIcon,null),onClick:this.zoomOut,tooltip:r.zoomOut}),u.default.createElement(p.default,{img:u.default.createElement(d.FitAllIcon,null),onClick:this.resetZoom,tooltip:r.resetZoom}),u.default.createElement(p.default,{img:u.default.createElement(d.AddIcon,null),onClick:this.zoomIn,tooltip:r.zoomIn}),u.default.createElement(p.default,{img:u.default.createElement(d.ChevronRightIcon,null),onClick:this.moveRight,tooltip:r.moveRight}),u.default.createElement("div",{style:v.default.zoomSpacer},e&&u.default.createElement(p.default,{img:u.default.createElement(d.LastPageIcon,null),onClick:this.moveToEnd,tooltip:r.moveToEnd})))}}]),e}(l.PureComponent);e.default=b},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=[{text:"Ticks"},{text:"1 minute",value:60},{text:"5 minutes",value:300},{text:"15 minutes",value:900},{text:"1 hour",value:3600},{text:"4 hours",value:14400},{text:"1 day",value:86400}]},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(1),i=function(t){var e=(0,r.getLast)(t.yData);return e&&e[3]},o=function(t){var e=t.yData.length&&t.yData.filter(function(t){return!!t||0===t});return(0,r.getLast)(e)};e.default=function(t){return"candlestick"===t.type||"ohlc"===t.type?i(t):o(t)}},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Add",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Analysis",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg","data-svgreactloader":'[["http://www.w3.org/2000/svg","xlink","http://www.w3.org/1999/xlink"]]',version:"1.1",x:"0px",y:"0px",viewBox:"0 0 100 100"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M85.002,18.938c-3.998,0-7.25,3.252-7.25,7.25c0,0.813,0.141,1.593,0.389,2.323c0-0.001,0-0.001,0-0.002l-12.813,8.875   c-1.209-0.904-2.703-1.446-4.326-1.446c-1.785,0-3.418,0.651-4.682,1.725l-12.412-8.274c0,0,0,0,0,0.001   c0.222-0.695,0.344-1.434,0.344-2.202c0-3.998-3.252-7.25-7.25-7.25s-7.25,3.252-7.25,7.25c0,0.543,0.065,1.07,0.179,1.579   l-9.777,5.333c-1.345-1.359-3.188-2.157-5.147-2.157c-4.003,0-7.26,3.248-7.26,7.24c0,4.003,3.257,7.26,7.26,7.26   c3.992,0,7.24-3.257,7.24-7.26c0-0.531-0.069-1.056-0.183-1.569l9.782-5.336c0,0,0-0.001-0.001-0.001   c1.315,1.333,3.14,2.162,5.156,2.162c1.785,0,3.418-0.651,4.683-1.725l12.411,8.274c-0.221,0.695-0.344,1.434-0.344,2.201   c0,3.998,3.252,7.25,7.25,7.25s7.25-3.252,7.25-7.25c0-0.924-0.18-1.806-0.496-2.62l12.66-8.771c1.252,1.024,2.848,1.64,4.586,1.64   c3.998,0,7.25-3.252,7.25-7.25S89,18.938,85.002,18.938z M15.007,43.442c-2.349,0-4.26-1.911-4.26-4.26   c0-2.338,1.911-4.24,4.26-4.24c1.547,0,2.975,0.848,3.725,2.212c0.337,0.613,0.515,1.314,0.515,2.028   C19.248,41.531,17.345,43.442,15.007,43.442z M37.002,31.438c-2.343,0-4.25-1.907-4.25-4.25s1.907-4.25,4.25-4.25   s4.25,1.907,4.25,4.25S39.346,31.438,37.002,31.438z M61.002,47.438c-2.344,0-4.25-1.907-4.25-4.25s1.906-4.25,4.25-4.25   s4.25,1.907,4.25,4.25S63.346,47.438,61.002,47.438z M85.002,30.438c-2.344,0-4.25-1.907-4.25-4.25s1.906-4.25,4.25-4.25   s4.25,1.907,4.25,4.25S87.346,30.438,85.002,30.438z M24.234,38.708c0.009,0.16,0.014,0.318,0.014,0.475   c0,5.106-4.145,9.26-9.24,9.26c-0.47,0-0.929-0.046-1.38-0.114v32.734h21V36.125c-1.087-0.288-2.113-0.768-3.031-1.434   L24.234,38.708z M51.752,43.188c0-0.435,0.031-0.869,0.092-1.298l-10.126-6.751c-1.242,0.739-2.646,1.158-4.09,1.257v44.667h21   V52.117C54.676,51.064,51.752,47.466,51.752,43.188z M70.074,41.395c0.119,0.59,0.178,1.189,0.178,1.793   c0,4.89-3.816,8.895-8.625,9.219v28.656h21V35.125c-0.768-0.205-1.508-0.508-2.199-0.902L70.074,41.395z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Area",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M512 218l-121 213h-49l159-280 11 3v-33l-92-67-91 162-122-116-91 153-92-70-24 43v54l32-54 22 14-54 94v27l65-113 32 24-89 159h-8v27h512v-27h-40l40-73v-27l-57 100h-48l105-186v-27zm-488 213l84-148 16 13 89-153 16 16-156 272h-49zm65 0l151-264 29 30-132 234h-48zm62 0l127-224 32 30-111 194h-48zm65 0l105-183 13 13 94-164 19 11-183 323h-48zm64 0l178-315 32 24-161 291h-49z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Bar",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M162 472h-38v40h-40v-275h-41v-40h41v-41h40v275h38v41zm156-394h-38v-78h-40v315h-38v41h81v-237h38v-41h-3zm162 237h-41v-196h-40v78h-41v40h41v197h40v-78h41v-41z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Candle",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M445 280h-60v162h-16v-162h-59v-213h59v-67h16v67h60v213zm-240 165h-59v67h-17v-67h-62v-343h60v-67h16v70h59v340h3z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Checkbox",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M0 0h24v24H0z",fill:"none"}),r.createElement("path",{d:"M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"CheckboxOutline",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"}),r.createElement("path",{d:"M0 0h24v24H0z",fill:"none"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"ChevronLeft",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"ChevronRight",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Crosshair",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg","data-svgreactloader":'[["http://www.w3.org/2000/svg","xlink","http://www.w3.org/1999/xlink"],["http://www.w3.org/2000/svg","space","preserve"]]',version:"1.1",x:"0px",y:"0px",viewBox:"0 0 512 640",enableBackground:"new 0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M404.2,237.3c-8.2-67.8-61.9-121.7-129.6-130.2V68.5h-37.4v38.7c-67.7,8.5-121.4,62.4-129.6,130.2H68.5v37.4H108  c8.8,67.1,62.1,120.3,129.3,128.7v40.1h37.4v-40.1c67.2-8.4,120.6-61.6,129.3-128.7h39.5v-37.4H404.2z M366.3,274.7  c-8.2,46.5-45,83.1-91.6,91v-37.1h-37.4v37.1c-46.6-7.9-83.4-44.5-91.6-91h37.7v-37.4h-37.9c7.6-47.2,44.7-84.5,91.8-92.4v38.5h37.4  v-38.5c47.1,7.9,84.2,45.3,91.8,92.4h-37.9v37.4H366.3z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"FitAll",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M16.21 4.16l4 4v-4zm4 12l-4 4h4zm-12 4l-4-4v4zm-4-12l4-4h-4zm12.95-.95c-2.73-2.73-7.17-2.73-9.9 0s-2.73 7.17 0 9.9 7.17 2.73 9.9 0 2.73-7.16 0-9.9zm-1.1 8.8c-2.13 2.13-5.57 2.13-7.7 0s-2.13-5.57 0-7.7 5.57-2.13 7.7 0 2.13 5.57 0 7.7z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"LastPage",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Line",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M183 418l-105-181-54 92-24-14 75-132 106 181 156-270 91 157 57-97 24 13-81 138-91-157z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Remove",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M19 13H5v-2h14v2z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Settings",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Share",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.bollingerBandsArray=void 0;var i=n(1),o=n(29),a=n(53),s=r(a),l=function(t,e){var n=e.periods,r=void 0===n?20:n,i=e.field,a=e.stdDevUp,l=void 0===a?2:a,u=e.stdDevDown,c=void 0===u?2:u,d=(0,o.takeLast)(t,r,i),h=(0,s.default)(d,{periods:r}),p=(0,o.stddev)(d),f=h+p*l,g=h-p*c;return[h,f,g]};e.bollingerBandsArray=function(t,e){var n=e.periods;return(0,i.sequence)(t.length-n+1).map(function(r,i){return l(t.slice(i,i+n),e)})};e.default=l},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.exponentialMovingAverageArray=void 0;var r=n(1),i=n(29),o=function t(e,n){if(1===e.length)return e[0];var r=t(e.slice(0,e.length-1),n);return(e.slice(-1)[0]-r)*(0,i.weightingMultiplier)(n)+r},a=function(t,e){var n=e.periods,r=e.field;if(t.length<n)throw new Error("Periods longer than data length");var a=(0,i.takeLast)(t,n,r);return o(a,n)};e.exponentialMovingAverageArray=function(t,e){var n=e.periods;return(0,r.sequence)(t.length-n+1).map(function(r,i){return a(t.slice(i,i+n),e)})};e.default=a},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.length===e.length&&!t.some(function(t,n){return t!==e[n]})}},function(t,e){"use strict";function n(t){if(Array.isArray(t)){for(var e=0,n=Array(t.length);e<t.length;e++)n[e]=t[e];return n}return Array.from(t)}Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.max.apply(Math,n(t))}},function(t,e){"use strict";function n(t){if(Array.isArray(t)){for(var e=0,n=Array(t.length);e<t.length;e++)n[e]=t[e];return n}return Array.from(t)}Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.min.apply(Math,n(t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t&&(0===t.length?void 0:t[t.length-1])}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.reduce(function(t,n){var r=n[e],i=t.findIndex(function(t){return t.some(function(t){return t[e]===r})});return i>-1?t[i].push(n):t.push([n]),t},[])}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){for(var n=arguments.length<=2||void 0===arguments[2]?function(t){return t}:arguments[2],r=arguments.length<=3||void 0===arguments[3]?function(t){return t}:arguments[3],i=arguments.length<=4||void 0===arguments[4]||arguments[4],o=function(t,e){var i=n(t),o=r(e);return i>o?1:i<o?-1:0},a=t.slice(0),s=e.slice(0),l=[];a.length>0||s.length>0;){var u=a[0],c=s[0];if(!u){l=l.concat(s);break}if(!c){l=l.concat(a);break}var d=l.length>0&&l[l.length-1],h=void 0;switch(o(u,c)){case 0:i&&s.shift(),h=a.shift();break;case 1:h=s.shift();break;case-1:h=a.shift()}if(i&&d&&n(d)===r(h))break;l.push(h)}return l}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Array.from(Array(t).keys())}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(31),o=r(i);e.default=function(t,e){return(0,o.default)(t,e,"barrier2")}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(31),o=r(i);e.default=function(t,e){return(0,o.default)(t,e,"barrier")}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(55),o=r(i);e.default=function(t,e){return t.barrier?(0,o.default)(t,e):+t.entry_spot||e}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(17),o=r(i),a=function(t){var e=Object.keys(t),n={};return e.forEach(function(e){var r=t[e];n[e]=[{name:"Digit",values:r[0].last_digit_range,defaultValue:r[0].last_digit_range[0]}]}),n},s=function(t){var e=Object.keys(t),n={};return e.forEach(function(e){var r=t[e];n[e]=[{name:"High barrier",defaultValue:r[0].high_barrier},{name:"Low barrier",defaultValue:r[0].low_barrier}]}),n},l=function(t,e){var n=Object.keys(t),r={};return n.forEach(function(n){var i=t[n],o=i.find(function(t){return!!t.barrier});o&&(r[n]=[{name:e,defaultValue:o.barrier}])}),r};e.default=function(t,e){var n=(0,o.default)(t,"expiry_type");switch(e){case"CALL":return l(n,"Higher than");case"PUT":return l(n,"Lower than");case"ONETOUCH":case"NOTOUCH":return l(n,"Touch spot");case"EXPIRYMISS":case"EXPIRYRANGE":case"RANGE":case"UPORDOWN":return s(n);case"DIGITMATCH":case"DIGITDIFF":case"DIGITOVER":case"DIGITUNDER":return a(n);case"DIGITODD":case"DIGITEVEN":case"ASIANU":case"ASIAND":case"SPREADU":case"SPREADD":return;default:throw new Error("Unknown trade type: "+e)}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(30),o=r(i);e.default=function(t,e){return(0,o.default)(t.barrier2,t.entry_spot,e)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.floor(t.getTime()/1e3)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.toISOString().replace(/T/," ").replace(/\..+/,"")}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.toISOString().slice(11,19)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(15),o=r(i),a=n(11),s=r(a);e.default=function(){var t=arguments.length<=0||void 0===arguments[0]?0:arguments[0];return(0,s.default)((0,o.default)(t))}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(15),o=r(i);e.default=function(t){return(0,o.default)(t).toUTCString()}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(56),o=r(i);e.default=function(t){return(0,o.default)(new Date(1e3*t))}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(15),o=r(i);e.default=function(){var t=arguments.length<=0||void 0===arguments[0]?0:arguments[0];return(0,o.default)(t).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return new Date(1e3*t).toISOString().slice(11,19)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=new Date;return e.setMonth(e.getMonth()-t),Math.floor(e.getTime()/1e3)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return!isNaN(t.getTime())}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.split(":").map(function(t,e){switch(e){case 0:return parseInt(t,0)<24;case 1:return parseInt(t,0)<=59;default:return parseInt(t,0)<=59}}).indexOf(!1)>-1}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(12),o=r(i);e.default=function(){return(0,o.default)(-29)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(12),o=r(i);e.default=function(){return(0,o.default)(-6)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=new Date;return e.setDate(e.getDate()+t),e}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(11),o=r(i);e.default=function(){var t=new Date;return t.setFullYear((new Date).getFullYear()+1),(0,o.default)(t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.split(e).map(function(t){switch(t.length){case 0:return"01";case 1:return"0"+("0"===t?"1":t);default:return t}}).join(e)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.split(e).map(function(t){switch(t.length){case 0:return"00";case 1:return"0"+t;default:return t}}).join(e)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=Math.floor(t/60/60/24),n=Math.floor(t%86400/3600),r=Math.floor(t%3600/60),i=Math.floor(t%60);return(e>0?e+" day(s)":"")+(n>0?n+" hour(s)":"")+(r>0?r+" minute(s)":"")+(i>0?i+" second(s)":"")}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(57),o=r(i);e.default=function(t,e){return e-((0,o.default)()-t)%e}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(33),o=r(i),a=n(59),s=r(a);e.default=function(t,e,n){return(0,o.default)(e,t)?(0,o.default)(n,t)&&(0,s.default)(n,e):!((0,o.default)(n,e)&&(0,s.default)(n,t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=+t.slice(0,2),n=+t.slice(3,5);return 3600*e+60*n}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(12),o=r(i);e.default=function(){return(0,o.default)(0)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(11),o=r(i);e.default=function(){return(0,o.default)(new Date)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){return(new Date).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return new Date((new Date).setMonth((new Date).getMonth()+t))}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(11),o=r(i),a=n(34),s=r(a);e.default=function(){return(0,o.default)(new Date(1e3*(0,s.default)()))}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(34),o=r(i);e.default=function(){return new Date(1e3*(0,o.default)()).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){document.addEventListener("fullscreenchange",function(){return t(document.fullscreen)}),document.addEventListener("webkitfullscreenchange",function(){return t(document.webkitIsFullScreen)}),document.addEventListener("mozfullscreenchange",function(){return t(document.mozFullScreen)}),document.addEventListener("MSFullscreenChange",function(){return t(document.msFullscreenElement)})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){document.exitFullscreen?document.exitFullscreen():document.msExitFullscreen?document.msExitFullscreen():document.mozCancelFullScreen?document.mozCancelFullScreen():document.webkitExitFullscreen&&document.webkitExitFullscreen()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){document.removeEventListener("fullscreenchange",t),document.removeEventListener("webkitfullscreenchange",t),document.removeEventListener("mozfullscreenchange",t),document.removeEventListener("MSFullscreenChange",t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){t.requestFullscreen?t.requestFullscreen():t.msRequestFullscreen?t.msRequestFullscreen():t.mozRequestFullScreen?t.mozRequestFullScreen():t.webkitRequestFullscreen&&t.webkitRequestFullscreen()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default="undefined"!=typeof alert?alert:function(){}},191,function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){"undefined"!=typeof window&&setTimeout(function(){return window.dispatchEvent(new Event("resize"))},100)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return{t:"Ticks",s:"Seconds",m:"Minutes",h:"Hours",d:"Days"}[t]}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(35),o=r(i);e.default=function(t,e){var n=t.filter(function(t){return t.contract_type===e}),r=n.filter(function(t){return!t.forward_starting_options});if(0!==r.length)return(0,o.default)(r,e)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},o=n(54),a=r(o),s=n(17),l=r(s),u=n(35),c=r(u);e.default=function(t,e){var n=t.filter(function(t){return!!t.forward_starting_options&&t.contract_type===e});if(0!==n.length){if(n.length>1)throw new Error("Can not have more than one contract with forward starting options");var r=n[0].forward_starting_options,o=(0,l.default)(r||[],"date"),s=[];Object.keys(o).sort(function(t,e){return+t-+e}).forEach(function(t){var e=o[t].map(function(t){var e=new Date(1e3*t.open),n=new Date(1e3*t.close);return{open:e,close:n}}),n=(0,a.default)(e);s.push(i({date:new Date(1e3*t)},n))});var u=(0,c.default)(n,e);return{range:s,options:u}}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(63),o=r(i),a=n(16),s=r(a);e.default=function(t,e){return(0,o.default)(e)||(0,s.default)(t,e)<120}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e,n){var r=n.find(function(t){return t.unit===e});return!!r&&(t<=r.max&&t>=r.min)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=function(){},r=function(t){return t||"undefined"!=typeof window&&window.ga||n;
-	};e.trackUserId=function(t,e){return r(e)("set","userId",t)},e.trackRoute=function(t,e){return r(e)("send","pageview",t)},e.trackEvent=function(t,e,n,i){return r(i)("send",{hitType:"event",eventCategory:t,eventAction:e,eventLabel:n})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return"rgba(42, 48, 82, "+t+")"}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t<0&&"number-negative"||t>0&&"number-positive"||""}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.split(")").length>1?t.split(")")[1]:t}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=0;e.default=function(){return n++}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){return"undefined"!=typeof window&&/Mobile/.test(window.navigator.userAgent)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return/\S+@\S+\.\S+/.test(t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return/^[ -~]{6,25}$/.test(t)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(64),o=r(i);e.default=function(t,e){return t.reduce(function(t,n){var r=(0,o.default)(n.quote,e);return t[r]++,t},[0,0,0,0,0,0,0,0,0,0]).map(function(e){return t.length&&e/t.length*100})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.pow(10,-t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=t.toString();return e.includes(".")?e.split(".")[1].length:0}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t>0?"+"+t:t.toString()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){if(isNaN(t))return"0.01";var e=Array(t).join("0");return"0."+e+1}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.abs(Math.log10(t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return(+t).toFixed(2)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return Object.keys(t).reduce(function(n,r){return e(t[r])&&(n[r]=t[r]),n},{})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol?"symbol":typeof t},r=function t(e,r){if("object"!==("undefined"==typeof e?"undefined":n(e))||null===e||void 0===e)return!1;var i=Object.keys(e).map(function(t){return e[t]}),o=i.map(function(t,e){return r(t,e)});if(o.indexOf(!0)>-1)return!0;var a=i.map(function(e){return t(e,r)});return a.indexOf(!0)>-1};e.default=r},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=e.toPlainJS=function(t){return t&&("undefined"==typeof t.toJS?t:t.toJS())};e.default=function(t){return t&&Object.keys(t).reduce(function(e,r){return e[r]=n(t[r]),e},{})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.length===e.length&&t.every(function(t,n){return t===e[n]})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){var n=t.length,r=e.length;if(n!==r)return!1;if(0===n)return!0;var i=t[n-1],o=e[r-1];return i.epoch===o.epoch&&i.close===o.close}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.length===e.length&&(0===t.length||t[t.length-1].epoch===e[e.length-1].epoch)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(65),o=r(i),a=n(36),s=r(a);e.default=function(t,e){return(0,s.default)(t,e,o.default)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(66),o=r(i),a=n(36),s=r(a);e.default=function(t,e){return(0,s.default)(t,e,o.default)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t&&(0===t.length?void 0:+t[t.length-1].close)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t&&t.length>0?t[t.length-1].quote:void 0}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.times.map(function(e,n){return{epoch:+e,quote:+t.prices[n]}})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return[1e3*+(t.open_time||t.epoch),+t.open,+t.high,+t.low,+t.close]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.map(function(t){return{quote:+t.open,epoch:+t.epoch}})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return[1e3*t.epoch,t.quote]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t&&+t.ask_price}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return{callput:"Up/Down",risefall:"Rise/Fall",higherlower:"Higher/Lower",asian:"Asians",digits:"Digits",endsinout:"Ends In/Out",staysinout:"Stays In/Out",touchnotouch:"Touch/No Touch",spreads:"Spreads"}[t]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return{contract_id:"Contract ID",purchase_time:"Purchase Time",ask_price:"Ask Price",bid_price:"Bid Price",date_start:"Start Time",date_expiry:"Expiry Time",date_settlement:"Settlement Time",expiry_time:"Expiry Time",current_spot:"Current Spot",current_spot_time:"Current Spot Time",entry_spot:"Entry Spot",entry_tick_time:"Entry Spot Time",sell_price:"Sell Price",payout:"Potential Payout",buy_price:"Purchase Price",barrier:"Barrier",low_barrier:"Low Barrier",high_barrier:"High Barrier",sell_time:"Sell Time",exit_tick_time:"Exit Spot Time",exit_tick:"Exit Spot",sell_spot_time:"DO NOT USE",entry_tick:"DO NOT USE",sell_spot:"DO NOT USE"}[t]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return{amountPerPoint:t[0].amount_per_point,stopType:t[0].stop_type,stopLoss:t[0].stop_loss,stopProfit:t[0].stop_profit}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(16),o=r(i);e.default=function(t,e){return(0,o.default)(t,e)<86400}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(17),o=r(i);e.default=function(t){var e=t.map(function(t){return{amount_per_point:t.amount_per_point,barrier:t.barrier,barriers:t.barriers,contract_category:t.contract_category,contract_category_display:t.contract_category_display,contract_display:t.contract_display,contract_type:t.contract_type,expiry_type:t.expiry_type,forward_starting_options:t.forward_starting_options,high_barrier:t.high_barrier,last_digit_range:t.last_digit_range,low_barrier:t.low_barrier,min_contract_duration:t.min_contract_duration,max_contract_duration:t.max_contract_duration,stop_type:t.stop_type,stop_loss:t.stop_loss,stop_profit:t.stop_profit}}),n=(0,o.default)(e,"contract_category"),r=Object.keys(n);return r.forEach(function(t){var e=n[t],r=(0,o.default)(e,"contract_type");n[t]=r}),n}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(67),o=r(i),a=n(68),s=r(a);e.default=function(t,e){return(0,o.default)(t)+((0,s.default)(t)?" "+e:"")}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(18),o=r(i);e.default=function(t){var e=o.default.find(function(e){return e.text===t});return e?e.value:"Unknown"}},function(t,e){"use strict";function n(t,e){return t===e?0!==t||0!==e||1/t===1/e:t!==t&&e!==e}function r(t,e){if(n(t,e))return!0;if("object"!=typeof t||null===t||"object"!=typeof e||null===e)return!1;var r=Object.keys(t),o=Object.keys(e);if(r.length!==o.length)return!1;for(var a=0;a<r.length;a++)if(!i.call(e,r[a])||!n(t[r[a]],e[r[a]]))return!1;return!0}var i=Object.prototype.hasOwnProperty;t.exports=r},function(t,e){!function(e){"object"==typeof t&&t.exports?t.exports=e:e(Highcharts)}(function(t){var e,n=t.win,r=n.document,i=t.Chart,o=t.addEvent,a=t.removeEvent,s=t.fireEvent,l=t.createElement,u=t.discardElement,c=t.css,d=t.merge,h=t.each,p=t.extend,f=t.splat,g=Math.max,m=t.isTouchDevice,v=t.Renderer.prototype.symbols,y=t.getOptions();p(y.lang,{printChart:"Print chart",downloadPNG:"Download PNG image",downloadJPEG:"Download JPEG image",downloadPDF:"Download PDF document",downloadSVG:"Download SVG vector image",contextButtonTitle:"Chart context menu"}),y.navigation={menuStyle:{border:"1px solid #A0A0A0",background:"#FFFFFF",padding:"5px 0"},menuItemStyle:{padding:"0 10px",background:"none",color:"#303030",fontSize:m?"14px":"11px"},menuItemHoverStyle:{background:"#4572A5",color:"#FFFFFF"},buttonOptions:{symbolFill:"#E0E0E0",symbolSize:14,symbolStroke:"#666",symbolStrokeWidth:3,symbolX:12.5,symbolY:10.5,align:"right",buttonSpacing:3,height:22,theme:{fill:"white",stroke:"none"},verticalAlign:"top",width:24}},y.exporting={type:"image/png",url:"https://export.highcharts.com/",printMaxWidth:780,scale:2,buttons:{contextButton:{menuClassName:"highcharts-contextmenu",symbol:"menu",_titleKey:"contextButtonTitle",menuItems:[{textKey:"printChart",onclick:function(){this.print()}},{separator:!0},{textKey:"downloadPNG",onclick:function(){this.exportChart()}},{textKey:"downloadJPEG",onclick:function(){this.exportChart({type:"image/jpeg"})}},{textKey:"downloadPDF",onclick:function(){this.exportChart({type:"application/pdf"})}},{textKey:"downloadSVG",onclick:function(){this.exportChart({type:"image/svg+xml"})}}]}}},t.post=function(t,e,n){var i,t=l("form",d({method:"post",action:t,enctype:"multipart/form-data"},n),{display:"none"},r.body);for(i in e)l("input",{type:"hidden",name:i,value:e[i]},null,t);t.submit(),u(t)},p(i.prototype,{sanitizeSVG:function(t){return t.replace(/zIndex="[^"]+"/g,"").replace(/isShadow="[^"]+"/g,"").replace(/symbolName="[^"]+"/g,"").replace(/jQuery[0-9]+="[^"]+"/g,"").replace(/url\(("|&quot;)(\S+)("|&quot;)\)/g,"url($2)").replace(/url\([^#]+#/g,"url(#").replace(/<svg /,'<svg xmlns:xlink="http://www.w3.org/1999/xlink" ').replace(/ (NS[0-9]+\:)?href=/g," xlink:href=").replace(/\n/," ").replace(/<\/svg>.*?$/,"</svg>").replace(/(fill|stroke)="rgba\(([ 0-9]+,[ 0-9]+,[ 0-9]+),([ 0-9\.]+)\)"/g,'$1="rgb($2)" $1-opacity="$3"').replace(/&nbsp;/g," ").replace(/&shy;/g,"­").replace(/<IMG /g,"<image ").replace(/<(\/?)TITLE>/g,"<$1title>").replace(/height=([^" ]+)/g,'height="$1"').replace(/width=([^" ]+)/g,'width="$1"').replace(/hc-svg-href="([^"]+)">/g,'xlink:href="$1"/>').replace(/ id=([^" >]+)/g,' id="$1"').replace(/class=([^" >]+)/g,'class="$1"').replace(/ transform /g," ").replace(/:(path|rect)/g,"$1").replace(/style="([^"]+)"/g,function(t){return t.toLowerCase()})},getChartHTML:function(){return this.container.innerHTML},getSVG:function(e){var n,i,o,a,s,c=this,g=d(c.options,e),m=g.exporting.allowHTML;return r.createElementNS||(r.createElementNS=function(t,e){return r.createElement(e)}),i=l("div",null,{position:"absolute",top:"-9999em",width:c.chartWidth+"px",height:c.chartHeight+"px"},r.body),o=c.renderTo.style.width,s=c.renderTo.style.height,o=g.exporting.sourceWidth||g.chart.width||/px$/.test(o)&&parseInt(o,10)||600,s=g.exporting.sourceHeight||g.chart.height||/px$/.test(s)&&parseInt(s,10)||400,p(g.chart,{animation:!1,renderTo:i,forExport:!0,renderer:"SVGRenderer",width:o,height:s}),g.exporting.enabled=!1,delete g.data,g.series=[],h(c.series,function(t){a=d(t.userOptions,{animation:!1,enableMouseTracking:!1,showCheckbox:!1,visible:t.visible}),a.isInternal||g.series.push(a)}),e&&h(["xAxis","yAxis"],function(t){h(f(e[t]),function(e,n){g[t][n]=d(g[t][n],e)})}),n=new t.Chart(g,c.callback),h(["xAxis","yAxis"],function(t){h(c[t],function(e,r){var i=n[t][r],o=e.getExtremes(),a=o.userMin,o=o.userMax;i&&(void 0!==a||void 0!==o)&&i.setExtremes(a,o,!0,!1)})}),o=n.getChartHTML(),g=null,n.destroy(),u(i),m&&(i=o.match(/<\/svg>(.*?$)/))&&(i='<foreignObject x="0" y="0" width="200" height="200"><body xmlns="http://www.w3.org/1999/xhtml">'+i[1]+"</body></foreignObject>",o=o.replace("</svg>",i+"</svg>")),o=this.sanitizeSVG(o),o=o.replace(/(url\(#highcharts-[0-9]+)&quot;/g,"$1").replace(/&quot;/g,"'")},getSVGForExport:function(t,e){var n=this.options.exporting;return this.getSVG(d({chart:{borderRadius:0}},n.chartOptions,e,{exporting:{sourceWidth:t&&t.sourceWidth||n.sourceWidth,sourceHeight:t&&t.sourceHeight||n.sourceHeight}}))},exportChart:function(e,n){var r=this.getSVGForExport(e,n),e=d(this.options.exporting,e);t.post(e.url,{filename:e.filename||"chart",type:e.type,width:e.width||0,scale:e.scale,svg:r},e.formAttributes)},print:function(){var t,e,i=this,o=i.container,a=[],l=o.parentNode,u=r.body,c=u.childNodes,d=i.options.exporting.printMaxWidth;i.isPrinting||(i.isPrinting=!0,i.pointer.reset(null,0),s(i,"beforePrint"),(e=d&&i.chartWidth>d)&&(t=[i.options.chart.width,void 0,!1],i.setSize(d,void 0,!1)),h(c,function(t,e){1===t.nodeType&&(a[e]=t.style.display,t.style.display="none")}),u.appendChild(o),n.focus(),n.print(),setTimeout(function(){l.appendChild(o),h(c,function(t,e){1===t.nodeType&&(t.style.display=a[e])}),i.isPrinting=!1,e&&i.setSize.apply(i,t),s(i,"afterPrint")},1e3))},contextMenu:function(t,e,n,i,s,u,d){var f,m,v,y=this,b=y.options.navigation,x=b.menuItemStyle,w=y.chartWidth,k=y.chartHeight,P="cache-"+t,_=y[P],M=g(s,u),O=function(e){y.pointer.inClass(e.target,t)||m()};_||(y[P]=_=l("div",{className:t},{position:"absolute",zIndex:1e3,padding:M+"px"},y.container),f=l("div",null,p({MozBoxShadow:"3px 3px 10px #888",WebkitBoxShadow:"3px 3px 10px #888",boxShadow:"3px 3px 10px #888"},b.menuStyle),_),m=function(){c(_,{display:"none"}),d&&d.setState(0),y.openMenu=!1},o(_,"mouseleave",function(){v=setTimeout(m,500)}),o(_,"mouseenter",function(){clearTimeout(v)}),o(r,"mouseup",O),o(y,"destroy",function(){a(r,"mouseup",O)}),h(e,function(t){if(t){var e=t.separator?l("hr",null,null,f):l("div",{onmouseover:function(){c(this,b.menuItemHoverStyle)},onmouseout:function(){c(this,x)},onclick:function(e){e&&e.stopPropagation(),m(),t.onclick&&t.onclick.apply(y,arguments)},innerHTML:t.text||y.options.lang[t.textKey]},p({cursor:"pointer"},x),f);y.exportDivElements.push(e)}}),y.exportDivElements.push(f,_),y.exportMenuWidth=_.offsetWidth,y.exportMenuHeight=_.offsetHeight),e={display:"block"},n+y.exportMenuWidth>w?e.right=w-n-s-M+"px":e.left=n-M+"px",i+u+y.exportMenuHeight>k&&"top"!==d.alignOptions.verticalAlign?e.bottom=k-i-M+"px":e.top=i+u-M+"px",c(_,e),y.openMenu=!0},addButton:function(n){var r,i,o=this,a=o.renderer,s=d(o.options.navigation.buttonOptions,n),l=s.onclick,u=s.menuItems,c={stroke:s.symbolStroke,fill:s.symbolFill},h=s.symbolSize||12;if(o.btnCount||(o.btnCount=0),o.exportDivElements||(o.exportDivElements=[],o.exportSVGElements=[]),s.enabled!==!1){var f,g=s.theme,m=g.states,v=m&&m.hover,m=m&&m.select;delete g.states,l?f=function(t){t.stopPropagation(),l.call(o,t)}:u&&(f=function(){o.contextMenu(i.menuClassName,u,i.translateX,i.translateY,i.width,i.height,i),i.setState(2)}),s.text&&s.symbol?g.paddingLeft=t.pick(g.paddingLeft,25):s.text||p(g,{width:s.width,height:s.height,padding:0}),i=a.button(s.text,0,0,f,g,v,m).attr({title:o.options.lang[s._titleKey],"stroke-linecap":"round",zIndex:3}),i.menuClassName=n.menuClassName||"highcharts-menu-"+o.btnCount++,s.symbol&&(r=a.symbol(s.symbol,s.symbolX-h/2,s.symbolY-h/2,h,h).attr(p(c,{"stroke-width":s.symbolStrokeWidth||1,zIndex:1})).add(i)),i.add().align(p(s,{width:i.width,x:t.pick(s.x,e)}),!0,"spacingBox"),e+=(i.width+s.buttonSpacing)*("right"===s.align?-1:1),o.exportSVGElements.push(i,r)}},destroyExport:function(t){var e,n,t=t.target;for(e=0;e<t.exportSVGElements.length;e++)(n=t.exportSVGElements[e])&&(n.onclick=n.ontouchstart=null,t.exportSVGElements[e]=n.destroy());for(e=0;e<t.exportDivElements.length;e++)n=t.exportDivElements[e],a(n,"mouseleave"),t.exportDivElements[e]=n.onmouseout=n.onmouseover=n.ontouchstart=n.onclick=null,u(n)}}),v.menu=function(t,e,n,r){return["M",t,e+2.5,"L",t+n,e+2.5,"M",t,e+r/2+.5,"L",t+n,e+r/2+.5,"M",t,e+r-1.5,"L",t+n,e+r-1.5]},i.prototype.callbacks.push(function(t){var n,r=t.options.exporting,i=r.buttons;if(e=0,r.enabled!==!1){for(n in i)t.addButton(i[n]);o(t,"destroy",t.destroyExport)}})})},function(t,e){!function(e){"object"==typeof t&&t.exports?t.exports=e:e(Highcharts)}(function(t){function e(){return!!this.points.length}function n(){this.hasData()?this.hideNoData():this.showNoData()}var r=t.seriesTypes,i=t.Chart.prototype,o=t.getOptions(),a=t.extend,s=t.each;a(o.lang,{noData:"No data to display"}),o.noData={position:{x:0,y:0,align:"center",verticalAlign:"middle"},attr:{},style:{fontWeight:"bold",fontSize:"12px",color:"#60606a"}},s(["pie","gauge","waterfall","bubble","treemap"],function(t){r[t]&&(r[t].prototype.hasData=e)}),t.Series.prototype.hasData=function(){return this.visible&&void 0!==this.dataMax&&void 0!==this.dataMin},i.showNoData=function(t){var e=this.options,t=t||e.lang.noData,e=e.noData;this.noDataLabel||(this.noDataLabel=this.renderer.label(t,0,0,null,null,null,e.useHTML,null,"no-data").attr(e.attr).css(e.style).add(),this.noDataLabel.align(a(this.noDataLabel.getBBox(),e.position),!1,"plotBox"))},i.hideNoData=function(){this.noDataLabel&&(this.noDataLabel=this.noDataLabel.destroy())},i.hasData=function(){for(var t=this.series,e=t.length;e--;)if(t[e].hasData()&&!t[e].options.isInternal)return!0;return!1},i.callbacks.push(function(e){t.addEvent(e,"load",n),t.addEvent(e,"redraw",n)})})},function(t,e,n){var r=n(10),i=n(5),o=r(i,"DataView");t.exports=o},function(t,e,n){function r(t){var e=-1,n=t?t.length:0;for(this.clear();++e<n;){var r=t[e];this.set(r[0],r[1])}}var i=n(277),o=n(278),a=n(279),s=n(280),l=n(281);r.prototype.clear=i,r.prototype.delete=o,r.prototype.get=a,r.prototype.has=s,r.prototype.set=l,t.exports=r},function(t,e,n){var r=n(10),i=n(5),o=r(i,"Promise");t.exports=o},function(t,e,n){var r=n(10),i=n(5),o=r(i,"Set");t.exports=o},function(t,e,n){function r(t){var e=-1,n=t?t.length:0;for(this.__data__=new i;++e<n;)this.add(t[e])}var i=n(38),o=n(300),a=n(301);r.prototype.add=r.prototype.push=o,r.prototype.has=a,t.exports=r},function(t,e,n){var r=n(5),i=r.Uint8Array;t.exports=i},function(t,e,n){var r=n(10),i=n(5),o=r(i,"WeakMap");t.exports=o},function(t,e){function n(t,e){for(var n=-1,r=t?t.length:0;++n<r&&e(t[n],n,t)!==!1;);return t}t.exports=n},function(t,e,n){function r(t,e){var n=a(t)||o(t)?i(t.length,String):[],r=n.length,l=!!r;for(var c in t)!e&&!u.call(t,c)||l&&("length"==c||s(c,r))||n.push(c);return n}var i=n(264),o=n(81),a=n(9),s=n(76),l=Object.prototype,u=l.hasOwnProperty;t.exports=r},function(t,e){function n(t,e){for(var n=-1,r=t?t.length:0;++n<r;)if(e(t[n],n,t))return!0;return!1}t.exports=n},function(t,e,n){var r=n(251),i=n(269),o=i(r);t.exports=o},function(t,e,n){var r=n(270),i=r();t.exports=i},function(t,e,n){function r(t,e){return t&&i(t,e,o)}var i=n(250),o=n(42);t.exports=r},function(t,e){function n(t){return i.call(t)}var r=Object.prototype,i=r.toString;t.exports=n},function(t,e){function n(t,e){return null!=t&&e in Object(t)}t.exports=n},function(t,e,n){function r(t,e,n,r,m,y){var b=u(t),x=u(e),w=f,k=f;b||(w=l(t),w=w==p?g:w),x||(k=l(e),k=k==p?g:k);var P=w==g,_=k==g,M=w==k;if(M&&c(t)){if(!c(e))return!1;b=!0,P=!1}if(M&&!P)return y||(y=new i),b||d(t)?o(t,e,n,r,m,y):a(t,e,w,n,r,m,y);if(!(m&h)){var O=P&&v.call(t,"__wrapped__"),S=_&&v.call(e,"__wrapped__");if(O||S){var A=O?t.value():t,T=S?e.value():e;return y||(y=new i),n(A,T,r,m,y)}}return!!M&&(y||(y=new i),s(t,e,n,r,m,y))}var i=n(69),o=n(74),a=n(271),s=n(272),l=n(274),u=n(9),c=n(314),d=n(315),h=2,p="[object Arguments]",f="[object Array]",g="[object Object]",m=Object.prototype,v=m.hasOwnProperty;t.exports=r},function(t,e,n){function r(t,e,n,r){var l=n.length,u=l,c=!r;if(null==t)return!u;for(t=Object(t);l--;){var d=n[l];if(c&&d[2]?d[1]!==t[d[0]]:!(d[0]in t))return!1}for(;++l<u;){d=n[l];var h=d[0],p=t[h],f=d[1];if(c&&d[2]){if(void 0===p&&!(h in t))return!1}else{var g=new i;if(r)var m=r(p,f,h,t,e,g);if(!(void 0===m?o(f,p,r,a|s,g):m))return!1}}return!0}var i=n(69),o=n(72),a=1,s=2;t.exports=r},function(t,e,n){function r(t){if(!a(t)||o(t))return!1;var e=i(t)?f:u;return e.test(s(t))}var i=n(82),o=n(283),a=n(25),s=n(79),l=/[\\^$.*+?()[\]{}|]/g,u=/^\[object .+?Constructor\]$/,c=Function.prototype,d=Object.prototype,h=c.toString,p=d.hasOwnProperty,f=RegExp("^"+h.call(p).replace(l,"\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,"$1.*?")+"$");t.exports=r},function(t,e,n){function r(t){return o(t)&&i(t.length)&&!!C[D.call(t)]}var i=n(40),o=n(26),a="[object Arguments]",s="[object Array]",l="[object Boolean]",u="[object Date]",c="[object Error]",d="[object Function]",h="[object Map]",p="[object Number]",f="[object Object]",g="[object RegExp]",m="[object Set]",v="[object String]",y="[object WeakMap]",b="[object ArrayBuffer]",x="[object DataView]",w="[object Float32Array]",k="[object Float64Array]",P="[object Int8Array]",_="[object Int16Array]",M="[object Int32Array]",O="[object Uint8Array]",S="[object Uint8ClampedArray]",A="[object Uint16Array]",T="[object Uint32Array]",C={};C[w]=C[k]=C[P]=C[_]=C[M]=C[O]=C[S]=C[A]=C[T]=!0,C[a]=C[s]=C[b]=C[l]=C[x]=C[u]=C[c]=C[d]=C[h]=C[p]=C[f]=C[g]=C[m]=C[v]=C[y]=!1;var E=Object.prototype,D=E.toString;t.exports=r},function(t,e,n){function r(t){return"function"==typeof t?t:null==t?a:"object"==typeof t?s(t)?o(t[0],t[1]):i(t):l(t)}var i=n(260),o=n(261),a=n(312),s=n(9),l=n(317);t.exports=r},function(t,e,n){function r(t){if(!i(t))return o(t);var e=[];for(var n in Object(t))s.call(t,n)&&"constructor"!=n&&e.push(n);return e}var i=n(284),o=n(297),a=Object.prototype,s=a.hasOwnProperty;t.exports=r},function(t,e,n){function r(t){var e=o(t);return 1==e.length&&e[0][2]?a(e[0][0],e[0][1]):function(n){return n===t||i(n,t,e)}}var i=n(255),o=n(273),a=n(78);t.exports=r},function(t,e,n){function r(t,e){return s(t)&&l(e)?u(c(t),e):function(n){var r=o(n,t);return void 0===r&&r===e?a(n,t):i(e,r,void 0,d|h)}}var i=n(72),o=n(310),a=n(311),s=n(22),l=n(77),u=n(78),c=n(24),d=1,h=2;t.exports=r},function(t,e){function n(t){return function(e){return null==e?void 0:e[t]}}t.exports=n},function(t,e,n){function r(t){return function(e){return i(e,t)}}var i=n(71);t.exports=r},function(t,e){function n(t,e){for(var n=-1,r=Array(t);++n<t;)r[n]=e(n);return r}t.exports=n},function(t,e,n){function r(t){if("string"==typeof t)return t;if(o(t))return l?l.call(t):"";var e=t+"";return"0"==e&&1/t==-a?"-0":e}var i=n(70),o=n(41),a=1/0,s=i?i.prototype:void 0,l=s?s.toString:void 0;t.exports=r},function(t,e){function n(t){return function(e){return t(e)}}t.exports=n},function(t,e){function n(t,e){return t.has(e)}t.exports=n},function(t,e,n){var r=n(5),i=r["__core-js_shared__"];t.exports=i},function(t,e,n){function r(t,e){return function(n,r){if(null==n)return n;if(!i(n))return t(n,r);for(var o=n.length,a=e?o:-1,s=Object(n);(e?a--:++a<o)&&r(s[a],a,s)!==!1;);return n}}var i=n(39);t.exports=r},function(t,e){function n(t){return function(e,n,r){for(var i=-1,o=Object(e),a=r(e),s=a.length;s--;){var l=a[t?s:++i];if(n(o[l],l,o)===!1)break}return e}}t.exports=n},function(t,e,n){function r(t,e,n,r,i,P,M){switch(n){case k:if(t.byteLength!=e.byteLength||t.byteOffset!=e.byteOffset)return!1;t=t.buffer,e=e.buffer;case w:return!(t.byteLength!=e.byteLength||!r(new o(t),new o(e)));case h:case p:case m:return a(+t,+e);case f:return t.name==e.name&&t.message==e.message;case v:case b:return t==e+"";case g:var O=l;case y:var S=P&d;if(O||(O=u),t.size!=e.size&&!S)return!1;var A=M.get(t);if(A)return A==e;P|=c,M.set(t,e);var T=s(O(t),O(e),r,i,P,M);return M.delete(t),T;case x:if(_)return _.call(t)==_.call(e)}return!1}var i=n(70),o=n(244),a=n(80),s=n(74),l=n(295),u=n(302),c=1,d=2,h="[object Boolean]",p="[object Date]",f="[object Error]",g="[object Map]",m="[object Number]",v="[object RegExp]",y="[object Set]",b="[object String]",x="[object Symbol]",w="[object ArrayBuffer]",k="[object DataView]",P=i?i.prototype:void 0,_=P?P.valueOf:void 0;t.exports=r},function(t,e,n){function r(t,e,n,r,a,l){var u=a&o,c=i(t),d=c.length,h=i(e),p=h.length;if(d!=p&&!u)return!1;for(var f=d;f--;){var g=c[f];if(!(u?g in e:s.call(e,g)))return!1}var m=l.get(t);if(m&&l.get(e))return m==e;var v=!0;l.set(t,e),l.set(e,t);for(var y=u;++f<d;){g=c[f];var b=t[g],x=e[g];if(r)var w=u?r(x,b,g,e,t,l):r(b,x,g,t,e,l);if(!(void 0===w?b===x||n(b,x,r,a,l):w)){v=!1;break}y||(y="constructor"==g)}if(v&&!y){var k=t.constructor,P=e.constructor;k!=P&&"constructor"in t&&"constructor"in e&&!("function"==typeof k&&k instanceof k&&"function"==typeof P&&P instanceof P)&&(v=!1)}return l.delete(t),l.delete(e),v}var i=n(42),o=2,a=Object.prototype,s=a.hasOwnProperty;t.exports=r},function(t,e,n){function r(t){for(var e=o(t),n=e.length;n--;){var r=e[n],a=t[r];e[n]=[r,a,i(a)]}return e}var i=n(77),o=n(42);t.exports=r},function(t,e,n){var r=n(239),i=n(37),o=n(241),a=n(242),s=n(245),l=n(252),u=n(79),c="[object Map]",d="[object Object]",h="[object Promise]",p="[object Set]",f="[object WeakMap]",g="[object DataView]",m=Object.prototype,v=m.toString,y=u(r),b=u(i),x=u(o),w=u(a),k=u(s),P=l;(r&&P(new r(new ArrayBuffer(1)))!=g||i&&P(new i)!=c||o&&P(o.resolve())!=h||a&&P(new a)!=p||s&&P(new s)!=f)&&(P=function(t){var e=v.call(t),n=e==d?t.constructor:void 0,r=n?u(n):void 0;if(r)switch(r){case y:return g;case b:return c;case x:return h;case w:return p;case k:return f}return e}),t.exports=P},function(t,e){function n(t,e){return null==t?void 0:t[e]}t.exports=n},function(t,e,n){function r(t,e,n){e=l(e,t)?[e]:i(e);for(var r=-1,d=e.length,h=!1;++r<d;){var p=c(e[r]);if(!(h=null!=t&&n(t,p)))break;t=t[p]}return h||++r!=d?h:(d=t?t.length:0,!!d&&u(d)&&s(p,d)&&(a(t)||o(t)))}var i=n(73),o=n(81),a=n(9),s=n(76),l=n(22),u=n(40),c=n(24);t.exports=r},function(t,e,n){function r(){this.__data__=i?i(null):{},this.size=0}var i=n(23);t.exports=r},function(t,e){function n(t){var e=this.has(t)&&delete this.__data__[t];return this.size-=e?1:0,e}t.exports=n},function(t,e,n){function r(t){var e=this.__data__;if(i){var n=e[t];return n===o?void 0:n}return s.call(e,t)?e[t]:void 0}var i=n(23),o="__lodash_hash_undefined__",a=Object.prototype,s=a.hasOwnProperty;t.exports=r},function(t,e,n){function r(t){var e=this.__data__;return i?void 0!==e[t]:a.call(e,t)}var i=n(23),o=Object.prototype,a=o.hasOwnProperty;t.exports=r},function(t,e,n){function r(t,e){var n=this.__data__;return this.size+=this.has(t)?0:1,n[t]=i&&void 0===e?o:e,this}var i=n(23),o="__lodash_hash_undefined__";t.exports=r},function(t,e){function n(t){var e=typeof t;return"string"==e||"number"==e||"symbol"==e||"boolean"==e?"__proto__"!==t:null===t}t.exports=n},function(t,e,n){function r(t){return!!o&&o in t}var i=n(268),o=function(){var t=/[^.]+$/.exec(i&&i.keys&&i.keys.IE_PROTO||"");return t?"Symbol(src)_1."+t:""}();t.exports=r},function(t,e){function n(t){var e=t&&t.constructor,n="function"==typeof e&&e.prototype||r;return t===n}var r=Object.prototype;t.exports=n},function(t,e){function n(){this.__data__=[],this.size=0}t.exports=n},function(t,e,n){function r(t){var e=this.__data__,n=i(e,t);if(n<0)return!1;var r=e.length-1;return n==r?e.pop():a.call(e,n,1),--this.size,!0}var i=n(20),o=Array.prototype,a=o.splice;t.exports=r},function(t,e,n){function r(t){var e=this.__data__,n=i(e,t);return n<0?void 0:e[n][1]}var i=n(20);t.exports=r},function(t,e,n){function r(t){return i(this.__data__,t)>-1}var i=n(20);t.exports=r},function(t,e,n){function r(t,e){var n=this.__data__,r=i(n,t);return r<0?(++this.size,n.push([t,e])):n[r][1]=e,this}var i=n(20);t.exports=r},function(t,e,n){function r(){this.size=0,this.__data__={hash:new i,map:new(a||o),string:new i}}var i=n(240),o=n(19),a=n(37);t.exports=r},function(t,e,n){function r(t){var e=i(this,t).delete(t);return this.size-=e?1:0,e}var i=n(21);t.exports=r},function(t,e,n){function r(t){return i(this,t).get(t)}var i=n(21);t.exports=r},function(t,e,n){function r(t){return i(this,t).has(t)}var i=n(21);t.exports=r},function(t,e,n){function r(t,e){var n=i(this,t),r=n.size;return n.set(t,e),this.size+=n.size==r?0:1,this}var i=n(21);t.exports=r},function(t,e){function n(t){var e=-1,n=Array(t.size);return t.forEach(function(t,r){n[++e]=[r,t]}),n}t.exports=n},function(t,e,n){function r(t){var e=i(t,function(t){return n.size===o&&n.clear(),t}),n=e.cache;return e}var i=n(316),o=500;t.exports=r},function(t,e,n){var r=n(299),i=r(Object.keys,Object);t.exports=i},function(t,e,n){(function(t){var r=n(75),i="object"==typeof e&&e&&!e.nodeType&&e,o=i&&"object"==typeof t&&t&&!t.nodeType&&t,a=o&&o.exports===i,s=a&&r.process,l=function(){try{return s&&s.binding("util")}catch(t){}}();t.exports=l}).call(e,n(83)(t))},function(t,e){function n(t,e){return function(n){return t(e(n))}}t.exports=n},function(t,e){function n(t){return this.__data__.set(t,r),this}var r="__lodash_hash_undefined__";t.exports=n},function(t,e){function n(t){return this.__data__.has(t)}t.exports=n},function(t,e){function n(t){var e=-1,n=Array(t.size);return t.forEach(function(t){n[++e]=t}),n}t.exports=n},function(t,e,n){function r(){this.__data__=new i,this.size=0}var i=n(19);t.exports=r},function(t,e){function n(t){var e=this.__data__,n=e.delete(t);return this.size=e.size,n}t.exports=n},function(t,e){function n(t){return this.__data__.get(t)}t.exports=n},function(t,e){function n(t){return this.__data__.has(t)}t.exports=n},function(t,e,n){function r(t,e){var n=this.__data__;if(n instanceof i){var r=n.__data__;if(!o||r.length<s-1)return r.push([t,e]),this.size=++n.size,this;n=this.__data__=new a(r)}return n.set(t,e),this.size=n.size,this}var i=n(19),o=n(37),a=n(38),s=200;t.exports=r},function(t,e,n){var r=n(296),i=n(319),o=/^\./,a=/[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g,s=/\\(\\)?/g,l=r(function(t){t=i(t);var e=[];return o.test(t)&&e.push(""),t.replace(a,function(t,n,r,i){e.push(r?i.replace(s,"$1"):n||t)}),e});t.exports=l},function(t,e,n){function r(t,e){var n=s(t)?i:o;return n(t,a(e,3))}var i=n(246),o=n(249),a=n(258),s=n(9);t.exports=r},function(t,e,n){function r(t,e,n){var r=null==t?void 0:i(t,e);return void 0===r?n:r}var i=n(71);t.exports=r},function(t,e,n){function r(t,e){return null!=t&&o(t,e,i)}var i=n(253),o=n(276);t.exports=r},function(t,e){function n(t){return t}t.exports=n},function(t,e,n){function r(t){return o(t)&&i(t)}var i=n(39),o=n(26);t.exports=r},function(t,e,n){(function(t){var r=n(5),i=n(318),o="object"==typeof e&&e&&!e.nodeType&&e,a=o&&"object"==typeof t&&t&&!t.nodeType&&t,s=a&&a.exports===o,l=s?r.Buffer:void 0,u=l?l.isBuffer:void 0,c=u||i;t.exports=c}).call(e,n(83)(t))},function(t,e,n){var r=n(257),i=n(266),o=n(298),a=o&&o.isTypedArray,s=a?i(a):r;t.exports=s},function(t,e,n){function r(t,e){if("function"!=typeof t||e&&"function"!=typeof e)throw new TypeError(o);var n=function(){var r=arguments,i=e?e.apply(this,r):r[0],o=n.cache;if(o.has(i))return o.get(i);var a=t.apply(this,r);return n.cache=o.set(i,a)||o,a};return n.cache=new(r.Cache||i),n}var i=n(38),o="Expected a function";r.Cache=i,t.exports=r},function(t,e,n){function r(t){return a(t)?i(s(t)):o(t)}var i=n(262),o=n(263),a=n(22),s=n(24);t.exports=r},function(t,e){function n(){return!1}t.exports=n},function(t,e,n){function r(t){return null==t?"":i(t);
-	}var i=n(265);t.exports=r},function(t,e){var n;n=function(){return this}();try{n=n||Function("return this")()||(0,eval)("this")}catch(t){"object"==typeof window&&(n=window)}t.exports=n},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.BinaryChart=e.PlainChart=void 0;var i=n(85),o=r(i),a=n(84),s=r(a);e.PlainChart=o.default,e.BinaryChart=s.default}]))});
+	})}},{key:"destroyChart",value:function(){var t=this;this.eventListeners&&this.eventListeners.forEach(function(e){return t.chartDiv.removeEventListener(e.type,e.handler)}),this.chart&&this.chart.destroy()}},{key:"render",value:function(){var t=this,e=this.props.id;return u.default.createElement("div",{style:M.default.chartCore,ref:function(e){t.chartDiv=e},id:e})}}]),e}(l.PureComponent);e.default=O},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t};e.default=function(t,e,r){if(e){var i=Object.assign({},e),o=e.barrier_count,a=e.barrier,s=e.low_barrier,l=e.high_barrier;switch(o){case 1:return a?i.barrier=+a:i.barrier=+r,i;case 2:if(s&&l)return i.low_barrier=+s,i.high_barrier=+l,i;break;case void 0:return i;default:throw new Error("Unexpected barrier_count from contract: ",e)}}if(t){var u=Object.assign({entry_tick:+r},t),c=t.barrier,d=t.barrier2,h=t.barrierType;if(delete u.barrier,delete u.barrier2,delete u.low_barrier,delete u.high_barrier,delete u.barrierType,!c)return u.barrier=+r,u;switch(h){case"absolute":return c&&d?(u.low_barrier=+d,u.high_barrier=+c):d||(u.barrier=+c),u;case"digit":return n({},u,{barrier:+c});case"relative":default:var p=+c+r,f=+d+r;return c&&d?(u.low_barrier=f,u.high_barrier=p):d||(u.barrier=p),u}}}},function(t,e,n){"use strict";function r(t){if(t&&t.__esModule)return t;var e={};if(null!=t)for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n]);return e.default=t,e}Object.defineProperty(e,"__esModule",{value:!0}),e.plotBandForContract=void 0;var i=n(109),o=r(i);e.plotBandForContract=function(t){if(!t)return[];var e=t.contract_type;if(!e)return[];var n=o[e.toLowerCase()+"PlotBand"];if(!n)throw Error("Not a known type: "+e);var r=t.barrier,i=t.low_barrier,a=t.high_barrier,s=t.entry_tick;return n({barrier:r,low_barrier:i,high_barrier:a,entry_tick:s})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(8),o=r(i),a=function(t){return o.default.dateFormat("%a %d %b %H:%M:%S",t)},s=function(t){return'<div class="date-row">'+a(t.x)+'</div>\n  <div class="date-row">'+a(t.x+t.series.closestPointRange)+"</div>"},l=function(t,e){return'\n    <div class="binary-chart-info-bar">\n        '+s(t)+'\n        <div class="value-row"><span>'+t.series.name+"</span><span>"+t.y.toFixed(e)+"</span></div>\n    </div>\n"},u=function(t,e){return'\n    <div class="binary-chart-info-bar">\n        '+s(t)+'\n        <div class="value-row">'+t.series.name+'</div>\n        <div class="ohlc-row"><span>Open</span><span>'+t.open.toFixed(e)+'</span></div>\n        <div class="ohlc-row"><span>High</span><span>'+t.high.toFixed(e)+'</span></div>\n        <div class="ohlc-row"><span>Low</span><span>'+t.low.toFixed(e)+'</span></div>\n        <div class="ohlc-row"><span>Close</span><span>'+t.close.toFixed(e)+"</span></div>\n    </div>\n"};e.default=function(t){return{mouseOut:function(){document.getElementById("binary-chart-info-container").innerHTML=""},mouseOver:function(){var e="line"===this.series.type||"area"===this.series.type?l:u;document.getElementById("binary-chart-info-container").innerHTML=e(this,t)}}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(43),a=r(o),s=n(7),l=r(s),u=n(51),c=r(u),d=function(t,e){var n=(0,l.default)(t);return c.default.filter(function(t){return e&&e[t]&&!e.contract_type.includes("DIGIT")}).sort(function(t,n){return+e[t]-+e[n]}).map(function(t){return n.options.data.map(function(n){return[n[0],+e[t]]})})},h=function(t,e){var n=d(t,e);if(0!==n.length){for(;n.length<3;)n.push((0,i.getLast)(n));n.forEach(function(e,n){var r="b"+n,i=t.get(r);i.setData(e,!1)})}},p=function(t){var e=(0,l.default)(t),n=(0,i.getLast)(e.options.data),r=[n];t.addSeries((0,a.default)(r,"b0")),t.addSeries((0,a.default)(r,"b1")),t.addSeries((0,a.default)(r,"b2"))};e.default=function(t,e){var n=(0,l.default)(t);if(n){var r=t.get("b0");r||p(t,e),h(t,e)}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.updatePlotBands=void 0;var i=n(88),o=n(115),a=r(o),s=n(48),l=r(s),u=n(97),c=r(u),d=n(90),h=r(d),p=function(t,e,n,r,i){e.forEach(function(e){var o=n.find(function(t){return t.id===e.id});if(o){var a=t.plotLinesAndBands.find(function(t){return t.id===e.id}),s=!0;a&&a.value?s=a.options.value!==o.value:a&&a.from&&(s=a.from!==o.from||a.to!==o.to),s&&(t[i](e.id),t[r](o))}else t[i](e.id)})},f=function(t,e){var n=[{id:"win1"},{id:"loss1"},{id:"win2"},{id:"loss2"}];p(t,n,e,"addPlotBand","removePlotBand")},g=function(t,e){p(t,l.default,e,"addPlotLine","removePlotLine")},m=e.updatePlotBands=function(t,e){var n=(0,i.plotBandForContract)(e);f(t.yAxis[0],n)};e.default=function(t,e,n){m(t,e),(0,h.default)(t,e);var r=(0,a.default)(e,n);g(t.xAxis[0],r),(0,c.default)(t,r)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(53),o=n(147),a=n(146),s=n(27),l=r(s);e.default=function(t,e,n){if(e&&0!==e.length){if(!t.get("indicator0")){var r=t.userOptions.binary.pipSize;t.addSeries((0,l.default)("indicator","line",[],r,"indicator0")),t.addSeries((0,l.default)("indicator","line",[],r,"indicator1"))}n.forEach(function(n,r){var s=!!e[0].open,l=s?e.map(function(t){return+t.close}):e.map(function(t){return+t.quote}),u=[];switch(n.type.toLowerCase()){case"sma":u=(0,i.simpleMovingAverageArray)(l,n);break;case"ema":u=(0,o.exponentialMovingAverageArray)(l,n);break;case"bb":u=(0,a.bollingerBandsArray)(l,n)}var c=e.length-u.length,d=u.map(function(t,n){return[1e3*+e[n+c].epoch,t]}),h=t.get("indicator"+r);h.update({name:n.name||n.type}),h.setData(d)})}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(7),a=r(o);e.default=function(t,e){var n=e.pipSize,r=(0,a.default)(t);r&&t.yAxis[0].update({minTickInterval:(0,i.digitsToPips)(n)},!1)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(27),a=r(o),s=n(52),l=r(s),u=n(7),c=r(u),d=function(t,e){var n=(0,c.default)(t);n&&n.options.type!==e&&n.remove()};e.default=function(t,e){var n=e.type;d(t,n);var r=(0,l.default)(n),o=t.xAxis[0].getExtremes(),s=o.dataMax,u=o.min,h=o.max,p=(0,c.default)(t),f=p?p.options.data:[],g=t.userOptions.binary.pipSize,m=e.ticks.map("ticks"===r?i.tickToData:i.ohlcToData),v=(0,i.getLast)(m);if(v){var y=(0,i.doArrayDifferJustOneEntry)(f,m,function(t,e){return t&&e&&(t===e||t[0]===e[0])}),b="ticks"===r?2e3:1e5,x=function(r){return t.addSeries((0,a.default)(e.assetName,n,r,g),!1)},w=function(e,n){var r=t.get("future");if(r)t.xAxis[0].setExtremes(u,h,!1);else{var i=s-h<=n;if(i){var o=u+(e-s),a="fixed"===t.userOptions.binary.shiftMode;t.xAxis[0].setExtremes(a?o:u,e,!1)}}};y?(p?p.addPoint(v,!1):x([v]),w(v[0],b)):p?p.setData(m,!1):x(m)}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(43),a=r(o),s=n(7),l=r(s);e.default=function(t,e,n){function r(t,e){for(var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:1e4,r=arguments.length>3&&void 0!==arguments[3]?arguments[3]:8,i=r;i>=0;i-=1)t.push([e-i*n,d]);return t}if(!n)return!1;var o=e.date_start,s=e.date_expiry,u=t.xAxis[0],c=u.getExtremes(),d=2===Object.keys(n).length?n.quote:n.close,h=c.min||t.series[0].options.data[0][0],p=c.max||d,f=n.epoch,g=o&&o>f,m=s&&s>f,v=g||m,y=t.get("future");if(!v||e.tick_count){if(y){y.remove();var b=(0,l.default)(t);b.update({dataGrouping:{enabled:!0}});var x=b&&(0,i.getLast)(b.options.data)[0];if(x&&p>x)return u.setExtremes(h,x,!1),!0}return!1}var w=40,k=o&&1e3*(o+w),P=s&&1e3*(s+w);if(y){var _=(0,i.getLast)(y.options.data)[0],M=[];if(g&&_<1e3*o&&r(M,k),m&&_<1e3*s&&r(M,P),M.length>0)return y.setData(M),u.setExtremes(h,(0,i.getLast)(M)[0],!1),!0}else{(0,l.default)(t).update({dataGrouping:{enabled:!1}});var O=[];if(g&&r(O,k),m&&r(O,P),O.length>0){var S=(0,a.default)(O,"future");return t.addSeries(S),u.setExtremes(h,(0,i.getLast)(O)[0],!1),!0}}return!1}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.flattenTradingTimes=e.strTimePlusDayAsEpoch=void 0;var i=n(1),o=n(49),a=r(o),s=function(t){var e=t.split(":");return 60*+e[0]*60+60*+e[1]+ +e[2]},l=e.strTimePlusDayAsEpoch=function(t,e){return(0,i.dateToEpoch)(t)+s(e)},u=e.flattenTradingTimes=function(t,e){if(!e)return[];var n=new Date;n.setUTCHours(0,0,0,0);var r=e.open.map(function(t){return{name:"open",epoch:l(n,t)}}),i=e.close.map(function(t){return{name:"close",epoch:l(n,t)}}),o=e.settlement,a=r.concat(i);return a.push({name:"settlement",epoch:l(n,o)}),a},c=function(t){var e=new Date;return e.setUTCHours(0,0,0,0),u(e,t).map(function(t){return(0,a.default)("trading-times-line",t.epoch,t.name,"left","light")})};e.default=function(t,e){var n=t.xAxis[0];n.removePlotLine("trading-times-line");var r=c(e);r.forEach(function(t){return n.addPlotLine(t)})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},o=n(7),a=r(o),s={color:"lightgrey",fillColor:"none",lineWidth:5},l={dashStyle:"solid"};e.default=function(t,e){var n=e.find(function(t){return"entry_tick_time"===t.id}),r=e.find(function(t){return"exit_tick_time"===t.id}),o=[];n&&o.push(i({value:n.value},s)),r&&(o.push(i({value:r.value},l)),o.push(s));var u=(0,a.default)(t);if(u){var c=u.options.type,d=u.options.zones,h=(!d||0===d.length)&&0===o.length;h||"line"!==c&&"area"!==c||u.update({zones:o},!1)}}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier;return[(0,r.winPlotBand)("win1",0,e)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier;return[(0,r.winPlotBand)("win1",e,Number.MAX_VALUE)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier;return[(0,r.winPlotBand)("win1",e,Number.MAX_VALUE)]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){return[]}},101,101,101,101,101,function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(47),o=r(i);e.default=o.default},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(46),o=r(i);e.default=o.default},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.upordownPlotBand=e.spreaduPlotBand=e.spreaddPlotBand=e.rangePlotBand=e.putPlotBand=e.onetouchPlotBand=e.notouchPlotBand=e.expiryrangePlotBand=e.expirymissPlotBand=e.digitunderPlotBand=e.digitoverPlotBand=e.digitoddPlotBand=e.digitmatchPlotBand=e.digitevenPlotBand=e.digitdiffPlotBand=e.callPlotBand=e.asianuPlotBand=e.asiandPlotBand=void 0;var i=n(98),o=r(i),a=n(99),s=r(a),l=n(100),u=r(l),c=n(101),d=r(c),h=n(102),p=r(h),f=n(103),g=r(f),m=n(104),v=r(m),y=n(105),b=r(y),x=n(106),w=r(x),k=n(107),P=r(k),_=n(108),M=r(_),O=n(110),S=r(O),A=n(111),T=r(A),C=n(112),E=r(C),D=n(46),j=r(D),L=n(113),I=r(L),B=n(114),z=r(B),R=n(47),X=r(R);e.asiandPlotBand=o.default,e.asianuPlotBand=s.default,e.callPlotBand=u.default,e.digitdiffPlotBand=d.default,e.digitevenPlotBand=p.default,e.digitmatchPlotBand=g.default,e.digitoddPlotBand=v.default,e.digitoverPlotBand=b.default,e.digitunderPlotBand=w.default,e.expirymissPlotBand=P.default,e.expiryrangePlotBand=M.default,e.notouchPlotBand=S.default,e.onetouchPlotBand=T.default,e.putPlotBand=E.default,e.rangePlotBand=j.default,e.spreaddPlotBand=I.default,e.spreaduPlotBand=z.default,e.upordownPlotBand=X.default},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier,n=t.entry_tick;return e<n?[(0,r.winPlotBand)("win1",e,Number.MAX_VALUE)]:[(0,r.winPlotBand)("win1",0,e)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier,n=t.entry_tick;return e>n?[(0,r.winPlotBand)("win1",e,Number.MAX_VALUE)]:[(0,r.winPlotBand)("win1",0,e)]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(6);e.default=function(t){var e=t.barrier;return[(0,r.winPlotBand)("win1",0,e)]}},101,101,function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(1),o=n(49),a=r(o),s=n(48),l=r(s),u=function(t){return+t.purchase_time!==+t.entry_tick_time&&+t.purchase_time!==+t.date_start},c=function(t){return!t.tick_count},d=function(t){return+t.date_settlement!==+t.date_expiry},h=function(t){return!t.exit_tick_time&&t.sell_time};e.default=function(t,e){return t?l.default.filter(function(e){return t[e.id]}).filter(function(e){return"purchase_time"!==e.id||u(t)}).filter(function(e){return"date_expiry"!==e.id||c(t)}).filter(function(e){return"date_settlement"!==e.id||d(t)}).filter(function(e){return"sell_time"!==e.id||h(t)}).map(function(n){return(0,a.default)(n.id,t[n.id],(0,i.contractCodeToText)("sell_time"===n.id?"exit_tick_time":n.id),n.position,e)}):[]}},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(8);e.default=function(){(0,r.wrap)(r.Chart.prototype,"showLoading",function(t){if(0!==Object.keys(this).length){for(var e=arguments.length,n=Array(e>1?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];t.apply(this,n),this.isLoading=!0}}),(0,r.wrap)(r.Chart.prototype,"hideLoading",function(t){for(var e=arguments.length,n=Array(e>1?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];t.apply(this,n),this.isLoading=!1})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(8),o=n(4),a=n(7),s=r(a),l=n(129),u=r(l),c=n(51),d=r(c),h=function(t,e){return["M",t-5,e,"L",t+5,e-7,t+65,e-7,t+65,e+7,t+5,e+7]},p=function(t){var e=t.renderer,n=t.pipSize,r=t.background,i=t.text,o=t.value,a=t.x,s=t.y,l=t.indicator,u=t.yAxis,c=t.zIndex;l.group=e.g(l).attr({zIndex:c}).add(),l.line=e.rect(0,s,a+10,1).attr({fill:r,opacity:.75}).add(l.group),l.poly=e.path(h(a+10,s)).attr({fill:r}).add(l.group),l.label=e.label((+o).toFixed(n),a-3+u.chart.marginRight,s-9).attr({padding:2}).css({cursor:"default",fontSize:11,textAnchor:"end",color:i}).add(l.group)},f=function(t){var e=t.pipSize,n=t.value,r=t.x,i=t.y,o=t.indicator,a=t.yAxis;o.label.attr({text:(+n).toFixed(e)}),o.line.attr({y:i,width:r+10}),o.label.attr({x:r-3+a.chart.marginRight,y:i-9}),o.poly.attr({d:h(r+10,i)});var s=a.getExtremes();n>s.min&&n<s.max?o.group.show():o.group.hide()},g=function(t){var e=t.chart,n=t.indicator,r=t.value,i=t.x,o=t.pipSize,a=t.yAxis,s=t.background,l=t.text,u=t.zIndex,c=a.toPixels(r)||0,d=a[n]?f:p;a[n]||(a[n]={}),d({renderer:e.renderer,pipSize:o,background:s,text:l,value:r,x:i,y:c,indicator:a[n],yAxis:a,zIndex:u})},m=function(t){var e=t.userOptions.binary,n=e.contract,r=e.pipSize,i=e.theme,a=t.yAxis[0],l=(0,s.default)(t);if(l&&0!==l.yData.length){var c=(0,u.default)(l),h=a.width,p=n&&(n.exit_tick||n.sell_spot);g(p?{chart:t,indicator:"spot",value:+p,x:h,pipSize:r,yAxis:a,background:"#c03",text:"white",zIndex:11}:{chart:t,indicator:"spot",value:+c,x:h,pipSize:r,yAxis:a,background:"#c03",text:"white",zIndex:11}),d.default.forEach(function(e){n&&n[e]?g({chart:t,indicator:e,value:+n[e],x:h,pipSize:r,yAxis:a,background:(0,o.colorBg)(i,1),text:(0,o.colorText)(i,1),zIndex:10}):a[e]&&a[e].group.hide()})}};e.default=function(){(0,i.wrap)(i.Chart.prototype,"init",function(t){for(var e=arguments.length,n=Array(e>1?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];t.apply(this,n),m(this)}),(0,i.wrap)(i.Chart.prototype,"redraw",function(t){for(var e=arguments.length,n=Array(e>1?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];t.apply(this,n),m(this)})}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){return a.default.merge(t,e)}Object.defineProperty(e,"__esModule",{value:!0}),e.darkTheme=e.lightTheme=void 0;var o=n(8),a=r(o),s=n(4),l="#c03",u="#2E8836",c=function(t){return{spacing:[100,10,15,10],plotOptions:{line:{color:(0,s.colorBg)(t,1)},area:{color:(0,s.colorBg)(t,1)}},xAxis:{gridLineColor:(0,s.colorBg)(t,.25),labels:{style:{color:(0,s.colorBg)(t,.75)}},lineColor:(0,s.colorBg)(t,.25),title:{style:{color:(0,s.colorBg)(t,.75)}}},yAxis:{gridLineColor:(0,s.colorBg)(t,.2),labels:{style:{color:(0,s.colorBg)(t,.75)}},tickColor:(0,s.colorBg)(t,.2),title:{style:{color:(0,s.colorBg)(t,.75)}}},noData:{style:{color:(0,s.colorBg)(t,.5)}}}},d={chart:{style:{fontFamily:"'Roboto', sans-serif"},backgroundColor:"transparent",resetZoomButton:{theme:{display:"none"}}},plotOptions:{series:{states:{hover:{lineWidth:1.5}}},area:{lineWidth:1.5},ohlc:{color:l,upColor:u,lineWidth:1.5},candlestick:{color:"rgba(204, 0, 51, 0.75)",lineColor:l,lineWidth:1.5,upColor:"rgba(46, 136, 54, 0.75)",upLineColor:u}},xAxis:{labels:{y:15}},yAxis:{tickWidth:1},noData:{style:{fontSize:"20px",fontWeight:"bold"}},lang:{noData:"Data not available"}};e.lightTheme=i(d,c("light")),e.darkTheme=i(d,c("dark"))},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(13),d=n(14),h=r(d),p=[{text:"Simple Moving Average (SMA)",value:"sma",img:u.default.createElement(c.CheckboxIcon,null)},{text:"Exponenital Moving Average (EMA)",value:"ema",img:u.default.createElement(c.CheckboxOutlineIcon,null)},{text:"Bollinger Band (BB)",value:"bb",img:u.default.createElement(c.CheckboxOutlineIcon,null)}],f=function(t){function e(){var t,n,r,a;i(this,e);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return n=r=o(this,(t=e.__proto__||Object.getPrototypeOf(e)).call.apply(t,[this].concat(l))),r.onChange=function(){},a=n,o(r,a)}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.expanded,n=t.tooltip,r=t.onExpand;return u.default.createElement(h.default,{expanded:e,tooltip:n,img:u.default.createElement(c.AnalysisIcon,{width:"16px",height:"16px"}),text:"Indicators",items:p,onExpand:r,onChange:this.onChange})}}]),e}(l.PureComponent);f.defaultProps={},e.default=f},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(14),d=r(c),h=n(128),p=r(h),f=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.value,n=t.tooltip,r=t.expanded,i=t.onExpand,o=t.onChange,a=p.default.find(function(t){return t.value===e}).text;return u.default.createElement(d.default,{expanded:r,tooltip:n,text:a,items:p.default,onExpand:i,onChange:o})}}]),e}(l.PureComponent);e.default=f},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(4),d=r(c),h=function(t){function e(){var t,n,r,a;i(this,e);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return n=r=o(this,(t=e.__proto__||Object.getPrototypeOf(e)).call.apply(t,[this].concat(l))),r.onClick=function(){var t=r.props,e=t.value,n=t.onClick;n(e)},a=n,o(r,a)}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.text,n=t.img;return u.default.createElement("a",{key:e,style:d.default.pickerItem,className:"binary-chart-picker-item",onClick:this.onClick},n,e&&u.default.createElement("span",null,e))}}]),e}(l.PureComponent);e.default=h},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(13),d=n(14),h=r(d),p=function(t){function e(t){i(this,e);var n=o(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t));return n.showMenu=function(){return n.setState({expanded:!n.state.expanded})},n.download=function(t){var e=n.props.getChart();e.exportChart({type:t,filename:n.props.assetName})},n.downloadPng=function(){return n.download("image/png")},n.downloadSvg=function(){return n.download("image/svg+xml")},n.downloadPdf=function(){return n.download("application/pdf")},n.onDownload=function(t){return t()},n.state={expanded:!1},n}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.expanded,n=t.tooltip,r=t.onExpand;return u.default.createElement(h.default,{expanded:e,tooltip:n,text:"Share",img:u.default.createElement(c.ShareIcon,null),items:[{text:"Download PNG Image",value:this.downloadPng},{text:"Download SVG Image",value:this.downloadSvg},{text:"Download PDF Document",value:this.downloadPdf}],onExpand:r,onChange:this.onDownload})}}]),e}(l.PureComponent);p.defaultProps={assetName:"Chart"},e.default=p},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(1),d=n(4),h=r(d),p=[{text:"5m",seconds:300},{text:"15m",seconds:900},{text:"1h",seconds:3600},{text:"3h",seconds:10800},{text:"12h",seconds:43200},{text:"1d",seconds:86400},{text:"1w",seconds:604800},{text:"30d",seconds:27e5}],f=function(t){function e(){var t,n,r,a;i(this,e);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return n=r=o(this,(t=e.__proto__||Object.getPrototypeOf(e)).call.apply(t,[this].concat(l))),r.setRange=function(t){var e=r.props,n=e.getSeries,i=e.getXAxis,o=e.getChart,a=n(),s=i(),l=o(),u=s.getExtremes(),d=u.min,h=u.max,p=l.get("future"),f=h,g=h-1e3*t;if(p){var m=p.options.data[0][0];if(m<=h){var v=(0,c.getLast)(a.options.data)[0];g=v-1e3*t}}var y=a.options.data[0][0],b=g-y;if(b<0){var x=r.props.getData(Math.round(g/1e3),Math.round(y/1e3));x.then&&x.then(function(t){if(!t||0===t.length)return void s.setExtremes(d,f,!0,!1);var e=1e3*t[0].epoch,n=e<g?g:e;s.setExtremes(n,f,!0,!1)})}else s.setExtremes(g,f,!0,!1)},r.setRangeToMax=function(){var t=r.props.getXAxis(),e=t.getExtremes(),n=e.dataMin,i=e.dataMax;t.setExtremes(n,i,!0,!1)},a=n,o(r,a)}return a(e,t),s(e,[{key:"render",value:function(){var t=this,e=this.props,n=e.data,r=e.showAllTimeFrame,i=e.interval,o=p;return n.length>0&&!function(){var t=(0,c.getLast)(n).epoch,e=n[0].epoch;o=r?i?p.filter(function(n){return n.seconds<=t-e+500*i}):p.filter(function(n){return n.seconds<=t-e+1e3}):p.filter(function(n){return n.seconds<=t-e})}(),u.default.createElement("div",{style:h.default.timeFramePicker,className:"binary-chart-time-frame-picker"},o.map(function(e){return u.default.createElement("button",{key:e.text,style:h.default.timeFrameButton,className:"binary-chart-time-frame-button",onClick:function(){return t.setRange(e.seconds)}},e.text)}),u.default.createElement("button",{style:h.default.timeFrameButton,className:"binary-chart-time-frame-button",onClick:this.setRangeToMax},"Max"))}}]),e}(l.PureComponent);f.defaultProps={maxTimeRange:604800},e.default=f},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(4),d=r(c),h=n(50),p=r(h),f=n(120),g=r(f),m=n(125),v=r(m),y=n(119),b=(r(y),n(122)),x=r(b),w=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.allowOHLC,n=t.assetName,r=t.compact,i=t.type,o=t.getChart,a=t.pickerShown,s=t.interval,l=t.showTooltips,c=t.onShowPicker,h=t.onIntervalChange,f=t.onTypeChange,m=t.hideIntervalPicker,y=l?p.default:{};return u.default.createElement("div",{style:d.default.toolbar,className:"binary-chart-toolbar"},u.default.createElement(v.default,{allowOHLC:e,value:i,tooltip:y.type,expanded:"type"===a,onExpand:function(){return c("type")},onChange:f}),e&&!r&&!m&&u.default.createElement(g.default,{value:s,tooltip:y.interval,expanded:"interval"===a,onExpand:function(){return c("interval")},onChange:h}),u.default.createElement(x.default,{assetName:n,tooltip:y.share,expanded:"share"===a,onExpand:function(){return c("share")},getChart:o}))}}]),e}(l.PureComponent);w.defaultProps={type:"area",compact:!1,hasInterval:!1,hideIntervalPicker:!1},e.default=w},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(13),d=n(14),h=r(d),p=[{text:"Area",value:"area",img:u.default.createElement(c.AreaIcon,null)},{text:"Line",value:"line",img:u.default.createElement(c.LineIcon,null)},{text:"Candlestick",value:"candlestick",img:u.default.createElement(c.CandlestickIcon,null)},{text:"Bars",value:"ohlc",img:u.default.createElement(c.BarIcon,null)}],f={line:"Line",area:"Area",candlestick:"Candlestick",ohlc:"Bars"},g=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.allowOHLC,n=t.expanded,r=t.tooltip,i=t.value,o=t.onExpand,a=t.onChange,s=e?p:p.slice(0,2);return u.default.createElement(h.default,{expanded:n,tooltip:r,text:f[i],img:s.find(function(t){return t.value===i}).img,items:s,onExpand:o,onChange:a})}}]),e}(l.PureComponent);e.default=g},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);
+	t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(4),d=r(c),h=function(t){function e(){return i(this,e),o(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.img,n=t.tooltip,r=t.onClick;return u.default.createElement("a",{style:d.default.zoomButton,className:"binary-chart-zoom-button",onClick:r},e,n&&u.default.createElement("div",{className:"tooltip"},n))}}]),e}(l.PureComponent);e.default=h},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function a(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}Object.defineProperty(e,"__esModule",{value:!0});var s=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),l=n(0),u=r(l),c=n(1),d=n(13),h=n(126),p=r(h),f=n(50),g=r(f),m=n(4),v=r(m),y=n(28),b=function(t){function e(){var t,n,r,a;i(this,e);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return n=r=o(this,(t=e.__proto__||Object.getPrototypeOf(e)).call.apply(t,[this].concat(l))),r.moveOffset=function(t){var e=r.props,n=e.getData,i=e.getXAxis,o=e.getSeries,a=e.getChart,s=a(),l=i(),u=l.getExtremes(),d=u.min,h=u.max,p=u.dataMin,f=u.dataMax,g=o(),m=(0,c.getLast)(g.options.data),v=s.get("future"),b=v&&v.options.data[8][0],x=h-d,w=x/5*t,k=t>0,P=v&&b<=h,_=void 0,M=void 0;if(k){if(h===f)return;if(P)return;var O=Math.min(f,h+w),S=O-x,A=O>m[0];A?(_=S,M=f):(_=S,M=O)}else!function(){var e=d+w;if(P){var r=m[0]-d,i=r/5*t;e=d+i,M=m[0],_=e<p?d:Math.max(e,p),l.update({minRange:(0,y.computeMinRange)(s,{min:_,max:M})})}else e<p?(_=d,M=h):(_=Math.max(p,e),M=_+x);if(e<p){var o=Math.round(e/1e3),a=Math.round(p/1e3);n(o,a).then(function(t){if(!t||0===t.length)return void l.setExtremes(d,M,!0);var n=1e3*t[0].epoch,r=n<e?e:n;l.setExtremes(r,M,!0)})}}();_===d&&M===h||l.setExtremes(_,M,!0)},r.moveLeft=function(){return r.moveOffset(-1)},r.moveRight=function(){return r.moveOffset(1)},r.zoomIn=function(){var t=r.props,e=t.getChart,n=t.getSeries,i=t.getXAxis,o=e(),a=i(),s=a.getExtremes(),l=s.min,u=s.max,d=o.get("future"),h=(u-l)/2;if(d){var p=d.options.data[8][0];if(p<=u){var f=n(),g=(0,c.getLast)(f.options.data)[0];h=(g-l)/2}}a.setExtremes(l+h,u,!0)},r.resetZoom=function(){var t=r.props.getXAxis(),e=t.getExtremes(),n=e.dataMin,i=e.dataMax;t.setExtremes(n,i,!0)},r.zoomOut=function(){var t=r.props.getSeries(),e=r.props.getXAxis(),n=e.getExtremes(),i=n.dataMin,o=n.dataMax,a=n.min,s=n.max,l=Math.min(s,(0,c.getLast)(t.options.data)[0]),u=l-a,d=Math.max(i,a-u),h=Math.max(o,d+u);e.setExtremes(d,h,!0)},r.moveToEnd=function(){var t=r.props,e=t.getChart,n=t.getSeries,i=t.getXAxis,o=e(),a=i(),s=a.getExtremes(),l=s.dataMax,u=s.min,d=s.max,h=o.get("future"),p=l-d;if(h){var f=n(),g=(0,c.getLast)(f.options.data)[0];d>g?p=0:p-=l-g}a.setExtremes(u+p,l,!0)},a=n,o(r,a)}return a(e,t),s(e,[{key:"render",value:function(){var t=this.props,e=t.endButtonShown,n=t.showTooltips,r=n?g.default:{};return u.default.createElement("span",{style:v.default.zoomControls,className:"binary-chart-zoom-controls"},u.default.createElement("div",{style:v.default.zoomSpacer}),u.default.createElement(p.default,{img:u.default.createElement(d.ChevronLeftIcon,null),onClick:this.moveLeft,tooltip:r.moveLeft}),u.default.createElement(p.default,{img:u.default.createElement(d.RemoveIcon,null),onClick:this.zoomOut,tooltip:r.zoomOut}),u.default.createElement(p.default,{img:u.default.createElement(d.FitAllIcon,null),onClick:this.resetZoom,tooltip:r.resetZoom}),u.default.createElement(p.default,{img:u.default.createElement(d.AddIcon,null),onClick:this.zoomIn,tooltip:r.zoomIn}),u.default.createElement(p.default,{img:u.default.createElement(d.ChevronRightIcon,null),onClick:this.moveRight,tooltip:r.moveRight}),u.default.createElement("div",{style:v.default.zoomSpacer},e&&u.default.createElement(p.default,{img:u.default.createElement(d.LastPageIcon,null),onClick:this.moveToEnd,tooltip:r.moveToEnd})))}}]),e}(l.PureComponent);e.default=b},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=[{text:"Ticks"},{text:"1 minute",value:60},{text:"5 minutes",value:300},{text:"15 minutes",value:900},{text:"1 hour",value:3600},{text:"4 hours",value:14400},{text:"1 day",value:86400}]},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(1),i=function(t){var e=(0,r.getLast)(t.yData);return e&&e[3]},o=function(t){var e=t.yData.length&&t.yData.filter(function(t){return!!t||0===t});return(0,r.getLast)(e)};e.default=function(t){return"candlestick"===t.type||"ohlc"===t.type?i(t):o(t)}},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Add",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Analysis",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg","data-svgreactloader":'[["http://www.w3.org/2000/svg","xlink","http://www.w3.org/1999/xlink"]]',version:"1.1",x:"0px",y:"0px",viewBox:"0 0 100 100"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M85.002,18.938c-3.998,0-7.25,3.252-7.25,7.25c0,0.813,0.141,1.593,0.389,2.323c0-0.001,0-0.001,0-0.002l-12.813,8.875   c-1.209-0.904-2.703-1.446-4.326-1.446c-1.785,0-3.418,0.651-4.682,1.725l-12.412-8.274c0,0,0,0,0,0.001   c0.222-0.695,0.344-1.434,0.344-2.202c0-3.998-3.252-7.25-7.25-7.25s-7.25,3.252-7.25,7.25c0,0.543,0.065,1.07,0.179,1.579   l-9.777,5.333c-1.345-1.359-3.188-2.157-5.147-2.157c-4.003,0-7.26,3.248-7.26,7.24c0,4.003,3.257,7.26,7.26,7.26   c3.992,0,7.24-3.257,7.24-7.26c0-0.531-0.069-1.056-0.183-1.569l9.782-5.336c0,0,0-0.001-0.001-0.001   c1.315,1.333,3.14,2.162,5.156,2.162c1.785,0,3.418-0.651,4.683-1.725l12.411,8.274c-0.221,0.695-0.344,1.434-0.344,2.201   c0,3.998,3.252,7.25,7.25,7.25s7.25-3.252,7.25-7.25c0-0.924-0.18-1.806-0.496-2.62l12.66-8.771c1.252,1.024,2.848,1.64,4.586,1.64   c3.998,0,7.25-3.252,7.25-7.25S89,18.938,85.002,18.938z M15.007,43.442c-2.349,0-4.26-1.911-4.26-4.26   c0-2.338,1.911-4.24,4.26-4.24c1.547,0,2.975,0.848,3.725,2.212c0.337,0.613,0.515,1.314,0.515,2.028   C19.248,41.531,17.345,43.442,15.007,43.442z M37.002,31.438c-2.343,0-4.25-1.907-4.25-4.25s1.907-4.25,4.25-4.25   s4.25,1.907,4.25,4.25S39.346,31.438,37.002,31.438z M61.002,47.438c-2.344,0-4.25-1.907-4.25-4.25s1.906-4.25,4.25-4.25   s4.25,1.907,4.25,4.25S63.346,47.438,61.002,47.438z M85.002,30.438c-2.344,0-4.25-1.907-4.25-4.25s1.906-4.25,4.25-4.25   s4.25,1.907,4.25,4.25S87.346,30.438,85.002,30.438z M24.234,38.708c0.009,0.16,0.014,0.318,0.014,0.475   c0,5.106-4.145,9.26-9.24,9.26c-0.47,0-0.929-0.046-1.38-0.114v32.734h21V36.125c-1.087-0.288-2.113-0.768-3.031-1.434   L24.234,38.708z M51.752,43.188c0-0.435,0.031-0.869,0.092-1.298l-10.126-6.751c-1.242,0.739-2.646,1.158-4.09,1.257v44.667h21   V52.117C54.676,51.064,51.752,47.466,51.752,43.188z M70.074,41.395c0.119,0.59,0.178,1.189,0.178,1.793   c0,4.89-3.816,8.895-8.625,9.219v28.656h21V35.125c-0.768-0.205-1.508-0.508-2.199-0.902L70.074,41.395z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Area",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M512 218l-121 213h-49l159-280 11 3v-33l-92-67-91 162-122-116-91 153-92-70-24 43v54l32-54 22 14-54 94v27l65-113 32 24-89 159h-8v27h512v-27h-40l40-73v-27l-57 100h-48l105-186v-27zm-488 213l84-148 16 13 89-153 16 16-156 272h-49zm65 0l151-264 29 30-132 234h-48zm62 0l127-224 32 30-111 194h-48zm65 0l105-183 13 13 94-164 19 11-183 323h-48zm64 0l178-315 32 24-161 291h-49z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Bar",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M162 472h-38v40h-40v-275h-41v-40h41v-41h40v275h38v41zm156-394h-38v-78h-40v315h-38v41h81v-237h38v-41h-3zm162 237h-41v-196h-40v78h-41v40h41v197h40v-78h41v-41z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Candle",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M445 280h-60v162h-16v-162h-59v-213h59v-67h16v67h60v213zm-240 165h-59v67h-17v-67h-62v-343h60v-67h16v70h59v340h3z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Checkbox",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M0 0h24v24H0z",fill:"none"}),r.createElement("path",{d:"M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"CheckboxOutline",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"}),r.createElement("path",{d:"M0 0h24v24H0z",fill:"none"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"ChevronLeft",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"ChevronRight",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Crosshair",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg","data-svgreactloader":'[["http://www.w3.org/2000/svg","xlink","http://www.w3.org/1999/xlink"],["http://www.w3.org/2000/svg","space","preserve"]]',version:"1.1",x:"0px",y:"0px",viewBox:"0 0 512 640",enableBackground:"new 0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M404.2,237.3c-8.2-67.8-61.9-121.7-129.6-130.2V68.5h-37.4v38.7c-67.7,8.5-121.4,62.4-129.6,130.2H68.5v37.4H108  c8.8,67.1,62.1,120.3,129.3,128.7v40.1h37.4v-40.1c67.2-8.4,120.6-61.6,129.3-128.7h39.5v-37.4H404.2z M366.3,274.7  c-8.2,46.5-45,83.1-91.6,91v-37.1h-37.4v37.1c-46.6-7.9-83.4-44.5-91.6-91h37.7v-37.4h-37.9c7.6-47.2,44.7-84.5,91.8-92.4v38.5h37.4  v-38.5c47.1,7.9,84.2,45.3,91.8,92.4h-37.9v37.4H366.3z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"FitAll",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M16.21 4.16l4 4v-4zm4 12l-4 4h4zm-12 4l-4-4v4zm-4-12l4-4h-4zm12.95-.95c-2.73-2.73-7.17-2.73-9.9 0s-2.73 7.17 0 9.9 7.17 2.73 9.9 0 2.73-7.16 0-9.9zm-1.1 8.8c-2.13 2.13-5.57 2.13-7.7 0s-2.13-5.57 0-7.7 5.57-2.13 7.7 0 2.13 5.57 0 7.7z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"LastPage",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Line",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M183 418l-105-181-54 92-24-14 75-132 106 181 156-270 91 157 57-97 24 13-81 138-91-157z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Remove",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M19 13H5v-2h14v2z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Settings",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";var r=n(0),i=n(2)(n(3));t.exports=r.createClass({displayName:"Share",getDefaultProps:function(){return{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24"}},componentDidMount:function(){i.applyXmlAttributes(this)},render:function(){var t=this.props,e=t.children;return r.createElement("svg",this.props,r.createElement("path",{d:"M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"}),r.Children.map(e,function(t){return t}))}})},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.bollingerBandsArray=void 0;var i=n(1),o=n(29),a=n(53),s=r(a),l=function(t,e){var n=e.periods,r=void 0===n?20:n,i=e.field,a=e.stdDevUp,l=void 0===a?2:a,u=e.stdDevDown,c=void 0===u?2:u,d=(0,o.takeLast)(t,r,i),h=(0,s.default)(d,{periods:r}),p=(0,o.stddev)(d),f=h+p*l,g=h-p*c;return[h,f,g]};e.bollingerBandsArray=function(t,e){var n=e.periods;return(0,i.sequence)(t.length-n+1).map(function(r,i){return l(t.slice(i,i+n),e)})};e.default=l},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.exponentialMovingAverageArray=void 0;var r=n(1),i=n(29),o=function t(e,n){if(1===e.length)return e[0];var r=t(e.slice(0,e.length-1),n);return(e.slice(-1)[0]-r)*(0,i.weightingMultiplier)(n)+r},a=function(t,e){var n=e.periods,r=e.field;if(t.length<n)throw new Error("Periods longer than data length");var a=(0,i.takeLast)(t,n,r);return o(a,n)};e.exponentialMovingAverageArray=function(t,e){var n=e.periods;return(0,r.sequence)(t.length-n+1).map(function(r,i){return a(t.slice(i,i+n),e)})};e.default=a},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.length===e.length&&!t.some(function(t,n){return t!==e[n]})}},function(t,e){"use strict";function n(t){if(Array.isArray(t)){for(var e=0,n=Array(t.length);e<t.length;e++)n[e]=t[e];return n}return Array.from(t)}Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.max.apply(Math,n(t))}},function(t,e){"use strict";function n(t){if(Array.isArray(t)){for(var e=0,n=Array(t.length);e<t.length;e++)n[e]=t[e];return n}return Array.from(t)}Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.min.apply(Math,n(t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t&&(0===t.length?void 0:t[t.length-1])}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.reduce(function(t,n){var r=n[e],i=t.findIndex(function(t){return t.some(function(t){return t[e]===r})});return i>-1?t[i].push(n):t.push([n]),t},[])}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){for(var n=arguments.length<=2||void 0===arguments[2]?function(t){return t}:arguments[2],r=arguments.length<=3||void 0===arguments[3]?function(t){return t}:arguments[3],i=arguments.length<=4||void 0===arguments[4]||arguments[4],o=function(t,e){var i=n(t),o=r(e);return i>o?1:i<o?-1:0},a=t.slice(0),s=e.slice(0),l=[];a.length>0||s.length>0;){var u=a[0],c=s[0];if(!u){l=l.concat(s);break}if(!c){l=l.concat(a);break}var d=l.length>0&&l[l.length-1],h=void 0;switch(o(u,c)){case 0:i&&s.shift(),h=a.shift();break;case 1:h=s.shift();break;case-1:h=a.shift()}if(i&&d&&n(d)===r(h))break;l.push(h)}return l}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Array.from(Array(t).keys())}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(31),o=r(i);e.default=function(t,e){return(0,o.default)(t,e,"barrier2")}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(31),o=r(i);e.default=function(t,e){return(0,o.default)(t,e,"barrier")}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(55),o=r(i);e.default=function(t,e){return t.barrier?(0,o.default)(t,e):+t.entry_spot||e}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(17),o=r(i),a=function(t){var e=Object.keys(t),n={};return e.forEach(function(e){var r=t[e];n[e]=[{name:"Digit",values:r[0].last_digit_range,defaultValue:r[0].last_digit_range[0]}]}),n},s=function(t){var e=Object.keys(t),n={};return e.forEach(function(e){var r=t[e];n[e]=[{name:"High barrier",defaultValue:r[0].high_barrier},{name:"Low barrier",defaultValue:r[0].low_barrier}]}),n},l=function(t,e){var n=Object.keys(t),r={};return n.forEach(function(n){var i=t[n],o=i.find(function(t){return!!t.barrier});o&&(r[n]=[{name:e,defaultValue:o.barrier}])}),r};e.default=function(t,e){var n=(0,o.default)(t,"expiry_type");switch(e){case"CALL":return l(n,"Higher than");case"PUT":return l(n,"Lower than");case"ONETOUCH":case"NOTOUCH":return l(n,"Touch spot");case"EXPIRYMISS":case"EXPIRYRANGE":case"RANGE":case"UPORDOWN":return s(n);case"DIGITMATCH":case"DIGITDIFF":case"DIGITOVER":case"DIGITUNDER":return a(n);case"DIGITODD":case"DIGITEVEN":case"ASIANU":case"ASIAND":case"SPREADU":case"SPREADD":return;default:throw new Error("Unknown trade type: "+e)}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(30),o=r(i);e.default=function(t,e){return(0,o.default)(t.barrier2,t.entry_spot,e)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.floor(t.getTime()/1e3)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.toISOString().replace(/T/," ").replace(/\..+/,"")}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.toISOString().slice(11,19)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(15),o=r(i),a=n(11),s=r(a);e.default=function(){var t=arguments.length<=0||void 0===arguments[0]?0:arguments[0];return(0,s.default)((0,o.default)(t))}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(15),o=r(i);e.default=function(t){return(0,o.default)(t).toUTCString()}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(56),o=r(i);e.default=function(t){return(0,o.default)(new Date(1e3*t))}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(15),o=r(i);e.default=function(){var t=arguments.length<=0||void 0===arguments[0]?0:arguments[0];return(0,o.default)(t).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return new Date(1e3*t).toISOString().slice(11,19)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=new Date;return e.setMonth(e.getMonth()-t),Math.floor(e.getTime()/1e3)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return!isNaN(t.getTime())}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.split(":").map(function(t,e){switch(e){case 0:return parseInt(t,0)<24;case 1:return parseInt(t,0)<=59;default:return parseInt(t,0)<=59}}).indexOf(!1)>-1}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(12),o=r(i);e.default=function(){return(0,o.default)(-29)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(12),o=r(i);e.default=function(){return(0,o.default)(-6)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=new Date;return e.setDate(e.getDate()+t),e}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(11),o=r(i);e.default=function(){var t=new Date;return t.setFullYear((new Date).getFullYear()+1),(0,o.default)(t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.split(e).map(function(t){switch(t.length){case 0:return"01";case 1:return"0"+("0"===t?"1":t);default:return t}}).join(e)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.split(e).map(function(t){switch(t.length){case 0:return"00";case 1:return"0"+t;default:return t}}).join(e)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=Math.floor(t/60/60/24),n=Math.floor(t%86400/3600),r=Math.floor(t%3600/60),i=Math.floor(t%60);return(e>0?e+" day(s)":"")+(n>0?n+" hour(s)":"")+(r>0?r+" minute(s)":"")+(i>0?i+" second(s)":"")}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(57),o=r(i);e.default=function(t,e){return e-((0,o.default)()-t)%e}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(33),o=r(i),a=n(59),s=r(a);e.default=function(t,e,n){return(0,o.default)(e,t)?(0,o.default)(n,t)&&(0,s.default)(n,e):!((0,o.default)(n,e)&&(0,s.default)(n,t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=+t.slice(0,2),n=+t.slice(3,5);return 3600*e+60*n}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(12),o=r(i);e.default=function(){return(0,o.default)(0)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(11),o=r(i);e.default=function(){return(0,o.default)(new Date)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){return(new Date).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return new Date((new Date).setMonth((new Date).getMonth()+t))}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(11),o=r(i),a=n(34),s=r(a);e.default=function(){return(0,o.default)(new Date(1e3*(0,s.default)()))}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(34),o=r(i);e.default=function(){return new Date(1e3*(0,o.default)()).toISOString().slice(0,10)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){document.addEventListener("fullscreenchange",function(){return t(document.fullscreen)}),document.addEventListener("webkitfullscreenchange",function(){return t(document.webkitIsFullScreen)}),document.addEventListener("mozfullscreenchange",function(){return t(document.mozFullScreen)}),document.addEventListener("MSFullscreenChange",function(){return t(document.msFullscreenElement)})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){document.exitFullscreen?document.exitFullscreen():document.msExitFullscreen?document.msExitFullscreen():document.mozCancelFullScreen?document.mozCancelFullScreen():document.webkitExitFullscreen&&document.webkitExitFullscreen()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){document.removeEventListener("fullscreenchange",t),document.removeEventListener("webkitfullscreenchange",t),document.removeEventListener("mozfullscreenchange",t),document.removeEventListener("MSFullscreenChange",t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){t.requestFullscreen?t.requestFullscreen():t.msRequestFullscreen?t.msRequestFullscreen():t.mozRequestFullScreen?t.mozRequestFullScreen():t.webkitRequestFullscreen&&t.webkitRequestFullscreen()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default="undefined"!=typeof alert?alert:function(){}},191,function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){"undefined"!=typeof window&&setTimeout(function(){return window.dispatchEvent(new Event("resize"))},100)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return{t:"Ticks",s:"Seconds",m:"Minutes",h:"Hours",d:"Days"}[t]}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(35),o=r(i);e.default=function(t,e){var n=t.filter(function(t){return t.contract_type===e}),r=n.filter(function(t){return!t.forward_starting_options});if(0!==r.length)return(0,o.default)(r,e)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},o=n(54),a=r(o),s=n(17),l=r(s),u=n(35),c=r(u);e.default=function(t,e){var n=t.filter(function(t){return!!t.forward_starting_options&&t.contract_type===e});if(0!==n.length){if(n.length>1)throw new Error("Can not have more than one contract with forward starting options");var r=n[0].forward_starting_options,o=(0,l.default)(r||[],"date"),s=[];Object.keys(o).sort(function(t,e){return+t-+e}).forEach(function(t){var e=o[t].map(function(t){var e=new Date(1e3*t.open),n=new Date(1e3*t.close);return{open:e,close:n}}),n=(0,a.default)(e);s.push(i({date:new Date(1e3*t)},n))});var u=(0,c.default)(n,e);return{range:s,options:u}}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(63),o=r(i),a=n(16),s=r(a);e.default=function(t,e){return(0,o.default)(e)||(0,s.default)(t,e)<120}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e,n){var r=n.find(function(t){return t.unit===e});return!!r&&(t<=r.max&&t>=r.min)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=function(){},r=function(t){
+	return t||"undefined"!=typeof window&&window.ga||n};e.trackUserId=function(t,e){return r(e)("set","userId",t)},e.trackRoute=function(t,e){return r(e)("send","pageview",t)},e.trackEvent=function(t,e,n,i){return r(i)("send",{hitType:"event",eventCategory:t,eventAction:e,eventLabel:n})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return"rgba(42, 48, 82, "+t+")"}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t<0&&"number-negative"||t>0&&"number-positive"||""}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.split(")").length>1?t.split(")")[1]:t}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=0;e.default=function(){return n++}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){return"undefined"!=typeof window&&/Mobile/.test(window.navigator.userAgent)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return/\S+@\S+\.\S+/.test(t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return/^[ -~]{6,25}$/.test(t)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(64),o=r(i);e.default=function(t,e){return t.reduce(function(t,n){var r=(0,o.default)(n.quote,e);return t[r]++,t},[0,0,0,0,0,0,0,0,0,0]).map(function(e){return t.length&&e/t.length*100})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.pow(10,-t)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){var e=t.toString();return e.includes(".")?e.split(".")[1].length:0}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t>0?"+"+t:t.toString()}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){if(isNaN(t))return"0.01";var e=Array(t).join("0");return"0."+e+1}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return Math.abs(Math.log10(t))}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return(+t).toFixed(2)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return Object.keys(t).reduce(function(n,r){return e(t[r])&&(n[r]=t[r]),n},{})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol?"symbol":typeof t},r=function t(e,r){if("object"!==("undefined"==typeof e?"undefined":n(e))||null===e||void 0===e)return!1;var i=Object.keys(e).map(function(t){return e[t]}),o=i.map(function(t,e){return r(t,e)});if(o.indexOf(!0)>-1)return!0;var a=i.map(function(e){return t(e,r)});return a.indexOf(!0)>-1};e.default=r},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=e.toPlainJS=function(t){return t&&("undefined"==typeof t.toJS?t:t.toJS())};e.default=function(t){return t&&Object.keys(t).reduce(function(e,r){return e[r]=n(t[r]),e},{})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.length===e.length&&t.every(function(t,n){return t===e[n]})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){var n=t.length,r=e.length;if(n!==r)return!1;if(0===n)return!0;var i=t[n-1],o=e[r-1];return i.epoch===o.epoch&&i.close===o.close}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t,e){return t.length===e.length&&(0===t.length||t[t.length-1].epoch===e[e.length-1].epoch)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(65),o=r(i),a=n(36),s=r(a);e.default=function(t,e){return(0,s.default)(t,e,o.default)}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(66),o=r(i),a=n(36),s=r(a);e.default=function(t,e){return(0,s.default)(t,e,o.default)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t&&(0===t.length?void 0:+t[t.length-1].close)}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t&&t.length>0?t[t.length-1].quote:void 0}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.times.map(function(e,n){return{epoch:+e,quote:+t.prices[n]}})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return[1e3*+(t.open_time||t.epoch),+t.open,+t.high,+t.low,+t.close]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t.map(function(t){return{quote:+t.open,epoch:+t.epoch}})}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return[1e3*t.epoch,t.quote]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return t&&+t.ask_price}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return{callput:"Up/Down",risefall:"Rise/Fall",higherlower:"Higher/Lower",asian:"Asians",digits:"Digits",endsinout:"Ends In/Out",staysinout:"Stays In/Out",touchnotouch:"Touch/No Touch",spreads:"Spreads"}[t]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return{contract_id:"Contract ID",purchase_time:"Purchase Time",ask_price:"Ask Price",bid_price:"Bid Price",date_start:"Start Time",date_expiry:"Expiry Time",date_settlement:"Settlement Time",expiry_time:"Expiry Time",current_spot:"Current Spot",current_spot_time:"Current Spot Time",entry_spot:"Entry Spot",entry_tick_time:"Entry Spot Time",sell_price:"Sell Price",payout:"Potential Payout",buy_price:"Purchase Price",barrier:"Barrier",low_barrier:"Low Barrier",high_barrier:"High Barrier",sell_time:"Sell Time",exit_tick_time:"Exit Spot Time",exit_tick:"Exit Spot",sell_spot_time:"DO NOT USE",entry_tick:"DO NOT USE",sell_spot:"DO NOT USE"}[t]}},function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){return{amountPerPoint:t[0].amount_per_point,stopType:t[0].stop_type,stopLoss:t[0].stop_loss,stopProfit:t[0].stop_profit}}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(16),o=r(i);e.default=function(t,e){return(0,o.default)(t,e)<86400}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(17),o=r(i);e.default=function(t){var e=t.map(function(t){return{amount_per_point:t.amount_per_point,barrier:t.barrier,barriers:t.barriers,contract_category:t.contract_category,contract_category_display:t.contract_category_display,contract_display:t.contract_display,contract_type:t.contract_type,expiry_type:t.expiry_type,forward_starting_options:t.forward_starting_options,high_barrier:t.high_barrier,last_digit_range:t.last_digit_range,low_barrier:t.low_barrier,min_contract_duration:t.min_contract_duration,max_contract_duration:t.max_contract_duration,stop_type:t.stop_type,stop_loss:t.stop_loss,stop_profit:t.stop_profit}}),n=(0,o.default)(e,"contract_category"),r=Object.keys(n);return r.forEach(function(t){var e=n[t],r=(0,o.default)(e,"contract_type");n[t]=r}),n}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(67),o=r(i),a=n(68),s=r(a);e.default=function(t,e){return(0,o.default)(t)+((0,s.default)(t)?" "+e:"")}},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0});var i=n(18),o=r(i);e.default=function(t){var e=o.default.find(function(e){return e.text===t});return e?e.value:"Unknown"}},function(t,e){"use strict";function n(t,e){return t===e?0!==t||0!==e||1/t===1/e:t!==t&&e!==e}function r(t,e){if(n(t,e))return!0;if("object"!=typeof t||null===t||"object"!=typeof e||null===e)return!1;var r=Object.keys(t),o=Object.keys(e);if(r.length!==o.length)return!1;for(var a=0;a<r.length;a++)if(!i.call(e,r[a])||!n(t[r[a]],e[r[a]]))return!1;return!0}var i=Object.prototype.hasOwnProperty;t.exports=r},function(t,e){!function(e){"object"==typeof t&&t.exports?t.exports=e:e(Highcharts)}(function(t){var e,n=t.win,r=n.document,i=t.Chart,o=t.addEvent,a=t.removeEvent,s=t.fireEvent,l=t.createElement,u=t.discardElement,c=t.css,d=t.merge,h=t.each,p=t.extend,f=t.splat,g=Math.max,m=t.isTouchDevice,v=t.Renderer.prototype.symbols,y=t.getOptions();p(y.lang,{printChart:"Print chart",downloadPNG:"Download PNG image",downloadJPEG:"Download JPEG image",downloadPDF:"Download PDF document",downloadSVG:"Download SVG vector image",contextButtonTitle:"Chart context menu"}),y.navigation={menuStyle:{border:"1px solid #A0A0A0",background:"#FFFFFF",padding:"5px 0"},menuItemStyle:{padding:"0 10px",background:"none",color:"#303030",fontSize:m?"14px":"11px"},menuItemHoverStyle:{background:"#4572A5",color:"#FFFFFF"},buttonOptions:{symbolFill:"#E0E0E0",symbolSize:14,symbolStroke:"#666",symbolStrokeWidth:3,symbolX:12.5,symbolY:10.5,align:"right",buttonSpacing:3,height:22,theme:{fill:"white",stroke:"none"},verticalAlign:"top",width:24}},y.exporting={type:"image/png",url:"https://export.highcharts.com/",printMaxWidth:780,scale:2,buttons:{contextButton:{menuClassName:"highcharts-contextmenu",symbol:"menu",_titleKey:"contextButtonTitle",menuItems:[{textKey:"printChart",onclick:function(){this.print()}},{separator:!0},{textKey:"downloadPNG",onclick:function(){this.exportChart()}},{textKey:"downloadJPEG",onclick:function(){this.exportChart({type:"image/jpeg"})}},{textKey:"downloadPDF",onclick:function(){this.exportChart({type:"application/pdf"})}},{textKey:"downloadSVG",onclick:function(){this.exportChart({type:"image/svg+xml"})}}]}}},t.post=function(t,e,n){var i,t=l("form",d({method:"post",action:t,enctype:"multipart/form-data"},n),{display:"none"},r.body);for(i in e)l("input",{type:"hidden",name:i,value:e[i]},null,t);t.submit(),u(t)},p(i.prototype,{sanitizeSVG:function(t){return t.replace(/zIndex="[^"]+"/g,"").replace(/isShadow="[^"]+"/g,"").replace(/symbolName="[^"]+"/g,"").replace(/jQuery[0-9]+="[^"]+"/g,"").replace(/url\(("|&quot;)(\S+)("|&quot;)\)/g,"url($2)").replace(/url\([^#]+#/g,"url(#").replace(/<svg /,'<svg xmlns:xlink="http://www.w3.org/1999/xlink" ').replace(/ (NS[0-9]+\:)?href=/g," xlink:href=").replace(/\n/," ").replace(/<\/svg>.*?$/,"</svg>").replace(/(fill|stroke)="rgba\(([ 0-9]+,[ 0-9]+,[ 0-9]+),([ 0-9\.]+)\)"/g,'$1="rgb($2)" $1-opacity="$3"').replace(/&nbsp;/g," ").replace(/&shy;/g,"­").replace(/<IMG /g,"<image ").replace(/<(\/?)TITLE>/g,"<$1title>").replace(/height=([^" ]+)/g,'height="$1"').replace(/width=([^" ]+)/g,'width="$1"').replace(/hc-svg-href="([^"]+)">/g,'xlink:href="$1"/>').replace(/ id=([^" >]+)/g,' id="$1"').replace(/class=([^" >]+)/g,'class="$1"').replace(/ transform /g," ").replace(/:(path|rect)/g,"$1").replace(/style="([^"]+)"/g,function(t){return t.toLowerCase()})},getChartHTML:function(){return this.container.innerHTML},getSVG:function(e){var n,i,o,a,s,c=this,g=d(c.options,e),m=g.exporting.allowHTML;return r.createElementNS||(r.createElementNS=function(t,e){return r.createElement(e)}),i=l("div",null,{position:"absolute",top:"-9999em",width:c.chartWidth+"px",height:c.chartHeight+"px"},r.body),o=c.renderTo.style.width,s=c.renderTo.style.height,o=g.exporting.sourceWidth||g.chart.width||/px$/.test(o)&&parseInt(o,10)||600,s=g.exporting.sourceHeight||g.chart.height||/px$/.test(s)&&parseInt(s,10)||400,p(g.chart,{animation:!1,renderTo:i,forExport:!0,renderer:"SVGRenderer",width:o,height:s}),g.exporting.enabled=!1,delete g.data,g.series=[],h(c.series,function(t){a=d(t.userOptions,{animation:!1,enableMouseTracking:!1,showCheckbox:!1,visible:t.visible}),a.isInternal||g.series.push(a)}),e&&h(["xAxis","yAxis"],function(t){h(f(e[t]),function(e,n){g[t][n]=d(g[t][n],e)})}),n=new t.Chart(g,c.callback),h(["xAxis","yAxis"],function(t){h(c[t],function(e,r){var i=n[t][r],o=e.getExtremes(),a=o.userMin,o=o.userMax;i&&(void 0!==a||void 0!==o)&&i.setExtremes(a,o,!0,!1)})}),o=n.getChartHTML(),g=null,n.destroy(),u(i),m&&(i=o.match(/<\/svg>(.*?$)/))&&(i='<foreignObject x="0" y="0" width="200" height="200"><body xmlns="http://www.w3.org/1999/xhtml">'+i[1]+"</body></foreignObject>",o=o.replace("</svg>",i+"</svg>")),o=this.sanitizeSVG(o),o=o.replace(/(url\(#highcharts-[0-9]+)&quot;/g,"$1").replace(/&quot;/g,"'")},getSVGForExport:function(t,e){var n=this.options.exporting;return this.getSVG(d({chart:{borderRadius:0}},n.chartOptions,e,{exporting:{sourceWidth:t&&t.sourceWidth||n.sourceWidth,sourceHeight:t&&t.sourceHeight||n.sourceHeight}}))},exportChart:function(e,n){var r=this.getSVGForExport(e,n),e=d(this.options.exporting,e);t.post(e.url,{filename:e.filename||"chart",type:e.type,width:e.width||0,scale:e.scale,svg:r},e.formAttributes)},print:function(){var t,e,i=this,o=i.container,a=[],l=o.parentNode,u=r.body,c=u.childNodes,d=i.options.exporting.printMaxWidth;i.isPrinting||(i.isPrinting=!0,i.pointer.reset(null,0),s(i,"beforePrint"),(e=d&&i.chartWidth>d)&&(t=[i.options.chart.width,void 0,!1],i.setSize(d,void 0,!1)),h(c,function(t,e){1===t.nodeType&&(a[e]=t.style.display,t.style.display="none")}),u.appendChild(o),n.focus(),n.print(),setTimeout(function(){l.appendChild(o),h(c,function(t,e){1===t.nodeType&&(t.style.display=a[e])}),i.isPrinting=!1,e&&i.setSize.apply(i,t),s(i,"afterPrint")},1e3))},contextMenu:function(t,e,n,i,s,u,d){var f,m,v,y=this,b=y.options.navigation,x=b.menuItemStyle,w=y.chartWidth,k=y.chartHeight,P="cache-"+t,_=y[P],M=g(s,u),O=function(e){y.pointer.inClass(e.target,t)||m()};_||(y[P]=_=l("div",{className:t},{position:"absolute",zIndex:1e3,padding:M+"px"},y.container),f=l("div",null,p({MozBoxShadow:"3px 3px 10px #888",WebkitBoxShadow:"3px 3px 10px #888",boxShadow:"3px 3px 10px #888"},b.menuStyle),_),m=function(){c(_,{display:"none"}),d&&d.setState(0),y.openMenu=!1},o(_,"mouseleave",function(){v=setTimeout(m,500)}),o(_,"mouseenter",function(){clearTimeout(v)}),o(r,"mouseup",O),o(y,"destroy",function(){a(r,"mouseup",O)}),h(e,function(t){if(t){var e=t.separator?l("hr",null,null,f):l("div",{onmouseover:function(){c(this,b.menuItemHoverStyle)},onmouseout:function(){c(this,x)},onclick:function(e){e&&e.stopPropagation(),m(),t.onclick&&t.onclick.apply(y,arguments)},innerHTML:t.text||y.options.lang[t.textKey]},p({cursor:"pointer"},x),f);y.exportDivElements.push(e)}}),y.exportDivElements.push(f,_),y.exportMenuWidth=_.offsetWidth,y.exportMenuHeight=_.offsetHeight),e={display:"block"},n+y.exportMenuWidth>w?e.right=w-n-s-M+"px":e.left=n-M+"px",i+u+y.exportMenuHeight>k&&"top"!==d.alignOptions.verticalAlign?e.bottom=k-i-M+"px":e.top=i+u-M+"px",c(_,e),y.openMenu=!0},addButton:function(n){var r,i,o=this,a=o.renderer,s=d(o.options.navigation.buttonOptions,n),l=s.onclick,u=s.menuItems,c={stroke:s.symbolStroke,fill:s.symbolFill},h=s.symbolSize||12;if(o.btnCount||(o.btnCount=0),o.exportDivElements||(o.exportDivElements=[],o.exportSVGElements=[]),s.enabled!==!1){var f,g=s.theme,m=g.states,v=m&&m.hover,m=m&&m.select;delete g.states,l?f=function(t){t.stopPropagation(),l.call(o,t)}:u&&(f=function(){o.contextMenu(i.menuClassName,u,i.translateX,i.translateY,i.width,i.height,i),i.setState(2)}),s.text&&s.symbol?g.paddingLeft=t.pick(g.paddingLeft,25):s.text||p(g,{width:s.width,height:s.height,padding:0}),i=a.button(s.text,0,0,f,g,v,m).attr({title:o.options.lang[s._titleKey],"stroke-linecap":"round",zIndex:3}),i.menuClassName=n.menuClassName||"highcharts-menu-"+o.btnCount++,s.symbol&&(r=a.symbol(s.symbol,s.symbolX-h/2,s.symbolY-h/2,h,h).attr(p(c,{"stroke-width":s.symbolStrokeWidth||1,zIndex:1})).add(i)),i.add().align(p(s,{width:i.width,x:t.pick(s.x,e)}),!0,"spacingBox"),e+=(i.width+s.buttonSpacing)*("right"===s.align?-1:1),o.exportSVGElements.push(i,r)}},destroyExport:function(t){var e,n,t=t.target;for(e=0;e<t.exportSVGElements.length;e++)(n=t.exportSVGElements[e])&&(n.onclick=n.ontouchstart=null,t.exportSVGElements[e]=n.destroy());for(e=0;e<t.exportDivElements.length;e++)n=t.exportDivElements[e],a(n,"mouseleave"),t.exportDivElements[e]=n.onmouseout=n.onmouseover=n.ontouchstart=n.onclick=null,u(n)}}),v.menu=function(t,e,n,r){return["M",t,e+2.5,"L",t+n,e+2.5,"M",t,e+r/2+.5,"L",t+n,e+r/2+.5,"M",t,e+r-1.5,"L",t+n,e+r-1.5]},i.prototype.callbacks.push(function(t){var n,r=t.options.exporting,i=r.buttons;if(e=0,r.enabled!==!1){for(n in i)t.addButton(i[n]);o(t,"destroy",t.destroyExport)}})})},function(t,e){!function(e){"object"==typeof t&&t.exports?t.exports=e:e(Highcharts)}(function(t){function e(){return!!this.points.length}function n(){this.hasData()?this.hideNoData():this.showNoData()}var r=t.seriesTypes,i=t.Chart.prototype,o=t.getOptions(),a=t.extend,s=t.each;a(o.lang,{noData:"No data to display"}),o.noData={position:{x:0,y:0,align:"center",verticalAlign:"middle"},attr:{},style:{fontWeight:"bold",fontSize:"12px",color:"#60606a"}},s(["pie","gauge","waterfall","bubble","treemap"],function(t){r[t]&&(r[t].prototype.hasData=e)}),t.Series.prototype.hasData=function(){return this.visible&&void 0!==this.dataMax&&void 0!==this.dataMin},i.showNoData=function(t){var e=this.options,t=t||e.lang.noData,e=e.noData;this.noDataLabel||(this.noDataLabel=this.renderer.label(t,0,0,null,null,null,e.useHTML,null,"no-data").attr(e.attr).css(e.style).add(),this.noDataLabel.align(a(this.noDataLabel.getBBox(),e.position),!1,"plotBox"))},i.hideNoData=function(){this.noDataLabel&&(this.noDataLabel=this.noDataLabel.destroy())},i.hasData=function(){for(var t=this.series,e=t.length;e--;)if(t[e].hasData()&&!t[e].options.isInternal)return!0;return!1},i.callbacks.push(function(e){t.addEvent(e,"load",n),t.addEvent(e,"redraw",n)})})},function(t,e,n){var r=n(10),i=n(5),o=r(i,"DataView");t.exports=o},function(t,e,n){function r(t){var e=-1,n=t?t.length:0;for(this.clear();++e<n;){var r=t[e];this.set(r[0],r[1])}}var i=n(277),o=n(278),a=n(279),s=n(280),l=n(281);r.prototype.clear=i,r.prototype.delete=o,r.prototype.get=a,r.prototype.has=s,r.prototype.set=l,t.exports=r},function(t,e,n){var r=n(10),i=n(5),o=r(i,"Promise");t.exports=o},function(t,e,n){var r=n(10),i=n(5),o=r(i,"Set");t.exports=o},function(t,e,n){function r(t){var e=-1,n=t?t.length:0;for(this.__data__=new i;++e<n;)this.add(t[e])}var i=n(38),o=n(300),a=n(301);r.prototype.add=r.prototype.push=o,r.prototype.has=a,t.exports=r},function(t,e,n){var r=n(5),i=r.Uint8Array;t.exports=i},function(t,e,n){var r=n(10),i=n(5),o=r(i,"WeakMap");t.exports=o},function(t,e){function n(t,e){for(var n=-1,r=t?t.length:0;++n<r&&e(t[n],n,t)!==!1;);return t}t.exports=n},function(t,e,n){function r(t,e){var n=a(t)||o(t)?i(t.length,String):[],r=n.length,l=!!r;for(var c in t)!e&&!u.call(t,c)||l&&("length"==c||s(c,r))||n.push(c);return n}var i=n(264),o=n(81),a=n(9),s=n(76),l=Object.prototype,u=l.hasOwnProperty;t.exports=r},function(t,e){function n(t,e){for(var n=-1,r=t?t.length:0;++n<r;)if(e(t[n],n,t))return!0;return!1}t.exports=n},function(t,e,n){var r=n(251),i=n(269),o=i(r);t.exports=o},function(t,e,n){var r=n(270),i=r();t.exports=i},function(t,e,n){function r(t,e){return t&&i(t,e,o)}var i=n(250),o=n(42);t.exports=r},function(t,e){function n(t){return i.call(t)}var r=Object.prototype,i=r.toString;t.exports=n},function(t,e){function n(t,e){return null!=t&&e in Object(t)}t.exports=n},function(t,e,n){function r(t,e,n,r,m,y){var b=u(t),x=u(e),w=f,k=f;b||(w=l(t),w=w==p?g:w),x||(k=l(e),k=k==p?g:k);var P=w==g,_=k==g,M=w==k;if(M&&c(t)){if(!c(e))return!1;b=!0,P=!1}if(M&&!P)return y||(y=new i),b||d(t)?o(t,e,n,r,m,y):a(t,e,w,n,r,m,y);if(!(m&h)){var O=P&&v.call(t,"__wrapped__"),S=_&&v.call(e,"__wrapped__");if(O||S){var A=O?t.value():t,T=S?e.value():e;return y||(y=new i),n(A,T,r,m,y)}}return!!M&&(y||(y=new i),s(t,e,n,r,m,y))}var i=n(69),o=n(74),a=n(271),s=n(272),l=n(274),u=n(9),c=n(314),d=n(315),h=2,p="[object Arguments]",f="[object Array]",g="[object Object]",m=Object.prototype,v=m.hasOwnProperty;t.exports=r},function(t,e,n){function r(t,e,n,r){var l=n.length,u=l,c=!r;if(null==t)return!u;for(t=Object(t);l--;){var d=n[l];if(c&&d[2]?d[1]!==t[d[0]]:!(d[0]in t))return!1}for(;++l<u;){d=n[l];var h=d[0],p=t[h],f=d[1];if(c&&d[2]){if(void 0===p&&!(h in t))return!1}else{var g=new i;if(r)var m=r(p,f,h,t,e,g);if(!(void 0===m?o(f,p,r,a|s,g):m))return!1}}return!0}var i=n(69),o=n(72),a=1,s=2;t.exports=r},function(t,e,n){function r(t){if(!a(t)||o(t))return!1;var e=i(t)?f:u;return e.test(s(t))}var i=n(82),o=n(283),a=n(25),s=n(79),l=/[\\^$.*+?()[\]{}|]/g,u=/^\[object .+?Constructor\]$/,c=Function.prototype,d=Object.prototype,h=c.toString,p=d.hasOwnProperty,f=RegExp("^"+h.call(p).replace(l,"\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,"$1.*?")+"$");t.exports=r},function(t,e,n){function r(t){return o(t)&&i(t.length)&&!!C[D.call(t)]}var i=n(40),o=n(26),a="[object Arguments]",s="[object Array]",l="[object Boolean]",u="[object Date]",c="[object Error]",d="[object Function]",h="[object Map]",p="[object Number]",f="[object Object]",g="[object RegExp]",m="[object Set]",v="[object String]",y="[object WeakMap]",b="[object ArrayBuffer]",x="[object DataView]",w="[object Float32Array]",k="[object Float64Array]",P="[object Int8Array]",_="[object Int16Array]",M="[object Int32Array]",O="[object Uint8Array]",S="[object Uint8ClampedArray]",A="[object Uint16Array]",T="[object Uint32Array]",C={};C[w]=C[k]=C[P]=C[_]=C[M]=C[O]=C[S]=C[A]=C[T]=!0,C[a]=C[s]=C[b]=C[l]=C[x]=C[u]=C[c]=C[d]=C[h]=C[p]=C[f]=C[g]=C[m]=C[v]=C[y]=!1;var E=Object.prototype,D=E.toString;t.exports=r},function(t,e,n){function r(t){return"function"==typeof t?t:null==t?a:"object"==typeof t?s(t)?o(t[0],t[1]):i(t):l(t)}var i=n(260),o=n(261),a=n(312),s=n(9),l=n(317);t.exports=r},function(t,e,n){function r(t){if(!i(t))return o(t);var e=[];for(var n in Object(t))s.call(t,n)&&"constructor"!=n&&e.push(n);return e}var i=n(284),o=n(297),a=Object.prototype,s=a.hasOwnProperty;t.exports=r},function(t,e,n){function r(t){var e=o(t);return 1==e.length&&e[0][2]?a(e[0][0],e[0][1]):function(n){return n===t||i(n,t,e)}}var i=n(255),o=n(273),a=n(78);t.exports=r},function(t,e,n){function r(t,e){return s(t)&&l(e)?u(c(t),e):function(n){var r=o(n,t);return void 0===r&&r===e?a(n,t):i(e,r,void 0,d|h)}}var i=n(72),o=n(310),a=n(311),s=n(22),l=n(77),u=n(78),c=n(24),d=1,h=2;t.exports=r},function(t,e){function n(t){return function(e){return null==e?void 0:e[t]}}t.exports=n},function(t,e,n){function r(t){return function(e){return i(e,t)}}var i=n(71);t.exports=r},function(t,e){function n(t,e){for(var n=-1,r=Array(t);++n<t;)r[n]=e(n);return r}t.exports=n},function(t,e,n){function r(t){if("string"==typeof t)return t;if(o(t))return l?l.call(t):"";var e=t+"";return"0"==e&&1/t==-a?"-0":e}var i=n(70),o=n(41),a=1/0,s=i?i.prototype:void 0,l=s?s.toString:void 0;t.exports=r},function(t,e){function n(t){return function(e){return t(e)}}t.exports=n},function(t,e){function n(t,e){return t.has(e)}t.exports=n},function(t,e,n){var r=n(5),i=r["__core-js_shared__"];t.exports=i},function(t,e,n){function r(t,e){return function(n,r){if(null==n)return n;if(!i(n))return t(n,r);for(var o=n.length,a=e?o:-1,s=Object(n);(e?a--:++a<o)&&r(s[a],a,s)!==!1;);return n}}var i=n(39);t.exports=r},function(t,e){function n(t){return function(e,n,r){for(var i=-1,o=Object(e),a=r(e),s=a.length;s--;){var l=a[t?s:++i];if(n(o[l],l,o)===!1)break}return e}}t.exports=n},function(t,e,n){function r(t,e,n,r,i,P,M){switch(n){case k:if(t.byteLength!=e.byteLength||t.byteOffset!=e.byteOffset)return!1;t=t.buffer,e=e.buffer;case w:return!(t.byteLength!=e.byteLength||!r(new o(t),new o(e)));case h:case p:case m:return a(+t,+e);case f:return t.name==e.name&&t.message==e.message;case v:case b:return t==e+"";case g:var O=l;case y:var S=P&d;if(O||(O=u),t.size!=e.size&&!S)return!1;var A=M.get(t);if(A)return A==e;P|=c,M.set(t,e);var T=s(O(t),O(e),r,i,P,M);return M.delete(t),T;case x:if(_)return _.call(t)==_.call(e)}return!1}var i=n(70),o=n(244),a=n(80),s=n(74),l=n(295),u=n(302),c=1,d=2,h="[object Boolean]",p="[object Date]",f="[object Error]",g="[object Map]",m="[object Number]",v="[object RegExp]",y="[object Set]",b="[object String]",x="[object Symbol]",w="[object ArrayBuffer]",k="[object DataView]",P=i?i.prototype:void 0,_=P?P.valueOf:void 0;t.exports=r},function(t,e,n){function r(t,e,n,r,a,l){var u=a&o,c=i(t),d=c.length,h=i(e),p=h.length;if(d!=p&&!u)return!1;for(var f=d;f--;){var g=c[f];if(!(u?g in e:s.call(e,g)))return!1}var m=l.get(t);if(m&&l.get(e))return m==e;var v=!0;l.set(t,e),l.set(e,t);for(var y=u;++f<d;){g=c[f];var b=t[g],x=e[g];if(r)var w=u?r(x,b,g,e,t,l):r(b,x,g,t,e,l);if(!(void 0===w?b===x||n(b,x,r,a,l):w)){v=!1;break}y||(y="constructor"==g)}if(v&&!y){var k=t.constructor,P=e.constructor;k!=P&&"constructor"in t&&"constructor"in e&&!("function"==typeof k&&k instanceof k&&"function"==typeof P&&P instanceof P)&&(v=!1)}return l.delete(t),l.delete(e),v}var i=n(42),o=2,a=Object.prototype,s=a.hasOwnProperty;t.exports=r},function(t,e,n){function r(t){for(var e=o(t),n=e.length;n--;){var r=e[n],a=t[r];e[n]=[r,a,i(a)]}return e}var i=n(77),o=n(42);t.exports=r},function(t,e,n){var r=n(239),i=n(37),o=n(241),a=n(242),s=n(245),l=n(252),u=n(79),c="[object Map]",d="[object Object]",h="[object Promise]",p="[object Set]",f="[object WeakMap]",g="[object DataView]",m=Object.prototype,v=m.toString,y=u(r),b=u(i),x=u(o),w=u(a),k=u(s),P=l;(r&&P(new r(new ArrayBuffer(1)))!=g||i&&P(new i)!=c||o&&P(o.resolve())!=h||a&&P(new a)!=p||s&&P(new s)!=f)&&(P=function(t){var e=v.call(t),n=e==d?t.constructor:void 0,r=n?u(n):void 0;if(r)switch(r){case y:return g;case b:return c;case x:return h;case w:return p;case k:return f}return e}),t.exports=P},function(t,e){function n(t,e){return null==t?void 0:t[e]}t.exports=n},function(t,e,n){function r(t,e,n){e=l(e,t)?[e]:i(e);for(var r=-1,d=e.length,h=!1;++r<d;){var p=c(e[r]);if(!(h=null!=t&&n(t,p)))break;t=t[p]}return h||++r!=d?h:(d=t?t.length:0,!!d&&u(d)&&s(p,d)&&(a(t)||o(t)))}var i=n(73),o=n(81),a=n(9),s=n(76),l=n(22),u=n(40),c=n(24);t.exports=r},function(t,e,n){function r(){this.__data__=i?i(null):{},this.size=0}var i=n(23);t.exports=r},function(t,e){function n(t){var e=this.has(t)&&delete this.__data__[t];return this.size-=e?1:0,e}t.exports=n},function(t,e,n){function r(t){var e=this.__data__;if(i){var n=e[t];return n===o?void 0:n}return s.call(e,t)?e[t]:void 0}var i=n(23),o="__lodash_hash_undefined__",a=Object.prototype,s=a.hasOwnProperty;t.exports=r},function(t,e,n){function r(t){var e=this.__data__;return i?void 0!==e[t]:a.call(e,t)}var i=n(23),o=Object.prototype,a=o.hasOwnProperty;t.exports=r},function(t,e,n){function r(t,e){var n=this.__data__;return this.size+=this.has(t)?0:1,n[t]=i&&void 0===e?o:e,this}var i=n(23),o="__lodash_hash_undefined__";t.exports=r},function(t,e){function n(t){var e=typeof t;return"string"==e||"number"==e||"symbol"==e||"boolean"==e?"__proto__"!==t:null===t}t.exports=n},function(t,e,n){function r(t){return!!o&&o in t}var i=n(268),o=function(){var t=/[^.]+$/.exec(i&&i.keys&&i.keys.IE_PROTO||"");return t?"Symbol(src)_1."+t:""}();t.exports=r},function(t,e){function n(t){var e=t&&t.constructor,n="function"==typeof e&&e.prototype||r;return t===n}var r=Object.prototype;t.exports=n},function(t,e){function n(){this.__data__=[],this.size=0}t.exports=n},function(t,e,n){function r(t){var e=this.__data__,n=i(e,t);if(n<0)return!1;var r=e.length-1;return n==r?e.pop():a.call(e,n,1),--this.size,!0}var i=n(20),o=Array.prototype,a=o.splice;t.exports=r},function(t,e,n){function r(t){var e=this.__data__,n=i(e,t);return n<0?void 0:e[n][1]}var i=n(20);t.exports=r},function(t,e,n){function r(t){return i(this.__data__,t)>-1}var i=n(20);t.exports=r},function(t,e,n){function r(t,e){var n=this.__data__,r=i(n,t);return r<0?(++this.size,n.push([t,e])):n[r][1]=e,this}var i=n(20);t.exports=r},function(t,e,n){function r(){this.size=0,this.__data__={hash:new i,map:new(a||o),string:new i}}var i=n(240),o=n(19),a=n(37);t.exports=r},function(t,e,n){function r(t){var e=i(this,t).delete(t);return this.size-=e?1:0,e}var i=n(21);t.exports=r},function(t,e,n){function r(t){return i(this,t).get(t)}var i=n(21);t.exports=r},function(t,e,n){function r(t){return i(this,t).has(t)}var i=n(21);t.exports=r},function(t,e,n){function r(t,e){var n=i(this,t),r=n.size;return n.set(t,e),this.size+=n.size==r?0:1,this}var i=n(21);t.exports=r},function(t,e){function n(t){var e=-1,n=Array(t.size);return t.forEach(function(t,r){n[++e]=[r,t]}),n}t.exports=n},function(t,e,n){function r(t){var e=i(t,function(t){return n.size===o&&n.clear(),t}),n=e.cache;return e}var i=n(316),o=500;t.exports=r},function(t,e,n){var r=n(299),i=r(Object.keys,Object);t.exports=i},function(t,e,n){(function(t){var r=n(75),i="object"==typeof e&&e&&!e.nodeType&&e,o=i&&"object"==typeof t&&t&&!t.nodeType&&t,a=o&&o.exports===i,s=a&&r.process,l=function(){try{return s&&s.binding("util")}catch(t){}}();t.exports=l}).call(e,n(83)(t))},function(t,e){function n(t,e){return function(n){return t(e(n))}}t.exports=n},function(t,e){function n(t){return this.__data__.set(t,r),this}var r="__lodash_hash_undefined__";t.exports=n},function(t,e){function n(t){return this.__data__.has(t)}t.exports=n},function(t,e){function n(t){var e=-1,n=Array(t.size);return t.forEach(function(t){n[++e]=t}),n}t.exports=n},function(t,e,n){function r(){this.__data__=new i,this.size=0}var i=n(19);t.exports=r},function(t,e){function n(t){var e=this.__data__,n=e.delete(t);return this.size=e.size,n}t.exports=n},function(t,e){function n(t){return this.__data__.get(t)}t.exports=n},function(t,e){function n(t){return this.__data__.has(t)}t.exports=n},function(t,e,n){function r(t,e){var n=this.__data__;if(n instanceof i){var r=n.__data__;if(!o||r.length<s-1)return r.push([t,e]),this.size=++n.size,this;n=this.__data__=new a(r)}return n.set(t,e),this.size=n.size,this}var i=n(19),o=n(37),a=n(38),s=200;t.exports=r},function(t,e,n){var r=n(296),i=n(319),o=/^\./,a=/[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g,s=/\\(\\)?/g,l=r(function(t){t=i(t);var e=[];return o.test(t)&&e.push(""),t.replace(a,function(t,n,r,i){e.push(r?i.replace(s,"$1"):n||t)}),e});t.exports=l},function(t,e,n){function r(t,e){var n=s(t)?i:o;return n(t,a(e,3))}var i=n(246),o=n(249),a=n(258),s=n(9);t.exports=r},function(t,e,n){function r(t,e,n){var r=null==t?void 0:i(t,e);return void 0===r?n:r}var i=n(71);t.exports=r},function(t,e,n){function r(t,e){return null!=t&&o(t,e,i)}var i=n(253),o=n(276);t.exports=r},function(t,e){function n(t){return t}t.exports=n},function(t,e,n){function r(t){return o(t)&&i(t)}var i=n(39),o=n(26);t.exports=r},function(t,e,n){(function(t){var r=n(5),i=n(318),o="object"==typeof e&&e&&!e.nodeType&&e,a=o&&"object"==typeof t&&t&&!t.nodeType&&t,s=a&&a.exports===o,l=s?r.Buffer:void 0,u=l?l.isBuffer:void 0,c=u||i;t.exports=c}).call(e,n(83)(t))},function(t,e,n){var r=n(257),i=n(266),o=n(298),a=o&&o.isTypedArray,s=a?i(a):r;t.exports=s},function(t,e,n){function r(t,e){if("function"!=typeof t||e&&"function"!=typeof e)throw new TypeError(o);var n=function(){var r=arguments,i=e?e.apply(this,r):r[0],o=n.cache;if(o.has(i))return o.get(i);var a=t.apply(this,r);return n.cache=o.set(i,a)||o,a};return n.cache=new(r.Cache||i),n}var i=n(38),o="Expected a function";r.Cache=i,t.exports=r},function(t,e,n){function r(t){return a(t)?i(s(t)):o(t)}var i=n(262),o=n(263),a=n(22),s=n(24);t.exports=r},function(t,e){function n(){return!1;
+	}t.exports=n},function(t,e,n){function r(t){return null==t?"":i(t)}var i=n(265);t.exports=r},function(t,e){var n;n=function(){return this}();try{n=n||Function("return this")()||(0,eval)("this")}catch(t){"object"==typeof window&&(n=window)}t.exports=n},function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(e,"__esModule",{value:!0}),e.BinaryChart=e.PlainChart=void 0;var i=n(85),o=r(i),a=n(84),s=r(a);e.PlainChart=o.default,e.BinaryChart=s.default}]))});
 
 /***/ },
 /* 509 */
@@ -45549,21 +45569,13 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _filesaverjs = __webpack_require__(513);
-	
-	var _filesaverjs2 = _interopRequireDefault(_filesaverjs);
-	
 	var _observer = __webpack_require__(300);
-	
-	var _const = __webpack_require__(307);
-	
-	var _const2 = _interopRequireDefault(_const);
 	
 	var _translator = __webpack_require__(308);
 	
 	var _bot = __webpack_require__(303);
 	
-	var _utils = __webpack_require__(516);
+	var _utils = __webpack_require__(513);
 	
 	var _blocks = __webpack_require__(517);
 	
@@ -45572,6 +45584,41 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var backwardCompatibility = function backwardCompatibility(xml) {
+	  var blockElements = xml.getElementsByTagName('block');
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+	
+	  try {
+	    for (var _iterator = blockElements[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var block = _step.value;
+	
+	      if (block.getAttribute('type') === 'on_strategy') {
+	        block.setAttribute('type', 'before_purchase');
+	      } else if (block.getAttribute('type') === 'on_finish') {
+	        block.setAttribute('type', 'after_purchase');
+	      }
+	      if (block.getAttribute('deletable')) {
+	        block.removeAttribute('deletable');
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+	};
 	
 	var _Blockly = function () {
 	  function _Blockly() {
@@ -45595,10 +45642,9 @@
 	          collapse: false
 	        });
 	        $.get('xml/main.xml', function (main) {
+	          _this.overrideBlocklyDefaultShape();
 	          _this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
 	          Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-	          _this.disableDeleteForMainBlocks();
-	          _this.overrideBlocklyDefaultShape();
 	          _this.zoomOnPlusMinus();
 	          Blockly.mainWorkspace.clearUndo();
 	          (0, _utils.addPurchaseOptions)();
@@ -45622,45 +45668,45 @@
 	    key: 'createXmlTag',
 	    value: function createXmlTag(obj) {
 	      var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
-	      var _iteratorNormalCompletion = true;
-	      var _didIteratorError = false;
-	      var _iteratorError = undefined;
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
 	
 	      try {
-	        for (var _iterator = Object.keys(obj)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	          var market = _step.value;
+	        for (var _iterator2 = Object.keys(obj)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var market = _step2.value;
 	
 	          xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">';
-	          var _iteratorNormalCompletion2 = true;
-	          var _didIteratorError2 = false;
-	          var _iteratorError2 = undefined;
+	          var _iteratorNormalCompletion3 = true;
+	          var _didIteratorError3 = false;
+	          var _iteratorError3 = undefined;
 	
 	          try {
-	            for (var _iterator2 = Object.keys(obj[market].submarkets)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	              var submarket = _step2.value;
+	            for (var _iterator3 = Object.keys(obj[market].submarkets)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	              var submarket = _step3.value;
 	
 	              xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">';
-	              var _iteratorNormalCompletion3 = true;
-	              var _didIteratorError3 = false;
-	              var _iteratorError3 = undefined;
+	              var _iteratorNormalCompletion4 = true;
+	              var _didIteratorError4 = false;
+	              var _iteratorError4 = undefined;
 	
 	              try {
-	                for (var _iterator3 = Object.keys(obj[market].submarkets[submarket].symbols)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	                  var symbol = _step3.value;
+	                for (var _iterator4 = Object.keys(obj[market].submarkets[submarket].symbols)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	                  var symbol = _step4.value;
 	
 	                  xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>';
 	                }
 	              } catch (err) {
-	                _didIteratorError3 = true;
-	                _iteratorError3 = err;
+	                _didIteratorError4 = true;
+	                _iteratorError4 = err;
 	              } finally {
 	                try {
-	                  if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	                    _iterator3.return();
+	                  if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	                    _iterator4.return();
 	                  }
 	                } finally {
-	                  if (_didIteratorError3) {
-	                    throw _iteratorError3;
+	                  if (_didIteratorError4) {
+	                    throw _iteratorError4;
 	                  }
 	                }
 	              }
@@ -45668,16 +45714,16 @@
 	              xmlStr += '\t\t</category>\n';
 	            }
 	          } catch (err) {
-	            _didIteratorError2 = true;
-	            _iteratorError2 = err;
+	            _didIteratorError3 = true;
+	            _iteratorError3 = err;
 	          } finally {
 	            try {
-	              if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	                _iterator2.return();
+	              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                _iterator3.return();
 	              }
 	            } finally {
-	              if (_didIteratorError2) {
-	                throw _iteratorError2;
+	              if (_didIteratorError3) {
+	                throw _iteratorError3;
 	              }
 	            }
 	          }
@@ -45685,16 +45731,16 @@
 	          xmlStr += '\t</category>\n';
 	        }
 	      } catch (err) {
-	        _didIteratorError = true;
-	        _iteratorError = err;
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
 	      } finally {
 	        try {
-	          if (!_iteratorNormalCompletion && _iterator.return) {
-	            _iterator.return();
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
 	          }
 	        } finally {
-	          if (_didIteratorError) {
-	            throw _iteratorError;
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
 	          }
 	        }
 	      }
@@ -45714,34 +45760,6 @@
 	      var xmlStr = this.xmlToStr(xml);
 	      var marketXml = this.createXmlTag(_bot.bot.symbol.activeSymbols.getMarkets(), _bot.bot.symbol.assetIndex);
 	      return xmlStr.replace('<!--Markets-->', marketXml);
-	    }
-	  }, {
-	    key: 'disableDeleteForMainBlocks',
-	    value: function disableDeleteForMainBlocks() {
-	      var _iteratorNormalCompletion4 = true;
-	      var _didIteratorError4 = false;
-	      var _iteratorError4 = undefined;
-	
-	      try {
-	        for (var _iterator4 = _const2.default.mainBlocks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-	          var blockType = _step4.value;
-	
-	          (0, _utils.getBlockByType)(blockType).setDeletable(false);
-	        }
-	      } catch (err) {
-	        _didIteratorError4 = true;
-	        _iteratorError4 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-	            _iterator4.return();
-	          }
-	        } finally {
-	          if (_didIteratorError4) {
-	            throw _iteratorError4;
-	          }
-	        }
-	      }
 	    }
 	  }, {
 	    key: 'overrideBlocklyDefaultShape',
@@ -45764,26 +45782,33 @@
 	      Blockly.Blocks.lists.HUE = '#dedede';
 	      Blockly.Blocks.variables.HUE = '#dedede';
 	      Blockly.Blocks.procedures.HUE = '#dedede';
-	      this.setBlockColors();
-	    }
-	  }, {
-	    key: 'addMissingMainBlocks',
-	    value: function addMissingMainBlocks() {
+	      var addDownloadToMenu = function addDownloadToMenu(block) {
+	        if (block instanceof Object) {
+	          block.customContextMenu = function customContextMenu(options) {
+	            var _this3 = this;
+	
+	            // eslint-disable-line no-param-reassign, max-len
+	            if (!this.isCollapsed()) {
+	              options.push({
+	                text: _translator.translator.translateText('Download'),
+	                enabled: true,
+	                callback: function callback() {
+	                  (0, _utils.save)(Blockly.Xml.blockToDom(_this3), '-block-');
+	                }
+	              });
+	            }
+	          };
+	        }
+	      };
 	      var _iteratorNormalCompletion5 = true;
 	      var _didIteratorError5 = false;
 	      var _iteratorError5 = undefined;
 	
 	      try {
-	        for (var _iterator5 = _const2.default.mainBlocks[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	          var mainBlock = _step5.value;
+	        for (var _iterator5 = Object.keys(Blockly.Blocks)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	          var blockName = _step5.value;
 	
-	          if (!(0, _utils.getBlockByType)(mainBlock)) {
-	            var block = Blockly.mainWorkspace.newBlock(mainBlock);
-	            block.initSvg();
-	            block.render();
-	            this.setBlockColors();
-	            block.setDeletable(false);
-	          }
+	          addDownloadToMenu(Blockly.Blocks[blockName]);
 	        }
 	      } catch (err) {
 	        _didIteratorError5 = true;
@@ -45801,24 +45826,62 @@
 	      }
 	    }
 	  }, {
-	    key: 'reconfigureBlocklyAfterLoad',
-	    value: function reconfigureBlocklyAfterLoad() {
-	      this.addMissingMainBlocks();
-	      Blockly.mainWorkspace.clearUndo();
-	      this.setBlockColors();
-	      (0, _utils.addPurchaseOptions)();
-	    }
-	  }, {
-	    key: 'loadBlocks',
-	    value: function loadBlocks(str) {
+	    key: 'loadWorkspace',
+	    value: function loadWorkspace(str) {
 	      if (str) {
 	        this.blocksXmlStr = str;
 	      }
 	      try {
 	        Blockly.mainWorkspace.clear();
 	        var xml = Blockly.Xml.textToDom(this.blocksXmlStr);
+	        backwardCompatibility(xml);
 	        Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-	        this.reconfigureBlocklyAfterLoad();
+	        (0, _utils.addPurchaseOptions)();
+	        _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
+	      } catch (e) {
+	        if (e.name === 'BlocklyError') {
+	          // pass
+	        } else {
+	          throw e;
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'loadBlock',
+	    value: function loadBlock(str) {
+	      this.blocksXmlStr += str;
+	      try {
+	        var xml = Blockly.Xml.textToDom(str);
+	        var block = Blockly.Xml.domToBlock(xml, Blockly.mainWorkspace);
+	        if ((0, _utils.isMainBlock)(block.type)) {
+	          var _iteratorNormalCompletion6 = true;
+	          var _didIteratorError6 = false;
+	          var _iteratorError6 = undefined;
+	
+	          try {
+	            for (var _iterator6 = Blockly.mainWorkspace.getTopBlocks()[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	              var b = _step6.value;
+	
+	              if (b.type === block.type && b.id !== block.id) {
+	                b.dispose();
+	              }
+	            }
+	          } catch (err) {
+	            _didIteratorError6 = true;
+	            _iteratorError6 = err;
+	          } finally {
+	            try {
+	              if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	                _iterator6.return();
+	              }
+	            } finally {
+	              if (_didIteratorError6) {
+	                throw _iteratorError6;
+	              }
+	            }
+	          }
+	        }
+	        (0, _utils.addPurchaseOptions)();
 	        _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
 	      } catch (e) {
 	        if (e.name === 'BlocklyError') {
@@ -45840,106 +45903,9 @@
 	      return returnVal;
 	    }
 	  }, {
-	    key: 'setBlockColors',
-	    value: function setBlockColors() {
-	      var _iteratorNormalCompletion6 = true;
-	      var _didIteratorError6 = false;
-	      var _iteratorError6 = undefined;
-	
-	      try {
-	        for (var _iterator6 = _const2.default.mainBlocks[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-	          var blockType = _step6.value;
-	
-	          var block = (0, _utils.getBlockByType)(blockType);
-	          if (block) {
-	            block.getField().getSvgRoot().style.setProperty('fill', 'white', 'important');
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError6 = true;
-	        _iteratorError6 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion6 && _iterator6.return) {
-	            _iterator6.return();
-	          }
-	        } finally {
-	          if (_didIteratorError6) {
-	            throw _iteratorError6;
-	          }
-	        }
-	      }
-	    }
-	  }, {
 	    key: 'saveXml',
 	    value: function saveXml() {
-	      var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-	      var _iteratorNormalCompletion7 = true;
-	      var _didIteratorError7 = false;
-	      var _iteratorError7 = undefined;
-	
-	      try {
-	        for (var _iterator7 = Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-	          var field = _step7.value;
-	
-	          if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-	            if (field.childNodes.length >= 1) {
-	              field.childNodes[0].nodeValue = '';
-	            }
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError7 = true;
-	        _iteratorError7 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion7 && _iterator7.return) {
-	            _iterator7.return();
-	          }
-	        } finally {
-	          if (_didIteratorError7) {
-	            throw _iteratorError7;
-	          }
-	        }
-	      }
-	
-	      var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-	      var filename = 'binary-bot' + parseInt(new Date().getTime() / 1000, 10) + '.xml';
-	      var blob = new Blob([xmlText], {
-	        type: 'text/xml;charset=utf-8'
-	      });
-	      _filesaverjs2.default.saveAs(blob, filename);
-	    }
-	  }, {
-	    key: 'deleteStrayBlocks',
-	    value: function deleteStrayBlocks() {
-	      var topBlocks = Blockly.mainWorkspace.getTopBlocks();
-	      var _iteratorNormalCompletion8 = true;
-	      var _didIteratorError8 = false;
-	      var _iteratorError8 = undefined;
-	
-	      try {
-	        for (var _iterator8 = topBlocks[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-	          var block = _step8.value;
-	
-	          if (!(0, _utils.isMainBlock)(block.type) && block !== (0, _utils.findTopParentBlock)((0, _utils.getBlockByType)('trade')) && block.type.indexOf('procedures_def') < 0 && block.type !== 'block_holder') {
-	            block.dispose();
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError8 = true;
-	        _iteratorError8 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion8 && _iterator8.return) {
-	            _iterator8.return();
-	          }
-	        } finally {
-	          if (_didIteratorError8) {
-	            throw _iteratorError8;
-	          }
-	        }
-	      }
+	      (0, _utils.save)(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
 	    }
 	  }, {
 	    key: 'run',
@@ -45948,7 +45914,6 @@
 	      try {
 	        window.LoopTrap = 99999999999;
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-	        this.deleteStrayBlocks();
 	        this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
 	        code = '\n        ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n        try {\n          if (typeof trade !== \'undefined\') {\n            trade();\n          }\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
@@ -45980,13 +45945,11 @@
 	    key: 'undo',
 	    value: function undo() {
 	      Blockly.mainWorkspace.undo();
-	      this.setBlockColors();
 	    }
 	  }, {
 	    key: 'redo',
 	    value: function redo() {
 	      Blockly.mainWorkspace.undo(true);
-	      this.setBlockColors();
 	    }
 	  }]);
 	
@@ -45997,6 +45960,263 @@
 
 /***/ },
 /* 513 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.save = exports.addPurchaseOptions = exports.findTopParentBlock = exports.getPurchaseChoices = exports.getBlocksByType = exports.getBlockByType = exports.isMainBlock = exports.configMainBlock = exports.setBlockTextColor = exports.deleteBlockIfExists = undefined;
+	
+	var _filesaverjs = __webpack_require__(514);
+	
+	var _filesaverjs2 = _interopRequireDefault(_filesaverjs);
+	
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	var _translator = __webpack_require__(308);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var purchaseChoices = [[_translator.translator.translateText('Click to select'), '']];
+	
+	var deleteBlockIfExists = exports.deleteBlockIfExists = function deleteBlockIfExists(block) {
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+	
+	  try {
+	    for (var _iterator = Blockly.mainWorkspace.getTopBlocks()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var mainBlock = _step.value;
+	
+	      if (!block.isInFlyout && mainBlock.id !== block.id && mainBlock.type === block.type) {
+	        block.dispose();
+	        return true;
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+	
+	  return false;
+	};
+	
+	var setBlockTextColor = exports.setBlockTextColor = function setBlockTextColor(block) {
+	  var field = block.getField();
+	  if (field) {
+	    field.getSvgRoot().style.setProperty('fill', 'white', 'important');
+	  }
+	};
+	
+	var configMainBlock = exports.configMainBlock = function configMainBlock(ev, type) {
+	  if (ev.type === 'create') {
+	    var _iteratorNormalCompletion2 = true;
+	    var _didIteratorError2 = false;
+	    var _iteratorError2 = undefined;
+	
+	    try {
+	      for (var _iterator2 = ev.ids[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	        var blockId = _step2.value;
+	
+	        var block = Blockly.mainWorkspace.getBlockById(blockId);
+	        if (block) {
+	          if (block.type === type) {
+	            deleteBlockIfExists(block);
+	          }
+	        }
+	      }
+	    } catch (err) {
+	      _didIteratorError2 = true;
+	      _iteratorError2 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	          _iterator2.return();
+	        }
+	      } finally {
+	        if (_didIteratorError2) {
+	          throw _iteratorError2;
+	        }
+	      }
+	    }
+	  }
+	};
+	
+	var isMainBlock = exports.isMainBlock = function isMainBlock(blockType) {
+	  return _const2.default.mainBlocks.indexOf(blockType) >= 0;
+	};
+	
+	var getBlockByType = exports.getBlockByType = function getBlockByType(type) {
+	  var _iteratorNormalCompletion3 = true;
+	  var _didIteratorError3 = false;
+	  var _iteratorError3 = undefined;
+	
+	  try {
+	    for (var _iterator3 = Blockly.mainWorkspace.getAllBlocks()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	      var block = _step3.value;
+	
+	      if (type === block.type) {
+	        return block;
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError3 = true;
+	    _iteratorError3 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	        _iterator3.return();
+	      }
+	    } finally {
+	      if (_didIteratorError3) {
+	        throw _iteratorError3;
+	      }
+	    }
+	  }
+	
+	  return null;
+	};
+	
+	var getBlocksByType = exports.getBlocksByType = function getBlocksByType(type) {
+	  var result = [];
+	  var _iteratorNormalCompletion4 = true;
+	  var _didIteratorError4 = false;
+	  var _iteratorError4 = undefined;
+	
+	  try {
+	    for (var _iterator4 = Blockly.mainWorkspace.getAllBlocks()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	      var block = _step4.value;
+	
+	      if (type === block.type) {
+	        result.push(block);
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError4 = true;
+	    _iteratorError4 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	        _iterator4.return();
+	      }
+	    } finally {
+	      if (_didIteratorError4) {
+	        throw _iteratorError4;
+	      }
+	    }
+	  }
+	
+	  return result;
+	};
+	
+	var getPurchaseChoices = exports.getPurchaseChoices = function getPurchaseChoices() {
+	  return purchaseChoices;
+	};
+	
+	var findTopParentBlock = exports.findTopParentBlock = function findTopParentBlock(b) {
+	  var block = b;
+	  var pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
+	  if (pblock === null) {
+	    return null;
+	  }
+	  while (pblock !== null) {
+	    if (pblock.type === 'trade') {
+	      return pblock;
+	    }
+	    block = pblock;
+	    pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
+	  }
+	  return block;
+	};
+	
+	var addPurchaseOptions = exports.addPurchaseOptions = function addPurchaseOptions() {
+	  var firstOption = {};
+	  var secondOption = {};
+	  var trade = getBlockByType('trade');
+	  if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
+	    var conditionType = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
+	    var opposites = _const2.default.opposites[conditionType.toUpperCase()];
+	    purchaseChoices.length = 0;
+	    opposites.forEach(function (option, index) {
+	      if (index === 0) {
+	        firstOption = {
+	          condition: Object.keys(option)[0],
+	          name: option[Object.keys(option)[0]]
+	        };
+	      } else {
+	        secondOption = {
+	          condition: Object.keys(option)[0],
+	          name: option[Object.keys(option)[0]]
+	        };
+	      }
+	      purchaseChoices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
+	    });
+	    var purchases = Blockly.mainWorkspace.getAllBlocks().filter(function (r) {
+	      return ['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0;
+	    });
+	    var _iteratorNormalCompletion5 = true;
+	    var _didIteratorError5 = false;
+	    var _iteratorError5 = undefined;
+	
+	    try {
+	      for (var _iterator5 = purchases[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	        var purchase = _step5.value;
+	
+	        var value = purchase.getField('PURCHASE_LIST').getValue();
+	        Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
+	        if (value === firstOption.condition) {
+	          purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+	        } else if (value === secondOption.condition) {
+	          purchase.getField('PURCHASE_LIST').setText(secondOption.name);
+	        } else {
+	          purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
+	          purchase.getField('PURCHASE_LIST').setText(firstOption.name);
+	        }
+	      }
+	    } catch (err) {
+	      _didIteratorError5 = true;
+	      _iteratorError5 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	          _iterator5.return();
+	        }
+	      } finally {
+	        if (_didIteratorError5) {
+	          throw _iteratorError5;
+	        }
+	      }
+	    }
+	  }
+	};
+	
+	var save = exports.save = function save(xmlDom) {
+	  var postfix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '-';
+	
+	  var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+	  var filename = 'binary-bot' + postfix + parseInt(new Date().getTime() / 1000, 10) + '.xml';
+	  var blob = new Blob([xmlText], {
+	    type: 'text/xml;charset=utf-8'
+	  });
+	  _filesaverjs2.default.saveAs(blob, filename);
+	};
+
+/***/ },
+/* 514 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* FileSaver.js
@@ -46274,7 +46494,7 @@
 	
 	if (typeof module !== "undefined" && module.exports) {
 	  module.exports.saveAs = saveAs;
-	} else if (("function" !== "undefined" && __webpack_require__(514) !== null) && (__webpack_require__(515) !== null)) {
+	} else if (("function" !== "undefined" && __webpack_require__(515) !== null) && (__webpack_require__(516) !== null)) {
 	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
 	    return saveAs;
 	  }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -46282,156 +46502,19 @@
 
 
 /***/ },
-/* 514 */
+/* 515 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 515 */
+/* 516 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
-
-/***/ },
-/* 516 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.addPurchaseOptions = exports.findTopParentBlock = exports.getPurchaseChoices = exports.getBlockByType = exports.isMainBlock = undefined;
-	
-	var _const = __webpack_require__(307);
-	
-	var _const2 = _interopRequireDefault(_const);
-	
-	var _translator = __webpack_require__(308);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var purchaseChoices = [[_translator.translator.translateText('Click to select'), '']];
-	
-	var isMainBlock = exports.isMainBlock = function isMainBlock(blockType) {
-	  return _const2.default.mainBlocks.indexOf(blockType) >= 0;
-	};
-	
-	var getBlockByType = exports.getBlockByType = function getBlockByType(type) {
-	  var _iteratorNormalCompletion = true;
-	  var _didIteratorError = false;
-	  var _iteratorError = undefined;
-	
-	  try {
-	    for (var _iterator = Blockly.mainWorkspace.getAllBlocks()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	      var block = _step.value;
-	
-	      if (type === block.type) {
-	        return block;
-	      }
-	    }
-	  } catch (err) {
-	    _didIteratorError = true;
-	    _iteratorError = err;
-	  } finally {
-	    try {
-	      if (!_iteratorNormalCompletion && _iterator.return) {
-	        _iterator.return();
-	      }
-	    } finally {
-	      if (_didIteratorError) {
-	        throw _iteratorError;
-	      }
-	    }
-	  }
-	
-	  return null;
-	};
-	
-	var getPurchaseChoices = exports.getPurchaseChoices = function getPurchaseChoices() {
-	  return purchaseChoices;
-	};
-	
-	var findTopParentBlock = exports.findTopParentBlock = function findTopParentBlock(b) {
-	  var block = b;
-	  var pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
-	  if (pblock === null) {
-	    return null;
-	  }
-	  while (pblock !== null) {
-	    if (pblock.type === 'trade') {
-	      return pblock;
-	    }
-	    block = pblock;
-	    pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
-	  }
-	  return block;
-	};
-	
-	var addPurchaseOptions = exports.addPurchaseOptions = function addPurchaseOptions() {
-	  var firstOption = {};
-	  var secondOption = {};
-	  var trade = getBlockByType('trade');
-	  if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
-	    var conditionType = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
-	    var opposites = _const2.default.opposites[conditionType.toUpperCase()];
-	    purchaseChoices.length = 0;
-	    opposites.forEach(function (option, index) {
-	      if (index === 0) {
-	        firstOption = {
-	          condition: Object.keys(option)[0],
-	          name: option[Object.keys(option)[0]]
-	        };
-	      } else {
-	        secondOption = {
-	          condition: Object.keys(option)[0],
-	          name: option[Object.keys(option)[0]]
-	        };
-	      }
-	      purchaseChoices.push([option[Object.keys(option)[0]], Object.keys(option)[0]]);
-	    });
-	    var purchases = Blockly.mainWorkspace.getAllBlocks().filter(function (r) {
-	      return ['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0;
-	    });
-	    var _iteratorNormalCompletion2 = true;
-	    var _didIteratorError2 = false;
-	    var _iteratorError2 = undefined;
-	
-	    try {
-	      for (var _iterator2 = purchases[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	        var purchase = _step2.value;
-	
-	        var value = purchase.getField('PURCHASE_LIST').getValue();
-	        Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-	        if (value === firstOption.condition) {
-	          purchase.getField('PURCHASE_LIST').setText(firstOption.name);
-	        } else if (value === secondOption.condition) {
-	          purchase.getField('PURCHASE_LIST').setText(secondOption.name);
-	        } else {
-	          purchase.getField('PURCHASE_LIST').setValue(firstOption.condition);
-	          purchase.getField('PURCHASE_LIST').setText(firstOption.name);
-	        }
-	      }
-	    } catch (err) {
-	      _didIteratorError2 = true;
-	      _iteratorError2 = err;
-	    } finally {
-	      try {
-	        if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	          _iterator2.return();
-	        }
-	      } finally {
-	        if (_didIteratorError2) {
-	          throw _iteratorError2;
-	        }
-	      }
-	    }
-	  }
-	};
 
 /***/ },
 /* 517 */
@@ -46475,35 +46558,106 @@
 	  value: true
 	});
 	
-	var _translator = __webpack_require__(308);
+	var _observer = __webpack_require__(300);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _translator = __webpack_require__(308);
 	
 	var _error = __webpack_require__(336);
 	
-	__webpack_require__(520);
+	__webpack_require__(519);
 	
 	var _markets = __webpack_require__(521);
 	
 	var _markets2 = _interopRequireDefault(_markets);
 	
+	var _bot = __webpack_require__(303);
+	
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
 	var _tradeTypes = __webpack_require__(522);
 	
 	var _tradeTypes2 = _interopRequireDefault(_tradeTypes);
 	
+	var _utils = __webpack_require__(513);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var backwardCompatibility = function backwardCompatibility(block) {
+	  setTimeout(function () {
+	    var parent = block.getParent();
+	    if (parent) {
+	      var submarketConnection = block.getInput('SUBMARKET').connection;
+	      var targetConnection = submarketConnection.targetConnection;
+	      if (targetConnection) {
+	        parent.nextConnection.connect(targetConnection);
+	      }
+	      submarketConnection.connect((0, _utils.findTopParentBlock)(parent).previousConnection);
+	    }
+	    block.setPreviousStatement(false);
+	  }, 0);
+	};
 	
 	Blockly.Blocks.trade = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('(1) Define your contract here'));
-	    this.appendStatementInput('SUBMARKET').setCheck('Submarket');
+	    this.appendStatementInput('SUBMARKET').setCheck(null);
 	    this.setPreviousStatement(true, null);
 	    this.setColour('#2a3052');
 	    this.setTooltip(_translator.translator.translateText('Use this block to choose markets and trade types.')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
 	  },
 	  onchange: function onchange(ev) {
-	    (0, _relationChecker.trade)(this, ev);
+	    if (ev.type === 'create') {
+	      (0, _utils.setBlockTextColor)(this);
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+	
+	      try {
+	        for (var _iterator = ev.ids[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var blockId = _step.value;
+	
+	          var block = Blockly.mainWorkspace.getBlockById(blockId);
+	          if (block) {
+	            if (block.type === 'trade') {
+	              if (!(0, _utils.deleteBlockIfExists)(block)) {
+	                backwardCompatibility(block);
+	              }
+	            }
+	            if (_bot.bot.symbol.findSymbol(block.type)) {
+	              _observer.observer.emit('tour:submarket_created');
+	            }
+	            if (_const2.default.conditions.indexOf(block.type) >= 0) {
+	              _observer.observer.emit('tour:condition_created');
+	            }
+	            if (block.type === 'math_number') {
+	              _observer.observer.emit('tour:number');
+	            }
+	            if (block.type === 'purchase') {
+	              _observer.observer.emit('tour:purchase_created');
+	            }
+	            if (block.type === 'trade_again') {
+	              _observer.observer.emit('tour:trade_again_created');
+	            }
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+	    }
 	  }
 	};
 	
@@ -46512,12 +46666,9 @@
 	  if (!account) {
 	    return new _error.BlocklyError(_translator.translator.translateText('Please login.')).emit();
 	  }
-	  var submarket = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
-	  if (submarket === '') {
-	    return new _error.BlocklyError(_translator.translator.translateText('You have to add a submarket first')).emit();
-	  }
+	  var initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 	  // TODO: Assemble JavaScript into code variable.
-	  var code = 'function trade(again){\n  Bot.start(\'' + account.trim() + '\', ' + submarket.trim() + ',\n  on_strategy, typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n  on_finish, again);\n}';
+	  var code = '\n  var tradeOption = {};\n  ' + initialization.trim() + ';\n  function trade(again){\n    Bot.start(\'' + account.trim() + '\', tradeOption,\n    typeof before_purchase === \'undefined\' ? function(){} : before_purchase,\n    typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n    typeof after_purchase === \'undefined\' ? function(){} : after_purchase,\n    again);\n  }';
 	  return code;
 	};
 	
@@ -46532,319 +46683,13 @@
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.insideFinish = exports.insideDuringPurchase = exports.insideStrategy = exports.insideCondition = exports.trade = exports.submarket = exports.condition = undefined;
-	
-	var _observer = __webpack_require__(300);
-	
-	var _tools = __webpack_require__(309);
-	
-	var _const = __webpack_require__(307);
-	
-	var _const2 = _interopRequireDefault(_const);
-	
-	var _bot = __webpack_require__(303);
-	
-	var _translator = __webpack_require__(308);
-	
-	var _utils = __webpack_require__(516);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/* eslint-disable no-underscore-dangle */
-	var isInteger = function isInteger(amount) {
-	  return !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount);
-	};
-	var isInRange = function isInRange(amount, min, max) {
-	  return !isNaN(+amount) && +amount >= min && +amount <= max;
-	};
-	var getNumField = function getNumField(block, fieldName) {
-	  var field = block.getInputTargetBlock(fieldName);
-	  if (field !== null && field.type === 'math_number') {
-	    field = field.getFieldValue('NUM').trim();
-	    return field;
-	  }
-	  return '';
-	};
-	var insideHolder = function insideHolder(blockObj) {
-	  var parent = (0, _utils.findTopParentBlock)(blockObj);
-	  if (parent !== null && parent.type === 'block_holder') {
-	    return true;
-	  }
-	  return false;
-	};
-	var getListField = function getListField(block, fieldName) {
-	  return block.getFieldValue(fieldName);
-	};
-	var disable = function disable(blockObj) {
-	  Blockly.Events.recordUndo = false;
-	  blockObj.setDisabled(true);
-	  Blockly.Events.recordUndo = true;
-	};
-	var enable = function enable(blockObj) {
-	  Blockly.Events.recordUndo = false;
-	  blockObj.setDisabled(false);
-	  Blockly.Events.recordUndo = true;
-	};
-	var condition = exports.condition = function condition(blockObj, ev, calledByParent) {
-	  if (insideHolder(blockObj)) {
-	    return;
-	  }
-	  if (blockObj.parentBlock_ !== null) {
-	    if (!_bot.bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
-	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
-	      disable(blockObj);
-	      return;
-	    } else if (!_bot.bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
-	      var symbol = _bot.bot.symbol.findSymbol(blockObj.parentBlock_.type);
-	      _observer.observer.emit('ui.log.warn', symbol[Object.keys(symbol)[0]] + ' ' + _translator.translator.translateText('does not support category:') + (' ' + _bot.bot.symbol.getCategoryNameForCondition(blockObj.type)) + (', ' + _translator.translator.translateText('Allowed categories are')) + (' ' + _bot.bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)));
-	      disable(blockObj);
-	      return;
-	    }
-	    _observer.observer.emit('tour:condition');
-	    if (!calledByParent) {
-	      if (ev.type === 'change' && ev.element && ev.element === 'field' || ev.type === 'move' && typeof ev.newInputName === 'string') {
-	        var duration = getNumField(blockObj, 'DURATION');
-	        var durationType = getListField(blockObj, 'DURATIONTYPE_LIST');
-	        if (duration !== '') {
-	          var minDuration = _bot.bot.symbol.getLimitation(blockObj.parentBlock_.type, blockObj.type).minDuration;
-	          if (!(0, _tools.durationAccepted)(duration + durationType, minDuration)) {
-	            _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Minimum duration is') + ' ' + (0, _tools.expandDuration)(minDuration));
-	          } else {
-	            _observer.observer.emit('tour:ticks');
-	          }
-	          if (durationType === 't') {
-	            if (!isInteger(duration) || !isInRange(duration, 5, 10)) {
-	              _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Number of ticks must be between 5 and 10'));
-	            } else {
-	              _observer.observer.emit('tour:ticks');
-	            }
-	          } else if (!isInteger(duration) || duration < 1) {
-	            _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Expiry time cannot be equal to start time'));
-	          }
-	        }
-	        var prediction = getNumField(blockObj, 'PREDICTION');
-	        if (prediction !== '') {
-	          if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-	            _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Prediction must be one digit'));
-	          }
-	        }
-	        var _iteratorNormalCompletion = true;
-	        var _didIteratorError = false;
-	        var _iteratorError = undefined;
-	
-	        try {
-	          for (var _iterator = blockObj.inputList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	            var il = _step.value;
-	
-	            if (il.name !== '' && blockObj.getInputTargetBlock(il.name) === null) {
-	              return;
-	            }
-	          }
-	        } catch (err) {
-	          _didIteratorError = true;
-	          _iteratorError = err;
-	        } finally {
-	          try {
-	            if (!_iteratorNormalCompletion && _iterator.return) {
-	              _iterator.return();
-	            }
-	          } finally {
-	            if (_didIteratorError) {
-	              throw _iteratorError;
-	            }
-	          }
-	        }
-	
-	        _observer.observer.emit('tour:options');
-	      }
-	    }
-	  }
-	  enable(blockObj);
-	};
-	var submarket = exports.submarket = function submarket(blockObj, ev) {
-	  if (insideHolder(blockObj)) {
-	    return;
-	  }
-	  if (blockObj.childBlocks_.length > 0 && _const2.default.conditions.indexOf(blockObj.childBlocks_[0].type) < 0) {
-	    _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Submarket blocks can only accept trade type blocks'));
-	    var _iteratorNormalCompletion2 = true;
-	    var _didIteratorError2 = false;
-	    var _iteratorError2 = undefined;
-	
-	    try {
-	      for (var _iterator2 = Array.prototype.slice.apply(blockObj.childBlocks_)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	        var child = _step2.value;
-	
-	        child.unplug();
-	      }
-	    } catch (err) {
-	      _didIteratorError2 = true;
-	      _iteratorError2 = err;
-	    } finally {
-	      try {
-	        if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	          _iterator2.return();
-	        }
-	      } finally {
-	        if (_didIteratorError2) {
-	          throw _iteratorError2;
-	        }
-	      }
-	    }
-	  } else if (blockObj.childBlocks_.length > 0) {
-	    condition(blockObj.childBlocks_[0], ev, true);
-	  }
-	  if (blockObj.parentBlock_ !== null) {
-	    if (blockObj.parentBlock_.type !== 'trade') {
-	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Submarket blocks have to be added to the trade block'));
-	      disable(blockObj);
-	      return;
-	    }
-	  }
-	  enable(blockObj);
-	};
-	var trade = exports.trade = function trade(blockObj, ev) {
-	  if (insideHolder(blockObj)) {
-	    return;
-	  }
-	  if (ev.type === 'create') {
-	    if (_bot.bot.symbol.findSymbol(Blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
-	      _observer.observer.emit('tour:submarket_created');
-	    }
-	    if (_const2.default.conditions.indexOf(Blockly.mainWorkspace.getBlockById(ev.blockId).type) >= 0) {
-	      _observer.observer.emit('tour:condition_created');
-	    }
-	    if (Blockly.mainWorkspace.getBlockById(ev.blockId).type === 'math_number') {
-	      _observer.observer.emit('tour:number');
-	    }
-	    if (Blockly.mainWorkspace.getBlockById(ev.blockId).type === 'purchase') {
-	      _observer.observer.emit('tour:purchase_created');
-	    }
-	    if (Blockly.mainWorkspace.getBlockById(ev.blockId).type === 'trade_again') {
-	      _observer.observer.emit('tour:trade_again_created');
-	    }
-	  }
-	  if (blockObj.childBlocks_.length && !_bot.bot.symbol.findSymbol(blockObj.childBlocks_[0].type)) {
-	    _observer.observer.emit('ui.log.warn', _translator.translator.translateText('The trade block can only accept submarket blocks'));
-	    var _iteratorNormalCompletion3 = true;
-	    var _didIteratorError3 = false;
-	    var _iteratorError3 = undefined;
-	
-	    try {
-	      for (var _iterator3 = Array.prototype.slice.apply(blockObj.childBlocks_)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	        var child = _step3.value;
-	
-	        child.unplug();
-	      }
-	    } catch (err) {
-	      _didIteratorError3 = true;
-	      _iteratorError3 = err;
-	    } finally {
-	      try {
-	        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	          _iterator3.return();
-	        }
-	      } finally {
-	        if (_didIteratorError3) {
-	          throw _iteratorError3;
-	        }
-	      }
-	    }
-	  } else if (blockObj.childBlocks_.length > 0) {
-	    submarket(blockObj.childBlocks_[0], ev);
-	    _observer.observer.emit('tour:submarket');
-	    if ('newInputName' in ev) {
-	      (0, _utils.addPurchaseOptions)();
-	    }
-	  }
-	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
-	  if (topParent !== null) {
-	    if (_bot.bot.symbol.findSymbol(topParent.type) || ['on_strategy', 'on_finish', 'during_purchase'].indexOf(topParent.type) >= 0) {
-	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('The trade block cannot be inside binary blocks'));
-	      disable(blockObj);
-	      return;
-	    }
-	  }
-	  enable(blockObj);
-	};
-	var insideCondition = exports.insideCondition = function insideCondition(blockObj, ev, name) {
-	  if (insideHolder(blockObj)) {
-	    return;
-	  }
-	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
-	  if (topParent !== null) {
-	    if (_const2.default.conditions.indexOf(blockObj.parentBlock_.type) < 0 && !ev.oldParentId) {
-	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added to the condition block'));
-	      disable(blockObj);
-	      return;
-	    }
-	  }
-	  enable(blockObj);
-	};
-	var insideStrategy = exports.insideStrategy = function insideStrategy(blockObj, ev, name) {
-	  if (insideHolder(blockObj)) {
-	    return;
-	  }
-	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
-	  if (topParent !== null) {
-	    if (topParent.type !== 'on_strategy' && !ev.oldParentId) {
-	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added inside the strategy block'));
-	      disable(blockObj);
-	      return;
-	    } else if (blockObj.type === 'purchase') {
-	      _observer.observer.emit('tour:purchase');
-	    }
-	  }
-	  enable(blockObj);
-	};
-	var insideDuringPurchase = exports.insideDuringPurchase = function insideDuringPurchase(blockObj, ev, name) {
-	  if (insideHolder(blockObj)) {
-	    return;
-	  }
-	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
-	  if (topParent !== null) {
-	    if (topParent.type !== 'during_purchase' && !ev.oldParentId) {
-	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added inside the during purchase block'));
-	      disable(blockObj);
-	      return;
-	    }
-	  }
-	  enable(blockObj);
-	};
-	var insideFinish = exports.insideFinish = function insideFinish(blockObj, ev, name) {
-	  if (insideHolder(blockObj)) {
-	    return;
-	  }
-	  var topParent = (0, _utils.findTopParentBlock)(blockObj);
-	  if (topParent !== null) {
-	    if (topParent.type !== 'on_finish' && !ev.oldParentId) {
-	      _observer.observer.emit('ui.log.warn', name + ' ' + _translator.translator.translateText('must be added inside the finish block'));
-	      disable(blockObj);
-	      return;
-	    }
-	    if (blockObj.type === 'trade_again') {
-	      _observer.observer.emit('tour:trade_again');
-	    }
-	  }
-	  enable(blockObj);
-	};
-
-/***/ },
-/* 520 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
 	var _const = __webpack_require__(307);
 	
 	var _const2 = _interopRequireDefault(_const);
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -46870,6 +46715,256 @@
 	};
 
 /***/ },
+/* 520 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.insideFinish = exports.insideDuringPurchase = exports.insideStrategy = exports.insideCondition = exports.submarket = exports.insideTrade = exports.condition = undefined;
+	
+	var _observer = __webpack_require__(300);
+	
+	var _tools = __webpack_require__(309);
+	
+	var _const = __webpack_require__(307);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	var _bot = __webpack_require__(303);
+	
+	var _translator = __webpack_require__(308);
+	
+	var _utils = __webpack_require__(513);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/* eslint-disable no-underscore-dangle */
+	var isInteger = function isInteger(amount) {
+	  return !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount);
+	};
+	var isInRange = function isInRange(amount, min, max) {
+	  return !isNaN(+amount) && +amount >= min && +amount <= max;
+	};
+	var getNumField = function getNumField(block, fieldName) {
+	  var field = block.getInputTargetBlock(fieldName);
+	  if (field !== null && field.type === 'math_number') {
+	    field = field.getFieldValue('NUM').trim();
+	    return field;
+	  }
+	  return '';
+	};
+	var insideHolder = function insideHolder(blockObj) {
+	  var parent = (0, _utils.findTopParentBlock)(blockObj);
+	  if (blockObj.isInFlyout) {
+	    return true;
+	  }
+	  if (parent !== null && (parent.type === 'block_holder' || parent.type.indexOf('procedures_def') === 0)) {
+	    return true;
+	  }
+	  return false;
+	};
+	var getListField = function getListField(block, fieldName) {
+	  return block.getFieldValue(fieldName);
+	};
+	var disable = function disable(blockObj, message) {
+	  if (!blockObj.disabled) {
+	    _observer.observer.emit('ui.log.warn', message);
+	    Blockly.Events.recordUndo = false;
+	    blockObj.setDisabled(true);
+	    Blockly.Events.recordUndo = true;
+	  }
+	};
+	var enable = function enable(blockObj) {
+	  Blockly.Events.recordUndo = false;
+	  blockObj.setDisabled(false);
+	  Blockly.Events.recordUndo = true;
+	};
+	var conditionFields = function conditionFields(blockObj, ev, calledByParent) {
+	  if (!calledByParent) {
+	    if (ev.type === 'change' && ev.element === 'field' || ev.type === 'move' && typeof ev.newInputName === 'string') {
+	      var duration = getNumField(blockObj, 'DURATION');
+	      var durationType = getListField(blockObj, 'DURATIONTYPE_LIST');
+	      if (duration !== '') {
+	        var minDuration = _bot.bot.symbol.getLimitation(blockObj.parentBlock_.type, blockObj.type).minDuration;
+	        if (!(0, _tools.durationAccepted)(duration + durationType, minDuration)) {
+	          _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Minimum duration is') + ' ' + (0, _tools.expandDuration)(minDuration));
+	        } else {
+	          _observer.observer.emit('tour:ticks');
+	        }
+	        if (durationType === 't') {
+	          if (!isInteger(duration) || !isInRange(duration, 5, 10)) {
+	            _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Number of ticks must be between 5 and 10'));
+	          } else {
+	            _observer.observer.emit('tour:ticks');
+	          }
+	        } else if (!isInteger(duration) || duration < 1) {
+	          _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Expiry time cannot be equal to start time'));
+	        }
+	      }
+	      var prediction = getNumField(blockObj, 'PREDICTION');
+	      if (prediction !== '') {
+	        if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
+	          _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Prediction must be one digit'));
+	        }
+	      }
+	      var inputMissing = false;
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+	
+	      try {
+	        for (var _iterator = blockObj.inputList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var il = _step.value;
+	
+	          if (il.name !== '' && blockObj.getInputTargetBlock(il.name) === null) {
+	            inputMissing = true;
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+	
+	      if (!inputMissing) {
+	        _observer.observer.emit('tour:options');
+	      }
+	    }
+	  }
+	};
+	var condition = exports.condition = function condition(blockObj, ev, calledByParent) {
+	  if (insideHolder(blockObj)) {
+	    enable(blockObj);
+	  } else if (blockObj.parentBlock_ !== null) {
+	    if (!_bot.bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
+	      disable(blockObj, _translator.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
+	    } else if (!_bot.bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
+	      var symbol = _bot.bot.symbol.findSymbol(blockObj.parentBlock_.type);
+	      disable(blockObj, symbol[Object.keys(symbol)[0]] + ' ' + _translator.translator.translateText('does not support category:') + (' ' + _bot.bot.symbol.getCategoryNameForCondition(blockObj.type)) + (', ' + _translator.translator.translateText('Allowed categories are')) + (' ' + _bot.bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)));
+	    } else {
+	      _observer.observer.emit('tour:condition');
+	      conditionFields(blockObj, ev, calledByParent);
+	      enable(blockObj);
+	    }
+	  }
+	};
+	var insideTrade = exports.insideTrade = function insideTrade(blockObj, ev, name) {
+	  if (insideHolder(blockObj)) {
+	    enable(blockObj);
+	  } else {
+	    var topParent = (0, _utils.findTopParentBlock)(blockObj);
+	    if (topParent && topParent.type !== 'trade') {
+	      disable(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the trade block'));
+	    } else {
+	      if (blockObj.type === 'submarket') {
+	        _observer.observer.emit('tour:submarket');
+	        (0, _utils.addPurchaseOptions)();
+	      }
+	      enable(blockObj);
+	    }
+	  }
+	};
+	var submarket = exports.submarket = function submarket(blockObj, ev) {
+	  if (insideHolder(blockObj)) {
+	    enable(blockObj);
+	  } else {
+	    if (blockObj.childBlocks_.length > 0 && _const2.default.conditions.indexOf(blockObj.childBlocks_[0].type) < 0) {
+	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Submarket blocks can only accept trade type blocks'));
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
+	
+	      try {
+	        for (var _iterator2 = Array.prototype.slice.apply(blockObj.childBlocks_)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var child = _step2.value;
+	
+	          child.unplug();
+	        }
+	      } catch (err) {
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
+	          }
+	        } finally {
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
+	          }
+	        }
+	      }
+	    } else if (blockObj.childBlocks_.length > 0) {
+	      condition(blockObj.childBlocks_[0], ev, true);
+	    }
+	    insideTrade(blockObj, ev, 'submarket');
+	  }
+	};
+	var insideCondition = exports.insideCondition = function insideCondition(blockObj, ev, name) {
+	  if (insideHolder(blockObj)) {
+	    enable(blockObj);
+	  } else if (_const2.default.conditions.indexOf(blockObj.parentBlock_.type) < 0) {
+	    disable(blockObj, name + ' ' + _translator.translator.translateText('must be added to the condition block'));
+	  } else {
+	    enable(blockObj);
+	  }
+	};
+	var insideStrategy = exports.insideStrategy = function insideStrategy(blockObj, ev, name) {
+	  if (insideHolder(blockObj)) {
+	    enable(blockObj);
+	  } else {
+	    var topParent = (0, _utils.findTopParentBlock)(blockObj);
+	    if (topParent && topParent.type !== 'before_purchase') {
+	      disable(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the strategy block'));
+	    } else {
+	      if (blockObj.type === 'purchase') {
+	        _observer.observer.emit('tour:purchase');
+	      }
+	      enable(blockObj);
+	    }
+	  }
+	};
+	var insideDuringPurchase = exports.insideDuringPurchase = function insideDuringPurchase(blockObj, ev, name) {
+	  if (insideHolder(blockObj)) {
+	    enable(blockObj);
+	  } else {
+	    var topParent = (0, _utils.findTopParentBlock)(blockObj);
+	    if (topParent && topParent.type !== 'during_purchase') {
+	      disable(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the during purchase block'));
+	    } else {
+	      enable(blockObj);
+	    }
+	  }
+	};
+	var insideFinish = exports.insideFinish = function insideFinish(blockObj, ev, name) {
+	  if (insideHolder(blockObj)) {
+	    enable(blockObj);
+	  } else {
+	    var topParent = (0, _utils.findTopParentBlock)(blockObj);
+	    if (topParent && topParent.type !== 'after_purchase') {
+	      disable(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the finish block'));
+	    } else {
+	      if (blockObj.type === 'trade_again') {
+	        _observer.observer.emit('tour:trade_again');
+	      }
+	      enable(blockObj);
+	    }
+	  }
+	};
+
+/***/ },
 /* 521 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -46881,7 +46976,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _bot = __webpack_require__(303);
 	
@@ -46904,7 +46999,7 @@
 	          this.appendDummyInput().appendField(_translator.translator.translateText('Accepts') + ': (' + _bot.bot.symbol.getAllowedCategoryNames(symbol) + ')');
 	          this.appendStatementInput('CONDITION').setCheck('Condition');
 	          this.setInputsInline(false);
-	          this.setPreviousStatement(true, 'Submarket');
+	          this.setPreviousStatement(true, null);
 	          this.setColour('#f2f2f2');
 	          this.setTooltip(_translator.translator.translateText('Chooses the symbol:') + ' ' + symbolNames[symbol]); // eslint-disable-line max-len
 	          this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
@@ -46946,7 +47041,7 @@
 	        if (!condition) {
 	          return new _error.BlocklyError(_translator.translator.translateText('A trade type has to be defined for the symbol')).emit();
 	        }
-	        var code = condition.trim() + '\n      symbol: \'' + symbol + '\'}';
+	        var code = '\n      tradeOption = ' + condition.trim() + ';\n      tradeOption.symbol = \'' + symbol + '\'';
 	        return code;
 	      };
 	    };
@@ -46984,7 +47079,7 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -47117,7 +47212,7 @@
 	        if (opposites === '' || durationValue === '' || payouttype === '' || currency === '' || amount === '') {
 	          return new _error.BlocklyError(_translator.translator.translateText('All trade types are required')).emit();
 	        }
-	        var code = '{\n      condition: \'' + opposites + '\',\n      candleInterval: \'' + candleIntervalValue + '\',\n      duration: ' + durationValue + ',\n      duration_unit: \'' + durationType + '\',\n      basis: \'' + payouttype + '\',\n      currency: \'' + currency + '\',\n      amount: ' + amount + ',\n      ' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'prediction: ' + predictionValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrierOffset: ' + barrierOffsetValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'secondBarrierOffset: ' + secondBarrierOffsetValue + ',' : '');
+	        var code = '{\n      condition: \'' + opposites + '\',\n      candleInterval: \'' + candleIntervalValue + '\',\n      duration: ' + durationValue + ',\n      duration_unit: \'' + durationType + '\',\n      basis: \'' + payouttype + '\',\n      currency: \'' + currency + '\',\n      amount: ' + amount + ',\n      ' + (_const2.default.hasPrediction.indexOf(opposites) > -1 && predictionValue !== '' ? 'prediction: ' + predictionValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 || _const2.default.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== '' ? 'barrierOffset: ' + barrierOffsetValue + ',' : '') + '\n      ' + (_const2.default.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '' ? 'secondBarrierOffset: ' + secondBarrierOffsetValue + ',' : '') + '\n      }';
 	        return code;
 	      };
 	    };
@@ -47420,19 +47515,27 @@
 	
 	__webpack_require__(543);
 	
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
-	Blockly.Blocks.on_strategy = {
+	var _utils = __webpack_require__(513);
+	
+	Blockly.Blocks.before_purchase = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('(2) things to do before purchase is made'));
 	    this.appendStatementInput('STRATEGY_STACK').setCheck('Purchase');
 	    this.setColour('#2a3052');
 	    this.setTooltip(_translator.translator.translateText('This block decides what to do each time a new tick is received')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    if (ev.type === 'create') {
+	      (0, _utils.setBlockTextColor)(this);
+	    }
+	    (0, _utils.configMainBlock)(ev, 'before_purchase');
 	  }
-	};
-	Blockly.JavaScript.on_strategy = function (block) {
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
+	
+	Blockly.JavaScript.before_purchase = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
-	  var code = 'function on_strategy(ticks, proposals, purchaseCtrl){\n    if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
+	  var code = 'function before_purchase(ticks, proposals, purchaseCtrl){\n    if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
 	  return code;
 	};
 
@@ -47442,7 +47545,7 @@
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -47469,7 +47572,7 @@
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -47496,7 +47599,7 @@
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -47527,7 +47630,7 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -47565,7 +47668,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -47608,7 +47711,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -47650,7 +47753,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _const = __webpack_require__(307);
 	
@@ -47684,7 +47787,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 	Blockly.Blocks.direction = {
@@ -47710,9 +47813,9 @@
 
 	'use strict';
 	
-	var _utils = __webpack_require__(516);
+	var _utils = __webpack_require__(513);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -47743,9 +47846,9 @@
 
 	'use strict';
 	
-	var _utils = __webpack_require__(516);
+	var _utils = __webpack_require__(513);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -47776,9 +47879,9 @@
 
 	'use strict';
 	
-	var _utils = __webpack_require__(516);
+	var _utils = __webpack_require__(513);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -47817,7 +47920,8 @@
 	
 	__webpack_require__(547);
 	
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
+	var _utils = __webpack_require__(513);
+	
 	Blockly.Blocks.during_purchase = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('(3) things to do when trade is in progress'));
@@ -47825,8 +47929,15 @@
 	    this.setColour('#2a3052');
 	    this.setTooltip(_translator.translator.translateText('Sell at market before a trade is finished')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    if (ev.type === 'create') {
+	      (0, _utils.setBlockTextColor)(this);
+	    }
+	    (0, _utils.configMainBlock)(ev, 'during_purchase');
 	  }
-	};
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
+	
 	Blockly.JavaScript.during_purchase = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
 	  var code = 'function during_purchase(openContract, purchaseCtrl){\n  if(purchaseCtrl === null) return; \n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n  }\n  ';
@@ -47841,7 +47952,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 	Blockly.Blocks.sell_at_market = {
@@ -47868,7 +47979,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 	Blockly.Blocks.check_sell = {
@@ -47897,7 +48008,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	Blockly.Blocks.sell_price = {
 	  init: function init() {
@@ -47934,19 +48045,27 @@
 	
 	__webpack_require__(553);
 	
-	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
-	Blockly.Blocks.on_finish = {
+	var _utils = __webpack_require__(513);
+	
+	Blockly.Blocks.after_purchase = {
 	  init: function init() {
 	    this.appendDummyInput().appendField(_translator.translator.translateText('(4) things to do after purchase is finished'));
 	    this.appendStatementInput('FINISH_STACK').setCheck('TradeAgain');
 	    this.setColour('#2a3052');
 	    this.setTooltip(_translator.translator.translateText('This block decides what to do when a purchased contract is finished')); // eslint-disable-line max-len
 	    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+	  },
+	  onchange: function onchange(ev) {
+	    if (ev.type === 'create') {
+	      (0, _utils.setBlockTextColor)(this);
+	    }
+	    (0, _utils.configMainBlock)(ev, 'after_purchase');
 	  }
-	};
-	Blockly.JavaScript.on_finish = function (block) {
+	}; // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
+	
+	Blockly.JavaScript.after_purchase = function (block) {
 	  var stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
-	  var code = 'function on_finish(_finishedContract, details){\n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n    Bot.stop();\n  }\n  ';
+	  var code = 'function after_purchase(_finishedContract, details){\n    try {\n      ' + stack + '\n    } catch (e) { \n      if (e.name === \'BlocklyError\') {\n        // pass\n      } else {\n        throw e;\n      }\n    }\n    Bot.stop();\n  }\n  ';
 	  return code;
 	};
 
@@ -47958,7 +48077,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#e54skh
 	Blockly.Blocks.contract_result = {
@@ -47988,7 +48107,7 @@
 	
 	var _const2 = _interopRequireDefault(_const);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -48018,7 +48137,7 @@
 
 	'use strict';
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _translator = __webpack_require__(308);
 	
@@ -48047,7 +48166,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	var _const = __webpack_require__(307);
 	
@@ -48082,7 +48201,7 @@
 	
 	var _translator = __webpack_require__(308);
 	
-	var _relationChecker = __webpack_require__(519);
+	var _relationChecker = __webpack_require__(520);
 	
 	// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
 	Blockly.Blocks.trade_again = {
@@ -48339,7 +48458,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.') + '</p>',
-	        target: (0, _components.getUiComponent)('on_strategy'),
+	        target: (0, _components.getUiComponent)('before_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48384,7 +48503,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Now add it to the Strategy block.') + '</p>',
-	        target: (0, _components.getUiComponent)('on_strategy'),
+	        target: (0, _components.getUiComponent)('before_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48401,7 +48520,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.') + '</p>',
-	        target: (0, _components.getUiComponent)('on_strategy'),
+	        target: (0, _components.getUiComponent)('before_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48409,7 +48528,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.') + '</p>',
-	        target: (0, _components.getUiComponent)('on_strategy'),
+	        target: (0, _components.getUiComponent)('before_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48417,7 +48536,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block') + '</p>',
-	        target: (0, _components.getUiComponent)('on_finish'),
+	        target: (0, _components.getUiComponent)('after_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48425,7 +48544,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.') + '</p>',
-	        target: (0, _components.getUiComponent)('on_finish'),
+	        target: (0, _components.getUiComponent)('after_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48453,7 +48572,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Now add it to the On Finish block') + '</p>',
-	        target: (0, _components.getUiComponent)('on_finish'),
+	        target: (0, _components.getUiComponent)('after_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48471,7 +48590,7 @@
 	        }
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn\'t called e.g. in a logic block which its trade type is unmet.') + '</p>',
-	        target: (0, _components.getUiComponent)('on_finish'),
+	        target: (0, _components.getUiComponent)('after_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48479,7 +48598,7 @@
 	        nextButton: true
 	      }, {
 	        content: '<p>' + _translator.translator.translateText('OK, this\'s it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.') + '</p>',
-	        target: (0, _components.getUiComponent)('on_finish'),
+	        target: (0, _components.getUiComponent)('after_purchase'),
 	        closeButton: true,
 	        highlightTarget: true,
 	        my: 'left center',
@@ -48614,7 +48733,7 @@
 	});
 	exports.setOpacity = exports.setOpacityForAll = exports.getUiComponent = undefined;
 	
-	var _utils = __webpack_require__(516);
+	var _utils = __webpack_require__(513);
 	
 	var uiComponents = {
 	  accountSelect: '#accountSelect',
