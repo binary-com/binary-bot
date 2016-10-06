@@ -4,11 +4,34 @@ import { translator } from '../../../common/translator';
 
 const purchaseChoices = [[translator.translateText('Click to select'), '']];
 
+export const deleteBlockIfExists = (block) => {
+  for (const mainBlock of Blockly.mainWorkspace.getTopBlocks()) {
+    if (!block.isInFlyout && mainBlock.id !== block.id && mainBlock.type === block.type) {
+      block.dispose();
+      return true;
+    }
+  }
+  return false;
+};
+
 export const setBlockTextColor = (block) => {
   const field = block.getField();
   if (field) {
     field.getSvgRoot()
       .style.setProperty('fill', 'white', 'important');
+  }
+};
+
+export const configMainBlock = (ev, type) => {
+  if (ev.type === 'create') {
+    for (const blockId of ev.ids) {
+      const block = Blockly.mainWorkspace.getBlockById(blockId);
+      if (block) {
+        if (block.type === type) {
+          deleteBlockIfExists(block);
+        }
+      }
+    }
   }
 };
 

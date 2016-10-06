@@ -6,7 +6,7 @@ import markets from './markets';
 import { bot } from '../../../../bot';
 import config from '../../../../../common/const';
 import tradeTypes from './tradeTypes';
-import { setBlockTextColor, findTopParentBlock } from '../../utils';
+import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils';
 
 const backwardCompatibility = (block) => {
   setTimeout(() => {
@@ -39,25 +39,27 @@ Blockly.Blocks.trade = {
       setBlockTextColor(this);
       for (const blockId of ev.ids) {
         const block = Blockly.mainWorkspace.getBlockById(blockId);
-        if (block.type === 'trade') {
-          backwardCompatibility(block);
-        }
-        if (!this.isInFlyout) {
+        if (block) {
+          if (block.type === 'trade') {
+            if (!deleteBlockIfExists(block)) {
+              backwardCompatibility(block);
+            }
+          }
           if (bot.symbol.findSymbol(block.type)) {
             observer.emit('tour:submarket_created');
           }
           if (config.conditions.indexOf(block.type) >= 0) {
-              observer.emit('tour:condition_created');
-            }
+            observer.emit('tour:condition_created');
+          }
           if (block.type === 'math_number') {
-              observer.emit('tour:number');
-            }
+            observer.emit('tour:number');
+          }
           if (block.type === 'purchase') {
-              observer.emit('tour:purchase_created');
-            }
+            observer.emit('tour:purchase_created');
+          }
           if (block.type === 'trade_again') {
-              observer.emit('tour:trade_again_created');
-            }
+            observer.emit('tour:trade_again_created');
+          }
         }
       }
     }

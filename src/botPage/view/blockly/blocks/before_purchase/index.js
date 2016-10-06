@@ -11,7 +11,7 @@ import './direction';
 import './purchase';
 import './ask_price';
 import './payout';
-import { setBlockTextColor } from '../../utils';
+import { configMainBlock, setBlockTextColor } from '../../utils';
 
 Blockly.Blocks.before_purchase = {
   init: function init() {
@@ -27,6 +27,7 @@ Blockly.Blocks.before_purchase = {
     if (ev.type === 'create') {
       setBlockTextColor(this);
     }
+    configMainBlock(ev, 'before_purchase');
   },
 };
 Blockly.JavaScript.before_purchase = (block) => {

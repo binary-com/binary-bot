@@ -5,7 +5,7 @@ import './check_result';
 import './details';
 import './read_details';
 import './trade_again';
-import { setBlockTextColor } from '../../utils';
+import { configMainBlock, setBlockTextColor } from '../../utils';
 
 Blockly.Blocks.after_purchase = {
   init: function init() {
@@ -21,6 +21,7 @@ Blockly.Blocks.after_purchase = {
     if (ev.type === 'create') {
       setBlockTextColor(this);
     }
+    configMainBlock(ev, 'after_purchase');
   },
 };
 Blockly.JavaScript.after_purchase = (block) => {

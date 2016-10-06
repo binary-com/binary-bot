@@ -3,7 +3,7 @@ import { translator } from '../../../../../common/translator';
 import './sell_at_market';
 import './check_sell';
 import './sell_price';
-import { setBlockTextColor } from '../../utils';
+import { configMainBlock, setBlockTextColor } from '../../utils';
 
 Blockly.Blocks.during_purchase = {
   init: function init() {
@@ -19,6 +19,7 @@ Blockly.Blocks.during_purchase = {
     if (ev.type === 'create') {
       setBlockTextColor(this);
     }
+    configMainBlock(ev, 'during_purchase');
   },
 };
 Blockly.JavaScript.during_purchase = (block) => {
