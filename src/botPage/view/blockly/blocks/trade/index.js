@@ -8,38 +8,51 @@ import config from '../../../../../common/const';
 import tradeTypes from './tradeTypes';
 import { setBlockTextColor } from '../../utils';
 
+const decorate = (block) => {
+  setTimeout(() => {
+    if (block.getParent()) {
+      block.unplug();
+    }
+    block.setPreviousStatement(false);
+  }, 0);
+};
+
 Blockly.Blocks.trade = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('(1) Define your contract here'));
     this.appendStatementInput('SUBMARKET')
-      .setCheck('Submarket');
+      .setCheck(null);
     this.setPreviousStatement(true, null);
     this.setColour('#2a3052');
     this.setTooltip(translator.translateText('Use this block to choose markets and trade types.')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    setBlockTextColor(this);
-    if (!this.isInFlyout && ev.type === 'create') {
-      if (bot.symbol.findSymbol(Blockly.mainWorkspace.getBlockById(ev.blockId).type)) {
-        observer.emit('tour:submarket_created');
-      }
-      if (config.conditions.indexOf(Blockly.mainWorkspace.getBlockById(ev.blockId)
-          .type) >= 0) {
-        observer.emit('tour:condition_created');
-      }
-      if (Blockly.mainWorkspace.getBlockById(ev.blockId)
-          .type === 'math_number') {
-        observer.emit('tour:number');
-      }
-      if (Blockly.mainWorkspace.getBlockById(ev.blockId)
-          .type === 'purchase') {
-        observer.emit('tour:purchase_created');
-      }
-      if (Blockly.mainWorkspace.getBlockById(ev.blockId)
-          .type === 'trade_again') {
-        observer.emit('tour:trade_again_created');
+    if (ev.type === 'create') {
+      setBlockTextColor(this);
+      for (const blockId of ev.ids) {
+        const block = Blockly.mainWorkspace.getBlockById(blockId);
+        if (block.type === 'trade') {
+          decorate(block);
+        }
+        if (!this.isInFlyout) {
+          if (bot.symbol.findSymbol(block.type)) {
+            observer.emit('tour:submarket_created');
+          }
+          if (config.conditions.indexOf(block.type) >= 0) {
+              observer.emit('tour:condition_created');
+            }
+          if (block.type === 'math_number') {
+              observer.emit('tour:number');
+            }
+          if (block.type === 'purchase') {
+              observer.emit('tour:purchase_created');
+            }
+          if (block.type === 'trade_again') {
+              observer.emit('tour:trade_again_created');
+            }
+        }
       }
     }
   },

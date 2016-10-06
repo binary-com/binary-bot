@@ -1,8 +1,7 @@
 import { observer } from 'binary-common-utils/lib/observer';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock, save,
-} from './utils';
+import { addPurchaseOptions, isMainBlock, save } from './utils';
 import blocks from './blocks';
 
 const backwardCompatibility = (xml) => {
@@ -175,24 +174,12 @@ export default class _Blockly {
   saveXml() {
     save(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
   }
-  deleteStrayBlocks() {
-    const topBlocks = Blockly.mainWorkspace.getTopBlocks();
-    for (const block of topBlocks) {
-      if (!isMainBlock(block.type)
-        && block !== findTopParentBlock(getBlockByType('trade'))
-        && block.type.indexOf('procedures_def') < 0
-        && block.type !== 'block_holder') {
-        block.dispose();
-      }
-    }
-  }
   run() {
     let code;
     try {
       window.LoopTrap = 99999999999;
       Blockly.JavaScript
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-      this.deleteStrayBlocks();
       this.blocksXmlStr = Blockly.Xml.domToPrettyText(
         Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
       code = `

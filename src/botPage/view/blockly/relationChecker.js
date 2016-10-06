@@ -141,7 +141,6 @@ export const submarket = (blockObj, ev) => {
       condition(blockObj.childBlocks_[0], ev, true);
     }
     insideTrade(blockObj, ev, 'submarket');
-    enable(blockObj);
   }
 };
 export const insideCondition = (blockObj, ev, name) => {

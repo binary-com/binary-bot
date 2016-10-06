@@ -15,8 +15,10 @@ Blockly.Blocks.during_purchase = {
     this.setTooltip(translator.translateText('Sell at market before a trade is finished')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function onchange() {
-    setBlockTextColor(this);
+  onchange: function onchange(ev) {
+    if (ev.type === 'create') {
+      setBlockTextColor(this);
+    }
   },
 };
 Blockly.JavaScript.during_purchase = (block) => {

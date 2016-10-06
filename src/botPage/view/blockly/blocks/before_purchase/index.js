@@ -23,8 +23,10 @@ Blockly.Blocks.before_purchase = {
     this.setTooltip(translator.translateText('This block decides what to do each time a new tick is received')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
-  onchange: function onchange() {
-    setBlockTextColor(this);
+  onchange: function onchange(ev) {
+    if (ev.type === 'create') {
+      setBlockTextColor(this);
+    }
   },
 };
 Blockly.JavaScript.before_purchase = (block) => {
