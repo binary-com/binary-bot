@@ -1,8 +1,10 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BinaryChart } from 'binary-charts';
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer } from 'binary-common-utils/lib/observer';
-import {
-  getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager';
-import { PlainChart as Chart } from 'binary-charts';
+import { getTokenList, removeAllTokens,
+  get as getStorage } from 'binary-common-utils/lib/storageManager';
 import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
 import { translator } from '../../common/translator';
@@ -288,38 +290,48 @@ export default class View {
       e.preventDefault(); // prevent the default action (scroll / move caret)
     });
   }
-
   updateChart(info) {
-    const chartOptions = {
-      type: this.chartType,
-      theme: 'light',
-      defaultRange: 0,
-      onTypeChange: (type) => {
-        this.chartType = type;
-      },
+    const chartToDataType = {
+      area: 'ticks',
+      line: 'ticks',
+      candlestick: 'candles',
+      ohlc: 'candles',
     };
-    if (this.chartType === 'candlestick') {
-      chartOptions.ticks = info.candles;
-    } else {
-      chartOptions.ticks = info.ticks;
-      if (this.latestOpenContract) {
-        chartOptions.contract = this.latestOpenContract;
+
+    const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0;
+
+    const zoomInMax = (ev, chart) => {
+      const { dataMax } = chart.xAxis[0].getExtremes();
+      const { minRange } = chart.xAxis[0].options;
+      chart.xAxis[0].setExtremes(dataMax - minRange, dataMax);
+    };
+
+    const events = [
+      {
+        type: 'zoom-in-max',
+        handler: zoomInMax,
+      },
+    ];
+
+    ReactDOM.render(
+            <BinaryChart
+                className="trade-chart"
+                id="trade-chart0"
+                contract={isLine() ? this.contractForChart : false}
+                hideZoomControls={isLine() && this.contractForChart}
+                pipSize={Number(Number(info.pip).toExponential().substring(3))}
+                shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
+                ticks={info[chartToDataType[this.chartType]]}
+                type={this.chartType}
+                events={events}
+                compactToolbar
+                onTypeChange={(type) => (this.chartType = type)}
+            />, $('#chart')[0]);
+    if (isLine() && this.contractForChart) {
+      const chartDiv = document.getElementById('trade-chart0');
+      if (chartDiv) {
+        chartDiv.dispatchEvent(new Event('zoom-in-max'));
       }
-    }
-    chartOptions.pipSize = Number(Number(info.pip)
-      .toExponential()
-      .substring(3));
-    if (!this.chart) {
-      this.chart = Chart('chart', chartOptions); // eslint-disable-line new-cap
-    } else {
-      this.chart.updateChart(chartOptions);
-    }
-  }
-  destroyChart() {
-    if (this.chart) {
-      this.chart.destroy();
-      delete this.latestOpenContract;
-      delete this.chart;
     }
   }
   addEventHandlers() {
@@ -336,7 +348,6 @@ export default class View {
     observer.register('bot.stop', () => {
       $('#runButton').show();
       $('#stopButton').hide();
-      this.destroyChart();
     });
 
     observer.register('bot.tradeInfo', (tradeInfo) => {
@@ -347,13 +358,17 @@ export default class View {
     });
 
     observer.register('bot.tradeUpdate', (contract) => {
-      this.latestOpenContract = contract;
+      this.contractForChart = {
+        ...contract,
+      };
+      this.contractForChart.date_expiry = Number(this.contractForChart.date_expiry);
+      this.contractForChart.date_settlement = Number(this.contractForChart.date_settlement);
+      this.contractForChart.date_start = Number(this.contractForChart.date_start);
     });
 
     observer.register('bot.finish', (contract) => {
       this.tradeInfo.add(contract);
-      setTimeout(() => delete this.latestOpenContract
-        , 2000);
+      this.contractForChart = false;
     });
 
     observer.register('bot.tickUpdate', (info) => {
