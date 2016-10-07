@@ -51,9 +51,14 @@ html, body {
 #fileBrowser {
 	width: 500px;
 	height: 500px;
-	margin-top: -200px;
 	margin-left: -200px;
-	z-index: 1002;
+	margin-top: -200px;
+}
+#saveAs {
+	width: 388px;
+	height: 114px;
+	margin-left: -194px;
+	margin-top: -57px;
 }
 .panel {
 	display: none;
@@ -63,10 +68,12 @@ html, body {
 	left: 50%;
 	border: 1px solid #2a3052;
 	border-top-color: #ddd;
+	z-index: 1002;
 }
 .panel .content{
 	padding: 0 15px 15px 15px;
 	background: white;
+	cursor: default;
 }
 .panel .description {
 	padding: 5px;
@@ -94,9 +101,6 @@ th, td {
 	overflow:auto;
 	height: 25vh;
 	padding-bottom: 1vh;
-}
-#chart, #tradesDisplay, #summaryDisplay {
-	cursor: default;
 }
 #chart {
 	height: 30vh;
