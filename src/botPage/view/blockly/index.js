@@ -16,6 +16,14 @@ const backwardCompatibility = (xml) => {
       block.removeAttribute('deletable');
     }
   }
+  const statements = xml.getElementsByTagName('statement');
+  for (const statement of statements) {
+    if (statement.getAttribute('name') === 'STRATEGY_STACK') {
+      statement.setAttribute('name', 'BEFOREPURCHASE_STACK');
+    } else if (statement.getAttribute('name') === 'FINISH_STACK') {
+      statement.setAttribute('name', 'AFTERPURCHASE_STACK');
+    }
+  }
 };
 
 export default class _Blockly {

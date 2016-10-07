@@ -19,11 +19,11 @@ const createDetails = (contract) => {
 };
 
 export default class PurchaseCtrl {
-  constructor(api, strategy, duringPurchase, finish) {
+  constructor(api, beforePurchase, duringPurchase, afterPurchase) {
     this.api = api;
-    this.strategy = strategy;
+    this.beforePurchase = beforePurchase;
     this.duringPurchase = duringPurchase;
-    this.finish = finish;
+    this.afterPurchase = afterPurchase;
     this.ready = false;
     this.purchased = false;
     this.runningObservations = [];
@@ -34,7 +34,7 @@ export default class PurchaseCtrl {
       this.proposals[proposal.contract_type] = proposal;
       if (!this.ready && Object.keys(this.proposals).length === 2) {
         this.ready = true;
-        observer.emit('strategy.ready');
+        observer.emit('beforePurchase.ready');
       }
     }
   }
@@ -69,9 +69,9 @@ export default class PurchaseCtrl {
         observer.emit('log.beforePurchase.start', {
           proposals: this.proposals,
         });
-        this.strategy(tickObj, this.proposals, this);
+        this.beforePurchase(tickObj, this.proposals, this);
       } else {
-        this.strategy(tickObj, null, null);
+        this.beforePurchase(tickObj, null, null);
       }
     }
   }
@@ -86,12 +86,12 @@ export default class PurchaseCtrl {
       this.trade = new Trade(this.api);
       const tradeUpdate = (openContract) => {
         this.duringPurchase(openContract, this);
-        observer.emit('strategy.tradeUpdate', openContract);
+        observer.emit('beforePurchase.tradeUpdate', openContract);
       };
       const tradeFinish = (finishedContract) => {
         // order matters, needs fix
-        observer.emit('strategy.finish', finishedContract);
-        this.finish(finishedContract, createDetails(finishedContract));
+        observer.emit('beforePurchase.finish', finishedContract);
+        this.afterPurchase(finishedContract, createDetails(finishedContract));
       };
       observer.register('trade.update', tradeUpdate);
       observer.register('trade.finish', tradeFinish, true);
@@ -118,7 +118,7 @@ export default class PurchaseCtrl {
     this.runningObservations = [];
     this.proposals = {};
     this.ready = false;
-    this.strategy = null;
+    this.beforePurchase = null;
     if (this.trade) {
       this.trade.destroy();
     }

@@ -49,13 +49,13 @@ export default class Bot {
     this.symbol = new _Symbol(this.api);
     this.initPromise = this.symbol.initPromise;
   }
-  start(token, tradeOption, strategy, duringPurchase, finish, sameTrade) {
+  start(token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade) {
     if (!this.running || sameTrade) {
       this.running = true;
       if (this.purchaseCtrl) {
         this.purchaseCtrl.destroy();
       }
-      this.purchaseCtrl = new PurchaseCtrl(this.api, strategy, duringPurchase, finish);
+      this.purchaseCtrl = new PurchaseCtrl(this.api, beforePurchase, duringPurchase, afterPurchase);
       this.tradeOption = tradeOption;
       observer.emit('log.bot.start', {
         again: !!sameTrade,
@@ -218,29 +218,29 @@ export default class Bot {
       observer.register('api.ohlc', apiOHLC);
     }
   }
-  observeStrategy() {
-    if (!observer.isRegistered('strategy.ready')) {
-      const strategyReady = () => {
+  observeBeforePurchase() {
+    if (!observer.isRegistered('beforePurchase.ready')) {
+      const beforePurchaseReady = () => {
         if (this.running) {
           observer.emit('bot.waiting_for_purchase');
         }
       };
-      observer.register('strategy.ready', strategyReady);
+      observer.register('beforePurchase.ready', beforePurchaseReady);
     }
   }
   observeTradeUpdate() {
-    if (!observer.isRegistered('strategy.tradeUpdate')) {
-      const strategyTradeUpdate = (contract) => {
+    if (!observer.isRegistered('beforePurchase.tradeUpdate')) {
+      const beforePurchaseTradeUpdate = (contract) => {
         if (this.running) {
           observer.emit('bot.tradeUpdate', contract);
         }
       };
-      observer.register('strategy.tradeUpdate', strategyTradeUpdate);
+      observer.register('beforePurchase.tradeUpdate', beforePurchaseTradeUpdate);
     }
   }
   observeStreams() {
     this.observeTradeUpdate();
-    this.observeStrategy();
+    this.observeBeforePurchase();
     this.observeTicks();
     this.observeOhlc();
   }
@@ -255,7 +255,7 @@ export default class Bot {
       type: 'proposal',
       unregister: [
         ['api.proposal', apiProposal],
-        'strategy.ready',
+        'beforePurchase.ready',
         'bot.waiting_for_purchase',
       ],
     });
@@ -271,12 +271,12 @@ export default class Bot {
       }
     }, () => 0);
   }
-  waitForStrategyFinish() {
-    const strategyFinish = (contract) => {
+  waitForBeforePurchaseFinish() {
+    const beforePurchaseFinish = (contract) => {
       this.botFinish(contract);
     };
-    observer.register('strategy.finish', strategyFinish, true, null, true);
-    this.unregisterOnFinish.push(['strategy.finish', strategyFinish]);
+    observer.register('beforePurchase.finish', beforePurchaseFinish, true, null, true);
+    this.unregisterOnFinish.push(['beforePurchase.finish', beforePurchaseFinish]);
   }
   waitForTradePurchase() {
     const tradePurchase = () => {
@@ -289,7 +289,7 @@ export default class Bot {
     this.unregisterOnFinish.push(['trade.purchase', tradePurchase]);
   }
   startTrading() {
-    this.waitForStrategyFinish();
+    this.waitForBeforePurchaseFinish();
     this.waitForTradePurchase();
     this.subscribeProposals();
   }
