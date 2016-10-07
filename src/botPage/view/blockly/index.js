@@ -1,7 +1,7 @@
 import { observer } from 'binary-common-utils/lib/observer';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import { addPurchaseOptions, isMainBlock, save } from './utils';
+import { addPurchaseOptions, isMainBlock, save, getMainBlocks } from './utils';
 import blocks from './blocks';
 
 const backwardCompatibility = (block) => {
@@ -10,15 +10,18 @@ const backwardCompatibility = (block) => {
   } else if (block.getAttribute('type') === 'on_finish') {
     block.setAttribute('type', 'after_purchase');
   }
-  if (block.getAttribute('deletable')) {
-    block.removeAttribute('deletable');
-  }
   for (const statement of block.getElementsByTagName('statement')) {
     if (statement.getAttribute('name') === 'STRATEGY_STACK') {
       statement.setAttribute('name', 'BEFOREPURCHASE_STACK');
     } else if (statement.getAttribute('name') === 'FINISH_STACK') {
       statement.setAttribute('name', 'AFTERPURCHASE_STACK');
     }
+  }
+};
+
+const setMainBlocksDeletable = () => {
+  for (const block of getMainBlocks()) {
+    block.setDeletable(true);
   }
 };
 
@@ -144,6 +147,7 @@ export default class _Blockly {
       backwardCompatibility(block);
     }
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    setMainBlocksDeletable();
     addPurchaseOptions();
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
@@ -154,6 +158,7 @@ export default class _Blockly {
     for (const block of xml.children) {
       this.addDomBlocks(block);
     }
+    setMainBlocksDeletable();
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
     observer.emit('ui.log.success',

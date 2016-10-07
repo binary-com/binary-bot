@@ -46,6 +46,14 @@ export const getBlockByType = (type) => {
   return null;
 };
 
+export const getMainBlocks = () => {
+  const result = [];
+  for (const blockType of config.mainBlocks) {
+    result.push(getBlockByType(blockType));
+  }
+  return result;
+};
+
 export const getBlocksByType = (type) => {
   const result = [];
   for (const block of Blockly.mainWorkspace.getAllBlocks()) {
