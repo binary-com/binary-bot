@@ -48,7 +48,7 @@
 	
 	__webpack_require__(1);
 	
-	var _jquery = __webpack_require__(682);
+	var _jquery = __webpack_require__(683);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -8809,6 +8809,38 @@
 	    return autoAdjustGetData(api, symbol, start, end, style, subscribe);
 	}
 	
+	// TODO: not sure where to place this?
+	var computeStartEndForContract = function computeStartEndForContract(contract) {
+	    var nowEpoch = (0, _binaryUtils.nowAsEpoch)();
+	    if (contract.tick_count) {
+	        var _start = +contract.date_start - 5;
+	        var exitTime = +contract.exit_tick_time + 5;
+	        var _end = exitTime || nowEpoch;
+	        return { start: _start, end: _end };
+	    }
+	
+	    var bufferSize = 0.05; // 5 % buffer
+	    var contractStart = +contract.date_start;
+	    var contractEnd = +contract.exit_tick_time || +contract.date_expiry;
+	
+	    if (contractEnd <= contractStart) {
+	        var e = new RangeError('Contract ends time is earlier than start time');
+	        e.name = 'ContractEndsBeforeStart';
+	        throw e;
+	    }
+	
+	    var buffer = (contractEnd - contractStart) * bufferSize;
+	    var bufferedExitTime = contractEnd + buffer;
+	
+	    var start = buffer ? contractStart - buffer : contractStart;
+	    var end = contractEnd ? bufferedExitTime : nowEpoch;
+	
+	    return {
+	        end: Math.round(end),
+	        start: Math.round(start)
+	    };
+	};
+	
 	/**
 	 * get data of contract
 	 * @param api                      - will be injected by library
@@ -8829,7 +8861,7 @@
 	        return getContract().then(function (contract) {
 	            var symbol = contract.underlying;
 	
-	            var _computeStartEndForCo = (0, _binaryUtils.computeStartEndForContract)(contract);
+	            var _computeStartEndForCo = computeStartEndForContract(contract);
 	
 	            var start = _computeStartEndForCo.start;
 	            var end = _computeStartEndForCo.end;
@@ -8862,6 +8894,7 @@
 	}
 	
 	var helpers = exports.helpers = {
+	    computeStartEndForContract: computeStartEndForContract,
 	    autoAdjustGetData: autoAdjustGetData
 	};
 	
@@ -19943,7 +19976,8 @@
 /* 679 */,
 /* 680 */,
 /* 681 */,
-/* 682 */
+/* 682 */,
+/* 683 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
