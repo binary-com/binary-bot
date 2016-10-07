@@ -208,6 +208,8 @@ export default class View {
       .submit((e) => {
         e.preventDefault();
         this.blockly.save($('#saveAsFilename').val(), $('#saveAsCollection').prop('checked'));
+        $('#saveAs')
+          .hide();
       });
 
     $('#undo')

@@ -127,14 +127,15 @@ export default class _Blockly {
   }
   addDomBlocks(blockXml) {
     backwardCompatibility(blockXml);
-    const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
-    if (isMainBlock(block.type)) {
+    const blockType = blockXml.getAttribute('type');
+    if (isMainBlock(blockType)) {
       for (const b of Blockly.mainWorkspace.getTopBlocks()) {
-        if (b.type === block.type && b.id !== block.id) {
+        if (b.type === blockType) {
           b.dispose();
         }
       }
     }
+    Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
     addPurchaseOptions();
   }
   loadWorkspace(xml) {
