@@ -4,20 +4,16 @@ import { bot } from '../../bot';
 import { addPurchaseOptions, isMainBlock, save } from './utils';
 import blocks from './blocks';
 
-const backwardCompatibility = (xml) => {
-  const blockElements = xml.getElementsByTagName('block');
-  for (const block of blockElements) {
-    if (block.getAttribute('type') === 'on_strategy') {
-      block.setAttribute('type', 'before_purchase');
-    } else if (block.getAttribute('type') === 'on_finish') {
-      block.setAttribute('type', 'after_purchase');
-    }
-    if (block.getAttribute('deletable')) {
-      block.removeAttribute('deletable');
-    }
+const backwardCompatibility = (block) => {
+  if (block.getAttribute('type') === 'on_strategy') {
+    block.setAttribute('type', 'before_purchase');
+  } else if (block.getAttribute('type') === 'on_finish') {
+    block.setAttribute('type', 'after_purchase');
   }
-  const statements = xml.getElementsByTagName('statement');
-  for (const statement of statements) {
+  if (block.getAttribute('deletable')) {
+    block.removeAttribute('deletable');
+  }
+  for (const statement of block.getElementsByTagName('statement')) {
     if (statement.getAttribute('name') === 'STRATEGY_STACK') {
       statement.setAttribute('name', 'BEFOREPURCHASE_STACK');
     } else if (statement.getAttribute('name') === 'FINISH_STACK') {
@@ -116,7 +112,9 @@ export default class _Blockly {
               text: translator.translateText('Download'),
               enabled: true,
               callback: () => {
-                save(Blockly.Xml.blockToDom(this), '-block-');
+                const xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
+                xml.appendChild(Blockly.Xml.blockToDom(this));
+                save('binary-bot-block', true, xml);
               },
             });
           }
@@ -127,48 +125,38 @@ export default class _Blockly {
       addDownloadToMenu(Blockly.Blocks[blockName]);
     }
   }
-  loadWorkspace(str) {
-    if (str) {
-      this.blocksXmlStr = str;
-    }
-    try {
-      Blockly.mainWorkspace.clear();
-      const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
-      backwardCompatibility(xml);
-      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-      addPurchaseOptions();
-      observer.emit('ui.log.success',
-        translator.translateText('Blocks are loaded successfully'));
-    } catch (e) {
-      if (e.name === 'BlocklyError') {
-        // pass
-      } else {
-        throw e;
-      }
-    }
-  }
-  loadBlock(str) {
-    this.blocksXmlStr += str;
-    try {
-      const xml = Blockly.Xml.textToDom(str);
-      const block = Blockly.Xml.domToBlock(xml, Blockly.mainWorkspace);
-      if (isMainBlock(block.type)) {
-        for (const b of Blockly.mainWorkspace.getTopBlocks()) {
-          if (b.type === block.type && b.id !== block.id) {
-            b.dispose();
-          }
+  addDomBlocks(blockXml) {
+    backwardCompatibility(blockXml);
+    const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
+    if (isMainBlock(block.type)) {
+      for (const b of Blockly.mainWorkspace.getTopBlocks()) {
+        if (b.type === block.type && b.id !== block.id) {
+          b.dispose();
         }
       }
-      addPurchaseOptions();
-      observer.emit('ui.log.success',
-        translator.translateText('Blocks are loaded successfully'));
-    } catch (e) {
-      if (e.name === 'BlocklyError') {
-        // pass
-      } else {
-        throw e;
-      }
     }
+    addPurchaseOptions();
+  }
+  loadWorkspace(xml) {
+    Blockly.mainWorkspace.clear();
+    for (const block of xml.children) {
+      backwardCompatibility(block);
+    }
+    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    addPurchaseOptions();
+    this.blocksXmlStr = Blockly.Xml.domToPrettyText(
+      Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'));
+  }
+  loadBlocks(xml) {
+    for (const block of xml.children) {
+      this.addDomBlocks(block);
+    }
+    this.blocksXmlStr = Blockly.Xml.domToPrettyText(
+      Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'));
   }
   selectBlockByText(text) {
     let returnVal;
@@ -179,8 +167,30 @@ export default class _Blockly {
     });
     return returnVal;
   }
-  saveXml() {
-    save(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+  load(blockStr = '') {
+    if (blockStr.indexOf('<xml') !== 0) {
+      observer.emit('ui.log.error',
+        translator.translateText('Unrecognized file format.'));
+    } else {
+      try {
+        const xml = Blockly.Xml.textToDom(blockStr);
+        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+          this.loadBlocks(xml);
+        } else {
+          this.loadWorkspace(xml);
+        }
+      } catch (e) {
+        if (e.name === 'BlocklyError') {
+          // pass
+        } else {
+          observer.emit('ui.log.error',
+            translator.translateText('Unrecognized file format.'));
+        }
+      }
+    }
+  }
+  save(filename, collection) {
+    save(filename, collection, Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
   }
   run() {
     let code;

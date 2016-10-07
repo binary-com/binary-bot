@@ -122,9 +122,9 @@ export const addPurchaseOptions = () => {
   }
 };
 
-export const save = (xmlDom, postfix = '-') => {
+export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
+  xmlDom.setAttribute('collection', collection ? 'true' : 'false');
   const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-  const filename = `binary-bot${postfix}${parseInt(new Date().getTime() / 1000, 10)}.xml`;
   const blob = new Blob([xmlText], {
     type: 'text/xml;charset=utf-8',
   });

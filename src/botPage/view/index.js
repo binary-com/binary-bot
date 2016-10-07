@@ -93,17 +93,7 @@ export default class View {
       const reader = new FileReader();
       reader.onload = (() => {
         $('#fileBrowser').hide();
-        return (e) => {
-          const blockText = e.target.result;
-          if (blockText.indexOf('<xml xmlns="http://www.w3.org/1999/xhtml">') >= 0) {
-            this.blockly.loadWorkspace(blockText);
-          } else if (blockText.indexOf('<block xmlns="http://www.w3.org/1999/xhtml"') >= 0) {
-            this.blockly.loadBlock(blockText);
-          } else {
-            observer.emit('ui.log.error',
-              translator.translateText('Unrecognized file format.'));
-          }
-        };
+        return (e) => this.blockly.load(e.target.result);
       })(f);
       reader.readAsText(f);
     };
@@ -203,19 +193,21 @@ export default class View {
     $('.panel')
       .drags();
 
-    $('#chart')
-      .mousedown((e) => { // prevent chart to trigger draggable
-        e.stopPropagation();
-      });
-
-    $('table')
-      .mousedown((e) => { // prevent tables to trigger draggable
+    $('.panel .content')
+      .mousedown((e) => { // prevent content to trigger draggable
         e.stopPropagation();
       });
 
     $('#saveXml')
       .click(() => {
-        this.blockly.saveXml();
+        $('#saveAs')
+          .show();
+      });
+
+    $('#saveAsForm')
+      .submit((e) => {
+        e.preventDefault();
+        this.blockly.save($('#saveAsFilename').val(), $('#saveAsCollection').prop('checked'));
       });
 
     $('#undo')
