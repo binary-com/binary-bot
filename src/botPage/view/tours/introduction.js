@@ -195,7 +195,7 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.') + '</p>',
+      content: '<p>' + translator.translateText('This is a <b>before purchase</b> block. All the blocks you put in here are run for each and every tick received.') + '</p>',
       target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
@@ -203,7 +203,7 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('The received tick value is in the block <b>Tick Value</b> and the tick direction (up or down) is in the block <b>Tick Direction</b>. You can pick them from the <b>Strategy</b> menu') + '</p>',
+      content: '<p>' + translator.translateText('The received tick value is in the block <b>Tick Value</b> and the tick direction (up or down) is in the block <b>Tick Direction</b>. You can pick them from the <b>before purchase</b> menu') + '</p>',
       target: getUiComponent('flyout'),
       closeButton: true,
       highlightTarget: true,
@@ -244,7 +244,7 @@ export default class Welcome {
           .css('opacity', 0.3);
       },
     }, {
-      content: '<p>' + translator.translateText('Now add it to the Strategy block.') + '</p>',
+      content: '<p>' + translator.translateText('Now add it to the before purchase block.') + '</p>',
       target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
@@ -269,7 +269,7 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.') + '</p>',
+      content: '<p>' + translator.translateText('A before purchase block consisting of only a purchase block means to purchase as soon as the first tick was received.') + '</p>',
       target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
@@ -277,7 +277,7 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block') + '</p>',
+      content: '<p>' + translator.translateText('After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>after purchase</b> block') + '</p>',
       target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
@@ -285,7 +285,7 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.') + '</p>',
+      content: '<p>' + translator.translateText('Same as the before purchase block, the <b>after purchase</b> block can have multiple blocks defining its functionality. The after purchase block defines what to do when the previously purchased contract is finished.') + '</p>',
       target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
@@ -293,7 +293,7 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.') + '</p>',
+      content: '<p>' + translator.translateText('A <b>Trade Again</b> block creates a new trade and exits from the after purchase block. Now pick a Trade Again block.') + '</p>',
       target: getUiComponent('flyout'),
       closeButton: true,
       highlightTarget: true,
@@ -314,7 +314,7 @@ export default class Welcome {
         observer.unregister('tour:trade_again_created', this.tour_trade_again_created);
       },
     }, {
-      content: '<p>' + translator.translateText('Now add it to the On Finish block') + '</p>',
+      content: '<p>' + translator.translateText('Now add it to the after purchase block') + '</p>',
       target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,

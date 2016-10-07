@@ -5,7 +5,7 @@ import Trade from './trade';
 const createDetails = (contract) => {
   const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2);
   const result = (profit < 0) ? 'loss' : 'win';
-  observer.emit(`log.strategy.${result}`, {
+  observer.emit(`log.beforePurchase.${result}`, {
     profit,
     transactionId: contract.transaction_ids.buy,
   });
@@ -66,7 +66,7 @@ export default class PurchaseCtrl {
         ticks,
       };
       if (this.ready) {
-        observer.emit('log.strategy.start', {
+        observer.emit('log.beforePurchase.start', {
           proposals: this.proposals,
         });
         this.strategy(tickObj, this.proposals, this);
@@ -76,7 +76,7 @@ export default class PurchaseCtrl {
     }
   }
   purchase(option) {
-    observer.emit('log.strategy.purchase', {
+    observer.emit('log.beforePurchase.purchase', {
       proposals: this.proposals,
       purchasing: option,
     });

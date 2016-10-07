@@ -11,7 +11,7 @@ Blockly.Blocks.after_purchase = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('(4) things to do after purchase is finished'));
-    this.appendStatementInput('FINISH_STACK')
+    this.appendStatementInput('AFTERPURCHASE_STACK')
       .setCheck('TradeAgain');
     this.setColour('#2a3052');
     this.setTooltip(translator.translateText('This block decides what to do when a purchased contract is finished')); // eslint-disable-line max-len
@@ -25,7 +25,7 @@ Blockly.Blocks.after_purchase = {
   },
 };
 Blockly.JavaScript.after_purchase = (block) => {
-  const stack = Blockly.JavaScript.statementToCode(block, 'FINISH_STACK');
+  const stack = Blockly.JavaScript.statementToCode(block, 'AFTERPURCHASE_STACK');
   const code = `function after_purchase(_finishedContract, details){
     try {
       ${stack}

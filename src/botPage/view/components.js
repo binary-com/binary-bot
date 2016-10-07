@@ -19,7 +19,7 @@ const uiComponents = {
   flyout: '.blocklyFlyoutBackground',
 };
 
-const doNotHide = ['center', 'flyout', 'workspace_inside', 'submarket', 'strategy', 'finish'];
+const doNotHide = ['center', 'flyout', 'workspace_inside'];
 
 export const getUiComponent = (component) => {
   if (isMainBlock(component)) {

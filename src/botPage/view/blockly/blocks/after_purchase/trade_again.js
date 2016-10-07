@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
 import { translator } from '../../../../../common/translator';
-import { insideFinish } from '../../relationChecker';
+import { insideAfterPurchase } from '../../relationChecker';
 
 Blockly.Blocks.trade_again = {
   init: function init() {
@@ -12,7 +12,7 @@ Blockly.Blocks.trade_again = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideFinish(this, ev, 'Trade Again');
+    insideAfterPurchase(this, ev, 'Trade Again');
   },
 };
 Blockly.JavaScript.trade_again = () => 'trade(true);\nreturn;\n';

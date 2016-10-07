@@ -17,7 +17,7 @@ Blockly.Blocks.before_purchase = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('(2) things to do before purchase is made'));
-    this.appendStatementInput('STRATEGY_STACK')
+    this.appendStatementInput('BEFOREPURCHASE_STACK')
       .setCheck('Purchase');
     this.setColour('#2a3052');
     this.setTooltip(translator.translateText('This block decides what to do each time a new tick is received')); // eslint-disable-line max-len
@@ -31,7 +31,7 @@ Blockly.Blocks.before_purchase = {
   },
 };
 Blockly.JavaScript.before_purchase = (block) => {
-  const stack = Blockly.JavaScript.statementToCode(block, 'STRATEGY_STACK');
+  const stack = Blockly.JavaScript.statementToCode(block, 'BEFOREPURCHASE_STACK');
   const code = `function before_purchase(ticks, proposals, purchaseCtrl){
     if(purchaseCtrl === null) return; 
     try {

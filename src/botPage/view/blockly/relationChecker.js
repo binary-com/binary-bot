@@ -143,7 +143,7 @@ export const submarket = (blockObj, ev) => {
     insideTrade(blockObj, ev, 'submarket');
   }
 };
-export const insideCondition = (blockObj, ev, name) => {
+export const insideTradeType = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     enable(blockObj);
   } else if (config.conditions.indexOf(blockObj.parentBlock_.type) < 0) {
@@ -153,14 +153,14 @@ export const insideCondition = (blockObj, ev, name) => {
     enable(blockObj);
   }
 };
-export const insideStrategy = (blockObj, ev, name) => {
+export const insideBeforePurchase = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     enable(blockObj);
   } else {
     const topParent = findTopParentBlock(blockObj);
     if (topParent && topParent.type !== 'before_purchase') {
       disable(blockObj,
-        `${name} ${translator.translateText('must be added inside the strategy block')}`);
+        `${name} ${translator.translateText('must be added inside the before purchase block')}`);
     } else {
       if (blockObj.type === 'purchase') {
         observer.emit('tour:purchase');
@@ -182,14 +182,14 @@ export const insideDuringPurchase = (blockObj, ev, name) => {
     }
   }
 };
-export const insideFinish = (blockObj, ev, name) => {
+export const insideAfterPurchase = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     enable(blockObj);
   } else {
     const topParent = findTopParentBlock(blockObj);
     if (topParent && topParent.type !== 'after_purchase') {
       disable(blockObj,
-        `${name} ${translator.translateText('must be added inside the finish block')}`);
+        `${name} ${translator.translateText('must be added inside the after purchase block')}`);
     } else {
       if (blockObj.type === 'trade_again') {
         observer.emit('tour:trade_again');
