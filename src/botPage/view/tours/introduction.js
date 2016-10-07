@@ -62,12 +62,13 @@ export default class Welcome {
       },
       setup: function setup() {
         observer.register('tour:submarket_created', this.tour_submarket_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[2].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[2].children_[1].select();
         setOpacity('toolbox', 1);
       },
       teardown: function teardown() {
         observer.unregister('tour:submarket_created', this.tour_submarket_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
         setOpacity('toolbox', 0.3);
       },
     }, {
@@ -86,7 +87,7 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:submarket', this.tour_submarket_added);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
       },
     }, {
       content: '<p>' + translator.translateText('Alright! Now pick a <b>trade type</b> block.') + '</p>',
@@ -101,12 +102,14 @@ export default class Welcome {
       },
       setup: function setup() {
         observer.register('tour:condition_created', this.tour_condition_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[1].children_[0].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[1].children_[0].select();
         setOpacity('toolbox', 1);
       },
       teardown: function teardown() {
         observer.unregister('tour:condition_created', this.tour_condition_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
         setOpacity('toolbox', 0.3);
       },
     }, {
@@ -125,7 +128,6 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:condition', this.tour_condition_added);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
       },
     }, {
       content: '<p>' + translator.translateText('Very good! It\'s time to add the options needed by the trade type block, pick a number') + ' (<img src="image/number.png"/>) ' + translator.translateText('from the Math menu') + '</p>',
@@ -145,6 +147,7 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:number', this.tour_number_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
         setOpacity('toolbox', 0.3);
       },
     }, {
@@ -183,6 +186,7 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:options', this.tour_options_added);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
         getUiComponent('toolbox')
           .css('opacity', 1);
       },
@@ -213,8 +217,8 @@ export default class Welcome {
       setup: function setup() {
         getUiComponent('toolbox')
           .css('opacity', 1);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
       },
       teardown: function teardown() {
         getUiComponent('toolbox')
@@ -232,14 +236,15 @@ export default class Welcome {
         tour.next();
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
         getUiComponent('toolbox')
           .css('opacity', 1);
         observer.register('tour:purchase_created', this.tour_purchase_created, true);
       },
       teardown: function teardown() {
         observer.unregister('tour:purchase_created', this.tour_purchase_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
         getUiComponent('toolbox')
           .css('opacity', 0.3);
       },
@@ -304,14 +309,15 @@ export default class Welcome {
         tour.next();
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
         getUiComponent('toolbox')
           .css('opacity', 1);
         observer.register('tour:trade_again_created', this.tour_trade_again_created, true);
       },
       teardown: function teardown() {
         observer.unregister('tour:trade_again_created', this.tour_trade_again_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
       },
     }, {
       content: '<p>' + translator.translateText('Now add it to the after purchase block') + '</p>',
@@ -329,7 +335,6 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:trade_again', this.tour_trade_again);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
       },
     }, {
       content: '<p>' + translator.translateText('Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn\'t called e.g. in a logic block which its trade type is unmet.') + '</p>',
@@ -444,7 +449,7 @@ export default class Welcome {
   stop() {
     setOpacityForAll(true, 1);
     this.tour.stop();
-    Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+    Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
     delete this.tour;
     if (this.stopCallback) {
       this.stopCallback();
