@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import config from '../../../../../common/const';
 import { translator } from '../../../../../common/translator';
-import { insideStrategy } from '../../relationChecker';
+import { insideBeforePurchase } from '../../relationChecker';
 
 Blockly.Blocks.read_ohlc_obj = {
   init: function init() {
@@ -17,7 +17,7 @@ Blockly.Blocks.read_ohlc_obj = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideStrategy(this, ev, 'Candles');
+    insideBeforePurchase(this, ev, 'Candles');
   },
 };
 
@@ -26,10 +26,10 @@ Blockly.JavaScript.read_ohlc_obj = (block) => {
   const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
   let code;
   if (ohlcObj) {
-    code = `Bot.expectOhlc((${ohlcObj} instanceof Array)? Bot.expectNonEmptyArray(${
+    code = `Bot.expect.ohlc((${ohlcObj} instanceof Array)? Bot.expect.notEmptyArray(${
     ohlcObj}).slice(-1)[0] : ${ohlcObj}).${ohlcField}`;
   } else {
-    code = `Bot.expectOhlc(Bot.expectNonEmptyArray(ticks.ohlc).slice(-1)[0]).${ohlcField}`;
+    code = `Bot.expect.ohlc(Bot.expect.notEmptyArray(ticks.ohlc).slice(-1)[0]).${ohlcField}`;
   }
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

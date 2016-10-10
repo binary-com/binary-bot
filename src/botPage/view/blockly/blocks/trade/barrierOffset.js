@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
 import config from '../../../../../common/const';
 import { translator } from '../../../../../common/translator';
-import { insideCondition } from '../../relationChecker';
+import { insideTradeType } from '../../relationChecker';
 
 Blockly.Blocks.barrier_offset = {
   init: function init() {
@@ -15,7 +15,7 @@ Blockly.Blocks.barrier_offset = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideCondition(this, ev, 'Barrier Offset');
+    insideTradeType(this, ev, 'Barrier Offset');
   },
 };
 Blockly.JavaScript.barrier_offset = (block) => {

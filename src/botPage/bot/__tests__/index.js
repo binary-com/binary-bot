@@ -58,7 +58,7 @@ describe('Bot', () => {
     });
     it('start bot with the token, option', () => {});
   });
-  describe('Start the trade without real finish and strategy functions', () => {
+  describe('Start the trade without real after purchase and before purchase functions', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('bot.stop', () => {
         bot.initPromise.then(() => {
@@ -72,7 +72,7 @@ describe('Bot', () => {
     });
     it('It is possible to restart the trade', () => {});
   });
-  describe('Start the trade with real finish and strategy functions', () => {
+  describe('Start the trade with real after purchase and before purchase functions', () => {
     let finishedContractFromFinishFunction;
     let finishedContractFromFinishSignal;
     let numOfTicks = 0;
@@ -96,8 +96,8 @@ describe('Bot', () => {
       }, true);
       bot.stop();
     });
-    it('Strategy decides to purchase the trade', () => {});
-    it('Calls the finish function when trade is finished', () => {
+    it('Before Purchase decides to purchase the trade', () => {});
+    it('Calls the after purchase function when trade is finished', () => {
       expect(finishedContractFromFinishSignal).to.be.equal(finishedContractFromFinishFunction);
     });
   });
@@ -119,8 +119,8 @@ describe('Bot', () => {
       }, true);
       bot.stop();
     });
-    it('Strategy decides to purchase the trade', () => {});
-    it('Calls the finish function when trade is finished', () => {
+    it('Before Purchase decides to purchase the trade', () => {});
+    it('Calls the after purchase function when trade is finished', () => {
       expect(finishedContractFromFinishSignal).to.be.equal(finishedContractFromFinishFunction);
     });
   });

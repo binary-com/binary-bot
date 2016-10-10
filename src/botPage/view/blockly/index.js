@@ -1,10 +1,29 @@
-import fileSaver from 'filesaverjs';
 import { observer } from 'binary-common-utils/lib/observer';
-import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import { addPurchaseOptions, getBlockByType, isMainBlock, findTopParentBlock } from './utils';
+import { addPurchaseOptions, isMainBlock, save, getMainBlocks } from './utils';
 import blocks from './blocks';
+
+const backwardCompatibility = (block) => {
+  if (block.getAttribute('type') === 'on_strategy') {
+    block.setAttribute('type', 'before_purchase');
+  } else if (block.getAttribute('type') === 'on_finish') {
+    block.setAttribute('type', 'after_purchase');
+  }
+  for (const statement of block.getElementsByTagName('statement')) {
+    if (statement.getAttribute('name') === 'STRATEGY_STACK') {
+      statement.setAttribute('name', 'BEFOREPURCHASE_STACK');
+    } else if (statement.getAttribute('name') === 'FINISH_STACK') {
+      statement.setAttribute('name', 'AFTERPURCHASE_STACK');
+    }
+  }
+};
+
+const setMainBlocksDeletable = () => {
+  for (const block of getMainBlocks()) {
+    block.setDeletable(true);
+  }
+};
 
 export default class _Blockly {
   constructor() {
@@ -26,10 +45,9 @@ export default class _Blockly {
           collapse: false,
         });
         $.get('xml/main.xml', (main) => {
+          this.overrideBlocklyDefaultShape();
           this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-          this.disableDeleteForMainBlocks();
-          this.overrideBlocklyDefaultShape();
           this.zoomOnPlusMinus();
           Blockly.mainWorkspace.clearUndo();
           addPurchaseOptions();
@@ -73,12 +91,6 @@ export default class _Blockly {
       bot.symbol.activeSymbols.getMarkets(), bot.symbol.assetIndex);
     return xmlStr.replace('<!--Markets-->', marketXml);
   }
-  disableDeleteForMainBlocks() {
-    for (const blockType of config.mainBlocks) {
-      getBlockByType(blockType)
-        .setDeletable(false);
-    }
-  }
   overrideBlocklyDefaultShape() {
     Blockly.Blocks.text.newQuote_ = (open) => { // eslint-disable-line no-underscore-dangle
       let file;
@@ -95,43 +107,58 @@ export default class _Blockly {
     Blockly.Blocks.lists.HUE = '#dedede';
     Blockly.Blocks.variables.HUE = '#dedede';
     Blockly.Blocks.procedures.HUE = '#dedede';
-    this.setBlockColors();
+    const addDownloadToMenu = (block) => {
+      if (block instanceof Object) {
+        block.customContextMenu = function customContextMenu(options) { // eslint-disable-line no-param-reassign, max-len
+          if (!this.isCollapsed()) {
+            options.push({
+              text: translator.translateText('Download'),
+              enabled: true,
+              callback: () => {
+                const xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
+                xml.appendChild(Blockly.Xml.blockToDom(this));
+                save('binary-bot-block', true, xml);
+              },
+            });
+          }
+        };
+      }
+    };
+    for (const blockName of Object.keys(Blockly.Blocks)) {
+      addDownloadToMenu(Blockly.Blocks[blockName]);
+    }
   }
-  addMissingMainBlocks() {
-    for (const mainBlock of config.mainBlocks) {
-      if (!getBlockByType(mainBlock)) {
-        const block = Blockly.mainWorkspace.newBlock(mainBlock);
-        block.initSvg();
-        block.render();
-        this.setBlockColors();
-        block.setDeletable(false);
+  addDomBlocks(blockXml) {
+    backwardCompatibility(blockXml);
+    const blockType = blockXml.getAttribute('type');
+    if (isMainBlock(blockType)) {
+      for (const b of Blockly.mainWorkspace.getTopBlocks()) {
+        if (b.type === blockType) {
+          b.dispose();
+        }
       }
     }
+    Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
   }
-  reconfigureBlocklyAfterLoad() {
-    this.addMissingMainBlocks();
-    Blockly.mainWorkspace.clearUndo();
-    this.setBlockColors();
-    addPurchaseOptions();
+  loadWorkspace(xml) {
+    Blockly.mainWorkspace.clear();
+    for (const block of xml.children) {
+      backwardCompatibility(block);
+    }
+    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    this.blocksXmlStr = Blockly.Xml.domToPrettyText(
+      Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'));
   }
-  loadBlocks(str) {
-    if (str) {
-      this.blocksXmlStr = str;
+  loadBlocks(xml) {
+    for (const block of xml.children) {
+      this.addDomBlocks(block);
     }
-    try {
-      Blockly.mainWorkspace.clear();
-      const xml = Blockly.Xml.textToDom(this.blocksXmlStr);
-      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-      this.reconfigureBlocklyAfterLoad();
-      observer.emit('ui.log.success',
-        translator.translateText('Blocks are loaded successfully'));
-    } catch (e) {
-      if (e.name === 'BlocklyError') {
-        // pass
-      } else {
-        throw e;
-      }
-    }
+    this.blocksXmlStr = Blockly.Xml.domToPrettyText(
+      Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'));
   }
   selectBlockByText(text) {
     let returnVal;
@@ -142,41 +169,32 @@ export default class _Blockly {
     });
     return returnVal;
   }
-  setBlockColors() {
-    for (const blockType of config.mainBlocks) {
-      const block = getBlockByType(blockType);
-      if (block) {
-        block.getField().getSvgRoot()
-          .style.setProperty('fill', 'white', 'important');
-      }
-    }
-  }
-  saveXml() {
-    const xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    for (const field of Array.prototype.slice.apply(xmlDom.getElementsByTagName('field'))) {
-      if (field.getAttribute('name') === 'ACCOUNT_LIST') {
-        if (field.childNodes.length >= 1) {
-          field.childNodes[0].nodeValue = '';
+  load(blockStr = '') {
+    if (blockStr.indexOf('<xml') !== 0) {
+      observer.emit('ui.log.error',
+        translator.translateText('Unrecognized file format.'));
+    } else {
+      try {
+        const xml = Blockly.Xml.textToDom(blockStr);
+        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+          this.loadBlocks(xml);
+        } else {
+          this.loadWorkspace(xml);
+        }
+        setMainBlocksDeletable();
+        addPurchaseOptions();
+      } catch (e) {
+        if (e.name === 'BlocklyError') {
+          // pass
+        } else {
+          observer.emit('ui.log.error',
+            translator.translateText('Unrecognized file format.'));
         }
       }
     }
-    const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    const filename = `binary-bot${parseInt(new Date().getTime() / 1000, 10)}.xml`;
-    const blob = new Blob([xmlText], {
-      type: 'text/xml;charset=utf-8',
-    });
-    fileSaver.saveAs(blob, filename);
   }
-  deleteStrayBlocks() {
-    const topBlocks = Blockly.mainWorkspace.getTopBlocks();
-    for (const block of topBlocks) {
-      if (!isMainBlock(block.type)
-        && block !== findTopParentBlock(getBlockByType('trade'))
-        && block.type.indexOf('procedures_def') < 0
-        && block.type !== 'block_holder') {
-        block.dispose();
-      }
-    }
+  save(filename, collection) {
+    save(filename, collection, Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
   }
   run() {
     let code;
@@ -184,7 +202,6 @@ export default class _Blockly {
       window.LoopTrap = 99999999999;
       Blockly.JavaScript
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-      this.deleteStrayBlocks();
       this.blocksXmlStr = Blockly.Xml.domToPrettyText(
         Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
       code = `
@@ -227,10 +244,8 @@ export default class _Blockly {
   }
   undo() {
     Blockly.mainWorkspace.undo();
-    this.setBlockColors();
   }
   redo() {
     Blockly.mainWorkspace.undo(true);
-    this.setBlockColors();
   }
 }

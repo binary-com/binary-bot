@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 import config from '../../../../../common/const';
-import { insideStrategy } from '../../relationChecker';
+import { insideBeforePurchase } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.ohlc_values = {
@@ -14,13 +14,13 @@ Blockly.Blocks.ohlc_values = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideStrategy(this, ev, 'Candles List');
+    insideBeforePurchase(this, ev, 'Candles List');
   },
 };
 
 Blockly.JavaScript.ohlc_values = (block) => {
   const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
-  const code = `(Bot.expectNonEmptyArray(ticks.ohlc).map(function(e){return Bot.expectOhlc(e).${
+  const code = `(Bot.expect.notEmptyArray(ticks.ohlc).map(function(e){return Bot.expect.ohlc(e).${
   ohlcField}}))`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u8i287
 import { translator } from '../../../../../common/translator';
-import { insideFinish } from '../../relationChecker';
+import { insideAfterPurchase } from '../../relationChecker';
 import config from '../../../../../common/const';
 
 Blockly.Blocks.read_details = {
@@ -14,7 +14,7 @@ Blockly.Blocks.read_details = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideFinish(this, ev, 'Read Contract Details');
+    insideAfterPurchase(this, ev, 'Read Contract Details');
   },
 };
 Blockly.JavaScript.read_details = (block) => {

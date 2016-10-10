@@ -17,7 +17,7 @@ export default () => {
         this.appendStatementInput('CONDITION')
           .setCheck('Condition');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, 'Submarket');
+        this.setPreviousStatement(true, null);
         this.setColour('#f2f2f2');
         this.setTooltip(`${translator.translateText('Chooses the symbol:')} ${symbolNames[symbol]}`); // eslint-disable-line max-len
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
@@ -35,8 +35,9 @@ export default () => {
         return new BlocklyError(
           translator.translateText('A trade type has to be defined for the symbol')).emit();
       }
-      const code = `${condition.trim()}
-      symbol: '${symbol}'}`;
+      const code = `
+      tradeOption = ${condition.trim()};
+      tradeOption.symbol = '${symbol}'`;
       return code;
     };
   }

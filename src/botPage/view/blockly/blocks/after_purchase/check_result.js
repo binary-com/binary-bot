@@ -1,5 +1,5 @@
 import config from '../../../../../common/const';
-import { insideFinish } from '../../relationChecker';
+import { insideAfterPurchase } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.contract_check_result = {
@@ -13,7 +13,7 @@ Blockly.Blocks.contract_check_result = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideFinish(this, ev, 'Check Result');
+    insideAfterPurchase(this, ev, 'Check Result');
   },
 };
 Blockly.JavaScript.contract_check_result = (block) => {

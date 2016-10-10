@@ -235,59 +235,63 @@
 	<category name="Variable" id="Variables" colour="#2a3052" custom="VARIABLE" i18n-text="Variable">></category>
 	<category name="Functions" id="Functions" colour="#2a3052" custom="PROCEDURE" i18n-text="Functions"></category>
 	<category name="Binary" colour="#2a3052" i18n-text="Binary">
-		<!--Markets-->
-		<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
-			<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
-				<block type="risefall"></block>
-				<block type="higherlower">
-					<value name="BARRIEROFFSET">
-						<block type="barrier_offset"></block>
-					</value>
-				</block>
-			</category>
-			<category name="Touch/No Touch" colour="#2a3052" i18n-text="Touch/No Touch">
-				<block type="touchnotouch">
-					<value name="BARRIEROFFSET">
-						<block type="barrier_offset"></block>
-					</value>
-				</block>
-			</category>
-			<category name="In/Out" colour="#2a3052" i18n-text="In/Out">
-				<block type="endsinout">
-					<value name="BARRIEROFFSET">
-						<block type="barrier_offset">
-							<field name="BARRIEROFFSETTYPE_LIST">+</field>
-						</block>
-					</value>
-					<value name="SECONDBARRIEROFFSET">
-						<block type="barrier_offset">
-							<field name="BARRIEROFFSETTYPE_LIST">-</field>
-						</block>
-					</value>
-				</block>
-				<block type="staysinout">
-					<value name="BARRIEROFFSET">
-						<block type="barrier_offset">
-							<field name="BARRIEROFFSETTYPE_LIST">+</field>
-						</block>
-					</value>
-					<value name="SECONDBARRIEROFFSET">
-						<block type="barrier_offset">
-							<field name="BARRIEROFFSETTYPE_LIST">-</field>
-						</block>
-					</value>
-				</block>
-			</category>
-			<category name="Asians" colour="#2a3052" i18n-text="Asians">
-				<block type="asians"></block>
-			</category>
-			<category name="Digits" colour="#2a3052" i18n-text="Digits">
-				<block type="matchesdiffers"></block>
-				<block type="evenodd"></block>
-				<block type="overunder"></block>
+		<category name="Trade" colour="#2a3052" i18n-text="Trade">
+			<block type="trade"></block>
+			<!--Markets-->
+			<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
+				<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
+					<block type="risefall"></block>
+					<block type="higherlower">
+						<value name="BARRIEROFFSET">
+							<block type="barrier_offset"></block>
+						</value>
+					</block>
+				</category>
+				<category name="Touch/No Touch" colour="#2a3052" i18n-text="Touch/No Touch">
+					<block type="touchnotouch">
+						<value name="BARRIEROFFSET">
+							<block type="barrier_offset"></block>
+						</value>
+					</block>
+				</category>
+				<category name="In/Out" colour="#2a3052" i18n-text="In/Out">
+					<block type="endsinout">
+						<value name="BARRIEROFFSET">
+							<block type="barrier_offset">
+								<field name="BARRIEROFFSETTYPE_LIST">+</field>
+							</block>
+						</value>
+						<value name="SECONDBARRIEROFFSET">
+							<block type="barrier_offset">
+								<field name="BARRIEROFFSETTYPE_LIST">-</field>
+							</block>
+						</value>
+					</block>
+					<block type="staysinout">
+						<value name="BARRIEROFFSET">
+							<block type="barrier_offset">
+								<field name="BARRIEROFFSETTYPE_LIST">+</field>
+							</block>
+						</value>
+						<value name="SECONDBARRIEROFFSET">
+							<block type="barrier_offset">
+								<field name="BARRIEROFFSETTYPE_LIST">-</field>
+							</block>
+						</value>
+					</block>
+				</category>
+				<category name="Asians" colour="#2a3052" i18n-text="Asians">
+					<block type="asians"></block>
+				</category>
+				<category name="Digits" colour="#2a3052" i18n-text="Digits">
+					<block type="matchesdiffers"></block>
+					<block type="evenodd"></block>
+					<block type="overunder"></block>
+				</category>
 			</category>
 		</category>
 		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
+			<block type="before_purchase"></block>
 			<block type="tick"></block>
 			<block type="ticks"></block>
 			<block type="ohlc"></block>
@@ -300,22 +304,30 @@
 			<block type="ask_price"></block>
 		</category>
 		<category name="During Purchase" colour="#2a3052" i18n-text="During Purchase">
+			<block type="during_purchase"></block>
 			<block type="check_sell"></block>
 			<block type="sell_price"></block>
 			<block type="sell_at_market"></block>
 		</category>
 		<category name="After Purchase" colour="#2a3052" i18n-text="After Purchase">
+			<block type="after_purchase"></block>
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
 			<block type="trade_again"></block>
 		</category>
 		<category name="Tools" colour="#2a3052" i18n-text="Tools">
-			<block type="barrier_offset"></block>
-			<block type="balance"></block>
-			<block type="total_profit"></block>
-			<block type="total_runs"></block>
-			<block type="notify"></block>
-			<block type="block_holder"></block>
+			<category name="Misc." colour="#2a3052" i18n-text="Misc.">
+				<block type="barrier_offset"></block>
+				<block type="balance"></block>
+				<block type="total_profit"></block>
+				<block type="total_runs"></block>
+				<block type="notify"></block>
+				<block type="block_holder"></block>
+			</category>
+			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
+				<block type="sma"></block>
+				<block type="ema"></block>
+			</category>
 		</category>
 	</category>
 </xml>

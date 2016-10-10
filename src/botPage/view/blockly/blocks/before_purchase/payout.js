@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
 import { getPurchaseChoices } from '../../../blockly/utils';
-import { insideStrategy } from '../../relationChecker';
+import { insideBeforePurchase } from '../../relationChecker';
 import { translator } from '../../../../../common/translator';
 
 Blockly.Blocks.payout = {
@@ -14,7 +14,7 @@ Blockly.Blocks.payout = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideStrategy(this, ev, 'Payout');
+    insideBeforePurchase(this, ev, 'Payout');
   },
 };
 Blockly.JavaScript.payout = (block) => {

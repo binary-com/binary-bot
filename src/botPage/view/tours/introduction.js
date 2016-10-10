@@ -33,14 +33,14 @@ export default class Welcome {
       teardown: function teardown() {
       },
     }, {
-      content: '<p>' + translator.translateText('You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.') + '</p>',
+      content: '<p>' + translator.translateText('You can see the <b>main blocks</b> (Step 1, 2, 3 and 4) already added to the workspace.') + '</p>',
       target: getUiComponent('center'),
       closeButton: true,
       nextButton: true,
       my: 'top center',
       at: 'bottom center',
     }, {
-      content: '<p>' + translator.translateText('You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.') + '</p>',
+      content: '<p>' + translator.translateText('You cannot add/remove main blocks, also you can move them to a desired place in the workspace. Only one block can exist for each step in the workspace.') + '</p>',
       target: getUiComponent('center'),
       closeButton: true,
       nextButton: true,
@@ -62,12 +62,13 @@ export default class Welcome {
       },
       setup: function setup() {
         observer.register('tour:submarket_created', this.tour_submarket_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[0].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[2].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[2].children_[1].select();
         setOpacity('toolbox', 1);
       },
       teardown: function teardown() {
         observer.unregister('tour:submarket_created', this.tour_submarket_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
         setOpacity('toolbox', 0.3);
       },
     }, {
@@ -86,7 +87,7 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:submarket', this.tour_submarket_added);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
       },
     }, {
       content: '<p>' + translator.translateText('Alright! Now pick a <b>trade type</b> block.') + '</p>',
@@ -101,12 +102,14 @@ export default class Welcome {
       },
       setup: function setup() {
         observer.register('tour:condition_created', this.tour_condition_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].children_[0].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[1].children_[0].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[1].children_[0].select();
         setOpacity('toolbox', 1);
       },
       teardown: function teardown() {
         observer.unregister('tour:condition_created', this.tour_condition_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
         setOpacity('toolbox', 0.3);
       },
     }, {
@@ -125,7 +128,6 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:condition', this.tour_condition_added);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
       },
     }, {
       content: '<p>' + translator.translateText('Very good! It\'s time to add the options needed by the trade type block, pick a number') + ' (<img src="image/number.png"/>) ' + translator.translateText('from the Math menu') + '</p>',
@@ -145,6 +147,7 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:number', this.tour_number_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
         setOpacity('toolbox', 0.3);
       },
     }, {
@@ -183,6 +186,7 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:options', this.tour_options_added);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
         getUiComponent('toolbox')
           .css('opacity', 1);
       },
@@ -195,15 +199,15 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('This is a <b>Strategy</b> block. All the blocks you put in here are run for each and every tick received.') + '</p>',
-      target: getUiComponent('on_strategy'),
+      content: '<p>' + translator.translateText('This is a <b>before purchase</b> block. All the blocks you put in here are run for each and every tick received.') + '</p>',
+      target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('The received tick value is in the block <b>Tick Value</b> and the tick direction (up or down) is in the block <b>Tick Direction</b>. You can pick them from the <b>Strategy</b> menu') + '</p>',
+      content: '<p>' + translator.translateText('You can some basic blocks for ticks/candle analysis and also payout/ask price to check the price before doing purchase.') + '</p>',
       target: getUiComponent('flyout'),
       closeButton: true,
       highlightTarget: true,
@@ -213,15 +217,15 @@ export default class Welcome {
       setup: function setup() {
         getUiComponent('toolbox')
           .css('opacity', 1);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
       },
       teardown: function teardown() {
         getUiComponent('toolbox')
           .css('opacity', 0.3);
       },
     }, {
-      content: '<p>' + translator.translateText('For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block') + '</p>',
+      content: '<p>' + translator.translateText('We\'ll now create our strategy by adding a single <b>purchase</b> block. Please pick a purchase block from the toolbox.') + '</p>',
       target: getUiComponent('flyout'),
       highlightTarget: true,
       closeButton: true,
@@ -232,20 +236,21 @@ export default class Welcome {
         tour.next();
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
         getUiComponent('toolbox')
           .css('opacity', 1);
         observer.register('tour:purchase_created', this.tour_purchase_created, true);
       },
       teardown: function teardown() {
         observer.unregister('tour:purchase_created', this.tour_purchase_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
         getUiComponent('toolbox')
           .css('opacity', 0.3);
       },
     }, {
-      content: '<p>' + translator.translateText('Now add it to the Strategy block.') + '</p>',
-      target: getUiComponent('on_strategy'),
+      content: '<p>' + translator.translateText('Now add it to the before purchase block.') + '</p>',
+      target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -262,38 +267,38 @@ export default class Welcome {
       },
     }, {
       content: '<p>' + translator.translateText('Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.') + '</p>',
-      target: getUiComponent('on_strategy'),
+      target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('A Strategy block consisting of only a purchase block means to purchase as soon as the first tick was received.') + '</p>',
-      target: getUiComponent('on_strategy'),
+      content: '<p>' + translator.translateText('A before purchase block consisting of only a purchase block means to purchase as soon as the first tick was received.') + '</p>',
+      target: getUiComponent('before_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>On Finish</b> block') + '</p>',
-      target: getUiComponent('on_finish'),
+      content: '<p>' + translator.translateText('After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>after purchase</b> block') + '</p>',
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('Same as the Strategy block, the <b>On Finish</b> block can have multiple blocks defining its functionality. The On Finish block defines what to do when the previously purchased contract is finished.') + '</p>',
-      target: getUiComponent('on_finish'),
+      content: '<p>' + translator.translateText('Same as the before purchase block, the <b>after purchase</b> block can have multiple blocks defining its functionality. The after purchase block defines what to do when the previously purchased contract is finished.') + '</p>',
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('A <b>Trade Again</b> block creates a new trade and exits from the On Finish block. Now pick a Trade Again block.') + '</p>',
+      content: '<p>' + translator.translateText('A <b>Trade Again</b> block creates a new trade and exits from the after purchase block. Now pick a Trade Again block.') + '</p>',
       target: getUiComponent('flyout'),
       closeButton: true,
       highlightTarget: true,
@@ -312,10 +317,11 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:trade_again_created', this.tour_trade_again_created);
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
       },
     }, {
-      content: '<p>' + translator.translateText('Now add it to the On Finish block') + '</p>',
-      target: getUiComponent('on_finish'),
+      content: '<p>' + translator.translateText('Now add it to the after purchase block') + '</p>',
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -329,11 +335,10 @@ export default class Welcome {
       },
       teardown: function teardown() {
         observer.unregister('tour:trade_again', this.tour_trade_again);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
       },
     }, {
       content: '<p>' + translator.translateText('Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn\'t called e.g. in a logic block which its trade type is unmet.') + '</p>',
-      target: getUiComponent('on_finish'),
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -341,7 +346,7 @@ export default class Welcome {
       nextButton: true,
     }, {
       content: '<p>' + translator.translateText('OK, this\'s it. Now we have a working bot which buys a contract after the first tick and then creates another trade which is exactly the same as before.') + '</p>',
-      target: getUiComponent('on_finish'),
+      target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
       my: 'left center',
@@ -366,7 +371,7 @@ export default class Welcome {
       at: 'bottom center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('You can save/load your blocks using these buttons') + '</p>',
+      content: '<p>' + translator.translateText('You can save/load your blocks using these buttons. You can also save a single block by right clicking on it and then clicking Download.') + '</p>',
       target: getUiComponent('group_save'),
       closeButton: true,
       highlightTarget: true,
@@ -374,7 +379,7 @@ export default class Welcome {
       at: 'left center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo') + '</p>',
+      content: '<p>' + translator.translateText('If you removed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo') + '</p>',
       target: getUiComponent('group_undo_redo'),
       closeButton: true,
       highlightTarget: true,
@@ -382,7 +387,7 @@ export default class Welcome {
       at: 'left center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('You can see the summary of your trades in this menu.') + '</p>',
+      content: '<p>' + translator.translateText('This button will open the summary panel.') + '</p>',
       target: getUiComponent('group_summary'),
       closeButton: true,
       highlightTarget: true,
@@ -390,7 +395,7 @@ export default class Welcome {
       at: 'left center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('You can reset your blocks to their initial state.') + '</p>',
+      content: '<p>' + translator.translateText('You can reset your blocks to their initial state after load or run.') + '</p>',
       target: getUiComponent('group_reset'),
       closeButton: true,
       highlightTarget: true,
@@ -444,7 +449,7 @@ export default class Welcome {
   stop() {
     setOpacityForAll(true, 1);
     this.tour.stop();
-    Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+    Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
     delete this.tour;
     if (this.stopCallback) {
       this.stopCallback();

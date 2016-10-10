@@ -96,7 +96,8 @@ export default () => {
         || (config.hasBarrierOffset.indexOf(opposites) > -1 && barrierOffsetValue !== ''))
         ? `barrierOffset: ${barrierOffsetValue},` : '')}
       ${((config.hasSecondBarrierOffset.indexOf(opposites) > -1 && secondBarrierOffsetValue !== '')
-        ? `secondBarrierOffset: ${secondBarrierOffsetValue},` : '')}`;
+        ? `secondBarrierOffset: ${secondBarrierOffsetValue},` : '')}
+      }`;
       return code;
     };
   }

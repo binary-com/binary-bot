@@ -11,11 +11,11 @@ describe('PurchaseCtrl', () => {
   let purchaseCtrl;
   before(() => {
     api = new CustomApi(ws);
-    const strategy = (ticks, receivedProposals, _purchaseCtrl) => {
+    const beforePurchase = (ticks, receivedProposals, _purchaseCtrl) => {
       if (receivedProposals) {
         if (firstAttempt) {
           firstAttempt = false;
-          observer.emit('test.strategy', {
+          observer.emit('test.beforePurchase', {
             ticks,
             proposals: receivedProposals,
           });
@@ -24,17 +24,17 @@ describe('PurchaseCtrl', () => {
           _purchaseCtrl.purchase('DIGITEVEN');
         }
       } else {
-        observer.emit('test.strategy', {
+        observer.emit('test.beforePurchase', {
           ticks,
           proposals: receivedProposals,
         });
       }
     };
-    purchaseCtrl = new PurchaseCtrl(api, strategy, () => {}, () => {});
+    purchaseCtrl = new PurchaseCtrl(api, beforePurchase, () => {}, () => {});
   });
-  describe('Make the strategy ready...', () => {
+  describe('Make the beforePurchase ready...', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('strategy.ready', () => {
+      observer.register('beforePurchase.ready', () => {
         done();
       }, true);
       observer.register('api.proposal', (_proposal) => {
@@ -70,11 +70,11 @@ describe('PurchaseCtrl', () => {
     it('Strategy gets ready when two proposals are available', () => {
     });
   });
-  describe('Adding the ticks to the strategy...', () => {
-    let strategyArgs;
+  describe('Adding the ticks to the beforePurchase...', () => {
+    let beforePurchaseArgs;
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('test.strategy', (_strategyArgs) => {
-        strategyArgs = _strategyArgs;
+      observer.register('test.beforePurchase', (_beforePurchaseArgs) => {
+        beforePurchaseArgs = _beforePurchaseArgs;
         done();
       }, true);
       purchaseCtrl.updateTicks({
@@ -88,13 +88,13 @@ describe('PurchaseCtrl', () => {
       });
     });
     it('purchaseCtrl passes ticks and send the proposals if ready', () => {
-      expect(strategyArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch');
-      expect(strategyArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
+      expect(beforePurchaseArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch');
+      expect(beforePurchaseArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
         .that.is.equal('Win payout if the last digit of Volatility 100 Index is'
           + ' odd after 5 ticks.');
     });
   });
-  describe('Waiting for strategy to purchase the contract', () => {
+  describe('Waiting for beforePurchase to purchase the contract', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('test.purchase', () => {
         done();
@@ -110,13 +110,13 @@ describe('PurchaseCtrl', () => {
         }],
       });
     });
-    it('strategy will buy the proposal whenever decided', () => {
+    it('beforePurchase will buy the proposal whenever decided', () => {
     });
   });
   describe('Waiting for purchase to be finished', () => {
     let finishedContract;
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('strategy.finish', (_finishedContract) => {
+      observer.register('beforePurchase.finish', (_finishedContract) => {
         finishedContract = _finishedContract;
         done();
       }, true);
@@ -130,7 +130,7 @@ describe('PurchaseCtrl', () => {
         }],
       });
     });
-    it('finish is called whenever the purchase is finished', () => {
+    it('afterPurchase is called whenever the purchase is finished', () => {
       expect(finishedContract).to.have.property('sell_price')
         .that.satisfy((price) => !isNaN(price));
     });
