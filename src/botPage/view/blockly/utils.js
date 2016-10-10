@@ -51,7 +51,7 @@ export const getMainBlocks = () => {
   for (const blockType of config.mainBlocks) {
     const block = getBlockByType(blockType);
     if (block) {
-      result.push();
+      result.push(block);
     }
   }
   return result;

@@ -139,7 +139,6 @@ export default class _Blockly {
       }
     }
     Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
-    addPurchaseOptions();
   }
   loadWorkspace(xml) {
     Blockly.mainWorkspace.clear();
@@ -147,8 +146,6 @@ export default class _Blockly {
       backwardCompatibility(block);
     }
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-    setMainBlocksDeletable();
-    addPurchaseOptions();
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
     observer.emit('ui.log.success',
@@ -158,7 +155,6 @@ export default class _Blockly {
     for (const block of xml.children) {
       this.addDomBlocks(block);
     }
-    setMainBlocksDeletable();
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
     observer.emit('ui.log.success',
@@ -185,6 +181,8 @@ export default class _Blockly {
         } else {
           this.loadWorkspace(xml);
         }
+        setMainBlocksDeletable();
+        addPurchaseOptions();
       } catch (e) {
         if (e.name === 'BlocklyError') {
           // pass
