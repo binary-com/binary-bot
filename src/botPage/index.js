@@ -43,7 +43,6 @@ class BotPage {
       showCode: () => {
         console.log(this.view.blockly.generatedJs); // eslint-disable-line no-console
         console.log(this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
-      },
       log: (message, type) => {
         observer.emit(`ui.log.${type}.left`, message);
       },
@@ -67,6 +66,11 @@ class BotPage {
           });
           payload.console.push({
             message: lzString.compressToBase64(this.view.blockly.blocksXmlStr),
+            severity: 'log',
+            timestamp: new Date().toISOString(),
+          });
+          payload.console.push({
+            message: lzString.compressToBase64(Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))),
             severity: 'log',
             timestamp: new Date().toISOString(),
           });
