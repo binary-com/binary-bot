@@ -90,7 +90,7 @@ const conditionFields = (blockObj, ev, calledByParent) => {
 export const condition = (blockObj, ev, calledByParent) => {
   if (insideHolder(blockObj)) {
     enable(blockObj);
-  } else if (blockObj.parentBlock_ !== null) {
+  } else if (blockObj.parentBlock_) {
     if (!bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
       disable(blockObj,
         translator.translateText('Trade Type blocks have to be added to submarket blocks'));
@@ -107,6 +107,8 @@ export const condition = (blockObj, ev, calledByParent) => {
       conditionFields(blockObj, ev, calledByParent);
       enable(blockObj);
     }
+  } else {
+    enable(blockObj);
   }
 };
 export const insideTrade = (blockObj, ev, name) => {
@@ -146,7 +148,7 @@ export const submarket = (blockObj, ev) => {
 export const insideTradeType = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     enable(blockObj);
-  } else if (config.conditions.indexOf(blockObj.parentBlock_.type) < 0) {
+  } else if (blockObj.parentBlock_ && config.conditions.indexOf(blockObj.parentBlock_.type) < 0) {
     disable(blockObj,
       `${name} ${translator.translateText('must be added to the condition block')}`);
   } else {
