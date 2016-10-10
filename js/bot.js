@@ -46985,7 +46985,7 @@
 	var condition = exports.condition = function condition(blockObj, ev, calledByParent) {
 	  if (insideHolder(blockObj)) {
 	    enable(blockObj);
-	  } else if (blockObj.parentBlock_ !== null) {
+	  } else if (blockObj.parentBlock_) {
 	    if (!_bot.bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
 	      disable(blockObj, _translator.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
 	    } else if (!_bot.bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
@@ -46996,6 +46996,8 @@
 	      conditionFields(blockObj, ev, calledByParent);
 	      enable(blockObj);
 	    }
+	  } else {
+	    enable(blockObj);
 	  }
 	};
 	var insideTrade = exports.insideTrade = function insideTrade(blockObj, ev, name) {
@@ -47053,7 +47055,7 @@
 	var insideTradeType = exports.insideTradeType = function insideTradeType(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
 	    enable(blockObj);
-	  } else if (_const2.default.conditions.indexOf(blockObj.parentBlock_.type) < 0) {
+	  } else if (blockObj.parentBlock_ && _const2.default.conditions.indexOf(blockObj.parentBlock_.type) < 0) {
 	    disable(blockObj, name + ' ' + _translator.translator.translateText('must be added to the condition block'));
 	  } else {
 	    enable(blockObj);
