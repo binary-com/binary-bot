@@ -17,7 +17,8 @@ const backwardCompatibility = (block) => {
       if (targetConnection) {
         parent.nextConnection.connect(targetConnection);
       }
-      submarketConnection.connect(findTopParentBlock(parent).previousConnection);
+      const ancestor = findTopParentBlock(parent);
+      submarketConnection.connect((ancestor || parent).previousConnection);
     }
     block.setPreviousStatement(false);
   }, 0);
