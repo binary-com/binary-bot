@@ -118,10 +118,10 @@ export const insideTrade = (blockObj, ev, name) => {
       disable(blockObj,
         `${name} ${translator.translateText('must be added inside the trade block')}`);
     } else {
-      if (blockObj.type === 'submarket') {
+      if (topParent && topParent.type === 'trade' && bot.symbol.findSymbol(blockObj.type)) {
         observer.emit('tour:submarket');
-        addPurchaseOptions();
       }
+      addPurchaseOptions();
       enable(blockObj);
     }
   }
@@ -162,7 +162,7 @@ export const insideBeforePurchase = (blockObj, ev, name) => {
       disable(blockObj,
         `${name} ${translator.translateText('must be added inside the before purchase block')}`);
     } else {
-      if (blockObj.type === 'purchase') {
+      if (topParent && topParent.type === 'before_purchase' && blockObj.type === 'purchase') {
         observer.emit('tour:purchase');
       }
       enable(blockObj);
@@ -191,7 +191,7 @@ export const insideAfterPurchase = (blockObj, ev, name) => {
       disable(blockObj,
         `${name} ${translator.translateText('must be added inside the after purchase block')}`);
     } else {
-      if (blockObj.type === 'trade_again') {
+      if (topParent && topParent.type === 'after_purchase' && blockObj.type === 'trade_again') {
         observer.emit('tour:trade_again');
       }
       enable(blockObj);

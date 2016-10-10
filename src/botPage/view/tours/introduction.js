@@ -33,14 +33,14 @@ export default class Welcome {
       teardown: function teardown() {
       },
     }, {
-      content: '<p>' + translator.translateText('You can see the <b>main blocks</b> (Step 1, 2 and 3) already added to the workspace.') + '</p>',
+      content: '<p>' + translator.translateText('You can see the <b>main blocks</b> (Step 1, 2, 3 and 4) already added to the workspace.') + '</p>',
       target: getUiComponent('center'),
       closeButton: true,
       nextButton: true,
       my: 'top center',
       at: 'bottom center',
     }, {
-      content: '<p>' + translator.translateText('You cannot add or delete the main blocks, but you can move them to a desired place in the workspace.') + '</p>',
+      content: '<p>' + translator.translateText('You cannot add/remove main blocks, also you can move them to a desired place in the workspace. Only one block can exist for each step in the workspace.') + '</p>',
       target: getUiComponent('center'),
       closeButton: true,
       nextButton: true,
@@ -207,7 +207,7 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('The received tick value is in the block <b>Tick Value</b> and the tick direction (up or down) is in the block <b>Tick Direction</b>. You can pick them from the <b>before purchase</b> menu') + '</p>',
+      content: '<p>' + translator.translateText('You can some basic blocks for ticks/candle analysis and also payout/ask price to check the price before doing purchase.') + '</p>',
       target: getUiComponent('flyout'),
       closeButton: true,
       highlightTarget: true,
@@ -225,7 +225,7 @@ export default class Welcome {
           .css('opacity', 0.3);
       },
     }, {
-      content: '<p>' + translator.translateText('For this tutorial we are not going to use those blocks, so we create our strategy by adding a <b>purchase</b> block. Please pick a purchase block') + '</p>',
+      content: '<p>' + translator.translateText('We\'ll now create our strategy by adding a single <b>purchase</b> block. Please pick a purchase block from the toolbox.') + '</p>',
       target: getUiComponent('flyout'),
       highlightTarget: true,
       closeButton: true,
@@ -309,8 +309,8 @@ export default class Welcome {
         tour.next();
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[2].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
         getUiComponent('toolbox')
           .css('opacity', 1);
         observer.register('tour:trade_again_created', this.tour_trade_again_created, true);
@@ -371,7 +371,7 @@ export default class Welcome {
       at: 'bottom center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('You can save/load your blocks using these buttons') + '</p>',
+      content: '<p>' + translator.translateText('You can save/load your blocks using these buttons. You can also save a single block by right clicking on it and then clicking Download.') + '</p>',
       target: getUiComponent('group_save'),
       closeButton: true,
       highlightTarget: true,
@@ -379,7 +379,7 @@ export default class Welcome {
       at: 'left center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('If you changed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo') + '</p>',
+      content: '<p>' + translator.translateText('If you removed a block by accident you can always undo/redo your changes using these buttons or Ctrl+Z for undo and Ctrl+Shift+Z for redo') + '</p>',
       target: getUiComponent('group_undo_redo'),
       closeButton: true,
       highlightTarget: true,
@@ -387,7 +387,7 @@ export default class Welcome {
       at: 'left center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('You can see the summary of your trades in this menu.') + '</p>',
+      content: '<p>' + translator.translateText('This button will open the summary panel.') + '</p>',
       target: getUiComponent('group_summary'),
       closeButton: true,
       highlightTarget: true,
@@ -395,7 +395,7 @@ export default class Welcome {
       at: 'left center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('You can reset your blocks to their initial state.') + '</p>',
+      content: '<p>' + translator.translateText('You can reset your blocks to their initial state after load or run.') + '</p>',
       target: getUiComponent('group_reset'),
       closeButton: true,
       highlightTarget: true,
