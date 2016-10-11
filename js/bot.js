@@ -24041,7 +24041,7 @@
 	      });
 	
 	      $('#resetButton').click(function () {
-	        _this3.blockly.loadWorkspace();
+	        _this3.blockly.resetWorkspace();
 	      });
 	
 	      $('#login').bind('click.login', function () {
@@ -45910,6 +45910,12 @@
 	      Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
 	    }
 	  }, {
+	    key: 'resetWorkspace',
+	    value: function resetWorkspace() {
+	      Blockly.mainWorkspace.clear();
+	      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
+	    }
+	  }, {
 	    key: 'loadWorkspace',
 	    value: function loadWorkspace(xml) {
 	      Blockly.mainWorkspace.clear();
@@ -46022,7 +46028,6 @@
 	      try {
 	        window.LoopTrap = 99999999999;
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-	        this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
 	        code = '\n        ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n        try {\n          if (typeof trade !== \'undefined\') {\n            trade();\n          }\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 	        this.generatedJs = code;
