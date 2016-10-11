@@ -140,6 +140,10 @@ export default class _Blockly {
     }
     Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
   }
+  resetWorkspace() {
+    Blockly.mainWorkspace.clear();
+    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
+  }
   loadWorkspace(xml) {
     Blockly.mainWorkspace.clear();
     for (const block of xml.children) {
@@ -202,8 +206,6 @@ export default class _Blockly {
       window.LoopTrap = 99999999999;
       Blockly.JavaScript
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-      this.blocksXmlStr = Blockly.Xml.domToPrettyText(
-        Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
       code = `
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
         try {

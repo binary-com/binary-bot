@@ -249,7 +249,7 @@ export default class View {
 
     $('#resetButton')
       .click(() => {
-        this.blockly.loadWorkspace();
+        this.blockly.resetWorkspace();
       });
 
     $('#login')
