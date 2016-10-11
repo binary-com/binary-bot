@@ -19336,6 +19336,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -19606,6 +19607,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -19876,6 +19878,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -20146,6 +20149,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -20416,6 +20420,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -20686,6 +20691,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -20956,6 +20962,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -21226,6 +21233,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -21496,6 +21504,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -21766,6 +21775,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -22036,6 +22046,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -22306,6 +22317,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -22576,6 +22588,7 @@
 	  "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
 	  "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
 	  "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+	  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
 	  "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
 	  "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
 	  "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
@@ -45667,6 +45680,36 @@
 	  }
 	};
 	
+	var disableStrayBlocks = function disableStrayBlocks() {
+	  var topBlocks = Blockly.mainWorkspace.getTopBlocks();
+	  var _iteratorNormalCompletion3 = true;
+	  var _didIteratorError3 = false;
+	  var _iteratorError3 = undefined;
+	
+	  try {
+	    for (var _iterator3 = topBlocks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	      var block = _step3.value;
+	
+	      if (!(0, _utils.isMainBlock)(block.type) && block.type.indexOf('procedures_def') < 0 && block.type !== 'block_holder' && !block.disabled) {
+	        (0, _utils.disable)(block, _translator.translator.translateText('Blocks must be inside block holders, main blocks or functions')); // eslint-disable-line max-len
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError3 = true;
+	    _iteratorError3 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	        _iterator3.return();
+	      }
+	    } finally {
+	      if (_didIteratorError3) {
+	        throw _iteratorError3;
+	      }
+	    }
+	  }
+	};
+	
 	var _Blockly = function () {
 	  function _Blockly() {
 	    var _this = this;
@@ -45715,45 +45758,45 @@
 	    key: 'createXmlTag',
 	    value: function createXmlTag(obj) {
 	      var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
-	      var _iteratorNormalCompletion3 = true;
-	      var _didIteratorError3 = false;
-	      var _iteratorError3 = undefined;
+	      var _iteratorNormalCompletion4 = true;
+	      var _didIteratorError4 = false;
+	      var _iteratorError4 = undefined;
 	
 	      try {
-	        for (var _iterator3 = Object.keys(obj)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	          var market = _step3.value;
+	        for (var _iterator4 = Object.keys(obj)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	          var market = _step4.value;
 	
 	          xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">';
-	          var _iteratorNormalCompletion4 = true;
-	          var _didIteratorError4 = false;
-	          var _iteratorError4 = undefined;
+	          var _iteratorNormalCompletion5 = true;
+	          var _didIteratorError5 = false;
+	          var _iteratorError5 = undefined;
 	
 	          try {
-	            for (var _iterator4 = Object.keys(obj[market].submarkets)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-	              var submarket = _step4.value;
+	            for (var _iterator5 = Object.keys(obj[market].submarkets)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	              var submarket = _step5.value;
 	
 	              xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">';
-	              var _iteratorNormalCompletion5 = true;
-	              var _didIteratorError5 = false;
-	              var _iteratorError5 = undefined;
+	              var _iteratorNormalCompletion6 = true;
+	              var _didIteratorError6 = false;
+	              var _iteratorError6 = undefined;
 	
 	              try {
-	                for (var _iterator5 = Object.keys(obj[market].submarkets[submarket].symbols)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	                  var symbol = _step5.value;
+	                for (var _iterator6 = Object.keys(obj[market].submarkets[submarket].symbols)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	                  var symbol = _step6.value;
 	
 	                  xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>';
 	                }
 	              } catch (err) {
-	                _didIteratorError5 = true;
-	                _iteratorError5 = err;
+	                _didIteratorError6 = true;
+	                _iteratorError6 = err;
 	              } finally {
 	                try {
-	                  if (!_iteratorNormalCompletion5 && _iterator5.return) {
-	                    _iterator5.return();
+	                  if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	                    _iterator6.return();
 	                  }
 	                } finally {
-	                  if (_didIteratorError5) {
-	                    throw _iteratorError5;
+	                  if (_didIteratorError6) {
+	                    throw _iteratorError6;
 	                  }
 	                }
 	              }
@@ -45761,16 +45804,16 @@
 	              xmlStr += '\t\t</category>\n';
 	            }
 	          } catch (err) {
-	            _didIteratorError4 = true;
-	            _iteratorError4 = err;
+	            _didIteratorError5 = true;
+	            _iteratorError5 = err;
 	          } finally {
 	            try {
-	              if (!_iteratorNormalCompletion4 && _iterator4.return) {
-	                _iterator4.return();
+	              if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	                _iterator5.return();
 	              }
 	            } finally {
-	              if (_didIteratorError4) {
-	                throw _iteratorError4;
+	              if (_didIteratorError5) {
+	                throw _iteratorError5;
 	              }
 	            }
 	          }
@@ -45778,16 +45821,16 @@
 	          xmlStr += '\t</category>\n';
 	        }
 	      } catch (err) {
-	        _didIteratorError3 = true;
-	        _iteratorError3 = err;
+	        _didIteratorError4 = true;
+	        _iteratorError4 = err;
 	      } finally {
 	        try {
-	          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	            _iterator3.return();
+	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	            _iterator4.return();
 	          }
 	        } finally {
-	          if (_didIteratorError3) {
-	            throw _iteratorError3;
+	          if (_didIteratorError4) {
+	            throw _iteratorError4;
 	          }
 	        }
 	      }
@@ -45849,27 +45892,27 @@
 	          };
 	        }
 	      };
-	      var _iteratorNormalCompletion6 = true;
-	      var _didIteratorError6 = false;
-	      var _iteratorError6 = undefined;
+	      var _iteratorNormalCompletion7 = true;
+	      var _didIteratorError7 = false;
+	      var _iteratorError7 = undefined;
 	
 	      try {
-	        for (var _iterator6 = Object.keys(Blockly.Blocks)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-	          var blockName = _step6.value;
+	        for (var _iterator7 = Object.keys(Blockly.Blocks)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+	          var blockName = _step7.value;
 	
 	          addDownloadToMenu(Blockly.Blocks[blockName]);
 	        }
 	      } catch (err) {
-	        _didIteratorError6 = true;
-	        _iteratorError6 = err;
+	        _didIteratorError7 = true;
+	        _iteratorError7 = err;
 	      } finally {
 	        try {
-	          if (!_iteratorNormalCompletion6 && _iterator6.return) {
-	            _iterator6.return();
+	          if (!_iteratorNormalCompletion7 && _iterator7.return) {
+	            _iterator7.return();
 	          }
 	        } finally {
-	          if (_didIteratorError6) {
-	            throw _iteratorError6;
+	          if (_didIteratorError7) {
+	            throw _iteratorError7;
 	          }
 	        }
 	      }
@@ -45880,29 +45923,29 @@
 	      backwardCompatibility(blockXml);
 	      var blockType = blockXml.getAttribute('type');
 	      if ((0, _utils.isMainBlock)(blockType)) {
-	        var _iteratorNormalCompletion7 = true;
-	        var _didIteratorError7 = false;
-	        var _iteratorError7 = undefined;
+	        var _iteratorNormalCompletion8 = true;
+	        var _didIteratorError8 = false;
+	        var _iteratorError8 = undefined;
 	
 	        try {
-	          for (var _iterator7 = Blockly.mainWorkspace.getTopBlocks()[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-	            var b = _step7.value;
+	          for (var _iterator8 = Blockly.mainWorkspace.getTopBlocks()[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+	            var b = _step8.value;
 	
 	            if (b.type === blockType) {
 	              b.dispose();
 	            }
 	          }
 	        } catch (err) {
-	          _didIteratorError7 = true;
-	          _iteratorError7 = err;
+	          _didIteratorError8 = true;
+	          _iteratorError8 = err;
 	        } finally {
 	          try {
-	            if (!_iteratorNormalCompletion7 && _iterator7.return) {
-	              _iterator7.return();
+	            if (!_iteratorNormalCompletion8 && _iterator8.return) {
+	              _iterator8.return();
 	            }
 	          } finally {
-	            if (_didIteratorError7) {
-	              throw _iteratorError7;
+	            if (_didIteratorError8) {
+	              throw _iteratorError8;
 	            }
 	          }
 	        }
@@ -45919,38 +45962,6 @@
 	    key: 'loadWorkspace',
 	    value: function loadWorkspace(xml) {
 	      Blockly.mainWorkspace.clear();
-	      var _iteratorNormalCompletion8 = true;
-	      var _didIteratorError8 = false;
-	      var _iteratorError8 = undefined;
-	
-	      try {
-	        for (var _iterator8 = xml.children[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-	          var block = _step8.value;
-	
-	          backwardCompatibility(block);
-	        }
-	      } catch (err) {
-	        _didIteratorError8 = true;
-	        _iteratorError8 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion8 && _iterator8.return) {
-	            _iterator8.return();
-	          }
-	        } finally {
-	          if (_didIteratorError8) {
-	            throw _iteratorError8;
-	          }
-	        }
-	      }
-	
-	      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-	      this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-	      _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
-	    }
-	  }, {
-	    key: 'loadBlocks',
-	    value: function loadBlocks(xml) {
 	      var _iteratorNormalCompletion9 = true;
 	      var _didIteratorError9 = false;
 	      var _iteratorError9 = undefined;
@@ -45959,7 +45970,7 @@
 	        for (var _iterator9 = xml.children[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
 	          var block = _step9.value;
 	
-	          this.addDomBlocks(block);
+	          backwardCompatibility(block);
 	        }
 	      } catch (err) {
 	        _didIteratorError9 = true;
@@ -45972,6 +45983,38 @@
 	        } finally {
 	          if (_didIteratorError9) {
 	            throw _iteratorError9;
+	          }
+	        }
+	      }
+	
+	      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+	      this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+	      _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
+	    }
+	  }, {
+	    key: 'loadBlocks',
+	    value: function loadBlocks(xml) {
+	      var _iteratorNormalCompletion10 = true;
+	      var _didIteratorError10 = false;
+	      var _iteratorError10 = undefined;
+	
+	      try {
+	        for (var _iterator10 = xml.children[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+	          var block = _step10.value;
+	
+	          this.addDomBlocks(block);
+	        }
+	      } catch (err) {
+	        _didIteratorError10 = true;
+	        _iteratorError10 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion10 && _iterator10.return) {
+	            _iterator10.return();
+	          }
+	        } finally {
+	          if (_didIteratorError10) {
+	            throw _iteratorError10;
 	          }
 	        }
 	      }
@@ -46028,6 +46071,7 @@
 	      try {
 	        window.LoopTrap = 99999999999;
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+	        disableStrayBlocks();
 	        code = '\n        ' + Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace) + '\n        try {\n          if (typeof trade !== \'undefined\') {\n            trade();\n          }\n        } catch (e) {\n          if (e.name === \'RuntimeError\') {\n            // pass\n          } else {\n            throw e;\n          }\n        }\n      ';
 	        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 	        this.generatedJs = code;
@@ -46080,11 +46124,13 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.save = exports.addPurchaseOptions = exports.findTopParentBlock = exports.getPurchaseChoices = exports.getBlocksByType = exports.getMainBlocks = exports.getBlockByType = exports.isMainBlock = exports.configMainBlock = exports.setBlockTextColor = exports.deleteBlockIfExists = undefined;
+	exports.enable = exports.disable = exports.save = exports.addPurchaseOptions = exports.findTopParentBlock = exports.getPurchaseChoices = exports.getBlocksByType = exports.getMainBlocks = exports.getBlockByType = exports.isMainBlock = exports.configMainBlock = exports.setBlockTextColor = exports.deleteBlockIfExists = undefined;
 	
 	var _filesaverjs = __webpack_require__(514);
 	
 	var _filesaverjs2 = _interopRequireDefault(_filesaverjs);
+	
+	var _observer = __webpack_require__(300);
 	
 	var _const = __webpack_require__(307);
 	
@@ -46361,6 +46407,21 @@
 	    type: 'text/xml;charset=utf-8'
 	  });
 	  _filesaverjs2.default.saveAs(blob, filename);
+	};
+	
+	var disable = exports.disable = function disable(blockObj, message) {
+	  if (!blockObj.disabled) {
+	    _observer.observer.emit('ui.log.warn', message);
+	    Blockly.Events.recordUndo = false;
+	    blockObj.setDisabled(true);
+	    Blockly.Events.recordUndo = true;
+	  }
+	};
+	
+	var enable = exports.enable = function enable(blockObj) {
+	  Blockly.Events.recordUndo = false;
+	  blockObj.setDisabled(false);
+	  Blockly.Events.recordUndo = true;
 	};
 
 /***/ },
@@ -46817,7 +46878,7 @@
 	  }
 	  var initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 	  // TODO: Assemble JavaScript into code variable.
-	  var code = '\n  ' + initialization.trim() + ';\n  function trade(again){\n    Bot.start(\'' + account.trim() + '\', getTradeOptions(),\n    typeof before_purchase === \'undefined\' ? function(){} : before_purchase,\n    typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n    typeof after_purchase === \'undefined\' ? function(){} : after_purchase,\n    again);\n  }';
+	  var code = '\n  ' + initialization.trim() + ';\n  function trade(again){\n    if (typeof getTradeOptions !== \'undefined\') {\n      Bot.start(\'' + account.trim() + '\', getTradeOptions(),\n      typeof before_purchase === \'undefined\' ? function(){} : before_purchase,\n      typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n      typeof after_purchase === \'undefined\' ? function(){} : after_purchase,\n      again);\n    }\n  }\n  ';
 	  return code;
 	};
 	
@@ -46918,19 +46979,6 @@
 	var getListField = function getListField(block, fieldName) {
 	  return block.getFieldValue(fieldName);
 	};
-	var disable = function disable(blockObj, message) {
-	  if (!blockObj.disabled) {
-	    _observer.observer.emit('ui.log.warn', message);
-	    Blockly.Events.recordUndo = false;
-	    blockObj.setDisabled(true);
-	    Blockly.Events.recordUndo = true;
-	  }
-	};
-	var enable = function enable(blockObj) {
-	  Blockly.Events.recordUndo = false;
-	  blockObj.setDisabled(false);
-	  Blockly.Events.recordUndo = true;
-	};
 	var conditionFields = function conditionFields(blockObj, ev, calledByParent) {
 	  if (!calledByParent) {
 	    if (ev.type === 'change' && ev.element === 'field' || ev.type === 'move' && typeof ev.newInputName === 'string') {
@@ -46995,41 +47043,41 @@
 	};
 	var condition = exports.condition = function condition(blockObj, ev, calledByParent) {
 	  if (insideHolder(blockObj)) {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  } else if (blockObj.parentBlock_) {
 	    if (!_bot.bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
-	      disable(blockObj, _translator.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
+	      (0, _utils.disable)(blockObj, _translator.translator.translateText('Trade Type blocks have to be added to submarket blocks'));
 	    } else if (!_bot.bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
 	      var symbol = _bot.bot.symbol.findSymbol(blockObj.parentBlock_.type);
-	      disable(blockObj, symbol[Object.keys(symbol)[0]] + ' ' + _translator.translator.translateText('does not support category:') + (' ' + _bot.bot.symbol.getCategoryNameForCondition(blockObj.type)) + (', ' + _translator.translator.translateText('Allowed categories are')) + (' ' + _bot.bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)));
+	      (0, _utils.disable)(blockObj, symbol[Object.keys(symbol)[0]] + ' ' + _translator.translator.translateText('does not support category:') + (' ' + _bot.bot.symbol.getCategoryNameForCondition(blockObj.type)) + (', ' + _translator.translator.translateText('Allowed categories are')) + (' ' + _bot.bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)));
 	    } else {
 	      _observer.observer.emit('tour:condition');
 	      conditionFields(blockObj, ev, calledByParent);
-	      enable(blockObj);
+	      (0, _utils.enable)(blockObj);
 	    }
 	  } else {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  }
 	};
 	var insideTrade = exports.insideTrade = function insideTrade(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  } else {
 	    var topParent = (0, _utils.findTopParentBlock)(blockObj);
 	    if (topParent && topParent.type !== 'trade') {
-	      disable(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the trade block'));
+	      (0, _utils.disable)(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the trade block'));
 	    } else {
 	      if (topParent && topParent.type === 'trade' && _bot.bot.symbol.findSymbol(blockObj.type)) {
 	        _observer.observer.emit('tour:submarket');
 	      }
 	      (0, _utils.addPurchaseOptions)();
-	      enable(blockObj);
+	      (0, _utils.enable)(blockObj);
 	    }
 	  }
 	};
 	var submarket = exports.submarket = function submarket(blockObj, ev) {
 	  if (insideHolder(blockObj)) {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  } else {
 	    if (blockObj.childBlocks_.length > 0 && _const2.default.conditions.indexOf(blockObj.childBlocks_[0].type) < 0) {
 	      _observer.observer.emit('ui.log.warn', _translator.translator.translateText('Submarket blocks can only accept trade type blocks'));
@@ -47065,52 +47113,52 @@
 	};
 	var insideTradeType = exports.insideTradeType = function insideTradeType(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  } else if (blockObj.parentBlock_ && _const2.default.conditions.indexOf(blockObj.parentBlock_.type) < 0) {
-	    disable(blockObj, name + ' ' + _translator.translator.translateText('must be added to the condition block'));
+	    (0, _utils.disable)(blockObj, name + ' ' + _translator.translator.translateText('must be added to the condition block'));
 	  } else {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  }
 	};
 	var insideBeforePurchase = exports.insideBeforePurchase = function insideBeforePurchase(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  } else {
 	    var topParent = (0, _utils.findTopParentBlock)(blockObj);
 	    if (topParent && topParent.type !== 'before_purchase') {
-	      disable(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the before purchase block'));
+	      (0, _utils.disable)(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the before purchase block'));
 	    } else {
 	      if (topParent && topParent.type === 'before_purchase' && blockObj.type === 'purchase') {
 	        _observer.observer.emit('tour:purchase');
 	      }
-	      enable(blockObj);
+	      (0, _utils.enable)(blockObj);
 	    }
 	  }
 	};
 	var insideDuringPurchase = exports.insideDuringPurchase = function insideDuringPurchase(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  } else {
 	    var topParent = (0, _utils.findTopParentBlock)(blockObj);
 	    if (topParent && topParent.type !== 'during_purchase') {
-	      disable(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the during purchase block'));
+	      (0, _utils.disable)(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the during purchase block'));
 	    } else {
-	      enable(blockObj);
+	      (0, _utils.enable)(blockObj);
 	    }
 	  }
 	};
 	var insideAfterPurchase = exports.insideAfterPurchase = function insideAfterPurchase(blockObj, ev, name) {
 	  if (insideHolder(blockObj)) {
-	    enable(blockObj);
+	    (0, _utils.enable)(blockObj);
 	  } else {
 	    var topParent = (0, _utils.findTopParentBlock)(blockObj);
 	    if (topParent && topParent.type !== 'after_purchase') {
-	      disable(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the after purchase block'));
+	      (0, _utils.disable)(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the after purchase block'));
 	    } else {
 	      if (topParent && topParent.type === 'after_purchase' && blockObj.type === 'trade_again') {
 	        _observer.observer.emit('tour:trade_again');
 	      }
-	      enable(blockObj);
+	      (0, _utils.enable)(blockObj);
 	    }
 	  }
 	};
