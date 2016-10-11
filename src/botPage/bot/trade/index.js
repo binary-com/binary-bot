@@ -55,6 +55,7 @@ export default class Trade {
         observer.emit('log.trade.finish', contract);
         observer.emit('trade.finish', contract);
       } else {
+        observer.emit('log.trade.update', contract);
         this.openContract = contract;
       }
       observer.emit('trade.update', contract);
