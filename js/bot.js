@@ -23030,6 +23030,7 @@
 	          _observer.observer.emit('log.trade.finish', contract);
 	          _observer.observer.emit('trade.finish', contract);
 	        } else {
+	          _observer.observer.emit('log.trade.update', contract);
 	          _this3.openContract = contract;
 	        }
 	        _observer.observer.emit('trade.update', contract);
@@ -24105,6 +24106,12 @@
 	        handler: zoomInMax
 	      }];
 	
+	      if (isLine() && this.contractForChart) {
+	        var chartDiv = document.getElementById('trade-chart0');
+	        if (chartDiv) {
+	          chartDiv.dispatchEvent(new Event('zoom-in-max'));
+	        }
+	      }
 	      _reactDom2.default.render(_react2.default.createElement(_binaryCharts.BinaryChart, {
 	        className: 'trade-chart',
 	        id: 'trade-chart0',
@@ -24120,12 +24127,6 @@
 	          return _this4.chartType = type;
 	        }
 	      }), $('#chart')[0]);
-	      if (isLine() && this.contractForChart) {
-	        var chartDiv = document.getElementById('trade-chart0');
-	        if (chartDiv) {
-	          chartDiv.dispatchEvent(new Event('zoom-in-max'));
-	        }
-	      }
 	    }
 	  }, {
 	    key: 'addEventHandlers',
@@ -49295,7 +49296,7 @@
 	    observeForLog(type, 'left');
 	  }
 	
-	  var _arr3 = ['log.bot.start', 'log.bot.login', 'log.bot.proposal', 'log.bot.stop', 'log.beforePurchase.start', 'log.beforePurchase.purchase', 'log.beforePurchase.win', 'log.beforePurchase.loss', 'log.trade.purchase', 'log.trade.finish'];
+	  var _arr3 = ['log.bot.start', 'log.bot.login', 'log.bot.proposal', 'log.bot.stop', 'log.beforePurchase.start', 'log.beforePurchase.purchase', 'log.beforePurchase.win', 'log.beforePurchase.loss', 'log.trade.purchase', 'log.trade.update', 'log.trade.finish'];
 	
 	  var _loop2 = function _loop2() {
 	    var event = _arr3[_i3];
