@@ -36,8 +36,13 @@ export default () => {
           translator.translateText('A trade type has to be defined for the symbol')).emit();
       }
       const code = `
-      tradeOption = ${condition.trim()};
-      tradeOption.symbol = '${symbol}'`;
+      function getTradeOptions() {
+        var tradeOptions = {};
+        tradeOptions = ${condition.trim()};
+        tradeOptions.symbol = '${symbol}'
+        return tradeOptions;
+      }
+      `;
       return code;
     };
   }
