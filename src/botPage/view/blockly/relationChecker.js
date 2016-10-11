@@ -4,7 +4,8 @@ import { durationAccepted, expandDuration } from 'binary-common-utils/lib/tools'
 import config from '../../../common/const';
 import { bot } from '../../bot';
 import { translator } from '../../../common/translator';
-import { findTopParentBlock, addPurchaseOptions } from './utils';
+import { findTopParentBlock, addPurchaseOptions,
+  disable, enable } from './utils';
 
 const isInteger = (amount) => !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount);
 const isInRange = (amount, min, max) => !isNaN(+amount) && +amount >= min && +amount <= max;
@@ -29,19 +30,6 @@ const insideHolder = (blockObj) => {
   return false;
 };
 const getListField = (block, fieldName) => block.getFieldValue(fieldName);
-const disable = (blockObj, message) => {
-  if (!blockObj.disabled) {
-    observer.emit('ui.log.warn', message);
-    Blockly.Events.recordUndo = false;
-    blockObj.setDisabled(true);
-    Blockly.Events.recordUndo = true;
-  }
-};
-const enable = (blockObj) => {
-  Blockly.Events.recordUndo = false;
-  blockObj.setDisabled(false);
-  Blockly.Events.recordUndo = true;
-};
 const conditionFields = (blockObj, ev, calledByParent) => {
   if (!calledByParent) {
     if ((ev.type === 'change' && ev.element === 'field')

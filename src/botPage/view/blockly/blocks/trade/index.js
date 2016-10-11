@@ -77,12 +77,15 @@ Blockly.JavaScript.trade = (block) => {
   const code = `
   ${initialization.trim()};
   function trade(again){
-    Bot.start('${account.trim()}', getTradeOptions(),
-    typeof before_purchase === 'undefined' ? function(){} : before_purchase,
-    typeof during_purchase === 'undefined' ? function(){} : during_purchase,
-    typeof after_purchase === 'undefined' ? function(){} : after_purchase,
-    again);
-  }`;
+    if (typeof getTradeOptions !== 'undefined') {
+      Bot.start('${account.trim()}', getTradeOptions(),
+      typeof before_purchase === 'undefined' ? function(){} : before_purchase,
+      typeof during_purchase === 'undefined' ? function(){} : during_purchase,
+      typeof after_purchase === 'undefined' ? function(){} : after_purchase,
+      again);
+    }
+  }
+  `;
   return code;
 };
 
