@@ -307,6 +307,12 @@ export default class View {
       },
     ];
 
+    if (isLine() && this.contractForChart) {
+      const chartDiv = document.getElementById('trade-chart0');
+      if (chartDiv) {
+        chartDiv.dispatchEvent(new Event('zoom-in-max'));
+      }
+    }
     ReactDOM.render(
             <BinaryChart
                 className="trade-chart"
@@ -321,12 +327,6 @@ export default class View {
                 compactToolbar
                 onTypeChange={(type) => (this.chartType = type)}
             />, $('#chart')[0]);
-    if (isLine() && this.contractForChart) {
-      const chartDiv = document.getElementById('trade-chart0');
-      if (chartDiv) {
-        chartDiv.dispatchEvent(new Event('zoom-in-max'));
-      }
-    }
   }
   addEventHandlers() {
     for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
