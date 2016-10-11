@@ -1,4 +1,5 @@
 import fileSaver from 'filesaverjs';
+import { observer } from 'binary-common-utils/lib/observer';
 import config from '../../../common/const';
 import { translator } from '../../../common/translator';
 
@@ -140,4 +141,19 @@ export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
     type: 'text/xml;charset=utf-8',
   });
   fileSaver.saveAs(blob, filename);
+};
+
+export const disable = (blockObj, message) => {
+  if (!blockObj.disabled) {
+    observer.emit('ui.log.warn', message);
+    Blockly.Events.recordUndo = false;
+    blockObj.setDisabled(true);
+    Blockly.Events.recordUndo = true;
+  }
+};
+
+export const enable = (blockObj) => {
+  Blockly.Events.recordUndo = false;
+  blockObj.setDisabled(false);
+  Blockly.Events.recordUndo = true;
 };

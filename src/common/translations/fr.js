@@ -116,6 +116,7 @@ module.exports = {
   "e99811bd3b1ad17e74614060ecb180602be35ad6": "Logged you out!",
   "5506eb6161a07356d96e91770d25d5a0f22200ef": "Conditions",
   "8b70c504aa09cadfdc4baac6909b492d9d63db71": "Purchased",
+  "e4458464df6cbb8da1134875ba51519c5d244d9f": "Blocks must be inside block holders, main blocks or functions",
   "a479c9c34e878d07b4d67a73a48f432ad7dc53c8": "Download",
   "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
   "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
