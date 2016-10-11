@@ -235,7 +235,7 @@
 	<category name="Variable" id="Variables" colour="#2a3052" custom="VARIABLE" i18n-text="Variable">></category>
 	<category name="Functions" id="Functions" colour="#2a3052" custom="PROCEDURE" i18n-text="Functions"></category>
 	<category name="Binary" colour="#2a3052" i18n-text="Binary">
-		<category name="Trade" colour="#2a3052" i18n-text="Trade">
+		<category name="Trade Definition" colour="#2a3052" i18n-text="Trade Definition">
 			<block type="trade"></block>
 			<!--Markets-->
 			<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
@@ -288,6 +288,9 @@
 					<block type="evenodd"></block>
 					<block type="overunder"></block>
 				</category>
+			</category>
+			<category name="Trade Block" colour="#2a3052" i18n-text="Trade Block">
+				<block type="trade"></block>
 			</category>
 		</category>
 		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
