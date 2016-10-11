@@ -8237,6 +8237,11 @@
 	          severity: 'log',
 	          timestamp: new Date().toISOString()
 	        });
+	        payload.console.push({
+	          message: _lzString2.default.compressToBase64(Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))),
+	          severity: 'log',
+	          timestamp: new Date().toISOString()
+	        });
 	        (0, _logger.notifyError)(error);
 	        return true;
 	      }
@@ -46806,7 +46811,7 @@
 	  }
 	  var initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 	  // TODO: Assemble JavaScript into code variable.
-	  var code = '\n  var tradeOption = {};\n  ' + initialization.trim() + ';\n  function trade(again){\n    Bot.start(\'' + account.trim() + '\', tradeOption,\n    typeof before_purchase === \'undefined\' ? function(){} : before_purchase,\n    typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n    typeof after_purchase === \'undefined\' ? function(){} : after_purchase,\n    again);\n  }';
+	  var code = '\n  ' + initialization.trim() + ';\n  function trade(again){\n    Bot.start(\'' + account.trim() + '\', getTradeOptions(),\n    typeof before_purchase === \'undefined\' ? function(){} : before_purchase,\n    typeof during_purchase === \'undefined\' ? function(){} : during_purchase,\n    typeof after_purchase === \'undefined\' ? function(){} : after_purchase,\n    again);\n  }';
 	  return code;
 	};
 	
@@ -47181,7 +47186,7 @@
 	        if (!condition) {
 	          return new _error.BlocklyError(_translator.translator.translateText('A trade type has to be defined for the symbol')).emit();
 	        }
-	        var code = '\n      tradeOption = ' + condition.trim() + ';\n      tradeOption.symbol = \'' + symbol + '\'';
+	        var code = '\n      function getTradeOptions() {\n        var tradeOptions = {};\n        tradeOptions = ' + condition.trim() + ';\n        tradeOptions.symbol = \'' + symbol + '\'\n        return tradeOptions;\n      }\n      ';
 	        return code;
 	      };
 	    };
