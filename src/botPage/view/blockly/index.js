@@ -39,6 +39,33 @@ const disableStrayBlocks = () => {
   }
 };
 
+const fixCollapsedBlocks = () => {
+  const topBlocks = Blockly.mainWorkspace.getTopBlocks();
+  for (const block of topBlocks) {
+    if (!isMainBlock(block.type)
+      && block.collapsed_ // eslint-disable-line no-underscore-dangle
+      && block.type.indexOf('procedures_def') === 0) {
+        block.setCollapsed(false);
+        block.setCollapsed(true);
+    }
+  }
+};
+
+const cleanUp = (blocksToClean) => {
+  Blockly.Events.setGroup(true);
+  let cursorY = 0;
+  for (const block of blocksToClean) {
+    const xy = block.getRelativeToSurfaceXY();
+    block.moveBy(-xy.x, cursorY - xy.y);
+    block.snapToGrid();
+    cursorY = block.getRelativeToSurfaceXY().y +
+        block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+  }
+  Blockly.Events.setGroup(false);
+  // Fire an event to allow scrollbars to resize.
+  Blockly.mainWorkspace.resizeContents();
+};
+
 export default class _Blockly {
   constructor() {
     this.blocksXmlStr = '';
@@ -56,7 +83,6 @@ export default class _Blockly {
             wheel: false,
           },
           trashcan: false,
-          collapse: false,
         });
         $.get('xml/main.xml', (main) => {
           this.overrideBlocklyDefaultShape();
@@ -124,17 +150,15 @@ export default class _Blockly {
     const addDownloadToMenu = (block) => {
       if (block instanceof Object) {
         block.customContextMenu = function customContextMenu(options) { // eslint-disable-line no-param-reassign, max-len
-          if (!this.isCollapsed()) {
-            options.push({
-              text: translator.translateText('Download'),
-              enabled: true,
-              callback: () => {
-                const xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
-                xml.appendChild(Blockly.Xml.blockToDom(this));
-                save('binary-bot-block', true, xml);
-              },
-            });
-          }
+          options.push({
+            text: translator.translateText('Download'),
+            enabled: true,
+            callback: () => {
+              const xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
+              xml.appendChild(Blockly.Xml.blockToDom(this));
+              save('binary-bot-block', true, xml);
+            },
+          });
         };
       }
     };
@@ -152,7 +176,7 @@ export default class _Blockly {
         }
       }
     }
-    Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
+    return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
   }
   resetWorkspace() {
     Blockly.mainWorkspace.clear();
@@ -170,9 +194,11 @@ export default class _Blockly {
       translator.translateText('Blocks are loaded successfully'));
   }
   loadBlocks(xml) {
+    const addedBlocks = [];
     for (const block of xml.children) {
-      this.addDomBlocks(block);
+      addedBlocks.push(this.addDomBlocks(block));
     }
+    cleanUp(addedBlocks);
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
     observer.emit('ui.log.success',
@@ -199,6 +225,7 @@ export default class _Blockly {
         } else {
           this.loadWorkspace(xml);
         }
+        fixCollapsedBlocks();
         setMainBlocksDeletable();
         addPurchaseOptions();
       } catch (e) {
