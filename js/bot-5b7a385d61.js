@@ -45723,6 +45723,74 @@
 	  }
 	};
 	
+	var fixCollapsedBlocks = function fixCollapsedBlocks() {
+	  var topBlocks = Blockly.mainWorkspace.getTopBlocks();
+	  var _iteratorNormalCompletion4 = true;
+	  var _didIteratorError4 = false;
+	  var _iteratorError4 = undefined;
+	
+	  try {
+	    for (var _iterator4 = topBlocks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	      var block = _step4.value;
+	
+	      if (!(0, _utils.isMainBlock)(block.type) && block.collapsed_ // eslint-disable-line no-underscore-dangle
+	      && block.type.indexOf('procedures_def') === 0) {
+	        block.setCollapsed(false);
+	        block.setCollapsed(true);
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError4 = true;
+	    _iteratorError4 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	        _iterator4.return();
+	      }
+	    } finally {
+	      if (_didIteratorError4) {
+	        throw _iteratorError4;
+	      }
+	    }
+	  }
+	};
+	
+	var cleanUp = function cleanUp(blocksToClean) {
+	  Blockly.Events.setGroup(true);
+	  var cursorY = 0;
+	  var _iteratorNormalCompletion5 = true;
+	  var _didIteratorError5 = false;
+	  var _iteratorError5 = undefined;
+	
+	  try {
+	    for (var _iterator5 = blocksToClean[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	      var block = _step5.value;
+	
+	      var xy = block.getRelativeToSurfaceXY();
+	      block.moveBy(-xy.x, cursorY - xy.y);
+	      block.snapToGrid();
+	      cursorY = block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+	    }
+	  } catch (err) {
+	    _didIteratorError5 = true;
+	    _iteratorError5 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	        _iterator5.return();
+	      }
+	    } finally {
+	      if (_didIteratorError5) {
+	        throw _iteratorError5;
+	      }
+	    }
+	  }
+	
+	  Blockly.Events.setGroup(false);
+	  // Fire an event to allow scrollbars to resize.
+	  Blockly.mainWorkspace.resizeContents();
+	};
+	
 	var _Blockly = function () {
 	  function _Blockly() {
 	    var _this = this;
@@ -45741,8 +45809,7 @@
 	          zoom: {
 	            wheel: false
 	          },
-	          trashcan: false,
-	          collapse: false
+	          trashcan: false
 	        });
 	        $.get('xml/main.xml', function (main) {
 	          _this.overrideBlocklyDefaultShape();
@@ -45771,45 +45838,45 @@
 	    key: 'createXmlTag',
 	    value: function createXmlTag(obj) {
 	      var xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
-	      var _iteratorNormalCompletion4 = true;
-	      var _didIteratorError4 = false;
-	      var _iteratorError4 = undefined;
+	      var _iteratorNormalCompletion6 = true;
+	      var _didIteratorError6 = false;
+	      var _iteratorError6 = undefined;
 	
 	      try {
-	        for (var _iterator4 = Object.keys(obj)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-	          var market = _step4.value;
+	        for (var _iterator6 = Object.keys(obj)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	          var market = _step6.value;
 	
 	          xmlStr += '\t<category name="' + obj[market].name + '" colour="#2a3052">';
-	          var _iteratorNormalCompletion5 = true;
-	          var _didIteratorError5 = false;
-	          var _iteratorError5 = undefined;
+	          var _iteratorNormalCompletion7 = true;
+	          var _didIteratorError7 = false;
+	          var _iteratorError7 = undefined;
 	
 	          try {
-	            for (var _iterator5 = Object.keys(obj[market].submarkets)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-	              var submarket = _step5.value;
+	            for (var _iterator7 = Object.keys(obj[market].submarkets)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+	              var submarket = _step7.value;
 	
 	              xmlStr += '\t\t<category name="' + obj[market].submarkets[submarket].name + '" colour="#2a3052">';
-	              var _iteratorNormalCompletion6 = true;
-	              var _didIteratorError6 = false;
-	              var _iteratorError6 = undefined;
+	              var _iteratorNormalCompletion8 = true;
+	              var _didIteratorError8 = false;
+	              var _iteratorError8 = undefined;
 	
 	              try {
-	                for (var _iterator6 = Object.keys(obj[market].submarkets[submarket].symbols)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-	                  var symbol = _step6.value;
+	                for (var _iterator8 = Object.keys(obj[market].submarkets[submarket].symbols)[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+	                  var symbol = _step8.value;
 	
 	                  xmlStr += '\t\t\t<block type="' + symbol.toLowerCase() + '"></block>';
 	                }
 	              } catch (err) {
-	                _didIteratorError6 = true;
-	                _iteratorError6 = err;
+	                _didIteratorError8 = true;
+	                _iteratorError8 = err;
 	              } finally {
 	                try {
-	                  if (!_iteratorNormalCompletion6 && _iterator6.return) {
-	                    _iterator6.return();
+	                  if (!_iteratorNormalCompletion8 && _iterator8.return) {
+	                    _iterator8.return();
 	                  }
 	                } finally {
-	                  if (_didIteratorError6) {
-	                    throw _iteratorError6;
+	                  if (_didIteratorError8) {
+	                    throw _iteratorError8;
 	                  }
 	                }
 	              }
@@ -45817,16 +45884,16 @@
 	              xmlStr += '\t\t</category>\n';
 	            }
 	          } catch (err) {
-	            _didIteratorError5 = true;
-	            _iteratorError5 = err;
+	            _didIteratorError7 = true;
+	            _iteratorError7 = err;
 	          } finally {
 	            try {
-	              if (!_iteratorNormalCompletion5 && _iterator5.return) {
-	                _iterator5.return();
+	              if (!_iteratorNormalCompletion7 && _iterator7.return) {
+	                _iterator7.return();
 	              }
 	            } finally {
-	              if (_didIteratorError5) {
-	                throw _iteratorError5;
+	              if (_didIteratorError7) {
+	                throw _iteratorError7;
 	              }
 	            }
 	          }
@@ -45834,16 +45901,16 @@
 	          xmlStr += '\t</category>\n';
 	        }
 	      } catch (err) {
-	        _didIteratorError4 = true;
-	        _iteratorError4 = err;
+	        _didIteratorError6 = true;
+	        _iteratorError6 = err;
 	      } finally {
 	        try {
-	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-	            _iterator4.return();
+	          if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	            _iterator6.return();
 	          }
 	        } finally {
-	          if (_didIteratorError4) {
-	            throw _iteratorError4;
+	          if (_didIteratorError6) {
+	            throw _iteratorError6;
 	          }
 	        }
 	      }
@@ -45891,99 +45958,27 @@
 	            var _this3 = this;
 	
 	            // eslint-disable-line no-param-reassign, max-len
-	            if (!this.isCollapsed()) {
-	              options.push({
-	                text: _translator.translator.translateText('Download'),
-	                enabled: true,
-	                callback: function callback() {
-	                  var xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
-	                  xml.appendChild(Blockly.Xml.blockToDom(_this3));
-	                  (0, _utils.save)('binary-bot-block', true, xml);
-	                }
-	              });
-	            }
+	            options.push({
+	              text: _translator.translator.translateText('Download'),
+	              enabled: true,
+	              callback: function callback() {
+	                var xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
+	                xml.appendChild(Blockly.Xml.blockToDom(_this3));
+	                (0, _utils.save)('binary-bot-block', true, xml);
+	              }
+	            });
 	          };
 	        }
 	      };
-	      var _iteratorNormalCompletion7 = true;
-	      var _didIteratorError7 = false;
-	      var _iteratorError7 = undefined;
-	
-	      try {
-	        for (var _iterator7 = Object.keys(Blockly.Blocks)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-	          var blockName = _step7.value;
-	
-	          addDownloadToMenu(Blockly.Blocks[blockName]);
-	        }
-	      } catch (err) {
-	        _didIteratorError7 = true;
-	        _iteratorError7 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion7 && _iterator7.return) {
-	            _iterator7.return();
-	          }
-	        } finally {
-	          if (_didIteratorError7) {
-	            throw _iteratorError7;
-	          }
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'addDomBlocks',
-	    value: function addDomBlocks(blockXml) {
-	      backwardCompatibility(blockXml);
-	      var blockType = blockXml.getAttribute('type');
-	      if ((0, _utils.isMainBlock)(blockType)) {
-	        var _iteratorNormalCompletion8 = true;
-	        var _didIteratorError8 = false;
-	        var _iteratorError8 = undefined;
-	
-	        try {
-	          for (var _iterator8 = Blockly.mainWorkspace.getTopBlocks()[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-	            var b = _step8.value;
-	
-	            if (b.type === blockType) {
-	              b.dispose();
-	            }
-	          }
-	        } catch (err) {
-	          _didIteratorError8 = true;
-	          _iteratorError8 = err;
-	        } finally {
-	          try {
-	            if (!_iteratorNormalCompletion8 && _iterator8.return) {
-	              _iterator8.return();
-	            }
-	          } finally {
-	            if (_didIteratorError8) {
-	              throw _iteratorError8;
-	            }
-	          }
-	        }
-	      }
-	      Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
-	    }
-	  }, {
-	    key: 'resetWorkspace',
-	    value: function resetWorkspace() {
-	      Blockly.mainWorkspace.clear();
-	      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
-	    }
-	  }, {
-	    key: 'loadWorkspace',
-	    value: function loadWorkspace(xml) {
-	      Blockly.mainWorkspace.clear();
 	      var _iteratorNormalCompletion9 = true;
 	      var _didIteratorError9 = false;
 	      var _iteratorError9 = undefined;
 	
 	      try {
-	        for (var _iterator9 = xml.children[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-	          var block = _step9.value;
+	        for (var _iterator9 = Object.keys(Blockly.Blocks)[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+	          var blockName = _step9.value;
 	
-	          backwardCompatibility(block);
+	          addDownloadToMenu(Blockly.Blocks[blockName]);
 	        }
 	      } catch (err) {
 	        _didIteratorError9 = true;
@@ -45999,6 +45994,76 @@
 	          }
 	        }
 	      }
+	    }
+	  }, {
+	    key: 'addDomBlocks',
+	    value: function addDomBlocks(blockXml) {
+	      backwardCompatibility(blockXml);
+	      var blockType = blockXml.getAttribute('type');
+	      if ((0, _utils.isMainBlock)(blockType)) {
+	        var _iteratorNormalCompletion10 = true;
+	        var _didIteratorError10 = false;
+	        var _iteratorError10 = undefined;
+	
+	        try {
+	          for (var _iterator10 = Blockly.mainWorkspace.getTopBlocks()[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+	            var b = _step10.value;
+	
+	            if (b.type === blockType) {
+	              b.dispose();
+	            }
+	          }
+	        } catch (err) {
+	          _didIteratorError10 = true;
+	          _iteratorError10 = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion10 && _iterator10.return) {
+	              _iterator10.return();
+	            }
+	          } finally {
+	            if (_didIteratorError10) {
+	              throw _iteratorError10;
+	            }
+	          }
+	        }
+	      }
+	      return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
+	    }
+	  }, {
+	    key: 'resetWorkspace',
+	    value: function resetWorkspace() {
+	      Blockly.mainWorkspace.clear();
+	      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
+	    }
+	  }, {
+	    key: 'loadWorkspace',
+	    value: function loadWorkspace(xml) {
+	      Blockly.mainWorkspace.clear();
+	      var _iteratorNormalCompletion11 = true;
+	      var _didIteratorError11 = false;
+	      var _iteratorError11 = undefined;
+	
+	      try {
+	        for (var _iterator11 = xml.children[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+	          var block = _step11.value;
+	
+	          backwardCompatibility(block);
+	        }
+	      } catch (err) {
+	        _didIteratorError11 = true;
+	        _iteratorError11 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion11 && _iterator11.return) {
+	            _iterator11.return();
+	          }
+	        } finally {
+	          if (_didIteratorError11) {
+	            throw _iteratorError11;
+	          }
+	        }
+	      }
 	
 	      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
 	      this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
@@ -46007,31 +46072,33 @@
 	  }, {
 	    key: 'loadBlocks',
 	    value: function loadBlocks(xml) {
-	      var _iteratorNormalCompletion10 = true;
-	      var _didIteratorError10 = false;
-	      var _iteratorError10 = undefined;
+	      var addedBlocks = [];
+	      var _iteratorNormalCompletion12 = true;
+	      var _didIteratorError12 = false;
+	      var _iteratorError12 = undefined;
 	
 	      try {
-	        for (var _iterator10 = xml.children[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-	          var block = _step10.value;
+	        for (var _iterator12 = xml.children[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+	          var block = _step12.value;
 	
-	          this.addDomBlocks(block);
+	          addedBlocks.push(this.addDomBlocks(block));
 	        }
 	      } catch (err) {
-	        _didIteratorError10 = true;
-	        _iteratorError10 = err;
+	        _didIteratorError12 = true;
+	        _iteratorError12 = err;
 	      } finally {
 	        try {
-	          if (!_iteratorNormalCompletion10 && _iterator10.return) {
-	            _iterator10.return();
+	          if (!_iteratorNormalCompletion12 && _iterator12.return) {
+	            _iterator12.return();
 	          }
 	        } finally {
-	          if (_didIteratorError10) {
-	            throw _iteratorError10;
+	          if (_didIteratorError12) {
+	            throw _iteratorError12;
 	          }
 	        }
 	      }
 	
+	      cleanUp(addedBlocks);
 	      this.blocksXmlStr = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
 	      _observer.observer.emit('ui.log.success', _translator.translator.translateText('Blocks are loaded successfully'));
 	    }
@@ -46061,6 +46128,7 @@
 	          } else {
 	            this.loadWorkspace(xml);
 	          }
+	          fixCollapsedBlocks();
 	          setMainBlocksDeletable();
 	          (0, _utils.addPurchaseOptions)();
 	        } catch (e) {
