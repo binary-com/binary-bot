@@ -23,8 +23,7 @@ const insideHolder = (blockObj) => {
   if (blockObj.isInFlyout) {
     return true;
   }
-  if (parent !== null &&
-    (parent.type === 'block_holder' || parent.type.indexOf('procedures_def') === 0)) {
+  if (parent !== null && parent.type === 'block_holder') {
     return true;
   }
   return false;
