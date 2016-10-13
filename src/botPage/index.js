@@ -36,7 +36,6 @@ class BotPage {
         const dp = Blockly.mainWorkspace.newBlock(blockType);
         dp.initSvg();
         dp.render();
-        this.view.blockly.setBlockColors();
       },
       start: bot.start.bind(bot),
       stop: bot.stop.bind(bot),

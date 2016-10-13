@@ -6,14 +6,14 @@ import { insideBeforePurchase } from '../../relationChecker';
 Blockly.Blocks.read_ohlc_obj = {
   init: function init() {
     this.appendValueInput('OHLCOBJ')
-      .setCheck(null)
+      .setCheck('Candle')
       .appendField(translator.translateText('Read'))
       .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
-      .appendField(translator.translateText('from Candle'));
+      .appendField(translator.translateText('in candle'));
     this.setInputsInline(false);
     this.setOutput(true, 'Number');
     this.setColour('#f2f2f2');
-    this.setTooltip(translator.translateText('Read a field from a candle (received from Candles list)')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Read a field in a candle (read from the Candles list)')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {

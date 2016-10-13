@@ -301,22 +301,23 @@
 					<block type="overunder"></block>
 				</category>
 			</category>
-			<category name="Trade Block" colour="#2a3052" i18n-text="Trade Block">
-				<block type="trade"></block>
-			</category>
 		</category>
 		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
 			<block type="before_purchase"></block>
 			<block type="tick"></block>
-			<block type="ticks"></block>
-			<block type="ohlc"></block>
-			<block type="ohlc_values"></block>
 			<block type="read_ohlc"></block>
-			<block type="read_ohlc_obj"></block>
 			<block type="check_direction"></block>
-			<block type="purchase"></block>
 			<block type="payout"></block>
 			<block type="ask_price"></block>
+			<block type="purchase"></block>
+			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
+				<block type="get_ohlc"></block>
+				<block type="is_candle_black"></block>
+				<block type="read_ohlc_obj"></block>
+				<block type="ticks"></block>
+				<block type="ohlc"></block>
+				<block type="ohlc_values"></block>
+			</category>
 		</category>
 		<category name="During Purchase" colour="#2a3052" i18n-text="During Purchase">
 			<block type="during_purchase"></block>
@@ -342,6 +343,10 @@
 			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
 				<block type="sma"></block>
 				<block type="ema"></block>
+				<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
+					<block type="smaa"></block>
+					<block type="emaa"></block>
+				</category>
 			</category>
 		</category>
 	</category>

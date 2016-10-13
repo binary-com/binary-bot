@@ -6,6 +6,8 @@ import './ohlc';
 import './ohlc_values';
 import './readOhlcObj';
 import './readOhlc';
+import './get_ohlc';
+import './is_candle_black';
 import './check_direction';
 import './direction';
 import './purchase';

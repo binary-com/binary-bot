@@ -1,9 +1,13 @@
-import simpleMovingAverage from 'binary-indicators/lib/simpleMovingAverage';
-import exponentialMovingAverage from 'binary-indicators/lib/exponentialMovingAverage';
+import simpleMovingAverage,
+{ simpleMovingAverageArray } from 'binary-indicators/lib/simpleMovingAverage';
+import exponentialMovingAverage,
+{ exponentialMovingAverageArray } from 'binary-indicators/lib/exponentialMovingAverage';
 
 export default {
   indicators: {
     simpleMovingAverage,
+    simpleMovingAverageArray,
     exponentialMovingAverage,
+    exponentialMovingAverageArray,
   },
 };
