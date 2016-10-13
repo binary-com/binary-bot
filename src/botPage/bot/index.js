@@ -78,9 +78,12 @@ export default class Bot {
         }
         if (!_.isEmpty(this.tradeOption)) {
           if (this.tradeOption.symbol !== this.currentSymbol) {
+            observer.unregisterAll('api.ohlc');
+            observer.unregisterAll('api.tick');
             promises.push(this.subscribeToTickHistory());
             promises.push(this.subscribeToCandles());
           } else if (this.tradeOption.candleInterval !== this.candleInterval) {
+            observer.unregisterAll('api.ohlc');
             this.candleInterval = this.tradeOption.candleInterval;
             promises.push(this.subscribeToCandles());
           }
@@ -148,6 +151,7 @@ export default class Bot {
   subscribeToCandles() {
     return new Promise((resolve) => {
       const apiCandles = (candles) => {
+        this.observeOhlc();
         this.candles = candles;
         resolve();
       };
@@ -168,6 +172,7 @@ export default class Bot {
   subscribeToTickHistory() {
     return new Promise((resolve) => {
       const apiHistory = (history) => {
+        this.observeTicks();
         this.currentSymbol = this.tradeOption.symbol;
         this.ticks = history;
         resolve();
