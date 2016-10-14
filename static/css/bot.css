@@ -44,7 +44,7 @@ html, body {
 }
 #summaryPanel {
 	width: 800px;
-	margin-top: -300px;
+	margin-top: -317px;
 	margin-left: -400px;
 	z-index: 1001;
 }
@@ -103,7 +103,7 @@ th, td {
 	padding-bottom: 1vh;
 }
 #chart {
-	height: 30vh;
+	height: 40vh;
 	width: 770px;
 	background-color: #f2f2f2;
 }
