@@ -86,16 +86,11 @@ export const findTopParentBlock = (b) => {
   return block;
 };
 
-export const addPurchaseOptions = () => {
+export const addPurchaseOptions = (submarket) => {
   let firstOption = {};
   let secondOption = {};
-  const trade = getBlockByType('trade');
-  if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null &&
-    trade.getInputTargetBlock('SUBMARKET')
-      .getInputTargetBlock('CONDITION') !== null) {
-    const conditionType = trade.getInputTargetBlock('SUBMARKET')
-      .getInputTargetBlock('CONDITION')
-      .type;
+  if (submarket && submarket.getInputTargetBlock('CONDITION') !== null) {
+    const conditionType = submarket.getInputTargetBlock('CONDITION').type;
     const opposites = config.opposites[conditionType.toUpperCase()];
     purchaseChoices.length = 0;
     opposites.forEach((option, index) => {

@@ -1,7 +1,7 @@
 import { observer } from 'binary-common-utils/lib/observer';
 import { translator } from '../../../common/translator';
 import { bot } from '../../bot';
-import { addPurchaseOptions, isMainBlock, save, getMainBlocks,
+import { isMainBlock, save, getMainBlocks,
   disable } from './utils';
 import blocks from './blocks';
 
@@ -90,7 +90,6 @@ export default class _Blockly {
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
           this.zoomOnPlusMinus();
           Blockly.mainWorkspace.clearUndo();
-          addPurchaseOptions();
           resolve();
         });
       });
@@ -231,7 +230,6 @@ export default class _Blockly {
         }
         fixCollapsedBlocks();
         setMainBlocksDeletable();
-        addPurchaseOptions();
       } catch (e) {
         if (e.name === 'BlocklyError') {
           // pass
