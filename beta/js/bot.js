@@ -24427,6 +24427,7 @@
 	      });
 	
 	      _observer.observer.register('bot.tradeUpdate', function (contract) {
+	        _this5.tradeInfo.add(contract);
 	        _this5.contractForChart = _extends({}, contract);
 	        _this5.contractForChart.date_expiry = Number(_this5.contractForChart.date_expiry);
 	        _this5.contractForChart.date_settlement = Number(_this5.contractForChart.date_settlement);
@@ -45797,14 +45798,16 @@
 	    value: function add(_trade) {
 	      var trade = clone(_trade);
 	      trade.number = this.tradeInfo.totalRuns;
-	      if (this.tradeInfo.tradeCount === this.tradeInfo.maxTradeCount) {
-	        $('#tradesDisplay tbody tr:first').insertAfter($('#tradesDisplay tbody tr:last'));
-	      } else {
-	        this.tradeInfo.tradeCount += 1;
-	        $('#tradesDisplay tbody').append('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
-	        $('.table-scroll').scrollTop($('.table-scroll')[0].scrollHeight);
+	      if (String(trade.transaction_ids.buy) !== $('#tradesDisplay tbody tr:last td:nth-child(2)').text()) {
+	        if (this.tradeInfo.tradeCount === this.tradeInfo.maxTradeCount) {
+	          $('#tradesDisplay tbody tr:first').insertAfter($('#tradesDisplay tbody tr:last'));
+	        } else {
+	          this.tradeInfo.tradeCount += 1;
+	          $('#tradesDisplay tbody').append('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
+	          $('.table-scroll').scrollTop($('.table-scroll')[0].scrollHeight);
+	        }
 	      }
-	      var profit = +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2);
+	      var profit = 'sell_price' in trade ? +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2) : '';
 	      var profitColor = profit < 0 ? 'red' : 'green';
 	      $('#tradesDisplay tbody tr:last td:nth-child(1)').text(trade.number);
 	      $('#tradesDisplay tbody tr:last td:nth-child(2)').text(trade.transaction_ids.buy);
@@ -49698,7 +49701,7 @@
 	    value: function stop() {
 	      (0, _components.setOpacityForAll)(true, 1);
 	      this.tour.stop();
-	      Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+	      Blockly.mainWorkspace.toolbox_.tree_.children_[4].setExpanded(false);
 	      delete this.tour;
 	      if (this.stopCallback) {
 	        this.stopCallback();
