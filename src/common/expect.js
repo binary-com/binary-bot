@@ -11,7 +11,7 @@ export const notEmptyArray = (array, CustomError = BlocklyError) => {
 
 export const ohlc = (obj, CustomError = BlocklyError) => {
   if (obj && obj instanceof Object &&
-    obj.open && obj.high && obj.low && obj.close) {
+    !isNaN(obj.open * obj.high * obj.low * obj.close)) {
     return obj;
   }
   return new CustomError(

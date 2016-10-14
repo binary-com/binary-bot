@@ -144,6 +144,7 @@ export default class _Blockly {
     Blockly.Blocks.texts.HUE = '#dedede';
     Blockly.Blocks.math.HUE = '#dedede';
     Blockly.Blocks.logic.HUE = '#dedede';
+    Blockly.Blocks.loops.HUE = '#dedede';
     Blockly.Blocks.lists.HUE = '#dedede';
     Blockly.Blocks.variables.HUE = '#dedede';
     Blockly.Blocks.procedures.HUE = '#dedede';

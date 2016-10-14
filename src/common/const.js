@@ -98,10 +98,10 @@ export default {
     ['-', '-'],
   ],
   ohlcFields: [
-    ['Open', 'open'],
-    ['High', 'high'],
-    ['Low', 'low'],
-    ['Close', 'close'],
+    [translator.translateText('Open'), 'open'],
+    [translator.translateText('High'), 'high'],
+    [translator.translateText('Low'), 'low'],
+    [translator.translateText('Close'), 'close'],
   ],
   candleIntervals: [
     ['1 minute', '60'],
