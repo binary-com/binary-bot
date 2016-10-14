@@ -222,6 +222,21 @@ export default class View {
         this.blockly.redo();
       });
 
+    $('#zoomIn')
+      .click(() => {
+        this.blockly.zoomOnPlusMinus(true);
+      });
+
+    $('#zoomOut')
+      .click(() => {
+        this.blockly.zoomOnPlusMinus(false);
+      });
+
+    $('#cleanUp')
+      .click(() => {
+        this.blockly.cleanUp();
+      });
+
     $('#showSummary')
       .click(() => {
         $('#summaryPanel')

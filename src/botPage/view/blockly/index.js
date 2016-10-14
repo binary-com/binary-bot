@@ -104,6 +104,9 @@ export default class _Blockly {
       Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
     }
   }
+  cleanUp() {
+    Blockly.mainWorkspace.cleanUp();
+  }
   createXmlTag(obj) {
     let xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
     for (const market of Object.keys(obj)) {
