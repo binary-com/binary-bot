@@ -366,6 +366,7 @@ export default class View {
     });
 
     observer.register('bot.tradeUpdate', (contract) => {
+      this.tradeInfo.add(contract);
       this.contractForChart = {
         ...contract,
       };
