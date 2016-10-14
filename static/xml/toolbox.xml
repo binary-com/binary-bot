@@ -312,7 +312,6 @@
 			<block type="purchase"></block>
 			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
 				<block type="get_ohlc"></block>
-				<block type="is_candle_black"></block>
 				<block type="ticks"></block>
 				<block type="ohlc"></block>
 				<block type="ohlc_values"></block>
@@ -337,6 +336,7 @@
 				<block type="total_profit"></block>
 				<block type="total_runs"></block>
 				<block type="notify"></block>
+				<block type="is_candle_black"></block>
 				<block type="ohlc_values_in_list"></block>
 				<block type="read_ohlc_obj"></block>
 				<block type="block_holder"></block>
