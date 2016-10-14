@@ -46041,7 +46041,6 @@
 	          Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
 	          _this.zoomOnPlusMinus();
 	          Blockly.mainWorkspace.clearUndo();
-	          (0, _utils.addPurchaseOptions)();
 	          resolve();
 	        });
 	      });
@@ -46360,7 +46359,6 @@
 	          }
 	          fixCollapsedBlocks();
 	          setMainBlocksDeletable();
-	          (0, _utils.addPurchaseOptions)();
 	        } catch (e) {
 	          if (e.name === 'BlocklyError') {
 	            // pass
@@ -46646,12 +46644,11 @@
 	  return block;
 	};
 	
-	var addPurchaseOptions = exports.addPurchaseOptions = function addPurchaseOptions() {
+	var addPurchaseOptions = exports.addPurchaseOptions = function addPurchaseOptions(submarket) {
 	  var firstOption = {};
 	  var secondOption = {};
-	  var trade = getBlockByType('trade');
-	  if (trade !== null && trade.getInputTargetBlock('SUBMARKET') !== null && trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION') !== null) {
-	    var conditionType = trade.getInputTargetBlock('SUBMARKET').getInputTargetBlock('CONDITION').type;
+	  if (submarket && submarket.getInputTargetBlock('CONDITION') !== null) {
+	    var conditionType = submarket.getInputTargetBlock('CONDITION').type;
 	    var opposites = _const2.default.opposites[conditionType.toUpperCase()];
 	    purchaseChoices.length = 0;
 	    opposites.forEach(function (option, index) {
@@ -47379,9 +47376,9 @@
 	      (0, _utils.disable)(blockObj, name + ' ' + _translator.translator.translateText('must be added inside the trade block'));
 	    } else {
 	      if (topParent && topParent.type === 'trade' && _bot.bot.symbol.findSymbol(blockObj.type)) {
+	        (0, _utils.addPurchaseOptions)(blockObj);
 	        _observer.observer.emit('tour:submarket');
 	      }
-	      (0, _utils.addPurchaseOptions)();
 	      (0, _utils.enable)(blockObj);
 	    }
 	  }
