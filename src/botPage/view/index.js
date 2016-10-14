@@ -15,7 +15,7 @@ import { logHandler } from './logger';
 
 export default class View {
   constructor() {
-    this.chartType = 'area';
+    this.chartType = 'line';
     this.tours = {};
     logHandler();
     this.tradeInfo = new TradeInfo();
