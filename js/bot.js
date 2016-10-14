@@ -24021,7 +24021,7 @@
 	
 	    _classCallCheck(this, View);
 	
-	    this.chartType = 'area';
+	    this.chartType = 'line';
 	    this.tours = {};
 	    (0, _logger.logHandler)();
 	    this.tradeInfo = new _tradeInfo2.default();
