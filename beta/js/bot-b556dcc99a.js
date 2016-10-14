@@ -24246,6 +24246,18 @@
 	        _this3.blockly.redo();
 	      });
 	
+	      $('#zoomIn').click(function () {
+	        _this3.blockly.zoomOnPlusMinus(true);
+	      });
+	
+	      $('#zoomOut').click(function () {
+	        _this3.blockly.zoomOnPlusMinus(false);
+	      });
+	
+	      $('#cleanUp').click(function () {
+	        _this3.blockly.cleanUp();
+	      });
+	
 	      $('#showSummary').click(function () {
 	        $('#summaryPanel').show();
 	      });
@@ -46031,6 +46043,11 @@
 	      } else {
 	        Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
 	      }
+	    }
+	  }, {
+	    key: 'cleanUp',
+	    value: function cleanUp() {
+	      Blockly.mainWorkspace.cleanUp();
 	    }
 	  }, {
 	    key: 'createXmlTag',
