@@ -217,7 +217,7 @@ export default class Welcome {
   stop() {
     setOpacityForAll(true, 1);
     this.tour.stop();
-    Blockly.mainWorkspace.toolbox_.tree_.children_[6].setExpanded(false);
+    Blockly.mainWorkspace.toolbox_.tree_.children_[4].setExpanded(false);
     delete this.tour;
     if (this.stopCallback) {
       this.stopCallback();
