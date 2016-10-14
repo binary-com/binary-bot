@@ -29,7 +29,7 @@
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "backbone": "^1.3.3",
-    "binary-charts": "^8.5.8",
+    "binary-charts": "^8.5.9",
     "binary-common-utils": "^4.2.0",
     "binary-live-api": "^27.0.0",
     "blockly": "google/blockly.git#0fb77e09",
