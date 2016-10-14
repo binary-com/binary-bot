@@ -42,6 +42,8 @@ export default class Bot {
     this.unregisterOnFinish = [];
     this.totalProfit = 0;
     this.totalRuns = 0;
+    this.totalWins = 0;
+    this.totalLosses = 0;
     this.totalStake = 0;
     this.totalPayout = 0;
     this.balance = 0;
@@ -307,12 +309,19 @@ export default class Bot {
       contract,
     });
 
+    if (+profit > 0) {
+      this.totalWins += 1;
+    } else if (+profit < 0) {
+      this.totalLosses += 1;
+    }
     this.totalProfit = +(this.totalProfit + profit).toFixed(2);
     this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2);
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2);
 
     observer.emit('bot.tradeInfo', {
       totalProfit: this.totalProfit,
+      totalWins: this.totalWins,
+      totalLosses: this.totalLosses,
       totalStake: this.totalStake,
       totalPayout: this.totalPayout,
     });

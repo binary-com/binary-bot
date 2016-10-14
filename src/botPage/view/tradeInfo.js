@@ -4,6 +4,8 @@ const clone = (obj) => ({
 
 const tradeInfoSkel = {
   totalRuns: 0,
+  totalWins: 0,
+  totalLosses: 0,
   totalProfit: '',
   totalPayout: '',
   totalStake: '',
