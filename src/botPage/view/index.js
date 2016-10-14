@@ -324,7 +324,6 @@ export default class View {
                 ticks={info[chartToDataType[this.chartType]]}
                 type={this.chartType}
                 events={events}
-                compactToolbar
                 onTypeChange={(type) => (this.chartType = type)}
             />, $('#chart')[0]);
   }
