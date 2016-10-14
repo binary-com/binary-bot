@@ -108,9 +108,9 @@ export const insideTrade = (blockObj, ev, name) => {
         `${name} ${translator.translateText('must be added inside the trade block')}`);
     } else {
       if (topParent && topParent.type === 'trade' && bot.symbol.findSymbol(blockObj.type)) {
+        addPurchaseOptions(blockObj);
         observer.emit('tour:submarket');
       }
-      addPurchaseOptions();
       enable(blockObj);
     }
   }
