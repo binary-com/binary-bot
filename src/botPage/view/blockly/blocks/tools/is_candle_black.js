@@ -1,6 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import { translator } from '../../../../../common/translator';
-import { insideBeforePurchase } from '../../relationChecker';
 
 Blockly.Blocks.is_candle_black = {
   init: function init() {
@@ -9,12 +8,9 @@ Blockly.Blocks.is_candle_black = {
       .appendField(translator.translateText('is candle black?'));
     this.setInputsInline(false);
     this.setOutput(true, 'Boolean');
-    this.setColour('#f2f2f2');
+    this.setColour('#dedede');
     this.setTooltip(translator.translateText('Checks if the given candle is black, returns true if close is less than open in the given candle.')); // eslint-disable-line max-len
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
-  onchange: function onchange(ev) {
-    insideBeforePurchase(this, ev, 'Candles');
   },
 };
 
