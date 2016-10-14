@@ -62,8 +62,8 @@ export default class Welcome {
       },
       setup: function setup() {
         observer.register('tour:submarket_created', this.tour_submarket_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[2].children_[1].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[0].children_[2].children_[1].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[0].children_[2].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[0].children_[2].children_[1].select();
         setOpacity('toolbox', 1);
       },
       teardown: function teardown() {
@@ -102,14 +102,14 @@ export default class Welcome {
       },
       setup: function setup() {
         observer.register('tour:condition_created', this.tour_condition_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[1].children_[0].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].children_[1].children_[0].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[1].children_[0].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[1].children_[0].select();
         setOpacity('toolbox', 1);
       },
       teardown: function teardown() {
         observer.unregister('tour:condition_created', this.tour_condition_created);
         Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[0].setExpanded(false);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].setExpanded(false);
         setOpacity('toolbox', 0.3);
       },
     }, {
@@ -217,8 +217,8 @@ export default class Welcome {
       setup: function setup() {
         getUiComponent('toolbox')
           .css('opacity', 1);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].select();
       },
       teardown: function teardown() {
         getUiComponent('toolbox')
@@ -236,8 +236,8 @@ export default class Welcome {
         tour.next();
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[1].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].select();
         getUiComponent('toolbox')
           .css('opacity', 1);
         observer.register('tour:purchase_created', this.tour_purchase_created, true);
@@ -309,8 +309,8 @@ export default class Welcome {
         tour.next();
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[6].children_[3].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[3].reveal(true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[3].select();
         getUiComponent('toolbox')
           .css('opacity', 1);
         observer.register('tour:trade_again_created', this.tour_trade_again_created, true);
