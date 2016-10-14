@@ -43,17 +43,22 @@ export default class TradeInfo {
   add(_trade) {
     const trade = clone(_trade);
     trade.number = this.tradeInfo.totalRuns;
-    if (this.tradeInfo.tradeCount === this.tradeInfo.maxTradeCount) {
-      $('#tradesDisplay tbody tr:first').insertAfter($('#tradesDisplay tbody tr:last'));
-    } else {
-      this.tradeInfo.tradeCount += 1;
-      $('#tradesDisplay tbody')
-        .append(
-          '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
-      $('.table-scroll')
-        .scrollTop($('.table-scroll')[0].scrollHeight);
+    if (String(trade.transaction_ids.buy) !==
+      $('#tradesDisplay tbody tr:last td:nth-child(2)').text()) {
+      if (this.tradeInfo.tradeCount === this.tradeInfo.maxTradeCount) {
+        $('#tradesDisplay tbody tr:first').insertAfter($('#tradesDisplay tbody tr:last'));
+      } else {
+        this.tradeInfo.tradeCount += 1;
+        $('#tradesDisplay tbody')
+          .append(
+            '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
+        $('.table-scroll')
+          .scrollTop($('.table-scroll')[0].scrollHeight);
+      }
     }
-    const profit = +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2);
+    const profit = 'sell_price' in trade ?
+      +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2)
+      : '';
     const profitColor = (profit < 0) ? 'red' : 'green';
     $('#tradesDisplay tbody tr:last td:nth-child(1)')
       .text(trade.number);
