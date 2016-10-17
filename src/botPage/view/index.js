@@ -339,6 +339,7 @@ export default class View {
                 ticks={info[chartToDataType[this.chartType]]}
                 type={this.chartType}
                 events={events}
+                hideIntervalPicker
                 onTypeChange={(type) => (this.chartType = type)}
             />, $('#chart')[0]);
   }
