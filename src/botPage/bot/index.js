@@ -6,7 +6,6 @@ import config from '../../common/const';
 import PurchaseCtrl from './purchaseCtrl';
 import _Symbol from './symbol';
 import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect';
-import { RuntimeError } from '../../common/error';
 
 const decorateTradeOptions = (tradeOption, otherOptions = {}) => {
   const option = {
@@ -16,16 +15,16 @@ const decorateTradeOptions = (tradeOption, otherOptions = {}) => {
     symbol: tradeOption.symbol,
     ...otherOptions,
   };
-  option.duration = expectNumber('duration', tradeOption.duration, RuntimeError);
-  option.amount = expectNumber('amount', tradeOption.amount, RuntimeError).toFixed(2);
+  option.duration = expectNumber('duration', tradeOption.duration);
+  option.amount = expectNumber('amount', tradeOption.amount).toFixed(2);
   if ('prediction' in tradeOption) {
-    option.barrier = expectNumber('prediction', tradeOption.prediction, RuntimeError);
+    option.barrier = expectNumber('prediction', tradeOption.prediction);
   }
   if ('barrierOffset' in tradeOption) {
-    option.barrier = expectBarrierOffset(tradeOption.barrierOffset, RuntimeError);
+    option.barrier = expectBarrierOffset(tradeOption.barrierOffset);
   }
   if ('secondBarrierOffset' in tradeOption) {
-    option.barrier2 = expectBarrierOffset(tradeOption.secondBarrierOffset, RuntimeError);
+    option.barrier2 = expectBarrierOffset(tradeOption.secondBarrierOffset);
   }
   return option;
 };
@@ -93,7 +92,7 @@ export default class Bot {
         Promise.all(promises).then(() => {
           this.startTrading();
         }).catch((error) => {
-          if (error.name === 'RuntimeError') {
+          if (error.name === 'BlocklyError') {
             // pass
           } else {
             throw error;

@@ -24,6 +24,8 @@ gulp.task('bundle-js', ['blockly-msg', 'blockly-media'], () => gulp.src([
   './node_modules/blockly/javascript_compressed.js',
 ])
   .pipe(concat('bundle.js'))
+  .pipe(rev())
+  .pipe(through.obj(addToManifest))
   .pipe(gulp.dest('www/js/')));
 
 gulp.task('bundle-css',
