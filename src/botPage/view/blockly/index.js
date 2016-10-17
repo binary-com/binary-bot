@@ -257,7 +257,7 @@ export default class _Blockly {
             trade();
           }
         } catch (e) {
-          if (e.name === 'RuntimeError') {
+          if (e.name === 'BlocklyError') {
             // pass
           } else {
             throw e;
