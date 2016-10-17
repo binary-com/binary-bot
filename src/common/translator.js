@@ -7,7 +7,6 @@ import id from './translations/id';
 import zhCn from './translations/zh_cn';
 import it from './translations/it';
 import vi from './translations/vi';
-import ar from './translations/ar';
 import pl from './translations/pl';
 import ru from './translations/ru';
 import pt from './translations/pt';
@@ -22,7 +21,6 @@ const supportedLanguages = {
   zh_cn: zhCn,
   it,
   vi,
-  ar,
   pl,
   ru,
   pt,

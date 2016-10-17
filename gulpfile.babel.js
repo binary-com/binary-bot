@@ -1,13 +1,13 @@
 import gulp from 'gulp';
 import ghPages from 'gulp-gh-pages';
 import webpack from 'gulp-webpack';
-import gp_rename from 'gulp-rename';
+import rename from 'gulp-rename';
 import cleanCSS from 'gulp-clean-css';
 import watch from 'gulp-watch';
 import concat from 'gulp-concat-util';
 import concatCss from 'gulp-concat-css';
 import del from 'del';
-import vinyl_paths from 'vinyl-paths';
+import paths from 'vinyl-paths';
 import scanner from 'i18next-scanner';
 import hash from 'sha1';
 import mustache from 'gulp-mustache-plus';
@@ -23,7 +23,8 @@ import eslint from 'gulp-eslint';
 import mocha from 'gulp-mocha';
 
 const options = {
-  lngs: ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi', 'ar', 'pl', 'ru', 'pt', 'es', 'fr', 'en'], // supported languages
+  lngs: ['zh_tw', 'de', 'id', 'zh_cn', 'it', 'vi',
+    'pl', 'ru', 'pt', 'es', 'fr', 'en'], // supported languages
   resource: {
     loadPath: 'src/common/translations/{{lng}}.js',
     savePath: 'src/common/translations/{{lng}}.js',
@@ -89,7 +90,7 @@ const addToManifest = function addToManifest(chunk, enc, cb) {
 };
 
 gulp.task('clean-css', () => gulp.src('./www/css/*-*.css')
-  .pipe(vinyl_paths(del)));
+  .pipe(paths(del)));
 
 gulp.task('static-css', ['clean-css'], () => gulp.src('static/css/*')
   .pipe(rev())
@@ -155,7 +156,7 @@ gulp.task('bundle', ['blockly'], () => gulp.src([
   .pipe(gulp.dest('www/js/')));
 
 gulp.task('clean-webpack', () => gulp.src(['./www/js/*-*.{js,map}'])
-  .pipe(vinyl_paths(del)));
+  .pipe(paths(del)));
 
 gulp.task('webpack-dev', ['clean-webpack', 'test', 'bundle'], () => {
   process.env.NODE_ENV = 'development';
@@ -186,7 +187,7 @@ gulp.task('pack-css', ['static'], () => gulp.src(['node_modules/{bootstrap/dist/
   .pipe(gulp.dest('www/css')));
 
 gulp.task('pack-css-min', ['pack-css'], () => gulp.src('www/css/bundle-*.css')
-  .pipe(gp_rename('bundle.min.css'))
+  .pipe(rename('bundle.min.css'))
   .pipe(cleanCSS())
   .pipe(rev())
   .pipe(through.obj(addToManifest))
