@@ -61,7 +61,7 @@ const parseFilenameWithoutVersion = function parseFilenameWithoutVersion(chunk) 
   const oldFile = path.parse(chunk.revOrigPath);
   const filename = oldFile.base.slice(0, oldFile.base.indexOf('.'));
   const ext = oldFile.base.slice(oldFile.base.indexOf('.'));
-  const newFileName = filename + '-' + chunk.revHash + ext;
+  const newFileName = `${filename}-${chunk.revHash}${ext}`;
   return {
     old: oldFile.base,
     new: newFileName,
@@ -180,7 +180,8 @@ gulp.task('revision-prod', ['webpack-prod'], () => gulp.src(['./www/js/*.js'])
   .pipe(through.obj(addToManifest))
   .pipe(gulp.dest('www/js')));
 
-gulp.task('pack-css', ['static'], () => gulp.src(['node_modules/{bootstrap/dist/css/bootstrap.min,tourist/tourist}.css'])
+gulp.task('pack-css', ['static'],
+  () => gulp.src(['node_modules/{bootstrap/dist/css/bootstrap.min,tourist/tourist}.css'])
   .pipe(concatCss('bundle.css'))
   .pipe(rev())
   .pipe(through.obj(addToManifest))
@@ -193,30 +194,32 @@ gulp.task('pack-css-min', ['pack-css'], () => gulp.src('www/css/bundle-*.css')
   .pipe(through.obj(addToManifest))
   .pipe(gulp.dest('www/css')));
 
-gulp.task('mustache-dev', ['static', 'revision-dev', 'pack-css'], () => gulp.src('templates/*.mustache')
+gulp.task('mustache-dev', ['static', 'revision-dev', 'pack-css'],
+  () => gulp.src('templates/*.mustache')
   .pipe(mustache({}, {}, {
-    index: '<script src="js/' + manifest['index.js'] + '"></script>',
-    bot: '<script src="js/' + manifest['bot.js'] + '"></script>',
-    bundle_css: '<link href="css/' + manifest['bundle.css'] + '" rel="stylesheet" />',
-    main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
-    bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
-    chart_css: '<link href="css/' + manifest['chart.css'] + '" rel="stylesheet" />',
-    fontello_css: '<link href="css/' + manifest['fontello.css'] + '" rel="stylesheet" />',
+    index: `<script src="js/${manifest['index.js']}"></script>`,
+    bot: `<script src="js/${manifest['bot.js']}"></script>`,
+    bundle_css: `<link href="css/${manifest['bundle.css']}" rel="stylesheet" />`,
+    main_css: `<link href="css/'${manifest['main.css']}" rel="stylesheet" />`,
+    bot_css: `<link href="css/${manifest['bot.css']}" rel="stylesheet" />`,
+    chart_css: `<link href="css/${manifest['chart.css']}" rel="stylesheet" />`,
+    fontello_css: `<link href="css/${manifest['fontello.css']}" rel="stylesheet" />`,
     head: 'templates/partials/head.mustache',
     security: 'templates/partials/security.mustache',
     language: 'templates/partials/language.mustache',
   }))
   .pipe(gulp.dest('www')));
 
-gulp.task('mustache-min', ['static', 'revision-prod', 'pack-css-min'], () => gulp.src('templates/*.mustache')
+gulp.task('mustache-min', ['static', 'revision-prod', 'pack-css-min'],
+  () => gulp.src('templates/*.mustache')
   .pipe(mustache({}, {}, {
-    index: '<script src="js/' + manifest['index.min.js'] + '"></script>',
-    bot: '<script src="js/' + manifest['bot.min.js'] + '"></script>',
-    bundle_css: '<link href="css/' + manifest['bundle.min.css'] + '" rel="stylesheet" />',
-    main_css: '<link href="css/' + manifest['main.css'] + '" rel="stylesheet" />',
-    bot_css: '<link href="css/' + manifest['bot.css'] + '" rel="stylesheet" />',
-    chart_css: '<link href="css/' + manifest['chart.css'] + '" rel="stylesheet" />',
-    fontello_css: '<link href="css/' + manifest['fontello.css'] + '" rel="stylesheet" />',
+    index: `<script src="js/${manifest['index.min.js']}"></script>`,
+    bot: `<script src="js/${manifest['bot.min.js']}"></script>`,
+    bundle_css: `<link href="css/${manifest['bundle.min.css']}" rel="stylesheet" />`,
+    main_css: `<link href="css/${manifest['main.css']}" rel="stylesheet" />`,
+    bot_css: `<link href="css/${manifest['bot.css']}" rel="stylesheet" />`,
+    chart_css: `<link href="css/${manifest['chart.css']}" rel="stylesheet" />`,
+    fontello_css: `<link href="css/${manifest['fontello.css']}" rel="stylesheet" />`,
     head: 'templates/partials/head.mustache',
     security: 'templates/partials/security.mustache',
     language: 'templates/partials/language.mustache',
@@ -249,14 +252,16 @@ gulp.task('serve', ['open', 'connect'], () => {
     .pipe(connect.reload());
 });
 
-gulp.task('deploy', ['build-min'], () => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', './beta/**'])
+gulp.task('deploy', ['build-min'],
+  () => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', './beta/**'])
   .pipe(ghPages()));
 
 gulp.task('test-deploy', ['build-min', 'serve'], () => {
 });
 
 gulp.task('watch', ['build', 'serve'], () => {
-  watch(['static/**', 'src/**/*.js', 'templates/**/*.mustache', '!./src/common/translations/*.js'], {
+  watch(['static/**', 'src/**/*.js',
+    'templates/**/*.mustache', '!./src/common/translations/*.js'], {
     debounceTimeout: 1000,
   }, () => gulp.run(['build']));
 });
