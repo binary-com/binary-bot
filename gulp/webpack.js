@@ -13,7 +13,7 @@ const gen = (env) => {
     .pipe(gulp.dest('www/js'));
 };
 
-const addRev = () => gulp.src(['./www/js/{bot,index}.js'])
+const addRev = () => gulp.src(['./www/js/{bot,index}*.js'])
   .pipe(rev())
   .pipe(through.obj(addToManifest))
   .pipe(gulp.dest('www/js'));
