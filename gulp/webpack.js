@@ -13,19 +13,16 @@ const gen = (env) => {
     .pipe(gulp.dest('www/js'));
 };
 
+const addRev = () => gulp.src(['./www/js/{bot,index}.js'])
+  .pipe(rev())
+  .pipe(through.obj(addToManifest))
+  .pipe(gulp.dest('www/js'));
+
 gulp.task('clean-webpack', () => gulp.src(['./www/js/{bot,index}*'])
   .pipe(paths(del)));
 
 gulp.task('webpack-gen-dev', ['clean-webpack', 'test'], () => gen('development'));
 gulp.task('webpack-gen-prod', ['clean-webpack', 'test'], () => gen('production'));
-
-gulp.task('webpack-dev', ['webpack-gen-dev'], () => gulp.src(['./www/js/*.js'])
-  .pipe(rev())
-  .pipe(through.obj(addToManifest))
-  .pipe(gulp.dest('www/js')));
-
-gulp.task('webpack-prod', ['webpack-gen-prod'], () => gulp.src(['./www/js/*.js'])
-  .pipe(rev())
-  .pipe(through.obj(addToManifest))
-  .pipe(gulp.dest('www/js')));
+gulp.task('webpack-dev', ['webpack-gen-dev'], addRev);
+gulp.task('webpack-prod', ['webpack-gen-prod'], addRev);
 
