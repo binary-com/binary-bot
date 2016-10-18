@@ -13,6 +13,8 @@ const uiComponents = {
   login_logout: '.login-logout',
   group_save: '.group-save',
   group_undo_redo: '.group-undo-redo',
+  group_zoom: '.group-zoom',
+  group_clean_up: '.group-clean-up',
   group_summary: '.group-summary',
   group_start_stop: '.group-start-stop',
   center: '#center',

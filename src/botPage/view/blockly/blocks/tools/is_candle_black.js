@@ -15,15 +15,8 @@ Blockly.Blocks.is_candle_black = {
 };
 
 Blockly.JavaScript.is_candle_black = (block) => {
-  const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
-  let code;
-  if (ohlcObj) {
-    code = `(function () {return this.close < this.open}).call(Bot.expect.ohlc((${
-    ohlcObj} instanceof Array)? Bot.expect.notEmptyArray(${
-    ohlcObj}).slice(-1)[0] : ${ohlcObj}))`;
-  } else {
-    code = '(function () {return this.close < this.open}).call('
-    + 'Bot.expect.ohlc(Bot.expect.notEmptyArray(ticks.ohlc).slice(-1)[0]))';
-  }
+  const ohlcObj = Blockly.JavaScript.valueToCode(block,
+    'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+  const code = `(function () {return this.close < this.open}).call(Bot.expect.ohlc(${ohlcObj}))`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
