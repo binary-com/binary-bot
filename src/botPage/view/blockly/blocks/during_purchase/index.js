@@ -24,7 +24,7 @@ Blockly.Blocks.during_purchase = {
 };
 Blockly.JavaScript.during_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
-  const code = `function during_purchase(openContract, purchaseCtrl){
+  const code = `during_purchase = function during_purchase(openContract, purchaseCtrl){
   if(purchaseCtrl === null) return; 
     try {
       ${stack}
@@ -35,7 +35,7 @@ Blockly.JavaScript.during_purchase = (block) => {
         throw e;
       }
     }
-  }
+  };
   `;
   return code;
 };

@@ -19,7 +19,8 @@ Blockly.Blocks.read_ohlc_obj = {
 
 Blockly.JavaScript.read_ohlc_obj = (block) => {
   const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
-  const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
+  const ohlcObj = Blockly.JavaScript.valueToCode(block,
+    'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
   const code = `Bot.expect.ohlc((${ohlcObj} instanceof Array)? Bot.expect.notEmptyArray(${
   ohlcObj}).slice(-1)[0] : ${ohlcObj}).${ohlcField}`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];

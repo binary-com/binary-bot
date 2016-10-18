@@ -251,6 +251,7 @@ export default class _Blockly {
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       disableStrayBlocks();
       code = `
+        var trade, before_purchase, during_purchase, after_purchase;
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
         try {
           if (typeof trade !== 'undefined') {
@@ -260,6 +261,7 @@ export default class _Blockly {
           if (e.name === 'BlocklyError') {
             // pass
           } else {
+            console.log(e.name);
             throw e;
           }
         }
