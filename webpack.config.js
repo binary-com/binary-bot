@@ -24,14 +24,7 @@ module.exports = {
     bot: ['babel-polyfill', path.join(__dirname, 'src', 'botPage')],
     index: path.join(__dirname, 'src', 'indexPage'),
   },
-  externals: [
-    {
-      blockly: 'Blockly',
-      tourist: 'Tourist',
-      $: 'jquery',
-    },
-    'ws',
-  ],
+  externals: ['ws'],
   output: {
     filename: production ? '[name].min.js' : '[name].js',
     sourceMapFilename: production ? '[name].min.js.map' : '[name].js.map',

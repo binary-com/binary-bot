@@ -1,4 +1,6 @@
 import gulp from 'gulp';
+import del from 'del';
+import paths from 'vinyl-paths';
 import rev from 'gulp-rev';
 import through from 'through2';
 import concat from 'gulp-concat-util';
@@ -7,18 +9,16 @@ import rename from 'gulp-rename';
 import cleanCSS from 'gulp-clean-css';
 import { addToManifest } from './revision';
 
-gulp.task('blockly-msg', () => gulp.src('node_modules/blockly/msg/**')
+gulp.task('clean-bundle', () => gulp.src(['./www/js/bundle*', 'blockly/**/*'])
+  .pipe(paths(del)));
+
+gulp.task('blockly-msg', ['clean-bundle'], () => gulp.src('node_modules/blockly/msg/**')
   .pipe(gulp.dest('www/js/blockly/msg')));
 
 gulp.task('blockly-media', () => gulp.src('node_modules/blockly/media/**')
   .pipe(gulp.dest('www/js/blockly/media')));
 
 gulp.task('bundle-js', ['blockly-msg', 'blockly-media'], () => gulp.src([
-  './node_modules/jquery/dist/jquery.min.js',
-  './node_modules/underscore/underscore-min.js',
-  './node_modules/backbone/backbone-min.js',
-  './node_modules/tourist/tourist.min.js',
-  './node_modules/notifyjs-browser/dist/notify.js',
   './node_modules/blockly/blockly_compressed.js',
   './node_modules/blockly/blocks_compressed.js',
   './node_modules/blockly/javascript_compressed.js',
