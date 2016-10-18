@@ -3,13 +3,23 @@ import 'babel-polyfill';
 import lzString from 'lz-string';
 import { observer } from 'binary-common-utils/lib/observer';
 import { getToken } from 'binary-common-utils/lib/storageManager';
-import './view/draggable';
+import underscore from 'underscore';
+import Backbone from 'backbone';
+import $ from 'jquery';
 import { bot } from './bot';
 import View from './view';
 import { setAppId } from '../common/appId';
 import { notifyError } from './view/logger';
 import expect from '../common/expect';
 import math from '../common/math';
+
+window._ = underscore;
+window.Backbone = Backbone;
+window.$ = $;
+
+require('tourist/tourist');
+require('notifyjs-browser');
+require('./view/draggable');
 
 setAppId();
 $.ajaxSetup({
