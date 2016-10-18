@@ -42,7 +42,7 @@ describe('Bot', () => {
       bot.start('FakeToken', null, null, null, null);
     });
     it('fake token should cause an error', () => {
-      expect(error).to.have.deep.property('.code')
+      expect(error).to.have.deep.property('.error.code')
         .that.is.equal('InvalidToken');
     });
   });
