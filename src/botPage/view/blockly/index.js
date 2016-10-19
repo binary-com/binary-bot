@@ -66,6 +66,26 @@ const cleanUp = (newBlocks) => {
   Blockly.mainWorkspace.resizeContents();
 };
 
+const createXmlTag = (obj) => {
+  let xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
+  for (const market of Object.keys(obj)) {
+    xmlStr += `\t<category name="${obj[market].name}" colour="#2a3052">`;
+    for (const submarket of Object.keys(obj[market].submarkets)) {
+      xmlStr += `\t\t<category name="${
+        obj[market].submarkets[submarket].name}" colour="#2a3052">`;
+      for (const symbol of Object.keys(obj[market].submarkets[submarket].symbols)) {
+        if (bot.symbol.getAllowedCategoryNames(symbol).length) {
+          xmlStr += `\t\t\t<block type="${symbol.toLowerCase()}"></block>`;
+        }
+      }
+      xmlStr += '\t\t</category>\n';
+    }
+    xmlStr += '\t</category>\n';
+  }
+  xmlStr += '</category>\n';
+  return xmlStr;
+};
+
 export default class _Blockly {
   constructor() {
     this.blocksXmlStr = '';
@@ -106,30 +126,13 @@ export default class _Blockly {
   cleanUp() {
     Blockly.mainWorkspace.cleanUp();
   }
-  createXmlTag(obj) {
-    let xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n';
-    for (const market of Object.keys(obj)) {
-      xmlStr += `\t<category name="${obj[market].name}" colour="#2a3052">`;
-      for (const submarket of Object.keys(obj[market].submarkets)) {
-        xmlStr += `\t\t<category name="${
-        obj[market].submarkets[submarket].name}" colour="#2a3052">`;
-        for (const symbol of Object.keys(obj[market].submarkets[submarket].symbols)) {
-          xmlStr += `\t\t\t<block type="${symbol.toLowerCase()}"></block>`;
-        }
-        xmlStr += '\t\t</category>\n';
-      }
-      xmlStr += '\t</category>\n';
-    }
-    xmlStr += '</category>\n';
-    return xmlStr;
-  }
   xmlToStr(xml) {
     const serializer = new XMLSerializer();
     return serializer.serializeToString(xml);
   }
   marketsToXml(xml) {
     const xmlStr = this.xmlToStr(xml);
-    const marketXml = this.createXmlTag(
+    const marketXml = createXmlTag(
       bot.symbol.activeSymbols.getMarkets(), bot.symbol.assetIndex);
     return xmlStr.replace('<!--Markets-->', marketXml);
   }

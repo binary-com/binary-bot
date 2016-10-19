@@ -33,7 +33,7 @@
     "binary-common-utils": "^4.2.1",
     "binary-live-api": "^27.0.0",
     "binary-mock-websocket": "^4.1.1",
-    "blockly": "google/blockly.git#0fb77e09",
+    "blockly": "google/blockly.git#c0c4359",
     "bootstrap": "^3.3.7",
     "eslint": "^3.8.1",
     "filesaverjs": "^0.2.2",
