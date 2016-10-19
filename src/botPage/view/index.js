@@ -92,6 +92,7 @@ export default class View {
     const readFile = (f) => {
       const reader = new FileReader();
       reader.onload = (() => {
+        $('#fileUploadForm')[0].reset();
         $('#fileBrowser').hide();
         return (e) => this.blockly.load(e.target.result);
       })(f);
@@ -107,9 +108,8 @@ export default class View {
       } else {
         files = e.target.files;
       }
-      files = Array.prototype.slice.apply(files);
-      const file = files[0];
-      if (file) {
+      files = [...files];
+      for (const file of files) {
         if (file.type.match('text/xml')) {
           readFile(file);
         } else {
@@ -275,28 +275,28 @@ export default class View {
       .text('Log in');
 
     $(document).keydown((e) => {
-      switch (e.which) {
-        case 189: // -
-          if (e.ctrlKey) {
-            this.blockly.zoomOnPlusMinus(false);
-          }
-          break;
-        case 187: // +
-          if (e.ctrlKey) {
-            this.blockly.zoomOnPlusMinus(true);
-          }
-          break;
-        case 39: // right
-          if (this.activeTour) {
-            this.activeTour.next();
-          } else {
-            return;
-          }
-          break;
-        default:
-          return; // exit this handler for other keys
+      if (e.which === 189) { // -
+        if (e.ctrlKey) {
+          this.blockly.zoomOnPlusMinus(false);
+          e.preventDefault();
+        }
+      } else if (e.which === 187) { // +
+        if (e.ctrlKey) {
+          this.blockly.zoomOnPlusMinus(true);
+          e.preventDefault();
+        }
+      } else if (e.which === 39) { // right
+        if (this.activeTour) {
+          this.activeTour.next();
+          e.preventDefault();
+        }
+      } else if (e.which === 27) { // Esc
+        const exitButton = $('.panel:hover .panelExitButton');
+        if (exitButton.length === 1) {
+          exitButton.click();
+          e.preventDefault();
+        }
       }
-      e.preventDefault(); // prevent the default action (scroll / move caret)
     });
   }
   updateChart(info) {

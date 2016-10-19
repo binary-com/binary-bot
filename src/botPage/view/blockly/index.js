@@ -34,24 +34,24 @@ const disableStrayBlocks = () => {
       && block.type !== 'block_holder'
       && !block.disabled) {
         disable(block,
-          translator.translateText('Blocks must be inside block holders, main blocks or functions')); // eslint-disable-line max-len
+          translator.translateText('Blocks must be inside block holders, main blocks or functions'));
       }
   }
 };
 
+const getCollapsedProcedures = () => Blockly.mainWorkspace.getTopBlocks().filter(
+  (block) => (!isMainBlock(block.type)
+      && block.collapsed_ && block.type.indexOf('procedures_def') === 0));
+
 const fixCollapsedBlocks = () => {
-  const topBlocks = Blockly.mainWorkspace.getTopBlocks();
-  for (const block of topBlocks) {
-    if (!isMainBlock(block.type)
-      && block.collapsed_ // eslint-disable-line no-underscore-dangle
-      && block.type.indexOf('procedures_def') === 0) {
-        block.setCollapsed(false);
-        block.setCollapsed(true);
-    }
+  for (const block of getCollapsedProcedures()) {
+    block.setCollapsed(false);
+    block.setCollapsed(true);
   }
 };
 
-const cleanUp = (blocksToClean) => {
+const cleanUp = (newBlocks) => {
+  const blocksToClean = [...getCollapsedProcedures(), ...newBlocks];
   Blockly.Events.setGroup(true);
   let cursorY = 0;
   for (const block of blocksToClean) {

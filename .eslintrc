@@ -43,6 +43,8 @@
     "jsx-a11y/no-static-element-interactions": 0,
     "generator-star-spacing": 0,
     "react/no-unused-prop-types": 0,
+    "no-underscore-dangle": 0,
+    "max-len": 0,
   },
   "settings": {
     "import/ignore": \.(scss|less|css)$,
