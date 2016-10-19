@@ -72,7 +72,7 @@ export const getPurchaseChoices = () => purchaseChoices;
 
 export const findTopParentBlock = (b) => {
   let block = b;
-  let pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
+  let pblock = block.parentBlock_;
   if (pblock === null) {
     return null;
   }
@@ -81,7 +81,7 @@ export const findTopParentBlock = (b) => {
       return pblock;
     }
     block = pblock;
-    pblock = block.parentBlock_; // eslint-disable-line no-underscore-dangle
+    pblock = block.parentBlock_;
   }
   return block;
 };
@@ -140,7 +140,9 @@ export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
 
 export const disable = (blockObj, message) => {
   if (!blockObj.disabled) {
-    observer.emit('ui.log.warn', message);
+    if (message) {
+      observer.emit('ui.log.warn', message);
+    }
     Blockly.Events.recordUndo = false;
     blockObj.setDisabled(true);
     Blockly.Events.recordUndo = true;

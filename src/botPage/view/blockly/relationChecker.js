@@ -124,7 +124,7 @@ export const submarket = (blockObj, ev) => {
       observer.emit('ui.log.warn',
         translator.translateText('Submarket blocks can only accept trade type blocks'));
       for (const child of Array.prototype.slice.apply(blockObj.childBlocks_)) {
-        child.unplug();
+        disable(child);
       }
     } else if (blockObj.childBlocks_.length > 0) {
       condition(blockObj.childBlocks_[0], ev, true);
