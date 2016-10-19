@@ -25,7 +25,11 @@ const doNotHide = ['center', 'flyout', 'workspace_inside'];
 
 export const getUiComponent = (component) => {
   if (isMainBlock(component)) {
-    return $(getBlockByType(component).getSvgRoot());
+    const mainBlock = getBlockByType(component);
+    if (mainBlock) {
+      return $(getBlockByType(component).getSvgRoot());
+    }
+    return $(uiComponents.center);
   }
   return $(uiComponents[component]);
 };
