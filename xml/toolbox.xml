@@ -302,17 +302,6 @@
 				</category>
 			</category>
 		</category>
-		<category name="Tick Analysis" colour="#2a3052" i18n-text="Tick Analysis">
-			<block type="tick"></block>
-			<block type="read_ohlc"></block>
-			<block type="check_direction"></block>
-			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
-				<block type="get_ohlc"></block>
-				<block type="ticks"></block>
-				<block type="ohlc"></block>
-				<block type="ohlc_values"></block>
-			</category>
-		</category>
 		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
 			<block type="before_purchase"></block>
 			<block type="payout"></block>
@@ -330,6 +319,17 @@
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
 			<block type="trade_again"></block>
+		</category>
+		<category name="Tick Analysis" colour="#2a3052" i18n-text="Tick Analysis">
+			<block type="tick"></block>
+			<block type="read_ohlc"></block>
+			<block type="check_direction"></block>
+			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
+				<block type="get_ohlc"></block>
+				<block type="ticks"></block>
+				<block type="ohlc"></block>
+				<block type="ohlc_values"></block>
+			</category>
 		</category>
 		<category name="Tools" colour="#2a3052" i18n-text="Tools">
 			<category name="Misc." colour="#2a3052" i18n-text="Misc.">
