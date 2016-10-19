@@ -92,6 +92,7 @@ export default class View {
     const readFile = (f) => {
       const reader = new FileReader();
       reader.onload = (() => {
+        $('#fileUploadForm')[0].reset();
         $('#fileBrowser').hide();
         return (e) => this.blockly.load(e.target.result);
       })(f);
