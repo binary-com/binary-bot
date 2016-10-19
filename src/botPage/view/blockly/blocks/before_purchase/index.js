@@ -1,13 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
 import { translator } from '../../../../../common/translator';
-import './tick';
-import './ticks';
-import './ohlc';
-import './ohlc_values';
-import './readOhlc';
-import './get_ohlc';
-import './check_direction';
-import './direction';
 import './purchase';
 import './ask_price';
 import './payout';

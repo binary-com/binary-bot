@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import { translator } from '../../../../../common/translator';
-import { insideBeforePurchase } from '../../relationChecker';
+import { beforeSell } from '../../relationChecker';
 
 Blockly.Blocks.get_ohlc = {
   init: function init() {
@@ -15,7 +15,7 @@ Blockly.Blocks.get_ohlc = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideBeforePurchase(this, ev, 'Get Candle');
+    beforeSell(this, ev, 'Get Candle');
   },
 };
 

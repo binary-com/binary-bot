@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 import { translator } from '../../../../../common/translator';
-import { insideBeforePurchase } from '../../relationChecker';
+import { beforeSell } from '../../relationChecker';
 
 Blockly.Blocks.direction = {
   init: function init() {
@@ -12,7 +12,7 @@ Blockly.Blocks.direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideBeforePurchase(this, ev, 'Tick Direction');
+    beforeSell(this, ev, 'Tick Direction');
   },
 };
 

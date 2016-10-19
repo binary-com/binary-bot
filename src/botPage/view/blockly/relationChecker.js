@@ -171,6 +171,19 @@ export const insideDuringPurchase = (blockObj, ev, name) => {
     }
   }
 };
+export const beforeSell = (blockObj, ev, name) => {
+  if (insideHolder(blockObj)) {
+    enable(blockObj);
+  } else {
+    const topParent = findTopParentBlock(blockObj);
+    if (topParent && !(topParent.type === 'during_purchase' || topParent.type === 'before_purchase')) {
+      disable(blockObj,
+        `${name} ${translator.translateText('must be added either inside the before purchase or during purchase block')}`);
+    } else {
+      enable(blockObj);
+    }
+  }
+};
 export const insideAfterPurchase = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     enable(blockObj);
