@@ -124,7 +124,9 @@ export default class _Blockly {
     }
   }
   cleanUp() {
+    Blockly.Events.recordUndo = false;
     Blockly.mainWorkspace.cleanUp();
+    Blockly.Events.recordUndo = true;
   }
   xmlToStr(xml) {
     const serializer = new XMLSerializer();
@@ -185,8 +187,10 @@ export default class _Blockly {
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
   }
   resetWorkspace() {
+    Blockly.Events.recordUndo = false;
     Blockly.mainWorkspace.clear();
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
+    Blockly.Events.recordUndo = true;
   }
   loadWorkspace(xml) {
     Blockly.mainWorkspace.clear();
@@ -224,6 +228,7 @@ export default class _Blockly {
       observer.emit('ui.log.error',
         translator.translateText('Unrecognized file format.'));
     } else {
+      Blockly.Events.recordUndo = false;
       try {
         const xml = Blockly.Xml.textToDom(blockStr);
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
@@ -241,6 +246,7 @@ export default class _Blockly {
             translator.translateText('Unrecognized file format.'));
         }
       }
+      Blockly.Events.recordUndo = true;
     }
   }
   save(filename, collection) {
