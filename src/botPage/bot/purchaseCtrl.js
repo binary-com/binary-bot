@@ -20,6 +20,10 @@ const createDetails = (contract) => {
 
 export default class PurchaseCtrl {
   constructor(api, beforePurchase, duringPurchase, afterPurchase) {
+    this.tickObj = {
+      ticks: [],
+      candles: [],
+    };
     this.api = api;
     this.beforePurchase = beforePurchase;
     this.duringPurchase = duringPurchase;
@@ -41,37 +45,37 @@ export default class PurchaseCtrl {
   updateTicks(data) {
     const ticks = data.ticks;
     const ohlc = data.candles;
-    if (!this.purchased) {
-      let direction = '';
-      const length = ticks.length;
-      if (length >= 2) {
-        if (ticks[length - 1].quote > ticks[length - 2].quote) {
-          direction = 'rise';
-        }
-        if (ticks[length - 1].quote < ticks[length - 2].quote) {
-          direction = 'fall';
-        }
+    let direction = '';
+    const length = ticks.length;
+    if (length >= 2) {
+      if (ticks[length - 1].quote > ticks[length - 2].quote) {
+        direction = 'rise';
       }
-      if (ohlc) {
-        const repr = function repr() {
-          return JSON.stringify(this);
-        };
-        for (const o of ohlc) {
-          o.toString = repr;
-        }
+      if (ticks[length - 1].quote < ticks[length - 2].quote) {
+        direction = 'fall';
       }
-      const tickObj = {
-        direction,
-        ohlc,
-        ticks,
+    }
+    if (ohlc) {
+      const repr = function repr() {
+        return JSON.stringify(this);
       };
+      for (const o of ohlc) {
+        o.toString = repr;
+      }
+    }
+    this.tickObj = {
+      direction,
+      ohlc,
+      ticks,
+    };
+    if (!this.purchased) {
       if (this.ready) {
         observer.emit('log.beforePurchase.start', {
           proposals: this.proposals,
         });
-        this.beforePurchase(tickObj, this.proposals, this);
+        this.beforePurchase(this.tickObj, this.proposals, this);
       } else {
-        this.beforePurchase(tickObj, null, null);
+        this.beforePurchase(this.tickObj, null, null);
       }
     }
   }
@@ -85,7 +89,7 @@ export default class PurchaseCtrl {
       const contract = this.getContract(option);
       this.trade = new Trade(this.api);
       const tradeUpdate = (openContract) => {
-        this.duringPurchase(openContract, this);
+        this.duringPurchase(this.tickObj, openContract, this);
         observer.emit('beforePurchase.tradeUpdate', openContract);
       };
       const tradeFinish = (finishedContract) => {

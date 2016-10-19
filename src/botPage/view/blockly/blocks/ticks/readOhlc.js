@@ -1,9 +1,9 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import config from '../../../../../common/const';
 import { translator } from '../../../../../common/translator';
-import { insideBeforePurchase } from '../../relationChecker';
+import { beforeSell } from '../../relationChecker';
 
-Blockly.Blocks.candle_type = {
+Blockly.Blocks.read_ohlc = {
   init: function init() {
     this.appendValueInput('CANDLEINDEX')
       .setCheck('Number')
@@ -19,11 +19,11 @@ Blockly.Blocks.candle_type = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideBeforePurchase(this, ev, 'Candle');
+    beforeSell(this, ev, 'Read Candle Field');
   },
 };
 
-Blockly.JavaScript.candle_type = (block) => {
+Blockly.JavaScript.read_ohlc = (block) => {
   const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
   let index = Number(Blockly.JavaScript.valueToCode(block,
     'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || '0';

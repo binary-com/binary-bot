@@ -1,5 +1,5 @@
 import { translator } from '../../../../../common/translator';
-import { insideBeforePurchase } from '../../relationChecker';
+import { beforeSell } from '../../relationChecker';
 import config from '../../../../../common/const';
 
 Blockly.Blocks.check_direction = {
@@ -13,7 +13,7 @@ Blockly.Blocks.check_direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
   },
   onchange: function onchange(ev) {
-    insideBeforePurchase(this, ev, 'Check Direction');
+    beforeSell(this, ev, 'Check Direction');
   },
 };
 Blockly.JavaScript.check_direction = (block) => {
