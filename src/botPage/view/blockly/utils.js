@@ -6,21 +6,25 @@ import { translator } from '../../../common/translator';
 const purchaseChoices = [[translator.translateText('Click to select'), '']];
 
 export const deleteBlockIfExists = (block) => {
+  Blockly.Events.recordUndo = false;
   for (const mainBlock of Blockly.mainWorkspace.getTopBlocks()) {
     if (!block.isInFlyout && mainBlock.id !== block.id && mainBlock.type === block.type) {
       block.dispose();
       return true;
     }
   }
+  Blockly.Events.recordUndo = true;
   return false;
 };
 
 export const setBlockTextColor = (block) => {
+  Blockly.Events.recordUndo = false;
   const field = block.getField();
   if (field) {
     field.getSvgRoot()
       .style.setProperty('fill', 'white', 'important');
   }
+  Blockly.Events.recordUndo = true;
 };
 
 export const configMainBlock = (ev, type) => {
@@ -109,6 +113,7 @@ export const addPurchaseOptions = (submarket) => {
     });
     const purchases = Blockly.mainWorkspace.getAllBlocks()
       .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0));
+    Blockly.Events.recordUndo = false;
     for (const purchase of purchases) {
       const value = purchase.getField('PURCHASE_LIST')
         .getValue();
@@ -126,6 +131,7 @@ export const addPurchaseOptions = (submarket) => {
           .setText(firstOption.name);
       }
     }
+    Blockly.Events.recordUndo = true;
   }
 };
 
