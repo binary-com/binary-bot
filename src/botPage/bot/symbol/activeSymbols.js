@@ -9,45 +9,37 @@ const parsedSubmarkets = {}
 const parsedSymbols = {}
 
 const parseSymbols = () => {
-  const symbols = apiActiveSymbols
-  for (const symbol of symbols) {
-    const submarket = parsedSubmarkets[symbol.submarket]
+  for (const s of apiActiveSymbols) {
+    const submarket = parsedSubmarkets[s.submarket]
     submarket.symbols = submarket.symbols || {}
-    parsedSymbols[symbol.symbol] = submarket.symbols[symbol.symbol] = {
-      display: symbol.display_name,
-      symbol_type: symbol.symbol_type,
-      is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
-      pip: symbol.pip,
-      market: symbol.market,
-      submarket: symbol.submarket,
+    parsedSymbols[s.symbol] = submarket.symbols[s.symbol] = {
+      ...s,
+      display: s.display_name,
+      is_active: !s.is_trading_suspended && s.exchange_is_open,
     }
   }
 }
 
 const parseSubmarkets = () => {
-  for (const submarketName of Object.keys(groupedSubmarkets)) {
-    const submarketSymbols = groupedSubmarkets[submarketName]
-    const symbol = submarketSymbols[0]
+  for (const k of Object.keys(groupedSubmarkets)) {
+    const symbol = groupedSubmarkets[k][0]
     const market = parsedMarkets[symbol.market]
     market.submarkets = market.submarkets || {}
-    parsedSubmarkets[submarketName] = market.submarkets[submarketName] = {
+    parsedSubmarkets[k] = market.submarkets[k] = {
       name: symbol.submarket_display_name,
       is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
     }
   }
-  parseSymbols()
 }
 
 const parseMarkets = () => {
-  for (const marketName of Object.keys(groupedMarkets)) {
-    const marketSymbols = groupedMarkets[marketName]
-    const symbol = marketSymbols[0]
-    parsedMarkets[marketName] = {
+  for (const k of Object.keys(groupedMarkets)) {
+    const symbol = groupedMarkets[k][0]
+    parsedMarkets[k] = {
       name: symbol.market_display_name,
       is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
     }
   }
-  parseSubmarkets()
 }
 
 export default class ActiveSymbols {
@@ -56,6 +48,8 @@ export default class ActiveSymbols {
     groupedMarkets = _.groupBy(apiActiveSymbols, 'market')
     groupedSubmarkets = _.groupBy(apiActiveSymbols, 'submarket')
     parseMarkets()
+    parseSubmarkets()
+    parseSymbols()
   }
   getMarkets() {
     return parsedMarkets
