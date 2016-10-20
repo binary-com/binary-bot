@@ -21,8 +21,10 @@ export const setBlockTextColor = (block) => {
   Blockly.Events.recordUndo = false;
   const field = block.getField();
   if (field) {
-    field.getSvgRoot()
-      .style.setProperty('fill', 'white', 'important');
+    const svgElement = field.getSvgRoot();
+    if (svgElement) {
+      svgElement.style.setProperty('fill', 'white', 'important');
+    }
   }
   Blockly.Events.recordUndo = true;
 };
