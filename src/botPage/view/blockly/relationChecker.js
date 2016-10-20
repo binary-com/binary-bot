@@ -82,9 +82,9 @@ export const condition = (blockObj, ev, calledByParent) => {
       disable(blockObj,
         translator.translateText('Trade Type blocks have to be added to submarket blocks'))
     } else if (!bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
-      const symbol = bot.symbol.activeSymbols.getSymbolNames()[blockObj.parentBlock_.type]
       disable(blockObj,
-        `${symbol} ${translator.translateText('does not support category:')}`
+        `${bot.symbol.activeSymbols.getSymbols()[blockObj.parentBlock_.type].display}`
+        + ` ${translator.translateText('does not support category:')}`
         + ` ${bot.symbol.getCategoryNameForCondition(blockObj.type)}`
         + `, ${translator.translateText('Allowed categories are')}`
         + ` ${bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)}`)
