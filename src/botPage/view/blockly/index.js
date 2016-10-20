@@ -134,8 +134,7 @@ export default class _Blockly {
   }
   marketsToXml(xml) {
     const xmlStr = this.xmlToStr(xml)
-    const marketXml = createXmlTag(
-      bot.symbol.activeSymbols.getMarkets(), bot.symbol.assetIndex)
+    const marketXml = createXmlTag(bot.symbol.activeSymbols.getMarkets())
     return xmlStr.replace('<!--Markets-->', marketXml)
   }
   overrideBlocklyDefaultShape() {

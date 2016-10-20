@@ -12,7 +12,7 @@ const parseSymbols = () => {
   for (const s of apiActiveSymbols) {
     const submarket = parsedSubmarkets[s.submarket]
     submarket.symbols = submarket.symbols || {}
-    parsedSymbols[s.symbol] = submarket.symbols[s.symbol] = {
+    parsedSymbols[s.symbol.toLowerCase()] = submarket.symbols[s.symbol.toLowerCase()] = {
       ...s,
       display: s.display_name,
       is_active: !s.is_trading_suspended && s.exchange_is_open,

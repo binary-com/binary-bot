@@ -49,7 +49,7 @@ describe('ActiveSymbols', () => {
   it('Should getSymbolNames have all symbol names', () => {
     const names = activeSymbols.getSymbolNames()
     expect(names).to.be.an('Object')
-      .and.to.have.property('frxEURUSD')
+      .and.to.have.property('frxeurusd')
   })
   it('Should getMarkets output match the market snapshot', () => {
     const markets = activeSymbols.getMarkets()
