@@ -1,4 +1,4 @@
-import './sma';
-import './smaa';
-import './ema';
-import './emaa';
+import './sma'
+import './smaa'
+import './ema'
+import './emaa'

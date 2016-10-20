@@ -1,12 +1,12 @@
 /* eslint-disable no-underscore-dangle, max-len, object-shorthand, prefer-template */
-import { observer } from 'binary-common-utils/lib/observer';
-import { getUiComponent, setOpacityForAll, setOpacity } from '../components';
-import { translator } from '../../../common/translator';
+import { observer } from 'binary-common-utils/lib/observer'
+import { getUiComponent, setOpacityForAll, setOpacity } from '../components'
+import { translator } from '../../../common/translator'
 
 export default class Welcome {
   constructor() {
-    this.tour = null;
-    this.stopCallback = null;
+    this.tour = null
+    this.stopCallback = null
   }
   getSteps() {
     return [{
@@ -17,8 +17,8 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
       setup: function setup() {
-        $('#blocker').show();
-        setOpacityForAll(0.3);
+        $('#blocker').show()
+        setOpacityForAll(0.3)
       },
     }, {
       content: '<p>' + translator.translateText('This is where you can define your blocks.') + '</p>',
@@ -28,7 +28,7 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
       setup: function setup() {
-        setOpacity('workspace', 1);
+        setOpacity('workspace', 1)
       },
       teardown: function teardown() {
       },
@@ -47,7 +47,7 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
       setup: function setup() {
-        $('#blocker').hide();
+        $('#blocker').hide()
       },
     }, {
       content: '<p>' + translator.translateText('To start pick a <b>symbol</b> block from markets. Some steps like this one don\'t have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)') + '</p>',
@@ -58,18 +58,18 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_submarket_created'],
       tour_submarket_created: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        observer.register('tour:submarket_created', this.tour_submarket_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[0].children_[2].children_[1].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[0].children_[2].children_[1].select();
-        setOpacity('toolbox', 1);
+        observer.register('tour:submarket_created', this.tour_submarket_created, true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[0].children_[2].children_[1].reveal(true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[0].children_[2].children_[1].select()
+        setOpacity('toolbox', 1)
       },
       teardown: function teardown() {
-        observer.unregister('tour:submarket_created', this.tour_submarket_created);
-        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
-        setOpacity('toolbox', 0.3);
+        observer.unregister('tour:submarket_created', this.tour_submarket_created)
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
+        setOpacity('toolbox', 0.3)
       },
     }, {
       content: '<p>' + translator.translateText('Great! Now add it to the <b>Define Trade</b> block.') + '</p>',
@@ -80,14 +80,14 @@ export default class Welcome {
       at: 'bottom center',
       bind: ['tour_submarket_added'],
       tour_submarket_added: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        observer.register('tour:submarket', this.tour_submarket_added, true);
+        observer.register('tour:submarket', this.tour_submarket_added, true)
       },
       teardown: function teardown() {
-        observer.unregister('tour:submarket', this.tour_submarket_added);
-        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
+        observer.unregister('tour:submarket', this.tour_submarket_added)
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
       },
     }, {
       content: '<p>' + translator.translateText('Alright! Now pick a <b>trade type</b> block.') + '</p>',
@@ -98,19 +98,19 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_condition_created'],
       tour_condition_created: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        observer.register('tour:condition_created', this.tour_condition_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[1].children_[0].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[1].children_[0].select();
-        setOpacity('toolbox', 1);
+        observer.register('tour:condition_created', this.tour_condition_created, true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[1].children_[0].reveal(true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[1].children_[0].select()
+        setOpacity('toolbox', 1)
       },
       teardown: function teardown() {
-        observer.unregister('tour:condition_created', this.tour_condition_created);
-        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].setExpanded(false);
-        setOpacity('toolbox', 0.3);
+        observer.unregister('tour:condition_created', this.tour_condition_created)
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].setExpanded(false)
+        setOpacity('toolbox', 0.3)
       },
     }, {
       content: '<p>' + translator.translateText('OK! Now add it to the symbol you added in the previous step.') + '</p>',
@@ -121,13 +121,13 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_condition_added'],
       tour_condition_added: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        observer.register('tour:condition', this.tour_condition_added, true);
+        observer.register('tour:condition', this.tour_condition_added, true)
       },
       teardown: function teardown() {
-        observer.unregister('tour:condition', this.tour_condition_added);
+        observer.unregister('tour:condition', this.tour_condition_added)
       },
     }, {
       content: '<p>' + translator.translateText('Very good! It\'s time to add the options needed by the trade type block, pick a number') + ' (<img src="image/number.png"/>) ' + translator.translateText('from the Math menu') + '</p>',
@@ -138,17 +138,17 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_number_created'],
       tour_number_created: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        observer.register('tour:number', this.tour_number_created, true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
-        setOpacity('toolbox', 1);
+        observer.register('tour:number', this.tour_number_created, true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[1].select()
+        setOpacity('toolbox', 1)
       },
       teardown: function teardown() {
-        observer.unregister('tour:number', this.tour_number_created);
-        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
-        setOpacity('toolbox', 0.3);
+        observer.unregister('tour:number', this.tour_number_created)
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
+        setOpacity('toolbox', 0.3)
       },
     }, {
       content: '<p>' + translator.translateText('Click on the number block to edit its value') + ' (<img src="image/number_editing.png"/>), ' + translator.translateText('change the value to 5 and add it to the <b>ticks</b> field of the trade type block') + '</p>',
@@ -159,13 +159,13 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_ticks_added'],
       tour_ticks_added: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        observer.register('tour:ticks', this.tour_ticks_added, true);
+        observer.register('tour:ticks', this.tour_ticks_added, true)
       },
       teardown: function teardown() {
-        observer.unregister('tour:ticks', this.tour_ticks_added);
+        observer.unregister('tour:ticks', this.tour_ticks_added)
       },
     }, {
       content: '<p>' + translator.translateText('OK, Now add all remaining options to the trade type block') + '</p>',
@@ -176,19 +176,19 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_options_added'],
       tour_options_added: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[1].select();
-        observer.register('tour:options', this.tour_options_added, true);
+        Blockly.mainWorkspace.toolbox_.tree_.children_[1].select()
+        observer.register('tour:options', this.tour_options_added, true)
         getUiComponent('toolbox')
-          .css('opacity', 1);
+          .css('opacity', 1)
       },
       teardown: function teardown() {
-        observer.unregister('tour:options', this.tour_options_added);
-        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
+        observer.unregister('tour:options', this.tour_options_added)
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
         getUiComponent('toolbox')
-          .css('opacity', 1);
+          .css('opacity', 1)
       },
     }, {
       content: '<p>' + translator.translateText('That\'s it, now you have a complete trade block with its options. It\'s time to define a strategy') + '</p>',
@@ -216,13 +216,13 @@ export default class Welcome {
       nextButton: true,
       setup: function setup() {
         getUiComponent('toolbox')
-          .css('opacity', 1);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].select();
+          .css('opacity', 1)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].reveal(true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].select()
       },
       teardown: function teardown() {
         getUiComponent('toolbox')
-          .css('opacity', 0.3);
+          .css('opacity', 0.3)
       },
     }, {
       content: '<p>' + translator.translateText('We\'ll now create our strategy by adding a single <b>purchase</b> block. Please pick a purchase block from the toolbox.') + '</p>',
@@ -233,20 +233,20 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_purchase_created'],
       tour_purchase_created: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].reveal(true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[1].select()
         getUiComponent('toolbox')
-          .css('opacity', 1);
-        observer.register('tour:purchase_created', this.tour_purchase_created, true);
+          .css('opacity', 1)
+        observer.register('tour:purchase_created', this.tour_purchase_created, true)
       },
       teardown: function teardown() {
-        observer.unregister('tour:purchase_created', this.tour_purchase_created);
-        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
+        observer.unregister('tour:purchase_created', this.tour_purchase_created)
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
         getUiComponent('toolbox')
-          .css('opacity', 0.3);
+          .css('opacity', 0.3)
       },
     }, {
       content: '<p>' + translator.translateText('Now add it to the before purchase block.') + '</p>',
@@ -257,13 +257,13 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_purchase_added'],
       tour_purchase_added: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        observer.register('tour:purchase', this.tour_purchase_added, true);
+        observer.register('tour:purchase', this.tour_purchase_added, true)
       },
       teardown: function teardown() {
-        observer.unregister('tour:purchase', this.tour_purchase_added);
+        observer.unregister('tour:purchase', this.tour_purchase_added)
       },
     }, {
       content: '<p>' + translator.translateText('Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.') + '</p>',
@@ -306,18 +306,18 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_trade_again_created'],
       tour_trade_again_created: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[3].reveal(true);
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[3].select();
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[3].reveal(true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[3].select()
         getUiComponent('toolbox')
-          .css('opacity', 1);
-        observer.register('tour:trade_again_created', this.tour_trade_again_created, true);
+          .css('opacity', 1)
+        observer.register('tour:trade_again_created', this.tour_trade_again_created, true)
       },
       teardown: function teardown() {
-        observer.unregister('tour:trade_again_created', this.tour_trade_again_created);
-        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
+        observer.unregister('tour:trade_again_created', this.tour_trade_again_created)
+        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
       },
     }, {
       content: '<p>' + translator.translateText('Now add it to the after purchase block') + '</p>',
@@ -328,13 +328,13 @@ export default class Welcome {
       at: 'right center',
       bind: ['tour_trade_again'],
       tour_trade_again: (tour) => {
-        tour.next();
+        tour.next()
       },
       setup: function setup() {
-        observer.register('tour:trade_again', this.tour_trade_again, true);
+        observer.register('tour:trade_again', this.tour_trade_again, true)
       },
       teardown: function teardown() {
-        observer.unregister('tour:trade_again', this.tour_trade_again);
+        observer.unregister('tour:trade_again', this.tour_trade_again)
       },
     }, {
       content: '<p>' + translator.translateText('Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn\'t called e.g. in a logic block which its trade type is unmet.') + '</p>',
@@ -353,7 +353,7 @@ export default class Welcome {
       at: 'right center',
       nextButton: true,
       teardown: function teardown() {
-        setOpacityForAll(1);
+        setOpacityForAll(1)
       },
     }, {
       content: '<p>' + translator.translateText('You can use Ctrl + -/+ to zoom out/in the blocks') + '</p>',
@@ -410,49 +410,49 @@ export default class Welcome {
       my: 'right center',
       at: 'left center',
       nextButton: true,
-    }];
+    }]
   }
   next() {
     if (this.tour) {
-      this.tour.next();
+      this.tour.next()
     }
   }
   start(stopCallback) {
-    this.stopCallback = stopCallback;
+    this.stopCallback = stopCallback
     this.tour = new Tourist.Tour({
       steps: this.getSteps(),
       cancelStep: () => {
-        $('#blocker').hide();
-        setOpacityForAll(1);
-        this.tour._teardownCurrentStep = () => {};
-        observer.unregisterAll('tour:submarket_created');
-        observer.unregisterAll('tour:submarket');
-        observer.unregisterAll('tour:condition_created');
-        observer.unregisterAll('tour:condition');
-        observer.unregisterAll('tour:number');
-        observer.unregisterAll('tour:ticks');
-        observer.unregisterAll('tour:options');
-        observer.unregisterAll('tour:purchase_created');
-        observer.unregisterAll('tour:purchase');
-        observer.unregisterAll('tour:trade_again_created');
-        observer.unregisterAll('tour:trade_again');
-        this.stop();
+        $('#blocker').hide()
+        setOpacityForAll(1)
+        this.tour._teardownCurrentStep = () => {}
+        observer.unregisterAll('tour:submarket_created')
+        observer.unregisterAll('tour:submarket')
+        observer.unregisterAll('tour:condition_created')
+        observer.unregisterAll('tour:condition')
+        observer.unregisterAll('tour:number')
+        observer.unregisterAll('tour:ticks')
+        observer.unregisterAll('tour:options')
+        observer.unregisterAll('tour:purchase_created')
+        observer.unregisterAll('tour:purchase')
+        observer.unregisterAll('tour:trade_again_created')
+        observer.unregisterAll('tour:trade_again')
+        this.stop()
       },
       successStep: () => {
-        $('#blocker').hide();
-        setOpacityForAll(1);
-        this.stop();
+        $('#blocker').hide()
+        setOpacityForAll(1)
+        this.stop()
       },
-    });
-    this.tour.start();
+    })
+    this.tour.start()
   }
   stop() {
-    setOpacityForAll(true, 1);
-    this.tour.stop();
-    Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null);
-    delete this.tour;
+    setOpacityForAll(true, 1)
+    this.tour.stop()
+    Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
+    delete this.tour
     if (this.stopCallback) {
-      this.stopCallback();
+      this.stopCallback()
     }
   }
 }

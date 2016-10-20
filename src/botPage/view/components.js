@@ -1,4 +1,4 @@
-import { isMainBlock, getBlockByType } from '../view/blockly/utils';
+import { isMainBlock, getBlockByType } from '../view/blockly/utils'
 
 const uiComponents = {
   accountSelect: '#accountSelect',
@@ -19,51 +19,51 @@ const uiComponents = {
   group_start_stop: '.group-start-stop',
   center: '#center',
   flyout: '.blocklyFlyoutBackground',
-};
+}
 
-const doNotHide = ['center', 'flyout', 'workspace_inside'];
+const doNotHide = ['center', 'flyout', 'workspace_inside']
 
 export const getUiComponent = (component) => {
   if (isMainBlock(component)) {
-    const mainBlock = getBlockByType(component);
+    const mainBlock = getBlockByType(component)
     if (mainBlock) {
-      return $(getBlockByType(component).getSvgRoot());
+      return $(getBlockByType(component).getSvgRoot())
     }
-    return $(uiComponents.center);
+    return $(uiComponents.center)
   }
-  return $(uiComponents[component]);
-};
+  return $(uiComponents[component])
+}
 
 export const setOpacityForAll = (opacity) => {
   for (const key of Object.keys(uiComponents)) {
     if (doNotHide.indexOf(key) < 0) {
       getUiComponent(key)
-        .css('opacity', opacity);
-      const disabled = +opacity < 1;
+        .css('opacity', opacity)
+      const disabled = +opacity < 1
       getUiComponent(key)
         .find('button')
-        .prop('disabled', disabled);
+        .prop('disabled', disabled)
       getUiComponent(key)
         .find('input')
-        .prop('disabled', disabled);
+        .prop('disabled', disabled)
       getUiComponent(key)
         .find('select')
-        .prop('disabled', disabled);
+        .prop('disabled', disabled)
     }
   }
-};
+}
 
 export const setOpacity = (componentName, opacity) => {
   getUiComponent(componentName)
-    .css('opacity', opacity);
-  const disabled = +opacity < 1;
+    .css('opacity', opacity)
+  const disabled = +opacity < 1
   getUiComponent(componentName)
     .find('button')
-    .prop('disabled', disabled);
+    .prop('disabled', disabled)
   getUiComponent(componentName)
     .find('input')
-    .prop('disabled', disabled);
+    .prop('disabled', disabled)
   getUiComponent(componentName)
     .find('select')
-    .prop('disabled', disabled);
-};
+    .prop('disabled', disabled)
+}

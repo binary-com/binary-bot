@@ -1,9 +1,9 @@
-import { parseQueryString } from 'binary-common-utils/lib/tools';
-import { addTokenIfValid } from 'binary-common-utils/lib/account';
-import { set as setStorage } from 'binary-common-utils/lib/storageManager';
+import { parseQueryString } from 'binary-common-utils/lib/tools'
+import { addTokenIfValid } from 'binary-common-utils/lib/account'
+import { set as setStorage } from 'binary-common-utils/lib/storageManager'
 
 export function setAppId() {
-  let appId = 0;
+  let appId = 0
   if (document.location.port === '8080') {
     appId = 1168; // binary bot on localhost
   } else if (document.location.hostname.indexOf('github.io') >= 0) {
@@ -13,27 +13,27 @@ export function setAppId() {
   } else {
     appId = 1169; // binary bot
   }
-  setStorage('appId', appId);
+  setStorage('appId', appId)
 }
 
 async function addAllTokens(tokenList) {
   for (const token of tokenList) {
-    await new Promise((r) => addTokenIfValid(token, r));
+    await new Promise((r) => addTokenIfValid(token, r))
   }
 }
 
 export function oauthLogin(done = () => 0) {
-  const queryStr = parseQueryString();
-  let tokenList = [];
+  const queryStr = parseQueryString()
+  let tokenList = []
   tokenList = Object.keys(queryStr)
     .map((r) => (r.indexOf('token') === 0 ? queryStr[r] : null))
-    .filter((r) => r);
+    .filter((r) => r)
   if (tokenList.length) {
-    $('#main').hide();
+    $('#main').hide()
     addAllTokens(tokenList).then(() => {
-      document.location = 'bot.html';
-    });
+      document.location = 'bot.html'
+    })
   } else {
-    done();
+    done()
   }
 }
