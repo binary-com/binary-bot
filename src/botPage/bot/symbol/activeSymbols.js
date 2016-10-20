@@ -1,98 +1,64 @@
 import _ from 'underscore'
 
+let apiActiveSymbols
+let groupedMarkets
+let groupedSubmarkets
+
+const parsedMarkets = {}
+const parsedSubmarkets = {}
+const parsedSymbols = {}
+
+const parseSymbols = () => {
+  for (const s of apiActiveSymbols) {
+    const submarket = parsedSubmarkets[s.submarket]
+    submarket.symbols = submarket.symbols || {}
+    parsedSymbols[s.symbol.toLowerCase()] = submarket.symbols[s.symbol.toLowerCase()] = {
+      ...s,
+      display: s.display_name,
+      is_active: !s.is_trading_suspended && s.exchange_is_open,
+    }
+  }
+}
+
+const parseSubmarkets = () => {
+  for (const k of Object.keys(groupedSubmarkets)) {
+    const symbol = groupedSubmarkets[k][0]
+    const market = parsedMarkets[symbol.market]
+    market.submarkets = market.submarkets || {}
+    parsedSubmarkets[k] = market.submarkets[k] = {
+      name: symbol.submarket_display_name,
+      is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
+    }
+  }
+}
+
+const parseMarkets = () => {
+  for (const k of Object.keys(groupedMarkets)) {
+    const symbol = groupedMarkets[k][0]
+    parsedMarkets[k] = {
+      name: symbol.market_display_name,
+      is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
+    }
+  }
+}
+
 export default class ActiveSymbols {
   constructor(activeSymbols) {
-    this.activeSymbols = activeSymbols
-    this.markets = {}
-    this.submarkets = {}
-    this.symbols = {}
-    this.getMarkets()
+    apiActiveSymbols = activeSymbols
+    groupedMarkets = _.groupBy(apiActiveSymbols, 'market')
+    groupedSubmarkets = _.groupBy(apiActiveSymbols, 'submarket')
+    parseMarkets()
+    parseSubmarkets()
+    parseSymbols()
   }
   getMarkets() {
-    if (!_.isEmpty(this.markets)) {
-      return this.markets
-    }
-    const markets = _.groupBy(this.activeSymbols, 'market')
-    for (const marketName of Object.keys(markets)) {
-      const marketSymbols = markets[marketName]
-      const symbol = marketSymbols[0]
-      this.markets[marketName] = {
-        name: symbol.market_display_name,
-        is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
-      }
-      this.getSubmarketsForMarket(marketName)
-    }
-    return this.markets
-  }
-  getSubmarketsForMarket(marketName) {
-    const market = this.markets[marketName]
-    market.submarkets = {}
-    const submarkets = _.groupBy(_.groupBy(this.activeSymbols, 'market')[marketName], 'submarket')
-    for (const submarketName of Object.keys(submarkets)) {
-      const submarketSymbols = submarkets[submarketName]
-      const symbol = submarketSymbols[0]
-      this.submarkets[submarketName] = market.submarkets[submarketName] = {
-        name: symbol.submarket_display_name,
-        is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
-      }
-      this.getSymbolsForSubmarket(submarketName)
-    }
-    return market.submarkets
-  }
-  getSymbolsForSubmarket(submarketName) {
-    const submarket = this.submarkets[submarketName]
-    submarket.symbols = {}
-    const symbols = _.groupBy(this.activeSymbols, 'submarket')[submarketName]
-    for (const symbol of symbols) {
-      this.symbols[symbol.symbol] = submarket.symbols[symbol.symbol] = {
-        display: symbol.display_name,
-        symbol_type: symbol.symbol_type,
-        is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
-        pip: symbol.pip,
-        market: symbol.market,
-        submarket: symbol.submarket,
-      }
-    }
-    return submarket.symbols
-  }
-  getSubmarkets() {
-    if (!_.isEmpty(this.submarkets)) {
-      return this.submarkets
-    }
-    this.getMarkets()
-    return this.submarkets
+    return parsedMarkets
   }
   getSymbols() {
-    if (!_.isEmpty(this.symbols)) {
-      return this.symbols
-    }
-    this.getMarkets()
-    return this.symbols
-  }
-  getMarketsList() {
-    const tradeMarketsList = {}
-    _.extend(tradeMarketsList, this.getMarkets())
-    _.extend(tradeMarketsList, this.getSubmarkets())
-    return tradeMarketsList
-  }
-  getTradeUnderlyings() {
-    const tradeUnderlyings = {}
-    const symbols = this.getSymbols()
-    for (const key of Object.keys(symbols)) {
-      const symbol = symbols[key]
-      if (!tradeUnderlyings[symbol.market]) {
-        tradeUnderlyings[symbol.market] = {}
-      }
-      if (!tradeUnderlyings[symbol.submarket]) {
-        tradeUnderlyings[symbol.submarket] = {}
-      }
-      tradeUnderlyings[symbol.market][key] = symbol
-      tradeUnderlyings[symbol.submarket][key] = symbol
-    }
-    return tradeUnderlyings
+    return parsedSymbols
   }
   getSymbolNames() {
-    const symbols = _.clone(this.getSymbols())
+    const symbols = _.clone(parsedSymbols)
     for (const key of Object.keys(symbols)) {
       symbols[key] = symbols[key].display
     }

@@ -48,7 +48,7 @@ Blockly.Blocks.trade = {
               backwardCompatibility(block)
             }
           }
-          if (bot.symbol.findSymbol(block.type)) {
+          if (block.type in bot.symbol.activeSymbols.getSymbols()) {
             observer.emit('tour:submarket_created')
           }
           if (config.conditions.indexOf(block.type) >= 0) {

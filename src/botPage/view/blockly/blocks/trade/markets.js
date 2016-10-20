@@ -9,7 +9,7 @@ export default () => {
   for (const symbol of Object.keys(symbolNames)) {
     const allowedCategories = bot.symbol.getAllowedCategoryNames(symbol)
     if (allowedCategories.length) {
-      Blockly.Blocks[symbol.toLowerCase()] = {
+      Blockly.Blocks[symbol] = {
         init: function init() {
           this.appendDummyInput()
             .appendField(symbolNames[symbol])
@@ -27,7 +27,7 @@ export default () => {
           submarket(this, ev)
         },
       }
-      Blockly.JavaScript[symbol.toLowerCase()] = function market(block) {
+      Blockly.JavaScript[symbol] = function market(block) {
         const condition = Blockly.JavaScript.statementToCode(block, 'CONDITION')
         if (!condition) {
           return new BlocklyError(
@@ -37,7 +37,7 @@ export default () => {
       getTradeOptions = function getTradeOptions() {
         var tradeOptions = {}
         tradeOptions = ${condition.trim()}
-        tradeOptions.symbol = '${symbol}'
+        tradeOptions.symbol = '${bot.symbol.activeSymbols.getSymbols()[symbol].symbol}'
         return tradeOptions
       }
       `

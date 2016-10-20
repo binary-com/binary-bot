@@ -35,10 +35,6 @@ describe('ActiveSymbols', () => {
       done()
     })
   })
-  it('Should have all functions that are being tested', () => {
-    expect(activeSymbols).to.have.any.of.keys(['_initialized',
-      'activeSymbols', 'markets', 'submarkets', 'symbols'])
-  })
   it('Should getMarkets have forex as a key', () => {
     const markets = activeSymbols.getMarkets()
     expect(markets).to.be.an('Object')
@@ -50,31 +46,10 @@ describe('ActiveSymbols', () => {
     expect(markets.forex).to.have.property('submarkets')
       .and.to.be.an('Object')
   })
-  it('Should getSubmarkets have major_pairs as a key, but not forex', () => {
-    const submarkets = activeSymbols.getSubmarkets()
-    expect(submarkets).to.be.an('Object')
-      .and.to.have.any.of.key('major_pairs')
-      .and.not.to.have.any.of.key('forex')
-  })
-  it('Should getMarketsList have major_pairs and forex as keys', () => {
-    const marketList = activeSymbols.getMarketsList()
-    expect(marketList).to.be.an('Object')
-      .and.to.have.any.of.keys(['forex', 'major_pairs'])
-  })
-  it('Should getTradeUnderlyings have major_pairs and forex as keys and symbols as values', () => {
-    const tradeUnderlyings = activeSymbols.getTradeUnderlyings()
-    expect(tradeUnderlyings).to.be.an('Object')
-      .and.to.have.property('forex')
-      .and.to.have.property('frxEURUSD')
-      .and.to.have.any.of.keys(['is_active', 'display', 'market', 'submarket'])
-    expect(tradeUnderlyings).to.have.property('major_pairs')
-      .and.to.have.property('frxEURUSD')
-      .and.to.have.any.of.keys(['is_active', 'display', 'market', 'submarket'])
-  })
   it('Should getSymbolNames have all symbol names', () => {
     const names = activeSymbols.getSymbolNames()
     expect(names).to.be.an('Object')
-      .and.to.have.property('frxEURUSD')
+      .and.to.have.property('frxeurusd')
   })
   it('Should getMarkets output match the market snapshot', () => {
     const markets = activeSymbols.getMarkets()

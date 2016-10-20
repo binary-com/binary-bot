@@ -122,7 +122,7 @@ export default class Bot {
   }
   setTradeOptions() {
     if (!_.isEmpty(this.tradeOption)) {
-      this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol].pip
+      this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol.toLowerCase()].pip
       const opposites = config.opposites[this.tradeOption.condition]
       this.candleInterval = this.tradeOption.candleInterval
       this.tradeOptions = []

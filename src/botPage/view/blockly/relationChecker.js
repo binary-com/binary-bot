@@ -78,14 +78,13 @@ export const condition = (blockObj, ev, calledByParent) => {
   if (insideHolder(blockObj)) {
     enable(blockObj)
   } else if (blockObj.parentBlock_) {
-    if (!bot.symbol.findSymbol(blockObj.parentBlock_.type)) {
+    if (!(blockObj.parentBlock_.type in bot.symbol.activeSymbols.getSymbols())) {
       disable(blockObj,
         translator.translateText('Trade Type blocks have to be added to submarket blocks'))
     } else if (!bot.symbol.isConditionAllowedInSymbol(blockObj.parentBlock_.type, blockObj.type)) {
-      const symbol = bot.symbol.findSymbol(blockObj.parentBlock_.type)
+      const symbol = bot.symbol.activeSymbols.getSymbolNames()[blockObj.parentBlock_.type]
       disable(blockObj,
-        `${symbol[Object.keys(symbol)[0]]} ${
-        translator.translateText('does not support category:')}`
+        `${symbol} ${translator.translateText('does not support category:')}`
         + ` ${bot.symbol.getCategoryNameForCondition(blockObj.type)}`
         + `, ${translator.translateText('Allowed categories are')}`
         + ` ${bot.symbol.getAllowedCategoryNames(blockObj.parentBlock_.type)}`)
@@ -107,7 +106,8 @@ export const insideTrade = (blockObj, ev, name) => {
       disable(blockObj,
         `${name} ${translator.translateText('must be added inside the trade block')}`)
     } else {
-      if (topParent && topParent.type === 'trade' && bot.symbol.findSymbol(blockObj.type)) {
+      if (topParent && topParent.type === 'trade'
+        && blockObj.type in bot.symbol.activeSymbols.getSymbols()) {
         addPurchaseOptions(blockObj)
         observer.emit('tour:submarket')
       }
