@@ -1,4 +1,4 @@
-import { translator } from './translator';
+import { translator } from './translator'
 
 export default {
   lists: {
@@ -191,4 +191,4 @@ export default {
   },
   conditions: ['risefall', 'higherlower', 'touchnotouch',
     'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
-};
+}

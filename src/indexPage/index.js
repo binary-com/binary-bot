@@ -1,16 +1,16 @@
-import 'babel-polyfill';
-import $ from 'jquery';
-import { translator } from '../common/translator';
-import { setAppId, oauthLogin } from '../common/appId';
+import 'babel-polyfill'
+import $ from 'jquery'
+import { translator } from '../common/translator'
+import { setAppId, oauthLogin } from '../common/appId'
 
 window.$ = $; // eslint-disable-line no-undef
-setAppId();
+setAppId()
 oauthLogin(() => {
   $('[data-i18n-text]')
     .each(function jqueryEach() {
       $(this)
         .text(translator.translateText($(this)
-          .attr('data-i18n-text')));
-    });
-  $('.spinning').hide();
-});
+          .attr('data-i18n-text')))
+    })
+  $('.spinning').hide()
+})

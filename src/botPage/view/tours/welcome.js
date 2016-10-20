@@ -1,12 +1,12 @@
 /* eslint-disable no-underscore-dangle, max-len */
-import { setDone, isDone } from 'binary-common-utils/lib/storageManager';
-import { getUiComponent, setOpacityForAll, setOpacity } from '../components';
-import { translator } from '../../../common/translator';
+import { setDone, isDone } from 'binary-common-utils/lib/storageManager'
+import { getUiComponent, setOpacityForAll, setOpacity } from '../components'
+import { translator } from '../../../common/translator'
 
 export default class Welcome {
   constructor() {
-    this.tour = null;
-    this.stopCallback = null;
+    this.tour = null
+    this.stopCallback = null
   }
   getSteps() {
     return [{
@@ -14,7 +14,7 @@ export default class Welcome {
       ${translator.translateText('Welcome to the binary bot')},
       ${translator.translateText('a blockly based automation tool for binary.com trades')}.
       ${translator.translateText('Skip this tutorial by clicking on the <b>X</b> button')}.
-      ${translator.translateText('Skip each step by <b>Right Arrow (')} &rarr;
+      ${translator.translateText('Skip each step by <b>Right Arrow (')} &rarr
       ${translator.translateText(')</b> on the keyboard.')}
       </p>`,
       target: getUiComponent('center'),
@@ -23,8 +23,8 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
       setup: () => {
-        $('#blocker').show();
-        setOpacityForAll(0.3);
+        $('#blocker').show()
+        setOpacityForAll(0.3)
       },
     }, {
       content: `<p>
@@ -37,10 +37,10 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
       setup: () => {
-        setOpacity('workspace', 1);
+        setOpacity('workspace', 1)
       },
       teardown: () => {
-        setOpacity('workspace', 0.3);
+        setOpacity('workspace', 0.3)
       },
     }, {
       content: `<p>
@@ -53,10 +53,10 @@ export default class Welcome {
       my: 'left center',
       at: 'right center',
       setup: () => {
-        setOpacity('toolbox', 1);
+        setOpacity('toolbox', 1)
       },
       teardown: () => {
-        setOpacity('toolbox', 0.3);
+        setOpacity('toolbox', 0.3)
       },
     }, {
       content: `<p>
@@ -68,10 +68,10 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
       setup: () => {
-        setOpacity('workspace', 1);
+        setOpacity('workspace', 1)
       },
       teardown: () => {
-        setOpacity('workspace', 0.3);
+        setOpacity('workspace', 0.3)
       },
     }, {
       content: `<p>
@@ -84,12 +84,12 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
       setup: () => {
-        setOpacity('intro_login_logout', 1);
-        setOpacity('login_logout', 1);
+        setOpacity('intro_login_logout', 1)
+        setOpacity('login_logout', 1)
       },
       teardown: () => {
-        setOpacity('intro_login_logout', 0.3);
-        setOpacity('login_logout', 0.3);
+        setOpacity('intro_login_logout', 0.3)
+        setOpacity('login_logout', 0.3)
       },
     }, {
       content: `<p>
@@ -102,10 +102,10 @@ export default class Welcome {
       my: 'right center',
       at: 'left center',
       setup: () => {
-        setOpacity('group_save', 1);
+        setOpacity('group_save', 1)
       },
       teardown: () => {
-        setOpacity('group_save', 0.3);
+        setOpacity('group_save', 0.3)
       },
     }, {
       content: `<p>
@@ -118,10 +118,10 @@ export default class Welcome {
       my: 'right center',
       at: 'left center',
       setup: () => {
-        setOpacity('group_undo_redo', 1);
+        setOpacity('group_undo_redo', 1)
       },
       teardown: () => {
-        setOpacity('group_undo_redo', 0.3);
+        setOpacity('group_undo_redo', 0.3)
       },
     }, {
       content: `<p>
@@ -134,10 +134,10 @@ export default class Welcome {
       my: 'right center',
       at: 'left center',
       setup: () => {
-        setOpacity('group_summary', 1);
+        setOpacity('group_summary', 1)
       },
       teardown: () => {
-        setOpacity('group_summary', 0.3);
+        setOpacity('group_summary', 0.3)
       },
     }, {
       content: `<p>
@@ -150,10 +150,10 @@ export default class Welcome {
       my: 'right center',
       at: 'left center',
       setup: () => {
-        setOpacity('group_reset', 1);
+        setOpacity('group_reset', 1)
       },
       teardown: () => {
-        setOpacity('group_reset', 0.3);
+        setOpacity('group_reset', 0.3)
       },
     }, {
       content: `<p>
@@ -166,10 +166,10 @@ export default class Welcome {
       my: 'right center',
       at: 'left center',
       setup: () => {
-        setOpacity('group_start_stop', 1);
+        setOpacity('group_start_stop', 1)
       },
       teardown: () => {
-        setOpacity('group_start_stop', 0.3);
+        setOpacity('group_start_stop', 0.3)
       },
     }, {
       content: `<p>
@@ -180,47 +180,47 @@ export default class Welcome {
       highlightTarget: true,
       my: 'top center',
       at: 'bottom center',
-    }];
+    }]
   }
   next() {
     if (this.tour) {
-      this.tour.next();
+      this.tour.next()
     }
   }
   start(stopCallback) {
-    this.stopCallback = stopCallback;
+    this.stopCallback = stopCallback
     this.tour = new Tourist.Tour({
       steps: this.getSteps(),
       cancelStep: () => {
-        this.tour._teardownCurrentStep = () => {};
-        $('#blocker').hide();
-        setOpacityForAll(1);
-        setDone('welcomeFinished');
-        this.stop();
+        this.tour._teardownCurrentStep = () => {}
+        $('#blocker').hide()
+        setOpacityForAll(1)
+        setDone('welcomeFinished')
+        this.stop()
       },
       successStep: () => {
-        $('#blocker').hide();
-        setOpacityForAll(1);
-        setDone('welcomeFinished');
-        this.stop();
+        $('#blocker').hide()
+        setOpacityForAll(1)
+        setDone('welcomeFinished')
+        this.stop()
       },
-    });
-    this.tour.start();
+    })
+    this.tour.start()
   }
   welcome(stopCallback) {
     if (!isDone('welcomeFinished')) {
-      this.start(stopCallback);
+      this.start(stopCallback)
     } else if (stopCallback) {
-      stopCallback();
+      stopCallback()
     }
   }
   stop() {
-    setOpacityForAll(true, 1);
-    this.tour.stop();
-    Blockly.mainWorkspace.toolbox_.tree_.children_[4].setExpanded(false);
-    delete this.tour;
+    setOpacityForAll(true, 1)
+    this.tour.stop()
+    Blockly.mainWorkspace.toolbox_.tree_.children_[4].setExpanded(false)
+    delete this.tour
     if (this.stopCallback) {
-      this.stopCallback();
+      this.stopCallback()
     }
   }
 }

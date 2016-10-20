@@ -1,8 +1,8 @@
-import './tools';
-import './ticks';
-import './before_purchase';
-import './during_purchase';
-import './after_purchase';
-import './block_holder';
+import './tools'
+import './ticks'
+import './before_purchase'
+import './during_purchase'
+import './after_purchase'
+import './block_holder'
 
-export { default } from './trade';
+export { default } from './trade'

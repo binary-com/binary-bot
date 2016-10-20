@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { expect } from 'chai';
-import _const from '../const';
+import { expect } from 'chai'
+import _const from '../const'
 
 describe('Const', () => {
   it('Const should contain all const defs', () => {
@@ -18,6 +18,6 @@ describe('Const', () => {
       'ohlcFields',
       'durationTypes',
       'candleIntervals',
-    ]);
-  });
-});
+    ])
+  })
+})

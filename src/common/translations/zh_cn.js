@@ -287,4 +287,3 @@ module.exports = {
   "4cc7b9e53d082896ad884eb01be16320af65f282": "Simple Moving Average Array",
   "2c75179a57af3c36581008b65e86ed81c4a4cbea": "Calculates Simple Moving Average (SMA) list from a list of values with a period"
 }
-;

@@ -1,30 +1,30 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import 'babel-polyfill';
-import lzString from 'lz-string';
-import { observer } from 'binary-common-utils/lib/observer';
-import { getToken } from 'binary-common-utils/lib/storageManager';
-import underscore from 'underscore';
-import Backbone from 'backbone';
-import $ from 'jquery';
-import { bot } from './bot';
-import View from './view';
-import { setAppId } from '../common/appId';
-import { notifyError } from './view/logger';
-import expect from '../common/expect';
-import math from '../common/math';
+import 'babel-polyfill'
+import lzString from 'lz-string'
+import { observer } from 'binary-common-utils/lib/observer'
+import { getToken } from 'binary-common-utils/lib/storageManager'
+import underscore from 'underscore'
+import Backbone from 'backbone'
+import $ from 'jquery'
+import { bot } from './bot'
+import View from './view'
+import { setAppId } from '../common/appId'
+import { notifyError } from './view/logger'
+import expect from '../common/expect'
+import math from '../common/math'
 
-window._ = underscore;
-window.Backbone = Backbone;
-window.$ = $;
+window._ = underscore
+window.Backbone = Backbone
+window.$ = $
 
-require('tourist/tourist');
-require('notifyjs-browser');
-require('./view/draggable');
+require('tourist/tourist')
+require('notifyjs-browser')
+require('./view/draggable')
 
-setAppId();
+setAppId()
 $.ajaxSetup({
   cache: false,
-});
+})
 
 window._trackJs = { // eslint-disable-line no-underscore-dangle
   token: '346262e7ffef497d85874322fff3bbf8',
@@ -33,9 +33,9 @@ window._trackJs = { // eslint-disable-line no-underscore-dangle
   console: {
     display: false,
   },
-};
+}
 
-require('trackjs');
+require('trackjs')
 
 class BotPage {
   constructor() {
@@ -43,9 +43,9 @@ class BotPage {
       expect,
       math,
       addBlockByMagic: (blockType) => {
-        const dp = Blockly.mainWorkspace.newBlock(blockType);
-        dp.initSvg();
-        dp.render();
+        const dp = Blockly.mainWorkspace.newBlock(blockType)
+        dp.initSvg()
+        dp.render()
       },
       start: bot.start.bind(bot),
       stop: bot.stop.bind(bot),
@@ -54,53 +54,53 @@ class BotPage {
         console.log(this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
       },
       log: (message, type) => {
-        observer.emit(`ui.log.${type}.left`, message);
+        observer.emit(`ui.log.${type}.left`, message)
       },
       getTotalRuns: () => bot.totalRuns,
       getTotalProfit: () => bot.totalProfit,
       getBalance: (balanceType) => (balanceType === 'STR' ? bot.balanceStr : bot.balance),
-    };
+    }
 
     bot.initPromise.then(() => {
-      this.view = new View();
+      this.view = new View()
       trackJs.configure({
         onError: (payload, error) => {
           if (error && error.message && error.message.indexOf('The play() request was'
             + ' interrupted by a call to pause()') >= 0) {
-            return false;
+            return false
           }
           payload.console.push({
             message: lzString.compressToBase64(this.view.blockly.generatedJs),
             severity: 'log',
             timestamp: new Date().toISOString(),
-          });
+          })
           payload.console.push({
             message: lzString.compressToBase64(this.view.blockly.blocksXmlStr),
             severity: 'log',
             timestamp: new Date().toISOString(),
-          });
+          })
           payload.console.push({
             message: lzString.compressToBase64(
               Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))),
             severity: 'log',
             timestamp: new Date().toISOString(),
-          });
-          notifyError(error);
-          return true;
+          })
+          notifyError(error)
+          return true
         },
-      });
+      })
       this.view.initPromise.then(() => {
         trackJs.configure({
           userId: getToken($('#accountSelect').val()).account_name,
-        });
-        $('.spinning').hide();
-        this.view.activeTour = this.view.tours.welcome;
+        })
+        $('.spinning').hide()
+        this.view.activeTour = this.view.tours.welcome
         this.view.activeTour.welcome(() => {
-          this.view.activeTour = null;
-        });
-      });
-    });
+          this.view.activeTour = null
+        })
+      })
+    })
   }
 }
 
-export default new BotPage();
+export default new BotPage()

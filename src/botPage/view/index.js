@@ -1,137 +1,137 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BinaryChart } from 'binary-charts';
-import { logoutAllTokens } from 'binary-common-utils/lib/account';
-import { observer } from 'binary-common-utils/lib/observer';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BinaryChart } from 'binary-charts'
+import { logoutAllTokens } from 'binary-common-utils/lib/account'
+import { observer } from 'binary-common-utils/lib/observer'
 import { getTokenList, removeAllTokens,
-  get as getStorage } from 'binary-common-utils/lib/storageManager';
-import TradeInfo from './tradeInfo';
-import _Blockly from './blockly';
-import { translator } from '../../common/translator';
-import { bot } from '../bot';
-import Introduction from './tours/introduction';
-import Welcome from './tours/welcome';
-import { logHandler } from './logger';
+  get as getStorage } from 'binary-common-utils/lib/storageManager'
+import TradeInfo from './tradeInfo'
+import _Blockly from './blockly'
+import { translator } from '../../common/translator'
+import { bot } from '../bot'
+import Introduction from './tours/introduction'
+import Welcome from './tours/welcome'
+import { logHandler } from './logger'
 
 export default class View {
   constructor() {
-    this.chartType = 'line';
-    this.tours = {};
-    logHandler();
-    this.tradeInfo = new TradeInfo();
-    this.addTranslationToUi();
+    this.chartType = 'line'
+    this.tours = {}
+    logHandler()
+    this.tradeInfo = new TradeInfo()
+    this.addTranslationToUi()
     this.initPromise = new Promise((resolve) => {
-      this.updateTokenList();
-      this.blockly = new _Blockly();
+      this.updateTokenList()
+      this.blockly = new _Blockly()
       this.blockly.initPromise.then(() => {
-        this.setElementActions();
-        this.initTours();
-        resolve();
-      });
-    });
+        this.setElementActions()
+        this.initTours()
+        resolve()
+      })
+    })
   }
   updateTokenList() {
-    const tokenList = getTokenList();
+    const tokenList = getTokenList()
     if (tokenList.length === 0) {
-      $('#login').css('display', 'inline-block');
-      $('#accountSelect').css('display', 'none');
-      $('#accountSelect').children().remove();
-      $('#logout').css('display', 'none');
+      $('#login').css('display', 'inline-block')
+      $('#accountSelect').css('display', 'none')
+      $('#accountSelect').children().remove()
+      $('#logout').css('display', 'none')
     } else {
-      $('#login').css('display', 'none');
-      $('#accountSelect').css('display', 'inline-block');
-      $('#logout').css('display', 'inline-block');
+      $('#login').css('display', 'none')
+      $('#accountSelect').css('display', 'inline-block')
+      $('#logout').css('display', 'inline-block')
       for (const tokenInfo of tokenList) {
-        let prefix;
+        let prefix
         if ('isVirtual' in tokenInfo) {
-          prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account';
+          prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
         } else {
-          prefix = '';
+          prefix = ''
         }
         $('#accountSelect').append(`<option value='${tokenInfo.token}'>`
-          + ` ${prefix} ${tokenInfo.account_name} </option>`);
+          + ` ${prefix} ${tokenInfo.account_name} </option>`)
       }
     }
   }
   addTranslationToUi() {
     $('[data-i18n-text]')
       .each(function each() {
-        const contents = $(this).contents();
+        const contents = $(this).contents()
         if (contents.length > 0) {
           if (contents.get(0).nodeType === Node.TEXT_NODE) {
             $(this).text(translator.translateText($(this)
               .attr('data-i18n-text')))
-              .append(contents.slice(1));
+              .append(contents.slice(1))
           }
         } else {
           $(this)
             .text(translator.translateText($(this)
-              .attr('data-i18n-text')));
+              .attr('data-i18n-text')))
         }
-      });
+      })
   }
   initTours() {
-    this.tours.introduction = new Introduction();
-    this.tours.welcome = new Welcome();
+    this.tours.introduction = new Introduction()
+    this.tours.welcome = new Welcome()
   }
   startTour() {
-    const viewScope = this;
+    const viewScope = this
     $('#tours').on('change', function onChange() {
-      const value = $(this).val();
-      if (value === '') return;
+      const value = $(this).val()
+      if (value === '') return
       if (viewScope.activeTour) {
-        viewScope.activeTour.stop();
+        viewScope.activeTour.stop()
       }
-      viewScope.activeTour = viewScope.tours[value];
+      viewScope.activeTour = viewScope.tours[value]
       viewScope.activeTour.start(() => {
-        viewScope.activeTour = null;
-      });
-    });
+        viewScope.activeTour = null
+      })
+    })
   }
   setFileBrowser() {
     const readFile = (f) => {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (() => {
-        $('#fileUploadForm')[0].reset();
-        $('#fileBrowser').hide();
-        return (e) => this.blockly.load(e.target.result);
-      })(f);
-      reader.readAsText(f);
-    };
+        $('#fileUploadForm')[0].reset()
+        $('#fileBrowser').hide()
+        return (e) => this.blockly.load(e.target.result)
+      })(f)
+      reader.readAsText(f)
+    }
 
     const handleFileSelect = (e) => {
-      let files;
+      let files
       if (e.type === 'drop') {
-        e.stopPropagation();
-        e.preventDefault();
-        files = e.dataTransfer.files;
+        e.stopPropagation()
+        e.preventDefault()
+        files = e.dataTransfer.files
       } else {
-        files = e.target.files;
+        files = e.target.files
       }
-      files = [...files];
+      files = [...files]
       for (const file of files) {
         if (file.type.match('text/xml')) {
-          readFile(file);
+          readFile(file)
         } else {
           observer.emit('ui.log.info', `${
-          translator.translateText('File is not supported:')} ${file.name}`);
+          translator.translateText('File is not supported:')} ${file.name}`)
         }
       }
-    };
+    }
 
     const handleDragOver = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+      e.stopPropagation()
+      e.preventDefault()
       e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
-    };
+    }
 
-    const dropZone = document.getElementById('dropZone');
+    const dropZone = document.getElementById('dropZone')
 
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('drop', handleFileSelect, false);
+    dropZone.addEventListener('dragover', handleDragOver, false)
+    dropZone.addEventListener('drop', handleFileSelect, false)
     if (document.getElementById('files')) {
       document.getElementById('files')
-        .addEventListener('change', handleFileSelect, false);
+        .addEventListener('change', handleFileSelect, false)
     }
     $('#open_btn')
       .on('click', () => {
@@ -146,158 +146,158 @@ export default class View {
           readAs: 'DataURL',
           removeMessage: 'Remove&nbsp;file',
           title: 'Load file',
-        });
+        })
       })
       .on('files.bs.filedialog', (ev) => {
-        handleFileSelect(ev.files);
+        handleFileSelect(ev.files)
       })
       .on('cancel.bs.filedialog', (ev) => {
-        handleFileSelect(ev);
-      });
+        handleFileSelect(ev)
+      })
   }
   setElementActions() {
-    this.setFileBrowser();
-    this.startTour();
-    this.addBindings();
-    this.addEventHandlers();
+    this.setFileBrowser()
+    this.startTour()
+    this.addBindings()
+    this.addEventHandlers()
   }
   addBindings() {
     const stop = (e) => {
       if (e) {
-        e.preventDefault();
+        e.preventDefault()
       }
-      bot.stop();
-    };
+      bot.stop()
+    }
 
     const logout = () => {
       logoutAllTokens(() => {
-        this.updateTokenList();
-        observer.emit('ui.log.info', translator.translateText('Logged you out!'));
-      });
-    };
+        this.updateTokenList()
+        observer.emit('ui.log.info', translator.translateText('Logged you out!'))
+      })
+    }
 
     $('#stopButton')
       .click(stop)
-      .hide();
+      .hide()
 
     $('.panelExitButton')
       .click(function onClick() {
         $(this)
           .parent()
-          .hide();
-      });
+          .hide()
+      })
 
     $('.panel')
-      .hide();
+      .hide()
 
     $('.panel')
-      .drags();
+      .drags()
 
     $('.panel .content')
       .mousedown((e) => { // prevent content to trigger draggable
-        e.stopPropagation();
-      });
+        e.stopPropagation()
+      })
 
     $('#saveXml')
       .click(() => {
         $('#saveAs')
-          .show();
-      });
+          .show()
+      })
 
     $('#saveAsForm')
       .submit((e) => {
-        e.preventDefault();
-        this.blockly.save($('#saveAsFilename').val(), $('#saveAsCollection').prop('checked'));
+        e.preventDefault()
+        this.blockly.save($('#saveAsFilename').val(), $('#saveAsCollection').prop('checked'))
         $('#saveAs')
-          .hide();
-      });
+          .hide()
+      })
 
     $('#undo')
       .click(() => {
-        this.blockly.undo();
-      });
+        this.blockly.undo()
+      })
 
     $('#redo')
       .click(() => {
-        this.blockly.redo();
-      });
+        this.blockly.redo()
+      })
 
     $('#zoomIn')
       .click(() => {
-        this.blockly.zoomOnPlusMinus(true);
-      });
+        this.blockly.zoomOnPlusMinus(true)
+      })
 
     $('#zoomOut')
       .click(() => {
-        this.blockly.zoomOnPlusMinus(false);
-      });
+        this.blockly.zoomOnPlusMinus(false)
+      })
 
     $('#cleanUp')
       .click(() => {
-        this.blockly.cleanUp();
-      });
+        this.blockly.cleanUp()
+      })
 
     $('#showSummary')
       .click(() => {
         $('#summaryPanel')
-          .show();
-      });
+          .show()
+      })
 
     $('#loadXml')
       .click(() => {
         $('#fileBrowser')
-          .show();
-      });
+          .show()
+      })
 
     $('#logout')
       .click(() => {
-        logout();
-        $('.logout').hide();
-      });
+        logout()
+        $('.logout').hide()
+      })
 
     $('#runButton')
       .click(() => {
-        $('#stopButton').show();
-        $('#runButton').hide();
-        this.blockly.run();
-      });
+        $('#stopButton').show()
+        $('#runButton').hide()
+        this.blockly.run()
+      })
 
     $('#resetButton')
       .click(() => {
-        this.blockly.resetWorkspace();
-      });
+        this.blockly.resetWorkspace()
+      })
 
     $('#login')
       .bind('click.login', () => {
         document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' +
-          `${getStorage('appId')}&l=${translator.getLanguage().toUpperCase()}`;
+          `${getStorage('appId')}&l=${translator.getLanguage().toUpperCase()}`
       })
-      .text('Log in');
+      .text('Log in')
 
     $(document).keydown((e) => {
       if (e.which === 189) { // -
         if (e.ctrlKey) {
-          this.blockly.zoomOnPlusMinus(false);
-          e.preventDefault();
+          this.blockly.zoomOnPlusMinus(false)
+          e.preventDefault()
         }
       } else if (e.which === 187) { // +
         if (e.ctrlKey) {
-          this.blockly.zoomOnPlusMinus(true);
-          e.preventDefault();
+          this.blockly.zoomOnPlusMinus(true)
+          e.preventDefault()
         }
       } else if (e.which === 39) { // right
         if (this.activeTour) {
-          this.activeTour.next();
-          e.preventDefault();
+          this.activeTour.next()
+          e.preventDefault()
         }
       } else if (e.which === 27) { // Esc
-        const exitButton = $('.panel:hover .panelExitButton');
+        const exitButton = $('.panel:hover .panelExitButton')
         if (exitButton.length === 1) {
-          exitButton.click();
-          e.preventDefault();
+          exitButton.click()
+          e.preventDefault()
         }
       }
-    });
+    })
   }
   updateChart(info) {
     const chartToDataType = {
@@ -305,27 +305,27 @@ export default class View {
       line: 'ticks',
       candlestick: 'candles',
       ohlc: 'candles',
-    };
+    }
 
-    const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0;
+    const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
 
     const zoomInMax = (ev, chart) => {
-      const { dataMax } = chart.xAxis[0].getExtremes();
-      const { minRange } = chart.xAxis[0].options;
-      chart.xAxis[0].setExtremes(dataMax - minRange, dataMax);
-    };
+      const { dataMax } = chart.xAxis[0].getExtremes()
+      const { minRange } = chart.xAxis[0].options
+      chart.xAxis[0].setExtremes(dataMax - minRange, dataMax)
+    }
 
     const events = [
       {
         type: 'zoom-in-max',
         handler: zoomInMax,
       },
-    ];
+    ]
 
     if (isLine() && this.contractForChart) {
-      const chartDiv = document.getElementById('trade-chart0');
+      const chartDiv = document.getElementById('trade-chart0')
       if (chartDiv) {
-        chartDiv.dispatchEvent(new Event('zoom-in-max'));
+        chartDiv.dispatchEvent(new Event('zoom-in-max'))
       }
     }
     ReactDOM.render(
@@ -341,48 +341,48 @@ export default class View {
                 events={events}
                 hideIntervalPicker
                 onTypeChange={(type) => (this.chartType = type)}
-            />, $('#chart')[0]);
+            />, $('#chart')[0])
   }
   addEventHandlers() {
     for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
       observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
         if (error.code === 'InvalidToken') {
-          removeAllTokens();
-          this.updateTokenList();
+          removeAllTokens()
+          this.updateTokenList()
         }
-        bot.stop();
-      });
+        bot.stop()
+      })
     }
 
     observer.register('bot.stop', () => {
-      $('#runButton').show();
-      $('#stopButton').hide();
-    });
+      $('#runButton').show()
+      $('#stopButton').hide()
+    })
 
     observer.register('bot.tradeInfo', (tradeInfo) => {
       for (const key of Object.keys(tradeInfo)) {
-        this.tradeInfo.tradeInfo[key] = tradeInfo[key];
+        this.tradeInfo.tradeInfo[key] = tradeInfo[key]
       }
-      this.tradeInfo.update();
-    });
+      this.tradeInfo.update()
+    })
 
     observer.register('bot.tradeUpdate', (contract) => {
-      this.tradeInfo.add(contract);
+      this.tradeInfo.add(contract)
       this.contractForChart = {
         ...contract,
-      };
-      this.contractForChart.date_expiry = Number(this.contractForChart.date_expiry);
-      this.contractForChart.date_settlement = Number(this.contractForChart.date_settlement);
-      this.contractForChart.date_start = Number(this.contractForChart.date_start);
-    });
+      }
+      this.contractForChart.date_expiry = Number(this.contractForChart.date_expiry)
+      this.contractForChart.date_settlement = Number(this.contractForChart.date_settlement)
+      this.contractForChart.date_start = Number(this.contractForChart.date_start)
+    })
 
     observer.register('bot.finish', (contract) => {
-      this.tradeInfo.add(contract);
-      this.contractForChart = false;
-    });
+      this.tradeInfo.add(contract)
+      this.contractForChart = false
+    })
 
     observer.register('bot.tickUpdate', (info) => {
-      this.updateChart(info);
-    });
+      this.updateChart(info)
+    })
   }
 }
