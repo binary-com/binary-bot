@@ -57,11 +57,4 @@ export default class ActiveSymbols {
   getSymbols() {
     return parsedSymbols
   }
-  getSymbolNames() {
-    const symbols = _.clone(parsedSymbols)
-    for (const key of Object.keys(symbols)) {
-      symbols[key] = symbols[key].display
-    }
-    return symbols
-  }
 }

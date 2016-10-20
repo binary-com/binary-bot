@@ -46,11 +46,6 @@ describe('ActiveSymbols', () => {
     expect(markets.forex).to.have.property('submarkets')
       .and.to.be.an('Object')
   })
-  it('Should getSymbolNames have all symbol names', () => {
-    const names = activeSymbols.getSymbolNames()
-    expect(names).to.be.an('Object')
-      .and.to.have.property('frxeurusd')
-  })
   it('Should getMarkets output match the market snapshot', () => {
     const markets = activeSymbols.getMarkets()
     const deepDiff = deep(setChecks(markets), setChecks(JSON.parse(expectedMarketStr)))
