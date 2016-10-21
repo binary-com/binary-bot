@@ -102,6 +102,7 @@ export default {
     [translator.translateText('High'), 'high'],
     [translator.translateText('Low'), 'low'],
     [translator.translateText('Close'), 'close'],
+    [translator.translateText('Open Time'), 'epoch'],
   ],
   candleIntervals: [
     ['1 minute', '60'],
