@@ -1,6 +1,7 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../common/translator'
 import { bot } from '../../bot'
+import { notifyError } from '../logger'
 import { isMainBlock, save, getMainBlocks,
   disable } from './utils'
 import blocks from './blocks'
@@ -256,30 +257,27 @@ export default class _Blockly {
     try {
       window.LoopTrap = 99999999999
       Blockly.JavaScript
-        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n'
+        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
       disableStrayBlocks()
       code = `
-        var trade, before_purchase, during_purchase, after_purchase
+        var trade, before_purchase, during_purchase, after_purchase;
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
         try {
           if (typeof trade !== 'undefined') {
-            trade()
+            trade();
           }
         } catch (e) {
-          if (e.name === 'BlocklyError') {
-            // pass
-          } else {
-            console.log(e.name)
-            throw e
+          if (e.name !== 'BlocklyError') {
+            Bot.notifyError(e);
+            throw e;
           }
         }
       `
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null
       this.generatedJs = code
     } catch (e) {
-      if (e.name === 'BlocklyError') {
-        // pass
-      } else {
+      if (e.name !== 'BlocklyError') {
+        notifyError(e)
         throw e
       }
     }

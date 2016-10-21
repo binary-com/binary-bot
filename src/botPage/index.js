@@ -59,6 +59,7 @@ class BotPage {
       getTotalRuns: () => bot.totalRuns,
       getTotalProfit: () => bot.totalProfit,
       getBalance: (balanceType) => (balanceType === 'STR' ? bot.balanceStr : bot.balance),
+      notifyError,
     }
 
     bot.initPromise.then(() => {
@@ -85,7 +86,6 @@ class BotPage {
             severity: 'log',
             timestamp: new Date().toISOString(),
           })
-          notifyError(error)
           return true
         },
       })
