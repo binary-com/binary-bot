@@ -33,7 +33,7 @@ export default class Bot {
   constructor(api = null) {
     this.ticks = []
     this.candles = []
-    this.candleInterval = 60
+    this.currentCandleInterval = 0
     this.running = false
     this.currentToken = ''
     this.balanceStr = ''
@@ -83,9 +83,8 @@ export default class Bot {
             observer.unregisterAll('api.tick')
             promises.push(this.subscribeToTickHistory())
             promises.push(this.subscribeToCandles())
-          } else if (this.tradeOption.candleInterval !== this.candleInterval) {
+          } else if (this.tradeOption.candleInterval !== this.currentCandleInterval) {
             observer.unregisterAll('api.ohlc')
-            this.candleInterval = this.tradeOption.candleInterval
             promises.push(this.subscribeToCandles())
           }
         }
@@ -124,7 +123,7 @@ export default class Bot {
     if (!_.isEmpty(this.tradeOption)) {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol.toLowerCase()].pip
       const opposites = config.opposites[this.tradeOption.condition]
-      this.candleInterval = this.tradeOption.candleInterval
+      this.currentCandleInterval = this.tradeOption.candleInterval
       this.tradeOptions = []
       for (const key of Object.keys(opposites)) {
         this.tradeOptions.push(decorateTradeOptions(this.tradeOption, {
@@ -153,6 +152,7 @@ export default class Bot {
     return new Promise((resolve) => {
       const apiCandles = (candles) => {
         this.observeOhlc()
+        this.currentCandleInterval = this.tradeOption.candleInterval
         this.candles = candles
         resolve()
       }
@@ -164,7 +164,7 @@ export default class Bot {
       this.api.history(this.tradeOption.symbol, {
         end: 'latest',
         count: 600,
-        granularity: this.candleInterval,
+        granularity: this.tradeOption.candleInterval,
         style: 'candles',
         subscribe: 1,
       })
