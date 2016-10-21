@@ -30,14 +30,13 @@ Blockly.JavaScript.after_purchase = (block) => {
     try {
       ${stack}
     } catch (e) { 
-      if (e.name === 'BlocklyError') {
-        // pass
-      } else {
-        throw e
+      if (e.name !== 'BlocklyError') {
+        Bot.notifyError(e);
+        throw e;
       }
     }
-    Bot.stop()
-  }
+    Bot.stop();
+  };
   `
   return code
 }

@@ -77,7 +77,7 @@ Blockly.JavaScript.trade = (block) => {
   const initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET')
   // TODO: Assemble JavaScript into code variable.
   const code = `
-  var getTradeOptions
+  var getTradeOptions;
   try {
     ${initialization.trim()}
     trade = function trade(again){
@@ -86,15 +86,13 @@ Blockly.JavaScript.trade = (block) => {
         typeof before_purchase === 'undefined' ? function(){} : before_purchase,
         typeof during_purchase === 'undefined' ? function(){} : during_purchase,
         typeof after_purchase === 'undefined' ? function(){} : after_purchase,
-        again)
+        again);
       }
-    }
+    };
   } catch (e) {
-    if (e.name === 'BlocklyError') {
-      // pass
-    } else {
-      console.log(e.name)
-      throw e
+    if (e.name !== 'BlocklyError') {
+      Bot.notifyError(e);
+      throw e;
     }
   }
   `
