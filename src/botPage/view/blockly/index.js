@@ -11,7 +11,7 @@ const backwardCompatibility = (block) => {
   } else if (block.getAttribute('type') === 'on_finish') {
     block.setAttribute('type', 'after_purchase')
   }
-  for (const statement of block.getElementsByTagName('statement')) {
+  for (const statement of Array.prototype.slice.call(block.getElementsByTagName('statement'))) {
     if (statement.getAttribute('name') === 'STRATEGY_STACK') {
       statement.setAttribute('name', 'BEFOREPURCHASE_STACK')
     } else if (statement.getAttribute('name') === 'FINISH_STACK') {
@@ -193,7 +193,7 @@ export default class _Blockly {
   }
   loadWorkspace(xml) {
     Blockly.mainWorkspace.clear()
-    for (const block of xml.children) {
+    for (const block of Array.prototype.slice.call(xml.children)) {
       backwardCompatibility(block)
     }
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
@@ -204,7 +204,7 @@ export default class _Blockly {
   }
   loadBlocks(xml) {
     const addedBlocks = []
-    for (const block of xml.children) {
+    for (const block of Array.prototype.slice.call(xml.children)) {
       addedBlocks.push(this.addDomBlocks(block))
     }
     cleanUp(addedBlocks)
