@@ -1,11 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import { observer } from 'binary-common-utils/lib/observer'
-import { durationAccepted, expandDuration } from 'binary-common-utils/lib/tools'
 import config from '../../../common/const'
 import { bot } from '../../bot'
 import { translator } from '../../../common/translator'
 import { findTopParentBlock, addPurchaseOptions,
-  disable, enable } from './utils'
+  disable, enable, durationToSecond, expandDuration } from './utils'
 
 const isInteger = (amount) => !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount)
 const isInRange = (amount, min, max) => !isNaN(+amount) && +amount >= min && +amount <= max
@@ -38,13 +37,13 @@ const conditionFields = (blockObj, ev, calledByParent) => {
       if (duration !== '') {
         const minDuration = bot.symbol.getLimitation(
           blockObj.parentBlock_.type, blockObj.type).minDuration
-        if (!durationAccepted(duration + durationType, minDuration)) {
+        const durationInSeconds = durationToSecond(duration + durationType)
+        if (!durationInSeconds) {
+          observer.emit('ui.log.warn', translator.translateText('Duration must be a positive integer'))
+        } else if (durationInSeconds < durationToSecond(minDuration)) {
           observer.emit('ui.log.warn',
             `${translator.translateText('Minimum duration is')} ${expandDuration(minDuration)}`)
-        } else {
-          observer.emit('tour:ticks')
-        }
-        if (durationType === 't') {
+        } else if (durationType === 't') {
           if (!isInteger(duration) || !isInRange(duration, 5, 10)) {
             observer.emit('ui.log.warn',
               translator.translateText('Number of ticks must be between 5 and 10'))
