@@ -136,6 +136,7 @@ module.exports = {
   "af145748c9cf765a3b059eec20cb1dbb899297d8": "Blocks are loaded successfully",
   "da162a909c2981ed318d23cd9a6be1d66e0a8400": "Unrecognized file format.",
   "c3c49d3e838c8fe813d360aea7dc6b792948afde": "Markets",
+  "2f9f9096be1a1c0569a9ce54e57f0420f6b3c2e9": "Duration must be a positive integer",
   "11ee9c5d534cc8d22651092222b532917594161a": "Minimum duration is",
   "5283ac04c9a8ba8a937d1edb4ba986aeefce8bf1": "Number of ticks must be between 5 and 10",
   "ace1342bc3720b77ce510b93074041e7386d209e": "Expiry time cannot be equal to start time",
