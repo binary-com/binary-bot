@@ -15,10 +15,10 @@ module.exports = {
   "1c4f7176f1358919ae0299276c8d93d700bc4822": "In/Out",
   "9c7960c6b11d35ac9d6cdc1ebaad3af43b2065c5": "Asians",
   "2260ce49306460c8a2ef501939f29ad6ddd4e934": "Digits",
-  "d07ffc19d51f0973859a0d95c1d15cd9f22388ca": "Tick Analysis",
   "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3": "Before Purchase",
   "44ab9a87268d3fd74040ed0b55c04f83294cfdef": "During Purchase",
   "c415c9399b7ae7285d2c1c880a6a0aa18f62ff8c": "After Purchase",
+  "d07ffc19d51f0973859a0d95c1d15cd9f22388ca": "Tick Analysis",
   "4fa8cc860c52b268dc6a3adcde7305e9415db5bb": "Tools",
   "548f449b63ff41eaaff5a2d679ffa56b2015fc20": "Misc.",
   "8cf71374fa095a64b5295b672daef8507ec7be6a": "Indicators",
@@ -108,6 +108,7 @@ module.exports = {
   "b1a5954a483f8f8b0207385095f74aeb409b3f80": "High",
   "a124947cbd2d1d92b47e027274c3269ff0c7a84b": "Low",
   "bbfa773e5a63a5ea58c9b6207e608ca0120e592a": "Close",
+  "1173872a4fb205b713702f0eec5cf2c732c828fd": "Open Time",
   "53adebdc2b1cbbedb56395b19a73fe47b87cc554": "Ticks",
   "5fb1db527825d2996e37c655e5dec49d4da80c09": "Seconds",
   "092f99ea11a34a8490e7a767a83a42fc45634f82": "Minutes",
@@ -287,3 +288,4 @@ module.exports = {
   "4cc7b9e53d082896ad884eb01be16320af65f282": "Simple Moving Average Array",
   "2c75179a57af3c36581008b65e86ed81c4a4cbea": "Calculates Simple Moving Average (SMA) list from a list of values with a period"
 }
+;
