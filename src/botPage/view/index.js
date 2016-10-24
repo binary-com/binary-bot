@@ -89,29 +89,31 @@ export default class View {
     })
   }
   setFileBrowser() {
-    const readFile = (f) => {
+    const readFile = (f, dropEvent = {}) => {
       const reader = new FileReader()
       reader.onload = (() => {
         $('#fileUploadForm')[0].reset()
         $('#fileBrowser').hide()
-        return (e) => this.blockly.load(e.target.result)
+        return (e) => this.blockly.load(e.target.result, dropEvent)
       })(f)
       reader.readAsText(f)
     }
 
     const handleFileSelect = (e) => {
       let files
+      let dropEvent
       if (e.type === 'drop') {
         e.stopPropagation()
         e.preventDefault()
         files = e.dataTransfer.files
+        dropEvent = e
       } else {
         files = e.target.files
       }
       files = [...files]
       for (const file of files) {
         if (file.type.match('text/xml')) {
-          readFile(file)
+          readFile(file, dropEvent)
         } else {
           observer.emit('ui.log.info', `${
           translator.translateText('File is not supported:')} ${file.name}`)
@@ -125,7 +127,7 @@ export default class View {
       e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
     }
 
-    const dropZone = document.getElementById('dropZone')
+    const dropZone = document.body
 
     dropZone.addEventListener('dragover', handleDragOver, false)
     dropZone.addEventListener('drop', handleFileSelect, false)

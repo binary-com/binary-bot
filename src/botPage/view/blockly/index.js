@@ -51,13 +51,13 @@ const fixCollapsedBlocks = () => {
   }
 }
 
-const cleanUp = (newBlocks) => {
-  const blocksToClean = [...getCollapsedProcedures(), ...newBlocks]
+const cleanUp = (blocksToClean, dropEvent = {}) => {
+  const { clientX, clientY } = dropEvent
   Blockly.Events.setGroup(true)
   let cursorY = 0
   for (const block of blocksToClean) {
     const xy = block.getRelativeToSurfaceXY()
-    block.moveBy(-xy.x, cursorY - xy.y)
+    block.moveBy(((clientX / ((684 - 110) / 684)) - 145) - xy.x, (cursorY + ((clientY / (559 / 655)) - 154)) - xy.y)
     block.snapToGrid()
     cursorY = block.getRelativeToSurfaceXY().y +
         block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
@@ -203,12 +203,12 @@ export default class _Blockly {
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
   }
-  loadBlocks(xml) {
+  loadBlocks(xml, dropEvent = {}) {
     const addedBlocks = []
     for (const block of Array.prototype.slice.call(xml.children)) {
       addedBlocks.push(this.addDomBlocks(block))
     }
-    cleanUp(addedBlocks)
+    cleanUp(addedBlocks, dropEvent)
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
     observer.emit('ui.log.success',
@@ -223,7 +223,7 @@ export default class _Blockly {
     })
     return returnVal
   }
-  load(blockStr = '') {
+  load(blockStr = '', dropEvent = {}) {
     if (blockStr.indexOf('<xml') !== 0) {
       observer.emit('ui.log.error',
         translator.translateText('Unrecognized file format.'))
@@ -232,7 +232,7 @@ export default class _Blockly {
       try {
         const xml = Blockly.Xml.textToDom(blockStr)
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-          this.loadBlocks(xml)
+          this.loadBlocks(xml, dropEvent)
         } else {
           this.loadWorkspace(xml)
         }
