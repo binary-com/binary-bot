@@ -95,6 +95,7 @@ export default class _Blockly {
     this.blocksXmlStr = ''
     this.generatedJs = ''
     this.addBlocklyTranslation()
+    Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {} // https://github.com/google/blockly/issues/299
     this.initPromise = new Promise((resolve) => {
       $.get('xml/toolbox.xml', (toolbox) => {
         blocks()
