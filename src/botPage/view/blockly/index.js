@@ -51,18 +51,19 @@ const fixCollapsedBlocks = () => {
   }
 }
 
-const cleanUpForBlockLoad = (blocksToClean, dropEvent = {}) => {
+const cleanUpOnLoad = (blocksToClean, dropEvent = {}) => {
   const { clientX, clientY } = dropEvent
-  Blockly.Events.setGroup(true)
   const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
   const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
   const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft
   const blocklyTop = (document.body.offsetHeight - blocklyMetrics.viewHeight) - blocklyMetrics.viewTop
   const cursorX = (clientX) ? (clientX - blocklyLeft) * scaleCancellation : 0
-  const cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0
+  let cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0
+  Blockly.Events.setGroup(true)
   for (const block of blocksToClean) {
     block.moveBy(cursorX, cursorY)
     block.snapToGrid()
+    cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
   }
   Blockly.Events.setGroup(false)
   // Fire an event to allow scrollbars to resize.
@@ -210,7 +211,7 @@ export default class _Blockly {
     for (const block of Array.prototype.slice.call(xml.children)) {
       addedBlocks.push(this.addDomBlocks(block))
     }
-    cleanUpForBlockLoad(addedBlocks, dropEvent)
+    cleanUpOnLoad(addedBlocks, dropEvent)
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
     observer.emit('ui.log.success',
