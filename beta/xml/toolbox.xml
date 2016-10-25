@@ -246,10 +246,12 @@
 			<block type="controls_flow_statements"></block>
 		</category>
 	</category>
+	<sep gap="4"></sep>
 	<category name="Binary" colour="#2a3052" i18n-text="Binary">
 		<category name="Trade Definition" colour="#2a3052" i18n-text="Trade Definition">
 			<block type="trade"></block>
 			<!--Markets-->
+			<sep gap="0"></sep>
 			<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">
 				<category name="Up/Down" colour="#2a3052" i18n-text="Up/Down">
 					<block type="risefall"></block>
@@ -302,24 +304,28 @@
 				</category>
 			</category>
 		</category>
+		<sep gap="0"></sep>
 		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
 			<block type="before_purchase"></block>
 			<block type="payout"></block>
 			<block type="ask_price"></block>
 			<block type="purchase"></block>
 		</category>
+		<sep gap="0"></sep>
 		<category name="During Purchase" colour="#2a3052" i18n-text="During Purchase">
 			<block type="during_purchase"></block>
 			<block type="check_sell"></block>
 			<block type="sell_price"></block>
 			<block type="sell_at_market"></block>
 		</category>
+		<sep gap="0"></sep>
 		<category name="After Purchase" colour="#2a3052" i18n-text="After Purchase">
 			<block type="after_purchase"></block>
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
 			<block type="trade_again"></block>
 		</category>
+		<sep gap="0"></sep>
 		<category name="Tick Analysis" colour="#2a3052" i18n-text="Tick Analysis">
 			<block type="tick"></block>
 			<block type="read_ohlc"></block>
