@@ -51,16 +51,19 @@ const fixCollapsedBlocks = () => {
   }
 }
 
-const cleanUp = (newBlocks) => {
-  const blocksToClean = [...getCollapsedProcedures(), ...newBlocks]
+const cleanUpOnLoad = (blocksToClean, dropEvent = {}) => {
+  const { clientX, clientY } = dropEvent
+  const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
+  const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
+  const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft
+  const blocklyTop = (document.body.offsetHeight - blocklyMetrics.viewHeight) - blocklyMetrics.viewTop
+  const cursorX = (clientX) ? (clientX - blocklyLeft) * scaleCancellation : 0
+  let cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0
   Blockly.Events.setGroup(true)
-  let cursorY = 0
   for (const block of blocksToClean) {
-    const xy = block.getRelativeToSurfaceXY()
-    block.moveBy(-xy.x, cursorY - xy.y)
+    block.moveBy(cursorX, cursorY)
     block.snapToGrid()
-    cursorY = block.getRelativeToSurfaceXY().y +
-        block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
+    cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
   }
   Blockly.Events.setGroup(false)
   // Fire an event to allow scrollbars to resize.
@@ -203,12 +206,12 @@ export default class _Blockly {
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
   }
-  loadBlocks(xml) {
+  loadBlocks(xml, dropEvent = {}) {
     const addedBlocks = []
     for (const block of Array.prototype.slice.call(xml.children)) {
       addedBlocks.push(this.addDomBlocks(block))
     }
-    cleanUp(addedBlocks)
+    cleanUpOnLoad(addedBlocks, dropEvent)
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
     observer.emit('ui.log.success',
@@ -223,7 +226,7 @@ export default class _Blockly {
     })
     return returnVal
   }
-  load(blockStr = '') {
+  load(blockStr = '', dropEvent = {}) {
     if (blockStr.indexOf('<xml') !== 0) {
       observer.emit('ui.log.error',
         translator.translateText('Unrecognized file format.'))
@@ -232,7 +235,7 @@ export default class _Blockly {
       try {
         const xml = Blockly.Xml.textToDom(blockStr)
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-          this.loadBlocks(xml)
+          this.loadBlocks(xml, dropEvent)
         } else {
           this.loadWorkspace(xml)
         }
