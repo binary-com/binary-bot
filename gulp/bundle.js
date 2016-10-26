@@ -9,16 +9,10 @@ import rename from 'gulp-rename';
 import cleanCSS from 'gulp-clean-css';
 import { addToManifest } from './revision';
 
-gulp.task('clean-bundle', () => gulp.src(['./www/js/bundle*', 'blockly/**/*'])
+gulp.task('clean-bundle', () => gulp.src('./www/js/bundle*')
   .pipe(paths(del)));
 
-gulp.task('blockly-msg', ['clean-bundle'], () => gulp.src('node_modules/blockly/msg/**')
-  .pipe(gulp.dest('www/js/blockly/msg')));
-
-gulp.task('blockly-media', () => gulp.src('node_modules/blockly/media/**')
-  .pipe(gulp.dest('www/js/blockly/media')));
-
-gulp.task('bundle-js', ['blockly-msg', 'blockly-media'], () => gulp.src([
+gulp.task('bundle-js', () => gulp.src([
   './node_modules/blockly/blockly_compressed.js',
   './node_modules/blockly/blocks_compressed.js',
   './node_modules/blockly/javascript_compressed.js',
