@@ -247,8 +247,8 @@ export default class View {
 
     $('#loadXml')
       .click(() => {
-        $('#fileBrowser')
-          .show()
+        $('#files')
+          .click()
       })
 
     $('#logout')
