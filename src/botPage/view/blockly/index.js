@@ -100,7 +100,6 @@ export default class _Blockly {
       $.get('xml/toolbox.xml', (toolbox) => {
         blocks()
         const workspace = Blockly.inject('blocklyDiv', {
-          media: 'js/blockly/media/',
           toolbox: this.xmlToStr(translator.translateXml($.parseXML(
             this.marketsToXml(toolbox.getElementsByTagName('xml')[0])
           ))),
@@ -297,7 +296,7 @@ export default class _Blockly {
     })
     const script = document.createElement('script')
     script.type = 'text/javascript'
-    script.src = `js/blockly/msg/js/${translator.getLanguage()}.js`
+    script.src = `https://blockly-demo.appspot.com/static/msg/js/${translator.getLanguage()}.js`
     $('body').append(script)
   }
   undo() {

@@ -3,12 +3,23 @@ import { translator } from '../../../../../common/translator'
 import { bot } from '../../../../bot'
 
 
-export function title(block, opposites, optionNames) {
+export function title(block, oppositeNames, optionNames) {
   block.appendDummyInput()
     .setAlign(Blockly.ALIGN_CENTRE)
-    .appendField(bot.symbol.getCategoryNameForCondition(opposites))
+    .appendField(bot.symbol.getCategoryNameForCondition(oppositeNames))
   block.appendDummyInput()
     .appendField(`> ${optionNames[0]}/${optionNames[1]}`)
+}
+
+const oppositesToDropdown = (opposites) => opposites.map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
+
+export function contractTypes(block, opposites) {
+  block.appendDummyInput()
+    .appendField(translator.translateText('Contract Type:'))
+    .appendField(new Blockly.FieldDropdown([
+      [translator.translateText('Both'), 'both'],
+      ...oppositesToDropdown(opposites),
+    ]), 'TYPE_LIST')
 }
 
 export function candleInterval(block) {
@@ -17,11 +28,11 @@ export function candleInterval(block) {
     .appendField(new Blockly.FieldDropdown(config.candleIntervals), 'CANDLEINTERVAL_LIST')
 }
 
-export function duration(block, opposites) {
+export function duration(block, oppositeNames) {
   block.appendValueInput('DURATION')
     .setCheck('Number')
     .appendField(translator.translateText('Duration:'))
-    .appendField(new Blockly.FieldDropdown(config.durationTypes[opposites]), 'DURATIONTYPE_LIST')
+    .appendField(new Blockly.FieldDropdown(config.durationTypes[oppositeNames]), 'DURATIONTYPE_LIST')
 }
 
 export function payout(block) {
@@ -34,7 +45,7 @@ export function payout(block) {
     .appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST')
 }
 
-export function barrierOffset(block, opposites, name) {
+export function barrierOffset(block, oppositeNames, name) {
   let fieldName = translator.translateText('Barrier Offset:')
   if (name) {
     fieldName = name

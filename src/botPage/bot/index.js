@@ -2,7 +2,6 @@ import { observer } from 'binary-common-utils/lib/observer'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { getToken } from 'binary-common-utils/lib/storageManager'
 import _ from 'underscore'
-import config from '../../common/const'
 import PurchaseCtrl from './purchaseCtrl'
 import _Symbol from './symbol'
 import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect'
@@ -34,7 +33,6 @@ export default class Bot {
     this.ticks = []
     this.candles = []
     this.currentCandleInterval = 0
-    this.running = false
     this.currentToken = ''
     this.balanceStr = ''
     this.currentSymbol = ''
@@ -51,8 +49,7 @@ export default class Bot {
     this.initPromise = this.symbol.initPromise
   }
   start(token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade) {
-    if (!this.running || sameTrade) {
-      this.running = true
+    if (!this.purchaseCtrl || sameTrade) {
       if (this.purchaseCtrl) {
         this.purchaseCtrl.destroy()
       }
@@ -120,18 +117,14 @@ export default class Bot {
     })
   }
   setTradeOptions() {
+    this.tradeOptions = []
     if (!_.isEmpty(this.tradeOption)) {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol.toLowerCase()].pip
-      const opposites = config.opposites[this.tradeOption.condition]
-      this.currentCandleInterval = this.tradeOption.candleInterval
-      this.tradeOptions = []
-      for (const key of Object.keys(opposites)) {
+      for (const type of JSON.parse(this.tradeOption.contractTypes)) {
         this.tradeOptions.push(decorateTradeOptions(this.tradeOption, {
-          contract_type: Object.keys(opposites[key])[0],
+          contract_type: type,
         }))
       }
-    } else {
-      this.tradeOptions = []
     }
   }
   subscribeToBalance() {
@@ -196,7 +189,7 @@ export default class Bot {
       const apiTick = (tick) => {
         this.ticks = [...this.ticks, tick]
         this.ticks.splice(0, 1)
-        if (this.running) {
+        if (this.purchaseCtrl) {
           this.purchaseCtrl.updateTicks({
             ticks: this.ticks,
             candles: this.candles,
@@ -227,7 +220,7 @@ export default class Bot {
   observeBeforePurchase() {
     if (!observer.isRegistered('beforePurchase.ready')) {
       const beforePurchaseReady = () => {
-        if (this.running) {
+        if (this.purchaseCtrl) {
           observer.emit('bot.waiting_for_purchase')
         }
       }
@@ -237,7 +230,7 @@ export default class Bot {
   observeTradeUpdate() {
     if (!observer.isRegistered('beforePurchase.tradeUpdate')) {
       const beforePurchaseTradeUpdate = (contract) => {
-        if (this.running) {
+        if (this.purchaseCtrl) {
           observer.emit('bot.tradeUpdate', contract)
         }
       }
@@ -252,7 +245,7 @@ export default class Bot {
   }
   subscribeProposal(tradeOption) {
     const apiProposal = (proposal) => {
-      if (this.running) {
+      if (this.purchaseCtrl) {
         observer.emit('log.bot.proposal', proposal)
         this.purchaseCtrl.updateProposal(proposal)
       }
@@ -271,6 +264,9 @@ export default class Bot {
   subscribeProposals() {
     this.setTradeOptions()
     observer.unregisterAll('api.proposal')
+    if (this.purchaseCtrl) {
+      this.purchaseCtrl.setNumOfProposals(this.tradeOptions.length)
+    }
     this.api.originalApi.unsubscribeFromAllProposals().then(() => {
       for (const to of this.tradeOptions) {
         this.subscribeProposal(to)
@@ -333,13 +329,12 @@ export default class Bot {
     this.updateTotals(contract)
     observer.emit('bot.finish', contract)
     // order matters
-    this.running = false
     this.purchaseCtrl.destroy()
     this.purchaseCtrl = null
   //
   }
   stop(contract) {
-    if (!this.running) {
+    if (!this.purchaseCtrl) {
       observer.emit('bot.stop', contract)
       return
     }
@@ -348,7 +343,6 @@ export default class Bot {
     }
     this.unregisterOnFinish = []
     // order matters
-    this.running = false
     if (this.purchaseCtrl) {
       this.purchaseCtrl.destroy()
       this.purchaseCtrl = null

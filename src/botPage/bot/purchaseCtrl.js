@@ -24,6 +24,7 @@ export default class PurchaseCtrl {
       ticks: [],
       candles: [],
     }
+    this.expectedNumOfProposals = 2
     this.api = api
     this.beforePurchase = beforePurchase
     this.duringPurchase = duringPurchase
@@ -33,10 +34,13 @@ export default class PurchaseCtrl {
     this.runningObservations = []
     this.proposals = {}
   }
+  setNumOfProposals(num) {
+    this.expectedNumOfProposals = num
+  }
   updateProposal(proposal) {
     if (!this.purchased) {
       this.proposals[proposal.contract_type] = proposal
-      if (!this.ready && Object.keys(this.proposals).length === 2) {
+      if (!this.ready && Object.keys(this.proposals).length === this.expectedNumOfProposals) {
         this.ready = true
         observer.emit('beforePurchase.ready')
       }
