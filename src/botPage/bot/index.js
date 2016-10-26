@@ -33,7 +33,6 @@ export default class Bot {
     this.ticks = []
     this.candles = []
     this.currentCandleInterval = 0
-    this.running = false
     this.currentToken = ''
     this.balanceStr = ''
     this.currentSymbol = ''
@@ -50,8 +49,7 @@ export default class Bot {
     this.initPromise = this.symbol.initPromise
   }
   start(token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade) {
-    if (!this.running || sameTrade) {
-      this.running = true
+    if (!this.purchaseCtrl || sameTrade) {
       if (this.purchaseCtrl) {
         this.purchaseCtrl.destroy()
       }
@@ -191,7 +189,7 @@ export default class Bot {
       const apiTick = (tick) => {
         this.ticks = [...this.ticks, tick]
         this.ticks.splice(0, 1)
-        if (this.running) {
+        if (this.purchaseCtrl) {
           this.purchaseCtrl.updateTicks({
             ticks: this.ticks,
             candles: this.candles,
@@ -222,7 +220,7 @@ export default class Bot {
   observeBeforePurchase() {
     if (!observer.isRegistered('beforePurchase.ready')) {
       const beforePurchaseReady = () => {
-        if (this.running) {
+        if (this.purchaseCtrl) {
           observer.emit('bot.waiting_for_purchase')
         }
       }
@@ -232,7 +230,7 @@ export default class Bot {
   observeTradeUpdate() {
     if (!observer.isRegistered('beforePurchase.tradeUpdate')) {
       const beforePurchaseTradeUpdate = (contract) => {
-        if (this.running) {
+        if (this.purchaseCtrl) {
           observer.emit('bot.tradeUpdate', contract)
         }
       }
@@ -247,7 +245,7 @@ export default class Bot {
   }
   subscribeProposal(tradeOption) {
     const apiProposal = (proposal) => {
-      if (this.running) {
+      if (this.purchaseCtrl) {
         observer.emit('log.bot.proposal', proposal)
         this.purchaseCtrl.updateProposal(proposal)
       }
@@ -266,6 +264,9 @@ export default class Bot {
   subscribeProposals() {
     this.setTradeOptions()
     observer.unregisterAll('api.proposal')
+    if (this.purchaseCtrl) {
+      this.purchaseCtrl.setNumOfProposals(this.tradeOptions.length)
+    }
     this.api.originalApi.unsubscribeFromAllProposals().then(() => {
       for (const to of this.tradeOptions) {
         this.subscribeProposal(to)
@@ -328,13 +329,12 @@ export default class Bot {
     this.updateTotals(contract)
     observer.emit('bot.finish', contract)
     // order matters
-    this.running = false
     this.purchaseCtrl.destroy()
     this.purchaseCtrl = null
   //
   }
   stop(contract) {
-    if (!this.running) {
+    if (!this.purchaseCtrl) {
       observer.emit('bot.stop', contract)
       return
     }
@@ -343,7 +343,6 @@ export default class Bot {
     }
     this.unregisterOnFinish = []
     // order matters
-    this.running = false
     if (this.purchaseCtrl) {
       this.purchaseCtrl.destroy()
       this.purchaseCtrl = null
