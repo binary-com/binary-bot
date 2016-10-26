@@ -3,7 +3,7 @@ import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
 import { translator } from '../../../common/translator'
 
-const purchaseChoices = [[translator.translateText('Click to select'), '']]
+let purchaseChoices = [[translator.translateText('Click to select'), '']]
 
 export const deleteBlockIfExists = (block) => {
   Blockly.Events.recordUndo = false
@@ -93,26 +93,14 @@ export const findTopParentBlock = (b) => {
 }
 
 export const addPurchaseOptions = (submarket) => {
-  let firstOption = {}
-  let secondOption = {}
   if (submarket && submarket.getInputTargetBlock('CONDITION') !== null) {
-    const conditionType = submarket.getInputTargetBlock('CONDITION').type
+    const condition = submarket.getInputTargetBlock('CONDITION')
+    const conditionType = condition.type
     const opposites = config.opposites[conditionType.toUpperCase()]
-    purchaseChoices.length = 0
-    opposites.forEach((option, index) => {
-      if (index === 0) {
-        firstOption = {
-          condition: Object.keys(option)[0],
-          name: option[Object.keys(option)[0]],
-        }
-      } else {
-        secondOption = {
-          condition: Object.keys(option)[0],
-          name: option[Object.keys(option)[0]],
-        }
-      }
-      purchaseChoices.push([option[Object.keys(option)[0]], Object.keys(option)[0]])
-    })
+    const contractType = condition.getField('TYPE_LIST').getValue()
+    purchaseChoices = opposites
+      .filter((k) => (contractType === 'both' ? true : contractType === Object.keys(k)[0]))
+      .map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
     const purchases = Blockly.mainWorkspace.getAllBlocks()
       .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0))
     Blockly.Events.recordUndo = false
@@ -120,17 +108,17 @@ export const addPurchaseOptions = (submarket) => {
       const value = purchase.getField('PURCHASE_LIST')
         .getValue()
       Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'))
-      if (value === firstOption.condition) {
+      if (value === purchaseChoices[0][1]) {
         purchase.getField('PURCHASE_LIST')
-          .setText(firstOption.name)
-      } else if (value === secondOption.condition) {
+          .setText(purchaseChoices[0][0])
+      } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
         purchase.getField('PURCHASE_LIST')
-          .setText(secondOption.name)
+          .setText(purchaseChoices[1][0])
       } else {
         purchase.getField('PURCHASE_LIST')
-          .setValue(firstOption.condition)
+          .setValue(purchaseChoices[0][1])
         purchase.getField('PURCHASE_LIST')
-          .setText(firstOption.name)
+          .setText(purchaseChoices[0][0])
       }
     }
     Blockly.Events.recordUndo = true

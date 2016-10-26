@@ -9,7 +9,7 @@ describe('Bot', () => {
     amount: 1,
     basis: 'stake',
     candleInterval: 60,
-    condition: 'EVENODD',
+    contractTypes: '["DIGITEVEN", "DIGITODD"]',
     currency: 'USD',
     duration: 5,
     duration_unit: 't',

@@ -2,7 +2,6 @@ import { observer } from 'binary-common-utils/lib/observer'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { getToken } from 'binary-common-utils/lib/storageManager'
 import _ from 'underscore'
-import config from '../../common/const'
 import PurchaseCtrl from './purchaseCtrl'
 import _Symbol from './symbol'
 import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect'
@@ -120,18 +119,14 @@ export default class Bot {
     })
   }
   setTradeOptions() {
+    this.tradeOptions = []
     if (!_.isEmpty(this.tradeOption)) {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol.toLowerCase()].pip
-      const opposites = config.opposites[this.tradeOption.condition]
-      this.currentCandleInterval = this.tradeOption.candleInterval
-      this.tradeOptions = []
-      for (const key of Object.keys(opposites)) {
+      for (const type of JSON.parse(this.tradeOption.contractTypes)) {
         this.tradeOptions.push(decorateTradeOptions(this.tradeOption, {
-          contract_type: Object.keys(opposites[key])[0],
+          contract_type: type,
         }))
       }
-    } else {
-      this.tradeOptions = []
     }
   }
   subscribeToBalance() {
