@@ -90,6 +90,26 @@ const createXmlTag = (obj) => {
   return xmlStr
 }
 
+const disposeblockswithloaders = () => {
+  Blockly.mainWorkspace.addChangeListener((ev) => {
+    if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader') {
+      Blockly.Events.recordUndo = false
+      Blockly.Events.setGroup(true)
+      for (const block of Blockly.mainWorkspace.getTopBlocks()) {
+        if (block.loaderId === ev.blockId) {
+          const varsCreatedByMe = block.varsCreatedByMe
+          block.dispose()
+          for (const v of varsCreatedByMe) {
+            Blockly.mainWorkspace.deleteVariable(v)
+          }
+        }
+      }
+      Blockly.Events.setGroup(false)
+      Blockly.Events.recordUndo = true
+    }
+  })
+}
+
 export default class _Blockly {
   constructor() {
     this.blocksXmlStr = ''
@@ -114,6 +134,7 @@ export default class _Blockly {
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace)
           this.zoomOnPlusMinus()
           Blockly.mainWorkspace.clearUndo()
+          disposeblockswithloaders()
           resolve()
         })
       })
@@ -189,7 +210,7 @@ export default class _Blockly {
       addDownloadToMenu(Blockly.Blocks[blockName])
     }
   }
-  addDomBlocks(blockXml, header = false) {
+  addDomBlocks(blockXml, header = null) {
     if (header) {
       const id = blockXml.getAttribute('id')
       let clearToAdd = true
@@ -199,8 +220,12 @@ export default class _Blockly {
         }
       }
       if (clearToAdd) {
+        const vars = [...Blockly.mainWorkspace.variableList]
         const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
         block.getSvgRoot().style.display = 'none'
+        block.loaderId = header.id
+        header.loadedByMe.push(block.id)
+        block.varsCreatedByMe = Blockly.mainWorkspace.variableList.slice(vars.length)
         return block
       }
       return null
@@ -233,7 +258,7 @@ export default class _Blockly {
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
   }
-  loadBlocks(xml, dropEvent = {}, header = false) {
+  loadBlocks(xml, dropEvent = {}, header = null) {
     const addedBlocks = []
     for (const block of Array.prototype.slice.call(xml.children)) {
       if (!header || block.getAttribute('type').indexOf('procedures_def') === 0) {
@@ -256,7 +281,7 @@ export default class _Blockly {
     })
     return returnVal
   }
-  load(blockStr = '', dropEvent = {}, header = false) {
+  load(blockStr = '', dropEvent = {}, header = null) {
     if (blockStr.indexOf('<xml') !== 0) {
       observer.emit('ui.log.error',
         translator.translateText('Unrecognized file format.'))
@@ -273,7 +298,7 @@ export default class _Blockly {
           setMainBlocksDeletable()
           fixCollapsedBlocks()
         } else if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-          this.loadBlocks(xml, null, true)
+          this.loadBlocks(xml, null, header)
         } else {
           observer.emit('ui.log.error',
             translator.translateText('Remote blocks to load must be a collection.'))

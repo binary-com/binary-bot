@@ -60,7 +60,7 @@ class BotPage {
       getTotalProfit: () => bot.totalProfit,
       getBalance: (balanceType) => (balanceType === 'STR' ? bot.balanceStr : bot.balance),
       notifyError,
-      loadHeader: (xml) => this.view.blockly.load(xml, null, true),
+      load: (...args) => this.view.blockly.load(...args),
     }
 
     bot.initPromise.then(() => {
