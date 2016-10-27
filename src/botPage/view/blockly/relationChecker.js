@@ -22,7 +22,7 @@ const insideHolder = (blockObj) => {
   if (blockObj.isInFlyout) {
     return true
   }
-  if (parent !== null && parent.type === 'block_holder') {
+  if (parent !== null && ['block_holder', 'loader'].indexOf(parent.type) >= 0) {
     return true
   }
   return false
