@@ -4,7 +4,6 @@ import { getTopBlocksByType, disable, enable, deleteBlocksLoadedBy } from '../..
 
 Blockly.Blocks.loader = {
   init: function init() {
-    this.loaderId = Math.random()
     this.appendDummyInput()
       .appendField(`${translator.translateText('Load Block From')}:`)
       .appendField(new Blockly.FieldTextInput('http://www.example.com/block.xml'), 'URL')
@@ -27,11 +26,12 @@ Blockly.Blocks.loader = {
         let isNew = true
         for (const block of getTopBlocksByType('loader')) {
           if (block.url === url) {
-            disable(this, translator.translateText('This url is already loaded'))
             isNew = false
           }
         }
-        if (isNew) {
+        if (!isNew) {
+          disable(this, translator.translateText('This url is already loaded'))
+        } else {
           enable(this)
           $.ajax({
             type: 'GET',

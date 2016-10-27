@@ -149,10 +149,10 @@ export const disable = (blockObj, message) => {
     if (message) {
       observer.emit('ui.log.warn', message)
     }
-    Blockly.Events.recordUndo = false
-    blockObj.setDisabled(true)
-    Blockly.Events.recordUndo = true
   }
+  Blockly.Events.recordUndo = false
+  blockObj.setDisabled(true)
+  Blockly.Events.recordUndo = true
 }
 
 export const enable = (blockObj) => {

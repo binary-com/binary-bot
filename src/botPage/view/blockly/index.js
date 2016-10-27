@@ -3,7 +3,8 @@ import { translator } from '../../../common/translator'
 import { bot } from '../../bot'
 import { notifyError } from '../logger'
 import { isMainBlock, save, getMainBlocks,
-  disable, deleteBlocksLoadedBy } from './utils'
+  disable, deleteBlocksLoadedBy,
+} from './utils'
 import blocks from './blocks'
 
 const backwardCompatibility = (block) => {
@@ -306,7 +307,14 @@ export default class _Blockly {
     }
   }
   save(filename, collection) {
-    save(filename, collection, Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
+    const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
+    for (const blockDom of Array.prototype.slice.call(xml.children)) {
+      const block = Blockly.mainWorkspace.getBlockById(blockDom.getAttribute('id'))
+      if ('loaderId' in block) {
+        blockDom.remove()
+      }
+    }
+    save(filename, collection, xml)
   }
   run() {
     let code
