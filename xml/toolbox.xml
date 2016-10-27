@@ -341,6 +341,7 @@
 				<block type="is_candle_black"></block>
 				<block type="ohlc_values_in_list"></block>
 				<block type="read_ohlc_obj"></block>
+				<block type="loader"></block>
 				<block type="block_holder"></block>
 			</category>
 			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
