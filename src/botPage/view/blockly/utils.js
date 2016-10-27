@@ -74,6 +74,16 @@ export const getBlocksByType = (type) => {
   return result
 }
 
+export const getTopBlocksByType = (type) => {
+  const result = []
+  for (const block of Blockly.mainWorkspace.getTopBlocks()) {
+    if (type === block.type) {
+      result.push(block)
+    }
+  }
+  return result
+}
+
 export const getPurchaseChoices = () => purchaseChoices
 
 export const findTopParentBlock = (b) => {
@@ -139,10 +149,10 @@ export const disable = (blockObj, message) => {
     if (message) {
       observer.emit('ui.log.warn', message)
     }
-    Blockly.Events.recordUndo = false
-    blockObj.setDisabled(true)
-    Blockly.Events.recordUndo = true
   }
+  Blockly.Events.recordUndo = false
+  blockObj.setDisabled(true)
+  Blockly.Events.recordUndo = true
 }
 
 export const enable = (blockObj) => {
@@ -181,3 +191,20 @@ export const durationToSecond = (duration) => {
   }
   return null
 }
+
+export const deleteBlocksLoadedBy = (id) => {
+  Blockly.Events.recordUndo = false
+  Blockly.Events.setGroup(true)
+  for (const block of Blockly.mainWorkspace.getTopBlocks()) {
+    if (block.loaderId === id) {
+      const varsCreatedByMe = block.varsCreatedByMe
+      block.dispose()
+      for (const v of varsCreatedByMe) {
+        Blockly.mainWorkspace.deleteVariable(v)
+      }
+    }
+  }
+  Blockly.Events.setGroup(false)
+  Blockly.Events.recordUndo = true
+}
+

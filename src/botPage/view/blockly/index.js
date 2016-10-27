@@ -3,7 +3,8 @@ import { translator } from '../../../common/translator'
 import { bot } from '../../bot'
 import { notifyError } from '../logger'
 import { isMainBlock, save, getMainBlocks,
-  disable } from './utils'
+  disable, deleteBlocksLoadedBy,
+} from './utils'
 import blocks from './blocks'
 
 const backwardCompatibility = (block) => {
@@ -32,7 +33,7 @@ const disableStrayBlocks = () => {
   for (const block of topBlocks) {
     if (!isMainBlock(block.type)
       && block.type.indexOf('procedures_def') < 0
-      && block.type !== 'block_holder'
+      && ['block_holder', 'loader'].indexOf(block.type) < 0
       && !block.disabled) {
         disable(block,
           translator.translateText('Blocks must be inside block holders, main blocks or functions'))
@@ -51,8 +52,8 @@ const fixCollapsedBlocks = () => {
   }
 }
 
-const cleanUpOnLoad = (blocksToClean, dropEvent = {}) => {
-  const { clientX, clientY } = dropEvent
+const cleanUpOnLoad = (blocksToClean, dropEvent) => {
+  const { clientX = 0, clientY = 0 } = dropEvent || {}
   const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
   const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
   const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft
@@ -90,6 +91,14 @@ const createXmlTag = (obj) => {
   return xmlStr
 }
 
+const disposeBlocksWithLoaders = () => {
+  Blockly.mainWorkspace.addChangeListener((ev) => {
+    if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader') {
+      deleteBlocksLoadedBy(ev.blockId)
+    }
+  })
+}
+
 export default class _Blockly {
   constructor() {
     this.blocksXmlStr = ''
@@ -114,6 +123,7 @@ export default class _Blockly {
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace)
           this.zoomOnPlusMinus()
           Blockly.mainWorkspace.clearUndo()
+          disposeBlocksWithLoaders()
           resolve()
         })
       })
@@ -128,9 +138,21 @@ export default class _Blockly {
     }
   }
   cleanUp() {
-    Blockly.Events.recordUndo = false
-    Blockly.mainWorkspace.cleanUp()
-    Blockly.Events.recordUndo = true
+    Blockly.Events.setGroup(true)
+    const topBlocks = Blockly.mainWorkspace.getTopBlocks(true)
+    let cursorY = 0
+    for (const block of topBlocks) {
+      if (block.getSvgRoot().style.display !== 'none') {
+        const xy = block.getRelativeToSurfaceXY()
+        block.moveBy(-xy.x, cursorY - xy.y)
+        block.snapToGrid()
+        cursorY = block.getRelativeToSurfaceXY().y +
+          block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
+      }
+    }
+    Blockly.Events.setGroup(false);
+    // Fire an event to allow scrollbars to resize.
+    Blockly.mainWorkspace.resizeContents();
   }
   xmlToStr(xml) {
     const serializer = new XMLSerializer()
@@ -177,7 +199,26 @@ export default class _Blockly {
       addDownloadToMenu(Blockly.Blocks[blockName])
     }
   }
-  addDomBlocks(blockXml) {
+  addDomBlocks(blockXml, header = null) {
+    if (header) {
+      const id = blockXml.getAttribute('id')
+      let clearToAdd = true
+      for (const b of Blockly.mainWorkspace.getTopBlocks()) {
+        if (b.id === id) {
+          clearToAdd = false
+        }
+      }
+      if (clearToAdd) {
+        const vars = [...Blockly.mainWorkspace.variableList]
+        const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
+        block.getSvgRoot().style.display = 'none'
+        block.loaderId = header.id
+        header.loadedByMe.push(block.id)
+        block.varsCreatedByMe = Blockly.mainWorkspace.variableList.slice(vars.length)
+        return block
+      }
+      return null
+    }
     backwardCompatibility(blockXml)
     const blockType = blockXml.getAttribute('type')
     if (isMainBlock(blockType)) {
@@ -206,14 +247,20 @@ export default class _Blockly {
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
   }
-  loadBlocks(xml, dropEvent = {}) {
+  loadBlocks(xml, dropEvent = {}, header = null) {
     const addedBlocks = []
     for (const block of Array.prototype.slice.call(xml.children)) {
-      addedBlocks.push(this.addDomBlocks(block))
+      if (!header || [
+          'procedures_defreturn',
+          'procedures_defnoreturn',
+          'loader'].indexOf(block.getAttribute('type')) >= 0) {
+        const newBlock = this.addDomBlocks(block, header)
+        if (newBlock) {
+          addedBlocks.push(newBlock)
+        }
+      }
     }
     cleanUpOnLoad(addedBlocks, dropEvent)
-    this.blocksXmlStr = Blockly.Xml.domToPrettyText(
-      Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
   }
@@ -226,7 +273,7 @@ export default class _Blockly {
     })
     return returnVal
   }
-  load(blockStr = '', dropEvent = {}) {
+  load(blockStr = '', dropEvent = {}, header = null) {
     if (blockStr.indexOf('<xml') !== 0) {
       observer.emit('ui.log.error',
         translator.translateText('Unrecognized file format.'))
@@ -234,13 +281,20 @@ export default class _Blockly {
       Blockly.Events.recordUndo = false
       try {
         const xml = Blockly.Xml.textToDom(blockStr)
-        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-          this.loadBlocks(xml, dropEvent)
+        if (!header) {
+          if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+            this.loadBlocks(xml, dropEvent)
+          } else {
+            this.loadWorkspace(xml)
+          }
+          setMainBlocksDeletable()
+          fixCollapsedBlocks()
+        } else if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+          this.loadBlocks(xml, null, header)
         } else {
-          this.loadWorkspace(xml)
+          observer.emit('ui.log.error',
+            translator.translateText('Remote blocks to load must be a collection.'))
         }
-        fixCollapsedBlocks()
-        setMainBlocksDeletable()
       } catch (e) {
         if (e.name === 'BlocklyError') {
           // pass
@@ -253,7 +307,14 @@ export default class _Blockly {
     }
   }
   save(filename, collection) {
-    save(filename, collection, Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
+    const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
+    for (const blockDom of Array.prototype.slice.call(xml.children)) {
+      const block = Blockly.mainWorkspace.getBlockById(blockDom.getAttribute('id'))
+      if ('loaderId' in block) {
+        blockDom.remove()
+      }
+    }
+    save(filename, collection, xml)
   }
   run() {
     let code
