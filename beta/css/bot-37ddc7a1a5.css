@@ -325,3 +325,6 @@ button:focus {
 select.tour-highlight {
     background: white;
 }
+.blocklyTreeRow {
+  margin-bottom: 0px !important;
+}
