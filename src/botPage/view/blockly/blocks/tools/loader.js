@@ -22,10 +22,13 @@ Blockly.Blocks.loader = {
     if (!this.isInFlyout
       && ((ev.type === 'change' && ev.element === 'field') || ev.type === 'create')
       && ev.blockId === this.id) {
-        const url = this.getFieldValue('URL');
+        let url = this.getFieldValue('URL');
+        if (url.indexOf('http') !== 0) {
+          url = `http://${url}`
+        }
         let isNew = true
         for (const block of getTopBlocksByType('loader')) {
-          if (block.url === url) {
+          if (block.id !== this.id && block.url === url) {
             isNew = false
           }
         }
@@ -36,7 +39,17 @@ Blockly.Blocks.loader = {
           $.ajax({
             type: 'GET',
             url,
-          }).then((xml) => {
+          }).error((e) => {
+            window.amin = e
+            if (e.status) {
+              disable(this,
+                `${translator.translateText('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
+            } else {
+              disable(this,
+                translator.translateText('Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'))
+            }
+            deleteBlocksLoadedBy(this.id)
+          }).done((xml) => {
             Bot.load(xml, null, this) // eslint-disable-line no-undef
             this.url = url
           })
