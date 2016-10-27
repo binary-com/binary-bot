@@ -1,5 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
 import { translator } from '../../../../../common/translator'
+import { getTopBlocksByType, disable, enable, deleteBlocksLoadedBy } from '../../utils'
 
 Blockly.Blocks.loader = {
   init: function init() {
@@ -14,13 +15,33 @@ Blockly.Blocks.loader = {
     this.loadedByMe = []
   },
   onchange: function onchange(ev) {
-    if (!this.isInFlyout && ['create', 'change'].indexOf(ev.type) >= 0 && ev.blockId === this.id) {
-      const url = this.getFieldValue('URL');
-      $.ajax({
-        type: 'GET',
-        url,
-      }).then((xml) => Bot.load(xml, null, this)) // eslint-disable-line no-undef
-    }
+    if (!this.isInFlyout
+      && ev.type === 'change' && ev.element === 'disabled' && ev.newValue === true
+      && ev.blockId === this.id) {
+        deleteBlocksLoadedBy(this.id)
+      }
+    if (!this.isInFlyout
+      && ((ev.type === 'change' && ev.element === 'field') || ev.type === 'create')
+      && ev.blockId === this.id) {
+        const url = this.getFieldValue('URL');
+        let isNew = true
+        for (const block of getTopBlocksByType('loader')) {
+          if (block.url === url) {
+            disable(this, translator.translateText('This url is already loaded'))
+            isNew = false
+          }
+        }
+        if (isNew) {
+          enable(this)
+          $.ajax({
+            type: 'GET',
+            url,
+          }).then((xml) => {
+            Bot.load(xml, null, this) // eslint-disable-line no-undef
+            this.url = url
+          })
+        }
+      }
   },
 }
 

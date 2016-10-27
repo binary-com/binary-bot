@@ -3,7 +3,7 @@ import { translator } from '../../../common/translator'
 import { bot } from '../../bot'
 import { notifyError } from '../logger'
 import { isMainBlock, save, getMainBlocks,
-  disable } from './utils'
+  disable, deleteBlocksLoadedBy } from './utils'
 import blocks from './blocks'
 
 const backwardCompatibility = (block) => {
@@ -90,22 +90,10 @@ const createXmlTag = (obj) => {
   return xmlStr
 }
 
-const disposeblockswithloaders = () => {
+const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener((ev) => {
     if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader') {
-      Blockly.Events.recordUndo = false
-      Blockly.Events.setGroup(true)
-      for (const block of Blockly.mainWorkspace.getTopBlocks()) {
-        if (block.loaderId === ev.blockId) {
-          const varsCreatedByMe = block.varsCreatedByMe
-          block.dispose()
-          for (const v of varsCreatedByMe) {
-            Blockly.mainWorkspace.deleteVariable(v)
-          }
-        }
-      }
-      Blockly.Events.setGroup(false)
-      Blockly.Events.recordUndo = true
+      deleteBlocksLoadedBy(ev.blockId)
     }
   })
 }
@@ -134,7 +122,7 @@ export default class _Blockly {
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace)
           this.zoomOnPlusMinus()
           Blockly.mainWorkspace.clearUndo()
-          disposeblockswithloaders()
+          disposeBlocksWithLoaders()
           resolve()
         })
       })
@@ -261,7 +249,10 @@ export default class _Blockly {
   loadBlocks(xml, dropEvent = {}, header = null) {
     const addedBlocks = []
     for (const block of Array.prototype.slice.call(xml.children)) {
-      if (!header || block.getAttribute('type').indexOf('procedures_def') === 0) {
+      if (!header || [
+          'procedures_defreturn',
+          'procedures_defnoreturn',
+          'loader'].indexOf(block.getAttribute('type')) >= 0) {
         const newBlock = this.addDomBlocks(block, header)
         if (newBlock) {
           addedBlocks.push(newBlock)
