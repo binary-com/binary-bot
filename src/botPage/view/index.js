@@ -305,8 +305,8 @@ export default class View {
     const chartToDataType = {
       area: 'ticks',
       line: 'ticks',
-      candlestick: 'candles',
-      ohlc: 'candles',
+      candlestick: 'ohlc',
+      ohlc: 'ohlc',
     }
 
     const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
