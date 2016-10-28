@@ -254,6 +254,7 @@ module.exports = {
   "6f69eb9519c0ac8fa014de9fbbc1f3054663440f": "Checks if the given candle is black, returns true if close is less than open in the given candle.",
   "b06acc4158c824231f727a13e1c9811f43d5be42": "Load Block From",
   "661db37251a1ed1afe357ee13895f37a623d7cbf": "Load blocks from url",
+  "df84a88f38b03b5b342362d72370b0d66afdae35": "Target must be an xml file",
   "cd680fd936e9559ef1d95efac7a71680e2b13a89": "This url is already loaded",
   "34c59389053701a04127f74d32315e0206e076f8": "An error occurred while trying to load the url",
   "ca92532fe6eddc40c362c56b3b996d6851baa6d1": "Make sure 'Access-Control-Allow-Origin' exists in the response from the server",

@@ -197,11 +197,7 @@ export const deleteBlocksLoadedBy = (id) => {
   Blockly.Events.setGroup(true)
   for (const block of Blockly.mainWorkspace.getTopBlocks()) {
     if (block.loaderId === id) {
-      const varsCreatedByMe = block.varsCreatedByMe
       block.dispose()
-      for (const v of varsCreatedByMe) {
-        Blockly.mainWorkspace.deleteVariable(v)
-      }
     }
   }
   Blockly.Events.setGroup(false)
