@@ -318,7 +318,8 @@ export default class _Blockly {
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
       disableStrayBlocks()
       code = `
-        var trade, tick_analysis, before_purchase, during_purchase, after_purchase;
+        var trade, before_purchase, during_purchase, after_purchase;
+        var tick_analysis_list = [];
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
         try {
           if (typeof trade !== 'undefined') {

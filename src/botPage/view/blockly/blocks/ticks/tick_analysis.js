@@ -15,15 +15,15 @@ Blockly.Blocks.tick_analysis = {
 Blockly.JavaScript.tick_analysis = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'TICKANALYSIS_STACK')
   return `
-  tick_analysis = function tick_analysis(ticks){
-    try {
-      ${stack}
-    } catch (e) { 
-      if (e.name !== 'BlocklyError') {
-        Bot.notifyError(e);
-        throw e;
+    tick_analysis_list.push(function tick_analysis(ticks){
+      try {
+        ${stack}
+      } catch (e) { 
+        if (e.name !== 'BlocklyError') {
+          Bot.notifyError(e);
+          throw e;
+        }
       }
-    }
-  };
+    });
   `
 }
