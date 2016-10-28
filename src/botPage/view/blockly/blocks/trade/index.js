@@ -86,7 +86,8 @@ Blockly.JavaScript.trade = (block) => {
         typeof before_purchase === 'undefined' ? function(){} : before_purchase,
         typeof during_purchase === 'undefined' ? function(){} : during_purchase,
         typeof after_purchase === 'undefined' ? function(){} : after_purchase,
-        again);
+        again,
+        typeof tick_analysis === 'undefined' ? function(){} : tick_analysis);
       }
     };
   } catch (e) {
