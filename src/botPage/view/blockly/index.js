@@ -60,13 +60,11 @@ const cleanUpOnLoad = (blocksToClean, dropEvent) => {
   const blocklyTop = (document.body.offsetHeight - blocklyMetrics.viewHeight) - blocklyMetrics.viewTop
   const cursorX = (clientX) ? (clientX - blocklyLeft) * scaleCancellation : 0
   let cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0
-  Blockly.Events.setGroup(true)
   for (const block of blocksToClean) {
     block.moveBy(cursorX, cursorY)
     block.snapToGrid()
     cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
   }
-  Blockly.Events.setGroup(false)
   // Fire an event to allow scrollbars to resize.
   Blockly.mainWorkspace.resizeContents()
 }
@@ -209,10 +207,12 @@ export default class _Blockly {
         }
       }
       if (clearToAdd) {
+        Blockly.Events.recordUndo = false
         const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
         block.getSvgRoot().style.display = 'none'
         block.loaderId = header.id
         header.loadedByMe.push(block.id)
+        Blockly.Events.recordUndo = true
         return block
       }
       return null
@@ -229,10 +229,10 @@ export default class _Blockly {
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
   }
   resetWorkspace() {
-    Blockly.Events.recordUndo = false
+    Blockly.Events.setGroup(true)
     Blockly.mainWorkspace.clear()
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace)
-    Blockly.Events.recordUndo = true
+    Blockly.Events.setGroup(false)
   }
   loadWorkspace(xml) {
     Blockly.mainWorkspace.clear()
@@ -276,7 +276,7 @@ export default class _Blockly {
       observer.emit('ui.log.error',
         translator.translateText('Unrecognized file format.'))
     } else {
-      Blockly.Events.recordUndo = false
+      Blockly.Events.setGroup('load')
       try {
         const xml = Blockly.Xml.textToDom(blockStr)
         if (!header) {
@@ -301,7 +301,7 @@ export default class _Blockly {
             translator.translateText('Unrecognized file format.'))
         }
       }
-      Blockly.Events.recordUndo = true
+      Blockly.Events.setGroup(false)
     }
   }
   save(filename, collection) {
