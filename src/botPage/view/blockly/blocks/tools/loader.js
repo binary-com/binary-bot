@@ -48,7 +48,6 @@ Blockly.Blocks.loader = {
               type: 'GET',
               url,
             }).error((e) => {
-              window.amin = e
               if (e.status) {
                 disable(this,
                   `${translator.translateText('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
