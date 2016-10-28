@@ -21,8 +21,9 @@ const createDetails = (contract) => {
 export default class PurchaseCtrl {
   constructor(api, beforePurchase, duringPurchase, afterPurchase) {
     this.tickObj = {
+      direction: '',
+      ohlc: [],
       ticks: [],
-      candles: [],
     }
     this.expectedNumOfProposals = 2
     this.api = api
@@ -48,7 +49,7 @@ export default class PurchaseCtrl {
   }
   updateTicks(data) {
     const ticks = data.ticks
-    const ohlc = data.candles
+    const ohlc = data.ohlc
     let direction = ''
     const length = ticks.length
     if (length >= 2) {

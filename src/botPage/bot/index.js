@@ -192,7 +192,7 @@ export default class Bot {
         this.ticks.splice(0, 1)
         const tickObj = {
           ticks: this.ticks,
-          candles: this.candles,
+          ohlc: this.candles,
         }
         if (this.purchaseCtrl) {
           this.purchaseCtrl.updateTicks(tickObj)
