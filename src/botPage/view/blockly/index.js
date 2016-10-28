@@ -254,6 +254,7 @@ export default class _Blockly {
     const addedBlocks = []
     for (const block of Array.prototype.slice.call(xml.children)) {
       if (!header || [
+          'tick_analysis',
           'procedures_defreturn',
           'procedures_defnoreturn',
           'loader'].indexOf(block.getAttribute('type')) >= 0) {
