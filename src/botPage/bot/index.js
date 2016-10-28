@@ -190,7 +190,20 @@ export default class Bot {
       const apiTick = (tick) => {
         this.ticks = [...this.ticks, tick]
         this.ticks.splice(0, 1)
+        let direction = ''
+        const length = this.ticks.length
+        const tick1 = this.ticks.slice(-1)[0]
+        const tick2 = this.ticks.slice(-2)[0]
+        if (length >= 2) {
+          if (tick1.quote > tick2.quote) {
+            direction = 'rise'
+          }
+          if (tick1.quote < tick2.quote) {
+            direction = 'fall'
+          }
+        }
         const tickObj = {
+          direction,
           ticks: this.ticks,
           ohlc: this.candles,
         }

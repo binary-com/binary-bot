@@ -20,11 +20,6 @@ const createDetails = (contract) => {
 
 export default class PurchaseCtrl {
   constructor(api, beforePurchase, duringPurchase, afterPurchase) {
-    this.tickObj = {
-      direction: '',
-      ohlc: [],
-      ticks: [],
-    }
     this.expectedNumOfProposals = 2
     this.api = api
     this.beforePurchase = beforePurchase
@@ -47,19 +42,8 @@ export default class PurchaseCtrl {
       }
     }
   }
-  updateTicks(data) {
-    const ticks = data.ticks
-    const ohlc = data.ohlc
-    let direction = ''
-    const length = ticks.length
-    if (length >= 2) {
-      if (ticks[length - 1].quote > ticks[length - 2].quote) {
-        direction = 'rise'
-      }
-      if (ticks[length - 1].quote < ticks[length - 2].quote) {
-        direction = 'fall'
-      }
-    }
+  updateTicks(tickObj) {
+    const ohlc = tickObj.ohlc
     if (ohlc) {
       const repr = function repr() {
         return JSON.stringify(this)
@@ -68,11 +52,7 @@ export default class PurchaseCtrl {
         o.toString = repr
       }
     }
-    this.tickObj = {
-      direction,
-      ohlc,
-      ticks,
-    }
+    this.tickObj = tickObj
     if (!this.purchased) {
       if (this.ready) {
         observer.emit('log.beforePurchase.start', {
