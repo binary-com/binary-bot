@@ -321,6 +321,7 @@
 			<block type="trade_again"></block>
 		</category>
 		<category name="Tick Analysis" colour="#2a3052" i18n-text="Tick Analysis">
+			<block type="tick_analysis"></block>
 			<block type="tick"></block>
 			<block type="read_ohlc"></block>
 			<block type="check_direction"></block>
