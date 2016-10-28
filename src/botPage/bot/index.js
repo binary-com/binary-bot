@@ -207,11 +207,11 @@ export default class Bot {
           ticks: this.ticks,
           ohlc: this.candles,
         }
-        if (this.purchaseCtrl) {
-          this.purchaseCtrl.updateTicks(tickObj)
-        }
         if (this.tickAnalysis) {
           this.tickAnalysis(tickObj)
+        }
+        if (this.purchaseCtrl) {
+          this.purchaseCtrl.updateTicks(tickObj)
         }
         observer.emit('bot.tickUpdate', {
           ...tickObj,
