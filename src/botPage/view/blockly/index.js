@@ -209,12 +209,10 @@ export default class _Blockly {
         }
       }
       if (clearToAdd) {
-        const vars = [...Blockly.mainWorkspace.variableList]
         const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
         block.getSvgRoot().style.display = 'none'
         block.loaderId = header.id
         header.loadedByMe.push(block.id)
-        block.varsCreatedByMe = Blockly.mainWorkspace.variableList.slice(vars.length)
         return block
       }
       return null
