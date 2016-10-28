@@ -48,12 +48,13 @@ export default class Bot {
     this.symbol = new _Symbol(this.api)
     this.initPromise = this.symbol.initPromise
   }
-  start(token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade) {
+  start(token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysis) {
     if (!this.purchaseCtrl || sameTrade) {
       if (this.purchaseCtrl) {
         this.purchaseCtrl.destroy()
       }
       this.purchaseCtrl = new PurchaseCtrl(this.api, beforePurchase, duringPurchase, afterPurchase)
+      this.tickAnalysis = tickAnalysis
       this.tradeOption = tradeOption
       observer.emit('log.bot.start', {
         again: !!sameTrade,
@@ -189,15 +190,18 @@ export default class Bot {
       const apiTick = (tick) => {
         this.ticks = [...this.ticks, tick]
         this.ticks.splice(0, 1)
-        if (this.purchaseCtrl) {
-          this.purchaseCtrl.updateTicks({
-            ticks: this.ticks,
-            candles: this.candles,
-          })
-        }
-        observer.emit('bot.tickUpdate', {
+        const tickObj = {
           ticks: this.ticks,
           candles: this.candles,
+        }
+        if (this.purchaseCtrl) {
+          this.purchaseCtrl.updateTicks(tickObj)
+        }
+        if (this.tickAnalysis) {
+          this.tickAnalysis(tickObj)
+        }
+        observer.emit('bot.tickUpdate', {
+          ...tickObj,
           pip: this.pip,
         })
       }

@@ -177,9 +177,9 @@ export const beforeSell = (blockObj, ev, name) => {
     enable(blockObj)
   } else {
     const topParent = findTopParentBlock(blockObj)
-    if (topParent && !(topParent.type === 'during_purchase' || topParent.type === 'before_purchase')) {
+    if (topParent && ['during_purchase', 'before_purchase', 'tick_analysis'].indexOf(topParent.type) < 0) {
       disable(blockObj,
-        `${name} ${translator.translateText('must be added either inside the before purchase or during purchase block')}`)
+        `${name} ${translator.translateText('must be added either inside the tick analysis, before purchase or during purchase block')}`)
     } else {
       enable(blockObj)
     }

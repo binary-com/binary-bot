@@ -32,8 +32,13 @@ const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
   for (const block of topBlocks) {
     if (!isMainBlock(block.type)
-      && block.type.indexOf('procedures_def') < 0
-      && ['block_holder', 'loader'].indexOf(block.type) < 0
+      && [
+        'block_holder',
+        'tick_analysis',
+        'loader',
+        'procedures_defreturn',
+        'procedures_defnoreturn',
+      ].indexOf(block.type) < 0
       && !block.disabled) {
         disable(block,
           translator.translateText('Blocks must be inside block holders, main blocks or functions'))
@@ -322,7 +327,7 @@ export default class _Blockly {
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
       disableStrayBlocks()
       code = `
-        var trade, before_purchase, during_purchase, after_purchase;
+        var trade, tick_analysis, before_purchase, during_purchase, after_purchase;
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
         try {
           if (typeof trade !== 'undefined') {
