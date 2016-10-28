@@ -202,25 +202,15 @@ export default class _Blockly {
       addDownloadToMenu(Blockly.Blocks[blockName])
     }
   }
-  addDomBlocks(blockXml, header = null) {
+  addDomAsBlock(blockXml, header = null) {
     if (header) {
-      const id = blockXml.getAttribute('id')
-      let clearToAdd = true
-      for (const b of Blockly.mainWorkspace.getTopBlocks()) {
-        if (b.id === id) {
-          clearToAdd = false
-        }
-      }
-      if (clearToAdd) {
-        Blockly.Events.recordUndo = false
-        const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
-        block.getSvgRoot().style.display = 'none'
-        block.loaderId = header.id
-        header.loadedByMe.push(block.id)
-        Blockly.Events.recordUndo = true
-        return block
-      }
-      return null
+      Blockly.Events.recordUndo = false
+      const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
+      block.getSvgRoot().style.display = 'none'
+      block.loaderId = header.id
+      header.loadedByMe.push(block.id)
+      Blockly.Events.recordUndo = true
+      return block
     }
     backwardCompatibility(blockXml)
     const blockType = blockXml.getAttribute('type')
@@ -258,7 +248,7 @@ export default class _Blockly {
           'procedures_defreturn',
           'procedures_defnoreturn',
           'loader'].indexOf(block.getAttribute('type')) >= 0) {
-        const newBlock = this.addDomBlocks(block, header)
+        const newBlock = this.addDomAsBlock(block, header)
         if (newBlock) {
           addedBlocks.push(newBlock)
         }
