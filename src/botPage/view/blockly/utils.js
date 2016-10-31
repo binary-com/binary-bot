@@ -297,12 +297,12 @@ const processLoaders = (xml, header = null) => {
   return promises
 }
 
-const loadHeadersFirst = (xml, header = null) => new Promise((r) => {
+const loadHeadersFirst = (xml, header = null) => new Promise((resolve, reject) => {
   const promises = processLoaders(xml, header)
   if (promises.length) {
-    Promise.all(promises).then(r)
+    Promise.all(promises).then(resolve, reject)
   } else {
-    r()
+    resolve()
   }
 })
 
@@ -360,7 +360,7 @@ export const load = (blockStr = '', dropEvent = {}) => {
   }
 }
 
-const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve) => {
+const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, reject) => {
   Blockly.Events.setGroup('load')
   try {
     const xml = Blockly.Xml.textToDom(blockStr)
@@ -374,17 +374,15 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve) =>
             }
         }
         resolve()
-      })
+      }, reject)
     } else {
-      observer.emit('ui.log.error',
-        translator.translateText('Remote blocks to load must be a collection.'))
+      reject(translator.translateText('Remote blocks to load must be a collection.'))
     }
   } catch (e) {
     if (e.name === 'BlocklyError') {
       // pass
     } else {
-      observer.emit('ui.log.error',
-        translator.translateText('Unrecognized file format.'))
+      reject(translator.translateText('Unrecognized file format.'))
     }
   }
   Blockly.Events.setGroup(false)
