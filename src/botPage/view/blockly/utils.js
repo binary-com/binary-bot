@@ -253,7 +253,7 @@ export const deleteBlocksLoadedBy = (id) => {
   Blockly.Events.recordUndo = true
 }
 
-const addDomFromHeaderAsBlock = (blockXml, header = null) => {
+const addDomAsBlockFromHeader = (blockXml, header = null) => {
   Blockly.Events.recordUndo = false
   const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
   block.getSvgRoot().style.display = 'none'
@@ -263,20 +263,43 @@ const addDomFromHeaderAsBlock = (blockXml, header = null) => {
   return block
 }
 
-const loadFromHeader = (blockStr = '', header = null) => {
+const processLoaders = (xml, header = null) => {
+  const promises = []
+  for (const block of Array.prototype.slice.call(xml.children)) {
+    if (block.getAttribute('type') === 'loader') {
+      block.remove()
+      const loader = header ? addDomAsBlockFromHeader(block, header)
+        : Blockly.Xml.domToBlock(block, Blockly.mainWorkspace)
+      promises.push(loadRemote(loader)) // eslint-disable-line no-use-before-define
+    }
+  }
+  return promises
+}
+
+const loadHeadersFirst = (xml, header = null) => new Promise((r) => {
+  const promises = processLoaders(xml, header)
+  if (promises.length) {
+    Promise.all(promises).then(r)
+  } else {
+    r()
+  }
+})
+
+const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve) => {
   Blockly.Events.setGroup('load')
   try {
     const xml = Blockly.Xml.textToDom(blockStr)
     if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-      for (const block of Array.prototype.slice.call(xml.children)) {
-        if ([
-          'tick_analysis',
-          'procedures_defreturn',
-          'procedures_defnoreturn',
-          'loader'].indexOf(block.getAttribute('type')) >= 0) {
-            addDomFromHeaderAsBlock(block, header)
-          }
-      }
+      loadHeadersFirst(xml, header).then(() => {
+        for (const block of Array.prototype.slice.call(xml.children)) {
+          if (['tick_analysis',
+            'procedures_defreturn',
+            'procedures_defnoreturn'].indexOf(block.getAttribute('type')) >= 0) {
+              addDomAsBlockFromHeader(block, header)
+            }
+        }
+        resolve()
+      })
     } else {
       observer.emit('ui.log.error',
         translator.translateText('Remote blocks to load must be a collection.'))
@@ -290,9 +313,9 @@ const loadFromHeader = (blockStr = '', header = null) => {
     }
   }
   Blockly.Events.setGroup(false)
-}
+})
 
-export const loadRemoteBlock = (blockObj) => new Promise((resolve, reject) => {
+export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
   let url = blockObj.getFieldValue('URL');
   if (url.indexOf('http') !== 0) {
     url = `http://${url}`
@@ -324,16 +347,17 @@ export const loadRemoteBlock = (blockObj) => new Promise((resolve, reject) => {
         deleteBlocksLoadedBy(blockObj.id)
       }).done((xml) => {
         const oldVars = [...Blockly.mainWorkspace.variableList]
-        loadFromHeader(xml, blockObj)
-        Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
-          if (oldVars.indexOf(v) >= 0) {
-            return true
-          }
-          blockObj.loadedVariables.push(v)
-          return false
-        })
-        blockObj.url = url // eslint-disable-line no-param-reassign
-        resolve()
+        loadBlocksFromHeader(xml, blockObj).then(() => {
+          Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
+            if (oldVars.indexOf(v) >= 0) {
+              return true
+            }
+            blockObj.loadedVariables.push(v)
+            return false
+          })
+          blockObj.url = url // eslint-disable-line no-param-reassign
+          resolve()
+        }, reject)
       })
     }
   }
@@ -354,40 +378,29 @@ const addDomAsBlock = (blockXml) => {
 
 const loadWorkspace = (xml) => {
   Blockly.mainWorkspace.clear()
-  const promises = []
-  for (const block of Array.prototype.slice.call(xml.children)) {
-    if (block.getAttribute('type') === 'loader') {
-      block.remove()
-      const loader = addDomAsBlock(block)
-      promises.push(loadRemoteBlock(loader))
-    }
-  }
-  const loadRest = () => {
+  loadHeadersFirst(xml).then(() => {
     for (const block of Array.prototype.slice.call(xml.children)) {
       backwardCompatibility(block)
     }
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
-  }
-  if (promises.length) {
-    Promise.all(promises).then(loadRest)
-  } else {
-    loadRest()
-  }
+  })
 }
 
 const loadBlocks = (xml, dropEvent = {}) => {
-  const addedBlocks = []
-  for (const block of Array.prototype.slice.call(xml.children)) {
-    const newBlock = addDomAsBlock(block)
-    if (newBlock) {
-      addedBlocks.push(newBlock)
+  loadHeadersFirst(xml).then(() => {
+    const addedBlocks = []
+    for (const block of Array.prototype.slice.call(xml.children)) {
+      const newBlock = addDomAsBlock(block)
+      if (newBlock) {
+        addedBlocks.push(newBlock)
+      }
     }
-  }
-  cleanUpOnLoad(addedBlocks, dropEvent)
-  observer.emit('ui.log.success',
-    translator.translateText('Blocks are loaded successfully'))
+    cleanUpOnLoad(addedBlocks, dropEvent)
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'))
+  })
 }
 
 export const load = (blockStr = '', dropEvent = {}) => {
@@ -416,4 +429,3 @@ export const load = (blockStr = '', dropEvent = {}) => {
     Blockly.Events.setGroup(false)
   }
 }
-

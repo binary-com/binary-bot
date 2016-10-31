@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
 import { translator } from '../../../../../common/translator'
-import { enable, disable, deleteBlocksLoadedBy, loadRemoteBlock } from '../../utils'
+import { enable, disable, deleteBlocksLoadedBy, loadRemote } from '../../utils'
 
 
 Blockly.Blocks.loader = {
@@ -23,7 +23,7 @@ Blockly.Blocks.loader = {
       }
     if (!this.isInFlyout
       && (ev.type === 'change' && ev.element === 'field') && ev.blockId === this.id) {
-        loadRemoteBlock(this).then(() => {
+        loadRemote(this).then(() => {
           enable(this)
         }, (e) => {
           disable(this, e)
