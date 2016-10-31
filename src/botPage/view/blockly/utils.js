@@ -320,7 +320,7 @@ const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) =>
   if (promises.length) {
     Promise.all(promises).then(resolve, reject)
   } else {
-    resolve()
+    resolve([])
   }
 })
 
@@ -337,8 +337,8 @@ const loadWorkspace = (xml) => {
 }
 
 const loadBlocks = (xml, dropEvent = {}) => {
-  addLoadersFirst(xml).then(() => {
-    const addedBlocks = []
+  addLoadersFirst(xml).then((loaders) => {
+    const addedBlocks = [...loaders]
     for (const block of Array.prototype.slice.call(xml.children)) {
       const newBlock = addDomAsBlock(block)
       if (newBlock) {
@@ -445,7 +445,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
         loadBlocksFromHeader(xml, blockObj).then(() => {
           enable(blockObj)
           blockObj.url = url // eslint-disable-line no-param-reassign
-          resolve()
+          resolve(blockObj)
         }, (e) => {
           disable(blockObj)
           reject(e)
