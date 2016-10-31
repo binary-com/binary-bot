@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
 import { translator } from '../../../../../common/translator'
-import { getTopBlocksByType, disable, enable, deleteBlocksLoadedBy } from '../../utils'
+import { enable, disable, deleteBlocksLoadedBy, loadRemoteBlock } from '../../utils'
 
 
 Blockly.Blocks.loader = {
@@ -22,54 +22,12 @@ Blockly.Blocks.loader = {
         deleteBlocksLoadedBy(this.id)
       }
     if (!this.isInFlyout
-      && ((ev.type === 'change' && ev.element === 'field') || ev.type === 'create')
-      && ev.blockId === this.id) {
-        let url = this.getFieldValue('URL');
-        if (url.indexOf('http') !== 0) {
-          url = `http://${url}`
-        }
-        if (!url.match(/[^/]*\.[a-zA-Z]{3}$/) && url.slice(-1)[0] !== '/') {
-          disable(this, translator.translateText('Target must be an xml file'))
-        } else {
-          if (url.slice(-1)[0] === '/') {
-            url += 'index.xml'
-          }
-          let isNew = true
-          for (const block of getTopBlocksByType('loader')) {
-            if (block.id !== this.id && block.url === url) {
-              isNew = false
-            }
-          }
-          if (!isNew) {
-            disable(this, translator.translateText('This url is already loaded'))
-          } else {
-            enable(this)
-            $.ajax({
-              type: 'GET',
-              url,
-            }).error((e) => {
-              if (e.status) {
-                disable(this,
-                  `${translator.translateText('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
-              } else {
-                disable(this,
-                  translator.translateText('Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'))
-              }
-              deleteBlocksLoadedBy(this.id)
-            }).done((xml) => {
-              const oldVars = [...Blockly.mainWorkspace.variableList]
-              Bot.load(xml, null, this) // eslint-disable-line no-undef
-              Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
-                if (oldVars.indexOf(v) >= 0) {
-                  return true
-                }
-                this.loadedVariables.push(v)
-                return false
-              })
-              this.url = url
-            })
-          }
-        }
+      && (ev.type === 'change' && ev.element === 'field') && ev.blockId === this.id) {
+        loadRemoteBlock(this).then(() => {
+          enable(this)
+        }, (e) => {
+          disable(this, e)
+        })
       }
   },
 }

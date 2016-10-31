@@ -5,6 +5,57 @@ import { translator } from '../../../common/translator'
 
 let purchaseChoices = [[translator.translateText('Click to select'), '']]
 
+const backwardCompatibility = (block) => {
+  if (block.getAttribute('type') === 'on_strategy') {
+    block.setAttribute('type', 'before_purchase')
+  } else if (block.getAttribute('type') === 'on_finish') {
+    block.setAttribute('type', 'after_purchase')
+  }
+  for (const statement of Array.prototype.slice.call(block.getElementsByTagName('statement'))) {
+    if (statement.getAttribute('name') === 'STRATEGY_STACK') {
+      statement.setAttribute('name', 'BEFOREPURCHASE_STACK')
+    } else if (statement.getAttribute('name') === 'FINISH_STACK') {
+      statement.setAttribute('name', 'AFTERPURCHASE_STACK')
+    }
+  }
+}
+
+const setMainBlocksDeletable = () => {
+  for (const block of getMainBlocks()) {
+    block.setDeletable(true)
+  }
+}
+
+const fixCollapsedBlocks = () => {
+  for (const block of getCollapsedProcedures()) {
+    block.setCollapsed(false)
+    block.setCollapsed(true)
+  }
+}
+
+const cleanUpOnLoad = (blocksToClean, dropEvent) => {
+  const { clientX = 0, clientY = 0 } = dropEvent || {}
+  const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
+  const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
+  const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft
+  const blocklyTop = (document.body.offsetHeight - blocklyMetrics.viewHeight) - blocklyMetrics.viewTop
+  const cursorX = (clientX) ? (clientX - blocklyLeft) * scaleCancellation : 0
+  let cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0
+  for (const block of blocksToClean) {
+    block.moveBy(cursorX, cursorY)
+    block.snapToGrid()
+    cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
+  }
+  // Fire an event to allow scrollbars to resize.
+  Blockly.mainWorkspace.resizeContents()
+}
+
+export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
+
+const getCollapsedProcedures = () => Blockly.mainWorkspace.getTopBlocks().filter(
+  (block) => (!isMainBlock(block.type)
+      && block.collapsed_ && block.type.indexOf('procedures_def') === 0))
+
 export const deleteBlockIfExists = (block) => {
   Blockly.Events.recordUndo = false
   for (const mainBlock of Blockly.mainWorkspace.getTopBlocks()) {
@@ -41,8 +92,6 @@ export const configMainBlock = (ev, type) => {
     }
   }
 }
-
-export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
 
 export const getBlockByType = (type) => {
   for (const block of Blockly.mainWorkspace.getAllBlocks()) {
@@ -202,5 +251,169 @@ export const deleteBlocksLoadedBy = (id) => {
   }
   Blockly.Events.setGroup(false)
   Blockly.Events.recordUndo = true
+}
+
+const addDomFromHeaderAsBlock = (blockXml, header = null) => {
+  Blockly.Events.recordUndo = false
+  const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
+  block.getSvgRoot().style.display = 'none'
+  block.loaderId = header.id
+  header.loadedByMe.push(block.id)
+  Blockly.Events.recordUndo = true
+  return block
+}
+
+const loadFromHeader = (blockStr = '', header = null) => {
+  Blockly.Events.setGroup('load')
+  try {
+    const xml = Blockly.Xml.textToDom(blockStr)
+    if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+      for (const block of Array.prototype.slice.call(xml.children)) {
+        if ([
+          'tick_analysis',
+          'procedures_defreturn',
+          'procedures_defnoreturn',
+          'loader'].indexOf(block.getAttribute('type')) >= 0) {
+            addDomFromHeaderAsBlock(block, header)
+          }
+      }
+    } else {
+      observer.emit('ui.log.error',
+        translator.translateText('Remote blocks to load must be a collection.'))
+    }
+  } catch (e) {
+    if (e.name === 'BlocklyError') {
+      // pass
+    } else {
+      observer.emit('ui.log.error',
+        translator.translateText('Unrecognized file format.'))
+    }
+  }
+  Blockly.Events.setGroup(false)
+}
+
+export const loadRemoteBlock = (blockObj) => new Promise((resolve, reject) => {
+  let url = blockObj.getFieldValue('URL');
+  if (url.indexOf('http') !== 0) {
+    url = `http://${url}`
+  }
+  if (!url.match(/[^/]*\.[a-zA-Z]{3}$/) && url.slice(-1)[0] !== '/') {
+    reject(translator.translateText('Target must be an xml file'))
+  } else {
+    if (url.slice(-1)[0] === '/') {
+      url += 'index.xml'
+    }
+    let isNew = true
+    for (const block of getTopBlocksByType('loader')) {
+      if (block.id !== blockObj.id && block.url === url) {
+        isNew = false
+      }
+    }
+    if (!isNew) {
+      reject(translator.translateText('This url is already loaded'))
+    } else {
+      $.ajax({
+        type: 'GET',
+        url,
+      }).error((e) => {
+        if (e.status) {
+          reject(`${translator.translateText('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
+        } else {
+          reject(translator.translateText('Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'))
+        }
+        deleteBlocksLoadedBy(blockObj.id)
+      }).done((xml) => {
+        const oldVars = [...Blockly.mainWorkspace.variableList]
+        loadFromHeader(xml, blockObj)
+        Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
+          if (oldVars.indexOf(v) >= 0) {
+            return true
+          }
+          blockObj.loadedVariables.push(v)
+          return false
+        })
+        blockObj.url = url // eslint-disable-line no-param-reassign
+        resolve()
+      })
+    }
+  }
+})
+
+const addDomAsBlock = (blockXml) => {
+  backwardCompatibility(blockXml)
+  const blockType = blockXml.getAttribute('type')
+  if (isMainBlock(blockType)) {
+    for (const b of Blockly.mainWorkspace.getTopBlocks()) {
+      if (b.type === blockType) {
+        b.dispose()
+      }
+    }
+  }
+  return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
+}
+
+const loadWorkspace = (xml) => {
+  Blockly.mainWorkspace.clear()
+  const promises = []
+  for (const block of Array.prototype.slice.call(xml.children)) {
+    if (block.getAttribute('type') === 'loader') {
+      block.remove()
+      const loader = addDomAsBlock(block)
+      promises.push(loadRemoteBlock(loader))
+    }
+  }
+  const loadRest = () => {
+    for (const block of Array.prototype.slice.call(xml.children)) {
+      backwardCompatibility(block)
+    }
+    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'))
+  }
+  if (promises.length) {
+    Promise.all(promises).then(loadRest)
+  } else {
+    loadRest()
+  }
+}
+
+const loadBlocks = (xml, dropEvent = {}) => {
+  const addedBlocks = []
+  for (const block of Array.prototype.slice.call(xml.children)) {
+    const newBlock = addDomAsBlock(block)
+    if (newBlock) {
+      addedBlocks.push(newBlock)
+    }
+  }
+  cleanUpOnLoad(addedBlocks, dropEvent)
+  observer.emit('ui.log.success',
+    translator.translateText('Blocks are loaded successfully'))
+}
+
+export const load = (blockStr = '', dropEvent = {}) => {
+  if (blockStr.indexOf('<xml') !== 0) {
+    observer.emit('ui.log.error',
+      translator.translateText('Unrecognized file format.'))
+  } else {
+    Blockly.Events.setGroup('load')
+    try {
+      const xml = Blockly.Xml.textToDom(blockStr)
+      if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+        loadBlocks(xml, dropEvent)
+      } else {
+        loadWorkspace(xml)
+      }
+      setMainBlocksDeletable()
+      fixCollapsedBlocks()
+    } catch (e) {
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        observer.emit('ui.log.error',
+          translator.translateText('Unrecognized file format.'))
+      }
+    }
+    Blockly.Events.setGroup(false)
+  }
 }
 

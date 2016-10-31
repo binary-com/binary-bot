@@ -1,32 +1,10 @@
-import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../common/translator'
 import { bot } from '../../bot'
 import { notifyError } from '../logger'
-import { isMainBlock, save, getMainBlocks,
+import { isMainBlock, save, load,
   disable, deleteBlocksLoadedBy,
 } from './utils'
 import blocks from './blocks'
-
-const backwardCompatibility = (block) => {
-  if (block.getAttribute('type') === 'on_strategy') {
-    block.setAttribute('type', 'before_purchase')
-  } else if (block.getAttribute('type') === 'on_finish') {
-    block.setAttribute('type', 'after_purchase')
-  }
-  for (const statement of Array.prototype.slice.call(block.getElementsByTagName('statement'))) {
-    if (statement.getAttribute('name') === 'STRATEGY_STACK') {
-      statement.setAttribute('name', 'BEFOREPURCHASE_STACK')
-    } else if (statement.getAttribute('name') === 'FINISH_STACK') {
-      statement.setAttribute('name', 'AFTERPURCHASE_STACK')
-    }
-  }
-}
-
-const setMainBlocksDeletable = () => {
-  for (const block of getMainBlocks()) {
-    block.setDeletable(true)
-  }
-}
 
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
@@ -44,34 +22,6 @@ const disableStrayBlocks = () => {
           translator.translateText('Blocks must be inside block holders, main blocks or functions'))
       }
   }
-}
-
-const getCollapsedProcedures = () => Blockly.mainWorkspace.getTopBlocks().filter(
-  (block) => (!isMainBlock(block.type)
-      && block.collapsed_ && block.type.indexOf('procedures_def') === 0))
-
-const fixCollapsedBlocks = () => {
-  for (const block of getCollapsedProcedures()) {
-    block.setCollapsed(false)
-    block.setCollapsed(true)
-  }
-}
-
-const cleanUpOnLoad = (blocksToClean, dropEvent) => {
-  const { clientX = 0, clientY = 0 } = dropEvent || {}
-  const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
-  const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
-  const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft
-  const blocklyTop = (document.body.offsetHeight - blocklyMetrics.viewHeight) - blocklyMetrics.viewTop
-  const cursorX = (clientX) ? (clientX - blocklyLeft) * scaleCancellation : 0
-  let cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0
-  for (const block of blocksToClean) {
-    block.moveBy(cursorX, cursorY)
-    block.snapToGrid()
-    cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
-  }
-  // Fire an event to allow scrollbars to resize.
-  Blockly.mainWorkspace.resizeContents()
 }
 
 const createXmlTag = (obj) => {
@@ -202,103 +152,16 @@ export default class _Blockly {
       addDownloadToMenu(Blockly.Blocks[blockName])
     }
   }
-  addDomAsBlock(blockXml, header = null) {
-    if (header) {
-      Blockly.Events.recordUndo = false
-      const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
-      block.getSvgRoot().style.display = 'none'
-      block.loaderId = header.id
-      header.loadedByMe.push(block.id)
-      Blockly.Events.recordUndo = true
-      return block
-    }
-    backwardCompatibility(blockXml)
-    const blockType = blockXml.getAttribute('type')
-    if (isMainBlock(blockType)) {
-      for (const b of Blockly.mainWorkspace.getTopBlocks()) {
-        if (b.type === blockType) {
-          b.dispose()
-        }
-      }
-    }
-    return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
-  }
   resetWorkspace() {
     Blockly.Events.setGroup(true)
     Blockly.mainWorkspace.clear()
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace)
     Blockly.Events.setGroup(false)
   }
-  loadWorkspace(xml) {
-    Blockly.mainWorkspace.clear()
-    for (const block of Array.prototype.slice.call(xml.children)) {
-      backwardCompatibility(block)
-    }
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
+  load(blockStr = '', dropEvent = {}, header = null) {
+    load(blockStr, dropEvent, header)
     this.blocksXmlStr = Blockly.Xml.domToPrettyText(
       Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
-    observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
-  }
-  loadBlocks(xml, dropEvent = {}, header = null) {
-    const addedBlocks = []
-    for (const block of Array.prototype.slice.call(xml.children)) {
-      if (!header || [
-          'tick_analysis',
-          'procedures_defreturn',
-          'procedures_defnoreturn',
-          'loader'].indexOf(block.getAttribute('type')) >= 0) {
-        const newBlock = this.addDomAsBlock(block, header)
-        if (newBlock) {
-          addedBlocks.push(newBlock)
-        }
-      }
-    }
-    cleanUpOnLoad(addedBlocks, dropEvent)
-    observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
-  }
-  selectBlockByText(text) {
-    let returnVal
-    $('.blocklyText').each(function each() {
-      if ($(this).text().indexOf(text) >= 0) {
-        returnVal = $(this).parent()[0]
-      }
-    })
-    return returnVal
-  }
-  load(blockStr = '', dropEvent = {}, header = null) {
-    if (blockStr.indexOf('<xml') !== 0) {
-      observer.emit('ui.log.error',
-        translator.translateText('Unrecognized file format.'))
-    } else {
-      Blockly.Events.setGroup('load')
-      try {
-        const xml = Blockly.Xml.textToDom(blockStr)
-        if (!header) {
-          if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-            this.loadBlocks(xml, dropEvent)
-          } else {
-            this.loadWorkspace(xml)
-          }
-          setMainBlocksDeletable()
-          fixCollapsedBlocks()
-        } else if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-          this.loadBlocks(xml, null, header)
-        } else {
-          observer.emit('ui.log.error',
-            translator.translateText('Remote blocks to load must be a collection.'))
-        }
-      } catch (e) {
-        if (e.name === 'BlocklyError') {
-          // pass
-        } else {
-          observer.emit('ui.log.error',
-            translator.translateText('Unrecognized file format.'))
-        }
-      }
-      Blockly.Events.setGroup(false)
-    }
   }
   save(filename, collection) {
     const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
