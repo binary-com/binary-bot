@@ -241,12 +241,19 @@ export const durationToSecond = (duration) => {
   return null
 }
 
+const isProcedure = (blockType) => ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0
+
 export const deleteBlocksLoadedBy = (id) => {
   Blockly.Events.recordUndo = false
   Blockly.Events.setGroup(true)
   for (const block of Blockly.mainWorkspace.getTopBlocks()) {
     if (block.loaderId === id) {
-      block.dispose()
+      if (isProcedure(block.type)) {
+        block.setFieldValue(`${block.getFieldValue('NAME')} (deleted)`, 'NAME')
+        block.setDisabled(true)
+      } else {
+        block.dispose()
+      }
     }
   }
   Blockly.Events.setGroup(false)
@@ -277,6 +284,17 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
     header.loadedVariables.push(v)
     return false
   })
+  if (isProcedure(block.type)) {
+    const procedureName = block.getFieldValue('NAME')
+    const oldProcedure = Blockly.Procedures.getDefinition(
+      `${procedureName} (deleted)`, Blockly.mainWorkspace)
+    if (oldProcedure) {
+      const f = block.getField('NAME')
+      f.text_ = `${procedureName} (deleted)`
+      oldProcedure.dispose()
+      block.setFieldValue(`${procedureName}`, 'NAME')
+    }
+  }
   block.getSvgRoot().style.display = 'none'
   block.loaderId = header.id
   header.loadedByMe.push(block.id)
@@ -302,7 +320,7 @@ const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) =>
   if (promises.length) {
     Promise.all(promises).then(resolve, reject)
   } else {
-    resolve()
+    resolve([])
   }
 })
 
@@ -319,8 +337,8 @@ const loadWorkspace = (xml) => {
 }
 
 const loadBlocks = (xml, dropEvent = {}) => {
-  addLoadersFirst(xml).then(() => {
-    const addedBlocks = []
+  addLoadersFirst(xml).then((loaders) => {
+    const addedBlocks = [...loaders]
     for (const block of Array.prototype.slice.call(xml.children)) {
       const newBlock = addDomAsBlock(block)
       if (newBlock) {
@@ -367,9 +385,8 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
     if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
       addLoadersFirst(xml, header).then(() => {
         for (const block of Array.prototype.slice.call(xml.children)) {
-          if (['tick_analysis',
-            'procedures_defreturn',
-            'procedures_defnoreturn'].indexOf(block.getAttribute('type')) >= 0) {
+          if (block.getAttribute('type') === 'tick_analysis' ||
+            isProcedure(block.getAttribute('type'))) {
               addDomAsBlockFromHeader(block, header)
             }
         }
@@ -428,7 +445,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
         loadBlocksFromHeader(xml, blockObj).then(() => {
           enable(blockObj)
           blockObj.url = url // eslint-disable-line no-param-reassign
-          resolve()
+          resolve(blockObj)
         }, (e) => {
           disable(blockObj)
           reject(e)
