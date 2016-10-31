@@ -63,9 +63,9 @@ export default {
       NOTOUCH: translator.translateText('No Touch'),
     }],
     ENDSINOUT: [{
-      EXPIRYMISS: translator.translateText('Ends In'),
+      EXPIRYRANGE: translator.translateText('Ends In'),
     }, {
-      EXPIRYRANGE: translator.translateText('Ends Out'),
+      EXPIRYMISS: translator.translateText('Ends Out'),
     }],
     STAYSINOUT: [{
       RANGE: translator.translateText('Stays In'),
