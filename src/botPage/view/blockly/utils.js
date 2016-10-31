@@ -297,7 +297,7 @@ const processLoaders = (xml, header = null) => {
   return promises
 }
 
-const loadHeadersFirst = (xml, header = null) => new Promise((resolve, reject) => {
+const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) => {
   const promises = processLoaders(xml, header)
   if (promises.length) {
     Promise.all(promises).then(resolve, reject)
@@ -308,18 +308,18 @@ const loadHeadersFirst = (xml, header = null) => new Promise((resolve, reject) =
 
 const loadWorkspace = (xml) => {
   Blockly.mainWorkspace.clear()
-  loadHeadersFirst(xml).then(() => {
+  addLoadersFirst(xml).then(() => {
     for (const block of Array.prototype.slice.call(xml.children)) {
       backwardCompatibility(block)
     }
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
-  })
+  }, (e) => observer.emit('ui.log.error', e))
 }
 
 const loadBlocks = (xml, dropEvent = {}) => {
-  loadHeadersFirst(xml).then(() => {
+  addLoadersFirst(xml).then(() => {
     const addedBlocks = []
     for (const block of Array.prototype.slice.call(xml.children)) {
       const newBlock = addDomAsBlock(block)
@@ -330,7 +330,7 @@ const loadBlocks = (xml, dropEvent = {}) => {
     cleanUpOnLoad(addedBlocks, dropEvent)
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
-  })
+  }, (e) => observer.emit('ui.log.error', e))
 }
 
 export const load = (blockStr = '', dropEvent = {}) => {
@@ -365,7 +365,7 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
   try {
     const xml = Blockly.Xml.textToDom(blockStr)
     if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-      loadHeadersFirst(xml, header).then(() => {
+      addLoadersFirst(xml, header).then(() => {
         for (const block of Array.prototype.slice.call(xml.children)) {
           if (['tick_analysis',
             'procedures_defreturn',
@@ -376,12 +376,14 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
         resolve()
       }, reject)
     } else {
+      disable(header)
       reject(translator.translateText('Remote blocks to load must be a collection.'))
     }
   } catch (e) {
     if (e.name === 'BlocklyError') {
       // pass
     } else {
+      disable(header)
       reject(translator.translateText('Unrecognized file format.'))
     }
   }
@@ -394,6 +396,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
     url = `http://${url}`
   }
   if (!url.match(/[^/]*\.[a-zA-Z]{3}$/) && url.slice(-1)[0] !== '/') {
+    disable(blockObj)
     reject(translator.translateText('Target must be an xml file'))
   } else {
     if (url.slice(-1)[0] === '/') {
@@ -406,6 +409,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
       }
     }
     if (!isNew) {
+      disable(blockObj)
       reject(translator.translateText('This url is already loaded'))
     } else {
       $.ajax({
@@ -413,16 +417,22 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
         url,
       }).error((e) => {
         if (e.status) {
+          disable(blockObj)
           reject(`${translator.translateText('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
         } else {
+          disable(blockObj)
           reject(translator.translateText('Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'))
         }
         deleteBlocksLoadedBy(blockObj.id)
       }).done((xml) => {
         loadBlocksFromHeader(xml, blockObj).then(() => {
+          enable(blockObj)
           blockObj.url = url // eslint-disable-line no-param-reassign
           resolve()
-        }, reject)
+        }, (e) => {
+          disable(blockObj)
+          reject(e)
+        })
       })
     }
   }

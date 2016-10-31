@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
 import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../../../common/translator'
-import { enable, disable, deleteBlocksLoadedBy, loadRemote } from '../../utils'
+import { deleteBlocksLoadedBy, loadRemote } from '../../utils'
 
 
 Blockly.Blocks.loader = {
@@ -24,12 +24,10 @@ Blockly.Blocks.loader = {
       }
     if (!this.isInFlyout
       && (ev.type === 'change' && ev.element === 'field') && ev.blockId === this.id) {
+        deleteBlocksLoadedBy(this.id)
         loadRemote(this).then(() => {
           observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
-          enable(this)
-        }, (e) => {
-          disable(this, e)
-        })
+        }, (e) => observer.emit('ui.log.error', e))
       }
   },
 }
