@@ -35,7 +35,7 @@
     "binary-mock-websocket": "^4.1.1",
     "blockly": "google/blockly.git#0785a7b",
     "bootstrap": "^3.3.7",
-    "eslint": "^3.8.1",
+    "eslint": "^3.9.0",
     "filesaverjs": "^0.2.2",
     "gulp": "^3.9.1",
     "gulp-connect": "^5.0.0",
