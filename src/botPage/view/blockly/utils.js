@@ -253,9 +253,30 @@ export const deleteBlocksLoadedBy = (id) => {
   Blockly.Events.recordUndo = true
 }
 
+const addDomAsBlock = (blockXml) => {
+  backwardCompatibility(blockXml)
+  const blockType = blockXml.getAttribute('type')
+  if (isMainBlock(blockType)) {
+    for (const b of Blockly.mainWorkspace.getTopBlocks()) {
+      if (b.type === blockType) {
+        b.dispose()
+      }
+    }
+  }
+  return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
+}
+
 const addDomAsBlockFromHeader = (blockXml, header = null) => {
   Blockly.Events.recordUndo = false
+  const oldVars = [...Blockly.mainWorkspace.variableList]
   const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
+  Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
+    if (oldVars.indexOf(v) >= 0) {
+      return true
+    }
+    header.loadedVariables.push(v)
+    return false
+  })
   block.getSvgRoot().style.display = 'none'
   block.loaderId = header.id
   header.loadedByMe.push(block.id)
@@ -284,6 +305,60 @@ const loadHeadersFirst = (xml, header = null) => new Promise((r) => {
     r()
   }
 })
+
+const loadWorkspace = (xml) => {
+  Blockly.mainWorkspace.clear()
+  loadHeadersFirst(xml).then(() => {
+    for (const block of Array.prototype.slice.call(xml.children)) {
+      backwardCompatibility(block)
+    }
+    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'))
+  })
+}
+
+const loadBlocks = (xml, dropEvent = {}) => {
+  loadHeadersFirst(xml).then(() => {
+    const addedBlocks = []
+    for (const block of Array.prototype.slice.call(xml.children)) {
+      const newBlock = addDomAsBlock(block)
+      if (newBlock) {
+        addedBlocks.push(newBlock)
+      }
+    }
+    cleanUpOnLoad(addedBlocks, dropEvent)
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'))
+  })
+}
+
+export const load = (blockStr = '', dropEvent = {}) => {
+  if (blockStr.indexOf('<xml') !== 0) {
+    observer.emit('ui.log.error',
+      translator.translateText('Unrecognized file format.'))
+  } else {
+    Blockly.Events.setGroup('load')
+    try {
+      const xml = Blockly.Xml.textToDom(blockStr)
+      if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+        loadBlocks(xml, dropEvent)
+      } else {
+        loadWorkspace(xml)
+      }
+      setMainBlocksDeletable()
+      fixCollapsedBlocks()
+    } catch (e) {
+      if (e.name === 'BlocklyError') {
+        // pass
+      } else {
+        observer.emit('ui.log.error',
+          translator.translateText('Unrecognized file format.'))
+      }
+    }
+    Blockly.Events.setGroup(false)
+  }
+}
 
 const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve) => {
   Blockly.Events.setGroup('load')
@@ -346,15 +421,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
         }
         deleteBlocksLoadedBy(blockObj.id)
       }).done((xml) => {
-        const oldVars = [...Blockly.mainWorkspace.variableList]
         loadBlocksFromHeader(xml, blockObj).then(() => {
-          Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
-            if (oldVars.indexOf(v) >= 0) {
-              return true
-            }
-            blockObj.loadedVariables.push(v)
-            return false
-          })
           blockObj.url = url // eslint-disable-line no-param-reassign
           resolve()
         }, reject)
@@ -362,70 +429,3 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
     }
   }
 })
-
-const addDomAsBlock = (blockXml) => {
-  backwardCompatibility(blockXml)
-  const blockType = blockXml.getAttribute('type')
-  if (isMainBlock(blockType)) {
-    for (const b of Blockly.mainWorkspace.getTopBlocks()) {
-      if (b.type === blockType) {
-        b.dispose()
-      }
-    }
-  }
-  return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
-}
-
-const loadWorkspace = (xml) => {
-  Blockly.mainWorkspace.clear()
-  loadHeadersFirst(xml).then(() => {
-    for (const block of Array.prototype.slice.call(xml.children)) {
-      backwardCompatibility(block)
-    }
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
-    observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
-  })
-}
-
-const loadBlocks = (xml, dropEvent = {}) => {
-  loadHeadersFirst(xml).then(() => {
-    const addedBlocks = []
-    for (const block of Array.prototype.slice.call(xml.children)) {
-      const newBlock = addDomAsBlock(block)
-      if (newBlock) {
-        addedBlocks.push(newBlock)
-      }
-    }
-    cleanUpOnLoad(addedBlocks, dropEvent)
-    observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
-  })
-}
-
-export const load = (blockStr = '', dropEvent = {}) => {
-  if (blockStr.indexOf('<xml') !== 0) {
-    observer.emit('ui.log.error',
-      translator.translateText('Unrecognized file format.'))
-  } else {
-    Blockly.Events.setGroup('load')
-    try {
-      const xml = Blockly.Xml.textToDom(blockStr)
-      if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-        loadBlocks(xml, dropEvent)
-      } else {
-        loadWorkspace(xml)
-      }
-      setMainBlocksDeletable()
-      fixCollapsedBlocks()
-    } catch (e) {
-      if (e.name === 'BlocklyError') {
-        // pass
-      } else {
-        observer.emit('ui.log.error',
-          translator.translateText('Unrecognized file format.'))
-      }
-    }
-    Blockly.Events.setGroup(false)
-  }
-}
