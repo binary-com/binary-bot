@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 import { translator } from '../../../../../common/translator'
-import { beforeSell } from '../../relationChecker'
+import { tickScope } from '../../relationChecker'
 
 Blockly.Blocks.direction = {
   init: function init() {
@@ -12,8 +12,8 @@ Blockly.Blocks.direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    beforeSell(this, ev, 'Tick Direction')
+    tickScope(this, ev, 'Tick Direction')
   },
 }
 
-Blockly.JavaScript.direction = () => ['ticks.direction', Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.direction = () => ['this.ticks.direction', Blockly.JavaScript.ORDER_ATOMIC]

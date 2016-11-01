@@ -42,8 +42,8 @@ export default class PurchaseCtrl {
       }
     }
   }
-  updateTicks(tickObj) {
-    const ohlc = tickObj.ohlc
+  updateTicks(ticks) {
+    const ohlc = ticks.ohlc
     if (ohlc) {
       const repr = function repr() {
         return JSON.stringify(this)
@@ -52,15 +52,13 @@ export default class PurchaseCtrl {
         o.toString = repr
       }
     }
-    this.tickObj = tickObj
+    this.ticks = ticks
     if (!this.purchased) {
       if (this.ready) {
         observer.emit('log.beforePurchase.start', {
           proposals: this.proposals,
         })
-        this.beforePurchase(this.tickObj, this.proposals, this)
-      } else {
-        this.beforePurchase(this.tickObj, null, null)
+        this.beforePurchase()
       }
     }
   }
@@ -74,13 +72,16 @@ export default class PurchaseCtrl {
       const contract = this.getContract(option)
       this.trade = new Trade(this.api)
       const tradeUpdate = (openContract) => {
-        this.duringPurchase(this.tickObj, openContract, this)
+        this.openContract = openContract
+        this.duringPurchase()
         observer.emit('beforePurchase.tradeUpdate', openContract)
       }
       const tradeFinish = (finishedContract) => {
         // order matters, needs fix
         observer.emit('beforePurchase.finish', finishedContract)
-        this.afterPurchase(finishedContract, createDetails(finishedContract))
+        this.finishedContract = finishedContract
+        this.contractDetails = createDetails(finishedContract)
+        this.afterPurchase()
       }
       observer.register('trade.update', tradeUpdate)
       observer.register('trade.finish', tradeFinish, true)

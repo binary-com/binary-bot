@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import { translator } from '../../../../../common/translator'
-import { beforeSell } from '../../relationChecker'
+import { tickScope } from '../../relationChecker'
 
 Blockly.Blocks.get_ohlc = {
   init: function init() {
@@ -15,7 +15,7 @@ Blockly.Blocks.get_ohlc = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    beforeSell(this, ev, 'Get Candle')
+    tickScope(this, ev, 'Get Candle')
   },
 }
 
@@ -27,9 +27,9 @@ Blockly.JavaScript.get_ohlc = (block) => {
     index = 1
   }
   if (index === 1) {
-    code = 'Bot.expect.ohlc(Bot.expect.notEmptyArray(ticks.ohlc).slice(-1)[0])'
+    code = 'Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticks.ohlc).slice(-1)[0])'
   } else {
-    code = `Bot.expect.ohlc(Bot.expect.notEmptyArray(ticks.ohlc).slice(-1*${
+    code = `Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticks.ohlc).slice(-1*${
     index}, -1*${index - 1})[0])`
   }
   return [code, Blockly.JavaScript.ORDER_ATOMIC]

@@ -80,17 +80,16 @@ describe('Bot', () => {
       this.timeout('20000')
       observer.register('bot.stop', () => {
         bot.initPromise.then(() => {
-          observer.register('bot.finish', (_finishedContractFromFinishSignal) => {
-            finishedContractFromFinishSignal = _finishedContractFromFinishSignal
+          observer.register('bot.finish', (finishedContract) => {
+            finishedContractFromFinishSignal = finishedContract
             done()
           }, true)
-          bot.start(token, option, (tick, proposals, _purchaseCtrl) => {
-            if (!_purchaseCtrl) return
+          bot.start(token, option, function beforePurchase() {
             if (++numOfTicks === 3) {
-              _purchaseCtrl.purchase('DIGITEVEN')
+              this.purchase('DIGITEVEN')
             }
-          }, () => {}, (_finishedContract) => {
-            finishedContractFromFinishFunction = _finishedContract
+          }, () => {}, function afterPurchase() {
+            finishedContractFromFinishFunction = this.finishedContract
           })
         })
       }, true)
@@ -106,9 +105,9 @@ describe('Bot', () => {
     let finishedContractFromFinishSignal
     let numOfTicks = 0
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      bot.start(token, option, (tick, proposals, _purchaseCtrl) => {
+      bot.start(token, option, function afterPurchase() {
         if (++numOfTicks === 3) {
-          _purchaseCtrl.purchase('DIGITEVEN')
+          this.purchase('DIGITEVEN')
         }
       }, () => {}, (_finishedContract) => {
         finishedContractFromFinishFunction = _finishedContract

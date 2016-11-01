@@ -12,10 +12,11 @@ Blockly.Blocks.tick_analysis = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }
+
 Blockly.JavaScript.tick_analysis = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'TICKANALYSIS_STACK')
   return `
-    tick_analysis_list.push(function tick_analysis(ticks){
+    tick_analysis_list.push(function tick_analysis(){
       try {
         ${stack}
       } catch (e) { 

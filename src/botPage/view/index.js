@@ -8,7 +8,6 @@ import { getTokenList, removeAllTokens,
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translator } from '../../common/translator'
-import { bot } from '../bot'
 import Introduction from './tours/introduction'
 import Welcome from './tours/welcome'
 import { logHandler } from './logger'
@@ -168,7 +167,7 @@ export default class View {
       if (e) {
         e.preventDefault()
       }
-      bot.stop()
+      window.Bot.stop()
     }
 
     const logout = () => {
@@ -352,7 +351,7 @@ export default class View {
           removeAllTokens()
           this.updateTokenList()
         }
-        bot.stop()
+        window.Bot.stop()
       })
     }
 

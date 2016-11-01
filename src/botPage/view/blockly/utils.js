@@ -151,6 +151,14 @@ export const findTopParentBlock = (b) => {
   return block
 }
 
+export const insideMainBlocks = (block) => {
+  const parent = findTopParentBlock(block)
+  if (!parent) {
+    return false
+  }
+  return parent.type && isMainBlock(parent.type)
+}
+
 export const addPurchaseOptions = (submarket) => {
   if (submarket && submarket.getInputTargetBlock('CONDITION') !== null) {
     const condition = submarket.getInputTargetBlock('CONDITION')
@@ -385,7 +393,9 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
     if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
       addLoadersFirst(xml, header).then(() => {
         for (const block of Array.prototype.slice.call(xml.children)) {
-          if (block.getAttribute('type') === 'tick_analysis' ||
+          if (['tick_analysis',
+            'timeout',
+            'interval'].indexOf(block.getAttribute('type')) >= 0 ||
             isProcedure(block.getAttribute('type'))) {
               addDomAsBlockFromHeader(block, header)
             }

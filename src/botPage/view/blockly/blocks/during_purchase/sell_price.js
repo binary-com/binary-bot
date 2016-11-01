@@ -15,6 +15,6 @@ Blockly.Blocks.sell_price = {
   },
 }
 Blockly.JavaScript.sell_price = () => {
-  const code = '(+(Number(openContract.bid_price) - Number(openContract.buy_price)).toFixed(2))'
+  const code = '(+(Number(this.openContract.bid_price) - Number(this.openContract.buy_price)).toFixed(2))'
   return [code, Blockly.JavaScript.ORDER_ATOMIC]
 }
