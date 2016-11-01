@@ -11,22 +11,22 @@ describe('PurchaseCtrl', () => {
   let purchaseCtrl
   before(() => {
     api = new CustomApi(ws)
-    const beforePurchase = (ticks, receivedProposals, _purchaseCtrl) => {
-      if (receivedProposals) {
+    const beforePurchase = function beforePurchase() {
+      if (this.proposals) {
         if (firstAttempt) {
           firstAttempt = false
           observer.emit('test.beforePurchase', {
-            ticks,
-            proposals: receivedProposals,
+            ticks: this.ticks,
+            proposals: this.proposals,
           })
         } else {
           observer.emit('test.purchase')
-          _purchaseCtrl.purchase('DIGITEVEN')
+          this.purchase('DIGITEVEN')
         }
       } else {
         observer.emit('test.beforePurchase', {
-          ticks,
-          proposals: receivedProposals,
+          ticks: this.ticks,
+          proposals: this.proposals,
         })
       }
     }

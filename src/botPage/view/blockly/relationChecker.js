@@ -172,19 +172,6 @@ export const insideDuringPurchase = (blockObj, ev, name) => {
     }
   }
 }
-export const beforeSell = (blockObj, ev, name) => {
-  if (insideHolder(blockObj)) {
-    enable(blockObj)
-  } else {
-    const topParent = findTopParentBlock(blockObj)
-    if (topParent && ['during_purchase', 'before_purchase', 'tick_analysis'].indexOf(topParent.type) < 0) {
-      disable(blockObj,
-        `${name} ${translator.translateText('must be added either inside the tick analysis, before purchase or during purchase block')}`)
-    } else {
-      enable(blockObj)
-    }
-  }
-}
 export const insideAfterPurchase = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     enable(blockObj)
@@ -200,4 +187,39 @@ export const insideAfterPurchase = (blockObj, ev, name) => {
       enable(blockObj)
     }
   }
+}
+
+const getScopeNames = (scopes) => scopes.map((n) => config.scopeNames[n])
+
+export const insideScope = (blockObj, ev, name, scopes) => {
+  if (insideHolder(blockObj)) {
+    enable(blockObj)
+  } else {
+    const topParent = findTopParentBlock(blockObj)
+    if (topParent && scopes.indexOf(topParent.type) < 0) {
+      disable(blockObj,
+        `${name} ${
+        translator.translateText('must be added either inside one of these')
+      }: (${getScopeNames(scopes)})`)
+    } else {
+      enable(blockObj)
+    }
+  }
+}
+
+export const tickScope = (blockObj, ev, name) => {
+  insideScope(blockObj, ev, name, ['during_purchase',
+    'before_purchase',
+    'timeout',
+    'interval',
+    'tick_analysis'])
+}
+
+export const timeScope = (blockObj, ev, name) => {
+  insideScope(blockObj, ev, name, ['before_purchase',
+    'during_purchase',
+    'after_purchase',
+    'timeout',
+    'interval',
+    'tick_analysis'])
 }

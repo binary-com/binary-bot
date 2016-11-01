@@ -16,4 +16,4 @@ Blockly.Blocks.contract_result = {
   },
 }
 
-Blockly.JavaScript.contract_result = () => ['details[10]', Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.contract_result = () => ['this.contractDetails[10]', Blockly.JavaScript.ORDER_ATOMIC]

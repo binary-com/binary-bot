@@ -33,11 +33,11 @@ gulp.task('deploy', ['build-min'],
 gulp.task('test-deploy', ['build-min', 'serve'], () => {
 });
 
-gulp.task('watch-js', () => gulp.watch(['static/**'], {
+gulp.task('watch-css', () => gulp.watch(['static/**'], {
   debounceTimeout: 1000,
 }, ['build-dev-static']));
 
-gulp.task('watch-css', () => gulp.watch(['src/**/*.js', '!./src/common/translations/*.js'], {
+gulp.task('watch-js', () => gulp.watch(['src/**/*.js', '!./src/common/translations/*.js'], {
   debounceTimeout: 1000,
 }, ['build-dev-js']));
 

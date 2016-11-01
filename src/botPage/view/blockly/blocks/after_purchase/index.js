@@ -26,7 +26,7 @@ Blockly.Blocks.after_purchase = {
 }
 Blockly.JavaScript.after_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'AFTERPURCHASE_STACK')
-  const code = `after_purchase = function after_purchase(_finishedContract, details){
+  const code = `after_purchase = function after_purchase(){
     try {
       ${stack}
     } catch (e) { 

@@ -37,6 +37,9 @@ window._trackJs = { // eslint-disable-line no-underscore-dangle
 
 require('trackjs')
 
+const intervals = []
+const timeouts = []
+
 class BotPage {
   constructor() {
     window.Bot = {
@@ -48,7 +51,16 @@ class BotPage {
         dp.render()
       },
       start: bot.start.bind(bot),
-      stop: bot.stop.bind(bot),
+      stop: () => {
+        for (const i of intervals) {
+          clearInterval(i)
+        }
+        for (const i of timeouts) {
+          clearTimeout(i)
+        }
+        timeouts.length = intervals.length = 0
+        bot.stop()
+      },
       showCode: () => {
         console.log(this.view.blockly.generatedJs); // eslint-disable-line no-console
         console.log(this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
@@ -60,6 +72,8 @@ class BotPage {
       getTotalProfit: () => bot.totalProfit,
       getBalance: (balanceType) => (balanceType === 'STR' ? bot.balanceStr : bot.balance),
       notifyError,
+      setInterval: (f, n) => intervals.push(setInterval(f, n)),
+      setTimeout: (f, n) => timeouts.push(setTimeout(f, n)),
     }
 
     bot.initPromise.then(() => {

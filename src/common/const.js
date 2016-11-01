@@ -192,4 +192,12 @@ export default {
   },
   conditions: ['risefall', 'higherlower', 'touchnotouch',
     'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
+  scopeNames: {
+    before_purchase: translator.translateText('Before Purchase'),
+    during_purchase: translator.translateText('During Purchase'),
+    after_purchase: translator.translateText('After Purchase'),
+    tick_analysis: translator.translateText('Tick Analysis'),
+    timeout: translator.translateText('Run After n Seconds'),
+    interval: translator.translateText('Run Every n Seconds'),
+  },
 }

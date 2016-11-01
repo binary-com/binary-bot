@@ -18,6 +18,7 @@ describe('Const', () => {
       'ohlcFields',
       'durationTypes',
       'candleIntervals',
+      'scopeNames',
     ])
   })
 })

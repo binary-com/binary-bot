@@ -15,4 +15,4 @@ Blockly.Blocks.contract_details = {
     insideAfterPurchase(this, ev, 'Contract Details')
   },
 }
-Blockly.JavaScript.contract_details = () => ['details', Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.contract_details = () => ['this.contractDetails', Blockly.JavaScript.ORDER_ATOMIC]

@@ -202,19 +202,19 @@ export default class Bot {
             direction = 'fall'
           }
         }
-        const tickObj = {
+        const ticks = {
           direction,
           ticks: this.ticks,
           ohlc: this.candles,
         }
         for (const tickAnalysis of this.tickAnalysisList) {
-          tickAnalysis(tickObj)
+          tickAnalysis(ticks)
         }
         if (this.purchaseCtrl) {
-          this.purchaseCtrl.updateTicks(tickObj)
+          this.purchaseCtrl.updateTicks(ticks)
         }
         observer.emit('bot.tickUpdate', {
-          ...tickObj,
+          ...ticks,
           pip: this.pip,
         })
       }

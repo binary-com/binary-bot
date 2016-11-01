@@ -1,5 +1,5 @@
 import { translator } from '../../../../../common/translator'
-import { beforeSell } from '../../relationChecker'
+import { tickScope } from '../../relationChecker'
 import config from '../../../../../common/const'
 
 Blockly.Blocks.check_direction = {
@@ -13,11 +13,11 @@ Blockly.Blocks.check_direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    beforeSell(this, ev, 'Check Direction')
+    tickScope(this, ev, 'Check Direction')
   },
 }
 Blockly.JavaScript.check_direction = (block) => {
   const checkWith = block.getFieldValue('CHECK_DIRECTION')
-  const code = `(ticks.direction === '${checkWith}')`
+  const code = `(this.ticks.direction === '${checkWith}')`
   return [code, Blockly.JavaScript.ORDER_ATOMIC]
 }

@@ -15,4 +15,4 @@ Blockly.Blocks.sell_at_market = {
     insideDuringPurchase(this, ev, translator.translateText('Sell at market'))
   },
 }
-Blockly.JavaScript.sell_at_market = () => `purchaseCtrl.sellAtMarket();\n`
+Blockly.JavaScript.sell_at_market = () => `this.sellAtMarket();\n`
