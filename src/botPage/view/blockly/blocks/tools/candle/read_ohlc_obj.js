@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
-import config from '../../../../../common/const'
-import { translator } from '../../../../../common/translator'
+import config from '../../../../../../common/const'
+import { translator } from '../../../../../../common/translator'
 
 Blockly.Blocks.read_ohlc_obj = {
   init: function init() {
