@@ -333,18 +333,23 @@
 			</category>
 		</category>
 		<category name="Tools" colour="#2a3052" i18n-text="Tools">
+			<category name="Time" colour="#2a3052" i18n-text="Time">
+				<block type="epoch"></block>
+				<block type="timeout"></block>
+				<block type="interval"></block>
+			</category>
+			<category name="Candle" colour="#2a3052" i18n-text="Candle">
+				<block type="is_candle_black"></block>
+				<block type="ohlc_values_in_list"></block>
+				<block type="read_ohlc_obj"></block>
+			</category>
 			<category name="Misc." colour="#2a3052" i18n-text="Misc.">
 				<block type="barrier_offset"></block>
 				<block type="balance"></block>
 				<block type="total_profit"></block>
 				<block type="total_runs"></block>
 				<block type="notify"></block>
-				<block type="is_candle_black"></block>
-				<block type="ohlc_values_in_list"></block>
-				<block type="read_ohlc_obj"></block>
 				<block type="loader"></block>
-				<block type="timeout"></block>
-				<block type="interval"></block>
 				<block type="block_holder"></block>
 			</category>
 			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
