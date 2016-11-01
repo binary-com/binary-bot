@@ -208,7 +208,9 @@ export default class Bot {
           ohlc: this.candles,
         }
         for (const tickAnalysis of this.tickAnalysisList) {
-          tickAnalysis(ticks)
+          tickAnalysis.call({
+            ticks,
+          })
         }
         if (this.purchaseCtrl) {
           this.purchaseCtrl.updateTicks(ticks)
