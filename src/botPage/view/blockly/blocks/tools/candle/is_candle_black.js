@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
-import { translator } from '../../../../../common/translator'
+import { translator } from '../../../../../../common/translator'
 
 Blockly.Blocks.is_candle_black = {
   init: function init() {
