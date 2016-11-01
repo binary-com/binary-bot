@@ -343,6 +343,8 @@
 				<block type="ohlc_values_in_list"></block>
 				<block type="read_ohlc_obj"></block>
 				<block type="loader"></block>
+				<block type="timeout"></block>
+				<block type="interval"></block>
 				<block type="block_holder"></block>
 			</category>
 			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
