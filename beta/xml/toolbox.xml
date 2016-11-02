@@ -323,6 +323,7 @@
 		<category name="Tick Analysis" colour="#2a3052" i18n-text="Tick Analysis">
 			<block type="tick_analysis"></block>
 			<block type="tick"></block>
+			<block type="last_digit"></block>
 			<block type="read_ohlc"></block>
 			<block type="check_direction"></block>
 			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
