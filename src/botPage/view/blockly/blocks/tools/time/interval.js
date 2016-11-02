@@ -23,6 +23,6 @@ Blockly.JavaScript.interval = (block) => {
   return `
     Bot.setInterval(function (){
       ${stack}
-    }, ${seconds ? seconds * 1000 : 1000});
+    }.bind(this), ${seconds ? seconds * 1000 : 1000});
   `
 }
