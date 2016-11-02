@@ -356,9 +356,11 @@
 			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
 				<block type="sma"></block>
 				<block type="ema"></block>
+				<block type="bb"></block>
 				<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
 					<block type="smaa"></block>
 					<block type="emaa"></block>
+					<block type="bba"></block>
 				</category>
 			</category>
 		</category>

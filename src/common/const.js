@@ -200,4 +200,9 @@ export default {
     timeout: translator.translateText('Run After n Seconds'),
     interval: translator.translateText('Run Every n Seconds'),
   },
+  bbResult: [
+    [translator.translateText('upper'), '1'],
+    [translator.translateText('middle'), '0'],
+    [translator.translateText('lower'), '2'],
+  ],
 }

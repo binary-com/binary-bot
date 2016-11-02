@@ -5,6 +5,8 @@ import { translator } from '../../../common/translator'
 
 let purchaseChoices = [[translator.translateText('Click to select'), '']]
 
+export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
+
 const backwardCompatibility = (block) => {
   if (block.getAttribute('type') === 'on_strategy') {
     block.setAttribute('type', 'before_purchase')
@@ -18,11 +20,8 @@ const backwardCompatibility = (block) => {
       statement.setAttribute('name', 'AFTERPURCHASE_STACK')
     }
   }
-}
-
-const setMainBlocksDeletable = () => {
-  for (const block of getMainBlocks()) {
-    block.setDeletable(true)
+  if (isMainBlock(block.getAttribute('type'))) {
+    block.removeAttribute('deletable')
   }
 }
 
@@ -49,8 +48,6 @@ const cleanUpOnLoad = (blocksToClean, dropEvent) => {
   // Fire an event to allow scrollbars to resize.
   Blockly.mainWorkspace.resizeContents()
 }
-
-export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
 
 const getCollapsedProcedures = () => Blockly.mainWorkspace.getTopBlocks().filter(
   (block) => (!isMainBlock(block.type)
@@ -341,6 +338,7 @@ const loadWorkspace = (xml) => {
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
+    fixCollapsedBlocks()
   }, (e) => observer.emit('ui.log.error', e))
 }
 
@@ -356,6 +354,7 @@ const loadBlocks = (xml, dropEvent = {}) => {
     cleanUpOnLoad(addedBlocks, dropEvent)
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
+    fixCollapsedBlocks()
   }, (e) => observer.emit('ui.log.error', e))
 }
 
@@ -372,8 +371,6 @@ export const load = (blockStr = '', dropEvent = {}) => {
       } else {
         loadWorkspace(xml)
       }
-      setMainBlocksDeletable()
-      fixCollapsedBlocks()
     } catch (e) {
       if (e.name === 'BlocklyError') {
         // pass
