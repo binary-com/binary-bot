@@ -19,6 +19,7 @@ describe('Const', () => {
       'durationTypes',
       'candleIntervals',
       'scopeNames',
+      'bbResult',
     ])
   })
 })
