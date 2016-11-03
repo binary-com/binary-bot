@@ -189,13 +189,13 @@ export const addPurchaseOptions = (submarket) => {
   }
 }
 
-export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
+export const save = (filename = 'binary-bot.xml', collection = false, xmlDom) => {
   xmlDom.setAttribute('collection', collection ? 'true' : 'false')
   const xmlText = Blockly.Xml.domToPrettyText(xmlDom)
   const blob = new Blob([xmlText], {
     type: 'text/xml;charset=utf-8',
   })
-  fileSaver.saveAs(blob, filename)
+  fileSaver.saveAs(blob, `${filename}.xml`)
 }
 
 export const disable = (blockObj, message) => {

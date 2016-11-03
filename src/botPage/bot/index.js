@@ -157,7 +157,7 @@ export default class Bot {
       this.api.originalApi.unsubscribeFromAllCandles().then(() => 0, () => 0)
       this.api.history(this.tradeOption.symbol, {
         end: 'latest',
-        count: 600,
+        count: 5000,
         granularity: this.tradeOption.candleInterval,
         style: 'candles',
         subscribe: 1,
@@ -180,7 +180,7 @@ export default class Bot {
       this.api.originalApi.unsubscribeFromAllTicks().then(() => 0, () => 0)
       this.api.history(this.tradeOption.symbol, {
         end: 'latest',
-        count: 600,
+        count: 5000,
         subscribe: 1,
       })
     })

@@ -6,7 +6,7 @@ module.exports = {
         func: function r_100(api){
           api.getTickHistory('R_100', {
             "end": "latest",
-            "count": 600,
+            "count": 5000,
             "subscribe": 1
           })
         },
@@ -20,7 +20,7 @@ module.exports = {
         func: function r_100_candles(api){
           api.getTickHistory('R_100', {
             "end": "latest",
-            "count": 600,
+            "count": 5000,
             "granularity": 60,
             "style": "candles",
             "subscribe": 1
