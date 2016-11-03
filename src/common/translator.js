@@ -39,7 +39,7 @@ export default class Translator {
       window._jipt.push(['project', 'binary-bot'])
       const script = document.createElement('script')
       script.type = 'text/javascript'
-      script.src = 'http://cdn.crowdin.com/jipt/jipt.js'
+      script.src = `${document.location.protocol}//cdn.crowdin.com/jipt/jipt.js`
       $('body').append(script)
     }
     const resources = {}
