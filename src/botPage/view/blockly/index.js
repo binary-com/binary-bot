@@ -217,7 +217,8 @@ export default class _Blockly {
     })
     const script = document.createElement('script')
     script.type = 'text/javascript'
-    script.src = `https://blockly-demo.appspot.com/static/msg/js/${translator.getLanguage()}.js`
+    const lang = translator.getLanguage()
+    script.src = `https://blockly-demo.appspot.com/static/msg/js/${lang === 'ach' ? 'en' : lang}.js`
     $('body').append(script)
   }
   undo() {

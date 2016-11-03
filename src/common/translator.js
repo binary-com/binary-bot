@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import { parseQueryString } from 'binary-common-utils/lib/tools'
 import { set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager'
 import i18n from './_i18n'
@@ -13,6 +14,7 @@ import pt from './translations/pt'
 import es from './translations/es'
 import fr from './translations/fr'
 import en from './translations/en'
+import ach from './translations/ach'
 
 const supportedLanguages = {
   zh_tw: zhTw,
@@ -27,10 +29,19 @@ const supportedLanguages = {
   es,
   fr,
   en,
+  ach,
 }
 export default class Translator {
   constructor() {
     const lang = this.getLanguage()
+    if (lang === 'ach') {
+      window._jipt = []
+      window._jipt.push(['project', 'binary-bot'])
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = 'http://cdn.crowdin.com/jipt/jipt.js'
+      $('body').append(script)
+    }
     const resources = {}
     for (const slk of Object.keys(supportedLanguages)) {
       resources[slk] = {
