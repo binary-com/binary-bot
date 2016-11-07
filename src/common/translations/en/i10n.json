@@ -51,6 +51,7 @@
   "a3cbb98ddf5ee976bc1c3be5221d66ce3ca2e867": "Filename",
   "bf33cc2e57180686002e873efb1564c214405c77": "Save As Collection",
   "efc007a393f66cdb14d57d385822a3d9e36ef873": "Save",
+  "ff29ccd7a6c6073cc462ed590d27a91632fdf67e": "Binary Bot",
   "608061fb5aab975013fa70c5c814a1d8ba30c152": "Trade More Efficiently Than You Ever Thought Possible",
   "e4ce8dc3e416e69262ba642dc57d3975d6616980": "Interested in automating your preferred strategies for trading binary options?",
   "f261237ca8beec6f77b76c4121feb8da22818c56": "Binary Bot is our leading-edge programming tool which allows you to build trading apps with a simple “jigsaw puzzle-like” drag-and-drop function.",
@@ -318,6 +319,5 @@
   "4b6fe6898f0f956d48a4c8172c6dfbcb4159ab09": "Second(s)",
   "2eea87bb804e4e73e3f8e9c41140f7ed83ea8875": "Run the blocks inside every n seconds",
   "7b9c76088576a64f32d67ec335162b9f73eaa026": "Run After",
-  "ff56ffac023cf69ca5c7f71d407499536f4f86b5": "Run the blocks inside after n seconds",
-  "ff29ccd7a6c6073cc462ed590d27a91632fdf67e": "Binary Bot"
+  "ff56ffac023cf69ca5c7f71d407499536f4f86b5": "Run the blocks inside after n seconds"
 }
