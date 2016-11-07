@@ -1,4 +1,4 @@
 files:
   - 
     source: /src/common/translations/en/*.json
-    translation: /src/common/translations/%locale%/%original_file_name%
+    translation: /src/common/translations/%locale_with_underscore%/%original_file_name%
