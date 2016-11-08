@@ -2,6 +2,7 @@
 import { translator } from '../../../../../common/translator'
 import config from '../../../../../common/const'
 import { bot } from '../../../../bot'
+import { BlocklyError } from '../../../../../common/error'
 
 const inputList = ['CONTRACT_TYPE',
   'CANDLE_INTERVAL',
@@ -32,7 +33,8 @@ export default () => {
         const marketName = this.getFieldValue('MARKET_LIST')
         const submarkets = markets[marketName].submarkets
         const symbols = submarkets[submarketName].symbols
-        return Object.keys(symbols).map(e => [symbols[e].display, e])
+        return Object.keys(symbols)
+          .map(e => [symbols[e].display, symbols[e].symbol])
       }
       this.appendDummyInput()
         .appendField(`${translator.translateText('Market')}:`)
@@ -46,7 +48,8 @@ export default () => {
         if (!symbol) {
           return [['', '']]
         }
-        const allowedCategories = bot.symbol.getAllowedCategories(symbol)
+        const allowedCategories = bot.symbol
+          .getAllowedCategories(symbol.toLowerCase())
         return Object.keys(config.conditionsCategoryName)
           .filter(e => allowedCategories.indexOf(e) >= 0)
           .map(e => [config.conditionsCategoryName[e], e])
@@ -58,7 +61,7 @@ export default () => {
         }
         return config.conditionsCategory[tradeTypeCat].map(e => [
           config.opposites[e.toUpperCase()].map(c => c[Object.keys(c)[0]])
-          .join('/'),
+            .join('/'),
           e,
         ])
       }
@@ -70,7 +73,6 @@ export default () => {
       if (this.getFieldValue('TRADETYPE_LIST')) {
         updateInputList(this)
       }
-      console.log(this)
       this.setPreviousStatement(true, 'Market')
       this.setColour('#f2f2f2')
     },
@@ -98,48 +100,72 @@ export default () => {
       }
     },
   }
-  Blockly.JavaScript.market = () => {
-  }
-  /*
-  const symbols = bot.symbol.activeSymbols.getSymbols()
-  for (const k of Object.keys(symbols)) {
-    const allowedCategories = bot.symbol.getAllowedCategoryNames(k)
-    if (allowedCategories.length) {
-      Blockly.Blocks[k] = {
-        init: function init() {
-          this.appendDummyInput()
-            .appendField(symbols[k].display)
-          this.appendDummyInput()
-            .appendField(`${translator.translateText('Accepts')}: (${allowedCategories})`)
-          this.appendStatementInput('CONDITION')
-            .setCheck('Condition')
-          this.setInputsInline(false)
-          this.setPreviousStatement(true, null)
-          this.setColour('#f2f2f2')
-          this.setTooltip(`${translator.translateText('Chooses the symbol:')} ${symbols[k].display}`); // eslint-disable-line max-len
-          this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
-        },
-        onchange: function onchange(ev) {
-          submarket(this, ev)
-        },
+  Blockly.JavaScript.market = (block) => {
+    const durationValue = Blockly.JavaScript.valueToCode(block,
+      'DURATION', Blockly.JavaScript.ORDER_ATOMIC)
+    const candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST')
+    const contractTypeSelector = block.getFieldValue('TYPE_LIST')
+    const durationType = block.getFieldValue('DURATIONTYPE_LIST')
+    const payouttype = block.getFieldValue('PAYOUTTYPE_LIST')
+    const currency = block.getFieldValue('CURRENCY_LIST')
+    const amount = Blockly.JavaScript.valueToCode(block,
+      'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC)
+    let predictionValue
+    let barrierOffsetValue
+    let secondBarrierOffsetValue
+    const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase()
+    if (config.hasPrediction.indexOf(oppositesName) > -1) {
+      predictionValue = Blockly.JavaScript.valueToCode(block,
+        'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC)
+      if (predictionValue === '') {
+        return new BlocklyError(translator.translateText('All trade types are required')).emit()
       }
-      Blockly.JavaScript[k] = function market(block) {
-        const condition = Blockly.JavaScript.statementToCode(block, 'CONDITION')
-        if (!condition) {
-          return new BlocklyError(
-            translator.translateText('A trade type has to be defined for the symbol')).emit()
-        }
-        const code = `
+    }
+    if (config.hasBarrierOffset.indexOf(oppositesName) > -1 ||
+      config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
+      barrierOffsetValue = Blockly.JavaScript.valueToCode(block,
+        'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
+      if (barrierOffsetValue === '') {
+        return new BlocklyError(translator.translateText('All trade types are required')).emit()
+      }
+    }
+    if (config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
+      secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block,
+        'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
+      if (secondBarrierOffsetValue === '') {
+        return new BlocklyError(translator.translateText('All trade types are required')).emit()
+      }
+    }
+    if (oppositesName === '' || durationValue === '' ||
+      payouttype === '' || currency === '' || amount === '') {
+      return new BlocklyError(translator.translateText('All trade types are required')).emit()
+    }
+    const contractTypeList = contractTypeSelector === 'both' ?
+      config.opposites[oppositesName].map((k) => Object.keys(k)[0]) :
+      [contractTypeSelector]
+    const code = `
       getTradeOptions = function getTradeOptions() {
         var tradeOptions = {}
-        tradeOptions = ${condition.trim()}
-        tradeOptions.symbol = '${symbols[k].symbol}'
+        tradeOptions = {
+          contractTypes: '${JSON.stringify(contractTypeList)}',
+          candleInterval: '${candleIntervalValue}',
+          duration: ${durationValue},
+          duration_unit: '${durationType}',
+          basis: '${payouttype}',
+          currency: '${currency}',
+          amount: ${amount},
+          ${((config.hasPrediction.indexOf(oppositesName) > -1 && predictionValue !== '')
+      ? `prediction: ${predictionValue},` : '')}
+          ${((config.hasSecondBarrierOffset.indexOf(oppositesName) > -1
+    || (config.hasBarrierOffset.indexOf(oppositesName) > -1 && barrierOffsetValue !== ''))
+      ? `barrierOffset: ${barrierOffsetValue},` : '')}
+          ${((config.hasSecondBarrierOffset.indexOf(oppositesName) > -1 && secondBarrierOffsetValue !== '')
+      ? `secondBarrierOffset: ${secondBarrierOffsetValue},` : '')}
+        }
+        tradeOptions.symbol = '${block.getFieldValue('SYMBOL_LIST')}'
         return tradeOptions
       }
       `
-        return code
-      }
-    }
+    return code
   }
-*/
 }
