@@ -402,14 +402,12 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
         resolve()
       }, reject)
     } else {
-      disable(header)
       reject(translator.translateText('Remote blocks to load must be a collection.'))
     }
   } catch (e) {
     if (e.name === 'BlocklyError') {
       // pass
     } else {
-      disable(header)
       reject(translator.translateText('Unrecognized file format.'))
     }
   }
@@ -422,7 +420,6 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
     url = `http://${url}`
   }
   if (!url.match(/[^/]*\.[a-zA-Z]{3}$/) && url.slice(-1)[0] !== '/') {
-    disable(blockObj)
     reject(translator.translateText('Target must be an xml file'))
   } else {
     if (url.slice(-1)[0] === '/') {
@@ -443,10 +440,8 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
         url,
       }).error((e) => {
         if (e.status) {
-          disable(blockObj)
           reject(`${translator.translateText('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
         } else {
-          disable(blockObj)
           reject(translator.translateText('Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'))
         }
         deleteBlocksLoadedBy(blockObj.id)
@@ -456,7 +451,6 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
           blockObj.url = url // eslint-disable-line no-param-reassign
           resolve(blockObj)
         }, (e) => {
-          disable(blockObj)
           reject(e)
         })
       })

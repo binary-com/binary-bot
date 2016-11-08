@@ -29,7 +29,7 @@ Blockly.Blocks.loader = {
         }
       }
     if (!this.isInFlyout
-      && (ev.type === 'change' && ev.element === 'field') && ev.blockId === this.id) {
+      && (ev.type === 'change' && ev.element === 'field') && ev.blockId === this.id && !this.disabled) {
         deleteBlocksLoadedBy(this.id)
         loadRemote(this).then(() => {
           observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
