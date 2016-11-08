@@ -37,14 +37,10 @@ gulp.task('watch-css', () => gulp.watch(['static/**'], {
   debounceTimeout: 1000,
 }, ['build-dev-static']));
 
-gulp.task('watch-js', () => gulp.watch(['src/**/*.js', '!./src/common/translations/*.js'], {
-  debounceTimeout: 1000,
-}, ['build-dev-js']));
-
 gulp.task('watch-html', () => gulp.watch(['templates/*'], {
   debounceTimeout: 1000,
 }, ['build-dev-html']));
 
-gulp.task('watch', ['serve', 'build', 'watch-css', 'watch-js', 'watch-html']);
+gulp.task('watch', ['serve', 'build', 'watch-css', 'watch-html']);
 
 gulp.task('default', ['watch']);

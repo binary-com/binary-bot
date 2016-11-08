@@ -4,6 +4,7 @@ import path from 'path';
 const production = process.env.NODE_ENV === 'production';
 module.exports = {
   devtool: 'source-map',
+  watch: !production,
   module: {
     noParse: ['ws'],
     loaders: [

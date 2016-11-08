@@ -18,9 +18,15 @@ Blockly.Blocks.loader = {
   },
   onchange: function onchange(ev) {
     if (!this.isInFlyout
-      && ev.type === 'change' && ev.element === 'disabled' && ev.newValue === true
+      && ev.type === 'change' && ev.element === 'disabled'
       && ev.blockId === this.id) {
-        deleteBlocksLoadedBy(this.id)
+        if (ev.newValue === true) {
+          deleteBlocksLoadedBy(this.id)
+        } else {
+          loadRemote(this).then(() => {
+            observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
+          }, (e) => observer.emit('ui.log.error', e))
+        }
       }
     if (!this.isInFlyout
       && (ev.type === 'change' && ev.element === 'field') && ev.blockId === this.id) {
