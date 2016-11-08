@@ -1,8 +1,7 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#db8gmg
 import { translator } from '../../../../../common/translator'
-import { submarket } from '../../relationChecker'
+import config from '../../../../../common/const'
 import { bot } from '../../../../bot'
-import { BlocklyError } from '../../../../../common/error'
 
 export default () => {
   Blockly.Blocks.market = {
@@ -24,12 +23,43 @@ export default () => {
         return Object.keys(symbols).map(e => [symbols[e].display, e])
       }
       this.appendDummyInput()
-        .appendField(translator.translateText('Market:'))
+        .appendField(`${translator.translateText('Market')}:`)
         .appendField(new Blockly.FieldDropdown(Object.keys(markets).map(e => [markets[e].name, e])), 'MARKET_LIST')
         .appendField('->')
         .appendField(new Blockly.FieldDropdown(getSubmarkets), 'SUBMARKET_LIST')
         .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getSymbols), 'SYMBOL_LIST');
+        .appendField(new Blockly.FieldDropdown(getSymbols), 'SYMBOL_LIST')
+      const getTradeTypeCats = () => {
+        const symbol = this.getFieldValue('SYMBOL_LIST')
+        if (!symbol) {
+          return [['', '']]
+        }
+        const allowedCategories = bot.symbol.getAllowedCategories(symbol)
+        return Object.keys(config.conditionsCategoryName)
+          .filter(e => allowedCategories.indexOf(e) >= 0)
+          .map(e => [config.conditionsCategoryName[e], e])
+      }
+      const getTradeTypes = () => {
+        const tradeTypeCat = this.getFieldValue('TRADETYPECAT_LIST')
+        if (!tradeTypeCat) {
+          return [['', '']]
+        }
+        return config.conditionsCategory[tradeTypeCat].map(e => [
+          config.opposites[e.toUpperCase()].map(c => c[Object.keys(c)[0]])
+          .join('/'),
+          e,
+        ])
+      }
+      this.appendDummyInput()
+        .appendField(`${translator.translateText('Trade Type')}:`)
+        .appendField(new Blockly.FieldDropdown(getTradeTypeCats), 'TRADETYPECAT_LIST')
+        .appendField('->')
+        .appendField(new Blockly.FieldDropdown(getTradeTypes), 'TRADETYPE_LIST')
+      if (this.getFieldValue('TRADETYPE_LIST')) {
+        Blockly.Blocks[this.getFieldValue('TRADETYPE_LIST')].init.call(this)
+      }
+      console.log(this)
+      this.setPreviousStatement(true, 'Market')
       this.setColour('#f2f2f2')
     },
     onchange: function onchange(ev) {
@@ -37,9 +67,21 @@ export default () => {
         if (ev.name === 'MARKET_LIST') {
           this.setFieldValue('', 'SUBMARKET_LIST')
           this.setFieldValue('', 'SYMBOL_LIST')
+          this.setFieldValue('', 'TRADETYPE_LIST')
+          this.setFieldValue('', 'TRADETYPECAT_LIST')
         }
         if (ev.name === 'SUBMARKET_LIST') {
           this.setFieldValue('', 'SYMBOL_LIST')
+          this.setFieldValue('', 'TRADETYPE_LIST')
+          this.setFieldValue('', 'TRADETYPECAT_LIST')
+        }
+        if (ev.name === 'TRADETYPECAT_LIST') {
+          this.setFieldValue('', 'TRADETYPE_LIST')
+        }
+        if (ev.name === 'TRADETYPE_LIST') {
+          if (ev.newValue) {
+            Blockly.Blocks[ev.newValue].init.call(this)
+          }
         }
       }
     },

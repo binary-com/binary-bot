@@ -72,6 +72,10 @@ export default class _Symbol {
   getCategoryNameForCondition(condition) {
     return config.conditionsCategoryName[getCategoryForCondition(condition)]
   }
+  getAllowedCategories(symbol) {
+    const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol)
+    return categories
+  }
   getAllowedCategoryNames(symbol) {
     const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol)
     return categories.map((el) => config.conditionsCategoryName[el])

@@ -19,7 +19,6 @@ export default () => {
           const optionName = options[Object.keys(options)[0]]
           optionNames.push(optionName)
         }
-        title(this, oppositesName, optionNames)
         contractTypes(this, config.opposites[oppositesName])
         candleInterval(this)
         duration(this, oppositesName)
