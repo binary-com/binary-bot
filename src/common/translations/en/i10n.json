@@ -322,5 +322,6 @@
   "ff56ffac023cf69ca5c7f71d407499536f4f86b5": "Run the blocks inside after n seconds",
   "96a41b946454b41ad734c7933feb2d4e3832ec6d": "Market:",
   "2d646b5fd8ba7db6d524f5a78f9bd1d94d3bdcaa": "Choose a market",
-  "569bbd757e1bb8bbccd250b98dc2bb37cb47b787": "Market"
+  "569bbd757e1bb8bbccd250b98dc2bb37cb47b787": "Market",
+  "911348bf6fef082476779805cd1bda16bef66d2d": "Barrier Offset"
 }

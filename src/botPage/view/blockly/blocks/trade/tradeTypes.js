@@ -25,14 +25,19 @@ export default () => {
         payout(this, oppositesName)
         if (config.hasPrediction.indexOf(oppositesName) > -1) {
           prediction(this, oppositesName)
+        } else {
+          this.removeInput('PREDICTION')
         }
         if (config.hasBarrierOffset.indexOf(oppositesName) > -1) {
-          barrierOffset(this, oppositesName)
+          barrierOffset(this)
+        } else {
+          this.removeInput('BARRIEROFFSET')
         }
         if (config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
-          barrierOffset(this, oppositesName, translator.translateText('High Barrier Offset:'))
-          window.block = this
-          secondBarrierOffset(this, oppositesName)
+          barrierOffset(this)
+          secondBarrierOffset(this)
+        } else {
+          this.removeInput('SECONDBARRIEROFFSET')
         }
         this.setInputsInline(false)
         this.setPreviousStatement(true, 'Condition')

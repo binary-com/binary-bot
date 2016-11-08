@@ -5,18 +5,10 @@ import { BlocklyError } from '../../../../../common/error'
 import { marketDropdown, tradeTypeDropdown } from './components'
 import { updatePurchaseChoices } from '../../utils'
 
-const inputList = ['CONTRACT_TYPE',
-  'CANDLE_INTERVAL',
-  'DURATION',
-  'AMOUNT',
-  'CURRENCY',
-  'BARRIEROFFSET',
-  'SECONDBARRIEROFFSET',
-  'PREDICTION']
 const updateInputList = (block) => {
-  inputList.map(e => block.removeInput(e))
   Blockly.Blocks[block.getFieldValue('TRADETYPE_LIST')].init.call(block)
 }
+
 export default () => {
   Blockly.Blocks.market = {
     init: function init() {

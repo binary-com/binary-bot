@@ -62,55 +62,64 @@ export const tradeTypeDropdown = (block) => {
 }
 
 export const contractTypes = (block, opposites) => {
-  block.appendDummyInput('CONTRACT_TYPE')
-    .appendField(translator.translateText('Contract Type:'))
-    .appendField(new Blockly.FieldDropdown([
-      [translator.translateText('Both'), 'both'],
-      ...oppositesToDropdown(opposites),
-    ]), 'TYPE_LIST')
+  if (!block.getInput('CONTRACT_TYPE')) {
+    block.appendDummyInput('CONTRACT_TYPE')
+      .appendField(translator.translateText('Contract Type:'))
+      .appendField(new Blockly.FieldDropdown([
+        [translator.translateText('Both'), 'both'],
+        ...oppositesToDropdown(opposites),
+      ]), 'TYPE_LIST')
+  }
 }
 
 export const candleInterval = (block) => {
-  block.appendDummyInput('CANDLE_INTERVAL')
-    .appendField(translator.translateText('Candle Interval:'))
-    .appendField(new Blockly.FieldDropdown(config.candleIntervals), 'CANDLEINTERVAL_LIST')
+  if (!block.getInput('CANDLE_INTERVAL')) {
+    block.appendDummyInput('CANDLE_INTERVAL')
+      .appendField(translator.translateText('Candle Interval:'))
+      .appendField(new Blockly.FieldDropdown(config.candleIntervals), 'CANDLEINTERVAL_LIST')
+  }
 }
 
 export const duration = (block, oppositeNames) => {
-  block.appendValueInput('DURATION')
-    .setCheck('Number')
-    .appendField(translator.translateText('Duration:'))
-    .appendField(new Blockly.FieldDropdown(config.durationTypes[oppositeNames]), 'DURATIONTYPE_LIST')
+  if (!block.getInput('DURATION')) {
+    block.appendValueInput('DURATION')
+      .setCheck('Number')
+      .appendField(translator.translateText('Duration:'))
+      .appendField(new Blockly.FieldDropdown(config.durationTypes[oppositeNames]), 'DURATIONTYPE_LIST')
+  }
 }
 
 export const payout = (block) => {
-  block.appendValueInput('AMOUNT')
-    .setCheck('Number')
-    .appendField(translator.translateText('Payout:'))
-    .appendField(new Blockly.FieldDropdown(config.lists.PAYOUTTYPE), 'PAYOUTTYPE_LIST')
-  block.appendDummyInput('CURRENCY')
-    .appendField(translator.translateText('Currency:'))
-    .appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST')
+  if (!block.getInput('AMOUNT')) {
+    block.appendValueInput('AMOUNT')
+      .setCheck('Number')
+      .appendField(translator.translateText('Payout:'))
+      .appendField(new Blockly.FieldDropdown(config.lists.PAYOUTTYPE), 'PAYOUTTYPE_LIST')
+      .appendField(translator.translateText('Currency:'))
+      .appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST')
+  }
 }
 
-export const barrierOffset = (block, oppositeNames, name) => {
-  let fieldName = translator.translateText('Barrier Offset:')
-  if (name) {
-    fieldName = name
+export const barrierOffset = (block) => {
+  if (!block.getInput('BARRIEROFFSET')) {
+    block.appendValueInput('BARRIEROFFSET')
+      .setCheck('BarrierOffset')
+      .appendField(`${translator.translateText('Barrier Offset')} 1:`)
   }
-  block.appendValueInput('BARRIEROFFSET')
-    .setCheck('BarrierOffset')
-    .appendField(fieldName)
 }
 
 export const secondBarrierOffset = (block) => {
-  block.appendValueInput('SECONDBARRIEROFFSET')
-    .setCheck('BarrierOffset')
-    .appendField(translator.translateText('Low Barrier Offset:'))
+  if (!block.getInput('SECONDBARRIEROFFSET')) {
+    block.appendValueInput('SECONDBARRIEROFFSET')
+      .setCheck('BarrierOffset')
+      .appendField(`${translator.translateText('Barrier Offset')} 2:`)
+  }
 }
 
 export const prediction = (block) => {
-  block.appendValueInput('PREDICTION')
-    .setCheck('Number')
-    .appendField(translator.translateText('Prediction:'))
+  if (!block.getInput('PREDICTION')) {
+    block.appendValueInput('PREDICTION')
+      .setCheck('Number')
+      .appendField(translator.translateText('Prediction:'))
+  }
 }
