@@ -248,6 +248,7 @@
 	</category>
 	<category name="Binary" colour="#2a3052" i18n-text="Binary">
 		<category name="Trade Definition" colour="#2a3052" i18n-text="Trade Definition">
+			<block type="market"></block>
 			<block type="trade"></block>
 			<!--Markets-->
 			<category name="Trade Types" colour="#2a3052" i18n-text="Trade Types">

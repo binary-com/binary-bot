@@ -3,6 +3,7 @@ import { translator } from '../../../../../common/translator'
 import { BlocklyError } from '../../../../../common/error'
 import './barrierOffset'
 import markets from './markets'
+import market from './market'
 import { bot } from '../../../../bot'
 import config from '../../../../../common/const'
 import tradeTypes from './tradeTypes'
@@ -102,5 +103,6 @@ Blockly.JavaScript.trade = (block) => {
 
 export default () => {
   markets()
+  market()
   tradeTypes()
 }
