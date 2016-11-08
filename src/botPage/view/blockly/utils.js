@@ -254,8 +254,10 @@ export const deleteBlocksLoadedBy = (id) => {
   for (const block of Blockly.mainWorkspace.getTopBlocks()) {
     if (block.loaderId === id) {
       if (isProcedure(block.type)) {
-        block.setFieldValue(`${block.getFieldValue('NAME')} (deleted)`, 'NAME')
-        block.setDisabled(true)
+        if (block.getFieldValue('NAME').indexOf('deleted') < 0) {
+          block.setFieldValue(`${block.getFieldValue('NAME')} (deleted)`, 'NAME')
+          block.setDisabled(true)
+        }
       } else {
         block.dispose()
       }
