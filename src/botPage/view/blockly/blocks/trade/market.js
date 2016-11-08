@@ -1,8 +1,9 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#db8gmg
 import { translator } from '../../../../../common/translator'
 import config from '../../../../../common/const'
-import { bot } from '../../../../bot'
 import { BlocklyError } from '../../../../../common/error'
+import { marketDropdown, tradeTypeDropdown } from './components'
+import { updatePurchaseChoices } from '../../utils'
 
 const inputList = ['CONTRACT_TYPE',
   'CANDLE_INTERVAL',
@@ -19,57 +20,8 @@ const updateInputList = (block) => {
 export default () => {
   Blockly.Blocks.market = {
     init: function init() {
-      const markets = bot.symbol.activeSymbols.getMarkets()
-      const getSubmarkets = () => {
-        const marketName = this.getFieldValue('MARKET_LIST')
-        const submarkets = markets[marketName].submarkets
-        return Object.keys(submarkets).map(e => [submarkets[e].name, e])
-      }
-      const getSymbols = () => {
-        const submarketName = this.getFieldValue('SUBMARKET_LIST')
-        if (!submarketName) {
-          return [['', '']]
-        }
-        const marketName = this.getFieldValue('MARKET_LIST')
-        const submarkets = markets[marketName].submarkets
-        const symbols = submarkets[submarketName].symbols
-        return Object.keys(symbols)
-          .map(e => [symbols[e].display, symbols[e].symbol])
-      }
-      this.appendDummyInput()
-        .appendField(`${translator.translateText('Market')}:`)
-        .appendField(new Blockly.FieldDropdown(Object.keys(markets).map(e => [markets[e].name, e])), 'MARKET_LIST')
-        .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getSubmarkets), 'SUBMARKET_LIST')
-        .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getSymbols), 'SYMBOL_LIST')
-      const getTradeTypeCats = () => {
-        const symbol = this.getFieldValue('SYMBOL_LIST')
-        if (!symbol) {
-          return [['', '']]
-        }
-        const allowedCategories = bot.symbol
-          .getAllowedCategories(symbol.toLowerCase())
-        return Object.keys(config.conditionsCategoryName)
-          .filter(e => allowedCategories.indexOf(e) >= 0)
-          .map(e => [config.conditionsCategoryName[e], e])
-      }
-      const getTradeTypes = () => {
-        const tradeTypeCat = this.getFieldValue('TRADETYPECAT_LIST')
-        if (!tradeTypeCat) {
-          return [['', '']]
-        }
-        return config.conditionsCategory[tradeTypeCat].map(e => [
-          config.opposites[e.toUpperCase()].map(c => c[Object.keys(c)[0]])
-            .join('/'),
-          e,
-        ])
-      }
-      this.appendDummyInput()
-        .appendField(`${translator.translateText('Trade Type')}:`)
-        .appendField(new Blockly.FieldDropdown(getTradeTypeCats), 'TRADETYPECAT_LIST')
-        .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getTradeTypes), 'TRADETYPE_LIST')
+      marketDropdown(this)
+      tradeTypeDropdown(this)
       if (this.getFieldValue('TRADETYPE_LIST')) {
         updateInputList(this)
       }
@@ -97,6 +49,11 @@ export default () => {
             updateInputList(this)
           }
         }
+      }
+      const oppositesName = this.getFieldValue('TRADETYPE_LIST').toUpperCase()
+      const contractType = this.getFieldValue('TYPE_LIST')
+      if (oppositesName && contractType) {
+        updatePurchaseChoices(contractType, oppositesName)
       }
     },
   }

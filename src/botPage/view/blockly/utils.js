@@ -156,36 +156,40 @@ export const insideMainBlocks = (block) => {
   return parent.type && isMainBlock(parent.type)
 }
 
+export const updatePurchaseChoices = (contractType, oppositesName) => {
+  purchaseChoices = config.opposites[oppositesName]
+    .filter((k) => (contractType === 'both' ? true : contractType === Object.keys(k)[0]))
+    .map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
+  const purchases = Blockly.mainWorkspace.getAllBlocks()
+    .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0))
+  Blockly.Events.recordUndo = false
+  for (const purchase of purchases) {
+    const value = purchase.getField('PURCHASE_LIST')
+      .getValue()
+    Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'))
+    if (value === purchaseChoices[0][1]) {
+      purchase.getField('PURCHASE_LIST')
+        .setText(purchaseChoices[0][0])
+    } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
+      purchase.getField('PURCHASE_LIST')
+        .setText(purchaseChoices[1][0])
+    } else {
+      purchase.getField('PURCHASE_LIST')
+        .setValue(purchaseChoices[0][1])
+      purchase.getField('PURCHASE_LIST')
+        .setText(purchaseChoices[0][0])
+    }
+  }
+  Blockly.Events.recordUndo = true
+}
+
 export const addPurchaseOptions = (submarket) => {
   if (submarket && submarket.getInputTargetBlock('CONDITION') !== null) {
     const condition = submarket.getInputTargetBlock('CONDITION')
     const conditionType = condition.type
-    const opposites = config.opposites[conditionType.toUpperCase()]
+    const oppositesName = conditionType.toUpperCase()
     const contractType = condition.getField('TYPE_LIST').getValue()
-    purchaseChoices = opposites
-      .filter((k) => (contractType === 'both' ? true : contractType === Object.keys(k)[0]))
-      .map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
-    const purchases = Blockly.mainWorkspace.getAllBlocks()
-      .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0))
-    Blockly.Events.recordUndo = false
-    for (const purchase of purchases) {
-      const value = purchase.getField('PURCHASE_LIST')
-        .getValue()
-      Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'))
-      if (value === purchaseChoices[0][1]) {
-        purchase.getField('PURCHASE_LIST')
-          .setText(purchaseChoices[0][0])
-      } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
-        purchase.getField('PURCHASE_LIST')
-          .setText(purchaseChoices[1][0])
-      } else {
-        purchase.getField('PURCHASE_LIST')
-          .setValue(purchaseChoices[0][1])
-        purchase.getField('PURCHASE_LIST')
-          .setText(purchaseChoices[0][0])
-      }
-    }
-    Blockly.Events.recordUndo = true
+    updatePurchaseChoices(contractType, oppositesName)
   }
 }
 
