@@ -2,19 +2,10 @@ import config from '../../../../../common/const'
 import { translator } from '../../../../../common/translator'
 import { bot } from '../../../../bot'
 
-
-export function title(block, oppositeNames, optionNames) {
-  block.appendDummyInput()
-    .setAlign(Blockly.ALIGN_CENTRE)
-    .appendField(bot.symbol.getCategoryNameForCondition(oppositeNames))
-  block.appendDummyInput()
-    .appendField(`> ${optionNames[0]}/${optionNames[1]}`)
-}
-
 const oppositesToDropdown = (opposites) => opposites.map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
 
 export function contractTypes(block, opposites) {
-  block.appendDummyInput()
+  block.appendDummyInput('CONTRACT_TYPE')
     .appendField(translator.translateText('Contract Type:'))
     .appendField(new Blockly.FieldDropdown([
       [translator.translateText('Both'), 'both'],
@@ -23,7 +14,7 @@ export function contractTypes(block, opposites) {
 }
 
 export function candleInterval(block) {
-  block.appendDummyInput()
+  block.appendDummyInput('CANDLE_INTERVAL')
     .appendField(translator.translateText('Candle Interval:'))
     .appendField(new Blockly.FieldDropdown(config.candleIntervals), 'CANDLEINTERVAL_LIST')
 }
@@ -40,7 +31,7 @@ export function payout(block) {
     .setCheck('Number')
     .appendField(translator.translateText('Payout:'))
     .appendField(new Blockly.FieldDropdown(config.lists.PAYOUTTYPE), 'PAYOUTTYPE_LIST')
-  block.appendDummyInput()
+  block.appendDummyInput('CURRENCY')
     .appendField(translator.translateText('Currency:'))
     .appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST')
 }

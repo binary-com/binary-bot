@@ -4,7 +4,7 @@ import config from '../../../../../common/const'
 import { condition } from '../../relationChecker'
 import { translator } from '../../../../../common/translator'
 import {
-  duration, payout, prediction, title,
+  duration, payout, prediction,
   barrierOffset, secondBarrierOffset, candleInterval,
   contractTypes,
 } from './components'

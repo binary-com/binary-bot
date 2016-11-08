@@ -3,6 +3,18 @@ import { translator } from '../../../../../common/translator'
 import config from '../../../../../common/const'
 import { bot } from '../../../../bot'
 
+const inputList = ['CONTRACT_TYPE',
+  'CANDLE_INTERVAL',
+  'DURATION',
+  'AMOUNT',
+  'CURRENCY',
+  'BARRIEROFFSET',
+  'SECONDBARRIEROFFSET',
+  'PREDICTION']
+const updateInputList = (block) => {
+  inputList.map(e => block.removeInput(e))
+  Blockly.Blocks[block.getFieldValue('TRADETYPE_LIST')].init.call(block)
+}
 export default () => {
   Blockly.Blocks.market = {
     init: function init() {
@@ -56,7 +68,7 @@ export default () => {
         .appendField('->')
         .appendField(new Blockly.FieldDropdown(getTradeTypes), 'TRADETYPE_LIST')
       if (this.getFieldValue('TRADETYPE_LIST')) {
-        Blockly.Blocks[this.getFieldValue('TRADETYPE_LIST')].init.call(this)
+        updateInputList(this)
       }
       console.log(this)
       this.setPreviousStatement(true, 'Market')
@@ -80,7 +92,7 @@ export default () => {
         }
         if (ev.name === 'TRADETYPE_LIST') {
           if (ev.newValue) {
-            Blockly.Blocks[ev.newValue].init.call(this)
+            updateInputList(this)
           }
         }
       }
