@@ -299,17 +299,21 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
   class Hide extends Blockly.Events.Abstract {
     constructor() {
       super(block)
+      this.sourceBlockId = block.id
+      this.sourceHeaderId = header.id
+      this.run()
     }
     run() {
-      Blockly.mainWorkspace.getBlockById(this.blockId)
-        .getSvgRoot().style.display = 'none'
+      const sourceBlock = Blockly.mainWorkspace.getBlockById(this.sourceBlockId)
+      const sourceHeader = Blockly.mainWorkspace.getBlockById(this.sourceHeaderId)
+      sourceBlock.loaderId = sourceHeader.id
+      sourceHeader.loadedByMe.push(sourceBlock.id)
+      sourceBlock.getSvgRoot().style.display = 'none'
     }
   }
   Hide.prototype.type = 'Hide'
   const hideEvent = new Hide()
   Blockly.Events.fire(hideEvent)
-  block.loaderId = header.id
-  header.loadedByMe.push(block.id)
   return block
 }
 

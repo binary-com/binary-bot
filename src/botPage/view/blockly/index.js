@@ -57,6 +57,7 @@ const loadWorkspace = (xml) => {
 }
 
 const loadBlocks = (xml, dropEvent = {}) => {
+  Blockly.Events.setGroup('load')
   addLoadersFirst(xml).then((loaders) => {
     const addedBlocks = [...loaders]
     for (const block of Array.prototype.slice.call(xml.children)) {
@@ -66,10 +67,16 @@ const loadBlocks = (xml, dropEvent = {}) => {
       }
     }
     cleanUpOnLoad(addedBlocks, dropEvent)
+    fixCollapsedBlocks()
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
-    fixCollapsedBlocks()
-  }, e => observer.emit('ui.log.error', e))
+    Blockly.Events.recordUndo = true
+    Blockly.Events.setGroup(false)
+  }, e => {
+    Blockly.Events.recordUndo = true
+    Blockly.Events.setGroup(false)
+    observer.emit('ui.log.error', e)
+  })
 }
 
 export default class _Blockly {
