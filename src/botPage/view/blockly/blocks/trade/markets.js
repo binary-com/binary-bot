@@ -1,48 +1,46 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
-import { translator } from '../../../../../common/translator'
-import { submarket } from '../../relationChecker'
 import { bot } from '../../../../bot'
-import { BlocklyError } from '../../../../../common/error'
 
 export default () => {
   const symbols = bot.symbol.activeSymbols.getSymbols()
   for (const k of Object.keys(symbols)) {
-    const allowedCategories = bot.symbol.getAllowedCategoryNames(k)
-    if (allowedCategories.length) {
-      Blockly.Blocks[k] = {
-        init: function init() {
-          this.appendDummyInput()
-            .appendField(symbols[k].display)
-          this.appendDummyInput()
-            .appendField(`${translator.translateText('Accepts')}: (${allowedCategories})`)
-          this.appendStatementInput('CONDITION')
-            .setCheck('Condition')
-          this.setInputsInline(false)
-          this.setPreviousStatement(true, null)
-          this.setColour('#f2f2f2')
-          this.setTooltip(`${translator.translateText('Chooses the symbol:')} ${symbols[k].display}`); // eslint-disable-line max-len
-          this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
-        },
-        onchange: function onchange(ev) {
-          submarket(this, ev)
-        },
-      }
-      Blockly.JavaScript[k] = function market(block) {
-        const condition = Blockly.JavaScript.statementToCode(block, 'CONDITION')
-        if (!condition) {
-          return new BlocklyError(
-            translator.translateText('A trade type has to be defined for the symbol')).emit()
+    Blockly.Blocks[k] = {
+      init: function init() {
+        this.appendStatementInput('CONDITION')
+          .setCheck('Condition')
+        this.setPreviousStatement(true, null)
+      },
+      onchange: function onchange(ev) {
+        if (ev.type === Blockly.Events.CREATE
+        && ev.ids.indexOf(this.id) >= 0) {
+            const parent = this.parentBlock_
+            Blockly.Events.recordUndo = false
+            if (parent) {
+              const market = Blockly.mainWorkspace.newBlock('market')
+              parent.nextConnection.connect(market.previousConnection)
+              market.initSvg()
+              market.render()
+              const symbol = symbols[this.type]
+              market.setFieldValue(symbol.market, 'MARKET_LIST')
+              setTimeout(() => {
+                market.setFieldValue(symbol.submarket, 'SUBMARKET_LIST')
+                setTimeout(() => market.setFieldValue(symbol.symbol, 'SYMBOL_LIST'), 0)
+              }, 0)
+              if (this.getChildren().length) {
+                const condition = this.getChildren()[0]
+                console.log(condition.type)
+                for (const input of condition.inputList) {
+                  if (input.connection && input.connection.targetConnection) {
+                    market.getInput(input.name).connection.connect(input.connection.targetConnection)
+                  }
+                }
+              }
+            }
+            this.dispose()
+            Blockly.Events.recordUndo = true
         }
-        const code = `
-      getTradeOptions = function getTradeOptions() {
-        var tradeOptions = {}
-        tradeOptions = ${condition.trim()}
-        tradeOptions.symbol = '${symbols[k].symbol}'
-        return tradeOptions
-      }
-      `
-        return code
-      }
+      },
     }
+    Blockly.JavaScript[k] = () => ''
   }
 }

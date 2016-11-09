@@ -23,6 +23,7 @@ export default class View {
       this.updateTokenList()
       this.blockly = new _Blockly()
       this.blockly.initPromise.then(() => {
+        $('.actions_menu').show()
         this.setElementActions()
         this.initTours()
         resolve()
