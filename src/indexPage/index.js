@@ -12,5 +12,5 @@ oauthLogin(() => {
         .text(translator.translateText($(this)
           .attr('data-i18n-text')))
     })
-  $('.spinning').hide()
+  $('.barspinner').hide()
 })

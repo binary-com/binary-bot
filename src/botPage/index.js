@@ -107,7 +107,7 @@ class BotPage {
         trackJs.configure({
           userId: getToken($('#accountSelect').val()).account_name,
         })
-        $('.spinning').hide()
+        $('.barspinner').hide()
         this.view.activeTour = this.view.tours.welcome
         this.view.activeTour.welcome(() => {
           this.view.activeTour = null
