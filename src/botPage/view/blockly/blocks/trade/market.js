@@ -27,13 +27,11 @@ export default () => {
       if (ev.blockId === this.id && ev.element === 'field') {
         if (ev.name === 'MARKET_LIST') {
           this.setFieldValue('', 'SUBMARKET_LIST')
-          this.setFieldValue('', 'SYMBOL_LIST')
-          this.setFieldValue('', 'TRADETYPE_LIST')
-          this.setFieldValue('', 'TRADETYPECAT_LIST')
         }
         if (ev.name === 'SUBMARKET_LIST') {
           this.setFieldValue('', 'SYMBOL_LIST')
-          this.setFieldValue('', 'TRADETYPE_LIST')
+        }
+        if (ev.name === 'SYMBOL_LIST') {
           this.setFieldValue('', 'TRADETYPECAT_LIST')
         }
         if (ev.name === 'TRADETYPECAT_LIST') {
