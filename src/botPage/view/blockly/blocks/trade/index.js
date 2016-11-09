@@ -51,8 +51,8 @@ Blockly.Blocks.trade = {
               backwardCompatibility(block)
             }
           }
-          if (block.type in bot.symbol.activeSymbols.getSymbols()) {
-            observer.emit('tour:submarket_created')
+          if (block.type === 'market') {
+            observer.emit('tour:market_created')
           }
           if (config.conditions.indexOf(block.type) >= 0) {
             observer.emit('tour:condition_created')

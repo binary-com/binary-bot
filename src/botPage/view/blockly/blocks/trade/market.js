@@ -4,6 +4,7 @@ import config from '../../../../../common/const'
 import { BlocklyError } from '../../../../../common/error'
 import { marketDropdown, tradeTypeDropdown } from './components'
 import { updatePurchaseChoices } from '../../utils'
+import { insideTrade } from '../../relationChecker'
 
 const updateInputList = (block) => {
   Blockly.Blocks[block.getFieldValue('TRADETYPE_LIST')].init.call(block)
@@ -21,6 +22,7 @@ export default () => {
       this.setColour('#f2f2f2')
     },
     onchange: function onchange(ev) {
+      insideTrade(this, ev, translator.translateText('Market'))
       if (ev.group === 'tradeTypeConvert') {
         return;
       }

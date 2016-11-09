@@ -1,4 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
+// kept for backward compatibility
 import { bot } from '../../../../bot'
 import config from '../../../../../common/const'
 

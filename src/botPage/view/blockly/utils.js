@@ -183,16 +183,6 @@ export const updatePurchaseChoices = (contractType, oppositesName) => {
   Blockly.Events.recordUndo = true
 }
 
-export const addPurchaseOptions = (submarket) => {
-  if (submarket && submarket.getInputTargetBlock('CONDITION') !== null) {
-    const condition = submarket.getInputTargetBlock('CONDITION')
-    const conditionType = condition.type
-    const oppositesName = conditionType.toUpperCase()
-    const contractType = condition.getField('TYPE_LIST').getValue()
-    updatePurchaseChoices(contractType, oppositesName)
-  }
-}
-
 export const save = (filename = 'binary-bot.xml', collection = false, xmlDom) => {
   xmlDom.setAttribute('collection', collection ? 'true' : 'false')
   const xmlText = Blockly.Xml.domToPrettyText(xmlDom)

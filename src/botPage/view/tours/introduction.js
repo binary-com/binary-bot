@@ -40,7 +40,7 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
     }, {
-      content: '<p>' + translator.translateText('You cannot add/remove main blocks, also you can move them to a desired place in the workspace. Only one block can exist for each step in the workspace.') + '</p>',
+      content: '<p>' + translator.translateText('You can add/remove main blocks, also you can move them to a desired place in the workspace. Only one block can exist for each step in the workspace.') + '</p>',
       target: getUiComponent('center'),
       closeButton: true,
       nextButton: true,
@@ -50,7 +50,7 @@ export default class Welcome {
         $('#blocker').hide()
       },
     }, {
-      content: '<p>' + translator.translateText('To start pick a <b>symbol</b> block from markets. Some steps like this one don\'t have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)') + '</p>',
+      content: '<p>' + translator.translateText('To start pick a <b>Market</b> block. Some steps like this one don\'t have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a market from left should lead you to the next step.)') + '</p>',
       target: getUiComponent('flyout'),
       closeButton: true,
       highlightTarget: true,
@@ -61,13 +61,13 @@ export default class Welcome {
         tour.next()
       },
       setup: function setup() {
-        observer.register('tour:submarket_created', this.tour_submarket_created, true)
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[0].children_[2].children_[1].reveal(true)
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[0].children_[2].children_[1].select()
+        observer.register('tour:market_created', this.tour_submarket_created, true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].reveal(true)
+        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].select()
         setOpacity('toolbox', 1)
       },
       teardown: function teardown() {
-        observer.unregister('tour:submarket_created', this.tour_submarket_created)
+        observer.unregister('tour:market_created', this.tour_submarket_created)
         Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
         setOpacity('toolbox', 0.3)
       },
@@ -83,51 +83,11 @@ export default class Welcome {
         tour.next()
       },
       setup: function setup() {
-        observer.register('tour:submarket', this.tour_submarket_added, true)
+        observer.register('tour:market', this.tour_submarket_added, true)
       },
       teardown: function teardown() {
-        observer.unregister('tour:submarket', this.tour_submarket_added)
+        observer.unregister('tour:market', this.tour_submarket_added)
         Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
-      },
-    }, {
-      content: '<p>' + translator.translateText('Alright! Now pick a <b>trade type</b> block.') + '</p>',
-      target: getUiComponent('flyout'),
-      closeButton: true,
-      highlightTarget: true,
-      my: 'left center',
-      at: 'right center',
-      bind: ['tour_condition_created'],
-      tour_condition_created: (tour) => {
-        tour.next()
-      },
-      setup: function setup() {
-        observer.register('tour:condition_created', this.tour_condition_created, true)
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[1].children_[0].reveal(true)
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].children_[1].children_[0].select()
-        setOpacity('toolbox', 1)
-      },
-      teardown: function teardown() {
-        observer.unregister('tour:condition_created', this.tour_condition_created)
-        Blockly.mainWorkspace.toolbox_.tree_.setSelectedItem(null)
-        Blockly.mainWorkspace.toolbox_.tree_.children_[4].children_[0].setExpanded(false)
-        setOpacity('toolbox', 0.3)
-      },
-    }, {
-      content: '<p>' + translator.translateText('OK! Now add it to the symbol you added in the previous step.') + '</p>',
-      target: getUiComponent('trade'),
-      closeButton: true,
-      highlightTarget: true,
-      my: 'left center',
-      at: 'right center',
-      bind: ['tour_condition_added'],
-      tour_condition_added: (tour) => {
-        tour.next()
-      },
-      setup: function setup() {
-        observer.register('tour:condition', this.tour_condition_added, true)
-      },
-      teardown: function teardown() {
-        observer.unregister('tour:condition', this.tour_condition_added)
       },
     }, {
       content: '<p>' + translator.translateText('Very good! It\'s time to add the options needed by the trade type block, pick a number') + ' (<img src="image/number.png"/>) ' + translator.translateText('from the Math menu') + '</p>',
@@ -151,7 +111,7 @@ export default class Welcome {
         setOpacity('toolbox', 0.3)
       },
     }, {
-      content: '<p>' + translator.translateText('Click on the number block to edit its value') + ' (<img src="image/number_editing.png"/>), ' + translator.translateText('change the value to 5 and add it to the <b>ticks</b> field of the trade type block') + '</p>',
+      content: '<p>' + translator.translateText('Click on the number block to edit its value') + ' (<img src="image/number_editing.png"/>), ' + translator.translateText('change the value to 5 and add it to the <b>ticks</b> field of the market') + '</p>',
       target: getUiComponent('trade'),
       highlightTarget: true,
       closeButton: true,
@@ -425,10 +385,8 @@ export default class Welcome {
         $('#blocker').hide()
         setOpacityForAll(1)
         this.tour._teardownCurrentStep = () => {}
-        observer.unregisterAll('tour:submarket_created')
-        observer.unregisterAll('tour:submarket')
-        observer.unregisterAll('tour:condition_created')
-        observer.unregisterAll('tour:condition')
+        observer.unregisterAll('tour:market_created')
+        observer.unregisterAll('tour:market')
         observer.unregisterAll('tour:number')
         observer.unregisterAll('tour:ticks')
         observer.unregisterAll('tour:options')

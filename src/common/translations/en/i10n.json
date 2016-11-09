@@ -323,5 +323,9 @@
   "96a41b946454b41ad734c7933feb2d4e3832ec6d": "Market:",
   "2d646b5fd8ba7db6d524f5a78f9bd1d94d3bdcaa": "Choose a market",
   "569bbd757e1bb8bbccd250b98dc2bb37cb47b787": "Market",
-  "911348bf6fef082476779805cd1bda16bef66d2d": "Barrier Offset"
+  "911348bf6fef082476779805cd1bda16bef66d2d": "Barrier Offset",
+  "c4dfedce7e2fec36b41f46e8be86df4e2e77ab47": "You can add/remove main blocks, also you can move them to a desired place in the workspace. Only one block can exist for each step in the workspace.",
+  "875d9a93550905770f607a011f7e1e2ceef152d2": "To start pick a <b>Market</b> block. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a symbol from left should lead you to the next step.)",
+  "0d048f724e952e8626c8b2b0a3f2df7c90090d05": "To start pick a <b>Market</b> block. Some steps like this one don't have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a market from left should lead you to the next step.)",
+  "d124fe38a4f19ca654548e5d07183d09146e0859": "change the value to 5 and add it to the <b>ticks</b> field of the market"
 }
