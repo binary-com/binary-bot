@@ -14,7 +14,7 @@ export default class Welcome {
       ${translator.translateText('Welcome to the binary bot')},
       ${translator.translateText('a blockly based automation tool for binary.com trades')}.
       ${translator.translateText('Skip this tutorial by clicking on the <b>X</b> button')}.
-      ${translator.translateText('Skip each step by <b>Right Arrow (')} &rarr
+      ${translator.translateText('Skip each step by <b>Right Arrow (')} &rarr;
       ${translator.translateText(')</b> on the keyboard.')}
       </p>`,
       target: getUiComponent('center'),
@@ -28,8 +28,7 @@ export default class Welcome {
       },
     }, {
       content: `<p>
-      ${translator.translateText('The blocks you put in here will create a binary bot code.')}
-      ${translator.translateText('You can then execute using the run button.')}
+      ${translator.translateText('You can drag and drop blocks in here to load them in Binary Bot')}
       </p>`,
       target: getUiComponent('center'),
       closeButton: true,
@@ -44,34 +43,19 @@ export default class Welcome {
       },
     }, {
       content: `<p>
-      ${translator.translateText('You can pick blocks from here to add to the workspace')}
+      ${translator.translateText('Use these buttons to save/load your blocks, you can also drag and drop Bot files to load them')}
       </p>`,
-      target: getUiComponent('toolbox'),
+      target: getUiComponent('group_save'),
       closeButton: true,
       nextButton: true,
       highlightTarget: true,
-      my: 'left center',
-      at: 'right center',
+      my: 'right center',
+      at: 'left center',
       setup: () => {
-        setOpacity('toolbox', 1)
+        setOpacity('group_save', 1)
       },
       teardown: () => {
-        setOpacity('toolbox', 0.3)
-      },
-    }, {
-      content: `<p>
-      ${translator.translateText('Press Ctrl + -/+ to zoom out/in the blocks')}
-      </p>`,
-      target: getUiComponent('center'),
-      closeButton: true,
-      nextButton: true,
-      my: 'top center',
-      at: 'bottom center',
-      setup: () => {
-        setOpacity('workspace', 1)
-      },
-      teardown: () => {
-        setOpacity('workspace', 0.3)
+        setOpacity('group_save', 0.3)
       },
     }, {
       content: `<p>
@@ -93,71 +77,7 @@ export default class Welcome {
       },
     }, {
       content: `<p>
-      ${translator.translateText('Use these buttons to save/load your blocks')}
-      </p>`,
-      target: getUiComponent('group_save'),
-      closeButton: true,
-      nextButton: true,
-      highlightTarget: true,
-      my: 'right center',
-      at: 'left center',
-      setup: () => {
-        setOpacity('group_save', 1)
-      },
-      teardown: () => {
-        setOpacity('group_save', 0.3)
-      },
-    }, {
-      content: `<p>
-      ${translator.translateText('Use these buttons to Undo/Redo changes to your blocks.')}
-      </p>`,
-      target: getUiComponent('group_undo_redo'),
-      closeButton: true,
-      nextButton: true,
-      highlightTarget: true,
-      my: 'right center',
-      at: 'left center',
-      setup: () => {
-        setOpacity('group_undo_redo', 1)
-      },
-      teardown: () => {
-        setOpacity('group_undo_redo', 0.3)
-      },
-    }, {
-      content: `<p>
-      ${translator.translateText('Open the summary panel.')}
-      </p>`,
-      target: getUiComponent('group_summary'),
-      closeButton: true,
-      nextButton: true,
-      highlightTarget: true,
-      my: 'right center',
-      at: 'left center',
-      setup: () => {
-        setOpacity('group_summary', 1)
-      },
-      teardown: () => {
-        setOpacity('group_summary', 0.3)
-      },
-    }, {
-      content: `<p>
-      ${translator.translateText('Reset the blocks to their initial state.')}
-      </p>`,
-      target: getUiComponent('group_reset'),
-      closeButton: true,
-      nextButton: true,
-      highlightTarget: true,
-      my: 'right center',
-      at: 'left center',
-      setup: () => {
-        setOpacity('group_reset', 1)
-      },
-      teardown: () => {
-        setOpacity('group_reset', 0.3)
-      },
-    }, {
-      content: `<p>
-      ${translator.translateText('Use the run/stop buttons in this menu to run or stop your blocks.')}
+      ${translator.translateText('Use this button to run/stop your Bot')}
       </p>`,
       target: getUiComponent('group_start_stop'),
       closeButton: true,

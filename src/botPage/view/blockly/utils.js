@@ -7,7 +7,7 @@ let purchaseChoices = [[translator.translateText('Click to select'), '']]
 
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
 
-const backwardCompatibility = (block) => {
+export const backwardCompatibility = (block) => {
   if (block.getAttribute('type') === 'on_strategy') {
     block.setAttribute('type', 'before_purchase')
   } else if (block.getAttribute('type') === 'on_finish') {
@@ -25,14 +25,14 @@ const backwardCompatibility = (block) => {
   }
 }
 
-const fixCollapsedBlocks = () => {
+export const fixCollapsedBlocks = () => {
   for (const block of getCollapsedProcedures()) {
     block.setCollapsed(false)
     block.setCollapsed(true)
   }
 }
 
-const cleanUpOnLoad = (blocksToClean, dropEvent) => {
+export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
   const { clientX = 0, clientY = 0 } = dropEvent || {}
   const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
   const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
@@ -261,7 +261,7 @@ export const deleteBlocksLoadedBy = (id) => {
   Blockly.Events.recordUndo = true
 }
 
-const addDomAsBlock = (blockXml) => {
+export const addDomAsBlock = (blockXml) => {
   backwardCompatibility(blockXml)
   const blockType = blockXml.getAttribute('type')
   if (isMainBlock(blockType)) {
@@ -275,7 +275,6 @@ const addDomAsBlock = (blockXml) => {
 }
 
 const addDomAsBlockFromHeader = (blockXml, header = null) => {
-  Blockly.Events.recordUndo = false
   const oldVars = [...Blockly.mainWorkspace.variableList]
   const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
   Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
@@ -296,10 +295,21 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
       block.setFieldValue(`${procedureName}`, 'NAME')
     }
   }
-  block.getSvgRoot().style.display = 'none'
+  // dummy event to hide the element after creation
+  class Hide extends Blockly.Events.Abstract {
+    constructor() {
+      super(block)
+    }
+    run() {
+      Blockly.mainWorkspace.getBlockById(this.blockId)
+        .getSvgRoot().style.display = 'none'
+    }
+  }
+  Hide.prototype.type = 'Hide'
+  const hideEvent = new Hide()
+  Blockly.Events.fire(hideEvent)
   block.loaderId = header.id
   header.loadedByMe.push(block.id)
-  Blockly.Events.recordUndo = true
   return block
 }
 
@@ -316,7 +326,7 @@ const processLoaders = (xml, header = null) => {
   return promises
 }
 
-const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) => {
+export const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) => {
   const promises = processLoaders(xml, header)
   if (promises.length) {
     Promise.all(promises).then(resolve, reject)
@@ -325,62 +335,7 @@ const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) =>
   }
 })
 
-const loadWorkspace = (xml) => {
-  Blockly.mainWorkspace.clear()
-  addLoadersFirst(xml).then(() => {
-    for (const block of Array.prototype.slice.call(xml.children)) {
-      backwardCompatibility(block)
-    }
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
-    observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
-    fixCollapsedBlocks()
-  }, (e) => observer.emit('ui.log.error', e))
-}
-
-const loadBlocks = (xml, dropEvent = {}) => {
-  addLoadersFirst(xml).then((loaders) => {
-    const addedBlocks = [...loaders]
-    for (const block of Array.prototype.slice.call(xml.children)) {
-      const newBlock = addDomAsBlock(block)
-      if (newBlock) {
-        addedBlocks.push(newBlock)
-      }
-    }
-    cleanUpOnLoad(addedBlocks, dropEvent)
-    observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
-    fixCollapsedBlocks()
-  }, (e) => observer.emit('ui.log.error', e))
-}
-
-export const load = (blockStr = '', dropEvent = {}) => {
-  if (blockStr.indexOf('<xml') !== 0) {
-    observer.emit('ui.log.error',
-      translator.translateText('Unrecognized file format.'))
-  } else {
-    Blockly.Events.setGroup('load')
-    try {
-      const xml = Blockly.Xml.textToDom(blockStr)
-      if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-        loadBlocks(xml, dropEvent)
-      } else {
-        loadWorkspace(xml)
-      }
-    } catch (e) {
-      if (e.name === 'BlocklyError') {
-        // pass
-      } else {
-        observer.emit('ui.log.error',
-          translator.translateText('Unrecognized file format.'))
-      }
-    }
-    Blockly.Events.setGroup(false)
-  }
-}
-
 const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, reject) => {
-  Blockly.Events.setGroup('load')
   try {
     const xml = Blockly.Xml.textToDom(blockStr)
     if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
@@ -405,7 +360,6 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
       reject(translator.translateText('Unrecognized file format.'))
     }
   }
-  Blockly.Events.setGroup(false)
 })
 
 export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
@@ -444,9 +398,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
           enable(blockObj)
           blockObj.url = url // eslint-disable-line no-param-reassign
           resolve(blockObj)
-        }, (e) => {
-          reject(e)
-        })
+        }, reject)
       })
     }
   }

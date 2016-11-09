@@ -1,4 +1,5 @@
 import { getObjectValue } from 'binary-common-utils/lib/tools'
+import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
 import ActiveSymbols from './activeSymbols'
 

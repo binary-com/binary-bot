@@ -8,8 +8,9 @@ import { getTokenList, removeAllTokens,
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translator } from '../../common/translator'
-import Introduction from './tours/introduction'
 import Welcome from './tours/welcome'
+import Introduction from './tours/introduction'
+import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 
 export default class View {
@@ -73,6 +74,7 @@ export default class View {
   initTours() {
     this.tours.introduction = new Introduction()
     this.tours.welcome = new Welcome()
+    this.tours.makeSimpleStrategy = new MakeSimpleStrategy()
   }
   startTour() {
     const viewScope = this

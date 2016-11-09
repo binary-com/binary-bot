@@ -1,8 +1,10 @@
+import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../common/translator'
-import { bot } from '../../bot'
 import { notifyError } from '../logger'
-import { isMainBlock, save, load,
+import { isMainBlock, save,
   disable, deleteBlocksLoadedBy,
+  addLoadersFirst, cleanUpOnLoad, addDomAsBlock,
+  backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
 
@@ -26,32 +28,48 @@ const disableStrayBlocks = () => {
   }
 }
 
-const createXmlTag = (obj) => {
-  let xmlStr = '<category name="Markets" colour="#2a3052" i18n-text="Markets">\n'
-  for (const market of Object.keys(obj)) {
-    xmlStr += `\t<category name="${obj[market].name}" colour="#2a3052">`
-    for (const submarket of Object.keys(obj[market].submarkets)) {
-      xmlStr += `\t\t<category name="${
-        obj[market].submarkets[submarket].name}" colour="#2a3052">`
-      for (const symbol of Object.keys(obj[market].submarkets[submarket].symbols)) {
-        if (bot.symbol.getAllowedCategoryNames(symbol).length) {
-          xmlStr += `\t\t\t<block type="${symbol.toLowerCase()}"></block>`
-        }
-      }
-      xmlStr += '\t\t</category>\n'
-    }
-    xmlStr += '\t</category>\n'
-  }
-  xmlStr += '</category>\n'
-  return xmlStr
-}
-
 const disposeBlocksWithLoaders = () => {
-  Blockly.mainWorkspace.addChangeListener((ev) => {
+  Blockly.mainWorkspace.addChangeListener(ev => {
     if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader') {
       deleteBlocksLoadedBy(ev.blockId)
     }
   })
+}
+
+const loadWorkspace = (xml) => {
+  Blockly.Events.setGroup('load')
+  Blockly.mainWorkspace.clear()
+  addLoadersFirst(xml).then(() => {
+    for (const block of Array.prototype.slice.call(xml.children)) {
+      backwardCompatibility(block)
+    }
+    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
+    fixCollapsedBlocks()
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'))
+    Blockly.Events.recordUndo = true
+    Blockly.Events.setGroup(false)
+  }, e => {
+    Blockly.Events.recordUndo = true
+    Blockly.Events.setGroup(false)
+    observer.emit('ui.log.error', e)
+  })
+}
+
+const loadBlocks = (xml, dropEvent = {}) => {
+  addLoadersFirst(xml).then((loaders) => {
+    const addedBlocks = [...loaders]
+    for (const block of Array.prototype.slice.call(xml.children)) {
+      const newBlock = addDomAsBlock(block)
+      if (newBlock) {
+        addedBlocks.push(newBlock)
+      }
+    }
+    cleanUpOnLoad(addedBlocks, dropEvent)
+    observer.emit('ui.log.success',
+      translator.translateText('Blocks are loaded successfully'))
+    fixCollapsedBlocks()
+  }, e => observer.emit('ui.log.error', e))
 }
 
 export default class _Blockly {
@@ -64,9 +82,7 @@ export default class _Blockly {
       $.get('xml/toolbox.xml', (toolbox) => {
         blocks()
         const workspace = Blockly.inject('blocklyDiv', {
-          toolbox: this.xmlToStr(translator.translateXml($.parseXML(
-            this.marketsToXml(toolbox.getElementsByTagName('xml')[0])
-          ))),
+          toolbox: this.xmlToStr(translator.translateXml(toolbox.getElementsByTagName('xml')[0])),
           zoom: {
             wheel: false,
           },
@@ -113,11 +129,6 @@ export default class _Blockly {
     const serializer = new XMLSerializer()
     return serializer.serializeToString(xml)
   }
-  marketsToXml(xml) {
-    const xmlStr = this.xmlToStr(xml)
-    const marketXml = createXmlTag(bot.symbol.activeSymbols.getMarkets())
-    return xmlStr.replace('<!--Markets-->', marketXml)
-  }
   overrideBlocklyDefaultShape() {
     Blockly.Blocks.text.newQuote_ = (open) => { // eslint-disable-line no-underscore-dangle
       let file
@@ -160,10 +171,27 @@ export default class _Blockly {
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace)
     Blockly.Events.setGroup(false)
   }
-  load(blockStr = '', dropEvent = {}, header = null) {
-    load(blockStr, dropEvent, header)
-    this.blocksXmlStr = Blockly.Xml.domToPrettyText(
-      Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
+  load(blockStr = '', dropEvent = {}) {
+    if (blockStr.indexOf('<xml') !== 0) {
+      observer.emit('ui.log.error',
+        translator.translateText('Unrecognized file format.'))
+    } else {
+      try {
+        const xml = Blockly.Xml.textToDom(blockStr)
+        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+          loadBlocks(xml, dropEvent)
+        } else {
+          loadWorkspace(xml)
+        }
+      } catch (e) {
+        if (e.name === 'BlocklyError') {
+          // pass
+        } else {
+          observer.emit('ui.log.error',
+            translator.translateText('Unrecognized file format.'))
+        }
+      }
+    }
   }
   save(filename, collection) {
     const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
