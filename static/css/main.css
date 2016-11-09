@@ -15,20 +15,9 @@ html, body {
     max-width: 960px;
     margin: 0 auto;
 }
-#header #logo div {
-    display: inline-block;
-}
 #topbar {
     background-color: #15212d;
     height: 20px;
-}
-#logo {
-    display: inline-block;
-    margin-top: 15px;
-}
-.type-logo {
-    width: 80%;
-    margin-left: 10px;
 }
 #main {
     width: 100%;
@@ -61,6 +50,14 @@ ul.bullet {
         display: block;
         vertical-align: top;
     }
+}
+
+.barspinner {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -5rem;
+    z-index: 9999;
 }
 
 .center {

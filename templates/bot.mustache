@@ -16,7 +16,6 @@
 {{> ie }}
 </head>
 <body>
-  {{> loading }}
   <div id="center"></div>
   <div id="blocker"></div>
   {{> loading }}
@@ -33,10 +32,18 @@
   </div>
   <div id="header">
       <div class="left-header">
-        <a href="" id="logo">
-          <img class="symbol-logo" src="image/binary-symbol-logo.svg" alt="Binary-logo" />
-          <img class="type-logo" src="image/binary-type-logo.svg" alt="Binary-logo">
-        </a>
+          <div class="logo-wrapper">
+              <a href="" id="logo">
+                  <div class="logo-parent">
+                      <div class="logo">
+                          <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
+                      </div>
+                      <div class="binary-logo-text">
+                          <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
+                      </div>
+                  </div>
+              </a>
+          </div>
       </div>
       <div class="right-header">
         <div class="intro-login-logout">

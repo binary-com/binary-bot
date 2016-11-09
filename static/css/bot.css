@@ -107,6 +107,14 @@ th, td {
 	opacity: 1;
 }
 
+.barspinner {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -5rem;
+    z-index: 9999;
+}
+
 .icon-remove:before {
 	content: 'X';
 }
@@ -216,9 +224,6 @@ button:focus {
 	font-size: 18px;
 	padding: 0 20px;
 }
-#header #logo div {
-	display: inline-block;
-}
 #topbar {
 	background-color: #15212d;
 	width: 100%;
@@ -229,18 +234,6 @@ button:focus {
 	padding: 3px 20px;
 	display: table;
 }
-#logo {
-	display: inline-block;
-	margin-top: 5px;
-}
-.symbol-logo {
-	width: 22%;
-}
-.type-logo {
-	width: 57%;
-	margin-left: 8px;
-}
-
 .left-header {
 	float: left;
 }
