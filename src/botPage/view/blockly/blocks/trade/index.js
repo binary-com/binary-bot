@@ -12,6 +12,7 @@ import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../.
 const backwardCompatibility = (block) => {
   setTimeout(() => {
     Blockly.Events.recordUndo = false
+    Blockly.Events.setGroup('tradeConvert')
     const parent = block.getParent()
     if (parent) {
       const submarketConnection = block.getInput('SUBMARKET').connection
@@ -23,6 +24,7 @@ const backwardCompatibility = (block) => {
       submarketConnection.connect((ancestor || parent).previousConnection)
     }
     block.setPreviousStatement(false)
+    Blockly.Events.setGroup(false)
     Blockly.Events.recordUndo = true
   }, 0)
 }

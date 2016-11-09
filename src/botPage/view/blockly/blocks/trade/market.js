@@ -21,6 +21,9 @@ export default () => {
       this.setColour('#f2f2f2')
     },
     onchange: function onchange(ev) {
+      if (ev.group === 'tradeTypeConvert') {
+        return;
+      }
       if (ev.blockId === this.id && ev.element === 'field') {
         if (ev.name === 'MARKET_LIST') {
           this.setFieldValue('', 'SUBMARKET_LIST')
