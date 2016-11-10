@@ -12,11 +12,6 @@ html, body {
 	right: 100px;
 	bottom: 0px;
 }
-
-.login-logout{
-	float: right;
-	margin: 2px;
-}
 #center {
 	position: fixed;
 	width: 1px;
@@ -107,22 +102,13 @@ th, td {
 	opacity: 1;
 }
 
-.spinning img{
-	cursor: pointer;
-	width: 200px;
-	height: 200px;
-	position: fixed;
-	left: 50%;
-	top: 50%;
-	margin-left: -5rem;
-	z-index: 9999;
-	-webkit-animation:spin 2s linear infinite;
-	-moz-animation:spin 2s linear infinite;
-	animation:spin 2s linear infinite;
+.barspinner {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -5rem;
+    z-index: 9999;
 }
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 .icon-remove:before {
 	content: 'X';
@@ -225,16 +211,13 @@ button:focus {
 }
 
 #header {
-	height: 75px;
+	height: 81px;
 	width: 100%;
 	background-color: #2a3052;
 	border-top: 2px solid #394171;
 	border-bottom: 4px solid #e98024;
 	font-size: 18px;
 	padding: 0 20px;
-}
-#header #logo div {
-	display: inline-block;
 }
 #topbar {
 	background-color: #15212d;
@@ -246,18 +229,6 @@ button:focus {
 	padding: 3px 20px;
 	display: table;
 }
-#logo {
-	display: inline-block;
-	margin-top: 5px;
-}
-.symbol-logo {
-	width: 22%;
-}
-.type-logo {
-	width: 57%;
-	margin-left: 8px;
-}
-
 .left-header {
 	float: left;
 }
@@ -266,26 +237,21 @@ button:focus {
 	float: right;
 }
 
-#header .right-header {
-	margin-top: 5px;
+#client-logged-in {
+    display: none;
 }
 
-#logout, #login, #accountSelect {
-	display: none;
-}
-
-#logout, #login{
-	letter-spacing: .75px;
-	padding: 6px;
-	text-transform: uppercase;
-	font-size: 0.7em;
+.topMenuBalance {
+    visibility: hidden;
 }
 
 #login {
-	padding: 0 10px;
-	font-size: 0.8em;
-	line-height: 2em;
-	margin: 0.8em 0;
+	display: none;
+	margin: 0.6em 0;
+}
+
+.account {
+    font-size: 16px;
 }
 
 .btn-primary {
