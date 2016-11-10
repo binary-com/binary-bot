@@ -58,7 +58,7 @@ export default class _Symbol {
   getLimitation(symbol, condition) {
     const category = getCategoryForCondition(condition)
     return {
-      minDuration: parsedAssetIndex[symbol][category],
+      minDuration: parsedAssetIndex[symbol.toLowerCase()][category],
     }
   }
   isConditionAllowedInSymbol(symbol, condition) {
@@ -71,6 +71,10 @@ export default class _Symbol {
   }
   getCategoryNameForCondition(condition) {
     return config.conditionsCategoryName[getCategoryForCondition(condition)]
+  }
+  getAllowedCategories(symbol) {
+    const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol)
+    return categories
   }
   getAllowedCategoryNames(symbol) {
     const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol)
