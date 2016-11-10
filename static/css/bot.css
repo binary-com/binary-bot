@@ -12,11 +12,6 @@ html, body {
 	right: 100px;
 	bottom: 0px;
 }
-
-.login-logout{
-	float: right;
-	margin: 2px;
-}
 #center {
 	position: fixed;
 	width: 1px;
@@ -216,7 +211,7 @@ button:focus {
 }
 
 #header {
-	height: 75px;
+	height: 81px;
 	width: 100%;
 	background-color: #2a3052;
 	border-top: 2px solid #394171;
@@ -242,26 +237,21 @@ button:focus {
 	float: right;
 }
 
-#header .right-header {
-	margin-top: 5px;
+#client-logged-in {
+    display: none;
 }
 
-#logout, #login, #accountSelect {
-	display: none;
-}
-
-#logout, #login{
-	letter-spacing: .75px;
-	padding: 6px;
-	text-transform: uppercase;
-	font-size: 0.7em;
+.topMenuBalance {
+    visibility: hidden;
 }
 
 #login {
-	padding: 0 10px;
-	font-size: 0.8em;
-	line-height: 2em;
-	margin: 0.8em 0;
+	display: none;
+	margin: 0.6em 0;
+}
+
+.account {
+    font-size: 16px;
 }
 
 .btn-primary {

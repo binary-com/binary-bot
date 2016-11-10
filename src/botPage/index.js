@@ -105,7 +105,7 @@ class BotPage {
       })
       this.view.initPromise.then(() => {
         trackJs.configure({
-          userId: getToken($('#accountSelect').val()).account_name,
+          userId: $('.account-id').first().text(),
         })
         $('.barspinner').hide()
         this.view.activeTour = this.view.tours.welcome
