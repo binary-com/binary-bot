@@ -6,7 +6,10 @@ import { translator } from '../../../common/translator'
 let purchaseChoices = [[translator.translateText('Click to select'), '']]
 
 export const updateInputList = (block) => {
-  Blockly.Blocks[block.getFieldValue('TRADETYPE_LIST')].init.call(block)
+  const tradeType = block.getFieldValue('TRADETYPE_LIST')
+  if (tradeType) {
+    Blockly.Blocks[tradeType].init.call(block)
+  }
 }
 
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
