@@ -13,6 +13,7 @@ gulp.task('clean-bundle', () => gulp.src('./www/js/bundle*')
   .pipe(paths(del)));
 
 gulp.task('bundle-js', () => gulp.src([
+  './node_modules/jquery/dist/jquery.min.js',
   './node_modules/blockly/blockly_compressed.js',
   './node_modules/blockly/blocks_compressed.js',
   './node_modules/blockly/javascript_compressed.js',
@@ -35,4 +36,3 @@ gulp.task('bundle-css-min', ['bundle-css'], () => gulp.src('www/css/bundle-*.css
   .pipe(rev())
   .pipe(through.obj(addToManifest))
   .pipe(gulp.dest('www/css')));
-

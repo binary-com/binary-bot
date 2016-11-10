@@ -19,6 +19,7 @@ const getConfig = (prefix) => ({
   security: 'templates/partials/security.mustache',
   language: 'templates/partials/language.mustache',
   ie: 'templates/partials/ie.mustache',
+  loading: 'templates/partials/loading.mustache',
 });
 
 const genHtml = (min) => gulp.src('templates/*.mustache')
