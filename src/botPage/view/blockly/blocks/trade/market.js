@@ -3,26 +3,22 @@ import { translator } from '../../../../../common/translator'
 import config from '../../../../../common/const'
 import { BlocklyError } from '../../../../../common/error'
 import { marketDropdown, tradeTypeDropdown } from './components'
-import { updatePurchaseChoices } from '../../utils'
+import { updatePurchaseChoices, updateInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'
-
-const updateInputList = (block) => {
-  Blockly.Blocks[block.getFieldValue('TRADETYPE_LIST')].init.call(block)
-}
 
 export default () => {
   Blockly.Blocks.market = {
     init: function init() {
       marketDropdown(this)
       tradeTypeDropdown(this)
-      if (this.getFieldValue('TRADETYPE_LIST')) {
-        updateInputList(this)
-      }
       this.setPreviousStatement(true, 'Market')
       this.setColour('#f2f2f2')
     },
     onchange: function onchange(ev) {
       insideTrade(this, ev, translator.translateText('Market'))
+      if (ev.type === Blockly.Events.CREATE) {
+        updateInputList(this)
+      }
       if (ev.group === 'tradeTypeConvert') {
         return;
       }
