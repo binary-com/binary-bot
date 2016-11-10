@@ -6,10 +6,6 @@ html, body {
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
-.toolbox * {
-	margin: 2px;
-	float: left;
-}
 #blocklyDiv{
 	height: calc(100% - 96px);
 	width: 100%;
@@ -327,4 +323,7 @@ select.tour-highlight {
 }
 .blocklyTreeRow {
   margin-bottom: 0px !important;
+}
+.actions_menu {
+  display: none;
 }

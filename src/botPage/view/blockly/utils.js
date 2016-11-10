@@ -7,7 +7,7 @@ let purchaseChoices = [[translator.translateText('Click to select'), '']]
 
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
 
-const backwardCompatibility = (block) => {
+export const backwardCompatibility = (block) => {
   if (block.getAttribute('type') === 'on_strategy') {
     block.setAttribute('type', 'before_purchase')
   } else if (block.getAttribute('type') === 'on_finish') {
@@ -25,14 +25,14 @@ const backwardCompatibility = (block) => {
   }
 }
 
-const fixCollapsedBlocks = () => {
+export const fixCollapsedBlocks = () => {
   for (const block of getCollapsedProcedures()) {
     block.setCollapsed(false)
     block.setCollapsed(true)
   }
 }
 
-const cleanUpOnLoad = (blocksToClean, dropEvent) => {
+export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
   const { clientX = 0, clientY = 0 } = dropEvent || {}
   const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
   const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
@@ -156,37 +156,31 @@ export const insideMainBlocks = (block) => {
   return parent.type && isMainBlock(parent.type)
 }
 
-export const addPurchaseOptions = (submarket) => {
-  if (submarket && submarket.getInputTargetBlock('CONDITION') !== null) {
-    const condition = submarket.getInputTargetBlock('CONDITION')
-    const conditionType = condition.type
-    const opposites = config.opposites[conditionType.toUpperCase()]
-    const contractType = condition.getField('TYPE_LIST').getValue()
-    purchaseChoices = opposites
-      .filter((k) => (contractType === 'both' ? true : contractType === Object.keys(k)[0]))
-      .map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
-    const purchases = Blockly.mainWorkspace.getAllBlocks()
-      .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0))
-    Blockly.Events.recordUndo = false
-    for (const purchase of purchases) {
-      const value = purchase.getField('PURCHASE_LIST')
-        .getValue()
-      Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'))
-      if (value === purchaseChoices[0][1]) {
-        purchase.getField('PURCHASE_LIST')
-          .setText(purchaseChoices[0][0])
-      } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
-        purchase.getField('PURCHASE_LIST')
-          .setText(purchaseChoices[1][0])
-      } else {
-        purchase.getField('PURCHASE_LIST')
-          .setValue(purchaseChoices[0][1])
-        purchase.getField('PURCHASE_LIST')
-          .setText(purchaseChoices[0][0])
-      }
+export const updatePurchaseChoices = (contractType, oppositesName) => {
+  purchaseChoices = config.opposites[oppositesName]
+    .filter((k) => (contractType === 'both' ? true : contractType === Object.keys(k)[0]))
+    .map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
+  const purchases = Blockly.mainWorkspace.getAllBlocks()
+    .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0))
+  Blockly.Events.recordUndo = false
+  for (const purchase of purchases) {
+    const value = purchase.getField('PURCHASE_LIST')
+      .getValue()
+    Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'))
+    if (value === purchaseChoices[0][1]) {
+      purchase.getField('PURCHASE_LIST')
+        .setText(purchaseChoices[0][0])
+    } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
+      purchase.getField('PURCHASE_LIST')
+        .setText(purchaseChoices[1][0])
+    } else {
+      purchase.getField('PURCHASE_LIST')
+        .setValue(purchaseChoices[0][1])
+      purchase.getField('PURCHASE_LIST')
+        .setText(purchaseChoices[0][0])
     }
-    Blockly.Events.recordUndo = true
   }
+  Blockly.Events.recordUndo = true
 }
 
 export const save = (filename = 'binary-bot.xml', collection = false, xmlDom) => {
@@ -248,15 +242,58 @@ export const durationToSecond = (duration) => {
 
 const isProcedure = (blockType) => ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0
 
-export const deleteBlocksLoadedBy = (id) => {
-  Blockly.Events.recordUndo = false
-  Blockly.Events.setGroup(true)
+// dummy event to recover deleted blocks loaded by loader
+class DeleteStray extends Blockly.Events.Abstract {
+  constructor(block) {
+    super(block)
+    this.run(true)
+  }
+  run(redo) {
+    const recordUndo = Blockly.Events.recordUndo
+    Blockly.Events.recordUndo = false
+    const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId)
+    if (!sourceBlock) {
+      return
+    }
+    if (redo) {
+      sourceBlock.setFieldValue(`${sourceBlock.getFieldValue('NAME')} (deleted)`, 'NAME')
+      sourceBlock.setDisabled(true)
+    } else {
+      sourceBlock.setFieldValue(sourceBlock.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME')
+      sourceBlock.setDisabled(false)
+    }
+    Blockly.Events.recordUndo = recordUndo
+  }
+}
+DeleteStray.prototype.type = 'deletestray'
+
+// dummy event to hide the element after creation
+class Hide extends Blockly.Events.Abstract {
+  constructor(block, header) {
+    super(block)
+    this.sourceHeaderId = header.id
+    this.run(true)
+  }
+  run() {
+    const recordUndo = Blockly.Events.recordUndo
+    Blockly.Events.recordUndo = false
+    const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId)
+    const sourceHeader = Blockly.mainWorkspace.getBlockById(this.sourceHeaderId)
+    sourceBlock.loaderId = sourceHeader.id
+    sourceHeader.loadedByMe.push(sourceBlock.id)
+    sourceBlock.getSvgRoot().style.display = 'none'
+    Blockly.Events.recordUndo = recordUndo
+  }
+}
+Hide.prototype.type = 'hide'
+
+export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
+  Blockly.Events.setGroup(eventGroup)
   for (const block of Blockly.mainWorkspace.getTopBlocks()) {
     if (block.loaderId === id) {
       if (isProcedure(block.type)) {
         if (block.getFieldValue('NAME').indexOf('deleted') < 0) {
-          block.setFieldValue(`${block.getFieldValue('NAME')} (deleted)`, 'NAME')
-          block.setDisabled(true)
+          Blockly.Events.fire(new DeleteStray(block))
         }
       } else {
         block.dispose()
@@ -264,10 +301,9 @@ export const deleteBlocksLoadedBy = (id) => {
     }
   }
   Blockly.Events.setGroup(false)
-  Blockly.Events.recordUndo = true
 }
 
-const addDomAsBlock = (blockXml) => {
+export const addDomAsBlock = (blockXml) => {
   backwardCompatibility(blockXml)
   const blockType = blockXml.getAttribute('type')
   if (isMainBlock(blockType)) {
@@ -280,8 +316,30 @@ const addDomAsBlock = (blockXml) => {
   return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
 }
 
-const addDomAsBlockFromHeader = (blockXml, header = null) => {
+const replaceDeletedBlock = (block) => {
+  const procedureName = block.getFieldValue('NAME')
+  const oldProcedure = Blockly.Procedures.getDefinition(
+    `${procedureName} (deleted)`, Blockly.mainWorkspace)
+  if (oldProcedure) {
+    const recordUndo = Blockly.Events.recordUndo
+    Blockly.Events.recordUndo = false
+    const f = block.getField('NAME')
+    f.text_ = `${procedureName} (deleted)`
+    oldProcedure.dispose()
+    block.setFieldValue(`${procedureName}`, 'NAME')
+    Blockly.Events.recordUndo = recordUndo
+  }
+}
+
+export const recoverDeletedBlock = (block) => {
+  const recordUndo = Blockly.Events.recordUndo
   Blockly.Events.recordUndo = false
+  block.setFieldValue(block.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME')
+  block.setDisabled(false)
+  Blockly.Events.recordUndo = recordUndo
+}
+
+const addDomAsBlockFromHeader = (blockXml, header = null) => {
   const oldVars = [...Blockly.mainWorkspace.variableList]
   const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
   Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
@@ -291,21 +349,8 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
     header.loadedVariables.push(v)
     return false
   })
-  if (isProcedure(block.type)) {
-    const procedureName = block.getFieldValue('NAME')
-    const oldProcedure = Blockly.Procedures.getDefinition(
-      `${procedureName} (deleted)`, Blockly.mainWorkspace)
-    if (oldProcedure) {
-      const f = block.getField('NAME')
-      f.text_ = `${procedureName} (deleted)`
-      oldProcedure.dispose()
-      block.setFieldValue(`${procedureName}`, 'NAME')
-    }
-  }
-  block.getSvgRoot().style.display = 'none'
-  block.loaderId = header.id
-  header.loadedByMe.push(block.id)
-  Blockly.Events.recordUndo = true
+  replaceDeletedBlock(block)
+  Blockly.Events.fire(new Hide(block, header))
   return block
 }
 
@@ -322,7 +367,7 @@ const processLoaders = (xml, header = null) => {
   return promises
 }
 
-const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) => {
+export const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) => {
   const promises = processLoaders(xml, header)
   if (promises.length) {
     Promise.all(promises).then(resolve, reject)
@@ -331,65 +376,12 @@ const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) =>
   }
 })
 
-const loadWorkspace = (xml) => {
-  Blockly.mainWorkspace.clear()
-  addLoadersFirst(xml).then(() => {
-    for (const block of Array.prototype.slice.call(xml.children)) {
-      backwardCompatibility(block)
-    }
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
-    observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
-    fixCollapsedBlocks()
-  }, (e) => observer.emit('ui.log.error', e))
-}
-
-const loadBlocks = (xml, dropEvent = {}) => {
-  addLoadersFirst(xml).then((loaders) => {
-    const addedBlocks = [...loaders]
-    for (const block of Array.prototype.slice.call(xml.children)) {
-      const newBlock = addDomAsBlock(block)
-      if (newBlock) {
-        addedBlocks.push(newBlock)
-      }
-    }
-    cleanUpOnLoad(addedBlocks, dropEvent)
-    observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
-    fixCollapsedBlocks()
-  }, (e) => observer.emit('ui.log.error', e))
-}
-
-export const load = (blockStr = '', dropEvent = {}) => {
-  if (blockStr.indexOf('<xml') !== 0) {
-    observer.emit('ui.log.error',
-      translator.translateText('Unrecognized file format.'))
-  } else {
-    Blockly.Events.setGroup('load')
-    try {
-      const xml = Blockly.Xml.textToDom(blockStr)
-      if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-        loadBlocks(xml, dropEvent)
-      } else {
-        loadWorkspace(xml)
-      }
-    } catch (e) {
-      if (e.name === 'BlocklyError') {
-        // pass
-      } else {
-        observer.emit('ui.log.error',
-          translator.translateText('Unrecognized file format.'))
-      }
-    }
-    Blockly.Events.setGroup(false)
-  }
-}
-
 const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, reject) => {
-  Blockly.Events.setGroup('load')
   try {
     const xml = Blockly.Xml.textToDom(blockStr)
     if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+      const recordUndo = Blockly.Events.recordUndo
+      Blockly.Events.recordUndo = false
       addLoadersFirst(xml, header).then(() => {
         for (const block of Array.prototype.slice.call(xml.children)) {
           if (['tick_analysis',
@@ -399,8 +391,12 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
               addDomAsBlockFromHeader(block, header)
             }
         }
+        Blockly.Events.recordUndo = recordUndo
         resolve()
-      }, reject)
+      }, e => {
+        Blockly.Events.recordUndo = recordUndo
+        reject(e)
+      })
     } else {
       reject(translator.translateText('Remote blocks to load must be a collection.'))
     }
@@ -411,7 +407,6 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
       reject(translator.translateText('Unrecognized file format.'))
     }
   }
-  Blockly.Events.setGroup(false)
 })
 
 export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
@@ -450,9 +445,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
           enable(blockObj)
           blockObj.url = url // eslint-disable-line no-param-reassign
           resolve(blockObj)
-        }, (e) => {
-          reject(e)
-        })
+        }, reject)
       })
     }
   }

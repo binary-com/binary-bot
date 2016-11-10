@@ -3,7 +3,7 @@ import { translator } from '../../../../../common/translator'
 import { BlocklyError } from '../../../../../common/error'
 import './barrierOffset'
 import markets from './markets'
-import { bot } from '../../../../bot'
+import market from './market'
 import config from '../../../../../common/const'
 import tradeTypes from './tradeTypes'
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils'
@@ -11,6 +11,7 @@ import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../.
 const backwardCompatibility = (block) => {
   setTimeout(() => {
     Blockly.Events.recordUndo = false
+    Blockly.Events.setGroup('tradeConvert')
     const parent = block.getParent()
     if (parent) {
       const submarketConnection = block.getInput('SUBMARKET').connection
@@ -22,6 +23,7 @@ const backwardCompatibility = (block) => {
       submarketConnection.connect((ancestor || parent).previousConnection)
     }
     block.setPreviousStatement(false)
+    Blockly.Events.setGroup(false)
     Blockly.Events.recordUndo = true
   }, 0)
 }
@@ -48,8 +50,8 @@ Blockly.Blocks.trade = {
               backwardCompatibility(block)
             }
           }
-          if (block.type in bot.symbol.activeSymbols.getSymbols()) {
-            observer.emit('tour:submarket_created')
+          if (block.type === 'market') {
+            observer.emit('tour:market_created')
           }
           if (config.conditions.indexOf(block.type) >= 0) {
             observer.emit('tour:condition_created')
@@ -102,5 +104,6 @@ Blockly.JavaScript.trade = (block) => {
 
 export default () => {
   markets()
+  market()
   tradeTypes()
 }
