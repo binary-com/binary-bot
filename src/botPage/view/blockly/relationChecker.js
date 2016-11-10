@@ -31,11 +31,15 @@ const getListField = (block, fieldName) => block.getFieldValue(fieldName)
 const conditionFields = (blockObj, ev) => {
   if ((ev.type === 'change' && ev.element === 'field')
     || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
+      const symbol = blockObj.getFieldValue('SYMBOL_LIST')
+      const tradeType = blockObj.getFieldValue('TRADETYPE_LIST')
+      if (!symbol || !tradeType) {
+        return
+      }
       const duration = getNumField(blockObj, 'DURATION')
       const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
       if (duration !== '') {
-        const minDuration = bot.symbol.getLimitation(
-          blockObj.getFieldValue('SYMBOL_LIST'), blockObj.getFieldValue('TRADETYPE_LIST')).minDuration
+        const minDuration = bot.symbol.getLimitation(symbol, tradeType).minDuration
         const durationInSeconds = durationToSecond(duration + durationType)
         if (!durationInSeconds) {
           observer.emit('ui.log.warn', translator.translateText('Duration must be a positive integer'))
