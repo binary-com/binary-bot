@@ -80,12 +80,19 @@ export const candleInterval = (block) => {
   }
 }
 
-export const duration = (block, oppositeNames) => {
+export const duration = (block) => {
   if (!block.getInput('DURATION')) {
+    const getDurationTypes = () => {
+      const tradeType = block.getFieldValue('TRADETYPE_LIST')
+      if (tradeType) {
+        return config.durationTypes[tradeType.toUpperCase()]
+      }
+      return [['', '']]
+    }
     block.appendValueInput('DURATION')
       .setCheck('Number')
       .appendField(translator.translateText('Duration:'))
-      .appendField(new Blockly.FieldDropdown(config.durationTypes[oppositeNames]), 'DURATIONTYPE_LIST')
+      .appendField(new Blockly.FieldDropdown(getDurationTypes), 'DURATIONTYPE_LIST')
   }
 }
 

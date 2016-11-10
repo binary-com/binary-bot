@@ -41,6 +41,7 @@ export default () => {
           if (ev.newValue) {
             updateInputList(this)
           }
+          this.setFieldValue('', 'DURATIONTYPE_LIST')
         }
       }
       const oppositesName = this.getFieldValue('TRADETYPE_LIST').toUpperCase()
