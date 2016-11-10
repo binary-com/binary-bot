@@ -2,7 +2,6 @@
 import 'babel-polyfill'
 import lzString from 'lz-string'
 import { observer } from 'binary-common-utils/lib/observer'
-import { getToken } from 'binary-common-utils/lib/storageManager'
 import underscore from 'underscore'
 import Backbone from 'backbone'
 import $ from 'jquery'
@@ -105,9 +104,9 @@ class BotPage {
       })
       this.view.initPromise.then(() => {
         trackJs.configure({
-          userId: getToken($('#accountSelect').val()).account_name,
+          userId: $('.account-id').first().text(),
         })
-        $('.spinning').hide()
+        $('.barspinner').hide()
         this.view.activeTour = this.view.tours.welcome
         this.view.activeTour.welcome(() => {
           this.view.activeTour = null

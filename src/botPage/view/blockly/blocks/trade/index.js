@@ -72,7 +72,7 @@ Blockly.Blocks.trade = {
 }
 
 Blockly.JavaScript.trade = (block) => {
-  const account = $('#accountSelect').val()
+  const account = $('.account-id').first().attr('value')
   if (!account) {
     return new BlocklyError(translator.translateText('Please login.')).emit()
   }

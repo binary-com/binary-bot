@@ -1,7 +1,7 @@
 import { isMainBlock, getBlockByType } from '../view/blockly/utils'
 
 const uiComponents = {
-  accountSelect: '#accountSelect',
+  accountSelect: '#main-logout',
   tours: '#tours',
   logout: '.logout',
   workspace_inside: 'svg > .blocklyWorkspace > .blocklyBlockCanvas',
@@ -10,7 +10,7 @@ const uiComponents = {
   group_load: '.group-load',
   group_reset: '.group-reset',
   intro_login_logout: '.intro-login-logout',
-  login_logout: '.login-logout',
+  login_logout: '.login-wrapper',
   group_save: '.group-save',
   group_undo_redo: '.group-undo-redo',
   group_zoom: '.group-zoom',
