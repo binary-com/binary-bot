@@ -76,7 +76,7 @@ export default class Introduction {
       content: `<p>
       ${translator.translateText('You need to login before running the bot.')}
       </p>`,
-      target: getUiComponent('login_logout'),
+      target: getUiComponent('intro_login_logout'),
       closeButton: true,
       nextButton: true,
       highlightTarget: true,
@@ -84,11 +84,9 @@ export default class Introduction {
       at: 'bottom center',
       setup: () => {
         setOpacity('intro_login_logout', 1)
-        setOpacity('login_logout', 1)
       },
       teardown: () => {
         setOpacity('intro_login_logout', 0.3)
-        setOpacity('login_logout', 0.3)
       },
     }, {
       content: `<p>
