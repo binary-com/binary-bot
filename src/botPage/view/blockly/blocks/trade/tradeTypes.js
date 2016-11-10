@@ -1,7 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#orvwcx
 
 import config from '../../../../../common/const'
-import { condition } from '../../relationChecker'
 import { translator } from '../../../../../common/translator'
 import {
   duration, payout, prediction,

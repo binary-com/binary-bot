@@ -242,15 +242,55 @@ export const durationToSecond = (duration) => {
 
 const isProcedure = (blockType) => ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0
 
-export const deleteBlocksLoadedBy = (id) => {
-  Blockly.Events.recordUndo = false
-  Blockly.Events.setGroup(true)
+// dummy event to recover deleted blocks loaded by loader
+class DeleteStray extends Blockly.Events.Abstract {
+  constructor(block) {
+    super(block)
+    this.run(true)
+  }
+  run(redo) {
+    const recordUndo = Blockly.Events.recordUndo
+    Blockly.Events.recordUndo = false
+    const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId)
+    if (redo) {
+      sourceBlock.setFieldValue(`${sourceBlock.getFieldValue('NAME')} (deleted)`, 'NAME')
+      sourceBlock.setDisabled(true)
+    } else {
+      sourceBlock.setFieldValue(sourceBlock.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME')
+      sourceBlock.setDisabled(false)
+    }
+    Blockly.Events.recordUndo = recordUndo
+  }
+}
+DeleteStray.prototype.type = 'deletestray'
+
+// dummy event to hide the element after creation
+class Hide extends Blockly.Events.Abstract {
+  constructor(block, header) {
+    super(block)
+    this.sourceHeaderId = header.id
+    this.run(true)
+  }
+  run() {
+    const recordUndo = Blockly.Events.recordUndo
+    Blockly.Events.recordUndo = false
+    const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId)
+    const sourceHeader = Blockly.mainWorkspace.getBlockById(this.sourceHeaderId)
+    sourceBlock.loaderId = sourceHeader.id
+    sourceHeader.loadedByMe.push(sourceBlock.id)
+    sourceBlock.getSvgRoot().style.display = 'none'
+    Blockly.Events.recordUndo = recordUndo
+  }
+}
+Hide.prototype.type = 'hide'
+
+export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
+  Blockly.Events.setGroup(eventGroup)
   for (const block of Blockly.mainWorkspace.getTopBlocks()) {
     if (block.loaderId === id) {
       if (isProcedure(block.type)) {
         if (block.getFieldValue('NAME').indexOf('deleted') < 0) {
-          block.setFieldValue(`${block.getFieldValue('NAME')} (deleted)`, 'NAME')
-          block.setDisabled(true)
+          Blockly.Events.fire(new DeleteStray(block))
         }
       } else {
         block.dispose()
@@ -258,7 +298,6 @@ export const deleteBlocksLoadedBy = (id) => {
     }
   }
   Blockly.Events.setGroup(false)
-  Blockly.Events.recordUndo = true
 }
 
 export const addDomAsBlock = (blockXml) => {
@@ -274,6 +313,21 @@ export const addDomAsBlock = (blockXml) => {
   return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
 }
 
+const recoverDeletedBlocks = (block) => {
+  const procedureName = block.getFieldValue('NAME')
+  const oldProcedure = Blockly.Procedures.getDefinition(
+    `${procedureName} (deleted)`, Blockly.mainWorkspace)
+  if (oldProcedure) {
+    const recordUndo = Blockly.Events.recordUndo
+    Blockly.Events.recordUndo = false
+    const f = block.getField('NAME')
+    f.text_ = `${procedureName} (deleted)`
+    oldProcedure.dispose()
+    block.setFieldValue(`${procedureName}`, 'NAME')
+    Blockly.Events.recordUndo = recordUndo
+  }
+}
+
 const addDomAsBlockFromHeader = (blockXml, header = null) => {
   const oldVars = [...Blockly.mainWorkspace.variableList]
   const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
@@ -284,36 +338,8 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
     header.loadedVariables.push(v)
     return false
   })
-  if (isProcedure(block.type)) {
-    const procedureName = block.getFieldValue('NAME')
-    const oldProcedure = Blockly.Procedures.getDefinition(
-      `${procedureName} (deleted)`, Blockly.mainWorkspace)
-    if (oldProcedure) {
-      const f = block.getField('NAME')
-      f.text_ = `${procedureName} (deleted)`
-      oldProcedure.dispose()
-      block.setFieldValue(`${procedureName}`, 'NAME')
-    }
-  }
-  // dummy event to hide the element after creation
-  class Hide extends Blockly.Events.Abstract {
-    constructor() {
-      super(block)
-      this.sourceBlockId = block.id
-      this.sourceHeaderId = header.id
-      this.run()
-    }
-    run() {
-      const sourceBlock = Blockly.mainWorkspace.getBlockById(this.sourceBlockId)
-      const sourceHeader = Blockly.mainWorkspace.getBlockById(this.sourceHeaderId)
-      sourceBlock.loaderId = sourceHeader.id
-      sourceHeader.loadedByMe.push(sourceBlock.id)
-      sourceBlock.getSvgRoot().style.display = 'none'
-    }
-  }
-  Hide.prototype.type = 'Hide'
-  const hideEvent = new Hide()
-  Blockly.Events.fire(hideEvent)
+  recoverDeletedBlocks(block)
+  Blockly.Events.fire(new Hide(block, header))
   return block
 }
 
@@ -343,6 +369,8 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
   try {
     const xml = Blockly.Xml.textToDom(blockStr)
     if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+      const recordUndo = Blockly.Events.recordUndo
+      Blockly.Events.recordUndo = false
       addLoadersFirst(xml, header).then(() => {
         for (const block of Array.prototype.slice.call(xml.children)) {
           if (['tick_analysis',
@@ -352,8 +380,12 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
               addDomAsBlockFromHeader(block, header)
             }
         }
+        Blockly.Events.recordUndo = recordUndo
         resolve()
-      }, reject)
+      }, e => {
+        Blockly.Events.recordUndo = recordUndo
+        reject(e)
+      })
     } else {
       reject(translator.translateText('Remote blocks to load must be a collection.'))
     }

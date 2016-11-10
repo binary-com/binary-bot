@@ -1,7 +1,8 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../common/translator'
 import { notifyError } from '../logger'
-import { isMainBlock, save,
+import {
+  isMainBlock, save,
   disable, deleteBlocksLoadedBy,
   addLoadersFirst, cleanUpOnLoad, addDomAsBlock,
   backwardCompatibility, fixCollapsedBlocks,
@@ -31,7 +32,7 @@ const disableStrayBlocks = () => {
 const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener(ev => {
     if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader') {
-      deleteBlocksLoadedBy(ev.blockId)
+      deleteBlocksLoadedBy(ev.blockId, ev.group)
     }
   })
 }
@@ -47,10 +48,8 @@ const loadWorkspace = (xml) => {
     fixCollapsedBlocks()
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
-    Blockly.Events.recordUndo = true
     Blockly.Events.setGroup(false)
   }, e => {
-    Blockly.Events.recordUndo = true
     Blockly.Events.setGroup(false)
     observer.emit('ui.log.error', e)
   })
@@ -70,11 +69,7 @@ const loadBlocks = (xml, dropEvent = {}) => {
     fixCollapsedBlocks()
     observer.emit('ui.log.success',
       translator.translateText('Blocks are loaded successfully'))
-    Blockly.Events.recordUndo = true
-    Blockly.Events.setGroup(false)
   }, e => {
-    Blockly.Events.recordUndo = true
-    Blockly.Events.setGroup(false)
     observer.emit('ui.log.error', e)
   })
 }

@@ -23,17 +23,28 @@ Blockly.Blocks.loader = {
         if (ev.newValue === true) {
           deleteBlocksLoadedBy(this.id)
         } else {
+          const recordUndo = Blockly.Events.recordUndo
+          Blockly.Events.recordUndo = false
           loadRemote(this).then(() => {
             observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
-          }, (e) => observer.emit('ui.log.error', e))
+          }, (e) => {
+            Blockly.Events.recordUndo = recordUndo
+            observer.emit('ui.log.error', e)
+          })
         }
       }
     if (!this.isInFlyout
       && (ev.type === 'change' && ev.element === 'field') && ev.blockId === this.id && !this.disabled) {
+        const recordUndo = Blockly.Events.recordUndo
+        Blockly.Events.recordUndo = false
         deleteBlocksLoadedBy(this.id)
         loadRemote(this).then(() => {
+          Blockly.Events.recordUndo = recordUndo
           observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
-        }, (e) => observer.emit('ui.log.error', e))
+        }, (e) => {
+          Blockly.Events.recordUndo = recordUndo
+          observer.emit('ui.log.error', e)
+        })
       }
   },
 }
