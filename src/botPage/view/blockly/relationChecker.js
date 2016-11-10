@@ -42,7 +42,7 @@ const conditionFields = (blockObj, ev) => {
         } else if (durationInSeconds < durationToSecond(minDuration)) {
           observer.emit('ui.log.warn',
             `${translator.translateText('Minimum duration is')} ${expandDuration(minDuration)}`)
-        } else if (durationType === 't' && isInteger(duration) && isInRange(duration, 5, 10)) {
+        } else if (durationType === 't' && !(isInteger(duration) && isInRange(duration, 5, 10))) {
           observer.emit('ui.log.warn',
             translator.translateText('Number of ticks must be between 5 and 10'))
         } else if (!isInteger(duration) || duration < 1) {
