@@ -35,13 +35,10 @@ export default class View {
     const tokenList = getTokenList()
     if (tokenList.length === 0) {
       $('#login').css('display', 'inline-block')
-      $('#accountSelect').css('display', 'none')
-      $('#accountSelect').children().remove()
-      $('#logout').css('display', 'none')
+      $('#client-logged-in').css('display', 'none')
     } else {
       $('#login').css('display', 'none')
-      $('#accountSelect').css('display', 'inline-block')
-      $('#logout').css('display', 'inline-block')
+      $('#client-logged-in').css('display', 'inline-block')
       for (const tokenInfo of tokenList) {
         let prefix
         if ('isVirtual' in tokenInfo) {
@@ -49,8 +46,14 @@ export default class View {
         } else {
           prefix = ''
         }
-        $('#accountSelect').append(`<option value='${tokenInfo.token}'>`
-          + ` ${prefix} ${tokenInfo.account_name} </option>`)
+        if (tokenList.indexOf(tokenInfo) === 0) {
+            $('.account-id').attr('value', `${tokenInfo.token}`)
+                            .html(`${tokenInfo.account_name}`)
+            $('.account-type').html(`${prefix}`)
+        } else {
+            $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
+            '<div class="separator-line-thin-gray"></div>');
+        }
       }
     }
   }
@@ -269,6 +272,28 @@ export default class View {
     $('#resetButton')
       .click(() => {
         this.blockly.resetWorkspace()
+      })
+
+    $('.login-id-list')
+      .on('click', 'a', (e) => {
+          e.preventDefault()
+          var $el = $(e.currentTarget)
+          var $oldType = $el.find('li span'),
+              $oldTypeText = $oldType.text(),
+              $oldID = $el.find('li div'),
+              $oldIDText = $oldID.text(),
+              $oldValue = $el.attr('value'),
+              $newType = $('.account-type'),
+              $newTypeText = $newType.first().text(),
+              $newID = $('.account-id'),
+              $newIDText = $newID.first().text(),
+              $newValue = $newID.attr('value')
+          $oldType.html($newTypeText)
+          $oldID.html($newIDText)
+          $el.attr('value', $newValue)
+          $newType.html($oldTypeText)
+          $newID.html($oldIDText)
+          $newID.attr('value', $oldValue)
       })
 
     $('#login')

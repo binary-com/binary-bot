@@ -5,7 +5,7 @@ html, body {
     overflow-x: hidden;
 }
 #header {
-    height: 75px;
+    height: 81px;
     width: 100%;
     background-color: #2a3052;
     border-top: 2px solid #394171;
@@ -15,20 +15,9 @@ html, body {
     max-width: 960px;
     margin: 0 auto;
 }
-#header #logo div {
-    display: inline-block;
-}
 #topbar {
     background-color: #15212d;
     height: 20px;
-}
-#logo {
-    display: inline-block;
-    margin-top: 15px;
-}
-.type-logo {
-    width: 80%;
-    margin-left: 10px;
 }
 #main {
     width: 100%;
@@ -62,22 +51,14 @@ ul.bullet {
         vertical-align: top;
     }
 }
-.spinning img{
-    cursor: pointer;
-    width: 200px;
-    height: 200px;
+
+.barspinner {
     position: fixed;
     left: 50%;
     top: 50%;
     margin-left: -5rem;
     z-index: 9999;
-    -webkit-animation:spin 2s linear infinite;
-    -moz-animation:spin 2s linear infinite;
-    animation:spin 2s linear infinite;
 }
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 .center {
 	text-align: center;
