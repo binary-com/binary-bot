@@ -169,6 +169,8 @@ export default {
   hasBarrierOffset: [
     'HIGHERLOWER',
     'TOUCHNOTOUCH',
+    'ENDSINOUT',
+    'STAYSINOUT',
   ],
   hasSecondBarrierOffset: [
     'ENDSINOUT',

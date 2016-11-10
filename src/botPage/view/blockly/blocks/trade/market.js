@@ -3,7 +3,8 @@ import { translator } from '../../../../../common/translator'
 import config from '../../../../../common/const'
 import { BlocklyError } from '../../../../../common/error'
 import { marketDropdown, tradeTypeDropdown } from './components'
-import { updatePurchaseChoices, updateInputList } from '../../utils'
+import { updatePurchaseChoices, updateInputList,
+setInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'
 
 export default () => {
@@ -11,6 +12,7 @@ export default () => {
     init: function init() {
       marketDropdown(this)
       tradeTypeDropdown(this)
+      setInputList(this)
       this.setPreviousStatement(true, 'Market')
       this.setColour('#f2f2f2')
     },

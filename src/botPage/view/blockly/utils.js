@@ -12,6 +12,10 @@ export const updateInputList = (block) => {
   }
 }
 
+export const setInputList = (block) => {
+  Blockly.Blocks.endsinout.init.call(block)
+}
+
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
 
 export const backwardCompatibility = (block) => {
