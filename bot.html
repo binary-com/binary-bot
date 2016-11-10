@@ -55,7 +55,7 @@
 	<title>Binary Bot</title>
 
 <link href="css/fontello-4487bb75e3.css" rel="stylesheet" />
-<link href="css/bundle-684fef1268.min.css" rel="stylesheet" /><link href="css/bot-d69e05e287.css" rel="stylesheet" /><link href="css/chart-8e55ea09ee.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
+<link href="css/bundle-684fef1268.min.css" rel="stylesheet" /><link href="css/bot-cd77c04ffe.css" rel="stylesheet" /><link href="css/chart-8e55ea09ee.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
 
 <script>
 (function () {
@@ -71,10 +71,15 @@
 </script>
 </head>
 <body>
-  <div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
   <div id="center"></div>
   <div id="blocker"></div>
- <div class="spinning"><img src="image/binary-symbol-logo.svg"/></div>
+<div class="barspinner dark">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+</div>
   <div id="topbar">
 	  <div class="right-header">
 	<span class="language-select" style="display: none">
@@ -104,19 +109,59 @@
   </div>
   <div id="header">
       <div class="left-header">
-        <a href="" id="logo">
-          <img class="symbol-logo" src="image/binary-symbol-logo.svg" alt="Binary-logo" />
-          <img class="type-logo" src="image/binary-type-logo.svg" alt="Binary-logo">
-        </a>
+          <div class="logo-wrapper">
+              <a href="" id="logo">
+                  <div class="logo-parent">
+                      <div class="logo">
+                          <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
+                      </div>
+                      <div class="binary-logo-text">
+                          <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
+                      </div>
+                  </div>
+              </a>
+          </div>
       </div>
       <div class="right-header">
         <div class="intro-login-logout">
-          <div>
-            <select id="accountSelect"></select>
+          <div id="client-logged-in">
+            <div id="main-logout">
+                <ul id="main-account" class="nav-menu main-nav">
+                    <li class="account">
+                        <a href="javascript:;">
+                            <div class="main-account">
+                                <div class="account-type"></div>
+                                <div class="account-id"></div>
+                                <div class="topMenuBalance">0</div>
+                            </div>
+                            <div class="nav-caret"></div>
+                        </a>
+                    </li>
+                </ul>
+                <ul id="all-accounts" class="nav-menu main-nav">
+                    <li class="account">
+                        <a href="javascript:;">
+                            <div class="main-account">
+                                <div class="account-type"></div>
+                                <div class="account-id"></div>
+                                <div class="topMenuBalance">0</div>
+                            </div>
+                            <div class="nav-caret"></div>
+                        </a>
+                        <ul>
+                            <div class="login-id-list"></div>
+                            <a href="javascript:;" id="btn_logout" class="logout">
+                                <li id="logout" data-i18n-text="Sign out"></li>
+                            </a>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
           </div>
-          <div class="login-logout">
-            <button id="logout" data-i18n-text="Log out"></button>
-            <button title="Add your tokens to the bot" id="login" data-i18n-text="Log in"></button>
+          <div>
+            <a class="button">
+                <span id="login" data-i18n-text="Log in"></span>
+            </a>
           </div>
         </div>
       </div>
@@ -228,6 +273,7 @@
       </div>
   </div>
 
-<script src="js/bundle-17bb7c4c76.js"></script><script src="js/bot-20f5e13011.min.js"></script>
+<script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-426e495c37.min.js"></script>  <script src="https://style.binary.com/binary.js"></script>
+
 </body>
 </html>
