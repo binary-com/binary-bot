@@ -313,7 +313,7 @@ export const addDomAsBlock = (blockXml) => {
   return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
 }
 
-const recoverDeletedBlocks = (block) => {
+const replaceDeletedBlock = (block) => {
   const procedureName = block.getFieldValue('NAME')
   const oldProcedure = Blockly.Procedures.getDefinition(
     `${procedureName} (deleted)`, Blockly.mainWorkspace)
@@ -328,6 +328,14 @@ const recoverDeletedBlocks = (block) => {
   }
 }
 
+export const recoverDeletedBlock = (block) => {
+  const recordUndo = Blockly.Events.recordUndo
+  Blockly.Events.recordUndo = false
+  block.setFieldValue(block.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME')
+  block.setDisabled(false)
+  Blockly.Events.recordUndo = recordUndo
+}
+
 const addDomAsBlockFromHeader = (blockXml, header = null) => {
   const oldVars = [...Blockly.mainWorkspace.variableList]
   const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
@@ -338,7 +346,7 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
     header.loadedVariables.push(v)
     return false
   })
-  recoverDeletedBlocks(block)
+  replaceDeletedBlock(block)
   Blockly.Events.fire(new Hide(block, header))
   return block
 }

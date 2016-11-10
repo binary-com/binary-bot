@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
 import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../../../common/translator'
-import { deleteBlocksLoadedBy, loadRemote } from '../../utils'
+import { deleteBlocksLoadedBy, loadRemote, recoverDeletedBlock } from '../../utils'
 
 
 Blockly.Blocks.loader = {
@@ -23,14 +23,12 @@ Blockly.Blocks.loader = {
         if (ev.newValue === true) {
           deleteBlocksLoadedBy(this.id)
         } else {
-          const recordUndo = Blockly.Events.recordUndo
-          Blockly.Events.recordUndo = false
-          loadRemote(this).then(() => {
-            observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
-          }, (e) => {
-            Blockly.Events.recordUndo = recordUndo
-            observer.emit('ui.log.error', e)
-          })
+          const loader = Blockly.mainWorkspace.getBlockById(ev.blockId)
+          if (loader && loader.loadedByMe) {
+            for (const blockId of loader.loadedByMe) {
+              recoverDeletedBlock(Blockly.mainWorkspace.getBlockById(blockId))
+            }
+          }
         }
       }
     if (!this.isInFlyout
