@@ -20,9 +20,9 @@ export default () => {
         contractTypes(this, config.opposites[oppositesName])
         candleInterval(this)
         duration(this, oppositesName)
-        payout(this, oppositesName)
+        payout(this)
         if (config.hasPrediction.indexOf(oppositesName) > -1) {
-          prediction(this, oppositesName)
+          prediction(this)
         } else {
           this.removeInput('PREDICTION')
         }
