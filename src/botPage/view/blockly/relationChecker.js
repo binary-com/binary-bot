@@ -90,9 +90,9 @@ export const insideTrade = (blockObj, ev, name) => {
 export const insideTradeType = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
     enable(blockObj)
-  } else if (blockObj.parentBlock_ && config.conditions.indexOf(blockObj.parentBlock_.type) < 0) {
+  } else if (blockObj.parentBlock_ && !(config.conditions.indexOf(blockObj.parentBlock_.type) >= 0 || blockObj.parentBlock_.type === 'market')) {
     disable(blockObj,
-      `${name} ${translator.translateText('must be added to the condition block')}`)
+      `${name} ${translator.translateText('must be added to the market block')}`)
   } else {
     enable(blockObj)
   }
