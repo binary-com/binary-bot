@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { observer } from 'binary-common-utils/lib/observer'
-import { getTokenList, removeAllTokens,
-  get as getStorage } from 'binary-common-utils/lib/storageManager'
+import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translator } from '../../common/translator'
@@ -35,13 +34,10 @@ export default class View {
     const tokenList = getTokenList()
     if (tokenList.length === 0) {
       $('#login').css('display', 'inline-block')
-      $('#accountSelect').css('display', 'none')
-      $('#accountSelect').children().remove()
-      $('#logout').css('display', 'none')
+      $('#client-logged-in').css('display', 'none')
     } else {
       $('#login').css('display', 'none')
-      $('#accountSelect').css('display', 'inline-block')
-      $('#logout').css('display', 'inline-block')
+      $('#client-logged-in').css('display', 'inline-block')
       for (const tokenInfo of tokenList) {
         let prefix
         if ('isVirtual' in tokenInfo) {
@@ -49,8 +45,14 @@ export default class View {
         } else {
           prefix = ''
         }
-        $('#accountSelect').append(`<option value='${tokenInfo.token}'>`
-          + ` ${prefix} ${tokenInfo.account_name} </option>`)
+        if (tokenList.indexOf(tokenInfo) === 0) {
+          $('.account-id').attr('value', `${tokenInfo.token}`)
+            .html(`${tokenInfo.account_name}`)
+          $('.account-type').html(`${prefix}`)
+        } else {
+          $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
+            '<div class="separator-line-thin-gray"></div>');
+        }
       }
     }
   }
@@ -271,6 +273,28 @@ export default class View {
         this.blockly.resetWorkspace()
       })
 
+    $('.login-id-list')
+      .on('click', 'a', (e) => {
+        e.preventDefault()
+        const $el = $(e.currentTarget)
+        const $oldType = $el.find('li span')
+        const $oldTypeText = $oldType.text()
+        const $oldID = $el.find('li div')
+        const $oldIDText = $oldID.text()
+        const $oldValue = $el.attr('value')
+        const $newType = $('.account-type')
+        const $newTypeText = $newType.first().text()
+        const $newID = $('.account-id')
+        const $newIDText = $newID.first().text()
+        const $newValue = $newID.attr('value')
+        $oldType.html($newTypeText)
+        $oldID.html($newIDText)
+        $el.attr('value', $newValue)
+        $newType.html($oldTypeText)
+        $newID.html($oldIDText)
+        $newID.attr('value', $oldValue)
+      })
+
     $('#login')
       .bind('click.login', () => {
         document.location = 'https://oauth.binary.com/oauth2/authorize?app_id=' +
@@ -333,19 +357,19 @@ export default class View {
       }
     }
     ReactDOM.render(
-            <BinaryChart
-                className="trade-chart"
-                id="trade-chart0"
-                contract={isLine() ? this.contractForChart : false}
-                hideZoomControls={isLine() && this.contractForChart}
-                pipSize={Number(Number(info.pip).toExponential().substring(3))}
-                shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
-                ticks={info[chartToDataType[this.chartType]]}
-                type={this.chartType}
-                events={events}
-                hideIntervalPicker
-                onTypeChange={(type) => (this.chartType = type)}
-            />, $('#chart')[0])
+      <BinaryChart
+      className="trade-chart"
+      id="trade-chart0"
+      contract={isLine() ? this.contractForChart : false}
+      hideZoomControls={isLine() && this.contractForChart}
+      pipSize={Number(Number(info.pip).toExponential().substring(3))}
+      shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
+      ticks={info[chartToDataType[this.chartType]]}
+      type={this.chartType}
+      events={events}
+      hideIntervalPicker
+      onTypeChange={(type) => (this.chartType = type)}
+      />, $('#chart')[0])
   }
   addEventHandlers() {
     for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
