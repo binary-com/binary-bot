@@ -31,7 +31,8 @@ const disableStrayBlocks = () => {
 
 const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener(ev => {
-    if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader') {
+    if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
+    && ev.group !== 'undo') {
       deleteBlocksLoadedBy(ev.blockId, ev.group)
     }
   })
@@ -252,7 +253,9 @@ export default class _Blockly {
     $('body').append(script)
   }
   undo() {
+    Blockly.Events.setGroup('undo')
     Blockly.mainWorkspace.undo()
+    Blockly.Events.setGroup(false)
   }
   redo() {
     Blockly.mainWorkspace.undo(true)

@@ -252,6 +252,9 @@ class DeleteStray extends Blockly.Events.Abstract {
     const recordUndo = Blockly.Events.recordUndo
     Blockly.Events.recordUndo = false
     const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId)
+    if (!sourceBlock) {
+      return
+    }
     if (redo) {
       sourceBlock.setFieldValue(`${sourceBlock.getFieldValue('NAME')} (deleted)`, 'NAME')
       sourceBlock.setDisabled(true)
