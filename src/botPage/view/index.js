@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { observer } from 'binary-common-utils/lib/observer'
-import { getTokenList, removeAllTokens,
-  get as getStorage } from 'binary-common-utils/lib/storageManager'
+import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translator } from '../../common/translator'
@@ -47,11 +46,11 @@ export default class View {
           prefix = ''
         }
         if (tokenList.indexOf(tokenInfo) === 0) {
-            $('.account-id').attr('value', `${tokenInfo.token}`)
-                            .html(`${tokenInfo.account_name}`)
-            $('.account-type').html(`${prefix}`)
+          $('.account-id').attr('value', `${tokenInfo.token}`)
+            .html(`${tokenInfo.account_name}`)
+          $('.account-type').html(`${prefix}`)
         } else {
-            $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
+          $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
             '<div class="separator-line-thin-gray"></div>');
         }
       }
@@ -276,24 +275,24 @@ export default class View {
 
     $('.login-id-list')
       .on('click', 'a', (e) => {
-          e.preventDefault()
-          var $el = $(e.currentTarget)
-          var $oldType = $el.find('li span'),
-              $oldTypeText = $oldType.text(),
-              $oldID = $el.find('li div'),
-              $oldIDText = $oldID.text(),
-              $oldValue = $el.attr('value'),
-              $newType = $('.account-type'),
-              $newTypeText = $newType.first().text(),
-              $newID = $('.account-id'),
-              $newIDText = $newID.first().text(),
-              $newValue = $newID.attr('value')
-          $oldType.html($newTypeText)
-          $oldID.html($newIDText)
-          $el.attr('value', $newValue)
-          $newType.html($oldTypeText)
-          $newID.html($oldIDText)
-          $newID.attr('value', $oldValue)
+        e.preventDefault()
+        const $el = $(e.currentTarget)
+        const $oldType = $el.find('li span')
+        const $oldTypeText = $oldType.text()
+        const $oldID = $el.find('li div')
+        const $oldIDText = $oldID.text()
+        const $oldValue = $el.attr('value')
+        const $newType = $('.account-type')
+        const $newTypeText = $newType.first().text()
+        const $newID = $('.account-id')
+        const $newIDText = $newID.first().text()
+        const $newValue = $newID.attr('value')
+        $oldType.html($newTypeText)
+        $oldID.html($newIDText)
+        $el.attr('value', $newValue)
+        $newType.html($oldTypeText)
+        $newID.html($oldIDText)
+        $newID.attr('value', $oldValue)
       })
 
     $('#login')
@@ -358,19 +357,19 @@ export default class View {
       }
     }
     ReactDOM.render(
-            <BinaryChart
-                className="trade-chart"
-                id="trade-chart0"
-                contract={isLine() ? this.contractForChart : false}
-                hideZoomControls={isLine() && this.contractForChart}
-                pipSize={Number(Number(info.pip).toExponential().substring(3))}
-                shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
-                ticks={info[chartToDataType[this.chartType]]}
-                type={this.chartType}
-                events={events}
-                hideIntervalPicker
-                onTypeChange={(type) => (this.chartType = type)}
-            />, $('#chart')[0])
+      <BinaryChart
+      className="trade-chart"
+      id="trade-chart0"
+      contract={isLine() ? this.contractForChart : false}
+      hideZoomControls={isLine() && this.contractForChart}
+      pipSize={Number(Number(info.pip).toExponential().substring(3))}
+      shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
+      ticks={info[chartToDataType[this.chartType]]}
+      type={this.chartType}
+      events={events}
+      hideIntervalPicker
+      onTypeChange={(type) => (this.chartType = type)}
+      />, $('#chart')[0])
   }
   addEventHandlers() {
     for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {

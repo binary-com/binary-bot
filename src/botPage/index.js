@@ -2,7 +2,6 @@
 import 'babel-polyfill'
 import lzString from 'lz-string'
 import { observer } from 'binary-common-utils/lib/observer'
-import { getToken } from 'binary-common-utils/lib/storageManager'
 import underscore from 'underscore'
 import Backbone from 'backbone'
 import $ from 'jquery'
