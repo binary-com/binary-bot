@@ -96,6 +96,7 @@
     "through2": "^2.0.1",
     "underscore": "^1.8.3",
     "vinyl-paths": "^2.1.0",
+    "webpack": "^1.13.3",
     "xmldom": "^0.1.22"
   }
 }
