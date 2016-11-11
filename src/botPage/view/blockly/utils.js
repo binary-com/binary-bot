@@ -5,6 +5,8 @@ import { translator } from '../../../common/translator'
 
 let purchaseChoices = [[translator.translateText('Click to select'), '']]
 
+export const oppositesToDropdown = (opposites) => opposites.map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
+
 export const updateInputList = (block) => {
   const tradeType = block.getFieldValue('TRADETYPE_LIST')
   if (tradeType) {
@@ -168,9 +170,8 @@ export const insideMainBlocks = (block) => {
 }
 
 export const updatePurchaseChoices = (contractType, oppositesName) => {
-  purchaseChoices = config.opposites[oppositesName]
-    .filter((k) => (contractType === 'both' ? true : contractType === Object.keys(k)[0]))
-    .map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
+  purchaseChoices = oppositesToDropdown(config.opposites[oppositesName]
+    .filter((k) => (contractType === 'both' ? true : contractType === Object.keys(k)[0])))
   const purchases = Blockly.mainWorkspace.getAllBlocks()
     .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0))
   Blockly.Events.recordUndo = false
