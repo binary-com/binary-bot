@@ -40,9 +40,13 @@ export default () => {
         if (ev.name === 'TRADETYPE_LIST') {
           if (ev.newValue) {
             updateInputList(this)
+            this.setFieldValue('both', 'TYPE_LIST')
+            this.setFieldValue(config.durationTypes[
+              ev.newValue.toUpperCase()][0][1], 'DURATIONTYPE_LIST')
+          } else {
+            this.setFieldValue('', 'TYPE_LIST')
+            this.setFieldValue('', 'DURATIONTYPE_LIST')
           }
-          this.setFieldValue('', 'DURATIONTYPE_LIST')
-          this.setFieldValue('', 'TYPE_LIST')
         }
       }
       const oppositesName = this.getFieldValue('TRADETYPE_LIST').toUpperCase()
