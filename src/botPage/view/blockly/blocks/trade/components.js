@@ -1,8 +1,7 @@
 import config from '../../../../../common/const'
 import { translator } from '../../../../../common/translator'
 import { bot } from '../../../../bot'
-
-const oppositesToDropdown = (opposites) => opposites.map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
+import { oppositesToDropdown } from '../../utils'
 
 export const marketDropdown = (block) => {
   const markets = bot.symbol.activeSymbols.getMarkets()
@@ -61,14 +60,21 @@ export const tradeTypeDropdown = (block) => {
     .appendField(new Blockly.FieldDropdown(getTradeTypes), 'TRADETYPE_LIST')
 }
 
-export const contractTypes = (block, opposites) => {
+export const contractTypes = (block) => {
   if (!block.getInput('CONTRACT_TYPE')) {
+    const getContractTypes = () => {
+      const tradeType = block.getFieldValue('TRADETYPE_LIST')
+      if (tradeType) {
+        return [
+          [translator.translateText('Both'), 'both'],
+          ...oppositesToDropdown(config.opposites[tradeType.toUpperCase()]),
+        ]
+      }
+      return [['', '']]
+    }
     block.appendDummyInput('CONTRACT_TYPE')
       .appendField(translator.translateText('Contract Type:'))
-      .appendField(new Blockly.FieldDropdown([
-        [translator.translateText('Both'), 'both'],
-        ...oppositesToDropdown(opposites),
-      ]), 'TYPE_LIST')
+      .appendField(new Blockly.FieldDropdown(getContractTypes), 'TYPE_LIST')
   }
 }
 
