@@ -15,7 +15,7 @@ export const updateInputList = (block) => {
 }
 
 export const setInputList = (block) => {
-  Blockly.Blocks.endsinout.init.call(block) // Assuming the endsinout trade type includes all possible inputs
+  Blockly.Blocks.allFields.init.call(block)
 }
 
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
