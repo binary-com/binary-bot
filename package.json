@@ -36,7 +36,8 @@
     "binary-mock-websocket": "^4.1.1",
     "blockly": "google/blockly.git#0785a7b",
     "bootstrap": "^3.3.7",
-    "eslint": "^3.9.1",
+    "coveralls": "^2.11.15",
+    "eslint": "^3.10.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.6.0",
     "filesaverjs": "^0.2.2",
@@ -50,7 +51,7 @@
     "react-dom": "^15.3.2",
     "sha1": "^1.1.1",
     "tourist": "github:easelinc/tourist#a31cf497cc7af8173513ea3f57f760894d5262cb",
-    "trackjs": "^2.5.1",
+    "trackjs": "^2.5.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
