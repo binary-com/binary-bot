@@ -7,7 +7,7 @@ Blockly.Blocks.purchase = {
   init: function init() {
     this.appendDummyInput()
       .appendField(translator.translateText('Purchase'))
-      .appendField(new Blockly.FieldDropdown(() => getPurchaseChoices()), 'PURCHASE_LIST')
+      .appendField(new Blockly.FieldDropdown(getPurchaseChoices), 'PURCHASE_LIST')
     this.setPreviousStatement(true, 'Purchase')
     this.setColour('#f2f2f2')
     this.setTooltip(translator.translateText('Purchases a chosen contract.')); // eslint-disable-line max-len

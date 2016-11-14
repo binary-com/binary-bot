@@ -1,7 +1,4 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#orvwcx
-
 import config from '../../../../../common/const'
-import { translator } from '../../../../../common/translator'
 import {
   duration, payout, prediction,
   barrierOffset, secondBarrierOffset, candleInterval,
@@ -9,6 +6,19 @@ import {
 } from './components'
 
 export default () => {
+  Blockly.Blocks.allFields = {
+    init: function init() {
+      contractTypes(this)
+      candleInterval(this)
+      duration(this)
+      payout(this)
+      prediction(this)
+      barrierOffset(this)
+      secondBarrierOffset(this)
+      this.setInputsInline(false)
+      this.setPreviousStatement(true, 'Condition')
+    },
+  }
   for (const oppositesName of Object.keys(config.opposites)) {
     Blockly.Blocks[oppositesName.toLowerCase()] = {
       init: function init() {
@@ -19,7 +29,7 @@ export default () => {
         }
         contractTypes(this)
         candleInterval(this)
-        duration(this, oppositesName)
+        duration(this)
         payout(this)
         if (config.hasPrediction.indexOf(oppositesName) > -1) {
           prediction(this)
@@ -39,10 +49,6 @@ export default () => {
         }
         this.setInputsInline(false)
         this.setPreviousStatement(true, 'Condition')
-        this.setColour('#f2f2f2')
-        this.setTooltip(`${translator.translateText('Provides the trade types:')
-        } ${optionNames[0]}/${optionNames[1]}`)
-        this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
       },
     }
     Blockly.JavaScript[oppositesName.toLowerCase()] = () => ''
