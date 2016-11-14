@@ -1,6 +1,7 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../common/translator'
 import { notifyError } from '../logger'
+import config from '../../../common/const'
 import {
   isMainBlock, save,
   disable, deleteBlocksLoadedBy,
@@ -8,6 +9,8 @@ import {
   backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
+
+let toolbox = null
 
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
@@ -29,12 +32,48 @@ const disableStrayBlocks = () => {
   }
 }
 
+const hideToolbox = () => {
+  $('.blocklyToolboxDiv').css('left', '-100%', 'important')
+  $('#container').css('left', 'inherit', 'important')
+  $('.blocklySvg').css('left', '4em')
+  $('#toolbox').show()
+  toolbox.flyout_.hide()
+}
+
+const showToolbox = () => {
+  $('.blocklyToolboxDiv').css('left', '0px', 'important')
+  $('#container').css('left', `${toolbox.width}px`, 'important')
+  $('.blocklySvg').css('left', '0em')
+  $('#toolbox').hide()
+}
+
 const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener(ev => {
-    if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
-    && ev.group !== 'undo') {
-      deleteBlocksLoadedBy(ev.blockId, ev.group)
+    if (ev.type === 'create') {
+      hideToolbox()
+      for (const blockId of ev.ids) {
+        const block = Blockly.mainWorkspace.getBlockById(blockId)
+        if (block.type === 'market') {
+          observer.emit('tour:market_created')
+        }
+        if (config.conditions.indexOf(block.type) >= 0) {
+          observer.emit('tour:condition_created')
+        }
+        if (block.type === 'math_number') {
+          observer.emit('tour:number')
+        }
+        if (block.type === 'purchase') {
+          observer.emit('tour:purchase_created')
+        }
+        if (block.type === 'trade_again') {
+          observer.emit('tour:trade_again_created')
+        }
+      }
     }
+    if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
+      && ev.group !== 'undo') {
+        deleteBlocksLoadedBy(ev.blockId, ev.group)
+      }
   })
 }
 
@@ -82,10 +121,10 @@ export default class _Blockly {
     this.addBlocklyTranslation()
     Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {} // https://github.com/google/blockly/issues/299
     this.initPromise = new Promise((resolve) => {
-      $.get('xml/toolbox.xml', (toolbox) => {
+      $.get('xml/toolbox.xml', (toolboxXml) => {
         blocks()
         const workspace = Blockly.inject('blocklyDiv', {
-          toolbox: this.xmlToStr(translator.translateXml(toolbox.getElementsByTagName('xml')[0])),
+          toolbox: this.xmlToStr(translator.translateXml(toolboxXml.getElementsByTagName('xml')[0])),
           zoom: {
             wheel: false,
           },
@@ -98,6 +137,9 @@ export default class _Blockly {
           this.zoomOnPlusMinus()
           Blockly.mainWorkspace.clearUndo()
           disposeBlocksWithLoaders()
+          toolbox = Blockly.mainWorkspace.toolbox_
+          Blockly.mainWorkspace.toolbox_ = null
+          Blockly.mainWorkspace.cleanUp()
           resolve()
         })
       })
@@ -259,5 +301,11 @@ export default class _Blockly {
   }
   redo() {
     Blockly.mainWorkspace.undo(true)
+  }
+  showToolbox() {
+    showToolbox()
+  }
+  hideToolbox() {
+    hideToolbox()
   }
 }
