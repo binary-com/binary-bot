@@ -54,8 +54,8 @@
 	</script>
 	<title>Binary Bot</title>
 
-<link href="css/fontello-4487bb75e3.css" rel="stylesheet" />
-<link href="css/bundle-684fef1268.min.css" rel="stylesheet" /><link href="css/bot-cd77c04ffe.css" rel="stylesheet" /><link href="css/chart-8e55ea09ee.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
+<link href="css/fontello-99fe38bbc3.css" rel="stylesheet" />
+<link href="css/bundle-684fef1268.min.css" rel="stylesheet" /><link href="css/bot-54810d431f.css" rel="stylesheet" /><link href="css/chart-8e55ea09ee.css" rel="stylesheet" /><link href="css/toolbox-4e6a5adae9.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
 
 <script>
 (function () {
@@ -166,114 +166,121 @@
         </div>
       </div>
   </div>
-  <div id="blocklyDiv"></div>
-  <div id="summaryPanel" class="panel">
-      <div class="panelExitButton"><p class="icon-close"></p></div>
-      <div class="description">
-          <h4 data-i18n-text="Results"></h4>
-      </div>
-    <div class="content">
-      <h4>
-        <span data-i18n-text="Summary"></span>
-      </h4>
-      <table id="summaryDisplay">
-        <thead>
-          <tr>
-            <th data-i18n-text="No. of runs"></th>
-            <th data-i18n-text="Total Stake"></th>
-            <th data-i18n-text="Total Payout"></th>
-            <th data-i18n-text="Win"></th>
-            <th data-i18n-text="Loss"></th>
-            <th data-i18n-text="Total Profit/Loss"></th>
-            <th data-i18n-text="Balance"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="totalRuns"></td>
-            <td class="totalStake"></td>
-            <td class="totalPayout"></td>
-            <td class="totalWins"></td>
-            <td class="totalLosses"></td>
-            <td class="totalProfit"></td>
-            <td class="balance"></td>
-          </tr>
-        </tbody>
-      </table>
-      <h4>
-        <span data-i18n-text="Trades"></span>
-      </h4>
-      <div class="table-scroll">
-        <table id="tradesDisplay">
+  <div id="container">
+    <div id="summaryPanel" class="panel">
+        <div class="panelExitButton"><p class="icon-close"></p></div>
+        <div class="description">
+            <h4 data-i18n-text="Results"></h4>
+        </div>
+      <div class="content">
+        <h4>
+          <span data-i18n-text="Summary"></span>
+        </h4>
+        <table id="summaryDisplay">
           <thead>
             <tr>
-              <th><span data-i18n-text="Number"></span></th>
-              <th><span data-i18n-text="Reference"></span></th>
-              <th><span data-i18n-text="Trade Type"></span></th>
-              <th><span data-i18n-text="Entry Spot"></span></th>
-              <th><span data-i18n-text="Exit Spot"></span></th>
-              <th><span data-i18n-text="Buy Price"></span></th>
-              <th><span data-i18n-text="Final Price"></span></th>
-              <th><span data-i18n-text="Profit/Loss"></span></th>
+              <th data-i18n-text="No. of runs"></th>
+              <th data-i18n-text="Total Stake"></th>
+              <th data-i18n-text="Total Payout"></th>
+              <th data-i18n-text="Win"></th>
+              <th data-i18n-text="Loss"></th>
+              <th data-i18n-text="Total Profit/Loss"></th>
+              <th data-i18n-text="Balance"></th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td class="totalRuns"></td>
+              <td class="totalStake"></td>
+              <td class="totalPayout"></td>
+              <td class="totalWins"></td>
+              <td class="totalLosses"></td>
+              <td class="totalProfit"></td>
+              <td class="balance"></td>
+            </tr>
           </tbody>
         </table>
-      </div>
-      <div id="chart"></div>
-    </div>
-  </div>
-  <div id="fileBrowser" style="display: none">
-    <form id="fileUploadForm">
-      <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
-    </form>
-  </div>
-  <div id="saveAs" class="panel">
-    <div class="panelExitButton"><p class="icon-close"></p></div>
-    <div class="description">
-        <h4 data-i18n-text="Save blocks as"></h4>
-    </div>
-    <div class="content">
-      <form id="saveAsForm">
-        <span data-i18n-text="Filename"></span>: <input title="Choose filename for your blocks" type="text" id="saveAsFilename" value="binary-bot"/>
-        <div>
-          <label title="Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded." for="Collection" data-i18n-text="Save As Collection" style="font-weight: normal"></label>
-          <input title="Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded." name="Collection" type="checkbox" id="saveAsCollection" style="margin-left: 4px"/>
-          <button data-i18n-text="Save" type="submit" id="saveAsButton" style="float: right; padding: 6px; text-transform: uppercase;"></button>
+        <h4>
+          <span data-i18n-text="Trades"></span>
+        </h4>
+        <div class="table-scroll">
+          <table id="tradesDisplay">
+            <thead>
+              <tr>
+                <th><span data-i18n-text="Number"></span></th>
+                <th><span data-i18n-text="Reference"></span></th>
+                <th><span data-i18n-text="Trade Type"></span></th>
+                <th><span data-i18n-text="Entry Spot"></span></th>
+                <th><span data-i18n-text="Exit Spot"></span></th>
+                <th><span data-i18n-text="Buy Price"></span></th>
+                <th><span data-i18n-text="Final Price"></span></th>
+                <th><span data-i18n-text="Profit/Loss"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
         </div>
+        <div id="chart"></div>
+      </div>
+    </div>
+    <div id="fileBrowser" style="display: none">
+      <form id="fileUploadForm">
+        <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
       </form>
     </div>
-  </div>
-  <div id="fixed-bar-right" class="actions_menu">
-      <div class="group-save">
-        <div><button title="Load the blocks as an XML file" id="loadXml" class="icon-browse"></button></div>
-        <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-save"></button></div>
+    <div id="saveAs" class="panel">
+      <div class="panelExitButton"><p class="icon-close"></p></div>
+      <div class="description">
+          <h4 data-i18n-text="Save blocks as"></h4>
       </div>
-      <div class="group-undo-redo">
-        <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"></button></div>
-        <div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo"></button></div>
+      <div class="content">
+        <form id="saveAsForm">
+          <span data-i18n-text="Filename"></span>: <input title="Choose filename for your blocks" type="text" id="saveAsFilename" value="binary-bot"/>
+          <div>
+            <label title="Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded." for="Collection" data-i18n-text="Save As Collection" style="font-weight: normal"></label>
+            <input title="Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded." name="Collection" type="checkbox" id="saveAsCollection" style="margin-left: 4px"/>
+            <button data-i18n-text="Save" type="submit" id="saveAsButton" style="float: right; padding: 6px; text-transform: uppercase;"></button>
+          </div>
+        </form>
       </div>
-      <div class="group-zoom">
-        <div><button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in"></button></div>
-        <div><button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out"></button></div>
-      </div>
-      <div class="group-clean-up">
-        <div><button title="Clean up" id="cleanUp" class="icon-align-justify"></button></div>
-      </div>
-      <div class="group-summary">
-        <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
-      </div>
-      <div class="group-reset">
-        <div><button title="Reset the blocks" id="resetButton" class="icon-reset"></button></div>
-      </div>
-      <div class="group-start-stop">
-        <div><button title="Run the blocks" id="runButton" class="icon-run"></button></div>
-        <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
-      </div>
+    </div>
+    <div id="toolbox" class="actions_menu">
+        <div class="group-menu">
+          <div><button title="Open menu to select a block" id="openMenu" class="icon-menu"
+              style="font-size: 25px; border-bottom-width: thick; margin-left: 0px; margin-bottom: 14px;"
+              ></button></div>
+        </div>
+        <div class="group-save">
+          <div><button title="Load the blocks as an XML file" id="loadXml" class="icon-browse"></button></div>
+          <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-save"></button></div>
+        </div>
+        <div class="group-clean-up">
+          <div><button title="Clean up" id="cleanUp" class="icon-sort"></button></div>
+        </div>
+        <div class="group-undo-redo">
+          <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"></button></div>
+          <div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo"></button></div>
+        </div>
+        <div class="group-zoom">
+          <div><button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in"></button></div>
+          <div><button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out"></button></div>
+        </div>
+        <div class="group-summary">
+          <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
+        </div>
+        <div class="group-reset">
+          <div><button title="Reset the blocks" id="resetButton" class="icon-reset"></button></div>
+        </div>
+        <div class="group-start-stop">
+          <div><button title="Run the blocks" id="runButton" class="icon-run"></button></div>
+          <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
+        </div>
+    </div>
+    <div id="blocklyDiv"></div>
   </div>
 
-<script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-aa8edc527d.min.js"></script>  <script src="https://style.binary.com/binary.js"></script>
+<script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-54295331b5.min.js"></script>  <script src="https://style.binary.com/binary.js"></script>
 
 </body>
 </html>
