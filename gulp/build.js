@@ -14,6 +14,7 @@ const getConfig = (prefix) => ({
   main_css: `<link href="css/${getManifest('main.css')}" rel="stylesheet" />`,
   bot_css: `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
   chart_css: `<link href="css/${getManifest('chart.css')}" rel="stylesheet" />`,
+  toolbox_css: `<link href="css/${getManifest('toolbox.css')}" rel="stylesheet" />`,
   fontello_css: `<link href="css/${getManifest('fontello.css')}" rel="stylesheet" />`,
   head: 'templates/partials/head.mustache',
   security: 'templates/partials/security.mustache',

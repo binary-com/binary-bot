@@ -7,10 +7,9 @@ html, body {
 	overflow-y: hidden;
 }
 #blocklyDiv{
-	height: calc(100% - 96px);
-	width: 100%;
-	right: 100px;
-	bottom: 0px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 #center {
 	position: fixed;
@@ -128,82 +127,29 @@ th, td {
 	vertical-align: middle;
 }
 
-#fixed-bar-right {
+#toolbox {
 	position: absolute;
 	z-index: 100;
-	top: 110px;
-	left: 90%;
-	width: 10%;
+	left: 0px;
+	width: 4em;
 	text-align: center;
 	padding: 10px;
-	margin-left: 12px;
 }
-#fixed-bar-right * {
+#toolbox * {
 	margin-bottom: 5px;
 }
-#fixed-bar-right button {
+#toolbox button {
 	background-color: #F2F2F2;
 	border: 1px solid #ddd;
 	padding: 2.5px 6px;
 	color: black;
 }
-#fixed-bar-right button:hover {
+#toolbox button:hover {
 	background-color: #ddd;
 }
 
 button:focus {
 	outline: none;
-}
-
-.blocklyText {
-	fill: black !important;
-}
-
-
-.blocklyTreeSelected .blocklyTreeLabel {
-	color: white !important;
-}
-
-.blocklyTreeRow:not(.blocklyTreeSelected):hover {
-	background-color: #dedede !important;
-}
-
-.blocklyToolboxDiv .blocklyTreeRow{
-	color: black;
-}
-
-.blocklyEditableText tspan {
-	fill: black !important;
-}
-
-.blocklyEditableText rect {
-	fill-opacity: 1 !important;
-}
-
-.blocklyFlyoutBackground {
-	fill: white !important;
-	fill-opacity: 1 !important;
-	stroke: #dedede;
-	stroke-width: 1px;
-}
-
-.blocklyToolboxDiv {
-	background-color: #f2f2f2 !important;
-	border-width: thin;
-	color: #dedede;
-	border-right: 1px solid;
-}
-
-.blocklyIconShape {
-	fill: #2a3052 !important;
-}
-
-.blocklyIconGroup:not(:hover), .blocklyIconGroupReadonly {
-	opacity: 1 !important;
-}
-
-.blocklyScrollbarVertical, .blocklyScrollbarHorizontal{
-	display: none;
 }
 
 .box.is-dragover {
@@ -287,9 +233,14 @@ button:focus {
 select.tour-highlight {
     background: white;
 }
-.blocklyTreeRow {
-  margin-bottom: 0px !important;
-}
 .actions_menu {
   display: none;
+}
+
+#container {
+  position: fixed;
+	height: calc(100% - 96px);
+  width: 100%;
+  left: 0px;
+  transition: 0.5s;
 }

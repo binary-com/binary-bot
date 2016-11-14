@@ -204,6 +204,16 @@ export default class View {
         e.stopPropagation()
       })
 
+    $('#openMenu')
+      .click(() => {
+        this.blockly.showToolbox()
+      })
+
+    $('.blocklySvg')
+      .click(() => {
+        this.blockly.hideToolbox()
+      })
+
     $('#saveXml')
       .click(() => {
         $('#saveAs')
