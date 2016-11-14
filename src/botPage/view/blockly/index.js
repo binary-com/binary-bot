@@ -1,7 +1,12 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import { notifyError } from '../logger'
-import { isMainBlock, save, disable, deleteBlocksLoadedBy, addLoadersFirst, cleanUpOnLoad, addDomAsBlock, backwardCompatibility, fixCollapsedBlocks,
+import config from '../../../common/const'
+import {
+  isMainBlock, save,
+  disable, deleteBlocksLoadedBy,
+  addLoadersFirst, cleanUpOnLoad, addDomAsBlock,
+  backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
 import { getLanguage } from '../../../common/lang'
@@ -28,10 +33,30 @@ const disableStrayBlocks = () => {
 
 const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener(ev => {
+    if (ev.type === 'create') {
+      for (const blockId of ev.ids) {
+        const block = Blockly.mainWorkspace.getBlockById(blockId)
+        if (block.type === 'market') {
+          observer.emit('tour:market_created')
+        }
+        if (config.conditions.indexOf(block.type) >= 0) {
+          observer.emit('tour:condition_created')
+        }
+        if (block.type === 'math_number') {
+          observer.emit('tour:number')
+        }
+        if (block.type === 'purchase') {
+          observer.emit('tour:purchase_created')
+        }
+        if (block.type === 'trade_again') {
+          observer.emit('tour:trade_again_created')
+        }
+      }
+    }
     if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
       && ev.group !== 'undo') {
-      deleteBlocksLoadedBy(ev.blockId, ev.group)
-    }
+        deleteBlocksLoadedBy(ev.blockId, ev.group)
+      }
   })
 }
 
@@ -80,10 +105,10 @@ export default class _Blockly {
     Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {
     } // https://github.com/google/blockly/issues/299
     this.initPromise = new Promise((resolve) => {
-      $.get('xml/toolbox.xml', (toolbox) => {
+      $.get('xml/toolbox.xml', (toolboxXml) => {
         blocks()
         const workspace = Blockly.inject('blocklyDiv', {
-          toolbox: this.xmlToStr(translateXml(toolbox.getElementsByTagName('xml')[0])),
+          toolbox: this.xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
           zoom: {
             wheel: false,
           },

@@ -1,0 +1,66 @@
+@import 'color';
+
+.blocklyText {
+  fill: $black !important;
+}
+
+.blocklyTreeSelected .blocklyTreeLabel {
+  color: $white !important;
+}
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+  background-color: $brand-dark-gray !important;
+}
+
+.blocklyToolboxDiv .blocklyTreeRow{
+  color: $black;
+}
+
+.blocklyEditableText tspan {
+  fill: $black !important;
+}
+
+.blocklyEditableText rect {
+  fill-opacity: 1 !important;
+}
+
+.blocklyFlyoutBackground {
+  fill: $white !important;
+  fill-opacity: 1 !important;
+  stroke: $brand-dark-gray;
+  stroke-width: 1px;
+}
+
+.blocklyToolboxDiv {
+  background-color: $brand-gray !important;
+  border-width: thin;
+  color: $brand-dark-gray;
+  border-right: 1px solid;
+}
+
+.blocklyIconShape {
+  fill: #2a3052 !important;
+}
+
+.blocklyIconGroup:not(:hover), .blocklyIconGroupReadonly {
+  opacity: 1 !important;
+}
+
+.blocklyScrollbarVertical, .blocklyScrollbarHorizontal{
+  display: none;
+}
+
+.blocklyTreeRow {
+  margin-bottom: 0px !important;
+}
+
+.blocklyToolboxDiv {
+  position: fixed !important;
+  z-index: 200 !important;
+  left: -100%;
+  overflow-x: hidden !important;
+}
+
+.blocklySvg {
+  position: absolute;
+}
