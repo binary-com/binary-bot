@@ -1,10 +1,8 @@
-import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../../../common/translator'
 import { BlocklyError } from '../../../../../common/error'
 import './barrierOffset'
 import markets from './markets'
 import market from './market'
-import config from '../../../../../common/const'
 import tradeTypes from './tradeTypes'
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils'
 

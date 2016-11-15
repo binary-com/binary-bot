@@ -12,6 +12,15 @@ import blocks from './blocks'
 
 let toolbox = null
 
+let blocklyToolboxVisible = false
+
+const resizeOnToolboxClick = () => {
+  if (blocklyToolboxVisible) {
+    const toolboxWidth = $('.blocklyToolboxDiv').width()
+    $('#container').css('left', `${toolboxWidth}px`, 'important')
+  }
+}
+
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
   for (const block of topBlocks) {
@@ -32,7 +41,8 @@ const disableStrayBlocks = () => {
   }
 }
 
-const hideToolbox = () => {
+const hideBlocklyToolbox = () => {
+  blocklyToolboxVisible = false
   $('.blocklyToolboxDiv').css('left', '-100%', 'important')
   $('#container').css('left', 'inherit', 'important')
   $('.blocklySvg').css('left', '4em')
@@ -40,9 +50,9 @@ const hideToolbox = () => {
   toolbox.flyout_.hide()
 }
 
-const showToolbox = () => {
+const showBlocklyToolbox = () => {
+  blocklyToolboxVisible = true
   $('.blocklyToolboxDiv').css('left', '0px', 'important')
-  $('#container').css('left', `${toolbox.width}px`, 'important')
   $('.blocklySvg').css('left', '0em')
   $('#toolbox').hide()
 }
@@ -50,7 +60,7 @@ const showToolbox = () => {
 const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener(ev => {
     if (ev.type === 'create') {
-      hideToolbox()
+      hideBlocklyToolbox()
       for (const blockId of ev.ids) {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
         if (block.type === 'market') {
@@ -139,6 +149,7 @@ export default class _Blockly {
           disposeBlocksWithLoaders()
           toolbox = Blockly.mainWorkspace.toolbox_
           Blockly.mainWorkspace.toolbox_ = null
+          $('.blocklyToolboxDiv').click(resizeOnToolboxClick)
           Blockly.mainWorkspace.cleanUp()
           resolve()
         })
@@ -303,9 +314,9 @@ export default class _Blockly {
     Blockly.mainWorkspace.undo(true)
   }
   showToolbox() {
-    showToolbox()
+    showBlocklyToolbox()
   }
   hideToolbox() {
-    hideToolbox()
+    hideBlocklyToolbox()
   }
 }
