@@ -1,3 +1,4 @@
+@import 'color';
 @import 'chart';
 @import 'fontello';
 @import 'panel';
@@ -35,9 +36,9 @@ html, body {
     right: 0em;
     top: 0em;
     text-align: center;
-    border: 1px solid #e98024;
+    border: 1px solid $brand-orange;
     border-radius: 0 0 0 4px;
-    background: #e98024;
+    background: $brand-orange;
     margin: 0em;
 }
 
@@ -68,8 +69,8 @@ html, body {
     position: fixed;
     top: 50%;
     left: 50%;
-    border: 1px solid #2a3052;
-    border-top-color: #ddd;
+    border: 1px solid $brand-blue;
+    border-top-color: $toolbox-btn-active;
     z-index: 1002;
 }
 
@@ -81,8 +82,8 @@ html, body {
 
 .panel .description {
     padding: 5px;
-    background-color: #2a3052;
-    color: #fff;
+    background-color: $brand-blue;
+    color: $white;
 }
 
 .panel .description h4 {
@@ -115,7 +116,7 @@ th, td {
 #chart {
     height: 40vh;
     width: 770px;
-    background-color: #f2f2f2;
+    background-color: $brand-gray;
 }
 
 .draggable {
@@ -140,7 +141,7 @@ th, td {
 }
 
 .dark-blue {
-    background: #15212d;
+    background: $brand-primary-dark;
 }
 
 #files {
@@ -162,14 +163,14 @@ th, td {
 }
 
 #toolbox button {
-    background-color: #F2F2F2;
-    border: 1px solid #ddd;
+    background-color: $brand-gray;
+    border: 1px solid $toolbox-btn-active;
     padding: 2.5px 6px;
     color: black;
 }
 
 #toolbox button:hover {
-    background-color: #ddd;
+    background-color: $toolbox-btn-active;
 }
 
 button:focus {
@@ -183,17 +184,17 @@ button:focus {
 #header {
     height: 81px;
     width: 100%;
-    background-color: #2a3052;
-    border-top: 2px solid #394171;
-    border-bottom: 4px solid #e98024;
+    background-color: $brand-blue;
+    border-top: 2px solid $brand-dark-blue;
+    border-bottom: 4px solid $brand-orange;
     font-size: 18px;
     padding: 0 20px;
 }
 
 #topbar {
-    background-color: #15212d;
+    background-color: $brand-primary-dark;
     width: 100%;
-    color: #fff;
+    color: $white;
     line-height: 1;
     font-size: 70%;
     text-align: right;
@@ -227,17 +228,17 @@ button:focus {
 }
 
 .btn-primary {
-    color: #FFF !important;
+    color: $white !important;
     text-decoration: none !important;
-    background: #2E8836 !important;
-    border-color: #2E8836 !important;
+    background: $brand-btn !important;
+    border-color: $brand-btn !important;
 }
 
 .btn-primary:active, .btn-primary:hover {
-    color: #FFF !important;
+    color: $white !important;
     text-decoration: none !important;
-    background-color: #14602B !important;
-    border-color: #14602B !important;
+    background-color: $brand-btn-active !important;
+    border-color: $brand-btn-active !important;
 }
 
 #blocker {

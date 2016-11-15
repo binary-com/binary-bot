@@ -1,21 +1,23 @@
+@import 'color';
+
 .blocklyText {
-	fill: black !important;
+	fill: $black !important;
 }
 
 .blocklyTreeSelected .blocklyTreeLabel {
-	color: white !important;
+	color: $white !important;
 }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
-	background-color: #dedede !important;
+	background-color: $brand-dark-gray !important;
 }
 
 .blocklyToolboxDiv .blocklyTreeRow{
-	color: black;
+	color: $black;
 }
 
 .blocklyEditableText tspan {
-	fill: black !important;
+	fill: $black !important;
 }
 
 .blocklyEditableText rect {
@@ -23,16 +25,16 @@
 }
 
 .blocklyFlyoutBackground {
-	fill: white !important;
+	fill: $white !important;
 	fill-opacity: 1 !important;
-	stroke: #dedede;
+	stroke: $brand-dark-gray;
 	stroke-width: 1px;
 }
 
 .blocklyToolboxDiv {
-	background-color: #f2f2f2 !important;
+	background-color: $brand-gray !important;
 	border-width: thin;
-	color: #dedede;
+	color: $brand-dark-gray;
 	border-right: 1px solid;
 }
 

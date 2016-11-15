@@ -298,25 +298,25 @@
 
 /* '' */
 .blocklyText {
-  fill: black !important; }
+  fill: #000000 !important; }
 
 .blocklyTreeSelected .blocklyTreeLabel {
-  color: white !important; }
+  color: #ffffff !important; }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
   background-color: #dedede !important; }
 
 .blocklyToolboxDiv .blocklyTreeRow {
-  color: black; }
+  color: #000000; }
 
 .blocklyEditableText tspan {
-  fill: black !important; }
+  fill: #000000 !important; }
 
 .blocklyEditableText rect {
   fill-opacity: 1 !important; }
 
 .blocklyFlyoutBackground {
-  fill: white !important;
+  fill: #ffffff !important;
   fill-opacity: 1 !important;
   stroke: #dedede;
   stroke-width: 1px; }
@@ -412,7 +412,7 @@ html, body {
   top: 50%;
   left: 50%;
   border: 1px solid #2a3052;
-  border-top-color: #ddd;
+  border-top-color: #dddddd;
   z-index: 1002; }
 
 .panel .content {
@@ -423,7 +423,7 @@ html, body {
 .panel .description {
   padding: 5px;
   background-color: #2a3052;
-  color: #fff; }
+  color: #ffffff; }
 
 .panel .description h4 {
   color: white;
@@ -488,13 +488,13 @@ th, td {
   margin-bottom: 5px; }
 
 #toolbox button {
-  background-color: #F2F2F2;
-  border: 1px solid #ddd;
+  background-color: #f2f2f2;
+  border: 1px solid #dddddd;
   padding: 2.5px 6px;
   color: black; }
 
 #toolbox button:hover {
-  background-color: #ddd; }
+  background-color: #dddddd; }
 
 button:focus {
   outline: none; }
@@ -506,7 +506,7 @@ button:focus {
   height: 81px;
   width: 100%;
   background-color: #2a3052;
-  border-top: 2px solid #394171;
+  border-top: 2px solid #15212d;
   border-bottom: 4px solid #e98024;
   font-size: 18px;
   padding: 0 20px; }
@@ -514,7 +514,7 @@ button:focus {
 #topbar {
   background-color: #15212d;
   width: 100%;
-  color: #fff;
+  color: #ffffff;
   line-height: 1;
   font-size: 70%;
   text-align: right;
@@ -541,16 +541,16 @@ button:focus {
   font-size: 16px; }
 
 .btn-primary {
-  color: #FFF !important;
+  color: #ffffff !important;
   text-decoration: none !important;
-  background: #2E8836 !important;
-  border-color: #2E8836 !important; }
+  background: #2e8836 !important;
+  border-color: #2e8836 !important; }
 
 .btn-primary:active, .btn-primary:hover {
-  color: #FFF !important;
+  color: #ffffff !important;
   text-decoration: none !important;
-  background-color: #14602B !important;
-  border-color: #14602B !important; }
+  background-color: #14602b !important;
+  border-color: #14602b !important; }
 
 #blocker {
   position: fixed;
@@ -579,4 +579,4 @@ select.tour-highlight {
   left: 0em;
   transition: 0.5s; }
 
-/*# sourceMappingURL=bot-88c67cd323.css.map */
+/*# sourceMappingURL=bot-07944c7507.css.map */
