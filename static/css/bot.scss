@@ -2,6 +2,7 @@
 @import 'chart';
 @import 'fontello';
 @import 'panel';
+@import 'blockly-toolbox';
 @import 'toolbox';
 
 html, body {
@@ -27,102 +28,6 @@ html, body {
     left: 50%;
 }
 
-.panelExitButton p {
-    color: white;
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
-    position: absolute;
-    right: 0em;
-    top: 0em;
-    text-align: center;
-    border: 1px solid $brand-orange;
-    border-radius: 0 0 0 4px;
-    background: $brand-orange;
-    margin: 0em;
-}
-
-#summaryPanel {
-    width: 800px;
-    margin-top: -317px;
-    margin-left: -400px;
-    z-index: 1001;
-}
-
-#fileBrowser {
-    width: 388px;
-    height: 76px;
-    margin-left: -194px;
-    margin-top: -38px;
-}
-
-#saveAs {
-    width: 388px;
-    height: 114px;
-    margin-left: -194px;
-    margin-top: -57px;
-}
-
-.panel {
-    display: none;
-    background-color: white;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    border: 1px solid $brand-blue;
-    border-top-color: $toolbox-btn-active;
-    z-index: 1002;
-}
-
-.panel .content {
-    padding: 0 15px 15px 15px;
-    background: white;
-    cursor: default;
-}
-
-.panel .description {
-    padding: 5px;
-    background-color: $brand-blue;
-    color: $white;
-}
-
-.panel .description h4 {
-    color: white;
-    margin: 0;
-    text-align: center;
-}
-
-table {
-    overflow: auto;
-    width: 100%;
-}
-
-table, th, td {
-    border-collapse: collapse;
-}
-
-th, td {
-    text-align: center !important;
-    padding: 3px !important;
-    height: 2em;
-}
-
-.table-scroll {
-    overflow: auto;
-    height: 25vh;
-    padding-bottom: 1vh;
-}
-
-#chart {
-    height: 40vh;
-    width: 770px;
-    background-color: $brand-gray;
-}
-
-.draggable {
-    opacity: 1;
-}
-
 .barspinner {
     position: fixed;
     left: 50%;
@@ -138,47 +43,6 @@ th, td {
 #header select, #topbar select {
     color: #000;
     font-size: 1em;
-}
-
-.dark-blue {
-    background: $brand-primary-dark;
-}
-
-#files {
-    display: inline-flex;
-    vertical-align: middle;
-}
-
-#toolbox {
-    position: absolute;
-    z-index: 100;
-    left: 0em;
-    width: 4em;
-    text-align: center;
-    padding: 10px;
-}
-
-#toolbox * {
-    margin-bottom: 5px;
-}
-
-#toolbox button {
-    background-color: $brand-gray;
-    border: 1px solid $toolbox-btn-active;
-    padding: 2.5px 6px;
-    color: black;
-}
-
-#toolbox button:hover {
-    background-color: $toolbox-btn-active;
-}
-
-button:focus {
-    outline: none;
-}
-
-.box.is-dragover {
-    background-color: grey;
 }
 
 #header {
@@ -259,10 +123,6 @@ button:focus {
 
 select.tour-highlight {
     background: white;
-}
-
-.actions_menu {
-    display: none;
 }
 
 #container {
