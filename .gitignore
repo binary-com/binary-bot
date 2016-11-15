@@ -6,3 +6,4 @@ rev-manifest.json
 coverage
 beta/
 www
+.sass-cache
