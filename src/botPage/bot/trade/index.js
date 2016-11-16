@@ -71,7 +71,7 @@ export default class Trade {
       ],
     })
     this.runningObservations.push(['api.proposal_open_contract', apiProposalOpenContract])
-    setTimeout(() => this.api.proposal_open_contract(this.contractId), 1000)
+    this.api.proposal_open_contract(this.contractId)
     return true
   }
   getTheContractInfoAfterSell() {
