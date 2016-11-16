@@ -85,6 +85,8 @@
     "gulp-mustache-plus": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-rev": "^7.1.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^2.2.0",
     "gulp-watch": "^4.3.10",
     "gulp-webpack": "^1.5.0",
     "i18next-scanner": "^1.5.0",

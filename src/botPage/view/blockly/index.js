@@ -12,13 +12,8 @@ import blocks from './blocks'
 
 let toolbox = null
 
-let blocklyToolboxVisible = false
-
 const resizeOnToolboxClick = () => {
-  if (blocklyToolboxVisible) {
-    const toolboxWidth = $('.blocklyToolboxDiv').width()
-    $('#container').css('left', `${toolboxWidth}px`, 'important')
-  }
+  $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
 }
 
 const disableStrayBlocks = () => {
@@ -42,18 +37,16 @@ const disableStrayBlocks = () => {
 }
 
 const hideBlocklyToolbox = () => {
-  blocklyToolboxVisible = false
+  $('.blocklySvg').css('left', `${$('#toolbox').width()}px`, 'important')
   $('.blocklyToolboxDiv').css('left', '-100%', 'important')
   $('#container').css('left', 'inherit', 'important')
-  $('.blocklySvg').css('left', '4em')
   $('#toolbox').show()
   toolbox.flyout_.hide()
 }
 
 const showBlocklyToolbox = () => {
-  blocklyToolboxVisible = true
+  $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
   $('.blocklyToolboxDiv').css('left', '0px', 'important')
-  $('.blocklySvg').css('left', '0em')
   $('#toolbox').hide()
 }
 

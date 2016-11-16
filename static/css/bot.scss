@@ -1,0 +1,134 @@
+@import 'color';
+@import 'chart';
+@import 'fontello';
+@import 'panel';
+@import 'blockly-toolbox';
+@import 'toolbox';
+
+html, body {
+    height: 100%;
+    margin: 0em;
+    max-width: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#blocklyDiv {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#center {
+    position: fixed;
+    width: 1em;
+    height: 1em;
+    top: 50%;
+    left: 50%;
+}
+
+.barspinner {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -5rem;
+    z-index: 9999;
+}
+
+.icon-remove:before {
+    content: 'X';
+}
+
+#header select, #topbar select {
+    color: #000;
+    font-size: 1em;
+}
+
+#header {
+    height: 81px;
+    width: 100%;
+    background-color: $brand-blue;
+    border-top: 2px solid $brand-dark-blue;
+    border-bottom: 4px solid $brand-orange;
+    font-size: 18px;
+    padding: 0 20px;
+}
+
+#topbar {
+    background-color: $brand-primary-dark;
+    width: 100%;
+    color: $white;
+    line-height: 1;
+    font-size: 70%;
+    text-align: right;
+    padding: 3px 20px;
+    display: table;
+}
+
+.left-header {
+    float: left;
+}
+
+.right-header {
+    float: right;
+}
+
+#client-logged-in {
+    display: none;
+}
+
+.topMenuBalance {
+    visibility: hidden;
+}
+
+#login {
+    display: none;
+    margin: 0.6em 0;
+}
+
+.account {
+    font-size: 16px;
+}
+
+.btn-primary {
+    color: $white !important;
+    text-decoration: none !important;
+    background: $brand-btn !important;
+    border-color: $brand-btn !important;
+}
+
+.btn-primary:active, .btn-primary:hover {
+    color: $white !important;
+    text-decoration: none !important;
+    background-color: $brand-btn-active !important;
+    border-color: $brand-btn-active !important;
+}
+
+#blocker {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    top: 0em;
+    opacity: 0;
+    left: 0em;
+    background: white;
+}
+
+#stopButton {
+    display: none;
+}
+
+select.tour-highlight {
+    background: white;
+}
+
+#container {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0em;
+    transition: 0.5s;
+}

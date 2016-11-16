@@ -1,8 +1,10 @@
 *.swp
 .publish
+static/css/*.css*
 node_modules/
 npm-debug.log
 rev-manifest.json
 coverage
 beta/
 www
+.sass-cache

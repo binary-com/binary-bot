@@ -1,0 +1,39 @@
+#toolbox {
+    position: absolute;
+    z-index: 100;
+    left: 0;
+    width: 8em;
+    text-align: center;
+
+    * {
+        margin-bottom: 0.1em;
+    }
+
+    button {
+        background-color: $brand-gray;
+        border: 0.1em solid $toolbox-btn-active;
+        padding: 0.5em 0.1em;
+        width: 7em;
+        text-align: left;
+        color: $black;
+    }
+
+    button:hover {
+        background-color: $toolbox-btn-active;
+    }
+
+    button:focus {
+        outline: none;
+    }
+
+    .box.is-dragover {
+        background-color: grey;
+    }
+
+    #openMenu {
+      font-size: 1em;
+      border-bottom-width: thick;
+      margin-left: 0em;
+      margin-bottom: 0.5em;
+    }
+}

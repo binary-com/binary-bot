@@ -1,14 +1,14 @@
 .brand-blue {
-  color: #2a3052; }
+  color: $brand-blue; }
 
 .brand-blue-bg {
-  background-color: #2a3052; }
+  background-color: $brand-blue; }
 
 .brand-orange {
-  color: #e98024; }
+  color: $brand-orange; }
 
 .brand-orange-bg {
-  background-color: #e98024; }
+  background-color: $brand-orange; }
 
 .highcharts-container {
   width: 100% !important; }
@@ -20,28 +20,28 @@
   .highcharts-loading > span {
     padding: 0.5em 1em;
     border-radius: 3px;
-    color: #bebebe !important;
-    background: #161a24 !important; }
+    color: $brand-dark-gray !important;
+    background: $brand-dark-blue !important; }
     .inverse .highcharts-loading > span {
-      color: #161a24 !important;
-      background: #bebebe !important; }
+      color: $brand-dark-blue !important;
+      background: $brand-dark-gray !important; }
 
 .inverse .trade-chart {
-  color: #bebebe; }
+  color: $brand-dark-gray; }
 
 .trade-chart,
 .contract-chart {
   font-size: 12px;
-  color: #3e3e3e; }
+  color: $brand-primary-dark; }
   .trade-chart button,
   .contract-chart button {
-    color: #3e3e3e; }
+    color: $brand-primary-dark; }
     .trade-chart button:hover,
     .contract-chart button:hover {
       background: rgba(42, 48, 82, 0.1); }
   .inverse .trade-chart button, .inverse
   .contract-chart button {
-    color: #bebebe; }
+    color: $brand-dark-gray; }
     .inverse .trade-chart button:hover, .inverse
     .contract-chart button:hover {
       background: rgba(190, 190, 190, 0.1); }
@@ -83,10 +83,10 @@
   box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.5); }
 
 .inverse .binary-chart-submenu {
-  background: #161a24; }
+  background: $brand-dark-blue; }
 
 .binary-chart-submenu button {
-  color: #3e3e3e;
+  color: $brand-primary-dark;
   background: transparent;
   border-radius: 0; }
 
@@ -105,35 +105,35 @@
 .binary-chart-button:hover,
 .binary-chart-picker-item:hover,
 .binary-chart-time-frame-button:hover {
-  box-shadow: 0 0 0 1px #3e3e3e; }
+  box-shadow: 0 0 0 1px $brand-primary-dark; }
 .inverse .binary-chart-button:hover, .inverse
 .binary-chart-picker-item:hover, .inverse
 .binary-chart-time-frame-button:hover {
-  box-shadow: 0 0 0 1px #bebebe; }
+  box-shadow: 0 0 0 1px $brand-dark-gray; }
 
 .pressed {
-  background: #2a3052 !important; }
+  background: $brand-blue !important; }
   .pressed svg {
-    fill: #bebebe; }
+    fill: $brand-dark-gray; }
 
 .binary-chart-zoom-button {
   opacity: 0.75;
   background: rgba(42, 48, 82, 0.25) !important; }
   .binary-chart-zoom-button svg {
-    fill: #2a3052;
+    fill: $brand-blue;
     margin-bottom: 4px; }
   .binary-chart-zoom-button:hover {
     opacity: 1;
-    box-shadow: 0 0 0 1px #2a3052; }
+    box-shadow: 0 0 0 1px $brand-blue; }
 
 .inverse .binary-chart-zoom-button {
   opacity: 0.75;
   background: rgba(190, 190, 190, 0.25) !important; }
   .inverse .binary-chart-zoom-button svg {
-    fill: #bebebe; }
+    fill: $brand-dark-gray; }
   .inverse .binary-chart-zoom-button:hover {
     opacity: 1;
-    box-shadow: 0 0 0 1px #bebebe; }
+    box-shadow: 0 0 0 1px $brand-dark-gray; }
 
 .binary-chart-toolbar {
   height: 30px;
@@ -154,7 +154,7 @@
 .binary-chart-picker-item svg {
   width: 16px;
   height: 16px;
-  fill: #161a24; }
+  fill: $brand-dark-blue; }
 .inverse .binary-chart-button svg, .inverse
 .binary-chart-picker-item svg {
   fill: white; }
@@ -163,8 +163,8 @@
   padding: 0.5em 1em;
   opacity: 0.9;
   border-radius: 3px;
-  background: #161a24;
-  color: #bebebe; }
+  background: $brand-dark-blue;
+  color: $brand-dark-gray; }
   .binary-chart-info-bar .value-row {
     font-weight: bold; }
   .binary-chart-info-bar > div {
@@ -174,7 +174,7 @@
       flex: 1; }
   .inverse .binary-chart-info-bar {
     background: white;
-    color: #3e3e3e; }
+    color: $brand-primary-dark; }
 
 .highcharts-tooltip {
   display: none !important; }

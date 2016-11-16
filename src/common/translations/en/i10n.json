@@ -310,5 +310,14 @@
   "2eea87bb804e4e73e3f8e9c41140f7ed83ea8875": "Run the blocks inside every n seconds",
   "7b9c76088576a64f32d67ec335162b9f73eaa026": "Run After",
   "ff56ffac023cf69ca5c7f71d407499536f4f86b5": "Run the blocks inside after n seconds",
-  "911b13459aa01b37c766a6efac83f9d50f9c9742": "must be added to the market block"
+  "911b13459aa01b37c766a6efac83f9d50f9c9742": "must be added to the market block",
+  "57f5f5efbc5990f5230aa95359042338b856707b": "Menu",
+  "c04775152587e31fa1c94328d9f701dafcb13309": "Clean Up",
+  "39fc72124884d6573e4f9f89585f071ed0782696": "Undo",
+  "471b94d402d16a5fe7549d001a68ada1f7ddb16f": "Redo",
+  "e59ac86a75de61bcc18a1dc991a9f3acead949d7": "Zoom In",
+  "87af1da361b3c674aabb0ce0188ff9b582fd9e26": "Zoom Out",
+  "44c57abd888a66b36d4b7c902134063e4a097223": "Reset",
+  "b1b392607deaf29a7e81453e069b7c07a32a6b18": "Run",
+  "9e253470c876ee6d5c720eb777aeb82d4c26e28f": "Stop"
 }

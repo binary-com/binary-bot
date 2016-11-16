@@ -6,12 +6,8 @@
 {{> head }}
 	<title>Binary Bot</title>
 
-{{> fontello_css }}
-
 {{> bundle_css }}
 {{> bot_css }}
-{{> chart_css }}
-{{> toolbox_css }}
 <link rel="stylesheet" href="https://style.binary.com/binary.css">
 
 {{> ie }}
@@ -172,33 +168,55 @@
     <div id="toolbox" class="actions_menu">
         <div class="group-menu">
           <div><button title="Open menu to select a block" id="openMenu" class="icon-menu"
-              style="font-size: 25px; border-bottom-width: thick; margin-left: 0px; margin-bottom: 14px;"
+							data-i18n-text="Menu"
               ></button></div>
         </div>
         <div class="group-save">
-          <div><button title="Load the blocks as an XML file" id="loadXml" class="icon-browse"></button></div>
-          <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-save"></button></div>
+          <div><button title="Load the blocks as an XML file" id="loadXml" class="icon-browse"
+						data-i18n-text="Open"
+						></button></div>
+          <div><button title="Save the blocks as an XML file" id="saveXml" class="icon-save"
+						data-i18n-text="Save"
+						></button></div>
         </div>
         <div class="group-clean-up">
-          <div><button title="Clean up" id="cleanUp" class="icon-sort"></button></div>
+          <div><button title="Clean up" id="cleanUp" class="icon-sort"
+						data-i18n-text="Clean Up"
+						></button></div>
         </div>
         <div class="group-undo-redo">
-          <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"></button></div>
-          <div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo"></button></div>
+          <div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo"
+						data-i18n-text="Undo"
+						></button></div>
+          <div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo"
+						data-i18n-text="Redo"
+						></button></div>
         </div>
         <div class="group-zoom">
-          <div><button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in"></button></div>
-          <div><button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out"></button></div>
+          <div><button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in"
+						data-i18n-text="Zoom In"
+						></button></div>
+          <div><button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out"
+						data-i18n-text="Zoom Out"
+						></button></div>
         </div>
         <div class="group-summary">
-          <div><button title="Open the summary panel" id="showSummary" class="icon-summary"></button></div>
+          <div><button title="Open the summary panel" id="showSummary" class="icon-summary"
+						data-i18n-text="Summary"
+						></button></div>
         </div>
         <div class="group-reset">
-          <div><button title="Reset the blocks" id="resetButton" class="icon-reset"></button></div>
+          <div><button title="Reset the blocks" id="resetButton" class="icon-reset"
+						data-i18n-text="Reset"
+						></button></div>
         </div>
         <div class="group-start-stop">
-          <div><button title="Run the blocks" id="runButton" class="icon-run"></button></div>
-          <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
+          <div><button title="Run the blocks" id="runButton" class="icon-run"
+						data-i18n-text="Run"
+						></button></div>
+          <div><button title="Stop the blocks" id="stopButton" class="icon-stop"
+						data-i18n-text="Stop"
+						></button></div>
         </div>
     </div>
     <div id="blocklyDiv"></div>
