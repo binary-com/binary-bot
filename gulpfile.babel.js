@@ -33,7 +33,7 @@ gulp.task('deploy', ['build-min'],
 gulp.task('test-deploy', ['build-min', 'serve'], () => {
 });
 
-gulp.task('watch-static', () => gulp.watch(['static/{font, image, xml}', 'static/*.html', 'static/css/*.scss'], {
+gulp.task('watch-static', () => gulp.watch(['static/xml/**/*', 'static/*.html', 'static/css/*.scss'], {
   debounceTimeout: 1000,
 }, ['build-dev-static']));
 
