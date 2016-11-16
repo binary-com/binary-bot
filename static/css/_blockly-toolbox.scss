@@ -60,6 +60,7 @@
     left: -100%;
     overflow-x: hidden !important;
     transition: 0.5s;
+		min-width: 8em;
 }
 
 .blocklyFlyoutBackground {
@@ -67,6 +68,6 @@
 }
 
 .blocklySvg {
-    left: 4em;
-    position: absolute;
+		left: 8em;
+		position: absolute;
 }
