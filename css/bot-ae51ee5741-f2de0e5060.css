@@ -203,8 +203,8 @@
 
 @font-face {
   font-family: 'fontello';
-  src: url("../font/fontello.eot?23213831");
-  src: url("../font/fontello.eot?23213831#iefix") format("embedded-opentype"), url("../font/fontello.woff2?23213831") format("woff2"), url("../font/fontello.woff?23213831") format("woff"), url("../font/fontello.ttf?23213831") format("truetype"), url("../font/fontello.svg?23213831#fontello") format("svg");
+  src: url("../font/fontello.eot?14877753");
+  src: url("../font/fontello.eot?14877753#iefix") format("embedded-opentype"), url("../font/fontello.woff2?14877753") format("woff2"), url("../font/fontello.woff?14877753") format("woff"), url("../font/fontello.ttf?14877753") format("truetype"), url("../font/fontello.svg?14877753#fontello") format("svg");
   font-weight: normal;
   font-style: normal; }
 
@@ -214,7 +214,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?23213831#fontello') format('svg');
+    src: url('../font/fontello.svg?14877753#fontello') format('svg');
   }
 }
 */
@@ -293,6 +293,10 @@
   content: '\e80b'; }
 
 /* '' */
+.icon-edit:before {
+  content: '\e80c'; }
+
+/* '' */
 .icon-sort:before {
   content: '\f160'; }
 
@@ -402,12 +406,6 @@
   stroke: #dedede;
   stroke-width: 1px; }
 
-.blocklyToolboxDiv {
-  background-color: #ffffff !important;
-  border-width: thin;
-  color: #dedede;
-  border-right: 1px solid; }
-
 .blocklyIconShape {
   fill: #2a3052 !important; }
 
@@ -424,11 +422,18 @@
 .blocklyToolboxDiv {
   position: fixed !important;
   z-index: 200 !important;
-  left: -100%;
   overflow-x: hidden !important;
   transition: 0.5s;
   min-width: 8em;
-  background-color: #f2f2f2 !important; }
+  background-color: #f2f2f2 !important;
+  border-width: thin;
+  color: #dedede;
+  border-right: 1px solid;
+  left: -100% !important; }
+  .blocklyToolboxDiv.hide {
+    left: -100% !important; }
+  .blocklyToolboxDiv.show {
+    left: 0em !important; }
 
 .blocklyFlyoutBackground {
   transition: 0.5s; }
@@ -437,7 +442,7 @@
   background-position: -16px -1px !important; }
 
 .blocklySvg {
-  left: 8em;
+  left: 0em;
   position: absolute; }
 
 #toolbox {
@@ -445,7 +450,8 @@
   z-index: 100;
   left: 0;
   width: 8em;
-  text-align: center; }
+  text-align: center;
+  display: none; }
   #toolbox * {
     margin-bottom: 0.1em; }
   #toolbox button {
@@ -502,13 +508,8 @@ html, body {
   font-size: 1em; }
 
 #header {
-  height: 81px;
-  width: 100%;
-  background-color: #2a3052;
-  border-top: 2px solid #15212d;
-  border-bottom: 4px solid #e98024;
-  font-size: 18px;
-  padding: 0 20px; }
+  height: 4.5em;
+  width: 100%; }
 
 #topbar {
   background-color: #15212d;
@@ -521,10 +522,27 @@ html, body {
   display: table; }
 
 .left-header {
-  float: left; }
+  float: left;
+  width: 28%; }
 
 .right-header {
-  float: right; }
+  float: right;
+  width: 19%; }
+
+.middle-header {
+  float: left;
+  width: 53%; }
+  .middle-header div {
+    display: inline-flex; }
+  .middle-header button {
+    background-color: #2a3052;
+    padding: 1.5em 1em; }
+    .middle-header button span {
+      display: none; }
+  .middle-header button:hover {
+    background-color: #15212d; }
+    .middle-header button:hover span {
+      display: inline-block; }
 
 #client-logged-in {
   display: none; }
@@ -575,4 +593,4 @@ select.tour-highlight {
   left: 0em;
   transition: 0.5s; }
 
-/*# sourceMappingURL=bot-ee85ef8c2b.css.map */
+/*# sourceMappingURL=bot-ae51ee5741.css.map */
