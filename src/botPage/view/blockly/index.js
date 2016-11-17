@@ -286,19 +286,25 @@ export default class _Blockly {
   redo() {
     Blockly.mainWorkspace.undo(true)
   }
-  showToolbox() {
-    $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
-    $('.blocklyToolboxDiv').css('left', '0px', 'important')
+  showBlocklyToolbox() {
     $('.blocklyToolboxDiv').addClass('show')
     $('.blocklyToolboxDiv').removeClass('hide')
-    $('#toolbox').hide()
   }
-  hideToolbox() {
-    $('.blocklySvg').css('left', `${$('#toolbox').width()}px`, 'important')
+  hideBlocklyToolbox() {
     $('.blocklyToolboxDiv').addClass('hide')
     $('.blocklyToolboxDiv').removeClass('show')
-    $('#container').css('left', 'inherit', 'important')
-    $('#toolbox').show()
-    toolbox.flyout_.hide()
+  }
+  toggleToolbox(blockly) {
+    if (blockly) {
+      this.showBlocklyToolbox()
+      $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
+      $('#toolbox').hide()
+    } else {
+      this.hideBlocklyToolbox()
+      $('.blocklySvg').css('left', `${$('#toolbox').width()}px`, 'important')
+      $('#container').css('left', 'inherit', 'important')
+      $('#toolbox').show()
+      toolbox.flyout_.hide()
+    }
   }
 }

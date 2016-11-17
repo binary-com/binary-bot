@@ -22,7 +22,8 @@
     "dev": "gulp watch",
     "deploy": "git checkout beta; npm prune ; npm install ; gulp build-min; rm -rf beta; mkdir beta ; cp -r www/ beta/beta; git checkout -- src; git checkout master ; npm prune ; npm install ; gulp deploy",
     "hunspell": "gulp i18n; cd src/common/translations ; node -e \"var en = require('./en'); console.log(JSON.stringify(en));\">en.json; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../../known_words.txt en.txt && rm *.po *.txt *.json",
-    "publish-latest": "npm test && npm version from-git && npm publish"
+    "publish-latest": "npm test && npm version from-git && npm publish",
+    "start": "npm run dev"
   },
   "author": "Amin Marashi",
   "license": "MIT",

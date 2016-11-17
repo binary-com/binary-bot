@@ -208,14 +208,14 @@ export default class View {
     $('#openMenu')
       .click(() => {
         if (editMode) {
-          this.blockly.showToolbox()
+          this.blockly.toggleToolbox(true)
         }
       })
 
     $('.blocklySvg')
       .click(() => {
         if (editMode) {
-          this.blockly.hideToolbox()
+          this.blockly.toggleToolbox(false)
         }
       })
 
@@ -223,7 +223,7 @@ export default class View {
       .click(() => {
         if (editMode) {
           $('#showEdit>span').text(translator.translateText('Edit'))
-          this.blockly.hideToolbox()
+          this.blockly.hideBlocklyToolbox()
           $('#toolbox').hide()
           $('.blocklySvg').css('left', '0em')
         } else {
