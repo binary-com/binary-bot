@@ -40,6 +40,10 @@ export default class Trade {
       return false
     }
     const apiProposalOpenContract = (contract) => {
+      if (!('transaction_ids' in contract)) {
+        this.api.proposal_open_contract(this.contractId)
+        return
+      }
       if (!this.isSold && contract.is_valid_to_sell) {
         if (contract.is_expired) {
           this.isSold = true
