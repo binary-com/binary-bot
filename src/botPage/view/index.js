@@ -12,6 +12,8 @@ import Introduction from './tours/introduction'
 import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 
+let editMode = false
+
 export default class View {
   constructor() {
     this.chartType = 'line'
@@ -23,7 +25,6 @@ export default class View {
       this.updateTokenList()
       this.blockly = new _Blockly()
       this.blockly.initPromise.then(() => {
-        $('.actions_menu').show()
         this.setElementActions()
         this.initTours()
         resolve()
@@ -206,12 +207,31 @@ export default class View {
 
     $('#openMenu')
       .click(() => {
-        this.blockly.showToolbox()
+        if (editMode) {
+          this.blockly.showToolbox()
+        }
       })
 
     $('.blocklySvg')
       .click(() => {
-        this.blockly.hideToolbox()
+        if (editMode) {
+          this.blockly.hideToolbox()
+        }
+      })
+
+    $('#showEdit')
+      .click(() => {
+        if (editMode) {
+          $('#showEdit>span').text(translator.translateText('Edit'))
+          this.blockly.hideToolbox()
+          $('#toolbox').hide()
+          $('.blocklySvg').css('left', '0em')
+        } else {
+          $('#showEdit>span').text(translator.translateText('Exit Editing'))
+          $('#toolbox').show()
+          $('.blocklySvg').css('left', '8em')
+        }
+        editMode = !editMode
       })
 
     $('#saveXml')
@@ -336,6 +356,9 @@ export default class View {
         }
       }
     })
+    $('.blocklyToolboxDiv').click(
+      () => $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
+    )
   }
   updateChart(info) {
     const chartToDataType = {

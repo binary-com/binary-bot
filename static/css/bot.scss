@@ -46,13 +46,8 @@ html, body {
 }
 
 #header {
-    height: 81px;
+    height: 4.5em;
     width: 100%;
-    background-color: $brand-blue;
-    border-top: 2px solid $brand-dark-blue;
-    border-bottom: 4px solid $brand-orange;
-    font-size: 18px;
-    padding: 0 20px;
 }
 
 #topbar {
@@ -68,10 +63,33 @@ html, body {
 
 .left-header {
     float: left;
+    width: 28%;
 }
 
 .right-header {
     float: right;
+    width: 19%;
+}
+
+.middle-header {
+    float: left;
+    width: 53%;
+    div {
+        display: inline-flex;
+    }
+    button {
+        background-color: $brand-blue;
+        padding: 1.5em 1em;
+        span {
+            display: none;
+        }
+    }
+    button:hover {
+        background-color: $brand-dark-blue;
+        span {
+            display: inline-block;
+        }
+    }
 }
 
 #client-logged-in {

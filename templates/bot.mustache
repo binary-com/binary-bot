@@ -36,6 +36,26 @@
 				</a>
 			</div>
 		</div>
+		<div class="middle-header">
+			<button title="Load the blocks as an XML file" id="loadXml" class="icon-browse group-save">
+				<span data-i18n-text="Open"></span>
+			</button>
+			<button title="Save the blocks as an XML file" id="saveXml" class="icon-save group-save">
+				<span data-i18n-text="Save"></span>
+			</button>
+			<button title="Run the blocks" id="runButton" class="icon-run group-start-stop">
+				<span data-i18n-text="Run"></span>
+			</button>
+			<button title="Stop the blocks" id="stopButton" class="icon-stop group-start-stop">
+				<span data-i18n-text="Stop"></span>
+			</button>
+			<button title="Open the summary panel" id="showSummary" class="icon-summary group-summary">
+				<span data-i18n-text="Summary"></span>
+			</button>
+			<button title="Switch to editing mode" id="showEdit" class="icon-edit group-summary">
+				<span data-i18n-text="Edit"></span>
+			</button>
+		</div>
 		<div class="right-header">
 			<div class="intro-login-logout">
 				<div id="client-logged-in">
@@ -167,10 +187,6 @@
 			<div class="group-menu">
 				<div><button title="Open menu to select a block" id="openMenu" class="icon-menu" data-i18n-text="Menu"></button></div>
 			</div>
-			<div class="group-save">
-				<div><button title="Load the blocks as an XML file" id="loadXml" class="icon-browse" data-i18n-text="Open"></button></div>
-				<div><button title="Save the blocks as an XML file" id="saveXml" class="icon-save" data-i18n-text="Save"></button></div>
-			</div>
 			<div class="group-clean-up">
 				<div><button title="Clean up" id="cleanUp" class="icon-sort" data-i18n-text="Clean Up"></button></div>
 			</div>
@@ -182,15 +198,8 @@
 				<div><button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in" data-i18n-text="Zoom In"></button></div>
 				<div><button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out" data-i18n-text="Zoom Out"></button></div>
 			</div>
-			<div class="group-summary">
-				<div><button title="Open the summary panel" id="showSummary" class="icon-summary" data-i18n-text="Summary"></button></div>
-			</div>
 			<div class="group-reset">
 				<div><button title="Reset the blocks" id="resetButton" class="icon-reset" data-i18n-text="Reset"></button></div>
-			</div>
-			<div class="group-start-stop">
-				<div><button title="Run the blocks" id="runButton" class="icon-run" data-i18n-text="Run"></button></div>
-				<div><button title="Stop the blocks" id="stopButton" class="icon-stop" data-i18n-text="Stop"></button></div>
 			</div>
 		</div>
 		<div id="blocklyDiv"></div>
