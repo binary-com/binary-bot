@@ -37,13 +37,6 @@
 	stroke-width: 1px;
 }
 
-.blocklyToolboxDiv {
-	background-color: $white !important;
-	border-width: thin;
-	color: $brand-dark-gray;
-	border-right: 1px solid;
-}
-
 .blocklyIconShape {
 	fill: #2a3052 !important;
 }
@@ -64,11 +57,20 @@
 .blocklyToolboxDiv {
     position: fixed !important;
     z-index: 200 !important;
-    left: -100%;
     overflow-x: hidden !important;
     transition: 0.5s;
 		min-width: 8em;
 		background-color: $brand-gray !important;
+		border-width: thin;
+		color: $brand-dark-gray;
+		border-right: 1px solid;
+		left: -100% !important;
+		&.hide {
+				left: -100% !important;
+		}
+		&.show {
+				left: 0em !important	;
+		}
 }
 
 .blocklyFlyoutBackground {
@@ -80,6 +82,6 @@
 }
 
 .blocklySvg {
-		left: 8em;
+		left: 0em;
 		position: absolute;
 }

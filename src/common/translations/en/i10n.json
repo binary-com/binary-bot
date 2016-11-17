@@ -319,5 +319,9 @@
   "87af1da361b3c674aabb0ce0188ff9b582fd9e26": "Zoom Out",
   "44c57abd888a66b36d4b7c902134063e4a097223": "Reset",
   "b1b392607deaf29a7e81453e069b7c07a32a6b18": "Run",
-  "9e253470c876ee6d5c720eb777aeb82d4c26e28f": "Stop"
+  "9e253470c876ee6d5c720eb777aeb82d4c26e28f": "Stop",
+  "5301648dcf6b53cefc9ed52999aaa92d4603cae0": "Edit",
+  "d8f863f1361fc5427109d451328b0b15fadd927d": "Hide Edit",
+  "27f37429d3174ec9c8f100a0c4d8fb2dc7099de3": "Show Edit",
+  "6026794ee186bdc3707802ad9e18f045a456f662": "Exit Editing"
 }

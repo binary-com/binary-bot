@@ -12,10 +12,6 @@ import blocks from './blocks'
 
 let toolbox = null
 
-const resizeOnToolboxClick = () => {
-  $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
-}
-
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
   for (const block of topBlocks) {
@@ -36,24 +32,9 @@ const disableStrayBlocks = () => {
   }
 }
 
-const hideBlocklyToolbox = () => {
-  $('.blocklySvg').css('left', `${$('#toolbox').width()}px`, 'important')
-  $('.blocklyToolboxDiv').css('left', '-100%', 'important')
-  $('#container').css('left', 'inherit', 'important')
-  $('#toolbox').show()
-  toolbox.flyout_.hide()
-}
-
-const showBlocklyToolbox = () => {
-  $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
-  $('.blocklyToolboxDiv').css('left', '0px', 'important')
-  $('#toolbox').hide()
-}
-
 const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener(ev => {
     if (ev.type === 'create') {
-      hideBlocklyToolbox()
       for (const blockId of ev.ids) {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
         if (block.type === 'market') {
@@ -142,7 +123,6 @@ export default class _Blockly {
           disposeBlocksWithLoaders()
           toolbox = Blockly.mainWorkspace.toolbox_
           Blockly.mainWorkspace.toolbox_ = null
-          $('.blocklyToolboxDiv').click(resizeOnToolboxClick)
           Blockly.mainWorkspace.cleanUp()
           resolve()
         })
@@ -307,9 +287,18 @@ export default class _Blockly {
     Blockly.mainWorkspace.undo(true)
   }
   showToolbox() {
-    showBlocklyToolbox()
+    $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
+    $('.blocklyToolboxDiv').css('left', '0px', 'important')
+    $('.blocklyToolboxDiv').addClass('show')
+    $('.blocklyToolboxDiv').removeClass('hide')
+    $('#toolbox').hide()
   }
   hideToolbox() {
-    hideBlocklyToolbox()
+    $('.blocklySvg').css('left', `${$('#toolbox').width()}px`, 'important')
+    $('.blocklyToolboxDiv').addClass('hide')
+    $('.blocklyToolboxDiv').removeClass('show')
+    $('#container').css('left', 'inherit', 'important')
+    $('#toolbox').show()
+    toolbox.flyout_.hide()
   }
 }
