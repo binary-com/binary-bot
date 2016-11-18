@@ -71,6 +71,7 @@
 		left: -100% !important;
 		min-width: 8em;
 		border-right: 1px solid;
+		overflow: scroll;
 		&.shownToolbox {
 				left: 0em !important	;
 		}

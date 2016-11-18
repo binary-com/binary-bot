@@ -125,6 +125,8 @@ export default class _Blockly {
           Blockly.mainWorkspace.toolbox_ = null
           Blockly.mainWorkspace.cleanUp()
           $('.blocklyToolboxDiv').append('<button id="blocklyToolboxBack" class="icon-left"></button>')
+          $('.blocklyToolboxDiv').css('height', `${
+            document.body.offsetHeight - $('.injectionDiv').offset().top}px`, 'important')
           resolve()
         })
       })
