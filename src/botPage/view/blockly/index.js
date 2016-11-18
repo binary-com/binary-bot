@@ -124,6 +124,7 @@ export default class _Blockly {
           toolbox = Blockly.mainWorkspace.toolbox_
           Blockly.mainWorkspace.toolbox_ = null
           Blockly.mainWorkspace.cleanUp()
+          $('.blocklyToolboxDiv').append('<button id="blocklyToolboxBack" class="icon-left"></button>')
           resolve()
         })
       })
