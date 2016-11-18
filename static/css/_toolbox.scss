@@ -3,6 +3,7 @@
     left: 0;
     width: 8em;
     text-align: center;
+    z-index: 1;
     display: none;
     * {
         margin-bottom: 0.1em;
@@ -31,8 +32,8 @@
     }
 
     #openMenu {
-      border-bottom-width: thick;
-      margin-left: 0em;
-      margin-bottom: 0.5em;
+        border-bottom-width: thick;
+        margin-left: 0em;
+        margin-bottom: 0.5em;
     }
 }

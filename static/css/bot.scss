@@ -78,9 +78,12 @@
     button {
         background-color: $brand-blue;
         padding: 1.5em 1em;
+        font-size: 1.1em;
         @media #{$phone-screen} {
             padding: 0.5em 1em;
             display: block;
+            width: 7em;
+            text-align: left;
         }
         span {
             display: none;
@@ -96,8 +99,25 @@
         }
     }
     .collapse-menu {
+        &.hiddenMenu {
+            @media #{$phone-screen} {
+                display: none;
+            }
+        }
         @media #{$phone-screen} {
-            z-index: 2;
+            padding: 0em;
+            position: absolute;
+            padding-top: 0.4em;
+            z-index: 3;
+        }
+    }
+    #mobileMenu {
+        padding: 1.5em 1em;
+        font-size: 1.1em;
+        margin-bottom: 0.1em;
+        display: none;
+        @media #{$phone-screen} {
+            display: block;
         }
     }
 }
@@ -144,7 +164,7 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 9999;
+    z-index: 3;
     display: none;
     top: 0em;
     opacity: 0;
@@ -166,7 +186,7 @@ select.tour-highlight {
     width: 100%;
     left: 0em;
     transition: 0.5s;
-    z-index: -1;
+    z-index: 1;
 }
 
 html, body {
