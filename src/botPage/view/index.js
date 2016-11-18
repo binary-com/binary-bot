@@ -242,12 +242,10 @@ export default class View {
         if (editMode) {
           $('#showEdit>span').text(translator.translateText('Edit'))
           this.blockly.hideBlocklyToolbox()
-          $('#toolbox').hide()
-          $('.blocklySvg').css('left', '0em')
+          this.blockly.hideToolbox()
         } else {
           $('#showEdit>span').text(translator.translateText('Exit Editing'))
-          $('#toolbox').show()
-          $('.blocklySvg').css('left', '8em')
+          this.blockly.showToolbox()
         }
         editMode = !editMode
       })
