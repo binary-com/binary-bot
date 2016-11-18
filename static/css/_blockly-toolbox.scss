@@ -71,10 +71,7 @@
 		left: -100% !important;
 		min-width: 8em;
 		border-right: 1px solid;
-		&.hide {
-				left: -100% !important;
-		}
-		&.show {
+		&.shownToolbox {
 				left: 0em !important	;
 		}
 }
@@ -89,6 +86,5 @@
 
 .blocklySvg {
 		left: 0em;
-		margin-left: 0.5em;
 		position: absolute;
 }
