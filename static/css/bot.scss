@@ -5,17 +5,9 @@
 @import 'blockly-toolbox';
 @import 'toolbox';
 
-html, body {
-    height: 100%;
-    margin: 0em;
-    max-width: 100%;
-    max-height: 100%;
-    overflow-x: hidden;
-    overflow-y: hidden;
-}
-
 #blocklyDiv {
     position: absolute;
+    z-index: -1;
     height: 100%;
     width: 100%;
 }
@@ -32,7 +24,6 @@ html, body {
     position: fixed;
     left: 50%;
     top: 50%;
-    margin-left: -5rem;
     z-index: 9999;
 }
 
@@ -46,48 +37,68 @@ html, body {
 }
 
 #header {
-    height: 4.5em;
+    height: 6.1em;
     width: 100%;
+}
+
+.main-nav {
+    width: 8em;
 }
 
 #topbar {
     background-color: $brand-primary-dark;
     width: 100%;
     color: $white;
-    line-height: 1;
-    font-size: 70%;
     text-align: right;
-    padding: 3px 20px;
+    padding: 0.2em 0.1em;
     display: table;
+    float: right;
 }
 
 .left-header {
     float: left;
-    width: 28%;
 }
 
 .right-header {
     float: right;
-    width: 19%;
+    width: 23%;
+    .main-nav>li>ul a li {
+      padding: 0.5em 0;
+    }
 }
 
 .middle-header {
     float: left;
-    width: 53%;
     div {
         display: inline-flex;
+        @media #{$phone-screen} {
+            padding: 1.5em 0.1em;
+            display: block;
+        }
     }
     button {
         background-color: $brand-blue;
         padding: 1.5em 1em;
+        @media #{$phone-screen} {
+            padding: 0.5em 1em;
+            display: block;
+        }
         span {
             display: none;
+            @media #{$phone-screen} {
+                display: inline-block;
+            }
         }
     }
     button:hover {
         background-color: $brand-dark-blue;
         span {
             display: inline-block;
+        }
+    }
+    .collapse-menu {
+        @media #{$phone-screen} {
+            z-index: 99999;
         }
     }
 }
@@ -105,9 +116,16 @@ html, body {
     margin: 0.6em 0;
 }
 
-.account {
-    font-size: 16px;
+.accountSelect {
+    float: right;
+    margin-right: 1em;
+    .account {
+        width: 8em;
+        float: right;
+        font-size: 1em;
+    }
 }
+
 
 .btn-primary {
     color: $white !important;
@@ -149,4 +167,19 @@ select.tour-highlight {
     width: 100%;
     left: 0em;
     transition: 0.5s;
+}
+
+html, body {
+    height: 100%;
+    margin: 0em;
+    max-width: 100%;
+    max-height: 100%;
+    font-size: 1em;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+*, :before, :after {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
 }

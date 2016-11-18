@@ -1,4 +1,5 @@
 @import 'color';
+@import 'screen';
 
 .blocklyText {
 	fill: $black !important;
@@ -6,14 +7,25 @@
 
 .blocklyTreeLabel {
 	background-color: $brand-gray !important;
-	width: 7em !important;
 	text-align: left !important;
-	font-size: 1em !important;
 	color: $black !important;
+	font-size: 1em !important;
+	width: 7em !important;
+	@media #{$tablet-screen} {
+		font-size: 1.2em !important;
+	}
 }
 
 .blocklyTreeSelected>.blocklyTreeLabel {
 	font-weight: bold !important;
+}
+
+.blocklyTreeRow {
+  margin-bottom: 0px !important;
+	height: 1.2em !important;
+	@media #{$tablet-screen} {
+		height: 1.5em !important;
+	}
 }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
@@ -34,11 +46,11 @@
 	fill: $white !important;
 	fill-opacity: 1 !important;
 	stroke: $brand-dark-gray;
-	stroke-width: 1px;
+	stroke-width: 0.1em;
 }
 
 .blocklyIconShape {
-	fill: #2a3052 !important;
+	fill: $brand-blue !important;
 }
 
 .blocklyIconGroup:not(:hover), .blocklyIconGroupReadonly {
@@ -49,22 +61,17 @@
 	display: none;
 }
 
-.blocklyTreeRow {
-  margin-bottom: 0px !important;
-	height: 1.2em !important;
-}
-
 .blocklyToolboxDiv {
     position: fixed !important;
     z-index: 200 !important;
     overflow-x: hidden !important;
     transition: 0.5s;
-		min-width: 8em;
 		background-color: $brand-gray !important;
 		border-width: thin;
 		color: $brand-dark-gray;
-		border-right: 1px solid;
 		left: -100% !important;
+		min-width: 8em;
+		border-right: 1px solid;
 		&.hide {
 				left: -100% !important;
 		}

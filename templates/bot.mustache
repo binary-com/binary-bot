@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	{{> security }} {{> head }}
 	<title>Binary Bot</title>
-	{{> bundle_css }} {{> bot_css }}
-	<link rel="stylesheet" href="https://style.binary.com/binary.css"> {{> ie }}
+	{{> bundle_css }}
+	<link rel="stylesheet" href="https://style.binary.com/binary.css"> {{> ie }} {{> bot_css }}
 </head>
+
 <body>
 	<div id="center"></div>
 	<div id="blocker"></div>
 	{{> loading }}
 	<div id="topbar">
-		<div class="right-header">
-			{{> language }}
-			<select id="tours">
-        <option value="" data-i18n-text="Select a Tour"></option>
-	      <option value="welcome" data-i18n-text="Welcome!"></option>
-	      <option value="introduction" data-i18n-text="Introduction"></option>
-	      <option value="makeSimpleStrategy" data-i18n-text="1. Make a simple strategy"></option>
-	    </select>
-		</div>
+		{{> language }}
+		<select id="tours">
+      <option value="" data-i18n-text="Select a Tour"></option>
+      <option value="welcome" data-i18n-text="Welcome!"></option>
+      <option value="introduction" data-i18n-text="Introduction"></option>
+      <option value="makeSimpleStrategy" data-i18n-text="1. Make a simple strategy"></option>
+    </select>
 	</div>
 	<div id="header">
 		<div class="left-header">
@@ -37,28 +37,31 @@
 			</div>
 		</div>
 		<div class="middle-header">
-			<button title="Load the blocks as an XML file" id="loadXml" class="icon-browse group-save">
-				<span data-i18n-text="Open"></span>
-			</button>
-			<button title="Save the blocks as an XML file" id="saveXml" class="icon-save group-save">
-				<span data-i18n-text="Save"></span>
-			</button>
-			<button title="Run the blocks" id="runButton" class="icon-run group-start-stop">
-				<span data-i18n-text="Run"></span>
-			</button>
-			<button title="Stop the blocks" id="stopButton" class="icon-stop group-start-stop">
-				<span data-i18n-text="Stop"></span>
-			</button>
-			<button title="Open the summary panel" id="showSummary" class="icon-summary group-summary">
-				<span data-i18n-text="Summary"></span>
-			</button>
-			<button title="Switch to editing mode" id="showEdit" class="icon-edit group-summary">
-				<span data-i18n-text="Edit"></span>
-			</button>
+			<button title="Open menu to see actions" id="mobileMenu" class="icon-browse" data-i18n-text="Menu"></button>
+			<div class="collapse-menu">
+				<button title="Load the blocks as an XML file" id="loadXml" class="icon-browse group-save">
+					<span data-i18n-text="Open"></span>
+				</button>
+				<button title="Save the blocks as an XML file" id="saveXml" class="icon-save group-save">
+					<span data-i18n-text="Save"></span>
+				</button>
+				<button title="Run the blocks" id="runButton" class="icon-run group-start-stop">
+					<span data-i18n-text="Run"></span>
+				</button>
+				<button title="Stop the blocks" id="stopButton" class="icon-stop group-start-stop">
+					<span data-i18n-text="Stop"></span>
+				</button>
+				<button title="Open the summary panel" id="showSummary" class="icon-summary group-summary">
+					<span data-i18n-text="Summary"></span>
+				</button>
+				<button title="Switch to editing mode" id="showEdit" class="icon-edit group-summary">
+					<span data-i18n-text="Edit"></span>
+				</button>
+			</div>
 		</div>
 		<div class="right-header">
 			<div class="intro-login-logout">
-				<div id="client-logged-in">
+				<div id="client-logged-in" class="accountSelect">
 					<div id="main-logout">
 						<ul id="main-account" class="nav-menu main-nav">
 							<li class="account">
@@ -185,21 +188,21 @@
 		</div>
 		<div id="toolbox" class="actions_menu">
 			<div class="group-menu">
-				<div><button title="Open menu to select a block" id="openMenu" class="icon-menu" data-i18n-text="Menu"></button></div>
+				<button title="Open menu to select a block" id="openMenu" class="icon-menu" data-i18n-text="Menu"></button>
 			</div>
 			<div class="group-clean-up">
-				<div><button title="Clean up" id="cleanUp" class="icon-sort" data-i18n-text="Clean Up"></button></div>
+				<button title="Clean up" id="cleanUp" class="icon-sort" data-i18n-text="Clean Up"></button>
 			</div>
 			<div class="group-undo-redo">
-				<div><button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo" data-i18n-text="Undo"></button></div>
-				<div><button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo" data-i18n-text="Redo"></button></div>
+				<button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo" data-i18n-text="Undo"></button>
+				<button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo" data-i18n-text="Redo"></button>
 			</div>
 			<div class="group-zoom">
-				<div><button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in" data-i18n-text="Zoom In"></button></div>
-				<div><button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out" data-i18n-text="Zoom Out"></button></div>
+				<button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in" data-i18n-text="Zoom In"></button>
+				<button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out" data-i18n-text="Zoom Out"></button>
 			</div>
 			<div class="group-reset">
-				<div><button title="Reset the blocks" id="resetButton" class="icon-reset" data-i18n-text="Reset"></button></div>
+				<button title="Reset the blocks" id="resetButton" class="icon-reset" data-i18n-text="Reset"></button>
 			</div>
 		</div>
 		<div id="blocklyDiv"></div>
