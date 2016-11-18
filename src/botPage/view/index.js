@@ -230,7 +230,7 @@ export default class View {
         menuVisible = false
       })
 
-    $('.blocklySvg')
+    $('#blocklyToolboxBack')
       .click(() => {
         if (editMode) {
           this.blockly.toggleToolbox(false)
