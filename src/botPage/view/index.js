@@ -13,6 +13,7 @@ import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 
 let editMode = false
+let menuVisible = false
 
 export default class View {
   constructor() {
@@ -208,14 +209,31 @@ export default class View {
     $('#openMenu')
       .click(() => {
         if (editMode) {
-          this.blockly.showToolbox()
+          this.blockly.toggleToolbox(true)
         }
+      })
+
+    $('#mobileMenu')
+      .click(() => {
+        if (menuVisible) {
+          $('.collapse-menu').addClass('hiddenMenu')
+          menuVisible = false
+        } else {
+          $('.collapse-menu').removeClass('hiddenMenu')
+          menuVisible = true
+        }
+      })
+
+    $('#blocklyDiv,#toolbox,.collapse-menu')
+      .click(() => {
+        $('.collapse-menu').addClass('hiddenMenu')
+        menuVisible = false
       })
 
     $('.blocklySvg')
       .click(() => {
         if (editMode) {
-          this.blockly.hideToolbox()
+          this.blockly.toggleToolbox(false)
         }
       })
 
@@ -223,7 +241,7 @@ export default class View {
       .click(() => {
         if (editMode) {
           $('#showEdit>span').text(translator.translateText('Edit'))
-          this.blockly.hideToolbox()
+          this.blockly.hideBlocklyToolbox()
           $('#toolbox').hide()
           $('.blocklySvg').css('left', '0em')
         } else {
