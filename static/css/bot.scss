@@ -7,7 +7,6 @@
 
 #blocklyDiv {
     position: absolute;
-    z-index: -1;
     height: 100%;
     width: 100%;
 }
@@ -98,7 +97,7 @@
     }
     .collapse-menu {
         @media #{$phone-screen} {
-            z-index: 99999;
+            z-index: 2;
         }
     }
 }
@@ -145,7 +144,7 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 1000;
+    z-index: 9999;
     display: none;
     top: 0em;
     opacity: 0;
@@ -167,6 +166,7 @@ select.tour-highlight {
     width: 100%;
     left: 0em;
     transition: 0.5s;
+    z-index: -1;
 }
 
 html, body {

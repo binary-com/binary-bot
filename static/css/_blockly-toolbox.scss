@@ -63,7 +63,7 @@
 
 .blocklyToolboxDiv {
     position: fixed !important;
-    z-index: 200 !important;
+    z-index: -1 !important;
     overflow-x: hidden !important;
     transition: 0.5s;
 		background-color: $brand-gray !important;
