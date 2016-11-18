@@ -304,8 +304,7 @@
 #summaryPanel {
   width: 800px;
   margin-top: -317px;
-  margin-left: -400px;
-  z-index: 1001; }
+  margin-left: -400px; }
 
 #fileBrowser {
   width: 388px;
@@ -327,7 +326,7 @@
   left: 50%;
   border: 1px solid #2a3052;
   border-top-color: #dddddd;
-  z-index: 1002; }
+  z-index: 2; }
   .panel .panelExitButton p {
     color: white;
     cursor: pointer;
@@ -381,13 +380,23 @@
 
 .blocklyTreeLabel {
   background-color: #f2f2f2 !important;
-  width: 7em !important;
   text-align: left !important;
+  color: #000000 !important;
   font-size: 1em !important;
-  color: #000000 !important; }
+  width: 7em !important; }
+  @media only screen and (max-width: 801px) {
+    .blocklyTreeLabel {
+      font-size: 1.2em !important; } }
 
 .blocklyTreeSelected > .blocklyTreeLabel {
   font-weight: bold !important; }
+
+.blocklyTreeRow {
+  margin-bottom: 0px !important;
+  height: 1.2em !important; }
+  @media only screen and (max-width: 801px) {
+    .blocklyTreeRow {
+      height: 1.5em !important; } }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
   background-color: #f2f2f2 !important;
@@ -404,7 +413,7 @@
   fill: #ffffff !important;
   fill-opacity: 1 !important;
   stroke: #dedede;
-  stroke-width: 1px; }
+  stroke-width: 0.1em; }
 
 .blocklyIconShape {
   fill: #2a3052 !important; }
@@ -415,21 +424,16 @@
 .blocklyScrollbarVertical, .blocklyScrollbarHorizontal {
   display: none; }
 
-.blocklyTreeRow {
-  margin-bottom: 0px !important;
-  height: 1.2em !important; }
-
 .blocklyToolboxDiv {
   position: fixed !important;
-  z-index: 200 !important;
   overflow-x: hidden !important;
   transition: 0.5s;
-  min-width: 8em;
   background-color: #f2f2f2 !important;
   border-width: thin;
   color: #dedede;
-  border-right: 1px solid;
-  left: -100% !important; }
+  left: -100% !important;
+  min-width: 8em;
+  border-right: 1px solid; }
   .blocklyToolboxDiv.hide {
     left: -100% !important; }
   .blocklyToolboxDiv.show {
@@ -447,10 +451,10 @@
 
 #toolbox {
   position: absolute;
-  z-index: 100;
   left: 0;
   width: 8em;
   text-align: center;
+  z-index: 1;
   display: none; }
   #toolbox * {
     margin-bottom: 0.1em; }
@@ -460,6 +464,7 @@
     padding: 0.5em 0.1em;
     width: 7em;
     text-align: left;
+    font-size: 1em;
     color: #000000; }
   #toolbox button:hover {
     background-color: #dddddd; }
@@ -468,18 +473,9 @@
   #toolbox .box.is-dragover {
     background-color: grey; }
   #toolbox #openMenu {
-    font-size: 1em;
     border-bottom-width: thick;
     margin-left: 0em;
     margin-bottom: 0.5em; }
-
-html, body {
-  height: 100%;
-  margin: 0em;
-  max-width: 100%;
-  max-height: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden; }
 
 #blocklyDiv {
   position: absolute;
@@ -497,52 +493,86 @@ html, body {
   position: fixed;
   left: 50%;
   top: 50%;
-  margin-left: -5rem;
   z-index: 9999; }
 
 .icon-remove:before {
   content: 'X'; }
 
-#header select, #topbar select {
+#topbar select {
   color: #000;
-  font-size: 1em; }
+  font-size: 1em;
+  float: right;
+  margin-left: 0.1em; }
 
 #header {
-  height: 4.5em;
+  height: 6.1em;
   width: 100%; }
+
+.main-nav {
+  width: 8em; }
 
 #topbar {
   background-color: #15212d;
   width: 100%;
   color: #ffffff;
-  line-height: 1;
-  font-size: 70%;
   text-align: right;
-  padding: 3px 20px;
-  display: table; }
+  padding: 0.2em 0.1em;
+  display: table;
+  float: right; }
 
 .left-header {
-  float: left;
-  width: 28%; }
+  float: left; }
 
 .right-header {
   float: right;
-  width: 19%; }
+  width: 23%; }
+  .right-header .main-nav > li > ul a li {
+    padding: 0.5em 0; }
 
 .middle-header {
-  float: left;
-  width: 53%; }
+  float: left; }
   .middle-header div {
     display: inline-flex; }
+    @media only screen and (max-width: 480px) {
+      .middle-header div {
+        padding: 1.5em 0.1em;
+        display: block; } }
   .middle-header button {
     background-color: #2a3052;
-    padding: 1.5em 1em; }
+    padding: 1.5em 1em;
+    font-size: 1.1em; }
+    @media only screen and (max-width: 480px) {
+      .middle-header button {
+        padding: 0.5em 1em;
+        display: block;
+        width: 7em;
+        text-align: left; } }
     .middle-header button span {
       display: none; }
+      @media only screen and (max-width: 480px) {
+        .middle-header button span {
+          display: inline-block; } }
   .middle-header button:hover {
     background-color: #15212d; }
     .middle-header button:hover span {
       display: inline-block; }
+  @media only screen and (max-width: 480px) {
+    .middle-header .collapse-menu.hiddenMenu {
+      display: none; } }
+  @media only screen and (max-width: 480px) {
+    .middle-header .collapse-menu {
+      padding: 0em;
+      position: absolute;
+      padding-top: 0.4em;
+      z-index: 3; } }
+  .middle-header #mobileMenu {
+    padding: 1.5em 1em;
+    font-size: 1.1em;
+    margin-bottom: 0.1em;
+    display: none; }
+    @media only screen and (max-width: 480px) {
+      .middle-header #mobileMenu {
+        display: block; } }
 
 #client-logged-in {
   display: none; }
@@ -554,8 +584,13 @@ html, body {
   display: none;
   margin: 0.6em 0; }
 
-.account {
-  font-size: 16px; }
+.accountSelect {
+  float: right;
+  margin-right: 1em; }
+  .accountSelect .account {
+    width: 8em;
+    float: right;
+    font-size: 1em; }
 
 .btn-primary {
   color: #ffffff !important;
@@ -573,7 +608,7 @@ html, body {
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  z-index: 3;
   display: none;
   top: 0em;
   opacity: 0;
@@ -591,6 +626,20 @@ select.tour-highlight {
   height: 100%;
   width: 100%;
   left: 0em;
-  transition: 0.5s; }
+  transition: 0.5s;
+  z-index: 1; }
 
-/*# sourceMappingURL=bot-ae51ee5741.css.map */
+html, body {
+  height: 100%;
+  margin: 0em;
+  max-width: 100%;
+  max-height: 100%;
+  font-size: 1em;
+  overflow-x: hidden;
+  overflow-y: hidden; }
+
+*, :before, :after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit; }
+
+/*# sourceMappingURL=bot-a00ff3afde.css.map */
