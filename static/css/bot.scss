@@ -30,9 +30,11 @@
     content: 'X';
 }
 
-#header select, #topbar select {
+#topbar select {
     color: #000;
     font-size: 1em;
+    float: right;
+    margin-left: 0.1em;
 }
 
 #header {
