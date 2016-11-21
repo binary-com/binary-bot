@@ -61,10 +61,6 @@ const addResizeListener = (element, fn) => {
   element.__resizeListeners__.push(fn);
 }
 
-const showBlocklyToolbox = () => {
-  $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`)
-  $('.blocklyToolboxDiv').addClass('shownToolbox')
-}
 export default class View {
   constructor() {
     this.chartType = 'line'
@@ -220,14 +216,21 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
+    const showBlocklyToolbox = () => {
+      const toolboxDiv = $('.blocklyToolboxDiv')
+      $('.blocklySvg').css('left', `${toolboxDiv.width()}px`)
+      toolboxDiv.addClass('shownToolbox')
+    }
+
     const hideBlocklyToolbox = () => {
       this.blockly.getToolbox().flyout_.hide()
       $('.blocklyToolboxDiv').removeClass('shownToolbox')
     }
 
     const showToolbox = () => {
-      $('#toolbox').show()
-      $('.blocklySvg').css('left', `${$('#toolbox').width()}px`)
+      const toolbox = $('#toolbox')
+      toolbox.show()
+      $('.blocklySvg').css('left', `${toolbox.width()}px`)
       $('.blocklySvg').css('margin-left', '0.5em')
     }
 

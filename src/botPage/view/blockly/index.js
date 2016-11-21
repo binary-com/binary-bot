@@ -101,8 +101,18 @@ const loadBlocks = (xml, dropEvent = {}) => {
 const resizeToolbox = () => {
   const toolboxMenu = $("[role='group']:first")
   toolboxMenu.addClass('toolboxMenu')
-  toolboxMenu.css('overflow', 'scroll')
   toolboxMenu.on('click touchstart', e => e.stopPropagation())
+}
+
+const overrideDeleteArea = () => {
+  Blockly.WorkspaceSvg.prototype.isDeleteArea = e => {
+    const outsideWorkspace = e.clientX < $('.blocklyMainBackground').offset().left
+    if (outsideWorkspace) {
+      Blockly.Css.setCursor(Blockly.Css.Cursor.DELETE)
+      return true
+    }
+    return false
+  }
 }
 
 export default class _Blockly {
@@ -132,6 +142,7 @@ export default class _Blockly {
           Blockly.mainWorkspace.toolbox_ = null
           Blockly.mainWorkspace.cleanUp()
           resizeToolbox()
+          overrideDeleteArea()
           resolve()
         })
       })
