@@ -11,9 +11,6 @@
 	color: $black !important;
 	font-size: 1em !important;
 	width: 7em !important;
-	@media #{$tablet-screen} {
-		font-size: 1.2em !important;
-	}
 }
 
 .blocklyTreeSelected>.blocklyTreeLabel {
