@@ -15,6 +15,52 @@ import { logHandler } from './logger'
 let editMode = false
 let menuVisible = false
 
+const addResizeListener = (element, fn) => {
+  const resizeListener = (e) => {
+    const requestFrame = (...args) =>
+    (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame
+      || (a => setTimeout(a, 20)))(...args);
+
+    const cancelFrame = (...args) =>
+      (window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame ||
+             window.clearTimeout)(...args);
+
+    const win = e.target || e.srcElement;
+    if (win.__resizeRAF__) cancelFrame(win.__resizeRAF__);
+    win.__resizeRAF__ = requestFrame(() => {
+      const trigger = win.__resizeTrigger__;
+      trigger.__resizeListeners__.forEach((a) => {
+        a.call(trigger, e);
+      });
+    });
+  }
+  function objectLoad() {
+    this.contentDocument.defaultView.__resizeTrigger__ = this.__resizeElement__;
+    this.contentDocument.defaultView.addEventListener('resize', resizeListener);
+  }
+  const isIE = navigator.userAgent.match(/Trident/);
+  if (!element.__resizeListeners__) {
+    element.__resizeListeners__ = []; // eslint-disable-line no-param-reassign
+    if (document.attachEvent) {
+      element.__resizeTrigger__ = element; // eslint-disable-line no-param-reassign
+      element.attachEvent('onresize', resizeListener);
+    } else {
+      if (getComputedStyle(element).position === 'static') {
+        element.style.position = 'relative' // eslint-disable-line no-param-reassign
+      }
+      const obj = element.__resizeTrigger__ = document.createElement('object'); // eslint-disable-line no-param-reassign
+      obj.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;');
+      obj.__resizeElement__ = element;
+      obj.onload = objectLoad;
+      obj.type = 'text/html';
+      if (isIE) element.appendChild(obj);
+      obj.data = 'about:blank';
+      if (!isIE) element.appendChild(obj);
+    }
+  }
+  element.__resizeListeners__.push(fn);
+}
+
 export default class View {
   constructor() {
     this.chartType = 'line'
@@ -382,7 +428,7 @@ export default class View {
         }
       }
     })
-    $('.blocklyToolboxDiv').click(
+    addResizeListener($('.blocklyToolboxDiv')[0],
       () => $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
     )
   }

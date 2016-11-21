@@ -313,4 +313,7 @@ export default class _Blockly {
       this.showToolbox()
     }
   }
+  getToolbox() {
+    return toolbox
+  }
 }
