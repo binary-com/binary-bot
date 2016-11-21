@@ -98,6 +98,12 @@ const loadBlocks = (xml, dropEvent = {}) => {
   })
 }
 
+const resizeToolbox = () => {
+  const toolboxMenu = $("[role='group']:first")
+  toolboxMenu.height($(window).height() - toolboxMenu.offset().top)
+  toolboxMenu.css('overflow', 'scroll')
+}
+
 export default class _Blockly {
   constructor() {
     this.blocksXmlStr = ''
@@ -124,6 +130,7 @@ export default class _Blockly {
           toolbox = Blockly.mainWorkspace.toolbox_
           Blockly.mainWorkspace.toolbox_ = null
           Blockly.mainWorkspace.cleanUp()
+          resizeToolbox()
           resolve()
         })
       })
