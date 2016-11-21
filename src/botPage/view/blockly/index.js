@@ -100,7 +100,7 @@ const loadBlocks = (xml, dropEvent = {}) => {
 
 const resizeToolbox = () => {
   const toolboxMenu = $("[role='group']:first")
-  toolboxMenu.height($(window).height() - toolboxMenu.offset().top)
+  toolboxMenu.addClass('toolboxMenu')
   toolboxMenu.css('overflow', 'scroll')
   toolboxMenu.on('click touchstart', e => e.stopPropagation())
 }
