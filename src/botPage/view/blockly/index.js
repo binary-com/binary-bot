@@ -102,6 +102,7 @@ const resizeToolbox = () => {
   const toolboxMenu = $("[role='group']:first")
   toolboxMenu.height($(window).height() - toolboxMenu.offset().top)
   toolboxMenu.css('overflow', 'scroll')
+  toolboxMenu.on('click touchstart', e => e.stopPropagation())
 }
 
 export default class _Blockly {
