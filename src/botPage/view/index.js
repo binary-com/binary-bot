@@ -15,6 +15,52 @@ import { logHandler } from './logger'
 let editMode = false
 let menuVisible = false
 
+const addResizeListener = (element, fn) => {
+  const resizeListener = (e) => {
+    const requestFrame = (...args) =>
+    (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame
+      || (a => setTimeout(a, 20)))(...args);
+
+    const cancelFrame = (...args) =>
+      (window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame ||
+             window.clearTimeout)(...args);
+
+    const win = e.target || e.srcElement;
+    if (win.__resizeRAF__) cancelFrame(win.__resizeRAF__);
+    win.__resizeRAF__ = requestFrame(() => {
+      const trigger = win.__resizeTrigger__;
+      trigger.__resizeListeners__.forEach((a) => {
+        a.call(trigger, e);
+      });
+    });
+  }
+  function objectLoad() {
+    this.contentDocument.defaultView.__resizeTrigger__ = this.__resizeElement__;
+    this.contentDocument.defaultView.addEventListener('resize', resizeListener);
+  }
+  const isIE = navigator.userAgent.match(/Trident/);
+  if (!element.__resizeListeners__) {
+    element.__resizeListeners__ = []; // eslint-disable-line no-param-reassign
+    if (document.attachEvent) {
+      element.__resizeTrigger__ = element; // eslint-disable-line no-param-reassign
+      element.attachEvent('onresize', resizeListener);
+    } else {
+      if (getComputedStyle(element).position === 'static') {
+        element.style.position = 'relative' // eslint-disable-line no-param-reassign
+      }
+      const obj = element.__resizeTrigger__ = document.createElement('object'); // eslint-disable-line no-param-reassign
+      obj.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;');
+      obj.__resizeElement__ = element;
+      obj.onload = objectLoad;
+      obj.type = 'text/html';
+      if (isIE) element.appendChild(obj);
+      obj.data = 'about:blank';
+      if (!isIE) element.appendChild(obj);
+    }
+  }
+  element.__resizeListeners__.push(fn);
+}
+
 export default class View {
   constructor() {
     this.chartType = 'line'
@@ -184,10 +230,6 @@ export default class View {
       })
     }
 
-    $('#stopButton')
-      .click(stop)
-      .hide()
-
     $('.panelExitButton')
       .click(function onClick() {
         $(this)
@@ -224,14 +266,16 @@ export default class View {
         }
       })
 
-    $('#blocklyDiv,#toolbox,.collapse-menu')
-      .click(() => {
-        $('.collapse-menu').addClass('hiddenMenu')
-        menuVisible = false
-      })
+    const hideCollapseMenu = () => {
+      $('.collapse-menu').addClass('hiddenMenu')
+      menuVisible = false
+    }
 
-    $('#blocklyToolboxBack')
-      .click(() => {
+    $('#toolbox,.blocklyWorkspace,.blocklyToolboxDiv')
+      .on('click touchstart', hideCollapseMenu)
+
+    $('.blocklyWorkspace')
+      .on('click touchstart', () => {
         if (editMode) {
           this.blockly.toggleToolbox(false)
         }
@@ -239,6 +283,7 @@ export default class View {
 
     $('#showEdit')
       .click(() => {
+        hideCollapseMenu()
         if (editMode) {
           $('#showEdit>span').text(translator.translateText('Edit'))
           this.blockly.hideBlocklyToolbox()
@@ -252,6 +297,7 @@ export default class View {
 
     $('#saveXml')
       .click(() => {
+        hideCollapseMenu()
         $('#saveAs')
           .show()
       })
@@ -291,12 +337,14 @@ export default class View {
 
     $('#showSummary')
       .click(() => {
+        hideCollapseMenu()
         $('#summaryPanel')
           .show()
       })
 
     $('#loadXml')
       .click(() => {
+        hideCollapseMenu()
         $('#files')
           .click()
       })
@@ -309,10 +357,18 @@ export default class View {
 
     $('#runButton')
       .click(() => {
+        hideCollapseMenu()
         $('#stopButton').show()
         $('#runButton').hide()
         this.blockly.run()
       })
+
+    $('#stopButton ')
+      .click(e => {
+        hideCollapseMenu()
+        stop(e)
+      })
+      .hide()
 
     $('#resetButton')
       .click(() => {
@@ -372,7 +428,7 @@ export default class View {
         }
       }
     })
-    $('.blocklyToolboxDiv').click(
+    addResizeListener($('.blocklyToolboxDiv')[0],
       () => $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
     )
   }
