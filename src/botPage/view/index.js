@@ -61,6 +61,10 @@ const addResizeListener = (element, fn) => {
   element.__resizeListeners__.push(fn);
 }
 
+const showBlocklyToolbox = () => {
+  $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`)
+  $('.blocklyToolboxDiv').addClass('shownToolbox')
+}
 export default class View {
   constructor() {
     this.chartType = 'line'
@@ -216,6 +220,34 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
+    const hideBlocklyToolbox = () => {
+      this.blockly.getToolbox().flyout_.hide()
+      $('.blocklyToolboxDiv').removeClass('shownToolbox')
+    }
+
+    const showToolbox = () => {
+      $('#toolbox').show()
+      $('.blocklySvg').css('left', `${$('#toolbox').width()}px`)
+      $('.blocklySvg').css('margin-left', '0.5em')
+    }
+
+    const hideToolbox = () => {
+      $('#toolbox').hide()
+      $('.blocklySvg').css('left', '0em')
+      $('.blocklySvg').css('margin-left', '0em')
+    }
+
+    const toggleToolbox = (blockly) => {
+      if (blockly) {
+        hideToolbox()
+        showBlocklyToolbox()
+      } else {
+        hideBlocklyToolbox()
+        showToolbox()
+      }
+    }
+
+
     const stop = (e) => {
       if (e) {
         e.preventDefault()
@@ -251,7 +283,7 @@ export default class View {
     $('#openMenu')
       .click(() => {
         if (editMode) {
-          this.blockly.toggleToolbox(true)
+          toggleToolbox(true)
         }
       })
 
@@ -277,7 +309,7 @@ export default class View {
     $('.blocklyWorkspace')
       .on('click touchstart', () => {
         if (editMode) {
-          this.blockly.toggleToolbox(false)
+          toggleToolbox(false)
         }
       })
 
@@ -286,11 +318,11 @@ export default class View {
         hideCollapseMenu()
         if (editMode) {
           $('#showEdit>span').text(translator.translateText('Edit'))
-          this.blockly.hideBlocklyToolbox()
-          this.blockly.hideToolbox()
+          hideBlocklyToolbox()
+          hideToolbox()
         } else {
           $('#showEdit>span').text(translator.translateText('Exit Editing'))
-          this.blockly.showToolbox()
+          showToolbox()
         }
         editMode = !editMode
       })

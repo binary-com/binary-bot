@@ -286,33 +286,6 @@ export default class _Blockly {
   redo() {
     Blockly.mainWorkspace.undo(true)
   }
-  showBlocklyToolbox() {
-    $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`)
-    $('.blocklyToolboxDiv').addClass('shownToolbox')
-  }
-  hideBlocklyToolbox() {
-    toolbox.flyout_.hide()
-    $('.blocklyToolboxDiv').removeClass('shownToolbox')
-  }
-  showToolbox() {
-    $('#toolbox').show()
-    $('.blocklySvg').css('left', `${$('#toolbox').width()}px`)
-    $('.blocklySvg').css('margin-left', '0.5em')
-  }
-  hideToolbox() {
-    $('#toolbox').hide()
-    $('.blocklySvg').css('left', '0em')
-    $('.blocklySvg').css('margin-left', '0em')
-  }
-  toggleToolbox(blockly) {
-    if (blockly) {
-      this.hideToolbox()
-      this.showBlocklyToolbox()
-    } else {
-      this.hideBlocklyToolbox()
-      this.showToolbox()
-    }
-  }
   getToolbox() {
     return toolbox
   }
