@@ -274,8 +274,6 @@ export default class View {
 
     $('.panel')
       .hide()
-
-    $('.panel')
       .drags()
 
     $('.panel .content')

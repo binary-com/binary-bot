@@ -79,20 +79,9 @@
     }
     button {
         background-color: $brand-blue;
-        padding: 1.5em 1em;
+        padding: 1.6em 1em;
+        margin-right: 0.2em;
         font-size: 1.1em;
-        @media #{$phone-screen} {
-            padding: 0.5em 1em;
-            display: block;
-            width: 7em;
-            text-align: left;
-        }
-        span {
-            display: none;
-            @media #{$phone-screen} {
-                display: inline-block;
-            }
-        }
     }
     button:hover {
         background-color: $brand-dark-blue;
@@ -109,14 +98,25 @@
         @media #{$phone-screen} {
             padding: 0em;
             position: absolute;
-            padding-top: 0.4em;
             z-index: 3;
+        }
+        button {
+            @media #{$phone-screen} {
+                padding: 0.5em 1em;
+                display: block;
+                width: 7em;
+                text-align: left;
+            }
+            span {
+                display: none;
+                @media #{$phone-screen} {
+                    display: inline-block;
+                }
+            }
         }
     }
     #mobileMenu {
-        padding: 1.5em 1em;
         font-size: 1.1em;
-        margin-bottom: 0.1em;
         display: none;
         @media #{$phone-screen} {
             display: block;
