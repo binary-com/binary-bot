@@ -184,10 +184,6 @@ export default class View {
       })
     }
 
-    $('#stopButton')
-      .click(stop)
-      .hide()
-
     $('.panelExitButton')
       .click(function onClick() {
         $(this)
@@ -224,14 +220,16 @@ export default class View {
         }
       })
 
-    $('#blocklyDiv,#toolbox,.collapse-menu')
-      .click(() => {
-        $('.collapse-menu').addClass('hiddenMenu')
-        menuVisible = false
-      })
+    const hideCollapseMenu = () => {
+      $('.collapse-menu').addClass('hiddenMenu')
+      menuVisible = false
+    }
 
-    $('#blocklyToolboxBack')
-      .click(() => {
+    $('#toolbox,.blocklyWorkspace,.blocklyToolboxDiv')
+      .on('click touchstart', hideCollapseMenu)
+
+    $('.blocklyWorkspace')
+      .on('click touchstart', () => {
         if (editMode) {
           this.blockly.toggleToolbox(false)
         }
@@ -239,6 +237,7 @@ export default class View {
 
     $('#showEdit')
       .click(() => {
+        hideCollapseMenu()
         if (editMode) {
           $('#showEdit>span').text(translator.translateText('Edit'))
           this.blockly.hideBlocklyToolbox()
@@ -252,6 +251,7 @@ export default class View {
 
     $('#saveXml')
       .click(() => {
+        hideCollapseMenu()
         $('#saveAs')
           .show()
       })
@@ -291,12 +291,14 @@ export default class View {
 
     $('#showSummary')
       .click(() => {
+        hideCollapseMenu()
         $('#summaryPanel')
           .show()
       })
 
     $('#loadXml')
       .click(() => {
+        hideCollapseMenu()
         $('#files')
           .click()
       })
@@ -309,10 +311,18 @@ export default class View {
 
     $('#runButton')
       .click(() => {
+        hideCollapseMenu()
         $('#stopButton').show()
         $('#runButton').hide()
         this.blockly.run()
       })
+
+    $('#stopButton ')
+      .click(e => {
+        hideCollapseMenu()
+        stop(e)
+      })
+      .hide()
 
     $('#resetButton')
       .click(() => {
