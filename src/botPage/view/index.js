@@ -13,7 +13,7 @@ import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 
 let editMode = false
-let menuVisible = false
+let mobileMenuVisible = false
 
 const addResizeListener = (element, fn) => {
   const resizeListener = (e) => {
@@ -257,18 +257,18 @@ export default class View {
 
     $('#mobileMenu')
       .click(() => {
-        if (menuVisible) {
+        if (mobileMenuVisible) {
           $('.collapse-menu').addClass('hiddenMenu')
-          menuVisible = false
+          mobileMenuVisible = false
         } else {
           $('.collapse-menu').removeClass('hiddenMenu')
-          menuVisible = true
+          mobileMenuVisible = true
         }
       })
 
     const hideCollapseMenu = () => {
       $('.collapse-menu').addClass('hiddenMenu')
-      menuVisible = false
+      mobileMenuVisible = false
     }
 
     $('#toolbox,.blocklyWorkspace,.blocklyToolboxDiv')
@@ -429,7 +429,11 @@ export default class View {
       }
     })
     addResizeListener($('.blocklyToolboxDiv')[0],
-      () => $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
+      () => {
+        if (editMode) {
+          $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
+        }
+      }
     )
   }
   updateChart(info) {
