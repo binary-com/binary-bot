@@ -5,6 +5,10 @@
     text-align: center;
     z-index: 1;
     display: none;
+    padding-right: 0.5em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: calc(100% - 6.5em);
     * {
         margin-bottom: 0.1em;
     }

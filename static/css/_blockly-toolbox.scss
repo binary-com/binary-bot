@@ -67,7 +67,7 @@
 		color: $brand-dark-gray;
 		left: -100% !important;
 		border-right: 1px solid;
-		overflow: scroll;
+		height: calc(100% - 6.5em) !important;
 		&.shownToolbox {
 				left: 0em !important	;
 		}
@@ -84,4 +84,8 @@
 .blocklySvg {
 		left: 0em;
 		position: absolute;
+}
+
+.blocklyMenu {
+	overflow: scroll;
 }
