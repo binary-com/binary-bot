@@ -1,21 +1,66 @@
-#summaryPanel {
-    width: 800px;
-    margin-top: -317px;
-    margin-left: -400px;
-}
-
-#fileBrowser {
-    width: 388px;
-    height: 76px;
-    margin-left: -194px;
-    margin-top: -38px;
-}
+@import 'screen';
 
 #saveAs {
     width: 388px;
     height: 114px;
     margin-left: -194px;
     margin-top: -57px;
+}
+
+.fixed-panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: white;
+    position: fixed;
+    z-index: 2;
+    h4 {
+        font-size: 1em;
+        @media #{$phone-screen-rotate} {
+            display: none;
+        }
+    }
+    .container {
+        height: 100%;
+    }
+    #chart {
+        position: absolute;
+        background-color: $brand-gray;
+        width: 100%;
+        height: calc(50% - 6em);
+        top: 50%;
+        @media #{$phone-screen-rotate} {
+            height: calc(60% - 6em);
+            top: 40%;
+        }
+    }
+
+    .table-scroll {
+        position: absolute;
+        overflow: auto;
+        height: calc(50% - 14em);
+        min-height: 7em;
+        width: 100%;
+    }
+    table {
+        overflow: auto;
+        width: 100%;
+    }
+
+    table,
+    td,
+    th {
+        border-collapse: collapse;
+    }
+
+    td,
+    th {
+        text-align: center !important;
+        padding: 0.1em !important;
+        height: 2em;
+    }
+
 }
 
 .panel {
@@ -59,36 +104,6 @@
         color: white;
         margin: 0;
         text-align: center;
-    }
-
-    table {
-        overflow: auto;
-        width: 100%;
-    }
-
-    table,
-    td,
-    th {
-        border-collapse: collapse;
-    }
-
-    td,
-    th {
-        text-align: center !important;
-        padding: 3px !important;
-        height: 2em;
-    }
-
-    .table-scroll {
-        overflow: auto;
-        height: 25vh;
-        padding-bottom: 1vh;
-    }
-
-    #chart {
-        height: 40vh;
-        width: 770px;
-        background-color: $brand-gray;
     }
 
     .draggable {
