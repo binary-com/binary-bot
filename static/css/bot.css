@@ -117,6 +117,7 @@ th, td {
 #header select, #topbar select{
 	color: #000;
 	font-size: 14px;
+    float: right;
 }
 
 .dark-blue {

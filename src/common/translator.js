@@ -33,7 +33,11 @@ const supportedLanguages = {
 }
 export default class Translator {
   constructor() {
+    $('#language').change(e => {
+      document.location.search = `l=${e.target.value}`
+    })
     const lang = this.getLanguage()
+    $('#language').val(lang)
     if (lang === 'ach') {
       window._jipt = []
       window._jipt.push(['project', 'binary-bot'])
