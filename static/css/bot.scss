@@ -36,9 +36,11 @@
 }
 
 #header {
-    height: 15%;
-    max-height: 6.1em;
     width: 100%;
+    height: 6.1em;
+    @media #{$phone-screen} {
+        height: 5em;
+    }
 }
 
 #topbar {
@@ -53,6 +55,11 @@
 
 .left-header {
     float: left;
+    .logo-parent {
+        @media #{$phone-screen} {
+          padding: 0em;
+        }
+    }
 }
 
 .right-header {
@@ -76,7 +83,7 @@
         }
     }
     button {
-        padding: 1.2em 1em;
+        padding: 1.1em 1em;
         font-size: 1.1em;
         background-color: $brand-blue;
     }
