@@ -81,12 +81,6 @@
         margin-right: 0.2em;
         font-size: 1.1em;
     }
-    button:hover {
-        background-color: $brand-dark-blue;
-        span {
-            display: inline-block;
-        }
-    }
     .collapse-menu {
         &.hiddenMenu {
             @media #{$phone-screen} {
@@ -110,6 +104,12 @@
                 @media #{$phone-screen} {
                     display: inline-block;
                 }
+            }
+        }
+        button:hover {
+            background-color: $brand-dark-blue;
+            span {
+                display: inline-block;
             }
         }
     }
