@@ -372,7 +372,7 @@ export default class View {
       .click(() => {
         hideCollapseMenu()
         $('#summaryPanel')
-          .show()
+          .toggle()
       })
 
     $('#loadXml')
@@ -468,6 +468,11 @@ export default class View {
         }
       }
     )
+    $(window).resize(() => {
+      $('#trade-chart0').height(
+        `${$('#chart').height() - $('.binary-chart-toolbar').height()
+        - ($('.binary-chart-time-frame-button').height() * 1.5)}px`)
+    })
   }
   updateChart(info) {
     const chartToDataType = {
@@ -498,18 +503,21 @@ export default class View {
         chartDiv.dispatchEvent(new Event('zoom-in-max'))
       }
     }
+    const isMinHeight = $(window).height() <= 360
     ReactDOM.render(
       <BinaryChart
       className="trade-chart"
       id="trade-chart0"
       contract={isLine() ? this.contractForChart : false}
-      hideZoomControls={isLine() && this.contractForChart}
+      hideZoomControls={isMinHeight || (isLine() && this.contractForChart)}
       pipSize={Number(Number(info.pip).toExponential().substring(3))}
       shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
       ticks={info[chartToDataType[this.chartType]]}
       type={this.chartType}
       events={events}
       hideIntervalPicker
+      hideToolbar={isMinHeight}
+      hideTimeFrame={isMinHeight}
       onTypeChange={(type) => (this.chartType = type)}
       />, $('#chart')[0])
   }
