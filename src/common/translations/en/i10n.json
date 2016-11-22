@@ -310,5 +310,6 @@
   "2eea87bb804e4e73e3f8e9c41140f7ed83ea8875": "Run the blocks inside every n seconds",
   "7b9c76088576a64f32d67ec335162b9f73eaa026": "Run After",
   "ff56ffac023cf69ca5c7f71d407499536f4f86b5": "Run the blocks inside after n seconds",
-  "911b13459aa01b37c766a6efac83f9d50f9c9742": "must be added to the market block"
+  "911b13459aa01b37c766a6efac83f9d50f9c9742": "must be added to the market block",
+  "6e78c91f5a05fc0d4f1a787d38e3d6fe2f856d46": "Log out"
 }
