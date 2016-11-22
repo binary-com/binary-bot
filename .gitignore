@@ -6,5 +6,6 @@ npm-debug.log
 rev-manifest.json
 coverage
 beta/
+translation/
 www
 .sass-cache
