@@ -36,12 +36,9 @@
 }
 
 #header {
-    height: 6.1em;
+    height: 15%;
+    max-height: 6.1em;
     width: 100%;
-}
-
-.main-nav {
-    width: 8em;
 }
 
 #topbar {
@@ -61,6 +58,9 @@
 .right-header {
     float: right;
     width: 23%;
+    .main-nav {
+      width: 8em;
+    }
     .main-nav>li>ul a li {
       padding: 0.5em 0;
     }
@@ -76,10 +76,9 @@
         }
     }
     button {
-        background-color: $brand-blue;
-        padding: 1.6em 1em;
-        margin-right: 0.2em;
+        padding: 1.2em 1em;
         font-size: 1.1em;
+        background-color: $brand-blue;
     }
     .collapse-menu {
         &.hiddenMenu {
@@ -93,6 +92,8 @@
             z-index: 3;
         }
         button {
+            padding: 1.6em 1em;
+            margin-right: 0.2em;
             @media #{$phone-screen} {
                 padding: 0.5em 1em;
                 display: block;
@@ -144,7 +145,6 @@
         font-size: 1em;
     }
 }
-
 
 .btn-primary {
     color: $white !important;
