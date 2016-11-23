@@ -217,6 +217,7 @@ export default class View {
   }
   addBindings() {
     const showBlocklyToolbox = () => {
+      $('#summaryPanel').hide()
       const toolboxDiv = $('.blocklyToolboxDiv')
       $('.blocklySvg').css('left', `${toolboxDiv.width()}px`)
       toolboxDiv.addClass('shownToolbox')
@@ -228,6 +229,7 @@ export default class View {
     }
 
     const showToolbox = () => {
+      $('#summaryPanel').hide()
       const toolbox = $('#toolbox')
       toolbox.show()
       $('.blocklySvg').css('left', `${toolbox.width()}px`)
@@ -468,11 +470,6 @@ export default class View {
         }
       }
     )
-    $(window).resize(() => {
-      $('#trade-chart0').height(
-        `${$('#chart').height() - $('.binary-chart-toolbar').height()
-        - ($('.binary-chart-time-frame-button').height() * 1.5)}px`)
-    })
   }
   updateChart(info) {
     const chartToDataType = {
@@ -504,6 +501,14 @@ export default class View {
       }
     }
     const isMinHeight = $(window).height() <= 360
+
+    if ($('#trade-chart0').length) {
+      const resizeChart = () => $('#trade-chart0').height(
+        `${$('#chart').height() - $('.binary-chart-toolbar').height()
+        - ($('.binary-chart-time-frame-button').height() * 1.5)}px`)
+        $(window).resize(resizeChart)
+        resizeChart()
+    }
     ReactDOM.render(
       <BinaryChart
       className="trade-chart"
