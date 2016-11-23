@@ -505,9 +505,11 @@
 .icon-remove:before {
   content: 'X'; }
 
-#header select, #topbar select {
+#topbar select {
   color: #000;
-  font-size: 1em; }
+  font-size: 1em;
+  float: right;
+  margin-left: 0.1em; }
 
 #header {
   width: 100%;
@@ -648,4 +650,4 @@ html, body {
   -webkit-box-sizing: inherit;
   box-sizing: inherit; }
 
-/*# sourceMappingURL=bot-9d427e8d76.css.map */
+/*# sourceMappingURL=bot-9d290aaf2a.css.map */
