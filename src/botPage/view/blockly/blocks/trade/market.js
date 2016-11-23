@@ -7,6 +7,23 @@ import { updatePurchaseChoices, updateInputList,
 setInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'
 
+const bcBarrierOffset = (market, inputName) => {
+  const barrier = market.getInput(inputName)
+  if (barrier) {
+    const barrierOffset = barrier.connection.targetBlock()
+    if (barrierOffset.type === 'barrier_offset') {
+      market.setFieldValue(
+        barrierOffset.getFieldValue('BARRIEROFFSETTYPE_LIST')
+      , `${inputName}TYPE_LIST`)
+      const number = barrierOffset.getInput('BARRIEROFFSET_IN').connection.targetBlock()
+      if (number) {
+        barrier.connection.connect(number.outputConnection)
+      }
+      barrierOffset.dispose()
+    }
+  }
+}
+
 export default () => {
   Blockly.Blocks.market = {
     init: function init() {
@@ -23,6 +40,10 @@ export default () => {
       }
       if (ev.group === 'tradeTypeConvert') {
         return;
+      }
+      if (ev.type === Blockly.Events.MOVE) {
+        bcBarrierOffset(this, 'BARRIEROFFSET')
+        bcBarrierOffset(this, 'SECONDBARRIEROFFSET')
       }
       if (ev.blockId === this.id && ev.element === 'field') {
         if (ev.name === 'MARKET_LIST') {
@@ -79,18 +100,22 @@ export default () => {
     }
     if (config.hasBarrierOffset.indexOf(oppositesName) > -1 ||
       config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
+      const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST')
       barrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
       if (barrierOffsetValue === '') {
         return new BlocklyError(translator.translateText('All trade types are required')).emit()
       }
+      barrierOffsetValue = `${barrierOffsetType}${barrierOffsetValue}`
     }
     if (config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
+      const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST')
       secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
       if (secondBarrierOffsetValue === '') {
         return new BlocklyError(translator.translateText('All trade types are required')).emit()
       }
+      secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`
     }
     if (oppositesName === '' || durationValue === '' ||
       payouttype === '' || currency === '' || amount === '') {
