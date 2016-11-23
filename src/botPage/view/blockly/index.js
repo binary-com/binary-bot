@@ -283,8 +283,6 @@ export default class _Blockly {
     }
     if (code) {
       eval(code); // eslint-disable-line no-eval
-      $('#summaryPanel')
-        .show()
     }
   }
   addBlocklyTranslation() {
