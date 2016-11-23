@@ -116,16 +116,18 @@ export const payout = (block) => {
 export const barrierOffset = (block) => {
   if (!block.getInput('BARRIEROFFSET')) {
     block.appendValueInput('BARRIEROFFSET')
-      .setCheck('BarrierOffset')
+      .setCheck('Number')
       .appendField(`${translator.translateText('Barrier Offset')} 1:`)
+      .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'BARRIEROFFSETTYPE_LIST')
   }
 }
 
 export const secondBarrierOffset = (block) => {
   if (!block.getInput('SECONDBARRIEROFFSET')) {
     block.appendValueInput('SECONDBARRIEROFFSET')
-      .setCheck('BarrierOffset')
+      .setCheck('Number')
       .appendField(`${translator.translateText('Barrier Offset')} 2:`)
+      .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'SECONDBARRIEROFFSETTYPE_LIST')
   }
 }
 
