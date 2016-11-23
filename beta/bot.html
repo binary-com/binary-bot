@@ -66,7 +66,7 @@
   window.Event = window.CustomEvent = CustomEvent;
 })();
 </script>
- <link href="css/bot-32334ee91e.css" rel="stylesheet" />
+ <link href="css/bot-9d290aaf2a.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -189,44 +189,38 @@
 		</div>
 	</div>
 	<div id="container">
-		<div id="summaryPanel" class="panel">
-			<div class="panelExitButton">
-				<p class="icon-close"></p>
-			</div>
-			<div class="description">
-				<h4 data-i18n-text="Results"></h4>
-			</div>
+		<div id="summaryPanel" class="fixed-panel">
+			<h4>
+        <span data-i18n-text="Summary"></span>
+      </h4>
+			<table id="summaryDisplay">
+				<thead>
+					<tr>
+						<th data-i18n-text="No. of runs"></th>
+						<th data-i18n-text="Total Stake"></th>
+						<th data-i18n-text="Total Payout"></th>
+						<th data-i18n-text="Win"></th>
+						<th data-i18n-text="Loss"></th>
+						<th data-i18n-text="Total Profit/Loss"></th>
+						<th data-i18n-text="Balance"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="totalRuns"></td>
+						<td class="totalStake"></td>
+						<td class="totalPayout"></td>
+						<td class="totalWins"></td>
+						<td class="totalLosses"></td>
+						<td class="totalProfit"></td>
+						<td class="balance"></td>
+					</tr>
+				</tbody>
+			</table>
 			<div class="content">
 				<h4>
-          <span data-i18n-text="Summary"></span>
-        </h4>
-				<table id="summaryDisplay">
-					<thead>
-						<tr>
-							<th data-i18n-text="No. of runs"></th>
-							<th data-i18n-text="Total Stake"></th>
-							<th data-i18n-text="Total Payout"></th>
-							<th data-i18n-text="Win"></th>
-							<th data-i18n-text="Loss"></th>
-							<th data-i18n-text="Total Profit/Loss"></th>
-							<th data-i18n-text="Balance"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="totalRuns"></td>
-							<td class="totalStake"></td>
-							<td class="totalPayout"></td>
-							<td class="totalWins"></td>
-							<td class="totalLosses"></td>
-							<td class="totalProfit"></td>
-							<td class="balance"></td>
-						</tr>
-					</tbody>
-				</table>
-				<h4>
-          <span data-i18n-text="Trades"></span>
-        </h4>
+					<span data-i18n-text="Trades"></span>
+				</h4>
 				<div class="table-scroll">
 					<table id="tradesDisplay">
 						<thead>
@@ -293,7 +287,7 @@
 		<div id="blocklyDiv"></div>
 	</div>
 
-<script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-6eda770a0e.min.js"></script>	<script src="https://style.binary.com/binary.js"></script>
+<script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-749c1f8429.min.js"></script>	<script src="https://style.binary.com/binary.js"></script>
 
 </body>
 
