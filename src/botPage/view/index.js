@@ -502,13 +502,6 @@ export default class View {
     }
     const isMinHeight = $(window).height() <= 360
 
-    if ($('#trade-chart0').length) {
-      const resizeChart = () => $('#trade-chart0').height(
-        `${$('#chart').height() - $('.binary-chart-toolbar').height()
-        - ($('.binary-chart-time-frame-button').height() * 1.5)}px`)
-        $(window).resize(resizeChart)
-        resizeChart()
-    }
     ReactDOM.render(
       <BinaryChart
       className="trade-chart"
