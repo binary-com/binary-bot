@@ -1,91 +1,76 @@
 @charset "UTF-8";
-.brand-blue {
-  color: #2a3052; }
-
-.brand-blue-bg {
-  background-color: #2a3052; }
-
-.brand-orange {
-  color: #e98024; }
-
-.brand-orange-bg {
-  background-color: #e98024; }
-
 .highcharts-container {
   width: 100% !important; }
-
-.highcharts-container svg {
-  width: 100% !important; }
+  .highcharts-container svg {
+    width: 100% !important; }
 
 .highcharts-loading {
   background: transparent !important; }
-
-.highcharts-loading > span {
-  padding: 0.5em 1em;
-  border-radius: 3px;
-  color: #dedede !important;
-  background: #15212d !important; }
-
-.inverse .highcharts-loading > span {
-  color: #15212d !important;
-  background: #dedede !important; }
+  .highcharts-loading > span {
+    padding: 0.5em 1em;
+    border-radius: 3px;
+    color: #bebebe !important;
+    background: #161a24 !important; }
+    .inverse .highcharts-loading > span {
+      color: #161a24 !important;
+      background: #bebebe !important; }
 
 .inverse .trade-chart {
-  color: #dedede; }
-
-.trade-chart,
-.contract-chart {
-  font-size: 12px;
-  color: #15212d; }
+  color: #bebebe; }
 
 .trade-chart button,
 .contract-chart button {
-  color: #15212d; }
-
-.trade-chart button:hover,
-.contract-chart button:hover {
-  background: rgba(42, 48, 82, 0.1); }
+  color: #3e3e3e; }
+  .trade-chart button:hover,
+  .contract-chart button:hover {
+    background: rgba(42, 48, 82, 0.1); }
 
 .inverse .trade-chart button, .inverse
 .contract-chart button {
-  color: #dedede; }
+  color: #bebebe; }
+  .inverse .trade-chart button:hover, .inverse
+  .contract-chart button:hover {
+    background: rgba(190, 190, 190, 0.1); }
 
-.inverse .trade-chart button:hover, .inverse
-.contract-chart button:hover {
-  background: rgba(190, 190, 190, 0.1); }
+@keyframes fadeIn {
+  99% {
+    visibility: hidden; }
+  100% {
+    visibility: visible; } }
 
 .trade-chart .binary-chart-zoom-controls,
 .contract-chart .binary-chart-zoom-controls {
   visibility: hidden;
-  opacity: 0; }
+  animation: 2s fadeIn !important;
+  animation-fill-mode: forwards;
+  transition: visibility 2s; }
 
 .trade-chart:hover .binary-chart-zoom-controls,
 .contract-chart:hover .binary-chart-zoom-controls {
-  visibility: visible;
-  opacity: 1; }
+  visibility: visible; }
 
 .trade-chart {
-  height: 40vh;
   display: flex;
   flex-direction: column;
   flex: 1;
   min-width: 0;
   min-height: 0; }
-
-.trade-chart #trade-chart0,
-.trade-chart #trade-chart1,
-.trade-chart #trade-chart2,
-.trade-chart #trade-chart3,
-.trade-chart #trade-chart4 {
-  height: calc(100% - 60px); }
+  .trade-chart #trade-chart0,
+  .trade-chart #trade-chart1,
+  .trade-chart #trade-chart2,
+  .trade-chart #trade-chart3,
+  .trade-chart #trade-chart4 {
+    flex: 1; }
 
 .binary-chart-time-frame-picker {
-  height: 24px; }
+  min-height: 24px; }
 
 .binary-chart-time-frame-button {
   background: rgba(190, 190, 190, 0.25) !important;
-  margin-right: 2px;
   padding: 0 !important; }
+
+.binary-chart-time-frame-button + .binary-chart-time-frame-button {
+  margin-left: 2px; }
 
 .binary-chart-submenu {
   border-radius: 3px;
@@ -93,67 +78,59 @@
   box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.5); }
 
 .inverse .binary-chart-submenu {
-  background: #15212d; }
+  background: #161a24; }
 
 .binary-chart-submenu button {
-  color: #15212d;
+  color: #3e3e3e;
   background: transparent;
   border-radius: 0; }
 
 .binary-chart-picker-item,
 .binary-chart-button {
   text-align: left;
-  padding: 8px;
-  min-height: 30px;
-  min-width: 30px;
+  padding: 0.1em;
+  min-height: 1em;
+  min-width: 1em;
   display: flex;
   align-items: center; }
-
-.binary-chart-picker-item svg + span,
-.binary-chart-button svg + span {
-  margin-left: 8px; }
+  .binary-chart-picker-item svg + span,
+  .binary-chart-button svg + span {
+    margin-left: 8px; }
 
 .binary-chart-button:hover,
 .binary-chart-picker-item:hover,
 .binary-chart-time-frame-button:hover {
-  box-shadow: 0 0 0 1px #15212d; }
+  box-shadow: 0 0 0 1px #3e3e3e; }
 
 .inverse .binary-chart-button:hover, .inverse
 .binary-chart-picker-item:hover, .inverse
 .binary-chart-time-frame-button:hover {
-  box-shadow: 0 0 0 1px #dedede; }
+  box-shadow: 0 0 0 1px #bebebe; }
 
 .pressed {
   background: #2a3052 !important; }
-
-.pressed svg {
-  fill: #dedede; }
+  .pressed svg {
+    fill: #bebebe; }
 
 .binary-chart-zoom-button {
-  opacity: 0.75;
-  background: rgba(42, 48, 82, 0.25) !important; }
-
-.binary-chart-zoom-button svg {
-  fill: #2a3052;
-  margin-bottom: 4px; }
-
-.binary-chart-zoom-button:hover {
-  opacity: 1;
-  box-shadow: 0 0 0 1px #2a3052; }
+  background: rgba(42, 48, 82, 0.1) !important; }
+  .binary-chart-zoom-button svg {
+    fill: #2a3052;
+    margin-bottom: 4px; }
+  .binary-chart-zoom-button:hover {
+    background: rgba(42, 48, 82, 0.2) !important;
+    box-shadow: 0 0 0 1px #2a3052; }
 
 .inverse .binary-chart-zoom-button {
-  opacity: 0.75;
-  background: rgba(190, 190, 190, 0.25) !important; }
-
-.inverse .binary-chart-zoom-button svg {
-  fill: #dedede; }
-
-.inverse .binary-chart-zoom-button:hover {
-  opacity: 1;
-  box-shadow: 0 0 0 1px #dedede; }
+  background: rgba(190, 190, 190, 0.1) !important; }
+  .inverse .binary-chart-zoom-button svg {
+    fill: #bebebe; }
+  .inverse .binary-chart-zoom-button:hover {
+    background: rgba(190, 190, 190, 0.2) !important;
+    box-shadow: 0 0 0 1px #bebebe; }
 
 .binary-chart-toolbar {
-  height: 30px;
+  min-height: 30px;
   margin-bottom: 2px; }
 
 .binary-chart-toolbar > * {
@@ -162,8 +139,8 @@
 .binary-chart-button {
   background: rgba(42, 48, 82, 0.1);
   border-radius: 3px;
-  min-width: 28px;
-  padding: 5px;
+  min-width: 1em;
+  padding: 0.1em;
   flex: 1;
   align-items: center; }
 
@@ -171,32 +148,31 @@
 .binary-chart-picker-item svg {
   width: 16px;
   height: 16px;
-  fill: #15212d; }
+  fill: #161a24; }
 
 .inverse .binary-chart-button svg, .inverse
 .binary-chart-picker-item svg {
   fill: white; }
 
 .binary-chart-info-bar {
-  padding: 0.5em 1em;
-  opacity: 0.9;
+  padding: 0.25em 0.5em;
   border-radius: 3px;
-  background: #15212d;
-  color: #dedede; }
-
-.binary-chart-info-bar .value-row {
-  font-weight: bold; }
-
-.binary-chart-info-bar > div {
-  line-height: 1.5;
-  display: flex; }
-
-.binary-chart-info-bar > div > span {
-  flex: 1; }
-
-.inverse .binary-chart-info-bar {
-  background: white;
-  color: #15212d; }
+  background: rgba(22, 26, 36, 0.75);
+  border: 1px solid #161a24;
+  color: #bebebe; }
+  .binary-chart-info-bar .value-row {
+    font-weight: bold; }
+  .binary-chart-info-bar .ohlc-row {
+    text-transform: uppercase; }
+  .binary-chart-info-bar > div {
+    line-height: 1.5;
+    display: flex; }
+    .binary-chart-info-bar > div > span {
+      flex: 1; }
+  .inverse .binary-chart-info-bar {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid white;
+    color: #3e3e3e; }
 
 .highcharts-tooltip {
   display: none !important; }
@@ -305,22 +281,63 @@
   content: '\f160'; }
 
 /* '' */
-#summaryPanel {
-  width: 800px;
-  margin-top: -317px;
-  margin-left: -400px; }
-
-#fileBrowser {
-  width: 388px;
-  height: 76px;
-  margin-left: -194px;
-  margin-top: -38px; }
-
 #saveAs {
   width: 388px;
   height: 114px;
   margin-left: -194px;
   margin-top: -57px; }
+
+.fixed-panel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  right: 0em;
+  display: none;
+  background-color: white;
+  position: fixed;
+  z-index: 2; }
+  .fixed-panel h4 {
+    font-size: 1em; }
+    @media only screen and (max-height: 801px) {
+      .fixed-panel h4 {
+        display: none; } }
+  .fixed-panel .container {
+    height: 100%; }
+  .fixed-panel #chart {
+    position: absolute;
+    background-color: #f2f2f2;
+    width: 100%;
+    height: 40%;
+    bottom: 6em; }
+    @media only screen and (max-height: 480px) {
+      .fixed-panel #chart {
+        display: none; } }
+  .fixed-panel .table-scroll {
+    position: absolute;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    max-height: calc(59% - 14em);
+    bottom: calc(40% + 6em); }
+    @media only screen and (max-height: 801px) {
+      .fixed-panel .table-scroll {
+        max-height: calc(60% - 10.5em); } }
+    @media only screen and (max-height: 480px) {
+      .fixed-panel .table-scroll {
+        max-height: calc(100% - 4.5em);
+        bottom: 0em; } }
+  .fixed-panel table {
+    overflow: auto;
+    width: 100%; }
+  .fixed-panel table,
+  .fixed-panel td,
+  .fixed-panel th {
+    border-collapse: collapse; }
+  .fixed-panel td,
+  .fixed-panel th {
+    text-align: center !important;
+    padding: 0.1em !important;
+    height: 2em; }
 
 .panel {
   display: none;
@@ -356,26 +373,6 @@
     color: white;
     margin: 0;
     text-align: center; }
-  .panel table {
-    overflow: auto;
-    width: 100%; }
-  .panel table,
-  .panel td,
-  .panel th {
-    border-collapse: collapse; }
-  .panel td,
-  .panel th {
-    text-align: center !important;
-    padding: 3px !important;
-    height: 2em; }
-  .panel .table-scroll {
-    overflow: auto;
-    height: 25vh;
-    padding-bottom: 1vh; }
-  .panel #chart {
-    height: 40vh;
-    width: 770px;
-    background-color: #f2f2f2; }
   .panel .draggable {
     opacity: 1; }
 
@@ -444,6 +441,9 @@
 .blocklyTreeSelected > .blocklyTreeIconOpen {
   background-position: -16px -1px !important; }
 
+.blocklyTreeSelected > .blocklyTreeIconClosedLtr {
+  background-position: -32px -1px !important; }
+
 .blocklySvg {
   left: 0em;
   position: absolute; }
@@ -504,18 +504,16 @@
 .icon-remove:before {
   content: 'X'; }
 
-#topbar select {
+#header select, #topbar select {
   color: #000;
-  font-size: 1em;
-  float: right;
-  margin-left: 0.1em; }
+  font-size: 1em; }
 
 #header {
-  height: 6.1em;
-  width: 100%; }
-
-.main-nav {
-  width: 8em; }
+  width: 100%;
+  height: 6.1em; }
+  @media only screen and (max-width: 480px) {
+    #header {
+      height: 5em; } }
 
 #topbar {
   background-color: #15212d;
@@ -528,10 +526,15 @@
 
 .left-header {
   float: left; }
+  @media only screen and (max-width: 480px) {
+    .left-header .logo-parent {
+      padding: 0em; } }
 
 .right-header {
   float: right;
   width: 23%; }
+  .right-header .main-nav {
+    width: 8em; }
   .right-header .main-nav > li > ul a li {
     padding: 0.5em 0; }
 
@@ -544,14 +547,9 @@
         padding: 1.5em 0.1em;
         display: block; } }
   .middle-header button {
-    background-color: #2a3052;
-    padding: 1.6em 1em;
-    margin-right: 0.2em;
-    font-size: 1.1em; }
-  .middle-header button:hover {
-    background-color: #15212d; }
-    .middle-header button:hover span {
-      display: inline-block; }
+    padding: 1.1em 1em;
+    font-size: 1.1em;
+    background-color: #2a3052; }
   @media only screen and (max-width: 480px) {
     .middle-header .collapse-menu.hiddenMenu {
       display: none; } }
@@ -560,17 +558,24 @@
       padding: 0em;
       position: absolute;
       z-index: 3; } }
-  @media only screen and (max-width: 480px) {
-    .middle-header .collapse-menu button {
-      padding: 0.5em 1em;
-      display: block;
-      width: 7em;
-      text-align: left; } }
-  .middle-header .collapse-menu button span {
-    display: none; }
+  .middle-header .collapse-menu button {
+    padding: 1.6em 1em;
+    margin-right: 0.2em; }
     @media only screen and (max-width: 480px) {
-      .middle-header .collapse-menu button span {
-        display: inline-block; } }
+      .middle-header .collapse-menu button {
+        padding: 0.5em 1em;
+        display: block;
+        width: 7em;
+        text-align: left; } }
+    .middle-header .collapse-menu button span {
+      display: none; }
+      @media only screen and (max-width: 480px) {
+        .middle-header .collapse-menu button span {
+          display: inline-block; } }
+  .middle-header .collapse-menu button:hover {
+    background-color: #15212d; }
+    .middle-header .collapse-menu button:hover span {
+      display: inline-block; }
   .middle-header #mobileMenu {
     font-size: 1.1em;
     display: none; }
@@ -646,4 +651,4 @@ html, body {
   -webkit-box-sizing: inherit;
   box-sizing: inherit; }
 
-/*# sourceMappingURL=bot-32334ee91e.css.map */
+/*# sourceMappingURL=bot-f03b141485.css.map */
