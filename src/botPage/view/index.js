@@ -217,6 +217,7 @@ export default class View {
   }
   addBindings() {
     const showBlocklyToolbox = () => {
+      $('#summaryPanel').hide()
       const toolboxDiv = $('.blocklyToolboxDiv')
       $('.blocklySvg').css('left', `${toolboxDiv.width()}px`)
       toolboxDiv.addClass('shownToolbox')
@@ -228,6 +229,7 @@ export default class View {
     }
 
     const showToolbox = () => {
+      $('#summaryPanel').hide()
       const toolbox = $('#toolbox')
       toolbox.show()
       $('.blocklySvg').css('left', `${toolbox.width()}px`)
@@ -372,7 +374,7 @@ export default class View {
       .click(() => {
         hideCollapseMenu()
         $('#summaryPanel')
-          .show()
+          .toggle()
       })
 
     $('#loadXml')
@@ -498,18 +500,22 @@ export default class View {
         chartDiv.dispatchEvent(new Event('zoom-in-max'))
       }
     }
+    const isMinHeight = $(window).height() <= 360
+
     ReactDOM.render(
       <BinaryChart
       className="trade-chart"
       id="trade-chart0"
       contract={isLine() ? this.contractForChart : false}
-      hideZoomControls={isLine() && this.contractForChart}
+      hideZoomControls={isMinHeight || (isLine() && this.contractForChart)}
       pipSize={Number(Number(info.pip).toExponential().substring(3))}
       shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
       ticks={info[chartToDataType[this.chartType]]}
       type={this.chartType}
       events={events}
       hideIntervalPicker
+      hideToolbar={isMinHeight}
+      hideTimeFrame={isMinHeight}
       onTypeChange={(type) => (this.chartType = type)}
       />, $('#chart')[0])
   }
