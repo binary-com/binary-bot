@@ -13,6 +13,7 @@ import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 
 let editMode = false
+let summaryShown = false
 let mobileMenuVisible = false
 
 const addResizeListener = (element, fn) => {
@@ -216,8 +217,16 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
+    const hideSummary = () => {
+      $('#showSummary>span')
+        .text(translator.translateText('Summary'))
+      $('#summaryPanel')
+        .hide()
+      summaryShown = false
+    }
+
     const showBlocklyToolbox = () => {
-      $('#summaryPanel').hide()
+      hideSummary()
       const toolboxDiv = $('.blocklyToolboxDiv')
       $('.blocklySvg').css('left', `${toolboxDiv.width()}px`)
       toolboxDiv.addClass('shownToolbox')
@@ -229,7 +238,7 @@ export default class View {
     }
 
     const showToolbox = () => {
-      $('#summaryPanel').hide()
+      hideSummary()
       const toolbox = $('#toolbox')
       toolbox.show()
       $('.blocklySvg').css('left', `${toolbox.width()}px`)
@@ -252,6 +261,27 @@ export default class View {
       }
     }
 
+    const exitEditMode = () => {
+      $('#showEdit>span').text(translator.translateText('Edit'))
+      hideBlocklyToolbox()
+      hideToolbox()
+      editMode = false
+    }
+
+    const showSummary = () => {
+      exitEditMode()
+      $('#showSummary>span')
+        .text(translator.translateText('Exit'))
+      $('#summaryPanel')
+        .show()
+      summaryShown = true
+    }
+
+    const enterEditMode = () => {
+      $('#showEdit>span').text(translator.translateText('Exit'))
+      showToolbox()
+      editMode = true
+    }
 
     const stop = (e) => {
       if (e) {
@@ -320,14 +350,10 @@ export default class View {
       .click(() => {
         hideCollapseMenu()
         if (editMode) {
-          $('#showEdit>span').text(translator.translateText('Edit'))
-          hideBlocklyToolbox()
-          hideToolbox()
+          exitEditMode()
         } else {
-          $('#showEdit>span').text(translator.translateText('Exit Editing'))
-          showToolbox()
+          enterEditMode()
         }
-        editMode = !editMode
       })
 
     $('#saveXml')
@@ -373,8 +399,11 @@ export default class View {
     $('#showSummary')
       .click(() => {
         hideCollapseMenu()
-        $('#summaryPanel')
-          .toggle()
+        if (summaryShown) {
+          hideSummary()
+        } else {
+          showSummary()
+        }
       })
 
     $('#loadXml')
@@ -396,6 +425,7 @@ export default class View {
         $('#stopButton').show()
         $('#runButton').hide()
         this.blockly.run()
+        showSummary()
       })
 
     $('#stopButton ')
