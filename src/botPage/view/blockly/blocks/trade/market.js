@@ -11,7 +11,7 @@ const bcBarrierOffset = (market, inputName) => {
   const barrier = market.getInput(inputName)
   if (barrier) {
     const barrierOffset = barrier.connection.targetBlock()
-    if (barrierOffset.type === 'barrier_offset') {
+    if (barrierOffset && barrierOffset.type === 'barrier_offset') {
       market.setFieldValue(
         barrierOffset.getFieldValue('BARRIEROFFSETTYPE_LIST')
       , `${inputName}TYPE_LIST`)
