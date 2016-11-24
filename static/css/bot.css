@@ -283,9 +283,9 @@ button:focus {
 .reality-check {
 		position: fixed;
 		display: none;
-		top: calc(50% - 6.5em);
+		top: calc(50% - 7em);
 		width: 96%;
-		height: 13em;
+		padding-bottom: 0.5em;
 		left: 2%;
 		background-color: white;
 		z-index: 9999;
@@ -293,6 +293,7 @@ button:focus {
 }
 
 .reality-check p {
+	font-size: 1.2em;
 	margin: 0.4em;
 }
 
@@ -312,6 +313,7 @@ button:focus {
 }
 
 .reality-check .error-msg {
+	font-size: 0.8em;
 	left: 50%;
 }
 
