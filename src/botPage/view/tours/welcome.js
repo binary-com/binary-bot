@@ -23,7 +23,7 @@ export default class Welcome {
       my: 'top center',
       at: 'bottom center',
       setup: () => {
-        $('#blocker').show()
+        getUiComponent('blocker').show()
         setOpacityForAll(0.3)
       },
     }, {
@@ -111,13 +111,13 @@ export default class Welcome {
       steps: this.getSteps(),
       cancelStep: () => {
         this.tour._teardownCurrentStep = () => {}
-        $('#blocker').hide()
+        getUiComponent('blocker').hide()
         setOpacityForAll(1)
         setDone('welcomeFinished')
         this.stop()
       },
       successStep: () => {
-        $('#blocker').hide()
+        getUiComponent('blocker').hide()
         setOpacityForAll(1)
         setDone('welcomeFinished')
         this.stop()

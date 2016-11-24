@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { observer } from 'binary-common-utils/lib/observer'
-import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager'
+import { getTokenList, removeAllTokens,
+  get as getStorage, set as setStorage,
+  getToken,
+} from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translator } from '../../common/translator'
@@ -12,9 +15,65 @@ import Introduction from './tours/introduction'
 import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 
+let realityCheckTimeout
 let editMode = false
 let summaryShown = false
 let mobileMenuVisible = false
+
+const showRealityCheck = () => {
+  $('.blocker').show()
+  $('.reality-check').show()
+}
+
+const hideRealityCheck = () => {
+  $('.blocker').hide()
+  $('.reality-check').hide()
+}
+
+const stopRealityCheck = () => {
+  clearInterval(realityCheckTimeout)
+  realityCheckTimeout = null
+}
+
+const realityCheckInterval = () => {
+  realityCheckTimeout = setInterval(() => {
+    const now = parseInt((new Date().getTime()) / 1000, 10)
+    const checkTime = +getStorage('realityCheckTime')
+    if (checkTime && now >= checkTime) {
+      showRealityCheck()
+      stopRealityCheck()
+    }
+  }, 1000)
+}
+
+const startRealityCheck = (time, token) => {
+  stopRealityCheck()
+  if (time) {
+    const start = parseInt((new Date().getTime()) / 1000, 10) + (time * 60)
+    setStorage('realityCheckTime', start)
+    realityCheckInterval()
+  } else {
+    const tokenObj = getToken(token)
+    if (tokenObj.hasRealityCheck) {
+      const checkTime = +getStorage('realityCheckTime')
+      if (!checkTime) {
+        showRealityCheck()
+      } else {
+        realityCheckInterval()
+      }
+    }
+  }
+}
+
+const clearRealityCheck = () => {
+  setStorage('realityCheckTime', null)
+  stopRealityCheck()
+}
+
+const resetRealityCheck = (token) => {
+  clearRealityCheck()
+  startRealityCheck(null, token)
+}
 
 const addResizeListener = (element, fn) => {
   const resizeListener = (e) => {
@@ -75,6 +134,8 @@ export default class View {
       this.blockly.initPromise.then(() => {
         this.setElementActions()
         this.initTours()
+        $('#accountLis')
+        startRealityCheck(null, $('.account-id').first().attr('value'))
         resolve()
       })
     })
@@ -287,6 +348,7 @@ export default class View {
       if (e) {
         e.preventDefault()
       }
+      stopRealityCheck()
       window.Bot.stop()
     }
 
@@ -294,6 +356,7 @@ export default class View {
       logoutAllTokens(() => {
         this.updateTokenList()
         observer.emit('ui.log.info', translator.translateText('Logged you out!'))
+        clearRealityCheck()
       })
     }
 
@@ -419,6 +482,18 @@ export default class View {
         $('.logout').hide()
       })
 
+    $('#continueTrading')
+      .click(() => {
+        const time = parseInt($('#realityDuration').val(), 10)
+        if (time >= 10 && time <= 120) {
+          $('#rc-err').hide()
+          hideRealityCheck()
+          startRealityCheck(time)
+        } else {
+          $('#rc-err').show()
+        }
+      })
+
     $('#runButton')
       .click(() => {
         hideCollapseMenu()
@@ -442,6 +517,7 @@ export default class View {
 
     $('.login-id-list')
       .on('click', 'a', (e) => {
+        resetRealityCheck($(e.currentTarget).attr('value'))
         e.preventDefault()
         const $el = $(e.currentTarget)
         const $oldType = $el.find('li span')
