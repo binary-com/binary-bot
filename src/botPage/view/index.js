@@ -4,7 +4,9 @@ import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { observer } from 'binary-common-utils/lib/observer'
 import { getTokenList, removeAllTokens,
-  get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager'
+  get as getStorage, set as setStorage,
+  getToken,
+} from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translator } from '../../common/translator'
@@ -28,7 +30,6 @@ const hideRealityCheck = () => {
 const stopRealityCheck = () => {
   clearInterval(realityCheckTimeout)
   realityCheckTimeout = null
-  setStorage('realityCheckTime', null)
 }
 
 const realityCheckInterval = () => {
@@ -39,21 +40,32 @@ const realityCheckInterval = () => {
       showRealityCheck()
       stopRealityCheck()
     }
-  }, 1000)
+  }, 60000)
 }
 
-const startRealityCheck = (time) => {
+const startRealityCheck = (time, token) => {
+  stopRealityCheck()
   if (time) {
-    stopRealityCheck()
     const start = parseInt((new Date().getTime()) / 1000, 10) + (time * 60)
     setStorage('realityCheckTime', start)
+    realityCheckInterval()
   } else {
-    const start = +getStorage('realityCheckTime')
-    if (!start) {
-      showRealityCheck()
+    const tokenObj = getToken(token)
+    if (tokenObj.hasRealityCheck) {
+      const checkTime = +getStorage('realityCheckTime')
+      if (!checkTime) {
+        showRealityCheck()
+      } else {
+        realityCheckInterval()
+      }
     }
   }
-  realityCheckInterval()
+}
+
+const resetRealityCheck = (token) => {
+  setStorage('realityCheckTime', null)
+  stopRealityCheck()
+  startRealityCheck(null, token)
 }
 
 export default class View {
@@ -70,7 +82,8 @@ export default class View {
         $('.actions_menu').show()
         this.setElementActions()
         this.initTours()
-        startRealityCheck()
+        $('#accountLis')
+        startRealityCheck(null, $('.account-id').first().attr('value'))
         resolve()
       })
     })
@@ -333,6 +346,7 @@ export default class View {
 
     $('.login-id-list')
       .on('click', 'a', (e) => {
+        resetRealityCheck($(e.currentTarget).attr('value'))
         e.preventDefault()
         const $el = $(e.currentTarget)
         const $oldType = $el.find('li span')
