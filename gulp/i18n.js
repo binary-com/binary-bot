@@ -1,6 +1,8 @@
 import gulp from 'gulp';
 import fs from 'fs';
 import hash from 'sha1';
+import del from 'del';
+import paths from 'vinyl-paths';
 import scanner from 'i18next-scanner';
 
 const options = {
@@ -35,7 +37,10 @@ const customTransform = function _transform(file, enc, done) {
   done();
 };
 
-gulp.task('i18n-xml', ['static'], () => gulp.src('www/xml/*.xml')
+gulp.task('clean-i18n', () => gulp.src(['src/common/translations/en/*'])
+  .pipe(paths(del)));
+
+gulp.task('i18n-xml', ['clean-i18n', 'static'], () => gulp.src('www/xml/*.xml')
   .pipe(scanner(options, customTransform))
   .pipe(gulp.dest('./')));
 
