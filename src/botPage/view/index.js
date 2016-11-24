@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { observer } from 'binary-common-utils/lib/observer'
-import { getTokenList, removeAllTokens, get as getStorage } from 'binary-common-utils/lib/storageManager'
+import { getTokenList, removeAllTokens,
+  get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translator } from '../../common/translator'
@@ -11,6 +12,49 @@ import Welcome from './tours/welcome'
 import Introduction from './tours/introduction'
 import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
+
+let realityCheckTimeout
+
+const showRealityCheck = () => {
+  $('.blocker').show()
+  $('.reality-check').show()
+}
+
+const hideRealityCheck = () => {
+  $('.blocker').hide()
+  $('.reality-check').hide()
+}
+
+const stopRealityCheck = () => {
+  clearInterval(realityCheckTimeout)
+  realityCheckTimeout = null
+  setStorage('realityCheckTime', null)
+}
+
+const realityCheckInterval = () => {
+  realityCheckTimeout = setInterval(() => {
+    const now = parseInt((new Date().getTime()) / 1000, 10)
+    const checkTime = +getStorage('realityCheckTime')
+    if (checkTime && now >= checkTime) {
+      showRealityCheck()
+      stopRealityCheck()
+    }
+  }, 1000)
+}
+
+const startRealityCheck = (time) => {
+  if (time) {
+    stopRealityCheck()
+    const start = parseInt((new Date().getTime()) / 1000, 10) + (time)
+    setStorage('realityCheckTime', start)
+  } else {
+    const start = +getStorage('realityCheckTime')
+    if (!start) {
+      showRealityCheck()
+    }
+  }
+  realityCheckInterval()
+}
 
 export default class View {
   constructor() {
@@ -26,6 +70,7 @@ export default class View {
         $('.actions_menu').show()
         this.setElementActions()
         this.initTours()
+        startRealityCheck()
         resolve()
       })
     })
@@ -172,6 +217,7 @@ export default class View {
       if (e) {
         e.preventDefault()
       }
+      stopRealityCheck()
       window.Bot.stop()
     }
 
@@ -259,6 +305,18 @@ export default class View {
       .click(() => {
         logout()
         $('.logout').hide()
+      })
+
+    $('#continueTrading')
+      .click(() => {
+        const time = parseInt($('#realityDuration').val(), 10)
+        if (time >= 10 && time <= 120) {
+          $('#rc-err').hide()
+          hideRealityCheck()
+          startRealityCheck(time)
+        } else {
+          $('#rc-err').show()
+        }
       })
 
     $('#runButton')
