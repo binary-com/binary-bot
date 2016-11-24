@@ -62,9 +62,13 @@ const startRealityCheck = (time, token) => {
   }
 }
 
-const resetRealityCheck = (token) => {
+const clearRealityCheck = () => {
   setStorage('realityCheckTime', null)
   stopRealityCheck()
+}
+
+const resetRealityCheck = (token) => {
+  clearRealityCheck()
   startRealityCheck(null, token)
 }
 
@@ -238,6 +242,7 @@ export default class View {
       logoutAllTokens(() => {
         this.updateTokenList()
         observer.emit('ui.log.info', translator.translateText('Logged you out!'))
+        clearRealityCheck()
       })
     }
 

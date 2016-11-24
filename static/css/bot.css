@@ -283,9 +283,9 @@ button:focus {
 .reality-check {
 		position: fixed;
 		display: none;
-		top: 33%;
+		top: calc(50% - 6.5em);
 		width: 96%;
-		height: 36%;
+		height: 13em;
 		left: 2%;
 		background-color: white;
 		z-index: 9999;
@@ -309,6 +309,10 @@ button:focus {
 	margin-bottom: 0em;
 	margin-left: -5em;
 	position: relative;
+}
+
+.reality-check .error-msg {
+	left: 50%;
 }
 
 #stopButton {
