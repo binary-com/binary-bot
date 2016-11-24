@@ -45,7 +45,7 @@ const realityCheckInterval = () => {
 const startRealityCheck = (time) => {
   if (time) {
     stopRealityCheck()
-    const start = parseInt((new Date().getTime()) / 1000, 10) + (time)
+    const start = parseInt((new Date().getTime()) / 1000, 10) + (time * 60)
     setStorage('realityCheckTime', start)
   } else {
     const start = +getStorage('realityCheckTime')
