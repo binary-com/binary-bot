@@ -40,7 +40,7 @@ const realityCheckInterval = () => {
       showRealityCheck()
       stopRealityCheck()
     }
-  }, 60000)
+  }, 1000)
 }
 
 const startRealityCheck = (time, token) => {
