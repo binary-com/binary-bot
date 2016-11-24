@@ -17,7 +17,7 @@ export default class MakeSimpleStrategy {
       my: 'top center',
       at: 'bottom center',
       setup: function setup() {
-        $('#blocker').show()
+        getUiComponent('blocker').show()
         setOpacityForAll(0.3)
       },
     }, {
@@ -47,7 +47,7 @@ export default class MakeSimpleStrategy {
       my: 'top center',
       at: 'bottom center',
       setup: function setup() {
-        $('#blocker').hide()
+        getUiComponent('blocker').hide()
       },
     }, {
       content: '<p>' + translator.translateText('To start pick a <b>Market</b> block. Some steps like this one don\'t have the <b>Next step</b> button, therefore you need to follow the instructions to go to the next step, (in this case picking a market from left should lead you to the next step.)') + '</p>',
@@ -382,7 +382,7 @@ export default class MakeSimpleStrategy {
     this.tour = new Tourist.Tour({
       steps: this.getSteps(),
       cancelStep: () => {
-        $('#blocker').hide()
+        getUiComponent('blocker').hide()
         setOpacityForAll(1)
         this.tour._teardownCurrentStep = () => {}
         observer.unregisterAll('tour:market_created')
@@ -397,7 +397,7 @@ export default class MakeSimpleStrategy {
         this.stop()
       },
       successStep: () => {
-        $('#blocker').hide()
+        getUiComponent('blocker').hide()
         setOpacityForAll(1)
         this.stop()
       },

@@ -16,9 +16,10 @@ const uiComponents = {
   group_start_stop: '.group-start-stop',
   center: '#center',
   flyout: '.blocklyFlyoutBackground',
+  blocker: '.blocker',
 }
 
-const doNotHide = ['center', 'flyout', 'workspace_inside']
+const doNotHide = ['center', 'flyout', 'workspace_inside', 'blocker']
 
 export const getUiComponent = (component) => {
   if (isMainBlock(component)) {

@@ -294,7 +294,6 @@
 				<block type="read_ohlc_obj"></block>
 			</category>
 			<category name="Misc." colour="#2a3052" i18n-text="Misc.">
-				<block type="barrier_offset"></block>
 				<block type="balance"></block>
 				<block type="total_profit"></block>
 				<block type="total_runs"></block>
