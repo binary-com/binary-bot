@@ -50,7 +50,9 @@ class BotPage {
         dp.render()
       },
       start: bot.start.bind(bot),
-      stop: (byError) => {
+      shouldRestartOnError: bot.shouldRestartOnError.bind(bot),
+      restartOnError: bot.restartOnError.bind(bot),
+      stop: () => {
         for (const i of intervals) {
           clearInterval(i)
         }
@@ -58,7 +60,7 @@ class BotPage {
           clearTimeout(i)
         }
         timeouts.length = intervals.length = 0
-        bot.stop(null, byError)
+        bot.stop()
       },
       showCode: () => {
         console.log(this.view.blockly.generatedJs); // eslint-disable-line no-console

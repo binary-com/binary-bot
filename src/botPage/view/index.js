@@ -15,6 +15,7 @@ import Introduction from './tours/introduction'
 import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 import { SaveXml } from './react-components/SaveXml'
+import { RestartTimeout } from './react-components/RestartTimeout'
 
 let realityCheckTimeout
 
@@ -451,21 +452,17 @@ export default class View {
           removeAllTokens()
           this.updateTokenList()
         }
-        window.Bot.stop(true)
+        window.Bot.stop()
+        if (window.Bot.shouldRestartOnError()) {
+          ReactDOM.render(
+            <RestartTimeout
+              timeout="3"
+              startTime={new Date().getTime()}
+            />
+          , $('#restartTimeout')[0])
+        }
       })
     }
-
-    observer.register('bot.restartOnError', timeout => {
-      let countDown = timeout
-      const interval = setInterval(() => {
-        if (countDown === 0) {
-          clearInterval(interval)
-          return
-        }
-        console.log(`restarting in ${countDown} ${
-          countDown-- === 1 ? 'second' : 'seconds'}`)
-      }, 1000)
-    })
 
     observer.register('bot.stop', () => {
       $('#runButton').show()

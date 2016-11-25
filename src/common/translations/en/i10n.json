@@ -320,5 +320,8 @@
   "9982a7bce23cdb0cc57c416ee911fe724d48c8f6": "Restart on error",
   "4eba8c9abc03ba97141eed6e508c79949f5bf31c": "Restart on error (Use with caution)",
   "bbaa110be59371a35b79ee7c0686ed0d991c4ac4": "Caution!",
-  "02349f7b8f107a4b438066130a593735f2d31609": "Restart On Error (Use with caution)"
+  "02349f7b8f107a4b438066130a593735f2d31609": "Restart On Error (Use with caution)",
+  "34040fc10f01da331c08a8241356fde27bcdda32": "Restarting in",
+  "77dfd2135f4db726c47299bb55be26f7f4525a46": "Cancel",
+  "30e8df3645b759bb3a7540402e80255a39e7aec7": "An error occurred, restarting..."
 }
