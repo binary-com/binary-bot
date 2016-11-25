@@ -47,9 +47,23 @@ export default class Bot {
     this.api = (api === null) ? new CustomApi() : api
     this.symbol = new _Symbol(this.api)
     this.initPromise = this.symbol.initPromise
+    this.restartOnError = () => {
+      if (this.stoppedByError) {
+        this.restartTimeout = setTimeout(() => this.start(...this.startArgs), 3000)
+        observer.emit('bot.restartOnError', 3)
+      }
+    }
+    observer.register('bot.cancelRestart', () => {
+      clearTimeout(this.restartTimeout)
+    })
   }
-  start(token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysisList = []) {
+  start(...args) {
+    const [token, tradeOption, beforePurchase, duringPurchase,
+      afterPurchase, sameTrade, tickAnalysisList = []] = args
+    observer.unregister('api.error', this.restartOnError)
+    this.startArgs = args
     if (!this.purchaseCtrl || sameTrade) {
+      this.stoppedByError = false
       if (this.purchaseCtrl) {
         this.purchaseCtrl.destroy()
       }
@@ -87,6 +101,9 @@ export default class Bot {
           }
         }
         Promise.all(promises).then(() => {
+          if (tradeOption.restartOnError) {
+            observer.register('api.error', this.restartOnError)
+          }
           this.startTrading()
         }).catch((error) => {
           if (error.name === 'BlocklyError') {
@@ -352,7 +369,8 @@ export default class Bot {
     this.purchaseCtrl = null
   //
   }
-  stop(contract) {
+  stop(contract, byError = false) {
+    this.stoppedByError = byError
     if (!this.purchaseCtrl) {
       observer.emit('bot.stop', contract)
       return

@@ -14,6 +14,7 @@ import Welcome from './tours/welcome'
 import Introduction from './tours/introduction'
 import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
+import { SaveXml } from './react-components/SaveXml'
 
 let realityCheckTimeout
 
@@ -230,14 +231,6 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
-    const stop = (e) => {
-      if (e) {
-        e.preventDefault()
-      }
-      stopRealityCheck()
-      window.Bot.stop()
-    }
-
     const logout = () => {
       logoutAllTokens(() => {
         this.updateTokenList()
@@ -247,7 +240,13 @@ export default class View {
     }
 
     $('#stopButton')
-      .click(stop)
+      .click(e => {
+        if (e) {
+          e.preventDefault()
+        }
+        stopRealityCheck()
+        window.Bot.stop()
+      })
       .hide()
 
     $('.panelExitButton')
@@ -268,18 +267,15 @@ export default class View {
         e.stopPropagation()
       })
 
+    ReactDOM.render(
+      <SaveXml
+        onSave={(filename, collection) => this.blockly.save(filename, collection)}
+      />
+    , $('#saveXml')[0])
+
     $('#saveXml')
       .click(() => {
-        $('#saveAs')
-          .show()
-      })
-
-    $('#saveAsForm')
-      .submit((e) => {
-        e.preventDefault()
-        this.blockly.save($('#saveAsFilename').val(), $('#saveAsCollection').prop('checked'))
-        $('#saveAs')
-          .hide()
+        $('#saveAs').show()
       })
 
     $('#undo')
@@ -455,9 +451,21 @@ export default class View {
           removeAllTokens()
           this.updateTokenList()
         }
-        window.Bot.stop()
+        window.Bot.stop(true)
       })
     }
+
+    observer.register('bot.restartOnError', timeout => {
+      let countDown = timeout
+      const interval = setInterval(() => {
+        if (countDown === 0) {
+          clearInterval(interval)
+          return
+        }
+        console.log(`restarting in ${countDown} ${
+          countDown-- === 1 ? 'second' : 'seconds'}`)
+      }, 1000)
+    })
 
     observer.register('bot.stop', () => {
       $('#runButton').show()
