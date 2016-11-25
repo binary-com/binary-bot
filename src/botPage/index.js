@@ -50,6 +50,8 @@ class BotPage {
         dp.render()
       },
       start: bot.start.bind(bot),
+      shouldRestartOnError: bot.shouldRestartOnError.bind(bot),
+      restartOnError: bot.restartOnError.bind(bot),
       stop: () => {
         for (const i of intervals) {
           clearInterval(i)

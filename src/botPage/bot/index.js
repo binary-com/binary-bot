@@ -47,8 +47,17 @@ export default class Bot {
     this.api = (api === null) ? new CustomApi() : api
     this.symbol = new _Symbol(this.api)
     this.initPromise = this.symbol.initPromise
+    this.shouldRestartOnError = () => this.tradeOption && this.tradeOption.restartOnError
+    this.restartOnError = () => {
+      if (this.shouldRestartOnError()) {
+        this.start(...this.startArgs)
+      }
+    }
   }
-  start(token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysisList = []) {
+  start(...args) {
+    const [token, tradeOption, beforePurchase, duringPurchase,
+      afterPurchase, sameTrade, tickAnalysisList = []] = args
+    this.startArgs = args
     if (!this.purchaseCtrl || sameTrade) {
       if (this.purchaseCtrl) {
         this.purchaseCtrl.destroy()
