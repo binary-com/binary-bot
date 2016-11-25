@@ -14,6 +14,8 @@ import Welcome from './tours/welcome'
 import Introduction from './tours/introduction'
 import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
+import { SaveXml } from './react-components/SaveXml'
+import { RestartTimeout } from './react-components/RestartTimeout'
 
 let realityCheckTimeout
 
@@ -230,14 +232,6 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
-    const stop = (e) => {
-      if (e) {
-        e.preventDefault()
-      }
-      stopRealityCheck()
-      window.Bot.stop()
-    }
-
     const logout = () => {
       logoutAllTokens(() => {
         this.updateTokenList()
@@ -247,7 +241,13 @@ export default class View {
     }
 
     $('#stopButton')
-      .click(stop)
+      .click(e => {
+        if (e) {
+          e.preventDefault()
+        }
+        stopRealityCheck()
+        window.Bot.stop()
+      })
       .hide()
 
     $('.panelExitButton')
@@ -268,18 +268,15 @@ export default class View {
         e.stopPropagation()
       })
 
+    ReactDOM.render(
+      <SaveXml
+        onSave={(filename, collection) => this.blockly.save(filename, collection)}
+      />
+    , $('#saveXml')[0])
+
     $('#saveXml')
       .click(() => {
-        $('#saveAs')
-          .show()
-      })
-
-    $('#saveAsForm')
-      .submit((e) => {
-        e.preventDefault()
-        this.blockly.save($('#saveAsFilename').val(), $('#saveAsCollection').prop('checked'))
-        $('#saveAs')
-          .hide()
+        $('#saveAs').show()
       })
 
     $('#undo')
@@ -456,6 +453,14 @@ export default class View {
           this.updateTokenList()
         }
         window.Bot.stop()
+        if (window.Bot.shouldRestartOnError()) {
+          ReactDOM.render(
+            <RestartTimeout
+              timeout="3"
+              startTime={new Date().getTime()}
+            />
+          , $('#restartTimeout')[0])
+        }
       })
     }
 
