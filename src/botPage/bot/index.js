@@ -361,7 +361,7 @@ export default class Bot {
     this.purchaseCtrl = null
   //
   }
-  stop(contract, byError = false) {
+  stop(contract) {
     if (!this.purchaseCtrl) {
       observer.emit('bot.stop', contract)
       return
