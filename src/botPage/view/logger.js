@@ -34,6 +34,7 @@ export const notifyError = (error) => {
     position: 'bottom right',
     className: 'error',
   })
+  console.warn(error); // eslint-disable-line no-console
   console.error(message); // eslint-disable-line no-console
   return message
 }
