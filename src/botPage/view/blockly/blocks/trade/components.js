@@ -60,6 +60,13 @@ export const tradeTypeDropdown = (block) => {
     .appendField(new Blockly.FieldDropdown(getTradeTypes), 'TRADETYPE_LIST')
 }
 
+export const restartOnError = (block) => {
+  block.appendDummyInput()
+    .appendField(`${translator.translateText('Restart On Error (Use with caution)')}:`)
+    .appendField(new Blockly.FieldImage('https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Caution_sign_used_on_roads_pn.svg/512px-Caution_sign_used_on_roads_pn.svg.png', 15, 15, translator.translateText('Caution!')))
+    .appendField(new Blockly.FieldCheckbox('FALSE'), 'RESTARTONERROR')
+}
+
 export const contractTypes = (block) => {
   if (!block.getInput('CONTRACT_TYPE')) {
     const getContractTypes = () => {

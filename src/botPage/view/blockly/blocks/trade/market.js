@@ -2,7 +2,7 @@
 import { translator } from '../../../../../common/translator'
 import config from '../../../../../common/const'
 import { BlocklyError } from '../../../../../common/error'
-import { marketDropdown, tradeTypeDropdown } from './components'
+import { marketDropdown, tradeTypeDropdown, restartOnError } from './components'
 import { updatePurchaseChoices, updateInputList,
 setInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'
@@ -30,6 +30,7 @@ export default () => {
       marketDropdown(this)
       tradeTypeDropdown(this)
       setInputList(this)
+      restartOnError(this)
       this.setPreviousStatement(true, 'Market')
       this.setColour('#f2f2f2')
     },
@@ -87,10 +88,11 @@ export default () => {
     const currency = block.getFieldValue('CURRENCY_LIST')
     const amount = Blockly.JavaScript.valueToCode(block,
       'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC)
+    const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase()
+    const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE';
     let predictionValue
     let barrierOffsetValue
     let secondBarrierOffsetValue
-    const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase()
     if (config.hasPrediction.indexOf(oppositesName) > -1) {
       predictionValue = Blockly.JavaScript.valueToCode(block,
         'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC)
@@ -135,6 +137,7 @@ export default () => {
           basis: '${payouttype}',
           currency: '${currency}',
           amount: ${amount},
+          restartOnError: ${shouldRestartOnError},
           ${((config.hasPrediction.indexOf(oppositesName) > -1 && predictionValue !== '')
       ? `prediction: ${predictionValue},` : '')}
           ${((config.hasSecondBarrierOffset.indexOf(oppositesName) > -1

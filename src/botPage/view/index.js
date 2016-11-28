@@ -14,6 +14,8 @@ import Welcome from './tours/welcome'
 import Introduction from './tours/introduction'
 import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
+import { SaveXml } from './react-components/SaveXml'
+import { RestartTimeout } from './react-components/RestartTimeout'
 
 let realityCheckTimeout
 let editMode = false
@@ -419,20 +421,12 @@ export default class View {
         }
       })
 
-    $('#saveXml')
-      .click(() => {
-        hideCollapseMenu()
-        $('#saveAs')
-          .show()
-      })
-
-    $('#saveAsForm')
-      .submit((e) => {
-        e.preventDefault()
-        this.blockly.save($('#saveAsFilename').val(), $('#saveAsCollection').prop('checked'))
-        $('#saveAs')
-          .hide()
-      })
+    ReactDOM.render(
+      <SaveXml
+        onClick={hideCollapseMenu}
+        onSave={(filename, collection) => this.blockly.save(filename, collection)}
+      />
+    , $('#saveXml')[0])
 
     $('#undo')
       .click(() => {
@@ -633,6 +627,14 @@ export default class View {
           this.updateTokenList()
         }
         window.Bot.stop()
+        if (window.Bot.shouldRestartOnError()) {
+          ReactDOM.render(
+            <RestartTimeout
+              timeout="3"
+              startTime={new Date().getTime()}
+            />
+          , $('#restartTimeout')[0])
+        }
       })
     }
 

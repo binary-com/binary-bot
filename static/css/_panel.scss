@@ -1,30 +1,26 @@
 @import 'screen';
 
-#saveAs {
-    width: 388px;
-    height: 114px;
-    margin-left: -194px;
-    margin-top: -57px;
-}
-
 .fixed-panel {
     position: absolute;
     width: 100%;
     height: 100%;
-    right: 0em;
+    right: 0;
     display: none;
     background-color: white;
     position: fixed;
     z-index: 2;
+
     h4 {
         font-size: 1em;
         @media #{$tablet-screen-rotate} {
             display: none;
         }
     }
+
     .container {
         height: 100%;
     }
+
     #chart {
         position: absolute;
         background-color: $brand-gray;
@@ -48,9 +44,10 @@
         }
         @media #{$phone-screen-rotate} {
             max-height: calc(100% - 4.5em);
-            bottom: 0em;
+            bottom: 0;
         }
     }
+
     table {
         overflow: auto;
         width: 100%;
@@ -68,32 +65,30 @@
         padding: 0.1em !important;
         height: 2em;
     }
-
 }
 
-.panel {
-    display: none;
+.floating-panel {
+    font-size: 1em;
     background-color: white;
     position: fixed;
     top: 50%;
-    left: 50%;
-    border: 1px solid $brand-blue;
-    border-top-color: $toolbox-btn-active;
-    z-index: 2;
-
-    .panelExitButton p {
+    left: calc(50% - 7em);
+    border: 1px solid #2a3052;
+    border-top-color: #ddd;
+    z-index: 1002;
+    .panelExitButton p{
         color: white;
         cursor: pointer;
-        width: 25px;
-        height: 25px;
+        width: 1.4em;
+        height: 1.4em;
         position: absolute;
-        right: 0;
-        top: 0;
+        right: 0px;
+        top: 0px;
         text-align: center;
-        border: 1px solid $brand-orange;
+        border: 1px solid #e98024;
         border-radius: 0 0 0 4px;
-        background: $brand-orange;
-        margin: 0;
+        background: #e98024;
+        margin: 0px;
     }
 
     .content {
@@ -103,18 +98,14 @@
     }
 
     .description {
-        padding: 5px;
-        background-color: $brand-blue;
-        color: $white;
-    }
+        padding: 0.2em 2em;
+        background-color: #2a3052;
+        color: #fff;
 
-    .description h4 {
-        color: white;
-        margin: 0;
-        text-align: center;
-    }
-
-    .draggable {
-        opacity: 1;
+        h4 {
+            color: white;
+            margin: 0;
+            text-align: center;
+        }
     }
 }
