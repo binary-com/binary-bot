@@ -282,17 +282,11 @@
   content: '\f160'; }
 
 /* '' */
-#saveAs {
-  width: 388px;
-  height: 114px;
-  margin-left: -194px;
-  margin-top: -57px; }
-
 .fixed-panel {
   position: absolute;
   width: 100%;
   height: 100%;
-  right: 0em;
+  right: 0;
   display: none;
   background-color: white;
   position: fixed;
@@ -326,7 +320,7 @@
     @media only screen and (max-height: 480px) {
       .fixed-panel .table-scroll {
         max-height: calc(100% - 4.5em);
-        bottom: 0em; } }
+        bottom: 0; } }
   .fixed-panel table {
     overflow: auto;
     width: 100%; }
@@ -340,42 +334,40 @@
     padding: 0.1em !important;
     height: 2em; }
 
-.panel {
-  display: none;
+.floating-panel {
+  font-size: 1em;
   background-color: white;
   position: fixed;
   top: 50%;
-  left: 50%;
+  left: calc(50% - 7em);
   border: 1px solid #2a3052;
-  border-top-color: #dddddd;
-  z-index: 2; }
-  .panel .panelExitButton p {
+  border-top-color: #ddd;
+  z-index: 1002; }
+  .floating-panel .panelExitButton p {
     color: white;
     cursor: pointer;
-    width: 25px;
-    height: 25px;
+    width: 1.4em;
+    height: 1.4em;
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 0px;
+    top: 0px;
     text-align: center;
     border: 1px solid #e98024;
     border-radius: 0 0 0 4px;
     background: #e98024;
-    margin: 0; }
-  .panel .content {
+    margin: 0px; }
+  .floating-panel .content {
     padding: 0 15px 15px;
     background: white;
     cursor: default; }
-  .panel .description {
-    padding: 5px;
+  .floating-panel .description {
+    padding: 0.2em 2em;
     background-color: #2a3052;
-    color: #ffffff; }
-  .panel .description h4 {
-    color: white;
-    margin: 0;
-    text-align: center; }
-  .panel .draggable {
-    opacity: 1; }
+    color: #fff; }
+    .floating-panel .description h4 {
+      color: white;
+      margin: 0;
+      text-align: center; }
 
 .blocklyText {
   fill: #000000 !important; }
@@ -484,6 +476,91 @@
     margin-left: 0em;
     margin-bottom: 0.5em; }
 
+.left-header {
+  float: left; }
+  @media only screen and (max-width: 480px) {
+    .left-header .logo-parent {
+      padding: 0em; } }
+
+.right-header {
+  float: right;
+  width: 23%; }
+  .right-header .main-nav {
+    width: 8em; }
+  .right-header .main-nav > li > ul a li {
+    padding: 0.5em 0; }
+
+.middle-header {
+  float: left; }
+  .middle-header button.top-menu {
+    padding: 1.6em 1em;
+    font-size: 1.1em;
+    background-color: #2a3052; }
+  .middle-header .collapse-menu {
+    display: inline-flex; }
+    @media only screen and (max-width: 480px) {
+      .middle-header .collapse-menu {
+        display: block;
+        padding: 0em;
+        position: absolute;
+        z-index: 3; } }
+    @media only screen and (max-width: 480px) {
+      .middle-header .collapse-menu.hiddenMenu {
+        left: -100%; } }
+    .middle-header .collapse-menu button.top-menu {
+      margin-right: 0.2em; }
+      @media only screen and (max-width: 480px) {
+        .middle-header .collapse-menu button.top-menu {
+          padding: 0.5em 1em;
+          display: block;
+          width: 7em;
+          text-align: left; } }
+      .middle-header .collapse-menu button.top-menu span {
+        display: none; }
+        @media only screen and (max-width: 480px) {
+          .middle-header .collapse-menu button.top-menu span {
+            display: inline-block; } }
+    .middle-header .collapse-menu button:hover.top-menu {
+      background-color: #15212d; }
+      .middle-header .collapse-menu button:hover.top-menu span {
+        display: inline-block; }
+  .middle-header #mobileMenu {
+    font-size: 1.1em;
+    display: none; }
+    @media only screen and (max-width: 480px) {
+      .middle-header #mobileMenu {
+        display: block; } }
+
+#client-logged-in {
+  display: none; }
+
+.topMenuBalance {
+  visibility: hidden; }
+
+#login {
+  display: none;
+  margin: 0.6em 0; }
+
+.accountSelect {
+  float: right;
+  margin-right: 1em; }
+  .accountSelect .account {
+    width: 8em;
+    float: right;
+    font-size: 1em; }
+
+.btn-primary {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  background: #2e8836 !important;
+  border-color: #2e8836 !important; }
+
+.btn-primary:active, .btn-primary:hover {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  background-color: #14602b !important;
+  border-color: #14602b !important; }
+
 #blocklyDiv {
   position: absolute;
   height: calc(100% - 6.5em);
@@ -523,94 +600,6 @@
   padding: 0.2em 0.1em;
   display: table;
   float: right; }
-
-.left-header {
-  float: left; }
-  @media only screen and (max-width: 480px) {
-    .left-header .logo-parent {
-      padding: 0em; } }
-
-.right-header {
-  float: right;
-  width: 23%; }
-  .right-header .main-nav {
-    width: 8em; }
-  .right-header .main-nav > li > ul a li {
-    padding: 0.5em 0; }
-
-.middle-header {
-  float: left; }
-  .middle-header div {
-    display: inline-flex; }
-    @media only screen and (max-width: 480px) {
-      .middle-header div {
-        padding: 1.5em 0.1em;
-        display: block; } }
-  .middle-header button {
-    padding: 1.6em 1em;
-    font-size: 1.1em;
-    background-color: #2a3052; }
-  @media only screen and (max-width: 480px) {
-    .middle-header .collapse-menu.hiddenMenu {
-      display: none; } }
-  @media only screen and (max-width: 480px) {
-    .middle-header .collapse-menu {
-      padding: 0em;
-      position: absolute;
-      z-index: 3; } }
-  .middle-header .collapse-menu button {
-    margin-right: 0.2em; }
-    @media only screen and (max-width: 480px) {
-      .middle-header .collapse-menu button {
-        padding: 0.5em 1em;
-        display: block;
-        width: 7em;
-        text-align: left; } }
-    .middle-header .collapse-menu button span {
-      display: none; }
-      @media only screen and (max-width: 480px) {
-        .middle-header .collapse-menu button span {
-          display: inline-block; } }
-  .middle-header .collapse-menu button:hover {
-    background-color: #15212d; }
-    .middle-header .collapse-menu button:hover span {
-      display: inline-block; }
-  .middle-header #mobileMenu {
-    font-size: 1.1em;
-    display: none; }
-    @media only screen and (max-width: 480px) {
-      .middle-header #mobileMenu {
-        display: block; } }
-
-#client-logged-in {
-  display: none; }
-
-.topMenuBalance {
-  visibility: hidden; }
-
-#login {
-  display: none;
-  margin: 0.6em 0; }
-
-.accountSelect {
-  float: right;
-  margin-right: 1em; }
-  .accountSelect .account {
-    width: 8em;
-    float: right;
-    font-size: 1em; }
-
-.btn-primary {
-  color: #ffffff !important;
-  text-decoration: none !important;
-  background: #2e8836 !important;
-  border-color: #2e8836 !important; }
-
-.btn-primary:active, .btn-primary:hover {
-  color: #ffffff !important;
-  text-decoration: none !important;
-  background-color: #14602b !important;
-  border-color: #14602b !important; }
 
 .blocker {
   position: fixed;
@@ -676,4 +665,4 @@ html, body {
   -webkit-box-sizing: inherit;
   box-sizing: inherit; }
 
-/*# sourceMappingURL=bot-f0b8304e1a.css.map */
+/*# sourceMappingURL=bot-7daaedf61f.css.map */
