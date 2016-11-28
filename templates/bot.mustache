@@ -61,12 +61,6 @@
 				<button title="Stop the blocks" id="stopButton" class="icon-stop group-start-stop top-menu">
 					<span data-i18n-text="Stop"></span>
 				</button>
-				<button title="Open the summary panel" id="showSummary" class="icon-summary group-summary top-menu">
-					<span data-i18n-text="Summary"></span>
-				</button>
-				<button title="Switch to editing mode" id="showEdit" class="icon-edit group-summary top-menu">
-					<span data-i18n-text="Edit"></span>
-				</button>
 			</div>
 		</div>
 		<div class="right-header">
@@ -113,8 +107,19 @@
 			</div>
 		</div>
 	</div>
+	<div class="view-menu">
+		<button title="Switch to execute view" id="showExecute" class="icon-execute selected">
+			<span data-i18n-text="Execute"></span>
+		</button>
+		<button title="Switch to report summary panel" id="showSummary" class="icon-summary">
+			<span data-i18n-text="Report"></span>
+		</button>
+		<button title="Switch to editing" id="showEdit" class="icon-edit">
+			<span data-i18n-text="Edit"></span>
+		</button>
+	</div>
 	<div id="container">
-		<div id="summaryPanel" class="fixed-panel">
+		<div id="summaryPanel" class="report">
 			<h4>
         <span data-i18n-text="Summary"></span>
       </h4>

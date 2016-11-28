@@ -1,0 +1,49 @@
+.view-menu {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 1.4em;
+    background: $brand-orange;
+
+    * {
+        color: $black;
+    }
+
+    &:after {
+      position: absolute;
+      content: "";
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      border-bottom: 0.15em solid $brand-dark-gray;
+      z-index: 3;
+    }
+
+    button {
+        position: relative;
+        border-radius: inherit;
+        background-color: $brand-dark-gray;
+        font-size: 1em;
+        width: 6em;
+        padding: 0.1em;
+        padding-bottom: 0.27em;
+        text-align: left;
+        display: block;
+        float: left;
+        margin-right: 0.1em;
+        z-index: 4;
+
+        &.selected {
+            background-color: $white;
+        }
+    }
+
+    button:hover {
+        background-color: $white;
+        padding-bottom: 0.27em;
+
+        span {
+            display: inline-block;
+        }
+    }
+}

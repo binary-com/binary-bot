@@ -19,7 +19,6 @@ import { RestartTimeout } from './react-components/RestartTimeout'
 
 let realityCheckTimeout
 let editMode = false
-let summaryShown = false
 let mobileMenuVisible = false
 
 const showRealityCheck = () => {
@@ -280,16 +279,21 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
+    const showExecute = () => {
+      $('#showExecute').addClass('selected')
+    }
+
+    const hideExecute = () => {
+      $('#showExecute').removeClass('selected')
+    }
+
     const hideSummary = () => {
-      $('#showSummary>span')
-        .text(translator.translateText('Summary'))
+      $('#showSummary').removeClass('selected')
       $('#summaryPanel')
         .hide()
-      summaryShown = false
     }
 
     const showBlocklyToolbox = () => {
-      hideSummary()
       const toolboxDiv = $('.blocklyToolboxDiv')
       $('.blocklySvg').css('left', `${toolboxDiv.width()}px`)
       toolboxDiv.addClass('shownToolbox')
@@ -301,7 +305,6 @@ export default class View {
     }
 
     const showToolbox = () => {
-      hideSummary()
       const toolbox = $('#toolbox')
       toolbox.show()
       $('.blocklySvg').css('left', `${toolbox.width()}px`)
@@ -325,24 +328,25 @@ export default class View {
     }
 
     const exitEditMode = () => {
-      $('#showEdit>span').text(translator.translateText('Edit'))
+      $('#showEdit').removeClass('selected')
       hideBlocklyToolbox()
       hideToolbox()
       editMode = false
     }
 
     const showSummary = () => {
+      $('#showSummary').addClass('selected')
+      hideExecute()
       exitEditMode()
-      $('#showSummary>span')
-        .text(translator.translateText('Exit'))
       $('#summaryPanel')
         .show()
-      summaryShown = true
     }
 
     const enterEditMode = () => {
-      $('#showEdit>span').text(translator.translateText('Exit'))
+      $('#showEdit').addClass('selected')
       showToolbox()
+      hideExecute()
+      hideSummary()
       editMode = true
     }
 
@@ -406,6 +410,8 @@ export default class View {
 
     $('.blocklyWorkspace')
       .on('click touchstart', () => {
+        $('.view-menu-select')
+          .hide()
         if (editMode) {
           toggleToolbox(false)
         }
@@ -414,11 +420,14 @@ export default class View {
     $('#showEdit')
       .click(() => {
         hideCollapseMenu()
-        if (editMode) {
-          exitEditMode()
-        } else {
-          enterEditMode()
-        }
+        enterEditMode()
+      })
+
+    $('#showExecute')
+      .click(() => {
+        showExecute()
+        hideSummary()
+        exitEditMode()
       })
 
     ReactDOM.render(
@@ -456,11 +465,7 @@ export default class View {
     $('#showSummary')
       .click(() => {
         hideCollapseMenu()
-        if (summaryShown) {
-          hideSummary()
-        } else {
-          showSummary()
-        }
+        showSummary()
       })
 
     $('#loadXml')
@@ -508,6 +513,9 @@ export default class View {
       .click(() => {
         this.blockly.resetWorkspace()
       })
+
+    $('#changeView')
+      .click(() => $('.view-menu-select').toggle())
 
     $('.login-id-list')
       .on('click', 'a', (e) => {
