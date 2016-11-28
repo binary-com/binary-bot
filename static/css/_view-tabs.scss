@@ -15,14 +15,14 @@
       width: 100%;
       bottom: 0;
       left: 0;
-      border-bottom: 0.15em solid $brand-dark-gray;
+      border-bottom: 0.15em solid $tab-border;
       z-index: 3;
     }
 
     button {
         position: relative;
         border-radius: inherit;
-        background-color: $brand-dark-gray;
+        background: linear-gradient(to bottom, $brand-gray 50%, $tab-border 100%);
         font-size: 1em;
         width: 6em;
         padding: 0.1em;
@@ -34,13 +34,12 @@
         z-index: 4;
 
         &.selected {
-            background-color: $white;
+            background: $white;
         }
     }
 
     button:hover {
-        background-color: $white;
-        padding-bottom: 0.27em;
+        background: $white;
 
         span {
             display: inline-block;

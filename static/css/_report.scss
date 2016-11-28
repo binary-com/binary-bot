@@ -20,7 +20,7 @@
     }
 
     #chart {
-        background-color: $brand-gray;
+        background: $brand-gray;
         width: 100%;
         height: calc((100% - 12em)/2);
         @media #{$phone-screen-rotate} {
