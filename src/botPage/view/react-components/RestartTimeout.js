@@ -16,7 +16,7 @@ export class RestartTimeout extends PureComponent {
   }
   setInterval() {
     const { timeout, startTime } = this.props
-    if (this.state.startTime !== startTime) {
+    if (startTime - this.state.startTime > timeout * 1000) {
       this.setState({ startTime })
       this.setState({ timeout })
       this.restartInterval = setInterval(() => {
