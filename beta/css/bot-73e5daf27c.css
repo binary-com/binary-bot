@@ -481,9 +481,6 @@
 .left-header {
   float: left;
   height: 4.6em; }
-  @media only screen and (max-width: 480px) {
-    .left-header .logo-parent {
-      padding: 0em; } }
 
 .right-header {
   float: right;
@@ -587,7 +584,7 @@
     border-radius: inherit;
     background: linear-gradient(to bottom, #f2f2f2 50%, #d1d1d1 100%);
     font-size: 1em;
-    width: 6em;
+    width: 5.5em;
     padding: 0.1em;
     padding-bottom: 0.27em;
     text-align: left;
@@ -712,4 +709,4 @@ html, body {
   -webkit-box-sizing: inherit;
   box-sizing: inherit; }
 
-/*# sourceMappingURL=bot-81caf14d91.css.map */
+/*# sourceMappingURL=bot-73e5daf27c.css.map */
