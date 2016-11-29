@@ -479,13 +479,15 @@
     margin-bottom: 0.5em; }
 
 .left-header {
-  float: left; }
+  float: left;
+  height: 4.6em; }
   @media only screen and (max-width: 480px) {
     .left-header .logo-parent {
       padding: 0em; } }
 
 .right-header {
   float: right;
+  height: 4.6em;
   width: 23%; }
   .right-header .main-nav {
     width: 8em; }
@@ -493,6 +495,7 @@
     padding: 0.5em 0; }
 
 .middle-header {
+  height: 4.6em;
   float: left; }
   .middle-header button.top-menu {
     padding: 1.6em 1em;
@@ -709,4 +712,4 @@ html, body {
   -webkit-box-sizing: inherit;
   box-sizing: inherit; }
 
-/*# sourceMappingURL=bot-68632a2266.css.map */
+/*# sourceMappingURL=bot-81caf14d91.css.map */
