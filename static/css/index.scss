@@ -72,3 +72,7 @@ ul.bullet {
 .clear {
     clear: both;
 }
+
+.button span {
+    text-transform: inherit !important;
+}
