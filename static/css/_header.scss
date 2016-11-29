@@ -4,11 +4,6 @@
 .left-header {
     float: left;
     height: 4.6em;
-    .logo-parent {
-        @media #{$phone-screen} {
-          padding: 0em;
-        }
-    }
 }
 
 .right-header {
