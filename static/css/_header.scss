@@ -3,6 +3,7 @@
 
 .left-header {
     float: left;
+    height: 4.6em;
     .logo-parent {
         @media #{$phone-screen} {
           padding: 0em;
@@ -12,6 +13,7 @@
 
 .right-header {
     float: right;
+    height: 4.6em;
     width: 23%;
     .main-nav {
       width: 8em;
@@ -22,6 +24,7 @@
 }
 
 .middle-header {
+    height: 4.6em;
     float: left;
     button.top-menu {
         padding: 1.6em 1em;
