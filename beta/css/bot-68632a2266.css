@@ -687,6 +687,11 @@
 #stopButton {
   display: none; }
 
+#login {
+  float: right;
+  width: 3em;
+  margin: 1em; }
+
 select.tour-highlight {
   background: white; }
 
@@ -704,4 +709,4 @@ html, body {
   -webkit-box-sizing: inherit;
   box-sizing: inherit; }
 
-/*# sourceMappingURL=bot-e0519fdbd6.css.map */
+/*# sourceMappingURL=bot-68632a2266.css.map */
