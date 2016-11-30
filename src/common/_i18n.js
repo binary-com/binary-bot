@@ -5,10 +5,13 @@ class I18n {
     this.translation = null
   }
   init(options) {
+    this.fallbackLng = options.resources[options.fallbackLng][options.defaultNS]
     this.translation = options.resources[options.lng][options.defaultNS]
   }
   t(key) {
-    return this.translation[key]
+    return (key in this.translation)
+      ? this.translation[key]
+      : this.fallbackLng[key]
   }
   _(str) {
     const key = sha1(str)
