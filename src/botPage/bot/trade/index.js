@@ -23,7 +23,10 @@ export default class Trade {
       observer.emit('log.trade.purchase', purchasedContract)
       observer.emit('ui.log.info',
         `${translator.translateText('Purchased')}: ${contract.longcode}`)
-      observer.emit('trade.purchase', purchasedContract)
+      observer.emit('trade.purchase', {
+        contract,
+        purchasedContract,
+      })
       this.isSold = false
       this.contractId = purchasedContract.contract_id
       this.api.originalApi.unsubscribeFromAllProposals().then(() => 0, () => 0)

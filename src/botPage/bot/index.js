@@ -309,10 +309,15 @@ export default class Bot {
     this.unregisterOnFinish.push(['beforePurchase.finish', beforePurchaseFinish])
   }
   waitForTradePurchase() {
-    const tradePurchase = () => {
+    const tradePurchase = (info) => {
       this.totalRuns += 1
       observer.emit('bot.tradeInfo', {
         totalRuns: this.totalRuns,
+        transaction_ids: {
+          buy: info.purchasedContract.transaction_id,
+        },
+        contract_type: info.contract.contract_type,
+        buy_price: info.purchasedContract.buy_price,
       })
     }
     observer.register('trade.purchase', tradePurchase, true, null, true)
