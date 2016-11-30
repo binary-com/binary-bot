@@ -72,9 +72,9 @@ export default class Trade {
       unregister: [
         ['api.proposal_open_contract', apiProposalOpenContract],
         'trade.update',
-        'beforePurchase.tradeUpdate',
+        'purchase.tradeUpdate',
         'trade.finish',
-        'beforePurchase.finish',
+        'purchase.finish',
       ],
     })
     this.runningObservations.push(['api.proposal_open_contract', apiProposalOpenContract])

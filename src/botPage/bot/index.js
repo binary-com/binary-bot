@@ -246,23 +246,23 @@ export default class Bot {
     }
   }
   observeBeforePurchase() {
-    if (!observer.isRegistered('beforePurchase.ready')) {
+    if (!observer.isRegistered('purchase.ready')) {
       const beforePurchaseReady = () => {
         if (this.purchaseCtrl) {
           observer.emit('bot.waiting_for_purchase')
         }
       }
-      observer.register('beforePurchase.ready', beforePurchaseReady)
+      observer.register('purchase.ready', beforePurchaseReady)
     }
   }
   observeTradeUpdate() {
-    if (!observer.isRegistered('beforePurchase.tradeUpdate')) {
+    if (!observer.isRegistered('purchase.tradeUpdate')) {
       const beforePurchaseTradeUpdate = (contract) => {
         if (this.purchaseCtrl) {
           observer.emit('bot.tradeUpdate', contract)
         }
       }
-      observer.register('beforePurchase.tradeUpdate', beforePurchaseTradeUpdate)
+      observer.register('purchase.tradeUpdate', beforePurchaseTradeUpdate)
     }
   }
   observeStreams() {
@@ -282,7 +282,7 @@ export default class Bot {
       type: 'proposal',
       unregister: [
         ['api.proposal', apiProposal],
-        'beforePurchase.ready',
+        'purchase.ready',
         'bot.waiting_for_purchase',
       ],
     })
@@ -305,8 +305,8 @@ export default class Bot {
     const beforePurchaseFinish = (contract) => {
       this.botFinish(contract)
     }
-    observer.register('beforePurchase.finish', beforePurchaseFinish, true, null, true)
-    this.unregisterOnFinish.push(['beforePurchase.finish', beforePurchaseFinish])
+    observer.register('purchase.finish', beforePurchaseFinish, true, null, true)
+    this.unregisterOnFinish.push(['purchase.finish', beforePurchaseFinish])
   }
   waitForTradePurchase() {
     const tradePurchase = (info) => {
