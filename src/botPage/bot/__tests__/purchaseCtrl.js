@@ -34,9 +34,6 @@ describe('PurchaseCtrl', () => {
   })
   describe('Make the beforePurchase ready...', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('beforePurchase.ready', () => {
-        done()
-      }, true)
       observer.register('api.proposal', (_proposal) => {
         proposals.push(_proposal)
         purchaseCtrl.updateProposal(_proposal)
@@ -44,6 +41,9 @@ describe('PurchaseCtrl', () => {
       observer.register('api.authorize', () => {
         observer.register('api.proposal', () => {
           observer.register('api.proposal', () => {
+            if (purchaseCtrl.ready) {
+              done()
+            }
           }, true)
           api.proposal({
             amount: '1.00',
@@ -70,7 +70,7 @@ describe('PurchaseCtrl', () => {
     it('Strategy gets ready when two proposals are available', () => {
     })
   })
-  describe('Adding the ticks to the beforePurchase...', () => {
+  describe('Adding the ticks to the purchase...', () => {
     let beforePurchaseArgs
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('test.beforePurchase', (_beforePurchaseArgs) => {
@@ -116,7 +116,7 @@ describe('PurchaseCtrl', () => {
   describe('Waiting for purchase to be finished', () => {
     let finishedContract
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('beforePurchase.finish', (_finishedContract) => {
+      observer.register('purchase.finish', (_finishedContract) => {
         finishedContract = _finishedContract
         done()
       }, true)

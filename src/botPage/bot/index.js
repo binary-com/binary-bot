@@ -245,29 +245,18 @@ export default class Bot {
       observer.register('api.ohlc', apiOHLC)
     }
   }
-  observeBeforePurchase() {
-    if (!observer.isRegistered('beforePurchase.ready')) {
-      const beforePurchaseReady = () => {
-        if (this.purchaseCtrl) {
-          observer.emit('bot.waiting_for_purchase')
-        }
-      }
-      observer.register('beforePurchase.ready', beforePurchaseReady)
-    }
-  }
   observeTradeUpdate() {
-    if (!observer.isRegistered('beforePurchase.tradeUpdate')) {
+    if (!observer.isRegistered('purchase.tradeUpdate')) {
       const beforePurchaseTradeUpdate = (contract) => {
         if (this.purchaseCtrl) {
           observer.emit('bot.tradeUpdate', contract)
         }
       }
-      observer.register('beforePurchase.tradeUpdate', beforePurchaseTradeUpdate)
+      observer.register('purchase.tradeUpdate', beforePurchaseTradeUpdate)
     }
   }
   observeStreams() {
     this.observeTradeUpdate()
-    this.observeBeforePurchase()
     this.observeTicks()
     this.observeOhlc()
   }
@@ -278,14 +267,7 @@ export default class Bot {
         this.purchaseCtrl.updateProposal(proposal)
       }
     }
-    observer.register('api.proposal', apiProposal, false, {
-      type: 'proposal',
-      unregister: [
-        ['api.proposal', apiProposal],
-        'beforePurchase.ready',
-        'bot.waiting_for_purchase',
-      ],
-    })
+    observer.register('api.proposal', apiProposal, false)
     this.unregisterOnFinish.push(['api.proposal', apiProposal])
     this.api.proposal(tradeOption)
   }
@@ -305,8 +287,8 @@ export default class Bot {
     const beforePurchaseFinish = (contract) => {
       this.botFinish(contract)
     }
-    observer.register('beforePurchase.finish', beforePurchaseFinish, true, null, true)
-    this.unregisterOnFinish.push(['beforePurchase.finish', beforePurchaseFinish])
+    observer.register('purchase.finish', beforePurchaseFinish, true, null, true)
+    this.unregisterOnFinish.push(['purchase.finish', beforePurchaseFinish])
   }
   waitForTradePurchase() {
     const tradePurchase = (info) => {

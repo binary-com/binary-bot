@@ -5,7 +5,7 @@ import Trade from './trade'
 const createDetails = (contract) => {
   const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2)
   const result = (profit < 0) ? 'loss' : 'win'
-  observer.emit(`log.beforePurchase.${result}`, {
+  observer.emit(`log.purchase.${result}`, {
     profit,
     transactionId: contract.transaction_ids.buy,
   })
@@ -38,7 +38,6 @@ export default class PurchaseCtrl {
       this.proposals[proposal.contract_type] = proposal
       if (!this.ready && Object.keys(this.proposals).length === this.expectedNumOfProposals) {
         this.ready = true
-        observer.emit('beforePurchase.ready')
       }
     }
   }
@@ -55,7 +54,7 @@ export default class PurchaseCtrl {
     this.ticks = ticks
     if (!this.purchased) {
       if (this.ready) {
-        observer.emit('log.beforePurchase.start', {
+        observer.emit('log.purchase.start', {
           proposals: this.proposals,
         })
         this.beforePurchase()
@@ -63,10 +62,11 @@ export default class PurchaseCtrl {
     }
   }
   purchase(option) {
-    observer.emit('log.beforePurchase.purchase', {
+    observer.emit('log.purchase.purchase', {
       proposals: this.proposals,
       purchasing: option,
     })
+    observer.unregisterAll()
     if (!this.purchased) {
       this.purchased = true
       const contract = this.getContract(option)
@@ -74,11 +74,11 @@ export default class PurchaseCtrl {
       const tradeUpdate = (openContract) => {
         this.openContract = openContract
         this.duringPurchase()
-        observer.emit('beforePurchase.tradeUpdate', openContract)
+        observer.emit('purchase.tradeUpdate', openContract)
       }
       const tradeFinish = (finishedContract) => {
         // order matters, needs fix
-        observer.emit('beforePurchase.finish', finishedContract)
+        observer.emit('purchase.finish', finishedContract)
         this.finishedContract = finishedContract
         this.contractDetails = createDetails(finishedContract)
         this.afterPurchase()

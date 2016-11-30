@@ -48,11 +48,11 @@ describe('Bot', () => {
   })
   describe('Start trading', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('bot.waiting_for_purchase', () => {
+      observer.register('test.waiting_for_purchase', () => {
         done()
       }, true)
       observer.register('bot.stop', () => {
-        bot.start(token, option, () => {}, () => {}, () => {})
+        bot.start(token, option, () => observer.emit('test.waiting_for_purchase'), () => {}, () => {})
       }, true)
       bot.stop()
     })
@@ -62,10 +62,10 @@ describe('Bot', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('bot.stop', () => {
         bot.initPromise.then(() => {
-          observer.register('bot.waiting_for_purchase', () => {
+          observer.register('test.waiting_for_purchase', () => {
             done()
           }, true)
-          bot.start(token, option, () => {}, () => {}, () => {})
+          bot.start(token, option, () => observer.emit('test.waiting_for_purchase'), () => {}, () => {})
         })
       }, true)
       bot.stop()
