@@ -34,9 +34,6 @@ describe('PurchaseCtrl', () => {
   })
   describe('Make the beforePurchase ready...', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('purchase.ready', () => {
-        done()
-      }, true)
       observer.register('api.proposal', (_proposal) => {
         proposals.push(_proposal)
         purchaseCtrl.updateProposal(_proposal)
@@ -44,6 +41,9 @@ describe('PurchaseCtrl', () => {
       observer.register('api.authorize', () => {
         observer.register('api.proposal', () => {
           observer.register('api.proposal', () => {
+            if (purchaseCtrl.ready) {
+              done()
+            }
           }, true)
           api.proposal({
             amount: '1.00',

@@ -38,7 +38,6 @@ export default class PurchaseCtrl {
       this.proposals[proposal.contract_type] = proposal
       if (!this.ready && Object.keys(this.proposals).length === this.expectedNumOfProposals) {
         this.ready = true
-        observer.emit('purchase.ready')
       }
     }
   }
@@ -67,6 +66,7 @@ export default class PurchaseCtrl {
       proposals: this.proposals,
       purchasing: option,
     })
+    observer.unregisterAll()
     if (!this.purchased) {
       this.purchased = true
       const contract = this.getContract(option)

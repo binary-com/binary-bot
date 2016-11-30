@@ -245,16 +245,6 @@ export default class Bot {
       observer.register('api.ohlc', apiOHLC)
     }
   }
-  observeBeforePurchase() {
-    if (!observer.isRegistered('purchase.ready')) {
-      const beforePurchaseReady = () => {
-        if (this.purchaseCtrl) {
-          observer.emit('bot.waiting_for_purchase')
-        }
-      }
-      observer.register('purchase.ready', beforePurchaseReady)
-    }
-  }
   observeTradeUpdate() {
     if (!observer.isRegistered('purchase.tradeUpdate')) {
       const beforePurchaseTradeUpdate = (contract) => {
@@ -267,7 +257,6 @@ export default class Bot {
   }
   observeStreams() {
     this.observeTradeUpdate()
-    this.observeBeforePurchase()
     this.observeTicks()
     this.observeOhlc()
   }
@@ -278,14 +267,7 @@ export default class Bot {
         this.purchaseCtrl.updateProposal(proposal)
       }
     }
-    observer.register('api.proposal', apiProposal, false, {
-      type: 'proposal',
-      unregister: [
-        ['api.proposal', apiProposal],
-        'purchase.ready',
-        'bot.waiting_for_purchase',
-      ],
-    })
+    observer.register('api.proposal', apiProposal, false)
     this.unregisterOnFinish.push(['api.proposal', apiProposal])
     this.api.proposal(tradeOption)
   }
