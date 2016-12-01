@@ -422,7 +422,6 @@ export default class View {
 
     $('#showEdit')
       .change(() => {
-        hideCollapseMenu()
         if ($('#showEdit').is(':checked')) {
           enterEditMode()
         } else if (mode === 'execute') {
