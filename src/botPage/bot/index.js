@@ -260,7 +260,12 @@ export default class Bot {
     this.observeTicks()
     this.observeOhlc()
   }
-  subscribeProposal(tradeOption) {
+  subscribeProposals() {
+    this.setTradeOptions()
+    observer.unregisterAll('api.proposal')
+    if (this.purchaseCtrl) {
+      this.purchaseCtrl.setNumOfProposals(this.tradeOptions.length)
+    }
     const apiProposal = (proposal) => {
       if (this.purchaseCtrl) {
         observer.emit('log.bot.proposal', proposal)
@@ -269,17 +274,9 @@ export default class Bot {
     }
     observer.register('api.proposal', apiProposal, false)
     this.unregisterOnFinish.push(['api.proposal', apiProposal])
-    this.api.proposal(tradeOption)
-  }
-  subscribeProposals() {
-    this.setTradeOptions()
-    observer.unregisterAll('api.proposal')
-    if (this.purchaseCtrl) {
-      this.purchaseCtrl.setNumOfProposals(this.tradeOptions.length)
-    }
     this.api.originalApi.unsubscribeFromAllProposals().then(() => {
-      for (const to of this.tradeOptions) {
-        this.subscribeProposal(to)
+      for (const tradeOption of this.tradeOptions) {
+        this.api.proposal(tradeOption)
       }
     }, () => 0)
   }

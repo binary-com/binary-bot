@@ -66,7 +66,6 @@ export default class PurchaseCtrl {
       proposals: this.proposals,
       purchasing: option,
     })
-    observer.unregisterAll()
     if (!this.purchased) {
       this.purchased = true
       const contract = this.getContract(option)
