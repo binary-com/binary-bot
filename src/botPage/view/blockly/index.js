@@ -140,7 +140,6 @@ export default class _Blockly {
           disposeBlocksWithLoaders()
           toolbox = Blockly.mainWorkspace.toolbox_
           Blockly.mainWorkspace.toolbox_ = null
-          Blockly.mainWorkspace.cleanUp()
           resizeToolbox()
           overrideDeleteArea()
           resolve()
