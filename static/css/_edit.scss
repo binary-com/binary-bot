@@ -1,0 +1,90 @@
+.edit-mode-toggle {
+    cursor: pointer;
+    /* The switch - the box around the slider */
+    padding: 1.2em 1em 1.5em 1em;
+    font-size: 1.1em;
+    display: inline-block;
+
+    label {
+        margin: 0em;
+    }
+
+    &:hover {
+        background: $brand-dark-blue;
+        span {
+            display: inline-block;
+        }
+    }
+    @media #{$phone-screen} {
+        padding: 0.5em 1em;
+        display: block;
+        width: 7em;
+        text-align: left;
+    }
+    span {
+        display: none;
+        color: $white;
+        @media #{$phone-screen} {
+            display: inline-block;
+        }
+    }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 2.4em;
+        height: 1.15em;
+        margin-top: 0.05em;
+        /* Hide default HTML checkbox */
+        input {
+            display: none;
+        }
+    }
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 1em;
+            width: 1em;
+            left: 0.15em;
+            bottom: 0.1em;
+            background-color: white;
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+        }
+        /* Rounded sliders */
+        &.round {
+            border-radius: 1.5em;
+
+            &:before {
+                border-radius: 50%;
+            }
+        }
+    }
+
+    input {
+        &:checked + .slider {
+            background-color: $brand-btn;
+        }
+
+        &:focus + .slider {
+            box-shadow: 0 0 0.1em $brand-btn;
+        }
+
+        &:checked + .slider:before {
+            -webkit-transform: translateX(1.1em);
+            -ms-transform: translateX(1.1em);
+            transform: translateX(1.1em);
+        }
+    }
+}

@@ -1,3 +1,5 @@
+@import "edit";
+
 .view-menu {
     position: relative;
     z-index: 3;
@@ -44,5 +46,9 @@
         span {
             display: inline-block;
         }
+    }
+
+    .edit-mode-toggle {
+        float: right;
     }
 }

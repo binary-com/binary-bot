@@ -19,6 +19,7 @@ import { RestartTimeout } from './react-components/RestartTimeout'
 
 let realityCheckTimeout
 let editMode = false
+let mode = 'execute'
 let mobileMenuVisible = false
 
 const showRealityCheck = () => {
@@ -279,10 +280,6 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
-    const showExecute = () => {
-      $('#showExecute').addClass('selected')
-    }
-
     const hideExecute = () => {
       $('#showExecute').removeClass('selected')
     }
@@ -328,14 +325,21 @@ export default class View {
     }
 
     const exitEditMode = () => {
-      $('#showEdit').removeClass('selected')
+      $('#showEdit').prop('checked', false)
       hideBlocklyToolbox()
       hideToolbox()
       editMode = false
     }
 
+    const showExecute = () => {
+      mode = 'execute'
+      hideSummary()
+      $('#showExecute').addClass('selected')
+    }
+
     const showSummary = () => {
       $('#showSummary').addClass('selected')
+      mode = 'report'
       hideExecute()
       exitEditMode()
       $('#summaryPanel')
@@ -343,9 +347,8 @@ export default class View {
     }
 
     const enterEditMode = () => {
-      $('#showEdit').addClass('selected')
       showToolbox()
-      hideExecute()
+      showExecute()
       hideSummary()
       editMode = true
     }
@@ -418,16 +421,29 @@ export default class View {
       })
 
     $('#showEdit')
-      .click(() => {
+      .change(() => {
         hideCollapseMenu()
-        enterEditMode()
+        if ($('#showEdit').is(':checked')) {
+          enterEditMode()
+        } else if (mode === 'execute') {
+          exitEditMode()
+          showExecute()
+        } else if (mode === 'report') {
+          exitEditMode()
+          showSummary()
+        }
       })
 
     $('#showExecute')
       .click(() => {
+        hideCollapseMenu()
         showExecute()
-        hideSummary()
-        exitEditMode()
+      })
+
+    $('.edit-mode-toggle')
+      .click(() => {
+        $('#showEdit').prop('checked', !$('#showEdit').is(':checked'))
+        $('#showEdit').change()
       })
 
     ReactDOM.render(
