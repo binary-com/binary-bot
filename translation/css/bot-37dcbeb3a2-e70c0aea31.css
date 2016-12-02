@@ -456,7 +456,8 @@
   padding-right: 0.5em;
   overflow-x: hidden;
   overflow-y: auto;
-  height: calc(100% - 6.7em); }
+  height: calc(100% - 6.7em);
+  margin-top: 0.2em; }
   #toolbox * {
     margin-bottom: 0.1em; }
   #toolbox button {
@@ -563,6 +564,75 @@
   background-color: #14602b !important;
   border-color: #14602b !important; }
 
+.edit-mode-toggle {
+  background: #2a3052;
+  cursor: pointer;
+  /* The switch - the box around the slider */
+  padding: 1.2em 1em 1.5em 1em;
+  font-size: 1.1em;
+  display: inline-block;
+  /* The slider */ }
+  .edit-mode-toggle label {
+    margin: 0em; }
+  .edit-mode-toggle:hover {
+    background: #15212d; }
+    .edit-mode-toggle:hover span {
+      display: inline-block; }
+  @media only screen and (max-width: 480px) {
+    .edit-mode-toggle {
+      padding: 0.5em 1em;
+      display: block;
+      width: 7em;
+      text-align: left; } }
+  .edit-mode-toggle span {
+    display: none;
+    color: #ffffff; }
+    @media only screen and (max-width: 480px) {
+      .edit-mode-toggle span {
+        display: inline-block; } }
+  .edit-mode-toggle .switch {
+    position: relative;
+    display: inline-block;
+    width: 2.4em;
+    height: 1.15em;
+    margin-top: 0.05em;
+    /* Hide default HTML checkbox */ }
+    .edit-mode-toggle .switch input {
+      display: none; }
+  .edit-mode-toggle .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    /* Rounded sliders */ }
+    .edit-mode-toggle .slider:before {
+      position: absolute;
+      content: "";
+      height: 1em;
+      width: 1em;
+      left: 0.15em;
+      bottom: 0.1em;
+      background-color: white;
+      -webkit-transition: 0.4s;
+      transition: 0.4s; }
+    .edit-mode-toggle .slider.round {
+      border-radius: 1.5em; }
+      .edit-mode-toggle .slider.round:before {
+        border-radius: 50%; }
+  .edit-mode-toggle input:checked + .slider {
+    background-color: #2e8836; }
+  .edit-mode-toggle input:focus + .slider {
+    box-shadow: 0 0 0.1em #2e8836; }
+  .edit-mode-toggle input:checked + .slider:before {
+    -webkit-transform: translateX(1.1em);
+    -ms-transform: translateX(1.1em);
+    transform: translateX(1.1em); }
+
 .view-menu {
   position: relative;
   z-index: 3;
@@ -598,6 +668,8 @@
     background: #ffffff; }
     .view-menu button:hover span {
       display: inline-block; }
+  .view-menu .edit-mode-toggle {
+    float: right; }
 
 .reality-check {
   position: fixed;
@@ -709,4 +781,4 @@ html, body {
   -webkit-box-sizing: inherit;
   box-sizing: inherit; }
 
-/*# sourceMappingURL=bot-73e5daf27c.css.map */
+/*# sourceMappingURL=bot-37dcbeb3a2.css.map */
