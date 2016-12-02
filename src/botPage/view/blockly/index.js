@@ -2,11 +2,7 @@ import { observer } from 'binary-common-utils/lib/observer'
 import { translator } from '../../../common/translator'
 import { notifyError } from '../logger'
 import config from '../../../common/const'
-import {
-  isMainBlock, save,
-  disable, deleteBlocksLoadedBy,
-  addLoadersFirst, cleanUpOnLoad, addDomAsBlock,
-  backwardCompatibility, fixCollapsedBlocks,
+import { isMainBlock, save, disable, deleteBlocksLoadedBy, addLoadersFirst, cleanUpOnLoad, addDomAsBlock, backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
 
@@ -26,9 +22,9 @@ const disableStrayBlocks = () => {
         'procedures_defnoreturn',
       ].indexOf(block.type) < 0
       && !block.disabled) {
-        disable(block,
-          translator.translateText('Blocks must be inside block holders, main blocks or functions'))
-      }
+      disable(block,
+        translator.translateText('Blocks must be inside block holders, main blocks or functions'))
+    }
   }
 }
 
@@ -56,8 +52,8 @@ const disposeBlocksWithLoaders = () => {
     }
     if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
       && ev.group !== 'undo') {
-        deleteBlocksLoadedBy(ev.blockId, ev.group)
-      }
+      deleteBlocksLoadedBy(ev.blockId, ev.group)
+    }
   })
 }
 
@@ -120,7 +116,8 @@ export default class _Blockly {
     this.blocksXmlStr = ''
     this.generatedJs = ''
     this.addBlocklyTranslation()
-    Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {} // https://github.com/google/blockly/issues/299
+    Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {
+    } // https://github.com/google/blockly/issues/299
     this.initPromise = new Promise((resolve) => {
       $.get('xml/toolbox.xml', (toolboxXml) => {
         blocks()
@@ -165,7 +162,7 @@ export default class _Blockly {
         block.moveBy(-xy.x, cursorY - xy.y)
         block.snapToGrid()
         cursorY = block.getRelativeToSurfaceXY().y +
-          block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
+        block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
       }
     }
     Blockly.Events.setGroup(false);

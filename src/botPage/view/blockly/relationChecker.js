@@ -3,8 +3,7 @@ import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
 import { bot } from '../../bot'
 import { translator } from '../../../common/translator'
-import { findTopParentBlock,
-  disable, enable, durationToSecond, expandDuration } from './utils'
+import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'
 
 const isInteger = (amount) => !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount)
 const isInRange = (amount, min, max) => !isNaN(+amount) && +amount >= min && +amount <= max
@@ -31,47 +30,47 @@ const getListField = (block, fieldName) => block.getFieldValue(fieldName)
 const conditionFields = (blockObj, ev) => {
   if ((ev.type === 'change' && ev.element === 'field')
     || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
-      const symbol = blockObj.getFieldValue('SYMBOL_LIST')
-      const tradeType = blockObj.getFieldValue('TRADETYPE_LIST')
-      if (!symbol || !tradeType) {
-        return
-      }
-      const duration = getNumField(blockObj, 'DURATION')
-      const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
-      if (duration !== '') {
-        const minDuration = bot.symbol.getLimitation(symbol, tradeType).minDuration
-        const durationInSeconds = durationToSecond(duration + durationType)
-        if (!durationInSeconds) {
-          observer.emit('ui.log.warn', translator.translateText('Duration must be a positive integer'))
-        } else if (durationInSeconds < durationToSecond(minDuration)) {
-          observer.emit('ui.log.warn',
-            `${translator.translateText('Minimum duration is')} ${expandDuration(minDuration)}`)
-        } else if (durationType === 't' && !(isInteger(duration) && isInRange(duration, 5, 10))) {
-          observer.emit('ui.log.warn',
-            translator.translateText('Number of ticks must be between 5 and 10'))
-        } else if (!isInteger(duration) || duration < 1) {
-          observer.emit('ui.log.warn',
-            translator.translateText('Expiry time cannot be equal to start time'))
-        } else {
-          observer.emit('tour:ticks')
-        }
-      }
-      const prediction = getNumField(blockObj, 'PREDICTION')
-      if (prediction !== '') {
-        if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-          observer.emit('ui.log.warn', translator.translateText('Prediction must be one digit'))
-        }
-      }
-      let inputMissing = false
-      for (const il of blockObj.inputList) {
-        if (il.connection && blockObj.getInputTargetBlock(il.name) === null) {
-          inputMissing = true
-        }
-      }
-      if (!inputMissing) {
-        observer.emit('tour:options')
+    const symbol = blockObj.getFieldValue('SYMBOL_LIST')
+    const tradeType = blockObj.getFieldValue('TRADETYPE_LIST')
+    if (!symbol || !tradeType) {
+      return
+    }
+    const duration = getNumField(blockObj, 'DURATION')
+    const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
+    if (duration !== '') {
+      const minDuration = bot.symbol.getLimitation(symbol, tradeType).minDuration
+      const durationInSeconds = durationToSecond(duration + durationType)
+      if (!durationInSeconds) {
+        observer.emit('ui.log.warn', translator.translateText('Duration must be a positive integer'))
+      } else if (durationInSeconds < durationToSecond(minDuration)) {
+        observer.emit('ui.log.warn',
+          `${translator.translateText('Minimum duration is')} ${expandDuration(minDuration)}`)
+      } else if (durationType === 't' && !(isInteger(duration) && isInRange(duration, 5, 10))) {
+        observer.emit('ui.log.warn',
+          translator.translateText('Number of ticks must be between 5 and 10'))
+      } else if (!isInteger(duration) || duration < 1) {
+        observer.emit('ui.log.warn',
+          translator.translateText('Expiry time cannot be equal to start time'))
+      } else {
+        observer.emit('tour:ticks')
       }
     }
+    const prediction = getNumField(blockObj, 'PREDICTION')
+    if (prediction !== '') {
+      if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
+        observer.emit('ui.log.warn', translator.translateText('Prediction must be one digit'))
+      }
+    }
+    let inputMissing = false
+    for (const il of blockObj.inputList) {
+      if (il.connection && blockObj.getInputTargetBlock(il.name) === null) {
+        inputMissing = true
+      }
+    }
+    if (!inputMissing) {
+      observer.emit('tour:options')
+    }
+  }
 }
 export const insideTrade = (blockObj, ev, name) => {
   if (insideHolder(blockObj)) {
@@ -148,7 +147,7 @@ export const insideScope = (blockObj, ev, name, scopes) => {
       disable(blockObj,
         `${name} ${
         translator.translateText('must be added either inside one of these')
-      }: (${getScopeNames(scopes)})`)
+        }: (${getScopeNames(scopes)})`)
     } else {
       enable(blockObj)
     }

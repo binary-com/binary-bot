@@ -29,17 +29,17 @@ Blockly.Blocks.bba = {
 Blockly.JavaScript.bba = (block) => {
   const bbResult = block.getFieldValue('BBRESULT_LIST')
   const input = Blockly.JavaScript.valueToCode(block,
-    'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]'
+      'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]'
   const period = Blockly.JavaScript.valueToCode(block,
-    'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '0'
+      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '0'
   const stdDevUp = Blockly.JavaScript.valueToCode(block,
-    'UPMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '1'
+      'UPMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '1'
   const stdDevDown = Blockly.JavaScript.valueToCode(block,
-    'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '1'
+      'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '1'
   const code = `(Bot.math.indicators.bollingerBandsArray(Bot.expect.notEmptyArray(${
   input}), { periods: Bot.expect.indicatorPeriod(${input}, ${period
   }), stdDevUp: Bot.expect.number('${translator.translateText('Std. Dev. Up Multiplier')
-}', ${stdDevUp}), stdDevDown: Bot.expect.number('${translator.translateText('Std. Dev. Down Multiplier')
-}', ${stdDevDown}) }).map(function(el){return el[${bbResult}]}))`
+  }', ${stdDevUp}), stdDevDown: Bot.expect.number('${translator.translateText('Std. Dev. Down Multiplier')
+  }', ${stdDevDown}) }).map(function(el){return el[${bbResult}]}))`
   return [code, Blockly.JavaScript.ORDER_NONE]
 }

@@ -4,7 +4,7 @@ import { translator } from '../../../../../../common/translator'
 Blockly.Blocks.epoch = {
   init: function init() {
     this.appendDummyInput()
-        .appendField(translator.translateText('Seconds Since Epoch'))
+      .appendField(translator.translateText('Seconds Since Epoch'))
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
     this.setTooltip(translator.translateText('Returns the epoch time (seconds since epoch)')); // eslint-disable-line max-len

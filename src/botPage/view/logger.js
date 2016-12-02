@@ -82,10 +82,10 @@ export const logHandler = () => {
   }
 
   for (const event of [
-    'log.bot.start', 'log.bot.login', 'log.bot.proposal',
-    'log.bot.stop', 'log.purchase.start', 'log.purchase.purchase',
-    'log.purchase.win', 'log.purchase.loss',
-    'log.trade.purchase', 'log.trade.update', 'log.trade.finish']) {
+      'log.bot.start', 'log.bot.login', 'log.bot.proposal',
+      'log.bot.stop', 'log.purchase.start', 'log.purchase.purchase',
+      'log.purchase.win', 'log.purchase.loss',
+      'log.trade.purchase', 'log.trade.update', 'log.trade.finish']) {
     observer.register(event, (d) => console.log(event, d)); // eslint-disable-line no-console
   }
 
@@ -94,7 +94,11 @@ export const logHandler = () => {
   }
 
   observer.register('log.revenue', (data) => {
-    const { user, profit, contract } = data
+    const {
+      user,
+      profit,
+      contract,
+    } = data
     if (typeof amplitude !== 'undefined') {
       if (!user.isVirtual) {
         const revenue = new amplitude.Revenue()

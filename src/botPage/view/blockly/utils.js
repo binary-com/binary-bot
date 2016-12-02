@@ -46,7 +46,10 @@ export const fixCollapsedBlocks = () => {
 }
 
 export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
-  const { clientX = 0, clientY = 0 } = dropEvent || {}
+  const {
+    clientX = 0,
+    clientY = 0,
+  } = dropEvent || {}
   const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
   const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
   const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft
@@ -64,7 +67,7 @@ export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
 
 const getCollapsedProcedures = () => Blockly.mainWorkspace.getTopBlocks().filter(
   (block) => (!isMainBlock(block.type)
-      && block.collapsed_ && block.type.indexOf('procedures_def') === 0))
+    && block.collapsed_ && block.type.indexOf('procedures_def') === 0))
 
 export const deleteBlockIfExists = (block) => {
   Blockly.Events.recordUndo = false
@@ -397,11 +400,11 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
       addLoadersFirst(xml, header).then(() => {
         for (const block of Array.prototype.slice.call(xml.children)) {
           if (['tick_analysis',
-            'timeout',
-            'interval'].indexOf(block.getAttribute('type')) >= 0 ||
+              'timeout',
+              'interval'].indexOf(block.getAttribute('type')) >= 0 ||
             isProcedure(block.getAttribute('type'))) {
-              addDomAsBlockFromHeader(block, header)
-            }
+            addDomAsBlockFromHeader(block, header)
+          }
         }
         Blockly.Events.recordUndo = recordUndo
         resolve()

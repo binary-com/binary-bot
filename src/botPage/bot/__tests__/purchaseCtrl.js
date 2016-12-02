@@ -30,7 +30,9 @@ describe('PurchaseCtrl', () => {
         })
       }
     }
-    purchaseCtrl = new PurchaseCtrl(api, beforePurchase, () => {}, () => {})
+    purchaseCtrl = new PurchaseCtrl(api, beforePurchase, () => {
+    }, () => {
+    })
   })
   describe('Make the beforePurchase ready...', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
@@ -91,7 +93,7 @@ describe('PurchaseCtrl', () => {
       expect(beforePurchaseArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch')
       expect(beforePurchaseArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
         .that.is.equal('Win payout if the last digit of Volatility 100 Index is'
-          + ' odd after 5 ticks.')
+        + ' odd after 5 ticks.')
     })
   })
   describe('Waiting for beforePurchase to purchase the contract', () => {

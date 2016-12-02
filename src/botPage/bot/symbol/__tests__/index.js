@@ -36,7 +36,7 @@ describe('symbol', () => {
     it('getAllowedCategoryNames returns allowed category names', () => {
       expect(symbol.getAllowedCategoryNames('r_100')).to.be.ok
         .and.to.have.all.members(['Up/Down', 'Digits', 'Asians',
-          'Touch/No Touch', 'Ends In/Out', 'Stays In/Goes Out'])
+        'Touch/No Touch', 'Ends In/Out', 'Stays In/Goes Out'])
       expect(symbol.getAllowedCategoryNames('FAKE')).to.be.empty
     })
     it('getCategoryNameForCondition returns category name of a condition', () => {

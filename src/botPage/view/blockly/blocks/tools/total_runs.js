@@ -4,7 +4,7 @@ import { translator } from '../../../../../common/translator'
 Blockly.Blocks.total_runs = {
   init: function init() {
     this.appendDummyInput()
-        .appendField(translator.translateText('No. Of Runs'))
+      .appendField(translator.translateText('No. Of Runs'))
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
     this.setTooltip(translator.translateText('Returns the number of runs since the beginning')); // eslint-disable-line max-len

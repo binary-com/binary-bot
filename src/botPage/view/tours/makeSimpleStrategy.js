@@ -30,8 +30,7 @@ export default class MakeSimpleStrategy {
       setup: function setup() {
         setOpacity('workspace', 1)
       },
-      teardown: function teardown() {
-      },
+      teardown: function teardown() {},
     }, {
       content: '<p>' + translator.translateText('You can see the <b>main blocks</b> (Step 1, 2, 3 and 4) already added to the workspace.') + '</p>',
       target: getUiComponent('center'),
@@ -384,7 +383,8 @@ export default class MakeSimpleStrategy {
       cancelStep: () => {
         getUiComponent('blocker').hide()
         setOpacityForAll(1)
-        this.tour._teardownCurrentStep = () => {}
+        this.tour._teardownCurrentStep = () => {
+        }
         observer.unregisterAll('tour:market_created')
         observer.unregisterAll('tour:market')
         observer.unregisterAll('tour:number')

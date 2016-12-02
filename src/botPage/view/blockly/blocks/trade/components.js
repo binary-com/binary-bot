@@ -49,8 +49,8 @@ export const tradeTypeDropdown = (block) => {
     }
     return config.conditionsCategory[tradeTypeCat].map(e => [
       config.opposites[e.toUpperCase()].map(c => c[Object.keys(c)[0]])
-      .join('/'),
-    e,
+        .join('/'),
+      e,
     ])
   }
   block.appendDummyInput()

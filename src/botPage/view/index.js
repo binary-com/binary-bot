@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { observer } from 'binary-common-utils/lib/observer'
-import { getTokenList, removeAllTokens,
-  get as getStorage, set as setStorage,
-  getToken,
+import { getTokenList, removeAllTokens, get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
@@ -450,7 +448,7 @@ export default class View {
         onClick={hideCollapseMenu}
         onSave={(filename, collection) => this.blockly.save(filename, collection)}
       />
-    , $('#saveXml')[0])
+      , $('#saveXml')[0])
 
     $('#undo')
       .click(() => {
@@ -605,8 +603,12 @@ export default class View {
     const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
 
     const zoomInMax = (ev, chart) => {
-      const { dataMax } = chart.xAxis[0].getExtremes()
-      const { minRange } = chart.xAxis[0].options
+      const {
+        dataMax,
+      } = chart.xAxis[0].getExtremes()
+      const {
+        minRange,
+      } = chart.xAxis[0].options
       chart.xAxis[0].setExtremes(dataMax - minRange, dataMax)
     }
 
@@ -653,10 +655,10 @@ export default class View {
         if (window.Bot.shouldRestartOnError()) {
           ReactDOM.render(
             <RestartTimeout
-              timeout="3"
-              startTime={new Date().getTime()}
+            timeout="3"
+            startTime={new Date().getTime()}
             />
-          , $('#restartTimeout')[0])
+            , $('#restartTimeout')[0])
         }
       })
     }

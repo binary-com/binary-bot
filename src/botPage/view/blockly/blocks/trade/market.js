@@ -3,8 +3,7 @@ import { translator } from '../../../../../common/translator'
 import config from '../../../../../common/const'
 import { BlocklyError } from '../../../../../common/error'
 import { marketDropdown, tradeTypeDropdown, restartOnError } from './components'
-import { updatePurchaseChoices, updateInputList,
-setInputList } from '../../utils'
+import { updatePurchaseChoices, updateInputList, setInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'
 
 const bcBarrierOffset = (market, inputName) => {
@@ -14,7 +13,7 @@ const bcBarrierOffset = (market, inputName) => {
     if (barrierOffset && barrierOffset.type === 'barrier_offset') {
       market.setFieldValue(
         barrierOffset.getFieldValue('BARRIEROFFSETTYPE_LIST')
-      , `${inputName}TYPE_LIST`)
+        , `${inputName}TYPE_LIST`)
       const number = barrierOffset.getInput('BARRIEROFFSET_IN').connection.targetBlock()
       if (number) {
         barrier.connection.connect(number.outputConnection)
