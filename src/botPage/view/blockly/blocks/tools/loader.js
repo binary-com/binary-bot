@@ -20,33 +20,33 @@ Blockly.Blocks.loader = {
     if (!this.isInFlyout
       && ev.type === 'change' && ev.element === 'disabled'
       && ev.blockId === this.id) {
-        if (ev.newValue === true) {
-          deleteBlocksLoadedBy(this.id)
-        } else {
-          const loader = Blockly.mainWorkspace.getBlockById(ev.blockId)
-          if (loader && loader.loadedByMe) {
-            for (const blockId of loader.loadedByMe) {
-              recoverDeletedBlock(Blockly.mainWorkspace.getBlockById(blockId))
-            }
+      if (ev.newValue === true) {
+        deleteBlocksLoadedBy(this.id)
+      } else {
+        const loader = Blockly.mainWorkspace.getBlockById(ev.blockId)
+        if (loader && loader.loadedByMe) {
+          for (const blockId of loader.loadedByMe) {
+            recoverDeletedBlock(Blockly.mainWorkspace.getBlockById(blockId))
           }
         }
       }
+    }
     if (!this.isInFlyout
       && (ev.type === 'change' && ev.element === 'field') && ev.blockId === this.id && !this.disabled) {
-        const recordUndo = Blockly.Events.recordUndo
-        Blockly.Events.recordUndo = false
-        deleteBlocksLoadedBy(this.id)
-        loadRemote(this).then(() => {
-          Blockly.Events.recordUndo = recordUndo
-          observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
-        }, (e) => {
-          Blockly.Events.recordUndo = recordUndo
-          observer.emit('ui.log.error', e)
-        })
-      }
+      const recordUndo = Blockly.Events.recordUndo
+      Blockly.Events.recordUndo = false
+      deleteBlocksLoadedBy(this.id)
+      loadRemote(this).then(() => {
+        Blockly.Events.recordUndo = recordUndo
+        observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
+      }, (e) => {
+        Blockly.Events.recordUndo = recordUndo
+        observer.emit('ui.log.error', e)
+      })
+    }
   },
 }
 
 Blockly.JavaScript.loader = (block) => (block.loadedVariables.length ? `var ${
-  block.loadedVariables.map((v) => Blockly.JavaScript.variableDB_.safeName_(v)).toString()
+block.loadedVariables.map((v) => Blockly.JavaScript.variableDB_.safeName_(v)).toString()
 };` : '')

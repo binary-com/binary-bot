@@ -221,7 +221,8 @@ export default class Introduction {
     this.tour = new Tourist.Tour({
       steps: this.getSteps(),
       cancelStep: () => {
-        this.tour._teardownCurrentStep = () => {}
+        this.tour._teardownCurrentStep = () => {
+        }
         getUiComponent('blocker').hide()
         setOpacityForAll(1)
         setDone('welcomeFinished')

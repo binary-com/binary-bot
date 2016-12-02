@@ -21,7 +21,7 @@ Blockly.Blocks.get_ohlc = {
 
 Blockly.JavaScript.get_ohlc = (block) => {
   let index = Number(Blockly.JavaScript.valueToCode(block,
-    'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || '0'
+      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || '0'
   let code
   if (isNaN(index) || index < 1) {
     index = 1

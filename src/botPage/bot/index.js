@@ -55,8 +55,7 @@ export default class Bot {
     }
   }
   start(...args) {
-    const [token, tradeOption, beforePurchase, duringPurchase,
-      afterPurchase, sameTrade, tickAnalysisList = []] = args
+    const [token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysisList = []] = args
     this.startArgs = args
     if (!this.purchaseCtrl || sameTrade) {
       if (this.purchaseCtrl) {
@@ -149,7 +148,9 @@ export default class Bot {
       type: 'balance',
       unregister: [['api.balance', apiBalance]],
     })
-    this.api.originalApi.send({ forget_all: 'balance' }).then(() => this.api.balance())
+    this.api.originalApi.send({
+      forget_all: 'balance'
+    }).then(() => this.api.balance())
   }
   subscribeToCandles() {
     return new Promise((resolve) => {

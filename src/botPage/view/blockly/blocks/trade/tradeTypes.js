@@ -1,8 +1,5 @@
 import config from '../../../../../common/const'
-import {
-  duration, payout, prediction,
-  barrierOffset, secondBarrierOffset, candleInterval,
-  contractTypes,
+import { duration, payout, prediction, barrierOffset, secondBarrierOffset, candleInterval, contractTypes,
 } from './components'
 
 export default () => {

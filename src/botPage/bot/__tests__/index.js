@@ -52,11 +52,14 @@ describe('Bot', () => {
         done()
       }, true)
       observer.register('bot.stop', () => {
-        bot.start(token, option, () => observer.emit('test.waiting_for_purchase'), () => {}, () => {})
+        bot.start(token, option, () => observer.emit('test.waiting_for_purchase'), () => {
+        }, () => {
+        })
       }, true)
       bot.stop()
     })
-    it('start bot with the token, option', () => {})
+    it('start bot with the token, option', () => {
+    })
   })
   describe('Start the trade without real after purchase and before purchase functions', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
@@ -65,12 +68,15 @@ describe('Bot', () => {
           observer.register('test.waiting_for_purchase', () => {
             done()
           }, true)
-          bot.start(token, option, () => observer.emit('test.waiting_for_purchase'), () => {}, () => {})
+          bot.start(token, option, () => observer.emit('test.waiting_for_purchase'), () => {
+          }, () => {
+          })
         })
       }, true)
       bot.stop()
     })
-    it('It is possible to restart the trade', () => {})
+    it('It is possible to restart the trade', () => {
+    })
   })
   describe('Start the trade with real after purchase and before purchase functions', () => {
     let finishedContractFromFinishFunction
@@ -88,14 +94,16 @@ describe('Bot', () => {
             if (++numOfTicks === 3) {
               this.purchase('DIGITEVEN')
             }
-          }, () => {}, function afterPurchase() {
+          }, () => {
+          }, function afterPurchase() {
             finishedContractFromFinishFunction = this.finishedContract
           })
         })
       }, true)
       bot.stop()
     })
-    it('Before Purchase decides to purchase the trade', () => {})
+    it('Before Purchase decides to purchase the trade', () => {
+    })
     it('Calls the after purchase function when trade is finished', () => {
       expect(finishedContractFromFinishSignal).to.be.equal(finishedContractFromFinishFunction)
     })
@@ -109,7 +117,8 @@ describe('Bot', () => {
         if (++numOfTicks === 3) {
           this.purchase('DIGITEVEN')
         }
-      }, () => {}, (_finishedContract) => {
+      }, () => {
+      }, (_finishedContract) => {
         finishedContractFromFinishFunction = _finishedContract
       })
       observer.register('bot.stop', (_finishedContractFromFinishSignal) => {
@@ -118,7 +127,8 @@ describe('Bot', () => {
       }, true)
       bot.stop()
     })
-    it('Before Purchase decides to purchase the trade', () => {})
+    it('Before Purchase decides to purchase the trade', () => {
+    })
     it('Calls the after purchase function when trade is finished', () => {
       expect(finishedContractFromFinishSignal).to.be.equal(finishedContractFromFinishFunction)
     })

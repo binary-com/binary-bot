@@ -62,7 +62,7 @@ export default class _Symbol {
     }
   }
   isConditionAllowedInSymbol(symbol, condition) {
-    const { conditions } = getAllowedConditionsOrCategoriesForSymbol(symbol)
+    const {conditions} = getAllowedConditionsOrCategoriesForSymbol(symbol)
     return conditions.indexOf(condition) >= 0
   }
   getConditionName(condition) {
@@ -73,11 +73,11 @@ export default class _Symbol {
     return config.conditionsCategoryName[getCategoryForCondition(condition)]
   }
   getAllowedCategories(symbol) {
-    const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol)
+    const {categories} = getAllowedConditionsOrCategoriesForSymbol(symbol)
     return categories
   }
   getAllowedCategoryNames(symbol) {
-    const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol)
+    const {categories} = getAllowedConditionsOrCategoriesForSymbol(symbol)
     return categories.map((el) => config.conditionsCategoryName[el])
   }
 }
