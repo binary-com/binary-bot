@@ -46,7 +46,10 @@ export const fixCollapsedBlocks = () => {
 }
 
 export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
-  const {clientX = 0, clientY = 0} = dropEvent || {}
+  const {
+    clientX = 0,
+    clientY = 0,
+  } = dropEvent || {}
   const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
   const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
   const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft

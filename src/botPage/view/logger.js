@@ -94,7 +94,11 @@ export const logHandler = () => {
   }
 
   observer.register('log.revenue', (data) => {
-    const {user, profit, contract} = data
+    const {
+      user,
+      profit,
+      contract,
+    } = data
     if (typeof amplitude !== 'undefined') {
       if (!user.isVirtual) {
         const revenue = new amplitude.Revenue()

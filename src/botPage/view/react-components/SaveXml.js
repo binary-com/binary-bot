@@ -9,31 +9,33 @@ export class SaveXml extends PureComponent {
     }
   }
   props: {
-  onSave: PropTypes.string,
+    onSave: PropTypes.string,
   }
   render() {
-    const {onSave} = this.props
+    const {
+      onSave,
+    } = this.props
     return (
       <div>
-        <button
+      <button
       title="Save the blocks as an XML file"
       id="saveXml"
       className="icon-save"
       onClick={() => {
         this.setState({
-          dialogVisible: true
+          dialogVisible: true,
         })
       }}
       />
-        {this.state.dialogVisible ?
+      {this.state.dialogVisible ?
         <SaveAs
-        onClose={() => this.setState({
-          dialogVisible: false
-        })}
-        onSave={onSave}
+          onClose={() => this.setState({
+            dialogVisible: false,
+          })}
+          onSave={onSave}
         />
-        : null}
-      </div>
+      : null}
+    </div>
     )
   }
 }

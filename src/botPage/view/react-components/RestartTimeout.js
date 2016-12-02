@@ -15,13 +15,16 @@ export class RestartTimeout extends PureComponent {
     }
   }
   setInterval() {
-    const {timeout, startTime} = this.props
+    const {
+      timeout,
+      startTime,
+    } = this.props
     if (startTime - this.state.startTime > timeout * 1000) {
       this.setState({
-        startTime
+        startTime,
       })
       this.setState({
-        timeout
+        timeout,
       })
       this.restartInterval = setInterval(() => {
         if (this.state.timeout === 0) {
@@ -38,7 +41,7 @@ export class RestartTimeout extends PureComponent {
   close() {
     clearInterval(this.restartInterval)
     this.setState({
-      timeout: 0
+      timeout: 0,
     })
   }
   render() {
@@ -53,12 +56,12 @@ export class RestartTimeout extends PureComponent {
       <div>
               <p>{(`${translator.translateText('Restarting in')} ${this.state.timeout}`)}</p>
               <button
-      style={{
-        float: 'right',
-        marginBottom: '0.2em',
-      }}
-      onClick={() => this.close()}
-      >
+                style={{
+                  float: 'right',
+                  marginBottom: '0.2em',
+                }}
+                onClick={() => this.close()}
+              >
                 {translator.translateText('Cancel')}
               </button>
             </div>

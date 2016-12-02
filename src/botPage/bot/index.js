@@ -149,7 +149,7 @@ export default class Bot {
       unregister: [['api.balance', apiBalance]],
     })
     this.api.originalApi.send({
-      forget_all: 'balance'
+      forget_all: 'balance',
     }).then(() => this.api.balance())
   }
   subscribeToCandles() {

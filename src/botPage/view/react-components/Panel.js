@@ -8,7 +8,12 @@ export class Panel extends PureComponent {
   onClose: PropTypes.func,
   }
   render() {
-    const {id, description, content, onClose} = this.props
+    const {
+      id,
+      description,
+      content,
+      onClose,
+    } = this.props
     return (
       <div
       ref={el => ($(el).drags())}

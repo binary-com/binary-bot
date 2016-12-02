@@ -410,8 +410,12 @@ export default class View {
     const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
 
     const zoomInMax = (ev, chart) => {
-      const {dataMax} = chart.xAxis[0].getExtremes()
-      const {minRange} = chart.xAxis[0].options
+      const {
+        dataMax,
+      } = chart.xAxis[0].getExtremes()
+      const {
+        minRange,
+      } = chart.xAxis[0].options
       chart.xAxis[0].setExtremes(dataMax - minRange, dataMax)
     }
 
