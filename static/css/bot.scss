@@ -7,17 +7,17 @@
 @import 'header';
 @import 'view-tabs';
 @import 'reality-check';
-@import 'container';
+@import 'controls';
 
 #blocklyDiv {
     position: absolute;
-    height: calc(100% - 6em);
+    height: 100%;
     width: 100%;
 }
 
 #container {
     position: fixed;
-    height: 100%;
+    height: calc(100% - 6.5em);
     width: 100%;
     transition: 0.5s;
     z-index: 1;

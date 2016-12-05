@@ -1,4 +1,8 @@
-#container {
+.controls {
+  .edit-mode-toggle {
+    position: absolute;
+    z-index: 1;
+  }
   .zoom-controls {
     z-index: 1;
     position: absolute;

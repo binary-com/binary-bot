@@ -67,7 +67,8 @@
 		color: $brand-dark-gray;
 		left: -100% !important;
 		border-right: 1px solid;
-		height: calc(100% - 6em) !important;
+		height: calc(100% - 7.7em) !important;
+		z-index: 1;
 		&.shownToolbox {
 				left: 0em !important	;
 		}

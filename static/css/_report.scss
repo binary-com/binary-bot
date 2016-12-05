@@ -7,6 +7,7 @@
     display: none;
     background-color: white;
     z-index: 2;
+    position: absolute;
 
     h4 {
         font-size: 1em;
@@ -22,7 +23,7 @@
     #chart {
         background: $brand-gray;
         width: 100%;
-        height: calc((100% - 12em)/2);
+        height: calc((100% - 5em)/2);
         @media #{$phone-screen-rotate} {
             display: none;
         }
@@ -35,10 +36,10 @@
     .table-scroll {
         overflow: auto;
         width: 100%;
-        height: calc((100% - 12em)/2);
+        height: calc((100% - 5em)/2);
 
         @media #{$phone-screen-rotate} {
-            height: calc(100% - 12em);
+            height: calc(100% - 5em);
         }
     }
 

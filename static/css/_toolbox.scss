@@ -1,5 +1,6 @@
 #toolbox {
     position: absolute;
+    top: 1.5em;
     left: 0;
     width: 6em;
     text-align: center;
@@ -8,7 +9,7 @@
     padding-right: 0.5em;
     overflow-x: hidden;
     overflow-y: auto;
-    height: calc(100% - 6.7em);
+    height: calc(100% - 2.7em);
     margin-top: 0.2em;
 
     * {

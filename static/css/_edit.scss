@@ -1,33 +1,14 @@
 .edit-mode-toggle {
-    background: $brand-blue;
     cursor: pointer;
-    /* The switch - the box around the slider */
-    padding: 1.2em 1em 1.5em 1em;
-    font-size: 1.1em;
-    display: inline-block;
-
+    margin: 0.2em;
+    
     label {
         margin: 0em;
     }
 
-    &:hover {
-        background: $brand-dark-blue;
-        span {
-            display: inline-block;
-        }
-    }
-    @media #{$phone-screen} {
-        padding: 0.5em 1em;
-        display: block;
-        width: 7em;
-        text-align: left;
-    }
     span {
-        display: none;
-        color: $white;
-        @media #{$phone-screen} {
-            display: inline-block;
-        }
+        font-size: 1em;
+        color: $black;
     }
     .switch {
         position: relative;
@@ -35,12 +16,10 @@
         width: 2.4em;
         height: 1.15em;
         margin-top: 0.05em;
-        /* Hide default HTML checkbox */
         input {
             display: none;
         }
     }
-    /* The slider */
     .slider {
         position: absolute;
         cursor: pointer;
@@ -75,11 +54,11 @@
 
     input {
         &:checked + .slider {
-            background-color: $brand-btn;
+            background-color: $brand-orange;
         }
 
         &:focus + .slider {
-            box-shadow: 0 0 0.1em $brand-btn;
+            box-shadow: 0 0 0.1em $brand-orange;
         }
 
         &:checked + .slider:before {
