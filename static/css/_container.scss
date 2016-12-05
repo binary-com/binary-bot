@@ -1,0 +1,15 @@
+#container {
+  .zoom-controls {
+    z-index: 1;
+    position: absolute;
+    right: 0em;
+    top: 20%;
+    button {
+      padding: 1em;
+      font-size: 1.5em;
+      background: transparent;
+      color: black;
+      display: block;
+    }
+  }
+}
