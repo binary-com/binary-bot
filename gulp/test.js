@@ -10,6 +10,6 @@ gulp.task('eslint', () => gulp.src(['./src/**/*.js', '!./src/common/mock/*', '!.
 gulp.task('test', ['eslint'], () => gulp.src(['./src/**/__tests__/*.js'])
   .pipe(mocha({
     require: ['./src/common/mochaHelper.js'],
-    reporter: 'dot',
+    reporter: 'progress',
   })));
 

@@ -205,11 +205,7 @@ export default class View {
   setFileBrowser() {
     const readFile = (f, dropEvent = {}) => {
       const reader = new FileReader()
-      reader.onload = (() => {
-        $('#fileUploadForm')[0].reset()
-        $('#fileBrowser').hide()
-        return (e) => this.blockly.load(e.target.result, dropEvent)
-      })(f)
+      reader.onload = e => this.blockly.load(e.target.result, dropEvent)
       reader.readAsText(f)
     }
 
