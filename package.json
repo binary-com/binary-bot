@@ -25,7 +25,8 @@
     "gen-translation": "git checkout translation; npm prune ; npm install ; gulp build-min; rm -rf translation; mkdir translation ; cp -r www/ translation/translation; git checkout -- src",
     "deploy-all": "npm run gen-beta; npm run gen-translation; npm run deploy",
     "hunspell": "gulp i18n; cd src/common/translations ; node -e \"var en = require('./en'); console.log(JSON.stringify(en));\">en.json; json2po en.json  >en.po ; po2txt en.po > en.txt; hunspell -p ../../../known_words.txt en.txt && rm *.po *.txt *.json",
-    "publish-latest": "npm test && npm version from-git && npm publish"
+    "publish-latest": "npm test && npm version from-git && npm publish",
+    "start": "npm run dev"
   },
   "author": "Amin Marashi",
   "license": "MIT",
