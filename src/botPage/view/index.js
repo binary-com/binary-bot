@@ -455,9 +455,8 @@ export default class View {
           ReactDOM.render(
             <RestartTimeout
             timeout="3"
-            startTime={new Date().getTime()}
             />
-            , $('#restartTimeout')[0])
+            , document.getElementById('restartTimeout'))
         }
       })
     }
