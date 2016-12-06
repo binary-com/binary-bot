@@ -57,10 +57,7 @@ export default class Bot {
   start(...args) {
     const [token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysisList = []] = args
     this.startArgs = args
-    if (!this.purchaseCtrl || sameTrade) {
-      if (this.purchaseCtrl) {
-        this.purchaseCtrl.destroy()
-      }
+    if (!this.purchaseCtrl) {
       this.purchaseCtrl = new PurchaseCtrl(this.api, beforePurchase, duringPurchase, afterPurchase)
       this.tickAnalysisList = tickAnalysisList
       this.tradeOption = tradeOption
