@@ -16,7 +16,10 @@ export class Panel extends PureComponent {
     } = this.props
     return (
       <div
-      ref={el => ($(el).drags())}
+      ref={el => {
+        $(el).drags()
+        $(el).find('.content').mousedown(e => e.stopPropagation())
+      }}
       id={id}
       className="floating-panel"
       >
