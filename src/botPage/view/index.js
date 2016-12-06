@@ -375,9 +375,7 @@ export default class View {
       .drags()
 
     $('.panel .content')
-      .mousedown((e) => { // prevent content to trigger draggable
-        e.stopPropagation()
-      })
+      .mousedown(e => e.stopPropagation()) // prevent content to trigger draggable
 
     $('#openMenu')
       .click(() => {
