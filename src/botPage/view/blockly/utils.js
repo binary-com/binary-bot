@@ -84,6 +84,18 @@ export const deleteBlockIfExists = (block) => {
 
 export const setBlockTextColor = (block) => {
   Blockly.Events.recordUndo = false
+  if (block.inputList instanceof Array) {
+    for (const inp of Array.prototype.slice.call(block.inputList)) {
+      for (const field of inp.fieldRow) {
+        if (field instanceof Blockly.FieldLabel) {
+          const svgElement = field.getSvgRoot()
+          if (svgElement) {
+            svgElement.style.setProperty('fill', 'white', 'important')
+          }
+        }
+      }
+    }
+  }
   const field = block.getField()
   if (field) {
     const svgElement = field.getSvgRoot()
