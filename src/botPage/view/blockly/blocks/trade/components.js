@@ -65,7 +65,7 @@ export const restartOnError = (block) => {
   block.appendDummyInput()
     .appendField(`${translator.translateText('Restart On Error (Use with caution)')}:`)
     .appendField(new Blockly.FieldCheckbox('FALSE'), 'RESTARTONERROR')
-    .appendField(new Blockly.FieldImage(caution, 15, 15, translator.translateText('Caution!')))
+    .appendField(new Blockly.FieldImage(caution, 15, 15, '!'))
 }
 
 export const contractTypes = (block) => {
