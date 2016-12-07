@@ -30,7 +30,10 @@ Blockly.JavaScript.after_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'AFTERPURCHASE_STACK')
   const code = `after_purchase = function after_purchase(){
     try {
-      Blockly.mainWorkspace.getBlockById('${block.id}').select()
+      var block = Blockly.mainWorkspace.getBlockById('${block.id}')
+      if (block) {
+        block.select()
+      }
       ${stack}
     } catch (e) {
       if (e.name !== 'BlocklyError') {
