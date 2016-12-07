@@ -2,6 +2,7 @@ import config from '../../../../../common/const'
 import { translator } from '../../../../../common/translator'
 import { bot } from '../../../../bot'
 import { oppositesToDropdown } from '../../utils'
+import { caution } from '../images'
 
 export const marketDropdown = (block) => {
   const markets = bot.symbol.activeSymbols.getMarkets()
@@ -63,8 +64,8 @@ export const tradeTypeDropdown = (block) => {
 export const restartOnError = (block) => {
   block.appendDummyInput()
     .appendField(`${translator.translateText('Restart On Error (Use with caution)')}:`)
-    .appendField(new Blockly.FieldImage('https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Caution_sign_used_on_roads_pn.svg/512px-Caution_sign_used_on_roads_pn.svg.png', 15, 15, translator.translateText('Caution!')))
     .appendField(new Blockly.FieldCheckbox('FALSE'), 'RESTARTONERROR')
+    .appendField(new Blockly.FieldImage(caution, 15, 15, translator.translateText('Caution!')))
 }
 
 export const contractTypes = (block) => {

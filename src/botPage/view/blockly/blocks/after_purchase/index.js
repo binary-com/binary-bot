@@ -6,15 +6,17 @@ import './details'
 import './read_details'
 import './trade_again'
 import { configMainBlock, setBlockTextColor } from '../../utils'
+import { finishSign } from '../images'
 
 Blockly.Blocks.after_purchase = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(translator.translateText('(4) things to do after purchase is finished'))
+      .appendField(new Blockly.FieldImage(finishSign, 15, 15, 'F'))
+      .appendField(translator.translateText('(4) Get your trade result and trade again'))
     this.appendStatementInput('AFTERPURCHASE_STACK')
       .setCheck('TradeAgain')
     this.setColour('#2a3052')
-    this.setTooltip(translator.translateText('This block decides what to do when a purchased contract is finished')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Get the previous trade information and result, then trade again (Runs on trade finish)'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
@@ -29,7 +31,7 @@ Blockly.JavaScript.after_purchase = (block) => {
   const code = `after_purchase = function after_purchase(){
     try {
       ${stack}
-    } catch (e) { 
+    } catch (e) {
       if (e.name !== 'BlocklyError') {
         Bot.notifyError(e);
         throw e;
