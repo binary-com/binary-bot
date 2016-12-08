@@ -28,10 +28,6 @@ Blockly.JavaScript.before_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'BEFOREPURCHASE_STACK')
   const code = `before_purchase = function before_purchase(){
     try {
-      var block = Blockly.mainWorkspace.getBlockById('${block.id}')
-      if (block) {
-        block.select()
-      }
       ${stack}
     } catch (e) {
       if (e.name !== 'BlocklyError') {
