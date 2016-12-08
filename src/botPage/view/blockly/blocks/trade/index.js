@@ -41,7 +41,6 @@ Blockly.Blocks.trade = {
   },
   onchange: function onchange(ev) {
     if (ev.type === 'create') {
-      this.select()
       setBlockTextColor(this)
       for (const blockId of ev.ids) {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
@@ -84,7 +83,6 @@ Blockly.JavaScript.trade = (block) => {
   try {
     ${initialization.trim()}
     trade = function trade(again){
-      Blockly.mainWorkspace.getBlockById('${block.id}').select()
       if (typeof getTradeOptions !== 'undefined') {
         Bot.start('${account.trim()}', getTradeOptions(),
         typeof before_purchase === 'undefined' ? function(){} : before_purchase,
