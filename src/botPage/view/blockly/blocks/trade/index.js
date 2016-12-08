@@ -84,10 +84,7 @@ Blockly.JavaScript.trade = (block) => {
   try {
     ${initialization.trim()}
     trade = function trade(again){
-      var block = Blockly.mainWorkspace.getBlockById('${block.id}')
-      if (block) {
-        block.select()
-      }
+      Blockly.mainWorkspace.getBlockById('${block.id}').select()
       if (typeof getTradeOptions !== 'undefined') {
         Bot.start('${account.trim()}', getTradeOptions(),
         typeof before_purchase === 'undefined' ? function(){} : before_purchase,
