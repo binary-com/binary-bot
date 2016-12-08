@@ -26,6 +26,7 @@ Blockly.JavaScript.during_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK')
   const code = `during_purchase = function during_purchase(){
     try {
+      Blockly.mainWorkspace.highlightBlock('${block.id}')
       ${stack}
     } catch (e) { 
       if (e.name !== 'BlocklyError') {

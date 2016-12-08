@@ -207,6 +207,7 @@ export default class _Blockly {
     let code
     try {
       window.LoopTrap = 99999999999
+      Blockly.mainWorkspace.traceOn(true)
       Blockly.JavaScript
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
       disableStrayBlocks()
