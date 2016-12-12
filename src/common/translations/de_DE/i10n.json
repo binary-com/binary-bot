@@ -206,7 +206,7 @@
   "afdbbf9e4980ea6636358d83fad6bd56447ccc4b":"Wenn Sie unabsichtlich einen Block entfernt haben, können Sie Ihre Änderungen rückgängig machen/wiederholen, indem Sie diese Schaltflächen oder Ctrl+Z für rückgängig machen und Ctrl+Shift+Z für wiederholen, verwenden",
   "289e2c8c1e5261caf305fd0f86c307d4b3e6909e":"Diese Schaltfläche öffnet die Zusammenfassung.",
   "07f1405a51afc85bbb5a2bd172e9bb10ef7cbaa8":"Sie können Ihre Blöcke nach dem Laden oder der Ausführung, in ihren Ausgangszustand zurücksetzen.",
-  "0350a7131fa13a57dc525910b2b5f691f10ae33f":"At last! It's time to run the blocks we created. You can run/stop the blocks by clicking on the run/stop buttons. Please make sure you have chosen a Virtual Account before doing experiments.",
+  "0350a7131fa13a57dc525910b2b5f691f10ae33f":"Endlich! Es ist Zeit die Blöcke, die wir kreiert haben, laufen zu lassen. Sie können die Blöcke laufen/stoppen lassen, indem Sie auf die laufen/stop Schaltfläche drücken. Bitte stellen Sie sicher, dass Sie das virtuelle Konto ausgewählt haben bevor Sie Experimente durchführen.",
   "27f752f8ca631f5005555a1b49c14c57afab272f":"a blockly based automation tool for binary.com trades",
   "cd5f85b6f187605f82386eacd680f93820af8d11":"Result is",
   "1e38ce3d180cefae485a6986ca7c67841e30376f":"True if the result matches the selection",
