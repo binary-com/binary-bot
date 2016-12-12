@@ -1,0 +1,19 @@
+.controls {
+  .edit-mode-toggle {
+    position: absolute;
+    z-index: 1;
+  }
+  .zoom-controls {
+    z-index: 1;
+    position: absolute;
+    right: 0em;
+    margin-top: 1.5em;
+    button {
+      padding: 0.5em 1em;
+      font-size: 1.5em;
+      background: transparent;
+      color: black;
+      display: block;
+    }
+  }
+}
