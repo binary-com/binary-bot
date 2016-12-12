@@ -288,8 +288,15 @@ export default class _Blockly {
     })
     const script = document.createElement('script')
     script.type = 'text/javascript'
-    const lang = translator.getLanguage()
-    script.src = `https://blockly-demo.appspot.com/static/msg/js/${lang === 'ach' ? 'en' : lang}.js`
+    let lang = translator.getLanguage()
+    if (lang === 'ach') {
+      lang = 'en'
+    } else if (lang === 'zh_cn') {
+      lang = 'zh-hans'
+    } else if (lang === 'zh_tw') {
+      lang = 'zh-hant'
+    }
+    script.src = `https://blockly-demo.appspot.com/static/msg/js/${lang}.js`
     $('body').append(script)
   }
   undo() {
