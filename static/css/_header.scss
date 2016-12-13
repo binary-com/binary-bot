@@ -70,8 +70,15 @@
   }
 }
 
-#client-logged-in {
+#account-list {
   display: none;
+  float: right;
+  margin-right: 1em;
+  .account {
+    width: 8em;
+    float: right;
+    font-size: 1em;
+  }
 }
 
 .topMenuBalance {
@@ -81,16 +88,6 @@
 #login {
   display: none;
   margin: 0.6em 0;
-}
-
-.accountSelect {
-  float: right;
-  margin-right: 1em;
-  .account {
-    width: 8em;
-    float: right;
-    font-size: 1em;
-  }
 }
 
 .btn-primary {

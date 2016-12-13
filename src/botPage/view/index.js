@@ -142,23 +142,26 @@ export default class View {
   }
   updateTokenList() {
     const tokenList = getTokenList()
+    const loginButton = $('#login')
+    const accountList = $('#account-list')
     if (tokenList.length === 0) {
-      $('#login').css('display', 'inline-block')
-      $('#client-logged-in').css('display', 'none')
+      loginButton.show()
+      accountList.hide()
+      $('.account-id').removeAttr('value').text('')
+      $('.account-type').text('')
+      $('.login-id-list').children().remove()
     } else {
-      $('#login').css('display', 'none')
-      $('#client-logged-in').css('display', 'inline-block')
+      loginButton.hide()
+      accountList.show()
       for (const tokenInfo of tokenList) {
-        let prefix
+        let prefix = ''
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
-        } else {
-          prefix = ''
         }
         if (tokenList.indexOf(tokenInfo) === 0) {
           $('.account-id').attr('value', `${tokenInfo.token}`)
-            .html(`${tokenInfo.account_name}`)
-          $('.account-type').html(`${prefix}`)
+            .text(`${tokenInfo.account_name}`)
+          $('.account-type').text(`${prefix}`)
         } else {
           $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
             '<div class="separator-line-thin-gray"></div>');
