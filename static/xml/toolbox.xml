@@ -305,10 +305,12 @@
 				<block type="sma"></block>
 				<block type="ema"></block>
 				<block type="bb"></block>
+				<block type="rsi"></block>
 				<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
 					<block type="smaa"></block>
 					<block type="emaa"></block>
 					<block type="bba"></block>
+					<block type="rsia"></block>
 				</category>
 			</category>
 		</category>
