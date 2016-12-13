@@ -99,6 +99,9 @@ export default class View {
     if (tokenList.length === 0) {
       loginButton.show()
       accountList.hide()
+      $('.account-id').removeAttr('value').text('')
+      $('.account-type').text('')
+      $('.login-id-list').children().remove()
     } else {
       loginButton.hide()
       accountList.show()
