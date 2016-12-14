@@ -7,7 +7,7 @@
   "19de69cb601f53a4ea7af22a65c71ae63251365c":"变量",
   "2b961dea1dc0c60ddf9a2c8e9d090f6f7d082483":"功能",
   "dc7f77b4ccfc9f70a78bd97303bd10ba4c9d70c8":"回路",
-  "66639f7d455dd71faa9147f5d69e5ce885d8bebd":"二元",
+  "66639f7d455dd71faa9147f5d69e5ce885d8bebd":"Binary",
   "0ba66deaab2f2cd3b0793d03f600ee2b8f577fbc":"交易的定义",
   "9201c6ac624e98e168e6ccddbcd5a9b5cdff06b3":"购入前",
   "44ab9a87268d3fd74040ed0b55c04f83294cfdef":"购入时",
@@ -234,7 +234,7 @@
   "579607dc4f989ce2b94b558431666a0ab07ac1f3":"在市场卖出",
   "e20afd5cf3811a42071c9a312abb2afdad4c590b":"在市场卖出。",
   "4712cbff8e92822fc960ef9c0197293a19675eae":"销售利润/亏损",
-  "df817b48c7a076561b4f8bedc52d65d2e351ab52":"返回在市场上賣出的利润。",
+  "df817b48c7a076561b4f8bedc52d65d2e351ab52":"返回在市场上卖出的利润。",
   "852b438f91ad9eb2cdd84419a675a216d543c687":"读取",
   "af10ef20dd9060bbeead0afbc55381a66af442ef":"在",
   "61d905ffe59ca12f5a15f11345728757d120c97e":"最近的蜡烛图线",
@@ -312,8 +312,8 @@
   "5606b4460ac96063b8a8e5647008f3ec97252fc5":"自Epoch以来的秒数",
   "2de20bdeecb1a8c28bd36fe75f028ed4318d0348":"返回epoch时间（自epoch以来的秒数）",
   "f43cb41af7ce8a69c7aecbc1c603bb0381270982":"运行每个",
-  "4b6fe6898f0f956d48a4c8172c6dfbcb4159ab09":"秒数",
-  "2eea87bb804e4e73e3f8e9c41140f7ed83ea8875":"运行每隔 n 秒钟内的程序块",
+  "4b6fe6898f0f956d48a4c8172c6dfbcb4159ab09":"秒",
+  "2eea87bb804e4e73e3f8e9c41140f7ed83ea8875":"在每 n 秒内运行程序块",
   "7b9c76088576a64f32d67ec335162b9f73eaa026":"以下时间过后运行",
-  "ff56ffac023cf69ca5c7f71d407499536f4f86b5":"运行n 秒钟过后的内部程序块"
+  "ff56ffac023cf69ca5c7f71d407499536f4f86b5":"在 n 秒后运行内部程序块"
 }
