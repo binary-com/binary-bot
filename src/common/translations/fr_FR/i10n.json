@@ -285,9 +285,9 @@
   "a43c3299d30a5bc7e31a574cdc87f59cbc8fe585":"Define your trade contract and start the trade, add initializations here. (Runs on start)",
   "eabf5342bcb460c4f8261faa18695d851712614a":"Veuillez vous connecter.",
   "559f682cbda9fdf635263a782b7c6125ec4e745a":"All trade types are required",
-  "0f2ba74929aca6fea950e351dcd576b7cd841fa4":"le chandelier est-il noir ?",
-  "6f69eb9519c0ac8fa014de9fbbc1f3054663440f":"Vérifie si le chandelier concerné est noir et indique vrai si la fermeture est inférieure à l'ouverture dans le chandelier.",
-  "66aa155c6baaf33def677eb1311534751dfa06ab":"dans le chandelier",
+  "0f2ba74929aca6fea950e351dcd576b7cd841fa4":"la bougie est-elle noire ?",
+  "6f69eb9519c0ac8fa014de9fbbc1f3054663440f":"Vérifie si la bougie concernée est noire et indique vrai si le cours de clôture est inférieur au cours d'ouverture dans la bougie en question.",
+  "66aa155c6baaf33def677eb1311534751dfa06ab":"dans la bougie",
   "d79d854dcd0829e2177a47beab6a55569e781ab1":"Read a field in a candle (read from the Candles list)",
   "b44e884c355e447d0da0e6ba45caaff18c84373b":"Bollinger Bands",
   "d6a2a207343bd83aacdc80b579ff4419713a256e":"Input List",
@@ -311,9 +311,9 @@
   "2c75179a57af3c36581008b65e86ed81c4a4cbea":"Calculates Simple Moving Average (SMA) list from a list of values with a period",
   "5606b4460ac96063b8a8e5647008f3ec97252fc5":"Seconds Since Epoch",
   "2de20bdeecb1a8c28bd36fe75f028ed4318d0348":"Returns the epoch time (seconds since epoch)",
-  "f43cb41af7ce8a69c7aecbc1c603bb0381270982":"Run Every",
-  "4b6fe6898f0f956d48a4c8172c6dfbcb4159ab09":"Second(s)",
-  "2eea87bb804e4e73e3f8e9c41140f7ed83ea8875":"Run the blocks inside every n seconds",
-  "7b9c76088576a64f32d67ec335162b9f73eaa026":"Run After",
-  "ff56ffac023cf69ca5c7f71d407499536f4f86b5":"Run the blocks inside after n seconds"
+  "f43cb41af7ce8a69c7aecbc1c603bb0381270982":"Exécuter toutes les",
+  "4b6fe6898f0f956d48a4c8172c6dfbcb4159ab09":"Seconde(s)",
+  "2eea87bb804e4e73e3f8e9c41140f7ed83ea8875":"Exécuter les blocs inclus toutes les n secondes",
+  "7b9c76088576a64f32d67ec335162b9f73eaa026":"Exécuter après",
+  "ff56ffac023cf69ca5c7f71d407499536f4f86b5":"Exécuter les blocs inclus après n secondes"
 }
