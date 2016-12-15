@@ -630,7 +630,7 @@ export default class View {
       id="trade-chart0"
       contract={isLine() ? this.contractForChart : false}
       hideZoomControls={isMinHeight || (isLine() && this.contractForChart)}
-      pipSize={Number(Number(info.pip).toExponential().substring(3))}
+      pipSize={info.pipSize}
       shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
       ticks={info[chartToDataType[this.chartType]]}
       type={this.chartType}
