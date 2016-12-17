@@ -309,7 +309,7 @@
   "347775a293c14362d492f019e677c965be1d6e7d":"Oblicza prostą średnią kroczącą (EMA) z listy z okresem",
   "4cc7b9e53d082896ad884eb01be16320af65f282":"Tablica prostej średniej wykładniczej",
   "2c75179a57af3c36581008b65e86ed81c4a4cbea":"Oblicza prostą średnią kroczącą (SMA) z listy wartości z okresem",
-  "5606b4460ac96063b8a8e5647008f3ec97252fc5":"Seconds Since Epoch",
+  "5606b4460ac96063b8a8e5647008f3ec97252fc5":"Sekundy od epoki",
   "2de20bdeecb1a8c28bd36fe75f028ed4318d0348":"Returns the epoch time (seconds since epoch)",
   "f43cb41af7ce8a69c7aecbc1c603bb0381270982":"Uruchom co",
   "4b6fe6898f0f956d48a4c8172c6dfbcb4159ab09":"Sek.",
