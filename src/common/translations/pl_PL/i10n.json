@@ -192,7 +192,7 @@
   "2241114380da23680a3d0c54949ebff29b551107":"You can some basic blocks for ticks/candle analysis and also payout/ask price to check the price before doing purchase.",
   "d807900b7f73755ca95b24429d76f4a2116ca7b9":"Teraz utworzymy naszą strategię, dodając pojedynczy blok <b>zakupu</b>. Wybierz blok zakupu z paska narzędzi.",
   "49c6a22fd28c88b4442a50b979f47b4d9e92e161":"Teraz dodaj go do bloku przed zakupem.",
-  "4a362e853d0afc9cca5f580cc02999ee0ea12f84":"Nicely Done! The purchase block initiates a purchase defined by its dropdown list, e.g. if your trade type block is of <b>Rise/Fall</b> type you will have <b>Rise</b> and <b>Fall</b> options on the purchase block to select from.",
+  "4a362e853d0afc9cca5f580cc02999ee0ea12f84":"Dobra robota! Blok zakupu rozpoczyna zakup zdefiniowany przez opcję z jego rozwijanej listy, np. jeśli twój blok handlowy jest typu <b>Wzrost/spadek</b>, będzie możliwe wybranie opcji <b>Wzrost</b> lub <b>Spadek</b> dla tego bloku zakupu.",
   "f473d84a07518a15f65f3727eb52c9d5c18a44c2":"A before purchase block consisting of only a purchase block means to purchase as soon as the first tick was received.",
   "b8c5e7eaff26dd923ad6801e07482d40bc20bfc2":"After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>after purchase</b> block",
   "11b3fa5078b3714d73355fd82e135b7faa84496c":"Same as the before purchase block, the <b>after purchase</b> block can have multiple blocks defining its functionality. The after purchase block defines what to do when the previously purchased contract is finished.",
