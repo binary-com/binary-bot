@@ -5,6 +5,7 @@ import { getUTCTime } from 'binary-common-utils/lib/tools'
 import _ from 'underscore'
 import PurchaseCtrl from './purchaseCtrl'
 import _Symbol from './symbol'
+import { translator } from '../../common/translator'
 import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect'
 
 const decorateTradeOptions = (tradeOption, otherOptions = {}) => {
@@ -45,6 +46,9 @@ const createDetails = (contract) => {
   ]
 }
 
+let sessionRuns = 0
+let sessionProfit = 0
+
 export default class Bot {
   constructor(api = null) {
     this.ticks = []
@@ -72,8 +76,9 @@ export default class Bot {
     }
   }
   start(...args) {
-    const [token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysisList = []] = args
+    const [token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysisList = [], limitations = {}] = args
     this.startArgs = args
+    this.limitations = limitations
     if (!this.purchaseCtrl) {
       this.afterPurchase = afterPurchase
       this.purchaseCtrl = new PurchaseCtrl(this.api, beforePurchase, duringPurchase)
@@ -94,6 +99,7 @@ export default class Bot {
       if (sameTrade) {
         this.startTrading()
       } else {
+        sessionRuns = sessionProfit = 0
         const promises = []
         if (this.currentToken !== token) {
           promises.push(this.login(token))
@@ -304,6 +310,7 @@ export default class Bot {
   waitForTradePurchase() {
     const tradePurchase = (info) => {
       this.totalRuns += 1
+      sessionRuns += 1
       observer.emit('bot.tradeInfo', {
         totalRuns: this.totalRuns,
         transaction_ids: {
@@ -335,6 +342,7 @@ export default class Bot {
     } else if (+profit < 0) {
       this.totalLosses += 1
     }
+    sessionProfit = +(sessionProfit + profit).toFixed(2)
     this.totalProfit = +(this.totalProfit + profit).toFixed(2)
     this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2)
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2)
@@ -348,6 +356,17 @@ export default class Bot {
     })
   }
   tradeAgain(finishedContract) {
+    const { maxLoss, maxTrades } = this.limitations
+    if (maxLoss && maxTrades) {
+      if (sessionRuns >= maxTrades) {
+        observer.emit('LimitsReached', translator.translateText('Maximum number of trades reached'))
+        return
+      }
+      if (sessionProfit <= (-maxLoss)) {
+        observer.emit('LimitsReached', translator.translateText('Maximum loss amount reached'))
+        return
+      }
+    }
     const afterPurchaseContext = {
       finishedContract,
       contractDetails: createDetails(finishedContract),
