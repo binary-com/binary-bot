@@ -31,7 +31,6 @@ describe('PurchaseCtrl', () => {
       }
     }
     purchaseCtrl = new PurchaseCtrl(api, beforePurchase, () => {
-    }, () => {
     })
   })
   describe('Make the beforePurchase ready...', () => {
