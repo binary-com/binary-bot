@@ -386,6 +386,10 @@ export default class View {
       })
       .text('Log in')
 
+    $('#accountHistory').click(() => {
+      document.location =
+        `https://www.binary.com/${translator.getLanguage()}/user/statementws.html`
+    })
     $(document).keydown((e) => {
       if (e.which === 189) { // -
         if (e.ctrlKey) {
