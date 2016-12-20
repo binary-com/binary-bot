@@ -203,7 +203,7 @@ export default class _Blockly {
     }
     save(filename, collection, xml)
   }
-  run() {
+  run(limitations = {}) {
     let code
     try {
       window.LoopTrap = 99999999999
@@ -214,6 +214,7 @@ export default class _Blockly {
       code = `
         var trade, before_purchase, during_purchase, after_purchase;
         var tick_analysis_list = [];
+        var limitations = ${JSON.stringify(limitations)}
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
         try {
           if (typeof trade !== 'undefined') {
