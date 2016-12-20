@@ -55,7 +55,7 @@
 	<title>Binary Bot</title>
 
 <link href="css/fontello-4487bb75e3.css" rel="stylesheet" />
-<link href="css/bundle-ff1f125c4a.min.css" rel="stylesheet" /><link href="css/bot-1cc7d761bf.css" rel="stylesheet" /><link href="css/chart-8e55ea09ee.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
+<link href="css/bundle-ff1f125c4a.min.css" rel="stylesheet" /><link href="css/bot-b793933a35.css" rel="stylesheet" /><link href="css/chart-8e55ea09ee.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
 
 <script>
 (function () {
@@ -72,6 +72,7 @@
 </head>
 <body>
   <div id="center"></div>
+	<span id="limits-panel"></span>
 	<span id="restartTimeout"></span>
 	<div>
 		<div class="blocker"></div>
@@ -82,7 +83,10 @@
 				<input id="realityDuration" interval="1" maxlength="4" min="1" size="6" type="number" value="10">
 			</p>
 			<p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 120."></p>
+      <div>
+			<button id="accountHistory" data-i18n-text="Account History"></button>
 			<button bcont="1" class="button" id="continueTrading" data-i18n-text="Continue Trading"></button>
+      </div>
 		</div>
 	</div>
 <div class="barspinner dark">
@@ -138,7 +142,7 @@
       </div>
       <div class="right-header">
         <div class="intro-login-logout">
-          <div id="client-logged-in">
+          <div id="account-list">
             <div id="main-logout">
                 <ul id="main-account" class="nav-menu main-nav">
                     <li class="account">
@@ -172,11 +176,7 @@
                 </ul>
             </div>
           </div>
-          <div>
-            <a class="button">
-                <span id="login" data-i18n-text="Log in"></span>
-            </a>
-          </div>
+          <button id="login" data-i18n-text="Log in" />
         </div>
       </div>
   </div>
@@ -269,7 +269,7 @@
       </div>
   </div>
 
-<script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-116d1def39.min.js"></script>  <script src="https://style.binary.com/binary.js"></script>
+<script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-386ba1a825.min.js"></script>  <script src="https://style.binary.com/binary.js"></script>
 
 </body>
 </html>
