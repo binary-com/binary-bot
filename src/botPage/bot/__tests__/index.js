@@ -39,7 +39,7 @@ describe('Bot', () => {
         error = _error
         done()
       }, true)
-      bot.start('FakeToken', null, null, null, null)
+      bot.start('FakeToken', null, null, null)
     })
     it('fake token should cause an error', () => {
       expect(error).to.have.deep.property('.error.code')
@@ -53,7 +53,6 @@ describe('Bot', () => {
       }, true)
       observer.register('bot.stop', () => {
         bot.start(token, option, () => observer.emit('test.waiting_for_purchase'), () => {
-        }, () => {
         })
       }, true)
       bot.stop()
@@ -69,7 +68,6 @@ describe('Bot', () => {
             done()
           }, true)
           bot.start(token, option, () => observer.emit('test.waiting_for_purchase'), () => {
-          }, () => {
           })
         })
       }, true)

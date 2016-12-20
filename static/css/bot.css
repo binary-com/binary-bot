@@ -328,9 +328,9 @@ button:focus {
 }
 
 .reality-check button {
-	left: 50%;
+  float: right;
 	margin-bottom: 0em;
-	margin-left: -5em;
+	margin-right: 0.5em;
 	position: relative;
 }
 
