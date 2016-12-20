@@ -1,30 +1,12 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import { getUTCTime } from 'binary-common-utils/lib/tools'
 import Trade from './trade'
 
-const createDetails = (contract) => {
-  const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2)
-  const result = (profit < 0) ? 'loss' : 'win'
-  observer.emit(`log.purchase.${result}`, {
-    profit,
-    transactionId: contract.transaction_ids.buy,
-  })
-  return [
-    contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
-    profit, contract.contract_type,
-    getUTCTime(new Date(parseInt(`${contract.entry_tick_time}000`, 10))), +contract.entry_tick,
-    getUTCTime(new Date(parseInt(`${contract.exit_tick_time}000`, 10))), +contract.exit_tick,
-    +((contract.barrier) ? contract.barrier : 0), result,
-  ]
-}
-
 export default class PurchaseCtrl {
-  constructor(api, beforePurchase, duringPurchase, afterPurchase) {
+  constructor(api, beforePurchase, duringPurchase) {
     this.expectedNumOfProposals = 2
     this.api = api
     this.beforePurchase = beforePurchase
     this.duringPurchase = duringPurchase
-    this.afterPurchase = afterPurchase
     this.ready = false
     this.purchased = false
     this.runningObservations = []
@@ -75,13 +57,9 @@ export default class PurchaseCtrl {
         this.duringPurchase()
         observer.emit('purchase.tradeUpdate', openContract)
       }
-      const tradeFinish = (finishedContract) => {
-        // order matters, needs fix
+      const tradeFinish = finishedContract =>
         observer.emit('purchase.finish', finishedContract)
-        this.finishedContract = finishedContract
-        this.contractDetails = createDetails(finishedContract)
-        this.afterPurchase()
-      }
+
       observer.register('trade.update', tradeUpdate)
       observer.register('trade.finish', tradeFinish, true)
       this.runningObservations.push(['trade.update', tradeUpdate])
