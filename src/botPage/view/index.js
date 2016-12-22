@@ -14,6 +14,7 @@ import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 import { SaveXml } from './react-components/SaveXml'
 import { RestartTimeout } from './react-components/RestartTimeout'
+import { LimitsPanel } from './react-components/LimitsPanel'
 
 let realityCheckTimeout
 let editMode = false
@@ -503,16 +504,30 @@ export default class View {
         }
       })
 
+    const startBot = (limitations) => {
+      hideCollapseMenu()
+      $('#stopButton').show()
+      $('#runButton').hide()
+      this.blockly.run(limitations)
+      showSummary()
+    }
+
     $('#runButton')
       .click(() => {
-        hideCollapseMenu()
-        $('#stopButton').show()
-        $('#runButton').hide()
-        this.blockly.run()
-        showSummary()
+        const token = $('.account-id').first().attr('value')
+        const tokenObj = getToken(token)
+        if (tokenObj && tokenObj.hasTradeLimitation) {
+          ReactDOM.render(
+            <LimitsPanel
+            onSave={startBot}
+            />
+            , document.getElementById('limits-panel'))
+        } else {
+          startBot()
+        }
       })
 
-    $('#stopButton ')
+    $('#stopButton')
       .click(e => {
         hideCollapseMenu()
         stop(e)
@@ -557,6 +572,10 @@ export default class View {
       })
       .text('Log in')
 
+    $('#accountHistory').click(() => {
+      document.location =
+        `https://www.binary.com/${translator.getLanguage()}/user/statementws.html`
+    })
     $(document).keydown((e) => {
       if (e.which === 189) { // -
         if (e.ctrlKey) {
