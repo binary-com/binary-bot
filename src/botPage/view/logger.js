@@ -28,18 +28,25 @@ const notify = (message, ...args) => {
 }
 
 export const notifyError = (error) => {
-  let message = (error.error)
-    ? error.error.message
-    : error.message || error
+  let message = (error.error) ?
+    error.error.message :
+    error.message || error
+  const errorCode = error.error ?
+    error.error.code :
+    error.name
+
   if (error.name === 'DisconnectError') {
     message = translator.translateText('Connection lost before receiving the response from the server')
   }
+
+  const completeMsg = errorCode ?
+    `${errorCode}: ${message}` : message
   notify(message, {
     position: 'bottom right',
     className: 'error',
   })
   console.warn(error); // eslint-disable-line no-console
-  console.error(message); // eslint-disable-line no-console
+  console.error(completeMsg); // eslint-disable-line no-console
   return message
 }
 
