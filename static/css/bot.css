@@ -327,7 +327,7 @@ button:focus {
 	margin-left: 0.2em;
 }
 
-.reality-check button {
+.reality-check button, .reality-check a {
   float: right;
 	margin-bottom: 0em;
 	margin-right: 0.5em;
