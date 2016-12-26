@@ -604,8 +604,7 @@ export default class View {
         if (editMode) {
           $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
         }
-      }
-    )
+      })
   }
   updateChart(info) {
     const chartToDataType = {

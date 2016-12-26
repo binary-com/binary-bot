@@ -46,6 +46,7 @@
     "no-underscore-dangle": 0,
     "max-len": 0,
     "semi": 0,
+    "no-restricted-syntax": 0
   },
   "settings": {
     "import/ignore": \.(scss|less|css)$,
