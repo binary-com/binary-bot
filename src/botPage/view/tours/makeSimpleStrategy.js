@@ -166,7 +166,7 @@ export default class MakeSimpleStrategy {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('You can some basic blocks for ticks/candle analysis and also payout/ask price to check the price before doing purchase.') + '</p>',
+      content: '<p>' + translator.translateText('You can add basic blocks for ticks/candle analysis and payout/ask price to check the price before doing purchase.') + '</p>',
       target: getUiComponent('flyout'),
       closeButton: true,
       highlightTarget: true,
@@ -241,7 +241,7 @@ export default class MakeSimpleStrategy {
       at: 'right center',
       nextButton: true,
     }, {
-      content: '<p>' + translator.translateText('After a purchase was the bot waits till the purchase is completed, and then gives the control to the <b>after purchase</b> block') + '</p>',
+      content: '<p>' + translator.translateText('After a contract was purchased Binary Bot waits until the purchase is completed, and then gives the control to the <b>after purchase</b> block') + '</p>',
       target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
@@ -296,7 +296,7 @@ export default class MakeSimpleStrategy {
         observer.unregister('tour:trade_again', this.tour_trade_again)
       },
     }, {
-      content: '<p>' + translator.translateText('Excellent! The <b>Trade Again</b> block starts a new trade immediately after the previous contract is finished, therefore creates an infinite loop which goes on and on until the Trade Again block isn\'t called e.g. in a logic block which its trade type is unmet.') + '</p>',
+      content: '<p>' + translator.translateText('Excellent! The <b>Trade Again</b> block starts a new trade everytime the contract is finished, and this goes on until somehow stopped.') + '</p>',
       target: getUiComponent('after_purchase'),
       closeButton: true,
       highlightTarget: true,
