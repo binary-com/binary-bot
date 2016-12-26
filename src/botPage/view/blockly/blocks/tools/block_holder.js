@@ -4,7 +4,7 @@ import { translator } from '../../../../../common/translator'
 Blockly.Blocks.block_holder = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(translator.translateText('Blocks in here have no effect!'))
+      .appendField(translator.translateText('Blocks inside are ignored'))
     this.appendStatementInput('USELESS_STACK')
       .setCheck(null)
     this.setColour('#fef1cf')

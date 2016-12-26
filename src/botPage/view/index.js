@@ -10,7 +10,6 @@ import _Blockly from './blockly'
 import { translator } from '../../common/translator'
 import Welcome from './tours/welcome'
 import Introduction from './tours/introduction'
-import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 import { SaveXml } from './react-components/SaveXml'
 import { RestartTimeout } from './react-components/RestartTimeout'
@@ -191,7 +190,6 @@ export default class View {
   initTours() {
     this.tours.introduction = new Introduction()
     this.tours.welcome = new Welcome()
-    this.tours.makeSimpleStrategy = new MakeSimpleStrategy()
   }
   startTour() {
     const viewScope = this

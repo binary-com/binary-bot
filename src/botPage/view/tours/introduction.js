@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, max-len */
 import { setDone, isDone } from 'binary-common-utils/lib/storageManager'
-import { getUiComponent, setOpacityForAll, setOpacity } from '../components'
+import { getUiComponent } from '../components'
 import { translator } from '../../../common/translator'
 
 export default class Introduction {
@@ -24,7 +24,6 @@ export default class Introduction {
       at: 'bottom center',
       setup: () => {
         getUiComponent('blocker').show()
-        setOpacityForAll(0.3)
       },
     }, {
       content: `<p>
@@ -35,12 +34,6 @@ export default class Introduction {
       nextButton: true,
       my: 'top center',
       at: 'bottom center',
-      setup: () => {
-        setOpacity('workspace', 1)
-      },
-      teardown: () => {
-        setOpacity('workspace', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('You can pick blocks from here to add to your Bot')}
@@ -51,12 +44,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'left center',
       at: 'right center',
-      setup: () => {
-        setOpacity('toolbox', 1)
-      },
-      teardown: () => {
-        setOpacity('toolbox', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Press Ctrl + - to zoom out and Ctrl + + to zoom in the blocks')}
@@ -66,12 +53,6 @@ export default class Introduction {
       nextButton: true,
       my: 'top center',
       at: 'bottom center',
-      setup: () => {
-        setOpacity('workspace', 1)
-      },
-      teardown: () => {
-        setOpacity('workspace', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('You need to login before running the bot.')}
@@ -82,12 +63,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'top center',
       at: 'bottom center',
-      setup: () => {
-        setOpacity('intro_login_logout', 1)
-      },
-      teardown: () => {
-        setOpacity('intro_login_logout', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Use these buttons to save/load your blocks, you can also drag and drop Bot files to load them')}
@@ -98,12 +73,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_save', 1)
-      },
-      teardown: () => {
-        setOpacity('group_save', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Use these buttons to Undo/Redo changes to your blocks.')}
@@ -114,12 +83,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_undo_redo', 1)
-      },
-      teardown: () => {
-        setOpacity('group_undo_redo', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Use these buttons to zoom in/out your blocks.')}
@@ -130,12 +93,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_zoom', 1)
-      },
-      teardown: () => {
-        setOpacity('group_zoom', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Use this button to automatically arrange your blocks.')}
@@ -146,12 +103,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_clean_up', 1)
-      },
-      teardown: () => {
-        setOpacity('group_clean_up', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Show the summary panel where you can see the chart and more information about the trades.')}
@@ -162,12 +113,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_summary', 1)
-      },
-      teardown: () => {
-        setOpacity('group_summary', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Reset the blocks to their initial state.')}
@@ -178,12 +123,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_reset', 1)
-      },
-      teardown: () => {
-        setOpacity('group_reset', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Use this button to run/stop your Bot')}
@@ -194,12 +133,6 @@ export default class Introduction {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_start_stop', 1)
-      },
-      teardown: () => {
-        setOpacity('group_start_stop', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Good Luck!')}
@@ -224,13 +157,11 @@ export default class Introduction {
         this.tour._teardownCurrentStep = () => {
         }
         getUiComponent('blocker').hide()
-        setOpacityForAll(1)
         setDone('welcomeFinished')
         this.stop()
       },
       successStep: () => {
         getUiComponent('blocker').hide()
-        setOpacityForAll(1)
         setDone('welcomeFinished')
         this.stop()
       },
@@ -245,7 +176,6 @@ export default class Introduction {
     }
   }
   stop() {
-    setOpacityForAll(true, 1)
     this.tour.stop()
     Blockly.mainWorkspace.toolbox_.tree_.children_[4].setExpanded(false)
     delete this.tour

@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, max-len */
 import { setDone, isDone } from 'binary-common-utils/lib/storageManager'
-import { getUiComponent, setOpacityForAll, setOpacity } from '../components'
+import { getUiComponent } from '../components'
 import { translator } from '../../../common/translator'
 
 export default class Welcome {
@@ -24,7 +24,6 @@ export default class Welcome {
       at: 'bottom center',
       setup: () => {
         getUiComponent('blocker').show()
-        setOpacityForAll(0.3)
       },
     }, {
       content: `<p>
@@ -35,12 +34,6 @@ export default class Welcome {
       nextButton: true,
       my: 'top center',
       at: 'bottom center',
-      setup: () => {
-        setOpacity('workspace', 1)
-      },
-      teardown: () => {
-        setOpacity('workspace', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Use these buttons to save/load your blocks, you can also drag and drop Bot files to load them')}
@@ -51,12 +44,6 @@ export default class Welcome {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_save', 1)
-      },
-      teardown: () => {
-        setOpacity('group_save', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('You need to login before running the bot.')}
@@ -67,12 +54,6 @@ export default class Welcome {
       highlightTarget: true,
       my: 'top center',
       at: 'bottom center',
-      setup: () => {
-        setOpacity('intro_login_logout', 1)
-      },
-      teardown: () => {
-        setOpacity('intro_login_logout', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Use this button to run/stop your Bot')}
@@ -83,12 +64,6 @@ export default class Welcome {
       highlightTarget: true,
       my: 'right center',
       at: 'left center',
-      setup: () => {
-        setOpacity('group_start_stop', 1)
-      },
-      teardown: () => {
-        setOpacity('group_start_stop', 0.3)
-      },
     }, {
       content: `<p>
       ${translator.translateText('Good Luck!')}
@@ -113,13 +88,11 @@ export default class Welcome {
         this.tour._teardownCurrentStep = () => {
         }
         getUiComponent('blocker').hide()
-        setOpacityForAll(1)
         setDone('welcomeFinished')
         this.stop()
       },
       successStep: () => {
         getUiComponent('blocker').hide()
-        setOpacityForAll(1)
         setDone('welcomeFinished')
         this.stop()
       },
@@ -134,7 +107,6 @@ export default class Welcome {
     }
   }
   stop() {
-    setOpacityForAll(true, 1)
     this.tour.stop()
     Blockly.mainWorkspace.toolbox_.tree_.children_[4].setExpanded(false)
     delete this.tour
