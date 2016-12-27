@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import { parseQueryString } from 'binary-common-utils/lib/tools'
-import {set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager'
+import { set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager'
 import i18n from './_i18n'
 import zhTw from './translations/zh_TW/i10n.json'
 import de from './translations/de_DE/i10n.json'
