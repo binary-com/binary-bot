@@ -21,7 +21,7 @@ Blockly.Blocks.bba = {
       .appendField(translator.translateText('Std. Dev. Down Multiplier'))
     this.setOutput(true, 'Array')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Calculates Bollinger Bands (BB) list from a list with a period')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Calculates Bollinger Bands (BB) list from a list with a period'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

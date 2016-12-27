@@ -7,7 +7,7 @@ Blockly.Blocks.sell_price = {
       .appendField(translator.translateText('Sell profit/loss'))
     this.setOutput(true, 'Number')
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Returns the profit for sell at market.')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Returns the profit for sell at market.'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

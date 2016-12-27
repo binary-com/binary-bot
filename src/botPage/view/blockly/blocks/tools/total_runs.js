@@ -7,7 +7,7 @@ Blockly.Blocks.total_runs = {
       .appendField(translator.translateText('No. Of Runs'))
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Returns the number of runs since the beginning')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Returns the number of runs since the beginning'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

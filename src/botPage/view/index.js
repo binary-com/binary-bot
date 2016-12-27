@@ -117,7 +117,7 @@ export default class View {
           $('.account-type').text(`${prefix}`)
         } else {
           $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
-            '<div class="separator-line-thin-gray"></div>');
+            '<div class="separator-line-thin-gray"></div>')
         }
       }
     }
@@ -189,7 +189,7 @@ export default class View {
     const handleDragOver = (e) => {
       e.stopPropagation()
       e.preventDefault()
-      e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
+      e.dataTransfer.dropEffect = 'copy' // eslint-disable-line no-param-reassign
     }
 
     const dropZone = document.body

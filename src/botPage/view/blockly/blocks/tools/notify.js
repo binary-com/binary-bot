@@ -11,7 +11,7 @@ Blockly.Blocks.notify = {
     this.setPreviousStatement(true, null)
     this.setNextStatement(true, null)
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Creates notification')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Creates notification'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

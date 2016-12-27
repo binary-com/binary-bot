@@ -13,7 +13,7 @@ Blockly.Blocks.smaa = {
       .appendField(translator.translateText('Period'))
     this.setOutput(true, 'Array')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Calculates Simple Moving Average (SMA) list from a list of values with a period')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Calculates Simple Moving Average (SMA) list from a list of values with a period'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

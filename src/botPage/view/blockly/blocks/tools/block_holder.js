@@ -8,7 +8,7 @@ Blockly.Blocks.block_holder = {
     this.appendStatementInput('USELESS_STACK')
       .setCheck(null)
     this.setColour('#fef1cf')
-    this.setTooltip(translator.translateText('Put your blocks in here to prevent them from being removed')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Put your blocks in here to prevent them from being removed'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

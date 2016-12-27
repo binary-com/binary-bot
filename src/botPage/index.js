@@ -63,8 +63,8 @@ class BotPage {
         bot.stop()
       },
       showCode: () => {
-        console.log(this.view.blockly.generatedJs); // eslint-disable-line no-console
-        console.log(this.view.blockly.blocksXmlStr); // eslint-disable-line no-console
+        console.log(this.view.blockly.generatedJs) // eslint-disable-line no-console
+        console.log(this.view.blockly.blocksXmlStr) // eslint-disable-line no-console
       },
       log: (message, type) => {
         observer.emit(`ui.log.${type}.left`, message)

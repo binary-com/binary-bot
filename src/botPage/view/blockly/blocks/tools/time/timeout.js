@@ -13,9 +13,9 @@ Blockly.Blocks.timeout = {
     this.appendDummyInput()
       .appendField(translator.translateText('Second(s)'))
     this.setInputsInline(true)
-    this.setPreviousStatement(true, null);
+    this.setPreviousStatement(true, null)
     this.setColour('#fef1cf')
-    this.setTooltip(translator.translateText('Run the blocks inside after n seconds')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Run the blocks inside after n seconds'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

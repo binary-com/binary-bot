@@ -5,15 +5,15 @@ import { set as setStorage } from 'binary-common-utils/lib/storageManager'
 export function setAppId() {
   let appId = 0
   if (document.location.port === '8080') {
-    appId = 1168; // binary bot on localhost
+    appId = 1168 // binary bot on localhost
   } else if (document.location.hostname.indexOf('github.io') >= 0) {
-    appId = 1180; // binary bot github.io
+    appId = 1180 // binary bot github.io
   } else if (document.location.pathname.indexOf('/beta') >= 0) {
-    appId = 1261; // binary bot beta
+    appId = 1261 // binary bot beta
   } else if (document.location.pathname.indexOf('/translation') >= 0) {
-    appId = 1412; // binary bot translation
+    appId = 1412 // binary bot translation
   } else {
-    appId = 1169; // binary bot
+    appId = 1169 // binary bot
   }
   setStorage('appId', appId)
 }

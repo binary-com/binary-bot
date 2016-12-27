@@ -9,7 +9,7 @@ Blockly.Blocks.is_candle_black = {
     this.setInputsInline(false)
     this.setOutput(true, 'Boolean')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Checks if the given candle is black, returns true if close is less than open in the given candle.')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Checks if the given candle is black, returns true if close is less than open in the given candle.'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

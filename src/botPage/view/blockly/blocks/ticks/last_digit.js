@@ -8,7 +8,7 @@ Blockly.Blocks.last_digit = {
       .appendField(translator.translateText('Last Digit'))
     this.setOutput(true, 'Number')
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Returns the last digit of the latest tick')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Returns the last digit of the latest tick'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

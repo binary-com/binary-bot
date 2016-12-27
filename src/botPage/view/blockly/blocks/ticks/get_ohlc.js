@@ -11,7 +11,7 @@ Blockly.Blocks.get_ohlc = {
     this.setOutput(true, 'Candle')
     this.setInputsInline(true)
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Get the nth recent candle')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Get the nth recent candle'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

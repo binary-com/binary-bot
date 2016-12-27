@@ -437,7 +437,7 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
 })
 
 export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
-  let url = blockObj.getFieldValue('URL');
+  let url = blockObj.getFieldValue('URL')
   if (url.indexOf('http') !== 0) {
     url = `http://${url}`
   }

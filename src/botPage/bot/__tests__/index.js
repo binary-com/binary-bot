@@ -1,5 +1,5 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
-import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
+import { expect } from 'chai'
 import { observer } from 'binary-common-utils/lib/observer'
 import Bot from '../'
 import mockWebsocket from '../../../common/mock/websocket'

@@ -3,7 +3,7 @@ import $ from 'jquery'
 import { translator } from '../common/translator'
 import { setAppId, oauthLogin } from '../common/appId'
 
-window.$ = $; // eslint-disable-line no-undef
+window.$ = $ // eslint-disable-line no-undef
 setAppId()
 oauthLogin(() => {
   $('[data-i18n-text]')

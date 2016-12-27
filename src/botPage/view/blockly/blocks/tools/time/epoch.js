@@ -7,7 +7,7 @@ Blockly.Blocks.epoch = {
       .appendField(translator.translateText('Seconds Since Epoch'))
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Returns the epoch time (seconds since epoch)')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Returns the epoch time (seconds since epoch)'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

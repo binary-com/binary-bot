@@ -9,6 +9,7 @@ import './webpack';
 const getConfig = (prefix) => ({
   index: `<script src="js/${prefix ? getManifest(`index${prefix}.js`) : 'index.js'}"></script>`,
   bot: `<script src="js/${prefix ? getManifest(`bot${prefix}.js`) : 'bot.js'}"></script>`,
+  jquery: `<script src="js/${getManifest('jquery.js')}"></script>`,
   bundle: `<script src="js/${getManifest('bundle.js')}"></script>`,
   bundle_css: `<link href="css/${getManifest(`bundle${prefix}.css`)}" rel="stylesheet" />`,
   main_css: `<link href="css/${getManifest('main.css')}" rel="stylesheet" />`,

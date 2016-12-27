@@ -45,8 +45,8 @@ export const notifyError = (error) => {
     position: 'bottom right',
     className: 'error',
   })
-  console.warn(error); // eslint-disable-line no-console
-  console.error(completeMsg); // eslint-disable-line no-console
+  console.warn(error) // eslint-disable-line no-console
+  console.error(completeMsg) // eslint-disable-line no-console
   return message
 }
 
@@ -65,9 +65,9 @@ export const logHandler = () => {
     const subtype = (position === 'left') ? '.left' : ''
     observer.register(`ui.log.${type}${subtype}`, (message) => {
       if (type === 'warn') {
-        console.warn(message); // eslint-disable-line no-console
+        console.warn(message) // eslint-disable-line no-console
       } else {
-        console.log(message); // eslint-disable-line no-console
+        console.log(message) // eslint-disable-line no-console
       }
       if (position === 'left') {
         $.notify(message, {
@@ -93,7 +93,7 @@ export const logHandler = () => {
       'log.bot.stop', 'log.purchase.start', 'log.purchase.purchase',
       'log.purchase.win', 'log.purchase.loss',
       'log.trade.purchase', 'log.trade.update', 'log.trade.finish']) {
-    observer.register(event, (d) => console.log(event, d)); // eslint-disable-line no-console
+    observer.register(event, (d) => console.log(event, d)) // eslint-disable-line no-console
   }
 
   for (const event of ['log.bot.login', 'log.trade.finish']) {

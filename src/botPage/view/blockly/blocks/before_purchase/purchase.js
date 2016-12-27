@@ -10,7 +10,7 @@ Blockly.Blocks.purchase = {
       .appendField(new Blockly.FieldDropdown(getPurchaseChoices), 'PURCHASE_LIST')
     this.setPreviousStatement(true, 'Purchase')
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Purchases a chosen contract.')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Purchases a chosen contract.'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

@@ -15,7 +15,7 @@ Blockly.Blocks.candle_type = {
     this.setOutput(true, 'Number')
     this.setInputsInline(true)
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Read the selected candle value in the nth recent candle')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Read the selected candle value in the nth recent candle'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
