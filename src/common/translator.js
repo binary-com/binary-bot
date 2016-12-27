@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import { parseQueryString } from 'binary-common-utils/lib/tools'
-import { set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager'
+import {set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager'
 import i18n from './_i18n'
 import zhTw from './translations/zh_TW/i10n.json'
 import de from './translations/de_DE/i10n.json'
@@ -49,15 +49,19 @@ const languageDisplayName = {
 
 export default class Translator {
   constructor() {
-    $('.language').on('change_language', (event, value) => {
-      document.location.search = `l=${value}`
-    })
-    $.each(languageDisplayName, (key, value) => { // populate language dropdown
-      $('#select_language').append(`<li class=${key}>${value}</li>`);
-    })
+    $('.language')
+      .click(function onClick() {
+        $('ul#select_language li')
+          .click(function onClick() {
+            const lang = $(this).attr('class')
+            document.location.search = `l=${lang}`
+          })
+      })
     const lang = this.getLanguage()
-    $('.language').text(languageDisplayName[lang]);
-    $(document.getElementsByClassName(lang)[0]).hide();
+    $('.language')
+      .text(languageDisplayName[lang]);
+    $(`.${lang}`)
+      .hide();
     if (lang === 'ach') {
       window._jipt = []
       window._jipt.push(['project', 'binary-bot'])

@@ -2,7 +2,6 @@ import 'babel-polyfill'
 import $ from 'jquery'
 import { translator } from '../common/translator'
 import { setAppId, oauthLogin } from '../common/appId'
-import '../common/language_dropdown'
 
 window.$ = $; // eslint-disable-line no-undef
 setAppId()
