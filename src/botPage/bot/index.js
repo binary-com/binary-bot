@@ -1,9 +1,11 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { getToken } from 'binary-common-utils/lib/storageManager'
+import { getUTCTime } from 'binary-common-utils/lib/tools'
 import _ from 'underscore'
 import PurchaseCtrl from './purchaseCtrl'
 import _Symbol from './symbol'
+import { translator } from '../../common/translator'
 import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect'
 
 const decorateTradeOptions = (tradeOption, otherOptions = {}) => {
@@ -27,6 +29,25 @@ const decorateTradeOptions = (tradeOption, otherOptions = {}) => {
   }
   return option
 }
+
+const createDetails = (contract) => {
+  const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2)
+  const result = (profit < 0) ? 'loss' : 'win'
+  observer.emit(`log.purchase.${result}`, {
+    profit,
+    transactionId: contract.transaction_ids.buy,
+  })
+  return [
+    contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
+    profit, contract.contract_type,
+    getUTCTime(new Date(parseInt(`${contract.entry_tick_time}000`, 10))), +contract.entry_tick,
+    getUTCTime(new Date(parseInt(`${contract.exit_tick_time}000`, 10))), +contract.exit_tick,
+    +((contract.barrier) ? contract.barrier : 0), result,
+  ]
+}
+
+let sessionRuns = 0
+let sessionProfit = 0
 
 export default class Bot {
   constructor(api = null) {
@@ -55,10 +76,12 @@ export default class Bot {
     }
   }
   start(...args) {
-    const [token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysisList = []] = args
+    const [token, tradeOption, beforePurchase, duringPurchase, afterPurchase, sameTrade, tickAnalysisList = [], limitations = {}] = args
     this.startArgs = args
+    this.limitations = limitations
     if (!this.purchaseCtrl) {
-      this.purchaseCtrl = new PurchaseCtrl(this.api, beforePurchase, duringPurchase, afterPurchase)
+      this.afterPurchase = afterPurchase
+      this.purchaseCtrl = new PurchaseCtrl(this.api, beforePurchase, duringPurchase)
       this.tickAnalysisList = tickAnalysisList
       this.tradeOption = tradeOption
       observer.emit('log.bot.start', {
@@ -76,6 +99,7 @@ export default class Bot {
       if (sameTrade) {
         this.startTrading()
       } else {
+        sessionRuns = sessionProfit = 0
         const promises = []
         if (this.currentToken !== token) {
           promises.push(this.login(token))
@@ -211,6 +235,7 @@ export default class Bot {
         }
         const ticks = {
           direction,
+          pipSize: Number(Number(this.pip).toExponential().substring(3)),
           ticks: this.ticks,
           ohlc: this.candles,
         }
@@ -222,10 +247,7 @@ export default class Bot {
         if (this.purchaseCtrl) {
           this.purchaseCtrl.updateTicks(ticks)
         }
-        observer.emit('bot.tickUpdate', {
-          ...ticks,
-          pip: this.pip,
-        })
+        observer.emit('bot.tickUpdate', ticks)
       }
       observer.register('api.tick', apiTick)
     }
@@ -288,6 +310,7 @@ export default class Bot {
   waitForTradePurchase() {
     const tradePurchase = (info) => {
       this.totalRuns += 1
+      sessionRuns += 1
       observer.emit('bot.tradeInfo', {
         totalRuns: this.totalRuns,
         transaction_ids: {
@@ -319,6 +342,7 @@ export default class Bot {
     } else if (+profit < 0) {
       this.totalLosses += 1
     }
+    sessionProfit = +(sessionProfit + profit).toFixed(2)
     this.totalProfit = +(this.totalProfit + profit).toFixed(2)
     this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2)
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2)
@@ -331,17 +355,34 @@ export default class Bot {
       totalPayout: this.totalPayout,
     })
   }
-  botFinish(contract) {
+  tradeAgain(finishedContract) {
+    const { maxLoss, maxTrades } = this.limitations
+    if (maxLoss && maxTrades) {
+      if (sessionRuns >= maxTrades) {
+        observer.emit('LimitsReached', translator.translateText('Maximum number of trades reached'))
+        return
+      }
+      if (sessionProfit <= (-maxLoss)) {
+        observer.emit('LimitsReached', translator.translateText('Maximum loss amount reached'))
+        return
+      }
+    }
+    const afterPurchaseContext = {
+      finishedContract,
+      contractDetails: createDetails(finishedContract),
+    }
+    this.afterPurchase.call(afterPurchaseContext)
+  }
+  botFinish(finishedContract) {
     for (const obs of this.unregisterOnFinish) {
       observer.unregisterAll(...obs)
     }
     this.unregisterOnFinish = []
-    this.updateTotals(contract)
-    observer.emit('bot.finish', contract)
-    // order matters
+    this.updateTotals(finishedContract)
+    observer.emit('bot.finish', finishedContract)
     this.purchaseCtrl.destroy()
     this.purchaseCtrl = null
-  //
+    this.tradeAgain(finishedContract)
   }
   stop(contract) {
     if (!this.purchaseCtrl) {
@@ -352,12 +393,10 @@ export default class Bot {
       observer.unregisterAll(...obs)
     }
     this.unregisterOnFinish = []
-    // order matters
     if (this.purchaseCtrl) {
       this.purchaseCtrl.destroy()
       this.purchaseCtrl = null
     }
-    //
     this.api.originalApi.unsubscribeFromAllProposals().then(() => 0, () => 0)
     if (contract) {
       observer.emit('log.bot.stop', contract)

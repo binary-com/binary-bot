@@ -146,7 +146,7 @@ export const insideScope = (blockObj, ev, name, scopes) => {
     if (topParent && scopes.indexOf(topParent.type) < 0) {
       disable(blockObj,
         `${name} ${
-        translator.translateText('must be added either inside one of these')
+        translator.translateText('must be added inside')
         }: (${getScopeNames(scopes)})`)
     } else {
       enable(blockObj)

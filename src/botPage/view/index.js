@@ -10,10 +10,10 @@ import _Blockly from './blockly'
 import { translator } from '../../common/translator'
 import Welcome from './tours/welcome'
 import Introduction from './tours/introduction'
-import MakeSimpleStrategy from './tours/makeSimpleStrategy'
 import { logHandler } from './logger'
 import { SaveXml } from './react-components/SaveXml'
 import { RestartTimeout } from './react-components/RestartTimeout'
+import { LimitsPanel } from './react-components/LimitsPanel'
 
 let realityCheckTimeout
 
@@ -23,6 +23,7 @@ const showRealityCheck = () => {
 }
 
 const hideRealityCheck = () => {
+  $('#rc-err').hide()
   $('.blocker').hide()
   $('.reality-check').hide()
 }
@@ -94,23 +95,26 @@ export default class View {
   }
   updateTokenList() {
     const tokenList = getTokenList()
+    const loginButton = $('#login')
+    const accountList = $('#account-list')
     if (tokenList.length === 0) {
-      $('#login').css('display', 'inline-block')
-      $('#client-logged-in').css('display', 'none')
+      loginButton.show()
+      accountList.hide()
+      $('.account-id').removeAttr('value').text('')
+      $('.account-type').text('')
+      $('.login-id-list').children().remove()
     } else {
-      $('#login').css('display', 'none')
-      $('#client-logged-in').css('display', 'inline-block')
+      loginButton.hide()
+      accountList.show()
       for (const tokenInfo of tokenList) {
-        let prefix
+        let prefix = ''
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
-        } else {
-          prefix = ''
         }
         if (tokenList.indexOf(tokenInfo) === 0) {
           $('.account-id').attr('value', `${tokenInfo.token}`)
-            .html(`${tokenInfo.account_name}`)
-          $('.account-type').html(`${prefix}`)
+            .text(`${tokenInfo.account_name}`)
+          $('.account-type').text(`${prefix}`)
         } else {
           $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
             '<div class="separator-line-thin-gray"></div>');
@@ -138,7 +142,6 @@ export default class View {
   initTours() {
     this.tours.introduction = new Introduction()
     this.tours.welcome = new Welcome()
-    this.tours.makeSimpleStrategy = new MakeSimpleStrategy()
   }
   startTour() {
     const viewScope = this
@@ -308,17 +311,17 @@ export default class View {
           .click()
       })
 
-    $('#logout')
+    $('#logout, #logout-reality-check')
       .click(() => {
         logout()
+        hideRealityCheck()
         $('.logout').hide()
       })
 
-    $('#continueTrading')
+    $('#continue-trading')
       .click(() => {
         const time = parseInt($('#realityDuration').val(), 10)
         if (time >= 10 && time <= 120) {
-          $('#rc-err').hide()
           hideRealityCheck()
           startRealityCheck(time)
         } else {
@@ -326,11 +329,25 @@ export default class View {
         }
       })
 
+    const startBot = (limitations) => {
+      $('#stopButton').show()
+      $('#runButton').hide()
+      this.blockly.run(limitations)
+    }
+
     $('#runButton')
       .click(() => {
-        $('#stopButton').show()
-        $('#runButton').hide()
-        this.blockly.run()
+        const token = $('.account-id').first().attr('value')
+        const tokenObj = getToken(token)
+        if (tokenObj && tokenObj.hasTradeLimitation) {
+          ReactDOM.render(
+            <LimitsPanel
+            onSave={startBot}
+            />
+            , document.getElementById('limits-panel'))
+        } else {
+          startBot()
+        }
       })
 
     $('#resetButton')
@@ -368,6 +385,10 @@ export default class View {
       })
       .text('Log in')
 
+    $('#statement-reality-check').click(() => {
+      document.location =
+        `https://www.binary.com/${translator.getLanguage()}/user/statementws.html`
+    })
     $(document).keydown((e) => {
       if (e.which === 189) { // -
         if (e.ctrlKey) {
@@ -432,7 +453,7 @@ export default class View {
       id="trade-chart0"
       contract={isLine() ? this.contractForChart : false}
       hideZoomControls={isLine() && this.contractForChart}
-      pipSize={Number(Number(info.pip).toExponential().substring(3))}
+      pipSize={info.pipSize}
       shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
       ticks={info[chartToDataType[this.chartType]]}
       type={this.chartType}
@@ -444,7 +465,7 @@ export default class View {
   addEventHandlers() {
     for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
       observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
-        if (error.code === 'InvalidToken') {
+        if (error.error && error.error.code === 'InvalidToken') {
           removeAllTokens()
           this.updateTokenList()
         }

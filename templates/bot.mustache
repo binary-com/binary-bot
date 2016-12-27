@@ -1,61 +1,74 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    {{> security }}
-    {{> head }}
-    <title>Binary Bot</title>
-    {{> fontello_css }}
-    {{> bundle_css }}
-    {{> bot_css }}
-    {{> chart_css }}
-    <link rel="stylesheet" href="https://style.binary.com/binary.css">
-    {{> ie }}
-  </head>
-  <body>
-    <div id="center"></div>
-    <span id="restartTimeout"></span>
-    <div>
-      <div class="blocker"></div>
-      <div class="reality-check" style="display: none">
-        <h1 data-i18n-text="Reality Check"></h1>
-        <p data-i18n-text="Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis."></p>
-        <p data-i18n-text="Please specify your preferred reality-check interval in minutes">
-          <input id="realityDuration" interval="1" maxlength="4" min="1" size="6" type="number" value="10">
-        </p>
-        <p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 120."></p>
-        <button bcont="1" class="button" id="continueTrading" data-i18n-text="Continue Trading"></button>
+<head>
+{{> security }}
+
+{{> head }}
+	<title>Binary Bot</title>
+
+{{> fontello_css }}
+
+{{> bundle_css }}
+{{> bot_css }}
+{{> chart_css }}
+<link rel="stylesheet" href="https://style.binary.com/binary.css">
+
+{{> ie }}
+</head>
+<body>
+  <div id="center"></div>
+	<span id="limits-panel"></span>
+	<span id="restartTimeout"></span>
+	<div>
+		<div class="blocker"></div>
+		<div class="reality-check" style="display: none">
+			<h1 data-i18n-text="Reality Check"></h1>
+			<p data-i18n-text="Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis."></p>
+			<p data-i18n-text="Please specify your preferred reality-check interval in minutes">
+				<input id="realityDuration" interval="1" maxlength="4" min="1" size="6" type="number" value="10">
+			</p>
+			<p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 120."></p>
+      <div>
+        <button bcont="1" class="button" id="continue-trading" data-i18n-text="Continue Trading"></button>
+        <a id="statement-reality-check" class="button-secondary" href="#">
+          <span data-i18n-text="Statement"></span>
+        </a>
+        <a id="logout-reality-check" class="button-secondary" href="#">
+          <span data-i18n-text="Log out"></span>
+        </a>
       </div>
-    </div>
-    {{> loading }}
-    <div id="topbar">
-      <div class="wrapper">
-        {{> language }}
-        <select id="tours" style="display: none">
-          <option value="" data-i18n-text="Select a Tour"></option>
-          <option value="welcome" data-i18n-text="Welcome!"></option>
-          <option value="introduction" data-i18n-text="Introduction"></option>
-          <option value="makeSimpleStrategy" data-i18n-text="1. Make a simple strategy"></option>
-        </select>
+		</div>
+	</div>
+  {{> loading }}
+  <div id="topbar">
+	  <div class="right-header">
+	    {{> language }}
+	    <select id="tours">
+        <option value="" data-i18n-text="Select a Tour"></option>
+	      <option value="welcome" data-i18n-text="Welcome!"></option>
+	      <option value="introduction" data-i18n-text="Introduction"></option>
+	    </select>
+	  </div>
+  </div>
+  <div id="header">
+      <div class="left-header">
+          <div class="logo-wrapper">
+              <a href="" id="logo">
+                  <div class="logo-parent">
+                      <div class="logo">
+                          <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
+                      </div>
+                      <div class="binary-logo-text">
+                          <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
+                      </div>
+                  </div>
+              </a>
+          </div>
       </div>
-    </div>
-    <div id="header">
-      <div class="wrapper">
-        <div class="logo-wrapper">
-          <a href="" id="logo">
-            <div class="logo-parent">
-              <div class="logo">
-                <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
-              </div>
-              <div class="binary-logo-text">
-                <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="right-header">
-          <div class="intro-login-logout">
-            <div id="client-logged-in">
-              <div id="main-logout">
+      <div class="right-header">
+        <div class="intro-login-logout">
+          <div id="account-list">
+            <div id="main-logout">
                 <ul id="main-account" class="nav-menu main-nav">
                   <li class="account">
                     <a href="javascript:;">
@@ -88,12 +101,8 @@
                 </ul>
               </div>
             </div>
-            <div>
-              <a class="button">
-                <span id="login" data-i18n-text="Log in"></span>
-              </a>
-            </div>
           </div>
+          <button id="login" data-i18n-text="Log in" />
         </div>
       </div>
     </div>

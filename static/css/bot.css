@@ -259,7 +259,7 @@ button:focus {
 	float: right;
 }
 
-#client-logged-in {
+#account-list {
     display: none;
 }
 
@@ -327,10 +327,10 @@ button:focus {
 	margin-left: 0.2em;
 }
 
-.reality-check button {
-	left: 50%;
+.reality-check button, .reality-check a {
+  float: right;
 	margin-bottom: 0em;
-	margin-left: -5em;
+	margin-right: 0.5em;
 	position: relative;
 }
 

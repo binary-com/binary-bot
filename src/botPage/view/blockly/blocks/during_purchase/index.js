@@ -4,15 +4,17 @@ import './sell_at_market'
 import './check_sell'
 import './sell_price'
 import { configMainBlock, setBlockTextColor } from '../../utils'
+import { sellContract } from '../images'
 
 Blockly.Blocks.during_purchase = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(translator.translateText('(3) things to do when trade is in progress'))
+      .appendField(new Blockly.FieldImage(sellContract, 15, 15, 'S'))
+      .appendField(translator.translateText('(3) Watch and sell your purchased contract'))
     this.appendStatementInput('DURING_PURCHASE_STACK')
       .setCheck('SellAtMarket')
     this.setColour('#2a3052')
-    this.setTooltip(translator.translateText('Sell at market before a trade is finished')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Watch the purchased contract info and sell at market if available (Runs on contract update)'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
@@ -28,7 +30,7 @@ Blockly.JavaScript.during_purchase = (block) => {
     try {
       Blockly.mainWorkspace.highlightBlock('${block.id}')
       ${stack}
-    } catch (e) { 
+    } catch (e) {
       if (e.name !== 'BlocklyError') {
         Bot.notifyError(e);
         throw e;
