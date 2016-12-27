@@ -352,3 +352,10 @@ select.tour-highlight {
 .actions_menu {
   display: none;
 }
+
+.wrapper {
+	padding: 0 10px 0 0;
+}
+#select_language {
+	z-index: 999;
+}

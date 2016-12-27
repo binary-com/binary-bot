@@ -1,168 +1,164 @@
 <!DOCTYPE html>
 <html>
-<head>
-{{> security }}
-
-{{> head }}
-	<title>Binary Bot</title>
-
-{{> fontello_css }}
-
-{{> bundle_css }}
-{{> bot_css }}
-{{> chart_css }}
-<link rel="stylesheet" href="https://style.binary.com/binary.css">
-
-{{> ie }}
-</head>
-<body>
-  <div id="center"></div>
-	<span id="restartTimeout"></span>
-	<div>
-		<div class="blocker"></div>
-		<div class="reality-check" style="display: none">
-			<h1 data-i18n-text="Reality Check"></h1>
-			<p data-i18n-text="Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis."></p>
-			<p data-i18n-text="Please specify your preferred reality-check interval in minutes">
-				<input id="realityDuration" interval="1" maxlength="4" min="1" size="6" type="number" value="10">
-			</p>
-			<p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 120."></p>
-			<button bcont="1" class="button" id="continueTrading" data-i18n-text="Continue Trading"></button>
-		</div>
-	</div>
-  {{> loading }}
-  <div id="topbar">
-	  <div class="right-header">
-	    {{> language }}
-	    <select id="tours" style="display: none">
-	              <option value="" data-i18n-text="Select a Tour"></option>
-	      <option value="welcome" data-i18n-text="Welcome!"></option>
-	      <option value="introduction" data-i18n-text="Introduction"></option>
-	      <option value="makeSimpleStrategy" data-i18n-text="1. Make a simple strategy"></option>
-	    </select>
-	  </div>
-  </div>
-  <div id="header">
-      <div class="left-header">
-          <div class="logo-wrapper">
-              <a href="" id="logo">
-                  <div class="logo-parent">
-                      <div class="logo">
-                          <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
-                      </div>
-                      <div class="binary-logo-text">
-                          <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
-                      </div>
-                  </div>
-              </a>
-          </div>
+  <head>
+    {{> security }}
+    {{> head }}
+    <title>Binary Bot</title>
+    {{> fontello_css }}
+    {{> bundle_css }}
+    {{> bot_css }}
+    {{> chart_css }}
+    <link rel="stylesheet" href="https://style.binary.com/binary.css">
+    {{> ie }}
+  </head>
+  <body>
+    <div id="center"></div>
+    <span id="restartTimeout"></span>
+    <div>
+      <div class="blocker"></div>
+      <div class="reality-check" style="display: none">
+        <h1 data-i18n-text="Reality Check"></h1>
+        <p data-i18n-text="Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis."></p>
+        <p data-i18n-text="Please specify your preferred reality-check interval in minutes">
+          <input id="realityDuration" interval="1" maxlength="4" min="1" size="6" type="number" value="10">
+        </p>
+        <p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 120."></p>
+        <button bcont="1" class="button" id="continueTrading" data-i18n-text="Continue Trading"></button>
       </div>
-      <div class="right-header">
-        <div class="intro-login-logout">
-          <div id="client-logged-in">
-            <div id="main-logout">
+    </div>
+    {{> loading }}
+    <div id="topbar">
+      <div class="wrapper">
+        {{> language }}
+        <select id="tours" style="display: none">
+          <option value="" data-i18n-text="Select a Tour"></option>
+          <option value="welcome" data-i18n-text="Welcome!"></option>
+          <option value="introduction" data-i18n-text="Introduction"></option>
+          <option value="makeSimpleStrategy" data-i18n-text="1. Make a simple strategy"></option>
+        </select>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper">
+        <div class="logo-wrapper">
+          <a href="" id="logo">
+            <div class="logo-parent">
+              <div class="logo">
+                <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
+              </div>
+              <div class="binary-logo-text">
+                <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="right-header">
+          <div class="intro-login-logout">
+            <div id="client-logged-in">
+              <div id="main-logout">
                 <ul id="main-account" class="nav-menu main-nav">
-                    <li class="account">
-                        <a href="javascript:;">
-                            <div class="main-account">
-                                <div class="account-type"></div>
-                                <div class="account-id"></div>
-                                <div class="topMenuBalance">0</div>
-                            </div>
-                            <div class="nav-caret"></div>
-                        </a>
-                    </li>
+                  <li class="account">
+                    <a href="javascript:;">
+                      <div class="main-account">
+                        <div class="account-type"></div>
+                        <div class="account-id"></div>
+                        <div class="topMenuBalance">0</div>
+                      </div>
+                      <div class="nav-caret"></div>
+                    </a>
+                  </li>
                 </ul>
                 <ul id="all-accounts" class="nav-menu main-nav">
-                    <li class="account">
-                        <a href="javascript:;">
-                            <div class="main-account">
-                                <div class="account-type"></div>
-                                <div class="account-id"></div>
-                                <div class="topMenuBalance">0</div>
-                            </div>
-                            <div class="nav-caret"></div>
-                        </a>
-                        <ul>
-                            <div class="login-id-list"></div>
-                            <a href="javascript:;" id="btn_logout" class="logout">
-                                <li id="logout" data-i18n-text="Log out"></li>
-                            </a>
-                        </ul>
-                    </li>
+                  <li class="account">
+                    <a href="javascript:;">
+                      <div class="main-account">
+                        <div class="account-type"></div>
+                        <div class="account-id"></div>
+                        <div class="topMenuBalance">0</div>
+                      </div>
+                      <div class="nav-caret"></div>
+                    </a>
+                    <ul>
+                      <div class="login-id-list"></div>
+                      <a href="javascript:;" id="btn_logout" class="logout">
+                        <li id="logout" data-i18n-text="Log out"></li>
+                      </a>
+                    </ul>
+                  </li>
                 </ul>
+              </div>
             </div>
-          </div>
-          <div>
-            <a class="button">
+            <div>
+              <a class="button">
                 <span id="login" data-i18n-text="Log in"></span>
-            </a>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-  </div>
-  <div id="blocklyDiv"></div>
-  <div id="summaryPanel" class="panel">
+    </div>
+    <div id="blocklyDiv"></div>
+    <div id="summaryPanel" class="panel">
       <div class="panelExitButton"><p class="icon-close"></p></div>
       <div class="description">
-          <h4 data-i18n-text="Results"></h4>
+        <h4 data-i18n-text="Results"></h4>
       </div>
-    <div class="content">
-      <h4>
+      <div class="content">
+        <h4>
         <span data-i18n-text="Summary"></span>
-      </h4>
-      <table id="summaryDisplay">
-        <thead>
-          <tr>
-            <th data-i18n-text="No. of runs"></th>
-            <th data-i18n-text="Total Stake"></th>
-            <th data-i18n-text="Total Payout"></th>
-            <th data-i18n-text="Win"></th>
-            <th data-i18n-text="Loss"></th>
-            <th data-i18n-text="Total Profit/Loss"></th>
-            <th data-i18n-text="Balance"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="totalRuns"></td>
-            <td class="totalStake"></td>
-            <td class="totalPayout"></td>
-            <td class="totalWins"></td>
-            <td class="totalLosses"></td>
-            <td class="totalProfit"></td>
-            <td class="balance"></td>
-          </tr>
-        </tbody>
-      </table>
-      <h4>
-        <span data-i18n-text="Trades"></span>
-      </h4>
-      <div class="table-scroll">
-        <table id="tradesDisplay">
+        </h4>
+        <table id="summaryDisplay">
           <thead>
             <tr>
-              <th><span data-i18n-text="Number"></span></th>
-              <th><span data-i18n-text="Reference"></span></th>
-              <th><span data-i18n-text="Trade Type"></span></th>
-              <th><span data-i18n-text="Entry Spot"></span></th>
-              <th><span data-i18n-text="Exit Spot"></span></th>
-              <th><span data-i18n-text="Buy Price"></span></th>
-              <th><span data-i18n-text="Final Price"></span></th>
-              <th><span data-i18n-text="Profit/Loss"></span></th>
+              <th data-i18n-text="No. of runs"></th>
+              <th data-i18n-text="Total Stake"></th>
+              <th data-i18n-text="Total Payout"></th>
+              <th data-i18n-text="Win"></th>
+              <th data-i18n-text="Loss"></th>
+              <th data-i18n-text="Total Profit/Loss"></th>
+              <th data-i18n-text="Balance"></th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td class="totalRuns"></td>
+              <td class="totalStake"></td>
+              <td class="totalPayout"></td>
+              <td class="totalWins"></td>
+              <td class="totalLosses"></td>
+              <td class="totalProfit"></td>
+              <td class="balance"></td>
+            </tr>
           </tbody>
         </table>
+        <h4>
+        <span data-i18n-text="Trades"></span>
+        </h4>
+        <div class="table-scroll">
+          <table id="tradesDisplay">
+            <thead>
+              <tr>
+                <th><span data-i18n-text="Number"></span></th>
+                <th><span data-i18n-text="Reference"></span></th>
+                <th><span data-i18n-text="Trade Type"></span></th>
+                <th><span data-i18n-text="Entry Spot"></span></th>
+                <th><span data-i18n-text="Exit Spot"></span></th>
+                <th><span data-i18n-text="Buy Price"></span></th>
+                <th><span data-i18n-text="Final Price"></span></th>
+                <th><span data-i18n-text="Profit/Loss"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <div id="chart"></div>
       </div>
-      <div id="chart"></div>
     </div>
-  </div>
-  <form id="fileUploadForm" style="display: none;">
-    <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
-  </form>
-  <div id="fixed-bar-right" class="actions_menu">
+    <form id="fileUploadForm" style="display: none;">
+      <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
+    </form>
+    <div id="fixed-bar-right" class="actions_menu">
       <div class="group-save">
         <div><button title="Load the blocks as an XML file" id="loadXml" class="icon-browse"></button></div>
         <div id="saveXml"></div>
@@ -188,11 +184,9 @@
         <div><button title="Run the blocks" id="runButton" class="icon-run"></button></div>
         <div><button title="Stop the blocks" id="stopButton" class="icon-stop"></button></div>
       </div>
-  </div>
-
-  {{> bundle}}
-  {{> bot}}
-  <script src="https://style.binary.com/binary.js"></script>
-
-</body>
+    </div>
+    {{> bundle}}
+    {{> bot}}
+    <script src="https://style.binary.com/binary.js"></script>
+  </body>
 </html>

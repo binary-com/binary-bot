@@ -11,13 +11,19 @@ html, body {
     border-top: 2px solid #394171;
     border-bottom: 4px solid #e98024;
 }
-#header .wrapper {
+#header .wrapper, #topbar .wrapper{
     max-width: 960px;
     margin: 0 auto;
 }
 #topbar {
     background-color: #15212d;
-    height: 20px;
+    width: 100%;
+    color: #fff;
+    line-height: 1;
+    font-size: 70%;
+    text-align: right;
+    padding: 3px 20px;
+    display: table;
 }
 #main {
     width: 100%;
