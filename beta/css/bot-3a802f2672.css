@@ -310,24 +310,7 @@
   fill: white; }
 
 .binary-chart-info-bar {
-  padding: 0.25em 0.5em;
-  border-radius: 3px;
-  background: rgba(22, 26, 36, 0.75);
-  border: 1px solid #161a24;
-  color: #bebebe; }
-  .binary-chart-info-bar .value-row {
-    font-weight: bold; }
-  .binary-chart-info-bar .ohlc-row {
-    text-transform: uppercase; }
-  .binary-chart-info-bar > div {
-    line-height: 1.5;
-    display: flex; }
-    .binary-chart-info-bar > div > span {
-      flex: 1; }
-  .inverse .binary-chart-info-bar {
-    background: rgba(255, 255, 255, 0.75);
-    border: 1px solid white;
-    color: #3e3e3e; }
+  display: none; }
 
 .report {
   width: 100%;
@@ -778,4 +761,4 @@ html, body {
   -webkit-box-sizing: inherit;
   box-sizing: inherit; }
 
-/*# sourceMappingURL=bot-c870d64de3.css.map */
+/*# sourceMappingURL=bot-3a802f2672.css.map */
