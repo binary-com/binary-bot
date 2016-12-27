@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import { parseQueryString } from 'binary-common-utils/lib/tools'
-import {set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager'
+import { set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager'
 import i18n from './_i18n'
 import zhTw from './translations/zh_TW/i10n.json'
 import de from './translations/de_DE/i10n.json'
@@ -30,38 +30,19 @@ const supportedLanguages = {
   fr,
   en,
   ach,
-};
-
-const languageDisplayName = {
-  de: 'Deutsch',
-  en: 'English',
-  es: 'Español',
-  fr: 'Français',
-  id: 'Indonesia',
-  it: 'Italiano',
-  pl: 'Polish',
-  pt: 'Português',
-  ru: 'Русский',
-  vi: 'Vietnamese',
-  zh_cn: '简体中文',
-  zh_tw: '繁體中文',
-};
+}
 
 export default class Translator {
   constructor() {
-    $('.language')
-      .click(function onClick() {
-        $('ul#select_language li')
-          .click(function onClick() {
-            const lang = $(this).attr('class')
-            document.location.search = `l=${lang}`
-          })
-      })
     const lang = this.getLanguage()
-    $('.language')
-      .text(languageDisplayName[lang]);
-    $(`.${lang}`)
-      .hide();
+     $('#select_language li:first')
+       .nextAll().click((e) => {
+         const newLang = $(e.target).attr('class')
+         document.location.search = `l=${newLang}`
+       })
+     $('.language')
+       .text($(`.${lang}`)
+       .hide().text())
     if (lang === 'ach') {
       window._jipt = []
       window._jipt.push(['project', 'binary-bot'])
