@@ -12,7 +12,13 @@ import { addToManifest } from './revision';
 gulp.task('clean-bundle', () => gulp.src('./www/js/bundle*')
   .pipe(paths(del)));
 
-gulp.task('bundle-js', () => gulp.src([
+gulp.task('jquery-copy', () => gulp.src('./node_modules/jquery/dist/jquery.min.js')
+  .pipe(concat('jquery.js'))
+  .pipe(rev())
+  .pipe(through.obj(addToManifest))
+  .pipe(gulp.dest('www/js/')));
+
+gulp.task('bundle-js', ['jquery-copy'], () => gulp.src([
   './node_modules/jquery/dist/jquery.min.js',
   './node_modules/blockly/blockly_compressed.js',
   './node_modules/blockly/blocks_compressed.js',
