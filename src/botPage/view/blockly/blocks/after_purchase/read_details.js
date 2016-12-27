@@ -10,7 +10,7 @@ Blockly.Blocks.read_details = {
       .appendField(new Blockly.FieldDropdown(config.lists.DETAILS), 'DETAIL_INDEX')
     this.setOutput(true, null)
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Reads a selected option from contract details list')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Reads a selected option from contract details list'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

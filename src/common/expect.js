@@ -26,7 +26,7 @@ export const ohlc = (obj, CustomError = BlocklyError) => {
         return obj
       }
       return new CustomError(
-        translator.translateText('Expected candle object, but the given object is not a candle.')).emit(); // eslint-disable-line max-len
+        translator.translateText('Expected candle object, but the given object is not a candle.')).emit() // eslint-disable-line max-len
     }
     return new CustomError(
       `${translator.translateText('Expected candle object, given:')} ${typeof obj}`).emit()
@@ -72,7 +72,7 @@ export const indicatorPeriod = (inputList, period, CustomError = BlocklyError) =
       return period
     }
     return new CustomError(
-      translator.translateText('indicator period must be less than the length of input list.')).emit(); // eslint-disable-line max-len
+      translator.translateText('indicator period must be less than the length of input list.')).emit() // eslint-disable-line max-len
   }
   return new CustomError(
     translator.translateText('indicator period cannot be zero.')).emit()

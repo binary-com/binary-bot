@@ -9,7 +9,7 @@ Blockly.Blocks.balance = {
       .appendField(new Blockly.FieldDropdown(config.lists.BALANCE_TYPE), 'BALANCE_TYPE')
     this.setOutput(true, null)
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Get balance number or string')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Get balance number or string'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

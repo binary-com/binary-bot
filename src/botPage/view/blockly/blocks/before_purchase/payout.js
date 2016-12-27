@@ -10,7 +10,7 @@ Blockly.Blocks.payout = {
       .appendField(new Blockly.FieldDropdown(() => getPurchaseChoices()), 'PURCHASE_LIST')
     this.setOutput(true, 'Number')
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Payout for selected proposal')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Payout for selected proposal'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

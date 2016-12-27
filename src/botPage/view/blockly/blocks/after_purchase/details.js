@@ -8,7 +8,7 @@ Blockly.Blocks.contract_details = {
       .appendField(translator.translateText('Contract Details'))
     this.setOutput(true, 'Array')
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Returns the list of details for the finished contract')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Returns the list of details for the finished contract'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

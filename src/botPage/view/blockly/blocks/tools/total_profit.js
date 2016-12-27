@@ -7,7 +7,7 @@ Blockly.Blocks.total_profit = {
       .appendField(translator.translateText('Total Profit'))
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Returns the total profit')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Returns the total profit'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

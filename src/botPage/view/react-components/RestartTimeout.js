@@ -32,7 +32,7 @@ export class RestartTimeout extends PureComponent {
     }, 1000)
   }
   close() {
-    ReactDOM.unmountComponentAtNode(document.getElementById('restartTimeout'));
+    ReactDOM.unmountComponentAtNode(document.getElementById('restartTimeout'))
   }
   componentDidMount() {
     this.setInterval()

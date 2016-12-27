@@ -11,7 +11,7 @@ Blockly.Blocks.barrier_offset = {
     this.setInputsInline(false)
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Add sign to a number to make a Barrier Offset.')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Add sign to a number to make a Barrier Offset.'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

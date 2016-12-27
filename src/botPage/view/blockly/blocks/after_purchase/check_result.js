@@ -9,7 +9,7 @@ Blockly.Blocks.contract_check_result = {
       .appendField(new Blockly.FieldDropdown(config.lists.CHECK_RESULT), 'CHECK_RESULT')
     this.setOutput(true, 'Boolean')
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('True if the result matches the selection')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('True if the result matches the selection'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

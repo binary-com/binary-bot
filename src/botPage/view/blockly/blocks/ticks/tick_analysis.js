@@ -8,7 +8,7 @@ Blockly.Blocks.tick_analysis = {
     this.appendStatementInput('TICKANALYSIS_STACK')
       .setCheck(null)
     this.setColour('#fef1cf')
-    this.setTooltip(translator.translateText('You can use this block to analyze the ticks comming regardless of your trades')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('You can use this block to analyze the ticks comming regardless of your trades'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

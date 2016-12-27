@@ -39,7 +39,7 @@ export default () => {
         updateInputList(this)
       }
       if (ev.group === 'tradeTypeConvert') {
-        return;
+        return
       }
       if (ev.type === Blockly.Events.MOVE) {
         bcBarrierOffset(this, 'BARRIEROFFSET')
@@ -88,7 +88,7 @@ export default () => {
     const amount = Blockly.JavaScript.valueToCode(block,
       'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC)
     const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase()
-    const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE';
+    const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE'
     let predictionValue
     let barrierOffsetValue
     let secondBarrierOffsetValue

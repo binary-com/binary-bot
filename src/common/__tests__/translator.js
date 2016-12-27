@@ -1,4 +1,4 @@
-import { expect } from 'chai'; // eslint-disable-line import/no-extraneous-dependencies
+import { expect } from 'chai'
 import { translator } from '../translator'
 
 describe('Translation', () => {

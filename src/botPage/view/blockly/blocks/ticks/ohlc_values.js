@@ -10,7 +10,7 @@ Blockly.Blocks.ohlc_values = {
       .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
     this.setOutput(true, 'Array')
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Returns a list of the selected candle values')); // eslint-disable-line max-len
+    this.setTooltip(translator.translateText('Returns a list of the selected candle values'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
