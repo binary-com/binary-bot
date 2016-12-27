@@ -212,32 +212,5 @@
 }
 
 .binary-chart-info-bar {
-  padding: 0.25em 0.5em;
-  border-radius: $BORDER_RADIUS;
-  background: rgba($COLOR_INVERSE_BG, 0.75);
-  border: 1px solid $COLOR_INVERSE_BG;
-  color: $COLOR_INVERSE_TEXT;
-
-  .value-row {
-    font-weight: bold;
-  }
-
-  .ohlc-row {
-    text-transform: uppercase;
-  }
-
-  > div {
-    line-height: 1.5;
-    display: flex;
-
-    > span {
-      flex: 1;
-    }
-  }
-
-  .inverse & {
-    background: rgba($COLOR_BG, 0.75);
-    border: 1px solid $COLOR_BG;
-    color: $COLOR_TEXT;
-  }
+  display: none;
 }
