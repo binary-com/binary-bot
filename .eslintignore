@@ -1,5 +1,3 @@
 **/mock/*.js
 **/translations/*.js
 **/calls.js
-src/common/language_dropdown.js
-src/common/translator.js
