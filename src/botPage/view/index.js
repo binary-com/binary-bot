@@ -265,19 +265,19 @@ export default class View {
       .mousedown(e => e.stopPropagation()) // prevent content to trigger draggable
 
     $('.tours')
-      .click(function onClick() {
+      .click(e => {
+        e.stopPropagation()
         if ($('#select-tour').css('display') === 'none') {
           $('#select-tour')
             .fadeIn(100)
-        }
-        else {
+        } else {
           $('#select-tour')
             .fadeOut(100)
         }
       })
 
-    $('#header, #blocklyDiv')
-      .click(function onClick() {
+    $('body')
+      .click(e => {
         if ($('#select-tour').css('display') === 'block') {
           $('#select-tour')
             .fadeOut(100)
