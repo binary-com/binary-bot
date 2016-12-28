@@ -41,13 +41,13 @@
 	</div>
   {{> loading }}
   <div id="topbar">
-	  <div class="wrapper">
-	    {{> language }}
+	  <div class="right-header">
 	    <select id="tours">
         <option value="" data-i18n-text="Select a Tour"></option>
 	      <option value="welcome" data-i18n-text="Welcome!"></option>
 	      <option value="introduction" data-i18n-text="Introduction"></option>
 	    </select>
+	    {{> language }}
 	  </div>
   </div>
   <div id="header">
@@ -70,104 +70,103 @@
           <div id="account-list">
             <div id="main-logout">
                 <ul id="main-account" class="nav-menu main-nav">
-                  <li class="account">
-                    <a href="javascript:;">
-                      <div class="main-account">
-                        <div class="account-type"></div>
-                        <div class="account-id"></div>
-                        <div class="topMenuBalance">0</div>
-                      </div>
-                      <div class="nav-caret"></div>
-                    </a>
-                  </li>
+                    <li class="account">
+                        <a href="javascript:;">
+                            <div class="main-account">
+                                <div class="account-type"></div>
+                                <div class="account-id"></div>
+                                <div class="topMenuBalance">0</div>
+                            </div>
+                            <div class="nav-caret"></div>
+                        </a>
+                    </li>
                 </ul>
                 <ul id="all-accounts" class="nav-menu main-nav">
-                  <li class="account">
-                    <a href="javascript:;">
-                      <div class="main-account">
-                        <div class="account-type"></div>
-                        <div class="account-id"></div>
-                        <div class="topMenuBalance">0</div>
-                      </div>
-                      <div class="nav-caret"></div>
-                    </a>
-                    <ul>
-                      <div class="login-id-list"></div>
-                      <a href="javascript:;" id="btn_logout" class="logout">
-                        <li id="logout" data-i18n-text="Log out"></li>
-                      </a>
-                    </ul>
-                  </li>
+                    <li class="account">
+                        <a href="javascript:;">
+                            <div class="main-account">
+                                <div class="account-type"></div>
+                                <div class="account-id"></div>
+                                <div class="topMenuBalance">0</div>
+                            </div>
+                            <div class="nav-caret"></div>
+                        </a>
+                        <ul>
+                            <div class="login-id-list"></div>
+                            <a href="javascript:;" id="btn_logout" class="logout">
+                                <li id="logout" data-i18n-text="Log out"></li>
+                            </a>
+                        </ul>
+                    </li>
                 </ul>
-              </div>
             </div>
           </div>
           <button id="login" data-i18n-text="Log in" />
         </div>
       </div>
-    </div>
-    <div id="blocklyDiv"></div>
-    <div id="summaryPanel" class="panel">
+  </div>
+  <div id="blocklyDiv"></div>
+  <div id="summaryPanel" class="panel">
       <div class="panelExitButton"><p class="icon-close"></p></div>
       <div class="description">
-        <h4 data-i18n-text="Results"></h4>
+          <h4 data-i18n-text="Results"></h4>
       </div>
-      <div class="content">
-        <h4>
+    <div class="content">
+      <h4>
         <span data-i18n-text="Summary"></span>
-        </h4>
-        <table id="summaryDisplay">
+      </h4>
+      <table id="summaryDisplay">
+        <thead>
+          <tr>
+            <th data-i18n-text="No. of runs"></th>
+            <th data-i18n-text="Total Stake"></th>
+            <th data-i18n-text="Total Payout"></th>
+            <th data-i18n-text="Win"></th>
+            <th data-i18n-text="Loss"></th>
+            <th data-i18n-text="Total Profit/Loss"></th>
+            <th data-i18n-text="Balance"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="totalRuns"></td>
+            <td class="totalStake"></td>
+            <td class="totalPayout"></td>
+            <td class="totalWins"></td>
+            <td class="totalLosses"></td>
+            <td class="totalProfit"></td>
+            <td class="balance"></td>
+          </tr>
+        </tbody>
+      </table>
+      <h4>
+        <span data-i18n-text="Trades"></span>
+      </h4>
+      <div class="table-scroll">
+        <table id="tradesDisplay">
           <thead>
             <tr>
-              <th data-i18n-text="No. of runs"></th>
-              <th data-i18n-text="Total Stake"></th>
-              <th data-i18n-text="Total Payout"></th>
-              <th data-i18n-text="Win"></th>
-              <th data-i18n-text="Loss"></th>
-              <th data-i18n-text="Total Profit/Loss"></th>
-              <th data-i18n-text="Balance"></th>
+              <th><span data-i18n-text="Number"></span></th>
+              <th><span data-i18n-text="Reference"></span></th>
+              <th><span data-i18n-text="Trade Type"></span></th>
+              <th><span data-i18n-text="Entry Spot"></span></th>
+              <th><span data-i18n-text="Exit Spot"></span></th>
+              <th><span data-i18n-text="Buy Price"></span></th>
+              <th><span data-i18n-text="Final Price"></span></th>
+              <th><span data-i18n-text="Profit/Loss"></span></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="totalRuns"></td>
-              <td class="totalStake"></td>
-              <td class="totalPayout"></td>
-              <td class="totalWins"></td>
-              <td class="totalLosses"></td>
-              <td class="totalProfit"></td>
-              <td class="balance"></td>
-            </tr>
           </tbody>
         </table>
-        <h4>
-        <span data-i18n-text="Trades"></span>
-        </h4>
-        <div class="table-scroll">
-          <table id="tradesDisplay">
-            <thead>
-              <tr>
-                <th><span data-i18n-text="Number"></span></th>
-                <th><span data-i18n-text="Reference"></span></th>
-                <th><span data-i18n-text="Trade Type"></span></th>
-                <th><span data-i18n-text="Entry Spot"></span></th>
-                <th><span data-i18n-text="Exit Spot"></span></th>
-                <th><span data-i18n-text="Buy Price"></span></th>
-                <th><span data-i18n-text="Final Price"></span></th>
-                <th><span data-i18n-text="Profit/Loss"></span></th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
-        <div id="chart"></div>
       </div>
+      <div id="chart"></div>
     </div>
-    <form id="fileUploadForm" style="display: none;">
-      <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
-    </form>
-    <div id="fixed-bar-right" class="actions_menu">
+  </div>
+  <form id="fileUploadForm" style="display: none;">
+    <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
+  </form>
+  <div id="fixed-bar-right" class="actions_menu">
       <div class="group-save">
         <div><button title="Load the blocks as an XML file" id="loadXml" class="icon-browse"></button></div>
         <div id="saveXml"></div>
