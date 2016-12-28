@@ -353,7 +353,38 @@ select.tour-highlight {
   display: none;
 }
 
+
 .languages {
-  display: inline;
-	z-index: 999;
+  z-index: 999;
 }
+
+.tours {
+  position: relative;
+  cursor: pointer;
+  margin-right: 240px;
+  font-size: 13px;
+}
+#display-tour, #select-tour {
+  position: absolute;
+  width: 116px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+#select-tour {
+  background-color: #F2F2F2;
+  border: 1px solid #DEDEDE;
+  color: black;
+  display: none;
+}
+#select_language, #select-tour {
+  top: -3px;
+}
+#display-tour li, #display_language li {
+  line-height: 0;
+}
+#select-tour li:first-child {
+  margin: 0;
+  padding-top: 3px;
+}
+

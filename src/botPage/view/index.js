@@ -145,17 +145,18 @@ export default class View {
   }
   startTour() {
     const viewScope = this
-    $('#tours').on('change', function onChange() {
-      const value = $(this).val()
-      if (value === '') return
-      if (viewScope.activeTour) {
-        viewScope.activeTour.stop()
-      }
-      viewScope.activeTour = viewScope.tours[value]
-      viewScope.activeTour.start(() => {
-        viewScope.activeTour = null
-      })
-    })
+    $('#select-tour li:first')
+      .nextAll().click((e) => {
+         const value = $(e.target).attr('class')
+         if (value === '') return
+         if (viewScope.activeTour) {
+            viewScope.activeTour.stop()
+          }
+          viewScope.activeTour = viewScope.tours[value]
+          viewScope.activeTour.start(() => {
+            viewScope.activeTour = null
+          })
+       })
   }
   setFileBrowser() {
     const readFile = (f, dropEvent = {}) => {
@@ -262,6 +263,26 @@ export default class View {
 
     $('.panel .content')
       .mousedown(e => e.stopPropagation()) // prevent content to trigger draggable
+
+    $('.tours')
+      .click(function onClick() {
+        if ($('#select-tour').css('display') === 'none') {
+          $('#select-tour')
+            .fadeIn(100)
+        }
+        else {
+          $('#select-tour')
+            .fadeOut(100)
+        }
+      })
+
+    $('#header, #blocklyDiv')
+      .click(function onClick() {
+        if ($('#select-tour').css('display') === 'block') {
+          $('#select-tour')
+            .fadeOut(100)
+        } 
+      })
 
     ReactDOM.render(
       <SaveXml

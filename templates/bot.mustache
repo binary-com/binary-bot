@@ -42,11 +42,24 @@
   {{> loading }}
   <div id="topbar">
 	  <div class="right-header">
-	    <select id="tours">
-        <option value="" data-i18n-text="Select a Tour"></option>
-	      <option value="welcome" data-i18n-text="Welcome!"></option>
-	      <option value="introduction" data-i18n-text="Introduction"></option>
-	    </select>
+      <div class="tours">
+        <ul id="display-tour">
+          <li>
+            <span class="tour">Select a Tour</span>
+            <div class="nav-caret"></div>
+          </li>
+        </ul>
+         <ul id="select-tour">
+           <li>
+            <span class="tour">Select a Tour</span>
+            <div class="nav-caret"></div>
+          </li>
+
+           <div class="separator-line-thin-gray"></div>
+          <li class="welcome">Welcome</li>
+          <li class="introduction">Introduction</li>
+        </ul>
+      </div>
 	    {{> language }}
 	  </div>
   </div>
