@@ -138,7 +138,6 @@ th, td {
 #header select, #topbar select{
 	color: #000;
 	font-size: 14px;
-    float: right;
 }
 
 .dark-blue {
@@ -256,6 +255,7 @@ button:focus {
 }
 
 .right-header {
+  padding-right: 10px;
 	float: right;
 }
 
@@ -351,4 +351,9 @@ select.tour-highlight {
 }
 .actions_menu {
   display: none;
+}
+
+.languages {
+  display: inline;
+	z-index: 999;
 }

@@ -31,13 +31,18 @@ const supportedLanguages = {
   en,
   ach,
 }
+
 export default class Translator {
   constructor() {
-    $('#language').change(e => {
-      document.location.search = `l=${e.target.value}`
-    })
     const lang = this.getLanguage()
-    $('#language').val(lang)
+     $('#select_language li:first')
+       .nextAll().click((e) => {
+         const newLang = $(e.target).attr('class')
+         document.location.search = `l=${newLang}`
+       })
+     $('.language')
+       .text($(`.${lang}`)
+       .hide().text())
     if (lang === 'ach') {
       window._jipt = []
       window._jipt.push(['project', 'binary-bot'])
