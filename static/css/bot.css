@@ -360,7 +360,6 @@ select.tour-highlight {
 
 .tours {
   position: relative;
-  cursor: pointer;
   margin-right: 240px;
   font-size: 13px;
 }
@@ -380,11 +379,12 @@ select.tour-highlight {
 #select_language, #select-tour {
   top: -3px;
 }
+#select-tour li {
+  cursor: pointer;
+  padding: 3px;
+  margin: 0;
+}
 #display-tour li, #display_language li {
+  cursor: pointer;
   line-height: 0;
 }
-#select-tour li:first-child {
-  margin: 0;
-  padding-top: 3px;
-}
-
