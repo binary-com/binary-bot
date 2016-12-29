@@ -353,12 +353,12 @@ select.tour-highlight {
   display: none;
 }
 
-
 .languages {
   z-index: 999;
 }
 
 .tours {
+  z-index: 999;
   position: relative;
   margin-right: 240px;
   font-size: 13px;

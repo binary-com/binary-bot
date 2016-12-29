@@ -277,11 +277,11 @@ export default class View {
       })
 
     $('body')
-      .click(e => {
+      .click(() => {
         if ($('#select-tour').css('display') === 'block') {
           $('#select-tour')
             .fadeOut(100)
-        } 
+        }
       })
 
     ReactDOM.render(
