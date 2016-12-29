@@ -36,8 +36,8 @@ export default class Translator {
   constructor() {
     const lang = this.getLanguage()
      $('#select_language li:first')
-       .nextAll().click((e) => {
-         const newLang = $(e.target).attr('class')
+       .nextAll().click(function click() {
+         const newLang = $(this).attr('class')
          document.location.search = `l=${newLang}`
        })
      $('.language')

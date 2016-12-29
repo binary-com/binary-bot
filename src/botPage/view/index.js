@@ -146,8 +146,8 @@ export default class View {
   startTour() {
     const viewScope = this
     $('#select-tour li:first')
-      .nextAll().click((e) => {
-         const value = $(e.target).attr('class')
+      .nextAll().click(function click() {
+         const value = $(this).attr('class')
          if (value === '') return
          if (viewScope.activeTour) {
             viewScope.activeTour.stop()
