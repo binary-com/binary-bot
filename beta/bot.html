@@ -66,7 +66,7 @@
   window.Event = window.CustomEvent = CustomEvent;
 })();
 </script>
- <link href="css/bot-3a802f2672.css" rel="stylesheet" />
+ <link href="css/bot-10dd7d0cd0.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -100,32 +100,58 @@
     <div class="rect4"></div>
     <div class="rect5"></div>
 </div>
-	<div id="topbar">
-	<span class="language-select">
-		<select id="language">
-			<option value="en" selected="selected">English</option>
-			<option value="de">Deutsch</option>
-			<option value="id">Bahasa Indonesia</option>
-			<option value="pl">Polish</option>
-			<option value="ru">Русский</option>
-			<option value="zh_cn">简体中文</option>
-			<option value="zh_tw">繁體中文</option>
-		<!--
-			<option value="it">Italiano</option>
-			<option value="vi">Vietnamese</option>
-			<option value="pt">Português</option>
-			<option value="es">Español</option>
-			<option value="fr">Français</option>
-		-->
-		</select>
-	</span>
+  <div id="topbar">
+	  <div class="right-header">
+      <div class="tours">
+        <ul id="display-tour">
+          <li>
+            <span class="tour">Select a Tour</span>
+            <div class="nav-caret"></div>
+          </li>
+        </ul>
+         <ul id="select-tour">
+           <li>
+            <span class="tour">Select a Tour</span>
+            <div class="nav-caret"></div>
+          </li>
 
-		<select id="tours">
-      <option value="" data-i18n-text="Select a Tour"></option>
-      <option value="welcome" data-i18n-text="Welcome!"></option>
-      <option value="introduction" data-i18n-text="Introduction"></option>
-    </select>
-	</div>
+           <div class="separator-line-thin-gray"></div>
+          <li class="welcome">Welcome</li>
+          <li class="introduction">Introduction</li>
+        </ul>
+      </div>
+<div class="languages">
+  <ul id="display_language">
+    <li>
+      <span class="world world-white"></span>
+      <span class="language"></span>
+      <span class="nav-caret"></span>
+    </li>
+  </ul>
+  <ul id="select_language">
+    <li>
+      <span class="world world-black"></span>
+        <span class="language"></span>
+      <span class="nav-caret"></span>
+    </li>
+    <li class="de">Deutsch</li>
+    <li class="en">English</li>
+    <li class="id">Indonesia</li>
+    <li class="pl">Polish</li>
+    <li class="ru">Русский</li>
+    <li class="zh_cn">简体中文</li>
+    <li class="zh_tw">繁體中文</li>
+  <!--
+    <li class="es">Español</li>
+    <li class="fr">Français</li>
+    <li class="it">Italiano</li>
+    <li class="pt">Português</li>
+    <li class="vi">Tiếng Việt</li>
+  -->  
+  </ul>
+</div>
+	  </div>
+  </div>
 	<div id="header">
 		<div class="left-header">
 			<div class="logo-wrapper">
@@ -289,7 +315,7 @@
 		</div>
 		<div id="blocklyDiv"></div>
 	</div>
-<script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-daf004aac1.min.js"></script>	<script src="https://style.binary.com/binary.js"></script>
+<script src="js/jquery-2f6b11a7e9.js"></script><script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-4926ce4147.min.js"></script>	<script src="https://style.binary.com/binary.js"></script>
 
 </body>
 
