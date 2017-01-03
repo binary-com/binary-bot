@@ -1,7 +1,7 @@
 // Maintained for Backward Compatibility
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
 import config from '../../../../../common/const'
-import { translator } from '../../../../../common/translator'
+import { translate } from '../../../../../common/i18n'
 
 Blockly.Blocks.barrier_offset = {
   init: function init() {
@@ -11,7 +11,7 @@ Blockly.Blocks.barrier_offset = {
     this.setInputsInline(false)
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Add sign to a number to make a Barrier Offset.'))
+    this.setTooltip(translate('Add sign to a number to make a Barrier Offset.'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

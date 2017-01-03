@@ -1,5 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import { translator } from '../../../common/translator'
+import { translate } from '../../../common/i18n'
 
 export default class Trade {
   constructor(api) {
@@ -26,7 +26,7 @@ export default class Trade {
         purchasedContract,
       })
       observer.emit('ui.log.info',
-        `${translator.translateText('Purchased')}: ${contract.longcode}`)
+        `${translate('Purchased')}: ${contract.longcode}`)
       this.isSold = false
       this.contractId = purchasedContract.contract_id
       this.api.originalApi.unsubscribeFromAllProposals().then(() => 0, () => 0)

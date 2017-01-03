@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
-import { translator } from '../../../../../common/translator'
+import { translate } from '../../../../../common/i18n'
 import './sell_at_market'
 import './check_sell'
 import './sell_price'
@@ -10,11 +10,11 @@ Blockly.Blocks.during_purchase = {
   init: function init() {
     this.appendDummyInput()
       .appendField(new Blockly.FieldImage(sellContract, 15, 15, 'S'))
-      .appendField(translator.translateText('(3) Watch and sell your purchased contract'))
+      .appendField(translate('(3) Watch and sell your purchased contract'))
     this.appendStatementInput('DURING_PURCHASE_STACK')
       .setCheck('SellAtMarket')
     this.setColour('#2a3052')
-    this.setTooltip(translator.translateText('Watch the purchased contract info and sell at market if available (Runs on contract update)'))
+    this.setTooltip(translate('Watch the purchased contract info and sell at market if available (Runs on contract update)'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle, max-len */
 import { setDone, isDone } from 'binary-common-utils/lib/storageManager'
 import { getUiComponent } from '../components'
-import { translator } from '../../../common/translator'
+import { translate } from '../../../common/i18n'
 
 export default class Welcome {
   constructor() {
@@ -11,11 +11,11 @@ export default class Welcome {
   getSteps() {
     return [{
       content: `<p>
-      ${translator.translateText('Welcome to the binary bot')},
-      ${translator.translateText('a blockly based automation tool for binary.com trades')}.
-      ${translator.translateText('Skip this tutorial by clicking on the <b>X</b> button')}.
-      ${translator.translateText('Skip each step by <b>Right Arrow (')} &rarr;
-      ${translator.translateText(')</b> on the keyboard.')}
+      ${translate('Welcome to the binary bot')},
+      ${translate('a blockly based automation tool for binary.com trades')}.
+      ${translate('Skip this tutorial by clicking on the <b>X</b> button')}.
+      ${translate('Skip each step by <b>Right Arrow (')} &rarr;
+      ${translate(')</b> on the keyboard.')}
       </p>`,
       target: getUiComponent('center'),
       closeButton: true,
@@ -27,7 +27,7 @@ export default class Welcome {
       },
     }, {
       content: `<p>
-      ${translator.translateText('You can drag and drop blocks in here to load them in Binary Bot')}
+      ${translate('You can drag and drop blocks in here to load them in Binary Bot')}
       </p>`,
       target: getUiComponent('center'),
       closeButton: true,
@@ -36,7 +36,7 @@ export default class Welcome {
       at: 'bottom center',
     }, {
       content: `<p>
-      ${translator.translateText('Use these buttons to save/load your blocks, you can also drag and drop Bot files to load them')}
+      ${translate('Use these buttons to save/load your blocks, you can also drag and drop Bot files to load them')}
       </p>`,
       target: getUiComponent('group_save'),
       closeButton: true,
@@ -46,7 +46,7 @@ export default class Welcome {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('You need to login before running the bot.')}
+      ${translate('You need to login before running the bot.')}
       </p>`,
       target: getUiComponent('intro_login_logout'),
       closeButton: true,
@@ -56,7 +56,7 @@ export default class Welcome {
       at: 'bottom center',
     }, {
       content: `<p>
-      ${translator.translateText('Use this button to run/stop your Bot')}
+      ${translate('Use this button to run/stop your Bot')}
       </p>`,
       target: getUiComponent('group_start_stop'),
       closeButton: true,
@@ -66,7 +66,7 @@ export default class Welcome {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('Good Luck!')}
+      ${translate('Good Luck!')}
       </p>`,
       target: getUiComponent('center'),
       nextButton: true,

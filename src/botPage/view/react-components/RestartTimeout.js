@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import { translator } from '../../../common/translator'
+import { translate } from '../../../common/i18n'
 import { Panel } from './Panel'
 
 export class RestartTimeout extends PureComponent {
@@ -47,11 +47,11 @@ export class RestartTimeout extends PureComponent {
     return (
       <Panel
       id="saveAs"
-      description={translator.translateText('An error occurred, restarting...')}
+      description={translate('An error occurred, restarting...')}
       onClose={() => this.close()}
       content={
       <div>
-              <p>{(`${translator.translateText('Restarting in')} ${this.state.timeout}`)}</p>
+              <p>{(`${translate('Restarting in')} ${this.state.timeout}`)}</p>
               <button
                 style={{
                   float: 'right',
@@ -59,7 +59,7 @@ export class RestartTimeout extends PureComponent {
                 }}
                 onClick={() => this.close()}
               >
-                {translator.translateText('Cancel')}
+                {translate('Cancel')}
               </button>
             </div>
       }

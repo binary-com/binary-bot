@@ -1,16 +1,16 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 import config from '../../../../../common/const'
 import { tickScope } from '../../relationChecker'
-import { translator } from '../../../../../common/translator'
+import { translate } from '../../../../../common/i18n'
 
 Blockly.Blocks.ohlc_values = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(translator.translateText('Candle Values'))
+      .appendField(translate('Candle Values'))
       .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
     this.setOutput(true, 'Array')
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Returns a list of the selected candle values'))
+    this.setTooltip(translate('Returns a list of the selected candle values'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {

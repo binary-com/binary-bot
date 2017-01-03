@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#db8gmg
-import { translator } from '../../../../../common/translator'
+import { translate } from '../../../../../common/i18n'
 import config from '../../../../../common/const'
 import { BlocklyError } from '../../../../../common/error'
 import { marketDropdown, tradeTypeDropdown, restartOnError } from './components'
@@ -34,7 +34,7 @@ export default () => {
       this.setColour('#f2f2f2')
     },
     onchange: function onchange(ev) {
-      insideTrade(this, ev, translator.translateText('Market'))
+      insideTrade(this, ev, translate('Market'))
       if (ev.type === Blockly.Events.CREATE) {
         updateInputList(this)
       }
@@ -96,7 +96,7 @@ export default () => {
       predictionValue = Blockly.JavaScript.valueToCode(block,
         'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC)
       if (predictionValue === '') {
-        return new BlocklyError(translator.translateText('All trade types are required')).emit()
+        return new BlocklyError(translate('All trade types are required')).emit()
       }
     }
     if (config.hasBarrierOffset.indexOf(oppositesName) > -1 ||
@@ -105,7 +105,7 @@ export default () => {
       barrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
       if (barrierOffsetValue === '') {
-        return new BlocklyError(translator.translateText('All trade types are required')).emit()
+        return new BlocklyError(translate('All trade types are required')).emit()
       }
       barrierOffsetValue = `${barrierOffsetType}${barrierOffsetValue}`
     }
@@ -114,13 +114,13 @@ export default () => {
       secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
       if (secondBarrierOffsetValue === '') {
-        return new BlocklyError(translator.translateText('All trade types are required')).emit()
+        return new BlocklyError(translate('All trade types are required')).emit()
       }
       secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`
     }
     if (oppositesName === '' || durationValue === '' ||
       payouttype === '' || currency === '' || amount === '') {
-      return new BlocklyError(translator.translateText('All trade types are required')).emit()
+      return new BlocklyError(translate('All trade types are required')).emit()
     }
     const contractTypeList = contractTypeSelector === 'both' ?
       config.opposites[oppositesName].map((k) => Object.keys(k)[0]) :

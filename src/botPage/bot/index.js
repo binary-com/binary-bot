@@ -5,7 +5,7 @@ import { getUTCTime } from 'binary-common-utils/lib/tools'
 import _ from 'underscore'
 import PurchaseCtrl from './purchaseCtrl'
 import _Symbol from './symbol'
-import { translator } from '../../common/translator'
+import { translate } from '../../common/i18n'
 import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect'
 
 const decorateTradeOptions = (tradeOption, otherOptions = {}) => {
@@ -359,11 +359,11 @@ export default class Bot {
     const { maxLoss, maxTrades } = this.limitations
     if (maxLoss && maxTrades) {
       if (sessionRuns >= maxTrades) {
-        observer.emit('LimitsReached', translator.translateText('Maximum number of trades reached'))
+        observer.emit('LimitsReached', translate('Maximum number of trades reached'))
         return
       }
       if (sessionProfit <= (-maxLoss)) {
-        observer.emit('LimitsReached', translator.translateText('Maximum loss amount reached'))
+        observer.emit('LimitsReached', translate('Maximum loss amount reached'))
         return
       }
     }

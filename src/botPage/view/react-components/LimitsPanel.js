@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import { translator } from '../../../common/translator'
+import { translate } from '../../../common/i18n'
 import { Panel } from './Panel'
 
 const errorStyle = {
@@ -45,10 +45,10 @@ export class LimitsPanel extends PureComponent {
           maxTrades,
         })
       } else {
-        this.setState({ error: translator.translateText('Maximum allowed number of trades for each session is 100.') })
+        this.setState({ error: translate('Maximum allowed number of trades for each session is 100.') })
       }
     } else {
-      this.setState({ error: translator.translateText('Both number of trades and loss amount are required.') })
+      this.setState({ error: translate('Both number of trades and loss amount are required.') })
     }
   }
   render() {
@@ -56,22 +56,22 @@ export class LimitsPanel extends PureComponent {
       <Panel
       id="saveAs"
       onClose={() => this.close()}
-      description={translator.translateText('Trade Limitations')}
+      description={translate('Trade Limitations')}
       content={
         <div>
           <div
           style={limitsStyle}
           >
-            <label htmlFor="limitation-max-trades">{translator.translateText('Maximum number of trades')}</label>
+            <label htmlFor="limitation-max-trades">{translate('Maximum number of trades')}</label>
             <input style={inputStyle} ref={(el) => (this.maxTradesDiv = el)} type="number" id="limitation-max-trades" />
-            <label htmlFor="limitation-max-loss">{translator.translateText('Maximum loss amount')}</label>
+            <label htmlFor="limitation-max-loss">{translate('Maximum loss amount')}</label>
             <input style={inputStyle} ref={(el) => (this.maxLossDiv = el)} type="number" id="limitation-max-loss" />
             {this.state.error ? <p style={errorStyle}>{this.state.error}</p> : null}
           </div>
           <button
           style={saveButtonStyle}
           onClick={() => this.submit()}
-          >{translator.translateText('Start')}</button>
+          >{translate('Start')}</button>
         </div>
       }
       />

@@ -1,21 +1,21 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import config from '../../../../../common/const'
-import { translator } from '../../../../../common/translator'
+import { translate } from '../../../../../common/i18n'
 import { tickScope } from '../../relationChecker'
 
 Blockly.Blocks.candle_type = {
   init: function init() {
     this.appendValueInput('CANDLEINDEX')
       .setCheck('Number')
-      .appendField(translator.translateText('Read'))
+      .appendField(translate('Read'))
       .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
-      .appendField(`${translator.translateText('in')}`)
+      .appendField(`${translate('in')}`)
     this.appendDummyInput()
-      .appendField(`${translator.translateText('recent candle')}`)
+      .appendField(`${translate('recent candle')}`)
     this.setOutput(true, 'Number')
     this.setInputsInline(true)
     this.setColour('#f2f2f2')
-    this.setTooltip(translator.translateText('Read the selected candle value in the nth recent candle'))
+    this.setTooltip(translate('Read the selected candle value in the nth recent candle'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
