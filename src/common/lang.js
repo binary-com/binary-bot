@@ -16,15 +16,11 @@ const addUiLang = () => {
   $('[data-i18n-text]')
     .each(function each() {
       const el = $(this)
+      const contents = el.contents()
 
       el.text(translate($(this)
         .attr('data-i18n-text')))
-
-      const contents = el.contents()
-      if (contents.length &&
-        contents.get(0).nodeType === Node.TEXT_NODE) {
-        el.append(contents.slice(1))
-      }
+        .append(contents)
     })
 }
 
