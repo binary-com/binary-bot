@@ -1,17 +1,17 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
 import { observer } from 'binary-common-utils/lib/observer'
-import { translator } from '../../../../../common/translator'
+import { translate } from '../../../../../common/i18n'
 import { deleteBlocksLoadedBy, loadRemote, recoverDeletedBlock } from '../../utils'
 
 
 Blockly.Blocks.loader = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(`${translator.translateText('Load Block From')}:`)
+      .appendField(`${translate('Load Block From')}:`)
       .appendField(new Blockly.FieldTextInput('http://www.example.com/block.xml'), 'URL')
     this.setInputsInline(true)
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Load blocks from url'))
+    this.setTooltip(translate('Load blocks from url'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
     this.loadedByMe = []
     this.loadedVariables = []
@@ -38,7 +38,7 @@ Blockly.Blocks.loader = {
       deleteBlocksLoadedBy(this.id)
       loadRemote(this).then(() => {
         Blockly.Events.recordUndo = recordUndo
-        observer.emit('ui.log.success', translator.translateText('Blocks are loaded successfully'))
+        observer.emit('ui.log.success', translate('Blocks are loaded successfully'))
       }, (e) => {
         Blockly.Events.recordUndo = recordUndo
         observer.emit('ui.log.error', e)

@@ -1,27 +1,27 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
-import { translator } from '../../../../../../common/translator'
+import { translate } from '../../../../../../common/i18n'
 import config from '../../../../../../common/const'
 
 Blockly.Blocks.bba = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(translator.translateText('Bollinger Bands Array'))
+      .appendField(translate('Bollinger Bands Array'))
       .appendField(new Blockly.FieldDropdown(config.bbResult), 'BBRESULT_LIST')
     this.appendValueInput('INPUT')
       .setCheck('Array')
-      .appendField(translator.translateText('Input List'))
+      .appendField(translate('Input List'))
     this.appendValueInput('PERIOD')
       .setCheck('Number')
-      .appendField(translator.translateText('Period'))
+      .appendField(translate('Period'))
     this.appendValueInput('UPMULTIPLIER')
       .setCheck('Number')
-      .appendField(translator.translateText('Std. Dev. Up Multiplier'))
+      .appendField(translate('Std. Dev. Up Multiplier'))
     this.appendValueInput('DOWNMULTIPLIER')
       .setCheck('Number')
-      .appendField(translator.translateText('Std. Dev. Down Multiplier'))
+      .appendField(translate('Std. Dev. Down Multiplier'))
     this.setOutput(true, 'Array')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Calculates Bollinger Bands (BB) list from a list with a period'))
+    this.setTooltip(translate('Calculates Bollinger Bands (BB) list from a list with a period'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }
@@ -38,8 +38,8 @@ Blockly.JavaScript.bba = (block) => {
       'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '1'
   const code = `(Bot.math.indicators.bollingerBandsArray(Bot.expect.notEmptyArray(${
   input}), { periods: Bot.expect.indicatorPeriod(${input}, ${period
-  }), stdDevUp: Bot.expect.number('${translator.translateText('Std. Dev. Up Multiplier')
-  }', ${stdDevUp}), stdDevDown: Bot.expect.number('${translator.translateText('Std. Dev. Down Multiplier')
+  }), stdDevUp: Bot.expect.number('${translate('Std. Dev. Up Multiplier')
+  }', ${stdDevUp}), stdDevDown: Bot.expect.number('${translate('Std. Dev. Down Multiplier')
   }', ${stdDevDown}) }).map(function(el){return el[${bbResult}]}))`
   return [code, Blockly.JavaScript.ORDER_NONE]
 }

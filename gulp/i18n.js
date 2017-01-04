@@ -19,7 +19,7 @@ const customTransform = function _transform(file, enc, done) {
   const content = fs.readFileSync(file.path, enc);
 
   parser.parseFuncFromString(content, {
-    list: ['translator.translateText'],
+    list: ['translate'],
   }, (key) => {
     const value = key;
     const defaultKey = hash(value);

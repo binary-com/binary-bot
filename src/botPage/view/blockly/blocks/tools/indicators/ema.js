@@ -1,19 +1,19 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
-import { translator } from '../../../../../../common/translator'
+import { translate } from '../../../../../../common/i18n'
 
 Blockly.Blocks.ema = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(translator.translateText('Exponential Moving Average'))
+      .appendField(translate('Exponential Moving Average'))
     this.appendValueInput('INPUT')
       .setCheck('Array')
-      .appendField(translator.translateText('Input List'))
+      .appendField(translate('Input List'))
     this.appendValueInput('PERIOD')
       .setCheck('Number')
-      .appendField(translator.translateText('Period'))
+      .appendField(translate('Period'))
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
-    this.setTooltip(translator.translateText('Calculates Exponential Moving Average (EMA) from a list with a period'))
+    this.setTooltip(translate('Calculates Exponential Moving Average (EMA) from a list with a period'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }

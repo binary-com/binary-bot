@@ -1,9 +1,9 @@
 import fileSaver from 'filesaverjs'
 import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
-import { translator } from '../../../common/translator'
+import { translate } from '../../../common/i18n'
 
-let purchaseChoices = [[translator.translateText('Click to select'), '']]
+let purchaseChoices = [[translate('Click to select'), '']]
 
 export const oppositesToDropdown = (opposites) => opposites.map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
 
@@ -425,13 +425,13 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
         reject(e)
       })
     } else {
-      reject(translator.translateText('Remote blocks to load must be a collection.'))
+      reject(translate('Remote blocks to load must be a collection.'))
     }
   } catch (e) {
     if (e.name === 'BlocklyError') {
       // pass
     } else {
-      reject(translator.translateText('Unrecognized file format.'))
+      reject(translate('Unrecognized file format.'))
     }
   }
 })
@@ -442,7 +442,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
     url = `http://${url}`
   }
   if (!url.match(/[^/]*\.[a-zA-Z]{3}$/) && url.slice(-1)[0] !== '/') {
-    reject(translator.translateText('Target must be an xml file'))
+    reject(translate('Target must be an xml file'))
   } else {
     if (url.slice(-1)[0] === '/') {
       url += 'index.xml'
@@ -455,16 +455,16 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
     }
     if (!isNew) {
       disable(blockObj)
-      reject(translator.translateText('This url is already loaded'))
+      reject(translate('This url is already loaded'))
     } else {
       $.ajax({
         type: 'GET',
         url,
       }).error((e) => {
         if (e.status) {
-          reject(`${translator.translateText('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
+          reject(`${translate('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
         } else {
-          reject(translator.translateText('Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'))
+          reject(translate('Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'))
         }
         deleteBlocksLoadedBy(blockObj.id)
       }).done((xml) => {

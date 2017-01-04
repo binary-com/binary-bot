@@ -1,10 +1,10 @@
-import { translator } from './translator'
+import { translate } from './i18n'
 
 export default {
   lists: {
     PAYOUTTYPE: [
-      // [translator.translateText('Payout'), 'payout'],
-      [translator.translateText('Stake'), 'stake'],
+      // [translate('Payout'), 'payout'],
+      [translate('Stake'), 'stake'],
     ],
     CURRENCY: [
       ['USD', 'USD'],
@@ -13,84 +13,84 @@ export default {
       ['AUD', 'AUD'],
     ],
     DETAILS: [
-      [translator.translateText('statement'), '1'],
-      [translator.translateText('ask price'), '2'],
-      [translator.translateText('payout'), '3'],
-      [translator.translateText('profit'), '4'],
-      [translator.translateText('contract type'), '5'],
-      [translator.translateText('entry spot'), '6'],
-      [translator.translateText('entry value'), '7'],
-      [translator.translateText('exit spot'), '8'],
-      [translator.translateText('exit value'), '9'],
-      [translator.translateText('barrier'), '10'],
-      [translator.translateText('result'), '11'],
+      [translate('statement'), '1'],
+      [translate('ask price'), '2'],
+      [translate('payout'), '3'],
+      [translate('profit'), '4'],
+      [translate('contract type'), '5'],
+      [translate('entry spot'), '6'],
+      [translate('entry value'), '7'],
+      [translate('exit spot'), '8'],
+      [translate('exit value'), '9'],
+      [translate('barrier'), '10'],
+      [translate('result'), '11'],
     ],
     CHECK_RESULT: [
-      [translator.translateText('Win'), 'win'],
-      [translator.translateText('Loss'), 'loss'],
+      [translate('Win'), 'win'],
+      [translate('Loss'), 'loss'],
     ],
     CHECK_DIRECTION: [
-      [translator.translateText('Rise'), 'rise'],
-      [translator.translateText('Fall'), 'fall'],
-      [translator.translateText('No Change'), ''],
+      [translate('Rise'), 'rise'],
+      [translate('Fall'), 'fall'],
+      [translate('No Change'), ''],
     ],
     BALANCE_TYPE: [
-      [translator.translateText('string'), 'STR'],
-      [translator.translateText('number'), 'NUM'],
+      [translate('string'), 'STR'],
+      [translate('number'), 'NUM'],
     ],
     NOTIFICATION_TYPE: [
-      [translator.translateText('green'), 'success'],
-      [translator.translateText('blue'), 'info'],
-      [translator.translateText('yellow'), 'warn'],
-      [translator.translateText('red'), 'error'],
+      [translate('green'), 'success'],
+      [translate('blue'), 'info'],
+      [translate('yellow'), 'warn'],
+      [translate('red'), 'error'],
     ],
   },
 
   opposites: {
     RISEFALL: [{
-      CALL: translator.translateText('Rise'),
+      CALL: translate('Rise'),
     }, {
-      PUT: translator.translateText('Fall'),
+      PUT: translate('Fall'),
     }],
     HIGHERLOWER: [{
-      CALL: translator.translateText('Higher'),
+      CALL: translate('Higher'),
     }, {
-      PUT: translator.translateText('Lower'),
+      PUT: translate('Lower'),
     }],
     TOUCHNOTOUCH: [{
-      ONETOUCH: translator.translateText('Touch'),
+      ONETOUCH: translate('Touch'),
     }, {
-      NOTOUCH: translator.translateText('No Touch'),
+      NOTOUCH: translate('No Touch'),
     }],
     ENDSINOUT: [{
-      EXPIRYRANGE: translator.translateText('Ends In'),
+      EXPIRYRANGE: translate('Ends In'),
     }, {
-      EXPIRYMISS: translator.translateText('Ends Out'),
+      EXPIRYMISS: translate('Ends Out'),
     }],
     STAYSINOUT: [{
-      RANGE: translator.translateText('Stays In'),
+      RANGE: translate('Stays In'),
     }, {
-      UPORDOWN: translator.translateText('Goes Out'),
+      UPORDOWN: translate('Goes Out'),
     }],
     ASIANS: [{
-      ASIANU: translator.translateText('Asian Up'),
+      ASIANU: translate('Asian Up'),
     }, {
-      ASIAND: translator.translateText('Asian Down'),
+      ASIAND: translate('Asian Down'),
     }],
     MATCHESDIFFERS: [{
-      DIGITMATCH: translator.translateText('Matches'),
+      DIGITMATCH: translate('Matches'),
     }, {
-      DIGITDIFF: translator.translateText('Differs'),
+      DIGITDIFF: translate('Differs'),
     }],
     EVENODD: [{
-      DIGITEVEN: translator.translateText('Even'),
+      DIGITEVEN: translate('Even'),
     }, {
-      DIGITODD: translator.translateText('Odd'),
+      DIGITODD: translate('Odd'),
     }],
     OVERUNDER: [{
-      DIGITOVER: translator.translateText('Over'),
+      DIGITOVER: translate('Over'),
     }, {
-      DIGITUNDER: translator.translateText('Under'),
+      DIGITUNDER: translate('Under'),
     }],
   },
   barrierTypes: [
@@ -98,11 +98,11 @@ export default {
     ['-', '-'],
   ],
   ohlcFields: [
-    [translator.translateText('Open'), 'open'],
-    [translator.translateText('High'), 'high'],
-    [translator.translateText('Low'), 'low'],
-    [translator.translateText('Close'), 'close'],
-    [translator.translateText('Open Time'), 'epoch'],
+    [translate('Open'), 'open'],
+    [translate('High'), 'high'],
+    [translate('Low'), 'low'],
+    [translate('Close'), 'close'],
+    [translate('Open Time'), 'epoch'],
   ],
   candleIntervals: [
     ['1 minute', '60'],
@@ -126,40 +126,40 @@ export default {
   ],
   durationTypes: {
     RISEFALL: [
-      [translator.translateText('Ticks'), 't'],
-      [translator.translateText('Seconds'), 's'],
-      [translator.translateText('Minutes'), 'm'],
-      [translator.translateText('Hours'), 'h'],
+      [translate('Ticks'), 't'],
+      [translate('Seconds'), 's'],
+      [translate('Minutes'), 'm'],
+      [translate('Hours'), 'h'],
     ],
     HIGHERLOWER: [
-      [translator.translateText('Ticks'), 't'],
-      [translator.translateText('Seconds'), 's'],
-      [translator.translateText('Minutes'), 'm'],
-      [translator.translateText('Hours'), 'h'],
+      [translate('Ticks'), 't'],
+      [translate('Seconds'), 's'],
+      [translate('Minutes'), 'm'],
+      [translate('Hours'), 'h'],
     ],
     TOUCHNOTOUCH: [
-      [translator.translateText('Minutes'), 'm'],
-      [translator.translateText('Hours'), 'h'],
+      [translate('Minutes'), 'm'],
+      [translate('Hours'), 'h'],
     ],
     ENDSINOUT: [
-      [translator.translateText('Minutes'), 'm'],
-      [translator.translateText('Hours'), 'h'],
+      [translate('Minutes'), 'm'],
+      [translate('Hours'), 'h'],
     ],
     STAYSINOUT: [
-      [translator.translateText('Minutes'), 'm'],
-      [translator.translateText('Hours'), 'h'],
+      [translate('Minutes'), 'm'],
+      [translate('Hours'), 'h'],
     ],
     ASIANS: [
-      [translator.translateText('Ticks'), 't'],
+      [translate('Ticks'), 't'],
     ],
     MATCHESDIFFERS: [
-      [translator.translateText('Ticks'), 't'],
+      [translate('Ticks'), 't'],
     ],
     EVENODD: [
-      [translator.translateText('Ticks'), 't'],
+      [translate('Ticks'), 't'],
     ],
     OVERUNDER: [
-      [translator.translateText('Ticks'), 't'],
+      [translate('Ticks'), 't'],
     ],
   },
   hasPrediction: [
@@ -185,26 +185,26 @@ export default {
     digits: ['matchesdiffers', 'evenodd', 'overunder'],
   },
   conditionsCategoryName: {
-    callput: translator.translateText('Up/Down'),
-    asian: translator.translateText('Asians'),
-    digits: translator.translateText('Digits'),
-    touchnotouch: translator.translateText('Touch/No Touch'),
-    endsinout: translator.translateText('Ends In/Out'),
-    staysinout: translator.translateText('Stays In/Goes Out'),
+    callput: translate('Up/Down'),
+    asian: translate('Asians'),
+    digits: translate('Digits'),
+    touchnotouch: translate('Touch/No Touch'),
+    endsinout: translate('Ends In/Out'),
+    staysinout: translate('Stays In/Goes Out'),
   },
   conditions: ['risefall', 'higherlower', 'touchnotouch',
     'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
   scopeNames: {
-    before_purchase: translator.translateText('Before Purchase'),
-    during_purchase: translator.translateText('During Purchase'),
-    after_purchase: translator.translateText('After Purchase'),
-    tick_analysis: translator.translateText('Tick Analysis'),
-    timeout: translator.translateText('Run After n Seconds'),
-    interval: translator.translateText('Run Every n Seconds'),
+    before_purchase: translate('Before Purchase'),
+    during_purchase: translate('During Purchase'),
+    after_purchase: translate('After Purchase'),
+    tick_analysis: translate('Tick Analysis'),
+    timeout: translate('Run After n Seconds'),
+    interval: translate('Run Every n Seconds'),
   },
   bbResult: [
-    [translator.translateText('upper'), '1'],
-    [translator.translateText('middle'), '0'],
-    [translator.translateText('lower'), '2'],
+    [translate('upper'), '1'],
+    [translate('middle'), '0'],
+    [translate('lower'), '2'],
   ],
 }

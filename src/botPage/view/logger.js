@@ -1,5 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import { translator } from '../../common/translator'
+import { translate } from '../../common/i18n'
 
 const shown = []
 
@@ -36,7 +36,7 @@ export const notifyError = (error) => {
     error.name
 
   if (error.name === 'DisconnectError') {
-    message = translator.translateText('Connection lost before receiving the response from the server')
+    message = translate('Connection lost before receiving the response from the server')
   }
 
   const completeMsg = errorCode ?

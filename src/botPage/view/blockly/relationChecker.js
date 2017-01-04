@@ -2,7 +2,7 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
 import { bot } from '../../bot'
-import { translator } from '../../../common/translator'
+import { translate } from '../../../common/i18n'
 import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'
 
 const isInteger = (amount) => !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount)
@@ -41,16 +41,16 @@ const conditionFields = (blockObj, ev) => {
       const minDuration = bot.symbol.getLimitation(symbol, tradeType).minDuration
       const durationInSeconds = durationToSecond(duration + durationType)
       if (!durationInSeconds) {
-        observer.emit('ui.log.warn', translator.translateText('Duration must be a positive integer'))
+        observer.emit('ui.log.warn', translate('Duration must be a positive integer'))
       } else if (durationInSeconds < durationToSecond(minDuration)) {
         observer.emit('ui.log.warn',
-          `${translator.translateText('Minimum duration is')} ${expandDuration(minDuration)}`)
+          `${translate('Minimum duration is')} ${expandDuration(minDuration)}`)
       } else if (durationType === 't' && !(isInteger(duration) && isInRange(duration, 5, 10))) {
         observer.emit('ui.log.warn',
-          translator.translateText('Number of ticks must be between 5 and 10'))
+          translate('Number of ticks must be between 5 and 10'))
       } else if (!isInteger(duration) || duration < 1) {
         observer.emit('ui.log.warn',
-          translator.translateText('Expiry time cannot be equal to start time'))
+          translate('Expiry time cannot be equal to start time'))
       } else {
         observer.emit('tour:ticks')
       }
@@ -58,7 +58,7 @@ const conditionFields = (blockObj, ev) => {
     const prediction = getNumField(blockObj, 'PREDICTION')
     if (prediction !== '') {
       if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-        observer.emit('ui.log.warn', translator.translateText('Prediction must be one digit'))
+        observer.emit('ui.log.warn', translate('Prediction must be one digit'))
       }
     }
     let inputMissing = false
@@ -79,7 +79,7 @@ export const insideTrade = (blockObj, ev, name) => {
     const topParent = findTopParentBlock(blockObj)
     if (topParent && topParent.type !== 'trade') {
       disable(blockObj,
-        `${name} ${translator.translateText('must be added inside the trade block')}`)
+        `${name} ${translate('must be added inside the trade block')}`)
     } else {
       if (topParent && topParent.type === 'trade'
         && blockObj.type === 'market') {
@@ -97,7 +97,7 @@ export const insideBeforePurchase = (blockObj, ev, name) => {
     const topParent = findTopParentBlock(blockObj)
     if (topParent && topParent.type !== 'before_purchase') {
       disable(blockObj,
-        `${name} ${translator.translateText('must be added inside the before purchase block')}`)
+        `${name} ${translate('must be added inside the before purchase block')}`)
     } else {
       if (topParent && topParent.type === 'before_purchase' && blockObj.type === 'purchase') {
         observer.emit('tour:purchase')
@@ -113,7 +113,7 @@ export const insideDuringPurchase = (blockObj, ev, name) => {
     const topParent = findTopParentBlock(blockObj)
     if (topParent && topParent.type !== 'during_purchase') {
       disable(blockObj,
-        `${name} ${translator.translateText('must be added inside the during purchase block')}`)
+        `${name} ${translate('must be added inside the during purchase block')}`)
     } else {
       enable(blockObj)
     }
@@ -126,7 +126,7 @@ export const insideAfterPurchase = (blockObj, ev, name) => {
     const topParent = findTopParentBlock(blockObj)
     if (topParent && topParent.type !== 'after_purchase') {
       disable(blockObj,
-        `${name} ${translator.translateText('must be added inside the after purchase block')}`)
+        `${name} ${translate('must be added inside the after purchase block')}`)
     } else {
       if (topParent && topParent.type === 'after_purchase' && blockObj.type === 'trade_again') {
         observer.emit('tour:trade_again')
@@ -146,7 +146,7 @@ export const insideScope = (blockObj, ev, name, scopes) => {
     if (topParent && scopes.indexOf(topParent.type) < 0) {
       disable(blockObj,
         `${name} ${
-        translator.translateText('must be added inside')
+        translate('must be added inside')
         }: (${getScopeNames(scopes)})`)
     } else {
       enable(blockObj)

@@ -11,7 +11,9 @@ import { setAppId } from '../common/appId'
 import { notifyError } from './view/logger'
 import expect from '../common/expect'
 import math from '../common/math'
+import { load as loadLang } from '../common/lang'
 
+loadLang()
 window._ = underscore
 window.Backbone = Backbone
 window.$ = $

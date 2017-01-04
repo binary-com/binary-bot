@@ -1,4 +1,4 @@
-import { translator } from './translator'
+import { translate } from './i18n'
 import { BlocklyError } from './error'
 
 const isNothing = (obj) => obj === undefined || obj === null
@@ -10,13 +10,13 @@ export const notEmptyArray = (obj, CustomError = BlocklyError) => {
         return obj
       }
       return new CustomError(
-        translator.translateText('Expected non-empty array, but the given array is empty.')).emit()
+        translate('Expected non-empty array, but the given array is empty.')).emit()
     }
     return new CustomError(
-      `${translator.translateText('Expected non-empty array, given:')} ${typeof obj}`).emit()
+      `${translate('Expected non-empty array, given:')} ${typeof obj}`).emit()
   }
   return new CustomError(
-    translator.translateText('Expected non-empty array, but nothing was given.')).emit()
+    translate('Expected non-empty array, but nothing was given.')).emit()
 }
 
 export const ohlc = (obj, CustomError = BlocklyError) => {
@@ -26,13 +26,13 @@ export const ohlc = (obj, CustomError = BlocklyError) => {
         return obj
       }
       return new CustomError(
-        translator.translateText('Expected candle object, but the given object is not a candle.')).emit() // eslint-disable-line max-len
+        translate('Expected candle object, but the given object is not a candle.')).emit() // eslint-disable-line max-len
     }
     return new CustomError(
-      `${translator.translateText('Expected candle object, given:')} ${typeof obj}`).emit()
+      `${translate('Expected candle object, given:')} ${typeof obj}`).emit()
   }
   return new CustomError(
-    translator.translateText('Expected candle object, but nothing was given.')).emit()
+    translate('Expected candle object, but nothing was given.')).emit()
 }
 
 export const tick = (obj, CustomError = BlocklyError) => {
@@ -41,10 +41,10 @@ export const tick = (obj, CustomError = BlocklyError) => {
       return obj
     }
     return new CustomError(
-      `${translator.translateText('Expected tick, given:')} ${obj} of type ${typeof obj}`).emit()
+      `${translate('Expected tick, given:')} ${obj} of type ${typeof obj}`).emit()
   }
   return new CustomError(
-    translator.translateText('Expected tick, but nothing was given.')).emit()
+    translate('Expected tick, but nothing was given.')).emit()
 }
 
 export const number = (name, obj, CustomError = BlocklyError) => {
@@ -52,7 +52,7 @@ export const number = (name, obj, CustomError = BlocklyError) => {
     return obj
   }
   return new CustomError(
-    `${name} ${translator.translateText('must be a number, given:')} ${
+    `${name} ${translate('must be a number, given:')} ${
     obj} of type ${typeof obj}`).emit()
 }
 
@@ -62,7 +62,7 @@ export const barrierOffset = (obj, CustomError = BlocklyError) => {
     return `${obj < 0 ? '' : '+'}${obj}`
   }
   return new CustomError(
-    `barrier offset ${translator.translateText('cannot be zero.')}`).emit()
+    `barrier offset ${translate('cannot be zero.')}`).emit()
 }
 
 export const indicatorPeriod = (inputList, period, CustomError = BlocklyError) => {
@@ -72,10 +72,10 @@ export const indicatorPeriod = (inputList, period, CustomError = BlocklyError) =
       return period
     }
     return new CustomError(
-      translator.translateText('indicator period must be less than the length of input list.')).emit() // eslint-disable-line max-len
+      translate('indicator period must be less than the length of input list.')).emit() // eslint-disable-line max-len
   }
   return new CustomError(
-    translator.translateText('indicator period cannot be zero.')).emit()
+    translate('indicator period cannot be zero.')).emit()
 }
 
 export default {

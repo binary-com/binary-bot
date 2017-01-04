@@ -1,5 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import { translator } from '../../../../../common/translator'
+import { translate } from '../../../../../common/i18n'
 import { BlocklyError } from '../../../../../common/error'
 import './barrierOffset'
 import markets from './markets'
@@ -33,12 +33,12 @@ Blockly.Blocks.trade = {
   init: function init() {
     this.appendDummyInput()
       .appendField(new Blockly.FieldImage(defineContract, 15, 15, 'T'))
-      .appendField(translator.translateText('(1) Define your trade contract'))
+      .appendField(translate('(1) Define your trade contract'))
     this.appendStatementInput('SUBMARKET')
       .setCheck(null)
     this.setPreviousStatement(true, null)
     this.setColour('#2a3052')
-    this.setTooltip(translator.translateText('Define your trade contract and start the trade, add initializations here. (Runs on start)'))
+    this.setTooltip(translate('Define your trade contract and start the trade, add initializations here. (Runs on start)'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
@@ -76,7 +76,7 @@ Blockly.Blocks.trade = {
 Blockly.JavaScript.trade = (block) => {
   const account = $('.account-id').first().attr('value')
   if (!account) {
-    return new BlocklyError(translator.translateText('Please login.')).emit()
+    return new BlocklyError(translate('Please login.')).emit()
   }
   const initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET')
   // TODO: Assemble JavaScript into code variable.

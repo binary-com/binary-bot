@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react'
-import { translator } from '../../../common/translator'
+import { translate } from '../../../common/i18n'
 import { Panel } from './Panel'
 
 export class SaveAs extends PureComponent {
@@ -16,14 +16,14 @@ export class SaveAs extends PureComponent {
       <Panel
       id="saveAs"
       onClose={onClose}
-      description={translator.translateText('Save blocks as')}
+      description={translate('Save blocks as')}
       content={
         <form
         action="javascript:;" // eslint-disable-line
         id="saveAsForm"
         onSubmit={() => onSave($('#saveAsFilename').val(), $('#saveAsCollection').prop('checked'))}
         >
-        <span>{translator.translateText('Filename')}</span>: <input title="Choose filename for your blocks" type="text" id="saveAsFilename" defaultValue="binary-bot" />
+        <span>{translate('Filename')}</span>: <input title="Choose filename for your blocks" type="text" id="saveAsFilename" defaultValue="binary-bot" />
         <div>
         <label
         title="Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded."
@@ -31,7 +31,7 @@ export class SaveAs extends PureComponent {
         style={{
           fontWeight: 'normal',
         }}
-        >{translator.translateText('Save As Collection')}</label>
+        >{translate('Save As Collection')}</label>
         <input
         title="Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded."
         name="Collection"
@@ -47,7 +47,7 @@ export class SaveAs extends PureComponent {
           padding: '6px',
           textTransform: 'uppercase',
         }}
-        >{translator.translateText('Save')}</button>
+        >{translate('Save')}</button>
         </div>
         </form>
       }

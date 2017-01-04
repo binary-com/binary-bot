@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle, max-len */
 import { setDone, isDone } from 'binary-common-utils/lib/storageManager'
 import { getUiComponent } from '../components'
-import { translator } from '../../../common/translator'
+import { translate } from '../../../common/i18n'
 
 export default class Introduction {
   constructor() {
@@ -11,11 +11,11 @@ export default class Introduction {
   getSteps() {
     return [{
       content: `<p>
-      ${translator.translateText('Welcome to the binary bot')},
-      ${translator.translateText('in this tutorial we will learn about basic tools in Binary Bot')}.
-      ${translator.translateText('Skip this tutorial by clicking on the <b>X</b> button')}. <br/>
-      ${translator.translateText('Skip each step by <b>Right Arrow (')} &rarr;
-      ${translator.translateText(')</b> on the keyboard.')}
+      ${translate('Welcome to the binary bot')},
+      ${translate('in this tutorial we will learn about basic tools in Binary Bot')}.
+      ${translate('Skip this tutorial by clicking on the <b>X</b> button')}. <br/>
+      ${translate('Skip each step by <b>Right Arrow (')} &rarr;
+      ${translate(')</b> on the keyboard.')}
       </p>`,
       target: getUiComponent('center'),
       closeButton: true,
@@ -27,7 +27,7 @@ export default class Introduction {
       },
     }, {
       content: `<p>
-      ${translator.translateText('You can drag and drop blocks in here to load them in Binary Bot')}
+      ${translate('You can drag and drop blocks in here to load them in Binary Bot')}
       </p>`,
       target: getUiComponent('center'),
       closeButton: true,
@@ -36,7 +36,7 @@ export default class Introduction {
       at: 'bottom center',
     }, {
       content: `<p>
-      ${translator.translateText('You can pick blocks from here to add to your Bot')}
+      ${translate('You can pick blocks from here to add to your Bot')}
       </p>`,
       target: getUiComponent('toolbox'),
       closeButton: true,
@@ -46,7 +46,7 @@ export default class Introduction {
       at: 'right center',
     }, {
       content: `<p>
-      ${translator.translateText('Press Ctrl + - to zoom out and Ctrl + + to zoom in the blocks')}
+      ${translate('Press Ctrl + - to zoom out and Ctrl + + to zoom in the blocks')}
       </p>`,
       target: getUiComponent('center'),
       closeButton: true,
@@ -55,7 +55,7 @@ export default class Introduction {
       at: 'bottom center',
     }, {
       content: `<p>
-      ${translator.translateText('You need to login before running the bot.')}
+      ${translate('You need to login before running the bot.')}
       </p>`,
       target: getUiComponent('intro_login_logout'),
       closeButton: true,
@@ -65,7 +65,7 @@ export default class Introduction {
       at: 'bottom center',
     }, {
       content: `<p>
-      ${translator.translateText('Use these buttons to save/load your blocks, you can also drag and drop Bot files to load them')}
+      ${translate('Use these buttons to save/load your blocks, you can also drag and drop Bot files to load them')}
       </p>`,
       target: getUiComponent('group_save'),
       closeButton: true,
@@ -75,7 +75,7 @@ export default class Introduction {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('Use these buttons to Undo/Redo changes to your blocks.')}
+      ${translate('Use these buttons to Undo/Redo changes to your blocks.')}
       </p>`,
       target: getUiComponent('group_undo_redo'),
       closeButton: true,
@@ -85,7 +85,7 @@ export default class Introduction {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('Use these buttons to zoom in/out your blocks.')}
+      ${translate('Use these buttons to zoom in/out your blocks.')}
       </p>`,
       target: getUiComponent('group_zoom'),
       closeButton: true,
@@ -95,7 +95,7 @@ export default class Introduction {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('Use this button to automatically arrange your blocks.')}
+      ${translate('Use this button to automatically arrange your blocks.')}
       </p>`,
       target: getUiComponent('group_clean_up'),
       closeButton: true,
@@ -105,7 +105,7 @@ export default class Introduction {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('Show the summary panel where you can see the chart and more information about the trades.')}
+      ${translate('Show the summary panel where you can see the chart and more information about the trades.')}
       </p>`,
       target: getUiComponent('group_summary'),
       closeButton: true,
@@ -115,7 +115,7 @@ export default class Introduction {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('Reset the blocks to their initial state.')}
+      ${translate('Reset the blocks to their initial state.')}
       </p>`,
       target: getUiComponent('group_reset'),
       closeButton: true,
@@ -125,7 +125,7 @@ export default class Introduction {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('Use this button to run/stop your Bot')}
+      ${translate('Use this button to run/stop your Bot')}
       </p>`,
       target: getUiComponent('group_start_stop'),
       closeButton: true,
@@ -135,7 +135,7 @@ export default class Introduction {
       at: 'left center',
     }, {
       content: `<p>
-      ${translator.translateText('Good Luck!')}
+      ${translate('Good Luck!')}
       </p>`,
       target: getUiComponent('center'),
       nextButton: true,

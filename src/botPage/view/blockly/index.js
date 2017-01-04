@@ -1,9 +1,10 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import { translator } from '../../../common/translator'
+import { translate, xml as translateXml } from '../../../common/i18n'
 import { notifyError } from '../logger'
 import { isMainBlock, save, disable, deleteBlocksLoadedBy, addLoadersFirst, cleanUpOnLoad, addDomAsBlock, backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
+import { getLanguage } from '../../../common/lang'
 
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
@@ -20,7 +21,7 @@ const disableStrayBlocks = () => {
       ].indexOf(block.type) < 0
       && !block.disabled) {
       disable(block,
-        translator.translateText('Blocks must be inside block holders, main blocks or functions'))
+        translate('Blocks must be inside block holders, main blocks or functions'))
     }
   }
 }
@@ -44,7 +45,7 @@ const loadWorkspace = (xml) => {
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
     fixCollapsedBlocks()
     observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
+      translate('Blocks are loaded successfully'))
     Blockly.Events.setGroup(false)
   }, e => {
     Blockly.Events.setGroup(false)
@@ -65,7 +66,7 @@ const loadBlocks = (xml, dropEvent = {}) => {
     cleanUpOnLoad(addedBlocks, dropEvent)
     fixCollapsedBlocks()
     observer.emit('ui.log.success',
-      translator.translateText('Blocks are loaded successfully'))
+      translate('Blocks are loaded successfully'))
   }, e => {
     observer.emit('ui.log.error', e)
   })
@@ -82,7 +83,7 @@ export default class _Blockly {
       $.get('xml/toolbox.xml', (toolbox) => {
         blocks()
         const workspace = Blockly.inject('blocklyDiv', {
-          toolbox: this.xmlToStr(translator.translateXml(toolbox.getElementsByTagName('xml')[0])),
+          toolbox: this.xmlToStr(translateXml(toolbox.getElementsByTagName('xml')[0])),
           zoom: {
             wheel: false,
           },
@@ -150,7 +151,7 @@ export default class _Blockly {
       if (block instanceof Object) {
         block.customContextMenu = function customContextMenu(options) { // eslint-disable-line no-param-reassign, max-len
           options.push({
-            text: translator.translateText('Download'),
+            text: translate('Download'),
             enabled: true,
             callback: () => {
               const xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>')
@@ -174,7 +175,7 @@ export default class _Blockly {
   load(blockStr = '', dropEvent = {}) {
     if (blockStr.indexOf('<xml') !== 0) {
       observer.emit('ui.log.error',
-        translator.translateText('Unrecognized file format.'))
+        translate('Unrecognized file format.'))
     } else {
       try {
         const xml = Blockly.Xml.textToDom(blockStr)
@@ -188,7 +189,7 @@ export default class _Blockly {
           // pass
         } else {
           observer.emit('ui.log.error',
-            translator.translateText('Unrecognized file format.'))
+            translate('Unrecognized file format.'))
         }
       }
     }
@@ -247,7 +248,7 @@ export default class _Blockly {
     })
     const script = document.createElement('script')
     script.type = 'text/javascript'
-    let lang = translator.getLanguage()
+    let lang = getLanguage()
     if (lang === 'ach') {
       lang = 'en'
     } else if (lang === 'zh_cn') {

@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#u7tjez
-import { translator } from '../../../../../common/translator'
+import { translate } from '../../../../../common/i18n'
 import './purchase'
 import './ask_price'
 import './payout'
@@ -10,11 +10,11 @@ Blockly.Blocks.before_purchase = {
   init: function init() {
     this.appendDummyInput()
       .appendField(new Blockly.FieldImage(purchase, 15, 15, 'P'))
-      .appendField(translator.translateText('(2) Watch and purchase your contract'))
+      .appendField(translate('(2) Watch and purchase your contract'))
     this.appendStatementInput('BEFOREPURCHASE_STACK')
       .setCheck('Purchase')
     this.setColour('#2a3052')
-    this.setTooltip(translator.translateText('Watch the tick stream and purchase the desired contract (Runs on tick update)'))
+    this.setTooltip(translate('Watch the tick stream and purchase the desired contract (Runs on tick update)'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
