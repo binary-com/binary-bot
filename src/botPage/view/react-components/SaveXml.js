@@ -20,7 +20,7 @@ export class SaveXml extends PureComponent {
       <button
       title="Save the blocks as an XML file"
       id="saveXml"
-      className="icon-save"
+      className="toolbox-button icon-save"
       onClick={() => {
         this.setState({
           dialogVisible: true,

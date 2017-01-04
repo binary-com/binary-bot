@@ -1,10 +1,8 @@
-import { observer } from 'binary-common-utils/lib/observer'
 import { translate } from '../../../../../common/i18n'
 import { BlocklyError } from '../../../../../common/error'
 import './barrierOffset'
 import markets from './markets'
 import market from './market'
-import config from '../../../../../common/const'
 import tradeTypes from './tradeTypes'
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils'
 import { defineContract } from '../images'
@@ -51,21 +49,6 @@ Blockly.Blocks.trade = {
             if (!deleteBlockIfExists(block)) {
               backwardCompatibility(block)
             }
-          }
-          if (block.type === 'market') {
-            observer.emit('tour:market_created')
-          }
-          if (config.conditions.indexOf(block.type) >= 0) {
-            observer.emit('tour:condition_created')
-          }
-          if (block.type === 'math_number') {
-            observer.emit('tour:number')
-          }
-          if (block.type === 'purchase') {
-            observer.emit('tour:purchase_created')
-          }
-          if (block.type === 'trade_again') {
-            observer.emit('tour:trade_again_created')
           }
         }
       }

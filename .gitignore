@@ -1,5 +1,6 @@
 *.swp
 .publish
+static/css/*.css*
 node_modules/
 npm-debug.log
 rev-manifest.json
@@ -8,3 +9,4 @@ beta/
 translation/
 www
 .nyc_output/
+.sass-cache
