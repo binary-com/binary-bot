@@ -2,8 +2,6 @@
 import 'babel-polyfill'
 import lzString from 'lz-string'
 import { observer } from 'binary-common-utils/lib/observer'
-import underscore from 'underscore'
-import Backbone from 'backbone'
 import $ from 'jquery'
 import { bot } from './bot'
 import View from './view'
@@ -14,11 +12,8 @@ import math from '../common/math'
 import { load as loadLang } from '../common/lang'
 
 loadLang()
-window._ = underscore
-window.Backbone = Backbone
 window.$ = $
 
-require('tourist/tourist')
 require('notifyjs-browser')
 require('./view/draggable')
 
@@ -112,10 +107,6 @@ class BotPage {
         })
         $('.show-on-load').show()
         $('.barspinner').hide()
-        this.view.activeTour = this.view.tours.welcome
-        this.view.activeTour.welcome(() => {
-          this.view.activeTour = null
-        })
       })
     })
   }

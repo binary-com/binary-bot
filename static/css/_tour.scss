@@ -1,0 +1,28 @@
+@import 'color';
+
+$joyride-color: $brand-orange;
+$joyride-button-bg-color: $brand-btn;
+$joyride-button-color: $white !important;
+$joyride-tooltip-width: (15em, 20em, 20em);
+
+@import '../../node_modules/react-joyride/lib/styles/react-joyride';
+
+#tour {
+  position: absolute;
+  display: inline;
+  bottom: 1em;
+  right: 1em;
+}
+
+.tour-first-pop-up {
+  .joyride-tooltip {
+    position: fixed !important;
+  }
+}
+
+.tour-custom-buttons {
+  float: right;
+  button: {
+    margin-left: 0.1em;
+  }
+}

@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react'
+import { translate } from '../../../common/i18n'
 import { SaveAs } from './SaveAs'
 
 export class SaveXml extends PureComponent {
@@ -18,7 +19,7 @@ export class SaveXml extends PureComponent {
     return (
       <div>
       <button
-      title="Save the blocks as an XML file"
+      title={translate('Save the existing blocks (xml file)')}
       id="saveXml"
       className="toolbox-button icon-save"
       onClick={() => {
