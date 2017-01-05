@@ -55,7 +55,8 @@ export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
   } = dropEvent || {}
   const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
   const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
-  const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft
+  const blocklyLeft = (blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft)
+    + parseInt($('.blocklySvg').css('left'), 10)
   const blocklyTop = (document.body.offsetHeight - blocklyMetrics.viewHeight) - blocklyMetrics.viewTop
   const cursorX = (clientX) ? (clientX - blocklyLeft) * scaleCancellation : 0
   let cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0

@@ -1,4 +1,5 @@
 *.swp
+.DS_Store
 .publish
 static/css/*.css*
 node_modules/
@@ -9,3 +10,4 @@ beta/
 translation/
 www
 .sass-cache
+.nyc_output/

@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/binary-com/binary-bot.svg?branch=master)](https://travis-ci.org/binary-com/binary-bot)
-[![Coverage Status](https://coveralls.io/repos/github/binary-com/binary-bot/badge.svg?branch=master)](https://coveralls.io/github/binary-com/binary-bot?branch=master)
+[![Build Status](https://travis-ci.org/binary-com/binary-bot.svg?branch=beta)](https://travis-ci.org/binary-com/binary-bot)		
+[![Coverage Status](https://coveralls.io/repos/github/binary-com/binary-bot/badge.svg?branch=beta)](https://coveralls.io/github/binary-com/binary-bot?branch=beta)
 
 # Binary Bot
 

@@ -1,29 +1,46 @@
 #toolbox {
   position: absolute;
-  z-index: 100;
-  right: 0;
-  width: 4em;
+  top: 2em;
+  left: 0;
+  width: 6em;
   text-align: center;
-  padding: 10px;
+  z-index: 1;
+  display: none;
+  padding-right: 0.5em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: calc(100% - 2.7em);
+  margin-top: 0.2em;
 
-  .toolbox-button {
-    float: right;
-    margin-bottom: 5px;
+  * {
+    margin-bottom: 0.1em;
+  }
+
+  button {
     background-color: $brand-gray;
-    border: 1px solid $toolbox-btn-active;
-    padding: 2.5px 6px;
+    border: 0.1em solid $toolbox-btn-active;
+    padding: 0.5em 0.1em;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
     color: $black;
   }
 
-  .toolbox-button:hover {
+  button:hover {
     background-color: $toolbox-btn-active;
   }
 
-  .toolbox-button:focus {
+  button:focus {
     outline: none;
   }
 
   .box.is-dragover {
     background-color: grey;
+  }
+
+  #openMenu {
+    border-bottom-width: thick;
+    margin-left: 0em;
+    margin-bottom: 0.5em;
   }
 }

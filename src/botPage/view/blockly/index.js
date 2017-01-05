@@ -2,14 +2,15 @@ import { observer } from 'binary-common-utils/lib/observer'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import { notifyError } from '../logger'
 import config from '../../../common/const'
-import {
-  isMainBlock, save,
+import { isMainBlock, save,
   disable, deleteBlocksLoadedBy,
   addLoadersFirst, cleanUpOnLoad, addDomAsBlock,
   backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
 import { getLanguage } from '../../../common/lang'
+
+let toolbox = null
 
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
@@ -59,8 +60,8 @@ const disposeBlocksWithLoaders = () => {
     }
     if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
       && ev.group !== 'undo') {
-        deleteBlocksLoadedBy(ev.blockId, ev.group)
-      }
+      deleteBlocksLoadedBy(ev.blockId, ev.group)
+    }
   })
 }
 
@@ -100,6 +101,23 @@ const loadBlocks = (xml, dropEvent = {}) => {
   })
 }
 
+const resizeToolbox = () => {
+  const toolboxMenu = $("[role='group']:first")
+  toolboxMenu.addClass('toolboxMenu')
+  toolboxMenu.on('click touchstart', e => e.stopPropagation())
+}
+
+const overrideDeleteArea = () => {
+  Blockly.WorkspaceSvg.prototype.isDeleteArea = e => {
+    const outsideWorkspace = e.clientX < $('.blocklyMainBackground').offset().left
+    if (outsideWorkspace) {
+      Blockly.Css.setCursor(Blockly.Css.Cursor.DELETE)
+      return true
+    }
+    return false
+  }
+}
+
 export default class _Blockly {
   constructor() {
     this.blocksXmlStr = ''
@@ -125,6 +143,10 @@ export default class _Blockly {
           Blockly.mainWorkspace.clearUndo()
           disposeBlocksWithLoaders()
           setTimeout(() => setBeforeUnload(true), 0)
+          toolbox = Blockly.mainWorkspace.toolbox_
+          Blockly.mainWorkspace.toolbox_ = null
+          resizeToolbox()
+          overrideDeleteArea()
           resolve()
         })
       })
@@ -267,8 +289,6 @@ export default class _Blockly {
     }
     if (code) {
       eval(code) // eslint-disable-line no-eval
-      $('#summaryPanel')
-        .show()
     }
   }
   addBlocklyTranslation() {
@@ -295,5 +315,8 @@ export default class _Blockly {
   }
   redo() {
     Blockly.mainWorkspace.undo(true)
+  }
+  getToolbox() {
+    return toolbox
   }
 }
