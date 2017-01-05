@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    {{> security }}
-
-    {{> head }}
+    {{> security }} {{> head }}
     <title>Binary Bot</title>
-
-    {{> fontello_css }}
-
     {{> bundle_css }}
-    {{> bot_css }}
-    {{> chart_css }}
-    <link rel="stylesheet" href="https://style.binary.com/binary.css">
-
-    {{> ie }}
+    <link rel="stylesheet" href="https://style.binary.com/binary.css"> {{> ie }} {{> bot_css }}
   </head>
+
   <body>
     <div id="center"></div>
     <span id="limits-panel"></span>
@@ -206,10 +199,7 @@
         <button title="Stop the blocks" id="stopButton" class="toolbox-button icon-stop"></button>
       </div>
     </div>
-
-    {{> jquery}}
-    {{> bundle}}
-    {{> bot}}
+    {{> jquery}} {{> bundle}} {{> bot}}
     <script src="https://style.binary.com/binary.js"></script>
 
   </body>
