@@ -408,6 +408,7 @@
   text-align: center;
   padding: 10px; }
   #toolbox .toolbox-button {
+    float: right;
     margin-bottom: 5px;
     background-color: #f2f2f2;
     border: 1px solid #dddddd;
@@ -591,4 +592,4 @@ select.tour-highlight {
   left: 0px;
   transition: 0.5s; }
 
-/*# sourceMappingURL=bot-1cae41daa5.css.map */
+/*# sourceMappingURL=bot-7e7279ea9c.css.map */
