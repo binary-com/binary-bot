@@ -1,19 +1,34 @@
 @import 'color';
+@import 'screen';
 
 .blocklyText {
   fill: $black !important;
 }
 
-.blocklyTreeSelected .blocklyTreeLabel {
-  color: $white !important;
+.blocklyTreeLabel {
+  background-color: $brand-gray !important;
+  text-align: left !important;
+  color: $black !important;
+  font-size: 1em !important;
+  width: 7em !important;
+}
+
+.blocklyTreeSelected>.blocklyTreeLabel {
+  font-weight: bold !important;
+}
+
+.blocklyTreeRow {
+  margin-bottom: 0px !important;
+  height: 1.2em !important;
+  @media #{$tablet-screen} {
+    height: 1.5em !important;
+  }
 }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
-  background-color: $brand-dark-gray !important;
-}
-
-.blocklyToolboxDiv .blocklyTreeRow{
-  color: $black;
+  background-color: $brand-gray !important;
+  color: $black !important;
+  text-decoration: underline !important;
 }
 
 .blocklyEditableText tspan {
@@ -28,18 +43,11 @@
   fill: $white !important;
   fill-opacity: 1 !important;
   stroke: $brand-dark-gray;
-  stroke-width: 1px;
-}
-
-.blocklyToolboxDiv {
-  background-color: $brand-gray !important;
-  border-width: thin;
-  color: $brand-dark-gray;
-  border-right: 1px solid;
+  stroke-width: 0.1em;
 }
 
 .blocklyIconShape {
-  fill: #2a3052 !important;
+  fill: $brand-blue !important;
 }
 
 .blocklyIconGroup:not(:hover), .blocklyIconGroupReadonly {
@@ -50,17 +58,39 @@
   display: none;
 }
 
-.blocklyTreeRow {
-  margin-bottom: 0px !important;
-}
-
 .blocklyToolboxDiv {
   position: fixed !important;
-  z-index: 200 !important;
-  left: -100%;
   overflow-x: hidden !important;
+  transition: 0.5s;
+  background-color: $brand-gray !important;
+  border-width: thin;
+  color: $brand-dark-gray;
+  left: -100% !important;
+  border-right: 1px solid;
+  height: calc(100% - 7.7em) !important;
+  z-index: 1;
+  &.shownToolbox {
+    left: 0em !important	;
+  }
+}
+
+.blocklyFlyoutBackground {
+  transition: 0.5s;
+}
+
+.blocklyTreeSelected>.blocklyTreeIconOpen {
+  background-position: -16px -1px !important;
+}
+
+.blocklyTreeSelected>.blocklyTreeIconClosedLtr {
+  background-position: -32px -1px !important;
 }
 
 .blocklySvg {
+  left: 0em;
   position: absolute;
+}
+
+.blocklyMenu {
+  overflow: scroll;
 }

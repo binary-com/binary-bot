@@ -1,4 +1,5 @@
 *.swp
+.DS_Store
 .publish
 static/css/*.css*
 node_modules/
@@ -8,5 +9,5 @@ coverage
 beta/
 translation/
 www
-.nyc_output/
 .sass-cache
+.nyc_output/

@@ -45,7 +45,6 @@ export class SaveAs extends PureComponent {
         type="submit" id="saveAsButton" style={{
           float: 'right',
           padding: '6px',
-          marginLeft: '1em',
         }}
         >{translate('Save')}</button>
         </div>

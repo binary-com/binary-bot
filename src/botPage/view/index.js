@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
+import { LiveApi } from 'binary-live-api'
 import { observer } from 'binary-common-utils/lib/observer'
 import { getTokenList, removeAllTokens, get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
@@ -17,6 +18,22 @@ import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
 
 let realityCheckTimeout
+let editMode = false
+let mode = 'execute'
+let mobileMenuVisible = false
+let ticks = []
+let currentSymbol = 'R_100'
+let currentStyle = 'ticks'
+let currentGranularity
+let api
+
+const mapHistoryTicks = history => {
+  const { times, prices } = history
+  return times.map((t, idx) => ({
+    epoch: +t,
+    quote: +prices[idx],
+  }))
+}
 
 const showRealityCheck = () => {
   $('.blocker').show()
@@ -74,17 +91,84 @@ const resetRealityCheck = (token) => {
   startRealityCheck(null, token)
 }
 
+const addResizeListener = (element, fn) => {
+  const resizeListener = (e) => {
+    const requestFrame = (...args) =>
+    (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame
+      || (a => setTimeout(a, 20)))(...args)
+
+    const cancelFrame = (...args) =>
+      (window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame ||
+             window.clearTimeout)(...args)
+
+    const win = e.target || e.srcElement
+    if (win.__resizeRAF__) cancelFrame(win.__resizeRAF__)
+    win.__resizeRAF__ = requestFrame(() => {
+      const trigger = win.__resizeTrigger__
+      trigger.__resizeListeners__.forEach((a) => {
+        a.call(trigger, e)
+      })
+    })
+  }
+  function objectLoad() {
+    this.contentDocument.defaultView.__resizeTrigger__ = this.__resizeElement__
+    this.contentDocument.defaultView.addEventListener('resize', resizeListener)
+  }
+  const isIE = navigator.userAgent.match(/Trident/)
+  if (!element.__resizeListeners__) {
+    element.__resizeListeners__ = [] // eslint-disable-line no-param-reassign
+    if (document.attachEvent) {
+      element.__resizeTrigger__ = element // eslint-disable-line no-param-reassign
+      element.attachEvent('onresize', resizeListener)
+    } else {
+      if (getComputedStyle(element).position === 'static') {
+        element.style.position = 'relative' // eslint-disable-line no-param-reassign
+      }
+      const obj = element.__resizeTrigger__ = document.createElement('object') // eslint-disable-line no-param-reassign
+      obj.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;')
+      obj.__resizeElement__ = element
+      obj.onload = objectLoad
+      obj.type = 'text/html'
+      if (isIE) element.appendChild(obj)
+      obj.data = 'about:blank'
+      if (!isIE) element.appendChild(obj)
+    }
+  }
+  element.__resizeListeners__.push(fn)
+}
+
+const initializeApi = () => {
+  api = new LiveApi()
+  api.events.on('ohlc', response => {
+    const newTick = response.ohlc
+    const lastCandle = ticks.slice(-1)[0]
+    const getTime = candle => candle.open_time || candle.epoch
+    ticks = (getTime(lastCandle) === getTime(newTick)) ?
+      [...ticks.slice(0, ticks.length - 1), newTick] :
+      ticks.concat([newTick])
+  })
+
+  api.events.on('tick', response => {
+    const newTick = response.tick
+    ticks = ticks.concat([{ epoch: +newTick.epoch, quote: +newTick.quote }])
+  })
+
+  api
+    .getTickHistory('R_100', { subscribe: 1, end: 'latest', count: 1000, style: 'ticks' })
+    .then(r => (ticks = mapHistoryTicks(r.history)))
+}
+
 export default class View {
   constructor() {
     this.chartType = 'line'
     this.tours = {}
     logHandler()
     this.tradeInfo = new TradeInfo()
+    initializeApi()
     this.initPromise = new Promise((resolve) => {
       this.updateTokenList()
       this.blockly = new _Blockly()
       this.blockly.initPromise.then(() => {
-        $('.actions_menu').show()
         this.setElementActions()
         this.initTours()
         $('#accountLis')
@@ -213,6 +297,87 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
+    const hideExecute = () => {
+      $('#showExecute').removeClass('selected')
+    }
+
+    const hideSummary = () => {
+      $('#showSummary').removeClass('selected')
+      $('#summaryPanel')
+        .hide()
+    }
+
+    const showBlocklyToolbox = () => {
+      const toolboxDiv = $('.blocklyToolboxDiv')
+      $('.blocklySvg').css('left', `${toolboxDiv.width()}px`)
+      toolboxDiv.addClass('shownToolbox')
+    }
+
+    const hideBlocklyToolbox = () => {
+      this.blockly.getToolbox().flyout_.hide()
+      $('.blocklyToolboxDiv').removeClass('shownToolbox')
+    }
+
+    const showToolbox = () => {
+      const toolbox = $('#toolbox')
+      toolbox.show()
+      $('.blocklySvg').css('left', `${toolbox.width()}px`)
+      $('.blocklySvg').css('margin-left', '0.5em')
+    }
+
+    const hideToolbox = () => {
+      $('#toolbox').hide()
+      $('.blocklySvg').css('left', '0em')
+      $('.blocklySvg').css('margin-left', '0em')
+    }
+
+    const toggleToolbox = (blockly) => {
+      if (blockly) {
+        hideToolbox()
+        showBlocklyToolbox()
+      } else {
+        hideBlocklyToolbox()
+        showToolbox()
+      }
+    }
+
+    const exitEditMode = () => {
+      $('#showEdit').prop('checked', false)
+      hideBlocklyToolbox()
+      hideToolbox()
+      editMode = false
+    }
+
+    const showExecute = () => {
+      mode = 'execute'
+      hideSummary()
+      $('#showExecute').addClass('selected')
+    }
+
+    const showSummary = () => {
+      $('#showSummary').addClass('selected')
+      mode = 'report'
+      hideExecute()
+      exitEditMode()
+      $('#summaryPanel')
+        .show()
+    }
+
+    const enterEditMode = () => {
+      showToolbox()
+      showExecute()
+      hideSummary()
+      editMode = true
+    }
+
+    const stop = (e) => {
+      if (e) {
+        e.preventDefault()
+      }
+      stopRealityCheck()
+      window.Bot.stop()
+    }
+
     const logout = () => {
       logoutAllTokens(() => {
         this.updateTokenList()
@@ -220,16 +385,6 @@ export default class View {
         clearRealityCheck()
       })
     }
-
-    $('#stopButton')
-      .click(e => {
-        if (e) {
-          e.preventDefault()
-        }
-        stopRealityCheck()
-        window.Bot.stop()
-      })
-      .hide()
 
     $('.panelExitButton')
       .click(function onClick() {
@@ -240,12 +395,70 @@ export default class View {
 
     $('.panel')
       .hide()
-
-    $('.panel')
       .drags()
 
     $('.panel .content')
       .mousedown(e => e.stopPropagation()) // prevent content to trigger draggable
+
+    $('#openMenu')
+      .click(() => {
+        if (editMode) {
+          toggleToolbox(true)
+        }
+      })
+
+    $('#mobileMenu')
+      .click(() => {
+        if (mobileMenuVisible) {
+          $('.collapse-menu').addClass('hiddenMenu')
+          mobileMenuVisible = false
+        } else {
+          $('.collapse-menu').removeClass('hiddenMenu')
+          mobileMenuVisible = true
+        }
+      })
+
+    const hideCollapseMenu = () => {
+      $('.collapse-menu').addClass('hiddenMenu')
+      mobileMenuVisible = false
+    }
+
+    $('#toolbox,.blocklyWorkspace,.blocklyToolboxDiv')
+      .on('click touchstart', hideCollapseMenu)
+
+    $('.blocklyWorkspace')
+      .on('click touchstart', () => {
+        $('.view-menu-select')
+          .hide()
+        if (editMode) {
+          toggleToolbox(false)
+        }
+      })
+
+    $('#showEdit')
+      .change(() => {
+        if ($('#showEdit').is(':checked')) {
+          enterEditMode()
+        } else if (mode === 'execute') {
+          exitEditMode()
+          showExecute()
+        } else if (mode === 'report') {
+          exitEditMode()
+          showSummary()
+        }
+      })
+
+    $('#showExecute')
+      .click(() => {
+        hideCollapseMenu()
+        showExecute()
+      })
+
+    $('.edit-mode-toggle')
+      .click(() => {
+        $('#showEdit').prop('checked', !$('#showEdit').is(':checked'))
+        $('#showEdit').change()
+      })
 
     $('.tours')
       .click(e => {
@@ -269,14 +482,10 @@ export default class View {
 
     ReactDOM.render(
       <SaveXml
-      onSave={(filename, collection) => this.blockly.save(filename, collection)}
+        onClick={hideCollapseMenu}
+        onSave={(filename, collection) => this.blockly.save(filename, collection)}
       />
       , $('#saveXml')[0])
-
-    $('#saveXml')
-      .click(() => {
-        $('#saveAs').show()
-      })
 
     $('#undo')
       .click(() => {
@@ -305,12 +514,13 @@ export default class View {
 
     $('#showSummary')
       .click(() => {
-        $('#summaryPanel')
-          .show()
+        hideCollapseMenu()
+        showSummary()
       })
 
     $('#loadXml')
       .click(() => {
+        hideCollapseMenu()
         $('#files')
           .click()
       })
@@ -334,9 +544,11 @@ export default class View {
       })
 
     const startBot = (limitations) => {
+      hideCollapseMenu()
       $('#stopButton').show()
       $('#runButton').hide()
       this.blockly.run(limitations)
+      showSummary()
     }
 
     $('#runButton')
@@ -354,10 +566,20 @@ export default class View {
         }
       })
 
+    $('#stopButton')
+      .click(e => {
+        hideCollapseMenu()
+        stop(e)
+      })
+      .hide()
+
     $('#resetButton')
       .click(() => {
         this.blockly.resetWorkspace()
       })
+
+    $('#changeView')
+      .click(() => $('.view-menu-select').toggle())
 
     $('.login-id-list')
       .on('click', 'a', (e) => {
@@ -417,15 +639,14 @@ export default class View {
         }
       }
     })
+    addResizeListener($('.blocklyToolboxDiv')[0],
+      () => {
+        if (editMode) {
+          $('.blocklySvg').css('left', `${$('.blocklyToolboxDiv').width()}px`, 'important')
+        }
+      })
   }
   updateChart(info) {
-    const chartToDataType = {
-      area: 'ticks',
-      line: 'ticks',
-      candlestick: 'ohlc',
-      ohlc: 'ohlc',
-    }
-
     const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
 
     const zoomInMax = (ev, chart) => {
@@ -451,18 +672,47 @@ export default class View {
         chartDiv.dispatchEvent(new Event('zoom-in-max'))
       }
     }
+    const isMinHeight = $(window).height() <= 360
+
+    const getData = (start, end, style, granularity) => {
+      currentStyle = style
+      currentGranularity = granularity
+      return new Promise((r, e) => {
+        api.unsubscribeFromAllTicks().then(() => 0, () => 0)
+        api.unsubscribeFromAllCandles().then(() => 0, () => 0)
+        api.getTickHistory(currentSymbol, { subscribe: 1, end: 'latest', count: 100, granularity, style })
+          .then(resp => {
+            let data
+            if (style === 'ticks') {
+              data = mapHistoryTicks(resp.history)
+            } else {
+              data = resp.candles
+            }
+
+            ticks = data
+            r(data)
+          }, e)
+      })
+    }
+
+    if (currentSymbol !== info.symbol) {
+      currentSymbol = info.symbol
+      getData(undefined, undefined, currentStyle, currentGranularity)
+    }
+
     ReactDOM.render(
       <BinaryChart
       className="trade-chart"
       id="trade-chart0"
       contract={isLine() ? this.contractForChart : false}
-      hideZoomControls={isLine() && this.contractForChart}
       pipSize={info.pipSize}
-      shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
-      ticks={info[chartToDataType[this.chartType]]}
+      shiftMode="static"
+      ticks={ticks}
+      getData={getData}
       type={this.chartType}
       events={events}
-      hideIntervalPicker
+      hideToolbar={isMinHeight}
+      hideTimeFrame={isMinHeight}
       onTypeChange={(type) => (this.chartType = type)}
       />, $('#chart')[0])
   }
