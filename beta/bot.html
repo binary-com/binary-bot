@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+  <head>
 	<style id="antiClickjack">body{display:none !important;}</style>
 	<script type="text/javascript">
 		if (self === top) {
@@ -53,8 +53,8 @@
 
 		amplitude.getInstance().init("8550b32c2a951c57e791d03c4c2ea55a");
 	</script>
-	<title>Binary Bot</title>
-<link href="css/bundle-ff1f125c4a.min.css" rel="stylesheet" />	<link rel="stylesheet" href="https://style.binary.com/binary.css"> <script>
+    <title>Binary Bot</title>
+<link href="css/bundle-ff1f125c4a.min.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <script>
 (function () {
   function CustomEvent ( event, params ) {
     params = params || { bubbles: false, cancelable: false, detail: undefined };
@@ -67,32 +67,32 @@
 })();
 </script>
  <link href="css/bot-10dd7d0cd0.css" rel="stylesheet" />
-</head>
+  </head>
 
-<body>
-  <div id="center"></div>
-	<span id="limits-panel"></span>
-	<span id="restartTimeout"></span>
-	<div>
-		<div class="blocker"></div>
-		<div class="reality-check" style="display: none">
-			<h1 data-i18n-text="Reality Check"></h1>
-			<p data-i18n-text="Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis."></p>
-			<p data-i18n-text="Please specify your preferred reality-check interval in minutes">
-				<input id="realityDuration" interval="1" maxlength="4" min="1" size="6" type="number" value="10">
-			</p>
-			<p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 120."></p>
-      <div>
-        <button bcont="1" class="button" id="continue-trading" data-i18n-text="Continue Trading"></button>
-        <a id="statement-reality-check" class="button-secondary" href="#">
-          <span data-i18n-text="Statement"></span>
-        </a>
-        <a id="logout-reality-check" class="button-secondary" href="#">
-          <span data-i18n-text="Log out"></span>
-        </a>
+  <body>
+    <div id="center"></div>
+    <span id="limits-panel"></span>
+    <span id="restartTimeout"></span>
+    <div>
+      <div class="blocker"></div>
+      <div class="reality-check" style="display: none">
+        <h1 data-i18n-text="Reality Check"></h1>
+        <p data-i18n-text="Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis."></p>
+        <p data-i18n-text="Please specify your preferred reality-check interval in minutes">
+        <input id="realityDuration" interval="1" maxlength="4" min="1" size="6" type="number" value="10">
+        </p>
+        <p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 120."></p>
+        <div>
+          <button bcont="1" class="button" id="continue-trading" data-i18n-text="Continue Trading"></button>
+          <a id="statement-reality-check" class="button-secondary" href="#">
+            <span data-i18n-text="Statement"></span>
+          </a>
+          <a id="logout-reality-check" class="button-secondary" href="#">
+            <span data-i18n-text="Log out"></span>
+          </a>
+        </div>
       </div>
-		</div>
-	</div>
+    </div>
 <div class="barspinner dark">
     <div class="rect1"></div>
     <div class="rect2"></div>
@@ -100,26 +100,26 @@
     <div class="rect4"></div>
     <div class="rect5"></div>
 </div>
-  <div id="topbar">
-	  <div class="right-header">
-      <div class="tours">
-        <ul id="display-tour">
-          <li>
-            <span class="tour" data-i18n-text="Select a Tour"></span>
-            <div class="nav-caret"></div>
-          </li>
-        </ul>
-         <ul id="select-tour">
-           <li>
-            <span class="tour" data-i18n-text="Select a Tour"></span>
-            <div class="nav-caret"></div>
-          </li>
+    <div id="topbar">
+      <div class="right-header">
+        <div class="tours">
+          <ul id="display-tour">
+            <li>
+              <span class="tour" data-i18n-text="Select a Tour"></span>
+              <div class="nav-caret"></div>
+            </li>
+          </ul>
+          <ul id="select-tour">
+            <li>
+              <span class="tour" data-i18n-text="Select a Tour"></span>
+              <div class="nav-caret"></div>
+            </li>
 
-           <div class="separator-line-thin-gray"></div>
-          <li class="welcome" data-i18n-text="Welcome"></li>
-          <li class="introduction" data-i18n-text="Introduction"></li>
-        </ul>
-      </div>
+            <div class="separator-line-thin-gray"></div>
+            <li class="welcome" data-i18n-text="Welcome"></li>
+            <li class="introduction" data-i18n-text="Introduction"></li>
+          </ul>
+        </div>
 <div class="languages">
   <ul id="display_language">
     <li>
@@ -150,173 +150,173 @@
   -->  
   </ul>
 </div>
-	  </div>
-  </div>
-	<div id="header">
-		<div class="left-header">
-			<div class="logo-wrapper">
-				<a href="javascript:;" id="logo">
-					<div class="logo-parent">
-						<div class="logo">
-							<img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
-						</div>
-						<div class="binary-logo-text">
-							<img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-		<div class="middle-header">
-			<button title="Open menu to see actions" id="mobileMenu" class="icon-menu top-menu" data-i18n-text="Menu"></button>
-			<div class="collapse-menu hiddenMenu">
-				<button title="Load the blocks as an XML file" id="loadXml" class="icon-browse group-save top-menu">
-					<span data-i18n-text="Open"></span>
-				</button>
-				<div id="saveXml"></div>
-				<button title="Run the blocks" id="runButton" class="icon-run group-start-stop top-menu">
-					<span data-i18n-text="Run"></span>
-				</button>
-				<button title="Stop the blocks" id="stopButton" class="icon-stop group-start-stop top-menu">
-					<span data-i18n-text="Stop"></span>
-				</button>
-			</div>
-		</div>
-		<div class="right-header">
-			<div class="intro-login-logout">
-				<div id="account-list">
-					<div id="main-logout">
-						<ul id="main-account" class="nav-menu main-nav">
-							<li class="account">
-								<a href="javascript:;">
-									<div class="main-account">
-										<div class="account-type"></div>
-										<div class="account-id"></div>
-										<div class="topMenuBalance">0</div>
-									</div>
-									<div class="nav-caret"></div>
-								</a>
-							</li>
-						</ul>
-						<ul id="all-accounts" class="nav-menu main-nav">
-							<li class="account">
-								<a href="javascript:;">
-									<div class="main-account">
-										<div class="account-type"></div>
-										<div class="account-id"></div>
-										<div class="topMenuBalance">0</div>
-									</div>
-									<div class="nav-caret"></div>
-								</a>
-								<ul>
-									<div class="login-id-list"></div>
-									<a href="javascript:;" id="btn_logout" class="logout">
-										<li id="logout" data-i18n-text="Log out"></li>
-									</a>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-        <button id="login" data-i18n-text="Log in" />
-			</div>
-		</div>
-	</div>
-	<div class="view-menu">
-		<button title="Switch to execute view" id="showExecute" class="icon-execute selected">
-			<span data-i18n-text="Bot"></span>
-		</button>
-		<button title="Switch to report summary panel" id="showSummary" class="icon-summary">
-			<span data-i18n-text="Report"></span>
-		</button>
-	</div>
-	<div id="container">
-		<div class="controls">
-			<div class="edit-mode-toggle">
-				<span data-i18n-text="Edit" class="icon-edit"></span>
-				<label class="switch">
-					<input type="checkbox" id="showEdit">
-					<div class="slider round"></div>
-				</label>
-			</div>
-			<div class="zoom-controls">
-				<button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in"></button>
-				<button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out"></button>
-			</div>
-		</div>
-		<div id="summaryPanel" class="report">
-			<h4>
-        <span data-i18n-text="Summary"></span>
-      </h4>
-			<table id="summaryDisplay">
-				<thead>
-					<tr>
-						<th data-i18n-text="No. of runs"></th>
-						<th data-i18n-text="Total Stake"></th>
-						<th data-i18n-text="Total Payout"></th>
-						<th data-i18n-text="Win"></th>
-						<th data-i18n-text="Loss"></th>
-						<th data-i18n-text="Total Profit/Loss"></th>
-						<th data-i18n-text="Balance"></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="totalRuns"></td>
-						<td class="totalStake"></td>
-						<td class="totalPayout"></td>
-						<td class="totalWins"></td>
-						<td class="totalLosses"></td>
-						<td class="totalProfit"></td>
-						<td class="balance"></td>
-					</tr>
-				</tbody>
-			</table>
-			<h4>
-				<span data-i18n-text="Trades"></span>
-			</h4>
-			<div class="table-scroll">
-				<table id="tradesDisplay">
-					<thead>
-						<tr>
-							<th><span data-i18n-text="Number"></span></th>
-							<th><span data-i18n-text="Reference"></span></th>
-							<th><span data-i18n-text="Trade Type"></span></th>
-							<th><span data-i18n-text="Entry Spot"></span></th>
-							<th><span data-i18n-text="Exit Spot"></span></th>
-							<th><span data-i18n-text="Buy Price"></span></th>
-							<th><span data-i18n-text="Final Price"></span></th>
-							<th><span data-i18n-text="Profit/Loss"></span></th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-			<div id="chart"></div>
-		</div>
-    <form id="fileUploadForm" style="display: none;">
-      <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
-    </form>
-		<div id="toolbox" class="actions_menu">
-			<div class="group-menu">
-				<button title="Open menu to select a block" id="openMenu" class="icon-plus" data-i18n-text="Add Block"></button>
-			</div>
-			<div class="group-undo-redo">
-				<button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo" data-i18n-text="Undo"></button>
-				<button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo" data-i18n-text="Redo"></button>
-			</div>
-			<div class="group-clean-up">
-				<button title="Clean up" id="cleanUp" class="icon-sort" data-i18n-text="Clean Up"></button>
-			</div>
-			<div class="group-reset">
-				<button title="Reset the blocks" id="resetButton" class="icon-reset" data-i18n-text="Reset"></button>
-			</div>
-		</div>
-		<div id="blocklyDiv"></div>
-	</div>
-<script src="js/jquery-2f6b11a7e9.js"></script><script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-f838bb04b3.min.js"></script>	<script src="https://style.binary.com/binary.js"></script>
+      </div>
+    </div>
+    <div id="header">
+      <div class="left-header">
+        <div class="logo-wrapper">
+          <a href="javascript:;" id="logo">
+            <div class="logo-parent">
+              <div class="logo">
+                <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
+              </div>
+              <div class="binary-logo-text">
+                <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="middle-header">
+        <button title="Open menu to see actions" id="mobileMenu" class="icon-menu top-menu" data-i18n-text="Menu"></button>
+        <div class="collapse-menu hiddenMenu">
+          <button title="Load the blocks as an XML file" id="loadXml" class="icon-browse group-save top-menu">
+            <span data-i18n-text="Open"></span>
+          </button>
+          <div id="saveXml"></div>
+          <button title="Run the blocks" id="runButton" class="icon-run group-start-stop top-menu">
+            <span data-i18n-text="Run"></span>
+          </button>
+          <button title="Stop the blocks" id="stopButton" class="icon-stop group-start-stop top-menu">
+            <span data-i18n-text="Stop"></span>
+          </button>
+        </div>
+      </div>
+      <div class="right-header">
+        <div class="intro-login-logout">
+          <div id="account-list">
+            <div id="main-logout">
+              <ul id="main-account" class="nav-menu main-nav">
+                <li class="account">
+                  <a href="javascript:;">
+                    <div class="main-account">
+                      <div class="account-type"></div>
+                      <div class="account-id"></div>
+                      <div class="topMenuBalance">0</div>
+                    </div>
+                    <div class="nav-caret"></div>
+                  </a>
+                </li>
+              </ul>
+              <ul id="all-accounts" class="nav-menu main-nav">
+                <li class="account">
+                  <a href="javascript:;">
+                    <div class="main-account">
+                      <div class="account-type"></div>
+                      <div class="account-id"></div>
+                      <div class="topMenuBalance">0</div>
+                    </div>
+                    <div class="nav-caret"></div>
+                  </a>
+                  <ul>
+                    <div class="login-id-list"></div>
+                    <a href="javascript:;" id="btn_logout" class="logout">
+                      <li id="logout" data-i18n-text="Log out"></li>
+                    </a>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button id="login" data-i18n-text="Log in" />
+        </div>
+      </div>
+    </div>
+    <div class="view-menu">
+      <button title="Switch to execute view" id="showExecute" class="icon-execute selected">
+        <span data-i18n-text="Bot"></span>
+      </button>
+      <button title="Switch to report summary panel" id="showSummary" class="icon-summary">
+        <span data-i18n-text="Report"></span>
+      </button>
+    </div>
+    <div id="container">
+      <div class="controls">
+        <div class="edit-mode-toggle">
+          <span data-i18n-text="Edit" class="icon-edit"></span>
+          <label class="switch">
+            <input type="checkbox" id="showEdit">
+            <div class="slider round"></div>
+          </label>
+        </div>
+        <div class="zoom-controls">
+          <button title="Zoom In (Ctrl + +)" id="zoomIn" class="icon-zoom-in"></button>
+          <button title="Zoom Out (Ctrl + -)" id="zoomOut" class="icon-zoom-out"></button>
+        </div>
+      </div>
+      <div id="summaryPanel" class="report">
+        <h4>
+          <span data-i18n-text="Summary"></span>
+        </h4>
+        <table id="summaryDisplay">
+          <thead>
+            <tr>
+              <th data-i18n-text="No. of runs"></th>
+              <th data-i18n-text="Total Stake"></th>
+              <th data-i18n-text="Total Payout"></th>
+              <th data-i18n-text="Win"></th>
+              <th data-i18n-text="Loss"></th>
+              <th data-i18n-text="Total Profit/Loss"></th>
+              <th data-i18n-text="Balance"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="totalRuns"></td>
+              <td class="totalStake"></td>
+              <td class="totalPayout"></td>
+              <td class="totalWins"></td>
+              <td class="totalLosses"></td>
+              <td class="totalProfit"></td>
+              <td class="balance"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h4>
+          <span data-i18n-text="Trades"></span>
+        </h4>
+        <div class="table-scroll">
+          <table id="tradesDisplay">
+            <thead>
+              <tr>
+                <th><span data-i18n-text="Number"></span></th>
+                <th><span data-i18n-text="Reference"></span></th>
+                <th><span data-i18n-text="Trade Type"></span></th>
+                <th><span data-i18n-text="Entry Spot"></span></th>
+                <th><span data-i18n-text="Exit Spot"></span></th>
+                <th><span data-i18n-text="Buy Price"></span></th>
+                <th><span data-i18n-text="Final Price"></span></th>
+                <th><span data-i18n-text="Profit/Loss"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <div id="chart"></div>
+      </div>
+      <form id="fileUploadForm" style="display: none;">
+        <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
+      </form>
+      <div id="toolbox" class="actions_menu">
+        <div class="group-menu">
+          <button title="Open menu to select a block" id="openMenu" class="icon-plus" data-i18n-text="Add Block"></button>
+        </div>
+        <div class="group-undo-redo">
+          <button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo" data-i18n-text="Undo"></button>
+          <button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo" data-i18n-text="Redo"></button>
+        </div>
+        <div class="group-clean-up">
+          <button title="Clean up" id="cleanUp" class="icon-sort" data-i18n-text="Clean Up"></button>
+        </div>
+        <div class="group-reset">
+          <button title="Reset the blocks" id="resetButton" class="icon-reset" data-i18n-text="Reset"></button>
+        </div>
+      </div>
+      <div id="blocklyDiv"></div>
+    </div>
+<script src="js/jquery-2f6b11a7e9.js"></script><script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-d1852e2660.min.js"></script>    <script src="https://style.binary.com/binary.js"></script>
 
-</body>
+  </body>
 
 </html>
