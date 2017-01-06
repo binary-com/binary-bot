@@ -114,7 +114,11 @@ export default class Bot {
         }
         this.observeStreams()
         Promise.all(promises).then(() => {
-          this.login(token)
+          if (token !== this.currentToken) {
+            this.login(token)
+          } else {
+            this.startTrading()
+          }
         }).catch((error) => {
           if (error.name === 'BlocklyError') {
             // pass
@@ -137,10 +141,8 @@ export default class Bot {
       }
       observer.register('api.authorize', apiAuthorize)
     }
-    if (token !== this.currentToken) {
-        this.currentToken = token
-        this.api.authorize(token)
-    }
+    this.currentToken = token
+    this.api.authorize(token)
   }
   setTradeOptions() {
     this.tradeOptions = []
