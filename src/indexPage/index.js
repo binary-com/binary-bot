@@ -6,4 +6,7 @@ import { load as loadLang } from '../common/lang'
 window.$ = $ // eslint-disable-line no-undef
 loadLang()
 setAppId()
-oauthLogin(() => $('.barspinner').hide())
+oauthLogin(() => {
+  $('.show-on-load').show()
+  $('.barspinner').hide()
+})
