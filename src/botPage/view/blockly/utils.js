@@ -1,4 +1,4 @@
-import fileSaver from 'filesaverjs'
+import filesaver from 'filesaverjs'
 import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
 import { translate } from '../../../common/i18n'
@@ -211,13 +211,13 @@ export const updatePurchaseChoices = (contractType, oppositesName) => {
   Blockly.Events.recordUndo = true
 }
 
-export const save = (filename = 'binary-bot.xml', collection = false, xmlDom) => {
+export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
   xmlDom.setAttribute('collection', collection ? 'true' : 'false')
   const xmlText = Blockly.Xml.domToPrettyText(xmlDom)
   const blob = new Blob([xmlText], {
     type: 'text/xml;charset=utf-8',
   })
-  fileSaver.saveAs(blob, `${filename}.xml`)
+  filesaver.saveAs(blob, `${filename}.xml`)
 }
 
 export const disable = (blockObj, message) => {
