@@ -101,9 +101,6 @@ export default class Bot {
       } else {
         sessionRuns = sessionProfit = 0
         const promises = []
-        if (this.currentToken !== token) {
-          promises.push(this.login(token))
-        }
         if (!_.isEmpty(this.tradeOption)) {
           if (this.tradeOption.symbol !== this.currentSymbol) {
             observer.unregisterAll('api.ohlc')
@@ -115,8 +112,9 @@ export default class Bot {
             promises.push(this.subscribeToCandles())
           }
         }
+        this.observeStreams()
         Promise.all(promises).then(() => {
-          this.startTrading()
+          this.login(token)
         }).catch((error) => {
           if (error.name === 'BlocklyError') {
             // pass
@@ -128,23 +126,21 @@ export default class Bot {
     }
   }
   login(token) {
-    return new Promise((resolve) => {
+    if (!observer.isRegistered('api.authorize')) {
       const apiAuthorize = () => {
         observer.emit('log.bot.login', {
-          lastToken: this.currentToken,
           token,
         })
-        this.currentToken = token
+
         this.subscribeToBalance()
-        this.observeStreams()
-        resolve()
+        this.startTrading()
       }
-      observer.register('api.authorize', apiAuthorize, true, {
-        type: 'authorize',
-        unregister: [['api.authorize', apiAuthorize]],
-      }, true)
-      this.api.authorize(token)
-    })
+      observer.register('api.authorize', apiAuthorize)
+    }
+    if (token !== this.currentToken) {
+        this.currentToken = token
+        this.api.authorize(token)
+    }
   }
   setTradeOptions() {
     this.tradeOptions = []
