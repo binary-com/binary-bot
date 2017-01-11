@@ -18,7 +18,7 @@ export class SaveXml extends PureComponent {
     return (
       <div>
       <button
-      title="Save the blocks as an XML file"
+      title={translate('Save the existing blocks (xml file)')}
       id="saveXml"
       className="icon-save top-menu"
       onClick={() => {

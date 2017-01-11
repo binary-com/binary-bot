@@ -9,13 +9,12 @@ import { getTokenList, removeAllTokens, get as getStorage, set as setStorage, ge
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translate } from '../../common/i18n'
-import Welcome from './tours/welcome'
-import Introduction from './tours/introduction'
 import { logHandler } from './logger'
 import { SaveXml } from './react-components/SaveXml'
 import { RestartTimeout } from './react-components/RestartTimeout'
 import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
+import { Tour } from './tour'
 
 let realityCheckTimeout
 let editMode = false
@@ -161,7 +160,6 @@ const initializeApi = () => {
 export default class View {
   constructor() {
     this.chartType = 'line'
-    this.tours = {}
     logHandler()
     this.tradeInfo = new TradeInfo()
     initializeApi()
@@ -170,9 +168,9 @@ export default class View {
       this.blockly = new _Blockly()
       this.blockly.initPromise.then(() => {
         this.setElementActions()
-        this.initTours()
         $('#accountLis')
         startRealityCheck(null, $('.account-id').first().attr('value'))
+        ReactDOM.render(<Tour />, document.getElementById('tour'))
         resolve()
       })
     })
@@ -205,25 +203,6 @@ export default class View {
         }
       }
     }
-  }
-  initTours() {
-    this.tours.introduction = new Introduction()
-    this.tours.welcome = new Welcome()
-  }
-  startTour() {
-    const viewScope = this
-    $('#select-tour li:first')
-      .nextAll().click(function click() {
-         const value = $(this).attr('class')
-         if (value === '') return
-         if (viewScope.activeTour) {
-            viewScope.activeTour.stop()
-          }
-          viewScope.activeTour = viewScope.tours[value]
-          viewScope.activeTour.start(() => {
-            viewScope.activeTour = null
-          })
-       })
   }
   setFileBrowser() {
     const readFile = (f, dropEvent = {}) => {
@@ -292,7 +271,6 @@ export default class View {
   }
   setElementActions() {
     this.setFileBrowser()
-    this.startTour()
     this.addBindings()
     this.addEventHandlers()
   }
@@ -507,7 +485,7 @@ export default class View {
         this.blockly.zoomOnPlusMinus(false)
       })
 
-    $('#cleanUp')
+    $('#rearrange')
       .click(() => {
         this.blockly.cleanUp()
       })
@@ -624,11 +602,6 @@ export default class View {
       } else if (e.which === 187) { // +
         if (e.ctrlKey) {
           this.blockly.zoomOnPlusMinus(true)
-          e.preventDefault()
-        }
-      } else if (e.which === 39) { // right
-        if (this.activeTour) {
-          this.activeTour.next()
           e.preventDefault()
         }
       } else if (e.which === 27) { // Esc
