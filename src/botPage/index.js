@@ -110,6 +110,7 @@ class BotPage {
         trackJs.configure({
           userId: $('.account-id').first().text(),
         })
+        $('.show-on-load').show()
         $('.barspinner').hide()
         this.view.activeTour = this.view.tours.welcome
         this.view.activeTour.welcome(() => {
