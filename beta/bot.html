@@ -66,10 +66,11 @@
   window.Event = window.CustomEvent = CustomEvent;
 })();
 </script>
- <link href="css/bot-10dd7d0cd0.css" rel="stylesheet" />
+ <link href="css/bot-d703448f1a.css" rel="stylesheet" />
   </head>
 
   <body>
+    <div id="tour"></div>
     <div id="center"></div>
     <span id="limits-panel"></span>
     <span id="restartTimeout"></span>
@@ -102,24 +103,6 @@
 </div>
     <div id="topbar">
       <div class="right-header">
-        <div class="tours">
-          <ul id="display-tour">
-            <li>
-              <span class="tour" data-i18n-text="Select a Tour"></span>
-              <div class="nav-caret"></div>
-            </li>
-          </ul>
-          <ul id="select-tour">
-            <li>
-              <span class="tour" data-i18n-text="Select a Tour"></span>
-              <div class="nav-caret"></div>
-            </li>
-
-            <div class="separator-line-thin-gray"></div>
-            <li class="welcome" data-i18n-text="Welcome"></li>
-            <li class="introduction" data-i18n-text="Introduction"></li>
-          </ul>
-        </div>
 <div class="languages">
   <ul id="display_language">
     <li>
@@ -134,8 +117,9 @@
         <span class="language"></span>
       <span class="nav-caret"></span>
     </li>
-    <li class="de">Deutsch</li>
     <li class="en">English</li>
+    <li class="de">Deutsch</li>
+    <li class="fr">Français</li>
     <li class="id">Indonesia</li>
     <li class="pl">Polish</li>
     <li class="ru">Русский</li>
@@ -143,7 +127,6 @@
     <li class="zh_tw">繁體中文</li>
   <!--
     <li class="es">Español</li>
-    <li class="fr">Français</li>
     <li class="it">Italiano</li>
     <li class="pt">Português</li>
     <li class="vi">Tiếng Việt</li>
@@ -299,23 +282,15 @@
         <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
       </form>
       <div id="toolbox" class="actions_menu">
-        <div class="group-menu">
-          <button title="Open menu to select a block" id="openMenu" class="icon-plus" data-i18n-text="Add Block"></button>
-        </div>
-        <div class="group-undo-redo">
-          <button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo" data-i18n-text="Undo"></button>
-          <button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo" data-i18n-text="Redo"></button>
-        </div>
-        <div class="group-clean-up">
-          <button title="Clean up" id="cleanUp" class="icon-sort" data-i18n-text="Clean Up"></button>
-        </div>
-        <div class="group-reset">
-          <button title="Reset the blocks" id="resetButton" class="icon-reset" data-i18n-text="Reset"></button>
-        </div>
+        <button title="Open menu to select a block" id="openMenu" class="icon-plus" data-i18n-text="Add Block"></button>
+        <button title="Undo the changes (Ctrl+Z)" id="undo" class="icon-undo" data-i18n-text="Undo"></button>
+        <button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="icon-redo" data-i18n-text="Redo"></button>
+        <button title="Clean up" id="cleanUp" class="icon-sort" data-i18n-text="Clean Up"></button>
+        <button title="Reset the blocks" id="resetButton" class="icon-reset" data-i18n-text="Reset"></button>
       </div>
       <div id="blocklyDiv"></div>
     </div>
-<script src="js/jquery-2f6b11a7e9.js"></script><script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-d1852e2660.min.js"></script>    <script src="https://style.binary.com/binary.js"></script>
+<script src="js/jquery-2f6b11a7e9.js"></script><script src="js/bundle-ebb5a4384f.js"></script><script src="js/bot-ec84a40dc9.min.js"></script>    <script src="https://style.binary.com/binary.js"></script>
 
   </body>
 
