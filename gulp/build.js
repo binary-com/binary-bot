@@ -17,7 +17,6 @@ const getConfig = (prefix) => ({
   head: 'templates/partials/head.mustache',
   security: 'templates/partials/security.mustache',
   language: 'templates/partials/language.mustache',
-  ie: 'templates/partials/ie.mustache',
   loading: 'templates/partials/loading.mustache',
 });
 

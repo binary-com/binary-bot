@@ -22,6 +22,7 @@ let currentSymbol = 'R_100'
 let currentStyle = 'ticks'
 let currentGranularity
 let api
+let chartComp
 
 const mapHistoryTicks = history => {
   const { times, prices } = history
@@ -401,28 +402,12 @@ export default class View {
   updateChart(info) {
     const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
 
-    const zoomInMax = (ev, chart) => {
-      const {
-        dataMax,
-      } = chart.xAxis[0].getExtremes()
-      const {
-        minRange,
-      } = chart.xAxis[0].options
+    if (chartComp && isLine() && this.contractForChart) {
+      const { chart } = chartComp
+      const { dataMax } = chart.xAxis[0].getExtremes()
+      const { minRange } = chart.xAxis[0].options
+
       chart.xAxis[0].setExtremes(dataMax - minRange, dataMax)
-    }
-
-    const events = [
-      {
-        type: 'zoom-in-max',
-        handler: zoomInMax,
-      },
-    ]
-
-    if (isLine() && this.contractForChart) {
-      const chartDiv = document.getElementById('trade-chart0')
-      if (chartDiv) {
-        chartDiv.dispatchEvent(new Event('zoom-in-max'))
-      }
     }
     const isMinHeight = $(window).height() <= 360
 
@@ -452,17 +437,16 @@ export default class View {
       getData(undefined, undefined, currentStyle, currentGranularity)
     }
 
-    ReactDOM.render(
+    chartComp = ReactDOM.render(
       <BinaryChart
       className="trade-chart"
       id="trade-chart0"
       contract={isLine() ? this.contractForChart : false}
       pipSize={info.pipSize}
-      shiftMode="static"
+      shiftMode="dynamic"
       ticks={ticks}
       getData={getData}
       type={this.chartType}
-      events={events}
       hideToolbar={isMinHeight}
       hideTimeFrame={isMinHeight}
       onTypeChange={(type) => (this.chartType = type)}
