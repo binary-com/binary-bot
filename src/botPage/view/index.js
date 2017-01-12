@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
+import { LiveApi } from 'binary-live-api'
 import { observer } from 'binary-common-utils/lib/observer'
 import { getTokenList, removeAllTokens, get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
@@ -16,6 +17,19 @@ import { getLanguage } from '../../common/lang'
 import { Tour } from './tour'
 
 let realityCheckTimeout
+let ticks = []
+let currentSymbol = 'R_100'
+let currentStyle = 'ticks'
+let currentGranularity
+let api
+
+const mapHistoryTicks = history => {
+  const { times, prices } = history
+  return times.map((t, idx) => ({
+    epoch: +t,
+    quote: +prices[idx],
+  }))
+}
 
 const showRealityCheck = () => {
   $('.blocker').show()
@@ -73,16 +87,37 @@ const resetRealityCheck = (token) => {
   startRealityCheck(null, token)
 }
 
+const initializeApi = () => {
+  api = new LiveApi()
+  api.events.on('ohlc', response => {
+    const newTick = response.ohlc
+    const lastCandle = ticks.slice(-1)[0]
+    const getTime = candle => candle.open_time || candle.epoch
+    ticks = (getTime(lastCandle) === getTime(newTick)) ?
+      [...ticks.slice(0, ticks.length - 1), newTick] :
+      ticks.concat([newTick])
+  })
+
+  api.events.on('tick', response => {
+    const newTick = response.tick
+    ticks = ticks.concat([{ epoch: +newTick.epoch, quote: +newTick.quote }])
+  })
+
+  api
+    .getTickHistory('R_100', { subscribe: 1, end: 'latest', count: 1000, style: 'ticks' })
+    .then(r => (ticks = mapHistoryTicks(r.history)))
+}
+
 export default class View {
   constructor() {
     this.chartType = 'line'
     logHandler()
     this.tradeInfo = new TradeInfo()
+    initializeApi()
     this.initPromise = new Promise((resolve) => {
       this.updateTokenList()
       this.blockly = new _Blockly()
       this.blockly.initPromise.then(() => {
-        $('.actions_menu').show()
         this.setElementActions()
         $('#accountLis')
         startRealityCheck(null, $('.account-id').first().attr('value'))
@@ -191,6 +226,14 @@ export default class View {
     this.addEventHandlers()
   }
   addBindings() {
+    const stop = (e) => {
+      if (e) {
+        e.preventDefault()
+      }
+      stopRealityCheck()
+      window.Bot.stop()
+    }
+
     const logout = () => {
       logoutAllTokens(() => {
         this.updateTokenList()
@@ -198,16 +241,6 @@ export default class View {
         clearRealityCheck()
       })
     }
-
-    $('#stopButton')
-      .click(e => {
-        if (e) {
-          e.preventDefault()
-        }
-        stopRealityCheck()
-        window.Bot.stop()
-      })
-      .hide()
 
     $('.panelExitButton')
       .click(function onClick() {
@@ -218,8 +251,6 @@ export default class View {
 
     $('.panel')
       .hide()
-
-    $('.panel')
       .drags()
 
     $('.panel .content')
@@ -227,14 +258,9 @@ export default class View {
 
     ReactDOM.render(
       <SaveXml
-      onSave={(filename, collection) => this.blockly.save(filename, collection)}
+        onSave={(filename, collection) => this.blockly.save(filename, collection)}
       />
       , $('#saveXml')[0])
-
-    $('#saveXml')
-      .click(() => {
-        $('#saveAs').show()
-      })
 
     $('#undo')
       .click(() => {
@@ -262,10 +288,7 @@ export default class View {
       })
 
     $('#showSummary')
-      .click(() => {
-        $('#summaryPanel')
-          .show()
-      })
+      .click(() => $('#summaryPanel').show())
 
     $('#loadXml')
       .click(() => {
@@ -311,6 +334,10 @@ export default class View {
           startBot()
         }
       })
+
+    $('#stopButton')
+      .click(e => stop(e))
+      .hide()
 
     $('#resetButton')
       .click(() => {
@@ -372,13 +399,6 @@ export default class View {
     })
   }
   updateChart(info) {
-    const chartToDataType = {
-      area: 'ticks',
-      line: 'ticks',
-      candlestick: 'ohlc',
-      ohlc: 'ohlc',
-    }
-
     const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
 
     const zoomInMax = (ev, chart) => {
@@ -404,18 +424,47 @@ export default class View {
         chartDiv.dispatchEvent(new Event('zoom-in-max'))
       }
     }
+    const isMinHeight = $(window).height() <= 360
+
+    const getData = (start, end, style, granularity) => {
+      currentStyle = style
+      currentGranularity = granularity
+      return new Promise((r, e) => {
+        api.unsubscribeFromAllTicks().then(() => 0, () => 0)
+        api.unsubscribeFromAllCandles().then(() => 0, () => 0)
+        api.getTickHistory(currentSymbol, { subscribe: 1, end: 'latest', count: 1000, granularity, style })
+          .then(resp => {
+            let data
+            if (style === 'ticks') {
+              data = mapHistoryTicks(resp.history)
+            } else {
+              data = resp.candles
+            }
+
+            ticks = data
+            r(data)
+          }, e)
+      })
+    }
+
+    if (info.symbol && currentSymbol !== info.symbol) {
+      currentSymbol = info.symbol
+      getData(undefined, undefined, currentStyle, currentGranularity)
+    }
+
     ReactDOM.render(
       <BinaryChart
       className="trade-chart"
       id="trade-chart0"
       contract={isLine() ? this.contractForChart : false}
-      hideZoomControls={isLine() && this.contractForChart}
       pipSize={info.pipSize}
-      shiftMode={this.contractForChart ? 'dynamic' : 'fixed'}
-      ticks={info[chartToDataType[this.chartType]]}
+      shiftMode="static"
+      ticks={ticks}
+      getData={getData}
       type={this.chartType}
       events={events}
-      hideIntervalPicker
+      hideToolbar={isMinHeight}
+      hideTimeFrame={isMinHeight}
       onTypeChange={(type) => (this.chartType = type)}
       />, $('#chart')[0])
   }
