@@ -400,9 +400,7 @@ export default class View {
     })
   }
   updateChart(info) {
-    const isLine = () => ['area', 'line'].indexOf(this.chartType) >= 0
-
-    if (chartComp && isLine() && this.contractForChart) {
+    if (chartComp && currentStyle === 'ticks' && this.contractForChart) {
       const { chart } = chartComp
       const { dataMax } = chart.xAxis[0].getExtremes()
       const { minRange } = chart.xAxis[0].options
@@ -441,7 +439,7 @@ export default class View {
       <BinaryChart
       className="trade-chart"
       id="trade-chart0"
-      contract={isLine() ? this.contractForChart : false}
+      contract={currentStyle === 'ticks' ? this.contractForChart : false}
       pipSize={info.pipSize}
       shiftMode="dynamic"
       ticks={ticks}
