@@ -207,4 +207,9 @@ export default {
     [translate('middle'), '0'],
     [translate('lower'), '2'],
   ],
+  macdFields: [
+    [translate('Histogram'), '0'],
+    [translate('MACD'), '1'],
+    [translate('Signal'), '2'],
+  ],
 }
