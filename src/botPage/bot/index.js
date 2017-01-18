@@ -65,6 +65,7 @@ export default class Bot {
     this.totalStake = 0
     this.totalPayout = 0
     this.balance = 0
+    this.pipSize = 2
     this.api = (api === null) ? new CustomApi() : api
     this.symbol = new _Symbol(this.api)
     this.initPromise = this.symbol.initPromise
@@ -231,10 +232,11 @@ export default class Bot {
             direction = 'fall'
           }
         }
+        this.pipSize = Number(Number(this.pip).toExponential().substring(3))
         const ticks = {
           direction,
           symbol: this.currentSymbol,
-          pipSize: Number(Number(this.pip).toExponential().substring(3)),
+          pipSize: this.pipSize,
           ticks: this.ticks,
           ohlc: this.candles,
         }
