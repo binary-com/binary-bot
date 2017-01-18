@@ -22,7 +22,7 @@ Blockly.JavaScript.rsia = (block) => {
   const input = Blockly.JavaScript.valueToCode(block,
       'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]'
   const period = Blockly.JavaScript.valueToCode(block,
-      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '0'
+      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '14'
   const code = `Bot.math.indicators.relativeStrengthIndexArray(Bot.expect.notEmptyArray(${
   input}), { periods: Bot.expect.indicatorPeriod(${input}, ${period}) })`
   return [code, Blockly.JavaScript.ORDER_NONE]

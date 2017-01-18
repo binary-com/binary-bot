@@ -31,11 +31,11 @@ Blockly.JavaScript.bb = (block) => {
   const input = Blockly.JavaScript.valueToCode(block,
       'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]'
   const period = Blockly.JavaScript.valueToCode(block,
-      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '0'
+      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '20'
   const stdDevUp = Blockly.JavaScript.valueToCode(block,
-      'UPMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '1'
+      'UPMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '2'
   const stdDevDown = Blockly.JavaScript.valueToCode(block,
-      'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '1'
+      'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '2'
   const code = `(Bot.math.indicators.bollingerBands(Bot.expect.notEmptyArray(${
   input}), { periods: Bot.expect.indicatorPeriod(${input}, ${period
   }), stdDevUp: Bot.expect.number('${translate('Std. Dev. Up Multiplier')
