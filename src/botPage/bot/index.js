@@ -1,12 +1,12 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import CustomApi from 'binary-common-utils/lib/customApi'
-import { getToken } from 'binary-common-utils/lib/storageManager'
 import { getUTCTime } from 'binary-common-utils/lib/tools'
-import _ from 'underscore'
 import PurchaseCtrl from './purchaseCtrl'
 import _Symbol from './symbol'
 import { translate } from '../../common/i18n'
 import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect'
+
+const isNotEmpty = o => o && Object.keys(o).length
 
 const decorateTradeOptions = (tradeOption, otherOptions = {}) => {
   const option = {
@@ -88,21 +88,12 @@ export default class Bot {
       observer.emit('log.bot.start', {
         again: !!sameTrade,
       })
-      const accountName = getToken(token).account_name
-      if (typeof amplitude !== 'undefined') {
-        amplitude.getInstance().setUserId(accountName)
-      }
-      if (typeof trackJs !== 'undefined') {
-        trackJs.configure({
-          userId: accountName,
-        })
-      }
       if (sameTrade) {
         this.startTrading()
       } else {
         sessionRuns = sessionProfit = 0
         const promises = []
-        if (!_.isEmpty(this.tradeOption)) {
+        if (isNotEmpty(this.tradeOption)) {
           if (this.tradeOption.symbol !== this.currentSymbol) {
             observer.unregisterAll('api.ohlc')
             observer.unregisterAll('api.tick')
@@ -147,7 +138,7 @@ export default class Bot {
   }
   setTradeOptions() {
     this.tradeOptions = []
-    if (!_.isEmpty(this.tradeOption)) {
+    if (isNotEmpty(this.tradeOption)) {
       this.pip = this.symbol.activeSymbols.getSymbols()[this.tradeOption.symbol.toLowerCase()].pip
       for (const type of JSON.parse(this.tradeOption.contractTypes)) {
         this.tradeOptions.push(decorateTradeOptions(this.tradeOption, {
@@ -331,13 +322,6 @@ export default class Bot {
   }
   updateTotals(contract) {
     const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2)
-    const user = getToken(this.currentToken)
-    observer.emit('log.revenue', {
-      user,
-      profit,
-      contract,
-    })
-
     if (+profit > 0) {
       this.totalWins += 1
     } else if (+profit < 0) {
@@ -349,6 +333,8 @@ export default class Bot {
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2)
 
     observer.emit('bot.tradeInfo', {
+      profit,
+      contract,
       totalProfit: this.totalProfit,
       totalWins: this.totalWins,
       totalLosses: this.totalLosses,

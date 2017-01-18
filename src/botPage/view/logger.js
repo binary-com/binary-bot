@@ -1,4 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
+import { getToken } from 'binary-common-utils/lib/storageManager'
 import { translate } from '../../common/i18n'
 
 const shown = []
@@ -58,6 +59,17 @@ export const logHandler = () => {
       amplitude.getInstance().logEvent(errorType, {
         message,
       })
+    })
+  }
+
+  const token = $('.account-id').first().attr('value')
+  const accountName = getToken(token).account_name
+  if (typeof amplitude !== 'undefined') {
+    amplitude.getInstance().setUserId(accountName)
+  }
+  if (typeof trackJs !== 'undefined') {
+    trackJs.configure({
+      userId: accountName,
     })
   }
 
