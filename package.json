@@ -75,8 +75,6 @@
     "gulp-webpack": "^1.5.0",
     "i18next-scanner": "^1.5.0",
     "jquery": "2.2.4",
-    "jsdom": "^9.8.0",
-    "jsdom-global": "^2.1.0",
     "jshint": "^2.9.3",
     "json-loader": "^0.5.4",
     "loader-utils": "^0.2.16",
@@ -91,9 +89,7 @@
     "through2": "^2.0.1",
     "tourist": "github:easelinc/tourist#a31cf497cc7af8173513ea3f57f760894d5262cb",
     "trackjs": "^2.6.2",
-    "underscore": "^1.8.3",
     "vinyl-paths": "^2.1.0",
-    "webpack": "^1.13.3",
-    "xmldom": "^0.1.22"
+    "webpack": "^1.13.3"
   }
 }
