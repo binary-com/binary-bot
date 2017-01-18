@@ -18,7 +18,7 @@ import { Tour } from './tour'
 
 let realityCheckTimeout
 let ticks = []
-let currentSymbol = 'R_100'
+let currentSymbol
 let currentStyle = 'ticks'
 let currentGranularity
 let api
@@ -103,10 +103,6 @@ const initializeApi = () => {
     const newTick = response.tick
     ticks = ticks.concat([{ epoch: +newTick.epoch, quote: +newTick.quote }])
   })
-
-  api
-    .getTickHistory('R_100', { subscribe: 1, end: 'latest', count: 1000, style: 'ticks' })
-    .then(r => (ticks = mapHistoryTicks(r.history)))
 }
 
 export default class View {

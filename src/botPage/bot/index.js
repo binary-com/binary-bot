@@ -233,6 +233,7 @@ export default class Bot {
         }
         const ticks = {
           direction,
+          symbol: this.currentSymbol,
           pipSize: Number(Number(this.pip).toExponential().substring(3)),
           ticks: this.ticks,
           ohlc: this.candles,
