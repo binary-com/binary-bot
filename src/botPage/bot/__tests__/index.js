@@ -32,20 +32,6 @@ describe('Bot', () => {
     expect(markets).to.be.an('Object')
       .and.to.have.property('forex')
   })
-  describe('Bot cannot start with a fake token', () => {
-    let error
-    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('api.error', (_error) => {
-        error = _error
-        done()
-      }, true)
-      bot.start('FakeToken', null, null, null)
-    })
-    it('fake token should cause an error', () => {
-      expect(error).to.have.deep.property('.error.code')
-        .that.is.equal('InvalidToken')
-    })
-  })
   describe('Start trading', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('test.waiting_for_purchase', () => {
