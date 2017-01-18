@@ -473,6 +473,15 @@ export default class View {
       for (const key of Object.keys(tradeInfo)) {
         this.tradeInfo.tradeInfo[key] = tradeInfo[key]
       }
+      if ('profit' in tradeInfo) {
+        const token = $('.account-id').first().attr('value')
+        const user = getToken(token)
+        observer.emit('log.revenue', {
+          user,
+          profit: tradeInfo.profit,
+          contract: tradeInfo.contract,
+        })
+      }
       this.tradeInfo.update()
     })
 
