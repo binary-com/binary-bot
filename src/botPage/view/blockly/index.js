@@ -31,8 +31,13 @@ const disableStrayBlocks = () => {
   }
 }
 
+const setBeforeUnload = off =>
+  (window.onbeforeunload = off ? null :
+    () => 'You have some unsaved blocks, do you want to save them before you exit?')
+
 const disposeBlocksWithLoaders = () => {
   Blockly.mainWorkspace.addChangeListener(ev => {
+    setBeforeUnload()
     if (ev.type === 'create') {
       for (const blockId of ev.ids) {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
@@ -121,6 +126,7 @@ export default class _Blockly {
           this.zoomOnPlusMinus()
           Blockly.mainWorkspace.clearUndo()
           disposeBlocksWithLoaders()
+          setTimeout(() => setBeforeUnload(true), 0)
           resolve()
         })
       })
@@ -220,6 +226,7 @@ export default class _Blockly {
     }
   }
   save(filename, collection) {
+    setBeforeUnload(true)
     const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
     for (const blockDom of Array.prototype.slice.call(xml.children)) {
       const block = Blockly.mainWorkspace.getBlockById(blockDom.getAttribute('id'))
