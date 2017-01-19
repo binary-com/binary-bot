@@ -29,7 +29,7 @@ Blockly.JavaScript.timeout = (block) => {
   return `
     Bot.setTimeout(function (){
       ${stack}
-    }.bind(this), (${seconds ? `(${seconds}) *` : ''} 1000));
+    }, (${seconds ? `(${seconds}) *` : ''} 1000));
     ${insideMainBlocks(block) ? 'return;' : ''}
   `
 }

@@ -1,6 +1,6 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import CustomApi from 'binary-common-utils/lib/customApi'
-import { getUTCTime } from 'binary-common-utils/lib/tools'
+import Context from './Context'
 import PurchaseCtrl from './purchaseCtrl'
 import _Symbol from './symbol'
 import { translate } from '../../common/i18n'
@@ -30,23 +30,6 @@ const tradeOptionToProposal = (tradeOption, otherOptions) =>
     otherOptions,
   )
 
-const createDetails = (contract) => {
-  const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2)
-  const result = (profit < 0) ? 'loss' : 'win'
-
-  observer.emit(`log.purchase.${result}`, {
-    profit,
-    transactionId: contract.transaction_ids.buy,
-  })
-  return [
-    contract.transaction_ids.buy, +contract.buy_price, +contract.sell_price,
-    profit, contract.contract_type,
-    getUTCTime(new Date(parseInt(`${contract.entry_tick_time}000`, 10))), +contract.entry_tick,
-    getUTCTime(new Date(parseInt(`${contract.exit_tick_time}000`, 10))), +contract.exit_tick,
-    +((contract.barrier) ? contract.barrier : 0), result,
-  ]
-}
-
 const isRegistered = name => observer.isRegistered(name)
 
 const getDirection = ticks => {
@@ -61,95 +44,88 @@ const getDirection = ticks => {
   return direction
 }
 
-let sessionRuns = 0
-let sessionProfit = 0
-
 export default class Bot {
   constructor(api = null) {
     this.ticks = []
     this.ohlc = []
-    this.candleInterval = 0
-    this.token = ''
-    this.balanceStr = ''
-    this.currentSymbol = ''
     this.unregisterOnFinishList = []
-    this.totalProfit = 0
-    this.totalRuns = 0
-    this.totalWins = 0
-    this.totalLosses = 0
-    this.totalStake = 0
-    this.totalPayout = 0
+    this.token = this.balanceStr = this.symbol = ''
+    this.candleInterval = this.totalProfit = this.totalRuns =
+    this.totalWins = this.totalLosses = this.totalStake =
+    this.sessionRuns = this.sessionProfit = this.totalPayout =
     this.balance = 0
     this.pipSize = 2
     this.api = (api === null) ? new CustomApi() : api
-    this.symbol = new _Symbol(this.api)
-    this.initPromise = this.symbol.initPromise
-    this.shouldRestartOnError = () => this.tradeOption && this.tradeOption.restartOnError
-    this.restartOnError = () => {
-      if (this.shouldRestartOnError()) {
-        this.start(...this.startArgs)
-      }
+    this.symbolApi = new _Symbol(this.api)
+    this.initPromise = this.symbolApi.initPromise
+  }
+  shouldRestartOnError() {
+    return this.tradeOption && this.tradeOption.restartOnError
+  }
+  restartOnError() {
+    if (this.shouldRestartOnError()) {
+      this.start(...this.startArgs)
     }
   }
-  getPipSize(symbols, symbolName) {
-    return +(+symbols[symbolName.toLowerCase()].pip)
+  getPipSize() {
+    const symbols = this.symbolApi.activeSymbols.getSymbols()
+
+    return +(+symbols[this.tradeOption.symbol.toLowerCase()].pip)
       .toExponential().substring(3)
+  }
+  subscriptionsBeforeStart() {
+    const isNewSymbol = this.tradeOption.symbol !== this.symbol
+    const isNewCandleInterval = this.tradeOption.candleInterval !== this.candleInterval
+
+    return [isNewSymbol ? this.subscribeToTickHistory() : null,
+      (isNewCandleInterval || isNewSymbol) ? this.subscribeToCandles() : null]
+  }
+  loginAndStartTrading(token) {
+    this.sessionRuns = this.sessionProfit = 0
+
+    const promises = this.subscriptionsBeforeStart()
+
+    this.observeStreams()
+
+    Promise.all(promises).then(() => this.login(token))
+      .catch((e) => {
+        if (e.name !== 'BlocklyError') {
+          throw e
+        }
+      })
   }
   start(...args) {
     const [
       token, tradeOption, beforePurchase, duringPurchase,
       afterPurchase, sameTrade, tickAnalysisList, limitations,
-    ] = args
+    ] = this.startArgs = args
 
-    this.startArgs = args
-    this.limitations = limitations || {}
+    this.context = new Context(
+      beforePurchase, duringPurchase, afterPurchase, tickAnalysisList)
+
     if (!this.purchaseCtrl) {
-      this.afterPurchase = afterPurchase
-      this.purchaseCtrl = new PurchaseCtrl(this.api, beforePurchase, duringPurchase)
-      this.tickAnalysisList = tickAnalysisList || []
       this.tradeOption = tradeOption
-      this.pipSize = this.getPipSize(
-        this.symbol.activeSymbols.getSymbols(),
-        this.tradeOption.symbol
-      )
-      observer.emit('log.bot.start', {
-        again: !!sameTrade,
-      })
+      this.limitations = limitations || {}
+
+      this.purchaseCtrl = new PurchaseCtrl(this.api, this.context)
+
+      this.pipSize = this.getPipSize()
+
+      observer.emit('log.bot.start', { again: !!sameTrade })
+
       if (sameTrade) {
         this.startTrading()
       } else {
-        sessionRuns = sessionProfit = 0
-        const newSymbol = this.tradeOption.symbol !== this.currentSymbol
-        const newCandleInterval = this.tradeOption.candleInterval !== this.candleInterval
-
-        const promises = [
-          newSymbol ? this.subscribeToTickHistory() : null,
-          (newCandleInterval || newSymbol) ? this.subscribeToCandles() : null,
-        ]
-
-        this.observeStreams()
-        Promise.all(promises).then(() => {
-          if (token !== this.token) {
-            this.login(token)
-          } else {
-            this.startTrading()
-          }
-        }).catch((error) => {
-          if (error.name === 'BlocklyError') {
-            // pass
-          } else {
-            throw error
-          }
-        })
+        this.loginAndStartTrading(token)
       }
     }
   }
-  observeLogin(token) {
+  observeLogin() {
     if (isRegistered('api.authorize')) {
       return
     }
     const apiAuthorize = () => {
-      observer.emit('log.bot.login', { token })
+      observer.emit('log.bot.login', { token: this.token })
 
       this.subscribeToBalance()
       this.startTrading()
@@ -157,7 +133,10 @@ export default class Bot {
     observer.register('api.authorize', apiAuthorize)
   }
   login(token) {
-    this.observeLogin(token)
+    if (token === this.token) {
+      this.startTrading()
+      return
+    }
     this.token = token
     this.api.authorize(token)
   }
@@ -172,20 +151,18 @@ export default class Bot {
     )
   }
   subscribeToBalance() {
-    const apiBalance = (balance) => {
-      this.balance = balance.balance
-      this.balanceStr = `${Number(balance.balance).toFixed(2)} ${balance.currency}`
-      observer.emit('bot.tradeInfo', {
-        balance: this.balanceStr,
-      })
+    const apiBalance = (balanceResp) => {
+      const { balance, currency } = balanceResp
+      this.balance = balance
+      this.balanceStr = `${(+balance).toFixed(2)} ${currency}`
+      observer.emit('bot.tradeInfo', { balance: this.balanceStr })
     }
     observer.register('api.balance', apiBalance, false, {
       type: 'balance',
       unregister: [['api.balance', apiBalance]],
     })
-    this.api.originalApi.send({
-      forget_all: 'balance',
-    }).then(() => this.api.balance(), noop)
+    this.api.originalApi.send({ forget_all: 'balance' })
+      .then(() => this.api.balance(), noop)
   }
   subscribeToCandles() {
     return new Promise((resolve) => {
@@ -212,7 +189,7 @@ export default class Bot {
   subscribeToTickHistory() {
     return new Promise((resolve) => {
       const apiHistory = (history) => {
-        this.currentSymbol = this.tradeOption.symbol
+        this.symbol = this.tradeOption.symbol
         this.ticks = history
         resolve()
       }
@@ -237,20 +214,22 @@ export default class Bot {
     const apiTick = (tick) => {
       this.ticks = [...this.ticks.slice(1), tick]
 
-      const ticks = {
-        direction: getDirection(this.ticks),
-        symbol: this.currentSymbol,
-        pipSize: this.pipSize,
-        ticks: this.ticks,
-        ohlc: this.ohlc,
-      }
+      const {
+        direction = getDirection(this.ticks),
+        symbol, pipSize, ticks, ohlc,
+      } = this
 
-      this.tickAnalysisList.forEach(ta => ta.call({ ticks }))
+      const ticksObj = { direction, symbol, pipSize, ticks, ohlc }
+
+      this.context.createTicks(ticksObj)
+
+      this.context.tickAnalysis()
 
       if (this.purchaseCtrl) {
-        this.purchaseCtrl.updateTicks(ticks)
+        this.purchaseCtrl.updateTicks(ticksObj)
       }
-      observer.emit('bot.tickUpdate', ticks)
+
+      observer.emit('bot.tickUpdate', ticksObj)
     }
     observer.register('api.tick', apiTick)
   }
@@ -271,14 +250,15 @@ export default class Bot {
     if (isRegistered('purchase.tradeUpdate')) {
       return
     }
-    const beforePurchaseTradeUpdate = (contract) => {
+    const tradeUpdate = (contract) => {
       if (this.purchaseCtrl) {
         observer.emit('bot.tradeUpdate', contract)
       }
     }
-    observer.register('purchase.tradeUpdate', beforePurchaseTradeUpdate)
+    observer.register('purchase.tradeUpdate', tradeUpdate)
   }
   observeStreams() {
+    this.observeLogin()
     this.observeTradeUpdate()
     this.observeTicks()
     this.observeOhlc()
@@ -302,16 +282,16 @@ export default class Bot {
     , noop)
   }
   waitForBeforePurchaseFinish() {
-    const beforePurchaseFinish = (contract) => {
+    const purchaseFinish = (contract) => {
       this.botFinish(contract)
     }
-    observer.register('purchase.finish', beforePurchaseFinish, true, null, true)
-    this.unregisterOnFinishList.push(['purchase.finish', beforePurchaseFinish])
+    observer.register('purchase.finish', purchaseFinish, true, null, true)
+    this.unregisterOnFinishList.push(['purchase.finish', purchaseFinish])
   }
   waitForTradePurchase() {
     const tradePurchase = (info) => {
       this.totalRuns += 1
-      sessionRuns += 1
+      this.sessionRuns += 1
       observer.emit('bot.tradeInfo', {
         totalRuns: this.totalRuns,
         transaction_ids: {
@@ -336,7 +316,7 @@ export default class Bot {
     } else if (+profit < 0) {
       this.totalLosses += 1
     }
-    sessionProfit = +(sessionProfit + profit).toFixed(2)
+    this.sessionProfit = +(this.sessionProfit + profit).toFixed(2)
     this.totalProfit = +(this.totalProfit + profit).toFixed(2)
     this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2)
     this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2)
@@ -351,23 +331,24 @@ export default class Bot {
       totalPayout: this.totalPayout,
     })
   }
-  tradeAgain(finishedContract) {
+  limitsReached() {
     const { maxLoss, maxTrades } = this.limitations
     if (maxLoss && maxTrades) {
-      if (sessionRuns >= maxTrades) {
+      if (this.sessionRuns >= maxTrades) {
         observer.emit('LimitsReached', translate('Maximum number of trades reached'))
-        return
+        return true
       }
-      if (sessionProfit <= (-maxLoss)) {
+      if (this.sessionProfit <= (-maxLoss)) {
         observer.emit('LimitsReached', translate('Maximum loss amount reached'))
-        return
+        return true
       }
     }
-    const afterPurchaseContext = {
-      finishedContract,
-      contractDetails: createDetails(finishedContract),
+    return false
+  }
+  tradeAgain(finishedContract) {
+    if (!this.limitsReached()) {
+      this.context.afterPurchase(finishedContract)
     }
-    this.afterPurchase.call(afterPurchaseContext)
   }
   unregisterOnFinish() {
     this.unregisterOnFinishList.forEach(o =>

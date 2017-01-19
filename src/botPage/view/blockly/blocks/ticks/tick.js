@@ -16,5 +16,5 @@ Blockly.Blocks.tick = {
   },
 }
 Blockly.JavaScript.tick = () => [
-  'Bot.expect.tick(Bot.expect.notEmptyArray(this.ticks.ticks).slice(-1)[0]).quote',
+  'Bot.expect.tick(Bot.expect.notEmptyArray(this.ticksObj.ticks).slice(-1)[0]).quote',
   Blockly.JavaScript.ORDER_ATOMIC]

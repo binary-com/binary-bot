@@ -16,5 +16,5 @@ Blockly.Blocks.last_digit = {
   },
 }
 Blockly.JavaScript.last_digit = () => [
-  'Number(Bot.expect.tick(Bot.expect.notEmptyArray(this.ticks.ticks).slice(-1)[0]).quote.toFixed(this.ticks.pipSize).slice(-1)[0])',
+  'Number(Bot.expect.tick(Bot.expect.notEmptyArray(this.ticksObj.ticks).slice(-1)[0]).quote.toFixed(this.ticksObj.pipSize).slice(-1)[0])',
   Blockly.JavaScript.ORDER_ATOMIC]

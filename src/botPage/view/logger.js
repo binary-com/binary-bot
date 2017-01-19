@@ -103,7 +103,6 @@ export const logHandler = () => {
   for (const event of [
       'log.bot.start', 'log.bot.login', 'log.bot.proposal',
       'log.purchase.start', 'log.purchase.purchase',
-      'log.purchase.win', 'log.purchase.loss',
       'log.trade.purchase', 'log.trade.update', 'log.trade.finish']) {
     observer.register(event, (d) => console.log(event, d)) // eslint-disable-line no-console
   }

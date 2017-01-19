@@ -2,7 +2,18 @@ import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
 import { observer } from 'binary-common-utils/lib/observer'
 import ws from '../../../common/mock/websocket'
+import Context from '../Context'
 import PurchaseCtrl from '../purchaseCtrl'
+
+const ticksObj = {
+  ticks: [{
+    epoch: 'some time',
+    quote: 1,
+  }, {
+    epoch: 'some time',
+    quote: 2,
+  }],
+}
 
 describe('PurchaseCtrl', () => {
   let api
@@ -12,12 +23,12 @@ describe('PurchaseCtrl', () => {
   before(() => {
     api = new CustomApi(ws)
     const beforePurchase = function beforePurchase() {
-      if (this.proposals) {
+      if (purchaseCtrl.proposals) {
         if (firstAttempt) {
           firstAttempt = false
           observer.emit('test.beforePurchase', {
-            ticks: this.ticks,
-            proposals: this.proposals,
+            ticksObj: this.ticksObj,
+            proposals: purchaseCtrl.proposals,
           })
         } else {
           observer.emit('test.purchase')
@@ -25,13 +36,14 @@ describe('PurchaseCtrl', () => {
         }
       } else {
         observer.emit('test.beforePurchase', {
-          ticks: this.ticks,
-          proposals: this.proposals,
+          ticksObj: this.ticksObj,
+          proposals: purchaseCtrl.proposals,
         })
       }
     }
-    purchaseCtrl = new PurchaseCtrl(api, beforePurchase, () => {
-    })
+    const context = new Context(beforePurchase)
+    purchaseCtrl = new PurchaseCtrl(api, context)
+    context.createTicks(ticksObj)
   })
   describe('Make the beforePurchase ready...', () => {
     before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
@@ -78,18 +90,10 @@ describe('PurchaseCtrl', () => {
         beforePurchaseArgs = _beforePurchaseArgs
         done()
       }, true)
-      purchaseCtrl.updateTicks({
-        ticks: [{
-          epoch: 'some time',
-          quote: 1,
-        }, {
-          epoch: 'some time',
-          quote: 2,
-        }],
-      })
+      purchaseCtrl.updateTicks(ticksObj)
     })
     it('purchaseCtrl passes ticks and send the proposals if ready', () => {
-      expect(beforePurchaseArgs.ticks.ticks.slice(-1)[0]).to.have.property('epoch')
+      expect(beforePurchaseArgs.ticksObj.ticks.slice(-1)[0]).to.have.property('epoch')
       expect(beforePurchaseArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
         .that.is.equal('Win payout if the last digit of Volatility 100 Index is'
         + ' odd after 5 ticks.')
@@ -101,15 +105,7 @@ describe('PurchaseCtrl', () => {
         done()
       }, true)
       purchaseCtrl.updateProposal(proposals[1])
-      purchaseCtrl.updateTicks({
-        ticks: [{
-          epoch: 'some time',
-          quote: 1,
-        }, {
-          epoch: 'some time',
-          quote: 2,
-        }],
-      })
+      purchaseCtrl.updateTicks()
     })
     it('beforePurchase will buy the proposal whenever decided', () => {
     })
@@ -121,15 +117,7 @@ describe('PurchaseCtrl', () => {
         finishedContract = _finishedContract
         done()
       }, true)
-      purchaseCtrl.updateTicks({
-        ticks: [{
-          epoch: 'some time',
-          quote: 1,
-        }, {
-          epoch: 'some time',
-          quote: 2,
-        }],
-      })
+      purchaseCtrl.updateTicks()
     })
     it('afterPurchase is called whenever the purchase is finished', () => {
       expect(finishedContract).to.have.property('sell_price')
