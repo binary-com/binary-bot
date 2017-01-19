@@ -1,4 +1,13 @@
-import _ from 'underscore'
+const groupBy = (arr, field) =>
+  arr.reduce((g, o) => {
+    const grouped = Object.assign({}, g)
+    if (o[field] in grouped) {
+      grouped[o[field]].push(o)
+    } else {
+      grouped[o[field]] = [o]
+    }
+    return grouped
+  }, {})
 
 let apiActiveSymbols
 let groupedMarkets
@@ -45,8 +54,8 @@ const parseMarkets = () => {
 export default class ActiveSymbols {
   constructor(activeSymbols) {
     apiActiveSymbols = activeSymbols
-    groupedMarkets = _.groupBy(apiActiveSymbols, 'market')
-    groupedSubmarkets = _.groupBy(apiActiveSymbols, 'submarket')
+    groupedMarkets = groupBy(apiActiveSymbols, 'market')
+    groupedSubmarkets = groupBy(apiActiveSymbols, 'submarket')
     parseMarkets()
     parseSubmarkets()
     parseSymbols()

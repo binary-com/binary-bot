@@ -1,4 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
+import { getToken } from 'binary-common-utils/lib/storageManager'
 import { translate } from '../../common/i18n'
 
 const shown = []
@@ -61,6 +62,17 @@ export const logHandler = () => {
     })
   }
 
+  const token = $('.account-id').first().attr('value')
+  const accountName = getToken(token).account_name
+  if (typeof amplitude !== 'undefined') {
+    amplitude.getInstance().setUserId(accountName)
+  }
+  if (typeof trackJs !== 'undefined') {
+    trackJs.configure({
+      userId: accountName,
+    })
+  }
+
   const observeForLog = (type, position) => {
     const subtype = (position === 'left') ? '.left' : ''
     observer.register(`ui.log.${type}${subtype}`, (message) => {
@@ -90,7 +102,7 @@ export const logHandler = () => {
 
   for (const event of [
       'log.bot.start', 'log.bot.login', 'log.bot.proposal',
-      'log.bot.stop', 'log.purchase.start', 'log.purchase.purchase',
+      'log.purchase.start', 'log.purchase.purchase',
       'log.purchase.win', 'log.purchase.loss',
       'log.trade.purchase', 'log.trade.update', 'log.trade.finish']) {
     observer.register(event, (d) => console.log(event, d)) // eslint-disable-line no-console
