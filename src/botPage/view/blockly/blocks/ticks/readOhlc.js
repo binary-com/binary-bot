@@ -32,9 +32,9 @@ Blockly.JavaScript.read_ohlc = (block) => {
     index = 1
   }
   if (index === 1) {
-    code = `(Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticks.ohlc).slice(-1)[0]).${ohlcField})`
+    code = `(Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticksObj.ohlc).slice(-1)[0]).${ohlcField})`
   } else {
-    code = `(Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticks.ohlc).slice(-1*${
+    code = `(Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticksObj.ohlc).slice(-1*${
     index}, -1*${index - 1})[0]).${ohlcField})`
   }
   return [code, Blockly.JavaScript.ORDER_ATOMIC]

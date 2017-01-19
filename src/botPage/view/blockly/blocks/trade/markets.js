@@ -5,7 +5,7 @@ import config from '../../../../../common/const'
 import { updateInputList } from '../../utils'
 
 export default () => {
-  const symbols = bot.symbol.activeSymbols.getSymbols()
+  const symbols = bot.symbolApi.activeSymbols.getSymbols()
   for (const k of Object.keys(symbols)) {
     Blockly.Blocks[k] = {
       init: function init() {

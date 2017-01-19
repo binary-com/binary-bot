@@ -2,15 +2,14 @@ import { observer } from 'binary-common-utils/lib/observer'
 import Trade from './trade'
 
 export default class PurchaseCtrl {
-  constructor(api, beforePurchase, duringPurchase) {
-    this.expectedNumOfProposals = 2
+  constructor(api, context) {
     this.api = api
-    this.beforePurchase = beforePurchase
-    this.duringPurchase = duringPurchase
-    this.ready = false
-    this.purchased = false
+    this.context = context
+    this.createInterface()
+    this.ready = this.purchased = false
     this.runningObservations = []
     this.proposals = {}
+    this.expectedNumOfProposals = 2
   }
   setNumOfProposals(num) {
     this.expectedNumOfProposals = num
@@ -23,24 +22,11 @@ export default class PurchaseCtrl {
       }
     }
   }
-  updateTicks(ticks) {
-    const ohlc = ticks.ohlc
-    if (ohlc) {
-      const repr = function repr() {
-        return JSON.stringify(this)
-      }
-      for (const o of ohlc) {
-        o.toString = repr
-      }
-    }
-    this.ticks = ticks
-    if (!this.purchased) {
-      if (this.ready) {
-        observer.emit('log.purchase.start', {
-          proposals: this.proposals,
-        })
-        this.beforePurchase()
-      }
+  updateTicks() {
+    if (!this.purchased && this.ready) {
+      observer.emit('log.purchase.start', { proposals: this.proposals })
+
+      this.context.beforePurchase()
     }
   }
   purchase(option) {
@@ -50,11 +36,10 @@ export default class PurchaseCtrl {
     })
     if (!this.purchased) {
       this.purchased = true
-      const contract = this.getContract(option)
+      const contract = this.proposals[option]
       this.trade = new Trade(this.api)
       const tradeUpdate = (openContract) => {
-        this.openContract = openContract
-        this.duringPurchase()
+        this.context.duringPurchase(openContract)
         observer.emit('purchase.tradeUpdate', openContract)
       }
       const tradeFinish = finishedContract =>
@@ -67,16 +52,17 @@ export default class PurchaseCtrl {
       this.trade.purchase(contract, tradeFinish)
     }
   }
-  isSellAvailable() {
-    return this.trade && this.trade.isSellAvailable
-  }
-  sellAtMarket() {
-    if (this.trade && this.trade.isSellAvailable) {
-      this.trade.sellAtMarket()
-    }
-  }
-  getContract(option) {
-    return this.proposals[option]
+  createInterface() {
+    this.context.addFunc({
+      purchase: option => this.purchase(option),
+      isSellAvailable: (() =>
+        this.trade && this.trade.isSellAvailable),
+      getContract: (option =>
+        this.proposals[option]),
+      sellAtMarket: () =>
+        (this.trade && this.trade.isSellAvailable &&
+          this.trade.sellAtMarket()),
+    })
   }
   destroy() {
     for (const obs of this.runningObservations) {
@@ -85,7 +71,6 @@ export default class PurchaseCtrl {
     this.runningObservations = []
     this.proposals = {}
     this.ready = false
-    this.beforePurchase = null
     if (this.trade) {
       this.trade.destroy()
     }

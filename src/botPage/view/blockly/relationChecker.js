@@ -38,7 +38,7 @@ const conditionFields = (blockObj, ev) => {
     const duration = getNumField(blockObj, 'DURATION')
     const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
     if (duration !== '') {
-      const minDuration = bot.symbol.getLimitation(symbol, tradeType).minDuration
+      const minDuration = bot.symbolApi.getLimitation(symbol, tradeType).minDuration
       const durationInSeconds = durationToSecond(duration + durationType)
       if (!durationInSeconds) {
         observer.emit('ui.log.warn', translate('Duration must be a positive integer'))
@@ -157,8 +157,6 @@ export const insideScope = (blockObj, ev, name, scopes) => {
 export const tickScope = (blockObj, ev, name) => {
   insideScope(blockObj, ev, name, ['during_purchase',
     'before_purchase',
-    'timeout',
-    'interval',
     'tick_analysis'])
 }
 
