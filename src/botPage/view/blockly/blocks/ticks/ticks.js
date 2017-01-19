@@ -15,5 +15,5 @@ Blockly.Blocks.ticks = {
     tickScope(this, ev, 'Ticks List')
   },
 }
-Blockly.JavaScript.ticks = () => ['Bot.expect.notEmptyArray(this.ticks.ticks).map(function(i){return Bot.expect.tick(i).quote;})',
+Blockly.JavaScript.ticks = () => ['Bot.expect.notEmptyArray(this.ticksObj.ticks).map(function(i){return Bot.expect.tick(i).quote;})',
   Blockly.JavaScript.ORDER_ATOMIC]

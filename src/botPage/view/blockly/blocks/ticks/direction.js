@@ -16,4 +16,4 @@ Blockly.Blocks.direction = {
   },
 }
 
-Blockly.JavaScript.direction = () => ['this.ticks.direction', Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.direction = () => ['this.ticksObj.direction', Blockly.JavaScript.ORDER_ATOMIC]

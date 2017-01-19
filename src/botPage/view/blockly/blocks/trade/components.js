@@ -5,7 +5,7 @@ import { oppositesToDropdown } from '../../utils'
 import { caution } from '../images'
 
 export const marketDropdown = (block) => {
-  const markets = bot.symbol.activeSymbols.getMarkets()
+  const markets = bot.symbolApi.activeSymbols.getMarkets()
   const getSubmarkets = () => {
     const marketName = block.getFieldValue('MARKET_LIST')
     const submarkets = markets[marketName].submarkets
@@ -37,7 +37,7 @@ export const tradeTypeDropdown = (block) => {
     if (!symbol) {
       return [['', '']]
     }
-    const allowedCategories = bot.symbol
+    const allowedCategories = bot.symbolApi
       .getAllowedCategories(symbol.toLowerCase())
     return Object.keys(config.conditionsCategoryName)
       .filter(e => allowedCategories.indexOf(e) >= 0)

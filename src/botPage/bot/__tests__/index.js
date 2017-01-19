@@ -28,7 +28,7 @@ describe('Bot', () => {
     })
   })
   it('initialize bot with the symbols', () => {
-    const markets = bot.symbol.activeSymbols.getMarkets()
+    const markets = bot.symbolApi.activeSymbols.getMarkets()
     expect(markets).to.be.an('Object')
       .and.to.have.property('forex')
   })
