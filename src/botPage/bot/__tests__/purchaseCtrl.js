@@ -20,7 +20,7 @@ describe('PurchaseCtrl', () => {
   const proposals = []
   let firstAttempt = true
   let purchaseCtrl
-  before(() => {
+  beforeAll(() => {
     api = new CustomApi(ws)
     const beforePurchase = function beforePurchase() {
       if (purchaseCtrl.proposals) {
@@ -46,7 +46,7 @@ describe('PurchaseCtrl', () => {
     context.createTicks(ticksObj)
   })
   describe('Make the beforePurchase ready...', () => {
-    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('api.proposal', (_proposal) => {
         proposals.push(_proposal)
         purchaseCtrl.updateProposal(_proposal)
@@ -85,7 +85,7 @@ describe('PurchaseCtrl', () => {
   })
   describe('Adding the ticks to the purchase...', () => {
     let beforePurchaseArgs
-    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('test.beforePurchase', (_beforePurchaseArgs) => {
         beforePurchaseArgs = _beforePurchaseArgs
         done()
@@ -100,7 +100,7 @@ describe('PurchaseCtrl', () => {
     })
   })
   describe('Waiting for beforePurchase to purchase the contract', () => {
-    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('test.purchase', () => {
         done()
       }, true)
@@ -112,7 +112,7 @@ describe('PurchaseCtrl', () => {
   })
   describe('Waiting for purchase to be finished', () => {
     let finishedContract
-    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('purchase.finish', (_finishedContract) => {
         finishedContract = _finishedContract
         done()
@@ -123,10 +123,5 @@ describe('PurchaseCtrl', () => {
       expect(finishedContract).to.have.property('sell_price')
         .that.satisfy((price) => !isNaN(price))
     })
-  })
-  after(() => {
-    purchaseCtrl.destroy()
-    observer.destroy()
-    api.destroy()
   })
 })

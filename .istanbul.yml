@@ -1,7 +1,0 @@
-instrumentation:
-  root: src
-  include-all-sources: true
-  verbose: true
-  excludes: ['**/view/**', '**/botPage/utils/**', '**/translations/**', '**/indexPage/**', 'botPage/index.js', 'common/calls.js']
-reporting:
-  dir: "coverage"

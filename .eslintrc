@@ -9,7 +9,7 @@
     "es6": true,
     "browser": true,
     "jquery": true,
-    "mocha": true
+    "jasmine": true
   },
   "globals": {
     "Blockly": false,
