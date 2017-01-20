@@ -32,7 +32,7 @@ export default class Context {
     this.duringPurchaseFunc = duringPurchase || noop
     this.afterPurchaseFunc = afterPurchase || noop
     this.taList = taList || []
-    this.contextToPass = {}
+    this.contextToPass = { ticksObj: { ohlc: [], ticks: [] } }
   }
   addFunc(funcs) {
     Object.assign(this.contextToPass, funcs)

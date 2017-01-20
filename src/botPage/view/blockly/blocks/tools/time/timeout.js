@@ -26,10 +26,12 @@ Blockly.Blocks.timeout = {
 Blockly.JavaScript.timeout = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'TIMEOUTSTACK')
   const seconds = Blockly.JavaScript.valueToCode(block, 'SECONDS', Blockly.JavaScript.ORDER_ATOMIC)
+  const isInside = insideMainBlocks(block)
+
   return `
-    Bot.setTimeout(function (){
+    Bot.setTimeout${isInside ? 'Inside' : ''}(function (){
       ${stack}
     }, (${seconds ? `(${seconds}) *` : ''} 1000));
-    ${insideMainBlocks(block) ? 'return;' : ''}
+    ${isInside ? 'return;' : ''}
   `
 }
