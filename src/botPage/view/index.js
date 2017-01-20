@@ -373,7 +373,7 @@ export default class View {
 
     $('#statement-reality-check').click(() => {
       document.location =
-        `https://www.binary.com/${getLanguage()}/user/statementws.html`
+        `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`
     })
     $(document).keydown((e) => {
       if (e.which === 189) { // -
