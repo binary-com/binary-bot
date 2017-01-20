@@ -68,7 +68,8 @@ class BotPage {
       getBalance: (balanceType) => (balanceType === 'STR' ? bot.balanceStr : bot.balance),
       notifyError,
       setInterval: (f, n) => intervals.push(setInterval(f, n)),
-      setTimeout: (f, n) => timeouts.push(setTimeout(bot.context.wrap(f), n)),
+      setTimeoutInside: (f, n) => timeouts.push(setTimeout(bot.context.wrap(f), n)),
+      setTimeout: (f, n) => timeouts.push(setTimeout(f, n)),
     }
 
     bot.initPromise.then(() => {
