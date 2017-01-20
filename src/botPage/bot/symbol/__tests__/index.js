@@ -27,7 +27,7 @@ describe('symbol', () => {
   })
   describe('Checking functions', () => {
     let symbol
-    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       symbol = new _Symbol(api)
       symbol.initPromise.then(() => {
         done()
@@ -57,8 +57,5 @@ describe('symbol', () => {
       expect(symbol.isConditionAllowedInSymbol('frxeurusd', 'fake'))
         .not.to.be.ok
     })
-  })
-  after(() => {
-    api.destroy()
   })
 })

@@ -66,12 +66,13 @@ describe('Context', () => {
   describe('wrapped func gets context', () => {
     let wrappedAndNormalFuncThisDiffers
 
-    before(() => {
+    beforeAll(() => {
       wrappedAndNormalFuncThisDiffers = wrappedFunc()
     })
 
-    it('Before Purchase Context should have ticks', () =>
-      expect(wrappedAndNormalFuncThisDiffers).to.be.ok)
+    it('Before Purchase Context should have ticks', () => {
+      expect(wrappedAndNormalFuncThisDiffers).to.be.equal(true)
+    })
   })
 
   describe('tickAnalysis tick received', () => {
@@ -82,13 +83,14 @@ describe('Context', () => {
       },
     }
 
-    before(() => {
+    beforeAll(() => {
       context.createTicks(ticksObj)
       context.tickAnalysis()
     })
 
-    it('Before Purchase Context should have ticks', () =>
-      expect(result.tickAnalysis).to.be.deep.equal(expected.tickAnalysis))
+    it('Before Purchase Context should have ticks', () => {
+      expect(result.tickAnalysis).to.be.deep.equal(expected.tickAnalysis)
+    })
   })
 
   describe('beforePurchase tick received', () => {
@@ -104,13 +106,14 @@ describe('Context', () => {
       },
     }
 
-    before(() => {
+    beforeAll(() => {
       context.createTicks(ticksObj)
       context.beforePurchase()
     })
 
-    it('Before Purchase Context should have ticks', () =>
-      expect(result.beforePurchase).to.be.deep.equal(expected.beforePurchase))
+    it('Before Purchase Context should have ticks', () => {
+      expect(result.beforePurchase).to.be.deep.equal(expected.beforePurchase)
+    })
   })
   describe('duringPurchase contract was purchased', () => {
     ticksObj.ticks = ticksObj.ticks.concat([{
@@ -126,13 +129,14 @@ describe('Context', () => {
       },
     }
 
-    before(() => {
+    beforeAll(() => {
       context.createTicks(ticksObj)
       context.duringPurchase(openContract)
     })
 
-    it('Before Purchase Context should have ticks', () =>
-      expect(result.duringPurchase).to.be.deep.equal(expected.duringPurchase))
+    it('Before Purchase Context should have ticks', () => {
+      expect(result.duringPurchase).to.be.deep.equal(expected.duringPurchase)
+    })
   })
   describe('afterPurchase contract was finished', () => {
     ticksObj.ticks = ticksObj.ticks.concat([{
@@ -159,12 +163,13 @@ describe('Context', () => {
       },
     }
 
-    before(() => {
+    beforeAll(() => {
       context.createTicks(ticksObj)
       context.afterPurchase(finishedContract)
     })
 
-    it('Before Purchase Context should have ticks', () =>
-      expect(result.afterPurchase).to.be.deep.equal(expected.afterPurchase))
+    it('Before Purchase Context should have ticks', () => {
+      expect(result.afterPurchase).to.be.deep.equal(expected.afterPurchase)
+    })
   })
 })

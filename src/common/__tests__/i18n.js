@@ -44,7 +44,7 @@ describe('i18n is able to', () => {
   })
 
   describe('translate a text (id)', () => {
-    before(() => init('id'))
+    beforeAll(() => init('id'))
     it('Find translation of "Logic"', () => {
       expect(translate('Logic')).to.be.equal('Logika')
     })
@@ -54,7 +54,7 @@ describe('i18n is able to', () => {
     const expected = ['Logic', 'Static']
     const result = []
 
-    before(() => {
+    beforeAll(() => {
       init('en')
       const translated = translateXml(dom)
       const elements = Array.from(
@@ -70,7 +70,7 @@ describe('i18n is able to', () => {
     const expected = ['Logika', 'Static']
     const result = []
 
-    before(() => {
+    beforeAll(() => {
       init('id')
       const translated = translateXml(dom)
       const elements = Array.from(

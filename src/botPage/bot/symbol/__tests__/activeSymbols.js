@@ -28,7 +28,7 @@ const setChecks = (obj) => {
 
 describe('ActiveSymbols', () => {
   let activeSymbols
-  before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+  beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
     const api = new CustomApi(ws).originalApi
     api.getActiveSymbolsBrief().then((response) => {
       activeSymbols = new ActiveSymbols(response.active_symbols)
@@ -55,8 +55,5 @@ describe('ActiveSymbols', () => {
           .and.not.to.be.equal('E')
       })
     }
-  })
-  after(() => {
-    delete ActiveSymbols.instance
   })
 })
