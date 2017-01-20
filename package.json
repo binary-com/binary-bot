@@ -16,8 +16,8 @@
   },
   "scripts": {
     "start": "gulp watch",
-    "test": "./node_modules/.bin/eslint src/ && ./node_modules/.bin/babel-node ./node_modules/.bin/jest",
-    "test:full": "./node_modules/.bin/nyc --reporter=lcov npm test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test": "eslint src/ && jest",
+    "test:full": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "gen-beta": "git checkout beta; npm prune ; npm install ; gulp build-min; rm -rf beta; mkdir beta ; cp -r www/ beta/beta; git checkout -- src",
     "gen-translation": "git checkout translation; npm prune ; npm install ; gulp build-min; rm -rf translation; mkdir translation ; cp -r www/ translation/translation; git checkout -- src",
     "deploy": "git checkout master ; npm prune ; npm install ; gulp deploy",
@@ -75,7 +75,6 @@
     "lz-string": "^1.4.4",
     "mocha": "^3.1.0",
     "notifyjs-browser": "^0.4.2",
-    "nyc": "^10.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-joyride": "^1.8.2",
