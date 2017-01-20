@@ -20,8 +20,8 @@ describe('Trade', () => {
       observer.register('api.authorize', () => {
         observer.register('api.proposal', (_proposal) => {
           proposal = _proposal
-          observer.register('api.buy', (_purchasedContract) => {
-            purchasedContract = _purchasedContract
+          observer.register('trade.purchase', r => {
+            purchasedContract = r.purchasedContract
             done()
           }, true)
           trade.purchase(proposal)

@@ -1,97 +1,91 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import { translate } from '../../../common/i18n'
 
+import { noop, subscribeToStream } from '../tools'
+
 export default class Trade {
   constructor(api) {
     this.api = api
-    this.runningObservations = []
     this.openContract = null
-    this.isSellAvailable = false
-    this.isSold = false
+    this.isSellAvailable = this.isSold = false
   }
   sellAtMarket() {
     if (!this.isSold) {
       this.isSold = true
-      this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(() => {
-        this.getTheContractInfoAfterSell()
-      }, () => 0)
+      this.api.originalApi.sellContract(this.openContract.contract_id, 0)
+        .then(() => this.getTheContractInfoAfterSell(), noop)
     }
   }
-  purchase(contract) {
-    this.api.buy(contract.id, contract.ask_price)
-    const apiBuy = (purchasedContract) => {
-      observer.emit('log.trade.purchase', purchasedContract)
-      observer.emit('trade.purchase', {
-        contract,
-        purchasedContract,
-      })
-      observer.emit('ui.log.info',
-        `${translate('Purchased')}: ${contract.longcode}`)
-      this.isSold = false
-      this.contractId = purchasedContract.contract_id
-      this.api.originalApi.unsubscribeFromAllProposals().then(() => 0, () => 0)
-      this.subscribeToOpenContract()
+  retryIfContractNotReceived(contract) {
+    if (!('transaction_ids' in contract)) {
+      this.api.proposal_open_contract(this.contractId)
+      return true
     }
-    observer.register('api.buy', apiBuy, true, {
-      type: 'buy',
-      unregister: [['api.buy', apiBuy], 'trade.purchase'],
-    })
-    this.runningObservations.push(['api.buy', apiBuy])
+    return false
+  }
+  onContractExpire(contract) {
+    if (!this.isSold && contract.is_valid_to_sell && contract.is_expired) {
+      this.isSold = true
+      this.isSellAvailable = false
+      this.api.originalApi.sellExpiredContracts().then(noop, noop)
+      this.getTheContractInfoAfterSell()
+    }
+  }
+  onContractUpdate(contract) {
+    if (contract.sell_price) {
+      this.openContract = null
+      observer.emit('log.trade.finish', contract)
+      observer.emit('trade.finish', contract)
+    } else {
+      observer.emit('log.trade.update', contract)
+      this.openContract = contract
+    }
+    observer.emit('trade.update', contract)
   }
   subscribeToOpenContract() {
     if (!this.contractId) {
-      return false
+      return
     }
-    const apiProposalOpenContract = (contract) => {
-      if (!('transaction_ids' in contract)) {
-        this.api.proposal_open_contract(this.contractId)
-        return
-      }
-      if (!this.isSold && contract.is_valid_to_sell) {
-        if (contract.is_expired) {
-          this.isSold = true
-          this.isSellAvailable = false
-          this.api.originalApi.sellExpiredContracts().then(() => 0, () => 0)
-          this.getTheContractInfoAfterSell()
-        } else {
-          this.isSellAvailable = true
+    subscribeToStream(
+      'api.proposal_open_contract', contract => {
+        if (this.retryIfContractNotReceived(contract)) {
+          return
         }
-      }
-      if (contract.sell_price) {
-        this.openContract = null
-        observer.emit('log.trade.finish', contract)
-        observer.emit('trade.finish', contract)
-      } else {
-        observer.emit('log.trade.update', contract)
-        this.openContract = contract
-      }
-      observer.emit('trade.update', contract)
-    }
-    observer.register('api.proposal_open_contract', apiProposalOpenContract, false, {
-      type: 'proposal_open_contract',
-      unregister: [
-        ['api.proposal_open_contract', apiProposalOpenContract],
-        'trade.update',
-        'purchase.tradeUpdate',
-        'trade.finish',
-        'purchase.finish',
-      ],
-    })
-    this.runningObservations.push(['api.proposal_open_contract', apiProposalOpenContract])
-    this.api.proposal_open_contract(this.contractId)
-    return true
+
+        this.onContractExpire(contract)
+
+        this.isSellAvailable = !this.isSold &&
+          !contract.is_expired && contract.is_valid_to_sell
+
+        this.onContractUpdate(contract)
+      }, () => this.api.proposal_open_contract(this.contractId),
+      false, 'proposal_open_contract',
+      ['trade.update', 'purchase.tradeUpdate', 'trade.finish', 'purchase.finish']
+    )
+  }
+  purchase(contract) {
+    subscribeToStream(
+      'api.buy', purchasedContract => {
+        observer.emit('log.trade.purchase', purchasedContract)
+        observer.emit('trade.purchase', { contract, purchasedContract })
+        observer.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)
+
+        this.isSold = false
+
+        this.contractId = purchasedContract.contract_id
+        this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
+        this.subscribeToOpenContract()
+      }, () => this.api.buy(contract.id, contract.ask_price),
+      true, 'buy', ['trade.purchase']
+    )
   }
   getTheContractInfoAfterSell() {
     if (this.contractId) {
-      this.api.originalApi.subscribeToOpenContract(this.contractId).then(() => 0, () => 0)
+      this.api.originalApi.subscribeToOpenContract(this.contractId).then(noop, noop)
     }
   }
   destroy() {
-    for (const obs of this.runningObservations) {
-      observer.unregisterAll(...obs)
-    }
-    this.runningObservations = []
     this.isSold = false
-    this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(() => 0, () => 0)
+    this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(noop, noop)
   }
 }
