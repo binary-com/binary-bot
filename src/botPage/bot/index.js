@@ -4,45 +4,10 @@ import Context from './Context'
 import PurchaseCtrl from './purchaseCtrl'
 import _Symbol from './symbol'
 import { translate } from '../../common/i18n'
-import { number as expectNumber, barrierOffset as expectBarrierOffset } from '../../common/expect'
-
-const noop = e => e
-
-const tradeOptionToProposal = (tradeOption, otherOptions) =>
-  Object.assign(
-    {
-      duration_unit: tradeOption.duration_unit,
-      basis: tradeOption.basis,
-      currency: tradeOption.currency,
-      symbol: tradeOption.symbol,
-      duration: expectNumber('duration', tradeOption.duration),
-      amount: expectNumber('amount', tradeOption.amount).toFixed(2),
-    },
-    'prediction' in tradeOption && {
-      barrier: expectNumber('prediction', tradeOption.prediction),
-    },
-    'barrierOffset' in tradeOption && {
-      barrier: expectBarrierOffset(tradeOption.barrierOffset),
-    },
-    'secondBarrierOffset' in tradeOption && {
-      barrier2: expectBarrierOffset(tradeOption.secondBarrierOffset),
-    },
-    otherOptions,
-  )
-
-const isRegistered = name => observer.isRegistered(name)
-
-const getDirection = ticks => {
-  const length = ticks.length
-  const [tick1, tick2] = ticks.slice(-2)
-  let direction = ''
-
-  if (length >= 2) {
-    direction = tick1.quote > tick2.quote ? 'rise' : direction
-    direction = tick1.quote < tick2.quote ? 'fall' : direction
-  }
-  return direction
-}
+import {
+  noop, subscribeToStream, registerStream,
+  getDirection, tradeOptionToProposal,
+} from './tools'
 
 export default class Bot {
   constructor(api = null) {
@@ -71,12 +36,6 @@ export default class Bot {
 
     return +(+symbols[this.tradeOption.symbol.toLowerCase()].pip)
       .toExponential().substring(3)
-  }
-  registerStream(name, cb) {
-    if (isRegistered(name)) {
-      return
-    }
-    observer.register(name, cb)
   }
   handleOhlcStream(candle) {
     const length = this.ohlc.length
@@ -116,10 +75,10 @@ export default class Bot {
     observer.emit('bot.tickUpdate', ticksObj)
   }
   observeStreams() {
-    this.registerStream('api.authorize', () => this.handleAuthStream())
-    this.registerStream('api.ohlc', candle => this.handleOhlcStream(candle))
-    this.registerStream('api.tick', tick => this.handleTickStream(tick))
-    this.registerStream('purchase.tradeUpdate', contract => this.handleTradeUpdate(contract))
+    registerStream('api.authorize', () => this.handleAuthStream())
+    registerStream('api.ohlc', candle => this.handleOhlcStream(candle))
+    registerStream('api.tick', tick => this.handleTickStream(tick))
+    registerStream('purchase.tradeUpdate', contract => this.handleTradeUpdate(contract))
   }
   subscriptionsBeforeStart() {
     const isNewSymbol = this.tradeOption.symbol !== this.symbol
@@ -186,20 +145,8 @@ export default class Bot {
       })
     )
   }
-  subscribeToStream(
-    name, respHandler, request, registerOnce, type, unregister
-  ) {
-    return new Promise((resolve) => {
-      observer.register(
-        name, (...args) => {
-          respHandler(...args)
-          resolve()
-        }, registerOnce, type && { type, unregister }, true)
-      request()
-    })
-  }
   subscribeToBalance() {
-    this.subscribeToStream(
+    subscribeToStream(
       'api.balance', balanceResp => {
         const { balance, currency } = balanceResp
         this.balance = +balance
@@ -210,7 +157,7 @@ export default class Bot {
     )
   }
   subscribeToCandles() {
-    return this.subscribeToStream(
+    return subscribeToStream(
       'api.candles', ohlc => {
         this.candleInterval = this.tradeOption.candleInterval
         this.ohlc = ohlc
@@ -227,7 +174,7 @@ export default class Bot {
     )
   }
   subscribeToTickHistory() {
-    return this.subscribeToStream(
+    return subscribeToStream(
       'api.history', history => {
         this.symbol = this.tradeOption.symbol
         this.ticks = history
@@ -242,7 +189,7 @@ export default class Bot {
     )
   }
   subscribeToProposals() {
-    this.subscribeToStream(
+    subscribeToStream(
       'api.proposal', proposal => {
         if (this.purchaseCtrl) {
           observer.emit('log.bot.proposal', proposal)
@@ -260,13 +207,13 @@ export default class Bot {
     )
   }
   subscribeToPurchaseFinish() {
-    this.subscribeToStream(
+    subscribeToStream(
       'purchase.finish', contract => this.botFinish(contract),
       noop, true, null
     )
   }
   subscribeToTradePurchase() {
-    this.subscribeToStream(
+    subscribeToStream(
       'trade.purchase', info => {
         this.totalRuns += 1
         this.sessionRuns += 1
@@ -285,7 +232,8 @@ export default class Bot {
     this.subscribeToProposals()
   }
   updateTotals(contract) {
-    const profit = +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2)
+    const profit = +((+contract.sell_price) - (+contract.buy_price)).toFixed(2)
+
     if (+profit > 0) {
       this.totalWins += 1
     } else if (+profit < 0) {
@@ -293,8 +241,8 @@ export default class Bot {
     }
     this.sessionProfit = +(this.sessionProfit + profit).toFixed(2)
     this.totalProfit = +(this.totalProfit + profit).toFixed(2)
-    this.totalStake = +(this.totalStake + Number(contract.buy_price)).toFixed(2)
-    this.totalPayout = +(this.totalPayout + Number(contract.sell_price)).toFixed(2)
+    this.totalStake = +(this.totalStake + (+contract.buy_price)).toFixed(2)
+    this.totalPayout = +(this.totalPayout + (+contract.sell_price)).toFixed(2)
 
     observer.emit('bot.tradeInfo', {
       profit,

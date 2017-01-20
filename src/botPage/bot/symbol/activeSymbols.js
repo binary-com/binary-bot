@@ -1,11 +1,12 @@
-const groupBy = (arr, field) =>
-  arr.reduce((g, o) => {
+const groupBy = (arr, field) => arr.reduce((g, o) => {
     const grouped = Object.assign({}, g)
+
     if (o[field] in grouped) {
       grouped[o[field]].push(o)
     } else {
       grouped[o[field]] = [o]
     }
+
     return grouped
   }, {})
 
@@ -18,7 +19,7 @@ const parsedSubmarkets = {}
 const parsedSymbols = {}
 
 const parseSymbols = () => {
-  for (const s of apiActiveSymbols) {
+  apiActiveSymbols.forEach(s => {
     const submarket = parsedSubmarkets[s.submarket]
     submarket.symbols = submarket.symbols || {}
     parsedSymbols[s.symbol.toLowerCase()] = submarket.symbols[s.symbol.toLowerCase()] = {
@@ -26,11 +27,11 @@ const parseSymbols = () => {
       display: s.display_name,
       is_active: !s.is_trading_suspended && s.exchange_is_open,
     }
-  }
+  })
 }
 
 const parseSubmarkets = () => {
-  for (const k of Object.keys(groupedSubmarkets)) {
+  Object.keys(groupedSubmarkets).forEach(k => {
     const symbol = groupedSubmarkets[k][0]
     const market = parsedMarkets[symbol.market]
     market.submarkets = market.submarkets || {}
@@ -38,17 +39,17 @@ const parseSubmarkets = () => {
       name: symbol.submarket_display_name,
       is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
     }
-  }
+  })
 }
 
 const parseMarkets = () => {
-  for (const k of Object.keys(groupedMarkets)) {
+  Object.keys(groupedMarkets).forEach(k => {
     const symbol = groupedMarkets[k][0]
     parsedMarkets[k] = {
       name: symbol.market_display_name,
       is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
     }
-  }
+  })
 }
 
 export default class ActiveSymbols {
