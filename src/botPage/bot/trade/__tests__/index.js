@@ -9,14 +9,14 @@ describe('Trade', () => {
   let trade
   let proposal
   let finishedContract
-  before(() => {
+  beforeAll(() => {
     observer.eventActionMap = {}
     api = new CustomApi(ws)
     trade = new Trade(api)
   })
   describe('Purchasing...', () => {
     let purchasedContract
-    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('api.authorize', () => {
         observer.register('api.proposal', (_proposal) => {
           proposal = _proposal
@@ -46,7 +46,7 @@ describe('Trade', () => {
   })
   describe('Getting updates', () => {
     const contractUpdates = []
-    before(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('trade.finish', (_contract) => {
         finishedContract = _contract
       }, true)
@@ -66,10 +66,5 @@ describe('Trade', () => {
       expect(finishedContract).to.have.property('sell_price')
         .that.satisfy((el) => !isNaN(el))
     })
-  })
-  after(() => {
-    trade.destroy()
-    observer.destroy()
-    api.destroy()
   })
 })
