@@ -39,7 +39,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.16.3",
-    "binary-charts": "^9.2.5",
+    "binary-charts": "^9.2.6",
     "binary-common-utils": "^4.9.0",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^28.1.0",
