@@ -202,7 +202,7 @@ export default class Bot {
     this.subscribeToStream(
       'api.balance', balanceResp => {
         const { balance, currency } = balanceResp
-        this.balance = balance
+        this.balance = +balance
         this.balanceStr = `${(+balance).toFixed(2)} ${currency}`
         observer.emit('bot.tradeInfo', { balance: this.balanceStr })
       }, () => this.api.originalApi.send({ forget_all: 'balance' })
