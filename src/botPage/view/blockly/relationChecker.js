@@ -157,6 +157,7 @@ export const insideScope = (blockObj, ev, name, scopes) => {
 export const tickScope = (blockObj, ev, name) => {
   insideScope(blockObj, ev, name, ['during_purchase',
     'before_purchase',
+    'after_purchase',
     'tick_analysis'])
 }
 
