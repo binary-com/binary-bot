@@ -4,6 +4,7 @@ import { translate } from '../../../common/i18n'
 import { Panel } from './Panel'
 
 const contentStyle = {
+  marginTop: '0.5em',
   width: '18em',
 }
 
