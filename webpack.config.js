@@ -1,9 +1,10 @@
-import webpack from 'webpack';
-import path from 'path';
+import webpack from 'webpack'
+import path from 'path'
 
-const production = process.env.NODE_ENV === 'production';
+const production = process.env.NODE_ENV === 'production'
+
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   watch: !production,
   module: {
     noParse: ['ws'],
@@ -35,6 +36,11 @@ module.exports = {
     sourceMapFilename: production ? '[name].min.js.map' : '[name].js.map',
   },
   plugins: production && [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
+    }),
     new webpack.optimize.UglifyJsPlugin({
       include: /\.js$/,
       minimize: true,
@@ -44,4 +50,4 @@ module.exports = {
       },
     }),
   ],
-};
+}
