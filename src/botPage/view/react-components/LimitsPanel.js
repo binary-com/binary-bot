@@ -3,18 +3,25 @@ import ReactDOM from 'react-dom'
 import { translate } from '../../../common/i18n'
 import { Panel } from './Panel'
 
+const contentStyle = {
+  width: '18em',
+}
+
 const errorStyle = {
   color: 'red',
   fontSize: '0.8em',
 }
 
 const saveButtonStyle = {
+  width: '4em',
   display: 'block',
-  float: 'right',
-  marginTop: '1em',
+  float: 'left',
+  marginLeft: '7em',
+  marginBottom: '0.5em',
 }
 
 const limitsStyle = {
+  display: 'block',
   width: '18em',
   float: 'left',
 }
@@ -22,6 +29,11 @@ const limitsStyle = {
 const inputStyle = {
   marginLeft: '0.5em',
   width: '4em',
+  float: 'right',
+}
+
+const fieldStyle = {
+  width: '18em',
 }
 
 export class LimitsPanel extends PureComponent {
@@ -58,20 +70,23 @@ export class LimitsPanel extends PureComponent {
       onClose={() => this.close()}
       description={translate('Trade Limitations')}
       content={
-        <div>
-          <div
-          style={limitsStyle}
-          >
-            <label htmlFor="limitation-max-trades">{translate('Maximum number of trades')}</label>
+        <div style={contentStyle}>
+          <div style={limitsStyle}>
+          <label style={fieldStyle} htmlFor="limitation-max-trades">
             <input style={inputStyle} ref={(el) => (this.maxTradesDiv = el)} type="number" id="limitation-max-trades" />
-            <label htmlFor="limitation-max-loss">{translate('Maximum loss amount')}</label>
+            {translate('Maximum number of trades')}
+          </label>
+          <label style={fieldStyle} htmlFor="limitation-max-loss">
             <input style={inputStyle} ref={(el) => (this.maxLossDiv = el)} type="number" id="limitation-max-loss" />
+            {translate('Maximum loss amount')}
+          </label>
             {this.state.error ? <p style={errorStyle}>{this.state.error}</p> : null}
           </div>
-          <button
-          style={saveButtonStyle}
-          onClick={() => this.submit()}
-          >{translate('Start')}</button>
+          <div style={saveButtonStyle}>
+            <button onClick={() => this.submit()}>
+              {translate('Start')}
+            </button>
+          </div>
         </div>
       }
       />
