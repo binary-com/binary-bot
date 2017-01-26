@@ -30,6 +30,39 @@ git pull
 npm install
 ```
 
+## Running the cli command
+
+```
+npm i -g binary-bot
+bot ./bot.js
+# specify endpoint:
+ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=0' bot bot.js
+```
+
+### ./bot.js content
+```
+var token = 'REPLACE_YOUR_TOKEN_HERE';
+
+(function (){
+  while (true) {
+    console.log('Starting bot...')
+    Bot.start(token, { amount: 1,
+      basis: 'stake', candleInterval: 60,
+      contractTypes: ['CALL', 'PUT'],
+      currency: 'USD', duration: 5,
+      duration_unit: 't', symbol: 'R_100',
+    });
+    watch('before');
+    Bot.purchase('CALL');
+    console.log('Purchased:', 'CALL');
+    while(watch('during')) {
+      console.log('Proposal Open Contract Recv')
+    }
+    console.log('Purchase finished:', Bot.readDetails(1));
+  }
+})();
+```
+
 ## Think you found a bug?
 
 There's a chance that we already know about it and doing our best to fix it. To find out you can search our [GitHub issues](https://github.com/binary-com/binary-bot/issues)
