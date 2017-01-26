@@ -40,7 +40,6 @@
     "binary-common-utils": "^4.9.4",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^28.1.0",
-    "binary-mock-websocket": "^4.1.1",
     "blockly": "google/blockly.git#0785a7b",
     "bootstrap": "^3.3.7",
     "chai": "^3.5.0",
@@ -67,8 +66,10 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-watch": "^4.3.11",
     "i18next-scanner": "^1.5.1",
+    "immutable": "^3.8.1",
     "jest-cli": "^18.1.0",
     "jquery": "3.1.1",
+    "js-interpreter": "^1.2.0",
     "json-loader": "^0.5.4",
     "loader-utils": "^0.2.16",
     "lz-string": "^1.4.4",
@@ -81,6 +82,7 @@
     "trackjs": "^2.6.2",
     "vinyl-paths": "^2.1.0",
     "webpack": "^1.14.0",
-    "webpack-stream": "^3.2.0"
+    "webpack-stream": "^3.2.0",
+    "ws": "^1.1.1"
   }
 }

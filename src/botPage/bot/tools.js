@@ -25,7 +25,7 @@ export const registerStream = (name, cb) => {
   observer.register(name, cb)
 }
 
-export const noop = e => e
+export const noop = () => {}
 
 export const tradeOptionToProposal = (tradeOption, otherOptions) =>
   Object.assign({
@@ -60,3 +60,10 @@ export const getDirection = ticks => {
   return direction
 }
 
+export const execContext = (CM, name, value) => {
+  CM.setContext(name, value)
+  if (name !== 'shared') {
+    observer.emit('CONTEXT',
+      { scope: name, data: CM.getContext(name) })
+  }
+}
