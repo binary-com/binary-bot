@@ -28,6 +28,40 @@ git pull
 npm install
 ```
 
+## Running the cli command
+
+```
+npm i -g binary-bot
+bot bot.js
+# specify endpoint:
+ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=0' bot bot.js
+```
+
+### bot .js content
+```
+var token = 'REPLACE_YOUR_TOKEN_HERE';
+(function (){
+  while (true) {
+    console.log('Starting bot...')
+    Bot.start(token, { amount: 1,
+      basis: 'stake', candleInterval: 60,
+      contractTypes: '["DIGITEVEN", "DIGITODD"]',
+      currency: 'USD', duration: 5,
+      duration_unit: 't', symbol: 'R_100',
+    });
+    var context;
+    context = context = wait('CONTEXT');
+    var option = Object.keys(context.data.proposals)[1]
+    Bot.purchase(option);
+    console.log('Purchased:', option);
+    while((context = wait('CONTEXT')).scope === 'during') {
+      console.log('Purchase Update:', context.data.openContract.transaction_ids)
+    }
+    console.log('Purchase finished:', context.data.finishedContract.transaction_ids);
+  }
+})();
+```
+
 ## Sample Blocks
 
 [Misc. Examples](https://gist.github.com/aminmarashi/dfabc8eadfaf77bf270b0318f03ea8bb)
