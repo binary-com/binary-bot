@@ -1,9 +1,11 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
 import { observer } from 'binary-common-utils/lib/observer'
-import ws from '../../../common/mock/websocket'
-import Context from '../Context'
-import PurchaseCtrl from '../purchaseCtrl'
+import ws from 'ws'
+import ContextManager from '../../ContextManager'
+import Purchase from '../'
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 
 const ticksObj = {
   ticks: [{
@@ -15,46 +17,47 @@ const ticksObj = {
   }],
 }
 
-describe('PurchaseCtrl', () => {
+describe('Purchase', () => {
   let api
   const proposals = []
   let firstAttempt = true
-  let purchaseCtrl
+  let purchase
   beforeAll(() => {
     api = new CustomApi(observer, ws)
-    const beforePurchase = function beforePurchase() {
-      if (purchaseCtrl.proposals) {
+    const beforePurchase = context => {
+      if (purchase.proposals) {
         if (firstAttempt) {
           firstAttempt = false
           observer.emit('test.beforePurchase', {
-            ticksObj: this.ticksObj,
-            proposals: purchaseCtrl.proposals,
+            ticksObj: context.ticksObj,
+            proposals: purchase.proposals,
           })
         } else {
           observer.emit('test.purchase')
-          this.purchase('DIGITEVEN')
+          purchase.purchase('DIGITEVEN')
         }
       } else {
         observer.emit('test.beforePurchase', {
-          ticksObj: this.ticksObj,
-          proposals: purchaseCtrl.proposals,
+          ticksObj: context.ticksObj,
+          proposals: purchase.proposals,
         })
       }
     }
-    const context = new Context(beforePurchase)
-    purchaseCtrl = new PurchaseCtrl(api, context)
-    context.createTicks(ticksObj)
+    observer.register('CONTEXT', context => context.scope === 'before' && beforePurchase(context.data))
+    const CM = new ContextManager()
+    purchase = new Purchase(api, CM)
+    CM.setContext('shared', ticksObj)
   })
   describe('Make the beforePurchase ready...', () => {
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('api.proposal', (_proposal) => {
         proposals.push(_proposal)
-        purchaseCtrl.updateProposal(_proposal)
+        purchase.updateProposal(_proposal)
       })
       observer.register('api.authorize', () => {
         observer.register('api.proposal', () => {
           observer.register('api.proposal', () => {
-            if (purchaseCtrl.ready) {
+            if (purchase.ready) {
               done()
             }
           }, true)
@@ -90,9 +93,9 @@ describe('PurchaseCtrl', () => {
         beforePurchaseArgs = _beforePurchaseArgs
         done()
       }, true)
-      purchaseCtrl.updateTicks(ticksObj)
+      purchase.updateTicks(ticksObj)
     })
-    it('purchaseCtrl passes ticks and send the proposals if ready', () => {
+    it('purchase passes ticks and send the proposals if ready', () => {
       expect(beforePurchaseArgs.ticksObj.ticks.slice(-1)[0]).to.have.property('epoch')
       expect(beforePurchaseArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
         .that.is.equal('Win payout if the last digit of Volatility 100 Index is'
@@ -104,8 +107,8 @@ describe('PurchaseCtrl', () => {
       observer.register('test.purchase', () => {
         done()
       }, true)
-      purchaseCtrl.updateProposal(proposals[1])
-      purchaseCtrl.updateTicks()
+      purchase.updateProposal(proposals[1])
+      purchase.updateTicks()
     })
     it('beforePurchase will buy the proposal whenever decided', () => {
     })
@@ -117,7 +120,7 @@ describe('PurchaseCtrl', () => {
         finishedContract = _finishedContract
         done()
       }, true)
-      purchaseCtrl.updateTicks()
+      purchase.updateTicks()
     })
     it('afterPurchase is called whenever the purchase is finished', () => {
       expect(finishedContract).to.have.property('sell_price')
