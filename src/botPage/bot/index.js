@@ -1,12 +1,12 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import CustomApi from 'binary-common-utils/lib/customApi'
-import Context from './Context'
-import PurchaseCtrl from './purchaseCtrl'
+import ContextManager from './ContextManager'
+import Purchase from './Purchase'
 import _Symbol from './symbol'
 import { translate } from '../../common/i18n'
 import {
   noop, subscribeToStream, registerStream,
-  getDirection, tradeOptionToProposal,
+  getDirection, tradeOptionToProposal, execContext,
 } from './tools'
 
 export default class Bot {
@@ -31,6 +31,7 @@ export default class Bot {
     this.api = (api === null) ? new CustomApi() : api
     this.symbolApi = new _Symbol(this.api)
     this.initPromise = this.symbolApi.initPromise
+    this.CM = new ContextManager()
   }
   shouldRestartOnError() {
     return this.tradeOption && this.tradeOption.restartOnError
@@ -74,10 +75,9 @@ export default class Bot {
 
     const ticksObj = { direction, symbol, pipSize, ticks, ohlc }
 
-    this.context.createTicks(ticksObj)
-    this.context.tickAnalysis()
+    execContext(this.CM, 'shared', ticksObj)
 
-    this.purchaseCtrl.updateTicks(ticksObj)
+    this.purchase.updateTicks(ticksObj)
 
     observer.emit('bot.tickUpdate', ticksObj)
   }
@@ -121,15 +121,9 @@ export default class Bot {
     return false
   }
   start(...args) {
-    const [
-      token, tradeOption, beforePurchase, duringPurchase,
-      afterPurchase, sameTrade, tickAnalysisList, limitations,
-    ] = args
+    const [token, tradeOption, sameTrade, limitations] = args
 
     this.startArgs = args
-
-    this.context = new Context(
-      beforePurchase, duringPurchase, afterPurchase, tickAnalysisList)
 
     this.limitations = limitations || {}
 
@@ -145,7 +139,7 @@ export default class Bot {
 
     this.tradeOption = tradeOption
 
-    this.purchaseCtrl = new PurchaseCtrl(this.api, this.context)
+    this.purchase = new Purchase(this.api, this.CM)
 
     this.pipSize = this.getPipSize()
 
@@ -220,12 +214,12 @@ export default class Bot {
       'api.proposal', proposal => {
         if (this.running) {
           observer.emit('log.bot.proposal', proposal)
-          this.purchaseCtrl.updateProposal(proposal)
+          this.purchase.updateProposal(proposal)
         }
       }, () => {
         const proposals = this.genProposals()
 
-        this.purchaseCtrl.setNumOfProposals(proposals.length)
+        this.purchase.setNumOfProposals(proposals.length)
         this.api.originalApi.unsubscribeFromAllProposals()
           .then(() => proposals.forEach(p => this.api.proposal(p)), noop)
       }, false, null)
@@ -279,7 +273,7 @@ export default class Bot {
   botFinish(finishedContract) {
     this.updateTotals(finishedContract)
     observer.emit('bot.finish', finishedContract)
-    this.context.afterPurchase(finishedContract)
+    execContext(this.CM, 'after', finishedContract)
   }
   stop() {
     this.running = false
@@ -288,4 +282,9 @@ export default class Bot {
   }
 }
 
-export const bot = process.browser ? new Bot() : null
+export const bot = new Bot(
+  process.browser ?
+    undefined :
+    (new CustomApi(require('ws'))) // eslint-disable-line global-require
+)
+
