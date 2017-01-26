@@ -4,10 +4,10 @@ import path from 'path'
 const production = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   watch: !production,
+  target: 'web',
   module: {
-    noParse: ['ws'],
     loaders: [
       {
         test: /\.js$/,
@@ -27,10 +27,9 @@ module.exports = {
     root: path.join(__dirname, 'node_modules'),
   },
   entry: {
-    bot: ['babel-polyfill', path.join(__dirname, 'src', 'botPage')],
+    bot: ['babel-polyfill', path.join(__dirname, 'src', 'botPage', 'view')],
     index: path.join(__dirname, 'src', 'indexPage'),
   },
-  externals: ['ws'],
   output: {
     filename: production ? '[name].min.js' : '[name].js',
     sourceMapFilename: production ? '[name].min.js.map' : '[name].js.map',

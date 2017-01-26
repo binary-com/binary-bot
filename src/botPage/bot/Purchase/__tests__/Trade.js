@@ -1,19 +1,18 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
-import { observer } from 'binary-common-utils/lib/observer'
-import ws from '../../../../common/mock/websocket'
-import Trade from '../'
+import Observer from 'binary-common-utils/lib/observer'
+import ws from 'ws'
+import Trade from '../Trade'
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 
 describe('Trade', () => {
-  let api
-  let trade
+  const observer = new Observer()
+  const api = new CustomApi(observer, ws)
+  const $scope = { observer, api }
+  const trade = new Trade($scope)
   let proposal
   let finishedContract
-  beforeAll(() => {
-    observer.eventActionMap = {}
-    api = new CustomApi(observer, ws)
-    trade = new Trade(api)
-  })
   describe('Purchasing...', () => {
     let purchasedContract
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
@@ -36,7 +35,7 @@ describe('Trade', () => {
           symbol: 'R_100',
         })
       }, true)
-      api.authorize('nmjKBPWxM00E8Fh')
+      api.authorize('Xkq6oGFEHh6hJH8')
     })
     it('Purchased the proposal successfuly', () => {
       expect(purchasedContract).to.have.property('longcode')
@@ -49,12 +48,10 @@ describe('Trade', () => {
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('trade.finish', (_contract) => {
         finishedContract = _contract
+        done()
       }, true)
       observer.register('trade.update', (contractUpdate) => {
         contractUpdates.push(contractUpdate)
-        if (contractUpdates.slice(-1)[0].is_sold) {
-          done()
-        }
       })
     })
     it('Emits the update signal', () => {

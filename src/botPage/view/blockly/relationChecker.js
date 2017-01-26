@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
-import { bot } from '../../bot'
+import { symbolApi, observer } from '../../../common/shared'
 import { translate } from '../../../common/i18n'
 import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'
 
@@ -43,7 +42,7 @@ const conditionFields = (blockObj, ev) => {
     const duration = getNumField(blockObj, 'DURATION')
     const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
     if (duration !== '') {
-      const minDuration = bot.symbolApi.getLimitation(symbol, tradeType).minDuration
+      const minDuration = symbolApi.getLimitation(symbol, tradeType).minDuration
       const durationInSeconds = durationToSecond(duration + durationType)
       if (!durationInSeconds) {
         observer.emit('ui.log.warn', translate('Duration must be a positive integer'))

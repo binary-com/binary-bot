@@ -1,31 +1,10 @@
-import { observer } from 'binary-common-utils/lib/observer'
+import { Map } from 'immutable'
 import {
   number as expectNumber,
   barrierOffset as expectBarrierOffset,
 } from '../../common/expect'
 
-const isRegistered = name => observer.isRegistered(name)
-
-export const subscribeToStream =
-  (name, respHandler, request, registerOnce, type, unregister) =>
-    new Promise((resolve) => {
-      observer.register(
-        name, (...args) => {
-          respHandler(...args)
-          resolve()
-        }, registerOnce, type && { type, unregister }, true)
-      request()
-    })
-
-
-export const registerStream = (name, cb) => {
-  if (isRegistered(name)) {
-    return
-  }
-  observer.register(name, cb)
-}
-
-export const noop = e => e
+export const noop = () => {}
 
 export const tradeOptionToProposal = (tradeOption, otherOptions) =>
   Object.assign({
@@ -59,4 +38,8 @@ export const getDirection = ticks => {
 
   return direction
 }
+
+export const getPipSizes = symbols =>
+  symbols.reduce((s, i) =>
+    s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map()).toObject()
 

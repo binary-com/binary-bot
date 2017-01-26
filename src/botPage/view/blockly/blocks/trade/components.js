@@ -1,11 +1,11 @@
 import config from '../../../../../common/const'
 import { translate } from '../../../../../common/i18n'
-import { bot } from '../../../../bot'
+import { symbolApi } from '../../../../../common/shared'
 import { oppositesToDropdown } from '../../utils'
 import { caution } from '../images'
 
 export const marketDropdown = (block) => {
-  const markets = bot.symbolApi.activeSymbols.getMarkets()
+  const markets = symbolApi.activeSymbols.getMarkets()
   const getSubmarkets = () => {
     const marketName = block.getFieldValue('MARKET_LIST')
     const submarkets = markets[marketName].submarkets
@@ -37,7 +37,7 @@ export const tradeTypeDropdown = (block) => {
     if (!symbol) {
       return [['', '']]
     }
-    const allowedCategories = bot.symbolApi
+    const allowedCategories = symbolApi
       .getAllowedCategories(symbol.toLowerCase())
     return Object.keys(config.conditionsCategoryName)
       .filter(e => allowedCategories.indexOf(e) >= 0)

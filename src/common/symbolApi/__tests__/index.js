@@ -1,31 +1,11 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
-import CustomApi from 'binary-common-utils/lib/customApi'
-import { observer } from 'binary-common-utils/lib/observer'
-import ws from '../../../../common/mock/websocket'
+import { LiveApi } from 'binary-live-api'
+import websocket from 'ws'
 import _Symbol from '../index'
 
 describe('symbol', () => {
-  const api = new CustomApi(observer, ws)
-  describe('Error Handling', () => {
-    it('initializing is needed for symbol functions', () => {
-      expect(() => {
-        _Symbol.getAllowedConditions()
-      }).to.throw(Error)
-      expect(() => {
-        _Symbol.isConditionAllowedInSymbol()
-      }).to.throw(Error)
-      expect(() => {
-        _Symbol.getConditionName()
-      }).to.throw(Error)
-      expect(() => {
-        _Symbol.getCategoryNameForCondition()
-      }).to.throw(Error)
-      expect(() => {
-        _Symbol.getAllowedCategoryNames()
-      }).to.throw(Error)
-    })
-  })
+  const api = new LiveApi({ websocket })
   describe('Checking functions', () => {
     let symbol
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback

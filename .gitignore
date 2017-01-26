@@ -10,3 +10,4 @@ translation/
 www
 .nyc_output/
 .sass-cache
+lib/

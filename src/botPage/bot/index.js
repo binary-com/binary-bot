@@ -1,16 +1,11 @@
-import { observer } from 'binary-common-utils/lib/observer'
-import CustomApi from 'binary-common-utils/lib/customApi'
-import Context from './Context'
-import PurchaseCtrl from './purchaseCtrl'
-import _Symbol from './symbol'
+import ContextManager from './ContextManager'
+import Purchase from './Purchase'
 import { translate } from '../../common/i18n'
-import {
-  noop, subscribeToStream, registerStream,
-  getDirection, tradeOptionToProposal,
-} from './tools'
+import { observer as viewObserver } from '../../common/shared'
+import { noop, getDirection, tradeOptionToProposal, getPipSizes } from './tools'
 
 export default class Bot {
-  constructor(api = null) {
+  constructor($scope) {
     this.ticks = []
     this.ohlc = []
     this.token = ''
@@ -27,10 +22,29 @@ export default class Bot {
     this.sessionProfit = 0
     this.running = false
     this.balance = 0
-    this.pipSize = 2
-    this.api = (api === null) ? new CustomApi(observer) : api
-    this.symbolApi = new _Symbol(this.api)
-    this.initPromise = this.symbolApi.initPromise
+    this.pipSizes = []
+    this.api = $scope.api
+    this.observer = $scope.observer
+    this.$scope = $scope
+    this.CM = new ContextManager($scope)
+  }
+  subscribeToStream(
+    name, respHandler, request, registerOnce, type, unregister
+  ) {
+    return new Promise((resolve) => {
+      this.observer.register(
+        name, (...args) => {
+          respHandler(...args)
+          resolve()
+        }, registerOnce, type && { type, unregister }, true)
+      request()
+    })
+  }
+  registerStream(name, cb) {
+    if (this.observer.isRegistered(name)) {
+      return
+    }
+    this.observer.register(name, cb)
   }
   shouldRestartOnError() {
     return this.tradeOption && this.tradeOption.restartOnError
@@ -39,12 +53,6 @@ export default class Bot {
     if (this.shouldRestartOnError()) {
       this.start(...this.startArgs)
     }
-  }
-  getPipSize() {
-    const symbols = this.symbolApi.activeSymbols.getSymbols()
-
-    return +(+symbols[this.tradeOption.symbol.toLowerCase()].pip)
-      .toExponential().substring(3)
   }
   handleOhlcStream(candle) {
     const length = this.ohlc.length
@@ -55,11 +63,11 @@ export default class Bot {
   }
   handleTradeUpdate(contract) {
     if (this.running) {
-      observer.emit('bot.tradeUpdate', contract)
+      viewObserver.emit('bot.tradeUpdate', contract)
     }
   }
   handleAuthStream() {
-    observer.emit('log.bot.login', { token: this.token })
+    viewObserver.emit('log.bot.login', { token: this.token })
 
     this.subscribeToBalance()
     this.startTrading()
@@ -69,30 +77,39 @@ export default class Bot {
 
     const {
       direction = getDirection(this.ticks),
-      symbol, pipSize, ticks, ohlc,
+      symbol, ticks, ohlc,
     } = this
 
-    const ticksObj = { direction, symbol, pipSize, ticks, ohlc }
+    const ticksObj = { direction, symbol, pipSize: this.pipSizes[symbol], ticks, ohlc }
 
-    this.context.createTicks(ticksObj)
-    this.context.tickAnalysis()
+    this.CM.setContext('shared', ticksObj)
 
-    this.purchaseCtrl.updateTicks(ticksObj)
+    this.purchase.updateTicks(ticksObj)
 
-    observer.emit('bot.tickUpdate', ticksObj)
+    viewObserver.emit('bot.tickUpdate', ticksObj)
   }
   observeStreams() {
-    registerStream('api.authorize', () => this.handleAuthStream())
-    registerStream('api.ohlc', candle => this.handleOhlcStream(candle))
-    registerStream('api.tick', tick => this.handleTickStream(tick))
-    registerStream('purchase.tradeUpdate', contract => this.handleTradeUpdate(contract))
+    this.registerStream('api.authorize', () => this.handleAuthStream())
+    this.registerStream('api.ohlc', candle => this.handleOhlcStream(candle))
+    this.registerStream('api.tick', tick => this.handleTickStream(tick))
+    this.registerStream('trade.update', contract => this.handleTradeUpdate(contract))
+  }
+  getPipSizes() {
+    return new Promise(resolve => {
+      this.api.originalApi.getActiveSymbolsBrief().then(resp =>
+        (this.pipSizes = getPipSizes(resp.active_symbols)))
+      resolve()
+    })
   }
   subscriptionsBeforeStart() {
     const isNewSymbol = this.tradeOption.symbol !== this.symbol
     const isNewCandleInterval = this.tradeOption.candleInterval !== this.candleInterval
 
-    return [isNewSymbol ? this.subscribeToTickHistory() : null,
-      (isNewCandleInterval || isNewSymbol) ? this.subscribeToCandles() : null]
+    return [
+      this.getPipSizes(),
+      isNewSymbol ? this.subscribeToTickHistory() : null,
+      (isNewCandleInterval || isNewSymbol) ? this.subscribeToCandles() : null,
+    ]
   }
   loginAndStartTrading(token) {
     const promises = this.subscriptionsBeforeStart()
@@ -110,26 +127,20 @@ export default class Bot {
     const { maxLoss, maxTrades } = this.limitations
     if (maxLoss && maxTrades) {
       if (this.sessionRuns >= maxTrades) {
-        observer.emit('LimitsReached', translate('Maximum number of trades reached'))
+        viewObserver.emit('LimitsReached', translate('Maximum number of trades reached'))
         return true
       }
       if (this.sessionProfit <= (-maxLoss)) {
-        observer.emit('LimitsReached', translate('Maximum loss amount reached'))
+        viewObserver.emit('LimitsReached', translate('Maximum loss amount reached'))
         return true
       }
     }
     return false
   }
   start(...args) {
-    const [
-      token, tradeOption, beforePurchase, duringPurchase,
-      afterPurchase, sameTrade, tickAnalysisList, limitations,
-    ] = args
+    const [token, tradeOption, sameTrade, limitations] = args
 
     this.startArgs = args
-
-    this.context = new Context(
-      beforePurchase, duringPurchase, afterPurchase, tickAnalysisList)
 
     this.limitations = limitations || {}
 
@@ -145,11 +156,9 @@ export default class Bot {
 
     this.tradeOption = tradeOption
 
-    this.purchaseCtrl = new PurchaseCtrl(this.api, this.context)
+    this.purchase = new Purchase(this.$scope, this.CM)
 
-    this.pipSize = this.getPipSize()
-
-    observer.emit('log.bot.start', { again: !!sameTrade })
+    viewObserver.emit('log.bot.start', { again: !!sameTrade })
 
     if (sameTrade) {
       this.startTrading()
@@ -176,17 +185,17 @@ export default class Bot {
       }))
   }
   subscribeToBalance() {
-    subscribeToStream(
+    this.subscribeToStream(
       'api.balance', balanceResp => {
         const { balance, currency } = balanceResp
         this.balance = +balance
         this.balanceStr = `${(+balance).toFixed(2)} ${currency}`
-        observer.emit('bot.tradeInfo', { balance: this.balanceStr })
+        viewObserver.emit('bot.tradeInfo', { balance: this.balanceStr })
       }, () => this.api.originalApi.send({ forget_all: 'balance' })
       .then(() => this.api.balance(), noop), false, null)
   }
   subscribeToCandles() {
-    return subscribeToStream(
+    return this.subscribeToStream(
       'api.candles', ohlc => {
         this.candleInterval = this.tradeOption.candleInterval
         this.ohlc = ohlc
@@ -202,7 +211,7 @@ export default class Bot {
       }, true, 'candles', ['api.ohlc', 'api.candles'])
   }
   subscribeToTickHistory() {
-    return subscribeToStream(
+    return this.subscribeToStream(
       'api.history', history => {
         this.symbol = this.tradeOption.symbol
         this.ticks = history
@@ -216,31 +225,31 @@ export default class Bot {
       }, true, 'history', ['api.history', 'api.tick', 'bot.tickUpdate'])
   }
   subscribeToProposals() {
-    subscribeToStream(
+    this.subscribeToStream(
       'api.proposal', proposal => {
         if (this.running) {
-          observer.emit('log.bot.proposal', proposal)
-          this.purchaseCtrl.updateProposal(proposal)
+          viewObserver.emit('log.bot.proposal', proposal)
+          this.purchase.updateProposal(proposal)
         }
       }, () => {
         const proposals = this.genProposals()
 
-        this.purchaseCtrl.setNumOfProposals(proposals.length)
+        this.purchase.setNumOfProposals(proposals.length)
         this.api.originalApi.unsubscribeFromAllProposals()
           .then(() => proposals.forEach(p => this.api.proposal(p)), noop)
       }, false, null)
   }
   subscribeToPurchaseFinish() {
-    subscribeToStream(
-      'purchase.finish', contract => this.botFinish(contract),
+    this.subscribeToStream(
+      'trade.finish', contract => this.botFinish(contract),
       noop, true, null)
   }
   subscribeToTradePurchase() {
-    subscribeToStream(
+    this.subscribeToStream(
       'trade.purchase', info => {
         this.totalRuns += 1
         this.sessionRuns += 1
-        observer.emit('bot.tradeInfo', {
+        viewObserver.emit('bot.tradeInfo', {
           totalRuns: this.totalRuns,
           transaction_ids: { buy: info.purchasedContract.transaction_id },
           contract_type: info.contract.contract_type,
@@ -266,7 +275,7 @@ export default class Bot {
     this.totalStake = +(this.totalStake + (+contract.buy_price)).toFixed(2)
     this.totalPayout = +(this.totalPayout + (+contract.sell_price)).toFixed(2)
 
-    observer.emit('bot.tradeInfo', {
+    viewObserver.emit('bot.tradeInfo', {
       profit,
       contract,
       totalProfit: this.totalProfit,
@@ -278,14 +287,11 @@ export default class Bot {
   }
   botFinish(finishedContract) {
     this.updateTotals(finishedContract)
-    observer.emit('bot.finish', finishedContract)
-    this.context.afterPurchase(finishedContract)
+    viewObserver.emit('bot.finish', finishedContract)
   }
   stop() {
     this.running = false
     this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
-    observer.emit('bot.stop')
+    viewObserver.emit('bot.stop')
   }
 }
-
-export const bot = process.browser ? new Bot() : null
