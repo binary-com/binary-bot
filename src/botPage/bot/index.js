@@ -1,4 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
+import WebSocket from 'ws'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import ContextManager from './ContextManager'
 import Purchase from './Purchase'
@@ -10,7 +11,7 @@ import {
 } from './tools'
 
 export default class Bot {
-  constructor(api = null) {
+  constructor(api) {
     this.ticks = []
     this.ohlc = []
     this.token = ''
@@ -28,7 +29,7 @@ export default class Bot {
     this.running = false
     this.balance = 0
     this.pipSize = 2
-    this.api = (api === null) ? new CustomApi() : api
+    this.api = api
     this.symbolApi = new _Symbol(this.api)
     this.initPromise = this.symbolApi.initPromise
     this.CM = new ContextManager()
@@ -284,7 +285,9 @@ export default class Bot {
 
 export const bot = new Bot(
   process.browser ?
-    undefined :
-    (new CustomApi(require('ws'))) // eslint-disable-line global-require
+    (new CustomApi()) :
+    (new CustomApi(null, null, new WebSocket(
+        process.env.ENDPOINT ||
+        'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
 )
 

@@ -1,9 +1,9 @@
 import Interpreter from 'js-interpreter'
-import botApi, { wait } from './botApi'
+import botApi, { wait, initPromise } from './botApi'
 
 const initFunc = (interpreter, scope) => {
-  interpreter.setProperty(scope, 'log',
-    interpreter.nativeToPseudo((...args) => console.log(...args))) // eslint-disable-line no-console
+  interpreter.setProperty(scope, 'console',
+    interpreter.nativeToPseudo(console))
   interpreter.setProperty(scope, 'Bot',
     interpreter.nativeToPseudo(botApi))
   interpreter.setProperty(scope, 'wait',
@@ -22,7 +22,7 @@ export default class JSI {
     this.done = done
   }
   start() {
-    botApi.init.then(() => {
+    initPromise.then(() => {
       const interpreter = new Interpreter(this.code, initFunc)
 
       const interpreterLoop = setInterval(() => {
