@@ -1,8 +1,10 @@
 {
   "name": "binary-bot",
-  "version": "2.3.2",
+  "version": "7.0.0",
   "description": "Visual automation for binary.com",
-  "main": "src/bot.js",
+  "bin": {
+    "bot": "lib/index.js"
+  },
   "babel": {
     "presets": [
       "es2015",
@@ -27,7 +29,9 @@
     "gen-beta": "git checkout beta; npm prune ; npm install ; gulp build-min; rm -rf beta; mkdir beta ; cp -r www/ beta/beta; git checkout -- src",
     "gen-translation": "git checkout translation; npm prune ; npm install ; gulp build-min; rm -rf translation; mkdir translation ; cp -r www/ translation/translation; git checkout -- src",
     "deploy": "git checkout master ; npm prune ; npm install ; gulp deploy",
-    "deploy-all": "npm run gen-beta; npm run gen-translation; npm run deploy"
+    "deploy-all": "npm run gen-beta; npm run gen-translation; npm run deploy",
+    "build": "webpack --config webpack.cli.config.js",
+    "prepublish": "npm run build"
   },
   "author": "Amin Marashi",
   "license": "MIT",
@@ -91,5 +95,9 @@
     "webpack": "^1.14.0",
     "webpack-stream": "^3.2.0",
     "ws": "^1.1.1"
+  },
+  "dependencies": {
+    "concat-stream": "^1.6.0",
+    "minimist": "^1.2.0"
   }
 }
