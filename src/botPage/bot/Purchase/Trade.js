@@ -12,8 +12,7 @@ export default class Trade {
   sellAtMarket() {
     if (!this.isSold) {
       this.isSold = true
-      this.api.originalApi.sellContract(this.openContract.contract_id, 0)
-        .then(() => this.getTheContractInfoAfterSell(), noop)
+      this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(noop, noop)
     }
   }
   retryIfContractNotReceived(contract) {
@@ -28,7 +27,6 @@ export default class Trade {
       this.isSold = true
       this.isSellAvailable = false
       this.api.originalApi.sellExpiredContracts().then(noop, noop)
-      this.getTheContractInfoAfterSell()
     }
   }
   onContractUpdate(contract) {
@@ -37,10 +35,10 @@ export default class Trade {
       observer.emit('log.trade.finish', contract)
       observer.emit('trade.finish', contract)
     } else {
-      observer.emit('log.trade.update', contract)
       this.openContract = contract
+      observer.emit('log.trade.update', contract)
+      observer.emit('trade.update', contract)
     }
-    observer.emit('trade.update', contract)
   }
   subscribeToOpenContract() {
     if (!this.contractId) {
@@ -52,12 +50,12 @@ export default class Trade {
           return
         }
 
-        this.onContractExpire(contract)
-
         this.isSellAvailable = !this.isSold &&
           !contract.is_expired && contract.is_valid_to_sell
 
         this.onContractUpdate(contract)
+
+        this.onContractExpire(contract)
       }, () => this.api.proposal_open_contract(this.contractId),
       false, 'proposal_open_contract',
       ['trade.update', 'purchase.tradeUpdate', 'trade.finish', 'purchase.finish']
@@ -78,11 +76,6 @@ export default class Trade {
       }, () => this.api.buy(contract.id, contract.ask_price),
       true, 'buy', ['trade.purchase']
     )
-  }
-  getTheContractInfoAfterSell() {
-    if (this.contractId) {
-      this.api.originalApi.subscribeToOpenContract(this.contractId).then(noop, noop)
-    }
   }
   destroy() {
     this.isSold = false

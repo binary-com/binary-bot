@@ -1,12 +1,12 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import CustomApi from 'binary-common-utils/lib/customApi'
-import Context from './Context'
-import PurchaseCtrl from './purchaseCtrl'
+import ContextManager from './ContextManager'
+import Purchase from './Purchase'
 import _Symbol from './symbol'
 import { translate } from '../../common/i18n'
 import {
   noop, subscribeToStream, registerStream,
-  getDirection, tradeOptionToProposal,
+  getDirection, tradeOptionToProposal, execContext,
 } from './tools'
 
 export default class Bot {
@@ -22,6 +22,7 @@ export default class Bot {
     this.api = (api === null) ? new CustomApi() : api
     this.symbolApi = new _Symbol(this.api)
     this.initPromise = this.symbolApi.initPromise
+    this.CM = new ContextManager()
   }
   shouldRestartOnError() {
     return this.tradeOption && this.tradeOption.restartOnError
@@ -45,7 +46,7 @@ export default class Bot {
     this.ohlc = [...prevCandles, candle]
   }
   handleTradeUpdate(contract) {
-    if (this.purchaseCtrl) {
+    if (this.purchase) {
       observer.emit('bot.tradeUpdate', contract)
     }
   }
@@ -65,11 +66,10 @@ export default class Bot {
 
     const ticksObj = { direction, symbol, pipSize, ticks, ohlc }
 
-    this.context.createTicks(ticksObj)
-    this.context.tickAnalysis()
+    execContext(this.CM, 'shared', ticksObj)
 
-    if (this.purchaseCtrl) {
-      this.purchaseCtrl.updateTicks(ticksObj)
+    if (this.purchase) {
+      this.purchase.updateTicks(ticksObj)
     }
 
     observer.emit('bot.tickUpdate', ticksObj)
@@ -102,19 +102,14 @@ export default class Bot {
       })
   }
   start(...args) {
-    const [
-      token, tradeOption, beforePurchase, duringPurchase,
-      afterPurchase, sameTrade, tickAnalysisList, limitations,
-    ] = this.startArgs = args
+    const [token, tradeOption, sameTrade, limitations] =
+      this.startArgs = args
 
-    this.context = new Context(
-      beforePurchase, duringPurchase, afterPurchase, tickAnalysisList)
-
-    if (!this.purchaseCtrl) {
+    if (!this.purchase) {
       this.tradeOption = tradeOption
       this.limitations = limitations || {}
 
-      this.purchaseCtrl = new PurchaseCtrl(this.api, this.context)
+      this.purchase = new Purchase(this.api, this.CM)
 
       this.pipSize = this.getPipSize()
 
@@ -191,15 +186,15 @@ export default class Bot {
   subscribeToProposals() {
     subscribeToStream(
       'api.proposal', proposal => {
-        if (this.purchaseCtrl) {
+        if (this.purchase) {
           observer.emit('log.bot.proposal', proposal)
-          this.purchaseCtrl.updateProposal(proposal)
+          this.purchase.updateProposal(proposal)
         }
       }, () => {
         const proposals = this.genProposals()
 
-        if (this.purchaseCtrl) {
-          this.purchaseCtrl.setNumOfProposals(proposals.length)
+        if (this.purchase) {
+          this.purchase.setNumOfProposals(proposals.length)
         }
         this.api.originalApi.unsubscribeFromAllProposals()
           .then(() => proposals.forEach(p => this.api.proposal(p)), noop)
@@ -270,26 +265,31 @@ export default class Bot {
   }
   tradeAgain(finishedContract) {
     if (!this.limitsReached()) {
-      this.context.afterPurchase(finishedContract)
+      execContext(this.CM, 'after', finishedContract)
     }
   }
-  destroyPurchaseCtrl() {
-    if (this.purchaseCtrl) {
-      this.purchaseCtrl.destroy()
-      this.purchaseCtrl = null
+  destroyPurchase() {
+    if (this.purchase) {
+      this.purchase.destroy()
+      this.purchase = null
     }
   }
   botFinish(finishedContract) {
     this.updateTotals(finishedContract)
     observer.emit('bot.finish', finishedContract)
-    this.destroyPurchaseCtrl()
+    this.destroyPurchase()
     this.tradeAgain(finishedContract)
   }
   stop(contract) {
-    this.destroyPurchaseCtrl()
+    this.destroyPurchase()
     this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
     observer.emit('bot.stop', contract)
   }
 }
 
-export const bot = process.browser ? new Bot() : null
+export const bot = new Bot(
+  process.browser ?
+    undefined :
+    (new CustomApi(require('ws'))) // eslint-disable-line global-require
+)
+

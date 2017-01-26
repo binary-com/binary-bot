@@ -1,23 +1,24 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import Trade from './trade'
+import Trade from './Trade'
+import { execContext } from '../tools'
 
 export default class PurchaseCtrl {
-  constructor(api, context) {
+  constructor(api, CM) {
     this.api = api
-    this.context = context
-    this.createInterface()
+    this.CM = CM
     this.ready = this.purchased = false
     this.proposals = {}
     this.expectedNumOfProposals = 2
   }
-  createInterface() {
-    this.context.addFunc({
-      purchase: option => this.purchase(option),
-      isSellAvailable: () => this.trade && this.trade.isSellAvailable,
-      getContract: option => this.proposals[option],
-      sellAtMarket: () => (this.trade && this.trade.isSellAvailable &&
-        this.trade.sellAtMarket()),
-    })
+  getContract(option) {
+    return this.proposals[option]
+  }
+  isSellAvailable() {
+    return this.trade && this.trade.isSellAvailable
+  }
+  sellAtMarket() {
+    return this.trade &&
+      this.trade.isSellAvailable && this.trade.sellAtMarket()
   }
   setNumOfProposals(num) {
     this.expectedNumOfProposals = num
@@ -34,7 +35,7 @@ export default class PurchaseCtrl {
   updateTicks() {
     if (!this.purchased && this.ready) {
       observer.emit('log.purchase.start', { proposals: this.proposals })
-      this.context.beforePurchase()
+      execContext(this.CM, 'before', this.proposals)
     }
   }
   purchase(option) {
@@ -42,7 +43,7 @@ export default class PurchaseCtrl {
       this.purchased = true
 
       observer.register('trade.update', openContract => {
-        this.context.duringPurchase(openContract)
+        execContext(this.CM, 'during', openContract)
         observer.emit('purchase.tradeUpdate', openContract)
       }, false, null, true)
       observer.register('trade.finish', finishedContract =>
