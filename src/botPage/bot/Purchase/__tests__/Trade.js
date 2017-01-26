@@ -1,8 +1,10 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
 import { observer } from 'binary-common-utils/lib/observer'
-import ws from '../../../../common/mock/websocket'
-import Trade from '../'
+import ws from 'ws'
+import Trade from '../Trade'
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 
 describe('Trade', () => {
   let api
@@ -49,12 +51,10 @@ describe('Trade', () => {
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('trade.finish', (_contract) => {
         finishedContract = _contract
+        done()
       }, true)
       observer.register('trade.update', (contractUpdate) => {
         contractUpdates.push(contractUpdate)
-        if (contractUpdates.slice(-1)[0].is_sold) {
-          done()
-        }
       })
     })
     it('Emits the update signal', () => {
