@@ -50,7 +50,7 @@ export class LimitsPanel extends PureComponent {
   submit() {
     const maxLoss = +this.maxLossDiv.value
     const maxTrades = +this.maxTradesDiv.value
-    if (maxLoss && maxTrades) {
+    if (maxLoss > 0 && maxTrades > 0) {
       if (maxTrades <= 100) {
         this.close()
         this.props.onSave({
@@ -61,7 +61,7 @@ export class LimitsPanel extends PureComponent {
         this.setState({ error: translate('Maximum allowed number of trades for each session is 100.') })
       }
     } else {
-      this.setState({ error: translate('Both number of trades and loss amount are required.') })
+      this.setState({ error: translate('Both number of trades and loss amount have to be positive values.') })
     }
   }
   render() {
@@ -74,11 +74,11 @@ export class LimitsPanel extends PureComponent {
         <div style={contentStyle}>
           <div style={limitsStyle}>
           <label style={fieldStyle} htmlFor="limitation-max-trades">
-            <input style={inputStyle} ref={(el) => (this.maxTradesDiv = el)} type="number" id="limitation-max-trades" />
+            <input style={inputStyle} ref={(el) => (this.maxTradesDiv = el)} type="number" id="limitation-max-trades" min="1" max="100" />
             {translate('Maximum number of trades')}
           </label>
           <label style={fieldStyle} htmlFor="limitation-max-loss">
-            <input style={inputStyle} ref={(el) => (this.maxLossDiv = el)} type="number" id="limitation-max-loss" />
+            <input style={inputStyle} ref={(el) => (this.maxLossDiv = el)} type="number" id="limitation-max-loss" min="0.01" />
             {translate('Maximum loss amount')}
           </label>
             {this.state.error ? <p style={errorStyle}>{this.state.error}</p> : null}
