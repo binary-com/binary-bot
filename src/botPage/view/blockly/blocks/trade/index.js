@@ -62,25 +62,14 @@ Blockly.JavaScript.trade = (block) => {
   // TODO: Assemble JavaScript into code variable.
   const code = `
   var getTradeOptions;
-  try {
-    ${initialization.trim()}
-    trade = function trade(again){
-      Blockly.mainWorkspace.highlightBlock('${block.id}')
-      if (typeof getTradeOptions !== 'undefined') {
-        Bot.start('${account.trim()}', getTradeOptions(),
-        typeof before_purchase === 'undefined' ? function(){} : before_purchase,
-        typeof during_purchase === 'undefined' ? function(){} : during_purchase,
-        typeof after_purchase === 'undefined' ? function(){} : after_purchase,
-        again,
-        tick_analysis_list, limitations);
-      }
-    };
-  } catch (e) {
-    if (e.name !== 'BlocklyError') {
-      Bot.notifyError(e);
-      throw e;
+  ${initialization.trim()}
+  trade = function trade(again){
+    // Blockly.mainWorkspace.highlightBlock('${block.id}')
+    if (getTradeOptions !== undefined) {
+      Bot.start('${account.trim()}', getTradeOptions(),
+      again, limitations);
     }
-  }
+  };
   `
   return code
 }

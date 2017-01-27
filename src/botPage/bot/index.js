@@ -1,13 +1,11 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import WebSocket from 'ws'
-import CustomApi from 'binary-common-utils/lib/customApi'
 import ContextManager from './ContextManager'
 import Purchase from './Purchase'
-import _Symbol from './symbol'
 import { translate } from '../../common/i18n'
 import {
   noop, subscribeToStream, registerStream,
   getDirection, tradeOptionToProposal, execContext,
+  getPipSizes,
 } from './tools'
 
 export default class Bot {
@@ -28,10 +26,8 @@ export default class Bot {
     this.sessionProfit = 0
     this.running = false
     this.balance = 0
-    this.pipSize = 2
+    this.pipSizes = []
     this.api = api
-    this.symbolApi = new _Symbol(this.api)
-    this.initPromise = this.symbolApi.initPromise
     this.CM = new ContextManager()
   }
   shouldRestartOnError() {
@@ -41,12 +37,6 @@ export default class Bot {
     if (this.shouldRestartOnError()) {
       this.start(...this.startArgs)
     }
-  }
-  getPipSize() {
-    const symbols = this.symbolApi.activeSymbols.getSymbols()
-
-    return +(+symbols[this.tradeOption.symbol.toLowerCase()].pip)
-      .toExponential().substring(3)
   }
   handleOhlcStream(candle) {
     const length = this.ohlc.length
@@ -71,10 +61,10 @@ export default class Bot {
 
     const {
       direction = getDirection(this.ticks),
-      symbol, pipSize, ticks, ohlc,
+      symbol, ticks, ohlc,
     } = this
 
-    const ticksObj = { direction, symbol, pipSize, ticks, ohlc }
+    const ticksObj = { direction, symbol, pipSize: this.pipSizes[symbol], ticks, ohlc }
 
     execContext(this.CM, 'shared', ticksObj)
 
@@ -88,12 +78,22 @@ export default class Bot {
     registerStream('api.tick', tick => this.handleTickStream(tick))
     registerStream('purchase.tradeUpdate', contract => this.handleTradeUpdate(contract))
   }
+  getPipSizes() {
+    return new Promise(resolve => {
+      this.api.originalApi.getActiveSymbolsBrief().then(resp =>
+        (this.pipSizes = getPipSizes(resp.active_symbols)))
+      resolve()
+    })
+  }
   subscriptionsBeforeStart() {
     const isNewSymbol = this.tradeOption.symbol !== this.symbol
     const isNewCandleInterval = this.tradeOption.candleInterval !== this.candleInterval
 
-    return [isNewSymbol ? this.subscribeToTickHistory() : null,
-      (isNewCandleInterval || isNewSymbol) ? this.subscribeToCandles() : null]
+    return [
+      this.getPipSizes(),
+      isNewSymbol ? this.subscribeToTickHistory() : null,
+      (isNewCandleInterval || isNewSymbol) ? this.subscribeToCandles() : null,
+    ]
   }
   loginAndStartTrading(token) {
     const promises = this.subscriptionsBeforeStart()
@@ -141,8 +141,6 @@ export default class Bot {
     this.tradeOption = tradeOption
 
     this.purchase = new Purchase(this.api, this.CM)
-
-    this.pipSize = this.getPipSize()
 
     observer.emit('log.bot.start', { again: !!sameTrade })
 
@@ -282,12 +280,3 @@ export default class Bot {
     observer.emit('bot.stop')
   }
 }
-
-export const bot = new Bot(
-  process.browser ?
-    (new CustomApi()) :
-    (new CustomApi(null, null, new WebSocket(
-        process.env.ENDPOINT ||
-        'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
-)
-

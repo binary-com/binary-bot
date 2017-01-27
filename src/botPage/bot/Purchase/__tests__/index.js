@@ -81,7 +81,7 @@ describe('Purchase', () => {
           symbol: 'R_100',
         })
       }, true)
-      api.authorize('nmjKBPWxM00E8Fh')
+      api.authorize(process.env.TESTINGTOKEN)
     })
     it('Strategy gets ready when two proposals are available', () => {
     })

@@ -1,33 +1,46 @@
 import Interpreter from 'js-interpreter'
-import botApi, { wait, initPromise } from './botApi'
+import BotApi from './BotApi'
 
-const initFunc = (interpreter, scope) => {
-  interpreter.setProperty(scope, 'console',
-    interpreter.nativeToPseudo(console))
-  interpreter.setProperty(scope, 'Bot',
-    interpreter.nativeToPseudo(botApi))
-  interpreter.setProperty(scope, 'wait',
-    interpreter.createAsyncFunction((arg = 0, cb) =>
-      wait(interpreter.pseudoToNative(arg)).then(rv => (
-        rv ?
-          cb(interpreter.nativeToPseudo(rv)) :
-          cb()
-      ))
+const createAsync = (interpreter, func) =>
+  interpreter.createAsyncFunction((arg, cb) =>
+    func(interpreter.pseudoToNative(arg)).then(rv => (
+      rv ?
+        cb(interpreter.nativeToPseudo(rv)) :
+        cb()
     ))
-}
+  )
 
 export default class JSI {
-  constructor(code, done) {
-    this.code = code
-    this.done = done
+  constructor(api) {
+    this.botApi = new BotApi(api)
   }
-  start() {
-    initPromise.then(() => {
-      const interpreter = new Interpreter(this.code, initFunc)
+  run(code) {
+    const botIf = this.botApi.getInterface()
+
+    const { isInside, wait, waitUntil, alert } =
+      this.botApi.getInterface()
+
+    const initFunc = (interpreter, scope) => {
+      interpreter.setProperty(scope, 'console',
+        interpreter.nativeToPseudo(console))
+      interpreter.setProperty(scope, 'alert',
+        interpreter.nativeToPseudo(alert))
+      interpreter.setProperty(scope, 'Bot',
+        interpreter.nativeToPseudo(botIf))
+      interpreter.setProperty(scope, 'isInside',
+        interpreter.nativeToPseudo(isInside))
+      interpreter.setProperty(scope, 'wait',
+        createAsync(interpreter, wait))
+      interpreter.setProperty(scope, 'waitUntil',
+        createAsync(interpreter, waitUntil))
+    }
+
+    return new Promise(r => {
+      const interpreter = new Interpreter(code, initFunc)
 
       const interpreterLoop = setInterval(() => {
         if (!interpreter.step()) {
-          this.done(interpreter.value)
+          r(interpreter.value)
           clearInterval(interpreterLoop)
         }
       }, 0)

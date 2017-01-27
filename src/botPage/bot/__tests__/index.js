@@ -1,4 +1,6 @@
 import { expect } from 'chai'
+import CustomApi from 'binary-common-utils/lib/customApi'
+import WebSocket from 'ws'
 import JSI from '../jsi'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
@@ -6,27 +8,32 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 describe('Run JSI over bot', () => {
   let value
 
+  const api = (new CustomApi(null, null, new WebSocket(
+    process.env.ENDPOINT ||
+      'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
+
   beforeAll(done => {
-    const jsi = new JSI(`
+    const jsi = new JSI(api)
+
+    jsi.run(`
       (function (){
-        Bot.start('nmjKBPWxM00E8Fh', { amount: 1,
-          basis: 'stake', candleInterval: 60,
+        Bot.start('${process.env.TESTINGTOKEN}',
+        {
+          amount: 1, basis: 'stake', candleInterval: 60,
           contractTypes: '["DIGITEVEN", "DIGITODD"]',
           currency: 'USD', duration: 5,
           duration_unit: 't', symbol: 'R_100',
-        });
-        var context;
-        Bot.purchase(Object.keys(
-          (context = wait('CONTEXT')
-        ).data.proposals)[1]);
-        while((context = wait('CONTEXT')).scope === 'during');
-        return context.scope === 'after';
+        }
+        );
+        var context = wait('CONTEXT');
+        Bot.purchase(1)
+        context = waitUntil('during')
+        return isInside('after')
       })();
-    `, v => {
+    `).then(v => {
       value = v
       done()
     })
-    jsi.start()
   })
   it('return code is correct', () => {
     expect(value.data).to.be.equal(true)

@@ -1,4 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
+import CustomApi from 'binary-common-utils/lib/customApi'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import { notifyError } from '../logger'
 import config from '../../../common/const'
@@ -9,7 +10,10 @@ import {
   backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
+import JSI from '../../bot/jsi'
 import { getLanguage } from '../../../common/lang'
+
+const noop = () => {}
 
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
@@ -243,17 +247,28 @@ export default class _Blockly {
       disableStrayBlocks()
       code = `
         var trade, before_purchase, during_purchase, after_purchase;
-        var tick_analysis_list = [];
+
+        function run(f) {
+          if (f) return f();
+          return false;
+        }
+
         var limitations = ${JSON.stringify(limitations)}
+        
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
-        try {
-          if (typeof trade !== 'undefined') {
-            trade();
+
+        var context
+
+        while(true) {
+          run(trade)
+          while((context = wait('CONTEXT')).scope === 'before') {
+            run(before_purchase)
           }
-        } catch (e) {
-          if (e.name !== 'BlocklyError') {
-            Bot.notifyError(e);
-            throw e;
+          while((context = wait('CONTEXT')).scope === 'during') {
+            run(during_purchase)
+          }
+          if(!run(after_purchase)) {
+            break;
           }
         }
       `
@@ -266,7 +281,8 @@ export default class _Blockly {
       }
     }
     if (code) {
-      eval(code) // eslint-disable-line no-eval
+      this.jsi = new JSI(new CustomApi())
+      this.jsi.run(code, noop)
       $('#summaryPanel')
         .show()
     }

@@ -1,4 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
+import { Map } from 'immutable'
 import {
   number as expectNumber,
   barrierOffset as expectBarrierOffset,
@@ -67,3 +68,8 @@ export const execContext = (CM, name, value) => {
       { scope: name, data: CM.getContext(name) })
   }
 }
+
+export const getPipSizes = symbols =>
+  symbols.reduce((s, i) =>
+    s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map()).toObject()
+
