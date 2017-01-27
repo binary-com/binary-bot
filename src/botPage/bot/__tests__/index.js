@@ -9,18 +9,18 @@ describe('Run JSI over bot', () => {
   beforeAll(done => {
     const jsi = new JSI(`
       (function (){
-        Bot.start('nmjKBPWxM00E8Fh', { amount: 1,
-          basis: 'stake', candleInterval: 60,
+        Bot.start('${process.env.TESTINGTOKEN}',
+        {
+          amount: 1, basis: 'stake', candleInterval: 60,
           contractTypes: '["DIGITEVEN", "DIGITODD"]',
           currency: 'USD', duration: 5,
           duration_unit: 't', symbol: 'R_100',
-        });
-        var context;
-        Bot.purchase(Object.keys(
-          (context = wait('CONTEXT')
-        ).data.proposals)[1]);
-        while((context = wait('CONTEXT')).scope === 'during');
-        return context.scope === 'after';
+        }
+        );
+        var context = wait('CONTEXT');
+        Bot.purchase(1)
+        context = waitUntil('during')
+        return isInside('after')
       })();
     `, v => {
       value = v
