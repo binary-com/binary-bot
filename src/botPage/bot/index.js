@@ -1,6 +1,4 @@
 import { observer } from 'binary-common-utils/lib/observer'
-import WebSocket from 'ws'
-import CustomApi from 'binary-common-utils/lib/customApi'
 import ContextManager from './ContextManager'
 import Purchase from './Purchase'
 import _Symbol from './symbol'
@@ -282,12 +280,3 @@ export default class Bot {
     observer.emit('bot.stop')
   }
 }
-
-export const bot = new Bot(
-  process.browser ?
-    (new CustomApi()) :
-    (new CustomApi(null, null, new WebSocket(
-        process.env.ENDPOINT ||
-        'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
-)
-
