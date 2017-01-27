@@ -18,6 +18,8 @@ export default class BotApi {
       getSellPrice: () =>
         +(((+this.context.data.openContract.bid_price) -
           (+this.context.data.openContract.buy_price)).toFixed(2)),
+      isResult: result => (this.context.data.contractDetails[10] === result),
+      readDetails: i => this.context.data.contractDetails[+i - 1],
       wait: arg => this.wait(arg),
       waitUntil: arg => this.waitUntil(arg),
       isInside: arg => this.isInside(arg),

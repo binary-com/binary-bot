@@ -250,8 +250,9 @@ export default class _Blockly {
 
         function run(f) {
           if (f !== undefined) {
-            f();
+            return f();
           }
+          return false;
         }
 
         var limitations = ${JSON.stringify(limitations)}
@@ -262,8 +263,9 @@ export default class _Blockly {
 
         while(true) {
           run(trade)
-          context = wait('CONTEXT')
-          run(before_purchase)
+          while((context = wait('CONTEXT')).scope === 'before') {
+            run(before_purchase)
+          }
           while((context = wait('CONTEXT')).scope === 'during') {
             run(during_purchase)
           }

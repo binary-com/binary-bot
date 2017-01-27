@@ -17,7 +17,8 @@ export default class JSI {
   run(code) {
     const botIf = this.botApi.getInterface()
 
-    const { isInside, wait, waitUntil, alert } = this.botApi.getInterface()
+    const { isInside, wait, waitUntil, alert } =
+      this.botApi.getInterface()
 
     const initFunc = (interpreter, scope) => {
       interpreter.setProperty(scope, 'console',
