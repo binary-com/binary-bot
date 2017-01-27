@@ -6,6 +6,7 @@ const production = process.env.NODE_ENV === 'production'
 module.exports = {
   devtool: 'cheap-module-source-map',
   watch: !production,
+  target: 'web',
   module: {
     loaders: [
       {
