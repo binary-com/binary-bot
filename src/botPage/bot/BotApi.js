@@ -9,8 +9,9 @@ export default class BotApi {
   getInterface() {
     return {
       start: (...args) => this.bot.start(...args),
-      purchase: i => this.bot.purchase.purchase(Object.keys(this.context.data.proposals)[i]),
+      purchase: option => this.bot.purchase.purchase(option),
       getContract: (...args) => this.bot.purchase.getContract(...args),
+      getAskPrice: name => +(this.bot.purchase.getContract(name).ask_price),
       isSellAvailable: (...args) => this.bot.purchase.isSellAvailable(...args),
       sellAtMarket: (...args) => this.bot.purchase.sellAtMarket(...args),
       wait: arg => this.wait(arg),

@@ -22,6 +22,8 @@ export default class JSI {
     const initFunc = (interpreter, scope) => {
       interpreter.setProperty(scope, 'console',
         interpreter.nativeToPseudo(console))
+      interpreter.setProperty(scope, 'alert',
+        interpreter.nativeToPseudo(alert))
       interpreter.setProperty(scope, 'Bot',
         interpreter.nativeToPseudo(botIf))
       interpreter.setProperty(scope, 'isInside',

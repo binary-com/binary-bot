@@ -13,6 +13,8 @@ import blocks from './blocks'
 import JSI from '../../bot/jsi'
 import { getLanguage } from '../../../common/lang'
 
+const noop = () => {}
+
 const disableStrayBlocks = () => {
   const topBlocks = Blockly.mainWorkspace.getTopBlocks()
   topBlocks.forEach(block => {
@@ -252,15 +254,19 @@ export default class _Blockly {
           }
         }
 
-        // var tick_analysis_list = [];
         var limitations = ${JSON.stringify(limitations)}
         
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
+        var context
+
         while(true) {
           run(trade)
+          context = wait('CONTEXT')
           run(before_purchase)
-          run(during_purchase)
+          while((context = wait('CONTEXT')).scope === 'during') {
+            run(during_purchase)
+          }
           if(!run(after_purchase)) {
             break;
           }
@@ -276,6 +282,7 @@ export default class _Blockly {
     }
     if (code) {
       this.jsi = new JSI(new CustomApi())
+      this.jsi.run(code, noop)
       $('#summaryPanel')
         .show()
     }
