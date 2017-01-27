@@ -27,7 +27,7 @@ Blockly.Blocks.before_purchase = {
 Blockly.JavaScript.before_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'BEFOREPURCHASE_STACK')
   const code = `before_purchase = function before_purchase(){
-    Blockly.mainWorkspace.highlightBlock('${block.id}')
+    // Blockly.mainWorkspace.highlightBlock('${block.id}')
     ${stack}
   };
   `
