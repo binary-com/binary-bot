@@ -26,7 +26,7 @@ module.exports = {
     root: path.join(__dirname, 'node_modules'),
   },
   entry: {
-    bot: ['babel-polyfill', path.join(__dirname, 'src', 'botPage')],
+    bot: ['babel-polyfill', path.join(__dirname, 'src', 'botPage', 'view')],
     index: path.join(__dirname, 'src', 'indexPage'),
   },
   output: {
