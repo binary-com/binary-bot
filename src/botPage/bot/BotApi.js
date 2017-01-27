@@ -5,7 +5,6 @@ import { noop } from './tools'
 export default class BotApi {
   constructor(api) {
     this.bot = new Bot(api)
-    this.initPromise = this.bot.initPromise
   }
   getInterface() {
     return {
@@ -14,6 +13,9 @@ export default class BotApi {
       getContract: (...args) => this.bot.purchase.getContract(...args),
       isSellAvailable: (...args) => this.bot.purchase.isSellAvailable(...args),
       sellAtMarket: (...args) => this.bot.purchase.sellAtMarket(...args),
+      wait: arg => this.wait(arg),
+      waitUntil: arg => this.waitUntil(arg),
+      isInside: arg => this.isInside(arg),
     }
   }
   wait(arg) {

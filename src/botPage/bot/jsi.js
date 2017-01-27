@@ -15,30 +15,32 @@ export default class JSI {
     this.botApi = new BotApi(api)
   }
   run(code) {
+    const botIf = this.botApi.getInterface()
+
+    const { isInside, wait, waitUntil } = this.botApi.getInterface()
+
     const initFunc = (interpreter, scope) => {
       interpreter.setProperty(scope, 'console',
         interpreter.nativeToPseudo(console))
-      interpreter.setProperty(scope, 'isInside',
-        interpreter.nativeToPseudo(this.botApi.isInside))
       interpreter.setProperty(scope, 'Bot',
-        interpreter.nativeToPseudo(this.botApi.getInterface()))
+        interpreter.nativeToPseudo(botIf))
+      interpreter.setProperty(scope, 'isInside',
+        interpreter.nativeToPseudo(isInside))
       interpreter.setProperty(scope, 'wait',
-        createAsync(interpreter, this.botApi.wait))
+        createAsync(interpreter, wait))
       interpreter.setProperty(scope, 'waitUntil',
-        createAsync(interpreter, this.botApi.waitUntil))
+        createAsync(interpreter, waitUntil))
     }
 
     return new Promise(r => {
-      this.botApi.initPromise.then(() => {
-        const interpreter = new Interpreter(code, initFunc)
+      const interpreter = new Interpreter(code, initFunc)
 
-        const interpreterLoop = setInterval(() => {
-          if (!interpreter.step()) {
-            r(interpreter.value)
-            clearInterval(interpreterLoop)
-          }
-        }, 0)
-      })
+      const interpreterLoop = setInterval(() => {
+        if (!interpreter.step()) {
+          r(interpreter.value)
+          clearInterval(interpreterLoop)
+        }
+      }, 0)
     })
   }
 }
