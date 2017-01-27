@@ -249,9 +249,7 @@ export default class _Blockly {
         var trade, before_purchase, during_purchase, after_purchase;
 
         function run(f) {
-          if (f !== undefined) {
-            return f();
-          }
+          if (f) return f();
           return false;
         }
 
