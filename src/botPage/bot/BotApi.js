@@ -12,11 +12,13 @@ export default class BotApi {
       purchase: option => this.bot.purchase.purchase(option),
       getContract: (...args) => this.bot.purchase.getContract(...args),
       getAskPrice: name => +(this.bot.purchase.getContract(name).ask_price),
+      getPayout: name => +(this.bot.purchase.getContract(name).payout),
       isSellAvailable: (...args) => this.bot.purchase.isSellAvailable(...args),
       sellAtMarket: (...args) => this.bot.purchase.sellAtMarket(...args),
       wait: arg => this.wait(arg),
       waitUntil: arg => this.waitUntil(arg),
       isInside: arg => this.isInside(arg),
+      alert: (...args) => alert(...args), // eslint-disable-line no-alert
     }
   }
   wait(arg) {
