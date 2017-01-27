@@ -14,6 +14,7 @@ import { SaveXml } from './react-components/SaveXml'
 import { RestartTimeout } from './react-components/RestartTimeout'
 import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
+import { initPromise } from './symbolApi'
 import { Tour } from './tour'
 
 let realityCheckTimeout
@@ -111,15 +112,17 @@ export default class View {
     logHandler()
     this.tradeInfo = new TradeInfo()
     initializeApi()
-    this.initPromise = new Promise((resolve) => {
-      this.updateTokenList()
-      this.blockly = new _Blockly()
-      this.blockly.initPromise.then(() => {
-        this.setElementActions()
-        $('#accountLis')
-        startRealityCheck(null, $('.account-id').first().attr('value'))
-        ReactDOM.render(<Tour />, document.getElementById('tour'))
-        resolve()
+    this.initPromise = new Promise(resolve => {
+      initPromise.then(() => {
+        this.updateTokenList()
+        this.blockly = new _Blockly()
+        this.blockly.initPromise.then(() => {
+          this.setElementActions()
+          $('#accountLis')
+          startRealityCheck(null, $('.account-id').first().attr('value'))
+          ReactDOM.render(<Tour />, document.getElementById('tour'))
+          resolve()
+        })
       })
     })
   }

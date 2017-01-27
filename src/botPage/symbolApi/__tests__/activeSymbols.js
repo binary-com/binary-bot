@@ -1,8 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { expect } from 'chai'
-import CustomApi from 'binary-common-utils/lib/customApi'
 import deep from 'deep-diff'
-import ws from 'ws'
+import { LiveApi } from 'binary-live-api'
+import websocket from 'ws'
 import ActiveSymbols from '../activeSymbols'
 
 
@@ -29,7 +29,7 @@ const setChecks = (obj) => {
 describe('ActiveSymbols', () => {
   let activeSymbols
   beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-    const api = new CustomApi(ws).originalApi
+    const api = new LiveApi({ websocket })
     api.getActiveSymbolsBrief().then((response) => {
       activeSymbols = new ActiveSymbols(response.active_symbols)
       done()

@@ -40,7 +40,7 @@ const getCategoryForCondition = condition =>
 
 export default class _Symbol {
   constructor(api) {
-    this.api = api.originalApi
+    this.api = api
     this.initPromise = new Promise(resolve => {
       this.api.getActiveSymbolsBrief().then(r => {
         this.activeSymbols = new ActiveSymbols(r.active_symbols)

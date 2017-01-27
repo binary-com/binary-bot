@@ -1,4 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
+import CustomApi from 'binary-common-utils/lib/customApi'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import { notifyError } from '../logger'
 import config from '../../../common/const'
@@ -9,6 +10,7 @@ import {
   backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
+import JSI from '../../bot/jsi'
 import { getLanguage } from '../../../common/lang'
 
 const disableStrayBlocks = () => {

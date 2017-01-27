@@ -1,11 +1,9 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr2375
-// kept for backward compatibility
-import { bot } from '../../../../bot'
+import symbolApi from '../../../symbolApi'
 import config from '../../../../../common/const'
 import { updateInputList } from '../../utils'
 
 export default () => {
-  const symbols = bot.symbolApi.activeSymbols.getSymbols()
+  const symbols = symbolApi.activeSymbols.getSymbols()
   Object.keys(symbols).forEach(k => {
     Blockly.Blocks[k] = {
       init: function init() {

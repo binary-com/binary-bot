@@ -28,31 +28,34 @@ window._trackJs = { // eslint-disable-line no-underscore-dangle
 
 require('trackjs')
 
-const view = new View()
-
-trackJs.configure({
-  userId: $('.account-id').first().text(),
-  onError: (payload, error) => {
-    if (error && error.message && error.message.indexOf('The play() request was'
-      + ' interrupted by a call to pause()') >= 0) {
-        return false
-      }
-    payload.console.push({
-      message: lzString.compressToBase64(view.blockly.generatedJs),
-      severity: 'log',
-      timestamp: new Date().toISOString(),
-    })
-    payload.console.push({
-      message: lzString.compressToBase64(view.blockly.blocksXmlStr),
-      severity: 'log',
-      timestamp: new Date().toISOString(),
-    })
-    payload.console.push({
-      message: lzString.compressToBase64(
-        Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))),
-      severity: 'log',
-      timestamp: new Date().toISOString(),
-    })
-    return true
-  },
+const view = new View().initPromise.then(() => {
+  $('.show-on-load').show()
+  $('.barspinner').hide()
+  trackJs.configure({
+    userId: $('.account-id').first().text(),
+    onError: (payload, error) => {
+      if (error && error.message && error.message.indexOf('The play() request was'
+        + ' interrupted by a call to pause()') >= 0) {
+          return false
+        }
+      payload.console.push({
+        message: lzString.compressToBase64(view.blockly.generatedJs),
+        severity: 'log',
+        timestamp: new Date().toISOString(),
+      })
+      payload.console.push({
+        message: lzString.compressToBase64(view.blockly.blocksXmlStr),
+        severity: 'log',
+        timestamp: new Date().toISOString(),
+      })
+      payload.console.push({
+        message: lzString.compressToBase64(
+          Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))),
+        severity: 'log',
+        timestamp: new Date().toISOString(),
+      })
+      return true
+    },
+  })
 })
+
