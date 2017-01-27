@@ -15,6 +15,9 @@ export default class BotApi {
       getPayout: name => +(this.bot.purchase.getContract(name).payout),
       isSellAvailable: (...args) => this.bot.purchase.isSellAvailable(...args),
       sellAtMarket: (...args) => this.bot.purchase.sellAtMarket(...args),
+      getSellPrice: () =>
+        +(((+this.context.data.openContract.bid_price) -
+          (+this.context.data.openContract.buy_price)).toFixed(2)),
       wait: arg => this.wait(arg),
       waitUntil: arg => this.waitUntil(arg),
       isInside: arg => this.isInside(arg),
