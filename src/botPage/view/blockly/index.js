@@ -243,17 +243,24 @@ export default class _Blockly {
       disableStrayBlocks()
       code = `
         var trade, before_purchase, during_purchase, after_purchase;
-        var tick_analysis_list = [];
-        var limitations = ${JSON.stringify(limitations)}
-        ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
-        try {
-          if (typeof trade !== 'undefined') {
-            trade();
+
+        function run(f) {
+          if (f !== undefined) {
+            f();
           }
-        } catch (e) {
-          if (e.name !== 'BlocklyError') {
-            Bot.notifyError(e);
-            throw e;
+        }
+
+        // var tick_analysis_list = [];
+        var limitations = ${JSON.stringify(limitations)}
+        
+        ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+
+        while(true) {
+          run(trade)
+          run(before_purchase)
+          run(during_purchase)
+          if(!run(after_purchase)) {
+            break;
           }
         }
       `
