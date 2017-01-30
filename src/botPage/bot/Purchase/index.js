@@ -1,6 +1,5 @@
 import { observer } from 'binary-common-utils/lib/observer'
 import Trade from './Trade'
-import { execContext } from '../tools'
 
 export default class PurchaseCtrl {
   constructor(api, CM) {
@@ -36,23 +35,13 @@ export default class PurchaseCtrl {
   updateTicks() {
     if (!this.purchased && this.ready) {
       observer.emit('log.purchase.start', { proposals: this.proposals })
-      execContext(this.CM, 'before', this.proposals)
+      this.CM.execContext('before', this.proposals)
     }
   }
   purchase(option) {
     if (!this.purchased && this.ready) {
       this.purchased = true
-
-      observer.register('trade.update', openContract => {
-        execContext(this.CM, 'during', openContract)
-        observer.emit('purchase.tradeUpdate', openContract)
-      }, false, null, true)
-      observer.register('trade.finish', finishedContract => {
-        this.ready = false
-        observer.emit('purchase.finish', finishedContract)
-      }, true, null, true)
-
-      this.trade = new Trade(this.api)
+      this.trade = new Trade(this.api, this.CM)
       this.trade.purchase(this.proposals[option])
     }
   }

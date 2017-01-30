@@ -3,12 +3,8 @@ import BotApi from './BotApi'
 
 const createAsync = (interpreter, func) =>
   interpreter.createAsyncFunction((arg, cb) =>
-    func(interpreter.pseudoToNative(arg)).then(rv => (
-      rv ?
-        cb(interpreter.nativeToPseudo(rv)) :
-        cb()
-    ))
-  )
+    func(interpreter.pseudoToNative(arg))
+      .then(rv => (rv ? cb(interpreter.nativeToPseudo(rv)) : cb())))
 
 export default class JSI {
   constructor(api) {
@@ -22,7 +18,7 @@ export default class JSI {
 
     const initFunc = (interpreter, scope) => {
       interpreter.setProperty(scope, 'console',
-        interpreter.nativeToPseudo(console))
+        interpreter.nativeToPseudo({ log(...args) { console.log(...args) } })) // eslint-disable-line no-console
       interpreter.setProperty(scope, 'alert',
         interpreter.nativeToPseudo(alert))
       interpreter.setProperty(scope, 'Bot',

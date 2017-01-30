@@ -246,10 +246,11 @@ export default class _Blockly {
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
       disableStrayBlocks()
       code = `
+      (function(){
         var trade, before_purchase, during_purchase, after_purchase;
 
-        function run(f) {
-          if (f) return f();
+        function run(f, arg) {
+          if (f) return f(arg);
           return false;
         }
 
@@ -258,9 +259,11 @@ export default class _Blockly {
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
         var context
-
+        
+        var again = false;
         while(true) {
-          run(trade)
+          run(trade, again)
+          again = true;
           while((context = wait('CONTEXT')).scope === 'before') {
             run(before_purchase)
           }
@@ -271,6 +274,7 @@ export default class _Blockly {
             break;
           }
         }
+      })();
       `
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null
       this.generatedJs = code

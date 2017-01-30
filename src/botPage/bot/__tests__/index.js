@@ -26,7 +26,7 @@ describe('Run JSI over bot', () => {
         }
         );
         var context = wait('CONTEXT');
-        Bot.purchase(1)
+        Bot.purchase('DIGITEVEN')
         context = waitUntil('during')
         return isInside('after')
       })();

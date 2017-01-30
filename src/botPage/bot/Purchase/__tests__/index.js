@@ -116,7 +116,7 @@ describe('Purchase', () => {
   describe('Waiting for purchase to be finished', () => {
     let finishedContract
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('purchase.finish', (_finishedContract) => {
+      observer.register('trade.finish', (_finishedContract) => {
         finishedContract = _finishedContract
         done()
       }, true)

@@ -4,8 +4,9 @@ import { translate } from '../../../common/i18n'
 import { noop, subscribeToStream } from '../tools'
 
 export default class Trade {
-  constructor(api) {
+  constructor(api, CM) {
     this.api = api
+    this.CM = CM || { execContext() {} }
     this.openContract = null
     this.isSellAvailable = false
     this.isSold = false
@@ -13,7 +14,8 @@ export default class Trade {
   sellAtMarket() {
     if (!this.isSold) {
       this.isSold = true
-      this.api.originalApi.sellContract(this.openContract.contract_id, 0).then(noop, noop)
+      this.api.originalApi.sellContract(
+        this.openContract.contract_id, 0).then(noop, noop)
     }
   }
   retryIfContractNotReceived(contract) {
@@ -31,7 +33,8 @@ export default class Trade {
     }
   }
   onContractUpdate(contract) {
-    if (contract.sell_price) {
+    const finished = contract.sell_price
+    if (finished) {
       this.openContract = null
       observer.emit('log.trade.finish', contract)
       observer.emit('trade.finish', contract)
@@ -41,6 +44,7 @@ export default class Trade {
       observer.emit('log.trade.update', contract)
       observer.emit('trade.update', contract)
     }
+    this.CM.execContext(finished ? 'after' : 'during', contract)
   }
   subscribeToOpenContract() {
     if (!this.contractId) {
@@ -59,8 +63,7 @@ export default class Trade {
 
         this.onContractExpire(contract)
       }, () => this.api.proposal_open_contract(this.contractId),
-      false, 'proposal_open_contract',
-      ['trade.update', 'purchase.tradeUpdate', 'trade.finish', 'purchase.finish'])
+      false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }
   purchase(contract) {
     subscribeToStream(
