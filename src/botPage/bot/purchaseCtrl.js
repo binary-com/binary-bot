@@ -45,17 +45,13 @@ export default class PurchaseCtrl {
         this.context.duringPurchase(openContract)
         observer.emit('purchase.tradeUpdate', openContract)
       }, false, null, true)
-      observer.register('trade.finish', finishedContract =>
-        observer.emit('purchase.finish', finishedContract), true, null, true)
+      observer.register('trade.finish', finishedContract => {
+        this.ready = false
+        observer.emit('purchase.finish', finishedContract)
+      }, true, null, true)
 
       this.trade = new Trade(this.api)
       this.trade.purchase(this.proposals[option])
-    }
-  }
-  destroy() {
-    this.ready = false
-    if (this.trade) {
-      this.trade.destroy()
     }
   }
 }

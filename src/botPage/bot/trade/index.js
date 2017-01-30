@@ -36,6 +36,7 @@ export default class Trade {
       this.openContract = null
       observer.emit('log.trade.finish', contract)
       observer.emit('trade.finish', contract)
+      this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(noop, noop)
     } else {
       observer.emit('log.trade.update', contract)
       this.openContract = contract
@@ -83,9 +84,5 @@ export default class Trade {
     if (this.contractId) {
       this.api.originalApi.subscribeToOpenContract(this.contractId).then(noop, noop)
     }
-  }
-  destroy() {
-    this.isSold = false
-    this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(noop, noop)
   }
 }

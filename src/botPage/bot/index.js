@@ -276,23 +276,14 @@ export default class Bot {
       totalPayout: this.totalPayout,
     })
   }
-  tradeAgain(finishedContract) {
-    this.context.afterPurchase(finishedContract)
-  }
-  destroyPurchaseCtrl() {
-    if (this.purchaseCtrl) {
-      this.purchaseCtrl.destroy()
-      this.purchaseCtrl = null
-    }
-  }
   botFinish(finishedContract) {
+    this.purchaseCtrl = null
     this.updateTotals(finishedContract)
     observer.emit('bot.finish', finishedContract)
-    this.destroyPurchaseCtrl()
-    this.tradeAgain(finishedContract)
+    this.context.afterPurchase(finishedContract)
   }
   stop() {
-    this.destroyPurchaseCtrl()
+    this.purchaseCtrl = null
     this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
     observer.emit('bot.stop')
   }
