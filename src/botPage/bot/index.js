@@ -76,7 +76,7 @@ export default class Bot {
     registerStream('api.authorize', () => this.handleAuthStream())
     registerStream('api.ohlc', candle => this.handleOhlcStream(candle))
     registerStream('api.tick', tick => this.handleTickStream(tick))
-    registerStream('purchase.tradeUpdate', contract => this.handleTradeUpdate(contract))
+    registerStream('trade.update', contract => this.handleTradeUpdate(contract))
   }
   getPipSizes() {
     return new Promise(resolve => {
@@ -225,7 +225,7 @@ export default class Bot {
   }
   subscribeToPurchaseFinish() {
     subscribeToStream(
-      'purchase.finish', contract => this.botFinish(contract),
+      'trade.finish', contract => this.botFinish(contract),
       noop, true, null)
   }
   subscribeToTradePurchase() {
@@ -272,7 +272,6 @@ export default class Bot {
   botFinish(finishedContract) {
     this.updateTotals(finishedContract)
     observer.emit('bot.finish', finishedContract)
-    this.CM.execContext('after', finishedContract)
   }
   stop() {
     this.running = false

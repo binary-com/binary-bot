@@ -41,17 +41,7 @@ export default class PurchaseCtrl {
   purchase(option) {
     if (!this.purchased && this.ready) {
       this.purchased = true
-
-      observer.register('trade.update', openContract => {
-        this.CM.execContext('during', openContract)
-        observer.emit('purchase.tradeUpdate', openContract)
-      }, false, null, true)
-      observer.register('trade.finish', finishedContract => {
-        this.ready = false
-        observer.emit('purchase.finish', finishedContract)
-      }, true, null, true)
-
-      this.trade = new Trade(this.api)
+      this.trade = new Trade(this.api, this.CM)
       this.trade.purchase(this.proposals[option])
     }
   }
