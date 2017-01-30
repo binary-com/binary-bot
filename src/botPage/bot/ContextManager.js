@@ -1,3 +1,4 @@
+import { observer } from 'binary-common-utils/lib/observer'
 import { getUTCTime } from 'binary-common-utils/lib/tools'
 import { Map } from 'immutable'
 
@@ -75,6 +76,13 @@ export default class ContextManager {
       this.setInside('during', 'openContract', new Map(value))
     } else if (name === 'after') {
       this.setInside('after', 'finishedContract', new Map(value))
+    }
+  }
+  execContext(name, value) {
+    this.setContext(name, value)
+    if (name !== 'shared') {
+      observer.emit('CONTEXT',
+        { scope: name, data: this.getContext(name) })
     }
   }
 }

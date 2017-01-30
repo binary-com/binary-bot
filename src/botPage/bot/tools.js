@@ -61,14 +61,6 @@ export const getDirection = ticks => {
   return direction
 }
 
-export const execContext = (CM, name, value) => {
-  CM.setContext(name, value)
-  if (name !== 'shared') {
-    observer.emit('CONTEXT',
-      { scope: name, data: CM.getContext(name) })
-  }
-}
-
 export const getPipSizes = symbols =>
   symbols.reduce((s, i) =>
     s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map()).toObject()
