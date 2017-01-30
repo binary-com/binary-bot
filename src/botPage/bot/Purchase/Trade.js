@@ -33,18 +33,18 @@ export default class Trade {
     }
   }
   onContractUpdate(contract) {
-    if (contract.sell_price) {
+    const finished = contract.sell_price
+    if (finished) {
       this.openContract = null
       observer.emit('log.trade.finish', contract)
       observer.emit('trade.finish', contract)
       this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(noop, noop)
-      this.CM.execContext('after', contract)
     } else {
       this.openContract = contract
       observer.emit('log.trade.update', contract)
       observer.emit('trade.update', contract)
-      this.CM.execContext('during', contract)
     }
+    this.CM.execContext(finished ? 'after' : 'during', contract)
   }
   subscribeToOpenContract() {
     if (!this.contractId) {
