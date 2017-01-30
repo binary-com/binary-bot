@@ -30,8 +30,8 @@ export default class BotApi {
     return (typeof arg === 'string' ?
       new Promise(
         r => observer.register(arg, c => r(this.context = c), true),
-        () => observer.unregisterAll(arg)
-      ) : new Promise(r => setTimeout(() => r(), arg), noop))
+        () => observer.unregisterAll(arg))
+          : new Promise(r => setTimeout(() => r(), arg), noop))
   }
   waitUntil(scope) {
     return new Promise(r => {

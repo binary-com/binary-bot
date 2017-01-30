@@ -3,12 +3,8 @@ import BotApi from './BotApi'
 
 const createAsync = (interpreter, func) =>
   interpreter.createAsyncFunction((arg, cb) =>
-    func(interpreter.pseudoToNative(arg)).then(rv => (
-      rv ?
-        cb(interpreter.nativeToPseudo(rv)) :
-        cb()
-    ))
-  )
+    func(interpreter.pseudoToNative(arg))
+      .then(rv => (rv ? cb(interpreter.nativeToPseudo(rv)) : cb())))
 
 export default class JSI {
   constructor(api) {
