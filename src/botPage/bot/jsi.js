@@ -18,7 +18,7 @@ export default class JSI {
 
     const initFunc = (interpreter, scope) => {
       interpreter.setProperty(scope, 'console',
-        interpreter.nativeToPseudo(console))
+        interpreter.nativeToPseudo({ log(...args) { console.log(...args) } })) // eslint-disable-line no-console
       interpreter.setProperty(scope, 'alert',
         interpreter.nativeToPseudo(alert))
       interpreter.setProperty(scope, 'Bot',
