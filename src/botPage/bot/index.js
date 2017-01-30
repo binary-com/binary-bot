@@ -88,8 +88,6 @@ export default class Bot {
       (isNewCandleInterval || isNewSymbol) ? this.subscribeToCandles() : null]
   }
   loginAndStartTrading(token) {
-    this.sessionRuns = this.sessionProfit = 0
-
     const promises = this.subscriptionsBeforeStart()
 
     this.observeStreams()
@@ -101,6 +99,20 @@ export default class Bot {
         }
       })
   }
+  limitsReached() {
+    const { maxLoss, maxTrades } = this.limitations
+    if (maxLoss && maxTrades) {
+      if (this.sessionRuns >= maxTrades) {
+        observer.emit('LimitsReached', translate('Maximum number of trades reached'))
+        return true
+      }
+      if (this.sessionProfit <= (-maxLoss)) {
+        observer.emit('LimitsReached', translate('Maximum loss amount reached'))
+        return true
+      }
+    }
+    return false
+  }
   start(...args) {
     const [
       token, tradeOption, beforePurchase, duringPurchase,
@@ -110,9 +122,19 @@ export default class Bot {
     this.context = new Context(
       beforePurchase, duringPurchase, afterPurchase, tickAnalysisList)
 
+    this.limitations = limitations || {}
+
+    if (!sameTrade) {
+      this.sessionRuns = this.sessionProfit = 0
+    }
+
+    if (this.limitsReached()) {
+      this.stop()
+      return
+    }
+
     if (!this.purchaseCtrl) {
       this.tradeOption = tradeOption
-      this.limitations = limitations || {}
 
       this.purchaseCtrl = new PurchaseCtrl(this.api, this.context)
 
@@ -254,24 +276,8 @@ export default class Bot {
       totalPayout: this.totalPayout,
     })
   }
-  limitsReached() {
-    const { maxLoss, maxTrades } = this.limitations
-    if (maxLoss && maxTrades) {
-      if (this.sessionRuns >= maxTrades) {
-        observer.emit('LimitsReached', translate('Maximum number of trades reached'))
-        return true
-      }
-      if (this.sessionProfit <= (-maxLoss)) {
-        observer.emit('LimitsReached', translate('Maximum loss amount reached'))
-        return true
-      }
-    }
-    return false
-  }
   tradeAgain(finishedContract) {
-    if (!this.limitsReached()) {
-      this.context.afterPurchase(finishedContract)
-    }
+    this.context.afterPurchase(finishedContract)
   }
   destroyPurchaseCtrl() {
     if (this.purchaseCtrl) {
@@ -285,10 +291,10 @@ export default class Bot {
     this.destroyPurchaseCtrl()
     this.tradeAgain(finishedContract)
   }
-  stop(contract) {
+  stop() {
     this.destroyPurchaseCtrl()
     this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
-    observer.emit('bot.stop', contract)
+    observer.emit('bot.stop')
   }
 }
 
