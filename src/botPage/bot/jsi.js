@@ -1,4 +1,5 @@
 import Interpreter from 'js-interpreter'
+import { observer } from 'binary-common-utils/lib/observer'
 import BotApi from './BotApi'
 
 const createAsync = (interpreter, func) =>
@@ -13,8 +14,7 @@ export default class JSI {
   run(code) {
     const botIf = this.botApi.getInterface()
 
-    const { isInside, wait, waitUntil, alert } =
-      this.botApi.getInterface()
+    const { isInside, wait, alert } = this.botApi.getInterface()
 
     const initFunc = (interpreter, scope) => {
       interpreter.setProperty(scope, 'console',
@@ -27,19 +27,21 @@ export default class JSI {
         interpreter.nativeToPseudo(isInside))
       interpreter.setProperty(scope, 'wait',
         createAsync(interpreter, wait))
-      interpreter.setProperty(scope, 'waitUntil',
-        createAsync(interpreter, waitUntil))
     }
 
     return new Promise(r => {
       const interpreter = new Interpreter(code, initFunc)
 
-      const interpreterLoop = setInterval(() => {
-        if (!interpreter.step()) {
+      const loop = () => {
+        if (!interpreter.run()) {
+          observer.unregisterAll('CONTINUE')
           r(interpreter.value)
-          clearInterval(interpreterLoop)
         }
-      }, 0)
+      }
+
+      observer.register('CONTINUE', loop)
+
+      loop()
     })
   }
 }

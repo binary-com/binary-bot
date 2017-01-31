@@ -3,7 +3,7 @@ import CustomApi from 'binary-common-utils/lib/customApi'
 import WebSocket from 'ws'
 import JSI from '../jsi'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 66000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 80000
 
 describe('Run JSI over bot', () => {
   let value
@@ -29,7 +29,7 @@ describe('Run JSI over bot', () => {
           again = true;
           var context = wait('CONTEXT');
           Bot.purchase("DIGITEVEN")
-          context = waitUntil('during')
+          while ((context = wait('CONTEXT')).scope === 'during');
           if (--count === 0) {
             break;
           }

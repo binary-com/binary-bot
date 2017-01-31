@@ -27,7 +27,7 @@ describe('Run JSI over bot', () => {
         );
         var context = wait('CONTEXT');
         Bot.purchase('DIGITEVEN')
-        context = waitUntil('during')
+        while ((context = wait('CONTEXT')).scope === 'during');
         return isInside('after')
       })();
     `).then(v => {
