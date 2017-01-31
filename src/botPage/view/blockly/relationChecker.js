@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
-import symbolApi from './../symbolApi'
+import { symbolApi, observer } from '../../../common/shared'
 import { translate } from '../../../common/i18n'
 import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'
 

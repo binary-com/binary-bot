@@ -1,6 +1,6 @@
 import config from '../../../../../common/const'
 import { translate } from '../../../../../common/i18n'
-import symbolApi from '../../../symbolApi'
+import { symbolApi } from '../../../../../common/shared'
 import { oppositesToDropdown } from '../../utils'
 import { caution } from '../images'
 
