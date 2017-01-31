@@ -1,4 +1,3 @@
-import { observer } from 'binary-common-utils/lib/observer'
 import { getUTCTime } from 'binary-common-utils/lib/tools'
 import { Map } from 'immutable'
 
@@ -32,7 +31,8 @@ const getContextObj = obj =>
   (obj instanceof Map ? obj.map(v => getContextObj(v)).toObject() : obj)
 
 export default class ContextManager {
-  constructor() {
+  constructor($scope) {
+    this.observer = $scope.observer
     this.contexts = new Map({
       before: sharedContext,
       during: sharedContext,
@@ -81,7 +81,7 @@ export default class ContextManager {
   execContext(name, value) {
     this.setContext(name, value)
     if (name !== 'shared') {
-      observer.emit('CONTEXT',
+      this.observer.emit('CONTEXT',
         { scope: name, data: this.getContext(name) })
     }
   }

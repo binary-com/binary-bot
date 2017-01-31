@@ -7,39 +7,51 @@ const createAsync = (interpreter, func) =>
       .then(rv => (rv ? cb(interpreter.nativeToPseudo(rv)) : cb())))
 
 export default class JSI {
-  constructor(api) {
-    this.botApi = new BotApi(api)
+  constructor($scope) {
+    if ($scope) {
+      this.botApi = new BotApi($scope)
+      this.observer = $scope.observer
+    }
   }
   run(code) {
-    const botIf = this.botApi.getInterface()
+    let initFunc
 
-    const { isInside, wait, waitUntil, alert } =
-      this.botApi.getInterface()
+    if (this.botApi) {
+      const botIf = this.botApi.getInterface()
 
-    const initFunc = (interpreter, scope) => {
-      interpreter.setProperty(scope, 'console',
-        interpreter.nativeToPseudo({ log(...args) { console.log(...args) } })) // eslint-disable-line no-console
-      interpreter.setProperty(scope, 'alert',
-        interpreter.nativeToPseudo(alert))
-      interpreter.setProperty(scope, 'Bot',
-        interpreter.nativeToPseudo(botIf))
-      interpreter.setProperty(scope, 'isInside',
-        interpreter.nativeToPseudo(isInside))
-      interpreter.setProperty(scope, 'wait',
-        createAsync(interpreter, wait))
-      interpreter.setProperty(scope, 'waitUntil',
-        createAsync(interpreter, waitUntil))
+      const { isInside, wait, alert } = this.botApi.getInterface()
+
+      initFunc = (interpreter, scope) => {
+        interpreter.setProperty(scope, 'console',
+          interpreter.nativeToPseudo({ log(...args) { console.log(...args) } })) // eslint-disable-line no-console
+        interpreter.setProperty(scope, 'alert',
+          interpreter.nativeToPseudo(alert))
+        interpreter.setProperty(scope, 'Bot',
+          interpreter.nativeToPseudo(botIf))
+        interpreter.setProperty(scope, 'isInside',
+          interpreter.nativeToPseudo(isInside))
+        interpreter.setProperty(scope, 'wait',
+          createAsync(interpreter, wait))
+      }
     }
 
     return new Promise(r => {
       const interpreter = new Interpreter(code, initFunc)
 
-      const interpreterLoop = setInterval(() => {
-        if (!interpreter.step()) {
+      const loop = () => {
+        if (!interpreter.run()) {
+          if (this.observer) {
+            this.observer.unregisterAll('CONTINUE')
+          }
           r(interpreter.value)
-          clearInterval(interpreterLoop)
+          return
         }
-      }, 0)
+        if (!this.observer.isRegistered('CONTINUE')) {
+          this.observer.register('CONTINUE', loop)
+        }
+      }
+
+      loop()
     })
   }
 }

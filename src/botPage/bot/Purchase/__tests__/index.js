@@ -1,6 +1,6 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
-import { observer } from 'binary-common-utils/lib/observer'
+import Observer from 'binary-common-utils/lib/observer'
 import ws from 'ws'
 import ContextManager from '../../ContextManager'
 import Purchase from '../'
@@ -18,12 +18,13 @@ const ticksObj = {
 }
 
 describe('Purchase', () => {
-  let api
+  const observer = new Observer()
+  const api = new CustomApi(observer, ws)
+  const $scope = { observer, api }
   const proposals = []
   let firstAttempt = true
   let purchase
   beforeAll(() => {
-    api = new CustomApi(observer, ws)
     const beforePurchase = context => {
       if (purchase.proposals) {
         if (firstAttempt) {
@@ -44,8 +45,8 @@ describe('Purchase', () => {
       }
     }
     observer.register('CONTEXT', context => context.scope === 'before' && beforePurchase(context.data))
-    const CM = new ContextManager()
-    purchase = new Purchase(api, CM)
+    const CM = new ContextManager($scope)
+    purchase = new Purchase($scope, CM)
     CM.setContext('shared', ticksObj)
   })
   describe('Make the beforePurchase ready...', () => {

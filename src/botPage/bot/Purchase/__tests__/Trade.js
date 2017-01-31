@@ -1,21 +1,18 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
-import { observer } from 'binary-common-utils/lib/observer'
+import Observer from 'binary-common-utils/lib/observer'
 import ws from 'ws'
 import Trade from '../Trade'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 
 describe('Trade', () => {
-  let api
-  let trade
+  const observer = new Observer()
+  const api = new CustomApi(observer, ws)
+  const $scope = { observer, api }
+  const trade = new Trade($scope)
   let proposal
   let finishedContract
-  beforeAll(() => {
-    observer.eventActionMap = {}
-    api = new CustomApi(observer, ws)
-    trade = new Trade(api)
-  })
   describe('Purchasing...', () => {
     let purchasedContract
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback

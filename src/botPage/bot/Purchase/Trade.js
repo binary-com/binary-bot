@@ -1,15 +1,27 @@
-import { observer } from 'binary-common-utils/lib/observer'
 import { translate } from '../../../common/i18n'
-
-import { noop, subscribeToStream } from '../tools'
+import { observer as viewObserver } from '../../../common/shared'
+import { noop } from '../tools'
 
 export default class Trade {
-  constructor(api, CM) {
-    this.api = api
+  constructor($scope, CM) {
+    this.api = $scope.api
+    this.observer = $scope.observer
     this.CM = CM || { execContext() {} }
     this.openContract = null
     this.isSellAvailable = false
     this.isSold = false
+  }
+  subscribeToStream(
+    name, respHandler, request, registerOnce, type, unregister
+  ) {
+    return new Promise((resolve) => {
+      this.observer.register(
+        name, (...args) => {
+          respHandler(...args)
+          resolve()
+        }, registerOnce, type && { type, unregister }, true)
+      request()
+    })
   }
   sellAtMarket() {
     if (!this.isSold) {
@@ -36,13 +48,13 @@ export default class Trade {
     const finished = contract.sell_price
     if (finished) {
       this.openContract = null
-      observer.emit('log.trade.finish', contract)
-      observer.emit('trade.finish', contract)
+      viewObserver.emit('log.trade.finish', contract)
+      this.observer.emit('trade.finish', contract)
       this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(noop, noop)
     } else {
       this.openContract = contract
-      observer.emit('log.trade.update', contract)
-      observer.emit('trade.update', contract)
+      viewObserver.emit('log.trade.update', contract)
+      this.observer.emit('trade.update', contract)
     }
     this.CM.execContext(finished ? 'after' : 'during', contract)
   }
@@ -50,7 +62,7 @@ export default class Trade {
     if (!this.contractId) {
       return
     }
-    subscribeToStream(
+    this.subscribeToStream(
       'api.proposal_open_contract', contract => {
         if (this.retryIfContractNotReceived(contract)) {
           return
@@ -66,11 +78,11 @@ export default class Trade {
       false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }
   purchase(contract) {
-    subscribeToStream(
+    this.subscribeToStream(
       'api.buy', purchasedContract => {
-        observer.emit('log.trade.purchase', purchasedContract)
-        observer.emit('trade.purchase', { contract, purchasedContract })
-        observer.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)
+        viewObserver.emit('log.trade.purchase', purchasedContract)
+        this.observer.emit('trade.purchase', { contract, purchasedContract })
+        viewObserver.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)
 
         this.isSold = false
 

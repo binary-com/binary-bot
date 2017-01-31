@@ -1,7 +1,7 @@
 import filesaver from 'file-saver'
-import { observer } from 'binary-common-utils/lib/observer'
 import config from '../../../common/const'
 import { translate } from '../../../common/i18n'
+import { observer } from '../../../common/shared'
 
 let purchaseChoices = [[translate('Click to select'), '']]
 

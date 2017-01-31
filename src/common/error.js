@@ -1,4 +1,4 @@
-import { observer } from 'binary-common-utils/lib/observer'
+import { observer } from './shared'
 
 export class CustomError {
   constructor(message) {

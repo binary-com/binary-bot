@@ -3,18 +3,19 @@ import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { LiveApi } from 'binary-live-api'
-import { observer } from 'binary-common-utils/lib/observer'
+import CustomApi from 'binary-common-utils/lib/customApi'
+import Observer from 'binary-common-utils/lib/observer'
 import { getTokenList, removeAllTokens, get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translate } from '../../common/i18n'
-import { logHandler } from './logger'
 import { SaveXml } from './react-components/SaveXml'
 import { RestartTimeout } from './react-components/RestartTimeout'
 import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
-import { initPromise } from './symbolApi'
+import { symbolPromise, observer } from '../../common/shared'
+import { logHandler } from '../../common/logger'
 import { Tour } from './tour'
 
 let realityCheckTimeout
@@ -108,14 +109,16 @@ const initializeApi = () => {
 
 export default class View {
   constructor() {
+    const o = new Observer()
+    this.$scope = { observer: o, api: new CustomApi(o) }
     this.chartType = 'line'
     logHandler()
     this.tradeInfo = new TradeInfo()
     initializeApi()
     this.initPromise = new Promise(resolve => {
-      initPromise.then(() => {
+      symbolPromise.then(() => {
         this.updateTokenList()
-        this.blockly = new _Blockly()
+        this.blockly = new _Blockly(this.$scope)
         this.blockly.initPromise.then(() => {
           this.setElementActions()
           $('#accountLis')
