@@ -1,3 +1,4 @@
+import { Stack } from 'immutable'
 import { observer } from 'binary-common-utils/lib/observer'
 import Bot from './'
 import { noop } from './tools'
@@ -5,6 +6,23 @@ import { noop } from './tools'
 export default class BotApi {
   constructor(api) {
     this.bot = new Bot(api)
+    this.reqQ = new Stack()
+    this.respQ = new Stack()
+    this.order = ['before', 'during', 'after']
+    this.expected = 0
+    observer.register('CONTEXT', r => {
+      if (!this.expectedScope(r.scope)) {
+        return
+      }
+      if (this.reqQ.size) {
+        const f = this.reqQ.first()
+        this.reqQ = this.reqQ.shift()
+        f(r)
+      } else {
+        this.respQ = this.respQ.unshift(r)
+      }
+      setTimeout(() => observer.emit('CONTINUE'), 0)
+    })
   }
   getInterface() {
     return {
@@ -26,24 +44,25 @@ export default class BotApi {
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
     }
   }
-  wait(arg) {
-    return (typeof arg === 'string' ?
-      new Promise(
-        r => observer.register(arg, c => r(this.context = c), true),
-        () => observer.unregisterAll(arg))
-          : new Promise(r => setTimeout(() => r(), arg), noop))
+  expectedScope(scope) {
+    if (this.order[this.expected] === scope) {
+      this.expected = (this.expected + 1) % this.order.length
+      return true
+    }
+    return false
   }
-  waitUntil(scope) {
-    return new Promise(r => {
-      const waitFor = c => {
-        if (c.scope !== scope) {
-          observer.unregister('CONTEXT', waitFor)
+  wait(arg) {
+    return (typeof arg === 'number' ?
+      new Promise(r => setTimeout(() => r(), arg), noop) :
+      new Promise(r => {
+        if (this.respQ.size) {
+          const c = this.respQ.first()
+          this.respQ = this.respQ.shift()
           r(this.context = c)
+        } else {
+          this.reqQ = this.reqQ.unshift(c => r(this.context = c))
         }
-      }
-
-      observer.register('CONTEXT', waitFor)
-    })
+      }))
   }
   isInside(scope) {
     return this.context.scope === scope
