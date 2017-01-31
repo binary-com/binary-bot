@@ -1,8 +1,7 @@
-import { observer } from 'binary-common-utils/lib/observer'
-import CustomApi from 'binary-common-utils/lib/customApi'
 import { translate, xml as translateXml } from '../../../common/i18n'
-import { notifyError } from '../logger'
 import config from '../../../common/const'
+import { observer } from '../../../common/shared'
+import { notifyError } from '../../../common/logger'
 import {
   isMainBlock, save,
   disable, deleteBlocksLoadedBy,
@@ -15,97 +14,13 @@ import { getLanguage } from '../../../common/lang'
 
 const noop = () => {}
 
-const disableStrayBlocks = () => {
-  const topBlocks = Blockly.mainWorkspace.getTopBlocks()
-  topBlocks.forEach(block => {
-    if (!isMainBlock(block.type)
-      && [
-        'block_holder',
-        'timeout',
-        'interval',
-        'tick_analysis',
-        'loader',
-        'procedures_defreturn',
-        'procedures_defnoreturn',
-      ].indexOf(block.type) < 0 && !block.disabled) {
-      disable(block,
-        translate('Blocks must be inside block holders, main blocks or functions'))
-    }
-  })
-}
-
 const setBeforeUnload = off =>
   (window.onbeforeunload = off ? null :
     () => 'You have some unsaved blocks, do you want to save them before you exit?')
 
-const disposeBlocksWithLoaders = () => {
-  Blockly.mainWorkspace.addChangeListener(ev => {
-    setBeforeUnload()
-    if (ev.type === 'create') {
-      ev.ids.forEach(blockId => {
-        const block = Blockly.mainWorkspace.getBlockById(blockId)
-        if (block.type === 'market') {
-          observer.emit('tour:market_created')
-        }
-        if (config.conditions.indexOf(block.type) >= 0) {
-          observer.emit('tour:condition_created')
-        }
-        if (block.type === 'math_number') {
-          observer.emit('tour:number')
-        }
-        if (block.type === 'purchase') {
-          observer.emit('tour:purchase_created')
-        }
-        if (block.type === 'trade_again') {
-          observer.emit('tour:trade_again_created')
-        }
-      })
-    }
-    if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
-      && ev.group !== 'undo') {
-        deleteBlocksLoadedBy(ev.blockId, ev.group)
-      }
-  })
-}
-
-const loadWorkspace = (xml) => {
-  Blockly.Events.setGroup('load')
-  Blockly.mainWorkspace.clear()
-  addLoadersFirst(xml).then(() => {
-    Array.from(xml.children).forEach(block =>
-      backwardCompatibility(block))
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
-    fixCollapsedBlocks()
-    observer.emit('ui.log.success',
-      translate('Blocks are loaded successfully'))
-    Blockly.Events.setGroup(false)
-  }, e => {
-    Blockly.Events.setGroup(false)
-    observer.emit('ui.log.error', e)
-  })
-}
-
-const loadBlocks = (xml, dropEvent = {}) => {
-  Blockly.Events.setGroup('load')
-  addLoadersFirst(xml).then((loaders) => {
-    const addedBlocks = [...loaders]
-    Array.from(xml.children).forEach(block => {
-      const newBlock = addDomAsBlock(block)
-      if (newBlock) {
-        addedBlocks.push(newBlock)
-      }
-    })
-    cleanUpOnLoad(addedBlocks, dropEvent)
-    fixCollapsedBlocks()
-    observer.emit('ui.log.success',
-      translate('Blocks are loaded successfully'))
-  }, e => {
-    observer.emit('ui.log.error', e)
-  })
-}
-
 export default class _Blockly {
-  constructor() {
+  constructor($scope) {
+    this.$scope = $scope
     this.blocksXmlStr = ''
     this.generatedJs = ''
     this.addBlocklyTranslation()
@@ -127,11 +42,89 @@ export default class _Blockly {
           Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace)
           this.zoomOnPlusMinus()
           Blockly.mainWorkspace.clearUndo()
-          disposeBlocksWithLoaders()
+          this.disposeBlocksWithLoaders()
           setTimeout(() => setBeforeUnload(true), 0)
           resolve()
         })
       })
+    })
+  }
+  disableStrayBlocks() {
+    const topBlocks = Blockly.mainWorkspace.getTopBlocks()
+    topBlocks.forEach(block => {
+      if (!isMainBlock(block.type)
+        && [
+          'block_holder',
+          'timeout',
+          'interval',
+          'tick_analysis',
+          'loader',
+          'procedures_defreturn',
+          'procedures_defnoreturn',
+        ].indexOf(block.type) < 0 && !block.disabled) {
+          disable(block,
+            translate('Blocks must be inside block holders, main blocks or functions'))
+        }
+    })
+  }
+  disposeBlocksWithLoaders() {
+    Blockly.mainWorkspace.addChangeListener(ev => {
+      setBeforeUnload()
+      if (ev.type === 'create') {
+        ev.ids.forEach(blockId => {
+          const block = Blockly.mainWorkspace.getBlockById(blockId)
+          if (block.type === 'market') {
+            observer.emit('tour:market_created')
+          }
+          if (config.conditions.indexOf(block.type) >= 0) {
+            observer.emit('tour:condition_created')
+          }
+          if (block.type === 'math_number') {
+            observer.emit('tour:number')
+          }
+          if (block.type === 'purchase') {
+            observer.emit('tour:purchase_created')
+          }
+          if (block.type === 'trade_again') {
+            observer.emit('tour:trade_again_created')
+          }
+        })
+      }
+      if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
+        && ev.group !== 'undo') {
+          deleteBlocksLoadedBy(ev.blockId, ev.group)
+        }
+    })
+  }
+  loadWorkspace(xml) {
+    Blockly.Events.setGroup('load')
+    Blockly.mainWorkspace.clear()
+    addLoadersFirst(xml).then(() => {
+      Array.from(xml.children).forEach(block => backwardCompatibility(block))
+      Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
+      fixCollapsedBlocks()
+      observer.emit('ui.log.success',
+        translate('Blocks are loaded successfully'))
+      Blockly.Events.setGroup(false)
+    }, e => {
+      Blockly.Events.setGroup(false)
+      observer.emit('ui.log.error', e)
+    })
+  }
+  loadBlocks(xml, dropEvent = {}) {
+    Blockly.Events.setGroup('load')
+    addLoadersFirst(xml).then((loaders) => {
+      const addedBlocks = [
+        ...loaders,
+        ...(Array.from(xml.children)
+          .map(block => addDomAsBlock(block)).filter(b => b)),
+      ]
+      cleanUpOnLoad(addedBlocks, dropEvent)
+      fixCollapsedBlocks()
+      observer.emit('ui.log.success',
+        translate('Blocks are loaded successfully'))
+    }, e => {
+      observer.emit('ui.log.error', e)
     })
   }
   zoomOnPlusMinus(zoomIn) {
@@ -212,9 +205,9 @@ export default class _Blockly {
       try {
         const xml = Blockly.Xml.textToDom(blockStr)
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-          loadBlocks(xml, dropEvent)
+          this.loadBlocks(xml, dropEvent)
         } else {
-          loadWorkspace(xml)
+          this.loadWorkspace(xml)
         }
       } catch (e) {
         if (e.name === 'BlocklyError') {
@@ -244,7 +237,7 @@ export default class _Blockly {
       Blockly.mainWorkspace.traceOn(true)
       Blockly.JavaScript
         .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
-      disableStrayBlocks()
+      this.disableStrayBlocks()
       code = `
       (function(){
         var trade, before_purchase, during_purchase, after_purchase;
@@ -285,7 +278,7 @@ export default class _Blockly {
       }
     }
     if (code) {
-      this.jsi = new JSI(new CustomApi())
+      this.jsi = new JSI(this.$scope)
       this.jsi.run(code, noop)
       $('#summaryPanel')
         .show()

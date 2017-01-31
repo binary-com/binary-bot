@@ -1,16 +1,16 @@
 import { Stack } from 'immutable'
-import { observer } from 'binary-common-utils/lib/observer'
 import Bot from './'
 import { noop } from './tools'
 
 export default class BotApi {
-  constructor(api) {
-    this.bot = new Bot(api)
+  constructor($scope) {
+    this.bot = new Bot($scope)
+    this.observer = $scope.observer
     this.reqQ = new Stack()
     this.respQ = new Stack()
     this.order = ['before', 'during', 'after']
     this.expected = 0
-    observer.register('CONTEXT', r => {
+    this.observer.register('CONTEXT', r => {
       if (!this.expectedScope(r.scope)) {
         return
       }
@@ -21,7 +21,7 @@ export default class BotApi {
       } else {
         this.respQ = this.respQ.unshift(r)
       }
-      setTimeout(() => observer.emit('CONTINUE'), 0)
+      setTimeout(() => this.observer.emit('CONTINUE'), 0)
     })
   }
   getInterface() {

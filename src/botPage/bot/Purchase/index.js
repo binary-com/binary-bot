@@ -1,9 +1,10 @@
-import { observer } from 'binary-common-utils/lib/observer'
+import { observer as viewObserver } from '../../../common/shared'
 import Trade from './Trade'
 
 export default class PurchaseCtrl {
-  constructor(api, CM) {
-    this.api = api
+  constructor($scope, CM) {
+    this.api = $scope.api
+    this.$scope = $scope
     this.CM = CM
     this.ready = false
     this.purchased = false
@@ -34,14 +35,14 @@ export default class PurchaseCtrl {
   }
   updateTicks() {
     if (!this.purchased && this.ready) {
-      observer.emit('log.purchase.start', { proposals: this.proposals })
+      viewObserver.emit('log.purchase.start', { proposals: this.proposals })
       this.CM.execContext('before', this.proposals)
     }
   }
   purchase(option) {
     if (!this.purchased && this.ready) {
       this.purchased = true
-      this.trade = new Trade(this.api, this.CM)
+      this.trade = new Trade(this.$scope, this.CM)
       this.trade.purchase(this.proposals[option])
     }
   }
