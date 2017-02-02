@@ -1,7 +1,6 @@
 import { translate, xml as translateXml } from '../../../common/i18n'
 import config from '../../../common/const'
-import { observer } from '../../../common/shared'
-import { notifyError } from '../../../common/logger'
+import { observer, throwError } from '../../../common/shared'
 import {
   isMainBlock, save,
   disable, deleteBlocksLoadedBy,
@@ -233,7 +232,7 @@ export default class _Blockly {
       window.LoopTrap = 99999999999
       Blockly.mainWorkspace.traceOn(true)
       Blockly.JavaScript
-        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
+        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
       this.disableStrayBlocks()
       code = `
       (function(){
