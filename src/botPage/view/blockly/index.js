@@ -198,25 +198,22 @@ export default class _Blockly {
     Blockly.Events.setGroup(false)
   }
   load(blockStr = '', dropEvent = {}) {
-    if (blockStr.indexOf('<xml') !== 0) {
-      observer.emit('ui.log.error',
-        translate('Unrecognized file format.'))
-    } else {
-      try {
-        const xml = Blockly.Xml.textToDom(blockStr)
-        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-          this.loadBlocks(xml, dropEvent)
-        } else {
-          this.loadWorkspace(xml)
-        }
-      } catch (e) {
-        if (e.name === 'BlocklyError') {
-          // pass
-        } else {
-          observer.emit('ui.log.error',
-            translate('Unrecognized file format.'))
-        }
+    let xml
+
+    try {
+      xml = Blockly.Xml.textToDom(blockStr)
+    } catch (e) {
+      observer.emit('ui.log.error', translate('Unrecognized file format.'))
+    }
+
+    try {
+      if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+        this.loadBlocks(xml, dropEvent)
+      } else {
+        this.loadWorkspace(xml)
       }
+    } catch (e) {
+      observer.emit('ui.log.error', translate('Unable to load the block file.'))
     }
   }
   save(filename, collection) {
@@ -272,10 +269,7 @@ export default class _Blockly {
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null
       this.generatedJs = code
     } catch (e) {
-      if (e.name !== 'BlocklyError') {
-        notifyError(e)
-        throw e
-      }
+      throwError(e)
     }
     if (code) {
       this.jsi = new JSI(this.$scope)

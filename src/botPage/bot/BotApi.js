@@ -1,6 +1,7 @@
 import { Stack } from 'immutable'
 import Bot from './'
 import { noop } from './tools'
+import { notifyError } from '../../common/logger'
 
 export default class BotApi {
   constructor($scope) {
@@ -42,6 +43,7 @@ export default class BotApi {
       wait: arg => this.wait(arg),
       isInside: arg => this.isInside(arg),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
+      notifyError: (...args) => notifyError(...args),
     }
   }
   expectedScope(scope) {

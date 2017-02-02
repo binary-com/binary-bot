@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#db8gmg
 import { translate } from '../../../../../common/i18n'
+import { throwError } from '../../../../../common/shared'
 import config from '../../../../../common/const'
-import { BlocklyError } from '../../../../../common/error'
 import { marketDropdown, tradeTypeDropdown, restartOnError } from './components'
 import { updatePurchaseChoices, updateInputList, setInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'
@@ -96,7 +96,7 @@ export default () => {
       predictionValue = Blockly.JavaScript.valueToCode(block,
         'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC)
       if (predictionValue === '') {
-        return new BlocklyError(translate('All trade types are required')).emit()
+        throwError(translate('All trade types are required'))
       }
     }
     if (config.hasBarrierOffset.indexOf(oppositesName) > -1 ||
@@ -105,7 +105,7 @@ export default () => {
       barrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
       if (barrierOffsetValue === '') {
-        return new BlocklyError(translate('All trade types are required')).emit()
+        throwError(translate('All trade types are required'))
       }
       barrierOffsetValue = `${barrierOffsetType}${barrierOffsetValue}`
     }
@@ -114,13 +114,13 @@ export default () => {
       secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
       if (secondBarrierOffsetValue === '') {
-        return new BlocklyError(translate('All trade types are required')).emit()
+        throwError(translate('All trade types are required'))
       }
       secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`
     }
     if (oppositesName === '' || durationValue === '' ||
       payouttype === '' || currency === '' || amount === '') {
-      return new BlocklyError(translate('All trade types are required')).emit()
+      throwError(translate('All trade types are required'))
     }
     const contractTypeList = contractTypeSelector === 'both' ?
       config.opposites[oppositesName].map((k) => Object.keys(k)[0]) :
