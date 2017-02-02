@@ -23,7 +23,7 @@ describe('Run JSI over bot', () => {
         var count = 5;
         var again = false;
         while(true) {
-          Bot.start('${process.env.TESTINGTOKEN}', {
+          Bot.start('Xkq6oGFEHh6hJH8', {
             amount: 1, basis: 'stake', candleInterval: 60,
             contractTypes: '["DIGITEVEN", "DIGITODD"]',
             currency: 'USD', duration: 5,

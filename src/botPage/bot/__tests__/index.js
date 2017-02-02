@@ -20,7 +20,7 @@ describe('Run JSI over bot', () => {
 
     jsi.run(`
       (function (){
-        Bot.start('${process.env.TESTINGTOKEN}',
+        Bot.start('Xkq6oGFEHh6hJH8',
         {
           amount: 1, basis: 'stake', candleInterval: 60,
           contractTypes: '["DIGITEVEN", "DIGITODD"]',
