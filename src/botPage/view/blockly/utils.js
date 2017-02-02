@@ -369,8 +369,13 @@ export const addLoadersFirst = (xml, header = null) => new Promise((resolve, rej
 })
 
 const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, reject) => {
+  let xml
   try {
-    const xml = Blockly.Xml.textToDom(blockStr)
+    xml = Blockly.Xml.textToDom(blockStr)
+  } catch (e) {
+    reject(translate('Unrecognized file format.'))
+  }
+  try {
     if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
       const recordUndo = Blockly.Events.recordUndo
       Blockly.Events.recordUndo = false
@@ -390,11 +395,7 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
       reject(translate('Remote blocks to load must be a collection.'))
     }
   } catch (e) {
-    if (e.name === 'BlocklyError') {
-      // pass
-    } else {
-      reject(translate('Unrecognized file format.'))
-    }
+    reject(translate('Unable to load the block file.'))
   }
 })
 
