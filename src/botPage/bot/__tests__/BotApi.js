@@ -2,11 +2,11 @@ import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
-import JSI from '../jsi'
+import JSI from '../JSI'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 
-describe('Run JSI over bot', () => {
+describe('BotApi', () => {
   let value
 
   const observer = new Observer()

@@ -9,7 +9,7 @@ import {
   backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
-import JSI from '../../bot/jsi'
+import JSI from '../../bot/JSI'
 import { getLanguage } from '../../../common/lang'
 
 const noop = () => {}

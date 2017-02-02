@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import JSI from '../jsi'
+import JSI from '../JSI'
 
 describe('Run JSI over simple calculation', () => {
   let value
