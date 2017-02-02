@@ -3,12 +3,13 @@ import del from 'del';
 import paths from 'vinyl-paths';
 import rev from 'gulp-rev';
 import through from 'through2';
-import webpack from 'webpack-stream';
+import webpackStream from 'webpack-stream';
+import webpack from 'webpack'
 import { addToManifest } from './revision';
 
 const gen = (env) => {
   process.env.NODE_ENV = env;
-  return webpack(require('../webpack.config'))
+  return webpackStream(require('../webpack.config'), webpack)
     .pipe(gulp.dest('www/js'));
 };
 
