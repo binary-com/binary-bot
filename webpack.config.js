@@ -8,6 +8,7 @@ module.exports = {
   watch: !production,
   target: 'web',
   module: {
+    noParse: ['ws'],
     loaders: [
       {
         test: /\.js$/,
@@ -30,6 +31,7 @@ module.exports = {
     bot: ['babel-polyfill', path.join(__dirname, 'src', 'botPage', 'view')],
     index: path.join(__dirname, 'src', 'indexPage'),
   },
+  externals: ['ws'],
   output: {
     filename: production ? '[name].min.js' : '[name].js',
     sourceMapFilename: production ? '[name].min.js.map' : '[name].js.map',
