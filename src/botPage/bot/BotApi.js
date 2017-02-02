@@ -10,6 +10,7 @@ export default class BotApi {
     this.respQ = new Stack()
     this.order = ['before', 'during', 'after']
     this.expected = 0
+    this.context = {}
     this.observer.register('CONTEXT', r => {
       if (!this.expectedScope(r.scope)) {
         return
@@ -39,7 +40,6 @@ export default class BotApi {
       isResult: result => (this.context.data.contractDetails[10] === result),
       readDetails: i => this.context.data.contractDetails[+i - 1],
       wait: arg => this.wait(arg),
-      waitUntil: arg => this.waitUntil(arg),
       isInside: arg => this.isInside(arg),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
     }
