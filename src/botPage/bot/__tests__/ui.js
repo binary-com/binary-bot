@@ -49,7 +49,7 @@ describe('Run JSI over simple calculation', () => {
   }
   trade = function trade(again){
     if (getTradeOptions !== undefined) {
-      Bot.start('a1-MzkoEzxzsY75VGCsv7SlbkHizJp1P', getTradeOptions(),
+      Bot.start('Xkq6oGFEHh6hJH8', getTradeOptions(),
         again, limitations);
     }
   };
