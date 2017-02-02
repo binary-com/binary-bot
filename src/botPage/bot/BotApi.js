@@ -1,6 +1,7 @@
 import { Stack } from 'immutable'
 import Bot from './'
 import { noop } from './tools'
+import { notifyError } from '../../common/logger'
 
 export default class BotApi {
   constructor($scope) {
@@ -10,6 +11,7 @@ export default class BotApi {
     this.respQ = new Stack()
     this.order = ['before', 'during', 'after']
     this.expected = 0
+    this.context = {}
     this.observer.register('CONTEXT', r => {
       if (!this.expectedScope(r.scope)) {
         return
@@ -24,8 +26,8 @@ export default class BotApi {
       setTimeout(() => this.observer.emit('CONTINUE'), 0)
     })
   }
-  getInterface() {
-    return {
+  getInterface(scope = 'Global') {
+    return scope === 'Bot' ? {
       start: (...args) => this.bot.start(...args),
       purchase: option => this.bot.purchase.purchase(option),
       getContract: (...args) => this.bot.purchase.getContract(...args),
@@ -38,10 +40,11 @@ export default class BotApi {
           (+this.context.data.openContract.buy_price)).toFixed(2)),
       isResult: result => (this.context.data.contractDetails[10] === result),
       readDetails: i => this.context.data.contractDetails[+i - 1],
+    } : {
       wait: arg => this.wait(arg),
-      waitUntil: arg => this.waitUntil(arg),
       isInside: arg => this.isInside(arg),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
+      notifyError: (...args) => notifyError(...args),
     }
   }
   expectedScope(scope) {

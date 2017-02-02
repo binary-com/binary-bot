@@ -1,5 +1,5 @@
 import { translate } from '../../../../../common/i18n'
-import { BlocklyError } from '../../../../../common/error'
+import { throwError } from '../../../../../common/shared'
 import './barrierOffset'
 import markets from './markets'
 import market from './market'
@@ -56,7 +56,7 @@ Blockly.Blocks.trade = {
 Blockly.JavaScript.trade = (block) => {
   const account = $('.account-id').first().attr('value')
   if (!account) {
-    return new BlocklyError(translate('Please login.')).emit()
+    throwError(translate('Please login.'))
   }
   const initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET')
   // TODO: Assemble JavaScript into code variable.

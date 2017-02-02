@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
-import JSI from '../jsi'
+import JSI from '../JSI'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 35000
 
@@ -49,7 +49,7 @@ describe('Run JSI over simple calculation', () => {
   }
   trade = function trade(again){
     if (getTradeOptions !== undefined) {
-      Bot.start('a1-MzkoEzxzsY75VGCsv7SlbkHizJp1P', getTradeOptions(),
+      Bot.start('Xkq6oGFEHh6hJH8', getTradeOptions(),
         again, limitations);
     }
   };

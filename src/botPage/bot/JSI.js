@@ -17,7 +17,7 @@ export default class JSI {
     let initFunc
 
     if (this.botApi) {
-      const botIf = this.botApi.getInterface()
+      const Bot = this.botApi.getInterface('Bot')
 
       const { isInside, wait, alert } = this.botApi.getInterface()
 
@@ -27,7 +27,7 @@ export default class JSI {
         interpreter.setProperty(scope, 'alert',
           interpreter.nativeToPseudo(alert))
         interpreter.setProperty(scope, 'Bot',
-          interpreter.nativeToPseudo(botIf))
+          interpreter.nativeToPseudo(Bot))
         interpreter.setProperty(scope, 'isInside',
           interpreter.nativeToPseudo(isInside))
         interpreter.setProperty(scope, 'wait',

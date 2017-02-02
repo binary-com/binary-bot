@@ -35,7 +35,7 @@ describe('Trade', () => {
           symbol: 'R_100',
         })
       }, true)
-      api.authorize(process.env.TESTINGTOKEN)
+      api.authorize('Xkq6oGFEHh6hJH8')
     })
     it('Purchased the proposal successfuly', () => {
       expect(purchasedContract).to.have.property('longcode')

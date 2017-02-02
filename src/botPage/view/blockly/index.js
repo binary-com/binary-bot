@@ -1,7 +1,6 @@
 import { translate, xml as translateXml } from '../../../common/i18n'
 import config from '../../../common/const'
-import { observer } from '../../../common/shared'
-import { notifyError } from '../../../common/logger'
+import { observer, throwError } from '../../../common/shared'
 import {
   isMainBlock, save,
   disable, deleteBlocksLoadedBy,
@@ -9,7 +8,7 @@ import {
   backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
-import JSI from '../../bot/jsi'
+import JSI from '../../bot/JSI'
 import { getLanguage } from '../../../common/lang'
 
 const noop = () => {}
@@ -198,25 +197,22 @@ export default class _Blockly {
     Blockly.Events.setGroup(false)
   }
   load(blockStr = '', dropEvent = {}) {
-    if (blockStr.indexOf('<xml') !== 0) {
-      observer.emit('ui.log.error',
-        translate('Unrecognized file format.'))
-    } else {
-      try {
-        const xml = Blockly.Xml.textToDom(blockStr)
-        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-          this.loadBlocks(xml, dropEvent)
-        } else {
-          this.loadWorkspace(xml)
-        }
-      } catch (e) {
-        if (e.name === 'BlocklyError') {
-          // pass
-        } else {
-          observer.emit('ui.log.error',
-            translate('Unrecognized file format.'))
-        }
+    let xml
+
+    try {
+      xml = Blockly.Xml.textToDom(blockStr)
+    } catch (e) {
+      observer.emit('ui.log.error', translate('Unrecognized file format.'))
+    }
+
+    try {
+      if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+        this.loadBlocks(xml, dropEvent)
+      } else {
+        this.loadWorkspace(xml)
       }
+    } catch (e) {
+      observer.emit('ui.log.error', translate('Unable to load the block file.'))
     }
   }
   save(filename, collection) {
@@ -236,7 +232,7 @@ export default class _Blockly {
       window.LoopTrap = 99999999999
       Blockly.mainWorkspace.traceOn(true)
       Blockly.JavaScript
-        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
+        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
       this.disableStrayBlocks()
       code = `
       (function(){
@@ -272,10 +268,7 @@ export default class _Blockly {
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null
       this.generatedJs = code
     } catch (e) {
-      if (e.name !== 'BlocklyError') {
-        notifyError(e)
-        throw e
-      }
+      throwError(e)
     }
     if (code) {
       this.jsi = new JSI(this.$scope)
