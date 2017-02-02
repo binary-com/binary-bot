@@ -3,7 +3,7 @@ import Observer from 'binary-common-utils/lib/observer'
 import fs from 'fs'
 import readline from 'readline'
 import minimist from 'minimist'
-import JSI from './jsi'
+import JSI from './JSI'
 
 const args = minimist(process.argv.slice(2))
 
