@@ -26,8 +26,8 @@ export default class BotApi {
       setTimeout(() => this.observer.emit('CONTINUE'), 0)
     })
   }
-  getInterface() {
-    return {
+  getInterface(scope = 'Global') {
+    return scope === 'Bot' ? {
       start: (...args) => this.bot.start(...args),
       purchase: option => this.bot.purchase.purchase(option),
       getContract: (...args) => this.bot.purchase.getContract(...args),
@@ -40,6 +40,7 @@ export default class BotApi {
           (+this.context.data.openContract.buy_price)).toFixed(2)),
       isResult: result => (this.context.data.contractDetails[10] === result),
       readDetails: i => this.context.data.contractDetails[+i - 1],
+    } : {
       wait: arg => this.wait(arg),
       isInside: arg => this.isInside(arg),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
