@@ -14,9 +14,9 @@ const $scope = { observer, api }
 
 const botApi = new BotApi($scope)
 
-const Bot = botApi.getInterface()
+const Bot = botApi.getInterface('Bot')
 
-const { isInside, wait, alert } = Bot
+const { isInside, wait, alert } = botApi.getInterface()
 
 describe('BotApi', () => {
   it('alert should not be native', () => {
