@@ -3,7 +3,7 @@ import del from 'del';
 import paths from 'vinyl-paths';
 import rev from 'gulp-rev';
 import through from 'through2';
-import webpack from 'gulp-webpack';
+import webpack from 'webpack-stream';
 import { addToManifest } from './revision';
 
 const gen = (env) => {

@@ -5,7 +5,7 @@ $joyride-button-bg-color: $brand-btn;
 $joyride-button-color: $white !important;
 $joyride-tooltip-width: (15em, 20em, 20em);
 
-@import '../../node_modules/react-joyride/lib/styles/react-joyride';
+@import '../../node_modules/react-joyride/lib/react-joyride';
 
 #tour {
   position: absolute;
