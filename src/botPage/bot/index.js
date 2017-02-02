@@ -117,11 +117,6 @@ export default class Bot {
     this.observeStreams()
 
     Promise.all(promises).then(() => this.login(token))
-      .catch((e) => {
-        if (e.name !== 'BlocklyError') {
-          throw e
-        }
-      })
   }
   limitsReached() {
     const { maxLoss, maxTrades } = this.limitations

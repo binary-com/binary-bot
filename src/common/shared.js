@@ -16,3 +16,11 @@ export const symbolPromise = new Promise(resolve => {
 })
 
 export const observer = new Observer()
+
+export const throwError = e => {
+  const msg = typeof e === 'string' ? e : e.message
+
+  observer.emit(msg)
+
+  throw Error(e)
+}
