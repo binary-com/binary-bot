@@ -18,8 +18,9 @@ export default class PurchaseCtrl {
     return !!(this.trade && this.trade.isSellAvailable)
   }
   sellAtMarket() {
-    return this.trade &&
-      this.trade.isSellAvailable && this.trade.sellAtMarket()
+    if (this.isSellAvailable()) {
+      this.trade.sellAtMarket()
+    }
   }
   setNumOfProposals(num) {
     this.expectedNumOfProposals = num

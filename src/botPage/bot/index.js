@@ -28,9 +28,7 @@ export default class Bot {
     this.$scope = $scope
     this.CM = new ContextManager($scope)
   }
-  subscribeToStream(
-    name, respHandler, request, registerOnce, type, unregister
-  ) {
+  subscribeToStream(name, respHandler, request, registerOnce, type, unregister) {
     return new Promise((resolve) => {
       this.observer.register(
         name, (...args) => {
