@@ -4,7 +4,7 @@ import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
 import JSI from '../JSI'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000 * 2
 
 const observer = new Observer()
 const api = (new CustomApi(observer, null, null, new WebSocket(
@@ -14,7 +14,7 @@ const $scope = { observer, api }
 
 const jsi = new JSI($scope)
 
-describe('Run JSI over simple calculation', () => {
+describe('Blocks Api', () => {
   let value
 
   beforeAll(done => {
@@ -44,7 +44,7 @@ describe('Run JSI over simple calculation', () => {
             result.askPrice = Bot.getAskPrice('CALL');
             result.payout = Bot.getPayout('CALL');
           }
-          Bot.purchase('CALL')
+          Bot.purchase('CALL');
           while ((context = wait('CONTEXT')).scope === 'during') {
             if (!again) {
               result.sellAvailable = Bot.isSellAvailable();
@@ -52,8 +52,8 @@ describe('Run JSI over simple calculation', () => {
             }
             Bot.sellAtMarket();
           }
-          result.isWin = Bot.isResult('win')
-          result.detail = Bot.readDetails(1)
+          result.isWin = Bot.isResult('win');
+          result.detail = Bot.readDetails(1);
           if (--count === 0) {
             break;
           }

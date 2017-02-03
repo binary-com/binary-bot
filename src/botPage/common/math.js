@@ -3,10 +3,12 @@ import exponentialMovingAverage, { exponentialMovingAverageArray } from 'binary-
 import bollingerBands, { bollingerBandsArray } from 'binary-indicators/lib/bollingerBands'
 import relativeStrengthIndex, { relativeStrengthIndexArray } from 'binary-indicators/lib/relativeStrengthIndex'
 import macdArray from 'binary-indicators/lib/macd'
-import { bot } from '../botPage/bot'
 
+// f(input, Object.assign({ pipSize: bot.pipSize }, config), ...args)
 const decorateWithPipSize = f =>
-  (input, config, ...args) => f(input, Object.assign({ pipSize: bot.pipSize }, config), ...args)
+  (input, config, ...args) => {
+    throw Error('Not implemented!')
+  }
 
 export default {
   indicators: {

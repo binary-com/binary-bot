@@ -9,7 +9,7 @@ import {
 } from './utils'
 import blocks from './blocks'
 import JSI from '../../bot/JSI'
-import { getLanguage } from '../../common/lang'
+import { getLanguage } from '../../../common/lang'
 
 const noop = () => {}
 

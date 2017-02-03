@@ -5,7 +5,7 @@ import ws from 'ws'
 import ContextManager from '../../ContextManager'
 import Purchase from '../'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 12000 * 2
 
 const ticksObj = {
   ticks: [{

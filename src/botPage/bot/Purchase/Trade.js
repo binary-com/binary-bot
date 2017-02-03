@@ -11,9 +11,7 @@ export default class Trade {
     this.isSellAvailable = false
     this.isSold = false
   }
-  subscribeToStream(
-    name, respHandler, request, registerOnce, type, unregister
-  ) {
+  subscribeToStream(name, respHandler, request, registerOnce, type, unregister) {
     return new Promise((resolve) => {
       this.observer.register(
         name, (...args) => {
