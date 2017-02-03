@@ -460,7 +460,7 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
       $.ajax({
         type: 'GET',
         url,
-      }).error((e) => {
+      }).fail((e) => {
         if (e.status) {
           reject(`${translate('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
         } else {
