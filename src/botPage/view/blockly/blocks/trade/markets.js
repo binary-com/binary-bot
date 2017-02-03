@@ -1,4 +1,4 @@
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 import { symbolApi } from '../../../shared'
 import { updateInputList } from '../../utils'
 

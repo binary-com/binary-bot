@@ -1,5 +1,5 @@
 import { translate } from '../../../common/i18n'
-import { observer as viewObserver } from '../../../common/shared'
+import { observer as viewObserver } from '../../common/shared'
 import { noop } from '../tools'
 
 export default class Trade {

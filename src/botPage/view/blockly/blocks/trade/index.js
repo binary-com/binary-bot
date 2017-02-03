@@ -1,5 +1,5 @@
 import { translate } from '../../../../../common/i18n'
-import { throwError } from '../../../../../common/shared'
+import { throwError } from '../../../../common/shared'
 import './barrierOffset'
 import markets from './markets'
 import market from './market'

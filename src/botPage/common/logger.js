@@ -1,5 +1,5 @@
 import { getToken } from 'binary-common-utils/lib/storageManager'
-import { translate } from './i18n'
+import { translate } from '../../common/i18n'
 import { observer } from './shared'
 
 const shown = []

@@ -1,4 +1,4 @@
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 import { translate } from '../../../../../common/i18n'
 import { symbolApi } from '../../../shared'
 import { oppositesToDropdown } from '../../utils'

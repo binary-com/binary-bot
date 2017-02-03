@@ -3,8 +3,8 @@ import 'babel-polyfill'
 import lzString from 'lz-string'
 import $ from 'jquery'
 import View from './View'
-import { setAppId } from '../../common/appId'
-import { load as loadLang } from '../../common/lang'
+import { setAppId } from '../common/appId'
+import { load as loadLang } from '../common/lang'
 
 loadLang()
 window.$ = $

@@ -1,6 +1,6 @@
 // Maintained for Backward Compatibility
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 import { translate } from '../../../../../common/i18n'
 
 Blockly.Blocks.barrier_offset = {
