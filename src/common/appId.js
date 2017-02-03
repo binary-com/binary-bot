@@ -2,7 +2,7 @@ import { parseQueryString } from 'binary-common-utils/lib/tools'
 import { addTokenIfValid } from 'binary-common-utils/lib/account'
 import { set as setStorage } from 'binary-common-utils/lib/storageManager'
 
-export function setAppId() {
+export const setAppId = () => {
   let appId = 0
   if (document.location.port === '8080') {
     appId = 1168 // binary bot on localhost
@@ -18,13 +18,15 @@ export function setAppId() {
   setStorage('appId', appId)
 }
 
-async function addAllTokens(tokenList) {
-  for (const token of tokenList) {
-    await new Promise((r) => addTokenIfValid(token, r))
-  }
+const addAllTokens = tokenList => {
+  const promises =
+    tokenList.map(token =>
+      new Promise((r) => addTokenIfValid(token, r)))
+
+  return Promise.all(promises)
 }
 
-export function oauthLogin(done = () => 0) {
+export const oauthLogin = (done = () => 0) => {
   const queryStr = parseQueryString()
   let tokenList = []
   tokenList = Object.keys(queryStr)

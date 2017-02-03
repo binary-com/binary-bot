@@ -164,8 +164,7 @@ export default class Bot {
     return this.getContractTypes().map(type =>
       tradeOptionToProposal(this.tradeOption, {
         contract_type: type,
-      })
-    )
+      }))
   }
   subscribeToBalance() {
     subscribeToStream(
@@ -175,8 +174,7 @@ export default class Bot {
         this.balanceStr = `${(+balance).toFixed(2)} ${currency}`
         observer.emit('bot.tradeInfo', { balance: this.balanceStr })
       }, () => this.api.originalApi.send({ forget_all: 'balance' })
-      .then(() => this.api.balance(), noop), false, null
-    )
+      .then(() => this.api.balance(), noop), false, null)
   }
   subscribeToCandles() {
     return subscribeToStream(
@@ -192,8 +190,7 @@ export default class Bot {
           style: 'candles',
           subscribe: 1,
         })
-      }, true, 'candles', ['api.ohlc', 'api.candles']
-    )
+      }, true, 'candles', ['api.ohlc', 'api.candles'])
   }
   subscribeToTickHistory() {
     return subscribeToStream(
@@ -207,8 +204,7 @@ export default class Bot {
           count: 5000,
           subscribe: 1,
         })
-      }, true, 'history', ['api.history', 'api.tick', 'bot.tickUpdate']
-    )
+      }, true, 'history', ['api.history', 'api.tick', 'bot.tickUpdate'])
   }
   subscribeToProposals() {
     subscribeToStream(
@@ -225,14 +221,12 @@ export default class Bot {
         }
         this.api.originalApi.unsubscribeFromAllProposals()
           .then(() => proposals.forEach(p => this.api.proposal(p)), noop)
-      }, false, null
-    )
+      }, false, null)
   }
   subscribeToPurchaseFinish() {
     subscribeToStream(
       'purchase.finish', contract => this.botFinish(contract),
-      noop, true, null
-    )
+      noop, true, null)
   }
   subscribeToTradePurchase() {
     subscribeToStream(
@@ -245,8 +239,7 @@ export default class Bot {
           contract_type: info.contract.contract_type,
           buy_price: info.purchasedContract.buy_price,
         })
-      }, noop, true, null
-    )
+      }, noop, true, null)
   }
   startTrading() {
     this.subscribeToPurchaseFinish()

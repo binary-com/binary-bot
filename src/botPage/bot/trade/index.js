@@ -61,8 +61,7 @@ export default class Trade {
         this.onContractUpdate(contract)
       }, () => this.api.proposal_open_contract(this.contractId),
       false, 'proposal_open_contract',
-      ['trade.update', 'purchase.tradeUpdate', 'trade.finish', 'purchase.finish']
-    )
+      ['trade.update', 'purchase.tradeUpdate', 'trade.finish', 'purchase.finish'])
   }
   purchase(contract) {
     subscribeToStream(
@@ -77,8 +76,7 @@ export default class Trade {
         this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
         this.subscribeToOpenContract()
       }, () => this.api.buy(contract.id, contract.ask_price),
-      true, 'buy', ['trade.purchase']
-    )
+      true, 'buy', ['trade.purchase'])
   }
   getTheContractInfoAfterSell() {
     if (this.contractId) {

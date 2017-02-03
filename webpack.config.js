@@ -13,7 +13,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loaders: [
-          'babel?presets[]=react,presets[]=es2015,presets[]=stage-0',
+          'babel?presets[]=react,presets[]=es2015',
         ], // 'babel-loader' is also a legal name to reference
       },
       {
