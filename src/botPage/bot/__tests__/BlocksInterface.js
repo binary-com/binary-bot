@@ -23,6 +23,7 @@ describe('Run JSI over simple calculation', () => {
         var count = 2;
         var again = false;
         var result = {};
+        var ticksResult = {};
         while(true) {
           Bot.start('Xkq6oGFEHh6hJH8', {
             amount: 1, basis: 'stake', candleInterval: 60,
@@ -32,14 +33,14 @@ describe('Run JSI over simple calculation', () => {
           }, again);
           var context = wait('CONTEXT');
           if (!again) {
-            result.lastOhlc = Bot.getOhlcFromEnd();
-            result.ohlc = Bot.getOhlc();
-            result.candleValues = Bot.getOhlc('close');
-            result.lastCloseValue1 = Bot.getOhlcFromEnd('close', 2);
-            result.lastCloseValue2 = Bot.getOhlcFromEnd('close');
-            result.ticks = Bot.getTicks();
-            result.lastTick = Bot.getLastTick();
-            result.lastDigit = Bot.getLastDigit();
+            ticksResult.lastOhlc = Bot.getOhlcFromEnd();
+            ticksResult.ohlc = Bot.getOhlc();
+            ticksResult.candleValues = Bot.getOhlc('close');
+            ticksResult.lastCloseValue1 = Bot.getOhlcFromEnd('close', 2);
+            ticksResult.lastCloseValue2 = Bot.getOhlcFromEnd('close');
+            ticksResult.ticks = Bot.getTicks();
+            ticksResult.lastTick = Bot.getLastTick();
+            ticksResult.lastDigit = Bot.getLastDigit();
             result.askPrice = Bot.getAskPrice('CALL');
             result.payout = Bot.getPayout('CALL');
           }
@@ -58,7 +59,10 @@ describe('Run JSI over simple calculation', () => {
           }
           again = true;
         }
-        return result;
+        return {
+          result: result,
+          ticksResult: ticksResult,
+        };
       })();
     `).then(v => {
       value = v
@@ -66,8 +70,8 @@ describe('Run JSI over simple calculation', () => {
     })
   })
 
-  it('return code is correct', () => {
-    const expectedTypes = [
+  it('ticks api', () => {
+    const expectedTicksResult = [
       'object', // last candle
       'object', // candles list
       'object', // candle values list
@@ -76,6 +80,16 @@ describe('Run JSI over simple calculation', () => {
       'object', // ticks
       'number', // last tick
       'number', // last digit
+    ]
+
+    const { ticksResult: result } = value
+    const ticksResult = Object.keys(result).map(k => typeof result[k])
+
+    expect(ticksResult).deep.equal(expectedTicksResult)
+  })
+
+  it('global api', () => {
+    const expectedResult = [
       'number', // askPrice
       'number', // payout
       'boolean', // isSellAvailable
@@ -84,9 +98,10 @@ describe('Run JSI over simple calculation', () => {
       'string', // statement
     ]
 
-    const result = Object.keys(value).map(k => typeof value[k])
+    const { result } = value
+    const mainResult = Object.keys(result).map(k => typeof result[k])
 
-    expect(result).deep.equal(expectedTypes)
+    expect(mainResult).deep.equal(expectedResult)
   })
 })
 
