@@ -23,6 +23,32 @@ export default class BotApi {
       setTimeout(() => this.observer.emit('CONTINUE'), 0)
     })
   }
+  getOhlc(field) {
+    const ohlc = this.context.data.ticksObj.ohlc
+
+    return field ? ohlc.map(o => o[field]) : ohlc
+  }
+  getTicks() {
+    return this.context.data.ticksObj.ticks.map(o => o.quote)
+  }
+  getPipSize() {
+    return this.context.data.ticksObj.pipSize
+  }
+  getTicksInterface() {
+    const getLastTick = () => this.getTicks().slice(-1)[0]
+
+    return {
+      getLastTick,
+      getLastDigit: () => +(getLastTick().toFixed(this.getPipSize()).slice(-1)[0]),
+      getOhlcFromEnd: (field, index) => {
+        const lastOhlc = this.getOhlc().slice(-(+index || 1))[0]
+
+        return field ? lastOhlc[field] : lastOhlc
+      },
+      getOhlc: (field) => this.getOhlc(field),
+      getTicks: () => this.getTicks(),
+    }
+  }
   getInterface(scope = 'Global') {
     return scope === 'Bot' ? {
       start: (...args) => this.bot.start(...args),
@@ -37,6 +63,7 @@ export default class BotApi {
           (+this.context.data.openContract.buy_price)).toFixed(2)),
       isResult: result => (this.context.data.contractDetails[10] === result),
       readDetails: i => this.context.data.contractDetails[+i - 1],
+      ...this.getTicksInterface(),
     } : {
       wait: arg => this.wait(arg),
       isInside: arg => this.isInside(arg),
