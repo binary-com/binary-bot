@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 import { translate } from '../../../../../common/i18n'
 import { mainScope } from '../../relationChecker'
 

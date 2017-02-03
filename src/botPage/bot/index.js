@@ -1,7 +1,7 @@
 import ContextManager from './ContextManager'
 import Purchase from './Purchase'
 import { translate } from '../../common/i18n'
-import { observer as viewObserver } from '../../common/shared'
+import { observer as viewObserver } from '../common/shared'
 import { noop, getDirection, tradeOptionToProposal, getPipSizes } from './tools'
 
 export default class Bot {

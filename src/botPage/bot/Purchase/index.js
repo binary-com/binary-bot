@@ -1,4 +1,4 @@
-import { observer as viewObserver } from '../../../common/shared'
+import { observer as viewObserver } from '../../common/shared'
 import Trade from './Trade'
 
 export default class PurchaseCtrl {

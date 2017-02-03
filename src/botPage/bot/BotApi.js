@@ -1,7 +1,7 @@
 import { Stack } from 'immutable'
 import Bot from './'
 import { noop } from './tools'
-import { notifyError } from '../../common/logger'
+import { notifyError } from '../common/logger'
 
 export default class BotApi {
   constructor($scope) {

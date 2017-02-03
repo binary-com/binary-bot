@@ -1,4 +1,4 @@
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 import { insideAfterPurchase } from '../../relationChecker'
 import { translate } from '../../../../../common/i18n'
 

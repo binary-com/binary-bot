@@ -1,8 +1,4 @@
 import { Map } from 'immutable'
-import {
-  number as expectNumber,
-  barrierOffset as expectBarrierOffset,
-} from '../../common/expect'
 
 export const noop = () => {}
 
@@ -12,17 +8,17 @@ export const tradeOptionToProposal = (tradeOption, otherOptions) =>
       basis: tradeOption.basis,
       currency: tradeOption.currency,
       symbol: tradeOption.symbol,
-      duration: expectNumber('duration', tradeOption.duration),
-      amount: expectNumber('amount', tradeOption.amount).toFixed(2),
+      duration: tradeOption.duration,
+      amount: tradeOption.amount.toFixed(2),
     },
     'prediction' in tradeOption && {
-      barrier: expectNumber('prediction', tradeOption.prediction),
+      barrier: tradeOption.prediction,
     },
     'barrierOffset' in tradeOption && {
-      barrier: expectBarrierOffset(tradeOption.barrierOffset),
+      barrier: tradeOption.barrierOffset,
     },
     'secondBarrierOffset' in tradeOption && {
-      barrier2: expectBarrierOffset(tradeOption.secondBarrierOffset),
+      barrier2: tradeOption.secondBarrierOffset,
     }, otherOptions,
   )
 
