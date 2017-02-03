@@ -23,14 +23,18 @@ describe('Run JSI over bot', () => {
         Bot.start('Xkq6oGFEHh6hJH8',
         {
           amount: 1, basis: 'stake', candleInterval: 60,
-          contractTypes: '["DIGITEVEN", "DIGITODD"]',
-          currency: 'USD', duration: 5,
-          duration_unit: 't', symbol: 'R_100',
+          contractTypes: '["CALL","PUT"]',
+          currency: 'USD', duration: 2,
+          duration_unit: 'h', symbol: 'R_100',
         }
         );
-        var context = wait('CONTEXT');
-        Bot.purchase('DIGITEVEN')
-        while ((context = wait('CONTEXT')).scope === 'during');
+        var context
+        while ((context = wait('CONTEXT')).scope === 'before') {
+          Bot.purchase('CALL')
+        }
+        while ((context = wait('CONTEXT')).scope === 'during') {
+          Bot.sellAtMarket();
+        }
         return isInside('after')
       })();
     `).then(v => {
@@ -39,6 +43,6 @@ describe('Run JSI over bot', () => {
     })
   })
   it('return code is correct', () => {
-    expect(value.data).to.be.equal(true)
+    expect(value).to.be.equal(true)
   })
 })

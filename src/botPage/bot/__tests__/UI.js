@@ -34,15 +34,12 @@ describe('Run JSI over simple calculation', () => {
     tradeOptions = {
       contractTypes: '["CALL","PUT"]',
       candleInterval: '60',
-      duration: 5,
-      duration_unit: 't',
+      duration: 2,
+      duration_unit: 'h',
       basis: 'stake',
       currency: 'USD',
       amount: 1,
       restartOnError: false,
-
-
-
     }
     tradeOptions.symbol = 'R_100'
     return tradeOptions
@@ -56,13 +53,12 @@ describe('Run JSI over simple calculation', () => {
 
   before_purchase = function before_purchase(){
     Bot.purchase('CALL');
-
   };
 
   during_purchase = function during_purchase(){
     if (Bot.isSellAvailable()) {
+      Bot.sellAtMarket();
     }
-
   };
 
   var count = 2;
@@ -71,7 +67,6 @@ describe('Run JSI over simple calculation', () => {
       return true;
     return false;
   };
-
 
   var context
 
@@ -98,7 +93,7 @@ describe('Run JSI over simple calculation', () => {
   })
 
   it('return code is correct', () => {
-    expect(value.data).to.be.equal(true)
+    expect(value).to.be.equal(true)
   })
 })
 

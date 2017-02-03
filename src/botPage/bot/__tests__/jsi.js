@@ -13,6 +13,6 @@ describe('Run JSI over simple calculation', () => {
   })
 
   it('return code is correct', () => {
-    expect(value.data).to.be.equal(3)
+    expect(value).to.be.equal(3)
   })
 })
