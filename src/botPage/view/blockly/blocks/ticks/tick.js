@@ -15,6 +15,4 @@ Blockly.Blocks.tick = {
     mainScope(this, ev, 'Tick Value')
   },
 }
-Blockly.JavaScript.tick = () => [
-  'Bot.expect.tick(Bot.expect.notEmptyArray(this.ticksObj.ticks).slice(-1)[0]).quote',
-  Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.tick = () => ['Bot.getLastTick()', Blockly.JavaScript.ORDER_ATOMIC]
