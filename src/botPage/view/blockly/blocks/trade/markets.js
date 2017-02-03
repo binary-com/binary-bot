@@ -1,5 +1,5 @@
 import config from '../../../../../common/const'
-import { symbolApi } from '../../../../../common/shared'
+import { symbolApi } from '../../../shared'
 import { updateInputList } from '../../utils'
 
 export default () => {
