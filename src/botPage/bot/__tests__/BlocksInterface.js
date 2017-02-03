@@ -32,6 +32,14 @@ describe('Run JSI over simple calculation', () => {
           }, again);
           var context = wait('CONTEXT');
           if (!again) {
+            result.lastOhlc = Bot.getOhlcFromEnd();
+            result.ohlc = Bot.getOhlc();
+            result.candleValues = Bot.getOhlc('close');
+            result.lastCloseValue1 = Bot.getOhlcFromEnd('close', 2);
+            result.lastCloseValue2 = Bot.getOhlcFromEnd('close');
+            result.ticks = Bot.getTicks();
+            result.lastTick = Bot.getLastTick();
+            result.lastDigit = Bot.getLastDigit();
             result.askPrice = Bot.getAskPrice('CALL');
             result.payout = Bot.getPayout('CALL');
           }
@@ -59,8 +67,22 @@ describe('Run JSI over simple calculation', () => {
   })
 
   it('return code is correct', () => {
-    const expectedTypes =
-      ['number', 'number', 'boolean', 'number', 'boolean', 'string']
+    const expectedTypes = [
+      'object', // last candle
+      'object', // candles list
+      'object', // candle values list
+      'number', // last close value
+      'number', // previous close value
+      'object', // ticks
+      'number', // last tick
+      'number', // last digit
+      'number', // askPrice
+      'number', // payout
+      'boolean', // isSellAvailable
+      'number', // sellPrice
+      'boolean', // isWin
+      'string', // statement
+    ]
 
     const result = Object.keys(value).map(k => typeof value[k])
 

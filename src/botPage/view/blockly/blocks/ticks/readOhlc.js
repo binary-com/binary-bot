@@ -25,17 +25,8 @@ Blockly.Blocks.read_ohlc = {
 
 Blockly.JavaScript.read_ohlc = (block) => {
   const ohlcField = block.getFieldValue('OHLCFIELD_LIST')
-  let index = Number(Blockly.JavaScript.valueToCode(block,
-      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || '0'
-  let code
-  if (isNaN(index) || index < 1) {
-    index = 1
-  }
-  if (index === 1) {
-    code = `(Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticksObj.ohlc).slice(-1)[0]).${ohlcField})`
-  } else {
-    code = `(Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticksObj.ohlc).slice(-1*${
-    index}, -1*${index - 1})[0]).${ohlcField})`
-  }
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+  const index = Number(Blockly.JavaScript.valueToCode(block,
+      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC))
+
+  return [`Bot.getOhlcFromEnd('${ohlcField}', ${index})`, Blockly.JavaScript.ORDER_ATOMIC]
 }

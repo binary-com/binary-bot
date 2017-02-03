@@ -238,9 +238,17 @@ export default class _Blockly {
       (function(){
         var trade, before_purchase, during_purchase, after_purchase;
 
+        var tick_analysis_list = [];
+
         function run(f, arg) {
           if (f) return f(arg);
           return false;
+        }
+
+        function tick_analysis() {
+          for (var i = 0; i < tick_analysis_list.length; i++) {
+            run(tick_analysis_list[i]);
+          }
         }
 
         var limitations = ${JSON.stringify(limitations)}
@@ -254,11 +262,14 @@ export default class _Blockly {
           run(trade, again)
           again = true;
           while((context = wait('CONTEXT')).scope === 'before') {
+            tick_analysis();
             run(before_purchase)
           }
           while((context = wait('CONTEXT')).scope === 'during') {
+            tick_analysis();
             run(during_purchase)
           }
+          tick_analysis();
           if(!run(after_purchase)) {
             break;
           }

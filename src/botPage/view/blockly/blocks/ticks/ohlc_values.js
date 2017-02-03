@@ -20,7 +20,6 @@ Blockly.Blocks.ohlc_values = {
 
 Blockly.JavaScript.ohlc_values = (block) => {
   const ohlcField = block.getFieldValue('OHLCFIELD_LIST')
-  const code = `(Bot.expect.notEmptyArray(this.ticksObj.ohlc).map(function(e){return Bot.expect.ohlc(e).${
-  ohlcField}}))`
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+
+  return [`Bot.getOhlc('${ohlcField}')`, Blockly.JavaScript.ORDER_ATOMIC]
 }
