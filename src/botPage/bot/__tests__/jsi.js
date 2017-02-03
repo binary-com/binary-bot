@@ -1,11 +1,12 @@
 import { expect } from 'chai'
 import JSI from '../JSI'
 
+const jsi = new JSI()
+
 describe('Run JSI over simple calculation', () => {
   let value
 
   beforeAll(done => {
-    const jsi = new JSI()
     jsi.run('1 + 2').then(v => {
       value = v
       done()

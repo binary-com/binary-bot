@@ -4,20 +4,20 @@ import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
 import JSI from '../JSI'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 18000 * 2
+
+const observer = new Observer()
+const api = (new CustomApi(observer, null, null, new WebSocket(
+  process.env.ENDPOINT ||
+    'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
+const $scope = { observer, api }
+
+const jsi = new JSI($scope)
 
 describe('Run JSI over bot', () => {
   let value
 
-  const observer = new Observer()
-  const api = (new CustomApi(observer, null, null, new WebSocket(
-    process.env.ENDPOINT ||
-      'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
-  const $scope = { observer, api }
-
   beforeAll(done => {
-    const jsi = new JSI($scope)
-
     jsi.run(`
       (function (){
         Bot.start('Xkq6oGFEHh6hJH8',

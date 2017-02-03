@@ -4,7 +4,7 @@ import Observer from 'binary-common-utils/lib/observer'
 import ws from 'ws'
 import Trade from '../Trade'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 12000 * 2
 
 describe('Trade', () => {
   const observer = new Observer()
