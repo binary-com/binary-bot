@@ -1,5 +1,5 @@
 import { LiveApi } from 'binary-live-api'
-import _Symbol from '../../common/symbolApi'
+import _Symbol from '../common/symbolApi'
 
 let api = new LiveApi()
 

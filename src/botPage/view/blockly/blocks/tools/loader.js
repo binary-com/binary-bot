@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
 import { translate } from '../../../../../common/i18n'
-import { observer } from '../../../../../common/shared'
+import { observer } from '../../../../common/shared'
 import { deleteBlocksLoadedBy, loadRemote, recoverDeletedBlock } from '../../utils'
 
 Blockly.Blocks.loader = {

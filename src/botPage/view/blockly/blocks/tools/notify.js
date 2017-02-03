@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
 import { translate } from '../../../../../common/i18n'
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 
 Blockly.Blocks.notify = {
   init: function init() {

@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import config from '../../../common/const'
-import { observer } from '../../../common/shared'
+import config from '../../common/const'
+import { observer } from '../../common/shared'
 import { symbolApi } from '../shared'
 import { translate } from '../../../common/i18n'
 import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'

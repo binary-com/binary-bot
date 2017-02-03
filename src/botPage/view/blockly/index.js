@@ -1,6 +1,6 @@
 import { translate, xml as translateXml } from '../../../common/i18n'
-import config from '../../../common/const'
-import { observer, throwError } from '../../../common/shared'
+import config from '../../common/const'
+import { observer, throwError } from '../../common/shared'
 import {
   isMainBlock, save,
   disable, deleteBlocksLoadedBy,
@@ -9,7 +9,7 @@ import {
 } from './utils'
 import blocks from './blocks'
 import JSI from '../../bot/JSI'
-import { getLanguage } from '../../../common/lang'
+import { getLanguage } from '../../common/lang'
 
 const noop = () => {}
 
