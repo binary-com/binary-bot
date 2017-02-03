@@ -1,7 +1,7 @@
 import ContextManager from './ContextManager'
 import Purchase from './Purchase'
 import { translate } from '../../common/i18n'
-import { observer as viewObserver } from '../../common/shared'
+import { observer as viewObserver } from '../common/shared'
 import { noop, getDirection, tradeOptionToProposal, getPipSizes } from './tools'
 
 export default class Bot {
@@ -28,9 +28,7 @@ export default class Bot {
     this.$scope = $scope
     this.CM = new ContextManager($scope)
   }
-  subscribeToStream(
-    name, respHandler, request, registerOnce, type, unregister
-  ) {
+  subscribeToStream(name, respHandler, request, registerOnce, type, unregister) {
     return new Promise((resolve) => {
       this.observer.register(
         name, (...args) => {

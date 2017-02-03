@@ -1,5 +1,5 @@
 import { translate } from '../../../common/i18n'
-import { observer as viewObserver } from '../../../common/shared'
+import { observer as viewObserver } from '../../common/shared'
 import { noop } from '../tools'
 
 export default class Trade {
@@ -11,9 +11,7 @@ export default class Trade {
     this.isSellAvailable = false
     this.isSold = false
   }
-  subscribeToStream(
-    name, respHandler, request, registerOnce, type, unregister
-  ) {
+  subscribeToStream(name, respHandler, request, registerOnce, type, unregister) {
     return new Promise((resolve) => {
       this.observer.register(
         name, (...args) => {

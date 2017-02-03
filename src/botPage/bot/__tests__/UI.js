@@ -4,19 +4,20 @@ import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
 import JSI from '../JSI'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 35000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 18000 * 2
 
-describe('Run JSI over simple calculation', () => {
+const observer = new Observer()
+const api = (new CustomApi(observer, null, null, new WebSocket(
+  process.env.ENDPOINT ||
+    'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
+const $scope = { observer, api }
+
+const jsi = new JSI($scope)
+
+describe('Run UI generated code', () => {
   let value
 
-  const observer = new Observer()
-  const api = (new CustomApi(observer, null, null, new WebSocket(
-    process.env.ENDPOINT ||
-      'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
-  const $scope = { observer, api }
-
   beforeAll(done => {
-    const jsi = new JSI($scope)
     jsi.run(`
 (function(){
   var trade, before_purchase, during_purchase, after_purchase;
@@ -34,15 +35,12 @@ describe('Run JSI over simple calculation', () => {
     tradeOptions = {
       contractTypes: '["CALL","PUT"]',
       candleInterval: '60',
-      duration: 5,
-      duration_unit: 't',
+      duration: 2,
+      duration_unit: 'h',
       basis: 'stake',
       currency: 'USD',
       amount: 1,
       restartOnError: false,
-
-
-
     }
     tradeOptions.symbol = 'R_100'
     return tradeOptions
@@ -56,13 +54,12 @@ describe('Run JSI over simple calculation', () => {
 
   before_purchase = function before_purchase(){
     Bot.purchase('CALL');
-
   };
 
   during_purchase = function during_purchase(){
     if (Bot.isSellAvailable()) {
+      Bot.sellAtMarket();
     }
-
   };
 
   var count = 2;
@@ -71,7 +68,6 @@ describe('Run JSI over simple calculation', () => {
       return true;
     return false;
   };
-
 
   var context
 
@@ -98,7 +94,7 @@ describe('Run JSI over simple calculation', () => {
   })
 
   it('return code is correct', () => {
-    expect(value.data).to.be.equal(true)
+    expect(value).to.be.equal(true)
   })
 })
 

@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#db8gmg
 import { translate } from '../../../../../common/i18n'
-import { throwError } from '../../../../../common/shared'
-import config from '../../../../../common/const'
+import { throwError } from '../../../../common/shared'
+import config from '../../../../common/const'
 import { marketDropdown, tradeTypeDropdown, restartOnError } from './components'
 import { updatePurchaseChoices, updateInputList, setInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'

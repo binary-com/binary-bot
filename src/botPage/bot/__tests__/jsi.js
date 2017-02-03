@@ -1,11 +1,12 @@
 import { expect } from 'chai'
 import JSI from '../JSI'
 
+const jsi = new JSI()
+
 describe('Run JSI over simple calculation', () => {
   let value
 
   beforeAll(done => {
-    const jsi = new JSI()
     jsi.run('1 + 2').then(v => {
       value = v
       done()
@@ -13,6 +14,6 @@ describe('Run JSI over simple calculation', () => {
   })
 
   it('return code is correct', () => {
-    expect(value.data).to.be.equal(3)
+    expect(value).to.be.equal(3)
   })
 })

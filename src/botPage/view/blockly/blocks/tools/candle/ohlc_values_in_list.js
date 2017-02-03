@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
-import config from '../../../../../../common/const'
+import config from '../../../../../common/const'
 import { translate } from '../../../../../../common/i18n'
 
 Blockly.Blocks.ohlc_values_in_list = {

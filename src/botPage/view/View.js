@@ -14,8 +14,9 @@ import { SaveXml } from './react-components/SaveXml'
 import { RestartTimeout } from './react-components/RestartTimeout'
 import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
-import { symbolPromise, observer } from '../../common/shared'
-import { logHandler } from '../../common/logger'
+import { observer } from '../common/shared'
+import { symbolPromise } from './shared'
+import { logHandler } from '../common/logger'
 import { Tour } from './tour'
 
 let realityCheckTimeout

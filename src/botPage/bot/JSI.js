@@ -43,7 +43,7 @@ export default class JSI {
           if (this.observer) {
             this.observer.unregisterAll('CONTINUE')
           }
-          r(interpreter.value)
+          r(interpreter.pseudoToNative(interpreter.value))
           return
         }
         if (!this.observer.isRegistered('CONTINUE')) {

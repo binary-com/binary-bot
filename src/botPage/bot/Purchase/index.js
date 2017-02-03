@@ -1,4 +1,4 @@
-import { observer as viewObserver } from '../../../common/shared'
+import { observer as viewObserver } from '../../common/shared'
 import Trade from './Trade'
 
 export default class PurchaseCtrl {
@@ -15,11 +15,12 @@ export default class PurchaseCtrl {
     return this.proposals[option]
   }
   isSellAvailable() {
-    return this.trade && this.trade.isSellAvailable
+    return !!(this.trade && this.trade.isSellAvailable)
   }
   sellAtMarket() {
-    return this.trade &&
-      this.trade.isSellAvailable && this.trade.sellAtMarket()
+    if (this.isSellAvailable()) {
+      this.trade.sellAtMarket()
+    }
   }
   setNumOfProposals(num) {
     this.expectedNumOfProposals = num

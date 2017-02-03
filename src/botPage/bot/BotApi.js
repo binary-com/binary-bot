@@ -1,7 +1,7 @@
 import { Stack } from 'immutable'
 import Bot from './'
 import { noop } from './tools'
-import { notifyError } from '../../common/logger'
+import { notifyError } from '../common/logger'
 
 export default class BotApi {
   constructor($scope) {
@@ -13,9 +13,6 @@ export default class BotApi {
     this.expected = 0
     this.context = {}
     this.observer.register('CONTEXT', r => {
-      if (!this.expectedScope(r.scope)) {
-        return
-      }
       if (this.reqQ.size) {
         const f = this.reqQ.first()
         this.reqQ = this.reqQ.shift()
@@ -25,6 +22,32 @@ export default class BotApi {
       }
       setTimeout(() => this.observer.emit('CONTINUE'), 0)
     })
+  }
+  getOhlc(field) {
+    const ohlc = this.context.data.ticksObj.ohlc
+
+    return field ? ohlc.map(o => o[field]) : ohlc
+  }
+  getTicks() {
+    return this.context.data.ticksObj.ticks.map(o => o.quote)
+  }
+  getPipSize() {
+    return this.context.data.ticksObj.pipSize
+  }
+  getTicksInterface() {
+    const getLastTick = () => this.getTicks().slice(-1)[0]
+
+    return {
+      getLastTick,
+      getLastDigit: () => +(getLastTick().toFixed(this.getPipSize()).slice(-1)[0]),
+      getOhlcFromEnd: (field, index) => {
+        const lastOhlc = this.getOhlc().slice(-(+index || 1))[0]
+
+        return field ? lastOhlc[field] : lastOhlc
+      },
+      getOhlc: (field) => this.getOhlc(field),
+      getTicks: () => this.getTicks(),
+    }
   }
   getInterface(scope = 'Global') {
     return scope === 'Bot' ? {
@@ -40,19 +63,13 @@ export default class BotApi {
           (+this.context.data.openContract.buy_price)).toFixed(2)),
       isResult: result => (this.context.data.contractDetails[10] === result),
       readDetails: i => this.context.data.contractDetails[+i - 1],
+      ...this.getTicksInterface(),
     } : {
       wait: arg => this.wait(arg),
       isInside: arg => this.isInside(arg),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
       notifyError: (...args) => notifyError(...args),
     }
-  }
-  expectedScope(scope) {
-    if (this.order[this.expected] === scope) {
-      this.expected = (this.expected + 1) % this.order.length
-      return true
-    }
-    return false
   }
   wait(arg) {
     return (typeof arg === 'number' ?
