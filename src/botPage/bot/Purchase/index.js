@@ -15,7 +15,7 @@ export default class PurchaseCtrl {
     return this.proposals[option]
   }
   isSellAvailable() {
-    return this.trade && this.trade.isSellAvailable
+    return !!(this.trade && this.trade.isSellAvailable)
   }
   sellAtMarket() {
     return this.trade &&

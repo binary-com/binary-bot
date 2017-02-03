@@ -13,9 +13,6 @@ export default class BotApi {
     this.expected = 0
     this.context = {}
     this.observer.register('CONTEXT', r => {
-      if (!this.expectedScope(r.scope)) {
-        return
-      }
       if (this.reqQ.size) {
         const f = this.reqQ.first()
         this.reqQ = this.reqQ.shift()
@@ -46,13 +43,6 @@ export default class BotApi {
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
       notifyError: (...args) => notifyError(...args),
     }
-  }
-  expectedScope(scope) {
-    if (this.order[this.expected] === scope) {
-      this.expected = (this.expected + 1) % this.order.length
-      return true
-    }
-    return false
   }
   wait(arg) {
     return (typeof arg === 'number' ?
