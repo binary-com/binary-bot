@@ -1,6 +1,6 @@
 import { getToken } from 'binary-common-utils/lib/storageManager'
 import { translate } from '../../common/i18n'
-import { observer } from './shared'
+import { observer } from '../common/shared'
 
 const log = (type, ...args) => {
   if (type === 'warn') {
@@ -31,12 +31,12 @@ const isNew = msg => {
 
 const notifyUniq = (msg, ...args) => isNew(msg) && $.notify(msg, ...args)
 
-export const notify = (msg, className, position = 'left', ...rest) => {
+const notify = (msg, className, position = 'left', ...rest) => {
   log(className, msg, ...rest)
   notifyUniq(msg, { position: `bottom ${position}`, className })
 }
 
-export const notifyError = (error) => {
+const notifyError = (error) => {
   let message = (error.error) ?
     error.error.message : error.message || error
   const errorCode = error.error ?
@@ -51,30 +51,50 @@ export const notifyError = (error) => {
   notify(message, 'error', 'right', error, completeMsg)
 }
 
-const errorList = ['api.error', 'BlocklyError', 'LimitsReached']
+const waitForNotifications = () => {
+  const errorList = ['api.error', 'BlocklyError', 'LimitsReached']
 
-const notifList = ['success', 'info', 'warn', 'error']
+  const notifList = ['success', 'info', 'warn', 'error']
 
-const logList = [
-  'log.bot.start',
-  'log.bot.login',
-  'log.bot.proposal',
-  'log.purchase.start',
-  'log.trade.purchase',
-  'log.trade.update',
-  'log.trade.finish',
-]
+  const logList = [
+    'log.bot.start',
+    'log.bot.login',
+    'log.bot.proposal',
+    'log.purchase.start',
+    'log.trade.purchase',
+    'log.trade.update',
+    'log.trade.finish',
+  ]
 
-const amplitudeList = ['log.bot.login', 'log.trade.finish']
+  const amplitudeList = ['log.bot.login', 'log.trade.finish']
 
-logList.forEach(event =>
-  observer.register(event, d => log('info', event, d)))
+  logList.forEach(event =>
+    observer.register(event, d => log('info', event, d)))
 
-errorList.forEach(type => observer.register(type, e => notifyError(e)))
+  observer.register('NotifyError', notifyError)
+  observer.register('Notify', notify)
 
-notifList.forEach(className =>
-  observer.register(`ui.log.${className}`, message =>
-    notify(message, className, 'right')))
+  errorList.forEach(type => observer.register(type, e => notifyError(e)))
+
+  notifList.forEach(className =>
+    observer.register(`ui.log.${className}`, message =>
+      notify(message, className, 'right')))
+
+  amplitudeList.forEach(event =>
+    observer.register(event, (d) => amplitude.getInstance().logEvent(event, d)))
+
+  observer.register('log.revenue', (data) => {
+    const { user, profit, contract } = data
+
+    if (typeof amplitude !== 'undefined' && !user.isVirtual) {
+      const revenue = new amplitude.Revenue()
+        .setProductId(`${contract.underlying}.${contract.contract_type}`)
+        .setPrice(-profit).setRevenueType((profit < 0) ? 'loss' : 'win')
+
+      amplitude.getInstance().logRevenueV2(revenue, { contract })
+    }
+  })
+}
 
 export const logHandler = () => {
   const token = $('.account-id').first().attr('value')
@@ -82,24 +102,11 @@ export const logHandler = () => {
 
   if (amplitude) {
     amplitude.getInstance().setUserId(userId)
-
-    amplitudeList.forEach(event =>
-      observer.register(event, (d) => amplitude.getInstance().logEvent(event, d)))
-
-    observer.register('log.revenue', (data) => {
-      const { user, profit, contract } = data
-
-      if (typeof amplitude !== 'undefined' && !user.isVirtual) {
-        const revenue = new amplitude.Revenue()
-          .setProductId(`${contract.underlying}.${contract.contract_type}`)
-          .setPrice(-profit).setRevenueType((profit < 0) ? 'loss' : 'win')
-
-        amplitude.getInstance().logRevenueV2(revenue, { contract })
-      }
-    })
   }
 
   if (trackJs) {
     trackJs.configure({ userId })
   }
+
+  waitForNotifications()
 }
