@@ -232,7 +232,7 @@ export default class _Blockly {
       window.LoopTrap = 99999999999
       Blockly.mainWorkspace.traceOn(true)
       Blockly.JavaScript
-        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
+        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
       this.disableStrayBlocks()
       code = `
       (function(){
