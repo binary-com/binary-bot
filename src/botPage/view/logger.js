@@ -71,8 +71,8 @@ const waitForNotifications = () => {
   logList.forEach(event =>
     observer.register(event, d => log('info', event, d)))
 
-  observer.register('NotifyError', notifyError)
-  observer.register('Notify', notify)
+  observer.register('NotifyError', args => notifyError(...args))
+  observer.register('Notify', args => notify(...args))
 
   errorList.forEach(type => observer.register(type, e => notifyError(e)))
 

@@ -10,6 +10,7 @@ export default class JSI {
   constructor($scope) {
     if ($scope) {
       this.botApi = new BotApi($scope)
+      this.stopped = false
       this.observer = $scope.observer
     }
   }
@@ -17,9 +18,9 @@ export default class JSI {
     let initFunc
 
     if (this.botApi) {
-      const Bot = this.botApi.getInterface('Bot')
+      this.Bot = this.botApi.getInterface('Bot')
 
-      const { isInside, wait, alert } = this.botApi.getInterface()
+      const { isInside, watch, alert, sleep, testScope } = this.botApi.getInterface()
 
       initFunc = (interpreter, scope) => {
         interpreter.setProperty(scope, 'console',
@@ -27,11 +28,15 @@ export default class JSI {
         interpreter.setProperty(scope, 'alert',
           interpreter.nativeToPseudo(alert))
         interpreter.setProperty(scope, 'Bot',
-          interpreter.nativeToPseudo(Bot))
+          interpreter.nativeToPseudo(this.Bot))
         interpreter.setProperty(scope, 'isInside',
           interpreter.nativeToPseudo(isInside))
-        interpreter.setProperty(scope, 'wait',
-          createAsync(interpreter, wait))
+        interpreter.setProperty(scope, 'testScope',
+          interpreter.nativeToPseudo(testScope))
+        interpreter.setProperty(scope, 'watch',
+          createAsync(interpreter, watch))
+        interpreter.setProperty(scope, 'sleep',
+          createAsync(interpreter, sleep))
       }
     }
 
@@ -39,7 +44,7 @@ export default class JSI {
       const interpreter = new Interpreter(code, initFunc)
 
       const loop = () => {
-        if (!interpreter.run()) {
+        if (this.stopped || !interpreter.run()) {
           if (this.observer) {
             this.observer.unregisterAll('CONTINUE')
           }
@@ -53,5 +58,9 @@ export default class JSI {
 
       loop()
     })
+  }
+  stop() {
+    this.stopped = true
+    this.Bot.stop()
   }
 }

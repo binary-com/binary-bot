@@ -31,7 +31,7 @@ describe('Blocks Api', () => {
             currency: 'USD', duration: 2,
             duration_unit: 'h', symbol: 'R_100',
           }, again);
-          var context = wait('CONTEXT');
+          var context = watch('before');
           if (!again) {
             ticksResult.lastOhlc = Bot.getOhlcFromEnd();
             ticksResult.ohlc = Bot.getOhlc();
@@ -44,8 +44,10 @@ describe('Blocks Api', () => {
             result.askPrice = Bot.getAskPrice('CALL');
             result.payout = Bot.getPayout('CALL');
           }
-          Bot.purchase('CALL');
-          while ((context = wait('CONTEXT')).scope === 'during') {
+          while (testScope(context = watch('before'), 'before')) {
+            Bot.purchase('CALL');
+          }
+          while (testScope(context = watch('during'), 'during')) {
             if (!again) {
               result.sellAvailable = Bot.isSellAvailable();
               result.sellPrice = Bot.getSellPrice();
