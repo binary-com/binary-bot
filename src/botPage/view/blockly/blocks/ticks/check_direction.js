@@ -18,6 +18,5 @@ Blockly.Blocks.check_direction = {
 }
 Blockly.JavaScript.check_direction = (block) => {
   const checkWith = block.getFieldValue('CHECK_DIRECTION')
-  const code = `(this.ticksObj.direction === '${checkWith}')`
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+  return [`Bot.checkDirection('${checkWith}')`, Blockly.JavaScript.ORDER_ATOMIC]
 }

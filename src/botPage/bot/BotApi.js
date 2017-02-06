@@ -1,7 +1,7 @@
 import { Stack } from 'immutable'
 import Bot from './'
 import { noop } from './tools'
-import { notifyError } from '../common/logger'
+import { notifyError, notify } from '../common/logger'
 
 export default class BotApi {
   constructor($scope) {
@@ -34,23 +34,8 @@ export default class BotApi {
   getPipSize() {
     return this.context.data.ticksObj.pipSize
   }
-  getTicksInterface() {
-    const getLastTick = () => this.getTicks().slice(-1)[0]
-
+  getBotInterface() {
     return {
-      getLastTick,
-      getLastDigit: () => +(getLastTick().toFixed(this.getPipSize()).slice(-1)[0]),
-      getOhlcFromEnd: (field, index) => {
-        const lastOhlc = this.getOhlc().slice(-(+index || 1))[0]
-
-        return field ? lastOhlc[field] : lastOhlc
-      },
-      getOhlc: (field) => this.getOhlc(field),
-      getTicks: () => this.getTicks(),
-    }
-  }
-  getInterface(scope = 'Global') {
-    return scope === 'Bot' ? {
       start: (...args) => this.bot.start(...args),
       purchase: option => this.bot.purchase.purchase(option),
       getContract: (...args) => this.bot.purchase.getContract(...args),
@@ -63,12 +48,41 @@ export default class BotApi {
           (+this.context.data.openContract.buy_price)).toFixed(2)),
       isResult: result => (this.context.data.contractDetails[10] === result),
       readDetails: i => this.context.data.contractDetails[+i - 1],
+    }
+  }
+  getTicksInterface() {
+    const getLastTick = () => this.getTicks().slice(-1)[0]
+    const getDirection = () => this.context.data.ticksObj.direction
+
+    return {
+      getLastTick,
+      getLastDigit: () => +(getLastTick().toFixed(this.getPipSize()).slice(-1)[0]),
+      getOhlcFromEnd: (field, index) => {
+        const lastOhlc = this.getOhlc().slice(-(+index || 1))[0]
+
+        return field ? lastOhlc[field] : lastOhlc
+      },
+      getOhlc: (field) => this.getOhlc(field),
+      getTicks: () => this.getTicks(),
+      checkDirection: w => getDirection() === w,
+      getDirection,
+    }
+  }
+  getToolsInterface() {
+    return {
+      notify: (...args) => notify(...args),
+      notifyError: (...args) => notifyError(...args),
+    }
+  }
+  getInterface(scope = 'Global') {
+    return scope === 'Bot' ? {
+      ...this.getBotInterface(),
       ...this.getTicksInterface(),
+      ...this.getToolsInterface(),
     } : {
       wait: arg => this.wait(arg),
       isInside: arg => this.isInside(arg),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
-      notifyError: (...args) => notifyError(...args),
     }
   }
   wait(arg) {
