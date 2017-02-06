@@ -16,7 +16,7 @@ const botApi = new BotApi($scope)
 
 const Bot = botApi.getInterface('Bot')
 
-const { isInside, wait, alert } = botApi.getInterface()
+const { isInside, watch, alert } = botApi.getInterface()
 
 describe('BotApi', () => {
   it('alert should not be native', () => {
@@ -40,7 +40,7 @@ describe('BotApi', () => {
         symbol: 'R_100',
       })
 
-      wait('CONTEXT').then(c => (context = c))
+      watch('before').then(c => (context = c))
 
       observer.register('CONTINUE', done, true)
     })

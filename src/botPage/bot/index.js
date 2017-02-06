@@ -4,6 +4,13 @@ import { translate } from '../../common/i18n'
 import { observer as viewObserver } from '../common/shared'
 import { noop, getDirection, tradeOptionToProposal, getPipSizes } from './tools'
 
+let totalRuns = 0
+let totalProfit = 0
+let totalWins = 0
+let totalLosses = 0
+let totalStake = 0
+let totalPayout = 0
+
 export default class Bot {
   constructor($scope) {
     this.ticks = []
@@ -12,12 +19,6 @@ export default class Bot {
     this.balanceStr = ''
     this.symbol = ''
     this.candleInterval = 0
-    this.totalProfit = 0
-    this.totalRuns = 0
-    this.totalWins = 0
-    this.totalLosses = 0
-    this.totalStake = 0
-    this.totalPayout = 0
     this.sessionRuns = 0
     this.sessionProfit = 0
     this.running = false
@@ -240,10 +241,10 @@ export default class Bot {
   subscribeToTradePurchase() {
     this.subscribeToStream(
       'trade.purchase', info => {
-        this.totalRuns += 1
+        totalRuns += 1
         this.sessionRuns += 1
         viewObserver.emit('bot.tradeInfo', {
-          totalRuns: this.totalRuns,
+          totalRuns,
           transaction_ids: { buy: info.purchasedContract.transaction_id },
           contract_type: info.contract.contract_type,
           buy_price: info.purchasedContract.buy_price,
@@ -259,23 +260,23 @@ export default class Bot {
     const profit = +((+contract.sell_price) - (+contract.buy_price)).toFixed(2)
 
     if (+profit > 0) {
-      this.totalWins += 1
+      totalWins += 1
     } else if (+profit < 0) {
-      this.totalLosses += 1
+      totalLosses += 1
     }
     this.sessionProfit = +(this.sessionProfit + profit).toFixed(2)
-    this.totalProfit = +(this.totalProfit + profit).toFixed(2)
-    this.totalStake = +(this.totalStake + (+contract.buy_price)).toFixed(2)
-    this.totalPayout = +(this.totalPayout + (+contract.sell_price)).toFixed(2)
+    totalProfit = +(totalProfit + profit).toFixed(2)
+    totalStake = +(totalStake + (+contract.buy_price)).toFixed(2)
+    totalPayout = +(totalPayout + (+contract.sell_price)).toFixed(2)
 
     viewObserver.emit('bot.tradeInfo', {
       profit,
       contract,
-      totalProfit: this.totalProfit,
-      totalWins: this.totalWins,
-      totalLosses: this.totalLosses,
-      totalStake: this.totalStake,
-      totalPayout: this.totalPayout,
+      totalProfit,
+      totalWins,
+      totalLosses,
+      totalStake,
+      totalPayout,
     })
   }
   botFinish(finishedContract) {

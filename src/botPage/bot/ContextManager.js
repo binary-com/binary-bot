@@ -78,11 +78,17 @@ export default class ContextManager {
       this.setInside('after', 'finishedContract', new Map(value))
     }
   }
-  execContext(name, value) {
-    this.setContext(name, value)
-    if (name !== 'shared') {
+  execContext(scope, value) {
+    if (!value) {
+      this.observer.emit('CONTEXT', { scope })
+      return
+    }
+
+    this.setContext(scope, value)
+
+    if (scope !== 'shared') {
       this.observer.emit('CONTEXT',
-        { scope: name, data: this.getContext(name) })
+        { scope, data: this.getContext(scope) })
     }
   }
 }

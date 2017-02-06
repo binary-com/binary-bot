@@ -29,10 +29,10 @@ describe('Run JSI over bot', () => {
         }
         );
         var context
-        while ((context = wait('CONTEXT')).scope === 'before') {
+        while (testScope(context = watch('before'), 'before')) {
           Bot.purchase('CALL')
         }
-        while ((context = wait('CONTEXT')).scope === 'during') {
+        while (testScope(context = watch('during'), 'during')) {
           Bot.sellAtMarket();
         }
         return isInside('after')

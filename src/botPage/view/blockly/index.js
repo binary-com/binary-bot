@@ -1,3 +1,5 @@
+import CustomApi from 'binary-common-utils/lib/customApi'
+import Observer from 'binary-common-utils/lib/observer'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import config from '../../common/const'
 import { observer, throwError } from '../../common/shared'
@@ -11,15 +13,12 @@ import blocks from './blocks'
 import JSI from '../../bot/JSI'
 import { getLanguage } from '../../../common/lang'
 
-const noop = () => {}
-
 const setBeforeUnload = off =>
   (window.onbeforeunload = off ? null :
     () => 'You have some unsaved blocks, do you want to save them before you exit?')
 
 export default class _Blockly {
-  constructor($scope) {
-    this.$scope = $scope
+  constructor() {
     this.blocksXmlStr = ''
     this.generatedJs = ''
     this.addBlocklyTranslation()
@@ -261,11 +260,11 @@ export default class _Blockly {
         while(true) {
           run(trade, again)
           again = true;
-          while((context = wait('CONTEXT')).scope === 'before') {
+          while(testScope(context = watch('before'), 'before')) {
             tick_analysis();
             run(before_purchase)
           }
-          while((context = wait('CONTEXT')).scope === 'during') {
+          while(testScope(context = watch('during'), 'during')) {
             tick_analysis();
             run(during_purchase)
           }
@@ -282,8 +281,10 @@ export default class _Blockly {
       throwError(e)
     }
     if (code) {
-      this.jsi = new JSI(this.$scope)
-      this.jsi.run(code, noop)
+      const o = new Observer()
+      const $scope = { observer: o, api: new CustomApi(o) }
+      this.jsi = new JSI($scope)
+      this.jsi.run(code).then(() => $scope.api.originalApi.disconnect())
       $('#summaryPanel')
         .show()
     }
