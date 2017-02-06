@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { LiveApi } from 'binary-live-api'
-import CustomApi from 'binary-common-utils/lib/customApi'
-import Observer from 'binary-common-utils/lib/observer'
 import { getTokenList, removeAllTokens, get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
@@ -16,7 +14,7 @@ import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
 import { observer } from '../common/shared'
 import { symbolPromise } from './shared'
-import { logHandler } from '../common/logger'
+import { logHandler } from './logger'
 import { Tour } from './tour'
 
 let realityCheckTimeout
@@ -110,8 +108,6 @@ const initializeApi = () => {
 
 export default class View {
   constructor() {
-    const o = new Observer()
-    this.$scope = { observer: o, api: new CustomApi(o) }
     this.chartType = 'line'
     logHandler()
     this.tradeInfo = new TradeInfo()
@@ -119,7 +115,7 @@ export default class View {
     this.initPromise = new Promise(resolve => {
       symbolPromise.then(() => {
         this.updateTokenList()
-        this.blockly = new _Blockly(this.$scope)
+        this.blockly = new _Blockly()
         this.blockly.initPromise.then(() => {
           this.setElementActions()
           $('#accountLis')
@@ -143,7 +139,7 @@ export default class View {
     } else {
       loginButton.hide()
       accountList.show()
-      for (const tokenInfo of tokenList) {
+      tokenList.forEach(tokenInfo => {
         let prefix = ''
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
@@ -156,7 +152,7 @@ export default class View {
           $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
             '<div class="separator-line-thin-gray"></div>')
         }
-      }
+      })
     }
   }
   setFileBrowser() {
@@ -178,14 +174,14 @@ export default class View {
         files = e.target.files
       }
       files = [...files]
-      for (const file of files) {
+      files.forEach(file => {
         if (file.type.match('text/xml')) {
           readFile(file, dropEvent)
         } else {
           observer.emit('ui.log.info', `${
           translate('File is not supported:')} ${file.name}`)
         }
-      }
+      })
     }
 
     const handleDragOver = (e) => {
@@ -235,7 +231,7 @@ export default class View {
         e.preventDefault()
       }
       stopRealityCheck()
-      window.Bot.stop()
+      this.blockly.jsi.stop()
     }
 
     const logout = () => {
@@ -454,32 +450,30 @@ export default class View {
       />, $('#chart')[0])
   }
   addEventHandlers() {
-    for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
+    ['api.error', 'BlocklyError', 'RuntimeError'].forEach(errorType =>
       observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
         if (error.error && error.error.code === 'InvalidToken') {
           removeAllTokens()
           this.updateTokenList()
         }
-        window.Bot.stop()
-        if (window.Bot.shouldRestartOnError()) {
+        this.blockly.jsi.stop()
+        if (this.blockly.jsi.Bot.shouldRestartOnError()) {
           ReactDOM.render(
             <RestartTimeout
             timeout="3"
             />
             , document.getElementById('restartTimeout'))
         }
-      })
-    }
+      }))
 
     observer.register('bot.stop', () => {
       $('#runButton').show()
       $('#stopButton').hide()
     })
 
-    observer.register('bot.tradeInfo', (tradeInfo) => {
-      for (const key of Object.keys(tradeInfo)) {
-        this.tradeInfo.tradeInfo[key] = tradeInfo[key]
-      }
+    observer.register('bot.tradeInfo', tradeInfo => {
+      Object.keys(tradeInfo).forEach(key =>
+        (this.tradeInfo.tradeInfo[key] = tradeInfo[key]))
       if ('profit' in tradeInfo) {
         const token = $('.account-id').first().attr('value')
         const user = getToken(token)

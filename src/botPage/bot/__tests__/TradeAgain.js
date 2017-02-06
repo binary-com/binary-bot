@@ -30,9 +30,10 @@ describe('Multiple trades', () => {
             duration_unit: 'h', symbol: 'R_100',
           }, again);
           again = true;
-          var context = wait('CONTEXT');
-          Bot.purchase("CALL");
-          while ((context = wait('CONTEXT')).scope === 'during') {
+          while (testScope(context = watch('before'), 'before')) {
+            Bot.purchase("CALL");
+          }
+          while (testScope(context = watch('during'), 'during')) {
             Bot.sellAtMarket();
           }
           if (--count === 0) {

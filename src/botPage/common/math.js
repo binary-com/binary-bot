@@ -4,10 +4,10 @@ import bollingerBands, { bollingerBandsArray } from 'binary-indicators/lib/bolli
 import relativeStrengthIndex, { relativeStrengthIndexArray } from 'binary-indicators/lib/relativeStrengthIndex'
 import macdArray from 'binary-indicators/lib/macd'
 
-// f(input, Object.assign({ pipSize: bot.pipSize }, config), ...args)
-const decorateWithPipSize = f =>
-  (input, config, ...args) => {
+const decorateWithPipSize = () /* f */ =>
+  (/* input, config, ...args */) => {
     throw Error('Not implemented!')
+    // f(input, Object.assign({ pipSize: bot.pipSize }, config), ...args)
   }
 
 export default {

@@ -11,5 +11,4 @@ Blockly.Blocks.epoch = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }
-Blockly.JavaScript.epoch = () => [
-  '(parseInt((new Date().getTime())/1000))', Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.epoch = () => ['Bot.getTime()', Blockly.JavaScript.ORDER_ATOMIC]
