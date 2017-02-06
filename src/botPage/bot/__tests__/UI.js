@@ -75,10 +75,10 @@ describe('Run UI generated code', () => {
   while(true) {
     run(trade, again)
     again = true;
-    while((context = wait('CONTEXT')).scope === 'before') {
+    while(testScope(context = watch('before'), 'before')) {
       run(before_purchase)
     }
-    while((context = wait('CONTEXT')).scope === 'during') {
+    while(testScope(context = watch('during'), 'during')) {
       run(during_purchase)
     }
     if(!run(after_purchase)) {

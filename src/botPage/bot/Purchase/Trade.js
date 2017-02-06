@@ -60,34 +60,32 @@ export default class Trade {
     if (!this.contractId) {
       return
     }
-    this.subscribeToStream(
-      'api.proposal_open_contract', contract => {
-        if (this.retryIfContractNotReceived(contract)) {
-          return
-        }
+    this.subscribeToStream('api.proposal_open_contract', contract => {
+      if (this.retryIfContractNotReceived(contract)) {
+        return
+      }
 
-        this.isSellAvailable = !this.isSold &&
-          !contract.is_expired && contract.is_valid_to_sell
+      this.isSellAvailable = !this.isSold &&
+        !contract.is_expired && contract.is_valid_to_sell
 
-        this.onContractUpdate(contract)
+      this.onContractUpdate(contract)
 
-        this.onContractExpire(contract)
-      }, () => this.api.proposal_open_contract(this.contractId),
-      false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
+      this.onContractExpire(contract)
+    }, () => this.api.proposal_open_contract(this.contractId),
+    false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }
   purchase(contract) {
-    this.subscribeToStream(
-      'api.buy', purchasedContract => {
-        viewObserver.emit('log.trade.purchase', purchasedContract)
-        this.observer.emit('trade.purchase', { contract, purchasedContract })
-        viewObserver.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)
+    this.subscribeToStream('api.buy', purchasedContract => {
+      viewObserver.emit('log.trade.purchase', purchasedContract)
+      this.observer.emit('trade.purchase', { contract, purchasedContract })
+      viewObserver.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)
 
-        this.isSold = false
+      this.isSold = false
 
-        this.contractId = purchasedContract.contract_id
-        this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
-        this.subscribeToOpenContract()
-      }, () => this.api.buy(contract.id, contract.ask_price),
-      true, 'buy', ['trade.purchase'])
+      this.contractId = purchasedContract.contract_id
+      this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
+      this.subscribeToOpenContract()
+    }, () => this.api.buy(contract.id, contract.ask_price),
+    true, 'buy', ['trade.purchase'])
   }
 }

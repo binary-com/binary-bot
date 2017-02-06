@@ -1,7 +1,7 @@
 import { observer as viewObserver } from '../../common/shared'
 import Trade from './Trade'
 
-export default class PurchaseCtrl {
+export default class Purchase {
   constructor($scope, CM) {
     this.api = $scope.api
     this.$scope = $scope
@@ -45,6 +45,7 @@ export default class PurchaseCtrl {
       this.purchased = true
       this.trade = new Trade(this.$scope, this.CM)
       this.trade.purchase(this.proposals[option])
+      this.CM.execContext('between-before-and-during')
     }
   }
 }

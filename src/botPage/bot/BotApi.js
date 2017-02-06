@@ -1,27 +1,16 @@
-import { Stack } from 'immutable'
+import { Map } from 'immutable'
 import Bot from './'
 import { noop } from './tools'
-import { notifyError, notify } from '../common/logger'
+import { observer as viewObserver } from '../common/shared'
 
 export default class BotApi {
   constructor($scope) {
     this.bot = new Bot($scope)
     this.observer = $scope.observer
-    this.reqQ = new Stack()
-    this.respQ = new Stack()
-    this.order = ['before', 'during', 'after']
-    this.expected = 0
+    this.reqs = new Map()
+    this.resps = new Map()
     this.context = {}
-    this.observer.register('CONTEXT', r => {
-      if (this.reqQ.size) {
-        const f = this.reqQ.first()
-        this.reqQ = this.reqQ.shift()
-        f(r)
-      } else {
-        this.respQ = this.respQ.unshift(r)
-      }
-      setTimeout(() => this.observer.emit('CONTINUE'), 0)
-    })
+    this.observeContexts()
   }
   getOhlc(field) {
     const ohlc = this.context.data.ticksObj.ohlc
@@ -37,6 +26,8 @@ export default class BotApi {
   getBotInterface() {
     return {
       start: (...args) => this.bot.start(...args),
+      stop: (...args) => this.bot.stop(...args),
+      shouldRestartOnError: (...args) => this.bot.shouldRestartOnError(...args),
       purchase: option => this.bot.purchase.purchase(option),
       getContract: (...args) => this.bot.purchase.getContract(...args),
       getAskPrice: name => +(this.bot.purchase.getContract(name).ask_price),
@@ -70,8 +61,9 @@ export default class BotApi {
   }
   getToolsInterface() {
     return {
-      notify: (...args) => notify(...args),
-      notifyError: (...args) => notifyError(...args),
+      notifyError: (...args) => viewObserver.emit('NotifyError', args),
+      notify: (...args) => viewObserver.emit('Notify', args),
+      getTime: () => parseInt((new Date().getTime()) / 1000, 10),
     }
   }
   getInterface(scope = 'Global') {
@@ -80,23 +72,56 @@ export default class BotApi {
       ...this.getTicksInterface(),
       ...this.getToolsInterface(),
     } : {
-      wait: arg => this.wait(arg),
-      isInside: arg => this.isInside(arg),
+      watch: (...args) => this.watch(...args),
+      sleep: (...args) => this.sleep(...args),
+      isInside: (...args) => this.isInside(...args),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
+      testScope: (context, expected) => context.scope === expected && context.data,
     }
   }
-  wait(arg) {
-    return (typeof arg === 'number' ?
-      new Promise(r => setTimeout(() => r(), arg), noop) :
-      new Promise(r => {
-        if (this.respQ.size) {
-          const c = this.respQ.first()
-          this.respQ = this.respQ.shift()
-          r(this.context = c)
-        } else {
-          this.reqQ = this.reqQ.unshift(c => r(this.context = c))
-        }
-      }))
+  sleep(arg) {
+    return new Promise(r => setTimeout(() => r(), arg), noop)
+  }
+  deletePrevScopeReqs(r) {
+    if (r.scope === 'between-before-and-during') {
+      this.resps = this.resps.set('before', { scope: 'before' })
+    }
+  }
+  handleAfter(r) {
+    this.resps = this.resps.set('after', r)
+    if (this.reqs.has('during')) {
+      this.reqs.get('during')({ scope: 'during' })
+      this.reqs = this.reqs.delete('during')
+    }
+  }
+  respondWithContext(r) {
+    if (this.reqs.has(r.scope)) {
+      this.reqs.get(r.scope)(r)
+      this.reqs = this.reqs.delete(r.scope)
+    } else if (r.scope === 'after') {
+      this.handleAfter(r)
+    }
+  }
+  observeContexts() {
+    this.observer.register('CONTEXT', r => {
+      this.context = r
+      this.deletePrevScopeReqs(r)
+      this.respondWithContext(r)
+
+      setTimeout(() => this.observer.emit('CONTINUE'), 0)
+    })
+  }
+  watch(scope) {
+    return new Promise(r => {
+      const response = this.resps.get(scope)
+
+      if (response) {
+        this.resps = this.resps.delete(scope)
+        r(response)
+      } else {
+        this.reqs = this.reqs.set(scope, c => r(c))
+      }
+    })
   }
   isInside(scope) {
     return this.context.scope === scope
