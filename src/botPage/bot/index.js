@@ -17,6 +17,7 @@ export default class Bot {
     this.candleInterval = this.totalProfit = this.totalRuns =
     this.totalWins = this.totalLosses = this.totalStake =
     this.sessionRuns = this.sessionProfit = this.totalPayout =
+    this.running = false
     this.balance = 0
     this.pipSize = 2
     this.api = (api === null) ? new CustomApi() : api
@@ -45,7 +46,7 @@ export default class Bot {
     this.ohlc = [...prevCandles, candle]
   }
   handleTradeUpdate(contract) {
-    if (this.purchaseCtrl) {
+    if (this.running) {
       observer.emit('bot.tradeUpdate', contract)
     }
   }
@@ -68,9 +69,7 @@ export default class Bot {
     this.context.createTicks(ticksObj)
     this.context.tickAnalysis()
 
-    if (this.purchaseCtrl) {
-      this.purchaseCtrl.updateTicks(ticksObj)
-    }
+    this.purchaseCtrl.updateTicks(ticksObj)
 
     observer.emit('bot.tickUpdate', ticksObj)
   }
@@ -133,20 +132,19 @@ export default class Bot {
       return
     }
 
-    if (!this.purchaseCtrl) {
-      this.tradeOption = tradeOption
+    this.tradeOption = tradeOption
 
-      this.purchaseCtrl = new PurchaseCtrl(this.api, this.context)
+    this.purchaseCtrl = new PurchaseCtrl(this.api, this.context)
 
-      this.pipSize = this.getPipSize()
+    this.pipSize = this.getPipSize()
 
-      observer.emit('log.bot.start', { again: !!sameTrade })
+    observer.emit('log.bot.start', { again: !!sameTrade })
 
-      if (sameTrade) {
-        this.startTrading()
-      } else {
-        this.loginAndStartTrading(token)
-      }
+    if (sameTrade) {
+      this.startTrading()
+    } else {
+      this.running = true
+      this.loginAndStartTrading(token)
     }
   }
   login(token) {
@@ -209,16 +207,14 @@ export default class Bot {
   subscribeToProposals() {
     subscribeToStream(
       'api.proposal', proposal => {
-        if (this.purchaseCtrl) {
+        if (this.running) {
           observer.emit('log.bot.proposal', proposal)
           this.purchaseCtrl.updateProposal(proposal)
         }
       }, () => {
         const proposals = this.genProposals()
 
-        if (this.purchaseCtrl) {
-          this.purchaseCtrl.setNumOfProposals(proposals.length)
-        }
+        this.purchaseCtrl.setNumOfProposals(proposals.length)
         this.api.originalApi.unsubscribeFromAllProposals()
           .then(() => proposals.forEach(p => this.api.proposal(p)), noop)
       }, false, null)
@@ -270,13 +266,12 @@ export default class Bot {
     })
   }
   botFinish(finishedContract) {
-    this.purchaseCtrl = null
     this.updateTotals(finishedContract)
     observer.emit('bot.finish', finishedContract)
     this.context.afterPurchase(finishedContract)
   }
   stop() {
-    this.purchaseCtrl = null
+    this.running = false
     this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
     observer.emit('bot.stop')
   }
