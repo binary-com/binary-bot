@@ -7,7 +7,8 @@ export default class Trade {
   constructor(api) {
     this.api = api
     this.openContract = null
-    this.isSellAvailable = this.isSold = false
+    this.isSellAvailable = false
+    this.isSold = false
   }
   sellAtMarket() {
     if (!this.isSold) {

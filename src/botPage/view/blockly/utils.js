@@ -26,24 +26,27 @@ export const backwardCompatibility = (block) => {
   } else if (block.getAttribute('type') === 'on_finish') {
     block.setAttribute('type', 'after_purchase')
   }
-  for (const statement of Array.prototype.slice.call(block.getElementsByTagName('statement'))) {
+  Array.from(block.getElementsByTagName('statement')).forEach(statement => {
     if (statement.getAttribute('name') === 'STRATEGY_STACK') {
       statement.setAttribute('name', 'BEFOREPURCHASE_STACK')
     } else if (statement.getAttribute('name') === 'FINISH_STACK') {
       statement.setAttribute('name', 'AFTERPURCHASE_STACK')
     }
-  }
+  })
   if (isMainBlock(block.getAttribute('type'))) {
     block.removeAttribute('deletable')
   }
 }
 
-export const fixCollapsedBlocks = () => {
-  for (const block of getCollapsedProcedures()) {
+const getCollapsedProcedures = () => Blockly.mainWorkspace.getTopBlocks().filter(
+  (block) => (!isMainBlock(block.type)
+    && block.collapsed_ && block.type.indexOf('procedures_def') === 0))
+
+export const fixCollapsedBlocks = () =>
+  getCollapsedProcedures().forEach(block => {
     block.setCollapsed(false)
     block.setCollapsed(true)
-  }
-}
+  })
 
 export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
   const {
@@ -56,44 +59,36 @@ export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
   const blocklyTop = (document.body.offsetHeight - blocklyMetrics.viewHeight) - blocklyMetrics.viewTop
   const cursorX = (clientX) ? (clientX - blocklyLeft) * scaleCancellation : 0
   let cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0
-  for (const block of blocksToClean) {
+  blocksToClean.forEach(block => {
     block.moveBy(cursorX, cursorY)
     block.snapToGrid()
     cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
-  }
+  })
   // Fire an event to allow scrollbars to resize.
   Blockly.mainWorkspace.resizeContents()
 }
 
-const getCollapsedProcedures = () => Blockly.mainWorkspace.getTopBlocks().filter(
-  (block) => (!isMainBlock(block.type)
-    && block.collapsed_ && block.type.indexOf('procedures_def') === 0))
-
 export const deleteBlockIfExists = (block) => {
   Blockly.Events.recordUndo = false
-  for (const mainBlock of Blockly.mainWorkspace.getTopBlocks()) {
-    if (!block.isInFlyout && mainBlock.id !== block.id && mainBlock.type === block.type) {
-      block.dispose()
-      return true
-    }
-  }
+  const existed = Blockly.mainWorkspace.getTopBlocks().filter(mainBlock =>
+    !block.isInFlyout && mainBlock.id !== block.id && mainBlock.type === block.type)
+      .map(b => b.dispose()).length
   Blockly.Events.recordUndo = true
-  return false
+  return existed
 }
 
 export const setBlockTextColor = (block) => {
   Blockly.Events.recordUndo = false
   if (block.inputList instanceof Array) {
-    for (const inp of Array.prototype.slice.call(block.inputList)) {
-      for (const field of inp.fieldRow) {
+    Array.from(block.inputList).forEach(inp =>
+      inp.fieldRow.forEach(field => {
         if (field instanceof Blockly.FieldLabel) {
           const svgElement = field.getSvgRoot()
           if (svgElement) {
             svgElement.style.setProperty('fill', 'white', 'important')
           }
         }
-      }
-    }
+      }))
   }
   const field = block.getField()
   if (field) {
@@ -107,56 +102,26 @@ export const setBlockTextColor = (block) => {
 
 export const configMainBlock = (ev, type) => {
   if (ev.type === 'create') {
-    for (const blockId of ev.ids) {
+    ev.ids.forEach(blockId => {
       const block = Blockly.mainWorkspace.getBlockById(blockId)
-      if (block) {
-        if (block.type === type) {
-          deleteBlockIfExists(block)
-        }
+      if (block && block.type === type) {
+        deleteBlockIfExists(block)
       }
-    }
+    })
   }
 }
 
-export const getBlockByType = (type) => {
-  for (const block of Blockly.mainWorkspace.getAllBlocks()) {
-    if (type === block.type) {
-      return block
-    }
-  }
-  return null
-}
+export const getBlockByType = type =>
+  Blockly.mainWorkspace.getAllBlocks().find(block => type === block.type)
 
-export const getMainBlocks = () => {
-  const result = []
-  for (const blockType of config.mainBlocks) {
-    const block = getBlockByType(blockType)
-    if (block) {
-      result.push(block)
-    }
-  }
-  return result
-}
+export const getBlocksByType = type =>
+  Blockly.mainWorkspace.getAllBlocks().filter(block => type === block.type)
 
-export const getBlocksByType = (type) => {
-  const result = []
-  for (const block of Blockly.mainWorkspace.getAllBlocks()) {
-    if (type === block.type) {
-      result.push(block)
-    }
-  }
-  return result
-}
+export const getTopBlocksByType = type =>
+  Blockly.mainWorkspace.getTopBlocks().filter(block => type === block.type)
 
-export const getTopBlocksByType = (type) => {
-  const result = []
-  for (const block of Blockly.mainWorkspace.getTopBlocks()) {
-    if (type === block.type) {
-      result.push(block)
-    }
-  }
-  return result
-}
+export const getMainBlocks = () =>
+  config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b)
 
 export const getPurchaseChoices = () => purchaseChoices
 
@@ -190,7 +155,7 @@ export const updatePurchaseChoices = (contractType, oppositesName) => {
   const purchases = Blockly.mainWorkspace.getAllBlocks()
     .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0))
   Blockly.Events.recordUndo = false
-  for (const purchase of purchases) {
+  purchases.forEach(purchase => {
     const value = purchase.getField('PURCHASE_LIST')
       .getValue()
     Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'))
@@ -206,7 +171,7 @@ export const updatePurchaseChoices = (contractType, oppositesName) => {
       purchase.getField('PURCHASE_LIST')
         .setText(purchaseChoices[0][0])
     }
-  }
+  })
   Blockly.Events.recordUndo = true
 }
 
@@ -316,7 +281,7 @@ Hide.prototype.type = 'hide'
 
 export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
   Blockly.Events.setGroup(eventGroup)
-  for (const block of Blockly.mainWorkspace.getTopBlocks()) {
+  Blockly.mainWorkspace.getTopBlocks().forEach(block => {
     if (block.loaderId === id) {
       if (isProcedure(block.type)) {
         if (block.getFieldValue('NAME').indexOf('deleted') < 0) {
@@ -326,7 +291,7 @@ export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
         block.dispose()
       }
     }
-  }
+  })
   Blockly.Events.setGroup(false)
 }
 
@@ -334,11 +299,8 @@ export const addDomAsBlock = (blockXml) => {
   backwardCompatibility(blockXml)
   const blockType = blockXml.getAttribute('type')
   if (isMainBlock(blockType)) {
-    for (const b of Blockly.mainWorkspace.getTopBlocks()) {
-      if (b.type === blockType) {
-        b.dispose()
-      }
-    }
+    Blockly.mainWorkspace.getTopBlocks()
+      .filter(b => b.type === blockType).forEach(b => b.dispose())
   }
   return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
 }
@@ -383,14 +345,17 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
 
 const processLoaders = (xml, header = null) => {
   const promises = []
-  for (const block of Array.prototype.slice.call(xml.children)) {
+  Array.from(xml.children).forEach(block => {
     if (block.getAttribute('type') === 'loader') {
       block.remove()
-      const loader = header ? addDomAsBlockFromHeader(block, header)
-        : Blockly.Xml.domToBlock(block, Blockly.mainWorkspace)
+
+      const loader = header ?
+        addDomAsBlockFromHeader(block, header) :
+        Blockly.Xml.domToBlock(block, Blockly.mainWorkspace)
+
       promises.push(loadRemote(loader)) // eslint-disable-line no-use-before-define
     }
-  }
+  })
   return promises
 }
 
@@ -410,14 +375,11 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
       const recordUndo = Blockly.Events.recordUndo
       Blockly.Events.recordUndo = false
       addLoadersFirst(xml, header).then(() => {
-        for (const block of Array.prototype.slice.call(xml.children)) {
-          if (['tick_analysis',
-              'timeout',
-              'interval'].indexOf(block.getAttribute('type')) >= 0 ||
-            isProcedure(block.getAttribute('type'))) {
-            addDomAsBlockFromHeader(block, header)
-          }
-        }
+        Array.from(xml.children).filter(block =>
+          ['tick_analysis', 'timeout', 'interval']
+        .includes(block.getAttribute('type')) || isProcedure(block.getAttribute('type')))
+            .forEach(block => addDomAsBlockFromHeader(block, header))
+
         Blockly.Events.recordUndo = recordUndo
         resolve()
       }, e => {
@@ -448,11 +410,11 @@ export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
       url += 'index.xml'
     }
     let isNew = true
-    for (const block of getTopBlocksByType('loader')) {
+    getTopBlocksByType('loader').forEach(block => {
       if (block.id !== blockObj.id && block.url === url) {
         isNew = false
       }
-    }
+    })
     if (!isNew) {
       disable(blockObj)
       reject(translate('This url is already loaded'))

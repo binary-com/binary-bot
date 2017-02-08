@@ -34,14 +34,9 @@ const getAllowedConditionsOrCategoriesForSymbol = symbol => {
   return { conditions, categories }
 }
 
-const getCategoryForCondition = condition => {
-  for (const category of Object.keys(config.conditionsCategory)) {
-    if (config.conditionsCategory[category].indexOf(condition.toLowerCase()) >= 0) {
-      return category
-    }
-  }
-  return null
-}
+const getCategoryForCondition = condition =>
+  Object.keys(config.conditionsCategory).find(category =>
+    config.conditionsCategory[category].indexOf(condition.toLowerCase()) >= 0)
 
 export default class _Symbol {
   constructor(api) {

@@ -53,7 +53,8 @@ class BotPage {
         intervals.forEach(i => clearInterval(i))
         timeouts.forEach(i => clearTimeout(i))
 
-        timeouts.length = intervals.length = 0
+        timeouts.length = 0
+        intervals.length = 0
         bot.stop()
       },
       showCode: () => {

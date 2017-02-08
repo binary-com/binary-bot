@@ -22,12 +22,14 @@ const parseSymbols = () => {
   apiActiveSymbols.forEach(s => {
     const submarket = parsedSubmarkets[s.submarket]
     submarket.symbols = submarket.symbols || {}
-    parsedSymbols[s.symbol.toLowerCase()] = submarket.symbols[s.symbol.toLowerCase()] = {
+    const symbol = {
       ...s,
       display: s.display_name,
       is_active: !s.is_trading_suspended && s.exchange_is_open,
     }
-  })
+    parsedSymbols[s.symbol.toLowerCase()] = symbol
+    submarket.symbols[s.symbol.toLowerCase()] = symbol
+ })
 }
 
 const parseSubmarkets = () => {
@@ -35,10 +37,12 @@ const parseSubmarkets = () => {
     const symbol = groupedSubmarkets[k][0]
     const market = parsedMarkets[symbol.market]
     market.submarkets = market.submarkets || {}
-    parsedSubmarkets[k] = market.submarkets[k] = {
+    const submarket = {
       name: symbol.submarket_display_name,
       is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
     }
+    parsedSubmarkets[k] = submarket
+    market.submarkets[k] = submarket
   })
 }
 

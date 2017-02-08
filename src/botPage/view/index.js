@@ -136,7 +136,7 @@ export default class View {
     } else {
       loginButton.hide()
       accountList.show()
-      for (const tokenInfo of tokenList) {
+      tokenList.forEach(tokenInfo => {
         let prefix = ''
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
@@ -149,7 +149,7 @@ export default class View {
           $('.login-id-list').append(`<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
             '<div class="separator-line-thin-gray"></div>')
         }
-      }
+      })
     }
   }
   setFileBrowser() {
@@ -171,14 +171,14 @@ export default class View {
         files = e.target.files
       }
       files = [...files]
-      for (const file of files) {
+      files.forEach(file => {
         if (file.type.match('text/xml')) {
           readFile(file, dropEvent)
         } else {
           observer.emit('ui.log.info', `${
           translate('File is not supported:')} ${file.name}`)
         }
-      }
+      })
     }
 
     const handleDragOver = (e) => {
@@ -447,7 +447,7 @@ export default class View {
       />, $('#chart')[0])
   }
   addEventHandlers() {
-    for (const errorType of ['api.error', 'BlocklyError', 'RuntimeError']) {
+    ['api.error', 'BlocklyError', 'RuntimeError'].forEach(errorType =>
       observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
         if (error.error && error.error.code === 'InvalidToken') {
           removeAllTokens()
@@ -461,8 +461,7 @@ export default class View {
             />
             , document.getElementById('restartTimeout'))
         }
-      })
-    }
+      }))
 
     observer.register('bot.stop', () => {
       $('#runButton').show()
@@ -470,9 +469,8 @@ export default class View {
     })
 
     observer.register('bot.tradeInfo', (tradeInfo) => {
-      for (const key of Object.keys(tradeInfo)) {
-        this.tradeInfo.tradeInfo[key] = tradeInfo[key]
-      }
+      Object.assign(this.tradeInfo.tradeInfo, tradeInfo)
+
       if ('profit' in tradeInfo) {
         const token = $('.account-id').first().attr('value')
         const user = getToken(token)

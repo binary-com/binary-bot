@@ -62,11 +62,11 @@ const conditionFields = (blockObj, ev) => {
       }
     }
     let inputMissing = false
-    for (const il of blockObj.inputList) {
+    blockObj.inputList.forEach(il => {
       if (il.connection && blockObj.getInputTargetBlock(il.name) === null) {
         inputMissing = true
       }
-    }
+    })
     if (!inputMissing) {
       observer.emit('tour:options')
     }

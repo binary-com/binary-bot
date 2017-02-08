@@ -6,7 +6,8 @@ export default class PurchaseCtrl {
     this.api = api
     this.context = context
     this.createInterface()
-    this.ready = this.purchased = false
+    this.ready = false
+    this.purchased = false
     this.proposals = {}
     this.expectedNumOfProposals = 2
   }

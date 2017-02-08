@@ -13,10 +13,18 @@ export default class Bot {
   constructor(api = null) {
     this.ticks = []
     this.ohlc = []
-    this.token = this.balanceStr = this.symbol = ''
-    this.candleInterval = this.totalProfit = this.totalRuns =
-    this.totalWins = this.totalLosses = this.totalStake =
-    this.sessionRuns = this.sessionProfit = this.totalPayout =
+    this.token = ''
+    this.balanceStr = ''
+    this.symbol = ''
+    this.candleInterval = 0
+    this.totalProfit = 0
+    this.totalRuns = 0
+    this.totalWins = 0
+    this.totalLosses = 0
+    this.totalStake = 0
+    this.totalPayout = 0
+    this.sessionRuns = 0
+    this.sessionProfit = 0
     this.running = false
     this.balance = 0
     this.pipSize = 2
@@ -116,7 +124,9 @@ export default class Bot {
     const [
       token, tradeOption, beforePurchase, duringPurchase,
       afterPurchase, sameTrade, tickAnalysisList, limitations,
-    ] = this.startArgs = args
+    ] = args
+
+    this.startArgs = args
 
     this.context = new Context(
       beforePurchase, duringPurchase, afterPurchase, tickAnalysisList)
@@ -124,7 +134,8 @@ export default class Bot {
     this.limitations = limitations || {}
 
     if (!sameTrade) {
-      this.sessionRuns = this.sessionProfit = 0
+      this.sessionRuns = 0
+      this.sessionProfit = 0
     }
 
     if (this.limitsReached()) {

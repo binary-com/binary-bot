@@ -16,14 +16,14 @@ export default () => {
       this.setPreviousStatement(true, 'Condition')
     },
   }
-  for (const oppositesName of Object.keys(config.opposites)) {
+  Object.keys(config.opposites).forEach(oppositesName => {
     Blockly.Blocks[oppositesName.toLowerCase()] = {
       init: function init() {
         const optionNames = []
-        for (const options of config.opposites[oppositesName]) {
+        config.opposites[oppositesName].forEach(options => {
           const optionName = options[Object.keys(options)[0]]
           optionNames.push(optionName)
-        }
+        })
         contractTypes(this)
         candleInterval(this)
         duration(this)
@@ -49,5 +49,5 @@ export default () => {
       },
     }
     Blockly.JavaScript[oppositesName.toLowerCase()] = () => ''
-  }
+  })
 }
