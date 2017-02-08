@@ -22,10 +22,12 @@ export default class Trade {
     })
   }
   sellAtMarket() {
-    if (!this.isSold) {
-      this.isSold = true
+    if (!this.isSold && this.isSellAvailable) {
       this.api.originalApi.sellContract(
-        this.openContract.contract_id, 0).then(noop, noop)
+        this.openContract.contract_id, 0).then(() => {
+          this.isSold = true
+          this.isSellAvailable = false
+        }, noop)
     }
   }
   retryIfContractNotReceived(contract) {
@@ -36,9 +38,11 @@ export default class Trade {
     return false
   }
   handleExpire(contract) {
+    this.isSellAvailable = !this.isSold &&
+      !contract.is_expired && contract.is_valid_to_sell
+
     if (!this.isSold && contract.is_valid_to_sell && contract.is_expired) {
       this.isSold = true
-      this.isSellAvailable = false
       this.api.originalApi.sellExpiredContracts().then(noop, noop)
     }
   }
@@ -64,9 +68,6 @@ export default class Trade {
       if (this.retryIfContractNotReceived(contract)) {
         return
       }
-
-      this.isSellAvailable = !this.isSold &&
-        !contract.is_expired && contract.is_valid_to_sell
 
       this.handleExpire(contract)
 
