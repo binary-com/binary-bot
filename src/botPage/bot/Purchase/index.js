@@ -18,9 +18,7 @@ export default class Purchase {
     return !!(this.trade && this.trade.isSellAvailable)
   }
   sellAtMarket() {
-    if (this.isSellAvailable()) {
-      this.trade.sellAtMarket()
-    }
+    this.trade.sellAtMarket()
   }
   setNumOfProposals(num) {
     this.expectedNumOfProposals = num
