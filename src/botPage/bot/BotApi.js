@@ -1,4 +1,3 @@
-import { Map } from 'immutable'
 import Bot from './'
 import { noop } from './tools'
 import { observer as viewObserver } from '../common/shared'
@@ -6,22 +5,19 @@ import { observer as viewObserver } from '../common/shared'
 export default class BotApi {
   constructor($scope) {
     this.bot = new Bot($scope)
+    this.CM = $scope.CM
     this.observer = $scope.observer
-    this.reqs = new Map()
-    this.resps = new Map()
-    this.context = {}
-    this.observeContexts()
   }
   getOhlc(field) {
-    const ohlc = this.context.data.ticksObj.ohlc
+    const ohlc = this.CM.getLastContext().data.ticksObj.ohlc
 
     return field ? ohlc.map(o => o[field]) : ohlc
   }
   getTicks() {
-    return this.context.data.ticksObj.ticks.map(o => o.quote)
+    return this.CM.getLastContext().data.ticksObj.ticks.map(o => o.quote)
   }
   getPipSize() {
-    return this.context.data.ticksObj.pipSize
+    return this.CM.getLastContext().data.ticksObj.pipSize
   }
   getBotInterface() {
     return {
@@ -35,15 +31,15 @@ export default class BotApi {
       isSellAvailable: (...args) => this.bot.purchase.isSellAvailable(...args),
       sellAtMarket: (...args) => this.bot.purchase.sellAtMarket(...args),
       getSellPrice: () =>
-        +(((+this.context.data.openContract.bid_price) -
-          (+this.context.data.openContract.buy_price)).toFixed(2)),
-      isResult: result => (this.context.data.contractDetails[10] === result),
-      readDetails: i => this.context.data.contractDetails[+i - 1],
+        +(((+this.CM.getLastContext().data.openContract.bid_price) -
+          (+this.CM.getLastContext().data.openContract.buy_price)).toFixed(2)),
+      isResult: result => (this.CM.getLastContext().data.contractDetails[10] === result),
+      readDetails: i => this.CM.getLastContext().data.contractDetails[+i - 1],
     }
   }
   getTicksInterface() {
     const getLastTick = () => this.getTicks().slice(-1)[0]
-    const getDirection = () => this.context.data.ticksObj.direction
+    const getDirection = () => this.CM.getLastContext().data.ticksObj.direction
 
     return {
       getLastTick,
@@ -66,64 +62,23 @@ export default class BotApi {
       getTime: () => parseInt((new Date().getTime()) / 1000, 10),
     }
   }
-  getInterface(scope = 'Global') {
-    return scope === 'Bot' ? {
+  getInterface(name = 'Global') {
+    return name === 'Bot' ? {
       ...this.getBotInterface(),
       ...this.getTicksInterface(),
       ...this.getToolsInterface(),
     } : {
-      watch: (...args) => this.watch(...args),
+      watch: (...args) => this.CM.watch(...args),
+      isInside: (...args) => this.CM.isInside(...args),
+      testScope: (...args) => this.CM.testScope(...args),
       sleep: (...args) => this.sleep(...args),
-      isInside: (...args) => this.isInside(...args),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
-      testScope: (context, expected) => context.scope === expected && context.data,
     }
   }
   sleep(arg) {
-    return new Promise(r => setTimeout(() => r(), arg), noop)
-  }
-  deletePrevScopeReqs(r) {
-    if (r.scope === 'between-before-and-during') {
-      this.resps = this.resps.set('before', { scope: 'before' })
-    }
-  }
-  handleAfter(r) {
-    this.resps = this.resps.set('after', r)
-    if (this.reqs.has('during')) {
-      this.reqs.get('during')({ scope: 'during' })
-      this.reqs = this.reqs.delete('during')
-    }
-  }
-  respondWithContext(r) {
-    if (this.reqs.has(r.scope)) {
-      this.reqs.get(r.scope)(r)
-      this.reqs = this.reqs.delete(r.scope)
-    } else if (r.scope === 'after') {
-      this.handleAfter(r)
-    }
-  }
-  observeContexts() {
-    this.observer.register('CONTEXT', r => {
-      this.context = r
-      this.deletePrevScopeReqs(r)
-      this.respondWithContext(r)
-
+    return new Promise(r => setTimeout(() => {
+      r()
       setTimeout(() => this.observer.emit('CONTINUE'), 0)
-    })
-  }
-  watch(scope) {
-    return new Promise(r => {
-      const response = this.resps.get(scope)
-
-      if (response) {
-        this.resps = this.resps.delete(scope)
-        r(response)
-      } else {
-        this.reqs = this.reqs.set(scope, c => r(c))
-      }
-    })
-  }
-  isInside(scope) {
-    return this.context.scope === scope
+    }, arg), noop)
   }
 }
