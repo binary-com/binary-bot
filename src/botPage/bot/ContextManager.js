@@ -69,8 +69,9 @@ export default class ContextManager {
   }
   serveContext(r) {
     this.lastContext = r
-    this.deletePrevScopeReqs(r)
+    this.cancelBeforeOnPurchase(r)
     this.respondWithContext(r)
+    this.handleAfter(r)
 
     setTimeout(() => this.observer.emit('CONTINUE'), 0)
   }
@@ -78,20 +79,21 @@ export default class ContextManager {
     if (this.reqs.has(r.scope)) {
       this.reqs.get(r.scope)(r)
       this.reqs = this.reqs.delete(r.scope)
-      return
-    }
-    if (r.scope === 'after') {
-      this.handleAfter(r)
     }
   }
   handleAfter(r) {
-    this.resps = this.resps.set('after', r)
+    if (r.scope !== 'after') {
+      return
+    }
     if (this.reqs.has('during')) {
+      this.resps = this.resps.set('after', r)
       this.reqs.get('during')({ scope: 'during' })
       this.reqs = this.reqs.delete('during')
+    } else {
+      this.resps = this.resps.set('during', { scope: 'during' })
     }
   }
-  deletePrevScopeReqs(r) {
+  cancelBeforeOnPurchase(r) {
     if (r.scope === 'between-before-and-during') {
       this.resps = this.resps.set('before', { scope: 'before' })
     }

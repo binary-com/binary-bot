@@ -35,14 +35,14 @@ export default class Trade {
     }
     return false
   }
-  onContractExpire(contract) {
+  handleExpire(contract) {
     if (!this.isSold && contract.is_valid_to_sell && contract.is_expired) {
       this.isSold = true
       this.isSellAvailable = false
       this.api.originalApi.sellExpiredContracts().then(noop, noop)
     }
   }
-  onContractUpdate(contract) {
+  handleUpdate(contract) {
     const finished = contract.sell_price
     if (finished) {
       this.openContract = null
@@ -68,9 +68,9 @@ export default class Trade {
       this.isSellAvailable = !this.isSold &&
         !contract.is_expired && contract.is_valid_to_sell
 
-      this.onContractUpdate(contract)
+      this.handleExpire(contract)
 
-      this.onContractExpire(contract)
+      this.handleUpdate(contract)
     }, () => this.api.proposal_open_contract(this.contractId),
     false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }
