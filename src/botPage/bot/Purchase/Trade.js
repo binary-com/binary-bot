@@ -3,10 +3,10 @@ import { observer as viewObserver } from '../../common/shared'
 import { noop } from '../tools'
 
 export default class Trade {
-  constructor($scope, CM) {
+  constructor($scope) {
     this.api = $scope.api
     this.observer = $scope.observer
-    this.CM = CM || { execContext() {} }
+    this.CM = $scope.CM
     this.openContract = null
     this.isSellAvailable = false
     this.isSold = false
@@ -22,10 +22,12 @@ export default class Trade {
     })
   }
   sellAtMarket() {
-    if (!this.isSold) {
-      this.isSold = true
+    if (!this.isSold && this.isSellAvailable) {
       this.api.originalApi.sellContract(
-        this.openContract.contract_id, 0).then(noop, noop)
+        this.openContract.contract_id, 0).then(() => {
+          this.isSold = true
+          this.isSellAvailable = false
+        }, noop)
     }
   }
   retryIfContractNotReceived(contract) {
@@ -35,14 +37,16 @@ export default class Trade {
     }
     return false
   }
-  onContractExpire(contract) {
+  handleExpire(contract) {
+    this.isSellAvailable = !this.isSold &&
+      !contract.is_expired && contract.is_valid_to_sell
+
     if (!this.isSold && contract.is_valid_to_sell && contract.is_expired) {
       this.isSold = true
-      this.isSellAvailable = false
       this.api.originalApi.sellExpiredContracts().then(noop, noop)
     }
   }
-  onContractUpdate(contract) {
+  handleUpdate(contract) {
     const finished = contract.sell_price
     if (finished) {
       this.openContract = null
@@ -65,12 +69,9 @@ export default class Trade {
         return
       }
 
-      this.isSellAvailable = !this.isSold &&
-        !contract.is_expired && contract.is_valid_to_sell
+      this.handleExpire(contract)
 
-      this.onContractUpdate(contract)
-
-      this.onContractExpire(contract)
+      this.handleUpdate(contract)
     }, () => this.api.proposal_open_contract(this.contractId),
     false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }

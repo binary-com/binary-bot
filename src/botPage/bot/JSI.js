@@ -1,4 +1,5 @@
 import Interpreter from 'js-interpreter'
+import ContextManager from './ContextManager'
 import BotApi from './BotApi'
 
 const createAsync = (interpreter, func) =>
@@ -8,11 +9,13 @@ const createAsync = (interpreter, func) =>
 
 export default class JSI {
   constructor($scope) {
-    if ($scope) {
-      this.botApi = new BotApi($scope)
-      this.stopped = false
-      this.observer = $scope.observer
+    if (!$scope) { // valid usage for js only code
+      return
     }
+    this.botApi = new BotApi(
+      Object.assign({}, $scope, { CM: new ContextManager($scope) }))
+    this.stopped = false
+    this.observer = $scope.observer
   }
   run(code) {
     let initFunc
@@ -24,7 +27,9 @@ export default class JSI {
 
       initFunc = (interpreter, scope) => {
         interpreter.setProperty(scope, 'console',
-          interpreter.nativeToPseudo({ log(...args) { console.log(...args) } })) // eslint-disable-line no-console
+          interpreter.nativeToPseudo({
+            log(...args) { console.log(...args) }, // eslint-disable-line no-console
+          }))
         interpreter.setProperty(scope, 'alert',
           interpreter.nativeToPseudo(alert))
         interpreter.setProperty(scope, 'Bot',
@@ -52,7 +57,7 @@ export default class JSI {
           return
         }
         if (!this.observer.isRegistered('CONTINUE')) {
-          this.observer.register('CONTINUE', loop)
+          this.observer.register('CONTINUE', () => setTimeout(loop, 0))
         }
       }
 

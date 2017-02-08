@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
+import ContextManager from '../ContextManager'
 import BotApi from '../BotApi'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000 * 2
@@ -10,7 +11,7 @@ const observer = new Observer()
 const api = (new CustomApi(observer, null, null, new WebSocket(
   process.env.ENDPOINT ||
     'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
-const $scope = { observer, api }
+const $scope = { observer, api, CM: new ContextManager({ observer, api }) }
 
 const botApi = new BotApi($scope)
 
@@ -42,7 +43,7 @@ describe('BotApi', () => {
 
       watch('before').then(c => (context = c))
 
-      observer.register('CONTINUE', done, true)
+      observer.register('CONTINUE', () => setTimeout(done, 0), true)
     })
 
     it('context is inside before', () => {

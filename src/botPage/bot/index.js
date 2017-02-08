@@ -1,4 +1,3 @@
-import ContextManager from './ContextManager'
 import Purchase from './Purchase'
 import { translate } from '../../common/i18n'
 import { observer as viewObserver } from '../common/shared'
@@ -26,8 +25,8 @@ export default class Bot {
     this.pipSizes = []
     this.api = $scope.api
     this.observer = $scope.observer
+    this.CM = $scope.CM
     this.$scope = $scope
-    this.CM = new ContextManager($scope)
   }
   subscribeToStream(name, respHandler, request, registerOnce, type, unregister) {
     return new Promise((resolve) => {
@@ -150,7 +149,7 @@ export default class Bot {
 
     this.tradeOption = tradeOption
 
-    this.purchase = new Purchase(this.$scope, this.CM)
+    this.purchase = new Purchase(this.$scope)
 
     viewObserver.emit('log.bot.start', { again: !!sameTrade })
 

@@ -4,7 +4,7 @@ import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
 import JSI from '../JSI'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 18000 * 2
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 24000 * 2
 
 const observer = new Observer()
 const api = (new CustomApi(observer, null, null, new WebSocket(
@@ -14,30 +14,23 @@ const $scope = { observer, api }
 
 const jsi = new JSI($scope)
 
-describe('Run JSI over bot', () => {
+describe('Multiple trades', () => {
   let value
 
   beforeAll(done => {
     jsi.run(`
       (function (){
-        Bot.start('Xkq6oGFEHh6hJH8',
-        {
+        Bot.start('Xkq6oGFEHh6hJH8', {
           amount: 1, basis: 'stake', candleInterval: 60,
-          contractTypes: '["CALL","PUT"]',
-          currency: 'USD', duration: 2,
-          duration_unit: 'h', symbol: 'R_100',
-        }
-        );
+          contractTypes: '["CALL", "PUT"]',
+          currency: 'USD', duration: 5,
+          duration_unit: 't', symbol: 'R_100',
+        }, false);
         while (testScope(context = watch('before'), 'before')) {
-          console.log('Entered before')
-          Bot.purchase('CALL')
+          Bot.purchase("CALL");
         }
-        console.log('Exited before')
-        while (testScope(context = watch('during'), 'during')) {
-          console.log('Entered during')
-          Bot.sellAtMarket();
-        }
-        return isInside('after')
+        while (testScope(context = watch('during'), 'during')) {}
+        return true;
       })();
     `).then(v => {
       value = v
