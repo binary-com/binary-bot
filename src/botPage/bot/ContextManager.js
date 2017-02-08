@@ -39,23 +39,82 @@ export default class ContextManager {
       after: sharedContext,
       shared: sharedContext,
     })
+    this.reqs = new Map()
+    this.resps = new Map()
+    this.lastContext = {}
   }
-  get(name) {
-    return this.contexts.get(name)
-  }
-  set(name, value) {
-    this.contexts = this.contexts.set(name, value)
-  }
-  setInside(name, key, value) {
-    this.set(name, this.get(name).set(key, value))
-  }
-  setInsideAll(key, value) {
-    this.contexts.forEach((a, k) => this.setInside(k, key, value))
-  }
-  getContext(name) {
-    let context = getContextObj(this.get(name))
+  execContext(scope, value) {
+    if (!value) {
+      this.serveContext({ scope })
+      return
+    }
 
-    if (name === 'after') {
+    this.setContext(scope, value)
+
+    if (scope !== 'shared') {
+      this.serveContext({ scope, data: this.getContext(scope) })
+    }
+  }
+  watch(scope) {
+    return new Promise(r => {
+      const response = this.resps.get(scope)
+
+      if (response) {
+        this.resps = this.resps.delete(scope)
+        r(response)
+      } else {
+        this.reqs = this.reqs.set(scope, c => r(c))
+      }
+    })
+  }
+  serveContext(r) {
+    this.lastContext = r
+    this.deletePrevScopeReqs(r)
+    this.respondWithContext(r)
+
+    setTimeout(() => this.observer.emit('CONTINUE'), 0)
+  }
+  respondWithContext(r) {
+    if (this.reqs.has(r.scope)) {
+      this.reqs.get(r.scope)(r)
+      this.reqs = this.reqs.delete(r.scope)
+      return
+    }
+    if (r.scope === 'after') {
+      this.handleAfter(r)
+    }
+  }
+  handleAfter(r) {
+    this.resps = this.resps.set('after', r)
+    if (this.reqs.has('during')) {
+      this.reqs.get('during')({ scope: 'during' })
+      this.reqs = this.reqs.delete('during')
+    }
+  }
+  deletePrevScopeReqs(r) {
+    if (r.scope === 'between-before-and-during') {
+      this.resps = this.resps.set('before', { scope: 'before' })
+    }
+  }
+  setContext(scope, value) {
+    if (scope === 'shared') {
+      const { ohlc = [] } = value
+
+      const newTicksObj = new Map(value).set('ohlc', addToString(ohlc))
+
+      this.setInsideAll('ticksObj', newTicksObj)
+    } else if (scope === 'before') {
+      this.setInside('before', 'proposals', new Map(value))
+    } else if (scope === 'during') {
+      this.setInside('during', 'openContract', new Map(value))
+    } else if (scope === 'after') {
+      this.setInside('after', 'finishedContract', new Map(value))
+    }
+  }
+  getContext(scope) {
+    let context = getContextObj(this.get(scope))
+
+    if (scope === 'after') {
       context = Object.assign({
         contractDetails: createDetails(context.finishedContract),
       }, context)
@@ -63,32 +122,25 @@ export default class ContextManager {
 
     return context
   }
-  setContext(name, value) {
-    if (name === 'shared') {
-      const { ohlc = [] } = value
-
-      const newTicksObj = new Map(value).set('ohlc', addToString(ohlc))
-
-      this.setInsideAll('ticksObj', newTicksObj)
-    } else if (name === 'before') {
-      this.setInside('before', 'proposals', new Map(value))
-    } else if (name === 'during') {
-      this.setInside('during', 'openContract', new Map(value))
-    } else if (name === 'after') {
-      this.setInside('after', 'finishedContract', new Map(value))
-    }
+  setInsideAll(key, value) {
+    this.contexts.forEach((a, k) => this.setInside(k, key, value))
   }
-  execContext(scope, value) {
-    if (!value) {
-      this.observer.emit('CONTEXT', { scope })
-      return
-    }
-
-    this.setContext(scope, value)
-
-    if (scope !== 'shared') {
-      this.observer.emit('CONTEXT',
-        { scope, data: this.getContext(scope) })
-    }
+  setInside(scope, key, value) {
+    this.set(scope, this.get(scope).set(key, value))
+  }
+  get(scope) {
+    return this.contexts.get(scope)
+  }
+  set(scope, value) {
+    this.contexts = this.contexts.set(scope, value)
+  }
+  isInside(scope) {
+    return this.lastContext.scope === scope
+  }
+  getLastContext() {
+    return this.lastContext
+  }
+  testScope(context, expected) {
+    return !!(context.scope === expected && context.data)
   }
 }

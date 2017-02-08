@@ -20,34 +20,34 @@ const ticksObj = {
 describe('Purchase', () => {
   const observer = new Observer()
   const api = new CustomApi(observer, ws)
-  const $scope = { observer, api }
+  const $scope = { observer, api, CM: new ContextManager({ observer, api }) }
   const proposals = []
   let firstAttempt = true
   let purchase
-  beforeAll(() => {
-    const beforePurchase = context => {
-      if (purchase.proposals) {
-        if (firstAttempt) {
-          firstAttempt = false
-          observer.emit('test.beforePurchase', {
-            ticksObj: context.ticksObj,
-            proposals: purchase.proposals,
-          })
-        } else {
-          observer.emit('test.purchase')
-          purchase.purchase('DIGITEVEN')
-        }
-      } else {
+  const beforePurchase = context => {
+    if (purchase.proposals) {
+      if (firstAttempt) {
+        firstAttempt = false
         observer.emit('test.beforePurchase', {
           ticksObj: context.ticksObj,
           proposals: purchase.proposals,
         })
+      } else {
+        observer.emit('test.purchase')
+        purchase.purchase('DIGITEVEN')
       }
+    } else {
+      observer.emit('test.beforePurchase', {
+        ticksObj: context.ticksObj,
+        proposals: purchase.proposals,
+      })
     }
-    observer.register('CONTEXT', context => context.scope === 'before' && beforePurchase(context.data))
-    const CM = new ContextManager($scope)
-    purchase = new Purchase($scope, CM)
-    CM.setContext('shared', ticksObj)
+  }
+  beforeAll(() => {
+    purchase = new Purchase($scope)
+    $scope.CM.watch('before')
+      .then(c => c.scope === 'before' && beforePurchase(c.data))
+    $scope.CM.setContext('shared', ticksObj)
   })
   describe('Make the beforePurchase ready...', () => {
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
@@ -105,6 +105,7 @@ describe('Purchase', () => {
   })
   describe('Waiting for beforePurchase to purchase the contract', () => {
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+      $scope.CM.watch('before').then(c => c.scope === 'before' && beforePurchase(c.data))
       observer.register('test.purchase', () => {
         done()
       }, true)

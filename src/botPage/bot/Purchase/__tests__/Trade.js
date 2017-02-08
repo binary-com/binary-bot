@@ -2,6 +2,7 @@ import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
 import Observer from 'binary-common-utils/lib/observer'
 import ws from 'ws'
+import ContextManager from '../../ContextManager'
 import Trade from '../Trade'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 12000 * 2
@@ -9,7 +10,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 12000 * 2
 describe('Trade', () => {
   const observer = new Observer()
   const api = new CustomApi(observer, ws)
-  const $scope = { observer, api }
+  const $scope = { observer, api, CM: new ContextManager({ observer, api }) }
   const trade = new Trade($scope)
   let proposal
   let finishedContract
@@ -17,7 +18,7 @@ describe('Trade', () => {
   })
   describe('Purchasing...', () => {
     let purchasedContract
-    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(done => {
       observer.register('api.authorize', () => {
         observer.register('api.proposal', (_proposal) => {
           proposal = _proposal
@@ -47,7 +48,7 @@ describe('Trade', () => {
   })
   describe('Getting updates', () => {
     const contractUpdates = []
-    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+    beforeAll(done => {
       observer.register('trade.finish', (_contract) => {
         finishedContract = _contract
         done()
