@@ -28,11 +28,13 @@ describe('Run JSI over bot', () => {
           duration_unit: 'h', symbol: 'R_100',
         }
         );
-        var context
         while (testScope(context = watch('before'), 'before')) {
+          console.log('Entered before')
           Bot.purchase('CALL')
         }
+        console.log('Exited before')
         while (testScope(context = watch('during'), 'during')) {
+          console.log('Entered during')
           Bot.sellAtMarket();
         }
         return isInside('after')

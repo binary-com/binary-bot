@@ -3,10 +3,10 @@ import { observer as viewObserver } from '../../common/shared'
 import { noop } from '../tools'
 
 export default class Trade {
-  constructor($scope, CM) {
+  constructor($scope) {
     this.api = $scope.api
     this.observer = $scope.observer
-    this.CM = CM || { execContext() {} }
+    this.CM = $scope.CM
     this.openContract = null
     this.isSellAvailable = false
     this.isSold = false
