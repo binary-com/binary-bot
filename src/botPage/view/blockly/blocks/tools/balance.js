@@ -15,6 +15,5 @@ Blockly.Blocks.balance = {
 }
 Blockly.JavaScript.balance = (block) => {
   const balanceType = block.getFieldValue('BALANCE_TYPE')
-  const code = `Bot.getBalance('${balanceType}')`
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+  return [`Bot.getBalance('${balanceType}')`, Blockly.JavaScript.ORDER_ATOMIC]
 }

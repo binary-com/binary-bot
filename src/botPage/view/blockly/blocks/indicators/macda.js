@@ -36,13 +36,9 @@ Blockly.JavaScript.macda = (block) => {
       'SLOW_EMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '26'
   const smaPeriod = Blockly.JavaScript.valueToCode(block,
       'SMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '9'
-  const code = `
-  (Bot.math.indicators.macdArray(
-      Bot.expect.notEmptyArray(${input}),
-      {
-          fastEmaPeriod: Bot.expect.indicatorPeriod(${input}, ${fastEmaPeriod}),
-          slowEmaPeriod: Bot.expect.indicatorPeriod(${input}, ${slowEmaPeriod}),
-          smaPeriod: Bot.expect.indicatorPeriod(${input}, ${smaPeriod}),
-      }).map(function(el){return el[${macdField}]}))`
-  return [code, Blockly.JavaScript.ORDER_NONE]
+  return [`Bot.macda(${input}, {
+    fastEmaPeriod: ${fastEmaPeriod},
+    slowEmaPeriod: ${slowEmaPeriod},
+    smaPeriod: ${smaPeriod},
+  }, ${macdField})`, Blockly.JavaScript.ORDER_NONE]
 }

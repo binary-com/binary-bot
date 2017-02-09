@@ -1,23 +1,33 @@
 import Bot from './'
+import Indicators from './Indicators'
 import { noop } from './tools'
 import { observer as viewObserver } from '../common/shared'
 
 export default class BotApi {
   constructor($scope) {
     this.bot = new Bot($scope)
+    this.indicators = new Indicators($scope)
     this.CM = $scope.CM
     this.observer = $scope.observer
   }
-  getOhlc(field) {
-    const ohlc = this.CM.getLastContext().data.ticksObj.ohlc
-
-    return field ? ohlc.map(o => o[field]) : ohlc
+  getInterface(name = 'Global') {
+    return name === 'Bot' ? {
+      ...this.getBotInterface(),
+      ...this.getTicksInterface(),
+      ...this.getToolsInterface(),
+    } : {
+      watch: (...args) => this.CM.watch(...args),
+      isInside: (...args) => this.CM.isInside(...args),
+      testScope: (...args) => this.CM.testScope(...args),
+      sleep: (...args) => this.sleep(...args),
+      alert: (...args) => alert(...args), // eslint-disable-line no-alert
+    }
   }
-  getTicks() {
-    return this.CM.getLastContext().data.ticksObj.ticks.map(o => o.quote)
-  }
-  getPipSize() {
-    return this.CM.getLastContext().data.ticksObj.pipSize
+  sleep(arg = 1) {
+    return new Promise(r => setTimeout(() => {
+      r()
+      setTimeout(() => this.observer.emit('CONTINUE'), 0)
+    }, arg * 1000), noop)
   }
   getBotInterface() {
     return {
@@ -39,7 +49,6 @@ export default class BotApi {
   }
   getTicksInterface() {
     const getLastTick = () => this.getTicks().slice(-1)[0]
-    const getDirection = () => this.CM.getLastContext().data.ticksObj.direction
 
     return {
       getLastTick,
@@ -51,34 +60,51 @@ export default class BotApi {
       },
       getOhlc: (field) => this.getOhlc(field),
       getTicks: () => this.getTicks(),
-      checkDirection: w => getDirection() === w,
-      getDirection,
+      checkDirection: w => this.CM.getLastContext().data.ticksObj.direction === w,
     }
   }
   getToolsInterface() {
     return {
-      notifyError: (...args) => viewObserver.emit('NotifyError', args),
-      notify: (...args) => viewObserver.emit('Notify', args),
+      ...this.getTimeInterface(),
+      ...this.getCandleInterface(),
+      ...this.getMiscInterface(),
+      ...this.getIndicatorsInterface(),
+    }
+  }
+  getTimeInterface() {
+    return {
       getTime: () => parseInt((new Date().getTime()) / 1000, 10),
     }
   }
-  getInterface(name = 'Global') {
-    return name === 'Bot' ? {
-      ...this.getBotInterface(),
-      ...this.getTicksInterface(),
-      ...this.getToolsInterface(),
-    } : {
-      watch: (...args) => this.CM.watch(...args),
-      isInside: (...args) => this.CM.isInside(...args),
-      testScope: (...args) => this.CM.testScope(...args),
-      sleep: (...args) => this.sleep(...args),
-      alert: (...args) => alert(...args), // eslint-disable-line no-alert
+  getCandleInterface() {
+    return {
+      isCandleBlack: candle => candle && Object.keys(candle).length &&
+        candle.close < candle.open,
+      candleValues: (ohlc, field) => ohlc.map(o => o[field]),
+      candleField: (candle, field) => candle[field],
     }
   }
-  sleep(arg) {
-    return new Promise(r => setTimeout(() => {
-      r()
-      setTimeout(() => this.observer.emit('CONTINUE'), 0)
-    }, arg), noop)
+  getMiscInterface() {
+    return {
+      notifyError: (...args) => viewObserver.emit('NotifyError', args),
+      notify: (...args) => viewObserver.emit('Notify', args),
+      getTotalRuns: () => this.bot.getTotalRuns(),
+      getBalance: type => this.bot.getBalance(type),
+      getTotalProfit: () => this.bot.getTotalProfit(),
+    }
+  }
+  getIndicatorsInterface() {
+    return this.indicators.getInterface()
+  }
+  getOhlc(field) {
+    const ohlc = this.CM.getLastContext().data.ticksObj.ohlc
+
+    return field ? ohlc.map(o => o[field]) : ohlc
+  }
+  getTicks() {
+    return this.CM.getLastContext().data.ticksObj.ticks.map(o => o.quote)
+  }
+  getPipSize() {
+    return this.CM.getLastContext().data.ticksObj.pipSize
   }
 }
