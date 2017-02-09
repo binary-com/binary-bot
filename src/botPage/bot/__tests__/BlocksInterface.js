@@ -7,7 +7,11 @@ import JSI from '../JSI'
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000 * 2
 
 const header = `
+      var again = false;
       (function (){
+`
+
+const trade = `
         var result = {};
         Bot.start('Xkq6oGFEHh6hJH8', {
           amount: 1, basis: 'stake', candleInterval: 60,
@@ -35,48 +39,6 @@ const createJsi = () => {
   return new JSI($scope)
 }
 
-describe('Tick Blocks', () => {
-  let value
-  const jsi = createJsi()
-
-  beforeAll(done => {
-    jsi.run(`
-      ${header}
-        var context = watch('before');
-        result.lastOhlc = Bot.getOhlcFromEnd();
-        result.ohlc = Bot.getOhlc();
-        result.candleValues = Bot.getOhlc('close');
-        result.lastCloseValue1 = Bot.getOhlcFromEnd('close', 2);
-        result.lastCloseValue2 = Bot.getOhlcFromEnd('close');
-        result.ticks = Bot.getTicks();
-        result.lastTick = Bot.getLastTick();
-        result.lastDigit = Bot.getLastDigit();
-      ${footer}
-    `).then(v => {
-      value = v
-      done()
-    })
-  })
-
-  it('ticks api', () => {
-    const expectedResultTypes = [
-      'object', // last candle
-      'object', // candles list
-      'object', // candle values list
-      'number', // last close value
-      'number', // previous close value
-      'object', // ticks
-      'number', // last tick
-      'number', // last digit
-    ]
-
-    const { result } = value
-    const resultTypes = Object.keys(result).map(k => typeof result[k])
-
-    expect(resultTypes).deep.equal(expectedResultTypes)
-  })
-})
-
 describe('Before Purchase Blocks', () => {
   let value
 
@@ -85,9 +47,10 @@ describe('Before Purchase Blocks', () => {
   beforeAll(done => {
     jsi.run(`
       ${header}
+      ${trade}
         while (testScope(context = watch('before'), 'before')) {
-          result.askPrice = Bot.getAskPrice('CALL');
           result.payout = Bot.getPayout('CALL');
+          result.askPrice = Bot.getAskPrice('CALL');
           Bot.purchase('CALL');
         }
       ${footer}
@@ -99,8 +62,8 @@ describe('Before Purchase Blocks', () => {
 
   it('before purchase api', () => {
     const expectedResultTypes = [
-      'number', // ask price
       'number', // payout
+      'number', // ask price
     ]
 
     const { result } = value
@@ -118,6 +81,7 @@ describe('During Purchase Blocks', () => {
   beforeAll(done => {
     jsi.run(`
       ${header}
+      ${trade}
         watch('before')
         Bot.purchase('CALL')
         while (testScope(context = watch('during'), 'during')) {
@@ -153,6 +117,15 @@ describe('After Purchase Blocks', () => {
   beforeAll(done => {
     jsi.run(`
       ${header}
+      function tradeAgain() {
+        if (!again) {
+          again = true
+          return true;
+        }
+        return false;
+      }
+      while (true) {
+        ${trade}
         watch('before')
         Bot.purchase('CALL')
         while (testScope(context = watch('during'), 'during')) {
@@ -160,6 +133,10 @@ describe('After Purchase Blocks', () => {
         }
         result.isWin = Bot.isResult('win');
         result.detail = Bot.readDetails(1);
+        if (!tradeAgain()) {
+          break;
+        }
+      }
       ${footer}
     `).then(v => {
       value = v
@@ -171,6 +148,53 @@ describe('After Purchase Blocks', () => {
     const expectedResultTypes = [
       'boolean', // is result win
       'string', // statement
+    ]
+
+    const { result } = value
+    const resultTypes = Object.keys(result).map(k => typeof result[k])
+
+    expect(resultTypes).deep.equal(expectedResultTypes)
+  })
+})
+
+describe('Tick Blocks', () => {
+  let value
+  const jsi = createJsi()
+
+  beforeAll(done => {
+    jsi.run(`
+      ${header}
+      ${trade}
+        var context = watch('before');
+        result.lastTick = Bot.getLastTick();
+        result.lastDigit = Bot.getLastDigit();
+        result.lastOhlc = Bot.getOhlcFromEnd();
+        result.isTickDirUp = Bot.checkDirection('rise')
+
+        result.ohlc = Bot.getOhlc();
+        result.ticks = Bot.getTicks();
+        result.candleValues = Bot.getOhlc('close');
+        result.lastCloseValue1 = Bot.getOhlcFromEnd('close', 2);
+        result.lastCloseValue2 = Bot.getOhlcFromEnd('close');
+      ${footer}
+    `).then(v => {
+      value = v
+      done()
+    })
+  })
+
+  it('ticks api', () => {
+    const expectedResultTypes = [
+      'number', // last tick
+      'number', // last digit
+      'object', // last candle
+      'boolean', // is tick direction up
+
+      'object', // candles list
+      'object', // ticks
+      'object', // candle values list
+      'number', // last close value
+      'number', // previous close value
     ]
 
     const { result } = value
