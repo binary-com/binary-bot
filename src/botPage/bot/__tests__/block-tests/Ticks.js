@@ -33,7 +33,8 @@ describe('Ticks Analysis', () => {
   it('ticks api', () => {
     const { result: { ticks } } = value
 
-    expect(ticks.length).equal(3)
+    expect(ticks).satisfy(t =>
+      t.length >= 3 && t.reduce((a, b) => a && typeof b === 'number', true))
   })
 })
 
