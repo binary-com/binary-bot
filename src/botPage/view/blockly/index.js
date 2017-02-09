@@ -53,8 +53,6 @@ export default class _Blockly {
       if (!isMainBlock(block.type)
         && [
           'block_holder',
-          'timeout',
-          'interval',
           'tick_analysis',
           'loader',
           'procedures_defreturn',

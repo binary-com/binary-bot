@@ -380,10 +380,9 @@ const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, re
       const recordUndo = Blockly.Events.recordUndo
       Blockly.Events.recordUndo = false
       addLoadersFirst(xml, header).then(() => {
-        Array.from(xml.children).filter(block =>
-          ['tick_analysis', 'timeout', 'interval']
-        .includes(block.getAttribute('type')) || isProcedure(block.getAttribute('type')))
-            .forEach(block => addDomAsBlockFromHeader(block, header))
+        Array.from(xml.children).filter(block => ['tick_analysis']
+          .includes(block.getAttribute('type')) || isProcedure(block.getAttribute('type')))
+          .forEach(block => addDomAsBlockFromHeader(block, header))
 
         Blockly.Events.recordUndo = recordUndo
         resolve()
