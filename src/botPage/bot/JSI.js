@@ -57,7 +57,7 @@ export default class JSI {
           return
         }
         if (!this.observer.isRegistered('CONTINUE')) {
-          this.observer.register('CONTINUE', loop)
+          this.observer.register('CONTINUE', () => setTimeout(loop, 0))
         }
       }
 
