@@ -43,7 +43,7 @@ describe('BotApi', () => {
 
       watch('before').then(c => (context = c))
 
-      observer.register('CONTINUE', done, true)
+      observer.register('CONTINUE', () => setTimeout(done, 0), true)
     })
 
     it('context is inside before', () => {

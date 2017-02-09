@@ -73,7 +73,7 @@ export default class ContextManager {
     this.respondWithContext(r)
     this.handleAfter(r)
 
-    setTimeout(() => this.observer.emit('CONTINUE'), 0)
+    this.observer.emit('CONTINUE')
   }
   respondWithContext(r) {
     if (this.reqs.has(r.scope)) {
