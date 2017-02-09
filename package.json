@@ -16,6 +16,9 @@
       "./src/common/mock/*"
     ]
   },
+  "jest": {
+    "testPathIgnorePatterns": ["/node_modules/", "shared.js"]
+  },
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/ && jest --forceExit --notify",
