@@ -286,7 +286,6 @@
 			<category name="Time" colour="#2a3052" i18n-text="Time">
 				<block type="epoch"></block>
 				<block type="timeout"></block>
-				<block type="interval"></block>
 			</category>
 			<category name="Candle" colour="#2a3052" i18n-text="Candle">
 				<block type="is_candle_black"></block>
