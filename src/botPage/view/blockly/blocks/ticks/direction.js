@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 import { translate } from '../../../../../common/i18n'
-import { tickScope } from '../../relationChecker'
+import { mainScope } from '../../relationChecker'
 
 Blockly.Blocks.direction = {
   init: function init() {
@@ -12,7 +12,7 @@ Blockly.Blocks.direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    tickScope(this, ev, 'Tick Direction')
+    mainScope(this, ev, 'Tick Direction')
   },
 }
 

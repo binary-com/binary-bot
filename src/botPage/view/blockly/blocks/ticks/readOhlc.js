@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import config from '../../../../../common/const'
 import { translate } from '../../../../../common/i18n'
-import { tickScope } from '../../relationChecker'
+import { mainScope } from '../../relationChecker'
 
 Blockly.Blocks.read_ohlc = {
   init: function init() {
@@ -19,7 +19,7 @@ Blockly.Blocks.read_ohlc = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    tickScope(this, ev, 'Read Candle Field')
+    mainScope(this, ev, 'Read Candle Field')
   },
 }
 

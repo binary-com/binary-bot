@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wupwb4
 import { translate } from '../../../../../../common/i18n'
 import { insideMainBlocks } from '../../../utils'
-import { timeScope } from '../../../relationChecker'
+import { mainScope } from '../../../relationChecker'
 
 Blockly.Blocks.timeout = {
   init: function init() {
@@ -19,7 +19,7 @@ Blockly.Blocks.timeout = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    timeScope(this, ev, translate('Run After n Seconds'))
+    mainScope(this, ev, translate('Run After n Seconds'))
   },
 }
 

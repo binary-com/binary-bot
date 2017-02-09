@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
-import { tickScope } from '../../relationChecker'
+import { mainScope } from '../../relationChecker'
 import { translate } from '../../../../../common/i18n'
 
 Blockly.Blocks.ticks = {
@@ -12,7 +12,7 @@ Blockly.Blocks.ticks = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    tickScope(this, ev, 'Ticks List')
+    mainScope(this, ev, 'Ticks List')
   },
 }
 Blockly.JavaScript.ticks = () => ['Bot.expect.notEmptyArray(this.ticksObj.ticks).map(function(i){return Bot.expect.tick(i).quote;})',
