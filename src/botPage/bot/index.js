@@ -287,4 +287,7 @@ export default class Bot {
     this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
     viewObserver.emit('bot.stop')
   }
+  getTotalRuns() {
+    return totalRuns
+  }
 }
