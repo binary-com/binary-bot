@@ -14,11 +14,9 @@ Blockly.Blocks.ohlc_values_in_list = {
   },
 }
 
-Blockly.JavaScript.ohlc_values_in_list = (block) => {
+Blockly.JavaScript.ohlc_values_in_list = block => {
   const ohlcList = Blockly.JavaScript.valueToCode(block,
     'OHLCLIST', Blockly.JavaScript.ORDER_ATOMIC)
   const ohlcField = block.getFieldValue('OHLCFIELD_LIST')
-  const code = `(Bot.expect.notEmptyArray(${ohlcList}).map(function(e){return Bot.expect.ohlc(e).${
-  ohlcField}}))`
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+  return [`Bot.candleValues(${ohlcList}, '${ohlcField}')`, Blockly.JavaScript.ORDER_ATOMIC]
 }
