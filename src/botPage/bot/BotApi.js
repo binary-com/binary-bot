@@ -8,16 +8,25 @@ export default class BotApi {
     this.CM = $scope.CM
     this.observer = $scope.observer
   }
-  getOhlc(field) {
-    const ohlc = this.CM.getLastContext().data.ticksObj.ohlc
-
-    return field ? ohlc.map(o => o[field]) : ohlc
+  getInterface(name = 'Global') {
+    return name === 'Bot' ? {
+      ...this.getBotInterface(),
+      ...this.getTicksInterface(),
+      ...this.getToolsInterface(),
+      ...this.getCandleInterface(),
+    } : {
+      watch: (...args) => this.CM.watch(...args),
+      isInside: (...args) => this.CM.isInside(...args),
+      testScope: (...args) => this.CM.testScope(...args),
+      sleep: (...args) => this.sleep(...args),
+      alert: (...args) => alert(...args), // eslint-disable-line no-alert
+    }
   }
-  getTicks() {
-    return this.CM.getLastContext().data.ticksObj.ticks.map(o => o.quote)
-  }
-  getPipSize() {
-    return this.CM.getLastContext().data.ticksObj.pipSize
+  sleep(arg) {
+    return new Promise(r => setTimeout(() => {
+      r()
+      setTimeout(() => this.observer.emit('CONTINUE'), 0)
+    }, arg), noop)
   }
   getBotInterface() {
     return {
@@ -60,23 +69,22 @@ export default class BotApi {
       getTime: () => parseInt((new Date().getTime()) / 1000, 10),
     }
   }
-  getInterface(name = 'Global') {
-    return name === 'Bot' ? {
-      ...this.getBotInterface(),
-      ...this.getTicksInterface(),
-      ...this.getToolsInterface(),
-    } : {
-      watch: (...args) => this.CM.watch(...args),
-      isInside: (...args) => this.CM.isInside(...args),
-      testScope: (...args) => this.CM.testScope(...args),
-      sleep: (...args) => this.sleep(...args),
-      alert: (...args) => alert(...args), // eslint-disable-line no-alert
+  getCandleInterface() {
+    return {
+      isCandleBlack: candle => candle && Object.keys(candle).length && candle.close < candle.open,
+      candleValues: (ohlc, field) => ohlc.map(o => o[field]),
+      candleField: (candle, field) => candle[field],
     }
   }
-  sleep(arg) {
-    return new Promise(r => setTimeout(() => {
-      r()
-      setTimeout(() => this.observer.emit('CONTINUE'), 0)
-    }, arg), noop)
+  getOhlc(field) {
+    const ohlc = this.CM.getLastContext().data.ticksObj.ohlc
+
+    return field ? ohlc.map(o => o[field]) : ohlc
+  }
+  getTicks() {
+    return this.CM.getLastContext().data.ticksObj.ticks.map(o => o.quote)
+  }
+  getPipSize() {
+    return this.CM.getLastContext().data.ticksObj.pipSize
   }
 }
