@@ -13,7 +13,6 @@ export default class BotApi {
       ...this.getBotInterface(),
       ...this.getTicksInterface(),
       ...this.getToolsInterface(),
-      ...this.getCandleInterface(),
     } : {
       watch: (...args) => this.CM.watch(...args),
       isInside: (...args) => this.CM.isInside(...args),
@@ -64,16 +63,29 @@ export default class BotApi {
   }
   getToolsInterface() {
     return {
-      notifyError: (...args) => viewObserver.emit('NotifyError', args),
-      notify: (...args) => viewObserver.emit('Notify', args),
+      ...this.getTimeInterface(),
+      ...this.getCandleInterface(),
+      ...this.getMiscInterface(),
+    }
+  }
+  getTimeInterface() {
+    return {
       getTime: () => parseInt((new Date().getTime()) / 1000, 10),
     }
   }
   getCandleInterface() {
     return {
-      isCandleBlack: candle => candle && Object.keys(candle).length && candle.close < candle.open,
+      isCandleBlack: candle => candle && Object.keys(candle).length &&
+        candle.close < candle.open,
       candleValues: (ohlc, field) => ohlc.map(o => o[field]),
       candleField: (candle, field) => candle[field],
+    }
+  }
+  getMiscInterface() {
+    return {
+      notifyError: (...args) => viewObserver.emit('NotifyError', args),
+      notify: (...args) => viewObserver.emit('Notify', args),
+      getTotalRuns: () => this.bot.getTotalRuns(),
     }
   }
   getOhlc(field) {
