@@ -1,6 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 import { translate } from '../../../../../common/i18n'
 import { mainScope } from '../../relationChecker'
+import { disable } from '../../utils'
 
 Blockly.Blocks.direction = {
   init: function init() {
@@ -13,7 +14,8 @@ Blockly.Blocks.direction = {
   },
   onchange: function onchange(ev) {
     mainScope(this, ev, 'Tick Direction')
+    disable(this, translate('Direction block is deprecated, please use the check direction block instead'))
   },
 }
 
-Blockly.JavaScript.direction = () => ['this.ticksObj.direction', Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.direction = () => ''
