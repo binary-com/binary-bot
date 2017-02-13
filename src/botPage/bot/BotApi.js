@@ -39,7 +39,6 @@ export default class BotApi {
   }
   getTicksInterface() {
     const getLastTick = () => this.getTicks().slice(-1)[0]
-    const getDirection = () => this.CM.getLastContext().data.ticksObj.direction
 
     return {
       getLastTick,
@@ -51,8 +50,7 @@ export default class BotApi {
       },
       getOhlc: (field) => this.getOhlc(field),
       getTicks: () => this.getTicks(),
-      checkDirection: w => getDirection() === w,
-      getDirection,
+      checkDirection: w => this.CM.getLastContext().data.ticksObj.direction === w,
     }
   }
   getToolsInterface() {
