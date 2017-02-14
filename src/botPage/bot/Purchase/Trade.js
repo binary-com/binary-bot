@@ -1,6 +1,6 @@
 import { translate } from '../../../common/i18n'
 import { observer as viewObserver } from '../../common/shared'
-import { noop } from '../tools'
+import { noop, subscribeToStream } from '../tools'
 
 export default class Trade {
   constructor($scope) {
@@ -10,16 +10,6 @@ export default class Trade {
     this.openContract = null
     this.isSellAvailable = false
     this.isSold = false
-  }
-  subscribeToStream(name, respHandler, request, registerOnce, type, unregister) {
-    return new Promise((resolve) => {
-      this.observer.register(
-        name, (...args) => {
-          respHandler(...args)
-          resolve()
-        }, registerOnce, type && { type, unregister }, true)
-      request()
-    })
   }
   sellAtMarket() {
     if (!this.isSold && this.isSellAvailable) {
@@ -64,7 +54,7 @@ export default class Trade {
     if (!this.contractId) {
       return
     }
-    this.subscribeToStream('api.proposal_open_contract', contract => {
+    subscribeToStream(this.observer, 'api.proposal_open_contract', contract => {
       if (this.retryIfContractNotReceived(contract)) {
         return
       }
@@ -76,7 +66,7 @@ export default class Trade {
     false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }
   purchase(contract) {
-    this.subscribeToStream('api.buy', purchasedContract => {
+    subscribeToStream(this.observer, 'api.buy', purchasedContract => {
       viewObserver.emit('log.trade.purchase', purchasedContract)
       this.observer.emit('trade.purchase', { contract, purchasedContract })
       viewObserver.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)

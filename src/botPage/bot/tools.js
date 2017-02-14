@@ -39,3 +39,13 @@ export const getPipSizes = symbols =>
   symbols.reduce((s, i) =>
     s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map()).toObject()
 
+export const subscribeToStream =
+  (observer, name, respHandler, request, registerOnce, type, unregister) =>
+    new Promise((resolve) => {
+      observer.register(
+        name, (...args) => {
+          respHandler(...args)
+          resolve()
+        }, registerOnce, type && { type, unregister }, true)
+      request()
+    })

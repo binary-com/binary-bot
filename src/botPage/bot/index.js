@@ -1,7 +1,10 @@
 import Purchase from './Purchase'
 import { translate } from '../../common/i18n'
 import { observer as viewObserver } from '../common/shared'
-import { noop, getDirection, tradeOptionToProposal, getPipSizes } from './tools'
+import {
+  noop, getDirection, tradeOptionToProposal, getPipSizes,
+  subscribeToStream,
+} from './tools'
 
 let totalRuns = 0
 let totalProfit = 0
@@ -27,16 +30,6 @@ export default class Bot {
     this.observer = $scope.observer
     this.CM = $scope.CM
     this.$scope = $scope
-  }
-  subscribeToStream(name, respHandler, request, registerOnce, type, unregister) {
-    return new Promise((resolve) => {
-      this.observer.register(
-        name, (...args) => {
-          respHandler(...args)
-          resolve()
-        }, registerOnce, type && { type, unregister }, true)
-      request()
-    })
   }
   registerStream(name, cb) {
     if (this.observer.isRegistered(name)) {
@@ -178,7 +171,7 @@ export default class Bot {
       }))
   }
   subscribeToBalance() {
-    this.subscribeToStream(
+    subscribeToStream(this.observer,
       'api.balance', balanceResp => {
         const { balance, currency } = balanceResp
         this.balance = +balance
@@ -188,7 +181,7 @@ export default class Bot {
       .then(() => this.api.balance(), noop), false, null)
   }
   subscribeToCandles() {
-    return this.subscribeToStream(
+    return subscribeToStream(this.observer,
       'api.candles', ohlc => {
         this.candleInterval = this.tradeOption.candleInterval
         this.ohlc = ohlc
@@ -204,7 +197,7 @@ export default class Bot {
       }, true, 'candles', ['api.ohlc', 'api.candles'])
   }
   subscribeToTickHistory() {
-    return this.subscribeToStream(
+    return subscribeToStream(this.observer,
       'api.history', history => {
         this.symbol = this.tradeOption.symbol
         this.ticks = history
@@ -218,7 +211,7 @@ export default class Bot {
       }, true, 'history', ['api.history', 'api.tick', 'bot.tickUpdate'])
   }
   subscribeToProposals() {
-    this.subscribeToStream(
+    subscribeToStream(this.observer,
       'api.proposal', proposal => {
         if (this.running) {
           viewObserver.emit('log.bot.proposal', proposal)
@@ -233,12 +226,12 @@ export default class Bot {
       }, false, null)
   }
   subscribeToPurchaseFinish() {
-    this.subscribeToStream(
+    subscribeToStream(this.observer,
       'trade.finish', contract => this.botFinish(contract),
       noop, true, null)
   }
   subscribeToTradePurchase() {
-    this.subscribeToStream(
+    subscribeToStream(this.observer,
       'trade.purchase', info => {
         totalRuns += 1
         this.sessionRuns += 1
