@@ -1,6 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#n3drko
 import { translate } from '../../../../../common/i18n'
-import { mainScope } from '../../relationChecker'
 import { disable } from '../../utils'
 
 Blockly.Blocks.direction = {
@@ -13,7 +12,6 @@ Blockly.Blocks.direction = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    mainScope(this, ev, 'Tick Direction')
     disable(this, translate('Direction block is deprecated, please use the check direction block instead'))
   },
 }
