@@ -21,11 +21,11 @@ export default class BotApi {
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
     }
   }
-  sleep(arg) {
+  sleep(arg = 1) {
     return new Promise(r => setTimeout(() => {
       r()
       setTimeout(() => this.observer.emit('CONTINUE'), 0)
-    }, arg), noop)
+    }, arg * 1000), noop)
   }
   getBotInterface() {
     return {

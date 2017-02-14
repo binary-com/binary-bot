@@ -27,7 +27,7 @@ Blockly.JavaScript.timeout = (block) => {
   const seconds = Blockly.JavaScript.valueToCode(block, 'SECONDS', Blockly.JavaScript.ORDER_ATOMIC)
 
   return `
-    sleep(${seconds ? `(${seconds}) *` : ''} 1000);
+    sleep(${seconds});
     ${stack}
   `
 }
