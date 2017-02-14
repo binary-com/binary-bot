@@ -6,10 +6,10 @@ engines:
       languages:
       - javascript
   eslint:
-    enabled: false
+    enabled: true
+    channel: "eslint-3"
 ratings:
   paths:
-  - "**.css"
   - "**.js"
 exclude_paths:
 - node_modules/
