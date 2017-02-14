@@ -1,0 +1,15 @@
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+  eslint:
+    enabled: false
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
+exclude_paths:
+- node_modules/
