@@ -448,11 +448,19 @@
     left: 50%; }
 
 .joyride-beacon {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
   display: inline-block;
+  line-height: 1;
+  padding: 0;
   height: 36px;
   position: relative;
   width: 36px;
   z-index: 1500; }
+  .joyride-beacon:active, .joyride-beacon:focus, .joyride-beacon:hover {
+    outline: none; }
   .joyride-beacon__inner {
     animation: joyride-beacon-inner 1.2s infinite ease-in-out;
     background-color: #e98024;
@@ -461,7 +469,7 @@
     height: 50%;
     left: 50%;
     opacity: 0.7;
-    position: relative;
+    position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
     width: 50%; }
@@ -470,8 +478,8 @@
     background-color: rgba(233, 128, 36, 0.2);
     border: 2px solid #e98024;
     border-radius: 50%;
-    display: block;
     box-sizing: border-box;
+    display: block;
     height: 100%;
     left: 0;
     opacity: 0.9;
@@ -504,15 +512,10 @@
   filter: drop-shadow(-1px -2px 3px rgba(0, 0, 0, 0.3)) drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.3));
   opacity: 0;
   padding: 20px;
+  pointer-events: auto;
   transform: translate3d(0, 0, 0);
   width: 15em;
   z-index: 1510; }
-  @media screen and (min-width: 480px) {
-    .joyride-tooltip {
-      width: 20em; } }
-  @media screen and (min-width: 960px) {
-    .joyride-tooltip {
-      width: 20em; } }
   .joyride-tooltip--animate {
     animation: joyride-tooltip 0.4s forwards;
     animation-timing-function: cubic-bezier(0, 1.05, 0.55, 1.18); }
@@ -565,19 +568,29 @@
       left: -16px;
       width: 18px; }
   .joyride-tooltip__close {
-    color: rgba(85, 85, 85, 0.5);
-    font-size: 30px;
-    line-height: 12px;
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 1;
+    padding: 0;
+    background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2212px%22%20height%3D%2212px%22%20viewBox%3D%220%200%2016%2016%22%20version%3D%221.1%22%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M14.117.323l-6.073%206.075-5.449-6.075c-.431-.431-1.131-.431-1.562%200-.431.431-.431%201.131%200%201.562l5.449%206.075-6.159%206.159c-.431.431-.431%201.134%200%201.562.431.431%201.131.431%201.562%200l6.075-6.073%205.449%206.073c.429.431%201.131.431%201.56%200%20.431-.429.431-1.131%200-1.562l-5.452-6.073%206.159-6.161c.431-.431.431-1.131%200-1.562-.431-.431-1.129-.431-1.56%200z%22%20fill%3D%22rgba(85, 85, 85, 0.5)%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 12px;
     position: absolute;
     right: 10px;
     text-decoration: none;
     top: 10px;
+    width: 12px;
     z-index: 10;
     display: block; }
+    .joyride-tooltip__close:active, .joyride-tooltip__close:focus, .joyride-tooltip__close:hover {
+      outline: none; }
     .joyride-tooltip__close:hover, .joyride-tooltip__close:focus {
       color: rgba(60, 60, 60, 0.5);
-      outline: none;
-      text-decoration: none; }
+      outline: none; }
     .joyride-tooltip__close--header {
       right: 20px;
       top: 20px; }
@@ -586,36 +599,52 @@
     color: #555;
     font-size: 20px;
     padding-bottom: 6px;
+    padding-right: 18px;
     position: relative; }
+    .joyride-tooltip__header ~ .joyride-tooltip__main {
+      padding: 12px 0 18px; }
   .joyride-tooltip__main {
     font-size: 16px;
-    padding: 12px 0 18px; }
+    padding-bottom: 18px;
+    padding-right: 18px; }
   .joyride-tooltip__footer {
     text-align: right; }
-  .joyride-tooltip__button--primary {
-    background-color: #2e8836;
-    border-radius: 4px;
-    color: #ffffff !important;
-    outline: none;
-    padding: 6px 12px;
-    text-decoration: none;
-    transition: background-color 0.2s ease-in-out; }
-    .joyride-tooltip__button--primary:active, .joyride-tooltip__button--primary:focus, .joyride-tooltip__button--primary:hover {
-      background-color: #369f3f;
+  .joyride-tooltip__button {
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 1;
+    padding: 0; }
+    .joyride-tooltip__button:active, .joyride-tooltip__button:focus, .joyride-tooltip__button:hover {
+      outline: none; }
+    .joyride-tooltip__button--primary {
+      background-color: #2e8836;
+      border-radius: 4px;
       color: #ffffff !important;
-      text-decoration: none; }
-  .joyride-tooltip__button--secondary {
-    color: #e98024;
-    margin-right: 10px;
-    outline: none; }
-  .joyride-tooltip__button--skip {
-    color: #ccc;
-    float: left;
-    margin-right: 10px; }
+      padding: 6px 12px;
+      transition: background-color 0.2s ease-in-out; }
+      .joyride-tooltip__button--primary:active, .joyride-tooltip__button--primary:focus, .joyride-tooltip__button--primary:hover {
+        background-color: #369f3f;
+        color: #ffffff !important; }
+    .joyride-tooltip__button--secondary {
+      color: #e98024;
+      margin-right: 10px; }
+    .joyride-tooltip__button--skip {
+      color: #ccc;
+      float: left;
+      margin-right: 10px; }
   .joyride-tooltip--standalone .joyride-tooltip__main {
     padding-bottom: 0; }
   .joyride-tooltip--standalone .joyride-tooltip__footer {
     display: none; }
+  @media screen and (min-width: 480px) {
+    .joyride-tooltip {
+      width: 20em; } }
+  @media screen and (min-width: 960px) {
+    .joyride-tooltip {
+      width: 20em; } }
 
 @keyframes joyride-tooltip {
   0% {
@@ -751,9 +780,6 @@ html, body {
 #stopButton {
   display: none; }
 
-.actions_menu {
-  display: none; }
-
 .languages {
   z-index: 999; }
 
@@ -774,4 +800,4 @@ html, body {
 .show-on-load {
   display: none; }
 
-/*# sourceMappingURL=bot-252e70513b.css.map */
+/*# sourceMappingURL=bot-da6cb777ec.css.map */
