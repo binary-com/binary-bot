@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
+import { observer } from 'binary-common-utils/lib/observer'
 import ws from '../../../../common/mock/websocket'
 import _Symbol from '../index'
 
 describe('symbol', () => {
-  const api = new CustomApi(ws)
+  const api = new CustomApi(observer, ws)
   describe('Error Handling', () => {
     it('initializing is needed for symbol functions', () => {
       expect(() => {

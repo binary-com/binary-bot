@@ -11,7 +11,7 @@ describe('Trade', () => {
   let finishedContract
   beforeAll(() => {
     observer.eventActionMap = {}
-    api = new CustomApi(ws)
+    api = new CustomApi(observer, ws)
     trade = new Trade(api)
   })
   describe('Purchasing...', () => {

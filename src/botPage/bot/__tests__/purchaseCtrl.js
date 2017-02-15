@@ -21,7 +21,7 @@ describe('PurchaseCtrl', () => {
   let firstAttempt = true
   let purchaseCtrl
   beforeAll(() => {
-    api = new CustomApi(ws)
+    api = new CustomApi(observer, ws)
     const beforePurchase = function beforePurchase() {
       if (purchaseCtrl.proposals) {
         if (firstAttempt) {

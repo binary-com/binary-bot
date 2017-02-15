@@ -18,13 +18,8 @@ export const setAppId = () => {
   setStorage('appId', appId)
 }
 
-const addAllTokens = tokenList => {
-  const promises =
-    tokenList.map(token =>
-      new Promise((r) => addTokenIfValid(token, r)))
-
-  return Promise.all(promises)
-}
+const addAllTokens = tokenList =>
+  Promise.all(tokenList.map(token => addTokenIfValid(token)))
 
 export const oauthLogin = (done = () => 0) => {
   const queryStr = parseQueryString()

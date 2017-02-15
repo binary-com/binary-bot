@@ -21,7 +21,7 @@ describe('Bot', () => {
   const token = 'nmjKBPWxM00E8Fh'
   beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
     observer.eventActionMap = {}
-    api = new CustomApi(mockWebsocket)
+    api = new CustomApi(observer, mockWebsocket)
     bot = new Bot(api)
     bot.initPromise.then(() => {
       done()

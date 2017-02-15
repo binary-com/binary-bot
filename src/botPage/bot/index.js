@@ -28,7 +28,7 @@ export default class Bot {
     this.running = false
     this.balance = 0
     this.pipSize = 2
-    this.api = (api === null) ? new CustomApi() : api
+    this.api = (api === null) ? new CustomApi(observer) : api
     this.symbolApi = new _Symbol(this.api)
     this.initPromise = this.symbolApi.initPromise
   }

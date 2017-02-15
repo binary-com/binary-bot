@@ -89,7 +89,10 @@ const resetRealityCheck = (token) => {
 }
 
 const initializeApi = () => {
-  api = new LiveApi()
+  api = new LiveApi({
+    language: getStorage('lang') || 'en',
+    appId: getStorage('appId') || 1,
+  })
   api.events.on('ohlc', response => {
     const newTick = response.ohlc
     const lastCandle = ticks.slice(-1)[0]
@@ -232,7 +235,7 @@ export default class View {
     }
 
     const logout = () => {
-      logoutAllTokens(() => {
+      logoutAllTokens().then(() => {
         this.updateTokenList()
         observer.emit('ui.log.info', translate('Logged you out!'))
         clearRealityCheck()
