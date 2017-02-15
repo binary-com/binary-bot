@@ -23,5 +23,5 @@ Blockly.JavaScript.rsi = (block) => {
       'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]'
   const period = Blockly.JavaScript.valueToCode(block,
       'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '14'
-  return [`Bot.rsi(${input}, { periods: ${period} })`, Blockly.JavaScript.ORDER_NONE]
+  return [`Bot.rsi(${input}, ${period})`, Blockly.JavaScript.ORDER_NONE]
 }

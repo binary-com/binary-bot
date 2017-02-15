@@ -22,17 +22,17 @@ export default class Indicators {
   }
   getInterface() {
     return {
-      sma: (...args) => this.decorate(sma, ...args),
-      smaa: (...args) => this.decorate(smaa, ...args),
-      ema: (...args) => this.decorate(ema, ...args),
-      emaa: (...args) => this.decorate(emaa, ...args),
+      sma: (input, periods) => this.decorate(sma, input, { periods }),
+      smaa: (input, periods) => this.decorate(smaa, input, { periods }),
+      ema: (input, periods) => this.decorate(ema, input, { periods }),
+      emaa: (input, periods) => this.decorate(emaa, input, { periods }),
+      rsi: (input, periods) => this.decorate(rsi, input, { periods }),
+      rsia: (input, periods) => this.decorate(rsia, input, { periods }),
       bb: (input, config, field) => this.decorate(bb, input, config)[field],
       bba: (input, config, field) =>
         this.decorate(bba, input, config).map(r => r[field]),
-      rsi: (...args) => this.decorate(rsi, ...args),
-      rsia: (...args) => this.decorate(rsia, ...args),
       macda: (input, config, field) =>
-        this.decorate(macda, config, field).map(r => r[field]),
+        this.decorate(macda, input, config).map(r => r[field]),
     }
   }
 }

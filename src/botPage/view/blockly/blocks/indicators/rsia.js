@@ -23,5 +23,5 @@ Blockly.JavaScript.rsia = (block) => {
       'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]'
   const period = Blockly.JavaScript.valueToCode(block,
       'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '14'
-  return [`Bot.rsia(${input}, { periods: ${period} })`, Blockly.JavaScript.ORDER_NONE]
+  return [`Bot.rsia(${input}, ${period})`, Blockly.JavaScript.ORDER_NONE]
 }
