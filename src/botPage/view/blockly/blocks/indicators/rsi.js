@@ -1,10 +1,10 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
-import { translate } from '../../../../../../common/i18n'
+import { translate } from '../../../../../common/i18n'
 
-Blockly.Blocks.sma = {
+Blockly.Blocks.rsi = {
   init: function init() {
     this.appendDummyInput()
-      .appendField(translate('Simple Moving Average'))
+      .appendField(translate('Relative Strength Index'))
     this.appendValueInput('INPUT')
       .setCheck('Array')
       .appendField(translate('Input List'))
@@ -13,17 +13,17 @@ Blockly.Blocks.sma = {
       .appendField(translate('Period'))
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
-    this.setTooltip(translate('Calculates Simple Moving Average (SMA) from a list with a period'))
+    this.setTooltip(translate('Relative Strength Index (RSI) from a list with a period'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
 }
 
-Blockly.JavaScript.sma = (block) => {
+Blockly.JavaScript.rsi = (block) => {
   const input = Blockly.JavaScript.valueToCode(block,
       'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]'
   const period = Blockly.JavaScript.valueToCode(block,
-      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '10'
-  const code = `Bot.math.indicators.simpleMovingAverage(Bot.expect.notEmptyArray(${
+      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '14'
+  const code = `Bot.math.indicators.relativeStrengthIndex(Bot.expect.notEmptyArray(${
   input}), { periods: Bot.expect.indicatorPeriod(${input}, ${period}) })`
   return [code, Blockly.JavaScript.ORDER_NONE]
 }
