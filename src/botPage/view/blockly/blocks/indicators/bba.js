@@ -31,15 +31,14 @@ Blockly.JavaScript.bba = (block) => {
   const input = Blockly.JavaScript.valueToCode(block,
       'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]'
   const period = Blockly.JavaScript.valueToCode(block,
-      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '20'
+      'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '10'
   const stdDevUp = Blockly.JavaScript.valueToCode(block,
-      'UPMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '2'
+      'UPMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '5'
   const stdDevDown = Blockly.JavaScript.valueToCode(block,
-      'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '2'
-  const code = `(Bot.math.indicators.bollingerBandsArray(Bot.expect.notEmptyArray(${
-  input}), { periods: Bot.expect.indicatorPeriod(${input}, ${period
-  }), stdDevUp: Bot.expect.number('${translate('Std. Dev. Up Multiplier')
-  }', ${stdDevUp}), stdDevDown: Bot.expect.number('${translate('Std. Dev. Down Multiplier')
-  }', ${stdDevDown}) }).map(function(el){return el[${bbResult}]}))`
-  return [code, Blockly.JavaScript.ORDER_NONE]
+      'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '5'
+  return [`Bot.bba(${input}, {
+    periods: ${period},
+    stdDevUp: ${stdDevUp},
+    stdDevDown: ${stdDevDown},
+  }, ${bbResult})`, Blockly.JavaScript.ORDER_NONE]
 }

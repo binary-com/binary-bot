@@ -1,10 +1,12 @@
 import Bot from './'
+import Indicators from './Indicators'
 import { noop } from './tools'
 import { observer as viewObserver } from '../common/shared'
 
 export default class BotApi {
   constructor($scope) {
     this.bot = new Bot($scope)
+    this.indicators = new Indicators($scope)
     this.CM = $scope.CM
     this.observer = $scope.observer
   }
@@ -66,6 +68,7 @@ export default class BotApi {
       ...this.getTimeInterface(),
       ...this.getCandleInterface(),
       ...this.getMiscInterface(),
+      ...this.getIndicatorsInterface(),
     }
   }
   getTimeInterface() {
@@ -89,6 +92,9 @@ export default class BotApi {
       getBalance: type => this.bot.getBalance(type),
       getTotalProfit: () => this.bot.getTotalProfit(),
     }
+  }
+  getIndicatorsInterface() {
+    return this.indicators.getInterface()
   }
   getOhlc(field) {
     const ohlc = this.CM.getLastContext().data.ticksObj.ohlc
