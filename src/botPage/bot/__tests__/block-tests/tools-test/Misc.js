@@ -19,11 +19,28 @@ describe('Misc. tools', () => {
         Bot.notify('Test', 'info')
         Bot.notifyError('Test2')
         result.totalRuns = Bot.getTotalRuns();
+        result.totalProfit = Bot.getTotalProfit();
+        watch('before')
+        result.balance = Bot.getBalance('NUM')
+        result.balanceStr = Bot.getBalance('STR')
       ${footer}
     `).then(v => {
       value = v
       done()
     })
+  })
+  it('Balance', () => {
+    const { result: { balance, balanceStr } } = value
+
+    expect(balance).to.be.a('Number')
+    expect(balanceStr).to.be.a('String')
+    expect(parseFloat(balanceStr)).equal(balance)
+  })
+
+  it('Total Profit', () => {
+    const { result: { totalProfit } } = value
+
+    expect(totalProfit).to.be.a('Number')
   })
 
   it('Total runs', () => {

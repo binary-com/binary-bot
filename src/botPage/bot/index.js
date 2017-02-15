@@ -12,19 +12,19 @@ let totalWins = 0
 let totalLosses = 0
 let totalStake = 0
 let totalPayout = 0
+let balance = 0
+let balanceStr = ''
 
 export default class Bot {
   constructor($scope) {
     this.ticks = []
     this.ohlc = []
     this.token = ''
-    this.balanceStr = ''
     this.symbol = ''
     this.candleInterval = 0
     this.sessionRuns = 0
     this.sessionProfit = 0
     this.running = false
-    this.balance = 0
     this.pipSizes = []
     this.api = $scope.api
     this.observer = $scope.observer
@@ -173,10 +173,10 @@ export default class Bot {
   subscribeToBalance() {
     subscribeToStream(this.observer,
       'api.balance', balanceResp => {
-        const { balance, currency } = balanceResp
-        this.balance = +balance
-        this.balanceStr = `${(+balance).toFixed(2)} ${currency}`
-        viewObserver.emit('bot.tradeInfo', { balance: this.balanceStr })
+        const { balance: b, currency } = balanceResp
+        balance = +b
+        balanceStr = `${balance.toFixed(2)} ${currency}`
+        viewObserver.emit('bot.tradeInfo', { balance: balanceStr })
       }, () => this.api.originalApi.send({ forget_all: 'balance' })
       .then(() => this.api.balance(), noop), false, null)
   }
@@ -282,5 +282,11 @@ export default class Bot {
   }
   getTotalRuns() {
     return totalRuns
+  }
+  getBalance(type) {
+    return type === 'STR' ? balanceStr : balance
+  }
+  getTotalProfit() {
+    return totalProfit
   }
 }

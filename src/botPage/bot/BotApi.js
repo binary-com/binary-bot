@@ -86,6 +86,8 @@ export default class BotApi {
       notifyError: (...args) => viewObserver.emit('NotifyError', args),
       notify: (...args) => viewObserver.emit('Notify', args),
       getTotalRuns: () => this.bot.getTotalRuns(),
+      getBalance: type => this.bot.getBalance(type),
+      getTotalProfit: () => this.bot.getTotalProfit(),
     }
   }
   getOhlc(field) {
