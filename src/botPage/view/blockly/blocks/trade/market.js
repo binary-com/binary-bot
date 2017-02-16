@@ -1,6 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#db8gmg
 import { translate } from '../../../../../common/i18n'
-import { throwError } from '../../../../common/shared'
 import config from '../../../../common/const'
 import { marketDropdown, tradeTypeDropdown, restartOnError } from './components'
 import { updatePurchaseChoices, updateInputList, setInputList } from '../../utils'
@@ -95,32 +94,19 @@ export default () => {
     if (config.hasPrediction.indexOf(oppositesName) > -1) {
       predictionValue = Blockly.JavaScript.valueToCode(block,
         'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC)
-      if (predictionValue === '') {
-        throwError(translate('All trade types are required'))
-      }
     }
     if (config.hasBarrierOffset.indexOf(oppositesName) > -1 ||
       config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
       const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST')
       barrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
-      if (barrierOffsetValue === '') {
-        throwError(translate('All trade types are required'))
-      }
       barrierOffsetValue = `${barrierOffsetType}${barrierOffsetValue}`
     }
     if (config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
       const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST')
       secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
-      if (secondBarrierOffsetValue === '') {
-        throwError(translate('All trade types are required'))
-      }
       secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`
-    }
-    if (oppositesName === '' || durationValue === '' ||
-      payouttype === '' || currency === '' || amount === '') {
-      throwError(translate('All trade types are required'))
     }
     const contractTypeList = contractTypeSelector === 'both' ?
       config.opposites[oppositesName].map((k) => Object.keys(k)[0]) :

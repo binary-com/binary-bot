@@ -10,14 +10,12 @@ describe('Misc. tools', () => {
   const observed = {}
 
   viewObserver.register('Notify', notify => (observed.notify = notify))
-  viewObserver.register('NotifyError', notifyError => (observed.notifyError = notifyError))
 
   beforeAll(done => {
     jsi.run(`
       ${header}
       ${trade}
         Bot.notify('Test', 'info')
-        Bot.notifyError('Test2')
         result.totalRuns = Bot.getTotalRuns();
         result.totalProfit = Bot.getTotalProfit();
         watch('before')
@@ -50,9 +48,8 @@ describe('Misc. tools', () => {
   })
 
   it('Notify', () => {
-    const { notify, notifyError } = observed
+    const { notify } = observed
 
     expect(notify).deep.equal(['Test', 'info'])
-    expect(notifyError).deep.equal(['Test2'])
   })
 })

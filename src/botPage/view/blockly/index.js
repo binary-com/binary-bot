@@ -2,7 +2,7 @@ import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer from 'binary-common-utils/lib/observer'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import config from '../../common/const'
-import { observer, throwError } from '../../common/shared'
+import { observer } from '../../common/shared'
 import {
   isMainBlock, save,
   disable, deleteBlocksLoadedBy,
@@ -224,14 +224,9 @@ export default class _Blockly {
     save(filename, collection, xml)
   }
   run(limitations = {}) {
-    let code
-    try {
-      window.LoopTrap = 99999999999
-      Blockly.mainWorkspace.traceOn(true)
-      Blockly.JavaScript
-        .INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) { Bot.notifyError("Infinite loop!"); throw "Infinite loop."; }\n'
-      this.disableStrayBlocks()
-      code = `
+    Blockly.mainWorkspace.traceOn(true)
+    this.disableStrayBlocks()
+    const code = `
       (function(){
         var trade, before_purchase, during_purchase, after_purchase;
 
@@ -249,11 +244,11 @@ export default class _Blockly {
         }
 
         var limitations = ${JSON.stringify(limitations)}
-        
+
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
         var context
-        
+
         var again = false;
         while(true) {
           run(trade, again)
@@ -273,11 +268,7 @@ export default class _Blockly {
         }
       })();
       `
-      Blockly.JavaScript.INFINITE_LOOP_TRAP = null
-      this.generatedJs = code
-    } catch (e) {
-      throwError(e)
-    }
+    this.generatedJs = code
     if (code) {
       const o = new Observer()
       const $scope = { observer: o, api: new CustomApi(o) }
