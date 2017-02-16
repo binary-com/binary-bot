@@ -1,4 +1,4 @@
-import { observer as viewObserver } from '../../common/shared'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import Trade from './Trade'
 
 export default class Purchase {
@@ -34,7 +34,7 @@ export default class Purchase {
   }
   updateTicks() {
     if (!this.purchased && this.ready) {
-      viewObserver.emit('log.purchase.start', { proposals: this.proposals })
+      globalObserver.emit('log.purchase.start', { proposals: this.proposals })
       this.CM.execContext('before', this.proposals)
     }
   }

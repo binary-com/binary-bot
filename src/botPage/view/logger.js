@@ -1,6 +1,6 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { getToken } from 'binary-common-utils/lib/storageManager'
 import { translate } from '../../common/i18n'
-import { observer } from '../common/shared'
 
 const log = (type, ...args) => {
   if (type === 'warn') {
@@ -69,20 +69,20 @@ const waitForNotifications = () => {
   const amplitudeList = ['log.bot.login', 'log.trade.finish']
 
   logList.forEach(event =>
-    observer.register(event, d => log('info', event, d)))
+    globalObserver.register(event, d => log('info', event, d)))
 
-  observer.register('Notify', args => notify(...args))
+  globalObserver.register('Notify', args => notify(...args))
 
-  errorList.forEach(type => observer.register(type, e => notifyError(e)))
+  errorList.forEach(type => globalObserver.register(type, e => notifyError(e)))
 
   notifList.forEach(className =>
-    observer.register(`ui.log.${className}`, message =>
+    globalObserver.register(`ui.log.${className}`, message =>
       notify(message, className, 'right')))
 
   amplitudeList.forEach(event =>
-    observer.register(event, (d) => amplitude.getInstance().logEvent(event, d)))
+    globalObserver.register(event, (d) => amplitude.getInstance().logEvent(event, d)))
 
-  observer.register('log.revenue', (data) => {
+  globalObserver.register('log.revenue', (data) => {
     const { user, profit, contract } = data
 
     if (typeof amplitude !== 'undefined' && !user.isVirtual) {

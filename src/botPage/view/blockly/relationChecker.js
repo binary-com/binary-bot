@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import config from '../../common/const'
-import { observer } from '../../common/shared'
 import { symbolApi } from '../shared'
 import { translate } from '../../../common/i18n'
 import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'
@@ -46,24 +46,24 @@ const conditionFields = (blockObj, ev) => {
       const minDuration = symbolApi.getLimitation(symbol, tradeType).minDuration
       const durationInSeconds = durationToSecond(duration + durationType)
       if (!durationInSeconds) {
-        observer.emit('ui.log.warn', translate('Duration must be a positive integer'))
+        globalObserver.emit('ui.log.warn', translate('Duration must be a positive integer'))
       } else if (durationInSeconds < durationToSecond(minDuration)) {
-        observer.emit('ui.log.warn',
+        globalObserver.emit('ui.log.warn',
           `${translate('Minimum duration is')} ${expandDuration(minDuration)}`)
       } else if (durationType === 't' && !(isInteger(duration) && isInRange(duration, 5, 10))) {
-        observer.emit('ui.log.warn',
+        globalObserver.emit('ui.log.warn',
           translate('Number of ticks must be between 5 and 10'))
       } else if (!isInteger(duration) || duration < 1) {
-        observer.emit('ui.log.warn',
+        globalObserver.emit('ui.log.warn',
           translate('Expiry time cannot be equal to start time'))
       } else {
-        observer.emit('tour:ticks')
+        globalObserver.emit('tour:ticks')
       }
     }
     const prediction = getNumField(blockObj, 'PREDICTION')
     if (prediction !== '') {
       if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-        observer.emit('ui.log.warn', translate('Prediction must be one digit'))
+        globalObserver.emit('ui.log.warn', translate('Prediction must be one digit'))
       }
     }
     let inputMissing = false
@@ -73,7 +73,7 @@ const conditionFields = (blockObj, ev) => {
       }
     })
     if (!inputMissing) {
-      observer.emit('tour:options')
+      globalObserver.emit('tour:options')
     }
   }
 }

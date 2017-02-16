@@ -1,5 +1,5 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate } from '../../../common/i18n'
-import { observer as viewObserver } from '../../common/shared'
 import { noop, subscribeToStream } from '../tools'
 
 export default class Trade {
@@ -40,12 +40,12 @@ export default class Trade {
     const finished = contract.sell_price
     if (finished) {
       this.openContract = null
-      viewObserver.emit('log.trade.finish', contract)
+      globalObserver.emit('log.trade.finish', contract)
       this.observer.emit('trade.finish', contract)
       this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(noop, noop)
     } else {
       this.openContract = contract
-      viewObserver.emit('log.trade.update', contract)
+      globalObserver.emit('log.trade.update', contract)
       this.observer.emit('trade.update', contract)
     }
     this.CM.execContext(finished ? 'after' : 'during', contract)
@@ -67,9 +67,9 @@ export default class Trade {
   }
   purchase(contract) {
     subscribeToStream(this.observer, 'api.buy', purchasedContract => {
-      viewObserver.emit('log.trade.purchase', purchasedContract)
+      globalObserver.emit('log.trade.purchase', purchasedContract)
       this.observer.emit('trade.purchase', { contract, purchasedContract })
-      viewObserver.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)
+      globalObserver.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)
 
       this.isSold = false
 

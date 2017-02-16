@@ -1,4 +1,5 @@
 import Interpreter from 'js-interpreter'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import ContextManager from './ContextManager'
 import BotApi from './BotApi'
 
@@ -58,7 +59,7 @@ export default class JSI {
             return
           }
         } catch (e) {
-          console.log(e)
+          globalObserver.emit(e)
         }
         if (!this.observer.isRegistered('CONTINUE')) {
           this.observer.register('CONTINUE', () => setTimeout(loop, 0))

@@ -1,6 +1,6 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { expect } from 'chai'
 import { createJsi, header, trade, footer } from '../shared'
-import { observer as viewObserver } from '../../../../common/shared'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
@@ -9,7 +9,7 @@ describe('Misc. tools', () => {
   const jsi = createJsi()
   const observed = {}
 
-  viewObserver.register('Notify', notify => (observed.notify = notify))
+  globalObserver.register('Notify', notify => (observed.notify = notify))
 
   beforeAll(done => {
     jsi.run(`

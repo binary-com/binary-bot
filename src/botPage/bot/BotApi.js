@@ -1,7 +1,7 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import Bot from './'
 import Indicators from './Indicators'
 import { noop } from './tools'
-import { observer as viewObserver } from '../common/shared'
 import { sanitizeStart } from './sanitize'
 
 export default class BotApi {
@@ -87,7 +87,7 @@ export default class BotApi {
   }
   getMiscInterface() {
     return {
-      notify: (...args) => viewObserver.emit('Notify', args),
+      notify: (...args) => globalObserver.emit('Notify', args),
       getTotalRuns: () => this.bot.getTotalRuns(),
       getBalance: type => this.bot.getBalance(type),
       getTotalProfit: () => this.bot.getTotalProfit(),
