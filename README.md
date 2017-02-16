@@ -40,24 +40,24 @@ ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=0' bot bot.js
 ### bot .js content
 ```
 var token = 'REPLACE_YOUR_TOKEN_HERE';
+
 (function (){
   while (true) {
     console.log('Starting bot...')
     Bot.start(token, { amount: 1,
       basis: 'stake', candleInterval: 60,
-      contractTypes: '["DIGITEVEN", "DIGITODD"]',
+      contractTypes: '["CALL", "PUT"]',
       currency: 'USD', duration: 5,
       duration_unit: 't', symbol: 'R_100',
     });
-    var context;
-    context = context = wait('CONTEXT');
-    var option = Object.keys(context.data.proposals)[1]
+    var context = watch('before');
+    var option = Object.keys(context.data.proposals)[Math.round(Math.random())]
     Bot.purchase(option);
     console.log('Purchased:', option);
-    while((context = wait('CONTEXT')).scope === 'during') {
+    while(testScope(context = watch('during'), 'during')) {
       console.log('Purchase Update:', context.data.openContract.transaction_ids)
     }
-    console.log('Purchase finished:', context.data.finishedContract.transaction_ids);
+    console.log('Purchase finished:', Bot.readDetails(1));
   }
 })();
 ```
