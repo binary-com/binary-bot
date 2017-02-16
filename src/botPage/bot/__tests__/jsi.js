@@ -10,6 +10,8 @@ describe('Run JSI over simple calculation', () => {
     jsi.run('1 + 2').then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 

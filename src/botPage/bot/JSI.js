@@ -1,5 +1,4 @@
 import Interpreter from 'js-interpreter'
-import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import ContextManager from './ContextManager'
 import BotApi from './BotApi'
 
@@ -46,8 +45,12 @@ export default class JSI {
       }
     }
 
-    return new Promise(r => {
+    return new Promise((resolve, reject) => {
       const interpreter = new Interpreter(code, initFunc)
+
+      if (this.observer) {
+        this.observer.register('api.error', e => reject(e))
+      }
 
       const loop = () => {
         try {
@@ -55,11 +58,11 @@ export default class JSI {
             if (this.observer) {
               this.observer.unregisterAll('CONTINUE')
             }
-            r(interpreter.pseudoToNative(interpreter.value))
+            resolve(interpreter.pseudoToNative(interpreter.value))
             return
           }
         } catch (e) {
-          globalObserver.emit(e)
+          reject(e)
         }
         if (!this.observer.isRegistered('CONTINUE')) {
           this.observer.register('CONTINUE', () => setTimeout(loop, 0))

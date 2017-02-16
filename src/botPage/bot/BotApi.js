@@ -1,8 +1,9 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import Bot from './'
+import { translate } from '../../common/i18n'
 import Indicators from './Indicators'
 import { noop } from './tools'
-import { sanitizeStart } from './sanitize'
+import { sanitizeStart, expectPositiveInteger } from './sanitize'
 
 export default class BotApi {
   constructor($scope) {
@@ -54,8 +55,12 @@ export default class BotApi {
     return {
       getLastTick,
       getLastDigit: () => +(getLastTick().toFixed(this.getPipSize()).slice(-1)[0]),
-      getOhlcFromEnd: (field, index) => {
-        const lastOhlc = this.getOhlc().slice(-(+index || 1))[0]
+      getOhlcFromEnd: (field, index = 1) => {
+        const sanitizedIndex =
+          expectPositiveInteger(index,
+            translate('OHLC index must be a positive integer'))
+
+        const lastOhlc = this.getOhlc().slice(-sanitizedIndex)[0]
 
         return field ? lastOhlc[field] : lastOhlc
       },

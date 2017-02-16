@@ -5,8 +5,6 @@ import { symbolApi } from '../shared'
 import { translate } from '../../../common/i18n'
 import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'
 
-const isInteger = (amount) => !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount)
-
 const isInRange = (amount, min, max) => !isNaN(+amount) && +amount >= min && +amount <= max
 
 const getNumField = (block, fieldName) => {
@@ -40,9 +38,10 @@ const conditionFields = (blockObj, ev) => {
     if (!symbol || !tradeType) {
       return
     }
-    const duration = getNumField(blockObj, 'DURATION')
+    let duration = getNumField(blockObj, 'DURATION')
     const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
-    if (duration !== '') {
+    if (duration) {
+      duration = +duration
       const minDuration = symbolApi.getLimitation(symbol, tradeType).minDuration
       const durationInSeconds = durationToSecond(duration + durationType)
       if (!durationInSeconds) {
@@ -50,19 +49,20 @@ const conditionFields = (blockObj, ev) => {
       } else if (durationInSeconds < durationToSecond(minDuration)) {
         globalObserver.emit('ui.log.warn',
           `${translate('Minimum duration is')} ${expandDuration(minDuration)}`)
-      } else if (durationType === 't' && !(isInteger(duration) && isInRange(duration, 5, 10))) {
+      } else if (durationType === 't' && !(Number.isInteger(duration) && isInRange(duration, 5, 10))) {
         globalObserver.emit('ui.log.warn',
           translate('Number of ticks must be between 5 and 10'))
-      } else if (!isInteger(duration) || duration < 1) {
+      } else if (!Number.isInteger(duration) || duration < 1) {
         globalObserver.emit('ui.log.warn',
           translate('Expiry time cannot be equal to start time'))
       } else {
         globalObserver.emit('tour:ticks')
       }
     }
-    const prediction = getNumField(blockObj, 'PREDICTION')
-    if (prediction !== '') {
-      if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
+    let prediction = +getNumField(blockObj, 'PREDICTION')
+    if (prediction) {
+      prediction = +prediction
+      if (!Number.isInteger(prediction) || !isInRange(prediction, 0, 9)) {
         globalObserver.emit('ui.log.warn', translate('Prediction must be one digit'))
       }
     }

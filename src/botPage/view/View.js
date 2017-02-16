@@ -450,21 +450,17 @@ export default class View {
       />, $('#chart')[0])
   }
   addEventHandlers() {
-    ['api.error', 'BlocklyError', 'RuntimeError'].forEach(errorType =>
-      globalObserver.register(errorType, (error) => { // eslint-disable-line no-loop-func
+      globalObserver.register('Error', error => {
         if (error.error && error.error.code === 'InvalidToken') {
           removeAllTokens()
           this.updateTokenList()
         }
         this.blockly.jsi.stop()
         if (this.blockly.jsi.Bot.shouldRestartOnError()) {
-          ReactDOM.render(
-            <RestartTimeout
-            timeout="3"
-            />
-            , document.getElementById('restartTimeout'))
+          ReactDOM.render(<RestartTimeout timeout="3" />,
+            document.getElementById('restartTimeout'))
         }
-      }))
+      })
 
     globalObserver.register('bot.stop', () => {
       $('#runButton').show()

@@ -22,6 +22,8 @@ describe('Relative Strength Index', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 

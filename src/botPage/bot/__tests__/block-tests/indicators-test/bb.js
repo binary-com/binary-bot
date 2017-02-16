@@ -30,6 +30,8 @@ describe('Bollinger Bands', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 

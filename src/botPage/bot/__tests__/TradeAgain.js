@@ -25,13 +25,13 @@ describe('Multiple trades', () => {
         while(true) {
           Bot.start('Xkq6oGFEHh6hJH8', {
             amount: 1, basis: 'stake', candleInterval: 60,
-            contractTypes: '["CALL", "PUT"]',
+            contractTypes: ['CALL', 'PUT'],
             currency: 'USD', duration: 2,
             duration_unit: 'h', symbol: 'R_100',
           }, again);
           again = true;
           while (testScope(context = watch('before'), 'before')) {
-            Bot.purchase("CALL");
+            Bot.purchase('CALL');
           }
           while (testScope(context = watch('during'), 'during')) {
             Bot.sellAtMarket();
@@ -45,6 +45,8 @@ describe('Multiple trades', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
   it('return code is correct', () => {

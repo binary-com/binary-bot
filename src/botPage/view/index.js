@@ -28,7 +28,9 @@ window._trackJs = { // eslint-disable-line no-underscore-dangle
 
 require('trackjs')
 
-const view = new View().initPromise.then(() => {
+const view = new View()
+
+view.initPromise.then(() => {
   $('.show-on-load').show()
   $('.barspinner').hide()
   trackJs.configure({

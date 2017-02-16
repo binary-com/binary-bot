@@ -33,7 +33,7 @@ describe('Run UI generated code', () => {
   getTradeOptions = function getTradeOptions() {
     var tradeOptions = {}
     tradeOptions = {
-      contractTypes: '["CALL","PUT"]',
+      contractTypes: ['CALL', 'PUT'],
       candleInterval: '60',
       duration: 2,
       duration_unit: 'h',
@@ -90,6 +90,8 @@ describe('Run UI generated code', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 
