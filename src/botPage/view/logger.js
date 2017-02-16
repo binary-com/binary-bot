@@ -5,8 +5,6 @@ import { translate } from '../../common/i18n'
 const log = (type, ...args) => {
   if (type === 'warn') {
     console.warn(...args) // eslint-disable-line no-console
-  } else if (type === 'error') {
-    console.error(...args) // eslint-disable-line no-console
   } else {
     console.log(...args) // eslint-disable-line no-console
   }
@@ -31,8 +29,8 @@ const isNew = msg => {
 
 const notifyUniq = (msg, ...args) => isNew(msg) && $.notify(msg, ...args)
 
-const notify = (msg, className, position = 'left', ...rest) => {
-  log(className, msg, ...rest)
+const notify = (msg, className, position = 'left') => {
+  log(className, msg)
   notifyUniq(msg, { position: `bottom ${position}`, className })
 }
 
@@ -46,9 +44,14 @@ const notifyError = error => {
     message = translate('Connection lost before receiving the response from the server')
   }
 
-  const completeMsg = errorCode ? `${errorCode}: ${message}` : message
+  const errorWithCode = new Error(error)
+  errorWithCode.message = errorCode ? `${errorCode}: ${message}` : message
 
-  notify(message, 'error', 'right', error, completeMsg)
+  if (trackJs) {
+    trackJs.track(errorWithCode)
+  }
+
+  notify(message, 'error', 'right')
 }
 
 const waitForNotifications = () => {

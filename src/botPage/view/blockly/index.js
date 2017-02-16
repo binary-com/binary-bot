@@ -2,6 +2,7 @@ import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer, { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import config from '../../common/const'
+import { createError } from '../../common/error'
 import {
   isMainBlock, save,
   disable, deleteBlocksLoadedBy,
@@ -198,7 +199,7 @@ export default class _Blockly {
     try {
       xml = Blockly.Xml.textToDom(blockStr)
     } catch (e) {
-      throw Error(translate('Unrecognized file format.'))
+      throw createError('FileLoad', translate('Unrecognized file format.'))
     }
 
     try {
@@ -208,7 +209,7 @@ export default class _Blockly {
         this.loadWorkspace(xml)
       }
     } catch (e) {
-      throw Error(translate('Unable to load the block file.'))
+      throw createError('FileLoad', translate('Unable to load the block file.'))
     }
   }
   save(filename, collection) {
