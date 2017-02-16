@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { LiveApi } from 'binary-live-api'
 import { getTokenList, removeAllTokens, get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
@@ -12,7 +13,6 @@ import { SaveXml } from './react-components/SaveXml'
 import { RestartTimeout } from './react-components/RestartTimeout'
 import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
-import { observer } from '../common/shared'
 import { symbolPromise } from './shared'
 import { logHandler } from './logger'
 import { Tour } from './tour'
@@ -178,7 +178,7 @@ export default class View {
         if (file.type.match('text/xml')) {
           readFile(file, dropEvent)
         } else {
-          observer.emit('ui.log.info', `${
+          globalObserver.emit('ui.log.info', `${
           translate('File is not supported:')} ${file.name}`)
         }
       })
@@ -237,7 +237,7 @@ export default class View {
     const logout = () => {
       logoutAllTokens(() => {
         this.updateTokenList()
-        observer.emit('ui.log.info', translate('Logged you out!'))
+        globalObserver.emit('ui.log.info', translate('Logged you out!'))
         clearRealityCheck()
       })
     }
@@ -451,7 +451,7 @@ export default class View {
   }
   addEventHandlers() {
     ['api.error', 'BlocklyError', 'RuntimeError'].forEach(errorType =>
-      observer.register(errorType, (error) => { // eslint-disable-line no-loop-func
+      globalObserver.register(errorType, (error) => { // eslint-disable-line no-loop-func
         if (error.error && error.error.code === 'InvalidToken') {
           removeAllTokens()
           this.updateTokenList()
@@ -466,18 +466,18 @@ export default class View {
         }
       }))
 
-    observer.register('bot.stop', () => {
+    globalObserver.register('bot.stop', () => {
       $('#runButton').show()
       $('#stopButton').hide()
     })
 
-    observer.register('bot.tradeInfo', tradeInfo => {
+    globalObserver.register('bot.tradeInfo', tradeInfo => {
       Object.keys(tradeInfo).forEach(key =>
         (this.tradeInfo.tradeInfo[key] = tradeInfo[key]))
       if ('profit' in tradeInfo) {
         const token = $('.account-id').first().attr('value')
         const user = getToken(token)
-        observer.emit('log.revenue', {
+        globalObserver.emit('log.revenue', {
           user,
           profit: tradeInfo.profit,
           contract: tradeInfo.contract,
@@ -486,7 +486,7 @@ export default class View {
       this.tradeInfo.update()
     })
 
-    observer.register('bot.tradeUpdate', (contract) => {
+    globalObserver.register('bot.tradeUpdate', (contract) => {
       this.tradeInfo.add(contract)
       this.contractForChart = {
         ...contract,
@@ -496,12 +496,12 @@ export default class View {
       this.contractForChart.date_start = Number(this.contractForChart.date_start)
     })
 
-    observer.register('bot.finish', (contract) => {
+    globalObserver.register('bot.finish', (contract) => {
       this.tradeInfo.add(contract)
       this.contractForChart = false
     })
 
-    observer.register('bot.tickUpdate', (info) => {
+    globalObserver.register('bot.tickUpdate', (info) => {
       this.updateChart(info)
     })
   }

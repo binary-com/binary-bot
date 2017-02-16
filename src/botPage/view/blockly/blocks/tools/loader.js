@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate } from '../../../../../common/i18n'
-import { observer } from '../../../../common/shared'
 import { deleteBlocksLoadedBy, loadRemote, recoverDeletedBlock } from '../../utils'
 
 Blockly.Blocks.loader = {
@@ -36,10 +36,10 @@ Blockly.Blocks.loader = {
       deleteBlocksLoadedBy(this.id)
       loadRemote(this).then(() => {
         Blockly.Events.recordUndo = recordUndo
-        observer.emit('ui.log.success', translate('Blocks are loaded successfully'))
+        globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'))
       }, (e) => {
         Blockly.Events.recordUndo = recordUndo
-        observer.emit('ui.log.error', e)
+        globalObserver.emit('ui.log.error', e)
       })
     }
   },

@@ -1,7 +1,7 @@
 import filesaver from 'file-saver'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import config from '../../common/const'
 import { translate } from '../../../common/i18n'
-import { observer } from '../../common/shared'
 
 let purchaseChoices = [[translate('Click to select'), '']]
 
@@ -187,7 +187,7 @@ export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
 export const disable = (blockObj, message) => {
   if (!blockObj.disabled) {
     if (message) {
-      observer.emit('ui.log.warn', message)
+      globalObserver.emit('ui.log.warn', message)
     }
   }
   Blockly.Events.recordUndo = false

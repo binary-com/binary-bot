@@ -1,6 +1,6 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import Purchase from './Purchase'
 import { translate } from '../../common/i18n'
-import { observer as viewObserver } from '../common/shared'
 import {
   noop, getDirection, tradeOptionToProposal, getPipSizes,
   subscribeToStream,
@@ -54,11 +54,11 @@ export default class Bot {
   }
   handleTradeUpdate(contract) {
     if (this.running) {
-      viewObserver.emit('bot.tradeUpdate', contract)
+      globalObserver.emit('bot.tradeUpdate', contract)
     }
   }
   handleAuthStream() {
-    viewObserver.emit('log.bot.login', { token: this.token })
+    globalObserver.emit('log.bot.login', { token: this.token })
 
     this.subscribeToBalance()
     this.startTrading()
@@ -77,7 +77,7 @@ export default class Bot {
 
     this.purchase.updateTicks(ticksObj)
 
-    viewObserver.emit('bot.tickUpdate', ticksObj)
+    globalObserver.emit('bot.tickUpdate', ticksObj)
   }
   observeStreams() {
     this.registerStream('api.authorize', () => this.handleAuthStream())
@@ -113,11 +113,11 @@ export default class Bot {
     const { maxLoss, maxTrades } = this.limitations
     if (maxLoss && maxTrades) {
       if (this.sessionRuns >= maxTrades) {
-        viewObserver.emit('LimitsReached', translate('Maximum number of trades reached'))
+        globalObserver.emit('LimitsReached', translate('Maximum number of trades reached'))
         return true
       }
       if (this.sessionProfit <= (-maxLoss)) {
-        viewObserver.emit('LimitsReached', translate('Maximum loss amount reached'))
+        globalObserver.emit('LimitsReached', translate('Maximum loss amount reached'))
         return true
       }
     }
@@ -144,7 +144,7 @@ export default class Bot {
 
     this.purchase = new Purchase(this.$scope)
 
-    viewObserver.emit('log.bot.start', { again: !!sameTrade })
+    globalObserver.emit('log.bot.start', { again: !!sameTrade })
 
     if (sameTrade) {
       this.startTrading()
@@ -176,7 +176,7 @@ export default class Bot {
         const { balance: b, currency } = balanceResp
         balance = +b
         balanceStr = `${balance.toFixed(2)} ${currency}`
-        viewObserver.emit('bot.tradeInfo', { balance: balanceStr })
+        globalObserver.emit('bot.tradeInfo', { balance: balanceStr })
       }, () => this.api.originalApi.send({ forget_all: 'balance' })
       .then(() => this.api.balance(), noop), false, null)
   }
@@ -214,7 +214,7 @@ export default class Bot {
     subscribeToStream(this.observer,
       'api.proposal', proposal => {
         if (this.running) {
-          viewObserver.emit('log.bot.proposal', proposal)
+          globalObserver.emit('log.bot.proposal', proposal)
           this.purchase.updateProposal(proposal)
         }
       }, () => {
@@ -235,7 +235,7 @@ export default class Bot {
       'trade.purchase', info => {
         totalRuns += 1
         this.sessionRuns += 1
-        viewObserver.emit('bot.tradeInfo', {
+        globalObserver.emit('bot.tradeInfo', {
           totalRuns,
           transaction_ids: { buy: info.purchasedContract.transaction_id },
           contract_type: info.contract.contract_type,
@@ -261,7 +261,7 @@ export default class Bot {
     totalStake = +(totalStake + (+contract.buy_price)).toFixed(2)
     totalPayout = +(totalPayout + (+contract.sell_price)).toFixed(2)
 
-    viewObserver.emit('bot.tradeInfo', {
+    globalObserver.emit('bot.tradeInfo', {
       profit,
       contract,
       totalProfit,
@@ -273,12 +273,12 @@ export default class Bot {
   }
   botFinish(finishedContract) {
     this.updateTotals(finishedContract)
-    viewObserver.emit('bot.finish', finishedContract)
+    globalObserver.emit('bot.finish', finishedContract)
   }
   stop() {
     this.running = false
     this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
-    viewObserver.emit('bot.stop')
+    globalObserver.emit('bot.stop')
   }
   getTotalRuns() {
     return totalRuns

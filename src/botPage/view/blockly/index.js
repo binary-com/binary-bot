@@ -1,8 +1,7 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
-import Observer from 'binary-common-utils/lib/observer'
+import Observer, { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import config from '../../common/const'
-import { observer } from '../../common/shared'
 import {
   isMainBlock, save,
   disable, deleteBlocksLoadedBy,
@@ -70,19 +69,19 @@ export default class _Blockly {
         ev.ids.forEach(blockId => {
           const block = Blockly.mainWorkspace.getBlockById(blockId)
           if (block.type === 'market') {
-            observer.emit('tour:market_created')
+            globalObserver.emit('tour:market_created')
           }
           if (config.conditions.indexOf(block.type) >= 0) {
-            observer.emit('tour:condition_created')
+            globalObserver.emit('tour:condition_created')
           }
           if (block.type === 'math_number') {
-            observer.emit('tour:number')
+            globalObserver.emit('tour:number')
           }
           if (block.type === 'purchase') {
-            observer.emit('tour:purchase_created')
+            globalObserver.emit('tour:purchase_created')
           }
           if (block.type === 'trade_again') {
-            observer.emit('tour:trade_again_created')
+            globalObserver.emit('tour:trade_again_created')
           }
         })
       }
@@ -99,12 +98,12 @@ export default class _Blockly {
       Array.from(xml.children).forEach(block => backwardCompatibility(block))
       Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace)
       fixCollapsedBlocks()
-      observer.emit('ui.log.success',
+      globalObserver.emit('ui.log.success',
         translate('Blocks are loaded successfully'))
       Blockly.Events.setGroup(false)
     }, e => {
       Blockly.Events.setGroup(false)
-      observer.emit('ui.log.error', e)
+      globalObserver.emit('ui.log.error', e)
     })
   }
   loadBlocks(xml, dropEvent = {}) {
@@ -117,10 +116,10 @@ export default class _Blockly {
       ]
       cleanUpOnLoad(addedBlocks, dropEvent)
       fixCollapsedBlocks()
-      observer.emit('ui.log.success',
+      globalObserver.emit('ui.log.success',
         translate('Blocks are loaded successfully'))
     }, e => {
-      observer.emit('ui.log.error', e)
+      globalObserver.emit('ui.log.error', e)
     })
   }
   zoomOnPlusMinus(zoomIn) {
@@ -199,7 +198,7 @@ export default class _Blockly {
     try {
       xml = Blockly.Xml.textToDom(blockStr)
     } catch (e) {
-      observer.emit('ui.log.error', translate('Unrecognized file format.'))
+      globalObserver.emit('ui.log.error', translate('Unrecognized file format.'))
     }
 
     try {
@@ -209,7 +208,7 @@ export default class _Blockly {
         this.loadWorkspace(xml)
       }
     } catch (e) {
-      observer.emit('ui.log.error', translate('Unable to load the block file.'))
+      globalObserver.emit('ui.log.error', translate('Unable to load the block file.'))
     }
   }
   save(filename, collection) {
