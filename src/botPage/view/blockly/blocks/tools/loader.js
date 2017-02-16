@@ -37,9 +37,9 @@ Blockly.Blocks.loader = {
       loadRemote(this).then(() => {
         Blockly.Events.recordUndo = recordUndo
         globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'))
-      }, (e) => {
+      }, e => {
         Blockly.Events.recordUndo = recordUndo
-        globalObserver.emit('ui.log.error', e)
+        throw e
       })
     }
   },

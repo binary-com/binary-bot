@@ -36,7 +36,7 @@ const notify = (msg, className, position = 'left', ...rest) => {
   notifyUniq(msg, { position: `bottom ${position}`, className })
 }
 
-const notifyError = (error) => {
+const notifyError = error => {
   let message = (error.error) ?
     error.error.message : error.message || error
   const errorCode = error.error ?
@@ -52,8 +52,6 @@ const notifyError = (error) => {
 }
 
 const waitForNotifications = () => {
-  const errorList = ['api.error', 'BlocklyError', 'LimitsReached']
-
   const notifList = ['success', 'info', 'warn', 'error']
 
   const logList = [
@@ -73,7 +71,7 @@ const waitForNotifications = () => {
 
   globalObserver.register('Notify', args => notify(...args))
 
-  errorList.forEach(type => globalObserver.register(type, e => notifyError(e)))
+  globalObserver.register('Error', notifyError)
 
   notifList.forEach(className =>
     globalObserver.register(`ui.log.${className}`, message =>

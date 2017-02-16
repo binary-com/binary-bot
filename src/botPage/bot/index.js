@@ -113,11 +113,11 @@ export default class Bot {
     const { maxLoss, maxTrades } = this.limitations
     if (maxLoss && maxTrades) {
       if (this.sessionRuns >= maxTrades) {
-        globalObserver.emit('LimitsReached', translate('Maximum number of trades reached'))
+        globalObserver.emit('Error', translate('Maximum number of trades reached'))
         return true
       }
       if (this.sessionProfit <= (-maxLoss)) {
-        globalObserver.emit('LimitsReached', translate('Maximum loss amount reached'))
+        globalObserver.emit('Error', translate('Maximum loss amount reached'))
         return true
       }
     }

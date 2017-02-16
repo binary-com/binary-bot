@@ -103,7 +103,7 @@ export default class _Blockly {
       Blockly.Events.setGroup(false)
     }, e => {
       Blockly.Events.setGroup(false)
-      globalObserver.emit('ui.log.error', e)
+      throw e
     })
   }
   loadBlocks(xml, dropEvent = {}) {
@@ -119,7 +119,7 @@ export default class _Blockly {
       globalObserver.emit('ui.log.success',
         translate('Blocks are loaded successfully'))
     }, e => {
-      globalObserver.emit('ui.log.error', e)
+      throw e
     })
   }
   zoomOnPlusMinus(zoomIn) {
@@ -198,7 +198,7 @@ export default class _Blockly {
     try {
       xml = Blockly.Xml.textToDom(blockStr)
     } catch (e) {
-      globalObserver.emit('ui.log.error', translate('Unrecognized file format.'))
+      throw Error(translate('Unrecognized file format.'))
     }
 
     try {
@@ -208,7 +208,7 @@ export default class _Blockly {
         this.loadWorkspace(xml)
       }
     } catch (e) {
-      globalObserver.emit('ui.log.error', translate('Unable to load the block file.'))
+      throw Error(translate('Unable to load the block file.'))
     }
   }
   save(filename, collection) {
@@ -272,7 +272,8 @@ export default class _Blockly {
       const o = new Observer()
       const $scope = { observer: o, api: new CustomApi(o) }
       this.jsi = new JSI($scope)
-      this.jsi.run(code).then(() => $scope.api.originalApi.disconnect())
+      this.jsi.run(code).then(() => $scope.api.originalApi.disconnect(),
+        e => globalObserver.emit('Error', e))
       $('#summaryPanel')
         .show()
     }
