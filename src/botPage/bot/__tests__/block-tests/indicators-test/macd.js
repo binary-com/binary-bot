@@ -23,6 +23,8 @@ describe('MACD', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 

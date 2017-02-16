@@ -9,16 +9,18 @@ describe('Time in tools', () => {
 
   beforeAll(done => {
     jsi.run(`
-          (function(){
-            var result = {};
-            result.time1 = Bot.getTime();
-            sleep(2)
-            result.time2 = Bot.getTime();
-            return result;
-          })() 
-      `).then(v => {
+        (function(){
+          var result = {};
+          result.time1 = Bot.getTime();
+          sleep(2)
+          result.time2 = Bot.getTime();
+          return result;
+        })() 
+    `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 

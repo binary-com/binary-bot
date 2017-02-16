@@ -23,6 +23,8 @@ describe('During Purchase Blocks', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 

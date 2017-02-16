@@ -27,6 +27,8 @@ describe('Ticks Analysis', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 
@@ -61,6 +63,8 @@ describe('Tick Blocks', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
 

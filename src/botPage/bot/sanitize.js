@@ -1,7 +1,19 @@
 import { translate } from '../../common/i18n'
 
 const sanitizeTradeOption = tradeOption => {
-  const { amount } = tradeOption
+  const { symbol, contractTypes, amount, duration } = tradeOption
+
+  if (!symbol) {
+    throw Error(translate('Underlying market is not selected'))
+  }
+
+  if (!contractTypes[0]) {
+    throw Error(translate('Contract type is not selected'))
+  }
+
+  if (isNaN(+duration)) {
+    throw Error(translate('Duration must be number'))
+  }
 
   if (isNaN(+amount)) {
     throw Error(translate('Amount must be number'))

@@ -109,13 +109,13 @@ export default () => {
       secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`
     }
     const contractTypeList = contractTypeSelector === 'both' ?
-      config.opposites[oppositesName].map((k) => Object.keys(k)[0]) :
+      config.opposites[oppositesName].map(k => Object.keys(k)[0]) :
       [contractTypeSelector]
     const code = `
       getTradeOptions = function getTradeOptions() {
         var tradeOptions = {}
         tradeOptions = {
-          contractTypes: '${JSON.stringify(contractTypeList)}',
+          contractTypes: ${JSON.stringify(contractTypeList)},
           candleInterval: '${candleIntervalValue}',
           duration: ${durationValue},
           duration_unit: '${durationType}',

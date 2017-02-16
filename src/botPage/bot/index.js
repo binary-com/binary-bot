@@ -161,11 +161,8 @@ export default class Bot {
     this.token = token
     this.api.authorize(token)
   }
-  getContractTypes() {
-    return JSON.parse(this.tradeOption.contractTypes)
-  }
   genProposals() {
-    return this.getContractTypes().map(type =>
+    return this.tradeOption.contractTypes.map(type =>
       tradeOptionToProposal(this.tradeOption, {
         contract_type: type,
       }))
@@ -178,7 +175,7 @@ export default class Bot {
         balanceStr = `${balance.toFixed(2)} ${currency}`
         globalObserver.emit('bot.tradeInfo', { balance: balanceStr })
       }, () => this.api.originalApi.send({ forget_all: 'balance' })
-      .then(() => this.api.balance(), noop), false, null)
+      .then(() => this.api.balance()).catch(noop), false, null)
   }
   subscribeToCandles() {
     return subscribeToStream(this.observer,
@@ -186,7 +183,7 @@ export default class Bot {
         this.candleInterval = this.tradeOption.candleInterval
         this.ohlc = ohlc
       }, () => {
-        this.api.originalApi.unsubscribeFromAllCandles().then(noop, noop)
+        this.api.originalApi.unsubscribeFromAllCandles().then(noop).catch(noop)
         this.api.history(this.tradeOption.symbol, {
           end: 'latest',
           count: 5000,
@@ -202,7 +199,7 @@ export default class Bot {
         this.symbol = this.tradeOption.symbol
         this.ticks = history
       }, () => {
-        this.api.originalApi.unsubscribeFromAllTicks().then(noop, noop)
+        this.api.originalApi.unsubscribeFromAllTicks().then(noop).catch(noop)
         this.api.history(this.tradeOption.symbol, {
           end: 'latest',
           count: 5000,
@@ -222,7 +219,7 @@ export default class Bot {
 
         this.purchase.setNumOfProposals(proposals.length)
         this.api.originalApi.unsubscribeFromAllProposals()
-          .then(() => proposals.forEach(p => this.api.proposal(p)), noop)
+          .then(() => proposals.forEach(p => this.api.proposal(p))).catch(noop)
       }, false, null)
   }
   subscribeToPurchaseFinish() {
@@ -277,7 +274,7 @@ export default class Bot {
   }
   stop() {
     this.running = false
-    this.api.originalApi.unsubscribeFromAllProposals().then(noop, noop)
+    this.api.originalApi.unsubscribeFromAllProposals().then(noop).catch(noop)
     globalObserver.emit('bot.stop')
   }
   getTotalRuns() {

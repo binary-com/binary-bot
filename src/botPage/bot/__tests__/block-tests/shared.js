@@ -12,7 +12,7 @@ export const header = `
 export const trade = `
         Bot.start('Xkq6oGFEHh6hJH8', {
           amount: 1, basis: 'stake', candleInterval: 60,
-          contractTypes: '["CALL","PUT"]',
+          contractTypes: ['CALL', 'PUT'],
           currency: 'USD', duration: 2,
           duration_unit: 'h', symbol: 'R_100',
         }, false);

@@ -25,6 +25,8 @@ describe('Misc. tools', () => {
     `).then(v => {
       value = v
       done()
+    }, e => {
+      throw e
     })
   })
   it('Balance', () => {

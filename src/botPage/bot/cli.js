@@ -24,7 +24,7 @@ const api = (new CustomApi(observer, null, null, new WebSocket(
     'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
 const $scope = { observer, api }
 
-globalObserver.register('Error', e => console.log(e))
+globalObserver.register('Error', e => console.log(e)) // eslint-disable-line no-console
 
 lineReader.on('close', () =>
   (new JSI($scope)).run(code)

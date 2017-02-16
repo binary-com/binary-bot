@@ -48,7 +48,9 @@ export default class JSI {
     return new Promise((resolve, reject) => {
       const interpreter = new Interpreter(code, initFunc)
 
-      this.observer.register('api.error', e => reject(e))
+      if (this.observer) {
+        this.observer.register('api.error', e => reject(e))
+      }
 
       const loop = () => {
         try {
