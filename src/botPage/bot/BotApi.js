@@ -2,6 +2,7 @@ import Bot from './'
 import Indicators from './Indicators'
 import { noop } from './tools'
 import { observer as viewObserver } from '../common/shared'
+import { sanitizeStart } from './sanitize'
 
 export default class BotApi {
   constructor($scope) {
@@ -31,7 +32,7 @@ export default class BotApi {
   }
   getBotInterface() {
     return {
-      start: (...args) => this.bot.start(...args),
+      start: (...args) => this.bot.start(...sanitizeStart(args)),
       stop: (...args) => this.bot.stop(...args),
       shouldRestartOnError: (...args) => this.bot.shouldRestartOnError(...args),
       purchase: option => this.bot.purchase.purchase(option),
@@ -86,7 +87,6 @@ export default class BotApi {
   }
   getMiscInterface() {
     return {
-      notifyError: (...args) => viewObserver.emit('NotifyError', args),
       notify: (...args) => viewObserver.emit('Notify', args),
       getTotalRuns: () => this.bot.getTotalRuns(),
       getBalance: type => this.bot.getBalance(type),

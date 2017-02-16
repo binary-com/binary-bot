@@ -49,12 +49,16 @@ export default class JSI {
       const interpreter = new Interpreter(code, initFunc)
 
       const loop = () => {
-        if (this.stopped || !interpreter.run()) {
-          if (this.observer) {
-            this.observer.unregisterAll('CONTINUE')
+        try {
+          if (this.stopped || !interpreter.run()) {
+            if (this.observer) {
+              this.observer.unregisterAll('CONTINUE')
+            }
+            r(interpreter.pseudoToNative(interpreter.value))
+            return
           }
-          r(interpreter.pseudoToNative(interpreter.value))
-          return
+        } catch (e) {
+          console.log(e)
         }
         if (!this.observer.isRegistered('CONTINUE')) {
           this.observer.register('CONTINUE', () => setTimeout(loop, 0))
