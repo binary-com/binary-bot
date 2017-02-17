@@ -5,8 +5,9 @@ import { translate } from '../../../../../../common/i18n'
 Blockly.Blocks.ohlc_values_in_list = {
   init: function init() {
     this.appendValueInput('OHLCLIST')
-      .appendField(translate('Candle Values'))
+      .appendField(translate('Make a list of'))
       .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
+      .appendField(translate('values from candles list'))
     this.setOutput(true, 'Array')
     this.setColour('#dedede')
     this.setTooltip(translate('Returns a list of the selected candle values'))

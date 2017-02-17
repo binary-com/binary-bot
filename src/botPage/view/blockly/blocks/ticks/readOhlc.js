@@ -7,11 +7,9 @@ Blockly.Blocks.read_ohlc = {
   init: function init() {
     this.appendValueInput('CANDLEINDEX')
       .setCheck('Number')
-      .appendField(translate('Read'))
+      .appendField(translate('In candles list read '))
       .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
-      .appendField(`${translate('in')}`)
-    this.appendDummyInput()
-      .appendField(`${translate('recent candle')}`)
+      .appendField(`${translate('# from end')}`)
     this.setOutput(true, 'Number')
     this.setInputsInline(true)
     this.setColour('#f2f2f2')

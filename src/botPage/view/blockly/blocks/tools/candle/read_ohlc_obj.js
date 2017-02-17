@@ -8,7 +8,7 @@ Blockly.Blocks.read_ohlc_obj = {
       .setCheck('Candle')
       .appendField(translate('Read'))
       .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
-      .appendField(translate('in candle'))
+      .appendField(translate('value in candle'))
     this.setInputsInline(false)
     this.setOutput(true, 'Number')
     this.setColour('#dedede')
