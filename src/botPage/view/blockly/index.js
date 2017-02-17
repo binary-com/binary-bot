@@ -1,7 +1,6 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer, { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate, xml as translateXml } from '../../../common/i18n'
-import config from '../../common/const'
 import { createError } from '../../common/error'
 import {
   isMainBlock, save,
@@ -66,26 +65,6 @@ export default class _Blockly {
   disposeBlocksWithLoaders() {
     Blockly.mainWorkspace.addChangeListener(ev => {
       setBeforeUnload()
-      if (ev.type === 'create') {
-        ev.ids.forEach(blockId => {
-          const block = Blockly.mainWorkspace.getBlockById(blockId)
-          if (block.type === 'market') {
-            globalObserver.emit('tour:market_created')
-          }
-          if (config.conditions.indexOf(block.type) >= 0) {
-            globalObserver.emit('tour:condition_created')
-          }
-          if (block.type === 'math_number') {
-            globalObserver.emit('tour:number')
-          }
-          if (block.type === 'purchase') {
-            globalObserver.emit('tour:purchase_created')
-          }
-          if (block.type === 'trade_again') {
-            globalObserver.emit('tour:trade_again_created')
-          }
-        })
-      }
       if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
         && ev.group !== 'undo') {
           deleteBlocksLoadedBy(ev.blockId, ev.group)
