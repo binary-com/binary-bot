@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
-import { observer } from 'binary-common-utils/lib/observer'
-import ws from '../../../../common/mock/websocket'
+import ws from 'ws'
 import _Symbol from '../index'
 
 describe('symbol', () => {

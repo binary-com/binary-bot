@@ -4,7 +4,6 @@ import ghPages from 'gulp-gh-pages';
 import connect from 'gulp-connect';
 import open from 'gulp-open';
 import './gulp/i18n';
-import './gulp/mock';
 import './gulp/build';
 
 

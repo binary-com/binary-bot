@@ -2,7 +2,7 @@ import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
 import { observer } from 'binary-common-utils/lib/observer'
 import Bot from '../'
-import mockWebsocket from '../../../common/mock/websocket'
+import ws from 'ws'
 
 describe('Bot', () => {
   const option = {
@@ -21,7 +21,7 @@ describe('Bot', () => {
   const token = 'nmjKBPWxM00E8Fh'
   beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
     observer.eventActionMap = {}
-    api = new CustomApi(observer, mockWebsocket)
+    api = new CustomApi(observer, ws)
     bot = new Bot(api)
     bot.initPromise.then(() => {
       done()
