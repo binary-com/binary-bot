@@ -31,15 +31,18 @@ const insideHolder = (blockObj) => {
 const getListField = (block, fieldName) => block.getFieldValue(fieldName)
 
 const conditionFields = (blockObj, ev) => {
-  if ((ev.type === 'change' && ev.element === 'field')
-    || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
+  if ((ev.type === 'change' && ev.element === 'field') ||
+    (ev.type === 'move' && typeof ev.newInputName === 'string')) {
     const symbol = blockObj.getFieldValue('SYMBOL_LIST')
     const tradeType = blockObj.getFieldValue('TRADETYPE_LIST')
+
     if (!symbol || !tradeType) {
       return
     }
+
     let duration = getNumField(blockObj, 'DURATION')
     const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
+
     if (duration) {
       duration = +duration
       const minDuration = symbolApi.getLimitation(symbol, tradeType).minDuration
@@ -55,25 +58,16 @@ const conditionFields = (blockObj, ev) => {
       } else if (!Number.isInteger(duration) || duration < 1) {
         globalObserver.emit('ui.log.warn',
           translate('Expiry time cannot be equal to start time'))
-      } else {
-        globalObserver.emit('tour:ticks')
       }
     }
+
     let prediction = +getNumField(blockObj, 'PREDICTION')
+
     if (prediction) {
       prediction = +prediction
       if (!Number.isInteger(prediction) || !isInRange(prediction, 0, 9)) {
         globalObserver.emit('ui.log.warn', translate('Prediction must be one digit'))
       }
-    }
-    let inputMissing = false
-    blockObj.inputList.forEach(il => {
-      if (il.connection && blockObj.getInputTargetBlock(il.name) === null) {
-        inputMissing = true
-      }
-    })
-    if (!inputMissing) {
-      globalObserver.emit('tour:options')
     }
   }
 }
