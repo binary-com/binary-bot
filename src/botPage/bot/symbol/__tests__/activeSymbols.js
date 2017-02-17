@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { observer } from 'binary-common-utils/lib/observer'
 import deep from 'deep-diff'
-import ws from '../../../../common/mock/websocket'
+import ws from 'ws'
 import ActiveSymbols from '../activeSymbols'
 
 
