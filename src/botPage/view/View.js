@@ -4,7 +4,9 @@ import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { LiveApi } from 'binary-live-api'
-import { getTokenList, removeAllTokens, get as getStorage, set as setStorage, getToken,
+import {
+  getTokenList, removeAllTokens,
+  get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
@@ -90,7 +92,10 @@ const resetRealityCheck = (token) => {
 }
 
 const initializeApi = () => {
-  api = new LiveApi()
+  api = new LiveApi({
+    language: getStorage('lang') || 'en',
+    appId: getStorage('appId') || 1,
+  })
   api.events.on('ohlc', response => {
     const newTick = response.ohlc
     const lastCandle = ticks.slice(-1)[0]
