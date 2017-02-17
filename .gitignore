@@ -8,5 +8,4 @@ coverage
 beta/
 translation/
 www
-.nyc_output/
 .sass-cache
