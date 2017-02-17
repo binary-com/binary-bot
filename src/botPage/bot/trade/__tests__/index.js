@@ -1,7 +1,7 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
 import { observer } from 'binary-common-utils/lib/observer'
-import ws from '../../../../common/mock/websocket'
+import ws from 'ws'
 import Trade from '../'
 
 describe('Trade', () => {
