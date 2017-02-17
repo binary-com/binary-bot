@@ -1,6 +1,22 @@
 import { translate } from '../../common/i18n'
 import { createError } from '../common/error'
 
+const isPositiveNumber = num => Number.isFinite(num) && num > 0
+
+const isPositiveInteger = num => isPositiveNumber(num) && Number.isInteger(num)
+
+export const expectPositiveInteger = (num, msg) => {
+  if (!isPositiveInteger(num)) {
+    throw createError('PositiveIntegerExpected', msg)
+  }
+}
+
+export const expectPositiveNumber = (num, msg) => {
+  if (!isPositiveNumber(num)) {
+    throw createError('PositiveNumberExpected', msg)
+  }
+}
+
 const sanitizeTradeOption = tradeOption => {
   const { symbol, contractTypes, amount, duration } = tradeOption
 
@@ -12,13 +28,9 @@ const sanitizeTradeOption = tradeOption => {
     throw createError('OptionError', translate('Contract type is not selected'))
   }
 
-  if (!Number.isInteger(duration)) {
-    throw createError('OptionError', translate('Duration must be a positive integer'))
-  }
+  expectPositiveInteger(duration, translate('Duration must be an integer'))
 
-  if (!Number.isFinite(amount)) {
-    throw createError('OptionError', translate('Amount must be number'))
-  }
+  expectPositiveNumber(amount, translate('Amount must be a positive number'))
 }
 
 export const sanitizeStart = args => {
@@ -32,3 +44,4 @@ export const sanitizeStart = args => {
 
   return args
 }
+
