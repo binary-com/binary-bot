@@ -30,9 +30,9 @@ npm install
 
 ## Think you found a bug?
 
-There's a chance that we already know about it and doing our best to fix it. To find out you can search our [issues in github](https://github.com/binary-com/binary-bot/issues)
+There's a chance that we already know about it and doing our best to fix it. To find out you can search our [GitHub issues](https://github.com/binary-com/binary-bot/issues)
 
-If still not satisfied please create a new issue, and explain to us how to reproduce the bug [here](https://github.com/binary-com/binary-bot/issues/new)
+Not satisfied yet? Please create a new issue, and explain to us what is the nature of the problem and how to reproduce [here](https://github.com/binary-com/binary-bot/issues/new)
 
 ## We'd love to hear from you
 
