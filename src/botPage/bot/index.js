@@ -12,6 +12,39 @@ let totalPayout = 0
 let balance = 0
 let balanceStr = ''
 
+
+/**
+ * @namespace tradeOption
+ * @property {number} amount - Amount for the contract
+ * @property {string} currency - The currency for the contract
+ * @property {string} basis - Basis for the contract ("stake")
+ * @property {number} candleInterval -
+ *   Interval for candles list (valid inputs in
+ *   {@link https://developers.binary.com/api/#ticks_history|#ticks_history})
+ * @property {string[]} contractTypes - The desired contract types
+ * @property {number} duration - Contract duration
+ * @property {string} duration_unit - Contract duration unit (valid inputs in
+ *   {@link https://developers.binary.com/api/#proposal|#proposal})
+ * @property {string} symbol - The underlying symbol (valid inputs in
+ *   {@link https://developers.binary.com/api/#active_symbols|#active_symbols})
+ * @property {boolean} restartOnError - Whether to restart on error or not
+ * @property {number} prediction - prediction number for trades (optional)
+ * @property {number} barrierOffset - barrier offset for the trade (optional)
+ * @property {number} secondBarrierOffset - second barrier offset for the trade (optional)
+ *
+ * @example {
+   amount: 1, basis: 'stake', candleInterval: 60,
+   contractTypes: ['CALL', 'PUT'],
+   currency: 'USD', duration: 2,
+   duration_unit: 'h', symbol: 'R_100',
+ }
+ */
+
+/**
+ * @namespace limitations
+ * @property {number} maxLoss - Maximum acceptable loss amount
+ * @property {number} maxTrades - Maximum acceptable num of trades
+ */
 export default class Bot {
   constructor($scope) {
     this.token = ''
@@ -57,6 +90,14 @@ export default class Bot {
     }
     return false
   }
+  /**
+   * start
+   * @memberof Bot
+   * @param {string} token - Token to login
+   * @param {object} tradeOption - {@link tradeOption}
+   * @param {boolean} sameTrade - Is this a repeat of trade or is this a fresh start
+   * @param {object} limitations - {@link limitations}
+   */
   start(...args) {
     const [token, tradeOption, limitations] = args
 
