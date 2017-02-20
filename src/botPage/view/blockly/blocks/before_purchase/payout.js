@@ -19,6 +19,6 @@ Blockly.Blocks.payout = {
 }
 Blockly.JavaScript.payout = (block) => {
   const purchaseList = block.getFieldValue('PURCHASE_LIST')
-  const code = `Number(this.getContract('${purchaseList}').payout)`
+  const code = `Bot.getPayout('${purchaseList}')`
   return [code, Blockly.JavaScript.ORDER_ATOMIC]
 }

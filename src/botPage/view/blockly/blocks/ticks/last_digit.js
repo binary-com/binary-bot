@@ -15,6 +15,4 @@ Blockly.Blocks.last_digit = {
     mainScope(this, ev, 'Tick Value')
   },
 }
-Blockly.JavaScript.last_digit = () => [
-  'Number(Bot.expect.tick(Bot.expect.notEmptyArray(this.ticksObj.ticks).slice(-1)[0]).quote.toFixed(this.ticksObj.pipSize).slice(-1)[0])',
-  Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.last_digit = () => ['Bot.getLastDigit()', Blockly.JavaScript.ORDER_ATOMIC]
