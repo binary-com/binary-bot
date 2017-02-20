@@ -1,9 +1,10 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
-import { observer } from 'binary-common-utils/lib/observer'
+import Observer from 'binary-common-utils/lib/observer'
 import ws from 'ws'
-import Context from '../Context'
-import PurchaseCtrl from '../purchaseCtrl'
+import Purchase from '../'
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 12000 * 2
 
 const ticksObj = {
   ticks: [{
@@ -15,46 +16,64 @@ const ticksObj = {
   }],
 }
 
-describe('PurchaseCtrl', () => {
-  let api
+const observer = new Observer()
+
+class CM {
+  setContext(scope, v) {
+    this.data = { ticksObj: v }
+  }
+  execContext(scope, v) {
+    this.data.proposals = v
+    this.p({ scope, data: this.data })
+  }
+  watch() {
+    return new Promise(r => {
+      this.p = r
+    })
+  }
+}
+
+describe('Purchase', () => {
+  const api = new CustomApi(observer, ws)
+  const $scope = { observer, api, CM: new CM() }
   const proposals = []
   let firstAttempt = true
-  let purchaseCtrl
-  beforeAll(() => {
-    api = new CustomApi(observer, ws)
-    const beforePurchase = function beforePurchase() {
-      if (purchaseCtrl.proposals) {
-        if (firstAttempt) {
-          firstAttempt = false
-          observer.emit('test.beforePurchase', {
-            ticksObj: this.ticksObj,
-            proposals: purchaseCtrl.proposals,
-          })
-        } else {
-          observer.emit('test.purchase')
-          this.purchase('DIGITEVEN')
-        }
-      } else {
+  let purchase
+  const beforePurchase = context => {
+    if (purchase.proposals) {
+      if (firstAttempt) {
+        firstAttempt = false
         observer.emit('test.beforePurchase', {
-          ticksObj: this.ticksObj,
-          proposals: purchaseCtrl.proposals,
+          ticksObj: context.ticksObj,
+          proposals: purchase.proposals,
         })
+      } else {
+        observer.emit('test.purchase')
+        purchase.purchase('DIGITEVEN')
       }
+    } else {
+      observer.emit('test.beforePurchase', {
+        ticksObj: context.ticksObj,
+        proposals: purchase.proposals,
+      })
     }
-    const context = new Context(beforePurchase)
-    purchaseCtrl = new PurchaseCtrl(api, context)
-    context.createTicks(ticksObj)
+  }
+  beforeAll(() => {
+    purchase = new Purchase($scope)
+    $scope.CM.watch('before')
+      .then(c => c.scope === 'before' && beforePurchase(c.data))
+    $scope.CM.setContext('shared', ticksObj)
   })
   describe('Make the beforePurchase ready...', () => {
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       observer.register('api.proposal', (_proposal) => {
         proposals.push(_proposal)
-        purchaseCtrl.updateProposal(_proposal)
+        purchase.updateProposal(_proposal)
       })
       observer.register('api.authorize', () => {
         observer.register('api.proposal', () => {
           observer.register('api.proposal', () => {
-            if (purchaseCtrl.ready) {
+            if (purchase.ready) {
               done()
             }
           }, true)
@@ -78,7 +97,7 @@ describe('PurchaseCtrl', () => {
           symbol: 'R_100',
         })
       }, true)
-      api.authorize('nmjKBPWxM00E8Fh')
+      api.authorize('Xkq6oGFEHh6hJH8')
     })
     it('Strategy gets ready when two proposals are available', () => {
     })
@@ -90,9 +109,9 @@ describe('PurchaseCtrl', () => {
         beforePurchaseArgs = _beforePurchaseArgs
         done()
       }, true)
-      purchaseCtrl.updateTicks(ticksObj)
+      purchase.updateTicks(ticksObj)
     })
-    it('purchaseCtrl passes ticks and send the proposals if ready', () => {
+    it('purchase passes ticks and send the proposals if ready', () => {
       expect(beforePurchaseArgs.ticksObj.ticks.slice(-1)[0]).to.have.property('epoch')
       expect(beforePurchaseArgs).to.have.deep.property('.proposals.DIGITODD.longcode')
         .that.is.equal('Win payout if the last digit of Volatility 100 Index is'
@@ -101,11 +120,12 @@ describe('PurchaseCtrl', () => {
   })
   describe('Waiting for beforePurchase to purchase the contract', () => {
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
+      $scope.CM.watch('before').then(c => c.scope === 'before' && beforePurchase(c.data))
       observer.register('test.purchase', () => {
         done()
       }, true)
-      purchaseCtrl.updateProposal(proposals[1])
-      purchaseCtrl.updateTicks()
+      purchase.updateProposal(proposals[1])
+      purchase.updateTicks()
     })
     it('beforePurchase will buy the proposal whenever decided', () => {
     })
@@ -113,11 +133,11 @@ describe('PurchaseCtrl', () => {
   describe('Waiting for purchase to be finished', () => {
     let finishedContract
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('purchase.finish', (_finishedContract) => {
+      observer.register('trade.finish', (_finishedContract) => {
         finishedContract = _finishedContract
         done()
       }, true)
-      purchaseCtrl.updateTicks()
+      purchase.updateTicks()
     })
     it('afterPurchase is called whenever the purchase is finished', () => {
       expect(finishedContract).to.have.property('sell_price')
