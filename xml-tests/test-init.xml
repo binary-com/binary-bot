@@ -1,0 +1,194 @@
+﻿<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="0">
+    <statement name="SUBMARKET">
+      <block type="variables_set" id="fBrYWn78H|M~(x0Wh++9">
+        <field name="VAR">initialization</field>
+        <value name="VALUE">
+          <block type="math_number" id="4U4K$+iPphfWV]%#lmF5">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <next>
+          <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+            <field name="MARKET_LIST">volidx</field>
+            <field name="SUBMARKET_LIST">random_index</field>
+            <field name="SYMBOL_LIST">R_100</field>
+            <field name="TRADETYPECAT_LIST">callput</field>
+            <field name="TRADETYPE_LIST">risefall</field>
+            <field name="TYPE_LIST">both</field>
+            <field name="CANDLEINTERVAL_LIST">60</field>
+            <field name="DURATIONTYPE_LIST">t</field>
+            <field name="PAYOUTTYPE_LIST">stake</field>
+            <field name="CURRENCY_LIST">USD</field>
+            <field name="RESTARTONERROR">FALSE</field>
+            <value name="DURATION">
+              <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+                <field name="NUM">5</field>
+              </block>
+            </value>
+            <value name="AMOUNT">
+              <block type="variables_get" id="iE@!QdHBd6fg|brGF[JX">
+                <field name="VAR">initialization</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="2D(6I8#VYw`mn^5fk;9*" x="0" y="268">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="controls_if" id="/9$h2fs.*[F1[qXe8d3E">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="logic_compare" id=",Q9^?.)60Ws3jua,Zpx+">
+            <field name="OP">EQ</field>
+            <value name="A">
+              <block type="total_runs" id="YKr^KDe|j;/k2V,g2a.$"></block>
+            </value>
+            <value name="B">
+              <block type="math_number" id="$~Tj?{@lwpoZ8S~oIQ!T">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="controls_if" id="D|JjHXGVYj6e_|vD}Od4">
+            <value name="IF0">
+              <block type="logic_compare" id="@MOIQhr(Rl/UBHlr?zFa">
+                <field name="OP">NEQ</field>
+                <value name="A">
+                  <block type="ask_price" id="D`8dJvt8D?TN.a-*.k+c">
+                    <field name="PURCHASE_LIST">CALL</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="math_number" id="^M3.[)6bmu4Ilj}.DQz?">
+                    <field name="NUM">1</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="text_print" id="u3_kN;JoQgE(9|`1NO1u">
+                <value name="TEXT">
+                  <shadow type="text" id="^Ycua!$Oe^_k@85-WU0U">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                  <block type="text_join" id="]4y^`Y3kf#SrXny*~+z7">
+                    <mutation items="2"></mutation>
+                    <value name="ADD0">
+                      <block type="text" id="~vr~a%9%00wn6F`]~[`2">
+                        <field name="TEXT">Incorrect init: </field>
+                      </block>
+                    </value>
+                    <value name="ADD1">
+                      <block type="variables_get" id="4@DMj4c*w|hAy(RSJQmH">
+                        <field name="VAR">initialization</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <next>
+              <block type="variables_set" id="Bi]C=s~JA+o8,Y!~C=(D">
+                <field name="VAR">initialization</field>
+                <value name="VALUE">
+                  <block type="math_number" id=".|)C5!}sNX%awvp*?o91">
+                    <field name="NUM">2</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+                    <field name="PURCHASE_LIST">CALL</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="controls_if" id="wwHdlpoONhltPP`zO?Zi">
+            <value name="IF0">
+              <block type="logic_compare" id="/{]^LS@m_B`XVtwO5p9m">
+                <field name="OP">NEQ</field>
+                <value name="A">
+                  <block type="ask_price" id=":rzRC{#X8@UUOP;YsUbO">
+                    <field name="PURCHASE_LIST">CALL</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="math_number" id="[z|x_A64#8z8gZV?np{.">
+                    <field name="NUM">2</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="text_print" id="@feTI{e,0!AlwwD,g~u`">
+                <value name="TEXT">
+                  <shadow type="text" id="^Ycua!$Oe^_k@85-WU0U">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                  <block type="text_join" id="hcc8dKUAge/pKeEin6{@">
+                    <mutation items="2"></mutation>
+                    <value name="ADD0">
+                      <block type="text" id="iAf5[yVXZf@Gq3[rPu!G">
+                        <field name="TEXT">Incorrect change of amount: </field>
+                      </block>
+                    </value>
+                    <value name="ADD1">
+                      <block type="variables_get" id="}^)m!$~E!^B)}c;+VS:|">
+                        <field name="VAR">initialization</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <next>
+              <block type="purchase" id="%vl~h]/=n;7sq!Z6G#SJ">
+                <field name="PURCHASE_LIST">CALL</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="0" y="676">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="controls_if" id=";!;s.cM*oR6Jk.yCoG3v">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="logic_compare" id="VRX7gDhD~{xOV8mgUfo(">
+            <field name="OP">EQ</field>
+            <value name="A">
+              <block type="total_runs" id="`Hu5WnuWgd:f;Q2|S2Jy"></block>
+            </value>
+            <value name="B">
+              <block type="math_number" id="yl!=i[@%!_G7[x58G@^N">
+                <field name="NUM">1</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="trade_again" id="SO*X=~i(5H%=zQ5%e+J$"></block>
+        </statement>
+        <statement name="ELSE">
+          <block type="notify" id="o4Bnh@$jZ?M,Zhnj~Tc/">
+            <field name="NOTIFICATION_TYPE">success</field>
+            <value name="MESSAGE">
+              <block type="text" id="t^cbDS:OfAiB|:;=0*=P">
+                <field name="TEXT">Test was successful</field>
+              </block>
+            </value>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+</xml>
