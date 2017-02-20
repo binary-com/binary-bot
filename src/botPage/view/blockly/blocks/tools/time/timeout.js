@@ -1,6 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wupwb4
 import { translate } from '../../../../../../common/i18n'
-import { insideMainBlocks } from '../../../utils'
 import { mainScope } from '../../../relationChecker'
 
 Blockly.Blocks.timeout = {
@@ -26,12 +25,9 @@ Blockly.Blocks.timeout = {
 Blockly.JavaScript.timeout = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'TIMEOUTSTACK')
   const seconds = Blockly.JavaScript.valueToCode(block, 'SECONDS', Blockly.JavaScript.ORDER_ATOMIC)
-  const isInside = insideMainBlocks(block)
 
   return `
-    Bot.setTimeout${isInside ? 'Inside' : ''}(function (){
-      ${stack}
-    }, (${seconds ? `(${seconds}) *` : ''} 1000));
-    ${isInside ? 'return;' : ''}
+    sleep(${seconds});
+    ${stack}
   `
 }

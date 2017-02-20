@@ -16,7 +16,6 @@ Blockly.Blocks.is_candle_black = {
 
 Blockly.JavaScript.is_candle_black = (block) => {
   const ohlcObj = Blockly.JavaScript.valueToCode(block,
-      'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC) || 'null'
-  const code = `(function () {return this.close < this.open}).call(Bot.expect.ohlc(${ohlcObj}))`
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+    'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC)
+  return [`Bot.isCandleBlack(${ohlcObj})`, Blockly.JavaScript.ORDER_ATOMIC]
 }
