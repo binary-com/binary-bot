@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/binary-com/binary-bot.svg?branch=master)](https://travis-ci.org/binary-com/binary-bot)		
+[![Build Status](https://travis-ci.org/binary-com/binary-bot.svg?branch=master)](https://travis-ci.org/binary-com/binary-bot)		saddkalkdj
 [![Coverage Status](https://coveralls.io/repos/github/binary-com/binary-bot/badge.svg?branch=master)](https://coveralls.io/github/binary-com/binary-bot?branch=master)
 
 # Binary Bot
@@ -28,6 +28,15 @@ git pull
 npm install
 ```
 
+## Think you found a bug?
+
+There's a chance that we already know about it and doing our best to fix it. To find out you can search our [issues in github](https://github.com/binary-com/binary-bot/issues)
+If still not satisfied please create a new issue, and explain to us how to reproduce the bug [here](https://github.com/binary-com/binary-bot/issues/new)
+
+## We'd love to hear from you
+
+Please send us your enquiries to marketing@binary.com
+wwwwwww
 ## Sample Blocks
 
 [Misc. Examples](https://gist.github.com/aminmarashi/dfabc8eadfaf77bf270b0318f03ea8bb)
