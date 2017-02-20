@@ -15,4 +15,4 @@ Blockly.Blocks.trade_again = {
     insideAfterPurchase(this, ev, 'Trade Again')
   },
 }
-Blockly.JavaScript.trade_again = () => 'trade(true);\nreturn;\n'
+Blockly.JavaScript.trade_again = () => 'return true;'

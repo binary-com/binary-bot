@@ -1,11 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import { observer } from 'binary-common-utils/lib/observer'
-import config from '../../../common/const'
-import { bot } from '../../bot'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
+import config from '../../common/const'
+import { symbolApi } from '../shared'
 import { translate } from '../../../common/i18n'
 import { findTopParentBlock, disable, enable, durationToSecond, expandDuration } from './utils'
-
-const isInteger = (amount) => !isNaN(+amount) && parseInt(amount, 10) === parseFloat(amount)
 
 const isInRange = (amount, min, max) => !isNaN(+amount) && +amount >= min && +amount <= max
 
@@ -33,47 +31,43 @@ const insideHolder = (blockObj) => {
 const getListField = (block, fieldName) => block.getFieldValue(fieldName)
 
 const conditionFields = (blockObj, ev) => {
-  if ((ev.type === 'change' && ev.element === 'field')
-    || (ev.type === 'move' && typeof ev.newInputName === 'string')) {
+  if ((ev.type === 'change' && ev.element === 'field') ||
+    (ev.type === 'move' && typeof ev.newInputName === 'string')) {
     const symbol = blockObj.getFieldValue('SYMBOL_LIST')
     const tradeType = blockObj.getFieldValue('TRADETYPE_LIST')
+
     if (!symbol || !tradeType) {
       return
     }
-    const duration = getNumField(blockObj, 'DURATION')
+
+    let duration = getNumField(blockObj, 'DURATION')
     const durationType = getListField(blockObj, 'DURATIONTYPE_LIST')
-    if (duration !== '') {
-      const minDuration = bot.symbolApi.getLimitation(symbol, tradeType).minDuration
+
+    if (duration) {
+      duration = +duration
+      const minDuration = symbolApi.getLimitation(symbol, tradeType).minDuration
       const durationInSeconds = durationToSecond(duration + durationType)
       if (!durationInSeconds) {
-        observer.emit('ui.log.warn', translate('Duration must be a positive integer'))
+        globalObserver.emit('ui.log.warn', translate('Duration must be a positive integer'))
       } else if (durationInSeconds < durationToSecond(minDuration)) {
-        observer.emit('ui.log.warn',
+        globalObserver.emit('ui.log.warn',
           `${translate('Minimum duration is')} ${expandDuration(minDuration)}`)
-      } else if (durationType === 't' && !(isInteger(duration) && isInRange(duration, 5, 10))) {
-        observer.emit('ui.log.warn',
+      } else if (durationType === 't' && !(Number.isInteger(duration) && isInRange(duration, 5, 10))) {
+        globalObserver.emit('ui.log.warn',
           translate('Number of ticks must be between 5 and 10'))
-      } else if (!isInteger(duration) || duration < 1) {
-        observer.emit('ui.log.warn',
+      } else if (!Number.isInteger(duration) || duration < 1) {
+        globalObserver.emit('ui.log.warn',
           translate('Expiry time cannot be equal to start time'))
-      } else {
-        observer.emit('tour:ticks')
       }
     }
-    const prediction = getNumField(blockObj, 'PREDICTION')
-    if (prediction !== '') {
-      if (!isInteger(prediction) || !isInRange(prediction, 0, 9)) {
-        observer.emit('ui.log.warn', translate('Prediction must be one digit'))
+
+    let prediction = +getNumField(blockObj, 'PREDICTION')
+
+    if (prediction) {
+      prediction = +prediction
+      if (!Number.isInteger(prediction) || !isInRange(prediction, 0, 9)) {
+        globalObserver.emit('ui.log.warn', translate('Prediction must be one digit'))
       }
-    }
-    let inputMissing = false
-    blockObj.inputList.forEach(il => {
-      if (il.connection && blockObj.getInputTargetBlock(il.name) === null) {
-        inputMissing = true
-      }
-    })
-    if (!inputMissing) {
-      observer.emit('tour:options')
     }
   }
 }

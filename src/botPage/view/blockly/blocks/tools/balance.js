@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
 import { translate } from '../../../../../common/i18n'
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 
 Blockly.Blocks.balance = {
   init: function init() {
@@ -15,6 +15,5 @@ Blockly.Blocks.balance = {
 }
 Blockly.JavaScript.balance = (block) => {
   const balanceType = block.getFieldValue('BALANCE_TYPE')
-  const code = `Bot.getBalance('${balanceType}')`
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+  return [`Bot.getBalance('${balanceType}')`, Blockly.JavaScript.ORDER_ATOMIC]
 }
