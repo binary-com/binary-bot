@@ -32,7 +32,7 @@ describe('Ticks Analysis', () => {
     })
   })
 
-  it('ticks api', () => {
+  it('tick analysis block', () => {
     const { result: { ticks } } = value
 
     expect(ticks).satisfy(t =>

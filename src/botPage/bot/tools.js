@@ -2,14 +2,16 @@ import { Map } from 'immutable'
 
 export const noop = () => {}
 
-export const tradeOptionToProposal = (tradeOption, otherOptions) =>
-  Object.assign({
+export const tradeOptionToProposal = tradeOption =>
+  tradeOption.contractTypes.map(type =>
+    Object.assign({
       duration_unit: tradeOption.duration_unit,
       basis: tradeOption.basis,
       currency: tradeOption.currency,
       symbol: tradeOption.symbol,
       duration: tradeOption.duration,
       amount: tradeOption.amount.toFixed(2),
+      contract_type: type,
     },
     'prediction' in tradeOption && {
       barrier: tradeOption.prediction,
@@ -19,8 +21,7 @@ export const tradeOptionToProposal = (tradeOption, otherOptions) =>
     },
     'secondBarrierOffset' in tradeOption && {
       barrier2: tradeOption.secondBarrierOffset,
-    }, otherOptions,
-  )
+    }))
 
 export const getDirection = ticks => {
   const length = ticks.length
@@ -50,3 +51,23 @@ export const subscribeToStream = (observer, name, respHandler, request,
       }, registerOnce, type && { type, unregister }, true)
     request()
   })
+
+export const registerStream = (observer, name, cb) => {
+  if (observer.isRegistered(name)) {
+    return
+  }
+  observer.register(name, cb)
+}
+
+export const doUntilDone = f => new Promise(resolve => {
+  const repeat = () => {
+    const promise = f()
+
+    if (promise) {
+      promise.catch(repeat).then(resolve, repeat)
+    } else {
+      resolve()
+    }
+  }
+  repeat()
+})
