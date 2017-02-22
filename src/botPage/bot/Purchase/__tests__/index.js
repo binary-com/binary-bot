@@ -4,7 +4,7 @@ import Observer from 'binary-common-utils/lib/observer'
 import ws from 'ws'
 import Purchase from '../'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 12000 * 2
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 17000 * 2
 
 const ticksObj = {
   ticks: [{
@@ -36,7 +36,6 @@ class CM {
 describe('Purchase', () => {
   const api = new CustomApi(observer, ws)
   const $scope = { observer, api, CM: new CM() }
-  const proposals = []
   let firstAttempt = true
   let purchase
   const beforePurchase = context => {
@@ -49,7 +48,7 @@ describe('Purchase', () => {
         })
       } else {
         observer.emit('test.purchase')
-        purchase.purchase('DIGITEVEN')
+        purchase.startPurchase('DIGITEVEN')
       }
     } else {
       observer.emit('test.beforePurchase', {
@@ -63,44 +62,17 @@ describe('Purchase', () => {
     $scope.CM.watch('before')
       .then(c => c.scope === 'before' && beforePurchase(c.data))
     $scope.CM.setContext('shared', ticksObj)
-  })
-  describe('Make the beforePurchase ready...', () => {
-    beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-      observer.register('api.proposal', (_proposal) => {
-        proposals.push(_proposal)
-        purchase.updateProposal(_proposal)
-      })
-      observer.register('api.authorize', () => {
-        observer.register('api.proposal', () => {
-          observer.register('api.proposal', () => {
-            if (purchase.ready) {
-              done()
-            }
-          }, true)
-          api.proposal({
-            amount: '1.00',
-            basis: 'stake',
-            contract_type: 'DIGITEVEN',
-            currency: 'USD',
-            duration: 5,
-            duration_unit: 't',
-            symbol: 'R_100',
-          })
-        }, true)
-        api.proposal({
-          amount: '1.00',
-          basis: 'stake',
-          contract_type: 'DIGITODD',
-          currency: 'USD',
-          duration: 5,
-          duration_unit: 't',
-          symbol: 'R_100',
-        })
-      }, true)
-      api.authorize('Xkq6oGFEHh6hJH8')
+    purchase.start({
+      amount: 1,
+      basis: 'stake',
+      candleInterval: 60,
+      contractTypes: ['DIGITEVEN', 'DIGITODD'],
+      currency: 'USD',
+      duration: 5,
+      duration_unit: 't',
+      symbol: 'R_100',
     })
-    it('Strategy gets ready when two proposals are available', () => {
-    })
+    api.authorize('Xkq6oGFEHh6hJH8')
   })
   describe('Adding the ticks to the purchase...', () => {
     let beforePurchaseArgs
@@ -109,7 +81,6 @@ describe('Purchase', () => {
         beforePurchaseArgs = _beforePurchaseArgs
         done()
       }, true)
-      purchase.updateTicks(ticksObj)
     })
     it('purchase passes ticks and send the proposals if ready', () => {
       expect(beforePurchaseArgs.ticksObj.ticks.slice(-1)[0]).to.have.property('epoch')
@@ -121,11 +92,7 @@ describe('Purchase', () => {
   describe('Waiting for beforePurchase to purchase the contract', () => {
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
       $scope.CM.watch('before').then(c => c.scope === 'before' && beforePurchase(c.data))
-      observer.register('test.purchase', () => {
-        done()
-      }, true)
-      purchase.updateProposal(proposals[1])
-      purchase.updateTicks()
+      observer.register('test.purchase', done, true)
     })
     it('beforePurchase will buy the proposal whenever decided', () => {
     })
@@ -137,7 +104,6 @@ describe('Purchase', () => {
         finishedContract = _finishedContract
         done()
       }, true)
-      purchase.updateTicks()
     })
     it('afterPurchase is called whenever the purchase is finished', () => {
       expect(finishedContract).to.have.property('sell_price')
