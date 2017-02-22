@@ -4,7 +4,7 @@ import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
 import JSI from '../JSI'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 24000 * 2
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 const observer = new Observer()
 const api = (new CustomApi(observer, null, null, new WebSocket(
