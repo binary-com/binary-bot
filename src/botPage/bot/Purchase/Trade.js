@@ -35,13 +35,6 @@ export default class Trade {
         })
     }
   }
-  retryIfContractNotReceived(contract) {
-    if (!('transaction_ids' in contract)) {
-      this.api.proposal_open_contract(this.contractId)
-      return true
-    }
-    return false
-  }
   handleExpire(contract) {
     this.isSellAvailable = !this.isSold &&
       !contract.is_expired && contract.is_valid_to_sell
@@ -69,14 +62,10 @@ export default class Trade {
       return
     }
     subscribeToStream(this.observer, 'api.proposal_open_contract', contract => {
-      if (this.retryIfContractNotReceived(contract)) {
-        return
-      }
-
       this.handleExpire(contract)
 
       this.handleUpdate(contract)
-    }, () => this.api.proposal_open_contract(this.contractId),
+    }, () => doUntilDone(() => this.api.proposal_open_contract(this.contractId)),
     false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }
   checkSellAvailable() {
