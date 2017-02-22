@@ -12,6 +12,11 @@ export default class Purchase {
     this.CM = $scope.CM
     this.$scope = $scope
     this.trade = new Trade(this.$scope)
+    this.symbol = ''
+    this.granularity = 0
+    this.ticks = []
+    this.ohlc = []
+    this.pipSizes = {}
   }
   start(tradeOption) {
     this.init()
@@ -33,13 +38,8 @@ export default class Purchase {
     }
   }
   init() {
-    this.granularity = 0
     this.ready = false
     this.purchased = false
-    this.symbol = ''
-    this.ticks = []
-    this.ohlc = []
-    this.pipSizes = []
     this.proposals = {}
   }
   subscribeToProposals(proposals) {
@@ -62,6 +62,10 @@ export default class Purchase {
   }
   getPipSizes() {
     return new Promise(resolve => {
+      if (Object.keys(this.pipSizes).length) {
+        resolve()
+        return
+      }
       this.api.originalApi.getActiveSymbolsBrief().then(resp =>
         (this.pipSizes = getPipSizes(resp.active_symbols)))
       resolve()
