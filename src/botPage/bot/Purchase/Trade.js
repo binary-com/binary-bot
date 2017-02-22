@@ -50,11 +50,12 @@ export default class Trade {
       this.openContract = null
       this.observer.emit('trade.finish', contract)
       doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposalsOpenContract())
+        .then(() => this.CM.execContext('after', contract))
     } else {
       this.openContract = contract
       this.observer.emit('trade.update', contract)
+      this.CM.execContext('during', contract)
     }
-    this.CM.execContext(finished ? 'after' : 'during', contract)
   }
   subscribeToOpenContract() {
     if (!this.contractId) {
