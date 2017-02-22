@@ -60,12 +60,12 @@ export default class BotApi {
       start: (...args) => this.bot.start(...sanitizeStart(args)),
       stop: (...args) => this.bot.stop(...args),
       shouldRestartOnError: (...args) => this.bot.shouldRestartOnError(...args),
-      purchase: option => this.bot.purchase.purchase(option),
+      purchase: option => this.bot.purchase.startPurchase(option),
       getContract: (...args) => this.bot.purchase.getContract(...args),
       getAskPrice: name => +(this.bot.purchase.getContract(name).ask_price),
       getPayout: name => +(this.bot.purchase.getContract(name).payout),
-      isSellAvailable: (...args) => this.bot.purchase.isSellAvailable(...args),
-      sellAtMarket: (...args) => this.bot.purchase.sellAtMarket(...args),
+      isSellAvailable: () => this.bot.purchase.trade.checkSellAvailable(),
+      sellAtMarket: (...args) => this.bot.purchase.trade.sellAtMarket(...args),
       getSellPrice: () =>
         +(((+this.CM.getContext().data.contract.bid_price) -
           (+this.CM.getContext().data.contract.buy_price)).toFixed(2)),

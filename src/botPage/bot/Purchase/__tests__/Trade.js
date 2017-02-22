@@ -25,7 +25,7 @@ describe('Trade', () => {
             purchasedContract = r.purchasedContract
             done()
           }, true)
-          trade.purchase(proposal)
+          trade.start(proposal)
         }, true)
         api.proposal({
           amount: '1.00',

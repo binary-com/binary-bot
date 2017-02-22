@@ -1,23 +1,38 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import { translate } from '../../../common/i18n'
-import { noop, subscribeToStream } from '../tools'
+import { subscribeToStream, doUntilDone } from '../tools'
 
 export default class Trade {
   constructor($scope) {
     this.api = $scope.api
     this.observer = $scope.observer
     this.CM = $scope.CM
+  }
+  init() {
     this.openContract = null
+    this.contractId = null
     this.isSellAvailable = false
     this.isSold = false
   }
+  start(contract) {
+    this.init()
+    subscribeToStream(this.observer, 'api.buy', purchasedContract => {
+      this.observer.emit('trade.purchase', { contract, purchasedContract })
+
+      this.isSold = false
+
+      this.contractId = purchasedContract.contract_id
+      doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposals())
+        .then(() => this.subscribeToOpenContract())
+      this.CM.execContext('between-before-and-during')
+    }, () => this.api.buy(contract.id, contract.ask_price),
+    true, 'buy', ['trade.purchase'])
+  }
   sellAtMarket() {
     if (!this.isSold && this.isSellAvailable) {
-      this.api.originalApi.sellContract(
-        this.openContract.contract_id, 0).then(() => {
+      doUntilDone(() => this.api.originalApi.sellContract(
+        this.openContract.contract_id, 0)).then(() => {
           this.isSold = true
           this.isSellAvailable = false
-        }).catch(noop)
+        })
     }
   }
   retryIfContractNotReceived(contract) {
@@ -33,19 +48,17 @@ export default class Trade {
 
     if (!this.isSold && contract.is_valid_to_sell && contract.is_expired) {
       this.isSold = true
-      this.api.originalApi.sellExpiredContracts().then(noop).catch(noop)
+      doUntilDone(() => this.api.originalApi.sellExpiredContracts())
     }
   }
   handleUpdate(contract) {
     const finished = contract.sell_price
     if (finished) {
       this.openContract = null
-      globalObserver.emit('log.trade.finish', contract)
       this.observer.emit('trade.finish', contract)
-      this.api.originalApi.unsubscribeFromAllProposalsOpenContract().then(noop).catch(noop)
+      doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposalsOpenContract())
     } else {
       this.openContract = contract
-      globalObserver.emit('log.trade.update', contract)
       this.observer.emit('trade.update', contract)
     }
     this.CM.execContext(finished ? 'after' : 'during', contract)
@@ -65,19 +78,7 @@ export default class Trade {
     }, () => this.api.proposal_open_contract(this.contractId),
     false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }
-  purchase(contract) {
-    subscribeToStream(this.observer, 'api.buy', purchasedContract => {
-      globalObserver.emit('log.trade.purchase', purchasedContract)
-      this.observer.emit('trade.purchase', { contract, purchasedContract })
-      globalObserver.emit('ui.log.info', `${translate('Purchased')}: ${contract.longcode}`)
-
-      this.isSold = false
-
-      this.contractId = purchasedContract.contract_id
-      this.api.originalApi.unsubscribeFromAllProposals().then(noop).catch(noop)
-      this.subscribeToOpenContract()
-      this.CM.execContext('between-before-and-during')
-    }, () => this.api.buy(contract.id, contract.ask_price),
-    true, 'buy', ['trade.purchase'])
+  checkSellAvailable() {
+    return !!this.isSellAvailable
   }
 }
