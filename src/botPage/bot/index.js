@@ -1,10 +1,7 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import Purchase from './Purchase'
 import { translate } from '../../common/i18n'
-import {
-  noop, getDirection, tradeOptionToProposal, getPipSizes,
-  subscribeToStream,
-} from './tools'
+import { noop, subscribeToStream, registerStream, doUntilDone } from './tools'
 
 let totalRuns = 0
 let totalProfit = 0
@@ -17,25 +14,14 @@ let balanceStr = ''
 
 export default class Bot {
   constructor($scope) {
-    this.ticks = []
-    this.ohlc = []
     this.token = ''
-    this.symbol = ''
-    this.candleInterval = 0
     this.sessionRuns = 0
     this.sessionProfit = 0
-    this.running = false
-    this.pipSizes = []
     this.api = $scope.api
     this.observer = $scope.observer
     this.CM = $scope.CM
     this.$scope = $scope
-  }
-  registerStream(name, cb) {
-    if (this.observer.isRegistered(name)) {
-      return
-    }
-    this.observer.register(name, cb)
+    this.purchase = new Purchase(this.$scope)
   }
   shouldRestartOnError() {
     return this.tradeOption && this.tradeOption.restartOnError
@@ -45,17 +31,8 @@ export default class Bot {
       this.start(...this.startArgs)
     }
   }
-  handleOhlcStream(candle) {
-    const length = this.ohlc.length
-    const prevCandles = length && this.ohlc[length - 1].epoch === candle.epoch ?
-      this.ohlc.slice(0, -1) :
-      this.ohlc.slice(1)
-    this.ohlc = [...prevCandles, candle]
-  }
   handleTradeUpdate(contract) {
-    if (this.running) {
-      globalObserver.emit('bot.tradeUpdate', contract)
-    }
+    globalObserver.emit('bot.tradeUpdate', contract)
   }
   handleAuthStream() {
     globalObserver.emit('log.bot.login', { token: this.token })
@@ -63,51 +40,10 @@ export default class Bot {
     this.subscribeToBalance()
     this.startTrading()
   }
-  handleTickStream(tick) {
-    this.ticks = [...this.ticks.slice(1), tick]
-
-    const {
-      direction = getDirection(this.ticks),
-      symbol, ticks, ohlc,
-    } = this
-
-    const ticksObj = { direction, symbol, pipSize: this.pipSizes[symbol], ticks, ohlc }
-
-    this.CM.setContext('shared', ticksObj)
-
-    this.purchase.updateTicks(ticksObj)
-
-    globalObserver.emit('bot.tickUpdate', ticksObj)
-  }
   observeStreams() {
-    this.registerStream('api.authorize', () => this.handleAuthStream())
-    this.registerStream('api.ohlc', candle => this.handleOhlcStream(candle))
-    this.registerStream('api.tick', tick => this.handleTickStream(tick))
-    this.registerStream('trade.update', contract => this.handleTradeUpdate(contract))
-  }
-  getPipSizes() {
-    return new Promise(resolve => {
-      this.api.originalApi.getActiveSymbolsBrief().then(resp =>
-        (this.pipSizes = getPipSizes(resp.active_symbols)))
-      resolve()
-    })
-  }
-  subscriptionsBeforeStart() {
-    const isNewSymbol = this.tradeOption.symbol !== this.symbol
-    const isNewCandleInterval = this.tradeOption.candleInterval !== this.candleInterval
-
-    return [
-      this.getPipSizes(),
-      isNewSymbol ? this.subscribeToTickHistory() : null,
-      (isNewCandleInterval || isNewSymbol) ? this.subscribeToCandles() : null,
-    ]
-  }
-  loginAndStartTrading(token) {
-    const promises = this.subscriptionsBeforeStart()
-
-    this.observeStreams()
-
-    Promise.all(promises).then(() => this.login(token))
+    registerStream(this.observer, 'api.authorize', () => this.handleAuthStream())
+    registerStream(this.observer,
+      'trade.update', contract => this.handleTradeUpdate(contract))
   }
   limitsReached() {
     const { maxLoss, maxTrades } = this.limitations
@@ -142,15 +78,14 @@ export default class Bot {
 
     this.tradeOption = tradeOption
 
-    this.purchase = new Purchase(this.$scope)
-
     globalObserver.emit('log.bot.start', { again: !!sameTrade })
+
+    this.observeStreams()
 
     if (sameTrade) {
       this.startTrading()
     } else {
-      this.running = true
-      this.loginAndStartTrading(token)
+      this.login(token)
     }
   }
   login(token) {
@@ -161,66 +96,15 @@ export default class Bot {
     this.token = token
     this.api.authorize(token)
   }
-  genProposals() {
-    return this.tradeOption.contractTypes.map(type =>
-      tradeOptionToProposal(this.tradeOption, {
-        contract_type: type,
-      }))
-  }
   subscribeToBalance() {
-    subscribeToStream(this.observer,
-      'api.balance', balanceResp => {
+    subscribeToStream(this.observer, 'api.balance',
+      balanceResp => {
         const { balance: b, currency } = balanceResp
         balance = +b
         balanceStr = `${balance.toFixed(2)} ${currency}`
         globalObserver.emit('bot.tradeInfo', { balance: balanceStr })
-      }, () => this.api.originalApi.send({ forget_all: 'balance' })
-      .then(() => this.api.balance()).catch(noop), false, null)
-  }
-  subscribeToCandles() {
-    return subscribeToStream(this.observer,
-      'api.candles', ohlc => {
-        this.candleInterval = this.tradeOption.candleInterval
-        this.ohlc = ohlc
-      }, () => {
-        this.api.originalApi.unsubscribeFromAllCandles().then(noop).catch(noop)
-        this.api.history(this.tradeOption.symbol, {
-          end: 'latest',
-          count: 5000,
-          granularity: this.tradeOption.candleInterval,
-          style: 'candles',
-          subscribe: 1,
-        })
-      }, true, 'candles', ['api.ohlc', 'api.candles'])
-  }
-  subscribeToTickHistory() {
-    return subscribeToStream(this.observer,
-      'api.history', history => {
-        this.symbol = this.tradeOption.symbol
-        this.ticks = history
-      }, () => {
-        this.api.originalApi.unsubscribeFromAllTicks().then(noop).catch(noop)
-        this.api.history(this.tradeOption.symbol, {
-          end: 'latest',
-          count: 5000,
-          subscribe: 1,
-        })
-      }, true, 'history', ['api.history', 'api.tick', 'bot.tickUpdate'])
-  }
-  subscribeToProposals() {
-    subscribeToStream(this.observer,
-      'api.proposal', proposal => {
-        if (this.running) {
-          globalObserver.emit('log.bot.proposal', proposal)
-          this.purchase.updateProposal(proposal)
-        }
-      }, () => {
-        const proposals = this.genProposals()
-
-        this.purchase.setNumOfProposals(proposals.length)
-        this.api.originalApi.unsubscribeFromAllProposals()
-          .then(() => proposals.forEach(p => this.api.proposal(p))).catch(noop)
-      }, false, null)
+      }, (() => doUntilDone(() => this.api.originalApi.send({ forget_all: 'balance' }))
+      .then(() => doUntilDone(() => this.api.balance()))), false, null)
   }
   subscribeToPurchaseFinish() {
     subscribeToStream(this.observer,
@@ -243,7 +127,7 @@ export default class Bot {
   startTrading() {
     this.subscribeToPurchaseFinish()
     this.subscribeToTradePurchase()
-    this.subscribeToProposals()
+    this.purchase.start(this.tradeOption)
   }
   updateTotals(contract) {
     const profit = +((+contract.sell_price) - (+contract.buy_price)).toFixed(2)
@@ -273,8 +157,6 @@ export default class Bot {
     globalObserver.emit('bot.finish', finishedContract)
   }
   stop() {
-    this.running = false
-    this.api.originalApi.unsubscribeFromAllProposals().then(noop).catch(noop)
     globalObserver.emit('bot.stop')
   }
   getTotalRuns() {
