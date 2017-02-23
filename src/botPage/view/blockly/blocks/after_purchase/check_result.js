@@ -1,4 +1,4 @@
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 import { insideAfterPurchase } from '../../relationChecker'
 import { translate } from '../../../../../common/i18n'
 
@@ -18,6 +18,6 @@ Blockly.Blocks.contract_check_result = {
 }
 Blockly.JavaScript.contract_check_result = (block) => {
   const checkWith = block.getFieldValue('CHECK_RESULT')
-  const code = `(this.contractDetails[10] === '${checkWith}')`
+  const code = `Bot.isResult('${checkWith}')`
   return [code, Blockly.JavaScript.ORDER_ATOMIC]
 }

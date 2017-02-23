@@ -19,6 +19,6 @@ Blockly.Blocks.ask_price = {
 }
 Blockly.JavaScript.ask_price = (block) => {
   const purchaseList = block.getFieldValue('PURCHASE_LIST')
-  const code = `Number(this.getContract('${purchaseList}').ask_price)`
+  const code = `Bot.getAskPrice('${purchaseList}')`
   return [code, Blockly.JavaScript.ORDER_ATOMIC]
 }
