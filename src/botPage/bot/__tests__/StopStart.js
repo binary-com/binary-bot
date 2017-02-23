@@ -20,21 +20,17 @@ describe('Run JSI over bot', () => {
     let jsi = new JSI($scope)
     jsi.run(`
       (function (){
-        Bot.start('Xkq6oGFEHh6hJH8',
-        {
+        Bot.start('Xkq6oGFEHh6hJH8', {
           amount: 1, basis: 'stake', candleInterval: 60,
           contractTypes: ['CALL', 'PUT'],
           currency: 'USD', duration: 2,
           duration_unit: 'h', symbol: 'R_100',
-        }
-        );
+        });
         while (watch('before')) {
           Bot.purchase('CALL')
         }
       })();
-    `).then(() => {
-      api.originalApi.disconnect()
-    }, e => {
+    `).then(e => {
       throw e
     })
 
@@ -49,14 +45,12 @@ describe('Run JSI over bot', () => {
       jsi = new JSI($scope)
       jsi.run(`
         (function (){
-          Bot.start('Xkq6oGFEHh6hJH8',
-          {
+          Bot.start('Xkq6oGFEHh6hJH8', {
             amount: 1, basis: 'stake', candleInterval: 60,
             contractTypes: ['CALL', 'PUT'],
             currency: 'USD', duration: 2,
             duration_unit: 'h', symbol: 'R_100',
-          }
-          );
+          });
           while (watch('before')) {
             Bot.purchase('CALL')
           }
