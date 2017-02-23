@@ -43,7 +43,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.23.0",
     "binary-charts": "^9.2.6",
-    "binary-common-utils": "^6.0.1",
+    "binary-common-utils": "^6.0.2",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^28.1.0",
     "blockly": "google/blockly.git#0785a7b",

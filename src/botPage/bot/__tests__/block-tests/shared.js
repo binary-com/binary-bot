@@ -4,7 +4,6 @@ import WebSocket from 'ws'
 import JSI from '../../JSI'
 
 export const header = `
-      var again = false;
       (function (){
         var result = {};
 `
@@ -15,7 +14,7 @@ export const trade = `
           contractTypes: ['CALL', 'PUT'],
           currency: 'USD', duration: 2,
           duration_unit: 'h', symbol: 'R_100',
-        }, false);
+        });
 `
 
 export const footer = `
