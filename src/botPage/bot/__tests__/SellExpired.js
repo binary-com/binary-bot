@@ -25,7 +25,7 @@ describe('Multiple trades', () => {
           contractTypes: ['CALL', 'PUT'],
           currency: 'USD', duration: 5,
           duration_unit: 't', symbol: 'R_100',
-        }, false);
+        });
         while (watch('before')) {
           Bot.purchase("CALL");
         }

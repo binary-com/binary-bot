@@ -21,15 +21,13 @@ describe('Multiple trades', () => {
     jsi.run(`
       (function (){
         var count = 5;
-        var again = false;
         while(true) {
           Bot.start('Xkq6oGFEHh6hJH8', {
             amount: 1, basis: 'stake', candleInterval: 60,
             contractTypes: ['CALL', 'PUT'],
             currency: 'USD', duration: 2,
             duration_unit: 'h', symbol: 'R_100',
-          }, again);
-          again = true;
+          });
           while (watch('before')) {
             Bot.purchase('CALL');
           }
