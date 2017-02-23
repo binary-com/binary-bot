@@ -22,8 +22,8 @@ describe('Run UI generated code', () => {
 (function(){
   var trade, before_purchase, during_purchase, after_purchase;
 
-  function run(f, arg) {
-    if (f) return f(arg);
+  function run(f) {
+    if (f) return f();
     return false;
   }
 
@@ -45,10 +45,9 @@ describe('Run UI generated code', () => {
     tradeOptions.symbol = 'R_100'
     return tradeOptions
   }
-  trade = function trade(again){
+  trade = function trade(){
     if (getTradeOptions !== undefined) {
-      Bot.start('Xkq6oGFEHh6hJH8', getTradeOptions(),
-        again, limitations);
+      Bot.start('Xkq6oGFEHh6hJH8', getTradeOptions(), limitations);
     }
   };
 
@@ -69,10 +68,8 @@ describe('Run UI generated code', () => {
     return false;
   };
 
-  var again = false;
   while(true) {
-    run(trade, again)
-    again = true;
+    run(trade)
     while(watch('before')) {
       run(before_purchase)
     }

@@ -1,4 +1,5 @@
 import Interpreter from 'js-interpreter'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import ContextManager from './ContextManager'
 import BotApi from './BotApi'
 
@@ -12,6 +13,7 @@ export default class JSI {
     if (!$scope) { // valid usage for js only code
       return
     }
+    this.$scope = $scope
     this.botApi = new BotApi(
       Object.assign({}, $scope, { CM: new ContextManager($scope) }))
     this.stopped = false
@@ -71,7 +73,8 @@ export default class JSI {
     })
   }
   stop() {
+    this.$scope.api.destroy()
+    globalObserver.emit('bot.stop')
     this.stopped = true
-    this.Bot.stop()
   }
 }

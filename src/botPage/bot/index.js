@@ -35,8 +35,6 @@ export default class Bot {
     globalObserver.emit('bot.tradeUpdate', contract)
   }
   handleAuthStream() {
-    globalObserver.emit('log.bot.login', { token: this.token })
-
     this.subscribeToBalance()
     this.startTrading()
   }
@@ -60,41 +58,28 @@ export default class Bot {
     return false
   }
   start(...args) {
-    const [token, tradeOption, sameTrade, limitations] = args
+    const [token, tradeOption, limitations] = args
 
     this.startArgs = args
 
     this.limitations = limitations || {}
 
-    if (!sameTrade) {
-      this.sessionRuns = 0
-      this.sessionProfit = 0
-    }
-
-    if (this.limitsReached()) {
-      this.stop()
-      return
-    }
-
     this.tradeOption = tradeOption
-
-    globalObserver.emit('log.bot.start', { again: !!sameTrade })
 
     this.observeStreams()
 
-    if (sameTrade) {
-      this.startTrading()
-    } else {
-      this.login(token)
-    }
-  }
-  login(token) {
-    if (token === this.token) {
-      this.startTrading()
+    if (this.limitsReached()) {
       return
     }
-    this.token = token
-    this.api.authorize(token)
+
+    if (token === this.token) {
+      this.startTrading()
+    } else {
+      this.sessionRuns = 0
+      this.sessionProfit = 0
+      this.token = token
+      this.api.authorize(token)
+    }
   }
   subscribeToBalance() {
     subscribeToStream(this.observer, 'api.balance',
@@ -155,9 +140,6 @@ export default class Bot {
   botFinish(finishedContract) {
     this.updateTotals(finishedContract)
     globalObserver.emit('bot.finish', finishedContract)
-  }
-  stop() {
-    globalObserver.emit('bot.stop')
   }
   getTotalRuns() {
     return totalRuns
