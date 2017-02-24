@@ -42,13 +42,12 @@ export default class Purchase {
 
         this.isSold = false
 
-        this.contractId = purchasedContract.contract_id
         doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposals())
 
-        this.postPurchase.start()
+        this.postPurchase.start(purchasedContract.contract_id)
 
         this.CM.execContext('between-before-and-during')
-      }, () => this.api.buy(contract.id, contract.ask_price),
+      }, () => doUntilDone(() => this.api.originalApi.buyContract(contract.id, contract.ask_price)),
       true, 'buy', ['trade.purchase'])
     }
   }
