@@ -12,19 +12,10 @@ export default class Trade {
     this.isSellAvailable = false
     this.isSold = false
   }
-  start(contract) {
+  start(contractId) {
     this.init()
-    subscribeToStream(this.observer, 'api.buy', purchasedContract => {
-      this.observer.emit('trade.purchase', { contract, purchasedContract })
-
-      this.isSold = false
-
-      this.contractId = purchasedContract.contract_id
-      doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposals())
-        .then(() => this.subscribeToOpenContract())
-      this.CM.execContext('between-before-and-during')
-    }, () => this.api.buy(contract.id, contract.ask_price),
-    true, 'buy', ['trade.purchase'])
+    this.contractId = contractId
+    this.subscribeToOpenContract()
   }
   sellAtMarket() {
     if (!this.isSold && this.isSellAvailable) {
