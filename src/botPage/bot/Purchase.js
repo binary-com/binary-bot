@@ -2,8 +2,8 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import {
   subscribeToStream, registerStream, doUntilDone,
   getDirection, getPipSizes, tradeOptionToProposal,
-} from '../tools'
-import Trade from './Trade'
+} from './tools'
+import PostPurchase from './PostPurchase'
 
 export default class Purchase {
   constructor($scope) {
@@ -11,7 +11,7 @@ export default class Purchase {
     this.observer = $scope.observer
     this.CM = $scope.CM
     this.$scope = $scope
-    this.trade = new Trade(this.$scope)
+    this.postPurchase = new PostPurchase(this.$scope)
     this.symbol = ''
     this.granularity = 0
     this.ticks = []
@@ -34,7 +34,7 @@ export default class Purchase {
   startPurchase(option) {
     if (!this.purchased) {
       this.purchased = true
-      this.trade.start(this.proposals[option])
+      this.postPurchase.start(this.proposals[option])
     }
   }
   init() {

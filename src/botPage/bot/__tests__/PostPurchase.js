@@ -2,17 +2,17 @@ import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
 import Observer from 'binary-common-utils/lib/observer'
 import ws from 'ws'
-import Trade from '../Trade'
+import PostPurchase from '../PostPurchase'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 12000 * 2
 
 class CM { execContext() { } }
 
-describe('Trade', () => {
+describe('PostPurchase', () => {
   const observer = new Observer()
   const api = new CustomApi(observer, ws)
   const $scope = { observer, api, CM: new CM() }
-  const trade = new Trade($scope)
+  const postPurchase = new PostPurchase($scope)
   let proposal
   let finishedContract
   describe('Purchasing...', () => {
@@ -25,7 +25,7 @@ describe('Trade', () => {
             purchasedContract = r.purchasedContract
             done()
           }, true)
-          trade.start(proposal)
+          postPurchase.start(proposal)
         }, true)
         api.proposal({
           amount: '1.00',
