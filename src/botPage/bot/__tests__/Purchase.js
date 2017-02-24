@@ -2,7 +2,7 @@ import CustomApi from 'binary-common-utils/lib/customApi'
 import { expect } from 'chai'
 import Observer from 'binary-common-utils/lib/observer'
 import ws from 'ws'
-import Purchase from '../'
+import Purchase from '../Purchase'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 17000 * 2
 

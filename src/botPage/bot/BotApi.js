@@ -64,8 +64,8 @@ export default class BotApi {
       getContract: (...args) => this.bot.purchase.getContract(...args),
       getAskPrice: name => +(this.bot.purchase.getContract(name).ask_price),
       getPayout: name => +(this.bot.purchase.getContract(name).payout),
-      isSellAvailable: () => this.bot.purchase.trade.checkSellAvailable(),
-      sellAtMarket: (...args) => this.bot.purchase.trade.sellAtMarket(...args),
+      isSellAvailable: () => this.bot.purchase.postPurchase.checkSellAvailable(),
+      sellAtMarket: (...args) => this.bot.purchase.postPurchase.sellAtMarket(...args),
       getSellPrice: () =>
         +(((+this.CM.getContext().data.contract.bid_price) -
           (+this.CM.getContext().data.contract.buy_price)).toFixed(2)),

@@ -1,4 +1,4 @@
-import { subscribeToStream, doUntilDone } from '../tools'
+import { subscribeToStream, doUntilDone } from './tools'
 
 export default class Trade {
   constructor($scope) {
