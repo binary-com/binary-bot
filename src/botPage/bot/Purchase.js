@@ -32,9 +32,24 @@ export default class Purchase {
     this.subscribeToProposals(proposals)
   }
   startPurchase(option) {
+    const contract = this.proposals[option]
+
     if (!this.purchased) {
       this.purchased = true
-      this.postPurchase.start(this.proposals[option])
+
+      subscribeToStream(this.observer, 'api.buy', purchasedContract => {
+        this.observer.emit('trade.purchase', { contract, purchasedContract })
+
+        this.isSold = false
+
+        this.contractId = purchasedContract.contract_id
+        doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposals())
+
+        this.postPurchase.start()
+
+        this.CM.execContext('between-before-and-during')
+      }, () => this.api.buy(contract.id, contract.ask_price),
+      true, 'buy', ['trade.purchase'])
     }
   }
   init() {
