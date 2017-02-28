@@ -4,6 +4,8 @@ import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
 import JSI from '../JSI'
 
+process.on('unhandledRejection', e => console.log(e)) // eslint-disable-line
+
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 24000 * 2
 
 const observer = new Observer()
@@ -28,22 +30,30 @@ describe('Multiple trades', () => {
             currency: 'USD', duration: 2,
             duration_unit: 'h', symbol: 'R_100',
           });
+          console.log('waiting for purchase')
           while (watch('before')) {
+          console.log('before')
             Bot.purchase('CALL');
           }
           while (watch('during')) {
+          console.log('during')
             Bot.sellAtMarket();
           }
+          console.log('after')
           if (--count === 0) {
+        console.log('Exited the loop')
             break;
           }
         }
+        console.log('outside the loop')
         return count === 0;
       })();
     `).then(v => {
       value = v
+      console.log('Done is called')
       done()
     }, e => {
+      console.log('Thrown', e)
       throw e
     })
   })

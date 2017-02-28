@@ -249,11 +249,17 @@ export default class _Blockly {
     if (code) {
       const o = new Observer()
       const $scope = { observer: o, api: new CustomApi(o) }
+      this.stop()
       this.jsi = new JSI($scope)
       this.jsi.run(code).then(() => $scope.api.originalApi.disconnect(),
         e => globalObserver.emit('Error', e))
       $('#summaryPanel')
         .show()
+    }
+  }
+  stop() {
+    if (this.jsi) {
+      this.jsi.stop()
     }
   }
   addBlocklyTranslation() {

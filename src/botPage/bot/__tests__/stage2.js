@@ -29,7 +29,7 @@ describe('Run JSI over bot', () => {
         while (watch('before')) {
           Bot.purchase('CALL');
         }
-        return isInside('before');
+        return !isInside('before');
       })();
     `).then(v => {
       value = v

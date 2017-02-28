@@ -1,194 +1,129 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import Purchase from './Purchase'
-import { translate } from '../../common/i18n'
-import { noop, subscribeToStream, registerStream, doUntilDone } from './tools'
+import { tradeOptionToProposal } from './tools'
 
-let totalRuns = 0
-let totalProfit = 0
-let totalWins = 0
-let totalLosses = 0
-let totalStake = 0
-let totalPayout = 0
-let balance = 0
-let balanceStr = ''
-
-
-/**
- * @namespace tradeOption
- * @property {number} amount - Amount for the contract
- * @property {string} currency - The currency for the contract
- * @property {string} basis - Basis for the contract ("stake")
- * @property {number} candleInterval -
- *   Interval for candles list (valid inputs in
- *   {@link https://developers.binary.com/api/#ticks_history|#ticks_history})
- * @property {string[]} contractTypes - The desired contract types
- * @property {number} duration - Contract duration
- * @property {string} duration_unit - Contract duration unit (valid inputs in
- *   {@link https://developers.binary.com/api/#proposal|#proposal})
- * @property {string} symbol - The underlying symbol (valid inputs in
- *   {@link https://developers.binary.com/api/#active_symbols|#active_symbols})
- * @property {boolean} restartOnError - Whether to restart on error or not
- * @property {number} prediction - prediction number for trades (optional)
- * @property {number} barrierOffset - barrier offset for the trade (optional)
- * @property {number} secondBarrierOffset - second barrier offset for the trade (optional)
- *
- * @example {
-   amount: 1, basis: 'stake', candleInterval: 60,
-   contractTypes: ['CALL', 'PUT'],
-   currency: 'USD', duration: 2,
-   duration_unit: 'h', symbol: 'R_100',
- }
- */
-
-/**
- * @namespace limitations
- * @property {number} maxLoss - Maximum acceptable loss amount
- * @property {number} maxTrades - Maximum acceptable num of trades
- */
 export default class Bot {
   constructor($scope) {
+    this.api = $scope.api.originalApi
+    this.activeProposals = []
+    this.observe()
+    this.isPurchaseStarted = false
+    this.isSellAvailable = false
+    this.forSellContractId = 0
     this.token = ''
-    this.sessionRuns = 0
-    this.sessionProfit = 0
-    this.api = $scope.api
     this.observer = $scope.observer
-    this.CM = $scope.CM
-    this.$scope = $scope
-    this.purchase = new Purchase(this.$scope)
-  }
-  shouldRestartOnError() {
-    return this.tradeOption && this.tradeOption.restartOnError
-  }
-  restartOnError() {
-    if (this.shouldRestartOnError()) {
-      this.start(...this.startArgs)
+    this.context = {}
+    this.promises = {
+      before() {},
+      during() {},
     }
   }
-  handleTradeUpdate(contract) {
-    globalObserver.emit('bot.tradeUpdate', contract)
-  }
-  handleAuthStream() {
-    this.subscribeToBalance()
-    this.startTrading()
-  }
-  observeStreams() {
-    registerStream(this.observer, 'api.authorize', () => this.handleAuthStream())
-    registerStream(this.observer,
-      'trade.update', contract => this.handleTradeUpdate(contract))
-  }
-  limitsReached() {
-    const { maxLoss, maxTrades } = this.limitations
-    if (maxLoss && maxTrades) {
-      if (this.sessionRuns >= maxTrades) {
-        globalObserver.emit('Error', translate('Maximum number of trades reached'))
-        return true
-      }
-      if (this.sessionProfit <= (-maxLoss)) {
-        globalObserver.emit('Error', translate('Maximum loss amount reached'))
-        return true
-      }
-    }
-    return false
-  }
-  /**
-   * start
-   * @memberof Bot
-   * @param {string} token - Token to login
-   * @param {object} tradeOption - {@link tradeOption}
-   * @param {boolean} sameTrade - Is this a repeat of trade or is this a fresh start
-   * @param {object} limitations - {@link limitations}
-   */
-  start(...args) {
-    const [token, tradeOption, limitations] = args
-
-    this.startArgs = args
-
-    this.limitations = limitations || {}
-
-    this.tradeOption = tradeOption
-
-    this.observeStreams()
-
-    if (this.limitsReached()) {
+  start(token, tradeOption) {
+    if (this.token) {
       return
     }
-
-    if (token === this.token) {
-      this.startTrading()
-    } else {
-      this.sessionRuns = 0
-      this.sessionProfit = 0
+    this.isSellAvailable = false
+    const symbol = tradeOption.symbol
+    this.api.authorize(token).then(() => {
       this.token = token
-      this.api.authorize(token)
-    }
-  }
-  subscribeToBalance() {
-    subscribeToStream(this.observer, 'api.balance',
-      balanceResp => {
-        const { balance: b, currency } = balanceResp
-        balance = +b
-        balanceStr = `${balance.toFixed(2)} ${currency}`
-        globalObserver.emit('bot.tradeInfo', { balance: balanceStr })
-      }, (() => doUntilDone(() => this.api.originalApi.send({ forget_all: 'balance' }))
-      .then(() => doUntilDone(() => this.api.balance()))), false, null)
-  }
-  subscribeToPurchaseFinish() {
-    subscribeToStream(this.observer,
-      'trade.finish', contract => this.botFinish(contract),
-      noop, true, null)
-  }
-  subscribeToTradePurchase() {
-    subscribeToStream(this.observer,
-      'trade.purchase', info => {
-        totalRuns += 1
-        this.sessionRuns += 1
-        globalObserver.emit('bot.tradeInfo', {
-          totalRuns,
-          transaction_ids: { buy: info.purchasedContract.transaction_id },
-          contract_type: info.contract.contract_type,
-          buy_price: info.purchasedContract.buy_price,
-        })
-      }, noop, true, null)
-  }
-  startTrading() {
-    this.subscribeToPurchaseFinish()
-    this.subscribeToTradePurchase()
-    this.purchase.start(this.tradeOption)
-  }
-  updateTotals(contract) {
-    const profit = +((+contract.sell_price) - (+contract.buy_price)).toFixed(2)
-
-    if (+profit > 0) {
-      totalWins += 1
-    } else if (+profit < 0) {
-      totalLosses += 1
-    }
-    this.sessionProfit = +(this.sessionProfit + profit).toFixed(2)
-    totalProfit = +(totalProfit + profit).toFixed(2)
-    totalStake = +(totalStake + (+contract.buy_price)).toFixed(2)
-    totalPayout = +(totalPayout + (+contract.sell_price)).toFixed(2)
-
-    globalObserver.emit('bot.tradeInfo', {
-      profit,
-      contract,
-      totalProfit,
-      totalWins,
-      totalLosses,
-      totalStake,
-      totalPayout,
+      this.proposalTemplates = tradeOptionToProposal(tradeOption)
+      this.requestProposals()
+      this.api.subscribeToTick(symbol)
     })
   }
-  botFinish(finishedContract) {
-    this.updateTotals(finishedContract)
-    globalObserver.emit('bot.finish', finishedContract)
+  requestPurchase(contractType) {
+    this.isPurchaseStarted = true
+    const requestedProposalIndex = this.activeProposals.findIndex(p => p.contract_type === contractType)
+    const toBuy = this.activeProposals[requestedProposalIndex]
+    const toForget = this.activeProposals[requestedProposalIndex ? 0 : 1]
+    this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
+      this.api.subscribeToOpenContract(r.buy.contract_id)
+      this.api.unsubscribeByID(toForget.id).then(() => this.requestProposals())
+      this.execContext('between-before-and-during')
+    })
   }
-  getTotalRuns() {
-    return totalRuns
+  sellAtMarket() {
+    if (!this.isSold && this.isSellAvailable) {
+      this.api.sellContract(this.forSellContractId, 0).then(() => {
+        this.isSellAvailable = false
+      })
+      .catch(() => this.sellAtMarket())
+    }
   }
-  getBalance(type) {
-    return type === 'STR' ? balanceStr : balance
+  setReady() {
+    this.expectedProposalCount = (this.expectedProposalCount + 1) % 2
   }
-  getTotalProfit() {
-    return totalProfit
+  checkReady() {
+    return this.activeProposals.length && !this.expectedProposalCount
+  }
+  requestProposals() {
+    this.activeProposals = []
+    this.proposalTemplates.forEach(proposal => {
+      this.api.subscribeToPriceForContractProposal(proposal).then(r => {
+        this.activeProposals.push(Object.assign({ contract_type: proposal.contract_type }, r.proposal))
+        this.setReady()
+      })
+    })
+  }
+  observe() {
+    this.listen('proposal_open_contract', t => {
+      const contract = t.proposal_open_contract
+      const { is_expired: isExpired, is_valid_to_sell: isValidToSell } = contract
+      if (!this.isSold && isExpired && isValidToSell) {
+        this.api.sellExpiredContracts()
+      }
+      this.isSold = !!contract.is_sold
+      if (this.isSold) {
+        this.isPurchaseStarted = false
+      } else {
+        this.forSellContractId = contract.contract_id
+      }
+      this.isSellAvailable = !this.isSold && !contract.is_expired && !!contract.is_valid_to_sell
+      this.execContext(this.isSold ? 'after' : 'during', contract)
+    })
+
+    this.listen('proposal', r => {
+      const proposal = r.proposal
+      const activeProposalIndex = this.activeProposals.findIndex(p => p.id === proposal.id)
+      if (activeProposalIndex >= 0) {
+        this.activeProposals[activeProposalIndex] = proposal
+        this.setReady()
+      }
+    })
+
+    this.listen('tick', () => {
+      if (!this.isPurchaseStarted && this.checkReady()) {
+        this.execContext('before', this.activeProposals)
+      }
+    })
+  }
+  execContext(scope) {
+    switch (scope) {
+      case 'before':
+        this.promises.before(true)
+        break
+      case 'between-before-and-during':
+        this.promises.before(false)
+        break
+      case 'during':
+        this.promises.during(true)
+        break
+      case 'after':
+        this.promises.during(false)
+        break
+      default:
+        break
+    }
+    this.scope = scope
+    this.observer.emit('CONTINUE')
+  }
+  isInside(scope) {
+    return this.scope === scope
+  }
+  watch(scope) {
+    return new Promise(resolve => {
+      this.promises[scope] = resolve
+    })
+  }
+  listen(n, f) {
+    this.api.events.on(n, f)
   }
 }

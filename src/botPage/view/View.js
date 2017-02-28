@@ -12,7 +12,6 @@ import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translate } from '../../common/i18n'
 import { SaveXml } from './react-components/SaveXml'
-import { RestartTimeout } from './react-components/RestartTimeout'
 import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
 import { symbolPromise } from './shared'
@@ -262,7 +261,7 @@ export default class View {
         e.preventDefault()
       }
       stopRealityCheck()
-      this.blockly.jsi.stop()
+      this.blockly.stop()
     }
 
     const logout = () => {
@@ -486,11 +485,7 @@ export default class View {
         if (error.error && error.error.code === 'InvalidToken') {
           removeAllTokens()
           this.updateTokenList()
-        }
-        this.blockly.jsi.stop()
-        if (this.blockly.jsi.Bot.shouldRestartOnError()) {
-          ReactDOM.render(<RestartTimeout timeout="3" />,
-            document.getElementById('restartTimeout'))
+          this.blockly.stop()
         }
       })
 

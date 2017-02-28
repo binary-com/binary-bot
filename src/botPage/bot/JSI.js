@@ -1,6 +1,5 @@
 import Interpreter from 'js-interpreter'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import ContextManager from './ContextManager'
 import BotApi from './BotApi'
 
 const createAsync = (interpreter, func) =>
@@ -14,8 +13,7 @@ export default class JSI {
       return
     }
     this.$scope = $scope
-    this.botApi = new BotApi(
-      Object.assign({}, $scope, { CM: new ContextManager($scope) }))
+    this.botApi = new BotApi($scope)
     this.stopped = false
     this.observer = $scope.observer
   }
@@ -45,24 +43,16 @@ export default class JSI {
       }
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const interpreter = new Interpreter(code, initFunc)
 
-      if (this.observer) {
-        this.observer.register('api.error', e => reject(e))
-      }
-
       const loop = () => {
-        try {
-          if (this.stopped || !interpreter.run()) {
-            if (this.observer) {
-              this.observer.unregisterAll('CONTINUE')
-            }
-            resolve(interpreter.pseudoToNative(interpreter.value))
-            return
+        if (this.stopped || !interpreter.run()) {
+          if (this.observer) {
+            this.observer.unregisterAll('CONTINUE')
           }
-        } catch (e) {
-          reject(e)
+          resolve(interpreter.pseudoToNative(interpreter.value))
+          return
         }
         if (!this.observer.isRegistered('CONTINUE')) {
           this.observer.register('CONTINUE', () => setTimeout(loop, 0))
