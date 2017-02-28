@@ -17,10 +17,14 @@ export default class Purchase {
     this.ticks = []
     this.ohlc = []
     this.pipSizes = {}
+    this.proposals = {}
   }
   start(tradeOption) {
     this.init()
 
+    if (this.ticks.length) {
+      return
+    }
     const { symbol, granularity } = tradeOption
     const proposals = tradeOptionToProposal(tradeOption)
 
@@ -40,21 +44,17 @@ export default class Purchase {
       subscribeToStream(this.observer, 'api.buy', purchasedContract => {
         this.observer.emit('trade.purchase', { contract, purchasedContract })
 
-        this.isSold = false
-
-        doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposals())
-
         this.postPurchase.start(purchasedContract.contract_id)
 
+        this.subscribeToProposals(proposals)
         this.CM.execContext('between-before-and-during')
       }, () => doUntilDone(() => this.api.originalApi.buyContract(contract.id, contract.ask_price)),
       true, 'buy', ['trade.purchase'])
     }
   }
   init() {
-    this.ready = false
     this.purchased = false
-    this.proposals = {}
+    this.ready = false
   }
   subscribeToProposals(proposals) {
     subscribeToStream(this.observer, 'api.proposal', proposal => {
@@ -63,8 +63,7 @@ export default class Purchase {
         this.ready = true
       }
     }, () => {
-      doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposals())
-        .then(() => proposals.forEach(p => this.api.proposal(p)))
+      proposals.forEach(p => this.api.proposal(p))
     }, false, null)
   }
   subscribeTicks(symbol, granularity) {
@@ -123,16 +122,13 @@ export default class Purchase {
         this.granularity = granularity
         this.ohlc = ohlc
       }, () => {
-        doUntilDone(() => this.api.originalApi.unsubscribeFromAllCandles())
-          .then(() => {
-            this.api.history(symbol, {
-              end: 'latest',
-              count: 5000,
-              granularity,
-              style: 'candles',
-              subscribe: 1,
-            })
-          })
+        this.api.history(symbol, {
+          end: 'latest',
+          count: 5000,
+          granularity,
+          style: 'candles',
+          subscribe: 1,
+        })
       }, true, 'candles', ['api.ohlc', 'api.candles'])
   }
   subscribeToTickHistory(symbol) {
@@ -144,14 +140,11 @@ export default class Purchase {
         this.symbol = symbol
         this.ticks = history
       }, () => {
-        doUntilDone(() => this.api.originalApi.unsubscribeFromAllTicks())
-          .then(() => {
-            this.api.history(symbol, {
-              end: 'latest',
-              count: 5000,
-              subscribe: 1,
-            })
-          })
+        this.api.history(symbol, {
+          end: 'latest',
+          count: 5000,
+          subscribe: 1,
+        })
       }, true, 'history', ['api.history', 'api.tick', 'bot.tickUpdate'])
   }
 }

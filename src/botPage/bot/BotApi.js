@@ -1,8 +1,20 @@
+import sma, {
+  simpleMovingAverageArray as smaa,
+} from 'binary-indicators/lib/simpleMovingAverage'
+import ema, {
+  exponentialMovingAverageArray as emaa,
+} from 'binary-indicators/lib/exponentialMovingAverage'
+import bb, {
+  bollingerBandsArray as bba,
+} from 'binary-indicators/lib/bollingerBands'
+import rsi, {
+  relativeStrengthIndexArray as rsia,
+} from 'binary-indicators/lib/relativeStrengthIndex'
+import macda from 'binary-indicators/lib/macd'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { getUTCTime } from 'binary-common-utils/lib/tools'
 import Bot from './'
 import { translate } from '../../common/i18n'
-import Indicators from './Indicators'
 import { noop } from './tools'
 import { sanitizeStart, expectPositiveInteger } from './sanitize'
 
@@ -31,8 +43,6 @@ const createDetails = (contract) => {
 export default class BotApi {
   constructor($scope) {
     this.bot = new Bot($scope)
-    this.indicators = new Indicators($scope)
-    this.CM = $scope.CM
     this.observer = $scope.observer
   }
   getInterface(name = 'Global') {
@@ -41,8 +51,8 @@ export default class BotApi {
       ...this.getTicksInterface(),
       ...this.getToolsInterface(),
     } : {
-      watch: (...args) => this.CM.watch(...args),
-      isInside: (...args) => this.CM.isInside(...args),
+      watch: (...args) => this.bot.watch(...args),
+      isInside: (...args) => this.bot.isInside(...args),
       sleep: (...args) => this.sleep(...args),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
     }
@@ -54,21 +64,20 @@ export default class BotApi {
     }, arg * 1000), noop)
   }
   getBotInterface() {
-    const getDetail = i => createDetails(this.CM.getContext().data.contract)[i]
+    const getDetail = i => createDetails(this.bot.getContext().data.contract)[i]
 
     return {
       start: (...args) => this.bot.start(...sanitizeStart(args)),
       stop: (...args) => this.bot.stop(...args),
-      shouldRestartOnError: (...args) => this.bot.shouldRestartOnError(...args),
-      purchase: option => this.bot.purchase.startPurchase(option),
+      purchase: option => this.bot.requestPurchase(option),
       getContract: (...args) => this.bot.purchase.getContract(...args),
       getAskPrice: name => +(this.bot.purchase.getContract(name).ask_price),
       getPayout: name => +(this.bot.purchase.getContract(name).payout),
-      isSellAvailable: () => this.bot.purchase.postPurchase.checkSellAvailable(),
-      sellAtMarket: (...args) => this.bot.purchase.postPurchase.sellAtMarket(...args),
+      isSellAvailable: () => this.bot.isSellAvailable,
+      sellAtMarket: () => this.bot.sellAtMarket(),
       getSellPrice: () =>
-        +(((+this.CM.getContext().data.contract.bid_price) -
-          (+this.CM.getContext().data.contract.buy_price)).toFixed(2)),
+        +(((+this.bot.getContext().data.contract.bid_price) -
+          (+this.bot.getContext().data.contract.buy_price)).toFixed(2)),
       isResult: result => (getDetail(10) === result),
       readDetails: i => getDetail(i - 1),
     }
@@ -90,7 +99,7 @@ export default class BotApi {
       },
       getOhlc: (field) => this.getOhlc(field),
       getTicks: () => this.getTicks(),
-      checkDirection: w => this.CM.getContext().data.ticksObj.direction === w,
+      checkDirection: w => this.bot.getContext().data.ticksObj.direction === w,
     }
   }
   getToolsInterface() {
@@ -122,18 +131,34 @@ export default class BotApi {
       getTotalProfit: () => this.bot.getTotalProfit(),
     }
   }
-  getIndicatorsInterface() {
-    return this.indicators.getInterface()
-  }
   getOhlc(field) {
-    const ohlc = this.CM.getContext().data.ticksObj.ohlc
+    const ohlc = this.bot.getContext().data.ticksObj.ohlc
 
     return field ? ohlc.map(o => o[field]) : ohlc
   }
   getTicks() {
-    return this.CM.getContext().data.ticksObj.ticks.map(o => o.quote)
+    return this.bot.getContext().data.ticksObj.ticks.map(o => o.quote)
   }
   getPipSize() {
-    return this.CM.getContext().data.ticksObj.pipSize
+    return this.bot.getContext().data.ticksObj.pipSize
+  }
+  decorate(f, input, config, ...args) {
+    const pipSize = this.CM.getContext().data.ticksObj.pipSize
+    return f(input, Object.assign({ pipSize }, config), ...args)
+  }
+  getIndicatorsInterface() {
+    return {
+      sma: (input, periods) => this.decorate(sma, input, { periods }),
+      smaa: (input, periods) => this.decorate(smaa, input, { periods }),
+      ema: (input, periods) => this.decorate(ema, input, { periods }),
+      emaa: (input, periods) => this.decorate(emaa, input, { periods }),
+      rsi: (input, periods) => this.decorate(rsi, input, { periods }),
+      rsia: (input, periods) => this.decorate(rsia, input, { periods }),
+      bb: (input, config, field) => this.decorate(bb, input, config)[field],
+      bba: (input, config, field) =>
+        this.decorate(bba, input, config).map(r => r[field]),
+      macda: (input, config, field) =>
+        this.decorate(macda, input, config).map(r => r[field]),
+    }
   }
 }

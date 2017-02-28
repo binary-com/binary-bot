@@ -40,8 +40,7 @@ export default class Trade {
     if (finished) {
       this.openContract = null
       this.observer.emit('trade.finish', contract)
-      doUntilDone(() => this.api.originalApi.unsubscribeFromAllProposalsOpenContract())
-        .then(() => this.CM.execContext('after', contract))
+      this.CM.execContext('after', contract)
     } else {
       this.openContract = contract
       this.observer.emit('trade.update', contract)
@@ -56,7 +55,7 @@ export default class Trade {
       this.handleExpire(contract)
 
       this.handleUpdate(contract)
-    }, () => doUntilDone(() => this.api.proposal_open_contract(this.contractId)),
+    }, () => doUntilDone(() => this.api.originalApi.subscribeToOpenContract(this.contractId)),
     false, 'proposal_open_contract', ['trade.update', 'trade.finish'])
   }
   checkSellAvailable() {

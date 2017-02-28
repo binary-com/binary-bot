@@ -59,8 +59,13 @@ export const registerStream = (observer, name, cb) => {
   observer.register(name, cb)
 }
 
-export const doUntilDone = f => new Promise(resolve => {
-  const repeat = () => {
+export const doUntilDone = f => new Promise((resolve, reject) => {
+  let count = 0
+  const repeat = e => {
+    if (count++ === 9) {
+      reject(e)
+      return
+    }
     const promise = f()
 
     if (promise) {

@@ -24,7 +24,7 @@ describe('Run JSI over bot', () => {
           amount: 1, basis: 'stake', candleInterval: 60,
           contractTypes: ['CALL', 'PUT'],
           currency: 'USD', duration: 2,
-          duration_unit: 'h', symbol: 'R_100',
+          duration_unit: 'h', symbol: 'frxAUDUSD',
         });
         watch('before');
         return isInside('before');
