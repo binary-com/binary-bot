@@ -6,10 +6,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000 * 2
 describe('Before Purchase Blocks', () => {
   let value
 
-  const jsi = createJsi()
+  const interpreter = createJsi()
 
   beforeAll(done => {
-    jsi.run(`
+    interpreter.run(`
       ${header}
       ${trade}
         while (watch('before')) {

@@ -13,7 +13,7 @@ import rsi, {
 import macda from 'binary-indicators/lib/macd'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { getUTCTime } from 'binary-common-utils/lib/tools'
-import Bot from './'
+import Core from './Core'
 import { translate } from '../../common/i18n'
 import { noop } from './tools'
 import { sanitizeStart, expectPositiveInteger } from './sanitize'
@@ -40,9 +40,9 @@ const createDetails = (contract) => {
  * @namespace Bot
  */
 
-export default class BotApi {
+export default class Interface {
   constructor($scope) {
-    this.bot = new Bot($scope)
+    this.bot = new Core($scope)
     this.observer = $scope.observer
   }
   getInterface(name = 'Global') {
