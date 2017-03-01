@@ -2,11 +2,11 @@ import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
-import JSI from '../JSI'
+import Interpreter from '../Interpreter'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000 * 2
 
-describe('Run JSI over bot', () => {
+describe('Run Interpreter over bot', () => {
   let value
 
   beforeAll(done => {
@@ -17,8 +17,8 @@ describe('Run JSI over bot', () => {
     )
     let $scope = { observer, api }
 
-    let jsi = new JSI($scope)
-    jsi.run(`
+    let interpreter = new Interpreter($scope)
+    interpreter.run(`
       (function (){
         Bot.start('Xkq6oGFEHh6hJH8', {
           amount: 1, basis: 'stake', candleInterval: 60,
@@ -35,15 +35,15 @@ describe('Run JSI over bot', () => {
     })
 
     setTimeout(() => {
-      jsi.stop()
+      interpreter.stop()
       observer = new Observer()
       api = (new CustomApi(observer, null, null, new WebSocket(
         process.env.ENDPOINT ||
           'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0'))
       )
       $scope = { observer, api }
-      jsi = new JSI($scope)
-      jsi.run(`
+      interpreter = new Interpreter($scope)
+      interpreter.run(`
         (function (){
           Bot.start('Xkq6oGFEHh6hJH8', {
             amount: 1, basis: 'stake', candleInterval: 60,

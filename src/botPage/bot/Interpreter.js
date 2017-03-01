@@ -1,29 +1,29 @@
-import Interpreter from 'js-interpreter'
+import JSInterpreter from 'js-interpreter'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import BotApi from './BotApi'
+import Interface from './Interface'
 
 const createAsync = (interpreter, func) =>
   interpreter.createAsyncFunction((arg, cb) =>
     func(interpreter.pseudoToNative(arg))
       .then(rv => (rv ? cb(interpreter.nativeToPseudo(rv)) : cb())))
 
-export default class JSI {
+export default class Interpreter {
   constructor($scope) {
     if (!$scope) { // valid usage for js only code
       return
     }
     this.$scope = $scope
-    this.botApi = new BotApi($scope)
+    this.botIf = new Interface($scope)
     this.stopped = false
     this.observer = $scope.observer
   }
   run(code) {
     let initFunc
 
-    if (this.botApi) {
-      this.Bot = this.botApi.getInterface('Bot')
+    if (this.botIf) {
+      this.Bot = this.botIf.getInterface('Bot')
 
-      const { isInside, watch, alert, sleep } = this.botApi.getInterface()
+      const { isInside, watch, alert, sleep } = this.botIf.getInterface()
 
       initFunc = (interpreter, scope) => {
         interpreter.setProperty(scope, 'console',
@@ -44,7 +44,7 @@ export default class JSI {
     }
 
     return new Promise(resolve => {
-      const interpreter = new Interpreter(code, initFunc)
+      const interpreter = new JSInterpreter(code, initFunc)
 
       const loop = () => {
         if (this.stopped || !interpreter.run()) {

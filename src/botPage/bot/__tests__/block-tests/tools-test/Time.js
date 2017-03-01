@@ -5,10 +5,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('Time in tools', () => {
   let value
-  const jsi = createJsi()
+  const interpreter = createJsi()
 
   beforeAll(done => {
-    jsi.run(`
+    interpreter.run(`
         (function(){
           var result = {};
           result.time1 = Bot.getTime();

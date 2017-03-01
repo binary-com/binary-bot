@@ -5,10 +5,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('Ticks Analysis', () => {
   let value
-  const jsi = createJsi()
+  const interpreter = createJsi()
 
   beforeAll(done => {
-    jsi.run(`
+    interpreter.run(`
       ${header}
       result.ticks = []
       function ta() {
@@ -42,10 +42,10 @@ describe('Ticks Analysis', () => {
 
 describe('Tick Blocks', () => {
   let value
-  const jsi = createJsi()
+  const interpreter = createJsi()
 
   beforeAll(done => {
-    jsi.run(`
+    interpreter.run(`
       ${header}
       ${trade}
         watch('before');

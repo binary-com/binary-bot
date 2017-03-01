@@ -9,7 +9,7 @@ import {
   backwardCompatibility, fixCollapsedBlocks,
 } from './utils'
 import blocks from './blocks'
-import JSI from '../../bot/JSI'
+import Interpreter from '../../bot/Interpreter'
 import { getLanguage } from '../../../common/lang'
 
 const setBeforeUnload = off =>
@@ -250,16 +250,16 @@ export default class _Blockly {
       const o = new Observer()
       const $scope = { observer: o, api: new CustomApi(o) }
       this.stop()
-      this.jsi = new JSI($scope)
-      this.jsi.run(code).then(() => $scope.api.originalApi.disconnect(),
+      this.interpreter = new Interpreter($scope)
+      this.interpreter.run(code).then(() => $scope.api.originalApi.disconnect(),
         e => globalObserver.emit('Error', e))
       $('#summaryPanel')
         .show()
     }
   }
   stop() {
-    if (this.jsi) {
-      this.jsi.stop()
+    if (this.interpreter) {
+      this.interpreter.stop()
     }
   }
   addBlocklyTranslation() {

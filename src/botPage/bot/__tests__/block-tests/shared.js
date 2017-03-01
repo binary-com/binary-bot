@@ -1,7 +1,7 @@
 import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
-import JSI from '../../JSI'
+import Interpreter from '../../Interpreter'
 
 export const header = `
       (function (){
@@ -32,5 +32,5 @@ export const createJsi = () => {
 
   const $scope = { observer, api }
 
-  return new JSI($scope)
+  return new Interpreter($scope)
 }
