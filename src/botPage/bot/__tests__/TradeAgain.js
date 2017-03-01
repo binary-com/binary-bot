@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
-import JSI from '../JSI'
+import Interpreter from '../Interpreter'
 
 process.on('unhandledRejection', e => console.log(e)) // eslint-disable-line
 
@@ -14,13 +14,13 @@ const api = (new CustomApi(observer, null, null, new WebSocket(
     'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
 const $scope = { observer, api }
 
-const jsi = new JSI($scope)
+const interpreter = new Interpreter($scope)
 
 describe('Multiple trades', () => {
   let value
 
   beforeAll(done => {
-    jsi.run(`
+    interpreter.run(`
       (function (){
         var count = 5;
         while(true) {

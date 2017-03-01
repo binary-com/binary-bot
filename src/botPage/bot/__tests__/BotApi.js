@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import CustomApi from 'binary-common-utils/lib/customApi'
 import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
-import BotApi from '../BotApi'
+import Interface from '../Interface'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000 * 2
 
@@ -12,13 +12,13 @@ const api = (new CustomApi(observer, null, null, new WebSocket(
     'wss://ws.binaryws.com/websockets/v3?l=en&app_id=0')))
 const $scope = { observer, api }
 
-const botApi = new BotApi($scope)
+const botInterface = new Interface($scope)
 
-const Bot = botApi.getInterface('Bot')
+const Bot = botInterface.getInterface('Bot')
 
-const { isInside, watch, alert } = botApi.getInterface()
+const { isInside, watch, alert } = botInterface.getInterface()
 
-describe('BotApi', () => {
+describe('Interface', () => {
   it('alert should not be native', () => {
     expect(alert.toString().includes('native')).equal(false)
   })

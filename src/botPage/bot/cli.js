@@ -4,7 +4,7 @@ import WebSocket from 'ws'
 import fs from 'fs'
 import readline from 'readline'
 import minimist from 'minimist'
-import JSI from './JSI'
+import Interpreter from './Interpreter'
 
 const args = minimist(process.argv.slice(2))
 
@@ -27,5 +27,5 @@ const $scope = { observer, api }
 globalObserver.register('Error', e => console.log(e)) // eslint-disable-line no-console
 
 lineReader.on('close', () =>
-  (new JSI($scope)).run(code)
+  (new Interpreter($scope)).run(code)
     .then(v => console.log(v.data), e => console.log(e))) // eslint-disable-line no-console

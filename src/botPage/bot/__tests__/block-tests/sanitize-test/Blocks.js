@@ -4,14 +4,14 @@ import { noop } from '../../../tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
-const jsi = createJsi()
+const interpreter = createJsi()
 
 describe('Trade Definition Blocks', () => {
   let error
 
   describe('Index must be handled properly', () => {
     beforeAll(done =>
-      jsi.run(`
+      interpreter.run(`
         ${trade}
         watch('before');
         Bot.getOhlcFromEnd('close', 0)
