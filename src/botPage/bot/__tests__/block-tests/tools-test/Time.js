@@ -1,14 +1,13 @@
 import { expect } from 'chai'
-import { createJsi } from '../shared'
+import { runAndGetResult } from '../../shared'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('Time in tools', () => {
-  let value
-  const interpreter = createJsi()
+  let result
 
   beforeAll(done => {
-    interpreter.run(`
+    runAndGetResult(`
         (function(){
           var result = {};
           result.time1 = Bot.getTime();
@@ -17,15 +16,13 @@ describe('Time in tools', () => {
           return result;
         })() 
     `).then(v => {
-      value = v
+      result = v
       done()
-    }, e => {
-      throw e
     })
   })
 
   it('time is correctly skewed', () => {
-    const { time1, time2 } = value
+    const { time1, time2 } = result
 
     expect(time2 - time1).equal(2)
   })
