@@ -20,10 +20,10 @@ describe('Ticks Service', () => {
   describe('Monitor market ticks', () => {
     const ticks = []
     beforeAll(done => {
-      ticksService.monitor('R_100', ticksList => {
+      const key = ticksService.monitor('R_100', ticksList => {
         ticks.push(ticksList)
         if (ticks.length === 3) {
-          ticksService.stopMonitor('R_100')
+          ticksService.stopMonitor('R_100', key)
           done()
         }
       })

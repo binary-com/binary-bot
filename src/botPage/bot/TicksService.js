@@ -27,8 +27,7 @@ const updateCandles = (candles, ohlc) => {
 
 const getType = isCandle => (isCandle ? 'candles' : 'ticks')
 
-const addToArray =
-  (arr, el) => (arr instanceof Array ? [...arr, el] : [el])
+const getUUID = () => `${new Date().getTime() * Math.random()}`
 
 export default class TicksService {
   constructor(api) {
@@ -61,7 +60,7 @@ export default class TicksService {
           const listeners = this.tickListeners.get(symbol)
 
           if (listeners) {
-            listeners.forEach(cb => cb(this.ticks.get(symbol)))
+            listeners.forEach(callback => callback(this.ticks.get(symbol)))
           }
         }
       })
@@ -73,12 +72,14 @@ export default class TicksService {
 
         if (this.candles.hasIn([symbol, granularity])) {
           this.candles = this.candles.setIn([symbol, granularity],
-            updateCandles(this.candles.getIn([symbol, granularity]), parseOhlc(ohlc)))
+            updateCandles(this.candles.getIn([symbol, granularity]),
+              parseOhlc(ohlc)))
 
           const listeners = this.ohlcListeners.getIn([symbol, granularity])
 
           if (listeners) {
-            listeners.forEach(cb => cb(this.candles.getIn([symbol, granularity])))
+            listeners.forEach(callback =>
+              callback(this.candles.getIn([symbol, granularity])))
           }
         }
       })
@@ -112,27 +113,26 @@ export default class TicksService {
   }
   monitor(symbol, ...args) {
     const type = getType(args.length === 2)
-    const cb = getLast(args)
+    const callback = getLast(args)
+    const key = getUUID()
 
     this.request(symbol, ...args.slice(0, -1))
 
     if (type === 'ticks') {
-      this.tickListeners = this.tickListeners.set(symbol,
-        addToArray(this.tickListeners.get(symbol), cb))
+      this.tickListeners = this.tickListeners.setIn([symbol, key], callback)
     } else {
-      const granularity = args[0]
-
-      this.ohlcListeners.setIn([symbol, granularity],
-        addToArray(this.ohlcListeners.getIn([symbol, granularity]), cb))
+      this.ohlcListeners = this.ohlcListeners.setIn([symbol, args[0], key], callback)
     }
+
+    return key
   }
-  stopMonitor(symbol, granularity) {
+  stopMonitor(symbol, granularity, key) {
     const type = getType(granularity)
 
     if (type === 'ticks') {
-      this.tickListeners = this.tickListeners.delete(symbol)
+      this.tickListeners = this.tickListeners.deleteIn([symbol, key])
     } else {
-      this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity])
+      this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity, key])
     }
   }
 }
