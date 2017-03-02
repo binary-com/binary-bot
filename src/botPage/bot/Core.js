@@ -2,7 +2,11 @@ import { tradeOptionToProposal } from './tools'
 
 export default class Core {
   constructor($scope) {
-    this.api = $scope.api.originalApi
+    ({
+      ticksService: this.ticksService,
+      api: this.api,
+      observer: this.observer,
+    } = $scope)
     this.activeProposals = []
     this.tickListener = {}
     this.observe()
@@ -10,7 +14,6 @@ export default class Core {
     this.isSellAvailable = false
     this.forSellContractId = 0
     this.token = ''
-    this.observer = $scope.observer
     this.context = {}
     this.promises = {
       before() {},

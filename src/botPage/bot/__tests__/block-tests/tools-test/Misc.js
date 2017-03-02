@@ -1,36 +1,30 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { expect } from 'chai'
-import { createJsi, header, trade, footer } from '../shared'
+import { runAndGetResult } from '../../shared'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('Misc. tools', () => {
-  let value
-  const interpreter = createJsi()
+  let result
   const observed = {}
 
   globalObserver.register('Notify', notify => (observed.notify = notify))
 
   beforeAll(done => {
-    interpreter.run(`
-      ${header}
-      ${trade}
+    runAndGetResult(undefined, `
         Bot.notify('Test', 'info')
         result.totalRuns = Bot.getTotalRuns();
         result.totalProfit = Bot.getTotalProfit();
         watch('before')
         result.balance = Bot.getBalance('NUM')
         result.balanceStr = Bot.getBalance('STR')
-      ${footer}
     `).then(v => {
-      value = v
+      result = v
       done()
-    }, e => {
-      throw e
     })
   })
   it('Balance', () => {
-    const { result: { balance, balanceStr } } = value
+    const { balance, balanceStr } = result
 
     expect(balance).to.be.a('Number')
     expect(balanceStr).to.be.a('String')
@@ -38,13 +32,13 @@ describe('Misc. tools', () => {
   })
 
   it('Total Profit', () => {
-    const { result: { totalProfit } } = value
+    const { totalProfit } = result
 
     expect(totalProfit).to.be.a('Number')
   })
 
   it('Total runs', () => {
-    const { result: { totalRuns } } = value
+    const { totalRuns } = result
 
     expect(totalRuns).equal(0)
   })

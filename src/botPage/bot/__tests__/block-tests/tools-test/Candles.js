@@ -1,44 +1,38 @@
 import { expect } from 'chai'
-import { createJsi, header, trade, footer } from '../shared'
+import { runAndGetResult } from '../../shared'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('Candle Blocks in tools', () => {
-  let value
-  const interpreter = createJsi()
+  let result
 
   beforeAll(done => {
-    interpreter.run(`
-      ${header}
-      ${trade}
-        watch('before');
-        var ohlc = Bot.getOhlc();
-        result.ohlc = Bot.candleValues(ohlc, 'open')
-        result.isCandleBlack = Bot.isCandleBlack({ open: 1, close: 0 })
-        result.candleField = Bot.candleField({ open: 1, close: 0 }, 'open')
-      ${footer}
+    runAndGetResult(`
+      watch('before');
+      var ohlc = Bot.getOhlc();
+      result.ohlc = Bot.candleValues(ohlc, 'open')
+      result.isCandleBlack = Bot.isCandleBlack({ open: 1, close: 0 })
+      result.candleField = Bot.candleField({ open: 1, close: 0 }, 'open')
     `).then(v => {
-      value = v
+      result = v
       done()
-    }, e => {
-      throw e
     })
   })
 
   it('ohlc values', () => {
-    const { result: { isCandleBlack } } = value
+    const { isCandleBlack } = result
 
     expect(isCandleBlack).equal(true)
   })
 
   it('is candle black', () => {
-    const { result: { ohlc } } = value
+    const { ohlc } = result
 
-    expect(ohlc).satisfy(o => o && o.length && typeof o[0] === 'number')
+    expect(ohlc).satisfy(o => o && o.length && Number.isFinite(o[0]))
   })
 
   it('candle field', () => {
-    const { result: { candleField } } = value
+    const { candleField } = result
 
     expect(candleField).equal(1)
   })

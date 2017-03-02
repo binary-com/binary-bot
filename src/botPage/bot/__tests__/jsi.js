@@ -10,8 +10,6 @@ describe('Run Interpreter over simple calculation', () => {
     interpreter.run('1 + 2').then(v => {
       value = v
       done()
-    }, e => {
-      throw e
     })
   })
 

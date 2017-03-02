@@ -1,16 +1,12 @@
-import { expect } from 'chai'
-import { createJsi, header, trade, footer } from './shared'
+import { runAndGetResult, expectResultTypes, parts } from '../shared'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('After Purchase Blocks', () => {
-  let value
-
-  const interpreter = createJsi()
+  let result
 
   beforeAll(done => {
-    interpreter.run(`
-      ${header}
+    runAndGetResult(`
       function tradeAgain() {
         if (!again) {
           again = true
@@ -19,37 +15,26 @@ describe('After Purchase Blocks', () => {
         return false;
       }
       while (true) {
-        ${trade}
-        watch('before')
-        Bot.purchase('CALL')
-        while (watch('during')) {
-          Bot.sellAtMarket();
-        }
+      `, `
+        ${parts.waitToPurchase}
+        ${parts.waitToSell}
         result.isWin = Bot.isResult('win');
         result.detail = Bot.readDetails(1);
         if (!tradeAgain()) {
           break;
         }
       }
-      ${footer}
     `).then(v => {
-      value = v
+      result = v
       done()
-    }, e => {
-      throw e
     })
   })
 
   it('before purchase api', () => {
-    const expectedResultTypes = [
+    expectResultTypes(result, [
       'boolean', // is result win
       'string', // statement
-    ]
-
-    const { result } = value
-    const resultTypes = Object.keys(result).map(k => typeof result[k])
-
-    expect(resultTypes).deep.equal(expectedResultTypes)
+    ])
   })
 })
 
