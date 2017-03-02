@@ -12,9 +12,9 @@ const isTick = t => Number.isInteger(t.epoch) && Number.isFinite(t.quote)
 const isOhlc = o => Number.isInteger(o.epoch) && Number.isFinite(o.open) &&
   Number.isFinite(o.high) && Number.isFinite(o.low) && Number.isFinite(o.close)
 
-const isTicksList = l => l.reduce((r, t) => r && isTick(t), true)
+const isTicksList = l => l.every(t => isTick(t))
 
-const isCandles = l => l.reduce((r, o) => r && isOhlc(o), true)
+const isCandles = l => l.every(o => isOhlc(o))
 
 describe('Ticks Service', () => {
   describe('Monitor market ticks', () => {
