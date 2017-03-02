@@ -4,6 +4,7 @@ export default class Core {
   constructor($scope) {
     this.api = $scope.api.originalApi
     this.activeProposals = []
+    this.tickListener = {}
     this.observe()
     this.isPurchaseStarted = false
     this.isSellAvailable = false
@@ -21,17 +22,30 @@ export default class Core {
       return
     }
     this.isSellAvailable = false
-    const symbol = tradeOption.symbol
     this.api.authorize(token).then(() => {
       this.token = token
       this.proposalTemplates = tradeOptionToProposal(tradeOption)
       this.requestProposals()
-      this.api.subscribeToTick(symbol)
+      this.monitorTickEvent(tradeOption.symbol)
     })
+  }
+  monitorTickEvent(symbol) {
+    if (this.tickListener.symbol !== symbol) {
+      this.ticksService.stopMonitor(this.tickListener.symbol, this.tickListener.key)
+
+      const key = this.ticksService.monitor(symbol, () => {
+        if (!this.isPurchaseStarted && this.checkReady()) {
+          this.execContext('before', this.activeProposals)
+        }
+      })
+
+      this.tickListener = { key, symbol }
+    }
   }
   requestPurchase(contractType) {
     this.isPurchaseStarted = true
-    const requestedProposalIndex = this.activeProposals.findIndex(p => p.contract_type === contractType)
+    const requestedProposalIndex =
+      this.activeProposals.findIndex(p => p.contract_type === contractType)
     const toBuy = this.activeProposals[requestedProposalIndex]
     const toForget = this.activeProposals[requestedProposalIndex ? 0 : 1]
     this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
@@ -58,7 +72,8 @@ export default class Core {
     this.activeProposals = []
     this.proposalTemplates.forEach(proposal => {
       this.api.subscribeToPriceForContractProposal(proposal).then(r => {
-        this.activeProposals.push(Object.assign({ contract_type: proposal.contract_type }, r.proposal))
+        this.activeProposals.push(
+          Object.assign({ contract_type: proposal.contract_type }, r.proposal))
         this.setReady()
       })
     })
@@ -67,6 +82,7 @@ export default class Core {
     this.listen('proposal_open_contract', t => {
       const contract = t.proposal_open_contract
       const { is_expired: isExpired, is_valid_to_sell: isValidToSell } = contract
+
       if (!this.isSold && isExpired && isValidToSell) {
         this.api.sellExpiredContracts()
       }
@@ -76,22 +92,19 @@ export default class Core {
       } else {
         this.forSellContractId = contract.contract_id
       }
-      this.isSellAvailable = !this.isSold && !contract.is_expired && !!contract.is_valid_to_sell
+      this.isSellAvailable =
+        !this.isSold && !contract.is_expired && !!contract.is_valid_to_sell
       this.execContext(this.isSold ? 'after' : 'during', contract)
     })
 
     this.listen('proposal', r => {
       const proposal = r.proposal
-      const activeProposalIndex = this.activeProposals.findIndex(p => p.id === proposal.id)
+      const activeProposalIndex =
+        this.activeProposals.findIndex(p => p.id === proposal.id)
+
       if (activeProposalIndex >= 0) {
         this.activeProposals[activeProposalIndex] = proposal
         this.setReady()
-      }
-    })
-
-    this.listen('tick', () => {
-      if (!this.isPurchaseStarted && this.checkReady()) {
-        this.execContext('before', this.activeProposals)
       }
     })
   }
