@@ -42,7 +42,7 @@ const createDetails = (contract) => {
 
 export default class Interface {
   constructor($scope) {
-    this.bot = new Core($scope)
+    this.core = new Core($scope)
     this.observer = $scope.observer
   }
   getInterface(name = 'Global') {
@@ -51,8 +51,8 @@ export default class Interface {
       ...this.getTicksInterface(),
       ...this.getToolsInterface(),
     } : {
-      watch: (...args) => this.bot.watch(...args),
-      isInside: (...args) => this.bot.isInside(...args),
+      watch: (...args) => this.core.watch(...args),
+      isInside: (...args) => this.core.isInside(...args),
       sleep: (...args) => this.sleep(...args),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
     }
@@ -64,20 +64,20 @@ export default class Interface {
     }, arg * 1000), noop)
   }
   getBotInterface() {
-    const getDetail = i => createDetails(this.bot.getContext().data.contract)[i]
+    const getDetail = i => createDetails(this.core.getContext().data.contract)[i]
 
     return {
-      start: (...args) => this.bot.start(...sanitizeStart(args)),
-      stop: (...args) => this.bot.stop(...args),
-      purchase: option => this.bot.requestPurchase(option),
-      getContract: (...args) => this.bot.purchase.getContract(...args),
-      getAskPrice: name => +(this.bot.purchase.getContract(name).ask_price),
-      getPayout: name => +(this.bot.purchase.getContract(name).payout),
-      isSellAvailable: () => this.bot.isSellAvailable,
-      sellAtMarket: () => this.bot.sellAtMarket(),
+      start: (...args) => this.core.start(...sanitizeStart(args)),
+      stop: (...args) => this.core.stop(...args),
+      purchase: option => this.core.requestPurchase(option),
+      getContract: (...args) => this.core.purchase.getContract(...args),
+      getAskPrice: name => +(this.core.purchase.getContract(name).ask_price),
+      getPayout: name => +(this.core.purchase.getContract(name).payout),
+      isSellAvailable: () => this.core.isSellAvailable,
+      sellAtMarket: () => this.core.sellAtMarket(),
       getSellPrice: () =>
-        +(((+this.bot.getContext().data.contract.bid_price) -
-          (+this.bot.getContext().data.contract.buy_price)).toFixed(2)),
+        +(((+this.core.getContext().data.contract.bid_price) -
+          (+this.core.getContext().data.contract.buy_price)).toFixed(2)),
       isResult: result => (getDetail(10) === result),
       readDetails: i => getDetail(i - 1),
     }
@@ -99,7 +99,7 @@ export default class Interface {
       },
       getOhlc: (field) => this.getOhlc(field),
       getTicks: () => this.getTicks(),
-      checkDirection: w => this.bot.getContext().data.ticksObj.direction === w,
+      checkDirection: w => this.core.getContext().data.ticksObj.direction === w,
     }
   }
   getToolsInterface() {
@@ -126,21 +126,21 @@ export default class Interface {
   getMiscInterface() {
     return {
       notify: (...args) => globalObserver.emit('Notify', args),
-      getTotalRuns: () => this.bot.getTotalRuns(),
-      getBalance: type => this.bot.getBalance(type),
-      getTotalProfit: () => this.bot.getTotalProfit(),
+      getTotalRuns: () => this.core.getTotalRuns(),
+      getBalance: type => this.core.getBalance(type),
+      getTotalProfit: () => this.core.getTotalProfit(),
     }
   }
   getOhlc(field) {
-    const ohlc = this.bot.getContext().data.ticksObj.ohlc
+    const ohlc = this.core.getContext().data.ticksObj.ohlc
 
     return field ? ohlc.map(o => o[field]) : ohlc
   }
   getTicks() {
-    return this.bot.getContext().data.ticksObj.ticks.map(o => o.quote)
+    return this.core.getContext().data.ticksObj.ticks.map(o => o.quote)
   }
   getPipSize() {
-    return this.bot.getContext().data.ticksObj.pipSize
+    return this.core.getContext().data.ticksObj.pipSize
   }
   decorate(f, input, config, ...args) {
     const pipSize = this.CM.getContext().data.ticksObj.pipSize

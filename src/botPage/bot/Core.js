@@ -1,6 +1,6 @@
 import { tradeOptionToProposal } from './tools'
 
-export default class Bot {
+export default class Core {
   constructor($scope) {
     this.api = $scope.api.originalApi
     this.activeProposals = []
