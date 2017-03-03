@@ -11,7 +11,7 @@ const parseOhlc = ohlc => ({
   high: +ohlc.high,
   low: +ohlc.low,
   close: +ohlc.close,
-  epoch: +ohlc.epoch,
+  epoch: +(ohlc.open_time || ohlc.epoch),
 })
 
 const parseCandles = candles => candles.map(t => parseOhlc(t))

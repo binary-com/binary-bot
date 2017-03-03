@@ -63,7 +63,7 @@ export default class Interpreter {
     })
   }
   stop() {
-    this.$scope.api.destroy()
+    this.$scope.api.disconnect()
     globalObserver.emit('bot.stop')
     this.stopped = true
   }
