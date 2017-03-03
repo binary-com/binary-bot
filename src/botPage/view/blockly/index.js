@@ -1,6 +1,4 @@
-import { LiveApi } from 'binary-live-api'
-import { get as getStorage } from 'binary-common-utils/lib/storageManager'
-import Observer, { observer as globalObserver } from 'binary-common-utils/lib/observer'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate, xml as translateXml } from '../../../common/i18n'
 import { createError } from '../../common/error'
 import {
@@ -12,6 +10,7 @@ import {
 import blocks from './blocks'
 import Interpreter from '../../bot/Interpreter'
 import { getLanguage } from '../../../common/lang'
+import { createScope } from '../shared'
 
 const setBeforeUnload = off =>
   (window.onbeforeunload = off ? null :
@@ -248,16 +247,9 @@ export default class _Blockly {
       `
     this.generatedJs = code
     if (code) {
-      const api = new LiveApi({
-        language: getStorage('lang') || 'en',
-        appId: getStorage('appId') || 1,
-      })
-      const observer = new Observer()
-      const $scope = { observer, api }
       this.stop()
-      this.interpreter = new Interpreter($scope)
-      this.interpreter.run(code).then(() => $scope.api.originalApi.disconnect(),
-        e => globalObserver.emit('Error', e))
+      this.interpreter = new Interpreter(createScope())
+      this.interpreter.run(code)
       $('#summaryPanel')
         .show()
     }
