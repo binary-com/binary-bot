@@ -2,7 +2,7 @@ import { LiveApi } from 'binary-live-api'
 import Observer from 'binary-common-utils/lib/observer'
 import WebSocket from 'ws'
 import Interpreter from './Interpreter'
-import TicksService from './TicksService'
+import TicksService from '../common/TicksService'
 
 export const createScope = () => {
   const observer = new Observer()
