@@ -36,6 +36,7 @@ export default class TicksService {
     this.candles = new Map()
     this.tickListeners = new Map()
     this.ohlcListeners = new Map()
+    this.subscriptions = new Map()
     this.observe()
   }
   request(symbol, granularity, subscribe) {
@@ -105,16 +106,34 @@ export default class TicksService {
     const type = getType(granularity)
 
     if (type === 'ticks') {
-      this.tickListeners = this.tickListeners.deleteIn([symbol, key])
-    } else {
+      if (this.tickListeners.has(symbol)) {
+        this.tickListeners = this.tickListeners.deleteIn([symbol, key])
+        if (!this.tickListeners.get(symbol).size) {
+          this.api.unsubscribeByID(this.subscriptions.getIn(['tick', symbol]))
+          this.subscriptions = this.subscriptions.deleteIn(['tick', symbol])
+          this.tickListeners = this.tickListeners.delete(symbol)
+        }
+      }
+    } else if (this.ohlcListeners.hasIn([symbol, granularity])) {
       this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity, key])
+      if (!this.ohlcListeners.getIn([symbol, granularity]).size) {
+        this.api.unsubscribeByID(
+          this.subscriptions.getIn(['ohlc', symbol, granularity]))
+        this.subscriptions =
+          this.subscriptions.deleteIn(['ohlc', symbol, granularity])
+        this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity])
+      }
     }
   }
   observe() {
       this.api.events.on('tick', r => {
-        const { tick, tick: { symbol } } = r
+        const { tick, tick: { symbol, id } } = r
 
         if (this.ticks.has(symbol)) {
+          if (!this.subscriptions.hasIn(['tick', symbol])) {
+            this.subscriptions = this.subscriptions.setIn(['tick', symbol], id)
+          }
+
           this.ticks = this.ticks.set(symbol,
             updateTicks(this.ticks.get(symbol), parseTick(tick)))
 
@@ -127,9 +146,14 @@ export default class TicksService {
       })
 
       this.api.events.on('ohlc', r => {
-        const { ohlc, ohlc: { symbol, granularity } } = r
+        const { ohlc, ohlc: { symbol, granularity, id } } = r
 
         if (this.candles.hasIn([symbol, granularity])) {
+          if (!this.subscriptions.hasIn(['ohlc', symbol, granularity])) {
+            this.subscriptions =
+              this.subscriptions.setIn(['ohlc', symbol, granularity], id)
+          }
+
           this.candles = this.candles.setIn([symbol, granularity],
             updateCandles(this.candles.getIn([symbol, granularity]),
               parseOhlc(ohlc)))
