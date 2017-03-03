@@ -1,4 +1,23 @@
+import { Map } from 'immutable'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { tradeOptionToProposal } from './tools'
+
+const scopeToWatchResolve = {
+  before: ['before', true],
+  purchase: ['before', false],
+  during: ['during', true],
+  after: ['during', false],
+}
+
+
+let totalRuns = 0
+let totalProfit = 0
+let totalWins = 0
+let totalLosses = 0
+let totalStake = 0
+let totalPayout = 0
+let balance = 0
+let balanceStr = ''
 
 export default class Core {
   constructor($scope) {
@@ -7,29 +26,32 @@ export default class Core {
       api: this.api,
       observer: this.observer,
     } = $scope)
-    this.activeProposals = []
     this.tickListener = {}
     this.observe()
     this.isPurchaseStarted = false
     this.isSellAvailable = false
     this.forSellContractId = 0
     this.token = ''
-    this.context = {}
-    this.promises = {
-      before() {},
-      during() {},
-    }
+    this.context = new Map({
+      proposals: new Map(),
+    })
+    this.promises = new Map()
+    this.sessionRuns = 0
+    this.sessionProfit = 0
   }
   start(token, tradeOption) {
     if (this.token) {
       return
     }
+
     this.isSellAvailable = false
+
     this.api.authorize(token).then(() => {
       this.token = token
       this.proposalTemplates = tradeOptionToProposal(tradeOption)
       this.requestProposals()
       this.monitorTickEvent(tradeOption.symbol)
+      this.api.subscribeToBalance()
     })
   }
   monitorTickEvent(symbol) {
@@ -38,7 +60,7 @@ export default class Core {
 
       const key = this.ticksService.monitor(symbol, () => {
         if (!this.isPurchaseStarted && this.checkReady()) {
-          this.execContext('before', this.activeProposals)
+          this.execContext('before')
         }
       })
 
@@ -46,88 +68,105 @@ export default class Core {
     }
   }
   requestPurchase(contractType) {
+    let toBuy
+    let toForget
+
+    this.context.get('proposals').forEach(proposal => {
+      if (proposal.contractType === contractType) {
+        toBuy = proposal
+      } else {
+        toForget = proposal
+      }
+    })
+
     this.isPurchaseStarted = true
-    const requestedProposalIndex =
-      this.activeProposals.findIndex(p => p.contract_type === contractType)
-    const toBuy = this.activeProposals[requestedProposalIndex]
-    const toForget = this.activeProposals[requestedProposalIndex ? 0 : 1]
+
     this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
+      globalObserver.emit('bot.info', {
+        totalRuns: ++totalRuns,
+        transaction_ids: { buy: r.buy.transaction_id },
+        contract_type: contractType,
+        buy_price: r.buy.buy_price,
+      })
       this.api.subscribeToOpenContract(r.buy.contract_id)
       this.api.unsubscribeByID(toForget.id).then(() => this.requestProposals())
-      this.execContext('between-before-and-during')
+      this.execContext('purchase')
     })
   }
   sellAtMarket() {
     if (!this.isSold && this.isSellAvailable) {
       this.api.sellContract(this.forSellContractId, 0).then(() => {
         this.isSellAvailable = false
-      })
-      .catch(() => this.sellAtMarket())
+      }).catch(() => this.sellAtMarket())
     }
   }
   setReady() {
     this.expectedProposalCount = (this.expectedProposalCount + 1) % 2
   }
   checkReady() {
-    return this.activeProposals.length && !this.expectedProposalCount
+    return this.context.get('proposals').size && !this.expectedProposalCount
   }
   requestProposals() {
-    this.activeProposals = []
+    this.context = this.context.set('proposals', new Map())
+
     this.proposalTemplates.forEach(proposal => {
       this.api.subscribeToPriceForContractProposal(proposal).then(r => {
-        this.activeProposals.push(
-          Object.assign({ contract_type: proposal.contract_type }, r.proposal))
+        this.context = this.context.setIn(['proposals', r.proposal.id],
+          Object.assign({ contractType: proposal.contract_type }, r.proposal))
         this.setReady()
       })
     })
   }
   observe() {
-    this.listen('proposal_open_contract', t => {
-      const contract = t.proposal_open_contract
+    this.listen('proposal_open_contract', r => {
+      const contract = r.proposal_open_contract
       const { is_expired: isExpired, is_valid_to_sell: isValidToSell } = contract
 
       if (!this.isSold && isExpired && isValidToSell) {
         this.api.sellExpiredContracts()
       }
+
       this.isSold = !!contract.is_sold
+
       if (this.isSold) {
         this.isPurchaseStarted = false
+        this.updateTotals(contract)
       } else {
         this.forSellContractId = contract.contract_id
       }
+
       this.isSellAvailable =
         !this.isSold && !contract.is_expired && !!contract.is_valid_to_sell
-      this.execContext(this.isSold ? 'after' : 'during', contract)
+
+      globalObserver.emit('bot.contract', contract)
+
+      this.execContext(this.isSold ? 'after' : 'during')
+    })
+
+    this.listen('balance', r => {
+      const { balance: { balance: b, currency } } = r
+
+      balance = +b
+      balanceStr = `${balance.toFixed(2)} ${currency}`
+
+      globalObserver.emit('bot.info', { balance: balanceStr })
     })
 
     this.listen('proposal', r => {
       const proposal = r.proposal
-      const activeProposalIndex =
-        this.activeProposals.findIndex(p => p.id === proposal.id)
+      const id = proposal.id
 
-      if (activeProposalIndex >= 0) {
-        this.activeProposals[activeProposalIndex] = proposal
+      if (this.context.hasIn(['proposals', id])) {
+        this.context.setIn(['proposals', id], proposal)
         this.setReady()
       }
     })
   }
   execContext(scope) {
-    switch (scope) {
-      case 'before':
-        this.promises.before(true)
-        break
-      case 'between-before-and-during':
-        this.promises.before(false)
-        break
-      case 'during':
-        this.promises.during(true)
-        break
-      case 'after':
-        this.promises.during(false)
-        break
-      default:
-        break
-    }
+    const [watchName, arg] = scopeToWatchResolve[scope]
+
+    this.promises.get(watchName)(arg)
+
     this.scope = scope
     this.observer.emit('CONTINUE')
   }
@@ -136,10 +175,33 @@ export default class Core {
   }
   watch(scope) {
     return new Promise(resolve => {
-      this.promises[scope] = resolve
+      this.promises = this.promises.set(scope, resolve)
     })
   }
   listen(n, f) {
     this.api.events.on(n, f)
+  }
+  updateTotals(contract) {
+    const profit = +((+contract.sell_price) - (+contract.buy_price)).toFixed(2)
+
+    if (+profit > 0) {
+      totalWins += 1
+    } else if (+profit < 0) {
+      totalLosses += 1
+    }
+    this.sessionProfit = +(this.sessionProfit + profit).toFixed(2)
+    totalProfit = +(totalProfit + profit).toFixed(2)
+    totalStake = +(totalStake + (+contract.buy_price)).toFixed(2)
+    totalPayout = +(totalPayout + (+contract.sell_price)).toFixed(2)
+
+    globalObserver.emit('bot.info', {
+      profit,
+      contract,
+      totalProfit,
+      totalWins,
+      totalLosses,
+      totalStake,
+      totalPayout,
+    })
   }
 }
