@@ -23,11 +23,13 @@ let realityCheckTimeout
 
 let chartData = []
 let symbol = 'R_100'
+let chartType = 'line'
 const pipSize = 2
 let dataType = 'ticks'
 let granularity = 60
+let contractForChart = null
 let chartComponent
-const listeners = {}
+let listeners = {}
 
 const api = new LiveApi({
   language: getStorage('lang') || 'en',
@@ -48,9 +50,68 @@ const addBalanceForToken = token => {
   })
 }
 
-const getData = (start, end, newStyle, newGranularity) => {
-  dataType = newStyle
+const stopTickListeners = () => {
+  if (listeners.ohlc) {
+    ticksService.stopMonitor(symbol, granularity, listeners.ohlc)
+  }
+  if (listeners.tick) {
+    ticksService.stopMonitor(symbol, listeners.tick)
+  }
+  listeners = {}
+}
+
+const updateChart = () => {
+  if (!$('#summaryPanel:visible').length) {
+    return
+  }
+
+  const isMinHeight = $(window).height() <= 360
+
+  if (chartComponent && dataType === 'ticks' && contractForChart) {
+    const { chart } = chartComponent
+    const { dataMax } = chart.xAxis[0].getExtremes()
+    const { minRange } = chart.xAxis[0].options
+
+    chart.xAxis[0].setExtremes(dataMax - minRange, dataMax)
+  }
+
+  chartComponent = ReactDOM.render(
+    <BinaryChart
+    className="trade-chart"
+    id="trade-chart0"
+    contract={dataType === 'ticks' ? contractForChart : false}
+    pipSize={pipSize}
+    shiftMode="dynamic"
+    ticks={chartData}
+    getData={getData} // eslint-disable-line no-use-before-define
+    type={chartType}
+    hideToolbar={isMinHeight}
+    hideTimeFrame={isMinHeight}
+    onTypeChange={(type) => (chartType = type)}
+    />, $('#chart')[0])
+}
+
+const updateTickListeners = () => {
+  listeners.ohlc = ticksService.monitor(symbol, granularity, response => {
+    if (dataType === 'candles') {
+      chartData = response
+      updateChart()
+    }
+  })
+
+  listeners.tick = ticksService.monitor(symbol, response => {
+    if (dataType === 'ticks') {
+      chartData = response
+      updateChart()
+    }
+  })
+}
+
+const getData = (start, end, newDataType, newGranularity) => {
+  stopTickListeners()
+  dataType = newDataType
   granularity = newGranularity
+  updateTickListeners()
   return ticksService.getHistory(symbol, dataType === 'ticks' ? undefined : newGranularity)
 }
 
@@ -112,10 +173,10 @@ const resetRealityCheck = (token) => {
 
 export default class View {
   constructor() {
-    this.chartType = 'line'
+    chartType = 'line'
     logHandler()
     this.tradeInfo = new TradeInfo()
-    this.initChart()
+    updateTickListeners()
     this.initPromise = new Promise(resolve => {
       symbolPromise.then(() => {
         this.updateTokenList()
@@ -415,39 +476,10 @@ export default class View {
   }
   updateInfo(info) {
     if (info.symbol && symbol !== info.symbol) {
+      stopTickListeners()
       symbol = info.symbol
       getData(undefined, undefined, dataType, granularity)
     }
-  }
-  updateChart() {
-    if (!$('#summaryPanel:visible').length) {
-      return
-    }
-
-    const isMinHeight = $(window).height() <= 360
-
-    if (chartComponent && dataType === 'ticks' && this.contractForChart) {
-      const { chart } = chartComponent
-      const { dataMax } = chart.xAxis[0].getExtremes()
-      const { minRange } = chart.xAxis[0].options
-
-      chart.xAxis[0].setExtremes(dataMax - minRange, dataMax)
-    }
-
-    chartComponent = ReactDOM.render(
-      <BinaryChart
-      className="trade-chart"
-      id="trade-chart0"
-      contract={dataType === 'ticks' ? this.contractForChart : false}
-      pipSize={pipSize}
-      shiftMode="dynamic"
-      ticks={chartData}
-      getData={getData}
-      type={this.chartType}
-      hideToolbar={isMinHeight}
-      hideTimeFrame={isMinHeight}
-      onTypeChange={(type) => (this.chartType = type)}
-      />, $('#chart')[0])
   }
   addEventHandlers() {
     globalObserver.register('Error', error => {
@@ -479,29 +511,14 @@ export default class View {
       if (contract) {
         this.tradeInfo.addContract(contract)
         if (contract.is_sold) {
-          this.contractForChart = null
+          contractForChart = null
         } else {
-          this.contractForChart = Object.assign({}, contract, {
+          contractForChart = Object.assign({}, contract, {
             date_expiry: +contract.date_expiry,
             date_settlement: +contract.date_settlement,
             date_start: +contract.date_start,
           })
         }
-      }
-    })
-  }
-  initChart() {
-    listeners.ohlc = ticksService.monitor(symbol, granularity, response => {
-      if (dataType === 'candles') {
-        chartData = response
-        this.updateChart()
-      }
-    })
-
-    listeners.tick = ticksService.monitor(symbol, response => {
-      if (dataType === 'ticks') {
-        chartData = response
-        this.updateChart()
       }
     })
   }
