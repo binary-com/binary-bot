@@ -91,28 +91,29 @@ const updateChart = () => {
     />, $('#chart')[0])
 }
 
-const updateTickListeners = () => {
-  listeners.ohlc = ticksService.monitor(symbol, granularity, response => {
-    if (dataType === 'candles') {
-      chartData = response
-      updateChart()
-    }
-  })
+const updateTickListeners = () => new Promise(resolve => {
+    listeners.ohlc = ticksService.monitor(symbol, granularity, response => {
+      if (dataType === 'candles') {
+        chartData = response
+        resolve()
+        updateChart()
+      }
+    })
 
-  listeners.tick = ticksService.monitor(symbol, response => {
-    if (dataType === 'ticks') {
-      chartData = response
-      updateChart()
-    }
+    listeners.tick = ticksService.monitor(symbol, response => {
+      if (dataType === 'ticks') {
+        chartData = response
+        resolve()
+        updateChart()
+      }
+    })
   })
-}
 
 const getData = (start, end, newDataType, newGranularity) => {
   stopTickListeners()
   dataType = newDataType
   granularity = newGranularity
-  updateTickListeners()
-  return ticksService.getHistory(symbol, dataType === 'ticks' ? undefined : newGranularity)
+  return updateTickListeners()
 }
 
 const showRealityCheck = () => {
