@@ -3,28 +3,41 @@ import ReactDOM from 'react-dom'
 import { BinaryChart } from 'binary-charts'
 import { logoutAllTokens } from 'binary-common-utils/lib/account'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import { LiveApi } from 'binary-live-api'
 import {
   getTokenList, removeAllTokens,
   get as getStorage, set as setStorage, getToken,
 } from 'binary-common-utils/lib/storageManager'
+import { LiveApi } from 'binary-live-api'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translate } from '../../common/i18n'
 import { SaveXml } from './react-components/SaveXml'
 import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
-import { symbolPromise } from './shared'
+import { symbolPromise, ticksService } from './shared'
 import { logHandler } from './logger'
 import { Tour } from './tour'
 
 let realityCheckTimeout
-let ticks = []
-let currentSymbol
-let currentStyle = 'ticks'
-let currentGranularity
-let api
-let chartComp
+
+let chartData = []
+let symbol = 'R_100'
+const pipSize = 2
+let dataType = 'ticks'
+let granularity = 60
+let chartComponent
+const listeners = {}
+
+const api = new LiveApi({
+  language: getStorage('lang') || 'en',
+  appId: getStorage('appId') || 1,
+})
+
+api.events.on('balance', response => {
+  const { balance: { balance, currency } } = response
+
+  $('.topMenuBalance').text(`${balance} ${currency}`)
+})
 
 const addBalanceForToken = token => {
   api.authorize(token).then(() => {
@@ -34,12 +47,10 @@ const addBalanceForToken = token => {
   })
 }
 
-const mapHistoryTicks = history => {
-  const { times, prices } = history
-  return times.map((t, idx) => ({
-    epoch: +t,
-    quote: +prices[idx],
-  }))
+const getData = (start, end, newStyle, newGranularity) => {
+  dataType = newStyle
+  granularity = newGranularity
+  return ticksService.getHistory(symbol, dataType === 'ticks' ? undefined : newGranularity)
 }
 
 const showRealityCheck = () => {
@@ -98,38 +109,12 @@ const resetRealityCheck = (token) => {
   startRealityCheck(null, token)
 }
 
-const initializeApi = () => {
-  api = new LiveApi({
-    language: getStorage('lang') || 'en',
-    appId: getStorage('appId') || 1,
-  })
-  api.events.on('ohlc', response => {
-    const newTick = response.ohlc
-    const lastCandle = ticks.slice(-1)[0]
-    const getTime = candle => candle.open_time || candle.epoch
-    ticks = (getTime(lastCandle) === getTime(newTick)) ?
-      [...ticks.slice(0, ticks.length - 1), newTick] :
-      ticks.concat([newTick])
-  })
-
-  api.events.on('tick', response => {
-    const newTick = response.tick
-    ticks = ticks.concat([{ epoch: +newTick.epoch, quote: +newTick.quote }])
-  })
-
-  api.events.on('balance', response => {
-    const { balance: { balance, currency } } = response
-
-    $('.topMenuBalance').text(`${balance} ${currency}`)
-  })
-}
-
 export default class View {
   constructor() {
     this.chartType = 'line'
     logHandler()
     this.tradeInfo = new TradeInfo()
-    initializeApi()
+    this.initChart()
     this.initPromise = new Promise(resolve => {
       symbolPromise.then(() => {
         this.updateTokenList()
@@ -138,7 +123,7 @@ export default class View {
           this.setElementActions()
           $('#accountLis')
           startRealityCheck(null, $('.account-id').first().attr('value'))
-          ReactDOM.render(<Tour />, document.getElementById('tour'))
+          ReactDOM.render(<Tour />, $('#tour')[0])
           resolve()
         })
       })
@@ -215,10 +200,9 @@ export default class View {
 
     dropZone.addEventListener('dragover', handleDragOver, false)
     dropZone.addEventListener('drop', handleFileSelect, false)
-    if (document.getElementById('files')) {
-      document.getElementById('files')
-        .addEventListener('change', handleFileSelect, false)
-    }
+
+    $('#files').on('change', handleFileSelect, false)
+
     $('#open_btn')
       .on('click', () => {
         $.FileDialog({ // eslint-disable-line new-cap
@@ -349,7 +333,7 @@ export default class View {
             <LimitsPanel
             onSave={startBot}
             />
-            , document.getElementById('limits-panel'))
+            , $('#limits-panel')[0])
         } else {
           startBot()
         }
@@ -420,50 +404,35 @@ export default class View {
       }
     })
   }
-  updateChart(info) {
-    if (chartComp && currentStyle === 'ticks' && this.contractForChart) {
-      const { chart } = chartComp
+  updateInfo(info) {
+    if (info.symbol && symbol !== info.symbol) {
+      symbol = info.symbol
+      getData(undefined, undefined, dataType, granularity)
+    }
+  }
+  updateChart() {
+    if (!$('#summaryPanel:visible').length) {
+      return
+    }
+
+    const isMinHeight = $(window).height() <= 360
+
+    if (chartComponent && dataType === 'ticks' && this.contractForChart) {
+      const { chart } = chartComponent
       const { dataMax } = chart.xAxis[0].getExtremes()
       const { minRange } = chart.xAxis[0].options
 
       chart.xAxis[0].setExtremes(dataMax - minRange, dataMax)
     }
-    const isMinHeight = $(window).height() <= 360
 
-    const getData = (start, end, style, granularity) => {
-      currentStyle = style
-      currentGranularity = granularity
-      return new Promise((r, e) => {
-        api.unsubscribeFromAllTicks().then(() => 0, () => 0)
-        api.unsubscribeFromAllCandles().then(() => 0, () => 0)
-        api.getTickHistory(currentSymbol, { subscribe: 1, end: 'latest', count: 1000, granularity, style })
-          .then(resp => {
-            let data
-            if (style === 'ticks') {
-              data = mapHistoryTicks(resp.history)
-            } else {
-              data = resp.candles
-            }
-
-            ticks = data
-            r(data)
-          }, e)
-      })
-    }
-
-    if (info.symbol && currentSymbol !== info.symbol) {
-      currentSymbol = info.symbol
-      getData(undefined, undefined, currentStyle, currentGranularity)
-    }
-
-    chartComp = ReactDOM.render(
+    chartComponent = ReactDOM.render(
       <BinaryChart
       className="trade-chart"
       id="trade-chart0"
-      contract={currentStyle === 'ticks' ? this.contractForChart : false}
-      pipSize={info.pipSize}
+      contract={dataType === 'ticks' ? this.contractForChart : false}
+      pipSize={pipSize}
       shiftMode="dynamic"
-      ticks={ticks}
+      ticks={chartData}
       getData={getData}
       type={this.chartType}
       hideToolbar={isMinHeight}
@@ -485,38 +454,46 @@ export default class View {
       $('#stopButton').hide()
     })
 
-    globalObserver.register('bot.tradeInfo', tradeInfo => {
-      Object.keys(tradeInfo).forEach(key =>
-        (this.tradeInfo.tradeInfo[key] = tradeInfo[key]))
-      if ('profit' in tradeInfo) {
+    globalObserver.register('bot.info', info => {
+      this.tradeInfo.addInfo(info)
+      if ('profit' in info) {
         const token = $('.account-id').first().attr('value')
         const user = getToken(token)
         globalObserver.emit('log.revenue', {
           user,
-          profit: tradeInfo.profit,
-          contract: tradeInfo.contract,
+          profit: info.profit,
         })
       }
-      this.tradeInfo.update()
     })
 
-    globalObserver.register('bot.tradeUpdate', (contract) => {
-      this.tradeInfo.add(contract)
-      this.contractForChart = {
-        ...contract,
+    globalObserver.register('bot.contract', contract => {
+      if (contract) {
+        this.tradeInfo.addContract(contract)
+        if (contract.is_sold) {
+          this.contractForChart = null
+        } else {
+          this.contractForChart = Object.assign({}, contract, {
+            date_expiry: +contract.date_expiry,
+            date_settlement: +contract.date_settlement,
+            date_start: +contract.date_start,
+          })
+        }
       }
-      this.contractForChart.date_expiry = Number(this.contractForChart.date_expiry)
-      this.contractForChart.date_settlement = Number(this.contractForChart.date_settlement)
-      this.contractForChart.date_start = Number(this.contractForChart.date_start)
+    })
+  }
+  initChart() {
+    listeners.ohlc = ticksService.monitor(symbol, granularity, response => {
+      if (dataType === 'candles') {
+        chartData = response
+        this.updateChart()
+      }
     })
 
-    globalObserver.register('bot.finish', (contract) => {
-      this.tradeInfo.add(contract)
-      this.contractForChart = false
-    })
-
-    globalObserver.register('bot.tickUpdate', (info) => {
-      this.updateChart(info)
+    listeners.tick = ticksService.monitor(symbol, response => {
+      if (dataType === 'ticks') {
+        chartData = response
+        this.updateChart()
+      }
     })
   }
 }
