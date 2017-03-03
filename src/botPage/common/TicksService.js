@@ -36,6 +36,7 @@ export default class TicksService {
     this.candles = new Map()
     this.tickListeners = new Map()
     this.ohlcListeners = new Map()
+    this.observe()
   }
   request(symbol, granularity) {
     const style = getType(granularity)
@@ -47,42 +48,6 @@ export default class TicksService {
     if (style === 'candles' && this.candles.has(symbol) &&
       this.candles.get(symbol).has(granularity)) {
       return Promise.resolve(this.candles.get(symbol).get(granularity))
-    }
-
-    if (style === 'ticks') {
-      this.api.events.on('tick', r => {
-        const { tick } = r
-
-        if (this.ticks.has(symbol)) {
-          this.ticks = this.ticks.set(symbol,
-            updateTicks(this.ticks.get(symbol), parseTick(tick)))
-
-          const listeners = this.tickListeners.get(symbol)
-
-          if (listeners) {
-            listeners.forEach(callback => callback(this.ticks.get(symbol)))
-          }
-        }
-      })
-    }
-
-    if (style === 'candles') {
-      this.api.events.on('ohlc', r => {
-        const { ohlc } = r
-
-        if (this.candles.hasIn([symbol, granularity])) {
-          this.candles = this.candles.setIn([symbol, granularity],
-            updateCandles(this.candles.getIn([symbol, granularity]),
-              parseOhlc(ohlc)))
-
-          const listeners = this.ohlcListeners.getIn([symbol, granularity])
-
-          if (listeners) {
-            listeners.forEach(callback =>
-              callback(this.candles.getIn([symbol, granularity])))
-          }
-        }
-      })
     }
 
     return new Promise((resolve, reject) => {
@@ -134,5 +99,38 @@ export default class TicksService {
     } else {
       this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity, key])
     }
+  }
+  observe() {
+      this.api.events.on('tick', r => {
+        const { tick, tick: { symbol } } = r
+
+        if (this.ticks.has(symbol)) {
+          this.ticks = this.ticks.set(symbol,
+            updateTicks(this.ticks.get(symbol), parseTick(tick)))
+
+          const listeners = this.tickListeners.get(symbol)
+
+          if (listeners) {
+            listeners.forEach(callback => callback(this.ticks.get(symbol)))
+          }
+        }
+      })
+
+      this.api.events.on('ohlc', r => {
+        const { ohlc, ohlc: { symbol, granularity } } = r
+
+        if (this.candles.hasIn([symbol, granularity])) {
+          this.candles = this.candles.setIn([symbol, granularity],
+            updateCandles(this.candles.getIn([symbol, granularity]),
+              parseOhlc(ohlc)))
+
+          const listeners = this.ohlcListeners.getIn([symbol, granularity])
+
+          if (listeners) {
+            listeners.forEach(callback =>
+              callback(this.candles.getIn([symbol, granularity])))
+          }
+        }
+      })
   }
 }
