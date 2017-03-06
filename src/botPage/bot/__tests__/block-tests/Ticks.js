@@ -22,8 +22,8 @@ describe('Ticks Analysis', () => {
       }
       ta()
     `).then(v => {
-        result = v
-        done()
+      result = v
+      done()
     })
   })
 
@@ -51,9 +51,9 @@ describe('Tick Blocks', () => {
         result.lastCloseValue1 = Bot.getOhlcFromEnd('close', 2);
         result.lastCloseValue2 = Bot.getOhlcFromEnd('close');
   `).then(v => {
-      result = v
-      done()
-    })
+    result = v
+    done()
+  })
   })
 
   it('ticks api', () => {

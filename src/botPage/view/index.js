@@ -38,8 +38,8 @@ view.initPromise.then(() => {
     onError: (payload, error) => {
       if (error && error.message && error.message.indexOf('The play() request was'
         + ' interrupted by a call to pause()') >= 0) {
-          return false
-        }
+        return false
+      }
       payload.console.push({
         message: lzString.compressToBase64(view.blockly.generatedJs),
         severity: 'log',
