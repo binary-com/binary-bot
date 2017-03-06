@@ -481,13 +481,13 @@ export default class View {
       />, $('#chart')[0])
   }
   addEventHandlers() {
-      globalObserver.register('Error', error => {
-        if (error.error && error.error.code === 'InvalidToken') {
-          removeAllTokens()
-          this.updateTokenList()
-          this.blockly.stop()
-        }
-      })
+    globalObserver.register('Error', error => {
+      if (error.error && error.error.code === 'InvalidToken') {
+        removeAllTokens()
+        this.updateTokenList()
+        this.blockly.stop()
+      }
+    })
 
     globalObserver.register('bot.stop', () => {
       $('#runButton').show()

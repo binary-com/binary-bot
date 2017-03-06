@@ -23,11 +23,11 @@ const e1 = new Xml({
 })
 
 const e2 = new Xml({
- name: 'Static',
+  name: 'Static',
 })
 
 const dom = new Xml({
- name: 'Main',
+  name: 'Main',
 }, {
   category: {
     0: e1,
