@@ -19,7 +19,7 @@ let totalPayout = 0
 let balance = 0
 let balanceStr = ''
 
-export default class Core {
+export default class TradeEngine {
   constructor($scope) {
     ({
       ticksService: this.ticksService,
@@ -32,7 +32,7 @@ export default class Core {
     this.isSellAvailable = false
     this.forSellContractId = 0
     this.token = ''
-    this.context = new Map({
+    this.data = new Map({
       proposals: new Map(),
     })
     this.promises = new Map()
@@ -71,7 +71,7 @@ export default class Core {
     let toBuy
     let toForget
 
-    this.context.get('proposals').forEach(proposal => {
+    this.data.get('proposals').forEach(proposal => {
       if (proposal.contractType === contractType) {
         toBuy = proposal
       } else {
@@ -104,14 +104,14 @@ export default class Core {
     this.expectedProposalCount = (this.expectedProposalCount + 1) % 2
   }
   checkReady() {
-    return this.context.get('proposals').size && !this.expectedProposalCount
+    return this.data.get('proposals').size && !this.expectedProposalCount
   }
   requestProposals() {
-    this.context = this.context.set('proposals', new Map())
+    this.data = this.data.set('proposals', new Map())
 
     this.proposalTemplates.forEach(proposal => {
       this.api.subscribeToPriceForContractProposal(proposal).then(r => {
-        this.context = this.context.setIn(['proposals', r.proposal.id],
+        this.data = this.data.setIn(['proposals', r.proposal.id],
           Object.assign({ contractType: proposal.contract_type }, r.proposal))
         this.setReady()
       })
@@ -156,8 +156,8 @@ export default class Core {
       const proposal = r.proposal
       const id = proposal.id
 
-      if (this.context.hasIn(['proposals', id])) {
-        this.context.setIn(['proposals', id], proposal)
+      if (this.data.hasIn(['proposals', id])) {
+        this.data.setIn(['proposals', id], proposal)
         this.setReady()
       }
     })
@@ -203,5 +203,8 @@ export default class Core {
       totalStake,
       totalPayout,
     })
+  }
+  getData() {
+    return this.data
   }
 }
