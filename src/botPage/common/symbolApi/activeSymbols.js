@@ -1,14 +1,14 @@
 const groupBy = (arr, field) => arr.reduce((g, o) => {
-    const grouped = Object.assign({}, g)
+  const grouped = Object.assign({}, g)
 
-    if (o[field] in grouped) {
-      grouped[o[field]].push(o)
-    } else {
-      grouped[o[field]] = [o]
-    }
+  if (o[field] in grouped) {
+    grouped[o[field]].push(o)
+  } else {
+    grouped[o[field]] = [o]
+  }
 
-    return grouped
-  }, {})
+  return grouped
+}, {})
 
 let apiActiveSymbols
 let groupedMarkets
@@ -29,7 +29,7 @@ const parseSymbols = () => {
     }
     parsedSymbols[s.symbol.toLowerCase()] = symbol
     submarket.symbols[s.symbol.toLowerCase()] = symbol
- })
+  })
 }
 
 const parseSubmarkets = () => {

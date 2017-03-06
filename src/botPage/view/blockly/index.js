@@ -58,9 +58,9 @@ export default class _Blockly {
           'procedures_defreturn',
           'procedures_defnoreturn',
         ].indexOf(block.type) < 0 && !block.disabled) {
-          disable(block,
+        disable(block,
             translate('Blocks must be inside block holders, main blocks or functions'))
-        }
+      }
     })
   }
   disposeBlocksWithLoaders() {
@@ -68,8 +68,8 @@ export default class _Blockly {
       setBeforeUnload()
       if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader'
         && ev.group !== 'undo') {
-          deleteBlocksLoadedBy(ev.blockId, ev.group)
-        }
+        deleteBlocksLoadedBy(ev.blockId, ev.group)
+      }
     })
   }
   loadWorkspace(xml) {
