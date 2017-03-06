@@ -46,6 +46,7 @@
     "coveralls": "^2.11.16",
     "deep-diff": "^0.3.4",
     "del": "^2.2.2",
+    "es6-plato": "^1.0.14",
     "eslint": "^3.15.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
