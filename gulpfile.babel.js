@@ -5,6 +5,7 @@ import connect from 'gulp-connect';
 import open from 'gulp-open';
 import './gulp/i18n';
 import './gulp/build';
+import './gulp/plato'
 
 
 gulp.task('connect', () => {
