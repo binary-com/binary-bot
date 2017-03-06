@@ -69,7 +69,7 @@ export default class Interface {
     return {
       start: (...args) => this.tradeEngine.start(...sanitizeStart(args)),
       stop: (...args) => this.tradeEngine.stop(...args),
-      purchase: option => this.tradeEngine.requestPurchase(option),
+      purchase: option => this.tradeEngine.purchase(option),
       getContract: (...args) => this.tradeEngine.purchase.getContract(...args),
       getAskPrice: name => +(this.tradeEngine.purchase.getContract(name).ask_price),
       getPayout: name => +(this.tradeEngine.purchase.getContract(name).payout),
