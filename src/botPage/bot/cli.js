@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import fs from 'fs'
 import readline from 'readline'
