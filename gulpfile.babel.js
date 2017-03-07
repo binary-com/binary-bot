@@ -1,11 +1,11 @@
-import gulp from 'gulp';
-import watch from 'gulp-watch';
-import ghPages from 'gulp-gh-pages';
-import connect from 'gulp-connect';
-import open from 'gulp-open';
-import './gulp/i18n';
-import './gulp/build';
-import './gulp/plato'
+const gulp = require('gulp')
+const watch = require('gulp-watch')
+const ghPages = require('gulp-gh-pages')
+const connect = require('gulp-connect')
+const open = require('gulp-open')
+require('./gulp/i18n')
+require('./gulp/build')
+require('./gulp/plato')
 
 
 gulp.task('connect', () => {

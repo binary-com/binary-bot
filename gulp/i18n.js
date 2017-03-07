@@ -1,9 +1,9 @@
-import gulp from 'gulp';
-import fs from 'fs';
-import hash from 'sha1';
-import del from 'del';
-import paths from 'vinyl-paths';
-import scanner from 'i18next-scanner';
+const gulp = require('gulp');
+const fs = require('fs');
+const hash = require('sha1');
+const del = require('del');
+const paths = require('vinyl-paths');
+const scanner = require('i18next-scanner');
 
 const options = {
   lngs: ['en'], // supported languages
