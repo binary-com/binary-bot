@@ -188,7 +188,7 @@ export default class View {
       } else {
         files = e.target.files
       }
-      files = [...files]
+      files = Array.from(files)
       files.forEach(file => {
         if (file.type.match('text/xml')) {
           readFile(file, dropEvent)
@@ -210,7 +210,7 @@ export default class View {
     dropZone.addEventListener('dragover', handleDragOver, false)
     dropZone.addEventListener('drop', handleFileSelect, false)
 
-    $('#files').on('change', handleFileSelect, false)
+    $('#files').on('change', handleFileSelect)
 
     $('#open_btn')
       .on('click', () => {
