@@ -1,0 +1,28 @@
+// explicitly used for jest, exluded by "babelrc": false
+  {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "react"
+    ],
+    "plugins": [
+      [
+        "transform-object-rest-spread",
+        {
+          "useBuiltIns": true
+        }
+      ],
+      [
+        "transform-class-properties",
+        {
+          "useBuiltIns": true
+        }
+      ]
+    ]
+  }
