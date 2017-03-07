@@ -1,15 +1,15 @@
-import gulp from 'gulp';
-import del from 'del';
-import paths from 'vinyl-paths';
-import rev from 'gulp-rev';
-import through from 'through2';
-import webpackStream from 'webpack-stream';
-import webpack from 'webpack'
-import { addToManifest } from './revision';
+const gulp = require('gulp');
+const del = require('del');
+const paths = require('vinyl-paths');
+const rev = require('gulp-rev');
+const through = require('through2');
+const webpackStream = require('webpack-stream');
+const webpack = require('webpack')
+const { addToManifest } = require('./revision');
 
 const gen = (env) => {
   process.env.NODE_ENV = env;
-  return webpackStream(require('../webpack.config'), webpack)
+  return webpackStream(require('../webpack.config.web'), webpack)
     .pipe(gulp.dest('www/js'));
 };
 

@@ -1,5 +1,5 @@
-import gulp from 'gulp'
-import plato from 'es6-plato'
+const gulp = require('gulp')
+const plato = require('es6-plato')
 
 const src = './src/botPage/bot/**/*.js'
 const outputDir = '/tmp/analysis'

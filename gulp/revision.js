@@ -1,4 +1,4 @@
-import path from 'path';
+const path = require('path');
 
 const manifest = {};
 
@@ -23,7 +23,7 @@ const parseFilenameWithVersion = (file) => {
   };
 };
 
-export const addToManifest = (chunk, enc, cb) => {
+const addToManifest = (chunk, enc, cb) => {
   let map;
   if (!('revHash' in chunk)) {
     map = parseFilenameWithVersion(chunk);
@@ -34,4 +34,9 @@ export const addToManifest = (chunk, enc, cb) => {
   return cb(null, chunk);
 };
 
-export const getManifest = (str) => manifest[str];
+const getManifest = (str) => manifest[str];
+
+module.exports = {
+  addToManifest: addToManifest,
+  getManifest: getManifest,
+}

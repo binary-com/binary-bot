@@ -6,14 +6,42 @@
     "bot": "lib/index.js"
   },
   "babel": {
+    "babelrc": false,
     "presets": [
-      "es2015",
-      "stage-0",
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current",
+            "browsers": [
+              "last 2 versions",
+              "ios_saf >= 8",
+              "not IE <= 10",
+              "chrome >= 49",
+              "firefox >= 49",
+              "> 1%"
+            ]
+          },
+          "loose": true,
+          "modules": false,
+          "useBuiltIns": true
+        }
+      ],
       "react"
     ],
-    "plugins": [],
-    "ignore": [
-      "./src/common/mock/*"
+    "plugins": [
+      [
+        "transform-object-rest-spread",
+        {
+          "useBuiltIns": true
+        }
+      ],
+      [
+        "transform-class-properties",
+        {
+          "useBuiltIns": true
+        }
+      ]
     ]
   },
   "jest": {
@@ -30,7 +58,7 @@
     "gen-translation": "git checkout translation; npm prune ; npm install ; gulp build-min; rm -rf translation; mkdir translation ; cp -r www/ translation/translation; git checkout -- src",
     "deploy": "git checkout master ; npm prune ; npm install ; gulp deploy",
     "deploy-all": "npm run gen-beta; npm run gen-translation; npm run deploy",
-    "build": "webpack --config webpack.cli.config.js",
+    "build": "webpack --config webpack.config.cli.js",
     "prepublish": "npm run build"
   },
   "author": "Amin Marashi",
@@ -41,13 +69,14 @@
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.3.2",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-env": "^1.2.1",
     "babel-preset-react": "^6.23.0",
-    "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.23.0",
     "binary-charts": "^9.2.6",
-    "binary-common-utils": "^6.0.2",
+    "binary-common-utils": "^6.0.3",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^28.1.0",
     "binary-utils": "^4.22.0",
@@ -93,7 +122,7 @@
     "sha1": "^1.1.1",
     "trackjs": "^2.6.3",
     "vinyl-paths": "^2.1.0",
-    "webpack": "^1.14.0",
+    "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0",
     "ws": "^1.1.1"
   },
