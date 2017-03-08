@@ -24,6 +24,14 @@ let currentGranularity
 let api
 let chartComp
 
+const addBalanceForToken = token => {
+  api.authorize(token).then(() => {
+    api.send({ forget_all: 'balance' }).then(() => {
+      api.subscribeToBalance()
+    })
+  })
+}
+
 const mapHistoryTicks = history => {
   const { times, prices } = history
   return times.map((t, idx) => ({
@@ -106,6 +114,12 @@ const initializeApi = () => {
     const newTick = response.tick
     ticks = ticks.concat([{ epoch: +newTick.epoch, quote: +newTick.quote }])
   })
+
+  api.events.on('balance', response => {
+    const { balance: { balance, currency } } = response
+
+    $('.topMenuBalance').text(`${balance} ${currency}`)
+  })
 }
 
 export default class View {
@@ -141,6 +155,7 @@ export default class View {
       accountList.show()
       tokenList.forEach(tokenInfo => {
         let prefix = ''
+        addBalanceForToken(tokenInfo.token)
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
         }
@@ -365,6 +380,8 @@ export default class View {
         $newType.html($oldTypeText)
         $newID.html($oldIDText)
         $newID.attr('value', $oldValue)
+        $('.topMenuBalance').text('\u2002')
+        addBalanceForToken($('#main-account .account-id').attr('value'))
       })
 
     $('#login')
