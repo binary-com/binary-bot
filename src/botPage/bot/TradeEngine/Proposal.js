@@ -1,6 +1,10 @@
 import { tradeOptionToProposal } from '../tools'
 
 export default Engine => class Proposal extends Engine {
+  constructor() {
+    super()
+    this.expectedProposalCount = 0
+  }
   makeProposals(tradeOption) {
     if (!this.isNewTradeOption(tradeOption)) {
       return

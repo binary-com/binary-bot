@@ -1,4 +1,16 @@
 export default Engine => class OpenContract extends Engine {
+  sellAtMarket() {
+    if (!this.isSold && this.isSellAvailable && !this.isExpired) {
+      this.api.sellContract(this.contractId, 0).then(() => {
+        this.isSellAvailable = false
+      }).catch(() => this.sellAtMarket())
+    }
+  }
+  sellExpired() {
+    if (this.isSellAvailable && this.isExpired) {
+      this.api.sellExpiredContracts()
+    }
+  }
   observeOpenContract() {
     this.listen('proposal_open_contract', r => {
       const contract = r.proposal_open_contract
@@ -10,11 +22,17 @@ export default Engine => class OpenContract extends Engine {
       if (this.isSold) {
         this.isPurchaseStarted = false
         this.updateTotals(contract)
+        this.api.unsubscribeByID(this.openContractId)
       }
 
       this.broadcastContract(contract)
 
       this.execContext(this.isSold ? 'after' : 'during')
+    })
+  }
+  subscribeToOpenContract(contractId) {
+    this.api.subscribeToOpenContract(contractId).then(r => {
+      ({ proposal_open_contract: { id: this.openContractId } } = r)
     })
   }
   setContractFlags(contract) {
