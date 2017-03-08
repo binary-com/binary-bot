@@ -106,6 +106,12 @@ const initializeApi = () => {
     const newTick = response.tick
     ticks = ticks.concat([{ epoch: +newTick.epoch, quote: +newTick.quote }])
   })
+
+  api.events.on('balance', response => {
+    const newBalance = response.balance
+    const balance = `${newBalance.balance} ${newBalance.currency}`
+    $('.topMenuBalance').text(`${balance}`)
+  })
 }
 
 export default class View {
@@ -141,6 +147,9 @@ export default class View {
       accountList.show()
       tokenList.forEach(tokenInfo => {
         let prefix = ''
+        api.authorize(tokenInfo.token).then(() => {
+          api.subscribeToBalance()
+        })
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
         }
@@ -365,6 +374,13 @@ export default class View {
         $newType.html($oldTypeText)
         $newID.html($oldIDText)
         $newID.attr('value', $oldValue)
+        $('.topMenuBalance').text('\u2002')
+        const token = $('#main-account .account-id').attr('value')
+        api.authorize(token).then(() => {
+          api.send({ forget_all: 'balance' }).then(() => {
+            api.subscribeToBalance()
+          })
+        })
       })
 
     $('#login')
