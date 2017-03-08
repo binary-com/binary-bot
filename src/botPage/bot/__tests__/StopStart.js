@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import { createInterpreter } from '../shared'
-import { parts } from './shared'
+import { createInterpreter } from '../cli'
+import { parts } from './tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000 * 2
 

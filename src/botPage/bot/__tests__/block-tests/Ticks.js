@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { runAndGetResult, expectResultTypes } from '../shared'
+import { runAndGetResult, expectResultTypes } from '../tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 

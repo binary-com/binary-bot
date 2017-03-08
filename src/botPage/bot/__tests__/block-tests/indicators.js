@@ -14,7 +14,7 @@ import sma, {
 } from 'binary-indicators/lib/simpleMovingAverage'
 import macda from 'binary-indicators/lib/macd'
 
-import { runAndGetResult } from '../shared'
+import { runAndGetResult } from '../tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
