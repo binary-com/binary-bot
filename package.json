@@ -19,7 +19,7 @@
   "jest": {
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "shared.js"
+      "tools.js"
     ]
   },
   "scripts": {
