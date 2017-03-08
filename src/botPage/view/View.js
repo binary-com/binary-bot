@@ -51,10 +51,17 @@ const addBalanceForToken = token => {
 
 const stopTickListeners = () => {
   if (listeners.ohlc) {
-    ticksService.stopMonitor(symbol, granularity, listeners.ohlc)
+    ticksService.stopMonitor({
+      symbol,
+      granularity,
+      key: listeners.ohlc,
+    })
   }
   if (listeners.tick) {
-    ticksService.stopMonitor(symbol, listeners.tick)
+    ticksService.stopMonitor({
+      symbol,
+      key: listeners.tick,
+    })
   }
   listeners = {}
 }
@@ -91,21 +98,17 @@ const updateChart = () => {
 }
 
 const updateTickListeners = () => new Promise(resolve => {
-  listeners.ohlc = ticksService.monitor(symbol, granularity, response => {
-    if (dataType === 'candles') {
-      chartData = response
-      resolve()
-      updateChart()
-    }
-  })
+  const callback = response => {
+    chartData = response
+    resolve()
+    updateChart()
+  }
 
-  listeners.tick = ticksService.monitor(symbol, response => {
-    if (dataType === 'ticks') {
-      chartData = response
-      resolve()
-      updateChart()
-    }
-  })
+  if (dataType === 'candles') {
+    listeners.ohlc = ticksService.monitor({ symbol, granularity, callback })
+  } else {
+    listeners.tick = ticksService.monitor({ symbol, callback })
+  }
 })
 
 const getData = (start, end, newDataType, newGranularity) => {
