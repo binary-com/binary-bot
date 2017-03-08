@@ -39,7 +39,9 @@ export default class TicksService {
     this.subscriptions = new Map()
     this.observe()
   }
-  request(symbol, granularity, subscribe) {
+  request(options) {
+    const { symbol, granularity } = options
+
     const style = getType(granularity)
 
     if (style === 'ticks' && this.ticks.has(symbol)) {
@@ -50,6 +52,133 @@ export default class TicksService {
       return Promise.resolve(this.candles.getIn(['symbol', 'granularity']))
     }
 
+    return this.requestStream({ ...options, style })
+  }
+  monitor(options) {
+    const { symbol, granularity, callback } = options
+
+    const type = getType(granularity)
+
+    const key = getUUID()
+
+    this.request({ ...options, subscribe: 1 })
+
+    if (type === 'ticks') {
+      this.tickListeners = this.tickListeners.setIn([symbol, key], callback)
+    } else {
+      this.ohlcListeners = this.ohlcListeners.setIn([symbol, granularity, key], callback)
+    }
+
+    return key
+  }
+  stopMonitor(options) {
+    const { symbol, granularity, key } = options
+    const type = getType(granularity)
+
+    if (type === 'ticks' && this.tickListeners.hasIn([symbol, key])) {
+      this.tickListeners = this.tickListeners.deleteIn([symbol, key])
+    }
+
+    if (type === 'candles' &&
+      this.ohlcListeners.hasIn([symbol, granularity, key])) {
+      this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity, key])
+    }
+
+    this.unsubscribeIfEmptyListeners(options)
+  }
+  unsubscribeIfEmptyListeners(options) {
+    const { symbol, granularity } = options
+
+    let needToUnsubscribe = false
+
+    if (this.tickListeners.has(symbol) &&
+      !this.tickListeners.get(symbol).size) {
+      this.tickListeners = this.tickListeners.delete(symbol)
+      this.ticks = this.ticks.delete(symbol)
+      needToUnsubscribe = true
+    }
+
+    if (this.ohlcListeners.hasIn([symbol, granularity]) &&
+      !this.ohlcListeners.getIn([symbol, granularity]).size) {
+      this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity])
+      this.candles = this.candles.deleteIn([symbol, granularity])
+      needToUnsubscribe = true
+    }
+
+    if (needToUnsubscribe) {
+      this.unsubscribeAllAndSubscribeListeners(symbol)
+    }
+  }
+  unsubscribeAllAndSubscribeListeners(symbol) {
+    const promises = []
+
+    if (this.subscriptions.hasIn(['tick', symbol])) {
+      promises.push(
+        this.api.unsubscribeByID(this.subscriptions.getIn(['tick', symbol])))
+    }
+
+    if (this.subscriptions.hasIn(['ohlc', symbol]) &&
+      this.subscriptions.getIn(['ohlc', symbol]).size) {
+      this.subscriptions.getIn(['ohlc', symbol])
+        .forEach(id => promises.push(this.api.unsubscribeByID(id)))
+    }
+
+    this.subscriptions = new Map()
+
+    Promise.all(promises).then(() => {
+      if (this.ohlcListeners.has(symbol)) {
+        this.ohlcListeners.get(symbol).forEach((listener, granularity) => {
+          this.candles = this.candles.deleteIn([symbol, granularity])
+          this.requestStream({ symbol, subscribe: 1, granularity, style: 'candles' })
+        })
+      }
+
+      if (this.tickListeners.has(symbol)) {
+        this.ticks = this.ticks.delete(symbol)
+        this.requestStream({ symbol, subscribe: 1, style: 'ticks' })
+      }
+    })
+  }
+  observe() {
+    this.api.events.on('tick', r => {
+      const { tick, tick: { symbol, id } } = r
+
+      if (this.ticks.has(symbol)) {
+        this.subscriptions = this.subscriptions.setIn(['tick', symbol], id)
+
+        this.ticks = this.ticks.set(symbol,
+            updateTicks(this.ticks.get(symbol), parseTick(tick)))
+
+        const listeners = this.tickListeners.get(symbol)
+
+        if (listeners) {
+          listeners.forEach(callback => callback(this.ticks.get(symbol)))
+        }
+      }
+    })
+
+    this.api.events.on('ohlc', r => {
+      const { ohlc, ohlc: { symbol, granularity, id } } = r
+
+      if (this.candles.hasIn([symbol, granularity])) {
+        this.subscriptions =
+          this.subscriptions.setIn(['ohlc', symbol, granularity], id)
+
+        this.candles = this.candles.setIn([symbol, granularity],
+            updateCandles(this.candles.getIn([symbol, granularity]),
+              parseOhlc(ohlc)))
+
+        const listeners = this.ohlcListeners.getIn([symbol, granularity])
+
+        if (listeners) {
+          listeners.forEach(callback =>
+              callback(this.candles.getIn([symbol, granularity])))
+        }
+      }
+    })
+  }
+  requestStream(options) {
+    const { symbol, subscribe, granularity, style } = options
     return new Promise((resolve, reject) => {
       this.api.getTickHistory(symbol,
         { subscribe, end: 'latest', count: 1000, granularity, style })
@@ -75,96 +204,12 @@ export default class TicksService {
         .catch(reject)
     })
   }
-  getHistory(symbol, granularity) {
-    return this.request(symbol, granularity)
+  getHistory(options) {
+    return this.request(options)
   }
-  getLast(symbol, granularity) {
+  getLast(options) {
     return new Promise((resolve, reject) => {
-      this.request(symbol, granularity).then(t => resolve(getLast(t)), reject)
-    })
-  }
-  monitor(symbol, ...args) {
-    const type = getType(args.length === 2)
-
-    const callback = getLast(args)
-
-    const granularity = (type === 'ticks' ? undefined : args[0])
-
-    const key = getUUID()
-
-    this.request(symbol, granularity, 1)
-
-    if (type === 'ticks') {
-      this.tickListeners = this.tickListeners.setIn([symbol, key], callback)
-    } else {
-      this.ohlcListeners = this.ohlcListeners.setIn([symbol, args[0], key], callback)
-    }
-
-    return key
-  }
-  stopMonitor(symbol, granularity, key) {
-    const type = getType(granularity)
-
-    if (type === 'ticks') {
-      if (this.tickListeners.has(symbol)) {
-        this.tickListeners = this.tickListeners.deleteIn([symbol, key])
-        if (!this.tickListeners.get(symbol).size) {
-          this.api.unsubscribeByID(this.subscriptions.getIn(['tick', symbol]))
-          this.subscriptions = this.subscriptions.deleteIn(['tick', symbol])
-          this.tickListeners = this.tickListeners.delete(symbol)
-        }
-      }
-    } else if (this.ohlcListeners.hasIn([symbol, granularity])) {
-      this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity, key])
-      if (!this.ohlcListeners.getIn([symbol, granularity]).size) {
-        this.api.unsubscribeByID(
-          this.subscriptions.getIn(['ohlc', symbol, granularity]))
-        this.subscriptions =
-          this.subscriptions.deleteIn(['ohlc', symbol, granularity])
-        this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity])
-      }
-    }
-  }
-  observe() {
-    this.api.events.on('tick', r => {
-      const { tick, tick: { symbol, id } } = r
-
-      if (this.ticks.has(symbol)) {
-        if (!this.subscriptions.hasIn(['tick', symbol])) {
-          this.subscriptions = this.subscriptions.setIn(['tick', symbol], id)
-        }
-
-        this.ticks = this.ticks.set(symbol,
-            updateTicks(this.ticks.get(symbol), parseTick(tick)))
-
-        const listeners = this.tickListeners.get(symbol)
-
-        if (listeners) {
-          listeners.forEach(callback => callback(this.ticks.get(symbol)))
-        }
-      }
-    })
-
-    this.api.events.on('ohlc', r => {
-      const { ohlc, ohlc: { symbol, granularity, id } } = r
-
-      if (this.candles.hasIn([symbol, granularity])) {
-        if (!this.subscriptions.hasIn(['ohlc', symbol, granularity])) {
-          this.subscriptions =
-              this.subscriptions.setIn(['ohlc', symbol, granularity], id)
-        }
-
-        this.candles = this.candles.setIn([symbol, granularity],
-            updateCandles(this.candles.getIn([symbol, granularity]),
-              parseOhlc(ohlc)))
-
-        const listeners = this.ohlcListeners.getIn([symbol, granularity])
-
-        if (listeners) {
-          listeners.forEach(callback =>
-              callback(this.candles.getIn([symbol, granularity])))
-        }
-      }
+      this.request(options).then(t => resolve(getLast(t)), reject)
     })
   }
 }

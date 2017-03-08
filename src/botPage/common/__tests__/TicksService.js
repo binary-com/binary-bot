@@ -20,13 +20,15 @@ describe('Ticks Service', () => {
   describe('Monitor market ticks', () => {
     const ticks = []
     beforeAll(done => {
-      const key = ticksService.monitor('R_100', ticksList => {
+      let key
+      const callback = ticksList => {
         ticks.push(ticksList)
         if (ticks.length === 3) {
           ticksService.stopMonitor('R_100', key)
           done()
         }
-      })
+      }
+      key = ticksService.monitor({ symbol: 'R_100', callback })
     })
     it('Requested market tick received', () => {
       expect(ticks[0]).satisfy(isTicksList)
@@ -38,17 +40,17 @@ describe('Ticks Service', () => {
     let ticks
     let candles
     beforeAll(done => {
-      ticksService.getLast('R_10').then(t => {
+      ticksService.getLast({ symbol: 'R_10' }).then(t => {
         tick = t
-        return ticksService.getLast('R_10', 60)
+        return ticksService.getLast({ symbol: 'R_10', granularity: 60 })
       })
       .then(o => {
         ohlc = o
-        return ticksService.getHistory('R_25')
+        return ticksService.getHistory({ symbol: 'R_25' })
       })
       .then(t => {
         ticks = t
-        return ticksService.getHistory('R_50', 60)
+        return ticksService.getHistory({ symbol: 'R_50', granularity: 60 })
       })
       .then(c => {
         candles = c
