@@ -203,7 +203,6 @@ export default class _Blockly {
     save(filename, collection, xml)
   }
   run(limitations = {}) {
-    Blockly.mainWorkspace.traceOn(true)
     this.disableStrayBlocks()
     const code = `
       (function(){
