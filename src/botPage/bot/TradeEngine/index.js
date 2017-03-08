@@ -29,7 +29,12 @@ export default class TradeEngine extends Balance(
 
     this.followTicks(tradeOption.symbol)
 
+    if (token === this.token) {
+      return
+    }
+
     this.api.authorize(token).then(() => {
+      this.token = token
       this.subscribeToBalance()
     })
   }
@@ -40,21 +45,9 @@ export default class TradeEngine extends Balance(
 
     this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
       this.broadcastPurchase(r.buy, contractType)
-      this.api.subscribeToOpenContract(r.buy.contract_id)
+      this.subscribeToOpenContract(r.buy.contract_id)
       this.execContext('purchase')
     })
-  }
-  sellAtMarket() {
-    if (!this.isSold && this.isSellAvailable && !this.isExpired) {
-      this.api.sellContract(this.contractId, 0).then(() => {
-        this.isSellAvailable = false
-      }).catch(() => this.sellAtMarket())
-    }
-  }
-  sellExpired() {
-    if (!this.isSellAvailable && this.isExpired) {
-      this.api.sellExpiredContracts()
-    }
   }
   observe() {
     this.observeOpenContract()
@@ -66,10 +59,12 @@ export default class TradeEngine extends Balance(
   execContext(scope) {
     const [watchName, arg] = scopeToWatchResolve[scope]
 
-    this.promises.get(watchName)(arg)
+    if (this.promises.has(watchName)) {
+      this.promises.get(watchName)(arg)
+      this.observer.emit('CONTINUE')
+    }
 
     this.scope = scope
-    this.observer.emit('CONTINUE')
   }
   watch(scope) {
     return new Promise(resolve => {
