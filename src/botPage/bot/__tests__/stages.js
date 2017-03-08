@@ -1,4 +1,4 @@
-import { expectReturnTrue, parts } from './shared'
+import { expectReturnTrue, parts } from './tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 18000 * 2
 

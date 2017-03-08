@@ -1,4 +1,4 @@
-import { runAndGetResult, expectResultTypes, parts } from '../shared'
+import { runAndGetResult, expectResultTypes, parts } from '../tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 

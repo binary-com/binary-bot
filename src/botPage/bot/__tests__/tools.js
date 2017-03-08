@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { createInterpreter } from '../shared'
+import { createInterpreter } from '../cli'
 
 export const parts = {
   header: `
