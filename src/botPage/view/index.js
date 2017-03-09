@@ -317,7 +317,6 @@ export default class View {
       .click(() => {
         logout()
         hideRealityCheck()
-        $('.logout').hide()
       })
 
     $('#continue-trading')
