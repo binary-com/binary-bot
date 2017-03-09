@@ -153,9 +153,11 @@ export default class View {
     } else {
       loginButton.hide()
       accountList.show()
+
+      addBalanceForToken(tokenList[0].token)
+
       tokenList.forEach(tokenInfo => {
         let prefix = ''
-        addBalanceForToken(tokenInfo.token)
         if ('isVirtual' in tokenInfo) {
           prefix = (tokenInfo.isVirtual) ? 'Virtual Account' : 'Real Account'
         }
