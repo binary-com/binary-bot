@@ -7,8 +7,7 @@ describe('Candle Blocks in tools', () => {
   let result
 
   beforeAll(done => {
-    runAndGetResult(`
-      watch('before');
+    runAndGetResult(undefined, `
       var ohlc = Bot.getOhlc();
       result.ohlc = Bot.candleValues(ohlc, 'open')
       result.isCandleBlack = Bot.isCandleBlack({ open: 1, close: 0 })
