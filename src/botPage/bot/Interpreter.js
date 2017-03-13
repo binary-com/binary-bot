@@ -2,11 +2,6 @@ import JSInterpreter from 'js-interpreter'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import Interface from './Interface'
 
-const createAsync = (interpreter, func) =>
-  interpreter.createAsyncFunction((arg, cb) =>
-    func(interpreter.pseudoToNative(arg))
-      .then(rv => (rv ? cb(interpreter.nativeToPseudo(rv)) : cb())))
-
 export default class Interpreter {
   constructor($scope) {
     if (!$scope) { // valid usage for js only code
@@ -39,16 +34,16 @@ export default class Interpreter {
 
         Object.entries(ticksIf).forEach(([name, f]) =>
           interpreter.setProperty(pseudoBotIf, name,
-            createAsync(interpreter, f)))
+            this.createAsync(interpreter, f)))
 
         interpreter.setProperty(scope, 'Bot', pseudoBotIf)
 
         interpreter.setProperty(scope, 'isInside',
           interpreter.nativeToPseudo(isInside))
         interpreter.setProperty(scope, 'watch',
-          createAsync(interpreter, watch))
+          this.createAsync(interpreter, watch))
         interpreter.setProperty(scope, 'sleep',
-          createAsync(interpreter, sleep))
+          this.createAsync(interpreter, sleep))
       }
     }
 
@@ -75,5 +70,16 @@ export default class Interpreter {
     this.$scope.api.disconnect()
     globalObserver.emit('bot.stop')
     this.stopped = true
+  }
+  createAsync(interpreter, func) {
+    return interpreter.createAsyncFunction((...args) => {
+      const callback = args.pop()
+
+      return func(...args.map(arg => interpreter.pseudoToNative(arg)))
+        .then(rv => {
+          callback(interpreter.nativeToPseudo(rv))
+          this.observer.emit('CONTINUE')
+        })
+    })
   }
 }
