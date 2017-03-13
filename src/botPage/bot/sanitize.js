@@ -9,12 +9,14 @@ export const expectPositiveInteger = (num, msg) => {
   if (!isPositiveInteger(num)) {
     throw createError('PositiveIntegerExpected', msg)
   }
+  return num
 }
 
 export const expectPositiveNumber = (num, msg) => {
   if (!isPositiveNumber(num)) {
     throw createError('PositiveNumberExpected', msg)
   }
+  return num
 }
 
 const sanitizeTradeOption = tradeOption => {
