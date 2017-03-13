@@ -41,4 +41,10 @@ export default Engine => class Total extends Engine {
   updateAndReturnTotalRuns() {
     return ++totalRuns
   }
+  getTotalRuns() {
+    return totalRuns
+  }
+  getTotalProfit() {
+    return totalProfit
+  }
 }

@@ -16,4 +16,7 @@ export default Engine => class Balance extends Engine {
       this.broadcastInfo({ balance: balanceStr })
     })
   }
+  getBalance(type) {
+    return (type === 'STR' ? balanceStr : balance)
+  }
 }
