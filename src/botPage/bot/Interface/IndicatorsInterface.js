@@ -29,7 +29,8 @@ export default Interface => class extends Interface {
     }
   }
   decorate(f, input, config, ...args) {
-    const pipSize = this.CM.getData().data.ticksObj.pipSize
+    const pipSize = this.tradeEngine.getPipSize()
+
     return f(input, Object.assign({ pipSize }, config), ...args)
   }
 }

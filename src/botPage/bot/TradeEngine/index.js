@@ -71,13 +71,13 @@ export default class TradeEngine extends Balance(
       this.promises = this.promises.set(scope, resolve)
     })
   }
-  listen(n, f) {
-    this.api.events.on(n, f)
-  }
   getData() {
     return this.data
   }
   isInside(scope) {
     return this.scope === scope
+  }
+  listen(n, f) {
+    this.api.events.on(n, f)
   }
 }

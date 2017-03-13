@@ -1,36 +1,72 @@
 import { translate } from '../../../common/i18n'
 import { expectPositiveInteger } from '../sanitize'
+import { getDirection } from '../tools'
 
 export default Interface => class extends Interface {
   getTicksInterface() {
-    const getLastTick = () => this.getTicks().slice(-1)[0]
-
     return {
-      getLastTick,
-      getLastDigit: () => +(getLastTick().toFixed(this.getPipSize()).slice(-1)[0]),
-      getOhlcFromEnd: (field, index = 1) => {
+      getLastTick: symbol => this.getLastTick(symbol),
+      getLastDigit: symbol => this.getLastDigit(symbol),
+      getTicks: symbol => this.getTicks(symbol),
+      checkDirection: ({ symbol, dir }) => new Promise(resolve =>
+        this.getDirection(symbol).then(d => resolve((d === dir)))),
+      getOhlcFromEnd: args => {
+        const { index = 1 } = args || {}
         const sanitizedIndex =
           expectPositiveInteger(index,
             translate('OHLC index must be a positive integer'))
 
-        const lastOhlc = this.getOhlc().slice(-sanitizedIndex)[0]
-
-        return field ? lastOhlc[field] : lastOhlc
+        return new Promise(resolve => this.getOhlc(args)
+          .then(ohlc => resolve(ohlc.slice(-sanitizedIndex)[0])))
       },
-      getOhlc: (field) => this.getOhlc(field),
-      getTicks: () => this.getTicks(),
-      checkDirection: w => this.tradeEngine.getData().data.ticksObj.direction === w,
+      getOhlc: args => this.getOhlc(args),
     }
   }
-  getOhlc(field) {
-    const ohlc = this.tradeEngine.getData().data.ticksObj.ohlc
+  getTicks(symbol) {
+    return this.getHistory({ symbol })
+      .then(ticks => ticks.map(o => o.quote))
+  }
+  getLastDigit(symbol) {
+    return new Promise(resolve =>
+      this.getLastTick(symbol).then(tick =>
+        this.getPipSize(symbol).then(pipSize =>
+          resolve(+(tick.toFixed(pipSize).slice(-1)[0])))))
+  }
+  getDirection(symbol) {
+    return new Promise(resolve => {
+      this.getHistory({ symbol })
+        .then(ticks => resolve(getDirection(ticks)))
+    })
+  }
+  getOhlc(args) {
+    const { symbol, granularity = 60, field } = args || {}
 
-    return field ? ohlc.map(o => o[field]) : ohlc
+    return new Promise(resolve =>
+      this.getHistory({ symbol, granularity })
+        .then(ohlc => resolve(field ? ohlc.map(o => o[field]) : ohlc)))
   }
-  getTicks() {
-    return this.tradeEngine.getData().data.ticksObj.ticks.map(o => o.quote)
+  getLastTick(symbol) {
+    return new Promise(resolve => this.$scope.ticksService
+      .getLast({ symbol: symbol || this.getSymbol() })
+      .then(tick => resolve(tick.quote)))
   }
-  getPipSize() {
-    return this.tradeEngine.getData().data.ticksObj.pipSize
+  getHistory({ symbol, granularity }) {
+    return this.$scope.ticksService
+      .getHistory({ symbol: symbol || this.getSymbol(), granularity })
+  }
+  getPipSize(symbol = this.getSymbol()) {
+    if (symbol === this.getSymbol()) {
+      return Promise.resolve(this.tradeEngine.getPipSize())
+    }
+
+    return new Promise(resolve =>
+      this.api.getActiveSymbolsBrief().then(r => {
+        const activeSymbol = r.active_symbols.find(a => a.symbol === symbol)
+
+        resolve(+(+activeSymbol.pip).toExponential().substring(3))
+      }))
+  }
+  getSymbol() {
+    return this.tradeEngine.getSymbol()
   }
 }

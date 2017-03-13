@@ -1,6 +1,9 @@
 export default Engine => class OpenContract extends Engine {
+  isSellAtMarketAvailable() {
+    return !this.isSold && this.isSellAvailable && !this.isExpired
+  }
   sellAtMarket() {
-    if (!this.isSold && this.isSellAvailable && !this.isExpired) {
+    if (this.isSellAtMarketAvailable()) {
       this.api.sellContract(this.contractId, 0).then(() => {
         this.isSellAvailable = false
       }).catch(() => this.sellAtMarket())
@@ -24,6 +27,8 @@ export default Engine => class OpenContract extends Engine {
         this.updateTotals(contract)
         this.api.unsubscribeByID(this.openContractId)
       }
+
+      this.data = this.data.set('contract', contract)
 
       this.broadcastContract(contract)
 
