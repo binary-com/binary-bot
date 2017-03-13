@@ -46,7 +46,7 @@ export default class TradeEngine extends Balance(
     this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
       this.broadcastPurchase(r.buy, contractType)
       this.subscribeToOpenContract(r.buy.contract_id)
-      this.execContext('purchase')
+      this.signal('purchase')
     })
   }
   observe() {
@@ -56,7 +56,7 @@ export default class TradeEngine extends Balance(
 
     this.observeProposals()
   }
-  execContext(scope) {
+  signal(scope) {
     const [watchName, arg] = scopeToWatchResolve[scope]
 
     if (this.promises.has(watchName)) {
