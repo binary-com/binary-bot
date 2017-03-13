@@ -1,6 +1,5 @@
 import { expect } from 'chai'
-import { run, parts } from '../../tools'
-import { noop } from '../../../tools'
+import { run } from '../../tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
@@ -10,10 +9,8 @@ describe('Trade Definition Blocks', () => {
   describe('Index must be handled properly', () => {
     beforeAll(done =>
       run(`
-        ${parts.trade}
-        watch('before');
-        Bot.getOhlcFromEnd('close', 0)
-      `).then(noop, e => {
+        Bot.getOhlcFromEnd({ symbol: 'R_100', field: 'close', index: 0 })
+      `).catch(e => {
         error = e
         done()
       }))

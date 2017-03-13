@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import { run } from '../../tools'
-import { noop } from '../../../tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
@@ -9,7 +8,7 @@ describe('Trade Definition Blocks', () => {
 
   describe('Start arguments', () => {
     beforeAll(done =>
-      run('Bot.start("");').then(noop, e => {
+      run('Bot.start("");').catch(e => {
         error = e
         done()
       }))
@@ -21,7 +20,7 @@ describe('Trade Definition Blocks', () => {
 
   describe('Trade Option must be checked', () => {
     beforeAll(done =>
-      run('Bot.start("SomeToken", { amount: "hello" });').then(noop, e => {
+      run('Bot.start("SomeToken", { amount: "hello" });').catch(e => {
         error = e
         done()
       }))
