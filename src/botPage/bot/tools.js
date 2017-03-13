@@ -1,4 +1,5 @@
 import { Map } from 'immutable'
+import { getUTCTime } from 'binary-common-utils/lib/tools'
 
 export const noop = () => {}
 
@@ -76,3 +77,25 @@ export const doUntilDone = f => new Promise((resolve, reject) => {
   }
   repeat()
 })
+
+const toFixedTwo = num => +(num).toFixed(2)
+
+export const addFixed = (a, b) => toFixedTwo(+a + (+b))
+
+export const subtractFixed = (a, b) => toFixedTwo(+a - (+b))
+
+export const createDetails = (contract) => {
+  const profit = subtractFixed(contract.sell_price, contract.buy_price)
+  const result = (profit < 0) ? 'loss' : 'win'
+
+  return [
+    contract.transaction_ids.buy, (+contract.buy_price),
+    (+contract.sell_price), profit, contract.contract_type,
+    getUTCTime(new Date(parseInt(`${contract.entry_tick_time}000`, 10))),
+    (+contract.entry_tick),
+    getUTCTime(new Date(parseInt(`${contract.exit_tick_time}000`, 10))),
+    (+contract.exit_tick),
+    (+((contract.barrier) ? contract.barrier : 0)),
+    result,
+  ]
+}
