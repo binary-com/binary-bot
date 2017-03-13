@@ -13,12 +13,13 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
   constructor($scope) {
     super()
     this.tradeEngine = new TradeEngine($scope)
+    this.api = $scope.api
     this.observer = $scope.observer
+    this.$scope = $scope
   }
   getInterface(name = 'Global') {
     return name === 'Bot' ? {
       ...this.getBotInterface(),
-      ...this.getTicksInterface(),
       ...this.getToolsInterface(),
     } : {
       watch: (...args) => this.tradeEngine.watch(...args),
@@ -28,20 +29,17 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     }
   }
   getBotInterface() {
-    const getDetail = i => createDetails(this.tradeEngine.getData().data.contract)[i]
+    const getDetail = i => createDetails(this.get('contract'))[i]
 
     return {
       start: (...args) => this.tradeEngine.start(...sanitizeStart(args)),
       stop: (...args) => this.tradeEngine.stop(...args),
-      purchase: option => this.tradeEngine.purchase(option),
-      getContract: (...args) => this.tradeEngine.purchase.getContract(...args),
-      getAskPrice: name => +(this.tradeEngine.purchase.getContract(name).ask_price),
-      getPayout: name => +(this.tradeEngine.purchase.getContract(name).payout),
-      isSellAvailable: () => this.tradeEngine.isSellAvailable,
+      purchase: contractType => this.tradeEngine.purchase(contractType),
+      getAskPrice: contractType => +this.getProposal(contractType).ask_price,
+      getPayout: contractType => +this.getProposal(contractType).payout,
+      isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
       sellAtMarket: () => this.tradeEngine.sellAtMarket(),
-      getSellPrice: () =>
-        +(((+this.tradeEngine.getData().data.contract.bid_price) -
-          (+this.tradeEngine.getData().data.contract.buy_price)).toFixed(2)),
+      getSellPrice: () => this.getSellPrice(),
       isResult: result => (getDetail(10) === result),
       readDetails: i => getDetail(i - 1),
     }
@@ -51,5 +49,26 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
       r()
       setTimeout(() => this.observer.emit('CONTINUE'), 0)
     }, arg * 1000), noop)
+  }
+  getProposal(contractType) {
+    const proposals = this.get('proposals')
+
+    let proposal
+
+    proposals.forEach(p => {
+      if (p.contractType === contractType) {
+        proposal = p
+      }
+    })
+
+    return proposal
+  }
+  getSellPrice() {
+    const { bid_price: bidPrice, buy_price: buyPrice } = this.get('contract')
+
+    return subtractFixed(bidPrice, buyPrice)
+  }
+  get(key) {
+    return this.tradeEngine.getData().get(key)
   }
 }

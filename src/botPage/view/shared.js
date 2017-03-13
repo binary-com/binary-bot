@@ -27,5 +27,5 @@ export const createScope = () => {
   const api = createApi()
   const observer = new Observer()
 
-  return { observer, api, ticksService }
+  return { observer, api, ticksService, symbolApi }
 }

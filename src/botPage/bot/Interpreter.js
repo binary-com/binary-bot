@@ -13,17 +13,19 @@ export default class Interpreter {
       return
     }
     this.$scope = $scope
-    this.botIf = new Interface($scope)
+    this.bot = new Interface($scope)
     this.stopped = false
     this.observer = $scope.observer
   }
   run(code) {
     let initFunc
 
-    if (this.botIf) {
-      this.Bot = this.botIf.getInterface('Bot')
+    if (this.bot) {
+      const BotIf = this.bot.getInterface('Bot')
 
-      const { isInside, watch, alert, sleep } = this.botIf.getInterface()
+      const ticksIf = this.bot.getTicksInterface()
+
+      const { isInside, watch, alert, sleep } = this.bot.getInterface()
 
       initFunc = (interpreter, scope) => {
         interpreter.setProperty(scope, 'console',
@@ -32,8 +34,15 @@ export default class Interpreter {
           }))
         interpreter.setProperty(scope, 'alert',
           interpreter.nativeToPseudo(alert))
-        interpreter.setProperty(scope, 'Bot',
-          interpreter.nativeToPseudo(this.Bot))
+
+        const pseudoBotIf = interpreter.nativeToPseudo(BotIf)
+
+        Object.entries(ticksIf).forEach(([name, f]) =>
+          interpreter.setProperty(pseudoBotIf, name,
+            createAsync(interpreter, f)))
+
+        interpreter.setProperty(scope, 'Bot', pseudoBotIf)
+
         interpreter.setProperty(scope, 'isInside',
           interpreter.nativeToPseudo(isInside))
         interpreter.setProperty(scope, 'watch',
