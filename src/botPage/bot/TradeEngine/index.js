@@ -22,7 +22,7 @@ export default class TradeEngine extends Balance(
     this.$scope = $scope
     this.observe()
     this.data = new Map()
-    this.promises = new Map()
+    this.watches = new Map()
     this.signals = new Map()
   }
   start(token, tradeOption) {
@@ -60,9 +60,12 @@ export default class TradeEngine extends Balance(
   signal(scope) {
     const [watchName, arg] = scopeToWatchResolve[scope]
 
-    if (this.promises.has(watchName)) {
-      this.signals = this.signals.delete(watchName)
-      this.promises.get(watchName)(arg)
+    if (this.watches.has(watchName)) {
+      const watch = this.watches.get(watchName)
+
+      this.watches = this.watches.delete(watchName)
+
+      watch(arg)
     } else {
       this.signals = this.signals.set(watchName, arg)
     }
@@ -76,8 +79,9 @@ export default class TradeEngine extends Balance(
       this.signals = this.signals.delete(watchName)
       return Promise.resolve(signal)
     }
+
     return new Promise(resolve => {
-      this.promises = this.promises.set(watchName, resolve)
+      this.watches = this.watches.set(watchName, resolve)
     })
   }
   getData() {
