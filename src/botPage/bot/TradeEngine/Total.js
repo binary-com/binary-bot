@@ -1,15 +1,11 @@
+import { addFixed, subtractFixed } from '../tools'
+
 let totalProfit = 0
 let totalWins = 0
 let totalLosses = 0
 let totalStake = 0
 let totalPayout = 0
 let totalRuns = 0
-
-const toFixedTwo = num => +(num).toFixed(2)
-
-const addFixed = (a, b) => toFixedTwo(+a + (+b))
-
-const subtractFixed = (a, b) => toFixedTwo(+a - (+b))
 
 export default Engine => class Total extends Engine {
   constructor() {
