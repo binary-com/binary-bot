@@ -16,7 +16,7 @@ import macda from 'binary-indicators/lib/macd'
 
 import { runAndGetResult } from '../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000 * 2
 
 const periods = 12
 
@@ -48,38 +48,31 @@ const getIndicatorsFromApi = () => runAndGetResult(undefined, `
 
 describe('Relative Strength Index', () => {
   let result
-  let ticks
-
-  const expectIndicatorResult = (name, expected) => {
-    it(name, () => {
-      const { [name]: recvd } = result
-
-      expect(recvd).deep.equal(expected)
-    })
-  }
+  let expected
 
   beforeAll(done =>
     getIndicatorsFromApi().then(r => {
       result = r
-      ticks = result.ticks
+      const ticks = result.ticks
+
+      expected = {
+        sma: sma(ticks, { periods }),
+        smaa: smaa(ticks, { periods }),
+        bb: bb(ticks, bbOption)[1],
+        bba: bba(ticks, bbOption).map(e => e[2]),
+        ema: ema(ticks, { periods }),
+        emaa: emaa(ticks, { periods }),
+        rsi: rsi(ticks, { periods }),
+        rsia: rsia(ticks, { periods }),
+        macda: macda(ticks, macdOption).map(e => e[0]),
+      }
+
       done()
     }))
 
-  expectIndicatorResult('bb', bb(ticks, bbOption)[1])
-
-  expectIndicatorResult('bba', bba(ticks, bbOption).map(e => e[2]))
-
-  expectIndicatorResult('ema', ema(ticks, { periods }))
-
-  expectIndicatorResult('emaa', emaa(ticks, { periods }))
-
-  expectIndicatorResult('rsi', rsi(ticks, { periods }))
-
-  expectIndicatorResult('rsia', rsia(ticks, { periods }))
-
-  expectIndicatorResult('macda', macda(ticks, macdOption).map(e => e[0]))
-
-  expectIndicatorResult('sma', sma(ticks, { periods }))
-
-  expectIndicatorResult('smaa', smaa(ticks, { periods }))
+  it('Indicator values are set correctly', () => {
+    Object.keys(expected).forEach(name => {
+      expect(result[name]).deep.equal(expected[name])
+    })
+  })
 })

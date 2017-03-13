@@ -6,24 +6,11 @@ describe('After Purchase Blocks', () => {
   let result
 
   beforeAll(done => {
-    runAndGetResult(`
-      function tradeAgain() {
-        if (!again) {
-          again = true
-          return true;
-        }
-        return false;
-      }
-      while (true) {
-      `, `
-        ${parts.waitToPurchase}
-        ${parts.waitToSell}
-        result.isWin = Bot.isResult('win');
-        result.detail = Bot.readDetails(1);
-        if (!tradeAgain()) {
-          break;
-        }
-      }
+    runAndGetResult(undefined, `
+      ${parts.waitToPurchase}
+      ${parts.waitToSell}
+      result.isWin = Bot.isResult('win');
+      result.detail = Bot.readDetails(1);
     `).then(v => {
       result = v
       done()

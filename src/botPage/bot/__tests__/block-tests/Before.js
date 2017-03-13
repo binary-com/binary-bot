@@ -10,7 +10,6 @@ describe('Before Purchase Blocks', () => {
       while (watch('before')) {
         result.payout = Bot.getPayout('CALL');
         result.askPrice = Bot.getAskPrice('CALL');
-        console.log('Before seen')
         Bot.purchase('CALL');
       }
     `)
