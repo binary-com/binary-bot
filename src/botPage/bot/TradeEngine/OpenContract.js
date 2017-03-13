@@ -32,7 +32,7 @@ export default Engine => class OpenContract extends Engine {
 
       this.broadcastContract(contract)
 
-      this.execContext(this.isSold ? 'after' : 'during')
+      this.signal(this.isSold ? 'after' : 'during')
     })
   }
   subscribeToOpenContract(contractId) {

@@ -14,7 +14,7 @@ export default Engine => class OpenContract extends Engine {
 
     const callback = () => {
       if (!this.isPurchaseStarted && this.checkReady()) {
-        pipSizePromise.then(() => this.execContext('before'))
+        pipSizePromise.then(() => this.signal('before'))
       }
     }
 
