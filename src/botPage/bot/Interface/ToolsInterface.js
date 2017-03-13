@@ -6,15 +6,10 @@ export default Interface =>
   class extends IndicatorsInterface(MiscInterface(CandleInterface(Interface))) {
     getToolsInterface() {
       return {
-        ...this.getTimeInterface(),
+        getTime: () => parseInt((new Date().getTime()) / 1000, 10),
         ...this.getCandleInterface(),
         ...this.getMiscInterface(),
         ...this.getIndicatorsInterface(),
-      }
-    }
-    getTimeInterface() {
-      return {
-        getTime: () => parseInt((new Date().getTime()) / 1000, 10),
       }
     }
   }
