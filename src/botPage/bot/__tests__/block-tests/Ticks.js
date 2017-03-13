@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { runAndGetResult, expectResultTypes } from '../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 35000 * 2
 
 describe('Ticks Analysis', () => {
   let result
@@ -43,13 +43,13 @@ describe('Tick Blocks', () => {
         result.lastTick = Bot.getLastTick();
         result.lastDigit = Bot.getLastDigit();
         result.lastOhlc = Bot.getOhlcFromEnd();
-        result.isTickDirUp = Bot.checkDirection('rise')
+        result.isTickDirUp = Bot.checkDirection({ dir: 'rise' })
 
         result.ohlc = Bot.getOhlc();
         result.ticks = Bot.getTicks();
-        result.candleValues = Bot.getOhlc('close');
-        result.lastCloseValue1 = Bot.getOhlcFromEnd('close', 2);
-        result.lastCloseValue2 = Bot.getOhlcFromEnd('close');
+        result.candleValues = Bot.getOhlc({ field: 'close' });
+        result.lastCloseValue1 = Bot.getOhlcFromEnd({ field: 'close', index: 2 });
+        result.lastCloseValue2 = Bot.getOhlcFromEnd({ field: 'close' });
   `).then(v => {
     result = v
     done()
