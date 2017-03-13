@@ -6,8 +6,6 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000 * 2
 
 const $scope = createScope()
 
-const observer = $scope.observer
-
 const botInterface = new Interface($scope)
 
 const Bot = botInterface.getInterface('Bot')
@@ -36,9 +34,10 @@ describe('Interface', () => {
         symbol: 'R_100',
       })
 
-      watch('before').then(c => (stay = c))
-
-      observer.register('CONTINUE', () => setTimeout(done, 0), true)
+      watch('before').then(c => {
+        stay = c
+        done()
+      })
     })
 
     it('context is inside before', () => {

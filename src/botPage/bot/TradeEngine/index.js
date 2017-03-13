@@ -61,7 +61,6 @@ export default class TradeEngine extends Balance(
 
     if (this.promises.has(watchName)) {
       this.promises.get(watchName)(arg)
-      this.observer.emit('CONTINUE')
     }
 
     this.scope = scope
