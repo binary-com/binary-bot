@@ -5,7 +5,7 @@ import websocket from 'ws'
 import _Symbol from '../index'
 
 describe('symbol', () => {
-  const api = new LiveApi({ websocket })
+  const api = new LiveApi({ websocket, appId: 1169 })
   describe('Checking functions', () => {
     let symbol
     beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback

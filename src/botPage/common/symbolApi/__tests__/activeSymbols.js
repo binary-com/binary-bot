@@ -29,7 +29,7 @@ const setChecks = (obj) => {
 describe('ActiveSymbols', () => {
   let activeSymbols
   beforeAll(function beforeAll(done) { // eslint-disable-line prefer-arrow-callback
-    const api = new LiveApi({ websocket })
+    const api = new LiveApi({ websocket, appId: 1169 })
     api.getActiveSymbolsBrief().then((response) => {
       activeSymbols = new ActiveSymbols(response.active_symbols)
       done()
