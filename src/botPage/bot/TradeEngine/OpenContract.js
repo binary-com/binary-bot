@@ -6,7 +6,7 @@ export default Engine => class OpenContract extends Engine {
     if (this.isSellAtMarketAvailable()) {
       this.api.sellContract(this.contractId, 0).then(() => {
         this.isSellAvailable = false
-      }).catch(() => this.sellAtMarket())
+      })
     }
   }
   sellExpired() {
