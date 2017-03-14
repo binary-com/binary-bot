@@ -5,7 +5,7 @@ import TicksService from '../TicksService'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000
 
-const ticksService = new TicksService(new LiveApi({ websocket }))
+const ticksService = new TicksService(new LiveApi({ websocket, appId: 1169 }))
 
 const isTick = t => Number.isInteger(t.epoch) && Number.isFinite(t.quote)
 
