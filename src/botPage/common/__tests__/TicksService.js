@@ -17,7 +17,7 @@ const isTicksList = l => l.every(t => isTick(t))
 const isCandles = l => l.every(o => isOhlc(o))
 
 describe('Ticks Service', () => {
-  describe('Monitor market ticks', () => {
+  describe('Monitor ticks', () => {
     const ticks = []
     beforeAll(done => {
       let key
@@ -30,7 +30,7 @@ describe('Ticks Service', () => {
       }
       key = ticksService.monitor({ symbol: 'R_100', callback })
     })
-    it('Requested market tick received', () => {
+    it('Ticks stream received', () => {
       expect(ticks[0]).satisfy(isTicksList)
     })
   })
@@ -57,16 +57,16 @@ describe('Ticks Service', () => {
         done()
       })
     })
-    it('Requested market tick received', () => {
+    it('tick received', () => {
       expect(tick).satisfy(isTick)
     })
-    it('Requested market ohlc received', () => {
+    it('ohlc received', () => {
       expect(ohlc).satisfy(isOhlc)
     })
-    it('Requested market ticks received', () => {
+    it('ticks list received', () => {
       expect(ticks).satisfy(isTicksList)
     })
-    it('Requested market ohlc received', () => {
+    it('ohlc list received', () => {
       expect(candles).satisfy(isCandles)
     })
   })
