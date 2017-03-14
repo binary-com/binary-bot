@@ -4,6 +4,8 @@ import { parts } from './tools'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000 * 2
 
+process.on('unhandledRejection', () => {})
+
 describe('Run Interpreter over bot', () => {
   let value
 
