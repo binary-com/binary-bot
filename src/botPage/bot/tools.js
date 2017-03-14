@@ -60,23 +60,26 @@ export const registerStream = (observer, name, cb) => {
   observer.register(name, cb)
 }
 
-export const doUntilDone = f => new Promise((resolve, reject) => {
-  let count = 0
-  const repeat = e => {
-    if (count++ === 9) {
-      reject(e)
-      return
-    }
-    const promise = f()
+export const doUntilDone =
+  (f, types = [], maxTries = 3) => new Promise((resolve, reject) => {
+    let count = 0
+    const repeat = e => {
+      if ((e && !types.concat('CallError').includes(e.name)) ||
+        count++ === maxTries) {
+        reject(e)
+        return
+      }
 
-    if (promise) {
-      promise.catch(repeat).then(resolve, repeat)
-    } else {
-      resolve()
+      const promise = f()
+
+      if (promise) {
+        promise.then(resolve).catch(repeat)
+      } else {
+        resolve()
+      }
     }
-  }
-  repeat()
-})
+    repeat()
+  })
 
 const toFixedTwo = num => +(num).toFixed(2)
 
