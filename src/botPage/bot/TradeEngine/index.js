@@ -1,4 +1,5 @@
 import { Map } from 'immutable'
+import { doUntilDone } from '../tools'
 import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
@@ -48,11 +49,11 @@ export default class TradeEngine extends Balance(
 
     this.isPurchaseStarted = true
 
-    this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
+    doUntilDone(() => this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
       this.broadcastPurchase(r.buy, contractType)
       this.subscribeToOpenContract(r.buy.contract_id)
       this.signal('purchase')
-    })
+    }), ['PriceMoved'])
   }
   observe() {
     this.observeOpenContract()
