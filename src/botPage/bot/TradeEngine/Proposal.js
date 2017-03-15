@@ -45,8 +45,11 @@ export default Engine => class Proposal extends Engine {
       const proposal = r.proposal
       const id = proposal.id
 
-      if (this.data.hasIn(['proposals', id])) {
-        this.data.setIn(['proposals', id], proposal)
+      const oldProposal = this.data.getIn(['proposals', id])
+
+      if (oldProposal) {
+        this.data.setIn(['proposals', id],
+          Object.assign({}, oldProposal, proposal))
         this.setProposalCount()
       }
     })
