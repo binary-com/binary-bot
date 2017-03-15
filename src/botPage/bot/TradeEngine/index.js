@@ -1,4 +1,5 @@
 import { Map } from 'immutable'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { doUntilDone } from '../tools'
 import Proposal from './Proposal'
 import Broadcast from './Broadcast'
@@ -27,11 +28,15 @@ export default class TradeEngine extends Balance(
     this.signals = new Map()
   }
   start(token, tradeOption) {
+    const { symbol } = tradeOption
+
+    globalObserver.emit('bot.start', symbol)
+
     this.makeProposals(tradeOption)
 
     Promise.all([
       this.loginAndGetBalance(token),
-      this.waitBeforePurchase(tradeOption.symbol),
+      this.waitBeforePurchase(symbol),
     ]).then(() => this.signal('before'))
   }
   loginAndGetBalance(token) {

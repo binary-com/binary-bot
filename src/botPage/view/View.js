@@ -469,13 +469,6 @@ export default class View {
       }
     })
   }
-  updateInfo(info) {
-    if (info.symbol && symbol !== info.symbol) {
-      stopTickListeners()
-      symbol = info.symbol
-      getData(undefined, undefined, dataType, granularity)
-    }
-  }
   addEventHandlers() {
     globalObserver.register('Error', error => {
       if (error.error && error.error.code === 'InvalidToken') {
@@ -488,6 +481,14 @@ export default class View {
     globalObserver.register('bot.stop', () => {
       $('#runButton').show()
       $('#stopButton').hide()
+    })
+
+    globalObserver.register('bot.start', s => {
+      if (symbol !== s) {
+        stopTickListeners()
+        symbol = s
+        getData(undefined, undefined, dataType, granularity)
+      }
     })
 
     globalObserver.register('bot.info', info => {
