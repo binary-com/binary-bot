@@ -4,7 +4,7 @@ let balanceStr = ''
 
 export default Engine => class Balance extends Engine {
   subscribeToBalance() {
-    this.api.subscribeToBalance()
+    return this.api.subscribeToBalance()
   }
   observeBalance() {
     this.listen('balance', r => {
