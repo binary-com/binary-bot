@@ -36,7 +36,7 @@ export default Engine => class Proposal extends Engine {
       this.api.subscribeToPriceForContractProposal(proposal).then(r => {
         this.data = this.data.setIn(['proposals', r.proposal.id],
           Object.assign({ contractType: proposal.contract_type }, r.proposal))
-        this.setReady()
+        this.setProposalCount()
       })
     })
   }
@@ -47,7 +47,7 @@ export default Engine => class Proposal extends Engine {
 
       if (this.data.hasIn(['proposals', id])) {
         this.data.setIn(['proposals', id], proposal)
-        this.setReady()
+        this.setProposalCount()
       }
     })
   }
@@ -58,10 +58,10 @@ export default Engine => class Proposal extends Engine {
     this.data.get('proposals').forEach(proposal =>
       this.api.unsubscribeByID(proposal.id))
   }
-  setReady() {
+  setProposalCount() {
     this.expectedProposalCount = (this.expectedProposalCount + 1) % 2
   }
-  checkReady() {
+  checkProposalReady() {
     return this.data.get('proposals').size && !this.expectedProposalCount
   }
   isNewTradeOption(tradeOption) {
