@@ -1,6 +1,5 @@
 import { Map } from 'immutable'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import { doUntilDone } from '../tools'
 import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
@@ -10,7 +9,6 @@ import OpenContract from './OpenContract'
 
 const scopeToWatchResolve = {
   before: ['before', true],
-  purchase: ['before', false],
   during: ['during', true],
   after: ['during', false],
 }
@@ -54,11 +52,19 @@ export default class TradeEngine extends Balance(
 
     this.isPurchaseStarted = true
 
-    doUntilDone(() => this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
-      this.broadcastPurchase(r.buy, contractType)
-      this.subscribeToOpenContract(r.buy.contract_id)
-      this.signal('purchase')
-    }), ['PriceMoved'])
+    return new Promise(resolve => {
+      this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
+        this.broadcastPurchase(r.buy, contractType)
+        this.subscribeToOpenContract(r.buy.contract_id)
+        resolve(true)
+      }).catch(() => {
+        this.isPurchaseStarted = false
+        this.waitBeforePurchase().then(() => {
+          this.observer.emit('REVERT')
+          setTimeout(() => this.signal('before'), 1000)
+        })
+      })
+    })
   }
   observe() {
     this.observeOpenContract()

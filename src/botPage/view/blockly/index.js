@@ -231,7 +231,9 @@ export default class _Blockly {
           again = true;
           while(watch('before')) {
             tick_analysis();
-            run(before_purchase)
+            if (run(before_purchase)) {
+              break
+            }
           }
           while(watch('during')) {
             tick_analysis();

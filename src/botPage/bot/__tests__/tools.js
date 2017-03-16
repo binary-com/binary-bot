@@ -16,7 +16,9 @@ export const parts = {
   `,
   waitToPurchase: `
         while (watch('before')) {
-          Bot.purchase('CALL');
+          if (Bot.purchase('CALL')) {
+            break;
+          }
         }
   `,
   waitToSell: `

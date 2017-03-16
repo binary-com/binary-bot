@@ -1,4 +1,4 @@
-import { tradeOptionToProposal } from '../tools'
+import { tradeOptionToProposal, doUntilDone } from '../tools'
 
 export default Engine => class Proposal extends Engine {
   constructor() {
@@ -33,11 +33,12 @@ export default Engine => class Proposal extends Engine {
     this.data = this.data.set('proposals', new Map())
 
     this.proposalTemplates.forEach(proposal => {
-      this.api.subscribeToPriceForContractProposal(proposal).then(r => {
-        this.data = this.data.setIn(['proposals', r.proposal.id],
-          Object.assign({ contractType: proposal.contract_type }, r.proposal))
-        this.setProposalCount()
-      })
+      doUntilDone(() => this.api.subscribeToPriceForContractProposal(proposal),
+        ['ContractBuyValidationError']).then(r => {
+          this.data = this.data.setIn(['proposals', r.proposal.id],
+            Object.assign({ contractType: proposal.contract_type }, r.proposal))
+          this.setProposalCount()
+        })
     })
   }
   observeProposals() {
