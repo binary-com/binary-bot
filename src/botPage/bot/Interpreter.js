@@ -36,6 +36,9 @@ export default class Interpreter {
           interpreter.setProperty(pseudoBotIf, name,
             this.createAsync(interpreter, f)))
 
+        interpreter.setProperty(pseudoBotIf, 'purchase',
+          this.createAsync(interpreter, BotIf.purchase))
+
         interpreter.setProperty(scope, 'Bot', pseudoBotIf)
 
         interpreter.setProperty(scope, 'isInside',
@@ -50,7 +53,10 @@ export default class Interpreter {
     return new Promise(resolve => {
       const interpreter = new JSInterpreter(code, initFunc)
 
+      let state
+
       const loop = () => {
+        state = interpreter.takeStateSnapshot()
         if (this.stopped || !interpreter.run()) {
           if (this.observer) {
             this.observer.unregisterAll('CONTINUE')
@@ -59,6 +65,12 @@ export default class Interpreter {
           return
         }
         if (!this.observer.isRegistered('CONTINUE')) {
+          this.observer.register('REVERT', () => {
+            interpreter.restoreStateSnapshot(state)
+            interpreter.paused_ = false
+            setTimeout(loop, 0)
+          })
+
           this.observer.register('CONTINUE', () => setTimeout(loop, 0))
         }
       }

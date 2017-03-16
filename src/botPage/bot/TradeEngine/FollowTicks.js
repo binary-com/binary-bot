@@ -1,28 +1,16 @@
 export default Engine => class OpenContract extends Engine {
   waitBeforePurchase(symbol) {
-    if (this.symbol !== symbol) {
-      return new Promise(resolve => {
-        const callback = () => {
-          if (!this.isPurchaseStarted && this.checkProposalReady()) {
-            this.requestPipSizes().then(resolve)
-          }
-        }
+    this.keepTicksAlive(symbol)
 
-        const { ticksService } = this.$scope
-
-        ticksService.stopMonitor(
-          { symbol: this.symbol, key: this.tickListenerKey })
-
-        const key = ticksService.monitor({ symbol, callback })
-
-        this.symbol = symbol
-
-        this.tickListenerKey = key
-      })
-    }
-    return Promise.resolve()
+    return new Promise(resolve => {
+      this.beforePromise = resolve
+    })
   }
   requestPipSizes() {
+    if (this.activeSymbols) {
+      return Promise.resolve(this.activeSymbols)
+    }
+
     const pipSizePromise = this.api.getActiveSymbolsBrief()
 
     pipSizePromise.then(r => {
@@ -30,6 +18,26 @@ export default Engine => class OpenContract extends Engine {
     })
 
     return pipSizePromise
+  }
+  keepTicksAlive(symbol) {
+    if (symbol && this.symbol !== symbol) {
+      const { ticksService } = this.$scope
+
+      ticksService.stopMonitor(
+        { symbol: this.symbol, key: this.tickListenerKey })
+
+      const callback = () => {
+        if (!this.isPurchaseStarted && this.checkProposalReady()) {
+          this.requestPipSizes().then(this.beforePromise)
+        }
+      }
+
+      const key = ticksService.monitor({ symbol, callback })
+
+      this.symbol = symbol
+
+      this.tickListenerKey = key
+    }
   }
   getSymbol() {
     return this.symbol
