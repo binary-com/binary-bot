@@ -109,7 +109,7 @@
     "immutable": "^3.8.1",
     "jest": "^19.0.2",
     "jquery": "3.1.1",
-    "js-interpreter": "^1.2.0",
+    "js-interpreter": "^1.4.0-alpha.3",
     "json-loader": "^0.5.4",
     "loader-utils": "^1.0.3",
     "lz-string": "^1.4.4",
