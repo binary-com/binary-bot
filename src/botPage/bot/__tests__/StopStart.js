@@ -28,7 +28,7 @@ describe('Run Interpreter over bot', () => {
           ${parts.trade}
           ${parts.waitToPurchase}
           watch('during')
-          return isInside('during')
+          return true;
         })();
       `).then(v => {
         value = v

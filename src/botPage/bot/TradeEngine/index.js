@@ -103,9 +103,6 @@ export default class TradeEngine extends Balance(
   getData() {
     return this.data
   }
-  isInside(scope) {
-    return this.scope === scope
-  }
   listen(n, f) {
     this.api.events.on(n, f)
   }
