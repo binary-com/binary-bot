@@ -20,7 +20,7 @@ export default class Interpreter {
 
       const ticksIf = this.bot.getTicksInterface()
 
-      const { isInside, watch, alert, sleep } = this.bot.getInterface()
+      const { watch, alert, sleep } = this.bot.getInterface()
 
       initFunc = (interpreter, scope) => {
         interpreter.setProperty(scope, 'console',
@@ -41,8 +41,6 @@ export default class Interpreter {
 
         interpreter.setProperty(scope, 'Bot', pseudoBotIf)
 
-        interpreter.setProperty(scope, 'isInside',
-          interpreter.nativeToPseudo(isInside))
         interpreter.setProperty(scope, 'watch',
           this.createAsync(interpreter, watchName => {
             if (watchName === 'before') {

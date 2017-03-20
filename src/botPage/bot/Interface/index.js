@@ -23,7 +23,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
       ...this.getToolsInterface(),
     } : {
       watch: (...args) => this.tradeEngine.watch(...args),
-      isInside: (...args) => this.tradeEngine.isInside(...args),
       sleep: (...args) => this.sleep(...args),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
     }

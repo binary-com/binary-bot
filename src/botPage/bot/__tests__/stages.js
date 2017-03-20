@@ -6,7 +6,7 @@ expectReturnTrue('Stage 1 - Before Purchase', `
       (function (){
         ${parts.trade}
         watch('before');
-        return isInside('before');
+        return true;
       })();
   `)
 
@@ -14,7 +14,7 @@ expectReturnTrue('Stage 2 - After Purchase Before Open Proposal', `
       (function (){
         ${parts.trade}
         ${parts.waitToPurchase}
-        return !isInside('before');
+        return true;
       })();
   `)
 
@@ -23,7 +23,7 @@ expectReturnTrue('Stage 3 - Before Sell', `
         ${parts.trade}
         ${parts.waitToPurchase}
         watch('during');
-        return isInside('during');
+        return true;
       })();
   `)
 
@@ -32,6 +32,6 @@ expectReturnTrue('Stage 4 - After Sell', `
         ${parts.trade}
         ${parts.waitToPurchase}
         ${parts.waitToSell}
-        return isInside('after');
+        return true;
       })();
   `)

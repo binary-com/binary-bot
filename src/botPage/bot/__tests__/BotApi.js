@@ -10,14 +10,14 @@ const botInterface = new Interface($scope)
 
 const Bot = botInterface.getInterface('Bot')
 
-const { isInside, watch, alert } = botInterface.getInterface()
+const { watch, alert } = botInterface.getInterface()
 
 describe('Interface', () => {
   it('alert should not be native', () => {
     expect(alert.toString().includes('native')).equal(false)
   })
   it('isInside should check if the api is inside the context', () => {
-    expect(isInside('before')).equal(false)
+    expect(botInterface.tradeEngine.scope).not.equal('before')
   })
   describe('Bot can be started correctly', () => {
     let stay
@@ -41,7 +41,7 @@ describe('Interface', () => {
     })
 
     it('context is inside before', () => {
-      expect(isInside('before')).equal(true)
+      expect(botInterface.tradeEngine.scope).equal('before')
     })
 
     it('Loop stayed on correctly', () => {

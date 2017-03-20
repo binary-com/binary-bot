@@ -7,7 +7,7 @@ expectReturnTrue('Main Blocks', `
         ${parts.trade}
         ${parts.waitToPurchase}
         ${parts.waitToSell}
-        return isInside('after')
+        return true;
       })();
   `)
 
