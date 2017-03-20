@@ -1,5 +1,6 @@
 import { Map } from 'immutable'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
+import { doUntilDone } from '../tools'
 import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
@@ -42,7 +43,7 @@ export default class TradeEngine extends Balance(
       return Promise.resolve()
     }
 
-    return this.api.authorize(token).then(() => {
+    return doUntilDone(() => this.api.authorize(token)).then(() => {
       this.token = token
       return this.subscribeToBalance()
     })
@@ -59,10 +60,7 @@ export default class TradeEngine extends Balance(
         resolve(true)
       }).catch(() => {
         this.isPurchaseStarted = false
-        this.waitBeforePurchase().then(() => {
-          this.observer.emit('REVERT')
-          this.signal('before')
-        })
+        this.waitBeforePurchase().then(() => this.observer.emit('REVERT'))
       })
     })
   }

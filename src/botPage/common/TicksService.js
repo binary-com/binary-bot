@@ -1,5 +1,6 @@
 import { Map } from 'immutable'
 import { historyToTicks, getLast } from 'binary-utils'
+import { doUntilDone } from '../bot/tools'
 
 const parseTick = tick => ({
   epoch: +tick.epoch,
@@ -113,14 +114,15 @@ export default class TicksService {
     const promises = []
 
     if (this.subscriptions.hasIn(['tick', symbol])) {
-      promises.push(
-        this.api.unsubscribeByID(this.subscriptions.getIn(['tick', symbol])))
+      promises.push(doUntilDone(() =>
+        this.api.unsubscribeByID(this.subscriptions.getIn(['tick', symbol]))))
     }
 
     if (this.subscriptions.hasIn(['ohlc', symbol]) &&
       this.subscriptions.getIn(['ohlc', symbol]).size) {
       this.subscriptions.getIn(['ohlc', symbol])
-        .forEach(id => promises.push(this.api.unsubscribeByID(id)))
+        .forEach(id => promises.push(doUntilDone(() =>
+          this.api.unsubscribeByID(id))))
     }
 
     this.subscriptions = new Map()
@@ -180,8 +182,8 @@ export default class TicksService {
   requestStream(options) {
     const { symbol, subscribe, granularity, style } = options
     return new Promise((resolve, reject) => {
-      this.api.getTickHistory(symbol,
-        { subscribe, end: 'latest', count: 1000, granularity, style })
+      doUntilDone(() => this.api.getTickHistory(symbol,
+        { subscribe, end: 'latest', count: 1000, granularity, style }))
           .then(r => {
             if (style === 'ticks') {
               const ticks = historyToTicks(r.history)

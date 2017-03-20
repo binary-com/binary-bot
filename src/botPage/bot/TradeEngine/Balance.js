@@ -1,10 +1,11 @@
+import { doUntilDone } from '../tools'
+
 let balance = 0
 let balanceStr = ''
 
-
 export default Engine => class Balance extends Engine {
   subscribeToBalance() {
-    return this.api.subscribeToBalance()
+    return doUntilDone(() => this.api.subscribeToBalance())
   }
   observeBalance() {
     this.listen('balance', r => {
