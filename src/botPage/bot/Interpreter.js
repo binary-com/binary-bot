@@ -10,7 +10,7 @@ export default class Interpreter {
     this.$scope = $scope
     this.bot = new Interface($scope)
     this.stopped = false
-    this.observer = $scope.observer
+    $scope.observer.register('REVERT', () => this.revert())
   }
   run(code) {
     let initFunc
@@ -44,39 +44,34 @@ export default class Interpreter {
         interpreter.setProperty(scope, 'isInside',
           interpreter.nativeToPseudo(isInside))
         interpreter.setProperty(scope, 'watch',
-          this.createAsync(interpreter, watch))
+          this.createAsync(interpreter, watchName => {
+            if (watchName === 'before') {
+              this.state = this.interpreter.takeStateSnapshot()
+            }
+
+            return watch(watchName)
+          }))
         interpreter.setProperty(scope, 'sleep',
           this.createAsync(interpreter, sleep))
       }
     }
 
     return new Promise(resolve => {
-      const interpreter = new JSInterpreter(code, initFunc)
+      this.interpreter = new JSInterpreter(code, initFunc)
 
-      let state
-
-      const loop = () => {
-        state = interpreter.takeStateSnapshot()
-        if (this.stopped || !interpreter.run()) {
-          if (this.observer) {
-            this.observer.unregisterAll('CONTINUE')
-          }
-          resolve(interpreter.pseudoToNative(interpreter.value))
-          return
-        }
-        if (!this.observer.isRegistered('CONTINUE')) {
-          this.observer.register('REVERT', () => {
-            interpreter.restoreStateSnapshot(state)
-            interpreter.paused_ = false
-            setTimeout(loop, 0)
-          })
-
-          this.observer.register('CONTINUE', () => setTimeout(loop, 0))
-        }
-      }
-
-      loop()
+      this.onFinish = resolve
+      this.loop()
     })
+  }
+  loop() {
+    if (this.stopped || !this.interpreter.run()) {
+      this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value))
+    }
+  }
+  revert() {
+    this.interpreter.restoreStateSnapshot(this.state)
+    this.interpreter.paused_ = false
+    this.loop()
   }
   stop() {
     this.$scope.api.disconnect()
@@ -87,10 +82,10 @@ export default class Interpreter {
     return interpreter.createAsyncFunction((...args) => {
       const callback = args.pop()
 
-      return func(...args.map(arg => interpreter.pseudoToNative(arg)))
+      func(...args.map(arg => interpreter.pseudoToNative(arg)))
         .then(rv => {
           callback(interpreter.nativeToPseudo(rv))
-          this.observer.emit('CONTINUE')
+          this.loop()
         })
     })
   }

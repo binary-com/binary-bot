@@ -36,7 +36,7 @@ expectReturnTrue('UI Generated Code', `
   };
 
   before_purchase = function before_purchase(){
-    Bot.purchase('CALL');
+    return Bot.purchase('CALL');
   };
 
   during_purchase = function during_purchase(){
@@ -55,7 +55,9 @@ expectReturnTrue('UI Generated Code', `
   while(true) {
     run(trade)
     while(watch('before')) {
-      run(before_purchase)
+      if (run(before_purchase)) {
+        break
+      }
     }
     while(watch('during')) {
       run(during_purchase)

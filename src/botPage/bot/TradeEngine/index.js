@@ -61,7 +61,7 @@ export default class TradeEngine extends Balance(
         this.isPurchaseStarted = false
         this.waitBeforePurchase().then(() => {
           this.observer.emit('REVERT')
-          setTimeout(() => this.signal('before'), 1000)
+          this.signal('before')
         })
       })
     })
