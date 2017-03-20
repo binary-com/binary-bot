@@ -19,7 +19,7 @@ S  (6)  ^  - Contract is open (is not either sold nor expired)
         │  Between Before Purchase and During Purchase
    (5)  ^  - proposal_open_contract requested
         │
-        ┌──────> On error go back to (3) (Needs to go back in the JSI too)
+        ┌──────> On error go back to (3) (REVERT signal to the JSI)
         │  Between Before Purchase and During Purchase
 S  (4)  ^  - Purchase response is successfully received
         │
@@ -27,11 +27,11 @@ S  (4)  ^  - Purchase response is successfully received
         │  Before Purchase
    (3)  ^  - Purchase is requested but not yet successful
         │
-        ┌──────> On error go back to (1)
+        ┌──────> Errors are handled by Live Api resubscribe
         │  Before Purchase
 S  (2)  ^  - Requested proposals and ticks are ready
         |
-        ┌──────> On error go back to (1)
+        ┌──────> On error go back to the failed micro step
         │  Trade Definition
    (1)  ^  - Requests for ticks and proposals are sent
         │
