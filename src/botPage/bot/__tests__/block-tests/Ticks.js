@@ -1,7 +1,30 @@
 import { expect } from 'chai'
 import { runAndGetResult, expectResultTypes } from '../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 35000 * 2
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000 * 2
+
+describe('Many getTicks in a row', () => {
+  let result
+
+  beforeAll(done => {
+    runAndGetResult(undefined, `
+      watch('before')
+      result.ticks = []
+      for (var i = 0; i < 100; i++) {
+        result.ticks.push(Bot.getLastTick('R_100'))
+      }
+    `).then(v => {
+      result = v
+      done()
+    })
+  })
+
+  it('All getTicks should be the same', () => {
+    const { ticks } = result
+
+    expect(ticks).satisfy(t => t.length === 100 && t.every(n => n === ticks[0]))
+  })
+})
 
 describe('Ticks Analysis', () => {
   let result
