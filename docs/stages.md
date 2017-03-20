@@ -3,37 +3,36 @@
 # Stages of execution
 
 ```
-                     (1 or 9 if you like!) Trade Again or Exit
-        ┌────────────────────────────────────────────────────────────────┐
-        │  After Purchase : (Finish signal is Sell Price)                |
-S  (8)  ^  - A proposal open contract response with sell price received  |
-        │                                                                |
-        ┌──────                                                          |
-        │  During Purchase: (Request for sell)                           |
-   (7)  ^  - Request for sell_expired or sell_at_market            <_____|
+        ┌───────> Trade Again or Exit (go back to (1))
+        │  After Purchase: (Finish signal is Sell Price)
+S  (8)  ^  - A proposal open contract response with sell price received
+        |
+        ┌──────> On error repeat (7)
+        │  During Purchase: (Request for sell)
+   (7)  ^  - Request for sell_expired or sell_at_market
         │
-        ┌─────────────────────────────────────────────────────────────────────────────┐
-        │  During Purchase: (Proposal Open Contract Received)                         |
-S  (6)  ^  - Contract is open (is not either sold nor expired)                        |
-        │                                                                             |
-        ┌──────                                                                       |
-        │  Between Before Purchase and During Purchase: (Proposal Open Contract Req)  |
-   (5)  ^  - proposal_open_contract requested                                   <_____|
+        ┌──────> On error go back to (5)
+        │  During Purchase: (Proposal Open Contract Received)
+S  (6)  ^  - Contract is open (is not either sold nor expired)
+        |
+        ┌──────> On error repeat (5)
+        │  Between Before Purchase and During Purchase
+   (5)  ^  - proposal_open_contract requested
         │
-        ┌───────────────────────────────────────────────────────────────────┐
-        │  Between Before Purchase and During Purchase: (Purchase Received) |
-S  (4)  ^  - Purchase response is successfully received                     |
-        │                                                                   |
-        ┌──────                                                             |
-        │  Before Purchase (Purchase Requested)                             |
-   (3)  ^  - Purchase is requested but not yet successful             <_____|
+        ┌──────> On error go back to (3) (Needs to go back in the JSI too)
+        │  Between Before Purchase and During Purchase
+S  (4)  ^  - Purchase response is successfully received
         │
-        ┌───────────────────────────────────────────────────────────────┐
-        │  Before Purchase: (Not purchased yet)                         |
-S  (2)  ^  - Requested proposals and ticks are received                 |
-        │                                                               |
-        ┌──────                                                         |
-        │  Trade Definition: (Before Start)                             |
-   (1)  ^  - Requests for ticks and proposals are sent            <_____|
+        |
+        │  Before Purchase
+   (3)  ^  - Purchase is requested but not yet successful
+        │
+        ┌──────> On error go back to (1)
+        │  Before Purchase
+S  (2)  ^  - Requested proposals and ticks are ready
+        |
+        ┌──────> On error go back to (1)
+        │  Trade Definition
+   (1)  ^  - Requests for ticks and proposals are sent
         │
 ```
