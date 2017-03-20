@@ -34,16 +34,17 @@ const macdOption = {
 
 const getIndicatorsFromApi = () => runAndGetResult(undefined, `
     watch('before');
-    result.ticks = Bot.getTicks() 
-    result.rsi = Bot.rsi(Bot.getTicks(), ${periods})
-    result.rsia = Bot.rsia(Bot.getTicks(), ${periods})
-    result.bb = Bot.bb(Bot.getTicks(), ${JSON.stringify(bbOption)}, 1)
-    result.bba = Bot.bba(Bot.getTicks(), ${JSON.stringify(bbOption)}, 2)
-    result.ema = Bot.ema(Bot.getTicks(), ${periods})
-    result.emaa = Bot.emaa(Bot.getTicks(), ${periods})
-    result.macda = Bot.macda(Bot.getTicks(), ${JSON.stringify(macdOption)}, 0)
-    result.sma = Bot.sma(Bot.getTicks(), ${periods})
-    result.smaa = Bot.smaa(Bot.getTicks(), ${periods})
+    var ticks = Bot.getTicks();
+    result.ticks = ticks
+    result.rsi = Bot.rsi(ticks, ${periods})
+    result.rsia = Bot.rsia(ticks, ${periods})
+    result.bb = Bot.bb(ticks, ${JSON.stringify(bbOption)}, 1)
+    result.bba = Bot.bba(ticks, ${JSON.stringify(bbOption)}, 2)
+    result.ema = Bot.ema(ticks, ${periods})
+    result.emaa = Bot.emaa(ticks, ${periods})
+    result.macda = Bot.macda(ticks, ${JSON.stringify(macdOption)}, 0)
+    result.sma = Bot.sma(ticks, ${periods})
+    result.smaa = Bot.smaa(ticks, ${periods})
   `)
 
 describe('Relative Strength Index', () => {
