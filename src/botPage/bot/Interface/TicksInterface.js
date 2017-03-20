@@ -46,11 +46,17 @@ export default Interface => class extends Interface {
         .then(ohlc => resolve(field ? ohlc.map(o => o[field]) : ohlc)))
   }
   getLastTick(symbol) {
+    if (!symbol && !this.getSymbol()) {
+      throw translate('An underlying symbol has to be set in getHistory')
+    }
     return new Promise(resolve => this.$scope.ticksService
       .getLast({ symbol: symbol || this.getSymbol() })
       .then(tick => resolve(tick.quote)))
   }
   getHistory({ symbol, granularity }) {
+    if (!symbol && !this.getSymbol()) {
+      throw translate('An underlying symbol has to be set in getHistory')
+    }
     return this.$scope.ticksService
       .getHistory({ symbol: symbol || this.getSymbol(), granularity })
   }
