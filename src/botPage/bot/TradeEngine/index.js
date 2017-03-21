@@ -62,7 +62,10 @@ export default class TradeEngine extends Balance(
         this.subscribeToOpenContract(r.buy.contract_id)
         this.renewProposalsOnPurchase()
         resolve(true)
-      }).catch(() => {
+      }).catch(e => {
+        if (e.name === 'RateLimit') {
+          throw e
+        }
         this.isPurchaseStarted = false
         this.waitBeforePurchase().then(() => this.observer.emit('REVERT'))
       })
