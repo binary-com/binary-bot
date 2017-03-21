@@ -13,11 +13,11 @@ const tradeInfoSkel = {
 
 export default class TradeInfo {
   constructor() {
-    this.tradeInfo = Object.assign({}, tradeInfoSkel)
+    this.tradeInfo = { ...tradeInfoSkel }
     this.tradeCount = 0
   }
   reset() {
-    this.tradeInfo = Object.assign({}, tradeInfoSkel)
+    this.tradeInfo = { ...tradeInfoSkel }
     this.update()
   }
   update() {
@@ -35,7 +35,7 @@ export default class TradeInfo {
     })
   }
   addInfo(info) {
-    this.tradeInfo = Object.assign({}, this.tradeInfo, info)
+    this.tradeInfo = { ...this.tradeInfo, ...info }
     this.update()
   }
   addContract(contract) {

@@ -14,7 +14,7 @@ export default Engine => class OpenContract extends Engine {
   }
   sellExpired() {
     if (this.isSellAvailable && this.isExpired) {
-      this.api.sellExpiredContracts()
+      doUntilDone(() => this.api.sellExpiredContracts())
     }
   }
   observeOpenContract() {
@@ -28,7 +28,7 @@ export default Engine => class OpenContract extends Engine {
       if (this.isSold) {
         this.isPurchaseStarted = false
         this.updateTotals(contract)
-        this.api.unsubscribeByID(this.openContractId)
+        doUntilDone(() => this.api.unsubscribeByID(this.openContractId))
       }
 
       this.data = this.data.set('contract', contract)
@@ -39,7 +39,7 @@ export default Engine => class OpenContract extends Engine {
     })
   }
   subscribeToOpenContract(contractId) {
-    this.api.subscribeToOpenContract(contractId).then(r => {
+    doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
       ({ proposal_open_contract: { id: this.openContractId } } = r)
     })
   }

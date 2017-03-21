@@ -31,6 +31,6 @@ export default Interface => class extends Interface {
   decorate(f, input, config, ...args) {
     const pipSize = this.tradeEngine.getPipSize()
 
-    return f(input, Object.assign({ pipSize }, config), ...args)
+    return f(input, { pipSize, ...config }, ...args)
   }
 }

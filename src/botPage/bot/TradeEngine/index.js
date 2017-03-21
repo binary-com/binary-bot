@@ -43,10 +43,13 @@ export default class TradeEngine extends Balance(
       return Promise.resolve()
     }
 
-    return doUntilDone(() => this.api.authorize(token)).then(() => {
-      this.token = token
-      return this.subscribeToBalance()
-    })
+    doUntilDone(() => this.api.authorize(token))
+
+    return new Promise(resolve =>
+      this.listen('authorize', () => {
+        this.token = token
+        resolve()
+      })).then(() => this.subscribeToBalance())
   }
   purchase(contractType) {
     const toBuy = this.selectProposal(contractType)
