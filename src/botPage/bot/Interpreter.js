@@ -84,7 +84,7 @@ export default class Interpreter {
         .then(rv => {
           callback(interpreter.nativeToPseudo(rv))
           this.loop()
-        })
+        }).catch(e => globalObserver.emit('Error', e))
     })
   }
 }

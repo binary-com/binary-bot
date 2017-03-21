@@ -6,6 +6,7 @@ let balanceStr = ''
 export default Engine => class Balance extends Engine {
   subscribeToBalance() {
     doUntilDone(() => this.api.subscribeToBalance())
+      .catch(e => this.broadcastError(e))
 
     return new Promise(r => {
       this.balancePromise = r
