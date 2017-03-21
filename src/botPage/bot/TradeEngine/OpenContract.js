@@ -2,13 +2,15 @@ import { doUntilDone } from '../tools'
 
 export default Engine => class OpenContract extends Engine {
   isSellAtMarketAvailable() {
-    return !this.isSold && this.isSellAvailable && !this.isExpired
+    return !this.isSold && this.isSellAvailable && !this.isExpired &&
+      Boolean(this.contractId)
   }
   sellAtMarket() {
     if (this.isSellAtMarketAvailable()) {
       doUntilDone(() => this.api.sellContract(this.contractId, 0), [
         'NoOpenPosition',
         'InvalidSellContractProposal',
+        'UnrecognisedRequest',
       ])
     }
   }

@@ -48,22 +48,16 @@ export default Engine => class Proposal extends Engine {
 
       this.data = this.data.setIn(['proposals', id],
         { ...r.passthrough, ...proposal })
-
-      this.setProposalCount()
     })
   }
   unsubscribeProposals() {
     if (!this.data.has('proposals')) {
       return
     }
-    this.data.get('proposals').forEach(proposal =>
-      doUntilDone(() => this.api.unsubscribeByID(proposal.id)))
-  }
-  setProposalCount() {
-    this.expectedProposalCount = (this.expectedProposalCount + 1) % 2
+    doUntilDone(() => this.api.unsubscribeFromAllProposals())
   }
   checkProposalReady() {
-    return this.data.get('proposals').size && !this.expectedProposalCount
+    return this.data.has('proposals') && this.data.get('proposals').size
   }
   isNewTradeOption(tradeOption) {
     if (!this.tradeOption) {
