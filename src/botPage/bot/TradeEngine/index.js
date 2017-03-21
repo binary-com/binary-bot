@@ -5,7 +5,7 @@ import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
 import Balance from './Balance'
-import FollowTicks from './FollowTicks'
+import PrepareBeforePurchase from './PrepareBeforePurchase'
 import OpenContract from './OpenContract'
 
 const scopeToWatchResolve = {
@@ -15,7 +15,7 @@ const scopeToWatchResolve = {
 }
 
 export default class TradeEngine extends Balance(
-  OpenContract(Proposal(FollowTicks(Broadcast(Total(class {})))))) {
+  OpenContract(Proposal(PrepareBeforePurchase(Broadcast(Total(class {})))))) {
   constructor($scope) {
     super()
     this.api = $scope.api
@@ -60,6 +60,7 @@ export default class TradeEngine extends Balance(
       this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
         this.broadcastPurchase(r.buy, contractType)
         this.subscribeToOpenContract(r.buy.contract_id)
+        this.renewProposalsOnPurchase()
         resolve(true)
       }).catch(() => {
         this.isPurchaseStarted = false

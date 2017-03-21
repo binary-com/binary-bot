@@ -15,24 +15,20 @@ export default Engine => class Proposal extends Engine {
   }
   selectProposal(contractType) {
     let toBuy
-    let toForget
 
     this.data.get('proposals').forEach(proposal => {
       if (proposal.contractType === contractType) {
         toBuy = proposal
-      } else {
-        toForget = proposal
       }
     })
 
-    doUntilDone(() => this.api.unsubscribeByID(toForget.id))
-      .then(() => this.requestProposals())
-
     return toBuy
   }
+  renewProposalsOnPurchase() {
+    this.unsubscribeProposals()
+    this.requestProposals()
+  }
   requestProposals() {
-    this.data = this.data.set('proposals', new Map())
-
     this.proposalTemplates.forEach(proposal =>
       doUntilDone(() => this.api.subscribeToPriceForContractProposal({
         ...proposal,
@@ -54,7 +50,12 @@ export default Engine => class Proposal extends Engine {
     if (!this.data.has('proposals')) {
       return
     }
-    doUntilDone(() => this.api.unsubscribeFromAllProposals())
+
+    this.data.get('proposals').forEach(proposal => {
+      doUntilDone(() => this.api.unsubscribeByID(proposal.id))
+    })
+
+    this.data = this.data.set('proposals', new Map())
   }
   checkProposalReady() {
     return this.data.has('proposals') && this.data.get('proposals').size

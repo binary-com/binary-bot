@@ -30,7 +30,6 @@ export default Engine => class OpenContract extends Engine {
       if (this.isSold) {
         this.isPurchaseStarted = false
         this.updateTotals(contract)
-        doUntilDone(() => this.api.unsubscribeByID(this.openContractId))
       }
 
       this.data = this.data.set('contract', contract)
