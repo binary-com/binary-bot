@@ -4,25 +4,24 @@ import { getUTCTime } from 'binary-common-utils/lib/tools'
 export const noop = () => {}
 
 export const tradeOptionToProposal = tradeOption =>
-  tradeOption.contractTypes.map(type =>
-    Object.assign({
-      duration_unit: tradeOption.duration_unit,
-      basis: tradeOption.basis,
-      currency: tradeOption.currency,
-      symbol: tradeOption.symbol,
-      duration: tradeOption.duration,
-      amount: tradeOption.amount.toFixed(2),
-      contract_type: type,
-    },
-    'prediction' in tradeOption && {
+  tradeOption.contractTypes.map(type => ({
+    duration_unit: tradeOption.duration_unit,
+    basis: tradeOption.basis,
+    currency: tradeOption.currency,
+    symbol: tradeOption.symbol,
+    duration: tradeOption.duration,
+    amount: tradeOption.amount.toFixed(2),
+    contract_type: type,
+    ...('prediction' in tradeOption && {
       barrier: tradeOption.prediction,
-    },
-    'barrierOffset' in tradeOption && {
+    }),
+    ...('barrierOffset' in tradeOption && {
       barrier: tradeOption.barrierOffset,
-    },
-    'secondBarrierOffset' in tradeOption && {
+    }),
+    ...('secondBarrierOffset' in tradeOption && {
       barrier2: tradeOption.secondBarrierOffset,
-    }))
+    }),
+  }))
 
 export const getDirection = ticks => {
   const length = ticks.length

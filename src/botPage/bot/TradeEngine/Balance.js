@@ -5,7 +5,11 @@ let balanceStr = ''
 
 export default Engine => class Balance extends Engine {
   subscribeToBalance() {
-    return doUntilDone(() => this.api.subscribeToBalance())
+    doUntilDone(() => this.api.subscribeToBalance())
+
+    return new Promise(r => {
+      this.balancePromise = r
+    })
   }
   observeBalance() {
     this.listen('balance', r => {
@@ -15,6 +19,7 @@ export default Engine => class Balance extends Engine {
       balanceStr = `${balance.toFixed(2)} ${currency}`
 
       this.broadcastInfo({ balance: balanceStr })
+      this.balancePromise()
     })
   }
   getBalance(type) {

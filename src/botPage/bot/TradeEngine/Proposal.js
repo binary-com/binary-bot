@@ -25,34 +25,31 @@ export default Engine => class Proposal extends Engine {
       }
     })
 
-    this.api.unsubscribeByID(toForget.id).then(() => this.requestProposals())
+    doUntilDone(() => this.api.unsubscribeByID(toForget.id))
+      .then(() => this.requestProposals())
 
     return toBuy
   }
   requestProposals() {
     this.data = this.data.set('proposals', new Map())
 
-    this.proposalTemplates.forEach(proposal => {
-      doUntilDone(() => this.api.subscribeToPriceForContractProposal(proposal),
-        ['ContractBuyValidationError']).then(r => {
-          this.data = this.data.setIn(['proposals', r.proposal.id],
-            Object.assign({ contractType: proposal.contract_type }, r.proposal))
-          this.setProposalCount()
-        })
-    })
+    this.proposalTemplates.forEach(proposal =>
+      doUntilDone(() => this.api.subscribeToPriceForContractProposal({
+        ...proposal,
+        passthrough: {
+          contractType: proposal.contract_type,
+        },
+      }), ['ContractBuyValidationError']))
   }
   observeProposals() {
     this.listen('proposal', r => {
       const proposal = r.proposal
       const id = proposal.id
 
-      const oldProposal = this.data.getIn(['proposals', id])
+      this.data = this.data.setIn(['proposals', id],
+        { ...r.passthrough, ...proposal })
 
-      if (oldProposal) {
-        this.data.setIn(['proposals', id],
-          Object.assign({}, oldProposal, proposal))
-        this.setProposalCount()
-      }
+      this.setProposalCount()
     })
   }
   unsubscribeProposals() {
@@ -60,7 +57,7 @@ export default Engine => class Proposal extends Engine {
       return
     }
     this.data.get('proposals').forEach(proposal =>
-      this.api.unsubscribeByID(proposal.id))
+      doUntilDone(() => this.api.unsubscribeByID(proposal.id)))
   }
   setProposalCount() {
     this.expectedProposalCount = (this.expectedProposalCount + 1) % 2

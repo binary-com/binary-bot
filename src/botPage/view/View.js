@@ -518,11 +518,7 @@ export default class View {
         if (contract.is_sold) {
           contractForChart = null
         } else {
-          contractForChart = Object.assign({}, contract, {
-            date_expiry: +contract.date_expiry,
-            date_settlement: +contract.date_settlement,
-            date_start: +contract.date_start,
-          })
+          contractForChart = contract
         }
       }
     })

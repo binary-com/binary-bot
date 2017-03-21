@@ -1,5 +1,5 @@
 const groupBy = (arr, field) => arr.reduce((g, o) => {
-  const grouped = Object.assign({}, g)
+  const grouped = { ...g }
 
   if (o[field] in grouped) {
     grouped[o[field]].push(o)
