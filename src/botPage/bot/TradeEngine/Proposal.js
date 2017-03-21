@@ -29,13 +29,15 @@ export default Engine => class Proposal extends Engine {
     this.requestProposals()
   }
   requestProposals() {
+    const promises = []
     this.proposalTemplates.forEach(proposal =>
-      doUntilDone(() => this.api.subscribeToPriceForContractProposal({
+      promises.push(doUntilDone(() => this.api.subscribeToPriceForContractProposal({
         ...proposal,
         passthrough: {
           contractType: proposal.contract_type,
         },
-      }), ['ContractBuyValidationError']))
+      }), ['ContractBuyValidationError'])))
+    Promise.all(promises).catch(e => this.broadcastError(e))
   }
   observeProposals() {
     this.listen('proposal', r => {

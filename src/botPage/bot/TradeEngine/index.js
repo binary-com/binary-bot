@@ -43,7 +43,7 @@ export default class TradeEngine extends Balance(
       return Promise.resolve()
     }
 
-    doUntilDone(() => this.api.authorize(token))
+    doUntilDone(() => this.api.authorize(token)).catch(e => this.broadcastError(e))
 
     return new Promise(resolve =>
       this.listen('authorize', () => {

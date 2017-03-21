@@ -12,7 +12,7 @@ export default Engine => class OpenContract extends Engine {
         'NoOpenPosition',
         'InvalidSellContractProposal',
         'UnrecognisedRequest',
-      ])
+      ]).catch(e => this.broadcastError(e))
     }
   }
   sellExpired() {

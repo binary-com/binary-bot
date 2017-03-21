@@ -15,4 +15,7 @@ export default Engine => class Broadcast extends Engine {
   broadcastInfo(info) {
     globalObserver.emit('bot.info', info)
   }
+  broadcastError(e) {
+    globalObserver.emit('Error', e)
+  }
 }
