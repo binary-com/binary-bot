@@ -3,7 +3,7 @@ import { tradeOptionToProposal, doUntilDone } from '../tools'
 export default Engine => class Proposal extends Engine {
   constructor() {
     super()
-    this.expectedProposalCount = 0
+    this.anotherProposalExpected = false
   }
   makeProposals(tradeOption) {
     if (!this.isNewTradeOption(tradeOption)) {
@@ -42,6 +42,8 @@ export default Engine => class Proposal extends Engine {
       const proposal = r.proposal
       const id = proposal.id
 
+      this.anotherProposalExpected = !this.anotherProposalExpected
+
       this.data = this.data.setIn(['proposals', id],
         { ...r.passthrough, ...proposal })
     })
@@ -58,7 +60,8 @@ export default Engine => class Proposal extends Engine {
     this.data = this.data.set('proposals', new Map())
   }
   checkProposalReady() {
-    return this.data.has('proposals') && this.data.get('proposals').size
+    return this.data.has('proposals') && this.data.get('proposals').size &&
+      !this.anotherProposalExpected
   }
   isNewTradeOption(tradeOption) {
     if (!this.tradeOption) {
