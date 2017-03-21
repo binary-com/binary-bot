@@ -3,10 +3,11 @@ import { doUntilDone } from '../tools'
 export default Engine => class OpenContract extends Engine {
   isSellAtMarketAvailable() {
     return !this.isSold && this.isSellAvailable && !this.isExpired &&
-      Boolean(this.contractId)
+      !this.isSellRequested
   }
   sellAtMarket() {
     if (this.isSellAtMarketAvailable()) {
+      this.isSellRequested = true
       doUntilDone(() => this.api.sellContract(this.contractId, 0), [
         'NoOpenPosition',
         'InvalidSellContractProposal',
@@ -40,6 +41,7 @@ export default Engine => class OpenContract extends Engine {
     })
   }
   subscribeToOpenContract(contractId) {
+    this.isSellRequested = false
     doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
       ({ proposal_open_contract: { id: this.openContractId } } = r)
     })
