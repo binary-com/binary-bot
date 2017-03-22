@@ -22,7 +22,6 @@
             ]
           },
           "loose": true,
-          "modules": false,
           "useBuiltIns": true
         }
       ],
