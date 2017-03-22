@@ -32,10 +32,10 @@
 .trade-chart,
 .contract-chart {
   button {
-    color: $COLOR_TEXT;
+    color: $brand-blue;
 
     &:hover {
-      background: rgba($COLOR_BRAND_BLUE, 0.1);
+      background: $brand-gray; // rgba($COLOR_BRAND_BLUE, 0.1);
     }
   }
 
@@ -96,8 +96,10 @@
 }
 
 .binary-chart-time-frame-button {
-  background: rgba($COLOR_INVERSE_TEXT, 0.25) !important;
+  background: $brand-gray;
   padding: 0 !important;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .binary-chart-time-frame-button + .binary-chart-time-frame-button {
@@ -107,7 +109,8 @@
 .binary-chart-submenu {
   border-radius: $BORDER_RADIUS;
   background: $COLOR_BG;
-  box-shadow: 0 0 1em 0 rgba(black, 0.5);
+  box-shadow: 0 0 1em 0 rgba(black, 0.1);
+  padding: 0.5em;
 }
 
 .inverse .binary-chart-submenu {
@@ -128,7 +131,7 @@
   min-width: 1em;
   display: flex;
   align-items: center;
-
+  font-size: 14px;
   svg + span {
     margin-left: 8px;
   }
@@ -138,7 +141,14 @@
 .binary-chart-picker-item,
 .binary-chart-time-frame-button {
   &:hover {
-    box-shadow: 0 0 0 1px $COLOR_TEXT;
+    color: $brand-orange;
+    text-decoration: none;
+    svg {
+      fill: $brand-orange;
+    }
+  }
+  &:focus {
+    outline: none;
   }
 
   .inverse &:hover {
@@ -163,8 +173,10 @@
   }
 
   &:hover {
-    background: rgba($COLOR_BRAND_BLUE, 0.2) !important;
-    box-shadow: 0 0 0 1px $COLOR_BRAND_BLUE;
+    box-shadow: 0 0 0 0px $COLOR_BRAND_BLUE;
+    svg {
+      fill: $brand-orange;
+    }
   }
 }
 
@@ -191,10 +203,10 @@
 }
 
 .binary-chart-button {
-  background: rgba($COLOR_BRAND_BLUE, 0.1);
+  background: $brand-gray;
   border-radius: $BORDER_RADIUS;
   min-width: 1em;
-  padding: 0.1em;
+  padding: 0em 0.5em;
   flex: 1;
   align-items: center;
 }
