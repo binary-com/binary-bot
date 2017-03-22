@@ -15,35 +15,35 @@
   > span {
     padding: 0.5em 1em;
     border-radius: $BORDER_RADIUS;
-    color: $COLOR_INVERSE_TEXT !important;
-    background: $COLOR_INVERSE_BG !important;
+    color: $chart-text-inverse !important;
+    background: $chart-background-inverse !important;
 
     .inverse & {
-      color: $COLOR_INVERSE_BG !important;
-      background: $COLOR_INVERSE_TEXT !important;
+      color: $chart-background-inverse !important;
+      background: $chart-text-inverse !important;
     }
   }
 }
 
 .inverse .trade-chart {
-  color: $COLOR_INVERSE_TEXT;
+  color: $chart-text-inverse;
 }
 
 .trade-chart,
 .contract-chart {
   button {
-    color: $COLOR_TEXT;
+    color: $brand-blue;
 
     &:hover {
-      background: rgba($COLOR_BRAND_BLUE, 0.1);
+      background: $brand-gray;
     }
   }
 
   .inverse & button {
-    color: $COLOR_INVERSE_TEXT;
+    color: $chart-text-inverse;
 
     &:hover {
-      background: rgba($COLOR_INVERSE_TEXT, 0.1);
+      background: rgba($chart-text-inverse, 0.1);
     }
   }
 }
@@ -65,12 +65,10 @@
     animation: 2s fadeIn !important;
     animation-fill-mode: forwards;
     transition: visibility 2s;
-    // opacity: 0;
   }
 
   &:hover .binary-chart-zoom-controls {
     visibility: visible;
-    // opacity: 1;
   }
 }
 
@@ -96,8 +94,10 @@
 }
 
 .binary-chart-time-frame-button {
-  background: rgba($COLOR_INVERSE_TEXT, 0.25) !important;
+  background: $brand-gray;
   padding: 0 !important;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .binary-chart-time-frame-button + .binary-chart-time-frame-button {
@@ -106,16 +106,17 @@
 
 .binary-chart-submenu {
   border-radius: $BORDER_RADIUS;
-  background: $COLOR_BG;
-  box-shadow: 0 0 1em 0 rgba(black, 0.5);
+  background: $chart-background;
+  box-shadow: 0 0 1em 0 rgba(black, 0.1);
+  padding: 0.5em;
 }
 
 .inverse .binary-chart-submenu {
-  background: $COLOR_INVERSE_BG;
+  background: $chart-background-inverse;
 }
 
 .binary-chart-submenu button {
-  color: $COLOR_TEXT;
+  color: $chart-text;
   background: transparent;
   border-radius: 0;
 }
@@ -128,7 +129,7 @@
   min-width: 1em;
   display: flex;
   align-items: center;
-
+  font-size: 14px;
   svg + span {
     margin-left: 8px;
   }
@@ -138,46 +139,55 @@
 .binary-chart-picker-item,
 .binary-chart-time-frame-button {
   &:hover {
-    box-shadow: 0 0 0 1px $COLOR_TEXT;
+    color: $brand-orange;
+    text-decoration: none;
+    svg {
+      fill: $brand-orange;
+    }
+  }
+  &:focus {
+    outline: none;
   }
 
   .inverse &:hover {
-    box-shadow: 0 0 0 1px $COLOR_INVERSE_TEXT;
+    box-shadow: 0 0 0 1px $chart-text-inverse;
   }
 }
 
 .pressed {
-  background: $COLOR_BRAND_BLUE !important;
+  background: $brand-blue !important;
 
   svg {
-    fill: $COLOR_INVERSE_TEXT;
+    fill: $chart-text-inverse;
   }
 }
 
 .binary-chart-zoom-button {
-  background: rgba($COLOR_BRAND_BLUE, 0.1) !important;
+  background: rgba($brand-blue, 0.1) !important;
 
   svg {
-    fill: $COLOR_BRAND_BLUE;
+    fill: $brand-blue;
     margin-bottom: 4px;
   }
 
   &:hover {
-    background: rgba($COLOR_BRAND_BLUE, 0.2) !important;
-    box-shadow: 0 0 0 1px $COLOR_BRAND_BLUE;
+    box-shadow: 0 0 0 0px $brand-blue;
+    svg {
+      fill: $brand-orange;
+    }
   }
 }
 
 .inverse .binary-chart-zoom-button {
-  background: rgba($COLOR_INVERSE_TEXT, 0.1) !important;
+  background: rgba($chart-text-inverse, 0.1) !important;
 
   svg {
-    fill: $COLOR_INVERSE_TEXT;
+    fill: $chart-text-inverse;
   }
 
   &:hover {
-    background: rgba($COLOR_INVERSE_TEXT, 0.2) !important;
-    box-shadow: 0 0 0 1px $COLOR_INVERSE_TEXT;
+    background: rgba($chart-text-inverse, 0.2) !important;
+    box-shadow: 0 0 0 1px $chart-text-inverse;
   }
 }
 
@@ -191,10 +201,10 @@
 }
 
 .binary-chart-button {
-  background: rgba($COLOR_BRAND_BLUE, 0.1);
+  background: $brand-gray;
   border-radius: $BORDER_RADIUS;
   min-width: 1em;
-  padding: 0.1em;
+  padding: 0em 0.5em;
   flex: 1;
   align-items: center;
 }
@@ -204,11 +214,11 @@
   svg {
     width: 16px;
     height: 16px;
-    fill: $COLOR_INVERSE_BG;
+    fill: $chart-background-inverse;
   }
 
   .inverse & svg {
-    fill: $COLOR_BG;
+    fill: $chart-background;
   }
 }
 
