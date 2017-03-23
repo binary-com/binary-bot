@@ -1,17 +1,12 @@
 import { tradeOptionToProposal, doUntilDone } from '../tools'
 
 export default Engine => class Proposal extends Engine {
-  constructor() {
-    super()
-    this.anotherProposalExpected = false
-  }
   makeProposals(tradeOption) {
     if (!this.isNewTradeOption(tradeOption)) {
       return
     }
     this.proposalTemplates = tradeOptionToProposal(tradeOption)
-    this.unsubscribeProposals()
-    this.requestProposals()
+    this.renewProposalsOnPurchase()
   }
   selectProposal(contractType) {
     let toBuy
@@ -29,25 +24,22 @@ export default Engine => class Proposal extends Engine {
     this.requestProposals()
   }
   requestProposals() {
-    const promises = []
     this.proposalTemplates.forEach(proposal =>
-      promises.push(doUntilDone(() => this.api.subscribeToPriceForContractProposal({
+      doUntilDone(() => this.api.subscribeToPriceForContractProposal({
         ...proposal,
         passthrough: {
           contractType: proposal.contract_type,
         },
-      }), ['ContractBuyValidationError'])))
-    Promise.all(promises).catch(e => this.broadcastError(e))
+      }), ['ContractBuyValidationError'])
+      .catch(e => this.broadcastError(e)))
   }
   observeProposals() {
     this.listen('proposal', r => {
       const proposal = r.proposal
       const id = proposal.id
 
-      this.anotherProposalExpected = !this.anotherProposalExpected
-
       this.data = this.data.setIn(['proposals', id],
-        { ...r.passthrough, ...proposal })
+        { ...proposal, ...r.passthrough })
     })
   }
   unsubscribeProposals() {
@@ -55,15 +47,15 @@ export default Engine => class Proposal extends Engine {
       return
     }
 
-    this.data.get('proposals').forEach(proposal => {
-      doUntilDone(() => this.api.unsubscribeByID(proposal.id))
-    })
-
-    this.data = this.data.set('proposals', new Map())
+    this.data.get('proposals').map(proposal =>
+      doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => {
+        this.data = this.data.deleteIn(['proposals', proposal.id])
+      }))
   }
   checkProposalReady() {
-    return this.data.has('proposals') && this.data.get('proposals').size &&
-      !this.anotherProposalExpected
+    const proposals = this.data.get('proposals')
+
+    return proposals && proposals.size === 2
   }
   isNewTradeOption(tradeOption) {
     if (!this.tradeOption) {
