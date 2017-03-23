@@ -92,15 +92,17 @@ export default class TicksService {
 
     let needToUnsubscribe = false
 
-    if (this.tickListeners.has(symbol) &&
-      !this.tickListeners.get(symbol).size) {
+    const tickListener = this.tickListeners.get(symbol)
+
+    if (tickListener && !tickListener.size) {
       this.tickListeners = this.tickListeners.delete(symbol)
       this.ticks = this.ticks.delete(symbol)
       needToUnsubscribe = true
     }
 
-    if (this.ohlcListeners.hasIn([symbol, granularity]) &&
-      !this.ohlcListeners.getIn([symbol, granularity]).size) {
+    const ohlcListener = this.ohlcListeners.getIn([symbol, granularity])
+
+    if (ohlcListener && !ohlcListener.size) {
       this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity])
       this.candles = this.candles.deleteIn([symbol, granularity])
       needToUnsubscribe = true
@@ -111,35 +113,30 @@ export default class TicksService {
     }
   }
   unsubscribeAllAndSubscribeListeners(symbol) {
-    const promises = []
+    const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol])
+    const tickSubscription = this.subscriptions.getIn(['tick', symbol])
 
-    if (this.subscriptions.hasIn(['tick', symbol])) {
-      promises.push(doUntilDone(() =>
-        this.api.unsubscribeByID(this.subscriptions.getIn(['tick', symbol]))))
-    }
+    const subscription = (ohlcSubscriptions ? ohlcSubscriptions.keys() : [])
+      .concat(tickSubscription)
 
-    if (this.subscriptions.hasIn(['ohlc', symbol]) &&
-      this.subscriptions.getIn(['ohlc', symbol]).size) {
-      this.subscriptions.getIn(['ohlc', symbol])
-        .forEach(id => promises.push(doUntilDone(() =>
-          this.api.unsubscribeByID(id))))
-    }
+    Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id))))
+      .then(() => {
+        const ohlcListeners = this.ohlcListeners.get(symbol)
+
+        if (ohlcListeners) {
+          ohlcListeners.forEach((listener, granularity) => {
+            this.candles = this.candles.deleteIn([symbol, granularity])
+            this.requestStream({ symbol, subscribe: 1, granularity, style: 'candles' })
+          })
+        }
+
+        if (this.tickListeners.has(symbol)) {
+          this.ticks = this.ticks.delete(symbol)
+          this.requestStream({ symbol, subscribe: 1, style: 'ticks' })
+        }
+      })
 
     this.subscriptions = new Map()
-
-    Promise.all(promises).then(() => {
-      if (this.ohlcListeners.has(symbol)) {
-        this.ohlcListeners.get(symbol).forEach((listener, granularity) => {
-          this.candles = this.candles.deleteIn([symbol, granularity])
-          this.requestStream({ symbol, subscribe: 1, granularity, style: 'candles' })
-        })
-      }
-
-      if (this.tickListeners.has(symbol)) {
-        this.ticks = this.ticks.delete(symbol)
-        this.requestStream({ symbol, subscribe: 1, style: 'ticks' })
-      }
-    })
   }
   observe() {
     this.api.events.on('tick', r => {
