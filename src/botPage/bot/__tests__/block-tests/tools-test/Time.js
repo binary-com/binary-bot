@@ -24,6 +24,6 @@ describe('Time in tools', () => {
   it('time is correctly skewed', () => {
     const { time1, time2 } = result
 
-    expect(time2 - time1).equal(2)
+    expect(time2 - time1).most(3)
   })
 })
