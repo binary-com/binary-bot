@@ -56,15 +56,17 @@ export default class TradeEngine extends Balance(
 
     this.isPurchaseStarted = true
 
-    return new Promise(resolve => {
+    const toIgnore = ['CallError', 'WrongResponse']
+
+    return new Promise((resolve, reject) => {
       this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
         this.broadcastPurchase(r.buy, contractType)
         this.subscribeToOpenContract(r.buy.contract_id)
         this.renewProposalsOnPurchase()
         resolve(true)
       }).catch(e => {
-        if (e.name === 'RateLimit') {
-          throw e
+        if (!toIgnore.includes(e.name)) {
+          reject(e)
         }
         this.isPurchaseStarted = false
         this.waitBeforePurchase().then(() => this.observer.emit('REVERT'))
