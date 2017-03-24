@@ -60,12 +60,13 @@ export const registerStream = (observer, name, cb) => {
 }
 
 export const doUntilDone =
-  (f, types = [], maxTries = 3) => new Promise(resolve => {
+  (f, types = [], maxTries = 3) => new Promise((resolve, reject) => {
     let count = 0
     const repeat = e => {
-      if ((e && !types.concat('CallError').includes(e.name)) ||
+      if ((e && !types.concat(['CallError', 'WrongResponse']).includes(e.name)) ||
         count++ === maxTries) {
-        throw e
+        reject(e)
+        return
       }
 
       const promise = f()
