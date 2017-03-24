@@ -2,7 +2,6 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { expect } from 'chai'
 import { runAndGetResult } from '../../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('Misc. tools', () => {
   let result

@@ -1,9 +1,8 @@
 import { expect } from 'chai'
 import { run } from '../../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
-describe('Trade Definition Blocks', () => {
+describe('Index handling', () => {
   let error
 
   describe('Index must be handled properly', () => {

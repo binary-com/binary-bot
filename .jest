@@ -1,0 +1,3 @@
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000
+
+process.on('unhandledRejection', e => console.log(e))

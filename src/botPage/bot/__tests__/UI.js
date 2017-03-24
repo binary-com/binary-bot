@@ -1,6 +1,5 @@
 import { expectReturnTrue } from './tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 expectReturnTrue('UI Generated Code', `
 (function(){

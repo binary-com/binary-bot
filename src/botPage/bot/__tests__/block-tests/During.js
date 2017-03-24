@@ -1,6 +1,5 @@
 import { runAndGetResult, expectResultTypes, parts } from '../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('During Purchase Blocks', () => {
   let result
@@ -19,7 +18,7 @@ describe('During Purchase Blocks', () => {
     })
   })
 
-  it('before purchase api', () => {
+  it('During purchase api', () => {
     expectResultTypes(result, [
       'boolean', // is sell available
       'number', // sell price

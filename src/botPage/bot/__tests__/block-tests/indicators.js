@@ -16,7 +16,6 @@ import macda from 'binary-indicators/lib/macd'
 
 import { runAndGetResult } from '../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000 * 2
 
 const periods = 12
 

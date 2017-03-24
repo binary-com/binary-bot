@@ -13,7 +13,7 @@ describe('Run Interpreter over simple calculation', () => {
     })
   })
 
-  it('return code is correct', () => {
+  it('Pure js code should be validated correctly', () => {
     expect(value).to.be.equal(3)
   })
 })

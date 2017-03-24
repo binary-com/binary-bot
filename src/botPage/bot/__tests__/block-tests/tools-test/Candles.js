@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import { runAndGetResult } from '../../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000 * 2
 
 describe('Candle Blocks in tools', () => {
   let result

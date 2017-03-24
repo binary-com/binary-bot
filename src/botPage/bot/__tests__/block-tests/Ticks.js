@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import { runAndGetResult, expectResultTypes } from '../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000 * 2
 
 describe('Many getTicks in a row', () => {
   let result

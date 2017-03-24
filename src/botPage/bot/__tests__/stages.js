@@ -1,6 +1,5 @@
 import { expectReturnTrue, parts } from './tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 18000 * 2
 
 expectReturnTrue('Stage 1 - Before Purchase', `
       (function (){
