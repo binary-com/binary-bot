@@ -1,6 +1,5 @@
 import { expectReturnTrue, parts } from './tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000 * 2
 
 expectReturnTrue('Main Blocks', `
       (function (){

@@ -1,6 +1,5 @@
 import { runAndGetResult, expectResultTypes } from '../tools'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000 * 2
 
 describe('Before Purchase Blocks', () => {
   let result

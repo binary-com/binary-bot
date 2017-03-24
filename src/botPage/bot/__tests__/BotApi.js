@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import Interface from '../Interface'
 import { createScope } from '../cli'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000 * 2
 
 const $scope = createScope()
 
