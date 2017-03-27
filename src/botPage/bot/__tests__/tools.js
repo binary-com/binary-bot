@@ -1,26 +1,31 @@
 import { expect } from 'chai'
 import { createInterpreter } from '../cli'
 
+const start = duration => `
+        Bot.start('Xkq6oGFEHh6hJH8', {
+          amount: 1, basis: 'stake', candleInterval: 60,
+          contractTypes: ['CALL', 'PUT'],
+          currency: 'USD', ${duration}, symbol: 'R_100',
+        });
+`
+
 export const parts = {
   header: `
       (function (){
         var result = {};
   `,
-  trade: `
-        Bot.start('Xkq6oGFEHh6hJH8', {
-          amount: 1, basis: 'stake', candleInterval: 60,
-          contractTypes: ['CALL', 'PUT'],
-          currency: 'USD', duration: 2,
-          duration_unit: 'h', symbol: 'R_100',
-        });
-  `,
+  timeTrade: start('duration: 2, duration_unit: "h"'),
+  tickTrade: start('duration: 5, duration_unit: "t"'),
   waitToPurchase: `
         watch('before');
         Bot.purchase('CALL');
   `,
   waitToSell: `
-        watch('during');
-        Bot.sellAtMarket();
+        while (watch('during')) {
+          if (Bot.isSellAvailable()) {
+            Bot.sellAtMarket();
+          }
+        }
   `,
   footer: `
         return {
@@ -36,7 +41,7 @@ export const runAndGetResult = (initCode = '', code) => new Promise(r => {
   run(`
     ${parts.header}
     ${initCode}
-    ${parts.trade}
+    ${parts.tickTrade}
     ${code}
     ${parts.footer}
   `).then(v => r(v.result))

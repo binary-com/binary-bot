@@ -7,11 +7,9 @@ describe('During Purchase Blocks', () => {
   beforeAll(done => {
     runAndGetResult(undefined, `
       ${parts.waitToPurchase}
-      while (watch('during')) {
-        result.sellAvailable = Bot.isSellAvailable();
-        result.sellPrice = Bot.getSellPrice();
-        Bot.sellAtMarket();
-      }
+      watch('during');
+      result.sellAvailable = Bot.isSellAvailable();
+      result.sellPrice = Bot.getSellPrice();
     `).then(v => {
       result = v
       done()

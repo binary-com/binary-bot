@@ -9,7 +9,7 @@ describe('Run Interpreter over bot', () => {
     let interpreter = createInterpreter()
     interpreter.run(`
       (function (){
-        ${parts.trade}
+        ${parts.tickTrade}
         while(watch('before')) {}
       })();
     `)
@@ -19,7 +19,7 @@ describe('Run Interpreter over bot', () => {
       interpreter = createInterpreter()
       interpreter.run(`
         (function (){
-          ${parts.trade}
+          ${parts.tickTrade}
           ${parts.waitToPurchase}
           ${parts.waitToSell}
           return true;

@@ -40,7 +40,6 @@ describe('Ticks Analysis', () => {
       Bot.purchase('CALL')
       while (watch('during')) {
         ta()
-        Bot.sellAtMarket()
       }
       ta()
     `).then(v => {

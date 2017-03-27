@@ -6,14 +6,10 @@ describe('Before Purchase Blocks', () => {
 
   beforeAll(done => {
     runAndGetResult(undefined, `
-      while (watch('before')) {
-        result.payout = Bot.getPayout('CALL');
-        result.askPrice = Bot.getAskPrice('CALL');
-        if (Bot.purchase('CALL')) {
-          break;
-        }
-      }
-      Bot.sellAtMarket();
+      watch('before');
+      result.payout = Bot.getPayout('CALL');
+      result.askPrice = Bot.getAskPrice('CALL');
+      Bot.purchase('CALL');
     `)
     .then(v => {
       result = v
