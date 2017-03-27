@@ -10,6 +10,8 @@ Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.
 ## Development
 
 ```
+git clone https://github.com/binary-com/binary-bot.git
+cd binary-bot
 npm install
 npm start
 ```
