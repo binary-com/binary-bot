@@ -1,6 +1,6 @@
 {
   "name": "binary-bot",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "Visual automation for binary.com",
   "bin": {
     "bot": "lib/index.js"
@@ -9,28 +9,37 @@
     "babelrc": false,
     "presets": [
       "react",
-      ["env", {
-        "targets": {
-          "browsers": [
-            "last 2 versions",
-            "ios_saf >= 8",
-            "not IE <= 10",
-            "chrome >= 49",
-            "firefox >= 49",
-            "> 1%"
-          ]
-        },
-        "loose": true,
-        "useBuiltIns": true
-      }]
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 2 versions",
+              "ios_saf >= 8",
+              "not IE <= 10",
+              "chrome >= 49",
+              "firefox >= 49",
+              "> 1%"
+            ]
+          },
+          "loose": true,
+          "useBuiltIns": true
+        }
+      ]
     ],
     "plugins": [
-      ["transform-object-rest-spread", {
-        "useBuiltIns": true
-      }],
-      ["transform-class-properties", {
-        "useBuiltIns": true
-      }]
+      [
+        "transform-object-rest-spread",
+        {
+          "useBuiltIns": true
+        }
+      ],
+      [
+        "transform-class-properties",
+        {
+          "useBuiltIns": true
+        }
+      ]
     ]
   },
   "jest": {
