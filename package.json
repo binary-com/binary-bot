@@ -127,7 +127,7 @@
     "ws": "^2.2.0"
   },
   "dependencies": {
-    "concat-stream": "^1.6.0",
-    "minimist": "^1.2.0"
+    "commander": "^2.9.0",
+    "concat-stream": "^1.6.0"
   }
 }
