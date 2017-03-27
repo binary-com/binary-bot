@@ -10,7 +10,7 @@ describe('Run Interpreter over bot', () => {
     interpreter.run(`
       (function (){
         ${parts.trade}
-        ${parts.waitToPurchase}
+        while(watch('before')) {}
       })();
     `)
 
@@ -21,14 +21,14 @@ describe('Run Interpreter over bot', () => {
         (function (){
           ${parts.trade}
           ${parts.waitToPurchase}
-          watch('during')
+          ${parts.waitToSell}
           return true;
         })();
       `).then(v => {
         value = v
         done()
       })
-    }, 20000)
+    }, 8000)
   })
   it('Code block is executed correctly', () => {
     expect(value).to.be.equal(true)

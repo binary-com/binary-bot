@@ -15,11 +15,8 @@ export const parts = {
         });
   `,
   waitToPurchase: `
-        while (watch('before')) {
-          if (Bot.purchase('CALL')) {
-            break;
-          }
-        }
+        watch('before');
+        Bot.purchase('CALL');
   `,
   waitToSell: `
         while (watch('during')) {

@@ -13,6 +13,7 @@ describe('Before Purchase Blocks', () => {
           break;
         }
       }
+      Bot.sellAtMarket();
     `)
     .then(v => {
       result = v

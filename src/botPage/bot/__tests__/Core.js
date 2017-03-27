@@ -35,6 +35,7 @@ expectReturnTrue('Main Blocks - Sell Expired', `
         });
         ${parts.waitToPurchase}
         while (watch('during')) {}
+        Bot.sellAtMarket();
         return true;
       })();
   `)
