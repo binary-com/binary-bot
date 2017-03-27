@@ -25,10 +25,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(
     this.$scope = $scope
     this.observe()
     this.data = new Map()
-    this.watches = new Map()
-    this.signals = new Map()
   }
   start(token, tradeOption) {
+    this.watches = new Map()
+    this.signals = new Map()
+
     const { symbol } = tradeOption
 
     globalObserver.emit('bot.start', symbol)

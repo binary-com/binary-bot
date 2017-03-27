@@ -19,9 +19,8 @@ export const parts = {
         Bot.purchase('CALL');
   `,
   waitToSell: `
-        while (watch('during')) {
-          Bot.sellAtMarket();
-        }
+        watch('during');
+        Bot.sellAtMarket();
   `,
   footer: `
         return {
