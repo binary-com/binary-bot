@@ -1,6 +1,6 @@
 import { Map } from 'immutable'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import { doUntilDone, shouldThrowError } from '../tools'
+import { doUntilDone } from '../tools'
 import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
@@ -8,6 +8,7 @@ import Balance from './Balance'
 import PrepareBeforePurchase from './PrepareBeforePurchase'
 import OpenContract from './OpenContract'
 import Sell from './Sell'
+import Purchase from './Purchase'
 
 const scopeToWatchResolve = {
   before: ['before', true],
@@ -15,8 +16,8 @@ const scopeToWatchResolve = {
   after: ['during', false],
 }
 
-export default class TradeEngine extends Balance(
-  Sell(OpenContract(Proposal(PrepareBeforePurchase(Broadcast(Total(class {}))))))) {
+export default class TradeEngine extends Balance(Purchase(Sell(
+  OpenContract(Proposal(PrepareBeforePurchase(Broadcast(Total(class {})))))))) {
   constructor($scope) {
     super()
     this.api = $scope.api
@@ -51,27 +52,6 @@ export default class TradeEngine extends Balance(
         this.token = token
         resolve()
       })).then(() => this.subscribeToBalance())
-  }
-  purchase(contractType) {
-    const toBuy = this.selectProposal(contractType)
-
-    this.isPurchaseStarted = true
-
-    return new Promise((resolve, reject) => {
-      this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
-        this.broadcastPurchase(r.buy, contractType)
-        this.subscribeToOpenContract(r.buy.contract_id)
-        this.renewProposalsOnPurchase()
-        resolve(true)
-      }).catch(e => {
-        if (shouldThrowError(e)) {
-          reject(e)
-          return
-        }
-        this.isPurchaseStarted = false
-        this.waitBeforePurchase().then(() => this.observer.emit('REVERT'))
-      })
-    })
   }
   observe() {
     this.observeOpenContract()
