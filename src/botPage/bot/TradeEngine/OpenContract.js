@@ -1,25 +1,6 @@
 import { doUntilDone } from '../tools'
 
 export default Engine => class OpenContract extends Engine {
-  isSellAtMarketAvailable() {
-    return !this.isSold && this.isSellAvailable && !this.isExpired &&
-      !this.isSellRequested
-  }
-  sellAtMarket() {
-    if (this.isSellAtMarketAvailable()) {
-      this.isSellRequested = true
-      doUntilDone(() => this.api.sellContract(this.contractId, 0), [
-        'NoOpenPosition',
-        'InvalidSellContractProposal',
-        'UnrecognisedRequest',
-      ]).catch(e => this.broadcastError(e))
-    }
-  }
-  sellExpired() {
-    if (this.isSellAvailable && this.isExpired) {
-      doUntilDone(() => this.api.sellExpiredContracts())
-    }
-  }
   observeOpenContract() {
     this.listen('proposal_open_contract', r => {
       const contract = r.proposal_open_contract
