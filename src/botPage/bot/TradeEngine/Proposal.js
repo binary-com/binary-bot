@@ -1,3 +1,4 @@
+import { translate } from '../../../common/i18n'
 import { tradeOptionToProposal, doUntilDone } from '../tools'
 
 export default Engine => class Proposal extends Engine {
@@ -11,11 +12,19 @@ export default Engine => class Proposal extends Engine {
   selectProposal(contractType) {
     let toBuy
 
+    if (!this.data.has('proposals')) {
+      throw translate('Proposals are not ready')
+    }
+
     this.data.get('proposals').forEach(proposal => {
       if (proposal.contractType === contractType) {
         toBuy = proposal
       }
     })
+
+    if (!toBuy) {
+      throw translate('Selected proposal does not exist')
+    }
 
     return toBuy
   }

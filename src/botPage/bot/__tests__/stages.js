@@ -13,6 +13,7 @@ expectReturnTrue('Stage 2 - After Purchase Before Open Proposal', `
       (function (){
         ${parts.trade}
         ${parts.waitToPurchase}
+        Bot.sellAtMarket();
         return true;
       })();
   `)
