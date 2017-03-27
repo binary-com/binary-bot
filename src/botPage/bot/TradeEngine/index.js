@@ -1,6 +1,6 @@
 import { Map } from 'immutable'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import { doUntilDone } from '../tools'
+import { doUntilDone, shouldThrowError } from '../tools'
 import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
@@ -56,8 +56,6 @@ export default class TradeEngine extends Balance(
 
     this.isPurchaseStarted = true
 
-    const toIgnore = ['CallError', 'WrongResponse']
-
     return new Promise((resolve, reject) => {
       this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
         this.broadcastPurchase(r.buy, contractType)
@@ -65,8 +63,9 @@ export default class TradeEngine extends Balance(
         this.renewProposalsOnPurchase()
         resolve(true)
       }).catch(e => {
-        if (!toIgnore.includes(e.name)) {
+        if (shouldThrowError(e)) {
           reject(e)
+          return
         }
         this.isPurchaseStarted = false
         this.waitBeforePurchase().then(() => this.observer.emit('REVERT'))

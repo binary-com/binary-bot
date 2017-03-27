@@ -59,10 +59,13 @@ export const registerStream = (observer, name, cb) => {
   observer.register(name, cb)
 }
 
+export const shouldThrowError = (e, types = []) => e &&
+  !types.concat(['CallError', 'WrongResponse']).includes(e.name)
+
 export const doUntilDone =
-  (f, types = []) => new Promise((resolve, reject) => {
+  (f, types) => new Promise((resolve, reject) => {
     const repeat = e => {
-      if ((e && !types.concat(['CallError', 'WrongResponse']).includes(e.name))) {
+      if (shouldThrowError(e, types)) {
         reject(e)
         return
       }
