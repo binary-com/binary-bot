@@ -35,8 +35,8 @@ npm install
 ```
 npm i -g binary-bot
 bot ./bot.js
-# specify endpoint:
-ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=0' bot bot.js
+# specify endpoint (Use only if you know what you're doing):
+ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169' bot bot.js
 ```
 
 ### ./bot.js content
