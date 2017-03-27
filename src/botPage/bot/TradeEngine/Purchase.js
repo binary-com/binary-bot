@@ -11,14 +11,14 @@ export default Engine => class Purchase extends Engine {
         this.broadcastPurchase(r.buy, contractType)
         this.subscribeToOpenContract(r.buy.contract_id)
         this.renewProposalsOnPurchase()
-        resolve(true)
+        resolve()
       }).catch(e => {
         if (shouldThrowError(e)) {
           reject(e)
           return
         }
         this.isPurchaseRequested = false
-        this.waitBeforePurchase().then(() => this.observer.emit('REVERT'))
+        this.waitBeforePurchase().then(() => this.observer.emit('REVERT', 'before'))
       })
     })
   }

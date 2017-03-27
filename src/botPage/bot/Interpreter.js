@@ -10,7 +10,7 @@ export default class Interpreter {
     this.$scope = $scope
     this.bot = new Interface($scope)
     this.stopped = false
-    $scope.observer.register('REVERT', () => this.revert())
+    $scope.observer.register('REVERT', watchName => this.revert(watchName))
   }
   run(code) {
     let initFunc
@@ -39,12 +39,18 @@ export default class Interpreter {
         interpreter.setProperty(pseudoBotIf, 'purchase',
           this.createAsync(interpreter, BotIf.purchase))
 
+        interpreter.setProperty(pseudoBotIf, 'sellAtMarket',
+          this.createAsync(interpreter, BotIf.sellAtMarket))
+
         interpreter.setProperty(scope, 'Bot', pseudoBotIf)
 
         interpreter.setProperty(scope, 'watch',
           this.createAsync(interpreter, watchName => {
+            const snapshot = this.interpreter.takeStateSnapshot()
             if (watchName === 'before') {
-              this.state = this.interpreter.takeStateSnapshot()
+              this.beforeState = snapshot
+            } else {
+              this.duringState = snapshot
             }
 
             return watch(watchName)
@@ -66,8 +72,9 @@ export default class Interpreter {
       this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value))
     }
   }
-  revert() {
-    this.interpreter.restoreStateSnapshot(this.state)
+  revert(watchName) {
+    this.interpreter.restoreStateSnapshot(
+      watchName === 'before' ? this.beforeState : this.duringState)
     this.interpreter.paused_ = false
     this.loop()
   }

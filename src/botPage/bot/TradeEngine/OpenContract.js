@@ -19,7 +19,19 @@ export default Engine => class OpenContract extends Engine {
 
       this.broadcastContract(contract)
 
-      this.signal(this.isSold ? 'after' : 'during')
+      if (this.isSold) {
+        if (this.afterPromise) {
+          this.afterPromise()
+        }
+        this.signal('after')
+      } else {
+        this.signal('during')
+      }
+    })
+  }
+  waitForAfter() {
+    return new Promise(resolve => {
+      this.afterPromise = resolve
     })
   }
   subscribeToOpenContract(contractId) {
@@ -38,7 +50,7 @@ export default Engine => class OpenContract extends Engine {
 
     this.isSold = Boolean(isSold)
 
-    this.isSellAvailable = !isSold && Boolean(isValidToSell)
+    this.isSellAvailable = !this.isSold && Boolean(isValidToSell)
 
     this.isExpired = Boolean(isExpired)
 
