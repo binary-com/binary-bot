@@ -12,6 +12,7 @@ import Purchase from './Purchase'
 
 const scopeToWatchResolve = {
   before: ['before', true],
+  purchase: ['before', false],
   during: ['during', true],
   after: ['during', false],
 }

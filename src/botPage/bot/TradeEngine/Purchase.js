@@ -11,6 +11,7 @@ export default Engine => class Purchase extends Engine {
         this.broadcastPurchase(r.buy, contractType)
         this.subscribeToOpenContract(r.buy.contract_id)
         this.renewProposalsOnPurchase()
+        this.signal('purchase')
         resolve()
       }).catch(e => {
         if (shouldThrowError(e)) {
