@@ -30,38 +30,23 @@ git pull
 npm install
 ```
 
-## Running the cli command
+## Running the CLI command
 
 ```
 npm i -g binary-bot
-bot ./bot.js
-# specify endpoint (Use only if you know what you're doing):
-ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169' bot bot.js
+bot -h // For a quick help
+bot bot-example.js
 ```
 
-### ./bot.js content
-```
-var token = 'REPLACE_YOUR_TOKEN_HERE';
+### Running with a specific endpoint
+**Use only if you know what you're doing**
 
-(function (){
-  while (true) {
-    console.log('Starting bot...')
-    Bot.start(token, { amount: 1,
-      basis: 'stake', candleInterval: 60,
-      contractTypes: ['CALL', 'PUT'],
-      currency: 'USD', duration: 5,
-      duration_unit: 't', symbol: 'R_100',
-    });
-    watch('before');
-    Bot.purchase('CALL');
-    console.log('Purchased:', 'CALL');
-    while(watch('during')) {
-      console.log('Proposal Open Contract Recv')
-    }
-    console.log('Purchase finished:', Bot.readDetails(1));
-  }
-})();
 ```
+ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169' bot bot-example.js
+```
+
+### CLI examples:
+[`speed-test.js`](./cli-examples/speed-test.js)
 
 ## Think you found a bug?
 
