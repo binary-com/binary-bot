@@ -10,7 +10,7 @@ export default Engine => class OpenContract extends Engine {
       this.sellExpired()
 
       if (this.isSold) {
-        this.isPurchaseStarted = false
+        this.isPurchaseRequested = false
         this.updateTotals(contract)
         this.api.unsubscribeByID(this.openContractId)
       }

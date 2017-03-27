@@ -27,7 +27,7 @@ export default Engine => class OpenContract extends Engine {
         { symbol: this.symbol, key: this.tickListenerKey })
 
       const callback = () => {
-        if (!this.isPurchaseStarted && this.checkProposalReady()) {
+        if (!this.isPurchaseRequested && this.checkProposalReady()) {
           this.requestPipSizes().then(this.beforePromise)
         }
       }

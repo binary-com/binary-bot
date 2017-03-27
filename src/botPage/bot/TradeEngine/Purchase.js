@@ -4,7 +4,7 @@ export default Engine => class Purchase extends Engine {
   purchase(contractType) {
     const toBuy = this.selectProposal(contractType)
 
-    this.isPurchaseStarted = true
+    this.isPurchaseRequested = true
 
     return new Promise((resolve, reject) => {
       this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
@@ -17,7 +17,7 @@ export default Engine => class Purchase extends Engine {
           reject(e)
           return
         }
-        this.isPurchaseStarted = false
+        this.isPurchaseRequested = false
         this.waitBeforePurchase().then(() => this.observer.emit('REVERT'))
       })
     })
