@@ -50,6 +50,10 @@ export default Engine => class Total extends Engine {
     return totalProfit
   }
   checkLimits(tradeOption) {
+    if (!tradeOption.limitations) {
+      return
+    }
+
     const { limitations: { maxLoss, maxTrades } } = tradeOption
 
     if (maxLoss && maxTrades) {

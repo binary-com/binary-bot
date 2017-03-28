@@ -41,13 +41,12 @@ export default class TradeEngine extends Balance(Purchase(Sell(
 
     this.makeProposals(tradeOption)
 
-    Promise.all([
-      this.loginAndGetBalance(token),
-      this.waitBeforePurchase(symbol),
-    ]).then(() => this.signal('before'))
+    this.startPromise = this.loginAndGetBalance(token)
+
+    this.waitBeforePurchase(symbol)
   }
   loginAndGetBalance(token) {
-    if (token === this.token) {
+    if (this.token === token) {
       return Promise.resolve()
     }
 
