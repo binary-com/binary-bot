@@ -27,7 +27,6 @@ Blockly.Blocks.after_purchase = {
 Blockly.JavaScript.after_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'AFTERPURCHASE_STACK')
   const code = `after_purchase = function after_purchase(){
-    // Blockly.mainWorkspace.highlightBlock('${block.id}')
     ${stack}
     return false;
   };
