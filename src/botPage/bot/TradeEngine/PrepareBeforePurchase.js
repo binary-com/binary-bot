@@ -1,11 +1,4 @@
 export default Engine => class OpenContract extends Engine {
-  waitBeforePurchase(symbol) {
-    this.keepTicksAlive(symbol)
-
-    return new Promise(resolve => {
-      this.beforePromise = resolve
-    })
-  }
   requestPipSizes() {
     if (this.activeSymbols) {
       return Promise.resolve(this.activeSymbols)
@@ -19,7 +12,7 @@ export default Engine => class OpenContract extends Engine {
 
     return pipSizePromise
   }
-  keepTicksAlive(symbol) {
+  waitBeforePurchase(symbol) {
     if (symbol && this.symbol !== symbol) {
       const { ticksService } = this.$scope
 
@@ -28,7 +21,10 @@ export default Engine => class OpenContract extends Engine {
 
       const callback = () => {
         if (!this.isPurchaseRequested && this.checkProposalReady()) {
-          this.requestPipSizes().then(this.beforePromise)
+          Promise.all([
+            this.startPromise,
+            this.requestPipSizes(),
+          ]).then(() => this.signal('before'))
         }
       }
 
