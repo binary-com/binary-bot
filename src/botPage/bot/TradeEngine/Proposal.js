@@ -39,7 +39,7 @@ export default Engine => class Proposal extends Engine {
         passthrough: {
           contractType: proposal.contract_type,
         },
-      }), ['ContractBuyValidationError'])
+      }))
       .catch(e => this.broadcastError(e)))
   }
   observeProposals() {
