@@ -60,7 +60,6 @@ Blockly.JavaScript.trade = (block) => {
   var getTradeOptions;
   ${initialization.trim()}
   trade = function trade(again){
-    // Blockly.mainWorkspace.highlightBlock('${block.id}')
     if (getTradeOptions !== undefined) {
       Bot.start('${account.trim()}', getTradeOptions(),
       again, limitations);

@@ -27,7 +27,6 @@ Blockly.Blocks.during_purchase = {
 Blockly.JavaScript.during_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK')
   const code = `during_purchase = function during_purchase(){
-    // Blockly.mainWorkspace.highlightBlock('${block.id}')
     ${stack}
   };
   `
