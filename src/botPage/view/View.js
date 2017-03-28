@@ -305,7 +305,7 @@ export default class View {
     }
 
     const logout = () => {
-      logoutAllTokens(() => {
+      logoutAllTokens().then(() => {
         this.updateTokenList()
         globalObserver.emit('ui.log.info', translate('Logged you out!'))
         clearRealityCheck()
