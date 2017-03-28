@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#db8gmg
 import { translate } from '../../../../../common/i18n'
 import config from '../../../../common/const'
-import { marketDropdown, tradeTypeDropdown, restartOnError } from './components'
+import { marketDropdown, tradeTypeDropdown } from './components'
 import { updatePurchaseChoices, updateInputList, setInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'
 
@@ -28,7 +28,6 @@ export default () => {
       marketDropdown(this)
       tradeTypeDropdown(this)
       setInputList(this)
-      restartOnError(this)
       this.setPreviousStatement(true, 'Market')
       this.setColour('#f2f2f2')
     },
@@ -82,12 +81,10 @@ export default () => {
     const candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST')
     const contractTypeSelector = block.getFieldValue('TYPE_LIST')
     const durationType = block.getFieldValue('DURATIONTYPE_LIST')
-    const payouttype = block.getFieldValue('PAYOUTTYPE_LIST')
     const currency = block.getFieldValue('CURRENCY_LIST')
     const amount = Blockly.JavaScript.valueToCode(block,
       'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC)
     const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase()
-    const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE'
     let predictionValue
     let barrierOffsetValue
     let secondBarrierOffsetValue
@@ -119,10 +116,8 @@ export default () => {
           candleInterval: '${candleIntervalValue}',
           duration: ${durationValue},
           duration_unit: '${durationType}',
-          basis: '${payouttype}',
           currency: '${currency}',
           amount: ${amount},
-          restartOnError: ${shouldRestartOnError},
           ${((config.hasPrediction.indexOf(oppositesName) > -1 && predictionValue !== '')
       ? `prediction: ${predictionValue},` : '')}
           ${((config.hasSecondBarrierOffset.indexOf(oppositesName) > -1
