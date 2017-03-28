@@ -17,7 +17,7 @@ export default Engine => class Sell extends Engine {
     ]
 
     return new Promise((resolve, reject) => Promise.all([
-      this.api.sellContract(this.contractId, 0),
+      this.sellContract(this.contractId),
       this.waitForAfter(),
     ]).then(() => resolve())
     .catch(e => {
@@ -27,6 +27,13 @@ export default Engine => class Sell extends Engine {
       }
       this.observer.emit('REVERT', 'during')
     }))
+  }
+  sellContract(id) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.api.sellContract(id, 0).then(resolve).catch(reject)
+      }, 1000)
+    })
   }
   sellExpired() {
     if (this.isSellAvailable && this.isExpired) {
