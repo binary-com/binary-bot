@@ -35,6 +35,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(
 
     const { symbol } = tradeOption
 
+    this.checkLimits(tradeOption)
+
     globalObserver.emit('bot.start', symbol)
 
     this.makeProposals(tradeOption)

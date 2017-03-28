@@ -1,3 +1,4 @@
+import { translate } from '../../../common/i18n'
 import { addFixed, subtractFixed } from '../tools'
 
 let totalProfit = 0
@@ -39,6 +40,7 @@ export default Engine => class Total extends Engine {
     })
   }
   updateAndReturnTotalRuns() {
+    this.sessionRuns++
     return ++totalRuns
   }
   getTotalRuns() {
@@ -46,5 +48,17 @@ export default Engine => class Total extends Engine {
   }
   getTotalProfit() {
     return totalProfit
+  }
+  checkLimits(tradeOption) {
+    const { limitations: { maxLoss, maxTrades } } = tradeOption
+
+    if (maxLoss && maxTrades) {
+      if (this.sessionRuns >= maxTrades) {
+        throw Error(translate('Maximum number of trades reached'))
+      }
+      if (this.sessionProfit <= (-maxLoss)) {
+        throw Error(translate('Maximum loss amount reached'))
+      }
+    }
   }
 }

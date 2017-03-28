@@ -110,8 +110,8 @@ export default () => {
       [contractTypeSelector]
     const code = `
       getTradeOptions = function getTradeOptions() {
-        var tradeOptions = {}
-        tradeOptions = {
+        var tradeOptions = {
+          limitations: limitations,
           contractTypes: ${JSON.stringify(contractTypeList)},
           candleInterval: '${candleIntervalValue}',
           duration: ${durationValue},
