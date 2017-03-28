@@ -35,12 +35,24 @@ const notify = (msg, className, position = 'left') => {
 }
 
 const notifyError = error => {
-  let message = (error.error) ?
-    error.error.message : error.message || error
-  const errorCode = error.error ?
-    error.error.code : error.name
+  if (!error) {
+    return
+  }
 
-  if (error.name === 'DisconnectError') {
+  let message = error.message
+  let errorCode = error.name
+
+  if (error.error) {
+    message = error.error.message
+    errorCode = error.error.errorCode
+    if (error.error.error) {
+      message = error.error.error.message
+      message = error.error.error.message
+      errorCode = error.error.error.errorCode
+    }
+  }
+
+  if (errorCode === 'DisconnectError') {
     message = translate('Connection lost before receiving the response from the server')
   }
 
