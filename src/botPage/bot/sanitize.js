@@ -1,3 +1,4 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate } from '../../common/i18n'
 import { createError } from '../common/error'
 
@@ -7,14 +8,18 @@ const isPositiveInteger = num => isPositiveNumber(num) && Number.isInteger(num)
 
 export const expectPositiveInteger = (num, msg) => {
   if (!isPositiveInteger(num)) {
-    throw createError('PositiveIntegerExpected', msg)
+    const error = createError('PositiveIntegerExpected', msg)
+    globalObserver.emit('Error', error)
+    throw error
   }
   return num
 }
 
 export const expectPositiveNumber = (num, msg) => {
   if (!isPositiveNumber(num)) {
-    throw createError('PositiveNumberExpected', msg)
+    const error = createError('PositiveNumberExpected', msg)
+    globalObserver.emit('Error', error)
+    throw error
   }
   return num
 }
@@ -23,11 +28,15 @@ const sanitizeTradeOption = tradeOption => {
   const { symbol, contractTypes, amount, duration } = tradeOption
 
   if (!symbol) {
-    throw createError('OptionError', translate('Underlying market is not selected'))
+    const error = createError('OptionError', translate('Underlying market is not selected'))
+    globalObserver.emit('Error', error)
+    throw error
   }
 
   if (!contractTypes[0]) {
-    throw createError('OptionError', translate('Contract type is not selected'))
+    const error = createError('OptionError', translate('Contract type is not selected'))
+    globalObserver.emit('Error', error)
+    throw error
   }
 
   expectPositiveInteger(duration, translate('Duration must be an integer'))
@@ -39,7 +48,9 @@ export const sanitizeStart = args => {
   const [token, tradeOption] = args
 
   if (!token) {
-    throw createError('LoginError', translate('Please login'))
+    const error = createError('LoginError', translate('Please login'))
+    globalObserver.emit('Error', error)
+    throw error
   }
 
   sanitizeTradeOption(tradeOption)
