@@ -60,7 +60,9 @@ export default class Interpreter {
       }
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
+      globalObserver.register('Error', e => reject(e))
+
       this.interpreter = new JSInterpreter(code, initFunc)
 
       this.onFinish = resolve
