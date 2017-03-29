@@ -22,5 +22,5 @@ Blockly.Blocks.ohlc_values = {
 Blockly.JavaScript.ohlc_values = (block) => {
   const ohlcField = block.getFieldValue('OHLCFIELD_LIST')
 
-  return [`Bot.getOhlc('${ohlcField}')`, Blockly.JavaScript.ORDER_ATOMIC]
+  return [`Bot.getOhlc({ field: '${ohlcField}' })`, Blockly.JavaScript.ORDER_ATOMIC]
 }
