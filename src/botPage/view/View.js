@@ -301,7 +301,7 @@ export default class View {
         e.preventDefault()
       }
       stopRealityCheck()
-      this.blockly.stop()
+      this.stop()
     }
 
     const logout = () => {
@@ -469,18 +469,18 @@ export default class View {
       }
     })
   }
+  stop() {
+    this.blockly.stop()
+    $('#runButton').show()
+    $('#stopButton').hide()
+  }
   addEventHandlers() {
     globalObserver.register('Error', error => {
       if (error.error && error.error.code === 'InvalidToken') {
         removeAllTokens()
         this.updateTokenList()
-        this.blockly.stop()
+        this.stop()
       }
-    })
-
-    globalObserver.register('bot.stop', () => {
-      $('#runButton').show()
-      $('#stopButton').hide()
     })
 
     globalObserver.register('bot.start', s => {
