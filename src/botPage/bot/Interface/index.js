@@ -1,6 +1,5 @@
 import TradeEngine from '../TradeEngine'
 import { noop, subtractFixed, createDetails } from '../tools'
-import { sanitizeStart } from '../sanitize'
 import TicksInterface from './TicksInterface'
 import ToolsInterface from './ToolsInterface'
 
@@ -31,7 +30,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     const getDetail = i => createDetails(this.get('contract'))[i]
 
     return {
-      start: (...args) => this.tradeEngine.start(...sanitizeStart(args)),
+      start: (...args) => this.tradeEngine.start(...args),
       stop: (...args) => this.tradeEngine.stop(...args),
       purchase: contractType => this.tradeEngine.purchase(contractType),
       getAskPrice: contractType => +this.getProposal(contractType).ask_price,
