@@ -24,7 +24,7 @@ Blockly.Blocks.read_ohlc = {
 Blockly.JavaScript.read_ohlc = (block) => {
   const ohlcField = block.getFieldValue('OHLCFIELD_LIST')
   const index = Number(Blockly.JavaScript.valueToCode(block,
-      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC))
+      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || 1
 
-  return [`Bot.getOhlcFromEnd('${ohlcField}', ${index})`, Blockly.JavaScript.ORDER_ATOMIC]
+  return [`Bot.getOhlcFromEnd({ field: '${ohlcField}', index: ${index} })`, Blockly.JavaScript.ORDER_ATOMIC]
 }

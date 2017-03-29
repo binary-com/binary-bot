@@ -21,6 +21,6 @@ Blockly.Blocks.get_ohlc = {
 
 Blockly.JavaScript.get_ohlc = (block) => {
   const index = Number(Blockly.JavaScript.valueToCode(block,
-      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC))
-  return [`Bot.getOhlcFromEnd(undefined, ${index})`, Blockly.JavaScript.ORDER_ATOMIC]
+      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || 1
+  return [`Bot.getOhlcFromEnd({ index: ${index} })`, Blockly.JavaScript.ORDER_ATOMIC]
 }
