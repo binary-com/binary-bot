@@ -24,7 +24,7 @@ export const expectPositiveNumber = (num, msg) => {
   return num
 }
 
-const sanitizeTradeOption = tradeOption => {
+const expectTradeOption = tradeOption => {
   const { symbol, contractTypes, amount, duration } = tradeOption
 
   if (!symbol) {
@@ -44,7 +44,7 @@ const sanitizeTradeOption = tradeOption => {
   expectPositiveNumber(amount, translate('Amount must be a positive number'))
 }
 
-export const sanitizeStart = args => {
+export const expectStartArg = args => {
   const [token, tradeOption] = args
 
   if (!token) {
@@ -53,7 +53,7 @@ export const sanitizeStart = args => {
     throw error
   }
 
-  sanitizeTradeOption(tradeOption)
+  expectTradeOption(tradeOption)
 
   return args
 }

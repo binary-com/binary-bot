@@ -11,13 +11,13 @@ export default Interface => class extends Interface {
       checkDirection: ({ symbol, dir }) => new Promise(resolve =>
         this.getDirection(symbol).then(d => resolve((d === dir)))),
       getOhlcFromEnd: args => {
-        const { index = 1 } = args || {}
-        const sanitizedIndex =
-          expectPositiveInteger(index,
-            translate('OHLC index must be a positive integer'))
+        const { index: { i = 1 } } = args || {}
+
+        const index =
+          expectPositiveInteger(i, translate('OHLC index must be a positive integer'))
 
         return new Promise(resolve => this.getOhlc(args)
-          .then(ohlc => resolve(ohlc.slice(-sanitizedIndex)[0])))
+          .then(ohlc => resolve(ohlc.slice(-index)[0])))
       },
       getOhlc: args => this.getOhlc(args),
     }
