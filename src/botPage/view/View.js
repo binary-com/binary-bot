@@ -480,8 +480,6 @@ export default class View {
   }
   stop() {
     this.blockly.stop()
-    $('#runButton').show()
-    $('#stopButton').hide()
   }
   addEventHandlers() {
     globalObserver.register('Error', error => {

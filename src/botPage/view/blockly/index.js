@@ -248,7 +248,7 @@ export default class _Blockly {
     if (code) {
       this.stop()
       this.interpreter = new Interpreter(createScope())
-      this.interpreter.run(code)
+      this.interpreter.run(code).catch(() => this.stop())
       $('#summaryPanel')
         .show()
     }
@@ -256,6 +256,9 @@ export default class _Blockly {
   stop() {
     if (this.interpreter) {
       this.interpreter.stop()
+      $('#runButton').show()
+      $('#stopButton').hide()
+      this.interpreter = null
     }
   }
   addBlocklyTranslation() {
