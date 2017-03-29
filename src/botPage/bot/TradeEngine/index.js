@@ -1,7 +1,7 @@
 import { Map } from 'immutable'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { doUntilDone } from '../tools'
-import { sanitizeStart } from '../sanitize'
+import { expectStartArg } from '../sanitize'
 import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
@@ -31,7 +31,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(
     this.signals = new Map()
   }
   start(...args) {
-    const [token, tradeOption] = sanitizeStart(args)
+    const [token, tradeOption] = expectStartArg(args)
     this.watches = new Map()
     this.signals = new Map()
 
