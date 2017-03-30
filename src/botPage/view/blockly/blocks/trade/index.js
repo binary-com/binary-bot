@@ -1,3 +1,4 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate } from '../../../../../common/i18n'
 import config from '../../../../common/const'
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils'
@@ -47,7 +48,6 @@ Blockly.Blocks.trade = {
   },
   onchange: function onchange(ev) {
     if (ev.type === Blockly.Events.CREATE) {
-      setBlockTextColor(this)
       ev.ids.forEach(blockId => {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
 
@@ -77,10 +77,23 @@ Blockly.Blocks.trade = {
         this.setFieldValue('', 'TYPE_LIST')
       }
     }
-    const oppositesName = this.getFieldValue('TRADETYPE_LIST').toUpperCase()
-    const contractType = this.getFieldValue('TYPE_LIST')
-    if (oppositesName && contractType) {
-      updatePurchaseChoices(contractType, oppositesName)
+    if (ev.blockId === this.id &&
+      ([Blockly.Events.CREATE, Blockly.Events.CHANGE]).includes(ev.type)) {
+      setBlockTextColor(this)
+      if (!this.isInFlyout) {
+        const symbol = this.getFieldValue('SYMBOL_LIST')
+        if (symbol) {
+          globalObserver.emit('bot.init', symbol)
+        }
+      }
+      const type = this.getFieldValue('TRADETYPE_LIST')
+      if (type) {
+        const oppositesName = type.toUpperCase()
+        const contractType = this.getFieldValue('TYPE_LIST')
+        if (oppositesName && contractType) {
+          updatePurchaseChoices(contractType, oppositesName)
+        }
+      }
     }
   },
 }

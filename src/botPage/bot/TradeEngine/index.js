@@ -1,5 +1,4 @@
 import { Map } from 'immutable'
-import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { translate } from '../../..//common/i18n'
 import { createError } from '../../common/error'
 import { doUntilDone } from '../tools'
@@ -45,8 +44,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(
     this.startPromise = this.loginAndGetBalance(token)
 
     this.waitBeforePurchase(symbol)
-
-    globalObserver.emit('bot.init', symbol)
   }
   start(tradeOptions) {
     if (!this.options) {
