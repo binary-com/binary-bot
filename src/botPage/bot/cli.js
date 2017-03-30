@@ -27,7 +27,7 @@ export const createInterpreter = () => new Interpreter(createScope())
 
 let filename
 
-program.version('7.0.10')
+program.version('7.0.13')
   .usage('[filename]')
   .arguments('[filename]')
   .action(fn => {
