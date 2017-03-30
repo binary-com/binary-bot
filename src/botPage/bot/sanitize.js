@@ -58,3 +58,25 @@ export const expectStartArg = args => {
   return args
 }
 
+const isCandle = candle => candle instanceof Object &&
+  (['open', 'high', 'low', 'close'])
+    .every(key => isPositiveNumber(candle[key])) &&
+      isPositiveInteger(candle.epoch)
+
+export const expectCandle = candle => {
+  if (!isCandle(candle)) {
+    const error = createError('CandleExpected', translate('Given candle is not valid'))
+    globalObserver.emit('Error', error)
+    throw error
+  }
+  return candle
+}
+
+export const expectCandles = candles => {
+  if (!(candles instanceof Array) || !candles.every(c => isCandle(c))) {
+    const error = createError('CandleListExpected', translate('Given candle list is not valid'))
+    globalObserver.emit('Error', error)
+    throw error
+  }
+  return candles
+}
