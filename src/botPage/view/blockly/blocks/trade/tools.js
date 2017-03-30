@@ -15,4 +15,3 @@ export const updateInputList = block => {
 export const setInputList = block => {
   Blockly.Blocks.allFields.init.call(block)
 }
-

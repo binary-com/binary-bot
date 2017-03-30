@@ -1,11 +1,10 @@
 import { translate } from '../../../../common/i18n'
 import config from '../../../common/const'
+import { oppositesToDropdown } from '../utils'
 
 let purchaseChoices = [[translate('Click to select'), '']]
 
 export const getPurchaseChoices = () => purchaseChoices
-
-export const oppositesToDropdown = op => op.map(k => Object.entries(k)[0].reverse())
 
 export const updatePurchaseChoices = (contractType, oppositesName) => {
   purchaseChoices = oppositesToDropdown(config.opposites[oppositesName]
