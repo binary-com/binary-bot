@@ -4,6 +4,7 @@ import config from '../../../../common/const'
 import { insideTrade } from '../../relationChecker'
 import { findTopParentBlock } from '../../utils'
 import { setInputList, updateInputList } from './tools'
+import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
 
 const bcBarrierOffset = (market, inputName) => {
   const barrier = market.getInput(inputName)
@@ -25,6 +26,12 @@ const bcBarrierOffset = (market, inputName) => {
 export default () => {
   Blockly.Blocks.market = {
     init: function init() {
+      // for backward compatibility
+      marketDropdown(this)
+      tradeTypeDropdown(this)
+      contractTypes(this)
+      candleInterval(this)
+      // end of bc
       setInputList(this)
       this.setPreviousStatement(true, 'TradeOptions')
       this.setColour('#f2f2f2')

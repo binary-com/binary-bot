@@ -22,7 +22,7 @@ export const marketDropdown = (block) => {
     return Object.keys(symbols)
       .map(e => [symbols[e].display, symbols[e].symbol])
   }
-  block.appendDummyInput()
+  block.appendDummyInput('MARKETDEFINITION')
     .appendField(`${translate('Market')}:`)
     .appendField(new Blockly.FieldDropdown(Object.keys(markets).map(e => [markets[e].name, e])), 'MARKET_LIST')
     .appendField('->')
@@ -54,7 +54,7 @@ export const tradeTypeDropdown = (block) => {
       e,
     ])
   }
-  block.appendDummyInput()
+  block.appendDummyInput('TRADETYPEDEFINITION')
     .appendField(`${translate('Trade Type')}:`)
     .appendField(new Blockly.FieldDropdown(getTradeTypeCats), 'TRADETYPECAT_LIST')
     .appendField('->')
