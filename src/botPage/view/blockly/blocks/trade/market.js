@@ -31,7 +31,7 @@ export default () => {
     },
     onchange: function onchange(ev) {
       insideTrade(this, ev, translate('Trade Options'))
-      if (ev.type === Blockly.Events.CREATE) {
+      if (([Blockly.Events.CREATE, Blockly.Events.CHANGE]).includes(ev.type)) {
         updateInputList(this)
       }
       if (ev.group === 'tradeTypeConvert') {
