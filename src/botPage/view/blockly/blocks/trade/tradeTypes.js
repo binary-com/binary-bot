@@ -1,12 +1,10 @@
 import config from '../../../../common/const'
-import { duration, payout, prediction, barrierOffset, secondBarrierOffset, candleInterval, contractTypes,
+import { duration, payout, prediction, barrierOffset, secondBarrierOffset,
 } from './components'
 
 export default () => {
   Blockly.Blocks.allFields = {
     init: function init() {
-      contractTypes(this)
-      candleInterval(this)
       duration(this)
       payout(this)
       prediction(this)
@@ -24,8 +22,6 @@ export default () => {
           const optionName = options[Object.keys(options)[0]]
           optionNames.push(optionName)
         })
-        contractTypes(this)
-        candleInterval(this)
         duration(this)
         payout(this)
         if (config.hasPrediction.indexOf(oppositesName) > -1) {

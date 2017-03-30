@@ -12,13 +12,13 @@ export const tradeOptionToProposal = tradeOption =>
     duration: tradeOption.duration,
     amount: tradeOption.amount.toFixed(2),
     contract_type: type,
-    ...('prediction' in tradeOption && {
+    ...(tradeOption.prediction !== undefined && {
       barrier: tradeOption.prediction,
     }),
-    ...('barrierOffset' in tradeOption && {
+    ...(tradeOption.barrierOffset !== undefined && {
       barrier: tradeOption.barrierOffset,
     }),
-    ...('secondBarrierOffset' in tradeOption && {
+    ...(tradeOption.secondBarrierOffset !== undefined && {
       barrier2: tradeOption.secondBarrierOffset,
     }),
   }))

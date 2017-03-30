@@ -3,21 +3,6 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import config from '../../common/const'
 import { translate } from '../../../common/i18n'
 
-let purchaseChoices = [[translate('Click to select'), '']]
-
-export const oppositesToDropdown = (opposites) => opposites.map((k) => [k[Object.keys(k)[0]], Object.keys(k)[0]])
-
-export const updateInputList = (block) => {
-  const tradeType = block.getFieldValue('TRADETYPE_LIST')
-  if (tradeType) {
-    Blockly.Blocks[tradeType].init.call(block)
-  }
-}
-
-export const setInputList = (block) => {
-  Blockly.Blocks.allFields.init.call(block)
-}
-
 export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
 
 export const backwardCompatibility = (block) => {
@@ -123,8 +108,6 @@ export const getTopBlocksByType = type =>
 export const getMainBlocks = () =>
   config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b)
 
-export const getPurchaseChoices = () => purchaseChoices
-
 export const findTopParentBlock = (b) => {
   let block = b
   let pblock = block.parentBlock_
@@ -147,32 +130,6 @@ export const insideMainBlocks = (block) => {
     return false
   }
   return parent.type && isMainBlock(parent.type)
-}
-
-export const updatePurchaseChoices = (contractType, oppositesName) => {
-  purchaseChoices = oppositesToDropdown(config.opposites[oppositesName]
-    .filter((k) => (contractType === 'both' ? true : contractType === Object.keys(k)[0])))
-  const purchases = Blockly.mainWorkspace.getAllBlocks()
-    .filter((r) => (['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0))
-  Blockly.Events.recordUndo = false
-  purchases.forEach(purchase => {
-    const value = purchase.getField('PURCHASE_LIST')
-      .getValue()
-    Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'))
-    if (value === purchaseChoices[0][1]) {
-      purchase.getField('PURCHASE_LIST')
-        .setText(purchaseChoices[0][0])
-    } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
-      purchase.getField('PURCHASE_LIST')
-        .setText(purchaseChoices[1][0])
-    } else {
-      purchase.getField('PURCHASE_LIST')
-        .setValue(purchaseChoices[0][1])
-      purchase.getField('PURCHASE_LIST')
-        .setText(purchaseChoices[0][0])
-    }
-  })
-  Blockly.Events.recordUndo = true
 }
 
 export const save = (filename = 'binary-bot', collection = false, xmlDom) => {

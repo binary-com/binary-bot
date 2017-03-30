@@ -1,10 +1,13 @@
 import { translate } from '../../../../../common/i18n'
+import config from '../../../../common/const'
+import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils'
+import { defineContract } from '../images'
+import { updatePurchaseChoices } from '../tools'
 import './barrierOffset'
+import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
 import markets from './markets'
 import market from './market'
 import tradeTypes from './tradeTypes'
-import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils'
-import { defineContract } from '../images'
 
 const backwardCompatibility = (block) => {
   setTimeout(() => {
@@ -31,6 +34,10 @@ Blockly.Blocks.trade = {
     this.appendDummyInput()
       .appendField(new Blockly.FieldImage(defineContract, 15, 15, 'T'))
       .appendField(translate('(1) Define your trade contract'))
+    marketDropdown(this)
+    tradeTypeDropdown(this)
+    contractTypes(this)
+    candleInterval(this)
     this.appendStatementInput('SUBMARKET')
       .setCheck(null)
     this.setPreviousStatement(true, null)
@@ -39,7 +46,7 @@ Blockly.Blocks.trade = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
-    if (ev.type === 'create') {
+    if (ev.type === Blockly.Events.CREATE) {
       setBlockTextColor(this)
       ev.ids.forEach(blockId => {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
@@ -49,19 +56,64 @@ Blockly.Blocks.trade = {
         }
       })
     }
+    if (ev.blockId === this.id && ev.element === 'field') {
+      if (ev.name === 'MARKET_LIST') {
+        this.setFieldValue('', 'SUBMARKET_LIST')
+      }
+      if (ev.name === 'SUBMARKET_LIST') {
+        this.setFieldValue('', 'SYMBOL_LIST')
+      }
+      if (ev.name === 'SYMBOL_LIST') {
+        this.setFieldValue('', 'TRADETYPECAT_LIST')
+      }
+      if (ev.name === 'TRADETYPECAT_LIST') {
+        this.setFieldValue('', 'TRADETYPE_LIST')
+      }
+    }
+    if (ev.name === 'TRADETYPE_LIST') {
+      if (ev.newValue) {
+        this.setFieldValue('both', 'TYPE_LIST')
+      } else {
+        this.setFieldValue('', 'TYPE_LIST')
+      }
+    }
+    const oppositesName = this.getFieldValue('TRADETYPE_LIST').toUpperCase()
+    const contractType = this.getFieldValue('TYPE_LIST')
+    if (oppositesName && contractType) {
+      updatePurchaseChoices(contractType, oppositesName)
+    }
   },
 }
 
 Blockly.JavaScript.trade = (block) => {
   const account = $('.account-id').first().attr('value')
   const initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET')
+  const candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST')
+  const contractTypeSelector = block.getFieldValue('TYPE_LIST')
+  const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase()
+  const contractTypeList = contractTypeSelector === 'both' ?
+    config.opposites[oppositesName].map(k => Object.keys(k)[0]) :
+    [contractTypeSelector]
   // TODO: Assemble JavaScript into code variable.
   const code = `
   var getTradeOptions;
   ${initialization.trim()}
-  trade = function trade(again){
+  trade = function trade(limitations){
     if (getTradeOptions !== undefined) {
-      Bot.start('${account.trim()}', getTradeOptions());
+      var tradeOptions = getTradeOptions()
+      Bot.start('${account.trim()}', {
+        limitations: limitations,
+        duration: tradeOptions.duration,
+        duration_unit: tradeOptions.duration_unit,
+        currency: tradeOptions.currency,
+        amount: tradeOptions.amount,
+        prediction: tradeOptions.prediction,
+        barrierOffset: tradeOptions.barrierOffset,
+        secondBarrierOffset: tradeOptions.secondBarrierOffset,
+        symbol: '${block.getFieldValue('SYMBOL_LIST')}',
+        contractTypes: ${JSON.stringify(contractTypeList)},
+        candleInterval: '${candleIntervalValue}',
+      });
     }
   };
   `

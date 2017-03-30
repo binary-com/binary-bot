@@ -1,7 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pbvgpo
-import { getPurchaseChoices } from '../../../blockly/utils'
 import { insideBeforePurchase } from '../../relationChecker'
 import { translate } from '../../../../../common/i18n'
+import { getPurchaseChoices } from '../tools'
 
 Blockly.Blocks.purchase = {
   init: function init() {

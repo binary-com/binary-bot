@@ -1,7 +1,8 @@
 import config from '../../../../common/const'
 import { translate } from '../../../../../common/i18n'
 import { symbolApi } from '../../../shared'
-import { oppositesToDropdown } from '../../utils'
+import { oppositesToDropdown } from '../tools'
+import { getTradeType } from './tools'
 
 export const marketDropdown = (block) => {
   const markets = symbolApi.activeSymbols.getMarkets()
@@ -89,7 +90,7 @@ export const candleInterval = (block) => {
 export const duration = (block) => {
   if (!block.getInput('DURATION')) {
     const getDurationTypes = () => {
-      const tradeType = block.getFieldValue('TRADETYPE_LIST')
+      const tradeType = getTradeType(block)
       if (tradeType) {
         return config.durationTypes[tradeType.toUpperCase()]
       }
