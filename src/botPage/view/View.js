@@ -490,7 +490,7 @@ export default class View {
       }
     })
 
-    globalObserver.register('bot.start', s => {
+    globalObserver.register('bot.init', s => {
       if (symbol !== s) {
         stopTickListeners()
         symbol = s

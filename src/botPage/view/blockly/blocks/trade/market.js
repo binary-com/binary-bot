@@ -85,8 +85,9 @@ export default () => {
       secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`
     }
     const code = `
-      getTradeOptions = function getTradeOptions() {
-        return {
+      start = function start() {
+        Bot.start({
+          limitations: limitations,
           duration: ${durationValue},
           duration_unit: '${durationType}',
           currency: '${currency}',
@@ -94,7 +95,7 @@ export default () => {
           prediction: ${predictionValue},
           barrierOffset: ${barrierOffsetValue},
           secondBarrierOffset: ${secondBarrierOffsetValue},
-        };
+        });
       }
       `
     return code

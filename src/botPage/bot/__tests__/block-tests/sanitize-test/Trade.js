@@ -7,7 +7,7 @@ describe('Trade Definition Blocks', () => {
 
   describe('Start arguments', () => {
     beforeAll(done =>
-      run('Bot.start("");').catch(e => {
+      run('Bot.init("");').catch(e => {
         error = e
         done()
       }))
@@ -19,7 +19,10 @@ describe('Trade Definition Blocks', () => {
 
   describe('Trade Option must be checked', () => {
     beforeAll(done =>
-      run('Bot.start("SomeToken", { amount: "hello" });').catch(e => {
+      run(`
+        Bot.init('Sametoken');
+        Bot.start({ amount: "hello" })
+      `).catch(e => {
         error = e
         done()
       }))

@@ -221,10 +221,15 @@ export default class _Blockly {
           }
         }
 
+        var limitations = ${JSON.stringify(limitations)};
+
+        var start;
+
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
+        run(trade)
         while(true) {
-          run(trade, ${JSON.stringify(limitations)})
+          run(start)
           while(watch('before')) {
             tick_analysis();
             run(before_purchase);

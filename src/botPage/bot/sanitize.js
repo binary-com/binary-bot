@@ -24,8 +24,8 @@ export const expectPositiveNumber = (num, msg) => {
   return num
 }
 
-const expectTradeOption = tradeOption => {
-  const { symbol, contractTypes, amount, duration } = tradeOption
+const expectOptions = options => {
+  const { symbol, contractTypes } = options
 
   if (!symbol) {
     const error = createError('OptionError', translate('Underlying market is not selected'))
@@ -38,14 +38,10 @@ const expectTradeOption = tradeOption => {
     globalObserver.emit('Error', error)
     throw error
   }
-
-  expectPositiveInteger(duration, translate('Duration must be an integer'))
-
-  expectPositiveNumber(amount, translate('Amount must be a positive number'))
 }
 
-export const expectStartArg = args => {
-  const [token, tradeOption] = args
+export const expectInitArg = args => {
+  const [token, options] = args
 
   if (!token) {
     const error = createError('LoginError', translate('Please login'))
@@ -53,9 +49,19 @@ export const expectStartArg = args => {
     throw error
   }
 
-  expectTradeOption(tradeOption)
+  expectOptions(options)
 
   return args
+}
+
+export const expectTradeOptions = tradeOptions => {
+  const { amount, duration } = tradeOptions
+
+  expectPositiveInteger(duration, translate('Duration must be an integer'))
+
+  expectPositiveNumber(amount, translate('Amount must be a positive number'))
+
+  return tradeOptions
 }
 
 const isCandle = candle => candle instanceof Object &&

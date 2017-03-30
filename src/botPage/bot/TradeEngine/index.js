@@ -1,7 +1,9 @@
 import { Map } from 'immutable'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
+import { translate } from '../../..//common/i18n'
+import { createError } from '../../common/error'
 import { doUntilDone } from '../tools'
-import { expectStartArg } from '../sanitize'
+import { expectInitArg } from '../sanitize'
 import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
@@ -30,22 +32,30 @@ export default class TradeEngine extends Balance(Purchase(Sell(
     this.watches = new Map()
     this.signals = new Map()
   }
-  start(...args) {
-    const [token, tradeOption] = expectStartArg(args)
+  init(...args) {
     this.watches = new Map()
     this.signals = new Map()
 
-    const { symbol } = tradeOption
+    const [token, options] = expectInitArg(args)
 
-    this.checkLimits(tradeOption)
+    const { symbol } = options
 
-    globalObserver.emit('bot.start', symbol)
-
-    this.makeProposals(tradeOption)
+    this.options = options
 
     this.startPromise = this.loginAndGetBalance(token)
 
     this.waitBeforePurchase(symbol)
+
+    globalObserver.emit('bot.init', symbol)
+  }
+  start(tradeOptions) {
+    if (!this.options) {
+      throw createError('NotInitialized', translate('Bot.init is not called'))
+    }
+
+    this.checkLimits(tradeOptions)
+
+    this.makeProposals({ ...this.options, ...tradeOptions })
   }
   loginAndGetBalance(token) {
     if (this.token === token) {

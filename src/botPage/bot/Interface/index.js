@@ -30,6 +30,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     const getDetail = i => createDetails(this.get('contract'))[i]
 
     return {
+      init: (...args) => this.tradeEngine.init(...args),
       start: (...args) => this.tradeEngine.start(...args),
       stop: (...args) => this.tradeEngine.stop(...args),
       purchase: contractType => this.tradeEngine.purchase(contractType),

@@ -1,11 +1,19 @@
 import { expect } from 'chai'
 import { createInterpreter } from '../cli'
 
+const init = `
+  Bot.init('Xkq6oGFEHh6hJH8', {
+    candleInterval: 60,
+    contractTypes: ['CALL', 'PUT'],
+    symbol: 'R_100',
+  })
+`
+
 const start = duration => `
-        Bot.start('Xkq6oGFEHh6hJH8', {
-          amount: 1, basis: 'stake', candleInterval: 60,
-          contractTypes: ['CALL', 'PUT'],
-          currency: 'USD', ${duration}, symbol: 'R_100',
+        ${init}
+        Bot.start({
+          amount: 1,
+          currency: 'USD', ${duration},
         });
 `
 
@@ -14,6 +22,7 @@ export const parts = {
       (function (){
         var result = {};
   `,
+  init,
   timeTrade: start('duration: 2, duration_unit: "h"'),
   tickTrade: start('duration: 5, duration_unit: "t"'),
   waitToPurchase: `

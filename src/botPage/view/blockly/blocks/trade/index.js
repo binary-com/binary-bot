@@ -96,25 +96,13 @@ Blockly.JavaScript.trade = (block) => {
     [contractTypeSelector]
   // TODO: Assemble JavaScript into code variable.
   const code = `
-  var getTradeOptions;
   ${initialization.trim()}
-  trade = function trade(limitations){
-    if (getTradeOptions !== undefined) {
-      var tradeOptions = getTradeOptions()
-      Bot.start('${account.trim()}', {
-        limitations: limitations,
-        duration: tradeOptions.duration,
-        duration_unit: tradeOptions.duration_unit,
-        currency: tradeOptions.currency,
-        amount: tradeOptions.amount,
-        prediction: tradeOptions.prediction,
-        barrierOffset: tradeOptions.barrierOffset,
-        secondBarrierOffset: tradeOptions.secondBarrierOffset,
-        symbol: '${block.getFieldValue('SYMBOL_LIST')}',
-        contractTypes: ${JSON.stringify(contractTypeList)},
-        candleInterval: '${candleIntervalValue}',
-      });
-    }
+  trade = function trade(){
+    Bot.init('${account.trim()}', {
+      symbol: '${block.getFieldValue('SYMBOL_LIST')}',
+      contractTypes: ${JSON.stringify(contractTypeList)},
+      candleInterval: '${candleIntervalValue}',
+    });
   };
   `
   return code

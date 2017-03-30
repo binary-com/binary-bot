@@ -22,15 +22,17 @@ describe('Interface', () => {
     let stay
 
     beforeAll((done) => {
-      Bot.start('Xkq6oGFEHh6hJH8', {
-        amount: 1,
-        basis: 'stake',
+      Bot.init('Xkq6oGFEHh6hJH8', {
         candleInterval: 60,
         contractTypes: ['DIGITEVEN', 'DIGITODD'],
+        symbol: 'R_100',
+      })
+
+      Bot.start({
+        amount: 1,
         currency: 'USD',
         duration: 5,
         duration_unit: 't',
-        symbol: 'R_100',
       })
 
       watch('before').then(c => {

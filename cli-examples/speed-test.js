@@ -2,13 +2,15 @@ var token = 'Replace with your own token';
 
 console.log('Starting bot...');
 
+Bot.init(token, {
+  symbol: 'R_100',
+  candleInterval: 60,
+  contractTypes: ['CALL', 'PUT'],
+});
+
 while (true) {
-  Bot.start(token, {
-    symbol: 'R_100',
+  Bot.start({
     amount: 1,
-    basis: 'stake',
-    candleInterval: 60,
-    contractTypes: ['CALL', 'PUT'],
     currency: 'USD',
     duration: 2,
     duration_unit: 'h',
