@@ -206,7 +206,7 @@ export default class _Blockly {
     this.disableStrayBlocks()
     const code = `
       (function(){
-        var trade, before_purchase, during_purchase, after_purchase;
+        var before_purchase, during_purchase, after_purchase;
 
         var tick_analysis_list = [];
 
@@ -227,7 +227,6 @@ export default class _Blockly {
 
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
-        run(trade)
         while(true) {
           run(start)
           while(watch('before')) {

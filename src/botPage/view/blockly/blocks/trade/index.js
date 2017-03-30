@@ -109,14 +109,12 @@ Blockly.JavaScript.trade = (block) => {
     [contractTypeSelector]
   // TODO: Assemble JavaScript into code variable.
   const code = `
+  Bot.init('${account.trim()}', {
+    symbol: '${block.getFieldValue('SYMBOL_LIST')}',
+    contractTypes: ${JSON.stringify(contractTypeList)},
+    candleInterval: '${candleIntervalValue}',
+  });
   ${initialization.trim()}
-  trade = function trade(){
-    Bot.init('${account.trim()}', {
-      symbol: '${block.getFieldValue('SYMBOL_LIST')}',
-      contractTypes: ${JSON.stringify(contractTypeList)},
-      candleInterval: '${candleIntervalValue}',
-    });
-  };
   `
   return code
 }

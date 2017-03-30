@@ -107,6 +107,7 @@ export const insideScope = (blockObj, ev, name, scopes) => enableIfInside(blockO
 
 export const mainScope = (blockObj, ev, name) => {
   insideScope(blockObj, ev, name, [
+    'trade',
     'during_purchase',
     'before_purchase',
     'after_purchase',

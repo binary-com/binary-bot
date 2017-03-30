@@ -1,9 +1,8 @@
 import { expectReturnTrue } from './tools'
 
-
 expectReturnTrue('UI Generated Code', `
-   (function(){
-        var trade, before_purchase, during_purchase, after_purchase;
+      (function(){
+        var before_purchase, during_purchase, after_purchase;
 
         var tick_analysis_list = [];
 
@@ -22,11 +21,16 @@ expectReturnTrue('UI Generated Code', `
 
         var start;
 
-          start = function start() {
+          Bot.init('a1-EclA0DUxYhtEhDpOtEMSI5dA054H7', {
+    symbol: 'R_100',
+    contractTypes: ["CALL","PUT"],
+    candleInterval: '60',
+  });
+  start = function start() {
           Bot.start({
             limitations: limitations,
-            duration: 2,
-            duration_unit: 'h',
+            duration: 5,
+            duration_unit: 't',
             currency: 'USD',
             amount: 1,
             prediction: undefined,
@@ -34,13 +38,6 @@ expectReturnTrue('UI Generated Code', `
             secondBarrierOffset: undefined,
           });
         }
-  trade = function trade(){
-    Bot.init('Xkq6oGFEHh6hJH8', {
-      symbol: 'R_100',
-      contractTypes: ["CALL","PUT"],
-      candleInterval: '60',
-    });
-  };
 
 before_purchase = function before_purchase(){
       Bot.purchase('CALL');
@@ -49,21 +46,18 @@ before_purchase = function before_purchase(){
 
 during_purchase = function during_purchase(){
       if (Bot.isSellAvailable()) {
-        Bot.sellAtMarket();
-      }
+  }
 
   };
 
-  var count = 3;
+var count = 3;
 after_purchase = function after_purchase(){
-    if (--count === 0) {
-      return false;
-    }
-    return true;
-  };
+  if (--count === 0) {
+    return false;
+  }
+  return true;
+};
 
-
-        run(trade)
         while(true) {
           run(start)
           while(watch('before')) {
