@@ -64,7 +64,7 @@ export const shouldThrowError = (e, types = []) => e &&
 
 export const doUntilDone =
   (f, types) => new Promise((resolve, reject) => {
-    let expBackOff = 256
+    let expBackOff = 512
 
     const repeat = e => {
       if (shouldThrowError(e, types)) {
