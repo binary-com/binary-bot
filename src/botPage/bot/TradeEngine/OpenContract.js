@@ -35,7 +35,12 @@ export default Engine => class OpenContract extends Engine {
     })
   }
   subscribeToOpenContract(contractId) {
-    this.isSellRequested = false
+    this.isSold = false
+
+    this.isSellAvailable = false
+
+    this.isExpired = false
+
     doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
       ({ proposal_open_contract: { id: this.openContractId } } = r)
     })
