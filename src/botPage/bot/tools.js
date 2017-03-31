@@ -64,7 +64,7 @@ export const shouldThrowError = (e, types = []) => e &&
 
 export const doUntilDone =
   (f, types) => new Promise((resolve, reject) => {
-    let expBackOff = 512
+    let backoffDelay = 512
 
     const repeat = e => {
       if (shouldThrowError(e, types)) {
@@ -75,14 +75,18 @@ export const doUntilDone =
       setTimeout(() => {
         const promise = f()
 
-        expBackOff *= 2
+        if (backoffDelay < 4000) {
+          backoffDelay *= 2
+        } else {
+          backoffDelay += 1000
+        }
 
         if (promise) {
           promise.then(resolve).catch(repeat)
         } else {
           resolve()
         }
-      }, expBackOff)
+      }, backoffDelay)
     }
     repeat()
   })
