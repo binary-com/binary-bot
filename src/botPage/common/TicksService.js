@@ -1,5 +1,6 @@
 import { Map } from 'immutable'
 import { historyToTicks, getLast } from 'binary-utils'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { doUntilDone } from '../bot/tools'
 
 const parseTick = tick => ({
@@ -62,7 +63,7 @@ export default class TicksService {
 
     const key = getUUID()
 
-    this.request({ ...options, subscribe: 1 })
+    this.request({ ...options, subscribe: 1 }).catch(e => globalObserver.emit('Error', e))
 
     if (type === 'ticks') {
       this.tickListeners = this.tickListeners.setIn([symbol, key], callback)
@@ -116,7 +117,7 @@ export default class TicksService {
     const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol])
     const tickSubscription = this.subscriptions.getIn(['tick', symbol])
 
-    const subscription = (ohlcSubscriptions ? ohlcSubscriptions.keys() : [])
+    const subscription = (ohlcSubscriptions ? Array.from(ohlcSubscriptions.keys()) : [])
       .concat(tickSubscription)
 
     Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id))))
@@ -127,12 +128,14 @@ export default class TicksService {
           ohlcListeners.forEach((listener, granularity) => {
             this.candles = this.candles.deleteIn([symbol, granularity])
             this.requestStream({ symbol, subscribe: 1, granularity, style: 'candles' })
+              .catch(e => globalObserver.emit('Error', e))
           })
         }
 
         if (this.tickListeners.has(symbol)) {
           this.ticks = this.ticks.delete(symbol)
           this.requestStream({ symbol, subscribe: 1, style: 'ticks' })
+            .catch(e => globalObserver.emit('Error', e))
         }
       })
 
