@@ -60,7 +60,7 @@ export const registerStream = (observer, name, cb) => {
 }
 
 export const shouldThrowError = (e, types = []) => e &&
-  !types.concat(['CallError', 'WrongResponse']).includes(e.name)
+  !types.concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError']).includes(e.name)
 
 export const doUntilDone =
   (f, types) => new Promise((resolve, reject) => {
