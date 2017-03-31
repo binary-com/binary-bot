@@ -1,18 +1,5 @@
 export default Engine => class OpenContract extends Engine {
-  requestPipSizes() {
-    if (this.activeSymbols) {
-      return Promise.resolve(this.activeSymbols)
-    }
-
-    const pipSizePromise = this.api.getActiveSymbolsBrief()
-
-    pipSizePromise.then(r => {
-      this.activeSymbols = r.active_symbols
-    })
-
-    return pipSizePromise
-  }
-  waitBeforePurchase(symbol) {
+  prepareBeforePurchase(symbol) {
     if (symbol && this.symbol !== symbol) {
       const { ticksService } = this.$scope
 
@@ -34,6 +21,19 @@ export default Engine => class OpenContract extends Engine {
 
       this.tickListenerKey = key
     }
+  }
+  requestPipSizes() {
+    if (this.activeSymbols) {
+      return Promise.resolve(this.activeSymbols)
+    }
+
+    const pipSizePromise = this.api.getActiveSymbolsBrief()
+
+    pipSizePromise.then(r => {
+      this.activeSymbols = r.active_symbols
+    })
+
+    return pipSizePromise
   }
   getSymbol() {
     return this.symbol

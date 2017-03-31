@@ -30,25 +30,27 @@ export default Engine => class Proposal extends Engine {
   }
   renewProposalsOnPurchase() {
     this.unsubscribeProposals()
-    this.requestProposals()
+    return this.requestProposals()
   }
   requestProposals() {
-    this.proposalTemplates.forEach(proposal =>
-      doUntilDone(() => this.api.subscribeToPriceForContractProposal({
-        ...proposal,
-        passthrough: {
-          contractType: proposal.contract_type,
-        },
-      }))
-      .catch(e => this.broadcastError(e)))
+    return new Promise(resolve =>
+      Promise.all(this.proposalTemplates.map(proposal =>
+        doUntilDone(() => this.api.subscribeToPriceForContractProposal({
+          ...proposal,
+          passthrough: {
+            contractType: proposal.contract_type,
+          },
+        })))).then(resolve).catch(e => this.broadcastError(e)))
   }
   observeProposals() {
     this.listen('proposal', r => {
       const proposal = r.proposal
       const id = proposal.id
 
-      this.data = this.data.setIn(['proposals', id],
-        { ...proposal, ...r.passthrough })
+      if (!this.data.hasIn(['forgetProposals', id])) {
+        this.data = this.data.setIn(['proposals', id],
+          { ...proposal, ...r.passthrough })
+      }
     })
   }
   unsubscribeProposals() {
@@ -56,10 +58,19 @@ export default Engine => class Proposal extends Engine {
       return
     }
 
-    this.data.get('proposals').map(proposal =>
-      doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => {
-        this.data = this.data.deleteIn(['proposals', proposal.id])
-      }))
+    const proposals = this.data.get('proposals')
+
+    this.data = this.data.set('proposals', new Map())
+
+    proposals.forEach(proposal => {
+      const { id } = proposal
+
+      this.data = this.data.setIn(['forgetProposals', id], true)
+
+      doUntilDone(() => this.api.unsubscribeByID(id)).then(() => {
+        this.data = this.data.deleteIn(['forgetProposals', id])
+      })
+    })
   }
   checkProposalReady() {
     const proposals = this.data.get('proposals')

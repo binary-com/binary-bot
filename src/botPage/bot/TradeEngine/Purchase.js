@@ -14,12 +14,12 @@ export default Engine => class Purchase extends Engine {
         this.signal('purchase')
         resolve()
       }).catch(e => {
-        if (shouldThrowError(e)) {
+        if (shouldThrowError(e, ['PriceMoved'])) {
           reject(e)
           return
         }
         this.isPurchaseRequested = false
-        this.observer.emit('REVERT', 'before')
+        this.renewProposalsOnPurchase().then(() => this.observer.emit('REVERT', 'before'))
       })
     })
   }
