@@ -19,7 +19,7 @@ export default Engine => class Purchase extends Engine {
           return
         }
         this.isPurchaseRequested = false
-        this.waitBeforePurchase().then(() => this.observer.emit('REVERT', 'before'))
+        this.observer.emit('REVERT', 'before')
       })
     })
   }
