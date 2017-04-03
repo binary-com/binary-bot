@@ -4,16 +4,25 @@ import { symbolApi } from '../../../shared'
 import { oppositesToDropdown } from '../../utils'
 import { getTradeType } from './tools'
 
+let initialized = false
+
+export const setInitialized = (init = true) => {
+  initialized = init
+}
+
 export const marketDropdown = (block) => {
   const markets = symbolApi.activeSymbols.getMarkets()
   const getSubmarkets = () => {
     const marketName = block.getFieldValue('MARKET_LIST')
+    if (marketName === 'Invalid') {
+      return [['', 'Invalid']]
+    }
     const submarkets = markets[marketName].submarkets
     return Object.keys(submarkets).map(e => [submarkets[e].name, e])
   }
   const getSymbols = () => {
     const submarketName = block.getFieldValue('SUBMARKET_LIST')
-    if (!submarketName) {
+    if (!submarketName || submarketName === 'Invalid') {
       return [['', '']]
     }
     const marketName = block.getFieldValue('MARKET_LIST')
@@ -22,9 +31,12 @@ export const marketDropdown = (block) => {
     return Object.keys(symbols)
       .map(e => [symbols[e].display, symbols[e].symbol])
   }
+  const getMarket = () => (!initialized ?
+    [['', 'Invalid']].concat(Object.keys(markets).map(e => [markets[e].name, e])) :
+    Object.keys(markets).map(e => [markets[e].name, e]))
   block.appendDummyInput('MARKETDEFINITION')
     .appendField(`${translate('Market')}:`)
-    .appendField(new Blockly.FieldDropdown(Object.keys(markets).map(e => [markets[e].name, e])), 'MARKET_LIST')
+    .appendField(new Blockly.FieldDropdown(getMarket), 'MARKET_LIST')
     .appendField('->')
     .appendField(new Blockly.FieldDropdown(getSubmarkets), 'SUBMARKET_LIST')
     .appendField('->')

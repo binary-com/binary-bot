@@ -3,7 +3,8 @@ import { translate } from '../../../../../common/i18n'
 import config from '../../../../common/const'
 import { insideTrade } from '../../relationChecker'
 import { findTopParentBlock } from '../../utils'
-import { setInputList, updateInputList, marketDefPlaceHolders } from './tools'
+import { setInputList, updateInputList, marketDefPlaceHolders,
+  moveMarketDefsToMainBlock } from './tools'
 
 const bcBarrierOffset = (market, inputName) => {
   const barrier = market.getInput(inputName)
@@ -35,6 +36,7 @@ export default () => {
       if (ev.group === 'BackwardCompatibility') {
         return
       }
+      moveMarketDefsToMainBlock(this)
       if (([Blockly.Events.CREATE, Blockly.Events.CHANGE]).includes(ev.type)) {
         updateInputList(this)
       }

@@ -1,5 +1,5 @@
 import { findTopParentBlock } from '../../utils'
-import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
+import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, setInitialized } from './components'
 
 export const getTradeType = block => {
   const tradeDefBlock = findTopParentBlock(block)
@@ -17,11 +17,38 @@ export const setInputList = block => {
   Blockly.Blocks.allFields.init.call(block)
 }
 
+const marketFields = [
+  'MARKET_LIST',
+  'SUBMARKET_LIST',
+  'SYMBOL_LIST',
+  'TRADETYPECAT_LIST',
+  'TRADETYPE_LIST',
+  'TYPE_LIST',
+  'CANDLEINTERVAL_LIST',
+]
+
+export const setMarketFieldsFromMarketDef = block => {
+  const children = block.getChildren()
+  if (children.length && children[0].type === 'market') {
+    const market = children[0]
+    if (market.getFieldValue('MARKET_LIST') === 'Invalid') {
+      marketFields.forEach(field => {
+        const value = block.getFieldValue(field)
+        const currentValue = market.getFieldValue(field)
+        if (currentValue && value) {
+          market.setFieldValue(value, field)
+        }
+      })
+    }
+    setInitialized()
+  }
+}
+
 export const moveMarketDefsToMainBlock = block => {
   const parent = findTopParentBlock(block)
   const extendParentFields = (field) => {
     const value = block.getFieldValue(field)
-    if (!parent.getFieldValue(field) && value) {
+    if (value) {
       parent.setFieldValue(value, field)
     }
   }
@@ -29,17 +56,7 @@ export const moveMarketDefsToMainBlock = block => {
     const recordUndo = Blockly.Events.recordUndo
     Blockly.Events.recordUndo = false
     Blockly.Events.setGroup('BackwardCompatibility')
-    const fields = [
-      'MARKET_LIST',
-      'SUBMARKET_LIST',
-      'SYMBOL_LIST',
-      'TRADETYPECAT_LIST',
-      'TRADETYPE_LIST',
-      'TYPE_LIST',
-      'CANDLEINTERVAL_LIST',
-    ]
-
-    // fields.forEach(f => extendParentFields(f))
+    marketFields.forEach(f => extendParentFields(f))
     Blockly.Events.setGroup(false)
     Blockly.Events.recordUndo = recordUndo
   }

@@ -5,7 +5,8 @@ import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../.
 import { defineContract } from '../images'
 import { updatePurchaseChoices } from '../shared'
 import './barrierOffset'
-import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
+import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, setInitialized } from './components'
+import { setMarketFieldsFromMarketDef } from './tools'
 import markets from './markets'
 import market from './market'
 import tradeTypes from './tradeTypes'
@@ -45,11 +46,13 @@ Blockly.Blocks.trade = {
     this.setColour('#2a3052')
     this.setTooltip(translate('Define your trade contract and start the trade, add initializations here. (Runs on start)'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
+    setInitialized(false)
   },
   onchange: function onchange(ev) {
     if (ev.group === 'BackwardCompatibility') {
       return
     }
+    setMarketFieldsFromMarketDef(this)
     if (ev.type === Blockly.Events.CREATE) {
       ev.ids.forEach(blockId => {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
