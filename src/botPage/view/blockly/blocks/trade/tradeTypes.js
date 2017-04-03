@@ -1,8 +1,8 @@
 import config from '../../../../common/const'
-import { moveMarketDefsToMainBlock } from './tools'
 import { duration, payout, prediction, barrierOffset, secondBarrierOffset,
 } from './components'
 
+// Backward Compatibility Convert condition (a.k.a tradeType) blocks to market style
 export default () => {
   Blockly.Blocks.allFields = {
     init: function init() {
@@ -25,7 +25,6 @@ export default () => {
         })
         duration(this)
         payout(this)
-        moveMarketDefsToMainBlock(this)
         if (config.hasPrediction.indexOf(oppositesName) > -1) {
           prediction(this)
         } else {

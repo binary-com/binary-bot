@@ -13,7 +13,7 @@ import tradeTypes from './tradeTypes'
 const backwardCompatibility = (block) => {
   setTimeout(() => {
     Blockly.Events.recordUndo = false
-    Blockly.Events.setGroup('tradeConvert')
+    Blockly.Events.setGroup('BackwardCompatibility')
     const parent = block.getParent()
     if (parent) {
       const submarketConnection = block.getInput('SUBMARKET').connection

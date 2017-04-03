@@ -1,8 +1,8 @@
-// Maintained for Backward Compatibility
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yn3rh2
 import config from '../../../../common/const'
 import { translate } from '../../../../../common/i18n'
 
+// Kept for Backward Compatibility
 Blockly.Blocks.barrier_offset = {
   init: function init() {
     this.appendValueInput('BARRIEROFFSET_IN')

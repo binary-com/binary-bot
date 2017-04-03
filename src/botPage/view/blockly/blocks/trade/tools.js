@@ -39,7 +39,7 @@ export const moveMarketDefsToMainBlock = block => {
       'CANDLEINTERVAL_LIST',
     ]
 
-    fields.forEach(f => extendParentFields(f))
+    // fields.forEach(f => extendParentFields(f))
     Blockly.Events.setGroup(false)
     Blockly.Events.recordUndo = recordUndo
   }
