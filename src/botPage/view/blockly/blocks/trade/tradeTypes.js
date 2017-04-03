@@ -29,7 +29,7 @@ export default () => {
         const parent = findTopParentBlock(this)
         const extendParentFields = (field) => {
           const value = this.getFieldValue(field)
-          if (value) {
+          if (!parent.getFieldValue(field) && value) {
             parent.setFieldValue(value, field)
           }
         }
