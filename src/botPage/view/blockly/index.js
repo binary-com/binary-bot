@@ -248,7 +248,10 @@ export default class _Blockly {
     if (code) {
       this.stop()
       this.interpreter = new Interpreter(createScope())
-      this.interpreter.run(code).catch(() => this.stop())
+      this.interpreter.run(code).catch(e => {
+        globalObserver.emit('Error', e)
+        this.stop()
+      })
       $('#summaryPanel')
         .show()
     }
