@@ -1,6 +1,6 @@
 import config from '../../../../common/const'
 import { symbolApi } from '../../../shared'
-import { updateInputList } from '../../utils'
+import { updateInputList } from './tools'
 
 export default () => {
   const symbols = symbolApi.activeSymbols.getSymbols()
