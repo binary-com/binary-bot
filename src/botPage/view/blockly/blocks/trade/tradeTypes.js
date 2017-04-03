@@ -1,5 +1,5 @@
 import config from '../../../../common/const'
-import { findTopParentBlock } from '../../utils'
+import { moveMarketDefsToMainBlock } from './tools'
 import { duration, payout, prediction, barrierOffset, secondBarrierOffset,
 } from './components'
 
@@ -25,37 +25,7 @@ export default () => {
         })
         duration(this)
         payout(this)
-        // for backward compatibility
-        const parent = findTopParentBlock(this)
-        const extendParentFields = (field) => {
-          const value = this.getFieldValue(field)
-          if (!parent.getFieldValue(field) && value) {
-            parent.setFieldValue(value, field)
-          }
-        }
-        if (parent) {
-          const recordUndo = Blockly.Events.recordUndo
-          Blockly.Events.recordUndo = false
-          Blockly.Events.setGroup('BackwardCompatibility')
-          const fields = [
-            'MARKET_LIST',
-            'SUBMARKET_LIST',
-            'SYMBOL_LIST',
-            'TRADETYPECAT_LIST',
-            'TRADETYPE_LIST',
-            'TYPE_LIST',
-            'CANDLEINTERVAL_LIST',
-          ]
-
-          fields.forEach(f => extendParentFields(f))
-          Blockly.Events.setGroup(false)
-          Blockly.Events.recordUndo = recordUndo
-        }
-        this.removeInput('MARKETDEFINITION')
-        this.removeInput('TRADETYPEDEFINITION')
-        this.removeInput('CONTRACT_TYPE')
-        this.removeInput('CANDLE_INTERVAL')
-        // end of bc
+        moveMarketDefsToMainBlock(this)
         if (config.hasPrediction.indexOf(oppositesName) > -1) {
           prediction(this)
         } else {

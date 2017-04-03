@@ -3,8 +3,7 @@ import { translate } from '../../../../../common/i18n'
 import config from '../../../../common/const'
 import { insideTrade } from '../../relationChecker'
 import { findTopParentBlock } from '../../utils'
-import { setInputList, updateInputList } from './tools'
-import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
+import { setInputList, updateInputList, marketDefPlaceHolders } from './tools'
 
 const bcBarrierOffset = (market, inputName) => {
   const barrier = market.getInput(inputName)
@@ -26,23 +25,18 @@ const bcBarrierOffset = (market, inputName) => {
 export default () => {
   Blockly.Blocks.market = {
     init: function init() {
-      // for backward compatibility
-      marketDropdown(this)
-      tradeTypeDropdown(this)
-      contractTypes(this)
-      candleInterval(this)
-      // end of bc
+      marketDefPlaceHolders(this)
       setInputList(this)
       this.setPreviousStatement(true, 'TradeOptions')
       this.setColour('#f2f2f2')
     },
     onchange: function onchange(ev) {
       insideTrade(this, ev, translate('Trade Options'))
+      if (ev.group === 'BackwardCompatibility') {
+        return
+      }
       if (([Blockly.Events.CREATE, Blockly.Events.CHANGE]).includes(ev.type)) {
         updateInputList(this)
-      }
-      if (ev.group === 'tradeTypeConvert') {
-        return
       }
       if (ev.type === Blockly.Events.MOVE) {
         bcBarrierOffset(this, 'BARRIEROFFSET')

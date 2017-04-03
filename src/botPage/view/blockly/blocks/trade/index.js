@@ -47,6 +47,9 @@ Blockly.Blocks.trade = {
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
   },
   onchange: function onchange(ev) {
+    if (ev.group === 'BackwardCompatibility') {
+      return
+    }
     if (ev.type === Blockly.Events.CREATE) {
       ev.ids.forEach(blockId => {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
@@ -56,45 +59,43 @@ Blockly.Blocks.trade = {
         }
       })
     }
-    if (ev.group === 'BackwardCompatibility') {
-      return
-    }
-    if (ev.blockId === this.id && ev.element === 'field') {
-      if (ev.name === 'MARKET_LIST') {
-        this.setFieldValue('', 'SUBMARKET_LIST')
-      }
-      if (ev.name === 'SUBMARKET_LIST') {
-        this.setFieldValue('', 'SYMBOL_LIST')
-      }
-      if (ev.name === 'SYMBOL_LIST') {
-        this.setFieldValue('', 'TRADETYPECAT_LIST')
-      }
-      if (ev.name === 'TRADETYPECAT_LIST') {
-        this.setFieldValue('', 'TRADETYPE_LIST')
-      }
-    }
-    if (ev.name === 'TRADETYPE_LIST') {
-      if (ev.newValue) {
-        this.setFieldValue('both', 'TYPE_LIST')
-      } else {
-        this.setFieldValue('', 'TYPE_LIST')
-      }
-    }
-    if (ev.blockId === this.id &&
-      ([Blockly.Events.CREATE, Blockly.Events.CHANGE]).includes(ev.type)) {
-      setBlockTextColor(this)
-      if (!this.isInFlyout) {
-        const symbol = this.getFieldValue('SYMBOL_LIST')
-        if (symbol) {
-          globalObserver.emit('bot.init', symbol)
+    if (ev.blockId === this.id) {
+      if (ev.element === 'field') {
+        if (ev.name === 'MARKET_LIST') {
+          this.setFieldValue('', 'SUBMARKET_LIST')
+        }
+        if (ev.name === 'SUBMARKET_LIST') {
+          this.setFieldValue('', 'SYMBOL_LIST')
+        }
+        if (ev.name === 'SYMBOL_LIST') {
+          this.setFieldValue('', 'TRADETYPECAT_LIST')
+        }
+        if (ev.name === 'TRADETYPECAT_LIST') {
+          this.setFieldValue('', 'TRADETYPE_LIST')
+        }
+        if (ev.name === 'TRADETYPE_LIST') {
+          if (ev.newValue) {
+            this.setFieldValue('both', 'TYPE_LIST')
+          } else {
+            this.setFieldValue('', 'TYPE_LIST')
+          }
         }
       }
-      const type = this.getFieldValue('TRADETYPE_LIST')
-      if (type) {
-        const oppositesName = type.toUpperCase()
-        const contractType = this.getFieldValue('TYPE_LIST')
-        if (oppositesName && contractType) {
-          updatePurchaseChoices(contractType, oppositesName)
+      if (([Blockly.Events.CREATE, Blockly.Events.CHANGE]).includes(ev.type)) {
+        setBlockTextColor(this)
+        if (!this.isInFlyout) {
+          const symbol = this.getFieldValue('SYMBOL_LIST')
+          if (symbol) {
+            globalObserver.emit('bot.init', symbol)
+          }
+        }
+        const type = this.getFieldValue('TRADETYPE_LIST')
+        if (type) {
+          const oppositesName = type.toUpperCase()
+          const contractType = this.getFieldValue('TYPE_LIST')
+          if (oppositesName && contractType) {
+            updatePurchaseChoices(contractType, oppositesName)
+          }
         }
       }
     }

@@ -1,7 +1,9 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import config from '../../../../common/const'
 import { symbolApi } from '../../../shared'
 import { updateInputList } from './tools'
 
+// Backward Compatibility Separate market blocks into one
 export default () => {
   const symbols = symbolApi.activeSymbols.getSymbols()
   Object.keys(symbols).forEach(k => {
@@ -15,8 +17,9 @@ export default () => {
         if (ev.type === Blockly.Events.CREATE
           && ev.ids.indexOf(this.id) >= 0) {
           const parent = this.parentBlock_
+          const recordUndo = Blockly.Events.recordUndo
           Blockly.Events.recordUndo = false
-          Blockly.Events.setGroup('tradeTypeConvert')
+          Blockly.Events.setGroup('BackwardCompatibility')
           const market = Blockly.mainWorkspace.newBlock('market')
           market.initSvg()
           market.render()
@@ -28,11 +31,10 @@ export default () => {
               const statementConnection = parent.getInput('SUBMARKET').connection
               statementConnection.connect(market.previousConnection)
             }
-          }
-          if (parent) {
             parent.setFieldValue(symbol.market, 'MARKET_LIST')
             parent.setFieldValue(symbol.submarket, 'SUBMARKET_LIST')
             parent.setFieldValue(symbol.symbol, 'SYMBOL_LIST')
+            globalObserver.emit('bot.init', symbol.symbol)
           }
           if (this.getChildren().length) {
             const condition = this.getChildren()[0]
@@ -55,7 +57,7 @@ export default () => {
           }
           this.dispose()
           Blockly.Events.setGroup(false)
-          Blockly.Events.recordUndo = true
+          Blockly.Events.recordUndo = recordUndo
         }
       },
     }
