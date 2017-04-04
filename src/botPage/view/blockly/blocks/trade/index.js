@@ -4,14 +4,11 @@ import config from '../../../../common/const'
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils'
 import { defineContract } from '../images'
 import { updatePurchaseChoices } from '../shared'
-import './barrierOffset'
 import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
-import markets from './markets'
-import market from './market'
-import tradeTypes from './tradeTypes'
+import backwardCompatibility from './backwardCompatibility'
 import tradeOptions from './tradeOptions'
 
-const bcMoveAboveInitializationsDown = (block) => {
+const bcMoveAboveInitializationsDown = block => {
   Blockly.Events.recordUndo = false
   Blockly.Events.setGroup('BackwardCompatibility')
   const parent = block.getParent()
@@ -122,8 +119,6 @@ Blockly.JavaScript.trade = (block) => {
 }
 
 export default () => {
-  markets()
-  market()
-  tradeTypes()
+  backwardCompatibility()
   tradeOptions()
 }

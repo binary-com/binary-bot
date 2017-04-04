@@ -1,3 +1,4 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { findTopParentBlock } from '../../utils'
 import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
 
@@ -27,26 +28,101 @@ const marketFields = [
   'CANDLEINTERVAL_LIST',
 ]
 
-export const moveMarketDefsToMainBlock = block => {
-  const parent = findTopParentBlock(block)
-  const extendParentFields = (field) => {
-    const value = block.getFieldValue(field)
-    if (value) {
-      parent.setFieldValue(value, field)
+const tradeOptionFields = [
+  'DURATIONTYPE_LIST',
+  'CURRENCY_LIST',
+  'BARRIEROFFSETTYPE_LIST',
+  'SECONDBARRIEROFFSETTYPE_LIST',
+]
+
+const extendField = (parent, block, field) => {
+  const value = block.getFieldValue(field)
+  if (value) {
+    parent.setFieldValue(value, field)
+  }
+}
+
+export const extendParentFields = (parent, block, fields) => {
+  fields.forEach(field => extendField(parent, block, field))
+}
+
+export const ignoreAndGroupEvents = f => {
+  const recordUndo = Blockly.Events.recordUndo
+  Blockly.Events.recordUndo = false
+  Blockly.Events.setGroup('BackwardCompatibility')
+  f()
+  Blockly.Events.setGroup(false)
+  Blockly.Events.recordUndo = recordUndo
+}
+
+export const cloneTradeOptions = (clone, block) => {
+  extendParentFields(clone, block, tradeOptionFields)
+  block.inputList.forEach(input => {
+    if (input.connection && input.connection.targetConnection) {
+      clone.getInput(input.name).connection.connect(input.connection.targetConnection)
     }
+  })
+}
+
+export const createTradeOptions = () => {
+  const tradeOptions = Blockly.mainWorkspace.newBlock('tradeOptions')
+
+  tradeOptions.initSvg()
+  tradeOptions.render()
+
+  return tradeOptions
+}
+
+const fixStatements = (block, tradeOptions) => {
+  const trade = findTopParentBlock(block)
+  const parent = block.getParent()
+  const parentIsTradeDef = !parent.nextConnection
+
+  if (parentIsTradeDef) {
+    trade.getInput('SUBMARKET').connection.connect(tradeOptions.previousConnection)
+  } else {
+    trade.getInput('INITIALIZATION').connection.connect(
+      trade.getInput('SUBMARKET').connection.targetConnection)
+    trade.getInput('SUBMARKET').connection.connect(tradeOptions.previousConnection)
   }
-  if (parent) {
-    const recordUndo = Blockly.Events.recordUndo
-    Blockly.Events.recordUndo = false
-    Blockly.Events.setGroup('BackwardCompatibility')
-    marketFields.forEach(f => extendParentFields(f))
-    Blockly.Events.setGroup(false)
-    Blockly.Events.recordUndo = recordUndo
-  }
-  block.removeInput('MARKETDEFINITION')
-  block.removeInput('TRADETYPEDEFINITION')
-  block.removeInput('CONTRACT_TYPE')
-  block.removeInput('CANDLE_INTERVAL')
+}
+
+export const marketToTradeOption = (market, marketOptions) => {
+  ignoreAndGroupEvents(() => {
+    const trade = findTopParentBlock(market)
+
+    if (!trade || trade.type !== 'trade') {
+      market.dispose()
+      return
+    }
+
+    const tradeOptions = createTradeOptions()
+
+    fixStatements(market, tradeOptions)
+
+    if (marketOptions) {
+      const [condition] = market.getChildren()
+
+      if (condition) {
+        cloneTradeOptions(tradeOptions, condition)
+      }
+    } else {
+      cloneTradeOptions(tradeOptions, market)
+    }
+
+    updateInputList(tradeOptions)
+
+    if (marketOptions) {
+      trade.setFieldValue(marketOptions.market, 'MARKET_LIST')
+      trade.setFieldValue(marketOptions.submarket, 'SUBMARKET_LIST')
+      trade.setFieldValue(marketOptions.symbol, 'SYMBOL_LIST')
+      globalObserver.emit('bot.init', marketOptions.symbol)
+    } else {
+      extendParentFields(trade, market, marketFields)
+    }
+
+    market.dispose()
+  })
 }
 
 export const marketDefPlaceHolders = block => {
