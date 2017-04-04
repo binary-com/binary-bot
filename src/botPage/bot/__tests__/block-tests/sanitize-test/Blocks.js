@@ -8,7 +8,7 @@ describe('Index handling', () => {
   describe('Index must be handled properly', () => {
     beforeAll(done =>
       run(`
-        Bot.getOhlcFromEnd({ symbol: 'R_100', field: 'close', index: 0 })
+        Bot.getOhlcFromEnd({ field: 'close', index: 0 })
       `).catch(e => {
         error = e
         done()

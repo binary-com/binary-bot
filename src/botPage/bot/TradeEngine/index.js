@@ -11,6 +11,7 @@ import PrepareBeforePurchase from './PrepareBeforePurchase'
 import OpenContract from './OpenContract'
 import Sell from './Sell'
 import Purchase from './Purchase'
+import Ticks from './Ticks'
 
 const scopeToWatchResolve = {
   before: ['before', true],
@@ -20,7 +21,7 @@ const scopeToWatchResolve = {
 }
 
 export default class TradeEngine extends Balance(Purchase(Sell(
-  OpenContract(Proposal(PrepareBeforePurchase(Broadcast(Total(class {})))))))) {
+  OpenContract(Proposal(Ticks(PrepareBeforePurchase(Broadcast(Total(class {}))))))))) {
   constructor($scope) {
     super()
     this.api = $scope.api

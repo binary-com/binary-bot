@@ -41,6 +41,20 @@ export default class TicksService {
     this.subscriptions = new Map()
     this.observe()
   }
+  requestPipSizes() {
+    if (this.pipSizes) {
+      return Promise.resolve(this.pipSizes)
+    }
+
+    return new Promise(resolve => {
+      this.api.getActiveSymbolsBrief().then(r => {
+        const { active_symbols: symbols } = r
+        this.pipSizes = symbols.reduce((s, i) =>
+          s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map()).toObject()
+        resolve(this.pipSizes)
+      })
+    })
+  }
   request(options) {
     const { symbol, granularity } = options
 
@@ -180,7 +194,11 @@ export default class TicksService {
     })
   }
   requestStream(options) {
+    return this.requestPipSizes().then(() => this.requestTicks(options))
+  }
+  requestTicks(options) {
     const { symbol, subscribe, granularity, style } = options
+
     return new Promise((resolve, reject) => {
       doUntilDone(() => this.api.getTickHistory(symbol,
         { subscribe, end: 'latest', count: 1000, granularity, style }))
@@ -203,15 +221,7 @@ export default class TicksService {
               resolve(candles)
             }
           })
-        .catch(reject)
-    })
-  }
-  getHistory(options) {
-    return this.request(options)
-  }
-  getLast(options) {
-    return new Promise((resolve, reject) => {
-      this.request(options).then(t => resolve(getLast(t)), reject)
+          .catch(reject)
     })
   }
 }

@@ -35,33 +35,18 @@ describe('Ticks Service', () => {
     })
   })
   describe('Get ticks', () => {
-    let tick
-    let ohlc
     let ticks
     let candles
     beforeAll(done => {
-      ticksService.getLast({ symbol: 'R_10' }).then(t => {
-        tick = t
-        return ticksService.getLast({ symbol: 'R_10', granularity: 60 })
-      })
-      .then(o => {
-        ohlc = o
-        return ticksService.getHistory({ symbol: 'R_25' })
-      })
+      ticksService.request({ symbol: 'R_25' })
       .then(t => {
         ticks = t
-        return ticksService.getHistory({ symbol: 'R_50', granularity: 60 })
+        return ticksService.request({ symbol: 'R_50', granularity: 60 })
       })
       .then(c => {
         candles = c
         done()
       })
-    })
-    it('tick received', () => {
-      expect(tick).satisfy(isTick)
-    })
-    it('ohlc received', () => {
-      expect(ohlc).satisfy(isOhlc)
     })
     it('ticks list received', () => {
       expect(ticks).satisfy(isTicksList)
