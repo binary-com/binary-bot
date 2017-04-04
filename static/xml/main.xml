@@ -1,5 +1,5 @@
 <xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
-  <block type="trade" x="-2" y="-5">
+  <block type="trade" x="0" y="0">
     <field name="MARKET_LIST">volidx</field>
     <field name="SUBMARKET_LIST">random_index</field>
     <field name="SYMBOL_LIST">R_100</field>
@@ -8,7 +8,7 @@
     <field name="TYPE_LIST">both</field>
     <field name="CANDLEINTERVAL_LIST">60</field>
     <statement name="SUBMARKET">
-      <block type="market">
+      <block type="tradeOptions">
         <field name="DURATIONTYPE_LIST">t</field>
         <field name="CURRENCY_LIST">USD</field>
         <value name="DURATION">
@@ -24,14 +24,14 @@
       </block>
     </statement>
   </block>
-  <block type="before_purchase" x="0" y="216">
+  <block type="before_purchase" x="0" y="251">
     <statement name="BEFOREPURCHASE_STACK">
       <block type="purchase">
         <field name="PURCHASE_LIST">CALL</field>
       </block>
     </statement>
   </block>
-  <block type="during_purchase" x="0" y="306">
+  <block type="during_purchase" x="0" y="341">
     <statement name="DURING_PURCHASE_STACK">
       <block type="controls_if">
         <value name="IF0">
@@ -40,7 +40,7 @@
       </block>
     </statement>
   </block>
-  <block type="after_purchase" x="0" y="431">
+  <block type="after_purchase" x="0" y="466">
     <statement name="AFTERPURCHASE_STACK">
       <block type="trade_again"></block>
     </statement>

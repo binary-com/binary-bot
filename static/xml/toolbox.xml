@@ -249,14 +249,14 @@
 	<category name="Binary" colour="#2a3052" i18n-text="Binary">
 		<category name="Trade Definition" colour="#2a3052" i18n-text="Trade Definition">
 			<block type="trade"></block>
-			<block type="market">
+			<block type="tradeOptions">
 				<value name="DURATION">
-					<shadow type="math_number" id="tamWDyv/I2n9H6*428t^">
+					<shadow type="math_number">
 						<field name="NUM">5</field>
 					</shadow>
 				</value>
 				<value name="AMOUNT">
-					<shadow type="math_number" id="tamWDyv/I2n9H6*428t^">
+					<shadow type="math_number">
 						<field name="NUM">1</field>
 					</shadow>
 				</value>

@@ -4,12 +4,6 @@ import { symbolApi } from '../../../shared'
 import { oppositesToDropdown } from '../../utils'
 import { getTradeType } from './tools'
 
-let initialized = false
-
-export const setInitialized = (init = true) => {
-  initialized = init
-}
-
 export const marketDropdown = (block) => {
   const markets = symbolApi.activeSymbols.getMarkets()
   const getSubmarkets = () => {
@@ -31,9 +25,7 @@ export const marketDropdown = (block) => {
     return Object.keys(symbols)
       .map(e => [symbols[e].display, symbols[e].symbol])
   }
-  const getMarket = () => (!initialized ?
-    [['', 'Invalid']].concat(Object.keys(markets).map(e => [markets[e].name, e])) :
-    Object.keys(markets).map(e => [markets[e].name, e]))
+  const getMarket = () => Object.keys(markets).map(e => [markets[e].name, e])
   block.appendDummyInput('MARKETDEFINITION')
     .appendField(`${translate('Market')}:`)
     .appendField(new Blockly.FieldDropdown(getMarket), 'MARKET_LIST')

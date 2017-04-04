@@ -5,6 +5,22 @@ import { findTopParentBlock } from '../../utils'
 import { updateInputList } from './tools'
 
 // Backward Compatibility Separate market blocks into one
+
+const initialBlocks = (block, tradeOptions) => {
+  const parent = block.parentBlock_
+  if (parent) {
+    const initStatement = block.getInput('INITIALIZATION').connection
+    const ancestor = findTopParentBlock(parent)
+    initStatement.connect((ancestor || parent).previousConnection)
+    if (parent.nextConnection) {
+      parent.nextConnection.connect(tradeOptions.previousConnection)
+    } else {
+      const statementConnection = parent.getInput('SUBMARKET').connection
+      statementConnection.connect(tradeOptions.previousConnection)
+    }
+  }
+}
+
 export default () => {
   const symbols = symbolApi.activeSymbols.getSymbols()
   Object.keys(symbols).forEach(k => {
@@ -20,24 +36,12 @@ export default () => {
           const recordUndo = Blockly.Events.recordUndo
           Blockly.Events.recordUndo = false
           Blockly.Events.setGroup('BackwardCompatibility')
-          const market = Blockly.mainWorkspace.newBlock('market')
-          market.initSvg()
-          market.render()
-          market.removeInput('MARKETDEFINITION')
-          market.removeInput('TRADETYPEDEFINITION')
-          market.removeInput('CONTRACT_TYPE')
-          market.removeInput('CANDLE_INTERVAL')
+          const tradeOptions = Blockly.mainWorkspace.newBlock('tradeOptions')
+          tradeOptions.initSvg()
+          tradeOptions.render()
+          initialBlocks(this, tradeOptions)
           const symbol = symbols[this.type]
-          const initializations = this.parentBlock_
-          if (initializations) {
-            if (initializations.nextConnection) {
-              initializations.nextConnection.connect(market.previousConnection)
-            } else {
-              const statementConnection = initializations.getInput('SUBMARKET').connection
-              statementConnection.connect(market.previousConnection)
-            }
-          }
-          const parent = findTopParentBlock(market)
+          const parent = findTopParentBlock(tradeOptions)
           if (parent) {
             parent.setFieldValue(symbol.market, 'MARKET_LIST')
             parent.setFieldValue(symbol.submarket, 'SUBMARKET_LIST')
@@ -55,7 +59,7 @@ export default () => {
               })
             }
           }
-          updateInputList(market)
+          updateInputList(tradeOptions)
           if (this.getChildren().length) {
             const condition = this.getChildren()[0]
             const fieldList = ['DURATIONTYPE_LIST', 'CURRENCY_LIST',
@@ -63,12 +67,12 @@ export default () => {
             fieldList.forEach(field => {
               const value = condition.getFieldValue(field)
               if (value) {
-                market.setFieldValue(value, field)
+                tradeOptions.setFieldValue(value, field)
               }
             })
             condition.inputList.forEach(input => {
               if (input.connection && input.connection.targetConnection) {
-                market.getInput(input.name).connection.connect(input.connection.targetConnection)
+                tradeOptions.getInput(input.name).connection.connect(input.connection.targetConnection)
               }
             })
           }

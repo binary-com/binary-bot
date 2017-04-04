@@ -1,5 +1,5 @@
 import { findTopParentBlock } from '../../utils'
-import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, setInitialized } from './components'
+import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
 
 export const getTradeType = block => {
   const tradeDefBlock = findTopParentBlock(block)
@@ -26,23 +26,6 @@ const marketFields = [
   'TYPE_LIST',
   'CANDLEINTERVAL_LIST',
 ]
-
-export const setMarketFieldsFromMarketDef = block => {
-  const children = block.getChildren()
-  if (children.length && children[0].type === 'market') {
-    const market = children[0]
-    if (market.getFieldValue('MARKET_LIST') === 'Invalid') {
-      marketFields.forEach(field => {
-        const value = block.getFieldValue(field)
-        const currentValue = market.getFieldValue(field)
-        if (currentValue && value) {
-          market.setFieldValue(value, field)
-        }
-      })
-    }
-    setInitialized()
-  }
-}
 
 export const moveMarketDefsToMainBlock = block => {
   const parent = findTopParentBlock(block)

@@ -5,30 +5,24 @@ import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../.
 import { defineContract } from '../images'
 import { updatePurchaseChoices } from '../shared'
 import './barrierOffset'
-import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, setInitialized } from './components'
-import { setMarketFieldsFromMarketDef } from './tools'
+import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
 import markets from './markets'
 import market from './market'
 import tradeTypes from './tradeTypes'
+import tradeOptions from './tradeOptions'
 
-const backwardCompatibility = (block) => {
-  setTimeout(() => {
-    Blockly.Events.recordUndo = false
-    Blockly.Events.setGroup('BackwardCompatibility')
-    const parent = block.getParent()
-    if (parent) {
-      const submarketConnection = block.getInput('SUBMARKET').connection
-      const targetConnection = submarketConnection.targetConnection
-      if (targetConnection) {
-        parent.nextConnection.connect(targetConnection)
-      }
-      const ancestor = findTopParentBlock(parent)
-      submarketConnection.connect((ancestor || parent).previousConnection)
-    }
-    block.setPreviousStatement(false)
-    Blockly.Events.setGroup(false)
-    Blockly.Events.recordUndo = true
-  }, 0)
+const bcMoveAboveInitializationsDown = (block) => {
+  Blockly.Events.recordUndo = false
+  Blockly.Events.setGroup('BackwardCompatibility')
+  const parent = block.getParent()
+  if (parent) {
+    const initializations = block.getInput('INITIALIZATION').connection
+    const ancestor = findTopParentBlock(parent)
+    initializations.connect((ancestor || parent).previousConnection)
+  }
+  block.setPreviousStatement(false)
+  Blockly.Events.setGroup(false)
+  Blockly.Events.recordUndo = true
 }
 
 Blockly.Blocks.trade = {
@@ -40,25 +34,27 @@ Blockly.Blocks.trade = {
     tradeTypeDropdown(this)
     contractTypes(this)
     candleInterval(this)
+    this.appendStatementInput('INITIALIZATION')
+      .setCheck(null)
+      .appendField(`${translate('Run Once at Start')}:`)
     this.appendStatementInput('SUBMARKET')
       .setCheck(null)
+      .appendField(`${translate('Trade Options')}:`)
     this.setPreviousStatement(true, null)
     this.setColour('#2a3052')
     this.setTooltip(translate('Define your trade contract and start the trade, add initializations here. (Runs on start)'))
     this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki')
-    setInitialized(false)
   },
   onchange: function onchange(ev) {
     if (ev.group === 'BackwardCompatibility') {
       return
     }
-    setMarketFieldsFromMarketDef(this)
     if (ev.type === Blockly.Events.CREATE) {
       ev.ids.forEach(blockId => {
         const block = Blockly.mainWorkspace.getBlockById(blockId)
 
         if (block && block.type === 'trade' && !deleteBlockIfExists(block)) {
-          backwardCompatibility(block)
+          bcMoveAboveInitializationsDown(block)
         }
       })
     }
@@ -114,7 +110,6 @@ Blockly.JavaScript.trade = (block) => {
   const contractTypeList = contractTypeSelector === 'both' ?
     config.opposites[oppositesName].map(k => Object.keys(k)[0]) :
     [contractTypeSelector]
-  // TODO: Assemble JavaScript into code variable.
   const code = `
   Bot.init('${account.trim()}', {
     symbol: '${block.getFieldValue('SYMBOL_LIST')}',
@@ -130,4 +125,5 @@ export default () => {
   markets()
   market()
   tradeTypes()
+  tradeOptions()
 }
