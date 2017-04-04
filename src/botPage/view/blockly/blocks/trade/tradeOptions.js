@@ -63,7 +63,6 @@ export default () => {
       secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`
     }
     const code = `
-      start = function start() {
         Bot.start({
           limitations: limitations,
           duration: ${durationValue},
@@ -74,7 +73,6 @@ export default () => {
           barrierOffset: ${barrierOffsetValue},
           secondBarrierOffset: ${secondBarrierOffsetValue},
         });
-      }
       `
     return code
   }

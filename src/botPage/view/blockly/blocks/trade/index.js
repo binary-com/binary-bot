@@ -36,7 +36,7 @@ Blockly.Blocks.trade = {
       .appendField(`${translate('Run Once at Start')}:`)
     this.appendStatementInput('SUBMARKET')
       .setCheck(null)
-      .appendField(`${translate('Trade Options')}:`)
+      .appendField(`${translate('Define Trade Options')}:`)
     this.setPreviousStatement(true, null)
     this.setColour('#2a3052')
     this.setTooltip(translate('Define your trade contract and start the trade, add initializations here. (Runs on start)'))
@@ -100,7 +100,8 @@ Blockly.Blocks.trade = {
 
 Blockly.JavaScript.trade = (block) => {
   const account = $('.account-id').first().attr('value')
-  const initialization = Blockly.JavaScript.statementToCode(block, 'SUBMARKET')
+  const initialization = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION')
+  const tradeOptionsStatement = Blockly.JavaScript.statementToCode(block, 'SUBMARKET')
   const candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST')
   const contractTypeSelector = block.getFieldValue('TYPE_LIST')
   const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase()
@@ -108,12 +109,17 @@ Blockly.JavaScript.trade = (block) => {
     config.opposites[oppositesName].map(k => Object.keys(k)[0]) :
     [contractTypeSelector]
   const code = `
-  Bot.init('${account.trim()}', {
-    symbol: '${block.getFieldValue('SYMBOL_LIST')}',
-    contractTypes: ${JSON.stringify(contractTypeList)},
-    candleInterval: '${candleIntervalValue}',
-  });
-  ${initialization.trim()}
+    init = function init() {
+      Bot.init('${account.trim()}', {
+        symbol: '${block.getFieldValue('SYMBOL_LIST')}',
+        contractTypes: ${JSON.stringify(contractTypeList)},
+        candleInterval: '${candleIntervalValue}',
+      });
+      ${initialization.trim()}
+    };
+    start = function start() {
+      ${tradeOptionsStatement.trim()}
+    };
   `
   return code
 }
