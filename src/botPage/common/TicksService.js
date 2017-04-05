@@ -77,7 +77,7 @@ export default class TicksService {
 
     const key = getUUID()
 
-    this.request({ ...options, subscribe: 1 }).catch(e => globalObserver.emit('Error', e))
+    this.request(options).catch(e => globalObserver.emit('Error', e))
 
     if (type === 'ticks') {
       this.tickListeners = this.tickListeners.setIn([symbol, key], callback)
@@ -141,14 +141,14 @@ export default class TicksService {
         if (ohlcListeners) {
           ohlcListeners.forEach((listener, granularity) => {
             this.candles = this.candles.deleteIn([symbol, granularity])
-            this.requestStream({ symbol, subscribe: 1, granularity, style: 'candles' })
+            this.requestStream({ symbol, granularity, style: 'candles' })
               .catch(e => globalObserver.emit('Error', e))
           })
         }
 
         if (this.tickListeners.has(symbol)) {
           this.ticks = this.ticks.delete(symbol)
-          this.requestStream({ symbol, subscribe: 1, style: 'ticks' })
+          this.requestStream({ symbol, style: 'ticks' })
             .catch(e => globalObserver.emit('Error', e))
         }
       })
@@ -197,26 +197,22 @@ export default class TicksService {
     return this.requestPipSizes().then(() => this.requestTicks(options))
   }
   requestTicks(options) {
-    const { symbol, subscribe, granularity, style } = options
+    const { symbol, granularity, style } = options
 
     return new Promise((resolve, reject) => {
       doUntilDone(() => this.api.getTickHistory(symbol,
-        { subscribe, end: 'latest', count: 1000, granularity, style }))
+        { subscribe: 1, end: 'latest', count: 1000, granularity, style }))
           .then(r => {
             if (style === 'ticks') {
               const ticks = historyToTicks(r.history)
 
-              if (subscribe) {
-                this.ticks = this.ticks.set(symbol, ticks)
-              }
+              this.ticks = this.ticks.set(symbol, ticks)
 
               resolve(ticks)
             } else {
               const candles = parseCandles(r.candles)
 
-              if (subscribe) {
-                this.candles = this.candles.setIn([symbol, granularity], candles)
-              }
+              this.candles = this.candles.setIn([symbol, granularity], candles)
 
               resolve(candles)
             }
