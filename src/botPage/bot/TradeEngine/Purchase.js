@@ -1,11 +1,12 @@
-import { shouldThrowError, backoffDelays } from '../tools'
+import { shouldThrowError, getBackoffDelay } from '../tools'
+
+let delayIndex = 0
 
 export default Engine => class Purchase extends Engine {
   purchase(contractType) {
     const toBuy = this.selectProposal(contractType)
 
     this.isPurchaseRequested = true
-    this.delayIndex = 0
 
     return new Promise((resolve, reject) => {
       this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
@@ -13,9 +14,10 @@ export default Engine => class Purchase extends Engine {
         this.subscribeToOpenContract(r.buy.contract_id)
         this.renewProposalsOnPurchase()
         this.signal('purchase')
+        delayIndex = 0
         resolve()
       }).catch(e => {
-        if (shouldThrowError(e, ['PriceMoved'], this.delayIndex)) {
+        if (shouldThrowError(e, ['PriceMoved'], delayIndex)) {
           reject(e)
           return
         }
@@ -27,7 +29,7 @@ export default Engine => class Purchase extends Engine {
           }
 
           this.waitForProposals().then(() => this.observer.emit('REVERT', 'before'))
-        }, backoffDelays[this.delayIndex++])
+        }, getBackoffDelay(e, delayIndex++))
       })
     })
   }

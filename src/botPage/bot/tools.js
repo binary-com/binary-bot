@@ -54,7 +54,9 @@ export const registerStream = (observer, name, cb) => {
 }
 
 // Total is more than 60s
-export const backoffDelays = [512, 1024, 2048, 4096, 5096, 6096, 7096, 8096, 9096, 10096, 11096]
+const backoffDelays = [512, 1024, 2048, 4096, 5096, 6096, 7096, 8096, 9096, 10096, 11096]
+
+export const getBackoffDelay = (e, delayIndex) => (e.name === 'RateLimit' ? 60000 : backoffDelays[delayIndex])
 
 export const shouldThrowError = (e, types = [], delayIndex = 0) => e &&
   (!types.concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError']).includes(e.name) ||
@@ -78,7 +80,7 @@ export const doUntilDone =
         } else {
           resolve()
         }
-      }, backoffDelays[delayIndex++])
+      }, getBackoffDelay(e, delayIndex++))
     }
     repeat()
   })
