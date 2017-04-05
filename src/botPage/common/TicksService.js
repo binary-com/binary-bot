@@ -130,7 +130,7 @@ export default class TicksService {
     const tickSubscription = this.subscriptions.getIn(['tick', symbol])
 
     const subscription = [
-      ...(ohlcSubscriptions ? Array.from(ohlcSubscriptions.keys()) : []),
+      ...(ohlcSubscriptions ? Array.from(ohlcSubscriptions.values()) : []),
       ...(tickSubscription || []),
     ]
 
