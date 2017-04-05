@@ -18,8 +18,13 @@ export default Engine => class Purchase extends Engine {
           reject(e)
           return
         }
-        this.isPurchaseRequested = false
-        this.renewProposalsOnPurchase().then(() => this.observer.emit('REVERT', 'before'))
+
+        // already requested by live api
+        if (e.name !== 'DisconnectError') {
+          this.renewProposalsOnPurchase()
+        }
+
+        this.waitForProposals().then(() => this.observer.emit('REVERT', 'before'))
       })
     })
   }

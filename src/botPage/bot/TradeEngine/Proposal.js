@@ -1,5 +1,5 @@
 import { translate } from '../../../common/i18n'
-import { tradeOptionToProposal, doUntilDone } from '../tools'
+import { tradeOptionToProposal, doUntilDone, getUUID } from '../tools'
 
 export default Engine => class Proposal extends Engine {
   makeProposals(tradeOption) {
@@ -30,25 +30,32 @@ export default Engine => class Proposal extends Engine {
   }
   renewProposalsOnPurchase() {
     this.unsubscribeProposals()
-    return this.requestProposals()
+    this.requestProposals()
+  }
+  waitForProposals() {
+    this.data = this.data.set('proposals', new Map())
+
+    return new Promise(resolve => {
+      this.proposalPromise = resolve
+    })
   }
   requestProposals() {
-    return new Promise(resolve =>
-      Promise.all(this.proposalTemplates.map(proposal =>
-        doUntilDone(() => this.api.subscribeToPriceForContractProposal({
-          ...proposal,
-          passthrough: {
-            contractType: proposal.contract_type,
-          },
-        })))).then(resolve).catch(e => this.broadcastError(e)))
+    Promise.all(this.proposalTemplates.map(proposal =>
+      doUntilDone(() => this.api.subscribeToPriceForContractProposal({
+        ...proposal,
+        passthrough: {
+          contractType: proposal.contract_type,
+          uuid: getUUID(),
+        },
+      })))).catch(e => this.broadcastError(e))
   }
   observeProposals() {
     this.listen('proposal', r => {
-      const proposal = r.proposal
-      const id = proposal.id
+      const { proposal, passthrough } = r
+      const id = passthrough.uuid
 
       if (!this.data.hasIn(['forgetProposals', id])) {
-        this.data = this.data.setIn(['proposals', id], { ...proposal, ...r.passthrough })
+        this.data = this.data.setIn(['proposals', id], { ...proposal, ...passthrough })
         this.checkProposalReady()
       }
     })
@@ -63,11 +70,11 @@ export default Engine => class Proposal extends Engine {
     this.data = this.data.set('proposals', new Map())
 
     proposals.forEach(proposal => {
-      const { id } = proposal
+      const { uuid: id } = proposal
 
       this.data = this.data.setIn(['forgetProposals', id], true)
 
-      doUntilDone(() => this.api.unsubscribeByID(id)).then(() => {
+      doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => {
         this.data = this.data.deleteIn(['forgetProposals', id])
       })
     })
@@ -77,6 +84,9 @@ export default Engine => class Proposal extends Engine {
 
     if (proposals && proposals.size === this.proposalTemplates.length) {
       this.startPromise.then(() => this.signal('before'))
+      if (this.proposalPromise) {
+        this.proposalPromise()
+      }
     }
   }
   isNewTradeOption(tradeOption) {
