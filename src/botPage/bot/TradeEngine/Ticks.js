@@ -3,7 +3,27 @@ import { translate } from '../../../common/i18n'
 import { getDirection } from '../tools'
 import { expectPositiveInteger } from '../sanitize'
 
-export default Engine => class OpenContract extends Engine {
+export default Engine => class Ticks extends Engine {
+  watchTicks(symbol) {
+    if (symbol && this.symbol !== symbol) {
+      const { ticksService } = this.$scope
+
+      ticksService.stopMonitor(
+        { symbol: this.symbol, key: this.tickListenerKey })
+
+      const callback = () => {
+        if (!this.isPurchaseRequested) {
+          this.checkProposalReady()
+        }
+      }
+
+      const key = ticksService.monitor({ symbol, callback })
+
+      this.symbol = symbol
+
+      this.tickListenerKey = key
+    }
+  }
   getTicks() {
     return new Promise(resolve => this.$scope.ticksService.request({ symbol: this.symbol })
       .then(ticks => resolve(ticks.map(o => o.quote))))
