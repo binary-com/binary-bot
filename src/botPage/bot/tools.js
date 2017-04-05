@@ -80,7 +80,7 @@ export const doUntilDone =
         } else {
           resolve()
         }
-      }, getBackoffDelay(e, delayIndex++))
+      }, backoffDelays[delayIndex++])
     }
     repeat()
   })
