@@ -24,7 +24,7 @@ let realityCheckTimeout
 let chartData = []
 let symbol = 'R_100'
 let chartType = 'line'
-const pipSize = 2
+let pipSize = 2
 let dataType = 'ticks'
 let granularity = 60
 let contract = null
@@ -494,6 +494,7 @@ export default class View {
       if (symbol !== s) {
         stopTickListeners()
         symbol = s
+        pipSize = ticksService.pipSizes[s]
         getData(undefined, undefined, dataType, granularity)
       }
     })
