@@ -20,7 +20,7 @@ export default class Interpreter {
 
       const ticksIf = this.bot.getTicksInterface()
 
-      const { watch, alert, sleep } = this.bot.getInterface()
+      const { watch, alert, prompt, sleep } = this.bot.getInterface()
 
       initFunc = (interpreter, scope) => {
         interpreter.setProperty(scope, 'console',
@@ -29,6 +29,9 @@ export default class Interpreter {
           }))
         interpreter.setProperty(scope, 'alert',
           interpreter.nativeToPseudo(alert))
+
+        interpreter.setProperty(scope, 'prompt',
+          interpreter.nativeToPseudo(prompt))
 
         const pseudoBotIf = interpreter.nativeToPseudo(BotIf)
 

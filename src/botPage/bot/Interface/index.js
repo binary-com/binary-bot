@@ -24,6 +24,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
       watch: (...args) => this.tradeEngine.watch(...args),
       sleep: (...args) => this.sleep(...args),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
+      prompt: (...args) => prompt(...args), // eslint-disable-line no-alert
     }
   }
   getBotInterface() {
