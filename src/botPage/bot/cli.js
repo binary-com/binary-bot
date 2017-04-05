@@ -7,6 +7,7 @@ import WebSocket from 'ws'
 import { LiveApi } from 'binary-live-api'
 import Interpreter from './Interpreter'
 import TicksService from '../common/TicksService'
+import { version } from '../../../package.json'
 
 const log = (...args) =>
   console.log(`${new Date().toLocaleTimeString()}:`, ...args) // eslint-disable-line no-console
@@ -27,7 +28,7 @@ export const createInterpreter = () => new Interpreter(createScope())
 
 let filename
 
-program.version('8.0.7')
+program.version(version)
   .usage('[filename]')
   .arguments('[filename]')
   .action(fn => {
