@@ -48,8 +48,8 @@ export default Engine => class Proposal extends Engine {
       const id = proposal.id
 
       if (!this.data.hasIn(['forgetProposals', id])) {
-        this.data = this.data.setIn(['proposals', id],
-          { ...proposal, ...r.passthrough })
+        this.data = this.data.setIn(['proposals', id], { ...proposal, ...r.passthrough })
+        this.checkProposalReady()
       }
     })
   }
@@ -75,7 +75,9 @@ export default Engine => class Proposal extends Engine {
   checkProposalReady() {
     const proposals = this.data.get('proposals')
 
-    return proposals && proposals.size === this.proposalTemplates.length
+    if (proposals && proposals.size === this.proposalTemplates.length) {
+      this.startPromise.then(() => this.signal('before'))
+    }
   }
   isNewTradeOption(tradeOption) {
     if (!this.tradeOption) {

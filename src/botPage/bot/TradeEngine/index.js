@@ -7,7 +7,6 @@ import Proposal from './Proposal'
 import Broadcast from './Broadcast'
 import Total from './Total'
 import Balance from './Balance'
-import PrepareBeforePurchase from './PrepareBeforePurchase'
 import OpenContract from './OpenContract'
 import Sell from './Sell'
 import Purchase from './Purchase'
@@ -21,7 +20,7 @@ const scopeToWatchResolve = {
 }
 
 export default class TradeEngine extends Balance(Purchase(Sell(
-  OpenContract(Proposal(Ticks(PrepareBeforePurchase(Broadcast(Total(class {}))))))))) {
+  OpenContract(Proposal(Ticks(Broadcast(Total(class {})))))))) {
   constructor($scope) {
     super()
     this.api = $scope.api
@@ -44,7 +43,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(
 
     this.startPromise = this.loginAndGetBalance(token)
 
-    this.prepareBeforePurchase(symbol)
+    this.symbol = symbol
   }
   start(tradeOptions) {
     if (!this.options) {
@@ -54,6 +53,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(
     this.checkLimits(tradeOptions)
 
     this.makeProposals({ ...this.options, ...tradeOptions })
+
+    this.checkProposalReady()
   }
   loginAndGetBalance(token) {
     if (this.token === token) {
@@ -90,7 +91,13 @@ export default class TradeEngine extends Balance(Purchase(Sell(
 
     this.scope = scope
   }
+  deleteTheOther(watchName) {
+    const toDelete = watchName === 'during' ? 'before' : 'during'
+    this.signals = this.signals.delete(toDelete)
+    this.watches = this.watches.delete(toDelete)
+  }
   watch(watchName) {
+    this.deleteTheOther(watchName)
     if (this.signals.has(watchName)) {
       const signal = this.signals.get(watchName)
 
