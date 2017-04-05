@@ -1,10 +1,11 @@
-import { shouldThrowError } from '../tools'
+import { shouldThrowError, backoffDelays } from '../tools'
 
 export default Engine => class Purchase extends Engine {
   purchase(contractType) {
     const toBuy = this.selectProposal(contractType)
 
     this.isPurchaseRequested = true
+    this.delayIndex = 0
 
     return new Promise((resolve, reject) => {
       this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
@@ -14,17 +15,19 @@ export default Engine => class Purchase extends Engine {
         this.signal('purchase')
         resolve()
       }).catch(e => {
-        if (shouldThrowError(e, ['PriceMoved'])) {
+        if (shouldThrowError(e, ['PriceMoved'], this.delayIndex)) {
           reject(e)
           return
         }
 
-        // already requested by live api
-        if (e.name !== 'DisconnectError') {
-          this.renewProposalsOnPurchase()
-        }
+        setTimeout(() => {
+          // already requested by live api
+          if (e.name !== 'DisconnectError') {
+            this.renewProposalsOnPurchase()
+          }
 
-        this.waitForProposals().then(() => this.observer.emit('REVERT', 'before'))
+          this.waitForProposals().then(() => this.observer.emit('REVERT', 'before'))
+        }, backoffDelays[this.delayIndex++])
       })
     })
   }

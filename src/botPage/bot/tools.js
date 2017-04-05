@@ -53,15 +53,19 @@ export const registerStream = (observer, name, cb) => {
   observer.register(name, cb)
 }
 
-export const shouldThrowError = (e, types = []) => e &&
-  !types.concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError']).includes(e.name)
+// Total is more than 60s
+export const backoffDelays = [512, 1024, 2048, 4096, 5096, 6096, 7096, 8096, 9096, 10096, 11096]
+
+export const shouldThrowError = (e, types = [], delayIndex = 0) => e &&
+  (!types.concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError']).includes(e.name) ||
+    delayIndex === backoffDelays.length)
 
 export const doUntilDone =
   (f, types) => new Promise((resolve, reject) => {
-    let backoffDelay = 512
+    let delayIndex = 0
 
     const repeat = e => {
-      if (shouldThrowError(e, types)) {
+      if (shouldThrowError(e, types, delayIndex)) {
         reject(e)
         return
       }
@@ -69,18 +73,12 @@ export const doUntilDone =
       setTimeout(() => {
         const promise = f()
 
-        if (backoffDelay < 4000) {
-          backoffDelay *= 2
-        } else {
-          backoffDelay += 1000
-        }
-
         if (promise) {
           promise.then(resolve).catch(repeat)
         } else {
           resolve()
         }
-      }, backoffDelay)
+      }, backoffDelays[delayIndex++])
     }
     repeat()
   })
