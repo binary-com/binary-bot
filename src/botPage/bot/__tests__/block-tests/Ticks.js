@@ -7,10 +7,9 @@ describe('Many getTicks in a row', () => {
 
   beforeAll(done => {
     runAndGetResult(undefined, `
-      watch('before')
       result.ticks = []
       for (var i = 0; i < 100; i++) {
-        result.ticks.push(Bot.getLastTick('R_100'))
+        result.ticks.push(Bot.getLastTick())
       }
     `).then(v => {
       result = v
@@ -60,7 +59,6 @@ describe('Tick Blocks', () => {
 
   beforeAll(done => {
     runAndGetResult(undefined, `
-        watch('before');
         result.lastTick = Bot.getLastTick();
         result.lastDigit = Bot.getLastDigit();
         result.lastOhlc = Bot.getOhlcFromEnd();
