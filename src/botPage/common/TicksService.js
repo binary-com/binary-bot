@@ -131,8 +131,10 @@ export default class TicksService {
     const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol])
     const tickSubscription = this.subscriptions.getIn(['tick', symbol])
 
-    const subscription = (ohlcSubscriptions ? Array.from(ohlcSubscriptions.keys()) : [])
-      .concat(tickSubscription)
+    const subscription = [
+      ...(ohlcSubscriptions ? Array.from(ohlcSubscriptions.keys()) : []),
+      ...(tickSubscription || []),
+    ]
 
     Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id))))
       .then(() => {
