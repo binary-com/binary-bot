@@ -106,3 +106,5 @@ export const createDetails = (contract) => {
     result,
   ]
 }
+
+export const getUUID = () => `${new Date().getTime() * Math.random()}`

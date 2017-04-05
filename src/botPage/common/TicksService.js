@@ -1,7 +1,7 @@
 import { Map } from 'immutable'
 import { historyToTicks, getLast } from 'binary-utils'
 import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import { doUntilDone } from '../bot/tools'
+import { doUntilDone, getUUID } from '../bot/tools'
 
 const parseTick = tick => ({
   epoch: +tick.epoch,
@@ -28,8 +28,6 @@ const updateCandles = (candles, ohlc) => {
 }
 
 const getType = isCandle => (isCandle ? 'candles' : 'ticks')
-
-const getUUID = () => `${new Date().getTime() * Math.random()}`
 
 export default class TicksService {
   constructor(api) {
