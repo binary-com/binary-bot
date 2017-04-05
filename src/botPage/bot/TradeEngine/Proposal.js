@@ -75,7 +75,7 @@ export default Engine => class Proposal extends Engine {
   checkProposalReady() {
     const proposals = this.data.get('proposals')
 
-    return proposals && proposals.size === 2
+    return proposals && proposals.size === this.proposalTemplates.length
   }
   isNewTradeOption(tradeOption) {
     if (!this.tradeOption) {
