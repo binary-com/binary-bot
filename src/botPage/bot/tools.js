@@ -60,7 +60,8 @@ export const getBackoffDelay = (e, delayIndex) => ((e && e.name === 'RateLimit')
 
 export const shouldThrowError = (e, types = [], delayIndex = 0) => e &&
   (!types.concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError']).includes(e.name) ||
-    delayIndex === backoffDelays.length)
+    delayIndex === backoffDelays.length ||
+    (delayIndex >= 1 && e.name === 'RateLimit')) // Hourly RateLimit reached
 
 export const doUntilDone =
   (f, types) => new Promise((resolve, reject) => {
