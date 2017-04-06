@@ -20,13 +20,12 @@ export default class Interpreter {
 
       const ticksIf = this.bot.getTicksInterface()
 
-      const { watch, alert, prompt, sleep } = this.bot.getInterface()
+      const { watch, alert, prompt, sleep, console: customConsole } = this.bot.getInterface()
 
       initFunc = (interpreter, scope) => {
         interpreter.setProperty(scope, 'console',
-          interpreter.nativeToPseudo({
-            log(...args) { console.log(...args) }, // eslint-disable-line no-console
-          }))
+          interpreter.nativeToPseudo(customConsole))
+
         interpreter.setProperty(scope, 'alert',
           interpreter.nativeToPseudo(alert))
 
