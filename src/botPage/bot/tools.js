@@ -53,15 +53,25 @@ export const registerStream = (observer, name, cb) => {
   observer.register(name, cb)
 }
 
-// Total is more than 60s
-const backoffDelays = [512, 1024, 2048, 4096, 5096, 6096, 7096, 8096, 9096, 10096, 11096]
+const maxRetries = 10
 
-export const getBackoffDelay = (e, delayIndex) => ((e && e.name === 'RateLimit') ? 20000 : backoffDelays[delayIndex])
+export const getBackoffDelay = (errorCode, delayIndex) => {
+  const offset = 0.5 // 500ms
+  const maxExpTries = 4
+  const exponentialIncrease = (2 ** delayIndex) + offset
+
+  if (errorCode === 'RateLimit' || delayIndex < maxExpTries) {
+    return exponentialIncrease * 1000
+  }
+
+  const linearIncrease = (maxExpTries - delayIndex) + 1
+
+  return (exponentialIncrease + linearIncrease) * 1000
+}
 
 export const shouldThrowError = (e, types = [], delayIndex = 0) => e &&
   (!types.concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError']).includes(e.name) ||
-    delayIndex === backoffDelays.length ||
-    (delayIndex >= 1 && e.name === 'RateLimit')) // Hourly RateLimit reached
+    delayIndex >= maxRetries)
 
 export const doUntilDone =
   (f, types) => new Promise((resolve, reject) => {
@@ -81,7 +91,7 @@ export const doUntilDone =
         } else {
           resolve()
         }
-      }, backoffDelays[delayIndex++])
+      }, getBackoffDelay(e && e.name, delayIndex++))
     }
     repeat()
   })

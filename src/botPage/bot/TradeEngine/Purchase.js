@@ -29,7 +29,7 @@ export default Engine => class Purchase extends Engine {
           }
 
           this.waitForProposals().then(() => this.observer.emit('REVERT', 'before'))
-        }, getBackoffDelay(e, delayIndex++))
+        }, getBackoffDelay(e.name, delayIndex++))
       })
     })
   }
