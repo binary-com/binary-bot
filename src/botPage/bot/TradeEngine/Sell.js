@@ -15,12 +15,12 @@ export default Engine => class Sell extends Engine {
     return recoverFromError(() => Promise.all([
       this.api.sellContract(this.contractId, 0),
       this.waitForAfter(),
-    ]), (errorCode, makeDelay) => makeDelay(delayIndex++).then(
+    ]), (errorCode, makeDelay) => makeDelay().then(
       () => this.observer.emit('REVERT', 'during')), [
         'NoOpenPosition',
         'InvalidSellContractProposal',
         'UnrecognisedRequest',
-      ]).then(() => {
+      ], delayIndex++).then(() => {
         delayIndex = 0
       })
   }

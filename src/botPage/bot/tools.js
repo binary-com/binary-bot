@@ -78,9 +78,7 @@ export const shouldThrowError = (e, types = [], delayIndex = 0) => e &&
   (!types.concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError']).includes(e.name) ||
     (e.name !== 'DisconnectError' && delayIndex >= maxRetries))
 
-export const recoverFromError = (f, r, types) => new Promise((resolve, reject) => {
-  let delayIndex = 0
-
+export const recoverFromError = (f, r, types, delayIndex) => new Promise((resolve, reject) => {
   const promise = f()
 
   if (!promise) {
@@ -94,13 +92,23 @@ export const recoverFromError = (f, r, types) => new Promise((resolve, reject) =
       return
     }
 
-    r(e.name, (di = delayIndex++) => new Promise(delayPromise =>
-        setTimeout(delayPromise, getBackoffDelay(e && e.name, di))))
+    r(e.name, () => new Promise(delayPromise =>
+        setTimeout(delayPromise, getBackoffDelay(e && e.name, delayIndex))))
   })
 })
 
-export const doUntilDone = (f, types) =>
-  recoverFromError(f, (errorCode, makeDelay) => makeDelay().then(f), types)
+export const doUntilDone = (f, types) => {
+  let delayIndex = 0
+
+  return new Promise((resolve, reject) => {
+    const repeat = () => {
+      recoverFromError(f,
+        (errorCode, makeDelay) => makeDelay().then(repeat), types, delayIndex++)
+          .then(resolve).catch(reject)
+    }
+    repeat()
+  })
+}
 
 const toFixedTwo = num => +(num).toFixed(2)
 

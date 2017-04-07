@@ -16,8 +16,8 @@ export default Engine => class Purchase extends Engine {
         }
 
         this.waitForProposals()
-          .then(() => makeDelay(delayIndex++).then(() => this.observer.emit('REVERT', 'before')))
-      }, ['PriceMoved'])
+          .then(() => makeDelay().then(() => this.observer.emit('REVERT', 'before')))
+      }, ['PriceMoved'], delayIndex++)
       .then(r => {
         delayIndex = 0
         this.broadcastPurchase(r.buy, contractType)
