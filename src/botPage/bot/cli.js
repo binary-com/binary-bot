@@ -12,6 +12,10 @@ import { version } from '../../../package.json'
 const log = (...args) =>
   console.log(`${new Date().toLocaleTimeString()}:`, ...args) // eslint-disable-line no-console
 
+process.on('unhandledRejection', e => log('Unhandled Rejection:', e))
+
+setInterval(() => {}, 2147483647) // Keep node alive
+
 export const createScope = () => {
   const observer = new Observer()
   const api = new LiveApi({
