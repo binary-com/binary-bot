@@ -81,7 +81,10 @@ Blockly.Blocks.trade = {
         setBlockTextColor(this)
         if (!this.isInFlyout) {
           const symbol = this.getFieldValue('SYMBOL_LIST')
-          if (symbol) {
+          const submarket = this.getInput('SUBMARKET').connection.targetConnection
+          const needsMutation = submarket && submarket.sourceBlock_.type !== 'tradeOptions'
+
+          if (symbol && !needsMutation) {
             globalObserver.emit('bot.init', symbol)
           }
         }
