@@ -12,7 +12,7 @@ export default Engine => class Ticks extends Engine {
         { symbol: this.symbol, key: this.tickListenerKey })
 
       const callback = () => {
-        if (!this.isPurchaseRequested) {
+        if (!this.ongoingPurchase) {
           this.checkProposalReady()
         }
       }

@@ -21,7 +21,7 @@ expectReturnTrue('UI Generated Code', `
 
         var start;
 
-          Bot.init('a1-EclA0DUxYhtEhDpOtEMSI5dA054H7', {
+          Bot.init('Xkq6oGFEHh6hJH8', {
     symbol: 'R_100',
     contractTypes: ["CALL","PUT"],
     candleInterval: '60',
