@@ -1,6 +1,8 @@
 import { translate } from '../../../common/i18n'
 import { recoverFromError, doUntilDone } from '../tools'
 
+let delayIndex = 0
+
 export default Engine => class Sell extends Engine {
   isSellAtMarketAvailable() {
     return !this.isSold && this.isSellAvailable && !this.isExpired
@@ -13,12 +15,14 @@ export default Engine => class Sell extends Engine {
     return recoverFromError(() => Promise.all([
       this.api.sellContract(this.contractId, 0),
       this.waitForAfter(),
-    ]), (errorCode, makeDelay) => makeDelay().then(
+    ]), (errorCode, makeDelay) => makeDelay(delayIndex++).then(
       () => this.observer.emit('REVERT', 'during')), [
         'NoOpenPosition',
         'InvalidSellContractProposal',
         'UnrecognisedRequest',
-      ])
+      ]).then(() => {
+        delayIndex = 0
+      })
   }
   sellExpired() {
     if (this.isSellAvailable && this.isExpired) {

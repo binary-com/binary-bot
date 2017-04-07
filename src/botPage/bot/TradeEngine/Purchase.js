@@ -1,5 +1,7 @@
 import { recoverFromError } from '../tools'
 
+let delayIndex = 0
+
 export default Engine => class Purchase extends Engine {
   purchase(contractType) {
     const toBuy = this.selectProposal(contractType)
@@ -14,9 +16,10 @@ export default Engine => class Purchase extends Engine {
         }
 
         this.waitForProposals()
-          .then(() => makeDelay().then(() => this.observer.emit('REVERT', 'before')))
+          .then(() => makeDelay(delayIndex++).then(() => this.observer.emit('REVERT', 'before')))
       }, ['PriceMoved'])
       .then(r => {
+        delayIndex = 0
         this.broadcastPurchase(r.buy, contractType)
         this.subscribeToOpenContract(r.buy.contract_id)
         this.renewProposalsOnPurchase()

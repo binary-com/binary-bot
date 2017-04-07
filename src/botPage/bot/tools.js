@@ -94,8 +94,8 @@ export const recoverFromError = (f, r, types) => new Promise((resolve, reject) =
       return
     }
 
-    r(e.name, () => new Promise(delayPromise =>
-      setTimeout(delayPromise, getBackoffDelay(e && e.name, delayIndex++))))
+    r(e.name, (di = delayIndex++) => new Promise(delayPromise =>
+        setTimeout(delayPromise, getBackoffDelay(e && e.name, di))))
   })
 })
 
