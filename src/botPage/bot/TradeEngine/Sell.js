@@ -1,5 +1,5 @@
 import { translate } from '../../../common/i18n'
-import { doUntilDone, shouldThrowError } from '../tools'
+import { recoverFromError, doUntilDone } from '../tools'
 
 export default Engine => class Sell extends Engine {
   isSellAtMarketAvailable() {
@@ -10,23 +10,15 @@ export default Engine => class Sell extends Engine {
       throw translate('Sell is not available')
     }
 
-    const toIgnore = [
-      'NoOpenPosition',
-      'InvalidSellContractProposal',
-      'UnrecognisedRequest',
-    ]
-
-    return new Promise((resolve, reject) => Promise.all([
+    return recoverFromError(() => Promise.all([
       this.api.sellContract(this.contractId, 0),
       this.waitForAfter(),
-    ]).then(() => resolve())
-    .catch(e => {
-      if (shouldThrowError(e, toIgnore)) {
-        reject(e)
-        return
-      }
-      this.observer.emit('REVERT', 'during')
-    }))
+    ]), (errorCode, makeDelay) => makeDelay().then(
+      () => this.observer.emit('REVERT', 'during')), [
+        'NoOpenPosition',
+        'InvalidSellContractProposal',
+        'UnrecognisedRequest',
+      ])
   }
   sellExpired() {
     if (this.isSellAvailable && this.isExpired) {

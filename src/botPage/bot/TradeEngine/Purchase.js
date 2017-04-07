@@ -1,6 +1,4 @@
-import { shouldThrowError, getBackoffDelay } from '../tools'
-
-let delayIndex = 0
+import { recoverFromError } from '../tools'
 
 export default Engine => class Purchase extends Engine {
   purchase(contractType) {
@@ -8,29 +6,21 @@ export default Engine => class Purchase extends Engine {
 
     this.ongoingPurchase = true
 
-    return new Promise((resolve, reject) => {
-      this.api.buyContract(toBuy.id, toBuy.ask_price).then(r => {
+    return recoverFromError(() => this.api.buyContract(toBuy.id, toBuy.ask_price),
+      (errorCode, makeDelay) => {
+        // if disconnected no need to resubscription (handled by live-api)
+        if (errorCode !== 'DisconnectError') {
+          this.renewProposalsOnPurchase()
+        }
+
+        this.waitForProposals()
+          .then(() => makeDelay().then(() => this.observer.emit('REVERT', 'before')))
+      }, ['PriceMoved'])
+      .then(r => {
         this.broadcastPurchase(r.buy, contractType)
         this.subscribeToOpenContract(r.buy.contract_id)
         this.renewProposalsOnPurchase()
         this.signal('purchase')
-        delayIndex = 0
-        resolve()
-      }).catch(e => {
-        if (shouldThrowError(e, ['PriceMoved'], delayIndex)) {
-          reject(e)
-          return
-        }
-
-        setTimeout(() => {
-          // already requested by live api
-          if (e.name !== 'DisconnectError') {
-            this.renewProposalsOnPurchase()
-          }
-
-          this.waitForProposals().then(() => this.observer.emit('REVERT', 'before'))
-        }, getBackoffDelay(e.name, delayIndex++))
       })
-    })
   }
 }

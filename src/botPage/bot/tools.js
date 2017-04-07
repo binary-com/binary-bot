@@ -57,6 +57,11 @@ const maxRetries = 10
 
 export const getBackoffDelay = (errorCode, delayIndex) => {
   const offset = 0.5 // 500ms
+
+  if (errorCode === 'DisconnectError') {
+    return offset * 1000
+  }
+
   const maxExpTries = 4
   const exponentialIncrease = (2 ** delayIndex) + offset
 
@@ -71,30 +76,31 @@ export const getBackoffDelay = (errorCode, delayIndex) => {
 
 export const shouldThrowError = (e, types = [], delayIndex = 0) => e &&
   (!types.concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError']).includes(e.name) ||
-    delayIndex >= maxRetries)
+    (e.name !== 'DisconnectError' && delayIndex >= maxRetries))
 
-export const doUntilDone =
-  (f, types) => new Promise((resolve, reject) => {
-    let delayIndex = 0
+export const recoverFromError = (f, r, types) => new Promise((resolve, reject) => {
+  let delayIndex = 0
 
-    const repeat = e => {
-      if (shouldThrowError(e, types, delayIndex)) {
-        reject(e)
-        return
-      }
+  const promise = f()
 
-      setTimeout(() => {
-        const promise = f()
+  if (!promise) {
+    resolve()
+    return
+  }
 
-        if (promise) {
-          promise.then(resolve).catch(repeat)
-        } else {
-          resolve()
-        }
-      }, getBackoffDelay(e && e.name, delayIndex++))
+  promise.then(resolve).catch(e => {
+    if (shouldThrowError(e, types, delayIndex)) {
+      reject(e)
+      return
     }
-    repeat()
+
+    r(e.name, () => new Promise(delayPromise =>
+      setTimeout(delayPromise, getBackoffDelay(e && e.name, delayIndex++))))
   })
+})
+
+export const doUntilDone = (f, types) =>
+  recoverFromError(f, (errorCode, makeDelay) => makeDelay().then(f), types)
 
 const toFixedTwo = num => +(num).toFixed(2)
 
