@@ -2,7 +2,7 @@ import { doUntilDone } from '../tools'
 
 export default Engine => class OpenContract extends Engine {
   observeOpenContract() {
-    this.listen('proposal_open_contract', r => {
+    const openContract = r => {
       const contract = r.proposal_open_contract
 
       this.setContractFlags(contract)
@@ -23,10 +23,21 @@ export default Engine => class OpenContract extends Engine {
         if (this.afterPromise) {
           this.afterPromise()
         }
+
         this.signal('after')
       } else {
         this.signal('during')
       }
+    }
+    this.listen('proposal_open_contract', openContract)
+    this.listen('transaction', t => {
+      const { contract_id: contractId, action } = t.transaction
+
+      if (contractId !== this.contractId || action !== 'sell') {
+        return
+      }
+
+      doUntilDone(() => this.api.getContractInfo(this.contractId)).then(openContract)
     })
   }
   waitForAfter() {
@@ -35,11 +46,12 @@ export default Engine => class OpenContract extends Engine {
     })
   }
   subscribeToOpenContract(contractId) {
-    this.isSold = false
+    this.contractId = contractId
 
-    this.isSellAvailable = false
-
-    this.isExpired = false
+    if (!this.transactionRequested) {
+      this.transactionRequested = true
+      doUntilDone(() => this.api.subscribeToTransactions())
+    }
 
     doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
       ({ proposal_open_contract: { id: this.openContractId } } = r)
@@ -50,7 +62,6 @@ export default Engine => class OpenContract extends Engine {
       is_expired: isExpired,
       is_valid_to_sell: isValidToSell,
       is_sold: isSold,
-      contract_id: contractId,
     } = contract
 
     this.isSold = Boolean(isSold)
@@ -58,7 +69,5 @@ export default Engine => class OpenContract extends Engine {
     this.isSellAvailable = !this.isSold && Boolean(isValidToSell)
 
     this.isExpired = Boolean(isExpired)
-
-    this.contractId = contractId
   }
 }
