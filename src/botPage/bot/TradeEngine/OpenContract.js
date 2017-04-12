@@ -5,7 +5,7 @@ export default Engine => class OpenContract extends Engine {
     this.listen('proposal_open_contract', r => {
       const contract = r.proposal_open_contract
 
-      if (this.contractId !== contract.contract_id) {
+      if (!this.expectedContractId(contract.contract_id)) {
         return
       }
 
@@ -34,7 +34,7 @@ export default Engine => class OpenContract extends Engine {
     this.listen('transaction', t => {
       const { contract_id: contractId, action } = t.transaction
 
-      if (contractId !== this.contractId || action !== 'sell') {
+      if (!this.expectedContractId(contractId) || action !== 'sell') {
         return
       }
 
@@ -70,5 +70,8 @@ export default Engine => class OpenContract extends Engine {
     this.isSellAvailable = !this.isSold && Boolean(isValidToSell)
 
     this.isExpired = Boolean(isExpired)
+  }
+  expectedContractId(contractId) {
+    return this.contractId && contractId === this.contractId
   }
 }
