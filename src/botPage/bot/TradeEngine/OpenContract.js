@@ -2,24 +2,26 @@ import { doUntilDone } from '../tools'
 
 export default Engine => class OpenContract extends Engine {
   observeOpenContract() {
-    const openContract = r => {
+    this.listen('proposal_open_contract', r => {
       const contract = r.proposal_open_contract
+
+      if (this.contractId !== contract.contract_id) {
+        return
+      }
 
       this.setContractFlags(contract)
 
       this.sellExpired()
-
-      if (this.isSold) {
-        this.ongoingPurchase = false
-        this.updateTotals(contract)
-        this.api.unsubscribeByID(this.openContractId)
-      }
 
       this.data = this.data.set('contract', contract)
 
       this.broadcastContract(contract)
 
       if (this.isSold) {
+        this.ongoingPurchase = false
+        this.contractId = ''
+        this.updateTotals(contract)
+        this.api.unsubscribeByID(this.openContractId)
         if (this.afterPromise) {
           this.afterPromise()
         }
@@ -28,8 +30,7 @@ export default Engine => class OpenContract extends Engine {
       } else {
         this.signal('during')
       }
-    }
-    this.listen('proposal_open_contract', openContract)
+    })
     this.listen('transaction', t => {
       const { contract_id: contractId, action } = t.transaction
 
@@ -37,7 +38,7 @@ export default Engine => class OpenContract extends Engine {
         return
       }
 
-      doUntilDone(() => this.api.getContractInfo(this.contractId)).then(openContract)
+      doUntilDone(() => this.api.getContractInfo(this.contractId))
     })
   }
   waitForAfter() {

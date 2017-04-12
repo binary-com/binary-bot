@@ -5,7 +5,7 @@ let delayIndex = 0
 
 export default Engine => class Sell extends Engine {
   isSellAtMarketAvailable() {
-    return !this.isSold && this.isSellAvailable && !this.isExpired
+    return this.contractId && !this.isSold && this.isSellAvailable && !this.isExpired
   }
   sellAtMarket() {
     if (!this.isSellAtMarketAvailable()) {
