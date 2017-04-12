@@ -118,6 +118,10 @@ export const marketToTradeOption = (market, marketOptions) => {
       trade.setFieldValue(marketOptions.symbol, 'SYMBOL_LIST')
       globalObserver.emit('bot.init', marketOptions.symbol)
     } else {
+      const symbol = market.getFieldValue('SYMBOL_LIST')
+      if (symbol) {
+        globalObserver.emit('bot.init', symbol)
+      }
       extendParentFields(trade, market, marketFields)
     }
 
