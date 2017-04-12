@@ -62,8 +62,8 @@ export default class TicksService {
       return Promise.resolve(this.ticks.get(symbol))
     }
 
-    if (style === 'candles' && this.candles.hasIn(['symbol', 'granularity'])) {
-      return Promise.resolve(this.candles.getIn(['symbol', 'granularity']))
+    if (style === 'candles' && this.candles.hasIn([symbol, granularity])) {
+      return Promise.resolve(this.candles.getIn([symbol, granularity]))
     }
 
     return this.requestStream({ ...options, style })
