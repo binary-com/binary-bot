@@ -31,6 +31,7 @@ export default Engine => class OpenContract extends Engine {
         this.signal('during')
       }
     })
+    // send request for proposal open contract if above failed within 1 sec
     this.listen('transaction', t => {
       const { contract_id: contractId, action } = t.transaction
 
@@ -38,7 +39,11 @@ export default Engine => class OpenContract extends Engine {
         return
       }
 
-      doUntilDone(() => this.api.getContractInfo(this.contractId))
+      setTimeout(() => {
+        if (this.expectedContractId(contractId)) {
+          doUntilDone(() => this.api.getContractInfo(this.contractId))
+        }
+      }, 1000)
     })
   }
   waitForAfter() {
