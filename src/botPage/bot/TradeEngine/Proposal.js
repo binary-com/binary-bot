@@ -1,5 +1,6 @@
 import { translate } from '../../../common/i18n'
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../tools'
+import { error as broadcastError } from '../broadcast'
 
 export default Engine => class Proposal extends Engine {
   makeProposals(tradeOption) {
@@ -50,7 +51,7 @@ export default Engine => class Proposal extends Engine {
           contractType: proposal.contract_type,
           uuid: getUUID(),
         },
-      })))).catch(e => this.broadcastError(e))
+      })))).catch(broadcastError)
   }
   observeProposals() {
     this.listen('proposal', r => {

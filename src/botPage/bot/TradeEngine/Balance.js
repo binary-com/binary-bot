@@ -1,3 +1,4 @@
+import { error as broadcastError, info } from '../broadcast'
 import { doUntilDone } from '../tools'
 
 let balance = 0
@@ -5,8 +6,7 @@ let balanceStr = ''
 
 export default Engine => class Balance extends Engine {
   subscribeToBalance() {
-    doUntilDone(() => this.api.subscribeToBalance())
-      .catch(e => this.broadcastError(e))
+    doUntilDone(() => this.api.subscribeToBalance()).catch(broadcastError)
 
     return new Promise(r => {
       this.balancePromise = r
@@ -19,8 +19,8 @@ export default Engine => class Balance extends Engine {
       balance = +b
       balanceStr = `${balance.toFixed(2)} ${currency}`
 
-      this.broadcastInfo({ balance: balanceStr })
       this.balancePromise()
+      info({ balance: balanceStr })
     })
   }
   getBalance(type) {

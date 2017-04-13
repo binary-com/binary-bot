@@ -2,9 +2,9 @@ import { Map } from 'immutable'
 import { translate } from '../../..//common/i18n'
 import { createError } from '../../common/error'
 import { doUntilDone } from '../tools'
+import { error as broadcastError } from '../broadcast'
 import { expectInitArg } from '../sanitize'
 import Proposal from './Proposal'
-import Broadcast from './Broadcast'
 import Total from './Total'
 import Balance from './Balance'
 import OpenContract from './OpenContract'
@@ -20,7 +20,7 @@ const scopeToWatchResolve = {
 }
 
 export default class TradeEngine extends Balance(Purchase(Sell(
-  OpenContract(Proposal(Ticks(Broadcast(Total(class {})))))))) {
+  OpenContract(Proposal(Ticks(Total(class {}))))))) {
   constructor($scope) {
     super()
     this.api = $scope.api
@@ -61,7 +61,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(
       return Promise.resolve()
     }
 
-    doUntilDone(() => this.api.authorize(token)).catch(e => this.broadcastError(e))
+    doUntilDone(() => this.api.authorize(token)).catch(broadcastError)
 
     return new Promise(resolve =>
       this.listen('authorize', () => {

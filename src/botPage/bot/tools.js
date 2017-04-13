@@ -1,6 +1,6 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { getUTCTime } from 'binary-common-utils/lib/tools'
 import { translate } from '../../common/i18n'
+import { notify } from './broadcast'
 
 export const noop = () => {}
 
@@ -57,8 +57,8 @@ export const registerStream = (observer, name, cb) => {
 
 const maxRetries = 10
 
-const notifyRetry = (msg, error, delay) => globalObserver.emit('Notify', ['warn',
-  `${msg}: ${error.error.msg_type}, ${translate('retrying in')} ${delay}s`, 'right'])
+const notifyRetry = (msg, error, delay) => notify('warn',
+  `${msg}: ${error.error.msg_type}, ${translate('retrying in')} ${delay}s`)
 
 const getBackoffDelay = (error, delayIndex) => {
   const offset = 0.5 // 500ms

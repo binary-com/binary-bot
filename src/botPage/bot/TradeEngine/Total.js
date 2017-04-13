@@ -1,5 +1,6 @@
 import { translate } from '../../../common/i18n'
 import { addFixed, subtractFixed } from '../tools'
+import { info } from '../broadcast'
 
 let totalProfit = 0
 let totalWins = 0
@@ -29,7 +30,7 @@ export default Engine => class Total extends Engine {
     totalStake = addFixed(totalStake, buyPrice)
     totalPayout = addFixed(totalPayout, sellPrice)
 
-    this.broadcastInfo({
+    info({
       profit,
       contract,
       totalProfit,

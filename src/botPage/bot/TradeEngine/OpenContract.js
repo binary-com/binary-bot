@@ -1,4 +1,5 @@
 import { doUntilDone } from '../tools'
+import { contract as broadcastContract } from '../broadcast'
 
 export default Engine => class OpenContract extends Engine {
   observeOpenContract() {
@@ -15,7 +16,7 @@ export default Engine => class OpenContract extends Engine {
 
       this.data = this.data.set('contract', contract)
 
-      this.broadcastContract(contract)
+      broadcastContract(contract)
 
       if (this.isSold) {
         this.ongoingPurchase = false
