@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import { parseQueryString } from 'binary-common-utils/lib/tools'
 import { set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager'
 import { supportedLanguages, translate, init } from './i18n'

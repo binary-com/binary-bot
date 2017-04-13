@@ -3,7 +3,15 @@ const webpack = require('webpack')
 
 const production = process.env.NODE_ENV === 'production'
 
-const plugins = production ? [
+const plugins = [
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    'window.jQuery': 'jquery',
+  }),
+]
+
+const productionPlugins = production ? [
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify('production'),
@@ -17,7 +25,7 @@ const plugins = production ? [
       warnings: false,
     },
   }),
-] : undefined
+] : []
 
 module.exports = {
   entry: {
@@ -43,5 +51,5 @@ module.exports = {
       },
     ],
   },
-  plugins,
+  plugins: plugins.concat(productionPlugins),
 }

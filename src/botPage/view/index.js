@@ -1,13 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import 'babel-polyfill'
+import 'jquery-ui/ui/widgets/dialog'
 import lzString from 'lz-string'
-import $ from 'jquery'
 import View from './View'
 import { setAppId } from '../../common/appId'
 import { load as loadLang } from '../../common/lang'
+import '../../common/binary-ui/dropdown'
 
 loadLang()
-window.$ = $
 
 require('notifyjs-browser')
 require('./draggable')

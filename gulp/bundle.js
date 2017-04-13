@@ -19,7 +19,6 @@ gulp.task('jquery-copy', () => gulp.src('./node_modules/jquery/dist/jquery.min.j
   .pipe(gulp.dest('www/js/')));
 
 gulp.task('bundle-js', ['jquery-copy'], () => gulp.src([
-  './node_modules/jquery/dist/jquery.min.js',
   './node_modules/blockly/blockly_compressed.js',
   './node_modules/blockly/blocks_compressed.js',
   './node_modules/blockly/javascript_compressed.js',
