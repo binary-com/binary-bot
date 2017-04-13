@@ -1,5 +1,6 @@
+import { translate } from '../../../common/i18n'
 import { recoverFromError } from '../tools'
-import { info } from '../broadcast'
+import { info, notify } from '../broadcast'
 
 let delayIndex = 0
 
@@ -20,12 +21,13 @@ export default Engine => class Purchase extends Engine {
           .then(() => makeDelay().then(() => this.observer.emit('REVERT', 'before')))
       }, ['PriceMoved'], delayIndex++)
       .then(r => {
-        const { buy, buy: { contract_id: contractId, longcode } } = r
+        const { buy } = r
 
-        this.subscribeToOpenContract(contractId)
+        this.subscribeToOpenContract(buy.contract_id)
         this.signal('purchase')
         this.renewProposalsOnPurchase(id)
         delayIndex = 0
+        notify('info', `${translate('Bought')}: ${buy.longcode}`)
         info({
           totalRuns: this.updateAndReturnTotalRuns(),
           transaction_ids: { buy: buy.transaction_id },

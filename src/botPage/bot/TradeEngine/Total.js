@@ -1,6 +1,6 @@
 import { translate } from '../../../common/i18n'
 import { addFixed, subtractFixed } from '../tools'
-import { info } from '../broadcast'
+import { info, notify } from '../broadcast'
 
 let totalProfit = 0
 let totalWins = 0
@@ -20,9 +20,11 @@ export default Engine => class Total extends Engine {
 
     const profit = subtractFixed(sellPrice, buyPrice)
 
-    totalWins += profit > 0 ? 1 : 0
+    const win = profit > 0
 
-    totalLosses += profit < 0 ? 1 : 0
+    totalWins += win ? 1 : 0
+
+    totalLosses += !win ? 1 : 0
 
     this.sessionProfit = addFixed(this.sessionProfit, profit)
 
@@ -39,6 +41,12 @@ export default Engine => class Total extends Engine {
       totalStake,
       totalPayout,
     })
+
+    if (win) {
+      notify('success', `${translate('Profit amount')}: ${profit}`)
+    } else {
+      notify('warn', `${translate('Loss amount')}: ${profit}`)
+    }
   }
   updateAndReturnTotalRuns() {
     this.sessionRuns++

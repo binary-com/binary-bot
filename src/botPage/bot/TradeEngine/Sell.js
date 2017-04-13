@@ -1,5 +1,6 @@
 import { translate } from '../../../common/i18n'
 import { recoverFromError, doUntilDone } from '../tools'
+import { notify } from '../broadcast'
 
 let delayIndex = 0
 
@@ -20,8 +21,10 @@ export default Engine => class Sell extends Engine {
         'NoOpenPosition',
         'InvalidSellContractProposal',
         'UnrecognisedRequest',
-      ], delayIndex++).then(() => {
+      ], delayIndex++).then(s => {
+        const { sell: { sold_for: soldFor } } = s[0]
         delayIndex = 0
+        notify('info', `${translate('Sold for')}: ${soldFor}`)
       })
   }
   sellExpired() {
