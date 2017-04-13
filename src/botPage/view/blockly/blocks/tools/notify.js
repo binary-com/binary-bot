@@ -18,7 +18,7 @@ Blockly.Blocks.notify = {
 Blockly.JavaScript.notify = (block) => {
   const notificationType = block.getFieldValue('NOTIFICATION_TYPE')
   const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC)
-  const code = `Bot.notify(${message}, '${notificationType}');
+  const code = `Bot.notify('${notificationType}', ${message});
 `
   return code
 }

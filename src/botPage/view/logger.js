@@ -27,11 +27,11 @@ const isNew = msg => {
   return true
 }
 
-const notifyUniq = (msg, ...args) => isNew(msg) && $.notify(msg, ...args)
-
-const notify = (msg, className, position = 'left') => {
+const notify = (className, msg, position = 'left') => {
   log(className, msg)
-  notifyUniq(msg, { position: `bottom ${position}`, className })
+  if (isNew(msg)) {
+    $.notify(msg, { position: `bottom ${position}`, className })
+  }
 }
 
 const notifyError = error => {
@@ -63,7 +63,7 @@ const notifyError = error => {
     trackJs.track(errorWithCode)
   }
 
-  notify(message, 'error', 'right')
+  notify('error', message, 'right')
 }
 
 const waitForNotifications = () => {
@@ -90,7 +90,7 @@ const waitForNotifications = () => {
 
   notifList.forEach(className =>
     globalObserver.register(`ui.log.${className}`, message =>
-      notify(message, className, 'right')))
+      notify(className, message, 'right')))
 
   amplitudeList.forEach(event =>
     globalObserver.register(event, (d) => amplitude.getInstance().logEvent(event, d)))

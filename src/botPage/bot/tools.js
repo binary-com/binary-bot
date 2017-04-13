@@ -57,11 +57,8 @@ export const registerStream = (observer, name, cb) => {
 
 const maxRetries = 10
 
-const notifyRetry = (msg, error, delay) => globalObserver.emit('Notify', [
-  `${msg}: ${error.error.msg_type}, ${translate('retrying in')} ${delay}s`,
-  'error',
-  'right',
-])
+const notifyRetry = (msg, error, delay) => globalObserver.emit('Notify', ['warn',
+  `${msg}: ${error.error.msg_type}, ${translate('retrying in')} ${delay}s`, 'right'])
 
 const getBackoffDelay = (error, delayIndex) => {
   const offset = 0.5 // 500ms

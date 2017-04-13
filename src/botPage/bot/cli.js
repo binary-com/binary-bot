@@ -50,7 +50,7 @@ const interpreter = createInterpreter()
 
 globalObserver.register('Error', e => log(e))
 
-globalObserver.register('Notify', e => log(e))
+globalObserver.register('Notify', e => log(`${e[0].toUpperCase()}: ${e[1]}`))
 
 lineReader
   .on('line', line => (code += `${line}\n`))
