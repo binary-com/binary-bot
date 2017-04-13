@@ -48,7 +48,9 @@ let code = ''
 
 const interpreter = createInterpreter()
 
-globalObserver.register('Error', e => log(e)) // eslint-disable-line no-console
+globalObserver.register('Error', e => log(e))
+
+globalObserver.register('Notify', e => log(e))
 
 lineReader
   .on('line', line => (code += `${line}\n`))
