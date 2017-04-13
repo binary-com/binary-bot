@@ -21,7 +21,6 @@ export default Engine => class OpenContract extends Engine {
         this.ongoingPurchase = false
         this.contractId = ''
         this.updateTotals(contract)
-        this.api.unsubscribeByID(this.openContractId)
         if (this.afterPromise) {
           this.afterPromise()
         }
@@ -59,9 +58,7 @@ export default Engine => class OpenContract extends Engine {
       doUntilDone(() => this.api.subscribeToTransactions())
     }
 
-    doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
-      ({ proposal_open_contract: { id: this.openContractId } } = r)
-    })
+    doUntilDone(() => this.api.subscribeToOpenContract(contractId))
   }
   setContractFlags(contract) {
     const {

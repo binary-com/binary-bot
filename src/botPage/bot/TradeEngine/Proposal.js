@@ -26,11 +26,14 @@ export default Engine => class Proposal extends Engine {
       throw translate('Selected proposal does not exist')
     }
 
-    return toBuy
+    return {
+      id: toBuy.id,
+      askPrice: toBuy.ask_price,
+    }
   }
-  renewProposalsOnPurchase() {
-    this.unsubscribeProposals()
+  renewProposalsOnPurchase(toBuyId) {
     this.requestProposals()
+    this.unsubscribeProposals(toBuyId)
   }
   waitForProposals() {
     this.data = this.data.set('proposals', new Map())
@@ -60,7 +63,7 @@ export default Engine => class Proposal extends Engine {
       }
     })
   }
-  unsubscribeProposals() {
+  unsubscribeProposals(toBuyId) {
     if (!this.data.has('proposals')) {
       return
     }
@@ -70,7 +73,11 @@ export default Engine => class Proposal extends Engine {
     this.data = this.data.set('proposals', new Map())
 
     proposals.forEach(proposal => {
-      const { uuid: id } = proposal
+      const { uuid: id, id: streamId } = proposal
+
+      if (toBuyId === streamId) {
+        return
+      }
 
       this.data = this.data.setIn(['forgetProposals', id], true)
 
