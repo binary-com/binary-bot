@@ -73,13 +73,10 @@
 }
 
 .trade-chart {
-  height: 14.5em;
   display: flex;
+  height: 20em;
   flex-direction: column;
   flex: 1;
-  min-width: 0;
-  min-height: 0;
-
   #trade-chart0,
   #trade-chart1,
   #trade-chart2,

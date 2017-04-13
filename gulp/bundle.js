@@ -29,7 +29,7 @@ gulp.task('bundle-js', ['jquery-copy'], () => gulp.src([
   .pipe(gulp.dest('www/js/')));
 
 gulp.task('bundle-css',
-  () => gulp.src(['node_modules/{bootstrap/dist/css/bootstrap.min,tourist/tourist}.css'])
+  () => gulp.src(['node_modules/{bootstrap/dist/css/bootstrap.min,tourist/tourist,jquery-ui-css/jquery-ui}.css'])
   .pipe(concatCss('bundle.css'))
   .pipe(rev())
   .pipe(through.obj(addToManifest))

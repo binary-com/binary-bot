@@ -251,8 +251,6 @@ export default class _Blockly {
         globalObserver.emit('Error', e)
         this.stop()
       })
-      $('#summaryPanel')
-        .show()
     }
   }
   stop() {

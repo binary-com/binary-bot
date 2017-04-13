@@ -111,6 +111,7 @@
     "jest": "^19.0.2",
     "jquery": "3.2.1",
     "jquery-ui": "^1.12.1",
+    "jquery-ui-css": "^1.11.4",
     "js-interpreter": "^1.4.2",
     "json-loader": "^0.5.4",
     "loader-utils": "^1.1.0",
