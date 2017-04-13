@@ -1,4 +1,6 @@
+import { observer as globalObserver } from 'binary-common-utils/lib/observer'
 import { getUTCTime } from 'binary-common-utils/lib/tools'
+import { translate } from '../../common/i18n'
 
 export const noop = () => {}
 
@@ -55,8 +57,16 @@ export const registerStream = (observer, name, cb) => {
 
 const maxRetries = 10
 
-export const getBackoffDelay = (errorCode, delayIndex) => {
+const notifyRetry = (msg, error, delay) => globalObserver.emit('Notify', [
+  `${msg}: ${error.error.msg_type}, ${translate('retrying in')} ${delay}s`,
+  'error',
+  'right',
+])
+
+const getBackoffDelay = (error, delayIndex) => {
   const offset = 0.5 // 500ms
+
+  const errorCode = error && error.name
 
   if (errorCode === 'DisconnectError') {
     return offset * 1000
@@ -66,12 +76,14 @@ export const getBackoffDelay = (errorCode, delayIndex) => {
   const exponentialIncrease = (2 ** delayIndex) + offset
 
   if (errorCode === 'RateLimit' || delayIndex < maxExpTries) {
+    notifyRetry(translate('Rate limit reached for'), error, exponentialIncrease)
     return exponentialIncrease * 1000
   }
 
-  const linearIncrease = (maxExpTries - delayIndex) + 1
+  const linearIncrease = exponentialIncrease + ((maxExpTries - delayIndex) + 1)
 
-  return (exponentialIncrease + linearIncrease) * 1000
+  notifyRetry(translate('Request failed for'), error, linearIncrease)
+  return linearIncrease * 1000
 }
 
 export const shouldThrowError = (e, types = [], delayIndex = 0) => e &&
@@ -93,7 +105,7 @@ export const recoverFromError = (f, r, types, delayIndex) => new Promise((resolv
     }
 
     r(e.name, () => new Promise(delayPromise =>
-        setTimeout(delayPromise, getBackoffDelay(e && e.name, delayIndex))))
+        setTimeout(delayPromise, getBackoffDelay(e, delayIndex))))
   })
 })
 
