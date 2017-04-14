@@ -1,6 +1,8 @@
-import { expectReturnTrue } from './tools'
+import { expectReturnTrue } from './tools';
 
-expectReturnTrue('UI Generated Code', `
+expectReturnTrue(
+  'UI Generated Code',
+  `
       (function(){
         var before_purchase, during_purchase, after_purchase;
 
@@ -74,5 +76,5 @@ after_purchase = function after_purchase(){
           }
         }
         return count === 0
-      })();`)
-
+      })();`,
+);

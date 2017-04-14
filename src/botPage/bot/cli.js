@@ -1,59 +1,67 @@
-import 'babel-polyfill'
-import Observer, { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import fs from 'fs'
-import readline from 'readline'
-import program from 'commander'
-import WebSocket from 'ws'
-import { LiveApi } from 'binary-live-api'
-import Interpreter from './Interpreter'
-import TicksService from '../common/TicksService'
-import { version } from '../../../package.json'
+import 'babel-polyfill';
+import Observer, {
+  observer as globalObserver,
+} from 'binary-common-utils/lib/observer';
+import fs from 'fs';
+import readline from 'readline';
+import program from 'commander';
+import WebSocket from 'ws';
+import { LiveApi } from 'binary-live-api';
+import Interpreter from './Interpreter';
+import TicksService from '../common/TicksService';
+import { version } from '../../../package.json';
 
 const log = (...args) =>
-  console.log(`${new Date().toLocaleTimeString()}:`, ...args) // eslint-disable-line no-console
+  console.log(`${new Date().toLocaleTimeString()}:`, ...args); // eslint-disable-line no-console
 
-process.on('unhandledRejection', e => log('Unhandled Rejection:', e))
+process.on('unhandledRejection', e => log('Unhandled Rejection:', e));
 
-setInterval(() => {}, 2147483647) // Keep node alive
+setInterval(() => {}, 2147483647); // Keep node alive
 
 export const createScope = () => {
-  const observer = new Observer()
+  const observer = new Observer();
   const api = new LiveApi({
-    connection: new WebSocket(process.env.ENDPOINT ||
-      'wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169'),
-  })
+    connection: new WebSocket(
+      process.env.ENDPOINT ||
+        'wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169',
+    ),
+  });
 
-  const ticksService = new TicksService(api)
+  const ticksService = new TicksService(api);
 
-  return { observer, api, ticksService }
-}
+  return { observer, api, ticksService };
+};
 
-export const createInterpreter = () => new Interpreter(createScope())
+export const createInterpreter = () => new Interpreter(createScope());
 
-let filename
+let filename;
 
-program.version(version)
+program
+  .version(version)
   .usage('[filename]')
   .arguments('[filename]')
   .action(fn => {
-    filename = fn
+    filename = fn;
   })
-  .parse(process.argv)
+  .parse(process.argv);
 
 const lineReader = readline.createInterface({
   input: filename ? fs.createReadStream(filename) : process.stdin,
-})
+});
 
-let code = ''
+let code = '';
 
-const interpreter = createInterpreter()
+const interpreter = createInterpreter();
 
-globalObserver.register('Error', e => log(e))
+globalObserver.register('Error', e => log(e));
 
-globalObserver.register('Notify', e => log(`${e[0].toUpperCase()}: ${e[1]}`))
+globalObserver.register('Notify', e => log(`${e[0].toUpperCase()}: ${e[1]}`));
 
 lineReader
-  .on('line', line => (code += `${line}\n`))
+  .on('line', line => {
+    code += `${line}\n`;
+  })
   .on('error', e => log(e))
-  .on('close', () => interpreter.run(code)
-    .then(v => log(v.data)).catch(e => log(e)))
+  .on('close', () =>
+    interpreter.run(code).then(v => log(v.data)).catch(e => log(e)),
+  );

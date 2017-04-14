@@ -1,19 +1,19 @@
-import { expect } from 'chai'
-import Interpreter from '../Interpreter'
+import { expect } from 'chai';
+import Interpreter from '../Interpreter';
 
-const interpreter = new Interpreter()
+const interpreter = new Interpreter();
 
 describe('Run Interpreter over simple calculation', () => {
-  let value
+  let value;
 
   beforeAll(done => {
     interpreter.run('1 + 2').then(v => {
-      value = v
-      done()
-    })
-  })
+      value = v;
+      done();
+    });
+  });
 
   it('Pure js code should be validated correctly', () => {
-    expect(value).to.be.equal(3)
-  })
-})
+    expect(value).to.be.equal(3);
+  });
+});

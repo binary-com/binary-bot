@@ -1,17 +1,17 @@
-import sha1 from 'sha1'
-import zhTw from './translations/zh_TW/i10n.json'
-import de from './translations/de_DE/i10n.json'
-import id from './translations/id_ID/i10n.json'
-import zhCn from './translations/zh_CN/i10n.json'
-import it from './translations/it_IT/i10n.json'
-import vi from './translations/vi_VN/i10n.json'
-import pl from './translations/pl_PL/i10n.json'
-import ru from './translations/ru_RU/i10n.json'
-import pt from './translations/pt_PT/i10n.json'
-import es from './translations/es_ES/i10n.json'
-import fr from './translations/fr_FR/i10n.json'
-import en from './translations/en/i10n.json'
-import ach from './translations/ach_UG/i10n.json'
+import sha1 from 'sha1';
+import zhTw from './translations/zh_TW/i10n.json';
+import de from './translations/de_DE/i10n.json';
+import id from './translations/id_ID/i10n.json';
+import zhCn from './translations/zh_CN/i10n.json';
+import it from './translations/it_IT/i10n.json';
+import vi from './translations/vi_VN/i10n.json';
+import pl from './translations/pl_PL/i10n.json';
+import ru from './translations/ru_RU/i10n.json';
+import pt from './translations/pt_PT/i10n.json';
+import es from './translations/es_ES/i10n.json';
+import fr from './translations/fr_FR/i10n.json';
+import en from './translations/en/i10n.json';
+import ach from './translations/ach_UG/i10n.json';
 
 export const supportedLanguages = {
   zh_tw: zhTw,
@@ -27,29 +27,27 @@ export const supportedLanguages = {
   fr,
   en,
   ach,
-}
+};
 
+const fallbackLang = en;
+let translation = {};
 
-const fallbackLang = en
-let translation = {}
+const t = key => (key in translation ? translation[key] : fallbackLang[key]);
 
-const t = key =>
-  (key in translation ? translation[key] : fallbackLang[key])
+export const init = lang => {
+  translation = supportedLanguages[lang];
+};
 
-export const init = lang =>
-  (translation = supportedLanguages[lang])
+export const translate = str => (str && t(sha1(str))) || str;
 
-
-export const translate = (str) => (str && t(sha1(str))) || str
-
-export const xml = (dom) => {
-  const categories = Array.from(dom.getElementsByTagName('category') || [])
+export const xml = dom => {
+  const categories = Array.from(dom.getElementsByTagName('category') || []);
   categories.forEach(child => {
-    const text = child.getAttribute('i18n-text')
+    const text = child.getAttribute('i18n-text');
     if (text) {
-      child.setAttribute('name', translate(text))
+      child.setAttribute('name', translate(text));
     }
-    xml(child)
-  })
-  return dom
-}
+    xml(child);
+  });
+  return dom;
+};

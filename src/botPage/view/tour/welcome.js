@@ -1,4 +1,4 @@
-import { translate } from '../../../common/i18n'
+import { translate } from '../../../common/i18n';
 
 export const steps = [
   {
@@ -81,4 +81,4 @@ export const steps = [
     selector: '#center',
     position: 'bottom',
   },
-]
+];

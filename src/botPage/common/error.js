@@ -1,5 +1,5 @@
 export const createError = (name, message) => {
-  const e = new Error(message)
-  e.name = name
-  return e
-}
+  const e = new Error(message);
+  e.name = name;
+  return e;
+};

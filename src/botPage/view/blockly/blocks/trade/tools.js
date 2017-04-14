@@ -1,22 +1,27 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import { findTopParentBlock } from '../../utils'
-import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { findTopParentBlock } from '../../utils';
+import {
+  marketDropdown,
+  tradeTypeDropdown,
+  candleInterval,
+  contractTypes,
+} from './components';
 
 export const getTradeType = block => {
-  const tradeDefBlock = findTopParentBlock(block)
-  return tradeDefBlock && tradeDefBlock.getFieldValue('TRADETYPE_LIST')
-}
+  const tradeDefBlock = findTopParentBlock(block);
+  return tradeDefBlock && tradeDefBlock.getFieldValue('TRADETYPE_LIST');
+};
 
 export const updateInputList = block => {
-  const tradeType = getTradeType(block)
+  const tradeType = getTradeType(block);
   if (tradeType) {
-    Blockly.Blocks[tradeType].init.call(block)
+    Blockly.Blocks[tradeType].init.call(block);
   }
-}
+};
 
 export const setInputList = block => {
-  Blockly.Blocks.allFields.init.call(block)
-}
+  Blockly.Blocks.allFields.init.call(block);
+};
 
 const marketFields = [
   'MARKET_LIST',
@@ -26,112 +31,121 @@ const marketFields = [
   'TRADETYPE_LIST',
   'TYPE_LIST',
   'CANDLEINTERVAL_LIST',
-]
+];
 
 const tradeOptionFields = [
   'DURATIONTYPE_LIST',
   'CURRENCY_LIST',
   'BARRIEROFFSETTYPE_LIST',
   'SECONDBARRIEROFFSETTYPE_LIST',
-]
+];
 
 const extendField = (parent, block, field) => {
-  const value = block.getFieldValue(field)
+  const value = block.getFieldValue(field);
   if (value) {
-    parent.setFieldValue(value, field)
+    parent.setFieldValue(value, field);
   }
-}
+};
 
 export const extendParentFields = (parent, block, fields) => {
-  fields.forEach(field => extendField(parent, block, field))
-}
+  fields.forEach(field => extendField(parent, block, field));
+};
 
 export const ignoreAndGroupEvents = f => {
-  const recordUndo = Blockly.Events.recordUndo
-  Blockly.Events.recordUndo = false
-  Blockly.Events.setGroup('BackwardCompatibility')
-  f()
-  Blockly.Events.setGroup(false)
-  Blockly.Events.recordUndo = recordUndo
-}
+  const recordUndo = Blockly.Events.recordUndo;
+  Blockly.Events.recordUndo = false;
+  Blockly.Events.setGroup('BackwardCompatibility');
+  f();
+  Blockly.Events.setGroup(false);
+  Blockly.Events.recordUndo = recordUndo;
+};
 
 export const cloneTradeOptions = (clone, block) => {
-  extendParentFields(clone, block, tradeOptionFields)
+  extendParentFields(clone, block, tradeOptionFields);
   block.inputList.forEach(input => {
     if (input.connection && input.connection.targetConnection) {
-      clone.getInput(input.name).connection.connect(input.connection.targetConnection)
+      clone
+        .getInput(input.name)
+        .connection.connect(input.connection.targetConnection);
     }
-  })
-}
+  });
+};
 
 export const createTradeOptions = () => {
-  const tradeOptions = Blockly.mainWorkspace.newBlock('tradeOptions')
+  const tradeOptions = Blockly.mainWorkspace.newBlock('tradeOptions');
 
-  tradeOptions.initSvg()
-  tradeOptions.render()
+  tradeOptions.initSvg();
+  tradeOptions.render();
 
-  return tradeOptions
-}
+  return tradeOptions;
+};
 
 const fixStatements = (block, tradeOptions) => {
-  const trade = findTopParentBlock(block)
-  const parent = block.getParent()
-  const parentIsTradeDef = !parent.nextConnection
+  const trade = findTopParentBlock(block);
+  const parent = block.getParent();
+  const parentIsTradeDef = !parent.nextConnection;
 
   if (parentIsTradeDef) {
-    trade.getInput('SUBMARKET').connection.connect(tradeOptions.previousConnection)
+    trade
+      .getInput('SUBMARKET')
+      .connection.connect(tradeOptions.previousConnection);
   } else {
-    trade.getInput('INITIALIZATION').connection.connect(
-      trade.getInput('SUBMARKET').connection.targetConnection)
-    trade.getInput('SUBMARKET').connection.connect(tradeOptions.previousConnection)
+    trade
+      .getInput('INITIALIZATION')
+      .connection.connect(
+        trade.getInput('SUBMARKET').connection.targetConnection,
+      );
+    trade
+      .getInput('SUBMARKET')
+      .connection.connect(tradeOptions.previousConnection);
   }
-}
+};
 
 export const marketToTradeOption = (market, marketOptions) => {
   ignoreAndGroupEvents(() => {
-    const trade = findTopParentBlock(market)
+    const trade = findTopParentBlock(market);
 
     if (!trade || trade.type !== 'trade') {
-      market.dispose()
-      return
+      market.dispose();
+      return;
     }
 
-    const tradeOptions = createTradeOptions()
+    const tradeOptions = createTradeOptions();
 
-    fixStatements(market, tradeOptions)
+    fixStatements(market, tradeOptions);
 
     if (marketOptions) {
-      const [condition] = market.getChildren()
+      const [condition] = market.getChildren();
 
       if (condition) {
-        cloneTradeOptions(tradeOptions, condition)
+        cloneTradeOptions(tradeOptions, condition);
       }
     } else {
-      cloneTradeOptions(tradeOptions, market)
+      cloneTradeOptions(tradeOptions, market);
     }
 
-    updateInputList(tradeOptions)
+    updateInputList(tradeOptions);
 
     if (marketOptions) {
-      trade.setFieldValue(marketOptions.market, 'MARKET_LIST')
-      trade.setFieldValue(marketOptions.submarket, 'SUBMARKET_LIST')
-      trade.setFieldValue(marketOptions.symbol, 'SYMBOL_LIST')
-      globalObserver.emit('bot.init', marketOptions.symbol)
+      trade.setFieldValue(marketOptions.market, 'MARKET_LIST');
+      trade.setFieldValue(marketOptions.submarket, 'SUBMARKET_LIST');
+      trade.setFieldValue(marketOptions.symbol, 'SYMBOL_LIST');
+      globalObserver.emit('bot.init', marketOptions.symbol);
     } else {
-      const symbol = market.getFieldValue('SYMBOL_LIST')
+      const symbol = market.getFieldValue('SYMBOL_LIST');
       if (symbol) {
-        globalObserver.emit('bot.init', symbol)
+        globalObserver.emit('bot.init', symbol);
       }
-      extendParentFields(trade, market, marketFields)
+      extendParentFields(trade, market, marketFields);
     }
 
-    market.dispose()
-  })
-}
+    market.dispose();
+  });
+};
 
 export const marketDefPlaceHolders = block => {
-  marketDropdown(block)
-  tradeTypeDropdown(block)
-  contractTypes(block)
-  candleInterval(block)
-}
+  marketDropdown(block);
+  tradeTypeDropdown(block);
+  contractTypes(block);
+  candleInterval(block);
+};

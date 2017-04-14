@@ -1,400 +1,456 @@
-import filesaver from 'file-saver'
-import { observer as globalObserver } from 'binary-common-utils/lib/observer'
-import config from '../../common/const'
-import { translate } from '../../../common/i18n'
+import filesaver from 'file-saver';
+import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import config from '../../common/const';
+import { translate } from '../../../common/i18n';
 
-export const isMainBlock = (blockType) => config.mainBlocks.indexOf(blockType) >= 0
+export const isMainBlock = blockType =>
+  config.mainBlocks.indexOf(blockType) >= 0;
 
-export const oppositesToDropdown = op => op.map(k => Object.entries(k)[0].reverse())
+export const oppositesToDropdown = op =>
+  op.map(k => Object.entries(k)[0].reverse());
 
-export const backwardCompatibility = (block) => {
+export const backwardCompatibility = block => {
   if (block.getAttribute('type') === 'on_strategy') {
-    block.setAttribute('type', 'before_purchase')
+    block.setAttribute('type', 'before_purchase');
   } else if (block.getAttribute('type') === 'on_finish') {
-    block.setAttribute('type', 'after_purchase')
+    block.setAttribute('type', 'after_purchase');
   }
   Array.from(block.getElementsByTagName('statement')).forEach(statement => {
     if (statement.getAttribute('name') === 'STRATEGY_STACK') {
-      statement.setAttribute('name', 'BEFOREPURCHASE_STACK')
+      statement.setAttribute('name', 'BEFOREPURCHASE_STACK');
     } else if (statement.getAttribute('name') === 'FINISH_STACK') {
-      statement.setAttribute('name', 'AFTERPURCHASE_STACK')
+      statement.setAttribute('name', 'AFTERPURCHASE_STACK');
     }
-  })
+  });
   if (isMainBlock(block.getAttribute('type'))) {
-    block.removeAttribute('deletable')
+    block.removeAttribute('deletable');
   }
-}
+};
 
-const getCollapsedProcedures = () => Blockly.mainWorkspace.getTopBlocks().filter(
-  (block) => (!isMainBlock(block.type)
-    && block.collapsed_ && block.type.indexOf('procedures_def') === 0))
+const getCollapsedProcedures = () =>
+  Blockly.mainWorkspace
+    .getTopBlocks()
+    .filter(
+      block =>
+        !isMainBlock(block.type) &&
+        block.collapsed_ &&
+        block.type.indexOf('procedures_def') === 0,
+    );
 
 export const fixCollapsedBlocks = () =>
   getCollapsedProcedures().forEach(block => {
-    block.setCollapsed(false)
-    block.setCollapsed(true)
-  })
+    block.setCollapsed(false);
+    block.setCollapsed(true);
+  });
 
 export const cleanUpOnLoad = (blocksToClean, dropEvent) => {
-  const {
-    clientX = 0,
-    clientY = 0,
-  } = dropEvent || {}
-  const blocklyMetrics = Blockly.mainWorkspace.getMetrics()
-  const scaleCancellation = (1 / Blockly.mainWorkspace.scale)
-  const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft
-  const blocklyTop = (document.body.offsetHeight - blocklyMetrics.viewHeight) - blocklyMetrics.viewTop
-  const cursorX = (clientX) ? (clientX - blocklyLeft) * scaleCancellation : 0
-  let cursorY = (clientY) ? (clientY - blocklyTop) * scaleCancellation : 0
+  const { clientX = 0, clientY = 0 } = dropEvent || {};
+  const blocklyMetrics = Blockly.mainWorkspace.getMetrics();
+  const scaleCancellation = 1 / Blockly.mainWorkspace.scale;
+  const blocklyLeft = blocklyMetrics.absoluteLeft - blocklyMetrics.viewLeft;
+  const blocklyTop =
+    document.body.offsetHeight -
+    blocklyMetrics.viewHeight -
+    blocklyMetrics.viewTop;
+  const cursorX = clientX ? (clientX - blocklyLeft) * scaleCancellation : 0;
+  let cursorY = clientY ? (clientY - blocklyTop) * scaleCancellation : 0;
   blocksToClean.forEach(block => {
-    block.moveBy(cursorX, cursorY)
-    block.snapToGrid()
-    cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y
-  })
+    block.moveBy(cursorX, cursorY);
+    block.snapToGrid();
+    cursorY += block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
+  });
   // Fire an event to allow scrollbars to resize.
-  Blockly.mainWorkspace.resizeContents()
-}
+  Blockly.mainWorkspace.resizeContents();
+};
 
-export const deleteBlockIfExists = (block) => {
-  Blockly.Events.recordUndo = false
-  const existed = Blockly.mainWorkspace.getTopBlocks().filter(mainBlock =>
-    !block.isInFlyout && mainBlock.id !== block.id && mainBlock.type === block.type)
-      .map(b => b.dispose()).length
-  Blockly.Events.recordUndo = true
-  return existed
-}
+export const deleteBlockIfExists = block => {
+  Blockly.Events.recordUndo = false;
+  const existed = Blockly.mainWorkspace
+    .getTopBlocks()
+    .filter(
+      mainBlock =>
+        !block.isInFlyout &&
+        mainBlock.id !== block.id &&
+        mainBlock.type === block.type,
+    )
+    .map(b => b.dispose()).length;
+  Blockly.Events.recordUndo = true;
+  return existed;
+};
 
-export const setBlockTextColor = (block) => {
-  Blockly.Events.recordUndo = false
+export const setBlockTextColor = block => {
+  Blockly.Events.recordUndo = false;
   if (block.inputList instanceof Array) {
     Array.from(block.inputList).forEach(inp =>
       inp.fieldRow.forEach(field => {
         if (field instanceof Blockly.FieldLabel) {
-          const svgElement = field.getSvgRoot()
+          const svgElement = field.getSvgRoot();
           if (svgElement) {
-            svgElement.style.setProperty('fill', 'white', 'important')
+            svgElement.style.setProperty('fill', 'white', 'important');
           }
         }
-      }))
+      }),
+    );
   }
-  const field = block.getField()
+  const field = block.getField();
   if (field) {
-    const svgElement = field.getSvgRoot()
+    const svgElement = field.getSvgRoot();
     if (svgElement) {
-      svgElement.style.setProperty('fill', 'white', 'important')
+      svgElement.style.setProperty('fill', 'white', 'important');
     }
   }
-  Blockly.Events.recordUndo = true
-}
+  Blockly.Events.recordUndo = true;
+};
 
 export const configMainBlock = (ev, type) => {
   if (ev.type === 'create') {
     ev.ids.forEach(blockId => {
-      const block = Blockly.mainWorkspace.getBlockById(blockId)
+      const block = Blockly.mainWorkspace.getBlockById(blockId);
       if (block && block.type === type) {
-        deleteBlockIfExists(block)
+        deleteBlockIfExists(block);
       }
-    })
+    });
   }
-}
+};
 
 export const getBlockByType = type =>
-  Blockly.mainWorkspace.getAllBlocks().find(block => type === block.type)
+  Blockly.mainWorkspace.getAllBlocks().find(block => type === block.type);
 
 export const getBlocksByType = type =>
-  Blockly.mainWorkspace.getAllBlocks().filter(block => type === block.type)
+  Blockly.mainWorkspace.getAllBlocks().filter(block => type === block.type);
 
 export const getTopBlocksByType = type =>
-  Blockly.mainWorkspace.getTopBlocks().filter(block => type === block.type)
+  Blockly.mainWorkspace.getTopBlocks().filter(block => type === block.type);
 
 export const getMainBlocks = () =>
-  config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b)
+  config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b);
 
-export const findTopParentBlock = (b) => {
-  let block = b
-  let pblock = block.parentBlock_
+export const findTopParentBlock = b => {
+  let block = b;
+  let pblock = block.parentBlock_;
   if (pblock === null) {
-    return null
+    return null;
   }
   while (pblock !== null) {
     if (pblock.type === 'trade') {
-      return pblock
+      return pblock;
     }
-    block = pblock
-    pblock = block.parentBlock_
+    block = pblock;
+    pblock = block.parentBlock_;
   }
-  return block
-}
+  return block;
+};
 
-export const insideMainBlocks = (block) => {
-  const parent = findTopParentBlock(block)
+export const insideMainBlocks = block => {
+  const parent = findTopParentBlock(block);
   if (!parent) {
-    return false
+    return false;
   }
-  return parent.type && isMainBlock(parent.type)
-}
+  return parent.type && isMainBlock(parent.type);
+};
 
 export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
-  xmlDom.setAttribute('collection', collection ? 'true' : 'false')
-  const xmlText = Blockly.Xml.domToPrettyText(xmlDom)
+  xmlDom.setAttribute('collection', collection ? 'true' : 'false');
+  const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
   const blob = new Blob([xmlText], {
     type: 'text/xml;charset=utf-8',
-  })
-  filesaver.saveAs(blob, `${filename}.xml`)
-}
+  });
+  filesaver.saveAs(blob, `${filename}.xml`);
+};
 
 export const disable = (blockObj, message) => {
   if (!blockObj.disabled) {
     if (message) {
-      globalObserver.emit('ui.log.warn', message)
+      globalObserver.emit('ui.log.warn', message);
     }
   }
-  Blockly.Events.recordUndo = false
-  blockObj.setDisabled(true)
-  Blockly.Events.recordUndo = true
-}
+  Blockly.Events.recordUndo = false;
+  blockObj.setDisabled(true);
+  Blockly.Events.recordUndo = true;
+};
 
-export const enable = (blockObj) => {
-  Blockly.Events.recordUndo = false
-  blockObj.setDisabled(false)
-  Blockly.Events.recordUndo = true
-}
+export const enable = blockObj => {
+  Blockly.Events.recordUndo = false;
+  blockObj.setDisabled(false);
+  Blockly.Events.recordUndo = true;
+};
 
-export const expandDuration = (duration) => `${duration.replace(/t/g, ' tick')
+export const expandDuration = duration =>
+  `${duration
+    .replace(/t/g, ' tick')
     .replace(/s/g, ' second')
     .replace(/m/g, ' minute')
     .replace(/h/g, ' hour')
-    .replace(/d/g, ' day')}(s)`
+    .replace(/d/g, ' day')}(s)`;
 
-export const durationToSecond = (duration) => {
-  const parsedDuration = duration.match(/^([0-9]+)([stmhd])$/)
+export const durationToSecond = duration => {
+  const parsedDuration = duration.match(/^([0-9]+)([stmhd])$/);
   if (!parsedDuration) {
-    return null
+    return null;
   }
-  const durationValue = parseFloat(parsedDuration[1])
-  const durationType = parsedDuration[2]
+  const durationValue = parseFloat(parsedDuration[1]);
+  const durationType = parsedDuration[2];
   if (durationType === 's') {
-    return durationValue
+    return durationValue;
   }
   if (durationType === 't') {
-    return durationValue * 2
+    return durationValue * 2;
   }
   if (durationType === 'm') {
-    return durationValue * 60
+    return durationValue * 60;
   }
   if (durationType === 'h') {
-    return durationValue * 60 * 60
+    return durationValue * 60 * 60;
   }
   if (durationType === 'd') {
-    return durationValue * 60 * 60 * 24
+    return durationValue * 60 * 60 * 24;
   }
-  return null
-}
+  return null;
+};
 
-const isProcedure = (blockType) => ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0
+const isProcedure = blockType =>
+  ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0;
 
 // dummy event to recover deleted blocks loaded by loader
 class DeleteStray extends Blockly.Events.Abstract {
   constructor(block) {
-    super(block)
-    this.run(true)
+    super(block);
+    this.run(true);
   }
   run(redo) {
-    const recordUndo = Blockly.Events.recordUndo
-    Blockly.Events.recordUndo = false
-    const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId)
+    const recordUndo = Blockly.Events.recordUndo;
+    Blockly.Events.recordUndo = false;
+    const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId);
     if (!sourceBlock) {
-      return
+      return;
     }
     if (redo) {
-      sourceBlock.setFieldValue(`${sourceBlock.getFieldValue('NAME')} (deleted)`, 'NAME')
-      sourceBlock.setDisabled(true)
+      sourceBlock.setFieldValue(
+        `${sourceBlock.getFieldValue('NAME')} (deleted)`,
+        'NAME',
+      );
+      sourceBlock.setDisabled(true);
     } else {
-      sourceBlock.setFieldValue(sourceBlock.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME')
-      sourceBlock.setDisabled(false)
+      sourceBlock.setFieldValue(
+        sourceBlock.getFieldValue('NAME').replace(' (deleted)', ''),
+        'NAME',
+      );
+      sourceBlock.setDisabled(false);
     }
-    Blockly.Events.recordUndo = recordUndo
+    Blockly.Events.recordUndo = recordUndo;
   }
 }
-DeleteStray.prototype.type = 'deletestray'
+DeleteStray.prototype.type = 'deletestray';
 
 // dummy event to hide the element after creation
 class Hide extends Blockly.Events.Abstract {
   constructor(block, header) {
-    super(block)
-    this.sourceHeaderId = header.id
-    this.run(true)
+    super(block);
+    this.sourceHeaderId = header.id;
+    this.run(true);
   }
   run() {
-    const recordUndo = Blockly.Events.recordUndo
-    Blockly.Events.recordUndo = false
-    const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId)
-    const sourceHeader = Blockly.mainWorkspace.getBlockById(this.sourceHeaderId)
-    sourceBlock.loaderId = sourceHeader.id
-    sourceHeader.loadedByMe.push(sourceBlock.id)
-    sourceBlock.getSvgRoot().style.display = 'none'
-    Blockly.Events.recordUndo = recordUndo
+    const recordUndo = Blockly.Events.recordUndo;
+    Blockly.Events.recordUndo = false;
+    const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId);
+    const sourceHeader = Blockly.mainWorkspace.getBlockById(
+      this.sourceHeaderId,
+    );
+    sourceBlock.loaderId = sourceHeader.id;
+    sourceHeader.loadedByMe.push(sourceBlock.id);
+    sourceBlock.getSvgRoot().style.display = 'none';
+    Blockly.Events.recordUndo = recordUndo;
   }
 }
-Hide.prototype.type = 'hide'
+Hide.prototype.type = 'hide';
 
 export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
-  Blockly.Events.setGroup(eventGroup)
+  Blockly.Events.setGroup(eventGroup);
   Blockly.mainWorkspace.getTopBlocks().forEach(block => {
     if (block.loaderId === id) {
       if (isProcedure(block.type)) {
         if (block.getFieldValue('NAME').indexOf('deleted') < 0) {
-          Blockly.Events.fire(new DeleteStray(block))
+          Blockly.Events.fire(new DeleteStray(block));
         }
       } else {
-        block.dispose()
+        block.dispose();
       }
     }
-  })
-  Blockly.Events.setGroup(false)
-}
+  });
+  Blockly.Events.setGroup(false);
+};
 
-export const addDomAsBlock = (blockXml) => {
-  backwardCompatibility(blockXml)
-  const blockType = blockXml.getAttribute('type')
+export const addDomAsBlock = blockXml => {
+  backwardCompatibility(blockXml);
+  const blockType = blockXml.getAttribute('type');
   if (isMainBlock(blockType)) {
-    Blockly.mainWorkspace.getTopBlocks()
-      .filter(b => b.type === blockType).forEach(b => b.dispose())
+    Blockly.mainWorkspace
+      .getTopBlocks()
+      .filter(b => b.type === blockType)
+      .forEach(b => b.dispose());
   }
-  return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
-}
+  return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
+};
 
-const replaceDeletedBlock = (block) => {
-  const procedureName = block.getFieldValue('NAME')
+const replaceDeletedBlock = block => {
+  const procedureName = block.getFieldValue('NAME');
   const oldProcedure = Blockly.Procedures.getDefinition(
-    `${procedureName} (deleted)`, Blockly.mainWorkspace)
+    `${procedureName} (deleted)`,
+    Blockly.mainWorkspace,
+  );
   if (oldProcedure) {
-    const recordUndo = Blockly.Events.recordUndo
-    Blockly.Events.recordUndo = false
-    const f = block.getField('NAME')
-    f.text_ = `${procedureName} (deleted)`
-    oldProcedure.dispose()
-    block.setFieldValue(`${procedureName}`, 'NAME')
-    Blockly.Events.recordUndo = recordUndo
+    const recordUndo = Blockly.Events.recordUndo;
+    Blockly.Events.recordUndo = false;
+    const f = block.getField('NAME');
+    f.text_ = `${procedureName} (deleted)`;
+    oldProcedure.dispose();
+    block.setFieldValue(`${procedureName}`, 'NAME');
+    Blockly.Events.recordUndo = recordUndo;
   }
-}
+};
 
-export const recoverDeletedBlock = (block) => {
-  const recordUndo = Blockly.Events.recordUndo
-  Blockly.Events.recordUndo = false
-  block.setFieldValue(block.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME')
-  block.setDisabled(false)
-  Blockly.Events.recordUndo = recordUndo
-}
+export const recoverDeletedBlock = block => {
+  const recordUndo = Blockly.Events.recordUndo;
+  Blockly.Events.recordUndo = false;
+  block.setFieldValue(
+    block.getFieldValue('NAME').replace(' (deleted)', ''),
+    'NAME',
+  );
+  block.setDisabled(false);
+  Blockly.Events.recordUndo = recordUndo;
+};
 
 const addDomAsBlockFromHeader = (blockXml, header = null) => {
-  const oldVars = [...Blockly.mainWorkspace.variableList]
-  const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace)
-  Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter((v) => {
-    if (oldVars.indexOf(v) >= 0) {
-      return true
-    }
-    header.loadedVariables.push(v)
-    return false
-  })
-  replaceDeletedBlock(block)
-  Blockly.Events.fire(new Hide(block, header))
-  return block
-}
+  const oldVars = [...Blockly.mainWorkspace.variableList];
+  const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
+  Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter(
+    v => {
+      if (oldVars.indexOf(v) >= 0) {
+        return true;
+      }
+      header.loadedVariables.push(v);
+      return false;
+    },
+  );
+  replaceDeletedBlock(block);
+  Blockly.Events.fire(new Hide(block, header));
+  return block;
+};
 
 const processLoaders = (xml, header = null) => {
-  const promises = []
+  const promises = [];
   Array.from(xml.children).forEach(block => {
     if (block.getAttribute('type') === 'loader') {
-      block.remove()
+      block.remove();
 
-      const loader = header ?
-        addDomAsBlockFromHeader(block, header) :
-        Blockly.Xml.domToBlock(block, Blockly.mainWorkspace)
+      const loader = header
+        ? addDomAsBlockFromHeader(block, header)
+        : Blockly.Xml.domToBlock(block, Blockly.mainWorkspace);
 
-      promises.push(loadRemote(loader)) // eslint-disable-line no-use-before-define
+      promises.push(loadRemote(loader)); // eslint-disable-line no-use-before-define
     }
-  })
-  return promises
-}
+  });
+  return promises;
+};
 
-export const addLoadersFirst = (xml, header = null) => new Promise((resolve, reject) => {
-  const promises = processLoaders(xml, header)
-  if (promises.length) {
-    Promise.all(promises).then(resolve, reject)
-  } else {
-    resolve([])
-  }
-})
-
-const loadBlocksFromHeader = (blockStr = '', header) => new Promise((resolve, reject) => {
-  let xml
-  try {
-    xml = Blockly.Xml.textToDom(blockStr)
-  } catch (e) {
-    reject(translate('Unrecognized file format.'))
-  }
-  try {
-    if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-      const recordUndo = Blockly.Events.recordUndo
-      Blockly.Events.recordUndo = false
-      addLoadersFirst(xml, header).then(() => {
-        Array.from(xml.children).filter(block => ['tick_analysis']
-          .includes(block.getAttribute('type')) || isProcedure(block.getAttribute('type')))
-          .forEach(block => addDomAsBlockFromHeader(block, header))
-
-        Blockly.Events.recordUndo = recordUndo
-        resolve()
-      }, e => {
-        Blockly.Events.recordUndo = recordUndo
-        reject(e)
-      })
+export const addLoadersFirst = (xml, header = null) =>
+  new Promise((resolve, reject) => {
+    const promises = processLoaders(xml, header);
+    if (promises.length) {
+      Promise.all(promises).then(resolve, reject);
     } else {
-      reject(translate('Remote blocks to load must be a collection.'))
+      resolve([]);
     }
-  } catch (e) {
-    reject(translate('Unable to load the block file.'))
-  }
-})
+  });
 
-export const loadRemote = (blockObj) => new Promise((resolve, reject) => {
-  let url = blockObj.getFieldValue('URL')
-  if (url.indexOf('http') !== 0) {
-    url = `http://${url}`
-  }
-  if (!url.match(/[^/]*\.[a-zA-Z]{3}$/) && url.slice(-1)[0] !== '/') {
-    reject(translate('Target must be an xml file'))
-  } else {
-    if (url.slice(-1)[0] === '/') {
-      url += 'index.xml'
+const loadBlocksFromHeader = (blockStr = '', header) =>
+  new Promise((resolve, reject) => {
+    let xml;
+    try {
+      xml = Blockly.Xml.textToDom(blockStr);
+    } catch (e) {
+      reject(translate('Unrecognized file format.'));
     }
-    let isNew = true
-    getTopBlocksByType('loader').forEach(block => {
-      if (block.id !== blockObj.id && block.url === url) {
-        isNew = false
+    try {
+      if (
+        xml.hasAttribute('collection') &&
+        xml.getAttribute('collection') === 'true'
+      ) {
+        const recordUndo = Blockly.Events.recordUndo;
+        Blockly.Events.recordUndo = false;
+        addLoadersFirst(xml, header).then(
+          () => {
+            Array.from(xml.children)
+              .filter(
+                block =>
+                  ['tick_analysis'].includes(block.getAttribute('type')) ||
+                  isProcedure(block.getAttribute('type')),
+              )
+              .forEach(block => addDomAsBlockFromHeader(block, header));
+
+            Blockly.Events.recordUndo = recordUndo;
+            resolve();
+          },
+          e => {
+            Blockly.Events.recordUndo = recordUndo;
+            reject(e);
+          },
+        );
+      } else {
+        reject(translate('Remote blocks to load must be a collection.'));
       }
-    })
-    if (!isNew) {
-      disable(blockObj)
-      reject(translate('This url is already loaded'))
-    } else {
-      $.ajax({
-        type: 'GET',
-        url,
-      }).fail((e) => {
-        if (e.status) {
-          reject(`${translate('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`)
-        } else {
-          reject(translate('Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'))
-        }
-        deleteBlocksLoadedBy(blockObj.id)
-      }).done((xml) => {
-        loadBlocksFromHeader(xml, blockObj).then(() => {
-          enable(blockObj)
-          blockObj.url = url // eslint-disable-line no-param-reassign
-          resolve(blockObj)
-        }, reject)
-      })
+    } catch (e) {
+      reject(translate('Unable to load the block file.'));
     }
-  }
-})
+  });
+
+export const loadRemote = blockObj =>
+  new Promise((resolve, reject) => {
+    let url = blockObj.getFieldValue('URL');
+    if (url.indexOf('http') !== 0) {
+      url = `http://${url}`;
+    }
+    if (!url.match(/[^/]*\.[a-zA-Z]{3}$/) && url.slice(-1)[0] !== '/') {
+      reject(translate('Target must be an xml file'));
+    } else {
+      if (url.slice(-1)[0] === '/') {
+        url += 'index.xml';
+      }
+      let isNew = true;
+      getTopBlocksByType('loader').forEach(block => {
+        if (block.id !== blockObj.id && block.url === url) {
+          isNew = false;
+        }
+      });
+      if (!isNew) {
+        disable(blockObj);
+        reject(translate('This url is already loaded'));
+      } else {
+        $.ajax({
+          type: 'GET',
+          url,
+        })
+          .fail(e => {
+            if (e.status) {
+              reject(
+                `${translate('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`,
+              );
+            } else {
+              reject(
+                translate(
+                  "Make sure 'Access-Control-Allow-Origin' exists in the response from the server",
+                ),
+              );
+            }
+            deleteBlocksLoadedBy(blockObj.id);
+          })
+          .done(xml => {
+            loadBlocksFromHeader(xml, blockObj).then(() => {
+              enable(blockObj);
+              blockObj.url = url; // eslint-disable-line no-param-reassign
+              resolve(blockObj);
+            }, reject);
+          });
+      }
+    }
+  });

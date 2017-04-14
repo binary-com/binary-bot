@@ -1,4 +1,4 @@
-import { translate } from '../../common/i18n'
+import { translate } from '../../common/i18n';
 
 export default {
   lists: {
@@ -6,12 +6,7 @@ export default {
       // [translate('Payout'), 'payout'],
       [translate('Stake'), 'stake'],
     ],
-    CURRENCY: [
-      ['USD', 'USD'],
-      ['EUR', 'EUR'],
-      ['GBP', 'GBP'],
-      ['AUD', 'AUD'],
-    ],
+    CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD']],
     DETAILS: [
       [translate('statement'), '1'],
       [translate('ask price'), '2'],
@@ -25,19 +20,13 @@ export default {
       [translate('barrier'), '10'],
       [translate('result'), '11'],
     ],
-    CHECK_RESULT: [
-      [translate('Win'), 'win'],
-      [translate('Loss'), 'loss'],
-    ],
+    CHECK_RESULT: [[translate('Win'), 'win'], [translate('Loss'), 'loss']],
     CHECK_DIRECTION: [
       [translate('Rise'), 'rise'],
       [translate('Fall'), 'fall'],
       [translate('No Change'), ''],
     ],
-    BALANCE_TYPE: [
-      [translate('string'), 'STR'],
-      [translate('number'), 'NUM'],
-    ],
+    BALANCE_TYPE: [[translate('string'), 'STR'], [translate('number'), 'NUM']],
     NOTIFICATION_TYPE: [
       [translate('green'), 'success'],
       [translate('blue'), 'info'],
@@ -47,56 +36,80 @@ export default {
   },
 
   opposites: {
-    RISEFALL: [{
-      CALL: translate('Rise'),
-    }, {
-      PUT: translate('Fall'),
-    }],
-    HIGHERLOWER: [{
-      CALL: translate('Higher'),
-    }, {
-      PUT: translate('Lower'),
-    }],
-    TOUCHNOTOUCH: [{
-      ONETOUCH: translate('Touch'),
-    }, {
-      NOTOUCH: translate('No Touch'),
-    }],
-    ENDSINOUT: [{
-      EXPIRYRANGE: translate('Ends In'),
-    }, {
-      EXPIRYMISS: translate('Ends Out'),
-    }],
-    STAYSINOUT: [{
-      RANGE: translate('Stays In'),
-    }, {
-      UPORDOWN: translate('Goes Out'),
-    }],
-    ASIANS: [{
-      ASIANU: translate('Asian Up'),
-    }, {
-      ASIAND: translate('Asian Down'),
-    }],
-    MATCHESDIFFERS: [{
-      DIGITMATCH: translate('Matches'),
-    }, {
-      DIGITDIFF: translate('Differs'),
-    }],
-    EVENODD: [{
-      DIGITEVEN: translate('Even'),
-    }, {
-      DIGITODD: translate('Odd'),
-    }],
-    OVERUNDER: [{
-      DIGITOVER: translate('Over'),
-    }, {
-      DIGITUNDER: translate('Under'),
-    }],
+    RISEFALL: [
+      {
+        CALL: translate('Rise'),
+      },
+      {
+        PUT: translate('Fall'),
+      },
+    ],
+    HIGHERLOWER: [
+      {
+        CALL: translate('Higher'),
+      },
+      {
+        PUT: translate('Lower'),
+      },
+    ],
+    TOUCHNOTOUCH: [
+      {
+        ONETOUCH: translate('Touch'),
+      },
+      {
+        NOTOUCH: translate('No Touch'),
+      },
+    ],
+    ENDSINOUT: [
+      {
+        EXPIRYRANGE: translate('Ends In'),
+      },
+      {
+        EXPIRYMISS: translate('Ends Out'),
+      },
+    ],
+    STAYSINOUT: [
+      {
+        RANGE: translate('Stays In'),
+      },
+      {
+        UPORDOWN: translate('Goes Out'),
+      },
+    ],
+    ASIANS: [
+      {
+        ASIANU: translate('Asian Up'),
+      },
+      {
+        ASIAND: translate('Asian Down'),
+      },
+    ],
+    MATCHESDIFFERS: [
+      {
+        DIGITMATCH: translate('Matches'),
+      },
+      {
+        DIGITDIFF: translate('Differs'),
+      },
+    ],
+    EVENODD: [
+      {
+        DIGITEVEN: translate('Even'),
+      },
+      {
+        DIGITODD: translate('Odd'),
+      },
+    ],
+    OVERUNDER: [
+      {
+        DIGITOVER: translate('Over'),
+      },
+      {
+        DIGITUNDER: translate('Under'),
+      },
+    ],
   },
-  barrierTypes: [
-    ['+', '+'],
-    ['-', '-'],
-  ],
+  barrierTypes: [['+', '+'], ['-', '-']],
   ohlcFields: [
     [translate('Open'), 'open'],
     [translate('High'), 'high'],
@@ -118,12 +131,7 @@ export default {
     ['8 hours', '28800'],
     ['1 day', '86400'],
   ],
-  mainBlocks: [
-    'trade',
-    'before_purchase',
-    'after_purchase',
-    'during_purchase',
-  ],
+  mainBlocks: ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
   durationTypes: {
     RISEFALL: [
       [translate('Ticks'), 't'],
@@ -137,45 +145,17 @@ export default {
       [translate('Minutes'), 'm'],
       [translate('Hours'), 'h'],
     ],
-    TOUCHNOTOUCH: [
-      [translate('Minutes'), 'm'],
-      [translate('Hours'), 'h'],
-    ],
-    ENDSINOUT: [
-      [translate('Minutes'), 'm'],
-      [translate('Hours'), 'h'],
-    ],
-    STAYSINOUT: [
-      [translate('Minutes'), 'm'],
-      [translate('Hours'), 'h'],
-    ],
-    ASIANS: [
-      [translate('Ticks'), 't'],
-    ],
-    MATCHESDIFFERS: [
-      [translate('Ticks'), 't'],
-    ],
-    EVENODD: [
-      [translate('Ticks'), 't'],
-    ],
-    OVERUNDER: [
-      [translate('Ticks'), 't'],
-    ],
+    TOUCHNOTOUCH: [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
+    ENDSINOUT: [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
+    STAYSINOUT: [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
+    ASIANS: [[translate('Ticks'), 't']],
+    MATCHESDIFFERS: [[translate('Ticks'), 't']],
+    EVENODD: [[translate('Ticks'), 't']],
+    OVERUNDER: [[translate('Ticks'), 't']],
   },
-  hasPrediction: [
-    'MATCHESDIFFERS',
-    'OVERUNDER',
-  ],
-  hasBarrierOffset: [
-    'HIGHERLOWER',
-    'TOUCHNOTOUCH',
-    'ENDSINOUT',
-    'STAYSINOUT',
-  ],
-  hasSecondBarrierOffset: [
-    'ENDSINOUT',
-    'STAYSINOUT',
-  ],
+  hasPrediction: ['MATCHESDIFFERS', 'OVERUNDER'],
+  hasBarrierOffset: ['HIGHERLOWER', 'TOUCHNOTOUCH', 'ENDSINOUT', 'STAYSINOUT'],
+  hasSecondBarrierOffset: ['ENDSINOUT', 'STAYSINOUT'],
   conditionsCategory: {
     callput: ['risefall', 'higherlower'],
     touchnotouch: ['touchnotouch'],
@@ -192,8 +172,17 @@ export default {
     endsinout: translate('Ends In/Out'),
     staysinout: translate('Stays In/Goes Out'),
   },
-  conditions: ['risefall', 'higherlower', 'touchnotouch',
-    'endsinout', 'staysinout', 'asians', 'matchesdiffers', 'evenodd', 'overunder'],
+  conditions: [
+    'risefall',
+    'higherlower',
+    'touchnotouch',
+    'endsinout',
+    'staysinout',
+    'asians',
+    'matchesdiffers',
+    'evenodd',
+    'overunder',
+  ],
   scopeNames: {
     before_purchase: translate('Before Purchase'),
     during_purchase: translate('During Purchase'),
@@ -212,4 +201,4 @@ export default {
     [translate('MACD'), '1'],
     [translate('Signal'), '2'],
   ],
-}
+};

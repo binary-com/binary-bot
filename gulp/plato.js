@@ -1,41 +1,41 @@
-const gulp = require('gulp')
-const plato = require('es6-plato')
+const gulp = require("gulp");
+const plato = require("es6-plato");
 
-const src = './src/botPage/bot/**/*.js'
-const outputDir = '/tmp/analysis'
+const src = "./src/botPage/bot/**/*.js";
+const outputDir = "/tmp/analysis";
 
 const lintRules = {
   rules: {
     indent: [2, 2],
-    quotes: [2, 'single'],
-    semi: [2, 'never'],
-    'no-console': [1],
-    curly: ['error'],
-    'no-dupe-keys': 2,
-    'func-names': [1, 'always'],
-    'max-len': [2],
+    quotes: [2, "single"],
+    semi: [2, "never"],
+    "no-console": [1],
+    curly: ["error"],
+    "no-dupe-keys": 2,
+    "func-names": [1, "always"],
+    "max-len": [2]
   },
   env: {
-    es6: true,
+    es6: true
   },
-  globals: ['require'],
+  globals: ["require"],
   parserOptions: {
-    sourceType: 'module',
+    sourceType: "module",
     ecmaFeatures: {
       jsx: true,
-      modules: true,
-    },
-  },
-}
+      modules: true
+    }
+  }
+};
 
 const platoArgs = {
-  title: 'example',
+  title: "example",
   eslint: lintRules,
-  complexity: {},
-}
+  complexity: {}
+};
 
 function analysis() {
-  return plato.inspect(src, outputDir, platoArgs)
+  return plato.inspect(src, outputDir, platoArgs);
 }
 
-gulp.task('analysis', analysis)
+gulp.task("analysis", analysis);

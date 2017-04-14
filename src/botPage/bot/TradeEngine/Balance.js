@@ -1,29 +1,29 @@
-import { error as broadcastError, info } from '../broadcast'
-import { doUntilDone } from '../tools'
+import { error as broadcastError, info } from '../broadcast';
+import { doUntilDone } from '../tools';
 
-let balance = 0
-let balanceStr = ''
+let balance = 0;
+let balanceStr = '';
 
 export default Engine => class Balance extends Engine {
   subscribeToBalance() {
-    doUntilDone(() => this.api.subscribeToBalance()).catch(broadcastError)
+    doUntilDone(() => this.api.subscribeToBalance()).catch(broadcastError);
 
     return new Promise(r => {
-      this.balancePromise = r
-    })
+      this.balancePromise = r;
+    });
   }
   observeBalance() {
     this.listen('balance', r => {
-      const { balance: { balance: b, currency } } = r
+      const { balance: { balance: b, currency } } = r;
 
-      balance = +b
-      balanceStr = `${balance.toFixed(2)} ${currency}`
+      balance = +b;
+      balanceStr = `${balance.toFixed(2)} ${currency}`;
 
-      this.balancePromise()
-      info({ balance: balanceStr })
-    })
+      this.balancePromise();
+      info({ balance: balanceStr });
+    });
   }
   getBalance(type) {
-    return (type === 'STR' ? balanceStr : balance)
+    return type === 'STR' ? balanceStr : balance;
   }
-}
+};

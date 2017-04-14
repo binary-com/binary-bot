@@ -44,9 +44,7 @@
     "generator-star-spacing": 0,
     "react/no-unused-prop-types": 0,
     "no-underscore-dangle": 0,
-    "max-len": 0,
-    "semi": ["error", "never"],
-    "no-extra-semi": 2,
+    "no-mixed-operators": 0,
     "no-console": 2,
   },
   "settings": {

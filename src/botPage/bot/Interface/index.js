@@ -1,37 +1,44 @@
-import TradeEngine from '../TradeEngine'
-import { noop, subtractFixed, createDetails } from '../tools'
-import TicksInterface from './TicksInterface'
-import ToolsInterface from './ToolsInterface'
+import TradeEngine from '../TradeEngine';
+import { noop, subtractFixed, createDetails } from '../tools';
+import TicksInterface from './TicksInterface';
+import ToolsInterface from './ToolsInterface';
 
 /**
  * Bot - Bot Module
  * @namespace Bot
  */
 
-export default class Interface extends ToolsInterface(TicksInterface(class {})) {
+export default class Interface
+  extends ToolsInterface(TicksInterface(class {})) {
   constructor($scope) {
-    super()
-    this.tradeEngine = new TradeEngine($scope)
-    this.api = $scope.api
-    this.observer = $scope.observer
-    this.$scope = $scope
+    super();
+    this.tradeEngine = new TradeEngine($scope);
+    this.api = $scope.api;
+    this.observer = $scope.observer;
+    this.$scope = $scope;
   }
   getInterface(name = 'Global') {
-    return name === 'Bot' ? {
-      ...this.getBotInterface(),
-      ...this.getToolsInterface(),
-    } : {
+    if (name === 'Bot') {
+      return {
+        ...this.getBotInterface(),
+        ...this.getToolsInterface(),
+      };
+    }
+    return {
       watch: (...args) => this.tradeEngine.watch(...args),
       sleep: (...args) => this.sleep(...args),
       alert: (...args) => alert(...args), // eslint-disable-line no-alert
       prompt: (...args) => prompt(...args), // eslint-disable-line no-alert
-      console: { // eslint-disable-next-line no-console
-        log(...args) { console.log(new Date().toLocaleTimeString(), ...args) },
+      console: {
+        log(...args) {
+          // eslint-disable-next-line no-console
+          console.log(new Date().toLocaleTimeString(), ...args);
+        },
       },
-    }
+    };
   }
   getBotInterface() {
-    const getDetail = i => createDetails(this.get('contract'))[i]
+    const getDetail = i => createDetails(this.get('contract'))[i];
 
     return {
       init: (...args) => this.tradeEngine.init(...args),
@@ -43,35 +50,39 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
       isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
       sellAtMarket: () => this.tradeEngine.sellAtMarket(),
       getSellPrice: () => this.getSellPrice(),
-      isResult: result => (getDetail(10) === result),
+      isResult: result => getDetail(10) === result,
       readDetails: i => getDetail(i - 1),
-    }
+    };
   }
   sleep(arg = 1) {
-    return new Promise(r => setTimeout(() => {
-      r()
-      setTimeout(() => this.observer.emit('CONTINUE'), 0)
-    }, arg * 1000), noop)
+    return new Promise(
+      r =>
+        setTimeout(() => {
+          r();
+          setTimeout(() => this.observer.emit('CONTINUE'), 0);
+        }, arg * 1000),
+      noop,
+    );
   }
   getProposal(contractType) {
-    const proposals = this.get('proposals')
+    const proposals = this.get('proposals');
 
-    let proposal
+    let proposal;
 
     proposals.forEach(p => {
       if (p.contractType === contractType) {
-        proposal = p
+        proposal = p;
       }
-    })
+    });
 
-    return proposal
+    return proposal;
   }
   getSellPrice() {
-    const { bid_price: bidPrice, buy_price: buyPrice } = this.get('contract')
+    const { bid_price: bidPrice, buy_price: buyPrice } = this.get('contract');
 
-    return subtractFixed(bidPrice, buyPrice)
+    return subtractFixed(bidPrice, buyPrice);
   }
   get(key) {
-    return this.tradeEngine.getData().get(key)
+    return this.tradeEngine.getData().get(key);
   }
 }

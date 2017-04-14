@@ -1,36 +1,36 @@
-import { translate } from '../../../common/i18n'
-import { addFixed, subtractFixed } from '../tools'
-import { info, notify } from '../broadcast'
+import { translate } from '../../../common/i18n';
+import { addFixed, subtractFixed } from '../tools';
+import { info, notify } from '../broadcast';
 
-let totalProfit = 0
-let totalWins = 0
-let totalLosses = 0
-let totalStake = 0
-let totalPayout = 0
-let totalRuns = 0
+let totalProfit = 0;
+let totalWins = 0;
+let totalLosses = 0;
+let totalStake = 0;
+let totalPayout = 0;
+let totalRuns = 0;
 
 export default Engine => class Total extends Engine {
   constructor() {
-    super()
-    this.sessionRuns = 0
-    this.sessionProfit = 0
+    super();
+    this.sessionRuns = 0;
+    this.sessionProfit = 0;
   }
   updateTotals(contract) {
-    const { sell_price: sellPrice, buy_price: buyPrice } = contract
+    const { sell_price: sellPrice, buy_price: buyPrice } = contract;
 
-    const profit = subtractFixed(sellPrice, buyPrice)
+    const profit = subtractFixed(sellPrice, buyPrice);
 
-    const win = profit > 0
+    const win = profit > 0;
 
-    totalWins += win ? 1 : 0
+    totalWins += win ? 1 : 0;
 
-    totalLosses += !win ? 1 : 0
+    totalLosses += !win ? 1 : 0;
 
-    this.sessionProfit = addFixed(this.sessionProfit, profit)
+    this.sessionProfit = addFixed(this.sessionProfit, profit);
 
-    totalProfit = addFixed(totalProfit, profit)
-    totalStake = addFixed(totalStake, buyPrice)
-    totalPayout = addFixed(totalPayout, sellPrice)
+    totalProfit = addFixed(totalProfit, profit);
+    totalStake = addFixed(totalStake, buyPrice);
+    totalPayout = addFixed(totalPayout, sellPrice);
 
     info({
       profit,
@@ -40,38 +40,38 @@ export default Engine => class Total extends Engine {
       totalLosses,
       totalStake,
       totalPayout,
-    })
+    });
 
     if (win) {
-      notify('success', `${translate('Profit amount')}: ${profit}`)
+      notify('success', `${translate('Profit amount')}: ${profit}`);
     } else {
-      notify('warn', `${translate('Loss amount')}: ${profit}`)
+      notify('warn', `${translate('Loss amount')}: ${profit}`);
     }
   }
   updateAndReturnTotalRuns() {
-    this.sessionRuns++
-    return ++totalRuns
+    this.sessionRuns++;
+    return ++totalRuns;
   }
   getTotalRuns() {
-    return totalRuns
+    return totalRuns;
   }
   getTotalProfit() {
-    return totalProfit
+    return totalProfit;
   }
   checkLimits(tradeOption) {
     if (!tradeOption.limitations) {
-      return
+      return;
     }
 
-    const { limitations: { maxLoss, maxTrades } } = tradeOption
+    const { limitations: { maxLoss, maxTrades } } = tradeOption;
 
     if (maxLoss && maxTrades) {
       if (this.sessionRuns >= maxTrades) {
-        throw Error(translate('Maximum number of trades reached'))
+        throw Error(translate('Maximum number of trades reached'));
       }
-      if (this.sessionProfit <= (-maxLoss)) {
-        throw Error(translate('Maximum loss amount reached'))
+      if (this.sessionProfit <= -maxLoss) {
+        throw Error(translate('Maximum loss amount reached'));
       }
     }
   }
-}
+};

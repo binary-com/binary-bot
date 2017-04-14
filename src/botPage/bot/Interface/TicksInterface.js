@@ -7,6 +7,6 @@ export default Interface => class extends Interface {
       checkDirection: dir => this.tradeEngine.checkDirection(dir),
       getOhlcFromEnd: args => this.tradeEngine.getOhlcFromEnd(args),
       getOhlc: args => this.tradeEngine.getOhlc(args),
-    }
+    };
   }
-}
+};

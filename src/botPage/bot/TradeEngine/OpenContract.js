@@ -1,80 +1,80 @@
-import { doUntilDone } from '../tools'
-import { contract as broadcastContract } from '../broadcast'
+import { doUntilDone } from '../tools';
+import { contract as broadcastContract } from '../broadcast';
 
 export default Engine => class OpenContract extends Engine {
   observeOpenContract() {
     this.listen('proposal_open_contract', r => {
-      const contract = r.proposal_open_contract
+      const contract = r.proposal_open_contract;
 
       if (!this.expectedContractId(contract.contract_id)) {
-        return
+        return;
       }
 
-      this.setContractFlags(contract)
+      this.setContractFlags(contract);
 
-      this.sellExpired()
+      this.sellExpired();
 
-      this.data = this.data.set('contract', contract)
+      this.data = this.data.set('contract', contract);
 
-      broadcastContract(contract)
+      broadcastContract(contract);
 
       if (this.isSold) {
-        this.ongoingPurchase = false
-        this.contractId = ''
-        this.updateTotals(contract)
+        this.ongoingPurchase = false;
+        this.contractId = '';
+        this.updateTotals(contract);
         if (this.afterPromise) {
-          this.afterPromise()
+          this.afterPromise();
         }
 
-        this.signal('after')
+        this.signal('after');
       } else {
-        this.signal('during')
+        this.signal('during');
       }
-    })
+    });
     // send request for proposal open contract if above failed within 1 sec
     this.listen('transaction', t => {
-      const { contract_id: contractId, action } = t.transaction
+      const { contract_id: contractId, action } = t.transaction;
 
       if (!this.expectedContractId(contractId) || action !== 'sell') {
-        return
+        return;
       }
 
       setTimeout(() => {
         if (this.expectedContractId(contractId)) {
-          doUntilDone(() => this.api.getContractInfo(this.contractId))
+          doUntilDone(() => this.api.getContractInfo(this.contractId));
         }
-      }, 1000)
-    })
+      }, 1000);
+    });
   }
   waitForAfter() {
     return new Promise(resolve => {
-      this.afterPromise = resolve
-    })
+      this.afterPromise = resolve;
+    });
   }
   subscribeToOpenContract(contractId) {
-    this.contractId = contractId
+    this.contractId = contractId;
 
     if (!this.transactionRequested) {
-      this.transactionRequested = true
-      doUntilDone(() => this.api.subscribeToTransactions())
+      this.transactionRequested = true;
+      doUntilDone(() => this.api.subscribeToTransactions());
     }
 
-    doUntilDone(() => this.api.subscribeToOpenContract(contractId))
+    doUntilDone(() => this.api.subscribeToOpenContract(contractId));
   }
   setContractFlags(contract) {
     const {
       is_expired: isExpired,
       is_valid_to_sell: isValidToSell,
       is_sold: isSold,
-    } = contract
+    } = contract;
 
-    this.isSold = Boolean(isSold)
+    this.isSold = Boolean(isSold);
 
-    this.isSellAvailable = !this.isSold && Boolean(isValidToSell)
+    this.isSellAvailable = !this.isSold && Boolean(isValidToSell);
 
-    this.isExpired = Boolean(isExpired)
+    this.isExpired = Boolean(isExpired);
   }
   expectedContractId(contractId) {
-    return this.contractId && contractId === this.contractId
+    return this.contractId && contractId === this.contractId;
   }
-}
+};

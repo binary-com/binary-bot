@@ -1,5 +1,5 @@
-import { expect } from 'chai'
-import { createInterpreter } from '../cli'
+import { expect } from 'chai';
+import { createInterpreter } from '../cli';
 
 const init = `
   Bot.init('Xkq6oGFEHh6hJH8', {
@@ -7,15 +7,16 @@ const init = `
     contractTypes: ['CALL', 'PUT'],
     symbol: 'R_100',
   })
-`
+`;
 
-const start = duration => `
+const start = duration =>
+  `
         ${init}
         Bot.start({
           amount: 1,
           currency: 'USD', ${duration},
         });
-`
+`;
 
 export const parts = {
   header: `
@@ -42,37 +43,40 @@ export const parts = {
         };
       })();
   `,
-}
+};
 
-export const run = code => createInterpreter().run(code)
+export const run = code => createInterpreter().run(code);
 
-export const runAndGetResult = (initCode = '', code) => new Promise(r => {
-  run(`
+export const runAndGetResult = (initCode = '', code) =>
+  new Promise(r => {
+    run(
+      `
     ${parts.header}
     ${initCode}
     ${parts.tickTrade}
     ${code}
     ${parts.footer}
-  `).then(v => r(v.result))
-})
+  `,
+    ).then(v => r(v.result));
+  });
 
 export const expectReturnTrue = (msg, code) =>
   describe(msg, () => {
-    let value
+    let value;
 
     beforeAll(done => {
       run(code).then(v => {
-        value = v
-        done()
-      })
-    })
+        value = v;
+        done();
+      });
+    });
     it('return code is true', () => {
-      expect(value).to.be.equal(true)
-    })
-  })
+      expect(value).to.be.equal(true);
+    });
+  });
 
 export const expectResultTypes = (result, types) => {
-  const resultTypes = Object.keys(result).map(k => typeof result[k])
+  const resultTypes = Object.keys(result).map(k => typeof result[k]);
 
-  expect(resultTypes).deep.equal(types)
-}
+  expect(resultTypes).deep.equal(types);
+};

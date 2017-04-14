@@ -1,4 +1,4 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer'
+import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 
 export default Interface => class extends Interface {
   getMiscInterface() {
@@ -7,6 +7,6 @@ export default Interface => class extends Interface {
       getTotalRuns: () => this.tradeEngine.getTotalRuns(),
       getBalance: type => this.tradeEngine.getBalance(type),
       getTotalProfit: () => this.tradeEngine.getTotalProfit(),
-    }
+    };
   }
-}
+};

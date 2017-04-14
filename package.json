@@ -49,6 +49,12 @@
       "tools.js"
     ]
   },
+  "lint-staged": {
+    "*.js": [
+      "prettier --single-quote --trailing-comma all --write",
+      "git add"
+    ]
+  },
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10",
@@ -58,7 +64,8 @@
     "deploy": "git checkout master ; npm prune ; npm install ; gulp deploy",
     "deploy-all": "npm run gen-beta; npm run gen-translation; npm run deploy",
     "build": "webpack --config webpack.config.cli.js",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "precommit": "lint-staged"
   },
   "author": "Amin Marashi",
   "license": "MIT",
@@ -106,6 +113,7 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.5.0",
     "gulp-watch": "^4.3.11",
+    "husky": "^0.13.3",
     "i18next-scanner": "^1.7.0",
     "immutable": "^3.8.1",
     "jest": "^19.0.2",
@@ -114,10 +122,12 @@
     "jquery-ui-css": "^1.11.4",
     "js-interpreter": "^1.4.2",
     "json-loader": "^0.5.4",
+    "lint-staged": "^3.4.0",
     "loader-utils": "^1.1.0",
     "lz-string": "^1.4.4",
     "mocha": "^3.2.0",
     "notifyjs-browser": "^0.4.2",
+    "prettier": "^1.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-joyride": "^1.10.1",

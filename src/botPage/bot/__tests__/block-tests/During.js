@@ -1,25 +1,27 @@
-import { runAndGetResult, expectResultTypes, parts } from '../tools'
-
+import { runAndGetResult, expectResultTypes, parts } from '../tools';
 
 describe('During Purchase Blocks', () => {
-  let result
+  let result;
 
   beforeAll(done => {
-    runAndGetResult(undefined, `
+    runAndGetResult(
+      undefined,
+      `
       ${parts.waitToPurchase}
       watch('during');
       result.sellAvailable = Bot.isSellAvailable();
       result.sellPrice = Bot.getSellPrice();
-    `).then(v => {
-      result = v
-      done()
-    })
-  })
+    `,
+    ).then(v => {
+      result = v;
+      done();
+    });
+  });
 
   it('During purchase api', () => {
     expectResultTypes(result, [
       'boolean', // is sell available
       'number', // sell price
-    ])
-  })
-})
+    ]);
+  });
+});
