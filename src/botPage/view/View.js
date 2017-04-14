@@ -12,8 +12,8 @@ import 'jquery-ui/ui/widgets/dialog'
 import TradeInfo from './tradeInfo'
 import _Blockly from './blockly'
 import { translate } from '../../common/i18n'
-import { SaveXml } from './react-components/SaveXml'
-import { LimitsPanel } from './react-components/LimitsPanel'
+import Save from './Dialogs/Save'
+import Limits from './Dialogs/Limits'
 import { getLanguage } from '../../common/lang'
 import { symbolPromise, ticksService } from './shared'
 import { logHandler } from './logger'
@@ -175,6 +175,9 @@ const resetRealityCheck = (token) => {
   clearRealityCheck()
   startRealityCheck(null, token)
 }
+
+const limits = new Limits()
+const saveDialog = new Save()
 
 export default class View {
   constructor() {
@@ -341,11 +344,8 @@ export default class View {
         classes: { 'ui-dialog-titlebar-close': 'icon-close' },
       })
 
-    ReactDOM.render(
-      <SaveXml
-        onSave={(filename, collection) => this.blockly.save(filename, collection)}
-      />
-      , $('#saveXml')[0])
+    $('#save-xml').click(() => saveDialog.save()
+      .then(arg => this.blockly.save(arg)))
 
     $('#undo')
       .click(() => {
@@ -411,11 +411,7 @@ export default class View {
         const token = $('.account-id').first().attr('value')
         const tokenObj = getToken(token)
         if (tokenObj && tokenObj.hasTradeLimitation) {
-          ReactDOM.render(
-            <LimitsPanel
-            onSave={startBot}
-            />
-            , $('#limits-panel')[0])
+          limits.getLimits().then(startBot)
         } else {
           startBot()
         }

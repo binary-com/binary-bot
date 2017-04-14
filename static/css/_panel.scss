@@ -25,19 +25,6 @@
     }
   }
 
-  .description {
-    padding: 5px;
-    background-color: $brand-blue;
-    color: $white;
-    border-radius: 4px 4px 0 0;
-  }
-
-  .description h4 {
-    color: $white;
-    margin: 0;
-    text-align: center;
-  }
-
   table {
     overflow: auto;
     width: 100%;
@@ -70,34 +57,10 @@
     border: 1px solid $brand-gray;
     border-radius: 3px;
   }
-
-  .draggable {
-    opacity: 1;
-  }
 }
 
-.floating-panel {
-	font-size: 1em;
-	background-color: white;
-	position: fixed;
-	top: 50%;
-	left: calc(50% - 7em);
-	border: 1px solid #2a3052;
-	border-top-color: #ddd;
-}
-.floating-panel .content{
+.dialog-content{
 	padding: 0 15px 15px 15px;
 	background: white;
 	cursor: default;
 }
-.floating-panel .description {
-	padding: 0.2em 2em;
-	background-color: #2a3052;
-	color: #fff;
-}
-.floating-panel .description h4 {
-	color: white;
-	margin: 0;
-	text-align: center;
-}
-

@@ -12,13 +12,7 @@ const { addToManifest } = require('./revision');
 gulp.task('clean-bundle', () => gulp.src('./www/js/bundle*')
   .pipe(paths(del)));
 
-gulp.task('jquery-copy', () => gulp.src('./node_modules/jquery/dist/jquery.min.js')
-  .pipe(concat('jquery.js'))
-  .pipe(rev())
-  .pipe(through.obj(addToManifest))
-  .pipe(gulp.dest('www/js/')));
-
-gulp.task('bundle-js', ['jquery-copy'], () => gulp.src([
+gulp.task('bundle-js', () => gulp.src([
   './node_modules/blockly/blockly_compressed.js',
   './node_modules/blockly/blocks_compressed.js',
   './node_modules/blockly/javascript_compressed.js',
@@ -29,15 +23,8 @@ gulp.task('bundle-js', ['jquery-copy'], () => gulp.src([
   .pipe(gulp.dest('www/js/')));
 
 gulp.task('bundle-css',
-  () => gulp.src(['node_modules/{bootstrap/dist/css/bootstrap.min,tourist/tourist,jquery-ui-css/jquery-ui}.css'])
+  () => gulp.src(['node_modules/{bootstrap/dist/css/bootstrap.min,jquery-ui-css/jquery-ui.min}.css'])
   .pipe(concatCss('bundle.css'))
-  .pipe(rev())
-  .pipe(through.obj(addToManifest))
-  .pipe(gulp.dest('www/css')));
-
-gulp.task('bundle-css-min', ['bundle-css'], () => gulp.src('www/css/bundle-*.css')
-  .pipe(rename('bundle.min.css'))
-  .pipe(cleanCSS())
   .pipe(rev())
   .pipe(through.obj(addToManifest))
   .pipe(gulp.dest('www/css')));

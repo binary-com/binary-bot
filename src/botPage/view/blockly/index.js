@@ -191,7 +191,9 @@ export default class _Blockly {
       throw createError('FileLoad', translate('Unable to load the block file.'))
     }
   }
-  save(filename, collection) {
+  save(arg) {
+    const { filename, collection } = arg
+
     setBeforeUnload(true)
     const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)
     Array.from(xml.children).forEach(blockDom => {

@@ -9,9 +9,8 @@ require('./webpack')
 const getConfig = (prefix) => ({
   index: `<script src="js/${prefix ? getManifest(`index${prefix}.js`) : 'index.js'}"></script>`,
   bot: `<script src="js/${prefix ? getManifest(`bot${prefix}.js`) : 'bot.js'}"></script>`,
-  jquery: `<script src="js/${getManifest('jquery.js')}"></script>`,
   bundle: `<script src="js/${getManifest('bundle.js')}"></script>`,
-  bundle_css: `<link href="css/${getManifest(`bundle${prefix}.css`)}" rel="stylesheet" />`,
+  bundle_css: `<link href="css/${getManifest('bundle.css')}" rel="stylesheet" />`,
   index_css: `<link href="css/${getManifest('index.css')}" rel="stylesheet" />`,
   bot_css: `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
   head: 'templates/partials/head.mustache',
@@ -28,6 +27,6 @@ const genHtml = (min) => gulp.src('templates/*.mustache')
 gulp.task('build-dev-html', genHtml);
 gulp.task('build-dev-js', ['webpack-dev'], genHtml);
 gulp.task('build-dev-static', ['static'], genHtml);
-gulp.task('build-min', ['static', 'webpack-prod', 'bundle-css-min', 'bundle-js'],
+gulp.task('build-min', ['static', 'webpack-prod', 'bundle-css', 'bundle-js'],
   () => genHtml(true));
 gulp.task('build', ['bundle-css', 'bundle-js', 'build-dev-js', 'build-dev-static']);
