@@ -463,22 +463,15 @@ export default class View {
     });
     $(document).keydown(e => {
       if (e.which === 189) {
-        // -
+        // Ctrl + -
         if (e.ctrlKey) {
           this.blockly.zoomOnPlusMinus(false);
           e.preventDefault();
         }
       } else if (e.which === 187) {
-        // +
+        // Ctrl + +
         if (e.ctrlKey) {
           this.blockly.zoomOnPlusMinus(true);
-          e.preventDefault();
-        }
-      } else if (e.which === 27) {
-        // Esc
-        const exitButton = $('.panel:hover .panelExitButton');
-        if (exitButton.length === 1) {
-          exitButton.click();
           e.preventDefault();
         }
       }
