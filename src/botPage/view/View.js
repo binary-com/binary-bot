@@ -350,8 +350,8 @@ export default class View {
     $('.draggable-dialog').hide().dialog({
       resizable: false,
       autoOpen: false,
-      width: 800,
-      height: 650,
+      width: Math.min(document.body.offsetWidth, 800),
+      height: Math.min(document.body.offsetHeight, 650),
       closeText: '',
       classes: { 'ui-dialog-titlebar-close': 'icon-close' },
     });
