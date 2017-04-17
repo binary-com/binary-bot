@@ -29,7 +29,7 @@ export default Engine => class Purchase extends Engine {
 
       this.subscribeToOpenContract(buy.contract_id);
       this.signal('purchase');
-      this.renewProposalsOnPurchase(id);
+      this.renewProposalsOnPurchase();
       delayIndex = 0;
       notify('info', `${translate('Bought')}: ${buy.longcode}`);
       info({

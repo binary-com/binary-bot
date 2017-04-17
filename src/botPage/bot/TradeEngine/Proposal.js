@@ -32,9 +32,9 @@ export default Engine => class Proposal extends Engine {
       askPrice: toBuy.ask_price,
     };
   }
-  renewProposalsOnPurchase(toBuyId) {
+  renewProposalsOnPurchase() {
     this.requestProposals();
-    this.unsubscribeProposals(toBuyId);
+    this.unsubscribeProposals();
   }
   waitForProposals() {
     this.data = this.data.set('proposals', new Map());
@@ -72,7 +72,7 @@ export default Engine => class Proposal extends Engine {
       }
     });
   }
-  unsubscribeProposals(toBuyId) {
+  unsubscribeProposals() {
     if (!this.data.has('proposals')) {
       return;
     }
@@ -83,10 +83,6 @@ export default Engine => class Proposal extends Engine {
 
     proposals.forEach(proposal => {
       const { uuid: id, id: streamId } = proposal;
-
-      if (toBuyId === streamId) {
-        return;
-      }
 
       this.data = this.data.setIn(['forgetProposals', id], true);
 
