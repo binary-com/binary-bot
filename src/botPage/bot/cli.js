@@ -5,7 +5,7 @@ import Observer, {
 import fs from 'fs';
 import readline from 'readline';
 import program from 'commander';
-import WebSocket from 'ws';
+import websocket from 'ws';
 import { LiveApi } from 'binary-live-api';
 import Interpreter from './Interpreter';
 import TicksService from '../common/TicksService';
@@ -21,10 +21,8 @@ setInterval(() => {}, 2147483647); // Keep node alive
 export const createScope = () => {
   const observer = new Observer();
   const api = new LiveApi({
-    connection: new WebSocket(
-      process.env.ENDPOINT ||
-        'wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169',
-    ),
+    websocket,
+    appId: 1169,
   });
 
   const ticksService = new TicksService(api);
