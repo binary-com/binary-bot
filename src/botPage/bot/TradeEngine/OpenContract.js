@@ -27,6 +27,10 @@ export default Engine => class OpenContract extends Engine {
         }
 
         this.signal('after');
+
+        if (this.openContractId) {
+          this.api.unsubscribeByID(this.openContractId);
+        }
       } else {
         this.signal('during');
       }
@@ -59,7 +63,9 @@ export default Engine => class OpenContract extends Engine {
       doUntilDone(() => this.api.subscribeToTransactions());
     }
 
-    doUntilDone(() => this.api.subscribeToOpenContract(contractId));
+    doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(
+      r => ({ proposal_open_contract: { id: this.openContractId } } = r),
+    );
   }
   setContractFlags(contract) {
     const {

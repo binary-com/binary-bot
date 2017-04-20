@@ -82,7 +82,7 @@ export default Engine => class Proposal extends Engine {
     this.data = this.data.set('proposals', new Map());
 
     proposals.forEach(proposal => {
-      const { uuid: id, id: streamId } = proposal;
+      const { uuid: id } = proposal;
 
       this.data = this.data.setIn(['forgetProposals', id], true);
 
