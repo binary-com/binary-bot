@@ -1,8 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
 import { translate } from '../../../../../common/i18n'
-import './result'
 import './check_result'
-import './details'
 import './read_details'
 import './trade_again'
 import { configMainBlock, setBlockTextColor } from '../../utils'
@@ -29,16 +27,9 @@ Blockly.Blocks.after_purchase = {
 Blockly.JavaScript.after_purchase = (block) => {
   const stack = Blockly.JavaScript.statementToCode(block, 'AFTERPURCHASE_STACK')
   const code = `after_purchase = function after_purchase(){
-    try {
-      Blockly.mainWorkspace.highlightBlock('${block.id}')
-      ${stack}
-    } catch (e) {
-      if (e.name !== 'BlocklyError') {
-        Bot.notifyError(e);
-        throw e;
-      }
-    }
-    Bot.stop();
+    // Blockly.mainWorkspace.highlightBlock('${block.id}')
+    ${stack}
+    return false;
   };
   `
   return code

@@ -17,6 +17,6 @@ Blockly.Blocks.check_sell = {
 }
 
 Blockly.JavaScript.check_sell = () => {
-  const code = '(this.isSellAvailable())'
+  const code = 'Bot.isSellAvailable()'
   return [code, Blockly.JavaScript.ORDER_ATOMIC]
 }

@@ -15,4 +15,4 @@ Blockly.Blocks.ohlc = {
     mainScope(this, ev, 'Candles List')
   },
 }
-Blockly.JavaScript.ohlc = () => ['Bot.expect.notEmptyArray(this.ticksObj.ohlc)', Blockly.JavaScript.ORDER_ATOMIC]
+Blockly.JavaScript.ohlc = () => ['Bot.getOhlc()', Blockly.JavaScript.ORDER_ATOMIC]

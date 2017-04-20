@@ -1,0 +1,666 @@
+﻿<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="loader" id="KIZ$Q.WywU25`HPa%]tp" x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/094961982556d36639b9055a1d40ec06/raw/three%2520line%2520strike.xml</field>
+  </block>
+  <block type="procedures_defnoreturn" id="@ckWYgfC!NiB21xF/1vX" x="0" y="0">
+    <mutation>
+      <arg name="Tests"></arg>
+    </mutation>
+    <field name="NAME">Describe</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="0~JHR}r+_97LE^Wmo`MB">
+        <field name="VAR">Successful</field>
+        <value name="VALUE">
+          <block type="math_number" id="cDNQIV|`H}Nub/HaoYX0">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="/u5pJ`kW#YXNAk|ODNfl">
+            <field name="VAR">Failed</field>
+            <value name="VALUE">
+              <block type="math_number" id="F;.~g{LwlFhx)vQvdXiJ">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+            <next>
+              <block type="controls_forEach" id="g!?nbRC%d7*?;xG}QN3E">
+                <field name="VAR">t</field>
+                <value name="LIST">
+                  <block type="variables_get" id="P]lT[gcj=Z@1!wQJMXK#">
+                    <field name="VAR">Tests</field>
+                  </block>
+                </value>
+                <statement name="DO">
+                  <block type="controls_if" id="v2,i(|y$kQrotn$I9W9z">
+                    <mutation else="1"></mutation>
+                    <value name="IF0">
+                      <block type="variables_get" id=",hI!3237*/F|8E-N-fY[">
+                        <field name="VAR">t</field>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="variables_set" id="|2wmY^%DH+(7dUM3_yjY">
+                        <field name="VAR">Successful</field>
+                        <value name="VALUE">
+                          <block type="math_arithmetic" id="+9)nq/T(v./M=n_GACxj">
+                            <field name="OP">ADD</field>
+                            <value name="A">
+                              <shadow type="math_number" id="PG.bn!dY(}._?kt!Tl,l">
+                                <field name="NUM">1</field>
+                              </shadow>
+                              <block type="variables_get" id="V!Le4dw;Md}zl9X(]SSP">
+                                <field name="VAR">Successful</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <shadow type="math_number" id="vKS=5^F0%5$|zcyRlc_j">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </statement>
+                    <statement name="ELSE">
+                      <block type="variables_set" id="fTv*AW{3M#~7yHd]6b_[">
+                        <field name="VAR">Failed</field>
+                        <value name="VALUE">
+                          <block type="math_arithmetic" id="Fx;[::LE+.WbL}w1#xeE">
+                            <field name="OP">ADD</field>
+                            <value name="A">
+                              <shadow type="math_number" id="PG.bn!dY(}._?kt!Tl,l">
+                                <field name="NUM">1</field>
+                              </shadow>
+                              <block type="variables_get" id="|)2q96uYEj$i[s7cSZ.z">
+                                <field name="VAR">Failed</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <shadow type="math_number" id="215JzO:)$O(a0OJ+Hgd9">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </statement>
+                  </block>
+                </statement>
+                <next>
+                  <block type="text_print" id="1?y`]:0P;BJTw7}mSw+V">
+                    <value name="TEXT">
+                      <shadow type="text" id="_f!R.DsE5eax+hq/PbzX">
+                        <field name="TEXT">abc</field>
+                      </shadow>
+                      <block type="text_join" id="h5x9S#S*0%}FMpgX6I2?">
+                        <mutation items="4"></mutation>
+                        <value name="ADD0">
+                          <block type="text" id="+qH7^3`{=4$|,N9rD,mS">
+                            <field name="TEXT">Successful: </field>
+                          </block>
+                        </value>
+                        <value name="ADD1">
+                          <block type="variables_get" id="hCUA~:i}9[;wiDRKOV(g">
+                            <field name="VAR">Successful</field>
+                          </block>
+                        </value>
+                        <value name="ADD2">
+                          <block type="text" id="IOTc8)/x==}KF(4h0L7T">
+                            <field name="TEXT"> / Failed: </field>
+                          </block>
+                        </value>
+                        <value name="ADD3">
+                          <block type="variables_get" id="|u97am;o+*wg^W.:{va5">
+                            <field name="VAR">Failed</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_defreturn" id="B57-lr`t!#b~4yS?2*Mi" x="0" y="388">
+    <mutation>
+      <arg name="Name"></arg>
+      <arg name="Condition"></arg>
+    </mutation>
+    <field name="NAME">Test</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="controls_if" id="anH2a8(pf!.[~vpQjRQ@">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="variables_get" id="=TTEzz6uzV8@mj;V;PJl">
+            <field name="VAR">Condition</field>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="notify" id="cu?FD62G/n)b|fWZ3`$a">
+            <field name="NOTIFICATION_TYPE">success</field>
+            <value name="MESSAGE">
+              <block type="text_join" id="q?;8~X3uRxMHm$gmfb^S">
+                <mutation items="2"></mutation>
+                <value name="ADD0">
+                  <block type="text" id="y9FzpVI-VNJ#x?Rq9S`l">
+                    <field name="TEXT">Test successfully passed: </field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="variables_get" id=")9o:Xwoedn/X2fWWabUH">
+                    <field name="VAR">Name</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set" id="nURG@Dw*(}7ruVAlk`T/">
+                <field name="VAR">result</field>
+                <value name="VALUE">
+                  <block type="logic_boolean" id="`%7i4]98Dh,ODA$,UZ45">
+                    <field name="BOOL">TRUE</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="notify" id="oUw).:wb/k5$02`4-!-m">
+            <field name="NOTIFICATION_TYPE">error</field>
+            <value name="MESSAGE">
+              <block type="text_join" id="dsw4O(J0AO1XY|q[~Eiu">
+                <mutation items="2"></mutation>
+                <value name="ADD0">
+                  <block type="text" id="qbD`=@Os;+eLO2(7%_lM">
+                    <field name="TEXT">Test failed: </field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="variables_get" id="u?ZrBojvzQR@-2CuBA(u">
+                    <field name="VAR">Name</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set" id="*@?{Y:$k[9u),RZ7jG.u">
+                <field name="VAR">result</field>
+                <value name="VALUE">
+                  <block type="logic_boolean" id="]`JRq?9MDYKA1@X_LRuP">
+                    <field name="BOOL">FALSE</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get" id="[b:G=b;PHz({,%A_#Ju,">
+        <field name="VAR">result</field>
+      </block>
+    </value>
+  </block>
+  <block type="block_holder" id="~]2h??COY8W+m.j6.n~:" x="0" y="732">
+    <statement name="USELESS_STACK">
+      <block type="text_print" id="O;gUYL%lxJG2v1}pl_Q$">
+        <value name="TEXT">
+          <shadow type="text" id="C|[lUa9=qi56ZQj4)$;S">
+            <field name="TEXT">Failed</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="824">
+    <statement name="SUBMARKET">
+      <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+        <field name="MARKET_LIST">volidx</field>
+        <field name="SUBMARKET_LIST">random_index</field>
+        <field name="SYMBOL_LIST">R_100</field>
+        <field name="TRADETYPECAT_LIST">callput</field>
+        <field name="TRADETYPE_LIST">risefall</field>
+        <field name="TYPE_LIST">both</field>
+        <field name="CANDLEINTERVAL_LIST">60</field>
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="PAYOUTTYPE_LIST">stake</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <field name="RESTARTONERROR">FALSE</field>
+        <value name="DURATION">
+          <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+            <field name="NUM">5</field>
+          </block>
+        </value>
+        <value name="AMOUNT">
+          <block type="math_number" id="|tIC~6lHx]cKt9rf1jFk">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="1066">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="variables_set" id="fwN,7Z3G[ptr*+oYuU,R">
+        <field name="VAR">Time1</field>
+        <value name="VALUE">
+          <block type="epoch" id="b.k)@S~LFO.,.^CuMx,8"></block>
+        </value>
+        <next>
+          <block type="variables_set" id="@;{ze`vQtDd!8M4R9eJ=">
+            <field name="VAR">balance str</field>
+            <value name="VALUE">
+              <block type="text_getSubstring" id="Bpw1Aw?95QbPZ4yI)xW_">
+                <mutation at1="false" at2="true"></mutation>
+                <field name="WHERE1">FIRST</field>
+                <field name="WHERE2">FROM_END</field>
+                <value name="STRING">
+                  <block type="balance" id="wFdL=%#W9VWMsb4aZ#-J">
+                    <field name="BALANCE_TYPE">STR</field>
+                  </block>
+                </value>
+                <value name="AT2">
+                  <block type="math_number" id=",Y^z|Zz-.K1~5zYtx1u6">
+                    <field name="NUM">4</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="timeout" id="/SBjr1F/l4VetssnEo4~">
+                <statement name="TIMEOUTSTACK">
+                  <block type="controls_if" id="Xa=shgtddSe[n0`UyqLp">
+                    <value name="IF0">
+                      <block type="logic_negate" id="Bt9:ARqO9{Pvu;?%Gu=E">
+                        <value name="BOOL">
+                          <block type="variables_get" id="ygQK[PAdclpo(J;#t1]x">
+                            <field name="VAR">time test finished</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="variables_set" id="+31kp^svmN38P[P5ur~^">
+                        <field name="VAR">time test finished</field>
+                        <value name="VALUE">
+                          <block type="logic_boolean" id="4gWbwo1U,D:6n6q@@K5S">
+                            <field name="BOOL">TRUE</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="procedures_callnoreturn" id="!yU^1%tn7Sq}HHBv;7i5">
+                            <mutation name="Describe">
+                              <arg name="Tests"></arg>
+                            </mutation>
+                            <value name="ARG0">
+                              <block type="lists_create_with" id="3aMxE4pss?6MiEDDZ6A%">
+                                <mutation items="1"></mutation>
+                                <value name="ADD0">
+                                  <block type="procedures_callreturn" id="pNW1xR]QIoX9VId1p/,9">
+                                    <mutation name="Test">
+                                      <arg name="Name"></arg>
+                                      <arg name="Condition"></arg>
+                                    </mutation>
+                                    <value name="ARG0">
+                                      <block type="text" id="k-#g@[~|R{{?-qJ*jvaL">
+                                        <field name="TEXT">Time Test</field>
+                                      </block>
+                                    </value>
+                                    <value name="ARG1">
+                                      <block type="logic_compare" id="zoH|l*LTn08sM:?Cb?eQ">
+                                        <field name="OP">GTE</field>
+                                        <value name="A">
+                                          <block type="epoch" id="Gi(yC`Ip`M[^d4Yz9FN7"></block>
+                                        </value>
+                                        <value name="B">
+                                          <block type="math_arithmetic" id="@mb_V,K/*jCR@MfbK}n/">
+                                            <field name="OP">ADD</field>
+                                            <value name="A">
+                                              <shadow type="math_number" id="SjDc}1n?2^Iwo()}uj5]">
+                                                <field name="NUM">1</field>
+                                              </shadow>
+                                              <block type="variables_get" id="4ObC{UCM;#H+LWc!v_7d">
+                                                <field name="VAR">Time1</field>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <shadow type="math_number" id="slmU^oV8iEx-B%}k@XMk">
+                                                <field name="NUM">2</field>
+                                              </shadow>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="procedures_callnoreturn" id="_oh;KV.0IleQ]5ydyI3+">
+                                <mutation name="Describe">
+                                  <arg name="Tests"></arg>
+                                </mutation>
+                                <value name="ARG0">
+                                  <block type="lists_create_with" id="srQI2~CBjj%#VEvr6$x^">
+                                    <mutation items="3"></mutation>
+                                    <value name="ADD0">
+                                      <block type="procedures_callreturn" id="|(,d.uf_m$.a0c!Q@zV:">
+                                        <mutation name="Test">
+                                          <arg name="Name"></arg>
+                                          <arg name="Condition"></arg>
+                                        </mutation>
+                                        <value name="ARG0">
+                                          <block type="text" id="[;7]-+irTg7YhvSV~Jk/">
+                                            <field name="TEXT">is candle black</field>
+                                          </block>
+                                        </value>
+                                        <value name="ARG1">
+                                          <block type="logic_operation" id="z66HO!{KZ?[eCb.$,d}F">
+                                            <field name="OP">OR</field>
+                                            <value name="A">
+                                              <block type="logic_compare" id="WLI{+a^RRd],%aEzXa1S">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="text_join" id="($z[{47u-nISUoHIVtY+">
+                                                    <mutation items="1"></mutation>
+                                                    <value name="ADD0">
+                                                      <block type="is_candle_black" id="J1{)!.MxYz3*i]H3P,3t">
+                                                        <value name="OHLCOBJ">
+                                                          <block type="get_ohlc" id="Dm7*h9.wfSfI]yvx+9AU"></block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="text" id="WRvwp}5_fa)ZB8Sr`AW#">
+                                                    <field name="TEXT">true</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="logic_compare" id="spT}pQ0ZN]chK}HMW5%n">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="text_join" id="}-NQ7V+]J8ZY5U6PGXZa">
+                                                    <mutation items="1"></mutation>
+                                                    <value name="ADD0">
+                                                      <block type="is_candle_black" id="Gk=*n54*PRMIqg@jO4XJ">
+                                                        <value name="OHLCOBJ">
+                                                          <block type="get_ohlc" id="MPDN6|#aE5V]]C(4BIS_"></block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="text" id="]+vv4:_x(M]-f9^!cu6j">
+                                                    <field name="TEXT">false</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <value name="ADD1">
+                                      <block type="procedures_callreturn" id="vqG[%IU$YwR3/m#eV$JV">
+                                        <mutation name="Test">
+                                          <arg name="Name"></arg>
+                                          <arg name="Condition"></arg>
+                                        </mutation>
+                                        <value name="ARG0">
+                                          <block type="text" id="jsp01}EJ1eBY8Etxf|h:">
+                                            <field name="TEXT">Candle values</field>
+                                          </block>
+                                        </value>
+                                        <value name="ARG1">
+                                          <block type="logic_compare" id="*J#}9LG6UF41+qNGRn,y">
+                                            <field name="OP">EQ</field>
+                                            <value name="A">
+                                              <block type="lists_getIndex" id="DZ95*Ta%%{iEw*Ts.*=P">
+                                                <mutation statement="false" at="false"></mutation>
+                                                <field name="MODE">GET</field>
+                                                <field name="WHERE">LAST</field>
+                                                <value name="VALUE">
+                                                  <block type="ohlc_values_in_list" id="{T;ZcY(t/x|0:XIQ0](S">
+                                                    <field name="OHLCFIELD_LIST">open</field>
+                                                    <value name="OHLCLIST">
+                                                      <block type="ohlc" id="lQjf$Q;q%ebbwz*J;,?1"></block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="read_ohlc" id="L?`FCEiyrU2Q9^H+,^OG">
+                                                <field name="OHLCFIELD_LIST">open</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <value name="ADD2">
+                                      <block type="procedures_callreturn" id="(OA%XPf,fmKp#Z~a3P)t">
+                                        <mutation name="Test">
+                                          <arg name="Name"></arg>
+                                          <arg name="Condition"></arg>
+                                        </mutation>
+                                        <value name="ARG0">
+                                          <block type="text" id="VCJusY-E..8p(DeGV_pe">
+                                            <field name="TEXT">Read field in candle</field>
+                                          </block>
+                                        </value>
+                                        <value name="ARG1">
+                                          <block type="logic_compare" id="BW,*otw8)JxDMA%hO~le">
+                                            <field name="OP">EQ</field>
+                                            <value name="A">
+                                              <block type="read_ohlc_obj" id="d6VUpEoZD4xi`%bf|!E0">
+                                                <field name="OHLCFIELD_LIST">open</field>
+                                                <value name="OHLCOBJ">
+                                                  <block type="get_ohlc" id="ZSQ/F-%yl4oQ|A4ww~C|"></block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="read_ohlc" id="[VWU*zil}:#Mowtbvq5.">
+                                                <field name="OHLCFIELD_LIST">open</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="procedures_callnoreturn" id="U:?zLvXSNk%.B0lbVfAv">
+                                    <mutation name="Describe">
+                                      <arg name="Tests"></arg>
+                                    </mutation>
+                                    <value name="ARG0">
+                                      <block type="lists_create_with" id=".-?T?4Bz%,.P$S$q|v_.">
+                                        <mutation items="4"></mutation>
+                                        <value name="ADD0">
+                                          <block type="procedures_callreturn" id="Pd!EWzyUk%ZjYY/VWEfe">
+                                            <mutation name="Test">
+                                              <arg name="Name"></arg>
+                                              <arg name="Condition"></arg>
+                                            </mutation>
+                                            <value name="ARG0">
+                                              <block type="text" id="eCc}}ksR%ZzIDSk?y8Yt">
+                                                <field name="TEXT">Balance</field>
+                                              </block>
+                                            </value>
+                                            <value name="ARG1">
+                                              <block type="logic_compare" id="Z/bZhbCW]50H+27n^h^M">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="math_arithmetic" id="Vr[7iC}d:#WvYwVzZ.xc">
+                                                    <field name="OP">MULTIPLY</field>
+                                                    <value name="A">
+                                                      <shadow type="math_number" id="_67bWvtx`x2-v#fFC?QC">
+                                                        <field name="NUM">1</field>
+                                                      </shadow>
+                                                      <block type="balance" id="hp{[nN#*@48t6E!_6vt$">
+                                                        <field name="BALANCE_TYPE">NUM</field>
+                                                      </block>
+                                                    </value>
+                                                    <value name="B">
+                                                      <shadow type="math_number" id="MLd0)20L}8nc67(f^Wt]">
+                                                        <field name="NUM">1</field>
+                                                      </shadow>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="balance" id="9)h~T)i-XCOtcF:M`ram">
+                                                    <field name="BALANCE_TYPE">NUM</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <value name="ADD1">
+                                          <block type="procedures_callreturn" id="n%J~CXlX$%s8$,l}V%ty">
+                                            <mutation name="Test">
+                                              <arg name="Name"></arg>
+                                              <arg name="Condition"></arg>
+                                            </mutation>
+                                            <value name="ARG0">
+                                              <block type="text" id="^A,/f}O?]32/,h=y5Rl_">
+                                                <field name="TEXT">Balance Str</field>
+                                              </block>
+                                            </value>
+                                            <value name="ARG1">
+                                              <block type="logic_compare" id="ue,T#B|rGDFxeTUB6$eb">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="math_arithmetic" id="]CI^Zr+GG+kHUGFQU@8[">
+                                                    <field name="OP">MULTIPLY</field>
+                                                    <value name="A">
+                                                      <shadow type="math_number" id="_67bWvtx`x2-v#fFC?QC">
+                                                        <field name="NUM">1</field>
+                                                      </shadow>
+                                                      <block type="variables_get" id="rKDxPo^X?IV,l:yG3gsI">
+                                                        <field name="VAR">balance str</field>
+                                                      </block>
+                                                    </value>
+                                                    <value name="B">
+                                                      <shadow type="math_number" id="wk2MlNAFF#.u.C}btyMv">
+                                                        <field name="NUM">1</field>
+                                                      </shadow>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="balance" id="Fp/MzXs[_[76rExpsi`5">
+                                                    <field name="BALANCE_TYPE">NUM</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <value name="ADD2">
+                                          <block type="procedures_callreturn" id="T2Wv:K*r!4o_F?_s!YQY">
+                                            <mutation name="Test">
+                                              <arg name="Name"></arg>
+                                              <arg name="Condition"></arg>
+                                            </mutation>
+                                            <value name="ARG0">
+                                              <block type="text" id="Tc80LJ$bw(*Aka@8dodZ">
+                                                <field name="TEXT">Total Profit</field>
+                                              </block>
+                                            </value>
+                                            <value name="ARG1">
+                                              <block type="logic_compare" id="Lep:Z2Dr%%JW@=d)M5b^">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="math_arithmetic" id="cE]~jqs$dG.s,Xp+)GP.">
+                                                    <field name="OP">MULTIPLY</field>
+                                                    <value name="A">
+                                                      <shadow type="math_number" id="_67bWvtx`x2-v#fFC?QC">
+                                                        <field name="NUM">1</field>
+                                                      </shadow>
+                                                      <block type="total_profit" id="B2lvcvRN1*MYZ{t2b:l*"></block>
+                                                    </value>
+                                                    <value name="B">
+                                                      <shadow type="math_number" id="`Tkrcg)F%1gu:2MH7U(t">
+                                                        <field name="NUM">1</field>
+                                                      </shadow>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="total_profit" id="I=p2L:N!s8H[(hc62i/z"></block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <value name="ADD3">
+                                          <block type="procedures_callreturn" id="Pk?j%nQjv78|:6;@u}#q">
+                                            <mutation name="Test">
+                                              <arg name="Name"></arg>
+                                              <arg name="Condition"></arg>
+                                            </mutation>
+                                            <value name="ARG0">
+                                              <block type="text" id="(BARkjo!N.(OM=5Bj`st">
+                                                <field name="TEXT">Num of runs</field>
+                                              </block>
+                                            </value>
+                                            <value name="ARG1">
+                                              <block type="logic_compare" id="@!Ev#X{J*PxPv!1,?Vs:">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="total_runs" id="tvGA:;gBG$Hn^iQn|G#s"></block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="math_number" id="LnR0[.)LJ#UYLd{%^~a3">
+                                                    <field name="NUM">0</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                  </block>
+                </statement>
+                <value name="SECONDS">
+                  <block type="math_number" id="1ojw_S6q7ucF/1gm-_`|">
+                    <field name="NUM">2</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>

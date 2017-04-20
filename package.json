@@ -1,27 +1,65 @@
 {
   "name": "binary-bot",
-  "version": "2.3.2",
+  "version": "7.0.0",
   "description": "Visual automation for binary.com",
-  "main": "src/bot.js",
+  "bin": {
+    "bot": "lib/index.js"
+  },
   "babel": {
+    "babelrc": false,
     "presets": [
-      "es2015",
-      "stage-0",
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current",
+            "browsers": [
+              "last 2 versions",
+              "ios_saf >= 8",
+              "not IE <= 10",
+              "chrome >= 49",
+              "firefox >= 49",
+              "> 1%"
+            ]
+          },
+          "loose": true,
+          "modules": false,
+          "useBuiltIns": true
+        }
+      ],
       "react"
     ],
-    "plugins": [],
-    "ignore": [
-      "./src/common/mock/*"
+    "plugins": [
+      [
+        "transform-object-rest-spread",
+        {
+          "useBuiltIns": true
+        }
+      ],
+      [
+        "transform-class-properties",
+        {
+          "useBuiltIns": true
+        }
+      ]
+    ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "tools.js"
     ]
   },
   "scripts": {
     "start": "gulp watch",
-    "test": "eslint src/ && jest",
-    "test:full": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test": "eslint src/ && jest --forceExit --notify",
+    "test:full": "jest -bi --forceExit --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "gen-beta": "git checkout beta; npm prune ; npm install ; gulp build-min; rm -rf beta; mkdir beta ; cp -r www/ beta/beta; git checkout -- src",
     "gen-translation": "git checkout translation; npm prune ; npm install ; gulp build-min; rm -rf translation; mkdir translation ; cp -r www/ translation/translation; git checkout -- src",
     "deploy": "git checkout master ; npm prune ; npm install ; gulp deploy",
-    "deploy-all": "npm run gen-beta; npm run gen-translation; npm run deploy"
+    "deploy-all": "npm run gen-beta; npm run gen-translation; npm run deploy",
+    "build": "webpack --config webpack.config.cli.js",
+    "prepublish": "npm run build"
   },
   "author": "Amin Marashi",
   "license": "MIT",
@@ -30,31 +68,34 @@
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",
-    "babel-loader": "^6.3.0",
+    "babel-jest": "^19.0.0",
+    "babel-loader": "^6.4.0",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-env": "^1.2.1",
     "babel-preset-react": "^6.23.0",
-    "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.23.0",
     "binary-charts": "^9.2.6",
-    "binary-common-utils": "^6.0.1",
+    "binary-common-utils": "^6.0.3",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^28.1.0",
-    "binary-mock-websocket": "^4.1.1",
-    "blockly": "google/blockly.git#0785a7b",
+    "binary-utils": "^4.22.0",
+    "blockly": "google/blockly.git#c797250",
     "bootstrap": "^3.3.7",
     "chai": "^3.5.0",
-    "coveralls": "^2.11.16",
+    "coveralls": "^2.12.0",
     "deep-diff": "^0.3.4",
     "del": "^2.2.2",
-    "eslint": "^3.15.0",
+    "es6-plato": "^1.0.14",
+    "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^3.0.2",
-    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0",
     "file-saver": "^1.3.3",
     "gulp": "^3.9.1",
-    "gulp-clean-css": "^3.0.2",
+    "gulp-clean-css": "^3.0.3",
     "gulp-concat-css": "^2.3.0",
     "gulp-concat-util": "^0.5.5",
     "gulp-connect": "^5.0.0",
@@ -67,10 +108,12 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-watch": "^4.3.11",
     "i18next-scanner": "^1.5.1",
-    "jest-cli": "^18.1.0",
+    "immutable": "^3.8.1",
+    "jest": "^19.0.2",
     "jquery": "3.1.1",
+    "js-interpreter": "^1.2.0",
     "json-loader": "^0.5.4",
-    "loader-utils": "^0.2.16",
+    "loader-utils": "^1.0.3",
     "lz-string": "^1.4.4",
     "mocha": "^3.2.0",
     "notifyjs-browser": "^0.4.2",
@@ -78,9 +121,14 @@
     "react-dom": "^15.4.2",
     "react-joyride": "^1.10.1",
     "sha1": "^1.1.1",
-    "trackjs": "^2.6.3",
+    "trackjs": "^2.6.4",
     "vinyl-paths": "^2.1.0",
-    "webpack": "^1.14.0",
-    "webpack-stream": "^3.2.0"
+    "webpack": "^2.2.1",
+    "webpack-stream": "^3.2.0",
+    "ws": "^2.2.0"
+  },
+  "dependencies": {
+    "concat-stream": "^1.6.0",
+    "minimist": "^1.2.0"
   }
 }
