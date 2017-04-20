@@ -23,7 +23,5 @@ Blockly.JavaScript.ema = (block) => {
       'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || 'null'
   const period = Blockly.JavaScript.valueToCode(block,
       'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '10'
-  const code = `Bot.math.indicators.exponentialMovingAverage(Bot.expect.notEmptyArray(${
-  input}), { periods: Bot.expect.indicatorPeriod(${input}, ${period}) })`
-  return [code, Blockly.JavaScript.ORDER_NONE]
+  return [`Bot.ema(${input}, ${period})`, Blockly.JavaScript.ORDER_NONE]
 }

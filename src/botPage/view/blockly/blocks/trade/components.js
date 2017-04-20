@@ -1,11 +1,10 @@
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 import { translate } from '../../../../../common/i18n'
-import { bot } from '../../../../bot'
+import { symbolApi } from '../../../shared'
 import { oppositesToDropdown } from '../../utils'
-import { caution } from '../images'
 
 export const marketDropdown = (block) => {
-  const markets = bot.symbolApi.activeSymbols.getMarkets()
+  const markets = symbolApi.activeSymbols.getMarkets()
   const getSubmarkets = () => {
     const marketName = block.getFieldValue('MARKET_LIST')
     const submarkets = markets[marketName].submarkets
@@ -37,7 +36,7 @@ export const tradeTypeDropdown = (block) => {
     if (!symbol) {
       return [['', '']]
     }
-    const allowedCategories = bot.symbolApi
+    const allowedCategories = symbolApi
       .getAllowedCategories(symbol.toLowerCase())
     return Object.keys(config.conditionsCategoryName)
       .filter(e => allowedCategories.indexOf(e) >= 0)
@@ -61,13 +60,6 @@ export const tradeTypeDropdown = (block) => {
     .appendField(new Blockly.FieldDropdown(getTradeTypes), 'TRADETYPE_LIST')
 }
 
-export const restartOnError = (block) => {
-  block.appendDummyInput()
-    .appendField(`${translate('Restart On Error (Use with caution)')}:`)
-    .appendField(new Blockly.FieldCheckbox('FALSE'), 'RESTARTONERROR')
-    .appendField(new Blockly.FieldImage(caution, 15, 15, '!'))
-}
-
 export const contractTypes = (block) => {
   if (!block.getInput('CONTRACT_TYPE')) {
     const getContractTypes = () => {
@@ -89,7 +81,7 @@ export const contractTypes = (block) => {
 export const candleInterval = (block) => {
   if (!block.getInput('CANDLE_INTERVAL')) {
     block.appendDummyInput('CANDLE_INTERVAL')
-      .appendField(translate('Candle Interval:'))
+      .appendField(translate('Default Candle Interval:'))
       .appendField(new Blockly.FieldDropdown(config.candleIntervals), 'CANDLEINTERVAL_LIST')
   }
 }
@@ -114,9 +106,7 @@ export const payout = (block) => {
   if (!block.getInput('AMOUNT')) {
     block.appendValueInput('AMOUNT')
       .setCheck('Number')
-      .appendField(translate('Payout:'))
-      .appendField(new Blockly.FieldDropdown(config.lists.PAYOUTTYPE), 'PAYOUTTYPE_LIST')
-      .appendField(translate('Currency:'))
+      .appendField(`${translate('Stake')}:`)
       .appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST')
   }
 }

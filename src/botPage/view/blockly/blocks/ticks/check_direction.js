@@ -1,6 +1,6 @@
 import { translate } from '../../../../../common/i18n'
 import { mainScope } from '../../relationChecker'
-import config from '../../../../../common/const'
+import config from '../../../../common/const'
 
 Blockly.Blocks.check_direction = {
   init: function init() {
@@ -18,6 +18,5 @@ Blockly.Blocks.check_direction = {
 }
 Blockly.JavaScript.check_direction = (block) => {
   const checkWith = block.getFieldValue('CHECK_DIRECTION')
-  const code = `(this.ticksObj.direction === '${checkWith}')`
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+  return [`Bot.checkDirection({ dir: '${checkWith}' })`, Blockly.JavaScript.ORDER_ATOMIC]
 }

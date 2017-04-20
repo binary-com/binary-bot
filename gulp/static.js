@@ -1,13 +1,11 @@
-import gulp from 'gulp'
-import del from 'del'
-import paths from 'vinyl-paths'
-import rev from 'gulp-rev'
-import through from 'through2'
-import sass from 'gulp-sass'
-import sourcemaps from 'gulp-sourcemaps'
-import {
-    addToManifest,
-} from './revision'
+const gulp = require('gulp')
+const del = require('del')
+const paths = require('vinyl-paths')
+const rev = require('gulp-rev')
+const through = require('through2')
+const sass = require('gulp-sass')
+const sourcemaps = require('gulp-sourcemaps')
+const addToManifest = require('./revision').addToManifest
 
 gulp.task('clean-css', () => gulp.src(['./www/css/*-*.css', '!./www/css/bundle-*', 'static/css/*.css*'])
     .pipe(paths(del)))

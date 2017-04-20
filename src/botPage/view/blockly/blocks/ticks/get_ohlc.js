@@ -20,17 +20,7 @@ Blockly.Blocks.get_ohlc = {
 }
 
 Blockly.JavaScript.get_ohlc = (block) => {
-  let index = Number(Blockly.JavaScript.valueToCode(block,
-      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || '0'
-  let code
-  if (isNaN(index) || index < 1) {
-    index = 1
-  }
-  if (index === 1) {
-    code = 'Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticksObj.ohlc).slice(-1)[0])'
-  } else {
-    code = `Bot.expect.ohlc(Bot.expect.notEmptyArray(this.ticksObj.ohlc).slice(-1*${
-    index}, -1*${index - 1})[0])`
-  }
-  return [code, Blockly.JavaScript.ORDER_ATOMIC]
+  const index = Number(Blockly.JavaScript.valueToCode(block,
+      'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || 1
+  return [`Bot.getOhlcFromEnd({ index: ${index} })`, Blockly.JavaScript.ORDER_ATOMIC]
 }

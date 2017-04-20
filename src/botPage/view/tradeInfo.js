@@ -1,6 +1,4 @@
-const clone = (obj) => ({
-  ...obj,
-})
+const maxTradeCount = 50
 
 const tradeInfoSkel = {
   totalRuns: 0,
@@ -11,15 +9,15 @@ const tradeInfoSkel = {
   totalStake: '',
   balance: '',
   tradeCount: 0,
-  maxTradeCount: 50,
 }
 
 export default class TradeInfo {
   constructor() {
-    this.tradeInfo = clone(tradeInfoSkel)
+    this.tradeInfo = { ...tradeInfoSkel }
+    this.tradeCount = 0
   }
   reset() {
-    this.tradeInfo = clone(tradeInfoSkel)
+    this.tradeInfo = { ...tradeInfoSkel }
     this.update()
   }
   update() {
@@ -36,15 +34,18 @@ export default class TradeInfo {
       }
     })
   }
-  add(_trade) {
-    const trade = clone(_trade)
-    trade.number = this.tradeInfo.totalRuns
-    if (String(trade.transaction_ids.buy) !==
+  addInfo(info) {
+    this.tradeInfo = { ...this.tradeInfo, ...info }
+    this.update()
+  }
+  addContract(contract) {
+    const number = this.tradeInfo.totalRuns
+    if (String(contract.transaction_ids.buy) !==
       $('#tradesDisplay tbody tr:last td:nth-child(2)').text()) {
-      if (this.tradeInfo.tradeCount === this.tradeInfo.maxTradeCount) {
+      if (this.tradeCount === maxTradeCount) {
         $('#tradesDisplay tbody tr:first').insertAfter($('#tradesDisplay tbody tr:last'))
       } else {
-        this.tradeInfo.tradeCount += 1
+        this.tradeCount += 1
         $('#tradesDisplay tbody')
           .append(
             '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')
@@ -52,24 +53,25 @@ export default class TradeInfo {
           .scrollTop($('.table-scroll')[0].scrollHeight)
       }
     }
-    const profit = 'sell_price' in trade ?
-      +(Number(trade.sell_price) - Number(trade.buy_price)).toFixed(2)
-      : ''
+
+    const profit = 'sell_price' in contract ?
+      +(Number(contract.sell_price) - Number(contract.buy_price)).toFixed(2) : ''
     const profitColor = (profit < 0) ? 'red' : 'green'
+
     $('#tradesDisplay tbody tr:last td:nth-child(1)')
-      .text(trade.number)
+      .text(number)
     $('#tradesDisplay tbody tr:last td:nth-child(2)')
-      .text(trade.transaction_ids.buy)
+      .text(contract.transaction_ids.buy)
     $('#tradesDisplay tbody tr:last td:nth-child(3)')
-      .text(trade.contract_type)
+      .text(contract.contract_type)
     $('#tradesDisplay tbody tr:last td:nth-child(4)')
-      .text(trade.entry_tick)
+      .text(contract.entry_tick)
     $('#tradesDisplay tbody tr:last td:nth-child(5)')
-      .text(trade.exit_tick)
+      .text(contract.exit_tick)
     $('#tradesDisplay tbody tr:last td:nth-child(6)')
-      .text(trade.buy_price)
+      .text(contract.buy_price)
     $('#tradesDisplay tbody tr:last td:nth-child(7)')
-      .text(trade.sell_price)
+      .text(contract.sell_price)
     $('#tradesDisplay tbody tr:last td:nth-child(8)')
       .text(profit)
     $('#tradesDisplay tbody tr:last td:nth-child(8)').css('color', profitColor)

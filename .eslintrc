@@ -21,7 +21,7 @@
     "react"
   ],
   "rules": {
-    "indent": [0, 4],
+    "indent": [2, 2],
     "linebreak-style": 0,
     "arrow-parens": 0,
     "no-plusplus": 0,
@@ -47,6 +47,7 @@
     "max-len": 0,
     "semi": ["error", "never"],
     "no-extra-semi": 2,
+    "no-console": 2,
   },
   "settings": {
     "import/ignore": \.(scss|less|css)$,

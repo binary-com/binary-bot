@@ -1,10 +1,10 @@
-import gulp from 'gulp';
-import connect from 'gulp-connect';
-import mustache from 'gulp-mustache-plus';
-import { getManifest } from './revision';
-import './static';
-import './bundle';
-import './webpack';
+const gulp = require('gulp')
+const connect = require('gulp-connect')
+const mustache = require('gulp-mustache-plus')
+const { getManifest } = require('./revision')
+require('./static')
+require('./bundle')
+require('./webpack')
 
 const getConfig = (prefix) => ({
   index: `<script src="js/${prefix ? getManifest(`index${prefix}.js`) : 'index.js'}"></script>`,

@@ -1,8 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#db8gmg
 import { translate } from '../../../../../common/i18n'
-import config from '../../../../../common/const'
-import { BlocklyError } from '../../../../../common/error'
-import { marketDropdown, tradeTypeDropdown, restartOnError } from './components'
+import config from '../../../../common/const'
+import { marketDropdown, tradeTypeDropdown } from './components'
 import { updatePurchaseChoices, updateInputList, setInputList } from '../../utils'
 import { insideTrade } from '../../relationChecker'
 
@@ -29,7 +28,6 @@ export default () => {
       marketDropdown(this)
       tradeTypeDropdown(this)
       setInputList(this)
-      restartOnError(this)
       this.setPreviousStatement(true, 'Market')
       this.setColour('#f2f2f2')
     },
@@ -83,60 +81,43 @@ export default () => {
     const candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST')
     const contractTypeSelector = block.getFieldValue('TYPE_LIST')
     const durationType = block.getFieldValue('DURATIONTYPE_LIST')
-    const payouttype = block.getFieldValue('PAYOUTTYPE_LIST')
     const currency = block.getFieldValue('CURRENCY_LIST')
     const amount = Blockly.JavaScript.valueToCode(block,
       'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC)
     const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase()
-    const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE'
     let predictionValue
     let barrierOffsetValue
     let secondBarrierOffsetValue
     if (config.hasPrediction.indexOf(oppositesName) > -1) {
       predictionValue = Blockly.JavaScript.valueToCode(block,
         'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC)
-      if (predictionValue === '') {
-        return new BlocklyError(translate('All trade types are required')).emit()
-      }
     }
     if (config.hasBarrierOffset.indexOf(oppositesName) > -1 ||
       config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
       const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST')
       barrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
-      if (barrierOffsetValue === '') {
-        return new BlocklyError(translate('All trade types are required')).emit()
-      }
       barrierOffsetValue = `${barrierOffsetType}${barrierOffsetValue}`
     }
     if (config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
       const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST')
       secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(block,
         'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC)
-      if (secondBarrierOffsetValue === '') {
-        return new BlocklyError(translate('All trade types are required')).emit()
-      }
       secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`
     }
-    if (oppositesName === '' || durationValue === '' ||
-      payouttype === '' || currency === '' || amount === '') {
-      return new BlocklyError(translate('All trade types are required')).emit()
-    }
     const contractTypeList = contractTypeSelector === 'both' ?
-      config.opposites[oppositesName].map((k) => Object.keys(k)[0]) :
+      config.opposites[oppositesName].map(k => Object.keys(k)[0]) :
       [contractTypeSelector]
     const code = `
       getTradeOptions = function getTradeOptions() {
-        var tradeOptions = {}
-        tradeOptions = {
-          contractTypes: '${JSON.stringify(contractTypeList)}',
+        var tradeOptions = {
+          limitations: limitations,
+          contractTypes: ${JSON.stringify(contractTypeList)},
           candleInterval: '${candleIntervalValue}',
           duration: ${durationValue},
           duration_unit: '${durationType}',
-          basis: '${payouttype}',
           currency: '${currency}',
           amount: ${amount},
-          restartOnError: ${shouldRestartOnError},
           ${((config.hasPrediction.indexOf(oppositesName) > -1 && predictionValue !== '')
       ? `prediction: ${predictionValue},` : '')}
           ${((config.hasSecondBarrierOffset.indexOf(oppositesName) > -1

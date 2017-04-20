@@ -249,7 +249,18 @@
 	<category name="Binary" colour="#2a3052" i18n-text="Binary">
 		<category name="Trade Definition" colour="#2a3052" i18n-text="Trade Definition">
 			<block type="trade"></block>
-			<block type="market"></block>
+			<block type="market">
+				<value name="DURATION">
+					<shadow type="math_number" id="tamWDyv/I2n9H6*428t^">
+						<field name="NUM">5</field>
+					</shadow>
+				</value>
+				<value name="AMOUNT">
+					<shadow type="math_number" id="tamWDyv/I2n9H6*428t^">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+			</block>
 		</category>
 		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
 			<block type="before_purchase"></block>
@@ -273,32 +284,138 @@
 			<block type="tick_analysis"></block>
 			<block type="tick"></block>
 			<block type="last_digit"></block>
-			<block type="read_ohlc"></block>
+			<block type="read_ohlc">
+				<field name="OHLCFIELD_LIST">open</field>
+				<value name="CANDLEINDEX">
+					<shadow type="math_number">
+						<field name="NUM">1</field>
+					</shadow>
+				</value>
+			</block>
 			<block type="check_direction"></block>
 			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
-				<block type="get_ohlc"></block>
+				<block type="get_ohlc">
+					<value name="CANDLEINDEX">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+				</block>
 				<block type="ticks"></block>
 				<block type="ohlc"></block>
 				<block type="ohlc_values"></block>
 			</category>
 		</category>
 		<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
-			<block type="sma"></block>
-			<block type="ema"></block>
-			<block type="bb"></block>
-			<block type="rsi"></block>
+			<block type="sma">
+				<value name="PERIOD">
+					<shadow type="math_number">
+						<field name="NUM">10</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="ema">
+				<value name="PERIOD">
+					<shadow type="math_number">
+						<field name="NUM">10</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="bb">
+				<field name="BBRESULT_LIST">1</field>
+				<value name="PERIOD">
+					<shadow type="math_number">
+						<field name="NUM">10</field>
+					</shadow>
+				</value>
+				<value name="UPMULTIPLIER">
+					<shadow type="math_number">
+						<field name="NUM">5</field>
+					</shadow>
+				</value>
+				<value name="DOWNMULTIPLIER">
+					<shadow type="math_number">
+						<field name="NUM">5</field>
+					</shadow>
+				</value>
+			</block>
+			<block type="rsi">
+				<value name="PERIOD">
+					<shadow type="math_number">
+						<field name="NUM">10</field>
+					</shadow>
+				</value>
+			</block>
 			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
-				<block type="smaa"></block>
-				<block type="emaa"></block>
-				<block type="bba"></block>
-				<block type="rsia"></block>
-				<block type="macda"></block>
+				<block type="smaa">
+					<value name="PERIOD">
+						<shadow type="math_number">
+							<field name="NUM">10</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="emaa">
+					<value name="PERIOD">
+						<shadow type="math_number">
+							<field name="NUM">10</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="bba">
+					<field name="BBRESULT_LIST">1</field>
+					<value name="PERIOD">
+						<shadow type="math_number">
+							<field name="NUM">10</field>
+						</shadow>
+					</value>
+					<value name="UPMULTIPLIER">
+						<shadow type="math_number">
+							<field name="NUM">5</field>
+						</shadow>
+					</value>
+					<value name="DOWNMULTIPLIER">
+						<shadow type="math_number">
+							<field name="NUM">5</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="rsia">
+					<value name="PERIOD">
+						<shadow type="math_number">
+							<field name="NUM">10</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="macda">
+					<field name="MACDFIELDS_LIST">0</field>
+					<value name="FAST_EMA_PERIOD">
+						<shadow type="math_number">
+							<field name="NUM">12</field>
+						</shadow>
+					</value>
+					<value name="SLOW_EMA_PERIOD">
+						<shadow type="math_number">
+							<field name="NUM">26</field>
+						</shadow>
+					</value>
+					<value name="SMA_PERIOD">
+						<shadow type="math_number">
+							<field name="NUM">9</field>
+						</shadow>
+					</value>
+				</block>
 			</category>
 		</category>
 		<category name="Tools" colour="#2a3052" i18n-text="Tools">
 			<category name="Time" colour="#2a3052" i18n-text="Time">
 				<block type="epoch"></block>
-				<block type="timeout"></block>
+				<block type="timeout">
+					<value name="SECONDS">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+				</block>
 			</category>
 			<category name="Candle" colour="#2a3052" i18n-text="Candle">
 				<block type="is_candle_black"></block>
@@ -309,7 +426,14 @@
 				<block type="balance"></block>
 				<block type="total_profit"></block>
 				<block type="total_runs"></block>
-				<block type="notify"></block>
+				<block type="notify">
+					<field name="NOTIFICATION_TYPE">success</field>
+					<value name="MESSAGE">
+						<shadow type="text">
+							<field name="TEXT">abc</field>
+						</shadow>
+					</value>
+				</block>
 				<block type="loader"></block>
 				<block type="block_holder"></block>
 			</category>
