@@ -7,6 +7,7 @@ export default Engine => class Proposal extends Engine {
     if (!this.isNewTradeOption(tradeOption)) {
       return;
     }
+    this.tradeOption = tradeOption;
     this.proposalTemplates = tradeOptionToProposal(tradeOption);
     this.renewProposalsOnPurchase();
   }
