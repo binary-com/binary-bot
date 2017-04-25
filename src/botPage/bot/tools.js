@@ -67,7 +67,7 @@ export const registerStream = (observer, name, cb) => {
   observer.register(name, cb);
 };
 
-const maxRetries = 10;
+const maxRetries = 12;
 
 const notifyRetry = (msg, error, delay) =>
   notify(
@@ -107,7 +107,7 @@ export const shouldThrowError = (e, types = [], delayIndex = 0) =>
   (!types
     .concat(['CallError', 'WrongResponse', 'RateLimit', 'DisconnectError'])
     .includes(e.name) ||
-    (e.name !== 'DisconnectError' && delayIndex >= maxRetries));
+    (e.name !== 'DisconnectError' && delayIndex > maxRetries));
 
 export const recoverFromError = (f, r, types, delayIndex) =>
   new Promise((resolve, reject) => {
