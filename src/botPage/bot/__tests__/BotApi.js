@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Interface from '../Interface';
-import { createScope } from '../cli';
+import { createScope } from '../CliTools';
 
 const $scope = createScope();
 

@@ -21,7 +21,6 @@ expectReturnTrue(
           ${parts.timeTrade}
           ${parts.waitToPurchase}
           ${parts.waitToSell}
-          sleep(1)
           if (--count === 0) {
             break;
           }

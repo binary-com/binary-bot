@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { createInterpreter } from '../cli';
+import { createInterpreter } from '../CliTools';
 
 const init = `
   Bot.init('Xkq6oGFEHh6hJH8', {
