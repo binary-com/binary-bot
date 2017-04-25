@@ -95,7 +95,11 @@ export default Engine => class Proposal extends Engine {
   checkProposalReady() {
     const proposals = this.data.get('proposals');
 
-    if (proposals && proposals.size === this.proposalTemplates.length) {
+    if (
+      proposals &&
+      proposals.size === this.proposalTemplates.length &&
+      !this.ongoingPurchase
+    ) {
       this.startPromise.then(() => this.signal('before'));
       if (this.proposalPromise) {
         this.proposalPromise();
