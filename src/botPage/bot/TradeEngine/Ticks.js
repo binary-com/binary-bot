@@ -14,9 +14,7 @@ export default Engine => class Ticks extends Engine {
       });
 
       const callback = () => {
-        if (!this.ongoingPurchase) {
-          this.checkProposalReady();
-        }
+        this.checkProposalReady();
       };
 
       const key = ticksService.monitor({ symbol, callback });

@@ -18,6 +18,8 @@ export default Engine => class Purchase extends Engine {
           this.renewProposalsOnPurchase();
         }
 
+        this.ongoingPurchase = false;
+
         this.waitForProposals().then(() =>
           makeDelay().then(() => this.observer.emit('REVERT', 'before')),
         );
