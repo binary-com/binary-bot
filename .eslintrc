@@ -20,7 +20,7 @@
     "Blockly": false,
     "trackJs": false,
     "amplitude": false,
-    "Tourist": false
+    "jest": false
   },
   "plugins": [
     "react"
