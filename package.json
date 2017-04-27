@@ -51,7 +51,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --single-quote --trailing-comma all --write",
+      "prettier-eslint --write",
       "git add"
     ]
   },
@@ -96,6 +96,8 @@
     "es6-plato": "^1.0.14",
     "eslint": "^3.18.0",
     "eslint-config-airbnb": "^14.1.0",
+    "eslint-config-binary": "^1.0.2",
+    "eslint-config-prettier": "^1.7.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
@@ -127,7 +129,7 @@
     "lz-string": "^1.4.4",
     "mocha": "^3.2.0",
     "notifyjs-browser": "^0.4.2",
-    "prettier": "^1.1.0",
+    "prettier-eslint-cli": "^3.4.2",
     "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

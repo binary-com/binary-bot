@@ -1,27 +1,27 @@
 import { runAndGetResult, expectResultTypes } from '../tools';
 
 describe('Before Purchase Blocks', () => {
-  let result;
+    let result;
 
-  beforeAll(done => {
-    runAndGetResult(
-      undefined,
-      `
+    beforeAll(done => {
+        runAndGetResult(
+            undefined,
+            `
       watch('before');
       result.payout = Bot.getPayout('CALL');
       result.askPrice = Bot.getAskPrice('CALL');
       Bot.purchase('CALL');
-    `,
-    ).then(v => {
-      result = v;
-      done();
+    `
+        ).then(v => {
+            result = v;
+            done();
+        });
     });
-  });
 
-  it('before purchase api', () => {
-    expectResultTypes(result, [
-      'number', // payout
-      'number', // ask price
-    ]);
-  });
+    it('before purchase api', () => {
+        expectResultTypes(result, [
+            'number', // payout
+            'number', // ask price
+        ]);
+    });
 });

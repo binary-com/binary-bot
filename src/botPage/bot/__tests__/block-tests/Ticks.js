@@ -2,44 +2,42 @@ import { expect } from 'chai';
 import { runAndGetResult, expectResultTypes } from '../tools';
 
 describe('Many getTicks in a row', () => {
-  let result;
+    let result;
 
-  beforeAll(done => {
-    runAndGetResult(
-      undefined,
-      `
+    beforeAll(done => {
+        runAndGetResult(
+            undefined,
+            `
       result.ticks = []
       for (var i = 0; i < 100; i++) {
         result.ticks.push(Bot.getLastTick())
       }
-    `,
-    ).then(v => {
-      result = v;
-      done();
+    `
+        ).then(v => {
+            result = v;
+            done();
+        });
     });
-  });
 
-  it('All getTicks should be the same', () => {
-    const { ticks } = result;
+    it('All getTicks should be the same', () => {
+        const { ticks } = result;
 
-    expect(ticks).satisfy(
-      t => t.length === 100 && t.every(n => n === ticks[0]),
-    );
-  });
+        expect(ticks).satisfy(t => t.length === 100 && t.every(n => n === ticks[0]));
+    });
 });
 
 describe('Ticks Analysis', () => {
-  let result;
+    let result;
 
-  beforeAll(done => {
-    runAndGetResult(
-      `
+    beforeAll(done => {
+        runAndGetResult(
+            `
       result.ticks = []
       function ta() {
         result.ticks.push(Bot.getLastTick());
       }
     `,
-      `
+            `
       watch('before');
       ta()
       Bot.purchase('CALL')
@@ -47,29 +45,27 @@ describe('Ticks Analysis', () => {
         ta()
       }
       ta()
-    `,
-    ).then(v => {
-      result = v;
-      done();
+    `
+        ).then(v => {
+            result = v;
+            done();
+        });
     });
-  });
 
-  it('tick analysis block', () => {
-    const { ticks } = result;
+    it('tick analysis block', () => {
+        const { ticks } = result;
 
-    expect(ticks).satisfy(
-      t => t.length >= 3 && t.every(n => Number.isFinite(n)),
-    );
-  });
+        expect(ticks).satisfy(t => t.length >= 3 && t.every(n => Number.isFinite(n)));
+    });
 });
 
 describe('Tick Blocks', () => {
-  let result;
+    let result;
 
-  beforeAll(done => {
-    runAndGetResult(
-      undefined,
-      `
+    beforeAll(done => {
+        runAndGetResult(
+            undefined,
+            `
         result.lastTick = Bot.getLastTick();
         result.lastDigit = Bot.getLastDigit();
         result.lastOhlc = Bot.getOhlcFromEnd();
@@ -80,25 +76,25 @@ describe('Tick Blocks', () => {
         result.candleValues = Bot.getOhlc({ field: 'close' });
         result.lastCloseValue1 = Bot.getOhlcFromEnd({ field: 'close', index: 2 });
         result.lastCloseValue2 = Bot.getOhlcFromEnd({ field: 'close' });
-  `,
-    ).then(v => {
-      result = v;
-      done();
+  `
+        ).then(v => {
+            result = v;
+            done();
+        });
     });
-  });
 
-  it('ticks api', () => {
-    expectResultTypes(result, [
-      'number', // last tick
-      'number', // last digit
-      'object', // last candle
-      'boolean', // is tick direction up
+    it('ticks api', () => {
+        expectResultTypes(result, [
+            'number', // last tick
+            'number', // last digit
+            'object', // last candle
+            'boolean', // is tick direction up
 
-      'object', // candles list
-      'object', // ticks
-      'object', // candle values list
-      'number', // last close value
-      'number', // previous close value
-    ]);
-  });
+            'object', // candles list
+            'object', // ticks
+            'object', // candle values list
+            'number', // last close value
+            'number', // previous close value
+        ]);
+    });
 });

@@ -5,41 +5,39 @@ import { info, notify } from '../broadcast';
 let delayIndex = 0;
 
 export default Engine => class Purchase extends Engine {
-  purchase(contractType) {
-    const { id, askPrice } = this.selectProposal(contractType);
+    purchase(contractType) {
+        const { id, askPrice } = this.selectProposal(contractType);
 
-    this.ongoingPurchase = true;
+        this.ongoingPurchase = true;
 
-    return recoverFromError(
-      () => this.api.buyContract(id, askPrice),
-      (errorCode, makeDelay) => {
-        // if disconnected no need to resubscription (handled by live-api)
-        if (errorCode !== 'DisconnectError') {
-          this.renewProposalsOnPurchase();
-        }
+        return recoverFromError(
+            () => this.api.buyContract(id, askPrice),
+            (errorCode, makeDelay) => {
+                // if disconnected no need to resubscription (handled by live-api)
+                if (errorCode !== 'DisconnectError') {
+                    this.renewProposalsOnPurchase();
+                }
 
-        this.ongoingPurchase = false;
+                this.ongoingPurchase = false;
 
-        this.waitForProposals().then(() =>
-          makeDelay().then(() => this.observer.emit('REVERT', 'before')),
-        );
-      },
-      ['PriceMoved'],
-      delayIndex++,
-    ).then(r => {
-      const { buy } = r;
+                this.waitForProposals().then(() => makeDelay().then(() => this.observer.emit('REVERT', 'before')));
+            },
+            ['PriceMoved'],
+            delayIndex++
+        ).then(r => {
+            const { buy } = r;
 
-      this.subscribeToOpenContract(buy.contract_id);
-      this.signal('purchase');
-      this.renewProposalsOnPurchase();
-      delayIndex = 0;
-      notify('info', `${translate('Bought')}: ${buy.longcode}`);
-      info({
-        totalRuns: this.updateAndReturnTotalRuns(),
-        transaction_ids: { buy: buy.transaction_id },
-        contract_type: contractType,
-        buy_price: buy.buy_price,
-      });
-    });
-  }
+            this.subscribeToOpenContract(buy.contract_id);
+            this.signal('purchase');
+            this.renewProposalsOnPurchase();
+            delayIndex = 0;
+            notify('info', `${translate('Bought')}: ${buy.longcode}`);
+            info({
+                totalRuns      : this.updateAndReturnTotalRuns(),
+                transaction_ids: { buy: buy.transaction_id },
+                contract_type  : contractType,
+                buy_price      : buy.buy_price,
+            });
+        });
+    }
 };

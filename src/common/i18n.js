@@ -14,19 +14,19 @@ import en from './translations/en/i10n.json';
 import ach from './translations/ach_UG/i10n.json';
 
 export const supportedLanguages = {
-  zh_tw: zhTw,
-  de,
-  id,
-  zh_cn: zhCn,
-  it,
-  vi,
-  pl,
-  ru,
-  pt,
-  es,
-  fr,
-  en,
-  ach,
+    zh_tw: zhTw,
+    de,
+    id,
+    zh_cn: zhCn,
+    it,
+    vi,
+    pl,
+    ru,
+    pt,
+    es,
+    fr,
+    en,
+    ach,
 };
 
 const fallbackLang = en;
@@ -35,19 +35,19 @@ let translation = {};
 const t = key => (key in translation ? translation[key] : fallbackLang[key]);
 
 export const init = lang => {
-  translation = supportedLanguages[lang];
+    translation = supportedLanguages[lang];
 };
 
 export const translate = str => (str && t(sha1(str))) || str;
 
 export const xml = dom => {
-  const categories = Array.from(dom.getElementsByTagName('category') || []);
-  categories.forEach(child => {
-    const text = child.getAttribute('i18n-text');
-    if (text) {
-      child.setAttribute('name', translate(text));
-    }
-    xml(child);
-  });
-  return dom;
+    const categories = Array.from(dom.getElementsByTagName('category') || []);
+    categories.forEach(child => {
+        const text = child.getAttribute('i18n-text');
+        if (text) {
+            child.setAttribute('name', translate(text));
+        }
+        xml(child);
+    });
+    return dom;
 };

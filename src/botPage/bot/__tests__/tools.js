@@ -10,7 +10,7 @@ const init = `
 `;
 
 const start = duration =>
-  `
+    `
         ${init}
         Bot.start({
           amount: 1,
@@ -19,25 +19,25 @@ const start = duration =>
 `;
 
 export const parts = {
-  header: `
+    header: `
       (function (){
         var result = {};
   `,
-  init,
-  timeTrade: start('duration: 2, duration_unit: "h"'),
-  tickTrade: start('duration: 5, duration_unit: "t"'),
-  waitToPurchase: `
+    init,
+    timeTrade     : start('duration: 2, duration_unit: "h"'),
+    tickTrade     : start('duration: 5, duration_unit: "t"'),
+    waitToPurchase: `
         watch('before');
         Bot.purchase('CALL');
   `,
-  waitToSell: `
+    waitToSell: `
         while (watch('during')) {
           if (Bot.isSellAvailable()) {
             Bot.sellAtMarket();
           }
         }
   `,
-  footer: `
+    footer: `
         return {
           result: result,
         };
@@ -48,35 +48,35 @@ export const parts = {
 export const run = code => createInterpreter().run(code);
 
 export const runAndGetResult = (initCode = '', code) =>
-  new Promise(r => {
-    run(
-      `
+    new Promise(r => {
+        run(
+            `
     ${parts.header}
     ${initCode}
     ${parts.tickTrade}
     ${code}
     ${parts.footer}
-  `,
-    ).then(v => r(v.result));
-  });
+  `
+        ).then(v => r(v.result));
+    });
 
 export const expectReturnTrue = (msg, code) =>
-  describe(msg, () => {
-    let value;
+    describe(msg, () => {
+        let value;
 
-    beforeAll(done => {
-      run(code).then(v => {
-        value = v;
-        done();
-      });
+        beforeAll(done => {
+            run(code).then(v => {
+                value = v;
+                done();
+            });
+        });
+        it('return code is true', () => {
+            expect(value).to.be.equal(true);
+        });
     });
-    it('return code is true', () => {
-      expect(value).to.be.equal(true);
-    });
-  });
 
 export const expectResultTypes = (result, types) => {
-  const resultTypes = Object.keys(result).map(k => typeof result[k]);
+    const resultTypes = Object.keys(result).map(k => typeof result[k]);
 
-  expect(resultTypes).deep.equal(types);
+    expect(resultTypes).deep.equal(types);
 };

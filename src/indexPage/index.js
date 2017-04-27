@@ -5,13 +5,13 @@ import { load as loadLang } from '../common/lang';
 import '../common/binary-ui/dropdown';
 
 if (getTokenList().length) {
-  location.pathname = `${location.pathname.replace(/\/+$/, '')}/bot.html`;
+    location.pathname = `${location.pathname.replace(/\/+$/, '')}/bot.html`;
 } else {
-  loadLang();
-  setAppId();
-  oauthLogin(() => {
-    $('.show-on-load').show();
-    $('.barspinner').hide();
-  });
+    loadLang();
+    setAppId();
+    oauthLogin(() => {
+        $('.show-on-load').show();
+        $('.barspinner').hide();
+    });
 }
 

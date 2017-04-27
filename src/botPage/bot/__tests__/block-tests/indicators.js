@@ -1,17 +1,9 @@
 import { expect } from 'chai';
 
-import bb, {
-  bollingerBandsArray as bba,
-} from 'binary-indicators/lib/bollingerBands';
-import rsi, {
-  relativeStrengthIndexArray as rsia,
-} from 'binary-indicators/lib/relativeStrengthIndex';
-import ema, {
-  exponentialMovingAverageArray as emaa,
-} from 'binary-indicators/lib/exponentialMovingAverage';
-import sma, {
-  simpleMovingAverageArray as smaa,
-} from 'binary-indicators/lib/simpleMovingAverage';
+import bb, { bollingerBandsArray as bba } from 'binary-indicators/lib/bollingerBands';
+import rsi, { relativeStrengthIndexArray as rsia } from 'binary-indicators/lib/relativeStrengthIndex';
+import ema, { exponentialMovingAverageArray as emaa } from 'binary-indicators/lib/exponentialMovingAverage';
+import sma, { simpleMovingAverageArray as smaa } from 'binary-indicators/lib/simpleMovingAverage';
 import macda from 'binary-indicators/lib/macd';
 
 import { runAndGetResult } from '../tools';
@@ -19,21 +11,21 @@ import { runAndGetResult } from '../tools';
 const periods = 12;
 
 const bbOption = {
-  periods,
-  stdDevUp: 5,
-  stdDevDown: 5,
+    periods,
+    stdDevUp  : 5,
+    stdDevDown: 5,
 };
 
 const macdOption = {
-  fastEmaPeriod: 12,
-  slowEmaPeriod: 26,
-  smaPeriod: 9,
+    fastEmaPeriod: 12,
+    slowEmaPeriod: 26,
+    smaPeriod    : 9,
 };
 
 const getIndicatorsFromApi = () =>
-  runAndGetResult(
-    undefined,
-    `
+    runAndGetResult(
+        undefined,
+        `
     watch('before');
     var ticks = Bot.getTicks();
     result.ticks = ticks
@@ -46,37 +38,37 @@ const getIndicatorsFromApi = () =>
     result.macda = Bot.macda(ticks, ${JSON.stringify(macdOption)}, 0)
     result.sma = Bot.sma(ticks, ${periods})
     result.smaa = Bot.smaa(ticks, ${periods})
-  `,
-  );
+  `
+    );
 
 describe('Relative Strength Index', () => {
-  let result;
-  let expected;
+    let result;
+    let expected;
 
-  beforeAll(done =>
-    getIndicatorsFromApi().then(r => {
-      result = r;
-      const ticks = result.ticks;
+    beforeAll(done =>
+        getIndicatorsFromApi().then(r => {
+            result = r;
+            const ticks = result.ticks;
 
-      expected = {
-        sma: sma(ticks, { periods }),
-        smaa: smaa(ticks, { periods }),
-        bb: bb(ticks, bbOption)[1],
-        bba: bba(ticks, bbOption).map(e => e[2]),
-        ema: ema(ticks, { periods }),
-        emaa: emaa(ticks, { periods }),
-        rsi: rsi(ticks, { periods }),
-        rsia: rsia(ticks, { periods }),
-        macda: macda(ticks, macdOption).map(e => e[0]),
-      };
+            expected = {
+                sma  : sma(ticks, { periods }),
+                smaa : smaa(ticks, { periods }),
+                bb   : bb(ticks, bbOption)[1],
+                bba  : bba(ticks, bbOption).map(e => e[2]),
+                ema  : ema(ticks, { periods }),
+                emaa : emaa(ticks, { periods }),
+                rsi  : rsi(ticks, { periods }),
+                rsia : rsia(ticks, { periods }),
+                macda: macda(ticks, macdOption).map(e => e[0]),
+            };
 
-      done();
-    }),
-  );
+            done();
+        })
+    );
 
-  it('Indicator values are set correctly', () => {
-    Object.keys(expected).forEach(name => {
-      expect(result[name]).deep.equal(expected[name]);
+    it('Indicator values are set correctly', () => {
+        Object.keys(expected).forEach(name => {
+            expect(result[name]).deep.equal(expected[name]);
+        });
     });
-  });
 });

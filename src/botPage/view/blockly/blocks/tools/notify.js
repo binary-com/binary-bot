@@ -3,29 +3,22 @@ import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
 
 Blockly.Blocks.notify = {
-  init: function init() {
-    this.appendValueInput('MESSAGE')
-      .setCheck(null)
-      .appendField(translate('Notify'))
-      .appendField(
-        new Blockly.FieldDropdown(config.lists.NOTIFICATION_TYPE),
-        'NOTIFICATION_TYPE',
-      );
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour('#dedede');
-    this.setTooltip(translate('Creates notification'));
-    this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
-  },
+    init: function init() {
+        this.appendValueInput('MESSAGE')
+            .setCheck(null)
+            .appendField(translate('Notify'))
+            .appendField(new Blockly.FieldDropdown(config.lists.NOTIFICATION_TYPE), 'NOTIFICATION_TYPE');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour('#dedede');
+        this.setTooltip(translate('Creates notification'));
+        this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+    },
 };
 Blockly.JavaScript.notify = block => {
-  const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
-  const message = Blockly.JavaScript.valueToCode(
-    block,
-    'MESSAGE',
-    Blockly.JavaScript.ORDER_ATOMIC,
-  );
-  const code = `Bot.notify('${notificationType}', ${message});
+    const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
+    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
+    const code = `Bot.notify('${notificationType}', ${message});
 `;
-  return code;
+    return code;
 };

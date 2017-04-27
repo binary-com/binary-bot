@@ -3,131 +3,123 @@ import { getToken } from 'binary-common-utils/lib/storageManager';
 import { translate } from '../../common/i18n';
 
 const log = (type, ...args) => {
-  if (type === 'warn') {
-    console.warn(...args); // eslint-disable-line no-console
-  } else {
-    console.log(...args); // eslint-disable-line no-console
-  }
+    if (type === 'warn') {
+        console.warn(...args); // eslint-disable-line no-console
+    } else {
+        console.log(...args); // eslint-disable-line no-console
+    }
 };
 
 const shown = [];
 
 const isNew = msg => {
-  const timestamp = parseInt(new Date().getTime() / 1000, 10);
+    const timestamp = parseInt(new Date().getTime() / 1000);
 
-  const shownMsg = shown.find(e => e.msg === msg);
-  if (shownMsg) {
-    const oldTimestamp = shownMsg.timestamp;
+    const shownMsg = shown.find(e => e.msg === msg);
+    if (shownMsg) {
+        const oldTimestamp = shownMsg.timestamp;
 
-    shownMsg.timestamp = timestamp;
-    return timestamp - oldTimestamp >= 1;
-  }
+        shownMsg.timestamp = timestamp;
+        return timestamp - oldTimestamp >= 1;
+    }
 
-  shown.push({ msg, timestamp });
-  return true;
+    shown.push({ msg, timestamp });
+    return true;
 };
 
 const notify = (className, msg, position = 'left') => {
-  log(className, msg);
-  if (isNew(msg)) {
-    $.notify(msg, { position: `bottom ${position}`, className });
-  }
+    log(className, msg);
+    if (isNew(msg)) {
+        $.notify(msg, { position: `bottom ${position}`, className });
+    }
 };
 
 const notifyError = error => {
-  if (!error) {
-    return;
-  }
-
-  let message = error.message;
-  let errorCode = error.name;
-
-  if (error.error) {
-    message = error.error.message;
-    errorCode = error.error.errorCode;
-    if (error.error.error) {
-      message = error.error.error.message;
-      message = error.error.error.message;
-      errorCode = error.error.error.errorCode;
+    if (!error) {
+        return;
     }
-  }
 
-  if (errorCode === 'DisconnectError') {
-    message = translate(
-      'Connection lost before receiving the response from the server',
-    );
-  }
+    let message = error.message;
+    let errorCode = error.name;
 
-  const errorWithCode = new Error(error);
-  errorWithCode.message = errorCode ? `${errorCode}: ${message}` : message;
+    if (error.error) {
+        message = error.error.message;
+        errorCode = error.error.errorCode;
+        if (error.error.error) {
+            message = error.error.error.message;
+            message = error.error.error.message;
+            errorCode = error.error.error.errorCode;
+        }
+    }
 
-  if (trackJs) {
-    trackJs.track(errorWithCode);
-  }
+    if (errorCode === 'DisconnectError') {
+        message = translate('Connection lost before receiving the response from the server');
+    }
 
-  notify('error', message, 'right');
+    const errorWithCode = new Error(error);
+    errorWithCode.message = errorCode ? `${errorCode}: ${message}` : message;
+
+    if (trackJs) {
+        trackJs.track(errorWithCode);
+    }
+
+    notify('error', message, 'right');
 };
 
 const waitForNotifications = () => {
-  const notifList = ['success', 'info', 'warn', 'error'];
+    const notifList = ['success', 'info', 'warn', 'error'];
 
-  const logList = [
-    'log.bot.start',
-    'log.bot.login',
-    'log.bot.proposal',
-    'log.purchase.start',
-    'log.trade.purchase',
-    'log.trade.update',
-    'log.trade.finish',
-  ];
+    const logList = [
+        'log.bot.start',
+        'log.bot.login',
+        'log.bot.proposal',
+        'log.purchase.start',
+        'log.trade.purchase',
+        'log.trade.update',
+        'log.trade.finish',
+    ];
 
-  const amplitudeList = ['log.bot.login', 'log.trade.finish'];
+    const amplitudeList = ['log.bot.login', 'log.trade.finish'];
 
-  logList.forEach(event =>
-    globalObserver.register(event, d => log('info', event, d)),
-  );
+    logList.forEach(event => globalObserver.register(event, d => log('info', event, d)));
 
-  globalObserver.register('Notify', args => notify(...args));
+    globalObserver.register('Notify', args => notify(...args));
 
-  globalObserver.register('Error', notifyError);
+    globalObserver.register('Error', notifyError);
 
-  notifList.forEach(className =>
-    globalObserver.register(`ui.log.${className}`, message =>
-      notify(className, message, 'right'),
-    ),
-  );
+    notifList.forEach(className =>
+        globalObserver.register(`ui.log.${className}`, message => notify(className, message, 'right'))
+    );
 
-  amplitudeList.forEach(event =>
-    globalObserver.register(event, d =>
-      amplitude.getInstance().logEvent(event, d),
-    ),
-  );
+    amplitudeList.forEach(event => globalObserver.register(event, d => amplitude.getInstance().logEvent(event, d)));
 
-  globalObserver.register('log.revenue', data => {
-    const { user, profit, contract } = data;
+    globalObserver.register('log.revenue', data => {
+        const { user, profit, contract } = data;
 
-    if (typeof amplitude !== 'undefined' && !user.isVirtual) {
-      const revenue = new amplitude.Revenue()
-        .setProductId(`${contract.underlying}.${contract.contract_type}`)
-        .setPrice(-profit)
-        .setRevenueType(profit < 0 ? 'loss' : 'win');
+        if (typeof amplitude !== 'undefined' && !user.isVirtual) {
+            const revenue = new amplitude.Revenue()
+                .setProductId(`${contract.underlying}.${contract.contract_type}`)
+                .setPrice(-profit)
+                .setRevenueType(profit < 0 ? 'loss' : 'win');
 
-      amplitude.getInstance().logRevenueV2(revenue, { contract });
+            amplitude.getInstance().logRevenueV2(revenue, { contract });
+        }
+    });
+};
+
+const logHandler = () => {
+    const token = $('.account-id').first().attr('value');
+    const userId = getToken(token).account_name;
+
+    if (amplitude) {
+        amplitude.getInstance().setUserId(userId);
     }
-  });
+
+    if (trackJs) {
+        trackJs.configure({ userId });
+    }
+
+    waitForNotifications();
 };
 
-export const logHandler = () => {
-  const token = $('.account-id').first().attr('value');
-  const userId = getToken(token).account_name;
-
-  if (amplitude) {
-    amplitude.getInstance().setUserId(userId);
-  }
-
-  if (trackJs) {
-    trackJs.configure({ userId });
-  }
-
-  waitForNotifications();
-};
+export default logHandler;
