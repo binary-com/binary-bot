@@ -4,5 +4,6 @@ export const TICKS_READY = 'TICKS_READY';
 export const PROPOSALS_READY = 'PROPOSALS_READY';
 export const PURCHASE_SUCCESSFUL = 'PURCHASE_SUCCESSFUL';
 export const OPEN_CONTRACT = 'OPEN_CONTRACT';
-export const SOLD = 'SOLD';
 export const INVALID_ACTION = 'INVALID_ACTION';
+export const START = 'START';
+export const STOP = 'STOP';
