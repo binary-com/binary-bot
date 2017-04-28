@@ -18,38 +18,37 @@ import * as constants from './state/constants';
 import { start } from './state/actions';
 
 const watchBefore = store =>
-    new Promise(resolve => {
-        const unsubscribe = store.subscribe(() => {
-            const newState = store.getState();
-
-            if (newState.scope === constants.BEFORE_PURCHASE && newState.proposalsReady) {
-                unsubscribe();
-                resolve(true);
-            }
-
-            if (newState.scope === constants.DURING_PURCHASE) {
-                unsubscribe();
-                resolve(false);
-            }
-        });
+    watchScope({
+        store,
+        stopScope: constants.DURING_PURCHASE,
+        passScope: constants.BEFORE_PURCHASE,
+        passFlag : 'proposalsReady',
     });
 
 const watchDuring = store =>
-    new Promise(resolve => {
+    watchScope({ store, stopScope: constants.STOP, passScope: constants.DURING_PURCHASE, passFlag: 'openContract' });
+
+const watchScope = ({ store, stopScope, passScope, passFlag }) => {
+    // in case watch is called after stop is fired
+    if (store.getState().scope === stopScope) {
+        return Promise.resolve(false);
+    }
+    return new Promise(resolve => {
         const unsubscribe = store.subscribe(() => {
             const newState = store.getState();
 
-            if (newState.scope === constants.DURING_PURCHASE && newState.openContract) {
+            if (newState.scope === passScope && newState[passFlag]) {
                 unsubscribe();
                 resolve(true);
             }
 
-            if (newState.scope === constants.STOP) {
+            if (newState.scope === stopScope) {
                 unsubscribe();
                 resolve(false);
             }
         });
     });
+};
 
 export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
     constructor($scope) {
