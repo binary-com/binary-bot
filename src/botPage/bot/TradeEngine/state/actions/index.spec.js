@@ -3,8 +3,7 @@ import * as actions from './';
 
 const getDispatchFromAction = ({ action, state }) => {
     const dispatch = jest.fn();
-    const thunk = action();
-    thunk(dispatch, () => state);
+    action()(dispatch, () => state);
     return dispatch;
 };
 
@@ -18,51 +17,57 @@ const beforePurchase = {
     isReady       : args =>
         toBeCalledWith({
             ...args,
-            state: { scope: constants.BEFORE_PURCHASE, ticksReady: true, proposalsReady: true },
+            state: { scope: constants.BEFORE_PURCHASE, proposalsReady: true },
         }),
-    isNotReady: action =>
-        notToBeCalled({ action, state: { scope: constants.BEFORE_PURCHASE, ticksReady: false, proposalsReady: true } }),
+    isNotReady: action => notToBeCalled({ action, state: { scope: constants.BEFORE_PURCHASE, proposalsReady: false } }),
 };
 
 describe('response actions', () => {
     it('START is fired if the scope is STOP', () => {
-        toBeCalledWith({ action: actions.start, calledWith: constants.START, state: { scope: constants.STOP } });
+        toBeCalledWith({
+            action    : actions.start,
+            calledWith: { type: constants.START },
+            state     : { scope: constants.STOP },
+        });
     });
     it('START is not fired if the scope is not STOP', () => {
         notToBeCalled({ action: actions.start, state: { scope: constants.BEFORE_PURCHASE } });
     });
-    it('TICKS_READY is fired if the scope is BEFORE_PURCHASE', () => {
-        beforePurchase.correctScope({ action: actions.ticksReady, calledWith: constants.TICKS_READY });
+    it('PROPOSALS_READY is fired', () => {
+        expect(actions.proposalsReady()).toEqual({ type: constants.PROPOSALS_READY });
     });
-    it('TICKS_READY is not fired if the scope is not BEFORE_PURCHASE', () => {
-        beforePurchase.incorrectScope(actions.ticksReady);
-    });
-    it('PROPOSALS_READY is fired if the scope is BEFORE_PURCHASE', () => {
-        beforePurchase.correctScope({ action: actions.proposalsReady, calledWith: constants.PROPOSALS_READY });
-    });
-    it('PROPOSALS_READY is not fired if the scope is not BEFORE_PURCHASE', () => {
-        beforePurchase.incorrectScope(actions.proposalsReady);
+    it('CLEAR_PROPOSALS is fired', () => {
+        expect(actions.clearProposals()).toEqual({ type: constants.CLEAR_PROPOSALS });
     });
     it('PURCHASE_SUCCESSFUL is fired if BEFORE_PURCHASE is ready', () => {
-        beforePurchase.isReady({ action: actions.purchaseSuccessful, calledWith: constants.PURCHASE_SUCCESSFUL });
+        beforePurchase.isReady({
+            action    : actions.purchaseSuccessful,
+            calledWith: { type: constants.PURCHASE_SUCCESSFUL },
+        });
     });
     it('PURCHASE_SUCCESSFUL is not fired if BEFORE_PURCHASE is not ready', () => {
         beforePurchase.isNotReady(actions.purchaseSuccessful);
     });
-    it('OPEN_CONTRACT is fired if BEFORE_PURCHASE is ready', () => {
-        beforePurchase.isReady({ action: actions.openContractReceived, calledWith: constants.OPEN_CONTRACT });
-    });
-    it('OPEN_CONTRACT is not fired if BEFORE_PURCHASE is not ready', () => {
-        beforePurchase.isNotReady(actions.openContractReceived);
-    });
-    it('SOLD is fired if DURING_PURCHASE is ready', () => {
+    it('OPEN_CONTRACT is fired if BEFORE_PURCHASE is ready or scope is DURING_PURCHASE', () => {
+        beforePurchase.isReady({ action: actions.openContractReceived, calledWith: { type: constants.OPEN_CONTRACT } });
         toBeCalledWith({
-            action    : actions.sell,
-            calledWith: constants.STOP,
-            state     : { scope: constants.DURING_PURCHASE, openContract: true },
+            action    : actions.openContractReceived,
+            calledWith: { type: constants.OPEN_CONTRACT },
+            state     : { scope: constants.DURING_PURCHASE, openContract: false },
         });
     });
-    it('SOLD is not fired if DURING_PURCHASE is not ready', () => {
-        notToBeCalled({ action: actions.sell, state: { scope: constants.DURING_PURCHASE, openContract: false } });
+    it('OPEN_CONTRACT is not fired if BEFORE_PURCHASE is not ready and scope is not DURING_PURCHASE', () => {
+        beforePurchase.isNotReady(actions.openContractReceived);
+        notToBeCalled({ action: actions.openContractReceived, state: { scope: constants.STOP } });
+    });
+    it('SELL is fired if the scope is DURING_PURCHASE', () => {
+        toBeCalledWith({
+            action    : actions.sell,
+            calledWith: { type: constants.SELL },
+            state     : { scope: constants.DURING_PURCHASE, openContract: false },
+        });
+    });
+    it('SELL is not fired the scope is not DURING_PURCHASE', () => {
+        notToBeCalled({ action: actions.sell, state: { scope: constants.STOP } });
     });
 });
