@@ -1,6 +1,8 @@
 import { translate } from '../../../common/i18n';
 import { recoverFromError } from '../tools';
 import { info, notify } from '../broadcast';
+import { purchaseSuccessful } from './state/actions';
+import { BEFORE_PURCHASE } from './state/constants';
 
 let delayIndex = 0;
 
@@ -8,19 +10,23 @@ export default Engine => class Purchase extends Engine {
     purchase(contractType) {
         const { id, askPrice } = this.selectProposal(contractType);
 
-        this.ongoingPurchase = true;
-
         return recoverFromError(
             () => this.api.buyContract(id, askPrice),
             (errorCode, makeDelay) => {
                 // if disconnected no need to resubscription (handled by live-api)
                 if (errorCode !== 'DisconnectError') {
                     this.renewProposalsOnPurchase();
+                } else {
+                    this.clearProposals();
                 }
 
-                this.ongoingPurchase = false;
-
-                this.waitForProposals().then(() => makeDelay().then(() => this.observer.emit('REVERT', 'before')));
+                const unsubscribe = this.store.subscribe(() => {
+                    const { scope, proposalsReady } = this.store.getState();
+                    if (scope === BEFORE_PURCHASE && proposalsReady) {
+                        makeDelay().then(() => this.observer.emit('REVERT', 'before'));
+                        unsubscribe();
+                    }
+                });
             },
             ['PriceMoved'],
             delayIndex++
@@ -28,7 +34,7 @@ export default Engine => class Purchase extends Engine {
             const { buy } = r;
 
             this.subscribeToOpenContract(buy.contract_id);
-            this.signal('purchase');
+            this.store.dispatch(purchaseSuccessful());
             this.renewProposalsOnPurchase();
             delayIndex = 0;
             notify('info', `${translate('Bought')}: ${buy.longcode}`);

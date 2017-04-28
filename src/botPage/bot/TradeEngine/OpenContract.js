@@ -1,5 +1,6 @@
 import { doUntilDone } from '../tools';
 import { contract as broadcastContract } from '../broadcast';
+import { sell, openContractReceived } from './state/actions';
 
 export default Engine => class OpenContract extends Engine {
     observeOpenContract() {
@@ -19,20 +20,19 @@ export default Engine => class OpenContract extends Engine {
             broadcastContract(contract);
 
             if (this.isSold) {
-                this.ongoingPurchase = false;
                 this.contractId = '';
                 this.updateTotals(contract);
                 if (this.afterPromise) {
                     this.afterPromise();
                 }
 
-                this.signal('after');
+                this.store.dispatch(sell());
 
                 if (this.openContractId) {
                     this.api.unsubscribeByID(this.openContractId);
                 }
             } else {
-                this.signal('during');
+                this.store.dispatch(openContractReceived());
             }
         });
         // send request for proposal open contract if above failed within 1 sec

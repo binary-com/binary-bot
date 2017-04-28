@@ -1,4 +1,6 @@
 import { Map } from 'immutable';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { translate } from '../../..//common/i18n';
 import createError from '../../common/error';
 import { doUntilDone } from '../tools';
@@ -11,13 +13,43 @@ import OpenContract from './OpenContract';
 import Sell from './Sell';
 import Purchase from './Purchase';
 import Ticks from './Ticks';
+import rootReducer from './state/reducers';
+import * as constants from './state/constants';
+import { start } from './state/actions';
 
-const scopeToWatchResolve = {
-    before  : ['before', true],
-    purchase: ['before', false],
-    during  : ['during', true],
-    after   : ['during', false],
-};
+const watchBefore = store =>
+    new Promise(resolve => {
+        const unsubscribe = store.subscribe(() => {
+            const newState = store.getState();
+
+            if (newState.scope === constants.BEFORE_PURCHASE && newState.proposalsReady) {
+                unsubscribe();
+                resolve(true);
+            }
+
+            if (newState.scope === constants.DURING_PURCHASE) {
+                unsubscribe();
+                resolve(false);
+            }
+        });
+    });
+
+const watchDuring = store =>
+    new Promise(resolve => {
+        const unsubscribe = store.subscribe(() => {
+            const newState = store.getState();
+
+            if (newState.scope === constants.DURING_PURCHASE && newState.openContract) {
+                unsubscribe();
+                resolve(true);
+            }
+
+            if (newState.scope === constants.STOP) {
+                unsubscribe();
+                resolve(false);
+            }
+        });
+    });
 
 export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
     constructor($scope) {
@@ -27,13 +59,9 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.$scope = $scope;
         this.observe();
         this.data = new Map();
-        this.watches = new Map();
-        this.signals = new Map();
+        this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
     init(...args) {
-        this.watches = new Map();
-        this.signals = new Map();
-
         const [token, options] = expectInitArg(args);
 
         const { symbol } = options;
@@ -48,6 +76,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
         }
+
+        this.store.dispatch(start());
 
         this.checkLimits(tradeOptions);
 
@@ -76,38 +106,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.observeProposals();
     }
-    signal(scope) {
-        const [watchName, arg] = scopeToWatchResolve[scope];
-
-        if (this.watches.has(watchName)) {
-            const watch = this.watches.get(watchName);
-
-            this.watches = this.watches.delete(watchName);
-
-            watch(arg);
-        } else {
-            this.signals = this.signals.set(watchName, arg);
-        }
-
-        this.scope = scope;
-    }
-    deleteTheOther(watchName) {
-        const toDelete = watchName === 'during' ? 'before' : 'during';
-        this.signals = this.signals.delete(toDelete);
-        this.watches = this.watches.delete(toDelete);
-    }
     watch(watchName) {
-        this.deleteTheOther(watchName);
-        if (this.signals.has(watchName)) {
-            const signal = this.signals.get(watchName);
-
-            this.signals = this.signals.delete(watchName);
-            return Promise.resolve(signal);
+        if (watchName === 'before') {
+            return watchBefore(this.store);
         }
-
-        return new Promise(resolve => {
-            this.watches = this.watches.set(watchName, resolve);
-        });
+        return watchDuring(this.store);
     }
     getData() {
         return this.data;

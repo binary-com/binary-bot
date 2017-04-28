@@ -1,6 +1,7 @@
 import { translate } from '../../../common/i18n';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../tools';
 import { error as broadcastError } from '../broadcast';
+import { proposalsReady, clearProposals } from './state/actions';
 
 export default Engine => class Proposal extends Engine {
     makeProposals(tradeOption) {
@@ -37,12 +38,9 @@ export default Engine => class Proposal extends Engine {
         this.requestProposals();
         this.unsubscribeProposals();
     }
-    waitForProposals() {
+    clearProposals() {
         this.data = this.data.set('proposals', new Map());
-
-        return new Promise(resolve => {
-            this.proposalPromise = resolve;
-        });
+        this.store.dispatch(clearProposals());
     }
     requestProposals() {
         Promise.all(
@@ -80,7 +78,7 @@ export default Engine => class Proposal extends Engine {
 
         const proposals = this.data.get('proposals');
 
-        this.data = this.data.set('proposals', new Map());
+        this.clearProposals();
 
         proposals.forEach(proposal => {
             const { uuid: id } = proposal;
@@ -95,11 +93,8 @@ export default Engine => class Proposal extends Engine {
     checkProposalReady() {
         const proposals = this.data.get('proposals');
 
-        if (proposals && proposals.size === this.proposalTemplates.length && !this.ongoingPurchase) {
-            this.startPromise.then(() => this.signal('before'));
-            if (this.proposalPromise) {
-                this.proposalPromise();
-            }
+        if (proposals && proposals.size === this.proposalTemplates.length) {
+            this.startPromise.then(() => this.store.dispatch(proposalsReady()));
         }
     }
     isNewTradeOption(tradeOption) {

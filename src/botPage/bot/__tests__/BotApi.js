@@ -41,7 +41,7 @@ describe('Interface', () => {
         });
 
         it('context is inside before', () => {
-            expect(botInterface.tradeEngine.scope).equal('before');
+            expect(botInterface.tradeEngine.store.getState().scope).equal('BEFORE_PURCHASE');
         });
 
         it('Loop stayed on correctly', () => {
