@@ -15,6 +15,7 @@ import { RestartTimeout } from './react-components/RestartTimeout'
 import { LimitsPanel } from './react-components/LimitsPanel'
 import { getLanguage } from '../../common/lang'
 import { Tour } from './tour'
+import OfficialVersionWarning from './react-components/OfficialVersionWarning'
 
 let realityCheckTimeout
 let ticks = []
@@ -136,6 +137,14 @@ export default class View {
         $('#accountLis')
         startRealityCheck(null, $('.account-id').first().attr('value'))
         ReactDOM.render(<Tour />, document.getElementById('tour'))
+        ReactDOM.render(
+          <OfficialVersionWarning
+            show={
+              !(typeof location !== 'undefined' &&
+              location.host === 'bot.binary.com' &&
+              location.pathname === '/bot.html')
+            }
+          />, $('#footer')[0])
         resolve()
       })
     })
