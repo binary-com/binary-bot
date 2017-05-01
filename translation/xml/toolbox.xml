@@ -282,6 +282,19 @@
 				<block type="ohlc_values"></block>
 			</category>
 		</category>
+		<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
+			<block type="sma"></block>
+			<block type="ema"></block>
+			<block type="bb"></block>
+			<block type="rsi"></block>
+			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
+				<block type="smaa"></block>
+				<block type="emaa"></block>
+				<block type="bba"></block>
+				<block type="rsia"></block>
+				<block type="macda"></block>
+			</category>
+		</category>
 		<category name="Tools" colour="#2a3052" i18n-text="Tools">
 			<category name="Time" colour="#2a3052" i18n-text="Time">
 				<block type="epoch"></block>
@@ -299,19 +312,6 @@
 				<block type="notify"></block>
 				<block type="loader"></block>
 				<block type="block_holder"></block>
-			</category>
-			<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
-				<block type="sma"></block>
-				<block type="ema"></block>
-				<block type="bb"></block>
-				<block type="rsi"></block>
-				<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
-					<block type="smaa"></block>
-					<block type="emaa"></block>
-					<block type="bba"></block>
-					<block type="rsia"></block>
-					<block type="macda"></block>
-				</category>
 			</category>
 		</category>
 	</category>
