@@ -8,6 +8,11 @@ let delayIndex = 0;
 
 export default Engine => class Purchase extends Engine {
     purchase(contractType) {
+        // Prevent calling purchase twice
+        if (this.store.getState().scope !== BEFORE_PURCHASE) {
+            return Promise.resolve();
+        }
+
         const { id, askPrice } = this.selectProposal(contractType);
 
         return recoverFromError(

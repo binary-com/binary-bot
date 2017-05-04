@@ -1,6 +1,7 @@
 import { translate } from '../../../common/i18n';
 import { recoverFromError, doUntilDone } from '../tools';
 import { notify } from '../broadcast';
+import { DURING_PURCHASE } from './state/constants';
 
 let delayIndex = 0;
 
@@ -9,6 +10,11 @@ export default Engine => class Sell extends Engine {
         return this.contractId && !this.isSold && this.isSellAvailable && !this.isExpired;
     }
     sellAtMarket() {
+        // Prevent calling sell twice
+        if (this.store.getState().scope !== DURING_PURCHASE) {
+            return Promise.resolve();
+        }
+
         if (!this.isSellAtMarketAvailable()) {
             throw translate('Sell is not available');
         }
