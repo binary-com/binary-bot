@@ -1,7 +1,12 @@
 {
   "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "extends": [
-    "eslint-config-airbnb",
+    "binary",
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
@@ -15,45 +20,21 @@
     "Blockly": false,
     "trackJs": false,
     "amplitude": false,
-    "Tourist": false
+    "jest": false
   },
   "plugins": [
     "react"
   ],
   "rules": {
-    "indent": [0, 4],
-    "linebreak-style": 0,
-    "arrow-parens": 0,
-    "no-plusplus": 0,
-    "class-methods-use-this": 0,
-    "react/no-danger": 0,
-    "react/sort-comp": 0,
-    "react/forbid-prop-types": 0,
-    "react/jsx-indent": [0, "tab"],
-    "react/prefer-stateless-function": 0,
-    "react/jsx-indent-props": [0, "tab"],
-    "react/jsx-filename-extension": 0,
-    "no-unused-vars": 1,
-    "no-trailing-spaces": 1,
-    "import/named": 0,
-    "import/default": 0,
-    "import/namespace": 0,
-    "import/prefer-default-export": 0,
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
     "import/no-extraneous-dependencies": 0,
-    "jsx-a11y/no-static-element-interactions": 0,
-    "generator-star-spacing": 0,
-    "react/no-unused-prop-types": 0,
-    "no-underscore-dangle": 0,
-    "max-len": 0,
-    "semi": ["error", "never"],
-    "no-extra-semi": 2,
   },
   "settings": {
-    "import/ignore": \.(scss|less|css)$,
-    "import/resolver": {
-      "webpack": {
-        "config": "webpack.config.js"
-      }
+    "react": {
+      "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
+      "pragma": "React",  // Pragma to use, default to "React"
+      "version": "15.0" // React version, default to the latest React stable release
     }
   }
 }

@@ -1,3 +1,3 @@
-import './epoch'
-import './timeout'
-import './interval'
+import './epoch';
+import './timeout';
+import './interval';

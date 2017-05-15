@@ -30,6 +30,24 @@ git pull
 npm install
 ```
 
+## Running the CLI command
+
+```
+npm i -g binary-bot
+bot -h // For a quick help
+bot bot-example.js
+```
+
+### Running with a specific endpoint
+**Use only if you know what you're doing**
+
+```
+ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169' bot bot-example.js
+```
+
+### CLI examples:
+[`speed-test.js`](/cli-examples/speed-test.js)
+
 ## Think you found a bug?
 
 There's a chance that we already know about it and doing our best to fix it. To find out you can search our [GitHub issues](https://github.com/binary-com/binary-bot/issues)
