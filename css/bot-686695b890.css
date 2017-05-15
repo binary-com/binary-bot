@@ -50,10 +50,12 @@
   visibility: visible; }
 
 .trade-chart {
+  height: 14.5em;
   display: flex;
-  height: 20em;
   flex-direction: column;
-  flex: 1; }
+  flex: 1;
+  min-width: 0;
+  min-height: 0; }
   .trade-chart #trade-chart0,
   .trade-chart #trade-chart1,
   .trade-chart #trade-chart2,
@@ -268,6 +270,10 @@
 
 /* '' */
 #summaryPanel {
+  width: 800px;
+  margin-top: -317px;
+  margin-left: -400px;
+  z-index: 1001;
   border-radius: 4px;
   border: 1px solid #f2f2f2;
   box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1); }
@@ -278,42 +284,93 @@
   margin-left: -194px;
   margin-top: -38px; }
 
-.draggable-dialog {
-  display: none; }
-  .draggable-dialog .content {
+.panelExitButton p {
+  color: #ffffff;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-align: center;
+  border-radius: 0 4px 0 0;
+  margin: 0; }
+  .panelExitButton p:hover {
+    color: #e98024; }
+
+.panel {
+  display: none;
+  background-color: #ffffff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-top-color: #dddddd;
+  z-index: 1002; }
+  .panel .content {
     padding: 0 15px 15px 15px;
     background: #ffffff;
     cursor: default; }
-    .draggable-dialog .content table {
+    .panel .content table {
       border: 1px solid #f2f2f2; }
-  .draggable-dialog table {
+  .panel .description {
+    padding: 5px;
+    background-color: #2a3052;
+    color: #ffffff;
+    border-radius: 4px 4px 0 0; }
+  .panel .description h4 {
+    color: #ffffff;
+    margin: 0;
+    text-align: center; }
+  .panel table {
     overflow: auto;
     width: 100%; }
-  .draggable-dialog table,
-  .draggable-dialog td,
-  .draggable-dialog th {
+  .panel table,
+  .panel td,
+  .panel th {
     border-collapse: collapse; }
-  .draggable-dialog td,
-  .draggable-dialog th {
+  .panel td,
+  .panel th {
     text-align: center !important;
     padding: 3px !important;
     height: 2em;
     font-size: 14px; }
-  .draggable-dialog .table-scroll {
+  .panel .table-scroll {
     overflow: auto;
-    height: 20em;
+    height: 25vh;
     padding-bottom: 1vh;
     margin-bottom: 1em; }
-  .draggable-dialog #chart {
-    width: 100%;
-    height: 20em;
+  .panel #chart {
+    height: 14.5em;
+    width: 42.5em;
     border: 1px solid #f2f2f2;
     border-radius: 3px; }
+  .panel .draggable {
+    opacity: 1; }
 
-.dialog-content {
+.floating-panel {
+  font-size: 1em;
+  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: calc(50% - 7em);
+  border: 1px solid #2a3052;
+  border-top-color: #ddd;
+  z-index: 1002; }
+
+.floating-panel .content {
   padding: 0 15px 15px 15px;
   background: white;
   cursor: default; }
+
+.floating-panel .description {
+  padding: 0.2em 2em;
+  background-color: #2a3052;
+  color: #fff; }
+
+.floating-panel .description h4 {
+  color: white;
+  margin: 0;
+  text-align: center; }
 
 .blocklyText {
   fill: #000000 !important; }
@@ -359,7 +416,7 @@
 
 .blocklyToolboxDiv {
   position: fixed !important;
-  z-index: 99 !important;
+  z-index: 200 !important;
   left: -100%;
   overflow-x: hidden !important; }
 
@@ -368,7 +425,7 @@
 
 #toolbox {
   position: absolute;
-  z-index: 99;
+  z-index: 100;
   right: 0;
   width: 4em;
   text-align: center;
@@ -744,7 +801,7 @@ html, body {
   display: none; }
 
 .languages {
-  z-index: 99; }
+  z-index: 999; }
 
 #select_language {
   top: -3px; }
@@ -763,4 +820,4 @@ html, body {
 .show-on-load {
   display: none; }
 
-/*# sourceMappingURL=bot-833a1d219c.css.map */
+/*# sourceMappingURL=bot-686695b890.css.map */
