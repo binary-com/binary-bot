@@ -54,14 +54,14 @@
 		amplitude.getInstance().init("8550b32c2a951c57e791d03c4c2ea55a");
 	</script>
     <title>Binary Bot</title>
-<link href="css/bundle-28d98ab8e2.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-833a1d219c.css" rel="stylesheet" />
+<link href="css/bundle-dc323e85e1.min.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-686695b890.css" rel="stylesheet" />
   </head>
 
   <body>
     <div id="tour"></div>
     <div id="center"></div>
-    <span id="limits-dialog"></span>
-    <span id="save-dialog"></span>
+    <span id="limits-panel"></span>
+    <span id="restartTimeout"></span>
     <div>
       <div class="blocker"></div>
       <div class="reality-check" style="display: none">
@@ -179,7 +179,11 @@
       </div>
     </div>
     <div id="blocklyDiv"></div>
-    <div id="summaryPanel" class="draggable-dialog">
+    <div id="summaryPanel" class="panel">
+      <div class="panelExitButton"><p class="icon-close"></p></div>
+      <div class="description">
+        <h4 data-i18n-text="Results"></h4>
+      </div>
       <div class="content">
         <h3>
           <span data-i18n-text="Summary"></span>
@@ -212,7 +216,22 @@
           <span data-i18n-text="Trades"></span>
         </h3>
         <div class="table-scroll">
-          <div id="tradeInfo"></div>
+          <table id="tradesDisplay">
+            <thead>
+              <tr>
+                <th><span data-i18n-text="Number"></span></th>
+                <th><span data-i18n-text="Reference"></span></th>
+                <th><span data-i18n-text="Trade type"></span></th>
+                <th><span data-i18n-text="Entry spot"></span></th>
+                <th><span data-i18n-text="Exit spot"></span></th>
+                <th><span data-i18n-text="Buy price"></span></th>
+                <th><span data-i18n-text="Final price"></span></th>
+                <th><span data-i18n-text="Profit/Loss"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
         </div>
         <div id="chart"></div>
       </div>
@@ -222,7 +241,7 @@
     </form>
     <div id="toolbox" class="actions_menu show-on-load">
       <button title="Load new blocks (xml file)" id="loadXml" class="toolbox-button icon-browse"></button>
-      <button title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
+      <div id="saveXml" class="group-save"></div>
       <button title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>
       <button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="toolbox-button icon-redo"></button>
       <button title="Zoom In (Ctrl + +)" id="zoomIn" class="toolbox-button icon-zoom-in"></button>
@@ -234,5 +253,7 @@
       <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
     </div>
     <div id="footer"></div>
-<script src="js/bundle-53060c14ac.js"></script><script src="js/bot-df4772f314.min.js"></script>  </body>
+<script src="js/jquery-e071abda8f.js"></script><script src="js/bundle-eda8befd3e.js"></script><script src="js/bot-87ec2257a7.min.js"></script>    <script src="https://style.binary.com/binary.js"></script>
+
+  </body>
 </html>
