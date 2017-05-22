@@ -4,6 +4,8 @@ import { notify } from './broadcast';
 
 export const noop = () => {};
 
+const castBarrierToString = barrier => (barrier > 0 ? `+${barrier}` : `${barrier}`);
+
 export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => ({
         duration_unit: tradeOption.duration_unit,
@@ -17,10 +19,10 @@ export const tradeOptionToProposal = tradeOption =>
             barrier: tradeOption.prediction,
         }),
         ...(tradeOption.barrierOffset !== undefined && {
-            barrier: tradeOption.barrierOffset,
+            barrier: castBarrierToString(tradeOption.barrierOffset),
         }),
         ...(tradeOption.secondBarrierOffset !== undefined && {
-            barrier2: tradeOption.secondBarrierOffset,
+            barrier2: castBarrierToString(tradeOption.secondBarrierOffset),
         }),
     }));
 
