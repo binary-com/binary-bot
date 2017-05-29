@@ -57,3 +57,25 @@
 	background: white;
 	cursor: default;
 }
+
+
+#logTable {
+  table {
+    th, td {
+      text-align: left !important;
+      padding: 10px !important;
+    }
+    .warn {
+      background: #FBEED5;
+    }
+    .success {
+      background: #DFF0D8;
+    }
+    .error {
+      background: #F2DEDE;
+    }
+    .info {
+      background: #D9EDF7;
+    }
+  }
+}
