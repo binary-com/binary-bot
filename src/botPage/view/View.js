@@ -341,7 +341,7 @@ export default class View {
         });
 
         $('.draggable-dialog').hide().dialog({
-            resizable: false,
+            resizable: true,
             autoOpen : false,
             width    : Math.min(document.body.offsetWidth, 800),
             height   : Math.min(document.body.offsetHeight, 650),
@@ -467,6 +467,10 @@ export default class View {
                 }
             }
         });
+
+        $('#logButton').click(() => {
+            $('#logPanel').dialog('open');
+        });
     }
     stop() {
         this.blockly.stop();
@@ -514,4 +518,3 @@ export default class View {
         });
     }
 }
-
