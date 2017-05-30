@@ -17,7 +17,7 @@
   display: none;
 
   .content {
-    padding: 0 15px 15px 15px;
+    padding: 0 5px;
     background: $white;
     cursor: default;
     table {
@@ -96,4 +96,9 @@
 
 #tradeInfo {
   margin-bottom: 10px;
+}
+
+#chart-dialog-component {
+  width: 100% !important;
+  height: 95% !important;
 }

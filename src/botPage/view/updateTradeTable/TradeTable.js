@@ -12,7 +12,7 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
     return '';
 };
 
-const minHeight = 210;
+const minHeight = 380;
 
 const ProfitColor = ({ value }) => <div style={{ color: value > 0 ? 'green' : 'red' }}>{value}</div>;
 
@@ -24,14 +24,14 @@ export default class TradeTable extends Component {
             rows: [],
         };
         this.columns = [
-            { key: 'id', width: 70, name: translate('Number') },
-            { key: 'reference', width: 110, name: translate('Reference') },
-            { key: 'contract_type', resizable: true, name: translate('Trade type') },
-            { key: 'entry_tick', resizable: true, name: translate('Entry spot') },
-            { key: 'exit_tick', resizable: true, name: translate('Exit spot') },
-            { key: 'buy_price', resizable: true, name: translate('Buy price') },
-            { key: 'sell_price', resizable: true, name: translate('Final price') },
-            { key: 'profit', resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
+            { key: 'id', width: 70, resizable: true, name: translate('Number') },
+            { key: 'reference', width: 110, resizable: true, name: translate('Reference') },
+            { key: 'contract_type', width: 80, resizable: true, name: translate('Trade type') },
+            { key: 'entry_tick', width: 80, resizable: true, name: translate('Entry spot') },
+            { key: 'exit_tick', width: 80, resizable: true, name: translate('Exit spot') },
+            { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
+            { key: 'sell_price', width: 80, resizable: true, name: translate('Final price') },
+            { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
     }
     componentWillReceiveProps(nextProps) {

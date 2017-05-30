@@ -4,7 +4,7 @@ import ReactDataGrid from 'react-data-grid';
 import { translate } from '../../../common/i18n';
 import { appendRow } from '../shared';
 
-const minHeight = 600;
+const minHeight = 550;
 
 class ColorFormatter extends Component {
     render() {
@@ -27,8 +27,8 @@ export default class LogTable extends Component {
             rows: [],
         };
         this.columns = [
-            { key: 'timestamp', width: 150, name: translate('Timestamp') },
-            { key: 'message', resizable: true, name: translate('Message') },
+            { key: 'timestamp', width: 150, resizable: true, name: translate('Timestamp') },
+            { key: 'message', resizable: true, width: 1000, name: translate('Message') },
         ];
     }
     componentDidUpdate(prevProps, prevState) {
