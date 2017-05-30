@@ -188,6 +188,7 @@ const resetRealityCheck = token => {
 
 const limits = new Limits();
 const saveDialog = new Save();
+// const chart = new Chart();
 
 const updateTokenList = () => {
     const tokenList = getTokenList();
@@ -239,9 +240,11 @@ export default class View {
                     ReactDOM.render(
                         <OfficialVersionWarning
                             show={
-                                !(typeof location !== 'undefined' &&
+                                !(
+                                    typeof location !== 'undefined' &&
                                     location.host === 'bot.binary.com' &&
-                                    location.pathname === '/bot.html')
+                                    location.pathname === '/bot.html'
+                                )
                             }
                         />,
                         $('#footer')[0]
