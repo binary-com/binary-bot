@@ -13,6 +13,8 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
     return '';
 };
 
+const minHeight = 220;
+
 export default class TradeTable extends Component {
     constructor() {
         super();
@@ -52,12 +54,15 @@ export default class TradeTable extends Component {
     }
 
     render() {
+        if (!$('#tradeInfo:visible').length) {
+            return <div style={{ height: minHeight }} />;
+        }
         return (
             <ReactDataGrid
                 columns={this.columns}
                 rowGetter={this.rowGetter.bind(this)}
                 rowsCount={this.state.rows.length}
-                minHeight={200}
+                minHeight={minHeight}
             />
         );
     }
