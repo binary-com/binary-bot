@@ -30,3 +30,24 @@ export const createScope = () => {
 
     return { observer, api, ticksService, symbolApi };
 };
+
+export const appendRow = (trade, state) => ({
+    id  : state.id + 1,
+    rows: [
+        ...state.rows,
+        {
+            ...trade,
+            id: state.id + 1,
+        },
+    ],
+});
+
+export const updateRow = (prevRowIndex, trade, state) => ({
+    rows: [
+        ...state.rows.slice(0, prevRowIndex),
+        {
+            ...trade,
+            id: state.id,
+        },
+    ],
+});
