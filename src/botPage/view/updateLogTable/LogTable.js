@@ -32,7 +32,7 @@ export default class LogTable extends Component {
     }
     componentWillReceiveProps(nextProps) {
         const { log } = nextProps;
-        if (Object.keys(log).length === 0) {
+        if (!Object.keys(log).length) {
             return;
         }
         this.setState(appendRow(log, this.state));

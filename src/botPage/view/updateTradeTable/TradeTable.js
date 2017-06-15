@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { appendRow, updateRow } from './shared';
-import { translate } from '../../common/i18n';
+import { appendRow, updateRow } from '../shared';
+import { translate } from '../../../common/i18n';
 
 const ReactDataGrid = require('react-data-grid');
 
@@ -33,6 +33,9 @@ export default class TradeTable extends Component {
     }
     componentWillReceiveProps(nextProps) {
         const { trade: tradeObj } = nextProps;
+        if (!Object.keys(tradeObj).length) {
+            return;
+        }
         const trade = {
             ...tradeObj,
             profit: getProfit(tradeObj),
