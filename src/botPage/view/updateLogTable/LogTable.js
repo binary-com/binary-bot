@@ -7,6 +7,12 @@ const ReactDataGrid = require('react-data-grid');
 
 const minHeight = 600;
 
+class ColorFormatter extends Component {
+    render() {
+        return <div className={this.props.row.type}><ReactDataGrid.Row ref="row" {...this.props} /></div>;
+    }
+}
+
 export default class LogTable extends Component {
     static propTypes = {
         log: PropTypes.shape({
@@ -52,6 +58,7 @@ export default class LogTable extends Component {
                 rowGetter={this.rowGetter.bind(this)}
                 rowsCount={this.state.rows.length}
                 minHeight={minHeight}
+                rowRenderer={ColorFormatter}
             />
         );
     }
