@@ -59,24 +59,28 @@
 }
 
 
-#logTable {
-  table {
-    th, td {
-      text-align: left !important;
-      padding: 10px !important;
-    }
-    .warn {
-      background: #FBEED5;
-    }
-    .success {
-      background: #DFF0D8;
-    }
-    .error {
-      background: #F2DEDE;
-    }
-    .info {
-      background: #D9EDF7;
-    }
+.warn {
+  .react-grid-Cell {
+    background: #FBEED5;
+
+  }
+}
+.success {
+  .react-grid-Cell {
+    background: #DFF0D8;
+
+  }
+}
+.error {
+  .react-grid-Cell {
+    background: #F2DEDE;
+
+  }
+}
+.info {
+  .react-grid-Cell {
+    background: #D9EDF7;
+
   }
 }
 
