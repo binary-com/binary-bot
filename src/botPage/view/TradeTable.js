@@ -1,64 +1,64 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { List } from 'immutable';
 import { translate } from '../../common/i18n';
-import TradeTableRow from './TradeTableRow';
+
+const ReactDataGrid = require('react-data-grid');
+
+const isNumber = num => num !== '' && Number.isFinite(Number(num));
+
+const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
+    if (isNumber(sellPrice) && isNumber(buyPrice)) {
+        return Number(Number(sellPrice) - Number(buyPrice)).toFixed(2);
+    }
+    return '';
+};
 
 export default class TradeTable extends Component {
-    static propTypes = {
-        trade: PropTypes.shape({
-            reference    : PropTypes.string,
-            contract_type: PropTypes.string,
-            entry_tick   : PropTypes.string,
-            exit_tick    : PropTypes.string,
-            buy_price    : PropTypes.string,
-            sell_price   : PropTypes.string,
-        }),
-    };
-    static defaultProps = {
-        trade: {
-            transaction_ids: {
-                buy: '',
-            },
-            contract_type: '',
-            entry_tick   : '',
-            exit_tick    : '',
-            buy_price    : '',
-            sell_price   : '',
-        },
-    };
     constructor() {
         super();
         this.state = {
             id  : 0,
-            rows: new List(),
+            rows: [],
         };
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.rows.size !== this.state.rows.size) {
-            const $tableScroll = $('.table-scroll');
-            $tableScroll.scrollTop($tableScroll[0].scrollHeight);
-        }
+        this.columns = [
+            { key: 'id', resizable: true, name: translate('Number') },
+            { key: 'reference', resizable: true, name: translate('Reference') },
+            { key: 'contract_type', resizable: true, name: translate('Trade type') },
+            { key: 'entry_tick', resizable: true, name: translate('Entry spot') },
+            { key: 'exit_tick', resizable: true, name: translate('Exit spot') },
+            { key: 'buy_price', resizable: true, name: translate('Buy price') },
+            { key: 'sell_price', resizable: true, name: translate('Final price') },
+            { key: 'profit', resizable: true, name: translate('Profit/Loss') },
+        ];
     }
     componentWillReceiveProps(nextProps) {
         const appendRow = trade =>
             this.setState({
                 id  : this.state.id + 1,
-                rows: this.state.rows.push({
-                    ...trade,
-                    id: this.state.id + 1,
-                }),
+                rows: [
+                    ...this.state.rows,
+                    {
+                        ...trade,
+                        id: this.state.id + 1,
+                    },
+                ],
             });
 
         const updateRow = (prevRowIndex, trade) =>
             this.setState({
-                rows: this.state.rows.update(prevRowIndex, () => ({
-                    ...trade,
-                    id: this.state.id,
-                })),
+                rows: [
+                    ...this.state.rows.slice(0, prevRowIndex),
+                    {
+                        ...trade,
+                        id: this.state.id,
+                    },
+                ],
             });
 
-        const { trade } = nextProps;
+        const { trade: tradeObj } = nextProps;
+        const trade = {
+            ...tradeObj,
+            profit: getProfit(tradeObj),
+        };
         const prevRowIndex = this.state.rows.findIndex(t => t.reference === trade.reference);
         if (prevRowIndex >= 0) {
             updateRow(prevRowIndex, trade);
@@ -66,25 +66,18 @@ export default class TradeTable extends Component {
             appendRow(trade);
         }
     }
+    rowGetter(i) {
+        return this.state.rows[i];
+    }
+
     render() {
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th><span />{translate('Number')}</th>
-                        <th><span />{translate('Reference')}</th>
-                        <th><span />{translate('Trade type')}</th>
-                        <th><span />{translate('Entry spot')}</th>
-                        <th><span />{translate('Exit spot')}</th>
-                        <th><span />{translate('Buy price')}</th>
-                        <th><span />{translate('Final price')}</th>
-                        <th><span />{translate('Profit/Loss')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.state.rows.slice(-50).map(r => <TradeTableRow trade={r} />)}
-                </tbody>
-            </table>
+            <ReactDataGrid
+                columns={this.columns}
+                rowGetter={this.rowGetter.bind(this)}
+                rowsCount={this.state.rows.length}
+                minHeight={200}
+            />
         );
     }
 }
