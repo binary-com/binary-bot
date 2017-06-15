@@ -59,29 +59,17 @@
 }
 
 
-.warn {
-  .react-grid-Cell {
+.warn .react-grid-Cell {
     background: #FBEED5;
-
-  }
 }
-.success {
-  .react-grid-Cell {
+.success .react-grid-Cell {
     background: #DFF0D8;
-
-  }
 }
-.error {
-  .react-grid-Cell {
+.error .react-grid-Cell {
     background: #F2DEDE;
-
-  }
 }
-.info {
-  .react-grid-Cell {
+.info .react-grid-Cell {
     background: #D9EDF7;
-
-  }
 }
 
 // ReactGrid
