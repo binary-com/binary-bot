@@ -5,6 +5,6 @@ import LogTable from './LogTable';
 // for the first props
 ReactDOM.render(<LogTable log={{}} />, $('#logTable')[0]);
 
-export default function addToNotificationPanel(log) {
+export default function updateLogTable(log) {
     ReactDOM.render(<LogTable log={log} />, $('#logTable')[0]);
 }
