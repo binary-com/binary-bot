@@ -12,7 +12,6 @@ import {
 } from 'binary-common-utils/lib/storageManager';
 import { LiveApi } from 'binary-live-api';
 import 'jquery-ui/ui/widgets/dialog';
-import TradeInfo from './tradeInfo';
 import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
@@ -22,7 +21,8 @@ import { symbolPromise, ticksService } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
-import addToNotificationPanel from './LogTable';
+import updateLogTable from './updateLogTable';
+import updateTradeTable from './updateTradeTable';
 
 let realityCheckTimeout;
 
@@ -225,7 +225,6 @@ export default class View {
     constructor() {
         chartType = 'line';
         logHandler();
-        this.tradeInfo = new TradeInfo();
         updateTickListeners();
         this.initPromise = new Promise(resolve => {
             symbolPromise.then(() => {
@@ -471,7 +470,7 @@ export default class View {
 
         $('#logButton').click(() => {
             $('#logPanel').dialog('open');
-            addToNotificationPanel({});
+            updateLogTable({});
         });
     }
     stop() {
@@ -496,7 +495,6 @@ export default class View {
         });
 
         globalObserver.register('bot.info', info => {
-            this.tradeInfo.addInfo(info);
             if ('profit' in info) {
                 const token = $('.account-id').first().attr('value');
                 const user = getToken(token);
@@ -510,7 +508,7 @@ export default class View {
 
         globalObserver.register('bot.contract', c => {
             if (c) {
-                this.tradeInfo.addContract(c);
+                updateTradeTable(c);
                 if (c.is_sold) {
                     contract = null;
                 } else {
