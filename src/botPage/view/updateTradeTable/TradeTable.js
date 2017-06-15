@@ -23,8 +23,8 @@ export default class TradeTable extends Component {
             rows: [],
         };
         this.columns = [
-            { key: 'id', width: 80, name: translate('Number') },
-            { key: 'reference', width: 100, name: translate('Reference') },
+            { key: 'id', width: 70, name: translate('Number') },
+            { key: 'reference', width: 110, name: translate('Reference') },
             { key: 'contract_type', resizable: true, name: translate('Trade type') },
             { key: 'entry_tick', resizable: true, name: translate('Entry spot') },
             { key: 'exit_tick', resizable: true, name: translate('Exit spot') },
