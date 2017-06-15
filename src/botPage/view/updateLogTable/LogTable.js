@@ -5,6 +5,8 @@ import { appendRow } from '../shared';
 
 const ReactDataGrid = require('react-data-grid');
 
+const minHeight = 600;
+
 export default class LogTable extends Component {
     static propTypes = {
         log: PropTypes.shape({
@@ -42,14 +44,14 @@ export default class LogTable extends Component {
     }
     render() {
         if (!$('#logTable:visible').length) {
-            return <div />;
+            return <div style={{ height: minHeight }} />;
         }
         return (
             <ReactDataGrid
                 columns={this.columns}
                 rowGetter={this.rowGetter.bind(this)}
                 rowsCount={this.state.rows.length}
-                minHeight={500}
+                minHeight={minHeight}
             />
         );
     }
