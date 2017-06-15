@@ -22,7 +22,7 @@ export default class LogTable extends Component {
             rows: [],
         };
         this.columns = [
-            { key: 'timestamp', width: 120, name: translate('Timestamp') },
+            { key: 'timestamp', width: 150, name: translate('Timestamp') },
             { key: 'message', resizable: true, name: translate('Message') },
         ];
     }
