@@ -1,10 +1,7 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { getToken } from 'binary-common-utils/lib/storageManager';
 import { translate } from '../../common/i18n';
-
-import LogInfo from './react-components/LogTable';
-
-const newLogTable = new LogInfo();
+import addToNotificationPanel from './LogTable';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
@@ -14,7 +11,7 @@ const log = (type, ...args) => {
     }
     const date = new Date();
     const timestamp = `${date.toISOString().split('T')[0]} ${date.toTimeString().slice(0, 8)}`;
-    newLogTable.addLog(type, timestamp, ...args);
+    addToNotificationPanel({ type, timestamp, message: args.join(':') });
 };
 
 const shown = [];
@@ -36,9 +33,9 @@ const isNew = msg => {
 
 const notify = (className, msg, position = 'left') => {
     log(className, msg);
-    // if (isNew(msg)) {
-    //     $.notify(msg, { position: `bottom ${position}`, className });
-    // }
+    if (isNew(msg)) {
+        $.notify(msg, { position: `bottom ${position}`, className });
+    }
 };
 
 const notifyError = error => {

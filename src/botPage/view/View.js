@@ -341,7 +341,7 @@ export default class View {
         });
 
         $('.draggable-dialog').hide().dialog({
-            resizable: true,
+            resizable: false,
             autoOpen : false,
             width    : Math.min(document.body.offsetWidth, 800),
             height   : Math.min(document.body.offsetHeight, 650),

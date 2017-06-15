@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { appendRow, updateRow } from './shared';
 import { translate } from '../../common/i18n';
 
 const ReactDataGrid = require('react-data-grid');
@@ -20,8 +21,8 @@ export default class TradeTable extends Component {
             rows: [],
         };
         this.columns = [
-            { key: 'id', resizable: true, name: translate('Number') },
-            { key: 'reference', resizable: true, name: translate('Reference') },
+            { key: 'id', width: 80, name: translate('Number') },
+            { key: 'reference', width: 80, name: translate('Reference') },
             { key: 'contract_type', resizable: true, name: translate('Trade type') },
             { key: 'entry_tick', resizable: true, name: translate('Entry spot') },
             { key: 'exit_tick', resizable: true, name: translate('Exit spot') },
@@ -31,29 +32,6 @@ export default class TradeTable extends Component {
         ];
     }
     componentWillReceiveProps(nextProps) {
-        const appendRow = trade =>
-            this.setState({
-                id  : this.state.id + 1,
-                rows: [
-                    ...this.state.rows,
-                    {
-                        ...trade,
-                        id: this.state.id + 1,
-                    },
-                ],
-            });
-
-        const updateRow = (prevRowIndex, trade) =>
-            this.setState({
-                rows: [
-                    ...this.state.rows.slice(0, prevRowIndex),
-                    {
-                        ...trade,
-                        id: this.state.id,
-                    },
-                ],
-            });
-
         const { trade: tradeObj } = nextProps;
         const trade = {
             ...tradeObj,
@@ -61,9 +39,9 @@ export default class TradeTable extends Component {
         };
         const prevRowIndex = this.state.rows.findIndex(t => t.reference === trade.reference);
         if (prevRowIndex >= 0) {
-            updateRow(prevRowIndex, trade);
+            this.setState(updateRow(prevRowIndex, trade, this.state));
         } else {
-            appendRow(trade);
+            this.setState(appendRow(trade, this.state));
         }
     }
     rowGetter(i) {
