@@ -13,7 +13,7 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
     return '';
 };
 
-const minHeight = 220;
+const minHeight = 210;
 
 export default class TradeTable extends Component {
     constructor() {
@@ -24,7 +24,7 @@ export default class TradeTable extends Component {
         };
         this.columns = [
             { key: 'id', width: 80, name: translate('Number') },
-            { key: 'reference', width: 80, name: translate('Reference') },
+            { key: 'reference', width: 100, name: translate('Reference') },
             { key: 'contract_type', resizable: true, name: translate('Trade type') },
             { key: 'entry_tick', resizable: true, name: translate('Entry spot') },
             { key: 'exit_tick', resizable: true, name: translate('Exit spot') },
