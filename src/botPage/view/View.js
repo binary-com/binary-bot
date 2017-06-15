@@ -22,6 +22,7 @@ import { symbolPromise, ticksService } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
+import addToNotificationPanel from './LogTable';
 
 let realityCheckTimeout;
 
@@ -470,6 +471,7 @@ export default class View {
 
         $('#logButton').click(() => {
             $('#logPanel').dialog('open');
+            addToNotificationPanel({});
         });
     }
     stop() {

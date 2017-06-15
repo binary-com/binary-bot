@@ -32,12 +32,18 @@ export default class LogTable extends Component {
     }
     componentWillReceiveProps(nextProps) {
         const { log } = nextProps;
+        if (Object.keys(log).length === 0) {
+            return;
+        }
         this.setState(appendRow(log, this.state));
     }
     rowGetter(i) {
         return this.state.rows[i];
     }
     render() {
+        if (!$('#logTable:visible').length) {
+            return <div />;
+        }
         return (
             <ReactDataGrid
                 columns={this.columns}
