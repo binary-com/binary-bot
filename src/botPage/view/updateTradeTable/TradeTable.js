@@ -14,6 +14,8 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
 
 const minHeight = 210;
 
+const ProfitColor = ({ value }) => <div style={{ color: value > 0 ? 'green' : 'red' }}>{value}</div>;
+
 export default class TradeTable extends Component {
     constructor() {
         super();
@@ -29,7 +31,7 @@ export default class TradeTable extends Component {
             { key: 'exit_tick', resizable: true, name: translate('Exit spot') },
             { key: 'buy_price', resizable: true, name: translate('Buy price') },
             { key: 'sell_price', resizable: true, name: translate('Final price') },
-            { key: 'profit', resizable: true, name: translate('Profit/Loss') },
+            { key: 'profit', resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
     }
     componentWillReceiveProps(nextProps) {
