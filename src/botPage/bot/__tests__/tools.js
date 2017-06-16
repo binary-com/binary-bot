@@ -4,7 +4,7 @@ import { createInterpreter } from '../CliTools';
 const init = `
   Bot.init('Xkq6oGFEHh6hJH8', {
     candleInterval: 60,
-    contractTypes: ['CALL', 'PUT'],
+    contractTypes: ['CALL'],
     symbol: 'R_100',
   })
 `;
