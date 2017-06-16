@@ -395,7 +395,9 @@ export const loadRemote = blockObj =>
                     .fail(e => {
                         if (e.status) {
                             reject(
-                                `${translate('An error occurred while trying to load the url')}: ${e.status} ${e.statusText}`
+                                `${translate(
+                                    'An error occurred while trying to load the url'
+                                )}: ${e.status} ${e.statusText}`
                             );
                         } else {
                             reject(

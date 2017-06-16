@@ -31,7 +31,8 @@ const getListField = (block, fieldName) => block.getFieldValue(fieldName);
 
 const conditionFields = (blockObj, ev) => {
     if (
-        (ev.type === 'change' && ev.element === 'field') || (ev.type === 'move' && typeof ev.newInputName === 'string')
+        (ev.type === 'change' && ev.element === 'field') ||
+        (ev.type === 'move' && typeof ev.newInputName === 'string')
     ) {
         const symbol = blockObj.getFieldValue('SYMBOL_LIST');
         const tradeType = blockObj.getFieldValue('TRADETYPE_LIST');
