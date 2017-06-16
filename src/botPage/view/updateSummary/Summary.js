@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { translate } from '../../common/i18n';
+import { translate } from '../../../common/i18n';
 
-export default class UpdateTradeInfo extends Component {
+export default class Summary extends Component {
     componentWillReceiveProps({ tradeInfo }) {
         this.setState({ ...this.state, ...tradeInfo });
     }

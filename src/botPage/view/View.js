@@ -23,7 +23,7 @@ import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import updateLogTable from './updateLogTable';
 import updateTradeTable from './updateTradeTable';
-import UpdateTradeInfo from './UpdateTradeInfo';
+import updateSummary from './updateSummary';
 
 let realityCheckTimeout;
 
@@ -496,7 +496,7 @@ export default class View {
         });
 
         globalObserver.register('bot.info', info => {
-            ReactDOM.render(<UpdateTradeInfo tradeInfo={info} />, $('#summaryDisplay')[0]);
+            updateSummary(info);
             if ('profit' in info) {
                 const token = $('.account-id').first().attr('value');
                 const user = getToken(token);
