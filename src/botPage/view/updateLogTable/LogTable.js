@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactDataGrid from 'react-data-grid';
 import { translate } from '../../../common/i18n';
 import { appendRow } from '../shared';
-
-const ReactDataGrid = require('react-data-grid');
 
 const minHeight = 600;
 

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
+import ReactDataGrid from 'react-data-grid';
 import { appendRow, updateRow } from '../shared';
 import { translate } from '../../../common/i18n';
-
-const ReactDataGrid = require('react-data-grid');
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
 
