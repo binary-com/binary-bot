@@ -54,7 +54,7 @@
 		amplitude.getInstance().init("8550b32c2a951c57e791d03c4c2ea55a");
 	</script>
     <title>Binary Bot</title>
-<link href="css/bundle-28d98ab8e2.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-c048b86074.css" rel="stylesheet" />
+<link href="css/bundle-28d98ab8e2.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-73fb0c584a.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -184,39 +184,18 @@
         <h3>
           <span data-i18n-text="Summary"></span>
         </h3>
-        <table id="summaryDisplay">
-          <thead>
-            <tr>
-              <th data-i18n-text="No. of runs"></th>
-              <th data-i18n-text="Total stake"></th>
-              <th data-i18n-text="Total payout"></th>
-              <th data-i18n-text="Win"></th>
-              <th data-i18n-text="Loss"></th>
-              <th data-i18n-text="Total profit/loss"></th>
-              <th data-i18n-text="Balance"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="totalRuns"></td>
-              <td class="totalStake"></td>
-              <td class="totalPayout"></td>
-              <td class="totalWins"></td>
-              <td class="totalLosses"></td>
-              <td class="totalProfit"></td>
-              <td class="balance"></td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="summaryDisplay"></div>
         <h3>
           <span data-i18n-text="Trades"></span>
         </h3>
-        <div class="table-scroll">
-          <div id="tradeInfo"></div>
-        </div>
+        <div id="tradeInfo"></div>
         <div id="chart"></div>
+        <div id="logPanel" class="draggable-dialog" title="Log">
+          <div id="logTable" class="logTable-scroll"></div>
+        </div>
       </div>
     </div>
+
     <form id="fileUploadForm" style="display: none;">
       <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
     </form>
@@ -232,7 +211,8 @@
       <button title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
       <button title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
       <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
+      <button title="Show log" id="logButton" class="toolbox-button icon-info"></button>
     </div>
     <div id="footer"></div>
-<script src="js/bundle-53060c14ac.js"></script><script src="js/bot-819670c34a.min.js"></script>  </body>
+<script src="js/bundle-53060c14ac.js"></script><script src="js/bot-c09a151389.min.js"></script>  </body>
 </html>
