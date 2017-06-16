@@ -6,6 +6,24 @@ import { ticksService } from '../shared';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
 
+let size = {};
+
+class CustomBinaryChart extends BinaryChart {
+    constructor(props) {
+        super(props);
+        console.log(props);
+    }
+    componentDidMount() {
+        let oldSize = size;
+        setInterval(() => {
+            if (size !== oldSize) {
+                this.chart.setSize(size.width - 30, size.height - 100, { duration: 100 });
+                oldSize = size;
+            }
+        }, 500);
+    }
+}
+
 class ChartContent extends PureComponent {
     constructor() {
         super();
@@ -16,9 +34,8 @@ class ChartContent extends PureComponent {
         this.granularity = 60;
         this.listeners = {};
         this.state = {
-            chartData     : [],
-            contract      : null,
-            chartComponent: '',
+            chartData: [],
+            contract : null,
         };
         this.getData = this.getData.bind(this);
         this.updateTickListeners();
@@ -64,7 +81,6 @@ class ChartContent extends PureComponent {
             const callback = response => {
                 this.setState({ chartData: response });
                 resolve();
-                this.setState({ chartComponent: this.chartComponent.refs.BinaryChart });
             };
 
             if (this.dataType === 'candles') {
@@ -93,7 +109,7 @@ class ChartContent extends PureComponent {
     render() {
         const isMinHeight = $(window).height() <= 360;
 
-        if (this.state.chartComponent && this.dataType === 'ticks' && this.state.contract) {
+        if (this.chartComponent && this.dataType === 'ticks' && this.state.contract) {
             const { chart } = this.state.chartComponent;
             const { dataMax } = chart.xAxis[0].getExtremes();
             const { minRange } = chart.xAxis[0].options;
@@ -104,7 +120,7 @@ class ChartContent extends PureComponent {
             return <div />;
         }
         return (
-            <BinaryChart
+            <CustomBinaryChart
                 className="trade-chart"
                 id="trade-chart0"
                 ref={component => (this.chartComponent = component)}
@@ -133,6 +149,9 @@ export default class Chart extends Dialog {
         super('chart-dialog', translate('Chart'), <ChartContent />, {
             width : 500,
             height: 500,
+            resize(_, { size: newSize }) {
+                size = newSize;
+            },
         });
     }
 }
