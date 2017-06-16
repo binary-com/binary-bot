@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { translate } from '../../../common/i18n';
 
 const OfficialVersionWarning = ({ show }) =>
-    (show
+    show
         ? <div
               style={{
                   bottom    : '0px',
@@ -23,7 +23,7 @@ const OfficialVersionWarning = ({ show }) =>
                   </a>
               </div>
           </div>
-        : null);
+        : null;
 
 OfficialVersionWarning.propTypes = {
     show: PropTypes.bool.isRequired,

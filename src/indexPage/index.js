@@ -14,4 +14,3 @@ if (getTokenList().length) {
         $('.barspinner').hide();
     });
 }
-
