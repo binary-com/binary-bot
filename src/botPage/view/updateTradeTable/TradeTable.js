@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
+import ReactDataGrid from 'react-data-grid';
 import { appendRow, updateRow } from '../shared';
 import { translate } from '../../../common/i18n';
-
-const ReactDataGrid = require('react-data-grid');
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
 
@@ -14,6 +13,8 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
 };
 
 const minHeight = 210;
+
+const ProfitColor = ({ value }) => <div style={{ color: value > 0 ? 'green' : 'red' }}>{value}</div>;
 
 export default class TradeTable extends Component {
     constructor() {
@@ -30,7 +31,7 @@ export default class TradeTable extends Component {
             { key: 'exit_tick', resizable: true, name: translate('Exit spot') },
             { key: 'buy_price', resizable: true, name: translate('Buy price') },
             { key: 'sell_price', resizable: true, name: translate('Final price') },
-            { key: 'profit', resizable: true, name: translate('Profit/Loss') },
+            { key: 'profit', resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
     }
     componentWillReceiveProps(nextProps) {
