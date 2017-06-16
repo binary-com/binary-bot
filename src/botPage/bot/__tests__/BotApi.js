@@ -23,7 +23,7 @@ describe('Interface', () => {
         beforeAll(done => {
             Bot.init('Xkq6oGFEHh6hJH8', {
                 candleInterval: 60,
-                contractTypes : ['DIGITEVEN', 'DIGITODD'],
+                contractTypes : ['DIGITODD', 'DIGITEVEN'],
                 symbol        : 'R_100',
             });
 

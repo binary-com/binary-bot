@@ -25,7 +25,7 @@ expectReturnTrue(
 
           Bot.init('Xkq6oGFEHh6hJH8', {
     symbol: 'R_100',
-    contractTypes: ["CALL","PUT"],
+    contractTypes: ["CALL"],
     candleInterval: '60',
   });
   start = function start() {
