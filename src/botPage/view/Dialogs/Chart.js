@@ -100,7 +100,9 @@ class ChartContent extends PureComponent {
 
             chart.xAxis[0].setExtremes(dataMax - minRange, dataMax);
         }
-
+        if (!$('#chart-dialog-component:visible').length) {
+            return <div />;
+        }
         return (
             <BinaryChart
                 className="trade-chart"
@@ -128,6 +130,9 @@ class ChartContent extends PureComponent {
 
 export default class Chart extends Dialog {
     constructor() {
-        super('chart-dialog', translate('Chart'), <ChartContent />);
+        super('chart-dialog', translate('Chart'), <ChartContent />, {
+            width : 500,
+            height: 500,
+        });
     }
 }

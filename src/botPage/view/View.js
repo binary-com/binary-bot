@@ -260,15 +260,6 @@ export default class View {
             $(this).parent().hide();
         });
 
-        $('.draggable-dialog').hide().dialog({
-            resizable: false,
-            autoOpen : false,
-            width    : Math.min(document.body.offsetWidth, 800),
-            height   : Math.min(document.body.offsetHeight, 650),
-            closeText: '',
-            classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
-        });
-
         $('#save-xml').click(() => saveDialog.save().then(arg => this.blockly.save(arg)));
 
         $('#undo').click(() => {
