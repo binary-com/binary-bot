@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BinaryChart } from 'binary-charts';
 import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import {
@@ -16,8 +15,9 @@ import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
+import Chart from './Dialogs/Chart';
 import { getLanguage } from '../../common/lang';
-import { symbolPromise, ticksService } from './shared';
+import { symbolPromise } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
@@ -26,16 +26,6 @@ import updateTradeTable from './updateTradeTable';
 import updateSummary from './updateSummary';
 
 let realityCheckTimeout;
-
-let chartData = [];
-let symbol = 'R_100';
-let chartType = 'line';
-let pipSize = 2;
-let dataType = 'ticks';
-let granularity = 60;
-let contract = null;
-let chartComponent;
-let listeners = {};
 
 const api = new LiveApi({
     language: getStorage('lang') || 'en',
@@ -56,79 +46,7 @@ const addBalanceForToken = token => {
     });
 };
 
-const stopTickListeners = () => {
-    if (listeners.ohlc) {
-        ticksService.stopMonitor({
-            symbol,
-            granularity,
-            key: listeners.ohlc,
-        });
-    }
-    if (listeners.tick) {
-        ticksService.stopMonitor({
-            symbol,
-            key: listeners.tick,
-        });
-    }
-    listeners = {};
-};
-
-const updateChart = () => {
-    if (!$('#summaryPanel:visible').length) {
-        return;
-    }
-
-    const isMinHeight = $(window).height() <= 360;
-
-    if (chartComponent && dataType === 'ticks' && contract) {
-        const { chart } = chartComponent;
-        const { dataMax } = chart.xAxis[0].getExtremes();
-        const { minRange } = chart.xAxis[0].options;
-
-        chart.xAxis[0].setExtremes(dataMax - minRange, dataMax);
-    }
-
-    chartComponent = ReactDOM.render(
-        <BinaryChart
-            className="trade-chart"
-            id="trade-chart0"
-            contract={contract && contract.underlying === symbol && dataType === 'ticks' ? contract : null}
-            pipSize={pipSize}
-            shiftMode="dynamic"
-            ticks={chartData}
-            getData={getData} // eslint-disable-line no-use-before-define
-            type={chartType}
-            hideToolbar={isMinHeight}
-            hideTimeFrame={isMinHeight}
-            onTypeChange={type => {
-                chartType = type;
-            }}
-        />,
-        $('#chart')[0]
-    );
-};
-
-const updateTickListeners = () =>
-    new Promise(resolve => {
-        const callback = response => {
-            chartData = response;
-            resolve();
-            updateChart();
-        };
-
-        if (dataType === 'candles') {
-            listeners.ohlc = ticksService.monitor({ symbol, granularity, callback });
-        } else {
-            listeners.tick = ticksService.monitor({ symbol, callback });
-        }
-    });
-
-const getData = (start, end, newDataType, newGranularity) => {
-    stopTickListeners();
-    dataType = newDataType;
-    granularity = newGranularity;
-    return updateTickListeners();
-};
+const chart = new Chart();
 
 const showRealityCheck = () => {
     $('.blocker').show();
@@ -225,9 +143,7 @@ const updateTokenList = () => {
 };
 export default class View {
     constructor() {
-        chartType = 'line';
         logHandler();
-        updateTickListeners();
         this.initPromise = new Promise(resolve => {
             symbolPromise.then(() => {
                 updateTokenList();
@@ -375,6 +291,10 @@ export default class View {
             this.blockly.cleanUp();
         });
 
+        $('#chartButton').click(() => {
+            chart.open();
+        });
+
         const showSummary = () => $('#summaryPanel').dialog('open');
 
         $('#showSummary').click(showSummary);
@@ -489,15 +409,6 @@ export default class View {
             }
         });
 
-        globalObserver.register('bot.init', s => {
-            if (symbol !== s) {
-                stopTickListeners();
-                symbol = s;
-                pipSize = ticksService.pipSizes[s];
-                getData(undefined, undefined, dataType, granularity);
-            }
-        });
-
         globalObserver.register('bot.info', info => {
             updateSummary(info);
             if ('profit' in info) {
@@ -514,11 +425,6 @@ export default class View {
         globalObserver.register('bot.contract', c => {
             if (c) {
                 updateTradeTable(c);
-                if (c.is_sold) {
-                    contract = null;
-                } else {
-                    contract = c;
-                }
             }
         });
     }
