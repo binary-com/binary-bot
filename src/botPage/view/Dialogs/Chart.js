@@ -111,7 +111,19 @@ class ChartContent extends PureComponent {
             chart.xAxis[0].setExtremes(dataMax - minRange, dataMax);
         }
         if (!$('#chart-dialog-component:visible').length) {
-            return <div />;
+            return (
+                <div style={{ height: 450, width: 500 }}>
+                    <div
+                        style={{
+                            'text-align' : 'center',
+                            'padding-top': '50%',
+                            'font-size'  : '1.5em',
+                        }}
+                    >
+                        Loading...
+                    </div>
+                </div>
+            );
         }
         return (
             <CustomBinaryChart
