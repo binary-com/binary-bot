@@ -6,21 +6,15 @@ import { ticksService } from '../shared';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
 
-let size = {};
-
 class CustomBinaryChart extends BinaryChart {
-    constructor(props) {
-        super(props);
-        console.log(props);
-    }
     componentDidMount() {
-        let oldSize = size;
-        setInterval(() => {
-            if (size !== oldSize) {
-                this.chart.setSize(size.width - 30, size.height - 100, { duration: 100 });
-                oldSize = size;
-            }
-        }, 500);
+        $('#chart-dialog-component').on('dialogresize', (_, { size }) => {
+            this.chart.setSize(size.width - 30, size.height - 100, false);
+        });
+    }
+    // eslint-disable-next-line class-methods-use-this
+    componentWillUnmount() {
+        $('#chart-dialog-component').off();
     }
 }
 
@@ -149,9 +143,6 @@ export default class Chart extends Dialog {
         super('chart-dialog', translate('Chart'), <ChartContent />, {
             width : 500,
             height: 500,
-            resize(_, { size: newSize }) {
-                size = newSize;
-            },
         });
     }
 }
