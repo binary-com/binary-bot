@@ -13,6 +13,7 @@
     <div id="center"></div>
     <span id="limits-dialog"></span>
     <span id="save-dialog"></span>
+    <span id="chart-dialog"></span>
     <div>
       <div class="blocker"></div>
       <div class="reality-check" style="display: none">
@@ -105,7 +106,6 @@
           <span data-i18n-text="Trades"></span>
         </h3>
         <div id="tradeInfo"></div>
-        <div id="chart"></div>
         <div id="logPanel" class="draggable-dialog" title="Log">
           <div id="logTable" class="logTable-scroll"></div>
         </div>
@@ -128,6 +128,7 @@
       <button title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
       <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
       <button title="Show log" id="logButton" class="toolbox-button icon-info"></button>
+      <button title="Show chart" id="chartButton" class="toolbox-button icon-chart-line"></button>
     </div>
     <div id="footer"></div>
     {{> bundle}} {{> bot}}
