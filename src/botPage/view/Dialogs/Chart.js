@@ -104,24 +104,26 @@ class ChartContent extends PureComponent {
     getSymbol() {
         return this.symbol;
     }
-    render() {
-        const isMinHeight = $(window).height() <= 360;
-
+    componentWillUpdate() {
         if (this.chartComponent && this.dataType === 'ticks' && this.state.contract) {
-            const { chart } = this.state.chartComponent;
+            const { chart } = this.chartComponent;
             const { dataMax } = chart.xAxis[0].getExtremes();
             const { minRange } = chart.xAxis[0].options;
 
             chart.xAxis[0].setExtremes(dataMax - minRange, dataMax);
         }
+    }
+    render() {
+        const isMinHeight = $(window).height() <= 360;
+
         if (!$('#chart-dialog-component:visible').length) {
             return (
                 <div style={{ height: chartHeight - headerSize, width: chartWidth - headerSize }}>
                     <div
                         style={{
-                            'text-align' : 'center',
-                            'padding-top': '50%',
-                            'font-size'  : '1.5em',
+                            textAlign : 'center',
+                            paddingTop: '50%',
+                            fontSize  : '1.5em',
                         }}
                     >
                         Loading...
