@@ -112,7 +112,7 @@ class ChartContent extends PureComponent {
         }
         if (!$('#chart-dialog-component:visible').length) {
             return (
-                <div style={{ height: 450, width: 500 }}>
+                <div style={{ height: 450, width: 450 }}>
                     <div
                         style={{
                             'text-align' : 'center',
