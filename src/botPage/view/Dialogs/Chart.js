@@ -6,6 +6,10 @@ import { ticksService } from '../shared';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
 
+const chartWidth = 500;
+const chartHeight = 500;
+const headerSize = 50;
+
 class CustomBinaryChart extends BinaryChart {
     componentDidMount() {
         $('#chart-dialog-component').on('dialogresize', (_, { size }) => {
@@ -112,7 +116,7 @@ class ChartContent extends PureComponent {
         }
         if (!$('#chart-dialog-component:visible').length) {
             return (
-                <div style={{ height: 450, width: 450 }}>
+                <div style={{ height: chartHeight - headerSize, width: chartWidth - headerSize }}>
                     <div
                         style={{
                             'text-align' : 'center',
@@ -153,8 +157,8 @@ class ChartContent extends PureComponent {
 export default class Chart extends Dialog {
     constructor() {
         super('chart-dialog', translate('Chart'), <ChartContent />, {
-            width : 500,
-            height: 500,
+            width : chartWidth,
+            height: chartHeight,
         });
     }
 }
