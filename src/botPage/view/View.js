@@ -22,7 +22,7 @@ import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import updateLogTable from './updateLogTable';
-import updateTradeTable from './updateTradeTable';
+import updateTradeTable, { open as rerenderTradeTable } from './updateTradeTable';
 import updateSummary from './updateSummary';
 
 let realityCheckTimeout;
@@ -295,8 +295,10 @@ export default class View {
             chart.open();
         });
 
-        const showSummary = () => $('#summaryPanel').dialog('open');
-
+        const showSummary = () => {
+            $('#summaryPanel').dialog('open');
+            rerenderTradeTable();
+        };
         $('#showSummary').click(showSummary);
 
         $('#loadXml').click(() => {
