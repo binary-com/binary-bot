@@ -1,17 +1,14 @@
 import JSInterpreter from 'js-interpreter';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { createScope } from './CliTools';
 import Interface from './Interface';
 
 export default class Interpreter {
-    constructor($scope) {
-        if (!$scope) {
-            // valid usage for js only code
-            return;
-        }
-        this.$scope = $scope;
-        this.bot = new Interface($scope);
+    constructor() {
+        this.$scope = createScope();
+        this.bot = new Interface(this.$scope);
         this.stopped = false;
-        $scope.observer.register('REVERT', watchName => this.revert(watchName));
+        this.$scope.observer.register('REVERT', watchName => this.revert(watchName));
     }
     run(code) {
         let initFunc;

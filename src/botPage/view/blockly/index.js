@@ -15,7 +15,6 @@ import {
 import blocks from './blocks';
 import Interpreter from '../../bot/Interpreter';
 import { getLanguage } from '../../../common/lang';
-import { createScope } from '../shared';
 
 const setBeforeUnload = off => {
     if (off) {
@@ -281,7 +280,7 @@ export default class _Blockly {
         this.generatedJs = code;
         if (code) {
             this.stop();
-            this.interpreter = new Interpreter(createScope());
+            this.interpreter = new Interpreter();
             this.interpreter.run(code).catch(e => {
                 globalObserver.emit('Error', e);
                 this.stop();

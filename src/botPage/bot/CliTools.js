@@ -16,4 +16,4 @@ export const createScope = () => {
     return { observer, api, ticksService };
 };
 
-export const createInterpreter = () => new Interpreter(createScope());
+export const createInterpreter = () => new Interpreter();
