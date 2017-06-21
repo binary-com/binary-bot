@@ -87,7 +87,7 @@
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^28.2.1",
     "binary-utils": "^4.22.0",
-    "blockly": "google/blockly.git#c797250",
+    "blockly": "google/blockly.git#0785a7b",
     "bootstrap": "^3.3.7",
     "chai": "^3.5.0",
     "coveralls": "^2.12.0",
