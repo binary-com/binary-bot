@@ -73,9 +73,12 @@ export default class Interpreter {
 
         return new Promise((resolve, reject) => {
             globalObserver.register('Error', e => {
-                const { shouldRestartOnError } = this.bot.TradeEngine.options;
+                const { shouldRestartOnError } = this.bot.tradeEngine.options;
                 if (shouldRestartOnError) {
+                    const { initArgs } = this.bot.tradeEngine;
                     this.init();
+                    this.bot.tradeEngine.init(...initArgs);
+                    this.interpreter.restoreStateSnapshot(this.startState);
                 } else {
                     reject(e);
                 }
