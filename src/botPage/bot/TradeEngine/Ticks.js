@@ -2,6 +2,9 @@ import { getLast } from 'binary-utils';
 import { translate } from '../../../common/i18n';
 import { getDirection } from '../tools';
 import { expectPositiveInteger } from '../sanitize';
+import * as constants from './state/constants';
+
+let tickListenerKey;
 
 export default Engine =>
     class Ticks extends Engine {
@@ -10,19 +13,22 @@ export default Engine =>
                 const { ticksService } = this.$scope;
 
                 ticksService.stopMonitor({
-                    symbol: this.symbol,
-                    key   : this.tickListenerKey,
+                    symbol,
+                    key: tickListenerKey,
                 });
 
-                const callback = () => {
+                const callback = ticks => {
                     this.checkProposalReady();
+                    const lastTick = ticks.slice(-1)[0];
+                    const { epoch } = lastTick;
+                    this.store.dispatch({ type: constants.NEW_TICK, payload: epoch });
                 };
 
                 const key = ticksService.monitor({ symbol, callback });
 
                 this.symbol = symbol;
 
-                this.tickListenerKey = key;
+                tickListenerKey = key;
             }
         }
         getTicks() {
