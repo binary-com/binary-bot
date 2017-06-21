@@ -4,7 +4,7 @@ import config from '../../../../common/const';
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils';
 import { defineContract } from '../images';
 import { updatePurchaseChoices } from '../shared';
-import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes } from './components';
+import { marketDefPlaceHolders } from './tools';
 import backwardCompatibility from './backwardCompatibility';
 import tradeOptions from './tradeOptions';
 
@@ -27,10 +27,7 @@ Blockly.Blocks.trade = {
         this.appendDummyInput()
             .appendField(new Blockly.FieldImage(defineContract, 15, 15, 'T'))
             .appendField(translate('(1) Define your trade contract'));
-        marketDropdown(this);
-        tradeTypeDropdown(this);
-        contractTypes(this);
-        candleInterval(this);
+        marketDefPlaceHolders(this);
         this.appendStatementInput('INITIALIZATION').setCheck(null).appendField(`${translate('Run Once at Start')}:`);
         this.appendStatementInput('SUBMARKET').setCheck(null).appendField(`${translate('Define Trade Options')}:`);
         this.setPreviousStatement(true, null);
