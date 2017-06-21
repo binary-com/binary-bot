@@ -5,6 +5,9 @@ import Interface from './Interface';
 
 export default class Interpreter {
     constructor() {
+        this.init();
+    }
+    init() {
         this.$scope = createScope();
         this.bot = new Interface(this.$scope);
         this.stopped = false;
@@ -19,6 +22,7 @@ export default class Interpreter {
             const ticksIf = this.bot.getTicksInterface();
 
             const { watch, alert, prompt, sleep, console: customConsole } = this.bot.getInterface();
+            const { start } = BotIf;
 
             initFunc = (interpreter, scope) => {
                 interpreter.setProperty(scope, 'console', interpreter.nativeToPseudo(customConsole));
@@ -31,6 +35,15 @@ export default class Interpreter {
 
                 Object.entries(ticksIf).forEach(([name, f]) =>
                     interpreter.setProperty(pseudoBotIf, name, this.createAsync(interpreter, f))
+                );
+
+                interpreter.setProperty(
+                    pseudoBotIf,
+                    'start',
+                    interpreter.nativeToPseudo((...args) => {
+                        this.startState = interpreter.takeStateSnapshot();
+                        start(...args);
+                    })
                 );
 
                 interpreter.setProperty(pseudoBotIf, 'purchase', this.createAsync(interpreter, BotIf.purchase));
@@ -53,12 +66,20 @@ export default class Interpreter {
                         return watch(watchName);
                     })
                 );
+
                 interpreter.setProperty(scope, 'sleep', this.createAsync(interpreter, sleep));
             };
         }
 
         return new Promise((resolve, reject) => {
-            globalObserver.register('Error', e => reject(e));
+            globalObserver.register('Error', e => {
+                const { shouldRestartOnError } = this.bot.TradeEngine.options;
+                if (shouldRestartOnError) {
+                    this.init();
+                } else {
+                    reject(e);
+                }
+            });
 
             try {
                 this.interpreter = new JSInterpreter(code, initFunc);
