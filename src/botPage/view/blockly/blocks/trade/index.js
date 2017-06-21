@@ -107,12 +107,14 @@ Blockly.JavaScript.trade = block => {
     const contractTypeList = contractTypeSelector === 'both'
         ? config.opposites[oppositesName].map(k => Object.keys(k)[0])
         : [contractTypeSelector];
+    const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE';
     const code = `
     init = function init() {
       Bot.init('${account}', {
         symbol: '${block.getFieldValue('SYMBOL_LIST')}',
         contractTypes: ${JSON.stringify(contractTypeList)},
         candleInterval: '${candleIntervalValue}',
+        shouldRestartOnError: ${shouldRestartOnError},
       });
       ${initialization.trim()}
     };

@@ -58,7 +58,7 @@ export default class Interpreter {
         }
 
         return new Promise((resolve, reject) => {
-            globalObserver.register('Error', e => console.log(this.bot) || reject(e));
+            globalObserver.register('Error', e => reject(e));
 
             try {
                 this.interpreter = new JSInterpreter(code, initFunc);
