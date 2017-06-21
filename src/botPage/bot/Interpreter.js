@@ -73,11 +73,16 @@ export default class Interpreter {
 
         return new Promise((resolve, reject) => {
             globalObserver.register('Error', e => {
+                if (this.stopped) {
+                    return;
+                }
                 const { shouldRestartOnError } = this.bot.tradeEngine.options;
                 if (shouldRestartOnError) {
-                    const { initArgs } = this.bot.tradeEngine;
+                    const { initArgs, tradeOptions } = this.bot.tradeEngine;
+                    this.stop();
                     this.init();
                     this.bot.tradeEngine.init(...initArgs);
+                    this.bot.tradeEngine.start(tradeOptions);
                     this.interpreter.restoreStateSnapshot(this.startState);
                     // eslint-disable-next-line no-underscore-dangle
                     this.interpreter.paused_ = false;
