@@ -2,6 +2,7 @@ import config from '../../../../common/const';
 import { translate } from '../../../../../common/i18n';
 import { symbolApi } from '../../../shared';
 import { oppositesToDropdown } from '../../utils';
+import { caution } from '../images';
 import { getTradeType } from './tools';
 
 export const marketDropdown = block => {
@@ -140,4 +141,12 @@ export const prediction = block => {
     if (!block.getInput('PREDICTION')) {
         block.appendValueInput('PREDICTION').setCheck('Number').appendField(translate('Prediction:'));
     }
+};
+
+export const restartOnError = block => {
+    block
+        .appendDummyInput()
+        .appendField(`${translate('Restart Binary Bot On Error')}:`)
+        .appendField(new Blockly.FieldCheckbox('FALSE'), 'RESTARTONERROR')
+        .appendField(new Blockly.FieldImage(caution, 15, 15, '!'));
 };
