@@ -79,6 +79,9 @@ export default class Interpreter {
                     this.init();
                     this.bot.tradeEngine.init(...initArgs);
                     this.interpreter.restoreStateSnapshot(this.startState);
+                    // eslint-disable-next-line no-underscore-dangle
+                    this.interpreter.paused_ = false;
+                    this.loop();
                 } else {
                     reject(e);
                 }
