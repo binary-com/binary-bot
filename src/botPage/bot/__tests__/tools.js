@@ -1,20 +1,19 @@
 import { expect } from 'chai';
 import { createInterpreter } from '../CliTools';
 
-const init = `
+export const init = options => `
   Bot.init('Xkq6oGFEHh6hJH8', {
     candleInterval: 60,
     contractTypes: ['CALL'],
-    symbol: 'R_100',
+    symbol: 'R_100', ${options || ''}
   })
 `;
 
-const start = duration =>
+export const start = options =>
     `
-        ${init}
         Bot.start({
           amount: 1,
-          currency: 'USD', ${duration},
+          currency: 'USD', ${options || ''}
         });
 `;
 
@@ -23,9 +22,9 @@ export const parts = {
       (function (){
         var result = {};
   `,
-    init,
-    timeTrade     : start('duration: 2, duration_unit: "h"'),
-    tickTrade     : start('duration: 5, duration_unit: "t"'),
+    init          : init(),
+    timeTrade     : `${init()}; ${start('duration: 2, duration_unit: "h"')};`,
+    tickTrade     : `${init()}; ${start('duration: 5, duration_unit: "t"')};`,
     waitToPurchase: `
         watch('before');
         Bot.purchase('CALL');
