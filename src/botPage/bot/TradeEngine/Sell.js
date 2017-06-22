@@ -17,7 +17,7 @@ export default Engine =>
             }
 
             if (!this.isSellAtMarketAvailable()) {
-                throw translate('Sell is not available');
+                throw Error(translate('Sell is not available'));
             }
 
             return recoverFromError(

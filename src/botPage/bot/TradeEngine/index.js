@@ -65,6 +65,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         const { symbol } = options;
 
+        this.initArgs = args;
+
         this.options = options;
 
         this.startPromise = this.loginAndGetBalance(token);
@@ -75,6 +77,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
         }
+
+        this.tradeOptions = tradeOptions;
 
         this.store.dispatch(start());
 

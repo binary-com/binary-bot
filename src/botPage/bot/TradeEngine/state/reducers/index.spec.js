@@ -56,4 +56,11 @@ describe('signal reducers', () => {
             proposalsReady: true,
         });
     });
+    it('NEW_TICK action', () => {
+        expect((state = signal(state, { type: constants.NEW_TICK, payload: '123' }))).toEqual({
+            scope         : constants.STOP,
+            proposalsReady: true,
+            newTick       : '123',
+        });
+    });
 });

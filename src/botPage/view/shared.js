@@ -1,14 +1,7 @@
-import { LiveApi } from 'binary-live-api';
-import { get as getStorage } from 'binary-common-utils/lib/storageManager';
 import Observer from 'binary-common-utils/lib/observer';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
-
-const createApi = () =>
-    new LiveApi({
-        language: getStorage('lang') || 'en',
-        appId   : getStorage('appId') || 1,
-    });
+import { createApi } from '../bot/CliTools';
 
 let tmpApi = createApi();
 
