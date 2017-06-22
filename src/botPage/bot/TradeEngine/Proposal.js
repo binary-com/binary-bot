@@ -17,7 +17,7 @@ export default Engine =>
             let toBuy;
 
             if (!this.data.has('proposals')) {
-                throw translate('Proposals are not ready');
+                throw Error(translate('Proposals are not ready'));
             }
 
             this.data.get('proposals').forEach(proposal => {
@@ -27,7 +27,7 @@ export default Engine =>
             });
 
             if (!toBuy) {
-                throw translate('Selected proposal does not exist');
+                throw Error(translate('Selected proposal does not exist'));
             }
 
             return {
