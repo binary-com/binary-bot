@@ -122,7 +122,7 @@
     "jquery": "3.2.1",
     "jquery-ui": "^1.12.1",
     "jquery-ui-css": "^1.11.4",
-    "js-interpreter": "^1.4.5",
+    "js-interpreter": "^1.4.6",
     "json-loader": "^0.5.4",
     "lint-staged": "^3.6.1",
     "loader-utils": "^1.1.0",
