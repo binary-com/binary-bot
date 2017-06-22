@@ -4,10 +4,13 @@ import { get as getStorage } from 'binary-common-utils/lib/storageManager';
 import Interpreter from './Interpreter';
 import TicksService from '../common/TicksService';
 
+// eslint-disable-next-line no-new-func
+const isBrowser = new Function('try {return this===window;}catch(e){ return false;}');
+
 export const createApi = () =>
     new LiveApi({
         // eslint-disable-next-line global-require
-        websocket: typeof window === 'undefined' ? require('ws') : undefined,
+        websocket: isBrowser() ? require('ws') : undefined,
         language : getStorage('lang') || 'en',
         appId    : getStorage('appId') || 1,
     });
