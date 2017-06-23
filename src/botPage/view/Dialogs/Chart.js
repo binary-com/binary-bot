@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-// import PropTypes from 'prop-types';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { BinaryChart } from 'binary-charts';
 import { ticksService } from '../shared';
