@@ -38,9 +38,11 @@ export default Engine =>
                     .then(ticks => resolve(ticks.map(o => o.quote)))
             );
         }
-        getLastTick() {
+        getLastTick(raw) {
             return new Promise(resolve =>
-                this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => resolve(getLast(ticks).quote))
+                this.$scope.ticksService
+                    .request({ symbol: this.symbol })
+                    .then(ticks => resolve(raw ? getLast(ticks) : getLast(ticks).quote))
             );
         }
         getLastDigit() {
