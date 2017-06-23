@@ -16,6 +16,7 @@ import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
 import Chart from './Dialogs/Chart';
+import TradingView from './Dialogs/TradingView';
 import { getLanguage } from '../../common/lang';
 import { symbolPromise } from './shared';
 import logHandler from './logger';
@@ -47,6 +48,7 @@ const addBalanceForToken = token => {
 };
 
 const chart = new Chart();
+const tradingView = new TradingView();
 
 const showRealityCheck = () => {
     $('.blocker').show();
@@ -295,6 +297,9 @@ export default class View {
             chart.open();
         });
 
+        $('#tradingViewButton').click(() => {
+            tradingView.open();
+        });
         const showSummary = () => {
             $('#summaryPanel').dialog('open');
             rerenderTradeTable();
