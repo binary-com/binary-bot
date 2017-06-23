@@ -16,7 +16,7 @@ expectReturnTrue(
     'Main Blocks - Multiple Trades',
     `
       (function (){
-        var count = 8;
+        var count = 2;
         while(true) {
           ${parts.timeTrade}
           ${parts.waitToPurchase}
