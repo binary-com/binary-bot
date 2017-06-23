@@ -33,7 +33,7 @@ const isNew = msg => {
 
 const notify = (className, msg, position = 'left') => {
     log(className, msg);
-    if (isNew(msg)) {
+    if (msg && isNew(msg)) {
         $.notify(msg, { position: `bottom ${position}`, className });
     }
 };

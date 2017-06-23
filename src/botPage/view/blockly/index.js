@@ -242,6 +242,7 @@ export default class _Blockly {
       (function(){
         var init, start, before_purchase, during_purchase, after_purchase;
 
+        var lastTickTime
         var tick_analysis_list = [];
 
         function run(f, arg) {
@@ -250,6 +251,11 @@ export default class _Blockly {
         }
 
         function tick_analysis() {
+          var currentTickTime = Bot.getLastTick(true).epoch
+          if (currentTickTime === lastTickTime) {
+            return
+          }
+          lastTickTime = currentTickTime
           for (var i = 0; i < tick_analysis_list.length; i++) {
             run(tick_analysis_list[i]);
           }
@@ -259,8 +265,10 @@ export default class _Blockly {
 
         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
-        run(init)
+        run(init);
+
         while(true) {
+          tick_analysis();
           run(start)
           while(watch('before')) {
             tick_analysis();

@@ -52,7 +52,7 @@ during_purchase = function during_purchase(){
 
   };
 
-var count = 3;
+var count = 2;
 after_purchase = function after_purchase(){
   if (--count === 0) {
     return false;
