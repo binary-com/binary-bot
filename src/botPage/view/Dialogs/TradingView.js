@@ -6,7 +6,7 @@ const chartWidth = 700;
 const chartHeight = 700;
 
 function TradingViewComponent() {
-    return <iframe width="100%" height="100%" src="https://tradingview.binary.com/" />;
+    return <iframe style={{ width: '100%', height: '100%' }} src="https://tradingview.binary.com/" />;
 }
 
 export default class TradingView extends Dialog {
