@@ -6,6 +6,7 @@ import View from './View';
 import { setAppId } from '../../common/appId';
 import { load as loadLang } from '../../common/lang';
 import '../../common/binary-ui/dropdown';
+import { version } from '../../../package.json';
 
 loadLang();
 
@@ -34,6 +35,7 @@ const view = new View();
 view.initPromise.then(() => {
     $('.show-on-load').show();
     $('.barspinner').hide();
+    trackJs.addMetadata('version', version);
     trackJs.configure({
         userId : $('.account-id').first().text(),
         onError: (payload, error) => {
