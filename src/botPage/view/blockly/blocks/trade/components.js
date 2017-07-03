@@ -97,7 +97,7 @@ export const duration = block => {
             if (tradeType) {
                 return config.durationTypes[tradeType.toUpperCase()];
             }
-            return [['', '']];
+            return [[translate('Ticks'), 't']];
         };
         block
             .appendValueInput('DURATION')
