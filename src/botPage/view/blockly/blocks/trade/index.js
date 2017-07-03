@@ -15,6 +15,7 @@ const bcMoveAboveInitializationsDown = block => {
     if (parent) {
         const initializations = block.getInput('INITIALIZATION').connection;
         const ancestor = findTopParentBlock(parent);
+        parent.nextConnection.disconnect();
         initializations.connect((ancestor || parent).previousConnection);
     }
     block.setPreviousStatement(false);

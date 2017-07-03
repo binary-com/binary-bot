@@ -86,6 +86,13 @@ const fixStatements = (block, tradeOptions) => {
     }
 };
 
+const addMarketToTrade = (trade, condition) => {
+    const tradeTypeList = trade.getField('TRADETYPE_LIST');
+    if (tradeTypeList) {
+        tradeTypeList.setValue(condition.type);
+    }
+};
+
 export const marketToTradeOption = (market, marketOptions) => {
     ignoreAndGroupEvents(() => {
         const trade = findTopParentBlock(market);
@@ -104,6 +111,7 @@ export const marketToTradeOption = (market, marketOptions) => {
 
             if (condition) {
                 cloneTradeOptions(tradeOptions, condition);
+                addMarketToTrade(trade, condition);
             }
         } else {
             cloneTradeOptions(tradeOptions, market);
