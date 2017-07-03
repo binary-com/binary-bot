@@ -14,9 +14,7 @@ const log = (type, ...args) => {
     updateLogTable({ type, timestamp, message: args.join(':') });
 };
 
-const shown = [];
-
-const isNew = msg => {
+const isNewMessage = (shown = []) => msg => {
     const timestamp = parseInt(new Date().getTime() / 1000);
 
     const shownMsg = shown.find(e => e.msg === msg);
@@ -31,9 +29,13 @@ const isNew = msg => {
     return true;
 };
 
+const isNewNotification = isNewMessage();
+
+const isNewError = isNewMessage();
+
 const notify = (className, msg, position = 'left') => {
-    log(className, msg);
-    if (msg && isNew(msg)) {
+    if (msg && isNewNotification(msg)) {
+        log(className, msg);
         $.notify(msg, { position: `bottom ${position}`, className });
     }
 };
@@ -63,7 +65,7 @@ const notifyError = error => {
     const errorWithCode = new Error(error);
     errorWithCode.message = errorCode ? `${errorCode}: ${message}` : message;
 
-    if (trackJs) {
+    if (trackJs && isNewError(message)) {
         trackJs.track(errorWithCode);
     }
 
