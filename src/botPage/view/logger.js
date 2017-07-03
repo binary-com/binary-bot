@@ -10,13 +10,13 @@ const log = (type, ...args) => {
         console.log(...args); // eslint-disable-line no-console
     }
     const date = new Date();
-    const timestamp = `${date.toISOString().split('T')[0]} ${date.toTimeString().slice(0, 8)}`;
+    const timestamp = `${date
+    .toISOString()
+    .split('T')[0]} ${date.toTimeString().slice(0, 8)}`;
     updateLogTable({ type, timestamp, message: args.join(':') });
 };
 
-const shown = [];
-
-const isNew = msg => {
+const isNewMessage = (shown = []) => msg => {
     const timestamp = parseInt(new Date().getTime() / 1000);
 
     const shownMsg = shown.find(e => e.msg === msg);
@@ -31,9 +31,13 @@ const isNew = msg => {
     return true;
 };
 
+const isNewNotification = isNewMessage();
+
+const isNewError = isNewMessage();
+
 const notify = (className, msg, position = 'left') => {
-    log(className, msg);
-    if (msg && isNew(msg)) {
+    if (msg && isNewNotification(msg)) {
+        log(className, msg);
         $.notify(msg, { position: `bottom ${position}`, className });
     }
 };
@@ -57,13 +61,15 @@ const notifyError = error => {
     }
 
     if (errorCode === 'DisconnectError') {
-        message = translate('Connection lost before receiving the response from the server');
+        message = translate(
+      'Connection lost before receiving the response from the server'
+    );
     }
 
     const errorWithCode = new Error(error);
     errorWithCode.message = errorCode ? `${errorCode}: ${message}` : message;
 
-    if (trackJs) {
+    if (trackJs && isNewError(message)) {
         trackJs.track(errorWithCode);
     }
 
@@ -85,26 +91,34 @@ const waitForNotifications = () => {
 
     const amplitudeList = ['log.bot.login', 'log.trade.finish'];
 
-    logList.forEach(event => globalObserver.register(event, d => log('info', event, d)));
+    logList.forEach(event =>
+    globalObserver.register(event, d => log('info', event, d))
+  );
 
     globalObserver.register('Notify', args => notify(...args));
 
     globalObserver.register('Error', notifyError);
 
     notifList.forEach(className =>
-        globalObserver.register(`ui.log.${className}`, message => notify(className, message, 'right'))
-    );
+    globalObserver.register(`ui.log.${className}`, message =>
+      notify(className, message, 'right')
+    )
+  );
 
-    amplitudeList.forEach(event => globalObserver.register(event, d => amplitude.getInstance().logEvent(event, d)));
+    amplitudeList.forEach(event =>
+    globalObserver.register(event, d =>
+      amplitude.getInstance().logEvent(event, d)
+    )
+  );
 
     globalObserver.register('log.revenue', data => {
         const { user, profit, contract } = data;
 
         if (typeof amplitude !== 'undefined' && !user.isVirtual) {
             const revenue = new amplitude.Revenue()
-                .setProductId(`${contract.underlying}.${contract.contract_type}`)
-                .setPrice(-profit)
-                .setRevenueType(profit < 0 ? 'loss' : 'win');
+        .setProductId(`${contract.underlying}.${contract.contract_type}`)
+        .setPrice(-profit)
+        .setRevenueType(profit < 0 ? 'loss' : 'win');
 
             amplitude.getInstance().logRevenueV2(revenue, { contract });
         }
