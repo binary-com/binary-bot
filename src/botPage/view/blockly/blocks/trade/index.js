@@ -23,18 +23,19 @@ const bcMoveAboveInitializationsDown = block => {
     Blockly.Events.recordUndo = true;
 };
 
-const decorateTrade = (trade, ev) => {
-    if ([Blockly.Events.CREATE, Blockly.Events.CHANGE].includes(ev.type)) {
-        setBlockTextColor(trade);
-        if (!trade.isInFlyout) {
-            const symbol = trade.getFieldValue('SYMBOL_LIST');
-            const submarket = trade.getInput('SUBMARKET').connection.targetConnection;
-            // eslint-disable-next-line no-underscore-dangle
-            const needsMutation = submarket && submarket.sourceBlock_.type !== 'tradeOptions';
+const decorateTrade = ev => {
+    const trade = Blockly.mainWorkspace.getBlockById(ev.blockId);
+    if (!trade || trade.type !== 'trade') {
+        return;
+    }
+    if ([Blockly.Events.CHANGE, Blockly.Events.MOVE, Blockly.Events.CREATE].includes(ev.type)) {
+        const symbol = trade.getFieldValue('SYMBOL_LIST');
+        const submarket = trade.getInput('SUBMARKET').connection.targetConnection;
+        // eslint-disable-next-line no-underscore-dangle
+        const needsMutation = submarket && submarket.sourceBlock_.type !== 'tradeOptions';
 
-            if (symbol && !needsMutation) {
-                globalObserver.emit('bot.init', symbol);
-            }
+        if (symbol && !needsMutation) {
+            globalObserver.emit('bot.init', symbol);
         }
         const type = trade.getFieldValue('TRADETYPE_LIST');
         if (type) {
@@ -75,7 +76,8 @@ Blockly.Blocks.trade = {
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
     onchange: function onchange(ev) {
-        decorateTrade(this, ev);
+        setBlockTextColor(this);
+        decorateTrade(ev);
         if (ev.group === 'BackwardCompatibility') {
             return;
         }
