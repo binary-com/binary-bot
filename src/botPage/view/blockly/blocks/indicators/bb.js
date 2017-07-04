@@ -1,6 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
 import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
+import { expectValue } from '../shared';
 
 Blockly.Blocks.bb = {
     init: function init() {
@@ -20,10 +21,10 @@ Blockly.Blocks.bb = {
 
 Blockly.JavaScript.bb = block => {
     const bbResult = block.getFieldValue('BBRESULT_LIST');
-    const input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]';
-    const period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '10';
-    const stdDevUp = Blockly.JavaScript.valueToCode(block, 'UPMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '5';
-    const stdDevDown = Blockly.JavaScript.valueToCode(block, 'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '5';
+    const input = expectValue(block, 'INPUT');
+    const period = expectValue(block, 'PERIOD');
+    const stdDevUp = expectValue(block, 'UPMULTIPLIER');
+    const stdDevDown = expectValue(block, 'DOWNMULTIPLIER');
     return [
         `Bot.bb(${input}, {
     periods: ${period},

@@ -1,6 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wupwb4
 import { translate } from '../../../../../../common/i18n';
 import { mainScope } from '../../../relationChecker';
+import { expectValue } from '../../shared';
 
 Blockly.Blocks.timeout = {
     init: function init() {
@@ -20,7 +21,7 @@ Blockly.Blocks.timeout = {
 
 Blockly.JavaScript.timeout = block => {
     const stack = Blockly.JavaScript.statementToCode(block, 'TIMEOUTSTACK');
-    const seconds = Blockly.JavaScript.valueToCode(block, 'SECONDS', Blockly.JavaScript.ORDER_ATOMIC);
+    const seconds = expectValue(block, 'SECONDS');
 
     return `
     sleep(${seconds});

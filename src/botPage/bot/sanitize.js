@@ -1,4 +1,3 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { translate } from '../../common/i18n';
 import createError from '../common/error';
 
@@ -8,18 +7,14 @@ const isPositiveInteger = num => isPositiveNumber(num) && Number.isInteger(num);
 
 export const expectPositiveInteger = (num, msg) => {
     if (!isPositiveInteger(num)) {
-        const error = createError('PositiveIntegerExpected', msg);
-        globalObserver.emit('Error', error);
-        throw error;
+        throw createError('PositiveIntegerExpected', msg);
     }
     return num;
 };
 
 export const expectPositiveNumber = (num, msg) => {
     if (!isPositiveNumber(num)) {
-        const error = createError('PositiveNumberExpected', msg);
-        globalObserver.emit('Error', error);
-        throw error;
+        throw createError('PositiveNumberExpected', msg);
     }
     return num;
 };
@@ -28,15 +23,11 @@ const expectOptions = options => {
     const { symbol, contractTypes } = options;
 
     if (!symbol) {
-        const error = createError('OptionError', translate('Underlying market is not selected'));
-        globalObserver.emit('Error', error);
-        throw error;
+        throw createError('OptionError', translate('Underlying market is not selected'));
     }
 
     if (!contractTypes[0]) {
-        const error = createError('OptionError', translate('Contract type is not selected'));
-        globalObserver.emit('Error', error);
-        throw error;
+        throw createError('OptionError', translate('Contract type is not selected'));
     }
 };
 
@@ -44,9 +35,7 @@ export const expectInitArg = args => {
     const [token, options] = args;
 
     if (!token) {
-        const error = createError('LoginError', translate('Please login'));
-        globalObserver.emit('Error', error);
-        throw error;
+        throw createError('LoginError', translate('Please login'));
     }
 
     expectOptions(options);
@@ -57,7 +46,7 @@ export const expectInitArg = args => {
 export const expectTradeOptions = tradeOptions => {
     const { amount, duration } = tradeOptions;
 
-    expectPositiveInteger(duration, translate('Duration must be an integer'));
+    expectPositiveInteger(duration, translate('Duration must be a positive integer'));
 
     expectPositiveNumber(amount, translate('Amount must be a positive number'));
 
@@ -71,18 +60,14 @@ const isCandle = candle =>
 
 export const expectCandle = candle => {
     if (!isCandle(candle)) {
-        const error = createError('CandleExpected', translate('Given candle is not valid'));
-        globalObserver.emit('Error', error);
-        throw error;
+        throw createError('CandleExpected', translate('Given candle is not valid'));
     }
     return candle;
 };
 
 export const expectCandles = candles => {
     if (!(candles instanceof Array) || !candles.every(c => isCandle(c))) {
-        const error = createError('CandleListExpected', translate('Given candle list is not valid'));
-        globalObserver.emit('Error', error);
-        throw error;
+        throw createError('CandleListExpected', translate('Given candle list is not valid'));
     }
     return candles;
 };

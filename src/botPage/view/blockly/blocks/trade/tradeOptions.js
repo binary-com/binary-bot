@@ -1,6 +1,7 @@
 import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
 import { insideTrade } from '../../relationChecker';
+import { expectValue } from '../shared';
 import { findTopParentBlock } from '../../utils';
 import { setInputList, updateInputList } from './tools';
 
@@ -30,10 +31,10 @@ export default () => {
         },
     };
     Blockly.JavaScript.tradeOptions = block => {
-        const durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC);
+        const durationValue = expectValue(block, 'DURATION');
         const durationType = block.getFieldValue('DURATIONTYPE_LIST');
         const currency = block.getFieldValue('CURRENCY_LIST');
-        const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC);
+        const amount = expectValue(block, 'AMOUNT');
         const tradeDefBlock = findTopParentBlock(block);
         if (!tradeDefBlock) {
             return '';
@@ -43,28 +44,20 @@ export default () => {
         let barrierOffsetValue = 'undefined';
         let secondBarrierOffsetValue = 'undefined';
         if (config.hasPrediction.indexOf(oppositesName) > -1) {
-            predictionValue = Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC);
+            predictionValue = expectValue(block, 'PREDICTION');
         }
         if (
             config.hasBarrierOffset.indexOf(oppositesName) > -1 ||
             config.hasSecondBarrierOffset.indexOf(oppositesName) > -1
         ) {
             const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-            barrierOffsetValue = Blockly.JavaScript.valueToCode(
-                block,
-                'BARRIEROFFSET',
-                Blockly.JavaScript.ORDER_ATOMIC
-            );
-            barrierOffsetValue = `${barrierOffsetType}${barrierOffsetValue}`;
+            const value = expectValue(block, 'BARRIEROFFSET');
+            barrierOffsetValue = `${barrierOffsetType}${value}`;
         }
         if (config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
             const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
-            secondBarrierOffsetValue = Blockly.JavaScript.valueToCode(
-                block,
-                'SECONDBARRIEROFFSET',
-                Blockly.JavaScript.ORDER_ATOMIC
-            );
-            secondBarrierOffsetValue = `${barrierOffsetType}${secondBarrierOffsetValue}`;
+            const value = expectValue(block, 'SECONDBARRIEROFFSET');
+            secondBarrierOffsetValue = `${barrierOffsetType}${value}`;
         }
         const code = `
         Bot.start({

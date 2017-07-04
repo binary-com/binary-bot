@@ -30,3 +30,11 @@ export const updatePurchaseChoices = (contractType, oppositesName) => {
     });
     Blockly.Events.recordUndo = true;
 };
+
+export const expectValue = (block, field) => {
+    const value = Blockly.JavaScript.valueToCode(block, field, Blockly.JavaScript.ORDER_ATOMIC);
+    if (!value) {
+        throw Error(translate(`${field} cannot be empty`));
+    }
+    return value;
+};

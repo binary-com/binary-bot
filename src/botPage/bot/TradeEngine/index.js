@@ -4,8 +4,7 @@ import thunk from 'redux-thunk';
 import { translate } from '../../..//common/i18n';
 import createError from '../../common/error';
 import { doUntilDone } from '../tools';
-import { error as broadcastError } from '../broadcast';
-import { expectInitArg } from '../sanitize';
+import { expectInitArg, expectTradeOptions } from '../sanitize';
 import Proposal from './Proposal';
 import Total from './Total';
 import Balance from './Balance';
@@ -78,7 +77,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             throw createError('NotInitialized', translate('Bot.init is not called'));
         }
 
-        this.tradeOptions = tradeOptions;
+        this.tradeOptions = expectTradeOptions(tradeOptions);
 
         this.store.dispatch(start());
 
@@ -93,7 +92,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             return Promise.resolve();
         }
 
-        doUntilDone(() => this.api.authorize(token)).catch(broadcastError);
+        doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
 
         return new Promise(resolve =>
             this.listen('authorize', () => {
