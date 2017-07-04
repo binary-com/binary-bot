@@ -1,5 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
 import { translate } from '../../../../../common/i18n';
+import { expectValue } from '../shared';
 
 Blockly.Blocks.sma = {
     init: function init() {
@@ -14,7 +15,7 @@ Blockly.Blocks.sma = {
 };
 
 Blockly.JavaScript.sma = block => {
-    const input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]';
-    const period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '10';
+    const input = expectValue(block, 'INPUT');
+    const period = expectValue(block, 'PERIOD');
     return [`Bot.sma(${input}, ${period})`, Blockly.JavaScript.ORDER_NONE];
 };

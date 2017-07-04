@@ -1,6 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#pmhydb
 import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
+import { expectValue } from '../shared';
 
 Blockly.Blocks.notify = {
     init: function init() {
@@ -17,7 +18,7 @@ Blockly.Blocks.notify = {
 };
 Blockly.JavaScript.notify = block => {
     const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
-    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
+    const message = expectValue(block, 'MESSAGE');
     const code = `Bot.notify('${notificationType}', ${message});
 `;
     return code;

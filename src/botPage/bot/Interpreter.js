@@ -70,28 +70,34 @@ export default class Interpreter {
         };
 
         return new Promise((resolve, reject) => {
-            globalObserver.register('Error', e => {
-                if (this.stopped || !this.bot || !this.bot.tradeEngine.tradeOptions) {
+            const onError = e => {
+                if (this.stopped) {
                     return;
                 }
-                const { shouldRestartOnError } = this.bot.tradeEngine.options;
-                if (shouldRestartOnError) {
-                    const { initArgs, tradeOptions } = this.bot.tradeEngine;
-                    this.stop();
-                    this.init();
-                    this.bot.tradeEngine.init(...initArgs);
-                    this.bot.tradeEngine.start(tradeOptions);
-                    this.revert(this.startState);
-                } else {
+                if (
+                    !(
+                        this.bot &&
+                        this.bot.tradeEngine.tradeOptions &&
+                        this.bot.tradeEngine.options &&
+                        this.bot.tradeEngine.options.shouldRestartOnError
+                    )
+                ) {
                     reject(e);
+                    return;
                 }
-            });
-
-            try {
-                this.interpreter = new JSInterpreter(code, initFunc);
-            } catch (e) {
                 globalObserver.emit('Error', e);
-            }
+                const { initArgs, tradeOptions } = this.bot.tradeEngine;
+                this.stop();
+                this.init();
+                this.$scope.observer.register('Error', onError);
+                this.bot.tradeEngine.init(...initArgs);
+                this.bot.tradeEngine.start(tradeOptions);
+                this.revert(this.startState);
+            };
+
+            this.$scope.observer.register('Error', onError);
+
+            this.interpreter = new JSInterpreter(code, initFunc);
 
             this.onFinish = resolve;
             this.loop();
@@ -122,7 +128,7 @@ export default class Interpreter {
                     callback(interpreter.nativeToPseudo(rv));
                     this.loop();
                 })
-                .catch(e => globalObserver.emit('Error', e));
+                .catch(e => this.$scope.observer.emit('Error', e));
         });
     }
 }
