@@ -154,20 +154,31 @@ export default class TicksService {
 
         this.subscriptions = new Map();
     }
+    updateTicksAndCallListeners(symbol, ticks) {
+        this.ticks = this.ticks.set(symbol, ticks);
+
+        const listeners = this.tickListeners.get(symbol);
+
+        if (listeners) {
+            listeners.forEach(callback => callback(this.ticks.get(symbol)));
+        }
+    }
+    updateCandlesAndCallListeners(address, candles) {
+        this.candles = this.candles.setIn(address, candles);
+
+        const listeners = this.ohlcListeners.getIn(address);
+
+        if (listeners) {
+            listeners.forEach(callback => callback(this.candles.getIn(address)));
+        }
+    }
     observe() {
         this.api.events.on('tick', r => {
             const { tick, tick: { symbol, id } } = r;
 
             if (this.ticks.has(symbol)) {
                 this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
-
-                this.ticks = this.ticks.set(symbol, updateTicks(this.ticks.get(symbol), parseTick(tick)));
-
-                const listeners = this.tickListeners.get(symbol);
-
-                if (listeners) {
-                    listeners.forEach(callback => callback(this.ticks.get(symbol)));
-                }
+                this.updateTicksAndCallListeners(symbol, updateTicks(this.ticks.get(symbol), parseTick(tick)));
             }
         });
 
@@ -176,17 +187,11 @@ export default class TicksService {
 
             if (this.candles.hasIn([symbol, granularity])) {
                 this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, granularity], id);
-
-                this.candles = this.candles.setIn(
-                    [symbol, granularity],
-                    updateCandles(this.candles.getIn([symbol, granularity]), parseOhlc(ohlc))
+                const address = [symbol, granularity];
+                this.updateCandlesAndCallListeners(
+                    address,
+                    updateCandles(this.candles.getIn(address), parseOhlc(ohlc))
                 );
-
-                const listeners = this.ohlcListeners.getIn([symbol, granularity]);
-
-                if (listeners) {
-                    listeners.forEach(callback => callback(this.candles.getIn([symbol, granularity])));
-                }
             }
         });
     }
@@ -210,13 +215,12 @@ export default class TicksService {
                     if (style === 'ticks') {
                         const ticks = historyToTicks(r.history);
 
-                        this.ticks = this.ticks.set(symbol, ticks);
-
+                        this.updateTicksAndCallListeners(symbol, ticks);
                         resolve(ticks);
                     } else {
                         const candles = parseCandles(r.candles);
 
-                        this.candles = this.candles.setIn([symbol, granularity], candles);
+                        this.updateCandlesAndCallListeners([symbol, granularity], candles);
 
                         resolve(candles);
                     }
