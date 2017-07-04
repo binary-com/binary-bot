@@ -1,6 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 import config from '../../../../../common/const';
 import { translate } from '../../../../../../common/i18n';
+import { expectValue } from '../../shared';
 
 Blockly.Blocks.ohlc_values_in_list = {
     init: function init() {
@@ -16,7 +17,7 @@ Blockly.Blocks.ohlc_values_in_list = {
 };
 
 Blockly.JavaScript.ohlc_values_in_list = block => {
-    const ohlcList = Blockly.JavaScript.valueToCode(block, 'OHLCLIST', Blockly.JavaScript.ORDER_ATOMIC);
+    const ohlcList = expectValue(block, 'OHLCLIST');
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
     return [`Bot.candleValues(${ohlcList}, '${ohlcField}')`, Blockly.JavaScript.ORDER_ATOMIC];
 };

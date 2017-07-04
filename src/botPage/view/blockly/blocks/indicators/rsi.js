@@ -1,5 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
 import { translate } from '../../../../../common/i18n';
+import { expectValue } from '../shared';
 
 Blockly.Blocks.rsi = {
     init: function init() {
@@ -14,7 +15,7 @@ Blockly.Blocks.rsi = {
 };
 
 Blockly.JavaScript.rsi = block => {
-    const input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_ATOMIC) || '[]';
-    const period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '14';
+    const input = expectValue(block, 'INPUT');
+    const period = expectValue(block, 'PERIOD');
     return [`Bot.rsi(${input}, ${period})`, Blockly.JavaScript.ORDER_NONE];
 };

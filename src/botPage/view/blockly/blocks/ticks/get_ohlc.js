@@ -1,6 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import { translate } from '../../../../../common/i18n';
 import { mainScope } from '../../relationChecker';
+import { expectValue } from '../shared';
 
 Blockly.Blocks.get_ohlc = {
     init: function init() {
@@ -20,6 +21,6 @@ Blockly.Blocks.get_ohlc = {
 };
 
 Blockly.JavaScript.get_ohlc = block => {
-    const index = Number(Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || 1;
+    const index = Number(expectValue(block, 'CANDLEINDEX')) || 1;
     return [`Bot.getOhlcFromEnd({ index: ${index} })`, Blockly.JavaScript.ORDER_ATOMIC];
 };

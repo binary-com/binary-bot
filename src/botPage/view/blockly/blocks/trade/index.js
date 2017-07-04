@@ -108,6 +108,9 @@ Blockly.Blocks.trade = {
 
 Blockly.JavaScript.trade = block => {
     const account = $('.account-id').first().attr('value');
+    if (!account) {
+        throw Error('Please login');
+    }
     const initialization = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
     const tradeOptionsStatement = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
     const candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST');
