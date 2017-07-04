@@ -238,68 +238,76 @@ export default class _Blockly {
     }
     run(limitations = {}) {
         disableStrayBlocks();
-        const code = `
-      (function(){
-        var init, start, before_purchase, during_purchase, after_purchase;
+        let code;
+        try {
+            code = `
+       (function(){
+         var init, start, before_purchase, during_purchase, after_purchase;
 
-        var lastTickTime
-        var tick_analysis_list = [];
+         var lastTickTime
+         var tick_analysis_list = [];
 
-        function run(f, arg) {
-          if (f) return f(arg);
-          return false;
-        }
+         function run(f, arg) {
+           if (f) return f(arg);
+           return false;
+         }
 
-        function tick_analysis() {
-          var currentTickTime = Bot.getLastTick(true).epoch
-          if (currentTickTime === lastTickTime) {
-            return
-          }
-          lastTickTime = currentTickTime
-          for (var i = 0; i < tick_analysis_list.length; i++) {
-            run(tick_analysis_list[i]);
-          }
-        }
+         function tick_analysis() {
+           var currentTickTime = Bot.getLastTick(true).epoch
+           if (currentTickTime === lastTickTime) {
+             return
+           }
+           lastTickTime = currentTickTime
+           for (var i = 0; i < tick_analysis_list.length; i++) {
+             run(tick_analysis_list[i]);
+           }
+         }
 
-        var limitations = ${JSON.stringify(limitations)};
+         var limitations = ${JSON.stringify(limitations)};
 
-        ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
-        run(init);
+         run(init);
 
-        while(true) {
-          tick_analysis();
-          run(start)
-          while(watch('before')) {
-            tick_analysis();
-            run(before_purchase);
-          }
-          while(watch('during')) {
-            tick_analysis();
-            run(during_purchase);
-          }
-          tick_analysis();
-          if(!run(after_purchase)) {
-            break;
-          }
-        }
-      })();
-      `;
-        this.generatedJs = code;
-        if (code) {
+         while(true) {
+           tick_analysis();
+           run(start)
+           while(watch('before')) {
+             tick_analysis();
+             run(before_purchase);
+           }
+           while(watch('during')) {
+             tick_analysis();
+             run(during_purchase);
+           }
+           tick_analysis();
+           if(!run(after_purchase)) {
+             break;
+           }
+         }
+       })();
+       `;
+            this.generatedJs = code;
+            if (code) {
+                this.stop(true);
+                this.interpreter = new Interpreter();
+                this.interpreter.run(code).catch(e => {
+                    globalObserver.emit('Error', e);
+                    this.stop();
+                });
+            }
+        } catch (e) {
+            globalObserver.emit('Error', e);
             this.stop();
-            this.interpreter = new Interpreter();
-            this.interpreter.run(code).catch(e => {
-                globalObserver.emit('Error', e);
-                this.stop();
-            });
         }
     }
-    stop() {
-        if (this.interpreter) {
-            this.interpreter.stop();
+    stop(stopBeforeStart) {
+        if (!stopBeforeStart) {
             $('#runButton').show();
             $('#stopButton').hide();
+        }
+        if (this.interpreter) {
+            this.interpreter.stop();
             this.interpreter = null;
         }
     }

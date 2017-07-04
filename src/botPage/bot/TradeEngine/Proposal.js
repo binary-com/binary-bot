@@ -1,6 +1,5 @@
 import { translate } from '../../../common/i18n';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../tools';
-import { error as broadcastError } from '../broadcast';
 import { proposalsReady, clearProposals } from './state/actions';
 
 export default Engine =>
@@ -55,7 +54,7 @@ export default Engine =>
                         })
                     )
                 )
-            ).catch(broadcastError);
+            ).catch(e => this.$scope.observer.emit('Error', e));
         }
         observeProposals() {
             this.listen('proposal', r => {

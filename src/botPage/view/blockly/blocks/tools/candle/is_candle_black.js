@@ -1,5 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import { translate } from '../../../../../../common/i18n';
+import { expectValue } from '../../shared';
 
 Blockly.Blocks.is_candle_black = {
     init: function init() {
@@ -17,6 +18,6 @@ Blockly.Blocks.is_candle_black = {
 };
 
 Blockly.JavaScript.is_candle_black = block => {
-    const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC);
+    const ohlcObj = expectValue(block, 'OHLCOBJ');
     return [`Bot.isCandleBlack(${ohlcObj})`, Blockly.JavaScript.ORDER_ATOMIC];
 };

@@ -92,16 +92,7 @@ const getBackoffDelay = (error, delayIndex) => {
 export const shouldThrowError = (e, types = [], delayIndex = 0) =>
     e &&
     (!types
-        .concat([
-            'CallError',
-            'WrongResponse',
-            'GetProposalFailure',
-            'ProposalArrayFailure',
-            'ContractValidationError',
-            'ContractCreationFailure',
-            'RateLimit',
-            'DisconnectError',
-        ])
+        .concat(['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'])
         .includes(e.name) ||
         (e.name !== 'DisconnectError' && delayIndex > maxRetries));
 
