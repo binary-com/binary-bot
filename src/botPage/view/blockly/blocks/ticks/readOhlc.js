@@ -2,7 +2,6 @@
 import config from '../../../../common/const';
 import { translate } from '../../../../../common/i18n';
 import { mainScope } from '../../relationChecker';
-import { expectValue } from '../shared';
 
 Blockly.Blocks.read_ohlc = {
     init: function init() {
@@ -24,7 +23,7 @@ Blockly.Blocks.read_ohlc = {
 
 Blockly.JavaScript.read_ohlc = block => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
-    const index = Number(expectValue(block, 'CANDLEINDEX')) || 1;
+    const index = Number(Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || 1;
 
     return [`Bot.getOhlcFromEnd({ field: '${ohlcField}', index: ${index} })`, Blockly.JavaScript.ORDER_ATOMIC];
 };

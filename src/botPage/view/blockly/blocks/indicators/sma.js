@@ -16,6 +16,6 @@ Blockly.Blocks.sma = {
 
 Blockly.JavaScript.sma = block => {
     const input = expectValue(block, 'INPUT');
-    const period = expectValue(block, 'PERIOD');
+    const period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '10';
     return [`Bot.sma(${input}, ${period})`, Blockly.JavaScript.ORDER_NONE];
 };
