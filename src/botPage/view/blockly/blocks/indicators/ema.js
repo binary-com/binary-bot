@@ -16,6 +16,6 @@ Blockly.Blocks.ema = {
 
 Blockly.JavaScript.ema = block => {
     const input = expectValue(block, 'INPUT');
-    const period = expectValue(block, 'PERIOD');
+    const period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '10';
     return [`Bot.ema(${input}, ${period})`, Blockly.JavaScript.ORDER_NONE];
 };

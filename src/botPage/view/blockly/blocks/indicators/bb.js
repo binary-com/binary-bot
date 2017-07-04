@@ -22,9 +22,9 @@ Blockly.Blocks.bb = {
 Blockly.JavaScript.bb = block => {
     const bbResult = block.getFieldValue('BBRESULT_LIST');
     const input = expectValue(block, 'INPUT');
-    const period = expectValue(block, 'PERIOD');
-    const stdDevUp = expectValue(block, 'UPMULTIPLIER');
-    const stdDevDown = expectValue(block, 'DOWNMULTIPLIER');
+    const period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '10';
+    const stdDevUp = Blockly.JavaScript.valueToCode(block, 'UPMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '5';
+    const stdDevDown = Blockly.JavaScript.valueToCode(block, 'DOWNMULTIPLIER', Blockly.JavaScript.ORDER_ATOMIC) || '5';
     return [
         `Bot.bb(${input}, {
     periods: ${period},

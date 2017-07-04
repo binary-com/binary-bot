@@ -16,6 +16,6 @@ Blockly.Blocks.rsi = {
 
 Blockly.JavaScript.rsi = block => {
     const input = expectValue(block, 'INPUT');
-    const period = expectValue(block, 'PERIOD');
+    const period = Blockly.JavaScript.valueToCode(block, 'PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '14';
     return [`Bot.rsi(${input}, ${period})`, Blockly.JavaScript.ORDER_NONE];
 };

@@ -22,9 +22,11 @@ Blockly.Blocks.macda = {
 Blockly.JavaScript.macda = block => {
     const macdField = block.getFieldValue('MACDFIELDS_LIST');
     const input = expectValue(block, 'INPUT');
-    const fastEmaPeriod = expectValue(block, 'FAST_EMA_PERIOD');
-    const slowEmaPeriod = expectValue(block, 'SLOW_EMA_PERIOD');
-    const smaPeriod = expectValue(block, 'SMA_PERIOD');
+    const fastEmaPeriod =
+        Blockly.JavaScript.valueToCode(block, 'FAST_EMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '12';
+    const slowEmaPeriod =
+        Blockly.JavaScript.valueToCode(block, 'SLOW_EMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '26';
+    const smaPeriod = Blockly.JavaScript.valueToCode(block, 'SMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '9';
     return [
         `Bot.macda(${input}, {
     fastEmaPeriod: ${fastEmaPeriod},
