@@ -23,6 +23,42 @@ const bcMoveAboveInitializationsDown = block => {
     Blockly.Events.recordUndo = true;
 };
 
+const decorateTrade = (trade, ev) => {
+    if ([Blockly.Events.CREATE, Blockly.Events.CHANGE].includes(ev.type)) {
+        setBlockTextColor(trade);
+        if (!trade.isInFlyout) {
+            const symbol = trade.getFieldValue('SYMBOL_LIST');
+            const submarket = trade.getInput('SUBMARKET').connection.targetConnection;
+            // eslint-disable-next-line no-underscore-dangle
+            const needsMutation = submarket && submarket.sourceBlock_.type !== 'tradeOptions';
+
+            if (symbol && !needsMutation) {
+                globalObserver.emit('bot.init', symbol);
+            }
+        }
+        const type = trade.getFieldValue('TRADETYPE_LIST');
+        if (type) {
+            const oppositesName = type.toUpperCase();
+            const contractType = trade.getFieldValue('TYPE_LIST');
+            if (oppositesName && contractType) {
+                updatePurchaseChoices(contractType, oppositesName);
+            }
+        }
+    }
+};
+
+const replaceInitializationBlocks = (trade, ev) => {
+    if (ev.type === Blockly.Events.CREATE) {
+        ev.ids.forEach(blockId => {
+            const block = Blockly.mainWorkspace.getBlockById(blockId);
+
+            if (block && block.type === 'trade' && !deleteBlockIfExists(block)) {
+                bcMoveAboveInitializationsDown(block);
+            }
+        });
+    }
+};
+
 Blockly.Blocks.trade = {
     init: function init() {
         this.appendDummyInput()
@@ -39,18 +75,11 @@ Blockly.Blocks.trade = {
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
     onchange: function onchange(ev) {
+        decorateTrade(this, ev);
         if (ev.group === 'BackwardCompatibility') {
             return;
         }
-        if (ev.type === Blockly.Events.CREATE) {
-            ev.ids.forEach(blockId => {
-                const block = Blockly.mainWorkspace.getBlockById(blockId);
-
-                if (block && block.type === 'trade' && !deleteBlockIfExists(block)) {
-                    bcMoveAboveInitializationsDown(block);
-                }
-            });
-        }
+        replaceInitializationBlocks(this, ev);
         if (ev.blockId === this.id) {
             if (ev.element === 'field') {
                 if (ev.name === 'MARKET_LIST') {
@@ -73,27 +102,6 @@ Blockly.Blocks.trade = {
                     }
                 }
             }
-            if ([Blockly.Events.CREATE, Blockly.Events.CHANGE].includes(ev.type)) {
-                setBlockTextColor(this);
-                if (!this.isInFlyout) {
-                    const symbol = this.getFieldValue('SYMBOL_LIST');
-                    const submarket = this.getInput('SUBMARKET').connection.targetConnection;
-                    // eslint-disable-next-line no-underscore-dangle
-                    const needsMutation = submarket && submarket.sourceBlock_.type !== 'tradeOptions';
-
-                    if (symbol && !needsMutation) {
-                        globalObserver.emit('bot.init', symbol);
-                    }
-                }
-                const type = this.getFieldValue('TRADETYPE_LIST');
-                if (type) {
-                    const oppositesName = type.toUpperCase();
-                    const contractType = this.getFieldValue('TYPE_LIST');
-                    if (oppositesName && contractType) {
-                        updatePurchaseChoices(contractType, oppositesName);
-                    }
-                }
-            }
         }
     },
 };
@@ -105,9 +113,10 @@ Blockly.JavaScript.trade = block => {
     const candleIntervalValue = block.getFieldValue('CANDLEINTERVAL_LIST');
     const contractTypeSelector = block.getFieldValue('TYPE_LIST');
     const oppositesName = block.getFieldValue('TRADETYPE_LIST').toUpperCase();
-    const contractTypeList = contractTypeSelector === 'both'
-        ? config.opposites[oppositesName].map(k => Object.keys(k)[0])
-        : [contractTypeSelector];
+    const contractTypeList =
+        contractTypeSelector === 'both'
+            ? config.opposites[oppositesName].map(k => Object.keys(k)[0])
+            : [contractTypeSelector];
     const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE';
     const code = `
     init = function init() {
