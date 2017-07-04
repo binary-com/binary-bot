@@ -117,8 +117,6 @@ export const marketToTradeOption = (market, marketOptions) => {
             cloneTradeOptions(tradeOptions, market);
         }
 
-        updateInputList(tradeOptions);
-
         if (marketOptions) {
             trade.setFieldValue(marketOptions.market, 'MARKET_LIST');
             trade.setFieldValue(marketOptions.submarket, 'SUBMARKET_LIST');
@@ -131,6 +129,8 @@ export const marketToTradeOption = (market, marketOptions) => {
             }
             extendParentFields(trade, market, marketFields);
         }
+
+        updateInputList(tradeOptions);
 
         market.dispose();
     });
