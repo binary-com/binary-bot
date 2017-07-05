@@ -18,10 +18,21 @@ const parseOhlc = ohlc => ({
 
 const parseCandles = candles => candles.map(t => parseOhlc(t));
 
-const updateTicks = (ticks, newTick) => [...ticks.slice(1), newTick];
+const updateTicks = (ticks, newTick) => (getLast(ticks).epoch >= newTick.epoch ? ticks : [...ticks.slice(1), newTick]);
 
 const updateCandles = (candles, ohlc) => {
-    const prevCandles = getLast(candles).epoch === ohlc.epoch ? candles.slice(0, -1) : candles.slice(1);
+    const lastCandle = getLast(candles);
+    if (
+        (lastCandle.open === ohlc.open &&
+            lastCandle.high === ohlc.high &&
+            lastCandle.low === ohlc.low &&
+            lastCandle.close === ohlc.close &&
+            lastCandle.epoch === ohlc.epoch) ||
+        lastCandle.epoch > ohlc.epoch
+    ) {
+        return candles;
+    }
+    const prevCandles = lastCandle.epoch === ohlc.epoch ? candles.slice(0, -1) : candles.slice(1);
     return [...prevCandles, ohlc];
 };
 
@@ -155,6 +166,9 @@ export default class TicksService {
         this.subscriptions = new Map();
     }
     updateTicksAndCallListeners(symbol, ticks) {
+        if (this.ticks.get(symbol) === ticks) {
+            return;
+        }
         this.ticks = this.ticks.set(symbol, ticks);
 
         const listeners = this.tickListeners.get(symbol);
@@ -164,6 +178,9 @@ export default class TicksService {
         }
     }
     updateCandlesAndCallListeners(address, candles) {
+        if (this.ticks.getIn(address) === candles) {
+            return;
+        }
         this.candles = this.candles.setIn(address, candles);
 
         const listeners = this.ohlcListeners.getIn(address);
