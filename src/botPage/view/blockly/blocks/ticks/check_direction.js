@@ -18,5 +18,5 @@ Blockly.Blocks.check_direction = {
 };
 Blockly.JavaScript.check_direction = block => {
     const checkWith = block.getFieldValue('CHECK_DIRECTION');
-    return [`Bot.checkDirection({ dir: '${checkWith}' })`, Blockly.JavaScript.ORDER_ATOMIC];
+    return [`Bot.checkDirection('${checkWith}')`, Blockly.JavaScript.ORDER_ATOMIC];
 };

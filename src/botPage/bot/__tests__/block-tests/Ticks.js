@@ -69,7 +69,7 @@ describe('Tick Blocks', () => {
         result.lastTick = Bot.getLastTick();
         result.lastDigit = Bot.getLastDigit();
         result.lastOhlc = Bot.getOhlcFromEnd();
-        result.isTickDirUp = Bot.checkDirection({ dir: 'rise' })
+        result.isTickDirUp = Bot.checkDirection('rise')
 
         result.ohlc = Bot.getOhlc();
         result.ticks = Bot.getTicks();
