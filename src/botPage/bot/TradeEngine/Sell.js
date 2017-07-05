@@ -20,16 +20,24 @@ export default Engine =>
                 throw Error(translate('Sell is not available'));
             }
 
-            return recoverFromError(
-                () => Promise.all([this.api.sellContract(this.contractId, 0), this.waitForAfter()]),
-                (errorCode, makeDelay) => makeDelay().then(() => this.observer.emit('REVERT', 'during')),
-                ['NoOpenPosition', 'InvalidSellContractProposal', 'UnrecognisedRequest'],
-                delayIndex++
-            ).then(s => {
+            const onSuccess = s => {
                 const { sell: { sold_for: soldFor } } = s[0];
                 delayIndex = 0;
                 notify('info', `${translate('Sold for')}: ${soldFor}`);
-            });
+            };
+
+            const action = () => Promise.all([this.api.sellContract(this.contractId, 0), this.waitForAfter()]);
+
+            if (!this.options.timeMachineEnabled) {
+                return doUntilDone(action).then(onSuccess);
+            }
+
+            return recoverFromError(
+                action,
+                (errorCode, makeDelay) => makeDelay().then(() => this.observer.emit('REVERT', 'during')),
+                ['NoOpenPosition', 'InvalidSellContractProposal', 'UnrecognisedRequest'],
+                delayIndex++
+            ).then(onSuccess);
         }
         sellExpired() {
             if (this.isSellAvailable && this.isExpired) {

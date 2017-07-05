@@ -5,6 +5,8 @@ export const init = options => `
   Bot.init('Xkq6oGFEHh6hJH8', {
     candleInterval: 60,
     contractTypes: ['CALL'],
+    shouldRestartOnError: true,
+    timeMachineEnabled: false,
     symbol: 'R_100', ${options || ''}
   })
 `;

@@ -143,10 +143,16 @@ export const prediction = block => {
     }
 };
 
-export const restartOnError = block => {
+export const restart = block => {
     block
         .appendDummyInput()
-        .appendField(`${translate('Restart Binary Bot On Error')}:`)
+        .appendField(`${translate('Restart buy/sell on error')}`)
+        .appendField(`(${translate('disable for better performance')}):`)
+        .appendField(new Blockly.FieldCheckbox('TRUE'), 'TIME_MACHINE_ENABLED');
+    block
+        .appendDummyInput()
+        .appendField(`${translate('Restart last trade on error')}`)
+        .appendField(`(${translate('bot ignores the unsuccessful trade')}):`)
         .appendField(new Blockly.FieldCheckbox('FALSE'), 'RESTARTONERROR')
         .appendField(new Blockly.FieldImage(caution, 15, 15, '!'));
 };

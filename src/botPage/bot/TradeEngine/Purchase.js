@@ -1,5 +1,5 @@
 import { translate } from '../../../common/i18n';
-import { recoverFromError } from '../tools';
+import { recoverFromError, doUntilDone } from '../tools';
 import { info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
@@ -16,8 +16,30 @@ export default Engine =>
 
             const { id, askPrice } = this.selectProposal(contractType);
 
+            const onSuccess = r => {
+                const { buy } = r;
+
+                this.subscribeToOpenContract(buy.contract_id);
+                this.store.dispatch(purchaseSuccessful());
+                this.renewProposalsOnPurchase();
+                delayIndex = 0;
+                notify('info', `${translate('Bought')}: ${buy.longcode}`);
+                info({
+                    totalRuns      : this.updateAndReturnTotalRuns(),
+                    transaction_ids: { buy: buy.transaction_id },
+                    contract_type  : contractType,
+                    buy_price      : buy.buy_price,
+                });
+            };
+
+            const action = () => this.api.buyContract(id, askPrice);
+
+            if (!this.options.timeMachineEnabled) {
+                return doUntilDone(action).then(onSuccess);
+            }
+
             return recoverFromError(
-                () => this.api.buyContract(id, askPrice),
+                action,
                 (errorCode, makeDelay) => {
                     // if disconnected no need to resubscription (handled by live-api)
                     if (errorCode !== 'DisconnectError') {
@@ -36,20 +58,6 @@ export default Engine =>
                 },
                 ['PriceMoved'],
                 delayIndex++
-            ).then(r => {
-                const { buy } = r;
-
-                this.subscribeToOpenContract(buy.contract_id);
-                this.store.dispatch(purchaseSuccessful());
-                this.renewProposalsOnPurchase();
-                delayIndex = 0;
-                notify('info', `${translate('Bought')}: ${buy.longcode}`);
-                info({
-                    totalRuns      : this.updateAndReturnTotalRuns(),
-                    transaction_ids: { buy: buy.transaction_id },
-                    contract_type  : contractType,
-                    buy_price      : buy.buy_price,
-                });
-            });
+            ).then(onSuccess);
         }
     };

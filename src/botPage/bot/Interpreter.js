@@ -3,6 +3,11 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
 
+const botInitialized = bot => bot && bot.tradeEngine.options;
+const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
+const shouldRestartOnError = bot => botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
+
 export default class Interpreter {
     constructor() {
         this.init();
@@ -38,7 +43,9 @@ export default class Interpreter {
                 'start',
                 interpreter.nativeToPseudo((...args) => {
                     const { start } = BotIf;
-                    this.startState = interpreter.takeStateSnapshot();
+                    if (shouldRestartOnError(this.bot)) {
+                        this.startState = interpreter.takeStateSnapshot();
+                    }
                     start(...args);
                 })
             );
@@ -55,11 +62,13 @@ export default class Interpreter {
                 this.createAsync(interpreter, watchName => {
                     const { watch } = this.bot.getInterface();
 
-                    const snapshot = this.interpreter.takeStateSnapshot();
-                    if (watchName === 'before') {
-                        this.beforeState = snapshot;
-                    } else {
-                        this.duringState = snapshot;
+                    if (timeMachineEnabled(this.bot)) {
+                        const snapshot = this.interpreter.takeStateSnapshot();
+                        if (watchName === 'before') {
+                            this.beforeState = snapshot;
+                        } else {
+                            this.duringState = snapshot;
+                        }
                     }
 
                     return watch(watchName);
@@ -74,14 +83,7 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
-                if (
-                    !(
-                        this.bot &&
-                        this.bot.tradeEngine.tradeOptions &&
-                        this.bot.tradeEngine.options &&
-                        this.bot.tradeEngine.options.shouldRestartOnError
-                    )
-                ) {
+                if (!shouldRestartOnError(this.bot) || !botStarted(this.bot)) {
                     reject(e);
                     return;
                 }
