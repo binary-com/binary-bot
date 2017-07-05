@@ -1,6 +1,6 @@
 {
   "name": "binary-bot",
-  "version": "8.1.6",
+  "version": "8.2.0",
   "description": "Visual automation for binary.com",
   "bin": {
     "bot": "lib/index.js"
