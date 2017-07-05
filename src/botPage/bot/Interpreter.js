@@ -3,9 +3,10 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
 
-const botStarted = bot => bot && bot.tradeEngine.tradeOptions && bot.tradeEngine.options;
-const shouldRestartOnError = bot => botStarted(bot) && bot.tradeEngine.options.shouldRestartOnError;
-const timeMachineEnabled = bot => botStarted(bot) && bot.tradeEngine.options.timeMachineEnabled;
+const botInitialized = bot => bot && bot.tradeEngine.options;
+const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
+const shouldRestartOnError = bot => botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
     constructor() {
@@ -82,7 +83,7 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
-                if (!shouldRestartOnError(this.bot)) {
+                if (!shouldRestartOnError(this.bot) || !botStarted(this.bot)) {
                     reject(e);
                     return;
                 }

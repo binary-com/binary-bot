@@ -122,6 +122,7 @@ Blockly.JavaScript.trade = block => {
         contractTypeSelector === 'both'
             ? config.opposites[oppositesName].map(k => Object.keys(k)[0])
             : [contractTypeSelector];
+    const timeMachineEnabled = block.getFieldValue('TIME_MACHINE_ENABLED') === 'TRUE';
     const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE';
     const code = `
     init = function init() {
@@ -130,6 +131,7 @@ Blockly.JavaScript.trade = block => {
         contractTypes: ${JSON.stringify(contractTypeList)},
         candleInterval: '${candleIntervalValue}',
         shouldRestartOnError: ${shouldRestartOnError},
+        timeMachineEnabled: ${timeMachineEnabled},
       });
       ${initialization.trim()}
     };

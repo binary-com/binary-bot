@@ -1,6 +1,6 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { findTopParentBlock } from '../../utils';
-import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, restartOnError } from './components';
+import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, restart } from './components';
 
 export const getTradeType = block => {
     const tradeDefBlock = findTopParentBlock(block);
@@ -141,5 +141,5 @@ export const marketDefPlaceHolders = block => {
     tradeTypeDropdown(block);
     contractTypes(block);
     candleInterval(block);
-    restartOnError(block);
+    restart(block);
 };
