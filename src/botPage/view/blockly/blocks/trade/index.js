@@ -60,6 +60,32 @@ const replaceInitializationBlocks = (trade, ev) => {
     }
 };
 
+const resetTradeFields = (trade, ev) => {
+    if (ev.blockId === trade.id) {
+        if (ev.element === 'field') {
+            if (ev.name === 'MARKET_LIST') {
+                trade.setFieldValue('', 'SUBMARKET_LIST');
+            }
+            if (ev.name === 'SUBMARKET_LIST') {
+                trade.setFieldValue('', 'SYMBOL_LIST');
+            }
+            if (ev.name === 'SYMBOL_LIST') {
+                trade.setFieldValue('', 'TRADETYPECAT_LIST');
+            }
+            if (ev.name === 'TRADETYPECAT_LIST') {
+                trade.setFieldValue('', 'TRADETYPE_LIST');
+            }
+            if (ev.name === 'TRADETYPE_LIST') {
+                if (ev.newValue) {
+                    trade.setFieldValue('both', 'TYPE_LIST');
+                } else {
+                    trade.setFieldValue('', 'TYPE_LIST');
+                }
+            }
+        }
+    }
+};
+
 Blockly.Blocks.trade = {
     init: function init() {
         this.appendDummyInput()
@@ -77,34 +103,11 @@ Blockly.Blocks.trade = {
     },
     onchange: function onchange(ev) {
         setBlockTextColor(this);
+        if (ev.group !== 'BackwardCompatibility') {
+            replaceInitializationBlocks(this, ev);
+            resetTradeFields(this, ev);
+        }
         decorateTrade(ev);
-        if (ev.group === 'BackwardCompatibility') {
-            return;
-        }
-        replaceInitializationBlocks(this, ev);
-        if (ev.blockId === this.id) {
-            if (ev.element === 'field') {
-                if (ev.name === 'MARKET_LIST') {
-                    this.setFieldValue('', 'SUBMARKET_LIST');
-                }
-                if (ev.name === 'SUBMARKET_LIST') {
-                    this.setFieldValue('', 'SYMBOL_LIST');
-                }
-                if (ev.name === 'SYMBOL_LIST') {
-                    this.setFieldValue('', 'TRADETYPECAT_LIST');
-                }
-                if (ev.name === 'TRADETYPECAT_LIST') {
-                    this.setFieldValue('', 'TRADETYPE_LIST');
-                }
-                if (ev.name === 'TRADETYPE_LIST') {
-                    if (ev.newValue) {
-                        this.setFieldValue('both', 'TYPE_LIST');
-                    } else {
-                        this.setFieldValue('', 'TYPE_LIST');
-                    }
-                }
-            }
-        }
     },
 };
 
