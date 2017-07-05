@@ -28,12 +28,12 @@ export const tradeOptionToProposal = tradeOption =>
 
 export const getDirection = ticks => {
     const length = ticks.length;
-    const [tick1, tick2] = ticks.slice(-2);
+    const [tickOld, tickNew] = ticks.slice(-2);
 
     let direction = '';
     if (length >= 2) {
-        direction = tick1.quote > tick2.quote ? 'rise' : direction;
-        direction = tick1.quote < tick2.quote ? 'fall' : direction;
+        direction = tickOld.quote < tickNew.quote ? 'rise' : direction;
+        direction = tickOld.quote > tickNew.quote ? 'fall' : direction;
     }
 
     return direction;
