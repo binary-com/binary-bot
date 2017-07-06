@@ -72,8 +72,8 @@ export default class TicksService {
             return Promise.resolve(this.ticks.get(symbol));
         }
 
-        if (style === 'candles' && this.candles.hasIn([symbol, granularity])) {
-            return Promise.resolve(this.candles.getIn([symbol, granularity]));
+        if (style === 'candles' && this.candles.hasIn([symbol, Number(granularity)])) {
+            return Promise.resolve(this.candles.getIn([symbol, Number(granularity)]));
         }
 
         return this.requestStream({ ...options, style });
@@ -90,7 +90,7 @@ export default class TicksService {
         if (type === 'ticks') {
             this.tickListeners = this.tickListeners.setIn([symbol, key], callback);
         } else {
-            this.ohlcListeners = this.ohlcListeners.setIn([symbol, granularity, key], callback);
+            this.ohlcListeners = this.ohlcListeners.setIn([symbol, Number(granularity), key], callback);
         }
 
         return key;
@@ -103,8 +103,8 @@ export default class TicksService {
             this.tickListeners = this.tickListeners.deleteIn([symbol, key]);
         }
 
-        if (type === 'candles' && this.ohlcListeners.hasIn([symbol, granularity, key])) {
-            this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity, key]);
+        if (type === 'candles' && this.ohlcListeners.hasIn([symbol, Number(granularity), key])) {
+            this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, Number(granularity), key]);
         }
 
         this.unsubscribeIfEmptyListeners(options);
@@ -122,11 +122,11 @@ export default class TicksService {
             needToUnsubscribe = true;
         }
 
-        const ohlcListener = this.ohlcListeners.getIn([symbol, granularity]);
+        const ohlcListener = this.ohlcListeners.getIn([symbol, Number(granularity)]);
 
         if (ohlcListener && !ohlcListener.size) {
-            this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, granularity]);
-            this.candles = this.candles.deleteIn([symbol, granularity]);
+            this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, Number(granularity)]);
+            this.candles = this.candles.deleteIn([symbol, Number(granularity)]);
             needToUnsubscribe = true;
         }
 
@@ -148,7 +148,7 @@ export default class TicksService {
 
             if (ohlcListeners) {
                 ohlcListeners.forEach((listener, granularity) => {
-                    this.candles = this.candles.deleteIn([symbol, granularity]);
+                    this.candles = this.candles.deleteIn([symbol, Number(granularity)]);
                     this.requestStream({
                         symbol,
                         granularity,
@@ -202,9 +202,9 @@ export default class TicksService {
         this.api.events.on('ohlc', r => {
             const { ohlc, ohlc: { symbol, granularity, id } } = r;
 
-            if (this.candles.hasIn([symbol, granularity])) {
-                this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, granularity], id);
-                const address = [symbol, granularity];
+            if (this.candles.hasIn([symbol, Number(granularity)])) {
+                this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);
+                const address = [symbol, Number(granularity)];
                 this.updateCandlesAndCallListeners(
                     address,
                     updateCandles(this.candles.getIn(address), parseOhlc(ohlc))
@@ -221,10 +221,10 @@ export default class TicksService {
         return new Promise((resolve, reject) => {
             doUntilDone(() =>
                 this.api.getTickHistory(symbol, {
-                    subscribe: 1,
-                    end      : 'latest',
-                    count    : 1000,
-                    granularity,
+                    subscribe  : 1,
+                    end        : 'latest',
+                    count      : 1000,
+                    granularity: granularity ? Number(granularity) : undefined,
                     style,
                 })
             )
@@ -237,7 +237,7 @@ export default class TicksService {
                     } else {
                         const candles = parseCandles(r.candles);
 
-                        this.updateCandlesAndCallListeners([symbol, granularity], candles);
+                        this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
 
                         resolve(candles);
                     }
