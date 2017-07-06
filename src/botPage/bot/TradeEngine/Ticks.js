@@ -58,7 +58,7 @@ export default Engine =>
             );
         }
         getOhlc(args) {
-            const { granularity = 60, field } = args || {};
+            const { granularity = this.options.candleInterval || 60, field } = args || {};
 
             return new Promise(resolve =>
                 this.$scope.ticksService
