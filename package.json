@@ -57,8 +57,7 @@
   },
   "scripts": {
     "start": "gulp watch",
-    "test": "eslint src/ && jest -w 10",
-    "test:full": "jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "gen-beta": "git checkout beta; npm prune ; npm install ; gulp build-min; rm -rf beta; mkdir beta ; cp -r www/ beta/beta; git checkout -- src",
     "gen-translation": "git checkout translation; npm prune ; npm install ; gulp build-min; rm -rf translation; mkdir translation ; cp -r www/ translation/translation; git checkout -- src",
     "deploy": "git checkout master ; npm prune ; npm install ; gulp deploy",
