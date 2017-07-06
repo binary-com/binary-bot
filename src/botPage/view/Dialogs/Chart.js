@@ -43,7 +43,6 @@ class ChartContent extends PureComponent {
             if (this.symbol !== s) {
                 this.stopTickListeners();
                 this.symbol = s;
-                this.pipSize = ticksService.pipSizes[s];
                 this.getData(undefined, undefined, this.dataType, this.granularity);
             }
         });
@@ -140,7 +139,7 @@ class ChartContent extends PureComponent {
                         ? this.state.contract
                         : null
                 }
-                pipSize={this.pipSize}
+                pipSize={ticksService.pipSizes[this.symbol]}
                 shiftMode="dynamic"
                 ticks={this.state.chartData}
                 getData={this.getData} // eslint-disable-line no-use-before-define
