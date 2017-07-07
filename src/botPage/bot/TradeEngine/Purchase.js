@@ -56,7 +56,7 @@ export default Engine =>
                         }
                     });
                 },
-                ['PriceMoved'],
+                ['PriceMoved', 'InvalidContractProposal'],
                 delayIndex++
             ).then(onSuccess);
         }

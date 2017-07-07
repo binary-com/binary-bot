@@ -26,7 +26,7 @@ class ChartContent extends PureComponent {
         super();
         this.symbol = 'R_100';
         this.chartType = 'line';
-        this.pipSize = 2;
+        this.defaultPipSize = 2;
         this.dataType = 'ticks';
         this.granularity = 60;
         this.listeners = {};
@@ -139,7 +139,7 @@ class ChartContent extends PureComponent {
                         ? this.state.contract
                         : null
                 }
-                pipSize={ticksService.pipSizes[this.symbol]}
+                pipSize={ticksService.pipSizes ? ticksService.pipSizes[this.symbol] : this.defaultPipSize}
                 shiftMode="dynamic"
                 ticks={this.state.chartData}
                 getData={this.getData} // eslint-disable-line no-use-before-define
