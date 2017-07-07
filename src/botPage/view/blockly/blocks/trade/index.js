@@ -30,11 +30,8 @@ const decorateTrade = ev => {
     }
     if ([Blockly.Events.CHANGE, Blockly.Events.MOVE, Blockly.Events.CREATE].includes(ev.type)) {
         const symbol = trade.getFieldValue('SYMBOL_LIST');
-        const submarket = trade.getInput('SUBMARKET').connection.targetConnection;
-        // eslint-disable-next-line no-underscore-dangle
-        const needsMutation = submarket && submarket.sourceBlock_.type !== 'tradeOptions';
 
-        if (symbol && !needsMutation) {
+        if (symbol) {
             globalObserver.emit('bot.init', symbol);
         }
         const type = trade.getFieldValue('TRADETYPE_LIST');
