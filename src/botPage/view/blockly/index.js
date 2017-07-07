@@ -132,7 +132,7 @@ export default class _Blockly {
         });
     }
     resetWorkspace() {
-        Blockly.Events.setGroup(true);
+        Blockly.Events.setGroup('reset');
         Blockly.mainWorkspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
         Blockly.Events.setGroup(false);

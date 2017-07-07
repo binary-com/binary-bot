@@ -31,9 +31,10 @@ const decorateTrade = ev => {
     if ([Blockly.Events.CHANGE, Blockly.Events.MOVE, Blockly.Events.CREATE].includes(ev.type)) {
         const symbol = trade.getFieldValue('SYMBOL_LIST');
 
-        if (symbol) {
+        if (symbol && (ev.group === 'reset' || ev.type !== Blockly.Events.CREATE)) {
             globalObserver.emit('bot.init', symbol);
         }
+
         const type = trade.getFieldValue('TRADETYPE_LIST');
         if (type) {
             const oppositesName = type.toUpperCase();
