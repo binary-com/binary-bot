@@ -148,7 +148,7 @@ export const restart = block => {
         .appendDummyInput()
         .appendField(`${translate('Restart buy/sell on error')}`)
         .appendField(`(${translate('disable for better performance')}):`)
-        .appendField(new Blockly.FieldCheckbox('TRUE'), 'TIME_MACHINE_ENABLED');
+        .appendField(new Blockly.FieldCheckbox('FALSE'), 'TIME_MACHINE_ENABLED');
     block
         .appendDummyInput()
         .appendField(`${translate('Restart last trade on error')}`)
