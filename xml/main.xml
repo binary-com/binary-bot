@@ -7,7 +7,7 @@
     <field name="TRADETYPE_LIST">risefall</field>
     <field name="TYPE_LIST">both</field>
     <field name="CANDLEINTERVAL_LIST">60</field>
-    <field name="TIME_MACHINE_ENABLED">TRUE</field>
+    <field name="TIME_MACHINE_ENABLED">FALSE</field>
     <field name="RESTARTONERROR">FALSE</field>
     <statement name="SUBMARKET">
       <block type="tradeOptions" id="x=V33~4Lb|(sLv`J[:Eb">
