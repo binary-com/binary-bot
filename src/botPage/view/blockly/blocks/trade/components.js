@@ -153,6 +153,6 @@ export const restart = block => {
         .appendDummyInput()
         .appendField(`${translate('Restart last trade on error')}`)
         .appendField(`(${translate('bot ignores the unsuccessful trade')}):`)
-        .appendField(new Blockly.FieldCheckbox('FALSE'), 'RESTARTONERROR')
+        .appendField(new Blockly.FieldCheckbox('TRUE'), 'RESTARTONERROR')
         .appendField(new Blockly.FieldImage(caution, 15, 15, '!'));
 };
