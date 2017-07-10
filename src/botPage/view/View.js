@@ -409,7 +409,7 @@ export default class View {
     }
     addEventHandlers() {
         globalObserver.register('Error', error => {
-            if (error.error && error.error.code === 'InvalidToken') {
+            if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
                 this.stop();
