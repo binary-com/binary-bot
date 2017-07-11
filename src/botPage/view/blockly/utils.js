@@ -167,31 +167,6 @@ export const expandDuration = duration =>
         .replace(/h/g, ' hour')
         .replace(/d/g, ' day')}(s)`;
 
-export const durationToSecond = duration => {
-    const parsedDuration = duration.match(/^([0-9]+)([stmhd])$/);
-    if (!parsedDuration) {
-        return null;
-    }
-    const durationValue = parseFloat(parsedDuration[1]);
-    const durationType = parsedDuration[2];
-    if (durationType === 's') {
-        return durationValue;
-    }
-    if (durationType === 't') {
-        return durationValue * 2;
-    }
-    if (durationType === 'm') {
-        return durationValue * 60;
-    }
-    if (durationType === 'h') {
-        return durationValue * 60 * 60;
-    }
-    if (durationType === 'd') {
-        return durationValue * 60 * 60 * 24;
-    }
-    return null;
-};
-
 const isProcedure = blockType => ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0;
 
 // dummy event to recover deleted blocks loaded by loader

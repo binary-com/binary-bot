@@ -20,13 +20,13 @@ export default Engine =>
                 throw Error(translate('Sell is not available'));
             }
 
-            const onSuccess = s => {
-                const { sell: { sold_for: soldFor } } = s[0];
+            const onSuccess = ({ sell: { sold_for: soldFor } }) => {
                 delayIndex = 0;
                 notify('info', `${translate('Sold for')}: ${soldFor}`);
+                return this.waitForAfter();
             };
 
-            const action = () => Promise.all([this.api.sellContract(this.contractId, 0), this.waitForAfter()]);
+            const action = () => this.api.sellContract(this.contractId, 0);
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
