@@ -2,7 +2,6 @@ import { doUntilDone } from '../tools';
 import { contract as broadcastContract } from '../broadcast';
 import { sell, openContractReceived } from './state/actions';
 
-const SUBSCRIPTION_TIMEOUT = 60; // seconds;
 const AFTER_FINISH_TIMEOUT = 5;
 
 export default Engine =>
@@ -66,9 +65,7 @@ export default Engine =>
                 ({ proposal_open_contract: { id: this.openContractId } } = r);
             });
         }
-        resetSubscriptionTimeout(
-            timeout = (this.getContractDuration() || SUBSCRIPTION_TIMEOUT) + AFTER_FINISH_TIMEOUT
-        ) {
+        resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {
             this.cancelSubscriptionTimeout();
             this.subscriptionTimeout = setInterval(() => {
                 this.subscribeToOpenContract();
