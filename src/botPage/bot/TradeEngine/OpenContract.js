@@ -3,7 +3,7 @@ import { contract as broadcastContract } from '../broadcast';
 import { sell, openContractReceived } from './state/actions';
 
 const SUBSCRIPTION_TIMEOUT = 60; // seconds;
-const WAIT_AFTER_FINISH_TIMEOUT = 5;
+const AFTER_FINISH_TIMEOUT = 5;
 
 export default Engine =>
     class OpenContract extends Engine {
@@ -37,7 +37,14 @@ export default Engine =>
                     this.cancelSubscriptionTimeout();
                 } else {
                     this.store.dispatch(openContractReceived());
-                    this.resetSubscriptionTimeout();
+                    if (!this.isExpired) {
+                        this.resetSubscriptionTimeout();
+                        return;
+                    }
+                    if (!this.retriedUnsuccessfullSellExpired) {
+                        this.retriedUnsuccessfullSellExpired = true;
+                        this.resetSubscriptionTimeout(AFTER_FINISH_TIMEOUT);
+                    }
                 }
             });
         }
@@ -47,6 +54,10 @@ export default Engine =>
             });
         }
         subscribeToOpenContract(contractId = this.contractId) {
+            if (this.contractId !== contractId) {
+                this.retriedUnsuccessfullSellExpired = false;
+                this.resetSubscriptionTimeout();
+            }
             this.contractId = contractId;
 
             this.unsubscribeOpenContract();
@@ -54,22 +65,22 @@ export default Engine =>
             doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
                 ({ proposal_open_contract: { id: this.openContractId } } = r);
             });
-
-            this.resetSubscriptionTimeout();
         }
-        resetSubscriptionTimeout() {
+        resetSubscriptionTimeout(
+            timeout = (this.getContractDuration() || SUBSCRIPTION_TIMEOUT) + AFTER_FINISH_TIMEOUT
+        ) {
             this.cancelSubscriptionTimeout();
-            const timeout = this.getContractDuration() || SUBSCRIPTION_TIMEOUT;
             this.subscriptionTimeout = setInterval(() => {
                 this.subscribeToOpenContract();
-            }, (timeout + WAIT_AFTER_FINISH_TIMEOUT) * 1000);
+                this.resetSubscriptionTimeout(timeout);
+            }, timeout * 1000);
         }
         cancelSubscriptionTimeout() {
             clearTimeout(this.subscriptionTimeout);
         }
         unsubscribeOpenContract() {
             if (this.openContractId) {
-                this.api.unsubscribeByID(this.openContractId);
+                doUntilDone(() => this.api.unsubscribeByID(this.openContractId));
             }
         }
         setContractFlags(contract) {
