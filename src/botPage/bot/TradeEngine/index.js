@@ -1,6 +1,7 @@
 import { Map } from 'immutable';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { durationToSecond } from 'binary-common-utils/lib/tools';
 import { translate } from '../../..//common/i18n';
 import createError from '../../common/error';
 import { doUntilDone } from '../tools';
@@ -100,6 +101,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                 resolve();
             })
         ).then(() => this.subscribeToBalance());
+    }
+    getContractDuration() {
+        const { duration, duration_unit: durationUnit } = this.tradeOptions;
+
+        return durationToSecond(`${duration}${durationUnit}`);
     }
     observe() {
         this.observeOpenContract();
