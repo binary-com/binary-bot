@@ -33,10 +33,13 @@ const isNewNotification = isNewMessage();
 
 const isNewError = isNewMessage();
 
-const notify = (className, msg, position = 'left') => {
-    if (msg && isNewNotification(msg)) {
-        log(className, msg);
-        $.notify(msg, { position: `bottom ${position}`, className });
+const notify = ({ className, message, position = 'left', sound = 'silent' }) => {
+    if (message && isNewNotification(message)) {
+        log(className, message);
+        $.notify(message, { position: `bottom ${position}`, className });
+        if (sound !== 'silent') {
+            $(`#${sound}`).get(0).play();
+        }
     }
 };
 
@@ -69,7 +72,7 @@ const notifyError = error => {
         trackJs.track(errorWithCode);
     }
 
-    notify('error', message, 'right');
+    notify({ className: 'error', message, position: 'right' });
 };
 
 const waitForNotifications = () => {
@@ -89,12 +92,12 @@ const waitForNotifications = () => {
 
     logList.forEach(event => globalObserver.register(event, d => log('info', event, d)));
 
-    globalObserver.register('Notify', args => notify(...args));
+    globalObserver.register('Notify', notify);
 
     globalObserver.register('Error', notifyError);
 
     notifList.forEach(className =>
-        globalObserver.register(`ui.log.${className}`, message => notify(className, message, 'right'))
+        globalObserver.register(`ui.log.${className}`, message => notify({ className, message, position: 'right' }))
     );
 
     amplitudeList.forEach(event => globalObserver.register(event, d => amplitude.getInstance().logEvent(event, d)));
