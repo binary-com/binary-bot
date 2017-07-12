@@ -33,7 +33,7 @@ const interpreter = createInterpreter();
 
 globalObserver.register('Error', e => log(e));
 
-globalObserver.register('Notify', e => log(`${e[0].toUpperCase()}: ${e[1]}`));
+globalObserver.register('Notify', ({ className, message }) => log(`${className.toUpperCase()}: ${message}`));
 
 lineReader
     .on('line', line => {
