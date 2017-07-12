@@ -86,7 +86,7 @@ export const candleInterval = block => {
         block
             .appendDummyInput('CANDLE_INTERVAL')
             .appendField(translate('Default Candle Interval:'))
-            .appendField(new Blockly.FieldDropdown(config.candleIntervals), 'CANDLEINTERVAL_LIST');
+            .appendField(new Blockly.FieldDropdown(config.candleIntervals.slice(1)), 'CANDLEINTERVAL_LIST');
     }
 };
 

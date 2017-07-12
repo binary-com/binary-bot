@@ -2,6 +2,7 @@
 import config from '../../../../common/const';
 import { translate } from '../../../../../common/i18n';
 import { mainScope } from '../../relationChecker';
+import candleInterval, { getGranularity } from './candleInterval';
 
 Blockly.Blocks.read_ohlc = {
     init: function init() {
@@ -9,7 +10,8 @@ Blockly.Blocks.read_ohlc = {
             .setCheck('Number')
             .appendField(translate('In candles list read '))
             .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
-            .appendField(`${translate('# from end')}`);
+            .appendField(translate('# from end'));
+        candleInterval(this);
         this.setOutput(true, 'Number');
         this.setInputsInline(true);
         this.setColour('#f2f2f2');
@@ -25,5 +27,8 @@ Blockly.JavaScript.read_ohlc = block => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
     const index = Number(Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || 1;
 
-    return [`Bot.getOhlcFromEnd({ field: '${ohlcField}', index: ${index} })`, Blockly.JavaScript.ORDER_ATOMIC];
+    return [
+        `Bot.getOhlcFromEnd({ field: '${ohlcField}', index: ${index}, granularity: ${getGranularity(block)} })`,
+        Blockly.JavaScript.ORDER_ATOMIC,
+    ];
 };

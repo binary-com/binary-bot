@@ -1,6 +1,7 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
 import { translate } from '../../../../../common/i18n';
 import { mainScope } from '../../relationChecker';
+import candleInterval, { getGranularity } from './candleInterval';
 
 Blockly.Blocks.get_ohlc = {
     init: function init() {
@@ -8,6 +9,7 @@ Blockly.Blocks.get_ohlc = {
             .setCheck('Number')
             .appendField(translate('in candle list'))
             .appendField(`${translate('get # from end')}`);
+        candleInterval(this);
         this.setOutput(true, 'Candle');
         this.setInputsInline(true);
         this.setColour('#f2f2f2');
@@ -21,5 +23,8 @@ Blockly.Blocks.get_ohlc = {
 
 Blockly.JavaScript.get_ohlc = block => {
     const index = Number(Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || 1;
-    return [`Bot.getOhlcFromEnd({ index: ${index} })`, Blockly.JavaScript.ORDER_ATOMIC];
+    return [
+        `Bot.getOhlcFromEnd({ index: ${index}, granularity: ${getGranularity(block)} })`,
+        Blockly.JavaScript.ORDER_ATOMIC,
+    ];
 };

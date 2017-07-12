@@ -122,6 +122,7 @@ export default {
         [translate('Open Time'), 'epoch'],
     ],
     candleIntervals: [
+        [translate('Default'), 'default'],
         ['1 minute', '60'],
         ['2 minutes', '120'],
         ['3 minutes', '180'],
