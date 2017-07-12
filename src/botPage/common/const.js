@@ -29,6 +29,14 @@ export default {
             [translate('yellow'), 'warn'],
             [translate('red'), 'error'],
         ],
+        NOTIFICATION_SOUND: [
+            [translate('Silent'), 'silent'],
+            [translate('Announcement'), 'announcement'],
+            [translate('Earned money'), 'earned-money'],
+            [translate('Job done'), 'job-done'],
+            [translate('Error'), 'error'],
+            [translate('Severe error'), 'severe-error'],
+        ],
     },
 
     opposites: {

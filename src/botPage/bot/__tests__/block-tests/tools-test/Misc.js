@@ -14,7 +14,7 @@ describe('Misc. tools', () => {
         runAndGetResult(
             undefined,
             `
-        Bot.notify('Test', 'info')
+        Bot.notify({ message: 'Test', className: 'info'})
         result.totalRuns = Bot.getTotalRuns();
         result.totalProfit = Bot.getTotalProfit();
         watch('before')
@@ -47,8 +47,9 @@ describe('Misc. tools', () => {
     });
 
     it('Notify', () => {
-        const { notify } = observed;
+        const { notify: { className, message } } = observed;
 
-        expect(notify).deep.equal(['Test', 'info']);
+        expect(className).equal('info');
+        expect(message).equal('Test');
     });
 });
