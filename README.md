@@ -46,7 +46,7 @@ ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169' bot bot-example.
 ```
 
 ### CLI examples:
-[`speed-test.js`](/cli-examples/speed-test.js)
+[`speed-test.js`](https://github.com/binary-com/binary-bot/blob/master/cli-examples/speed-test.js)
 
 ## Think you found a bug?
 
