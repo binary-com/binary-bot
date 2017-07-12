@@ -2,6 +2,7 @@
 import config from '../../../../common/const';
 import { mainScope } from '../../relationChecker';
 import { translate } from '../../../../../common/i18n';
+import candleInterval, { getGranularity } from './candleInterval';
 
 Blockly.Blocks.ohlc_values = {
     init: function init() {
@@ -9,6 +10,7 @@ Blockly.Blocks.ohlc_values = {
             .appendField(translate('Make a List of'))
             .appendField(new Blockly.FieldDropdown(config.ohlcFields), 'OHLCFIELD_LIST')
             .appendField(translate('values in candles list'));
+        candleInterval(this);
         this.setOutput(true, 'Array');
         this.setColour('#f2f2f2');
         this.setTooltip(translate('Returns a list of the selected candle values'));
@@ -22,5 +24,8 @@ Blockly.Blocks.ohlc_values = {
 Blockly.JavaScript.ohlc_values = block => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 
-    return [`Bot.getOhlc({ field: '${ohlcField}' })`, Blockly.JavaScript.ORDER_ATOMIC];
+    return [
+        `Bot.getOhlc({ field: '${ohlcField}', granularity: ${getGranularity(block)} })`,
+        Blockly.JavaScript.ORDER_ATOMIC,
+    ];
 };
