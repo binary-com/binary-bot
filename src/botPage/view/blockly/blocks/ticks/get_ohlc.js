@@ -22,7 +22,7 @@ Blockly.Blocks.get_ohlc = {
 };
 
 Blockly.JavaScript.get_ohlc = block => {
-    const index = Number(Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC)) || 1;
+    const index = Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.ORDER_ATOMIC) || 1;
     return [
         `Bot.getOhlcFromEnd({ index: ${index}, granularity: ${getGranularity(block)} })`,
         Blockly.JavaScript.ORDER_ATOMIC,
