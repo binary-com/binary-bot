@@ -69,7 +69,7 @@ export default Engine =>
         getOhlcFromEnd(args) {
             const { index: i = 1 } = args || {};
 
-            const index = expectPositiveInteger(i, translate('Index must be a positive integer'));
+            const index = expectPositiveInteger(Number(i), translate('Index must be a positive integer'));
 
             return new Promise(resolve => this.getOhlc(args).then(ohlc => resolve(ohlc.slice(-index)[0])));
         }
