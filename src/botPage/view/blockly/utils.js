@@ -1,7 +1,7 @@
-import filesaver from 'file-saver';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import config from '../../common/const';
 import { translate } from '../../../common/i18n';
+import { saveAs } from '../shared';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
@@ -135,11 +135,8 @@ export const insideMainBlocks = block => {
 
 export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
-    const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    const blob = new Blob([xmlText], {
-        type: 'text/xml;charset=utf-8',
-    });
-    filesaver.saveAs(blob, `${filename}.xml`);
+    const data = Blockly.Xml.domToPrettyText(xmlDom);
+    saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
 export const disable = (blockObj, message) => {

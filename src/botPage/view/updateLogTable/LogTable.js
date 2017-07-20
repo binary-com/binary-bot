@@ -1,14 +1,20 @@
+import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDataGrid from 'react-data-grid';
 import { translate } from '../../../common/i18n';
-import { appendRow } from '../shared';
+import { appendRow, saveAs } from '../shared';
+import ExportButton from '../react-components/ExportButton';
 
 const minHeight = 550;
 
 class ColorFormatter extends Component {
     render() {
-        return <div className={this.props.row.type}><ReactDataGrid.Row ref="row" {...this.props} /></div>;
+        return (
+            <div className={this.props.row.type}>
+                <ReactDataGrid.Row ref="row" {...this.props} />
+            </div>
+        );
     }
 }
 
@@ -47,18 +53,25 @@ export default class LogTable extends Component {
     rowGetter(i) {
         return this.state.rows[i];
     }
+    export() {
+        const data = json2csv({ data: this.state.rows, fields: ['timestamp', 'message'] });
+        saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
+    }
     render() {
         if (!$('#logTable:visible').length) {
             return <div style={{ height: minHeight }} />;
         }
         return (
-            <ReactDataGrid
-                columns={this.columns}
-                rowGetter={this.rowGetter.bind(this)}
-                rowsCount={this.state.rows.length}
-                minHeight={minHeight}
-                rowRenderer={ColorFormatter}
-            />
+            <div>
+                <ExportButton onClick={() => this.export()} />
+                <ReactDataGrid
+                    columns={this.columns}
+                    rowGetter={this.rowGetter.bind(this)}
+                    rowsCount={this.state.rows.length}
+                    minHeight={minHeight}
+                    rowRenderer={ColorFormatter}
+                />
+            </div>
         );
     }
 }
