@@ -1,7 +1,9 @@
+import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
-import { appendRow, updateRow } from '../shared';
+import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
+import ExportButton from '../react-components/ExportButton';
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
 
@@ -14,7 +16,10 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
 
 const minHeight = 380;
 
-const ProfitColor = ({ value }) => <div style={{ color: value > 0 ? 'green' : 'red' }}>{value}</div>;
+const ProfitColor = ({ value }) =>
+    <div style={{ color: value > 0 ? 'green' : 'red' }}>
+        {value}
+    </div>;
 
 export default class TradeTable extends Component {
     constructor() {
@@ -53,18 +58,36 @@ export default class TradeTable extends Component {
     rowGetter(i) {
         return this.state.rows[i];
     }
-
+    export() {
+        const data = json2csv({
+            data  : this.state.rows,
+            fields: [
+                'id',
+                'reference',
+                'contract_type',
+                'entry_tick',
+                'exit_tick',
+                'buy_price',
+                'sell_price',
+                'profit',
+            ],
+        });
+        saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
+    }
     render() {
         if (!$('#tradeInfo:visible').length) {
             return <div style={{ height: minHeight }} />;
         }
         return (
-            <ReactDataGrid
-                columns={this.columns}
-                rowGetter={this.rowGetter.bind(this)}
-                rowsCount={this.state.rows.length}
-                minHeight={minHeight}
-            />
+            <div>
+                <ExportButton onClick={() => this.export()} customStyle={{ marginTop: '-3.5em' }} />
+                <ReactDataGrid
+                    columns={this.columns}
+                    rowGetter={this.rowGetter.bind(this)}
+                    rowsCount={this.state.rows.length}
+                    minHeight={minHeight}
+                />
+            </div>
         );
     }
 }

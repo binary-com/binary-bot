@@ -1,3 +1,4 @@
+import filesaver from 'file-saver';
 import Observer from 'binary-common-utils/lib/observer';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
@@ -44,3 +45,8 @@ export const updateRow = (prevRowIndex, trade, state) => ({
         },
     ],
 });
+
+export const saveAs = ({ data, filename, type }) => {
+    const blob = new Blob([data], { type });
+    filesaver.saveAs(blob, filename);
+};
