@@ -61,7 +61,7 @@ export default () => {
         }
         const code = `
         Bot.start({
-          limitations: limitations,
+          limitations: BinaryBotPrivateLimitations,
           duration: ${durationValue},
           duration_unit: '${durationType}',
           currency: '${currency}',

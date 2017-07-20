@@ -241,51 +241,49 @@ export default class _Blockly {
         let code;
         try {
             code = `
-       (function(){
-         var init, start, before_purchase, during_purchase, after_purchase;
+var BinaryBotPrivateInit, BinaryBotPrivateStart, BinaryBotPrivateBeforePurchase, BinaryBotPrivateDuringPurchase, BinaryBotPrivateAfterPurchase;
 
-         var lastTickTime
-         var tick_analysis_list = [];
+var BinaryBotPrivateLastTickTime
+var BinaryBotPrivateTickAnalysisList = [];
 
-         function run(f, arg) {
-           if (f) return f(arg);
-           return false;
-         }
+function BinaryBotPrivateRun(f, arg) {
+ if (f) return f(arg);
+ return false;
+}
 
-         function tick_analysis() {
-           var currentTickTime = Bot.getLastTick(true).epoch
-           if (currentTickTime === lastTickTime) {
-             return
-           }
-           lastTickTime = currentTickTime
-           for (var i = 0; i < tick_analysis_list.length; i++) {
-             run(tick_analysis_list[i]);
-           }
-         }
+function BinaryBotPrivateTickAnalysis() {
+ var currentTickTime = Bot.getLastTick(true).epoch
+ if (currentTickTime === BinaryBotPrivateLastTickTime) {
+   return
+ }
+ BinaryBotPrivateLastTickTime = currentTickTime
+ for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
+   BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
+ }
+}
 
-         var limitations = ${JSON.stringify(limitations)};
+var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
 
-         ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
-         run(init);
+BinaryBotPrivateRun(BinaryBotPrivateInit);
 
-         while(true) {
-           tick_analysis();
-           run(start)
-           while(watch('before')) {
-             tick_analysis();
-             run(before_purchase);
-           }
-           while(watch('during')) {
-             tick_analysis();
-             run(during_purchase);
-           }
-           tick_analysis();
-           if(!run(after_purchase)) {
-             break;
-           }
-         }
-       })();
+while(true) {
+ BinaryBotPrivateTickAnalysis();
+ BinaryBotPrivateRun(BinaryBotPrivateStart)
+ while(watch('before')) {
+   BinaryBotPrivateTickAnalysis();
+   BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
+ }
+ while(watch('during')) {
+   BinaryBotPrivateTickAnalysis();
+   BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
+ }
+ BinaryBotPrivateTickAnalysis();
+ if(!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
+   break;
+ }
+}
        `;
             this.generatedJs = code;
             if (code) {

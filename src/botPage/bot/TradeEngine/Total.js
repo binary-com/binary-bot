@@ -1,6 +1,7 @@
 import { translate } from '../../../common/i18n';
 import { addFixed, subtractFixed } from '../tools';
 import { info, notify } from '../broadcast';
+import createError from '../../common/error';
 
 let totalProfit = 0;
 let totalWins = 0;
@@ -70,10 +71,10 @@ export default Engine =>
 
             if (maxLoss && maxTrades) {
                 if (this.sessionRuns >= maxTrades) {
-                    throw Error(translate('Maximum number of trades reached'));
+                    throw createError('CustomLimitsReached', translate('Maximum number of trades reached'));
                 }
                 if (this.sessionProfit <= -maxLoss) {
-                    throw Error(translate('Maximum loss amount reached'));
+                    throw createError('CustomLimitsReached', translate('Maximum loss amount reached'));
                 }
             }
         }

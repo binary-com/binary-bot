@@ -126,7 +126,7 @@ Blockly.JavaScript.trade = block => {
     const timeMachineEnabled = block.getFieldValue('TIME_MACHINE_ENABLED') === 'TRUE';
     const shouldRestartOnError = block.getFieldValue('RESTARTONERROR') === 'TRUE';
     const code = `
-    init = function init() {
+    BinaryBotPrivateInit = function BinaryBotPrivateInit() {
       Bot.init('${account}', {
         symbol: '${block.getFieldValue('SYMBOL_LIST')}',
         contractTypes: ${JSON.stringify(contractTypeList)},
@@ -136,7 +136,7 @@ Blockly.JavaScript.trade = block => {
       });
       ${initialization.trim()}
     };
-    start = function start() {
+    BinaryBotPrivateStart = function BinaryBotPrivateStart() {
       ${tradeOptionsStatement.trim()}
     };
   `;

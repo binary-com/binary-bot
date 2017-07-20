@@ -11,7 +11,6 @@ import { version } from '../../../package.json';
 loadLang();
 
 require('notifyjs-browser');
-require('./draggable');
 
 setAppId();
 $.ajaxSetup({
