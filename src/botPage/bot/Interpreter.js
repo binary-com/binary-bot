@@ -83,7 +83,7 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
-                if (!shouldRestartOnError(this.bot) || !botStarted(this.bot)) {
+                if (e.name === 'CustomLimitsReached' || !shouldRestartOnError(this.bot) || !botStarted(this.bot)) {
                     reject(e);
                     return;
                 }

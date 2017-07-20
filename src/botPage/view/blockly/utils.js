@@ -320,7 +320,7 @@ const loadBlocksFromHeader = (blockStr = '', header) =>
                         Array.from(xml.children)
                             .filter(
                                 block =>
-                                    ['tick_analysis'].includes(block.getAttribute('type')) ||
+                                    block.getAttribute('type') === 'tick_analysis' ||
                                     isProcedure(block.getAttribute('type'))
                             )
                             .forEach(block => addDomAsBlockFromHeader(block, header));
