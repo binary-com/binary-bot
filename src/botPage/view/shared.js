@@ -1,8 +1,14 @@
 import filesaver from 'file-saver';
 import Observer from 'binary-common-utils/lib/observer';
+import { setAppId } from '../../common/appId';
+import { load as loadLang } from '../../common/lang';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
 import { createApi } from '../bot/CliTools';
+
+loadLang();
+
+setAppId();
 
 let tmpApi = createApi();
 

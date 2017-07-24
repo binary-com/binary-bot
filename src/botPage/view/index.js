@@ -1,18 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import 'babel-polyfill';
 import 'jquery-ui/ui/widgets/dialog';
-import lzString from 'lz-string';
+import 'notifyjs-browser';
 import View from './View';
-import { setAppId } from '../../common/appId';
-import { load as loadLang } from '../../common/lang';
 import '../../common/binary-ui/dropdown';
 import { version } from '../../../package.json';
 
-loadLang();
-
-require('notifyjs-browser');
-
-setAppId();
 $.ajaxSetup({
     cache: false,
 });
@@ -27,6 +20,7 @@ window._trackJs = {
     },
 };
 
+// Should stay below the window._trackJs config
 require('trackjs');
 
 const view = new View();
@@ -36,33 +30,6 @@ view.initPromise.then(() => {
     $('.barspinner').hide();
     trackJs.addMetadata('version', version);
     trackJs.configure({
-        userId : $('.account-id').first().text(),
-        onError: (payload, error) => {
-            if (
-                error &&
-                error.message &&
-                error.message.indexOf('The play() request was interrupted by a call to pause()') >= 0
-            ) {
-                return false;
-            }
-            payload.console.push({
-                message  : lzString.compressToBase64(view.blockly.generatedJs),
-                severity : 'log',
-                timestamp: new Date().toISOString(),
-            });
-            payload.console.push({
-                message  : lzString.compressToBase64(view.blockly.blocksXmlStr),
-                severity : 'log',
-                timestamp: new Date().toISOString(),
-            });
-            payload.console.push({
-                message: lzString.compressToBase64(
-                    Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace))
-                ),
-                severity : 'log',
-                timestamp: new Date().toISOString(),
-            });
-            return true;
-        },
+        userId: $('.account-id').first().text(),
     });
 });
