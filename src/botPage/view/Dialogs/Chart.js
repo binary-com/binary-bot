@@ -3,6 +3,7 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { BinaryChart } from 'binary-charts';
 import { ticksService } from '../shared';
 import { translate } from '../../../common/i18n';
+import { loading as loadingStyle } from '../style';
 import Dialog from './Dialog';
 
 const chartWidth = 500;
@@ -117,15 +118,7 @@ class ChartContent extends PureComponent {
         if (!$('#chart-dialog-component:visible').length) {
             return (
                 <div style={{ height: chartHeight - headerSize, width: chartWidth - headerSize }}>
-                    <div
-                        style={{
-                            textAlign : 'center',
-                            paddingTop: '50%',
-                            fontSize  : '1.5em',
-                        }}
-                    >
-                        Loading...
-                    </div>
+                    <div style={loadingStyle}>Loading...</div>
                 </div>
             );
         }

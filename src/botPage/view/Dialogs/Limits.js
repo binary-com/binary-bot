@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../../common/i18n';
-import { contentStyle, errorStyle, saveButtonStyle, limitsStyle, inputStyle, fieldStyle } from './Style';
+import * as style from '../style';
 import Dialog from './Dialog';
 
 class LimitsContent extends PureComponent {
@@ -37,43 +37,47 @@ class LimitsContent extends PureComponent {
                 action="javascript:;" // eslint-disable-line no-script-url
                 onSubmit={() => this.submit()}
                 className="dialog-content"
-                style={contentStyle}
+                style={style.content}
             >
-                <div style={limitsStyle}>
-                    <label style={fieldStyle} htmlFor="limitation-max-trades">
-                        <input
-                            style={inputStyle}
-                            ref={el => {
-                                this.maxTradesDiv = el;
-                            }}
-                            type="number"
-                            id="limitation-max-trades"
-                            min="1"
-                            max="100"
-                            step="1"
-                        />
-                        {translate('Maximum number of trades')}
-                    </label>
-                    <label style={fieldStyle} htmlFor="limitation-max-loss">
-                        <input
-                            style={inputStyle}
-                            ref={el => {
-                                this.maxLossDiv = el;
-                            }}
-                            type="number"
-                            id="limitation-max-loss"
-                            min="0.01"
-                            step="0.01"
-                        />
-                        {translate('Maximum loss amount')}
-                    </label>
+                <div style={style.limits}>
+                    <div style={style.inputRow}>
+                        <label style={style.field} htmlFor="limitation-max-trades">
+                            <input
+                                style={style.input}
+                                ref={el => {
+                                    this.maxTradesDiv = el;
+                                }}
+                                type="number"
+                                id="limitation-max-trades"
+                                min="1"
+                                max="100"
+                                step="1"
+                            />
+                            {translate('Maximum number of trades')}
+                        </label>
+                    </div>
+                    <div style={style.inputRow}>
+                        <label style={style.field} htmlFor="limitation-max-loss">
+                            <input
+                                style={style.input}
+                                ref={el => {
+                                    this.maxLossDiv = el;
+                                }}
+                                type="number"
+                                id="limitation-max-loss"
+                                min="0.01"
+                                step="0.01"
+                            />
+                            {translate('Maximum loss amount')}
+                        </label>
+                    </div>
                     {this.state.error
-                        ? <p style={errorStyle}>
+                        ? <p style={style.error}>
                               {this.state.error}
                           </p>
                         : null}
                 </div>
-                <div style={saveButtonStyle}>
+                <div style={style.submitButton}>
                     <button type="submit">
                         {translate('Start')}
                     </button>

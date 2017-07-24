@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { translate } from '../../../common/i18n';
+import * as style from '../style';
 
 export default class Summary extends Component {
     componentWillReceiveProps({ tradeInfo }) {
@@ -53,10 +54,10 @@ export default class Summary extends Component {
                         <td className="totalPayout">
                             {totalPayout}
                         </td>
-                        <td style={{ color: 'green' }} className="totalWins">
+                        <td style={style.green} className="totalWins">
                             {totalWins}
                         </td>
-                        <td style={{ color: 'red' }} className="totalLosses">
+                        <td style={style.red} className="totalLosses">
                             {totalLosses}
                         </td>
                         <td style={profitColor} className="totalProfit">
