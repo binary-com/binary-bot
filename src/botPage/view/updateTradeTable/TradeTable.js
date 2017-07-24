@@ -4,6 +4,7 @@ import ReactDataGrid from 'react-data-grid';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import ExportButton from '../react-components/ExportButton';
+import * as style from '../style';
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
 
@@ -17,7 +18,7 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
 const minHeight = 380;
 
 const ProfitColor = ({ value }) =>
-    <div style={{ color: value > 0 ? 'green' : 'red' }}>
+    <div style={value > 0 ? style.green : style.red}>
         {value}
     </div>;
 
@@ -80,7 +81,7 @@ export default class TradeTable extends Component {
         }
         return (
             <div>
-                <ExportButton onClick={() => this.export()} customStyle={{ marginTop: '-3.5em' }} />
+                <ExportButton onClick={() => this.export()} customStyle={style.tradeTableExport} />
                 <ReactDataGrid
                     columns={this.columns}
                     rowGetter={this.rowGetter.bind(this)}

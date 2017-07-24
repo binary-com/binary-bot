@@ -1,29 +1,29 @@
 #toolbox {
-  position: absolute;
-  z-index: 99;
-  right: 0;
-  width: 4em;
-  text-align: center;
-  padding: 10px;
+    position: absolute;
+    z-index: 99;
+    right: 0;
+    width: 4em;
+    text-align: center;
+    padding: 10px;
 
-  .toolbox-button {
-    float: right;
-    margin-bottom: 5px;
-    background-color: $brand-gray;
-    border: 1px solid $toolbox-btn-active;
-    padding: 2.5px 6px;
-    color: $black;
-  }
+    .toolbox-button {
+        float: right;
+        margin-bottom: 5px;
+        background-color: $brand-gray;
+        border: 1px solid $toolbox-btn-active;
+        padding: 2.5px 6px;
+        color: $black;
+    }
 
-  .toolbox-button:hover {
-    background-color: $toolbox-btn-active;
-  }
+    .toolbox-button:hover {
+        background-color: $toolbox-btn-active;
+    }
 
-  .toolbox-button:focus {
-    outline: none;
-  }
+    .toolbox-button:focus {
+        outline: none;
+    }
 
-  .box.is-dragover {
-    background-color: grey;
-  }
+    .box.is-dragover {
+        background-color: grey;
+    }
 }

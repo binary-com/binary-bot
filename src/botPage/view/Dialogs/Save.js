@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../../common/i18n';
-import { contentStyle, checkboxStyle, saveButtonStyle, limitsStyle, fieldStyle } from './Style';
+import * as style from '../style';
 import Dialog from './Dialog';
 
 class SaveContent extends PureComponent {
@@ -26,43 +26,48 @@ class SaveContent extends PureComponent {
                 action="javascript:;" // eslint-disable-line no-script-url
                 onSubmit={() => this.submit()}
                 className="dialog-content"
-                style={contentStyle}
+                style={style.content}
             >
-                <div style={limitsStyle}>
-                    <label style={fieldStyle} title={'Choose a filename to save'} htmlFor="save-filename">
-                        {translate('Filename')}:
-                        <input
-                            name="save-filename"
-                            title="Choose filename for your blocks"
-                            type="text"
-                            ref={el => {
-                                this.filename = el;
-                            }}
-                            defaultValue="binary-bot"
-                        />
-                    </label>
-                    <label
-                        style={fieldStyle}
-                        title={
-                            'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
-                        }
-                        htmlFor="save-is-collection"
-                    >
-                        {translate('Save As Collection')}
-                        <input
-                            title={translate(
+                <div style={style.limits}>
+                    <div style={style.inputRow}>
+                        <label style={style.field} title={'Choose a filename to save'} htmlFor="save-filename">
+                            {translate('Filename')}:
+                            <input
+                                style={style.filename}
+                                name="save-filename"
+                                title="Choose filename for your blocks"
+                                type="text"
+                                ref={el => {
+                                    this.filename = el;
+                                }}
+                                defaultValue="binary-bot"
+                            />
+                        </label>
+                    </div>
+                    <div style={style.inputRow}>
+                        <label
+                            style={style.field}
+                            title={
                                 'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
-                            )}
-                            name="save-is-collection"
-                            type="checkbox"
-                            ref={el => {
-                                this.isCollection = el;
-                            }}
-                            style={checkboxStyle}
-                        />
-                    </label>
+                            }
+                            htmlFor="save-is-collection"
+                        >
+                            {translate('Save As Collection')}
+                            <input
+                                title={translate(
+                                    'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
+                                )}
+                                name="save-is-collection"
+                                type="checkbox"
+                                ref={el => {
+                                    this.isCollection = el;
+                                }}
+                                style={style.checkbox}
+                            />
+                        </label>
+                    </div>
                 </div>
-                <div style={saveButtonStyle}>
+                <div style={style.submitButton}>
                     <button type="submit">
                         {translate('Save')}
                     </button>

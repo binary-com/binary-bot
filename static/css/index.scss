@@ -1,88 +1,92 @@
-html, body {
-  height: 100%;
-  margin: 0px;
-  max-width: 100%;
-  overflow-x: hidden;
+html,
+body {
+    height: 100%;
+    margin: 0px;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 #header {
-  height: 81px;
-  width: 100%;
-  background-color: #2a3052;
-  border-top: 2px solid #394171;
-  border-bottom: 4px solid #e98024;
+    height: 81px;
+    width: 100%;
+    background-color: #2a3052;
+    border-top: 2px solid #394171;
+    border-bottom: 4px solid #e98024;
 }
-#header .wrapper, #topbar .wrapper{
-  max-width: 960px;
-  margin: 0 auto;
+#header .wrapper,
+#topbar .wrapper {
+    max-width: 960px;
+    margin: 0 auto;
 }
 #topbar {
-  background-color: #15212d;
-  width: 100%;
-  color: #fff;
-  line-height: 1;
-  font-size: 70%;
-  text-align: right;
-  padding: 3px 20px;
-  display: table;
+    background-color: #15212d;
+    width: 100%;
+    color: #fff;
+    line-height: 1;
+    font-size: 70%;
+    text-align: right;
+    padding: 3px 20px;
+    display: table;
 }
 #main {
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
 }
-.left, .right {
-  width: 45%;
-  margin: 20px;
-  display: inline-block;
-  vertical-align: top;
+.left,
+.right {
+    width: 45%;
+    margin: 20px;
+    display: inline-block;
+    vertical-align: top;
 }
 .right img {
-  width: 200%;
+    width: 200%;
 }
 .cta {
-  margin: 30px auto;
-  text-align: center;
+    margin: 30px auto;
+    text-align: center;
 }
 .contact {
-  text-align: center;
+    text-align: center;
 }
 ul.bullet {
-  margin: 0 !important;
+    margin: 0 !important;
 }
 @media only screen and (max-width: 480px) {
-  .left, .right {
-    width: 100%;
-    margin: 20px;
-    display: block;
-    vertical-align: top;
-  }
+    .left,
+    .right {
+        width: 100%;
+        margin: 20px;
+        display: block;
+        vertical-align: top;
+    }
 }
 
 .barspinner {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  margin-left: -5rem;
-  z-index: 9999;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -5rem;
+    z-index: 9999;
 }
 
 .center {
-  text-align: center;
+    text-align: center;
 }
 
 .half-width {
-  width: 50%;
-  float: left;
+    width: 50%;
+    float: left;
 }
 
 .clear {
-  clear: both;
+    clear: both;
 }
 
 .button span {
-  text-transform: inherit !important;
+    text-transform: inherit !important;
 }
 
 .show-on-load {
-  display: none;
+    display: none;
 }
