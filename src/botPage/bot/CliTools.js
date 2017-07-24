@@ -10,7 +10,7 @@ export const createApi = () =>
         // eslint-disable-next-line global-require
         websocket,
         language: getStorage('lang') || 'en',
-        appId   : getStorage('appId') || 1,
+        appId   : getStorage('appId') || 1169,
     });
 
 export const createScope = () => {
