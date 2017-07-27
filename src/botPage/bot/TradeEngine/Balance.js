@@ -27,6 +27,6 @@ export default Engine =>
         }
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
-            return type === 'STR' ? balanceStr : balance;
+            return type === 'STR' ? balanceStr : Number(balance);
         }
     };
