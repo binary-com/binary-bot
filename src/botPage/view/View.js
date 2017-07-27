@@ -18,7 +18,7 @@ import Limits from './Dialogs/Limits';
 import Chart from './Dialogs/Chart';
 import TradingView from './Dialogs/TradingView';
 import { getLanguage } from '../../common/lang';
-import { roundBalance, isVirtual, hasOwnProperty } from '../common/tools';
+import { roundBalance, isVirtual } from '../common/tools';
 import { symbolPromise } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
@@ -126,18 +126,14 @@ const updateTokenList = () => {
         loginButton.hide();
         accountList.show();
 
-        addBalanceForToken(tokenList[0].token);
-
+        const firstToken = tokenList[0];
+        addBalanceForToken(firstToken.token);
+        if (!('loginInfo' in firstToken)) {
+            removeAllTokens();
+            updateTokenList();
+        }
         tokenList.forEach(tokenInfo => {
-            let prefix = '';
-
-            if (isVirtual(tokenInfo)) {
-                prefix = 'Virtual Account';
-            } else if (hasOwnProperty(tokenInfo, 'loginInfo')) {
-                prefix = `${tokenInfo.loginInfo.currency} Account`;
-            } else {
-                prefix = 'Real Account';
-            }
+            const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
 
             if (tokenList.indexOf(tokenInfo) === 0) {
                 $('.account-id').attr('value', `${tokenInfo.token}`).text(`${tokenInfo.accountName}`);
