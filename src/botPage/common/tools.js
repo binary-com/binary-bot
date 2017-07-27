@@ -3,8 +3,6 @@ export const roundBalance = ({ currency, balance }) => {
     return Number(balance).toFixed(point);
 };
 
-export const hasOwnProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
+const hasOwnProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
 
-export const isVirtual = tokenInfo =>
-    (hasOwnProperty(tokenInfo, 'isVirtual') && tokenInfo.isVirtual) ||
-    (hasOwnProperty(tokenInfo, 'loginInfo') && tokenInfo.loginInfo.is_virtual);
+export const isVirtual = tokenInfo => hasOwnProperty(tokenInfo, 'loginInfo') && tokenInfo.loginInfo.is_virtual;
