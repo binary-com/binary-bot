@@ -1,6 +1,6 @@
 import { getLast } from 'binary-utils';
 import { translate } from '../../../common/i18n';
-import { getDirection } from '../tools';
+import { getDirection, getLastDigit } from '../tools';
 import { expectPositiveInteger } from '../sanitize';
 import * as constants from './state/constants';
 
@@ -47,7 +47,12 @@ export default Engine =>
         }
         getLastDigit() {
             return new Promise(resolve =>
-                this.getLastTick().then(tick => resolve(+tick.toFixed(this.getPipSize()).slice(-1)[0]))
+                this.getLastTick().then(tick => resolve(getLastDigit(tick, this.getPipSize())))
+            );
+        }
+        getLastDigitList() {
+            return new Promise(resolve =>
+                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick, this.getPipSize()))))
             );
         }
         checkDirection(dir) {

@@ -8,3 +8,4 @@ import './check_direction';
 import './direction';
 import './tick_analysis';
 import './last_digit';
+import './lastDigitList';
