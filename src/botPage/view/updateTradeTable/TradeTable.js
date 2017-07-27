@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
-import roundBalance from '../../common/tools';
+import { roundBalance } from '../../common/tools';
 import ExportButton from '../react-components/ExportButton';
 import * as style from '../style';
 

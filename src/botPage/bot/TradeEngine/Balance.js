@@ -1,4 +1,4 @@
-import roundBalance from '../../common/tools';
+import { roundBalance } from '../../common/tools';
 import { info } from '../broadcast';
 import { doUntilDone } from '../tools';
 

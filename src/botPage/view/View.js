@@ -18,7 +18,7 @@ import Limits from './Dialogs/Limits';
 import Chart from './Dialogs/Chart';
 import TradingView from './Dialogs/TradingView';
 import { getLanguage } from '../../common/lang';
-import roundBalance from '../common/tools';
+import { roundBalance, isVirtual, hasOwnProperty } from '../common/tools';
 import { symbolPromise } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
@@ -130,15 +130,21 @@ const updateTokenList = () => {
 
         tokenList.forEach(tokenInfo => {
             let prefix = '';
-            if ('isVirtual' in tokenInfo) {
-                prefix = tokenInfo.isVirtual ? 'Virtual Account' : 'Real Account';
+
+            if (isVirtual(tokenInfo)) {
+                prefix = 'Virtual Account';
+            } else if (hasOwnProperty(tokenInfo, 'loginInfo')) {
+                prefix = `${tokenInfo.loginInfo.currency} Account`;
+            } else {
+                prefix = 'Real Account';
             }
+
             if (tokenList.indexOf(tokenInfo) === 0) {
-                $('.account-id').attr('value', `${tokenInfo.token}`).text(`${tokenInfo.account_name}`);
+                $('.account-id').attr('value', `${tokenInfo.token}`).text(`${tokenInfo.accountName}`);
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a>` +
                         '<div class="separator-line-thin-gray"></div>'
                 );
             }
