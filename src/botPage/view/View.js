@@ -18,6 +18,7 @@ import Limits from './Dialogs/Limits';
 import Chart from './Dialogs/Chart';
 import TradingView from './Dialogs/TradingView';
 import { getLanguage } from '../../common/lang';
+import roundBalance from '../common/tools';
 import { symbolPromise } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
@@ -34,8 +35,9 @@ const api = new LiveApi({
 });
 
 api.events.on('balance', response => {
-    const { balance: { balance, currency } } = response;
+    const { balance: { balance: b, currency } } = response;
 
+    const balance = roundBalance({ currency, balance: b });
     $('.topMenuBalance').text(`${balance} ${currency}`);
 });
 

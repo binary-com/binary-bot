@@ -1,3 +1,4 @@
+import roundBalance from '../../common/tools';
 import { info } from '../broadcast';
 import { doUntilDone } from '../tools';
 
@@ -17,8 +18,8 @@ export default Engine =>
             this.listen('balance', r => {
                 const { balance: { balance: b, currency } } = r;
 
-                balance = +b;
-                balanceStr = `${balance.toFixed(2)} ${currency}`;
+                balance = roundBalance({ currency, balance: b });
+                balanceStr = `${balance} ${currency}`;
 
                 this.balancePromise();
                 info({ balance: balanceStr });
