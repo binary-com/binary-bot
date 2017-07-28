@@ -32,7 +32,7 @@ export const filename = {
 };
 
 export const inputRow = {
-    marginBottom: '0.8em',
+    marginBottom: '0.5em',
 };
 
 export const field = {
