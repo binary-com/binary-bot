@@ -43,6 +43,7 @@ export const appendRow = (trade, state) => ({
 });
 
 export const updateRow = (prevRowIndex, trade, state) => ({
+    id  : state.id,
     rows: [
         ...state.rows.slice(0, prevRowIndex),
         {

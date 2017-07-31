@@ -26,8 +26,11 @@ export default class TradeTable extends Component {
     constructor() {
         super();
         this.state = {
-            id  : 0,
-            rows: [],
+            initial: {
+                id  : 0,
+                rows: [],
+            },
+            accountID: 'initial',
         };
         this.columns = [
             { key: 'id', width: 70, resizable: true, name: translate('Number') },
@@ -42,26 +45,37 @@ export default class TradeTable extends Component {
     }
     componentWillReceiveProps(nextProps) {
         const { trade: tradeObj } = nextProps;
+        const { accountID } = tradeObj;
         if (!Object.keys(tradeObj).length) {
             return;
         }
+
         const trade = {
             ...tradeObj,
             profit: getProfit(tradeObj),
         };
-        const prevRowIndex = this.state.rows.findIndex(t => t.reference === trade.reference);
+
+        const accountStat = this.getaccountStat(accountID);
+
+        this.setState({ accountID });
+        const rows = accountStat.rows;
+        const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
+
         if (prevRowIndex >= 0) {
-            this.setState(updateRow(prevRowIndex, trade, this.state));
+            this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
         } else {
-            this.setState(appendRow(trade, this.state));
+            this.setState({ [accountID]: appendRow(trade, accountStat) });
         }
     }
     rowGetter(i) {
-        return this.state.rows[i];
+        const { accountID } = this.state;
+        return this.state[accountID].rows[i];
     }
     export() {
+        const { accountID } = this.state;
+
         const data = json2csv({
-            data  : this.state.rows,
+            data  : this.state[accountID].rows,
             fields: [
                 'id',
                 'reference',
@@ -75,17 +89,27 @@ export default class TradeTable extends Component {
         });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
+    getaccountStat(accountID) {
+        if (!(accountID in this.state)) {
+            const initialInfo = this.state.initial;
+            this.setState({ [accountID]: { ...initialInfo } });
+            return initialInfo;
+        }
+        return this.state[accountID];
+    }
     render() {
         if (!$('#tradeInfo:visible').length) {
             return <div style={{ height: minHeight }} />;
         }
+        const { accountID } = this.state;
+
         return (
             <div>
                 <ExportButton onClick={() => this.export()} customStyle={style.tradeTableExport} />
                 <ReactDataGrid
                     columns={this.columns}
                     rowGetter={this.rowGetter.bind(this)}
-                    rowsCount={this.state.rows.length}
+                    rowsCount={this.state[accountID].rows.length}
                     minHeight={minHeight}
                 />
             </div>
