@@ -21,7 +21,7 @@ export default Engine =>
                 balanceStr = `${balance.toFixed(2)} ${currency}`;
 
                 this.balancePromise();
-                info({ balance: balanceStr });
+                info({ accountID: this.accountInfo.loginid, balance: balanceStr });
             });
         }
         // eslint-disable-next-line class-methods-use-this

@@ -4,14 +4,24 @@ import * as style from '../style';
 
 export default class Summary extends Component {
     componentWillReceiveProps({ tradeInfo }) {
-        this.setState({ ...this.state, ...tradeInfo });
+        const { accountID } = tradeInfo;
+        this.setState({ accountID, [accountID]: { ...this.state[accountID], ...tradeInfo } });
     }
     constructor() {
         super();
-        this.state = {};
+        this.state = { accountID: 'initial', initial: {} };
     }
     render() {
-        const { totalRuns, totalStake, totalPayout, totalWins, totalLosses, totalProfit, balance } = this.state;
+        const {
+            accountID,
+            totalRuns,
+            totalStake,
+            totalPayout,
+            totalWins,
+            totalLosses,
+            totalProfit,
+            balance,
+        } = this.state[this.state.accountID];
 
         const profitColor = {
             color: totalProfit > 0 ? 'green' : 'red',
@@ -20,6 +30,9 @@ export default class Summary extends Component {
             <table>
                 <thead>
                     <tr>
+                        <th>
+                            {translate('Account')}
+                        </th>
                         <th>
                             {translate('No. of runs')}
                         </th>
@@ -45,6 +58,9 @@ export default class Summary extends Component {
                 </thead>
                 <tbody>
                     <tr>
+                        <td className="accountID">
+                            {accountID}
+                        </td>
                         <td className="totalRuns">
                             {totalRuns}
                         </td>
