@@ -1,6 +1,7 @@
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
+import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import ExportButton from '../react-components/ExportButton';
@@ -43,29 +44,31 @@ export default class TradeTable extends Component {
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
     }
-    componentWillReceiveProps(nextProps) {
-        const { trade: tradeObj } = nextProps;
-        const { accountID } = tradeObj;
-        if (!Object.keys(tradeObj).length) {
-            return;
-        }
+    componentWillMount() {
+        globalObserver.register('bot.contract', info => {
+            if (!info) {
+                return;
+            }
+            const tradeObj = { reference: info.transaction_ids.buy, ...info };
+            const { accountID } = tradeObj;
 
-        const trade = {
-            ...tradeObj,
-            profit: getProfit(tradeObj),
-        };
+            const trade = {
+                ...tradeObj,
+                profit: getProfit(tradeObj),
+            };
 
-        const accountStat = this.getaccountStat(accountID);
+            const accountStat = this.getaccountStat(accountID);
 
-        this.setState({ accountID });
-        const rows = accountStat.rows;
-        const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
+            this.setState({ accountID });
+            const rows = accountStat.rows;
+            const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
 
-        if (prevRowIndex >= 0) {
-            this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
-        } else {
-            this.setState({ [accountID]: appendRow(trade, accountStat) });
-        }
+            if (prevRowIndex >= 0) {
+                this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
+            } else {
+                this.setState({ [accountID]: appendRow(trade, accountStat) });
+            }
+        });
     }
     rowGetter(i) {
         const { accountID } = this.state;
@@ -98,13 +101,16 @@ export default class TradeTable extends Component {
         return this.state[accountID];
     }
     render() {
-        if (!$('#tradeInfo:visible').length) {
-            return <div style={{ height: minHeight }} />;
-        }
         const { accountID } = this.state;
 
         return (
             <div>
+                <h3>
+                    <span>
+                        {translate('Trades')}
+                    </span>
+                </h3>
+
                 <ExportButton onClick={() => this.export()} customStyle={style.tradeTableExport} />
                 <ReactDataGrid
                     columns={this.columns}

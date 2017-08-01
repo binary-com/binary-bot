@@ -2,6 +2,7 @@ import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDataGrid from 'react-data-grid';
+import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { translate } from '../../../common/i18n';
 import { appendRow, saveAs } from '../shared';
 import ExportButton from '../react-components/ExportButton';
@@ -43,12 +44,15 @@ export default class LogTable extends Component {
             $tableScroll.scrollTop($tableScroll.scrollHeight);
         }
     }
-    componentWillReceiveProps(nextProps) {
-        const { log } = nextProps;
-        if (!Object.keys(log).length) {
-            return;
-        }
-        this.setState(appendRow(log, this.state));
+    componentWillMount() {
+        globalObserver.register('bot.contract', log => {
+            if (log) {
+                if (!Object.keys(log).length) {
+                    return;
+                }
+                this.setState(appendRow(log, this.state));
+            }
+        });
     }
     rowGetter(i) {
         return this.state.rows[i];
