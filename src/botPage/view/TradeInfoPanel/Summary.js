@@ -7,24 +7,18 @@ export default class Summary extends Component {
     componentWillMount() {
         globalObserver.register('bot.info', info => {
             const { accountID } = info;
-            this.setState({ accountID, [accountID]: { ...this.state[accountID], ...info } });
+            this.setState({ [accountID]: { ...this.state[accountID], ...info } });
         });
     }
-    constructor() {
+    constructor({ accountID }) {
         super();
-        this.state = { accountID: 'initial', initial: {} };
+        this.state = { [accountID]: {} };
     }
     render() {
-        const {
-            accountID,
-            totalRuns,
-            totalStake,
-            totalPayout,
-            totalWins,
-            totalLosses,
-            totalProfit,
-            balance,
-        } = this.state[this.state.accountID];
+        const { accountID } = this.props;
+
+        const { totalRuns, totalStake, totalPayout, totalWins, totalLosses, totalProfit, balance } =
+            accountID in this.state ? this.state[accountID] : {};
 
         const profitColor = {
             color: totalProfit > 0 ? 'green' : 'red',
