@@ -24,14 +24,17 @@ const ProfitColor = ({ value }) =>
     </div>;
 
 export default class TradeTable extends Component {
-    constructor() {
+    constructor({ accountID }) {
         super();
         this.state = {
             initial: {
                 id  : 0,
                 rows: [],
             },
-            accountID: 'initial',
+            [accountID]: {
+                id  : 0,
+                rows: [],
+            },
         };
         this.columns = [
             { key: 'id', width: 70, resizable: true, name: translate('Number') },
@@ -57,9 +60,8 @@ export default class TradeTable extends Component {
                 profit: getProfit(tradeObj),
             };
 
-            const accountStat = this.getaccountStat(accountID);
+            const accountStat = this.getAccountStat(accountID);
 
-            this.setState({ accountID });
             const rows = accountStat.rows;
             const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
 
@@ -71,11 +73,11 @@ export default class TradeTable extends Component {
         });
     }
     rowGetter(i) {
-        const { accountID } = this.state;
+        const { accountID } = this.props;
         return this.state[accountID].rows[i];
     }
     export() {
-        const { accountID } = this.state;
+        const { accountID } = this.props;
 
         const data = json2csv({
             data  : this.state[accountID].rows,
@@ -92,7 +94,7 @@ export default class TradeTable extends Component {
         });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
-    getaccountStat(accountID) {
+    getAccountStat(accountID) {
         if (!(accountID in this.state)) {
             const initialInfo = this.state.initial;
             this.setState({ [accountID]: { ...initialInfo } });
@@ -101,21 +103,16 @@ export default class TradeTable extends Component {
         return this.state[accountID];
     }
     render() {
-        const { accountID } = this.state;
+        const { accountID } = this.props;
+        const rows = accountID in this.state ? this.state[accountID].rows : [];
 
         return (
             <div>
-                <h3>
-                    <span>
-                        {translate('Trades')}
-                    </span>
-                </h3>
-
                 <ExportButton onClick={() => this.export()} customStyle={style.tradeTableExport} />
                 <ReactDataGrid
                     columns={this.columns}
                     rowGetter={this.rowGetter.bind(this)}
-                    rowsCount={this.state[accountID].rows.length}
+                    rowsCount={rows.length}
                     minHeight={minHeight}
                 />
             </div>
