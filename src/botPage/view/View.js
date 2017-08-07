@@ -23,7 +23,7 @@ import { symbolPromise } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
-import updateLogTable from './updateLogTable';
+import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
 
 let realityCheckTimeout;
@@ -171,6 +171,7 @@ export default class View {
                         $('#footer')[0]
                     );
                     ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
+                    ReactDOM.render(<LogTable />, $('#logTable')[0]);
                     resolve();
                 });
             });
@@ -404,7 +405,6 @@ export default class View {
 
         $('#logButton').click(() => {
             $('#logPanel').dialog('open');
-            updateLogTable({});
         });
     }
     stop() {
