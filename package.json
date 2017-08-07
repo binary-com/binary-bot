@@ -1,6 +1,6 @@
 {
   "name": "binary-bot",
-  "version": "8.4.5",
+  "version": "8.4.6",
   "description": "Visual automation for binary.com",
   "bin": {
     "bot": "lib/index.js"
@@ -83,7 +83,7 @@
     "babel-preset-react": "^6.23.0",
     "babel-register": "^6.24.0",
     "binary-charts": "^9.2.6",
-    "binary-common-utils": "^6.0.6",
+    "binary-common-utils": "^7.0.0",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^28.2.3",
     "binary-utils": "^4.22.0",

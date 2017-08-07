@@ -1,3 +1,4 @@
+import { roundBalance } from '../../common/tools';
 import { doUntilDone } from '../tools';
 import { contract as broadcastContract } from '../broadcast';
 import { sell, openContractReceived } from './state/actions';
@@ -91,5 +92,9 @@ export default Engine =>
         }
         expectedContractId(contractId) {
             return this.contractId && contractId === this.contractId;
+        }
+        getSellPrice() {
+            const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.get('contract');
+            return roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) });
         }
     };

@@ -18,6 +18,7 @@ import Limits from './Dialogs/Limits';
 import Chart from './Dialogs/Chart';
 import TradingView from './Dialogs/TradingView';
 import { getLanguage } from '../../common/lang';
+import { roundBalance, isVirtual } from '../common/tools';
 import { symbolPromise } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
@@ -34,8 +35,9 @@ const api = new LiveApi({
 });
 
 api.events.on('balance', response => {
-    const { balance: { balance, currency } } = response;
+    const { balance: { balance: b, currency } } = response;
 
+    const balance = roundBalance({ currency, balance: b });
     $('.topMenuBalance').text(`${balance} ${currency}`);
 });
 
@@ -124,19 +126,21 @@ const updateTokenList = () => {
         loginButton.hide();
         accountList.show();
 
-        addBalanceForToken(tokenList[0].token);
-
+        const firstToken = tokenList[0];
+        addBalanceForToken(firstToken.token);
+        if (!('loginInfo' in firstToken)) {
+            removeAllTokens();
+            updateTokenList();
+        }
         tokenList.forEach(tokenInfo => {
-            let prefix = '';
-            if ('isVirtual' in tokenInfo) {
-                prefix = tokenInfo.isVirtual ? 'Virtual Account' : 'Real Account';
-            }
+            const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
+
             if (tokenList.indexOf(tokenInfo) === 0) {
-                $('.account-id').attr('value', `${tokenInfo.token}`).text(`${tokenInfo.account_name}`);
+                $('.account-id').attr('value', `${tokenInfo.token}`).text(`${tokenInfo.accountName}`);
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.account_name}</div></li></a>` +
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a>` +
                         '<div class="separator-line-thin-gray"></div>'
                 );
             }

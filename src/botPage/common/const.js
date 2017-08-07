@@ -6,7 +6,7 @@ export default {
             // [translate('Payout'), 'payout'],
             [translate('Stake'), 'stake'],
         ],
-        CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD']],
+        CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD'], ['BTC', 'BTC']],
         DETAILS : [
             [translate('statement'), '1'],
             [translate('ask price'), '2'],

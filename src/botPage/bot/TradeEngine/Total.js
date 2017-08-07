@@ -1,5 +1,5 @@
 import { translate } from '../../../common/i18n';
-import { addFixed, subtractFixed } from '../tools';
+import { roundBalance } from '../../common/tools';
 import { info, notify } from '../broadcast';
 import createError from '../../common/error';
 
@@ -18,9 +18,9 @@ export default Engine =>
             this.sessionProfit = 0;
         }
         updateTotals(contract) {
-            const { sell_price: sellPrice, buy_price: buyPrice } = contract;
+            const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
 
-            const profit = subtractFixed(sellPrice, buyPrice);
+            const profit = roundBalance({ currency, balance: Number(sellPrice) - Number(buyPrice) });
 
             const win = profit > 0;
 
@@ -28,11 +28,11 @@ export default Engine =>
 
             totalLosses += !win ? 1 : 0;
 
-            this.sessionProfit = addFixed(this.sessionProfit, profit);
+            this.sessionProfit = roundBalance({ currency, balance: Number(this.sessionProfit) - Number(profit) });
 
-            totalProfit = addFixed(totalProfit, profit);
-            totalStake = addFixed(totalStake, buyPrice);
-            totalPayout = addFixed(totalPayout, sellPrice);
+            totalProfit = roundBalance({ currency, balance: Number(totalProfit) + Number(profit) });
+            totalStake = roundBalance({ currency, balance: Number(totalStake) + Number(buyPrice) });
+            totalPayout = roundBalance({ currency, balance: Number(totalPayout) + Number(sellPrice) });
 
             info({
                 profit,

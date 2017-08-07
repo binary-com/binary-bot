@@ -1,5 +1,5 @@
 import TradeEngine from '../TradeEngine';
-import { noop, subtractFixed, createDetails } from '../tools';
+import { noop, createDetails } from '../tools';
 import TicksInterface from './TicksInterface';
 import ToolsInterface from './ToolsInterface';
 
@@ -77,9 +77,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         return proposal;
     }
     getSellPrice() {
-        const { bid_price: bidPrice, buy_price: buyPrice } = this.get('contract');
-
-        return subtractFixed(bidPrice, buyPrice);
+        return this.tradeEngine.getSellPrice();
     }
     get(key) {
         return this.tradeEngine.getData().get(key);

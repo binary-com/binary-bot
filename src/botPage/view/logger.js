@@ -1,6 +1,7 @@
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { getToken } from 'binary-common-utils/lib/storageManager';
 import { translate } from '../../common/i18n';
+import { isVirtual } from '../common/tools';
 import updateLogTable from './updateLogTable';
 
 const log = (type, ...args) => {
@@ -105,7 +106,7 @@ const waitForNotifications = () => {
     globalObserver.register('log.revenue', data => {
         const { user, profit, contract } = data;
 
-        if (typeof amplitude !== 'undefined' && !user.isVirtual) {
+        if (typeof amplitude !== 'undefined' && !isVirtual(user)) {
             const revenue = new amplitude.Revenue()
                 .setProductId(`${contract.underlying}.${contract.contract_type}`)
                 .setPrice(-profit)
@@ -118,7 +119,7 @@ const waitForNotifications = () => {
 
 const logHandler = () => {
     const token = $('.account-id').first().attr('value');
-    const userId = getToken(token).account_name;
+    const userId = getToken(token).accountName;
 
     if (amplitude) {
         amplitude.getInstance().setUserId(userId);

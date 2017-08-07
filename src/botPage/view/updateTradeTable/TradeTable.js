@@ -3,14 +3,18 @@ import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
+import { roundBalance } from '../../common/tools';
 import ExportButton from '../react-components/ExportButton';
 import * as style from '../style';
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
 
-const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice }) => {
+const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice, currency }) => {
     if (isNumber(sellPrice) && isNumber(buyPrice)) {
-        return Number(Number(sellPrice) - Number(buyPrice)).toFixed(2);
+        return roundBalance({
+            currency,
+            balance: Number(sellPrice) - Number(buyPrice),
+        });
     }
     return '';
 };

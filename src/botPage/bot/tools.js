@@ -1,5 +1,6 @@
 import { getUTCTime } from 'binary-common-utils/lib/tools';
 import { translate } from '../../common/i18n';
+import { roundBalance } from '../common/tools';
 import { notify } from './broadcast';
 
 export const noop = () => {};
@@ -13,7 +14,7 @@ export const tradeOptionToProposal = tradeOption =>
         currency     : tradeOption.currency,
         symbol       : tradeOption.symbol,
         duration     : tradeOption.duration,
-        amount       : tradeOption.amount.toFixed(2),
+        amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
         contract_type: type,
         ...(tradeOption.prediction !== undefined && {
             barrier: tradeOption.prediction,
@@ -127,12 +128,6 @@ export const doUntilDone = (f, types) => {
         repeat();
     });
 };
-
-const toFixedTwo = num => +num.toFixed(2);
-
-export const addFixed = (a, b) => toFixedTwo(+a + +b);
-
-export const subtractFixed = (a, b) => toFixedTwo(+a - +b);
 
 export const createDetails = contract => {
     const profit = subtractFixed(contract.sell_price, contract.buy_price);
