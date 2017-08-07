@@ -95,6 +95,6 @@ export default Engine =>
         }
         getSellPrice() {
             const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.get('contract');
-            return roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) });
+            return Number(roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) }));
         }
     };
