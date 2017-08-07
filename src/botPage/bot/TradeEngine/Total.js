@@ -24,7 +24,7 @@ export default Engine =>
         updateTotals(contract) {
             const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
 
-            const profit = roundBalance({ currency, balance: Number(sellPrice) - Number(buyPrice) });
+            const profit = Number(roundBalance({ currency, balance: Number(sellPrice) - Number(buyPrice) }));
 
             const win = profit > 0;
 
@@ -79,7 +79,7 @@ export default Engine =>
         }
         getTotalProfit() {
             const accountStat = this.getAccountStat();
-            return accountStat.totalProfit;
+            return Number(accountStat.totalProfit);
         }
         /* eslint-enable */
         checkLimits(tradeOption) {

@@ -131,7 +131,7 @@ export const doUntilDone = (f, types) => {
 
 export const createDetails = contract => {
     const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
-    const profit = roundBalance({ currency, balance: sellPrice - buyPrice });
+    const profit = Number(roundBalance({ currency, balance: sellPrice - buyPrice }));
     const result = profit < 0 ? 'loss' : 'win';
 
     return [
