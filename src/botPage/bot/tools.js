@@ -130,7 +130,8 @@ export const doUntilDone = (f, types) => {
 };
 
 export const createDetails = contract => {
-    const profit = subtractFixed(contract.sell_price, contract.buy_price);
+    const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
+    const profit = roundBalance({ currency, balance: sellPrice - buyPrice });
     const result = profit < 0 ? 'loss' : 'win';
 
     return [
