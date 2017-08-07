@@ -54,7 +54,7 @@
 		amplitude.getInstance().init("8550b32c2a951c57e791d03c4c2ea55a");
 	</script>
     <title>Binary Bot</title>
-<link href="css/bundle-28d98ab8e2.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-2878b30899.css" rel="stylesheet" />
+<link href="css/bundle-28d98ab8e2.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-6d23dee5a7.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -64,6 +64,13 @@
     <span id="save-dialog"></span>
     <span id="chart-dialog"></span>
     <span id="trading-view-dialog"></span>
+    <span id="logPanel" class="draggable-dialog" title="Log">
+      <div id="logTable" class="logTable-scroll"></div>
+    </span>
+    <span id="summaryPanel" class="draggable-dialog">
+    </span>
+
+
     <div>
       <div class="blocker"></div>
       <div class="reality-check" style="display: none">
@@ -181,21 +188,6 @@
       </div>
     </div>
     <div id="blocklyDiv"></div>
-    <div id="summaryPanel" class="draggable-dialog">
-      <div class="content">
-        <h3>
-          <span data-i18n-text="Summary"></span>
-        </h3>
-        <div id="summaryDisplay"></div>
-        <h3>
-          <span data-i18n-text="Trades"></span>
-        </h3>
-        <div id="tradeInfo"></div>
-        <div id="logPanel" class="draggable-dialog" title="Log">
-          <div id="logTable" class="logTable-scroll"></div>
-        </div>
-      </div>
-    </div>
 
     <form id="fileUploadForm" style="display: none;">
       <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
@@ -222,5 +214,5 @@
     <audio id="job-done" src="sound/job-done.ogg" autostart="false" ></audio>
     <audio id="error" src="sound/out-of-bounds.ogg" autostart="false" ></audio>
     <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false" ></audio>
-<script src="js/bundle-17bb7c4c76.js"></script><script src="js/bot-cb32169406.min.js"></script>  </body>
+<script src="js/bundle-17bb7c4c76.js"></script><script src="js/bot-c302bcb53f.min.js"></script>  </body>
 </html>
