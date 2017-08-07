@@ -3,12 +3,16 @@ import { roundBalance } from '../../common/tools';
 import { info, notify } from '../broadcast';
 import createError from '../../common/error';
 
-let totalProfit = 0;
-let totalWins = 0;
-let totalLosses = 0;
-let totalStake = 0;
-let totalPayout = 0;
-let totalRuns = 0;
+const skeleton = {
+    totalProfit: 0,
+    totalWins  : 0,
+    totalLosses: 0,
+    totalStake : 0,
+    totalPayout: 0,
+    totalRuns  : 0,
+};
+
+const globalStat = {};
 
 export default Engine =>
     class Total extends Engine {
@@ -24,24 +28,36 @@ export default Engine =>
 
             const win = profit > 0;
 
-            totalWins += win ? 1 : 0;
+            const accountStat = this.getAccountStat();
 
-            totalLosses += !win ? 1 : 0;
+            accountStat.totalWins += win ? 1 : 0;
+
+            accountStat.totalLosses += !win ? 1 : 0;
 
             this.sessionProfit = roundBalance({ currency, balance: Number(this.sessionProfit) - Number(profit) });
 
-            totalProfit = roundBalance({ currency, balance: Number(totalProfit) + Number(profit) });
-            totalStake = roundBalance({ currency, balance: Number(totalStake) + Number(buyPrice) });
-            totalPayout = roundBalance({ currency, balance: Number(totalPayout) + Number(sellPrice) });
+            accountStat.totalProfit = roundBalance({
+                currency,
+                balance: Number(accountStat.totalProfit) + Number(profit),
+            });
+            accountStat.totalStake = roundBalance({
+                currency,
+                balance: Number(accountStat.totalStake) + Number(buyPrice),
+            });
+            accountStat.totalPayout = roundBalance({
+                currency,
+                balance: Number(accountStat.totalPayout) + Number(sellPrice),
+            });
 
             info({
                 profit,
                 contract,
-                totalProfit,
-                totalWins,
-                totalLosses,
-                totalStake,
-                totalPayout,
+                accountID  : this.accountInfo.loginid,
+                totalProfit: accountStat.totalProfit,
+                totalWins  : accountStat.totalWins,
+                totalLosses: accountStat.totalLosses,
+                totalStake : accountStat.totalStake,
+                totalPayout: accountStat.totalPayout,
             });
 
             if (win) {
@@ -52,14 +68,18 @@ export default Engine =>
         }
         updateAndReturnTotalRuns() {
             this.sessionRuns++;
-            return ++totalRuns;
+            const accountStat = this.getAccountStat();
+
+            return ++accountStat.totalRuns;
         }
         /* eslint-disable class-methods-use-this */
         getTotalRuns() {
-            return totalRuns;
+            const accountStat = this.getAccountStat();
+            return accountStat.totalRuns;
         }
         getTotalProfit() {
-            return totalProfit;
+            const accountStat = this.getAccountStat();
+            return accountStat.totalProfit;
         }
         /* eslint-enable */
         checkLimits(tradeOption) {
@@ -77,5 +97,14 @@ export default Engine =>
                     throw createError('CustomLimitsReached', translate('Maximum loss amount reached'));
                 }
             }
+        }
+        getAccountStat() {
+            const { loginid: accountID } = this.accountInfo;
+
+            if (!(accountID in globalStat)) {
+                globalStat[accountID] = { ...skeleton };
+            }
+
+            return globalStat[accountID];
         }
     };

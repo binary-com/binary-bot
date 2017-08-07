@@ -21,7 +21,7 @@ export default Engine =>
 
                 this.data = this.data.set('contract', contract);
 
-                broadcastContract(contract);
+                broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
 
                 if (this.isSold) {
                     this.contractId = '';

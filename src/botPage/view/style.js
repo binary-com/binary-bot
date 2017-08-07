@@ -79,3 +79,5 @@ export const bottomWarningLink = { textDecoration: 'underline' };
 export const green = { color: 'green' };
 
 export const red = { color: 'red' };
+
+export const tradePanelAccount = { float: 'right' };

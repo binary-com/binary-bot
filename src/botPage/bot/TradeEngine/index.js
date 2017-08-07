@@ -96,7 +96,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
 
         return new Promise(resolve =>
-            this.listen('authorize', () => {
+            this.listen('authorize', ({ authorize }) => {
+                this.accountInfo = authorize;
                 this.token = token;
                 resolve();
             })

@@ -1,6 +1,7 @@
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
+import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
@@ -27,11 +28,17 @@ const ProfitColor = ({ value }) =>
     </div>;
 
 export default class TradeTable extends Component {
-    constructor() {
+    constructor({ accountID }) {
         super();
         this.state = {
-            id  : 0,
-            rows: [],
+            initial: {
+                id  : 0,
+                rows: [],
+            },
+            [accountID]: {
+                id  : 0,
+                rows: [],
+            },
         };
         this.columns = [
             { key: 'id', width: 70, resizable: true, name: translate('Number') },
@@ -44,28 +51,40 @@ export default class TradeTable extends Component {
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
     }
-    componentWillReceiveProps(nextProps) {
-        const { trade: tradeObj } = nextProps;
-        if (!Object.keys(tradeObj).length) {
-            return;
-        }
-        const trade = {
-            ...tradeObj,
-            profit: getProfit(tradeObj),
-        };
-        const prevRowIndex = this.state.rows.findIndex(t => t.reference === trade.reference);
-        if (prevRowIndex >= 0) {
-            this.setState(updateRow(prevRowIndex, trade, this.state));
-        } else {
-            this.setState(appendRow(trade, this.state));
-        }
+    componentWillMount() {
+        globalObserver.register('bot.contract', info => {
+            if (!info) {
+                return;
+            }
+            const tradeObj = { reference: info.transaction_ids.buy, ...info };
+            const { accountID } = tradeObj;
+
+            const trade = {
+                ...tradeObj,
+                profit: getProfit(tradeObj),
+            };
+
+            const accountStat = this.getAccountStat(accountID);
+
+            const rows = accountStat.rows;
+            const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
+
+            if (prevRowIndex >= 0) {
+                this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
+            } else {
+                this.setState({ [accountID]: appendRow(trade, accountStat) });
+            }
+        });
     }
     rowGetter(i) {
-        return this.state.rows[i];
+        const { accountID } = this.props;
+        return this.state[accountID].rows[i];
     }
     export() {
+        const { accountID } = this.props;
+
         const data = json2csv({
-            data  : this.state.rows,
+            data  : this.state[accountID].rows,
             fields: [
                 'id',
                 'reference',
@@ -79,17 +98,25 @@ export default class TradeTable extends Component {
         });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
-    render() {
-        if (!$('#tradeInfo:visible').length) {
-            return <div style={{ height: minHeight }} />;
+    getAccountStat(accountID) {
+        if (!(accountID in this.state)) {
+            const initialInfo = this.state.initial;
+            this.setState({ [accountID]: { ...initialInfo } });
+            return initialInfo;
         }
+        return this.state[accountID];
+    }
+    render() {
+        const { accountID } = this.props;
+        const rows = accountID in this.state ? this.state[accountID].rows : [];
+
         return (
             <div>
                 <ExportButton onClick={() => this.export()} customStyle={style.tradeTableExport} />
                 <ReactDataGrid
                     columns={this.columns}
                     rowGetter={this.rowGetter.bind(this)}
-                    rowsCount={this.state.rows.length}
+                    rowsCount={rows.length}
                     minHeight={minHeight}
                 />
             </div>

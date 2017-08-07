@@ -24,8 +24,7 @@ import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import updateLogTable from './updateLogTable';
-import updateTradeTable, { open as rerenderTradeTable } from './updateTradeTable';
-import updateSummary from './updateSummary';
+import TradeInfoPanel from './TradeInfoPanel';
 
 let realityCheckTimeout;
 
@@ -171,6 +170,7 @@ export default class View {
                         />,
                         $('#footer')[0]
                     );
+                    ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
                     resolve();
                 });
             });
@@ -306,7 +306,6 @@ export default class View {
         });
         const showSummary = () => {
             $('#summaryPanel').dialog('open');
-            rerenderTradeTable();
         };
         $('#showSummary').click(showSummary);
 
@@ -421,7 +420,6 @@ export default class View {
         });
 
         globalObserver.register('bot.info', info => {
-            updateSummary(info);
             if ('profit' in info) {
                 const token = $('.account-id').first().attr('value');
                 const user = getToken(token);
@@ -430,12 +428,6 @@ export default class View {
                     profit  : info.profit,
                     contract: info.contract,
                 });
-            }
-        });
-
-        globalObserver.register('bot.contract', c => {
-            if (c) {
-                updateTradeTable(c);
             }
         });
     }

@@ -15,6 +15,13 @@
     <span id="save-dialog"></span>
     <span id="chart-dialog"></span>
     <span id="trading-view-dialog"></span>
+    <span id="logPanel" class="draggable-dialog" title="Log">
+      <div id="logTable" class="logTable-scroll"></div>
+    </span>
+    <span id="summaryPanel" class="draggable-dialog">
+    </span>
+
+
     <div>
       <div class="blocker"></div>
       <div class="reality-check" style="display: none">
@@ -97,21 +104,6 @@
       </div>
     </div>
     <div id="blocklyDiv"></div>
-    <div id="summaryPanel" class="draggable-dialog">
-      <div class="content">
-        <h3>
-          <span data-i18n-text="Summary"></span>
-        </h3>
-        <div id="summaryDisplay"></div>
-        <h3>
-          <span data-i18n-text="Trades"></span>
-        </h3>
-        <div id="tradeInfo"></div>
-        <div id="logPanel" class="draggable-dialog" title="Log">
-          <div id="logTable" class="logTable-scroll"></div>
-        </div>
-      </div>
-    </div>
 
     <form id="fileUploadForm" style="display: none;">
       <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
