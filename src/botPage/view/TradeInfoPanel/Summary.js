@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
+import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 
 export default class Summary extends Component {
-    componentWillReceiveProps({ tradeInfo }) {
-        this.setState({ ...this.state, ...tradeInfo });
+    componentWillMount() {
+        globalObserver.register('bot.info', info => {
+            const { accountID } = info;
+            this.setState({ [accountID]: { ...this.state[accountID], ...info } });
+        });
     }
-    constructor() {
+    constructor({ accountID }) {
         super();
-        this.state = {};
+        this.state = { [accountID]: {} };
     }
     render() {
-        const { totalRuns, totalStake, totalPayout, totalWins, totalLosses, totalProfit, balance } = this.state;
+        const { accountID } = this.props;
+
+        const { totalRuns, totalStake, totalPayout, totalWins, totalLosses, totalProfit, balance } =
+            accountID in this.state ? this.state[accountID] : {};
 
         const profitColor = {
             color: totalProfit > 0 ? 'green' : 'red',
@@ -20,6 +27,9 @@ export default class Summary extends Component {
             <table>
                 <thead>
                     <tr>
+                        <th>
+                            {translate('Account')}
+                        </th>
                         <th>
                             {translate('No. of runs')}
                         </th>
@@ -45,6 +55,9 @@ export default class Summary extends Component {
                 </thead>
                 <tbody>
                     <tr>
+                        <td className="accountID">
+                            {accountID}
+                        </td>
                         <td className="totalRuns">
                             {totalRuns}
                         </td>

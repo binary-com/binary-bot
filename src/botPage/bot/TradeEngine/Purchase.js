@@ -25,6 +25,7 @@ export default Engine =>
                 delayIndex = 0;
                 notify('info', `${translate('Bought')}: ${buy.longcode}`);
                 info({
+                    accountID      : this.accountInfo.loginid,
                     totalRuns      : this.updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
                     contract_type  : contractType,

@@ -22,7 +22,7 @@ export default Engine =>
                 balanceStr = `${balance} ${currency}`;
 
                 this.balancePromise();
-                info({ balance: balanceStr });
+                info({ accountID: this.accountInfo.loginid, balance: balanceStr });
             });
         }
         // eslint-disable-next-line class-methods-use-this
