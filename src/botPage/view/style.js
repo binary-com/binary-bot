@@ -53,7 +53,7 @@ export const iframe = { width: '100%', height: '100%' };
 
 export const exportButton = {
     position: 'absolute',
-    right   : '0.5em',
+    left    : '41em',
     zIndex  : 2,
     padding : 0,
     width   : '2em',
