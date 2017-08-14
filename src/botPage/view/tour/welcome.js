@@ -38,7 +38,7 @@ const steps = [
       <a target="blank" href="https://shop.binary.com/collections/strategies">
         ${translate('Download sample strategies')}
       </a>
-      or
+      ${translate('or')}
         <a target="blank" href="https://github.com/binary-com/binary-bot#sample-blocks">
           ${translate('Make your own strategies')}
         </a>
