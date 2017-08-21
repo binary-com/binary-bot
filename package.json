@@ -63,7 +63,7 @@
     "deploy": "git checkout master ; npm prune ; npm install ; gulp deploy",
     "deploy-all": "npm run gen-beta; npm run gen-translation; npm run deploy",
     "build": "webpack --config webpack.config.cli.js",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "precommit": "lint-staged"
   },
   "author": "Amin Marashi",
