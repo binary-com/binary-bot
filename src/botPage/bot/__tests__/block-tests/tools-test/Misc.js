@@ -15,9 +15,9 @@ describe('Misc. tools', () => {
             undefined,
             `
         Bot.notify({ message: 'Test', className: 'info'})
+        watch('before')
         result.totalRuns = Bot.getTotalRuns();
         result.totalProfit = Bot.getTotalProfit();
-        watch('before')
         result.balance = Bot.getBalance('NUM')
         result.balanceStr = Bot.getBalance('STR')
     `
