@@ -302,6 +302,7 @@
 					</value>
 				</block>
 				<block type="ticks"></block>
+				<block type="lastDigitList"></block>
 				<block type="ohlc"></block>
 				<block type="ohlc_values"></block>
 			</category>
