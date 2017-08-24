@@ -1,5 +1,5 @@
 export const roundBalance = ({ currency, balance }) => {
-    const point = currency === 'BTC' ? 8 : 2;
+    const point = currency in ['BTC', 'LTC'] ? 8 : 2;
     return Number(balance).toFixed(point);
 };
 
