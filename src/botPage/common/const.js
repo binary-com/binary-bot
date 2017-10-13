@@ -1,12 +1,15 @@
 import { translate } from '../../common/i18n';
 
-export default {
+const CRYPTO_CURRENCIES = ['BTC', 'LTC', 'BCH'];
+
+const config = {
     lists: {
         PAYOUTTYPE: [
             // [translate('Payout'), 'payout'],
             [translate('Stake'), 'stake'],
         ],
-        CURRENCY: [['USD', 'USD'], ['EUR', 'EUR'], ['GBP', 'GBP'], ['AUD', 'AUD'], ['BTC', 'BTC'], ['LTC', 'LTC']],
+        CRYPTO_CURRENCIES,
+        CURRENCY: ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]),
         DETAILS : [
             [translate('statement'), '1'],
             [translate('ask price'), '2'],
@@ -199,3 +202,5 @@ export default {
     bbResult  : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
     macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
 };
+
+export default config;
