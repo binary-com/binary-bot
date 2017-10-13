@@ -78,7 +78,8 @@ export default class TradeTable extends Component {
     }
     rowGetter(i) {
         const { accountID } = this.props;
-        return this.state[accountID].rows[i];
+        const rows = this.state[accountID].rows;
+        return rows[rows.length - 1 - i];
     }
     export() {
         const { accountID } = this.props;
