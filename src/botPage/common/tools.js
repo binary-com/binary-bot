@@ -1,5 +1,7 @@
+import config from '../common/const';
+
 export const roundBalance = ({ currency, balance }) => {
-    const point = ['BTC', 'LTC'].includes(currency) ? 8 : 2;
+    const point = config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2;
     return Number(balance).toFixed(point);
 };
 
