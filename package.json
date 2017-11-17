@@ -84,7 +84,7 @@
     "binary-charts": "^9.2.6",
     "binary-common-utils": "^7.0.0",
     "binary-indicators": "^1.5.2",
-    "binary-live-api": "^28.2.3",
+    "binary-live-api": "^29.0.0",
     "binary-utils": "^4.22.0",
     "blockly": "google/blockly.git#0785a7b",
     "bootstrap": "^3.3.7",
