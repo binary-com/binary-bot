@@ -1,0 +1,243 @@
+﻿<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="loader" id="G8*bH0yYOiK7:XhZ-!pX" x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/0feb52b5802519cd4157b612d9bd3471/raw/martingale.xml</field>
+  </block>
+  <block type="trade" id=")inu*9KBx=?O=ZEkmjl_" x="-128" y="325">
+    <field name="MARKET_LIST">volidx</field>
+    <field name="SUBMARKET_LIST">random_index</field>
+    <field name="SYMBOL_LIST">R_100</field>
+    <field name="TRADETYPECAT_LIST">callput</field>
+    <field name="TRADETYPE_LIST">evenodd</field>
+    <field name="TYPE_LIST">both</field>
+    <field name="CANDLEINTERVAL_LIST">60</field>
+    <field name="TIME_MACHINE_ENABLED">FALSE</field>
+    <field name="RESTARTONERROR">TRUE</field>
+    <statement name="INITIALIZATION">
+      <block type="variables_set" id="X=dFUw#,k4grKp`3aSS)">
+        <field name="VAR">Num of loss</field>
+        <value name="VALUE">
+          <block type="math_number" id="*tZ~)%q:vyGgUnupZ-N~">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="2,wie9Br@|3!?L!LxV7I">
+            <field name="VAR">Contract Type</field>
+            <value name="VALUE">
+              <block type="text" id="ERF.L}:hpK0~QfXO2[s?">
+                <field name="TEXT">Call</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <statement name="SUBMARKET">
+      <block type="tradeOptions" id="Gr3X6!wwLik9IZ|`|wP/">
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <value name="DURATION">
+          <block type="math_number" id="sxYl%U5{t^F,Mj-zA7M5">
+            <field name="NUM">5</field>
+          </block>
+        </value>
+        <value name="AMOUNT">
+          <block type="procedures_callreturn" id="#+4O3V{hS-`.=f(Vye8_">
+            <mutation name="Martingale Trade Amount"></mutation>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="X[gun7Sx6Shn3kldC}mZ" x="423" y="324">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="notify" id="Y}$T{R@v5lwKm^swfALm">
+        <field name="NOTIFICATION_TYPE">success</field>
+        <field name="NOTIFICATION_SOUND">silent</field>
+        <value name="MESSAGE">
+          <shadow type="text" id="_Gku|Q#]Bptxzm(rGvzn">
+            <field name="TEXT">abc</field>
+          </shadow>
+          <block type="text_join" id="bRNA%j;pxMqlN:@1}a#0">
+            <mutation items="2"></mutation>
+            <value name="ADD0">
+              <block type="text" id="3Si[2[qpT63TWVLbhm$l">
+                <field name="TEXT">Total Profit</field>
+              </block>
+            </value>
+            <value name="ADD1">
+              <block type="total_profit" id="iZU2Cdb*s61]%PE5yLX."></block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="^Kh{Y_-|HCO=ntig-oZY">
+            <field name="VAR">Trade again with Delay?</field>
+            <value name="VALUE">
+              <block type="logic_boolean" id="-Z]/FIfDKfq6+:1wNhMd">
+                <field name="BOOL">FALSE</field>
+              </block>
+            </value>
+            <next>
+              <block type="controls_if" id="#=yO.C1rn7n]Zw*%E1AI">
+                <mutation else="1"></mutation>
+                <value name="IF0">
+                  <block type="contract_check_result" id="h[CgbsiRx?oxkOb({3n?">
+                    <field name="CHECK_RESULT">loss</field>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="controls_if" id=";FusdyQa[JB7q8k%g3_j">
+                    <mutation else="1"></mutation>
+                    <value name="IF0">
+                      <block type="logic_compare" id="m4%7rJ07d0YMP{!%K2+J">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="variables_get" id="BbIyf|Gv}M/alle]Yi2v">
+                            <field name="VAR">Num of loss</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="math_number" id="Jg7NaKV{lxnkKG+sli^}">
+                            <field name="NUM">1</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="variables_set" id="ft0`b0}MI@N5:5r#A}aG">
+                        <field name="VAR">Num of loss</field>
+                        <value name="VALUE">
+                          <block type="math_number" id="hIiYQGkB@9Tv!qLJyA++">
+                            <field name="NUM">0</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="controls_if" id="YYge)))Q3RxZDeK_LA-d">
+                            <mutation else="1"></mutation>
+                            <value name="IF0">
+                              <block type="logic_compare" id=":i0on9T7.,?X+_vh#[n~">
+                                <field name="OP">EQ</field>
+                                <value name="A">
+                                  <block type="variables_get" id="-Z7yv=?f!j41GQo!Y_M$">
+                                    <field name="VAR">Contract Type</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="text" id="f{X]y@k2txOXec(dE4Zy">
+                                    <field name="TEXT">Call</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <statement name="DO0">
+                              <block type="variables_set" id="9Q4`0[TFV{+iDoqvlO[!">
+                                <field name="VAR">Contract Type</field>
+                                <value name="VALUE">
+                                  <block type="text" id="XOu_`CA3!{W#fY_0X{G5">
+                                    <field name="TEXT">Put</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </statement>
+                            <statement name="ELSE">
+                              <block type="variables_set" id="Jo^4VO*#%/BISW+[0b}C">
+                                <field name="VAR">Contract Type</field>
+                                <value name="VALUE">
+                                  <block type="text" id="{D0q2;hIRa;2?A9hYuQ6">
+                                    <field name="TEXT">Call</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </statement>
+                            <next>
+                              <block type="variables_set" id="C]9B)Z:#(cs%$)-7KHc~">
+                                <field name="VAR">Trade again with Delay?</field>
+                                <value name="VALUE">
+                                  <block type="logic_boolean" id="#?*|.J(7BikJJ5`(TCq}">
+                                    <field name="BOOL">TRUE</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                    <statement name="ELSE">
+                      <block type="math_change" id="+r5zbph60AJHQ0=;153!">
+                        <field name="VAR">Num of loss</field>
+                        <value name="DELTA">
+                          <shadow type="math_number" id="O+}3r@EPAY?F=Ys65p#K">
+                            <field name="NUM">1</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </statement>
+                  </block>
+                </statement>
+                <statement name="ELSE">
+                  <block type="variables_set" id="*$-M$;vJHRtg#%1]umSL">
+                    <field name="VAR">Num of loss</field>
+                    <value name="VALUE">
+                      <block type="math_number" id="eV(UBMyXrq?IZwU+Z#[;">
+                        <field name="NUM">0</field>
+                      </block>
+                    </value>
+                  </block>
+                </statement>
+                <next>
+                  <block type="controls_if" id="E_4.ef]}%mJ6~12CE,N5">
+                    <value name="IF0">
+                      <block type="procedures_callreturn" id="KeR|]Fhr3qd{P}AaHtBc">
+                        <mutation name="Martingale Trade Again After Purchase">
+                          <arg name="martingale:profit"></arg>
+                          <arg name="martingale:resultIsWin"></arg>
+                        </mutation>
+                        <value name="ARG0">
+                          <block type="read_details" id="*0C_DOst(@$2_Ph[Qpje">
+                            <field name="DETAIL_INDEX">4</field>
+                          </block>
+                        </value>
+                        <value name="ARG1">
+                          <block type="contract_check_result" id="uJ=%k[gd/YjTx-S||@L%">
+                            <field name="CHECK_RESULT">win</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="controls_if" id="B}*^rM[98[T%4M|t|dWS">
+                        <mutation else="1"></mutation>
+                        <value name="IF0">
+                          <block type="variables_get" id="C~v~WC2R`?z|cL[w)~)B">
+                            <field name="VAR">Trade again with Delay?</field>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="timeout" id="!v(t7]86V;WNBte2_XIh">
+                            <statement name="TIMEOUTSTACK">
+                              <block type="trade_again" id="`Lalh)t#CEvQ[)]`M;40"></block>
+                            </statement>
+                            <value name="SECONDS">
+                              <shadow type="math_number" id="E)_aHRD~d[@}uK1)zm|!">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </statement>
+                        <statement name="ELSE">
+                          <block type="trade_again" id="SKI)^E~YMm%_vU_=Rw/4"></block>
+                        </statement>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>
