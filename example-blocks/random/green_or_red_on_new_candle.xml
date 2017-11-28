@@ -1,0 +1,89 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="loader" id="k[C4hGez7^QT],zxYEZT" x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/is%2520candle%2520new.xml</field>
+  </block>
+  <block type="trade" id="xgH69|xFn9=70w.*3Vo@" x="0" y="53">
+    <field name="MARKET_LIST">volidx</field>
+    <field name="SUBMARKET_LIST">random_index</field>
+    <field name="SYMBOL_LIST">R_100</field>
+    <field name="TRADETYPECAT_LIST">callput</field>
+    <field name="TRADETYPE_LIST">risefall</field>
+    <field name="TYPE_LIST">both</field>
+    <field name="CANDLEINTERVAL_LIST">60</field>
+    <field name="TIME_MACHINE_ENABLED">FALSE</field>
+    <field name="RESTARTONERROR">TRUE</field>
+    <statement name="SUBMARKET">
+      <block type="tradeOptions" id="x=V33~4Lb|(sLv`J[:Eb">
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <value name="DURATION">
+          <shadow type="math_number" id="O*@58sDc=!cOO}*b2vf9">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+        <value name="AMOUNT">
+          <shadow type="math_number" id="ml)25~7^q}3I9}vjf:%K">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="i-CIx.(Onm4?ihxzA}Y]" x="0" y="354">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="controls_if" id="HkD(d}J6nnb{7yuLb$Fu">
+        <value name="IF0">
+          <block type="procedures_callreturn" id="$yPbd~7H2`Y1~6d-6pE4">
+            <mutation name="binary::is new candle"></mutation>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="controls_if" id="|oz1hfd9Bc9Ad@@N5f(o">
+            <mutation else="1"></mutation>
+            <value name="IF0">
+              <block type="is_candle_black" id="-GnwOBo$Et5O#A-3Jy0q">
+                <value name="OHLCOBJ">
+                  <block type="get_ohlc" id="1i}N.[xWneM-n;6N:X,J">
+                    <field name="CANDLEINTERVAL_LIST">default</field>
+                    <value name="CANDLEINDEX">
+                      <shadow type="math_number" id="`P/MSDbYI4C,ME!VFd^Q">
+                        <field name="NUM">1</field>
+                      </shadow>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="notify" id="K?Z;CsbQ//Z%1!gf8xH@">
+                <field name="NOTIFICATION_TYPE">success</field>
+                <field name="NOTIFICATION_SOUND">silent</field>
+                <value name="MESSAGE">
+                  <shadow type="text" id="g2MI`{zSxkp7|e6oGDmu">
+                    <field name="TEXT">Red</field>
+                  </shadow>
+                </value>
+              </block>
+            </statement>
+            <statement name="ELSE">
+              <block type="notify" id="TPGH;86SSS?z1W{k_7=H">
+                <field name="NOTIFICATION_TYPE">success</field>
+                <field name="NOTIFICATION_SOUND">silent</field>
+                <value name="MESSAGE">
+                  <shadow type="text" id="HzWtz;*_j=Wy@lXQmLtV">
+                    <field name="TEXT">Green</field>
+                  </shadow>
+                </value>
+              </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="D^Jz1^n=2vtZku1vBN@;" x="0" y="574">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="trade_again" id="c)S|KjoQdXc8l#J@5z3P"></block>
+    </statement>
+  </block>
+</xml>
