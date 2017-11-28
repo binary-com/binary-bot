@@ -1,0 +1,96 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="xgH69|xFn9=70w.*3Vo@" x="0" y="0">
+    <field name="MARKET_LIST">volidx</field>
+    <field name="SUBMARKET_LIST">random_index</field>
+    <field name="SYMBOL_LIST">R_100</field>
+    <field name="TRADETYPECAT_LIST">callput</field>
+    <field name="TRADETYPE_LIST">risefall</field>
+    <field name="TYPE_LIST">both</field>
+    <field name="CANDLEINTERVAL_LIST">60</field>
+    <field name="TIME_MACHINE_ENABLED">FALSE</field>
+    <field name="RESTARTONERROR">TRUE</field>
+    <statement name="SUBMARKET">
+      <block type="tradeOptions" id="x=V33~4Lb|(sLv`J[:Eb">
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <value name="DURATION">
+          <shadow type="math_number" id="O*@58sDc=!cOO}*b2vf9">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+        <value name="AMOUNT">
+          <shadow type="math_number" id="ml)25~7^q}3I9}vjf:%K">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="tick_analysis" id="@E~`Bf@n:wYeAS^w,t:z" x="0" y="301">
+    <statement name="TICKANALYSIS_STACK">
+      <block type="variables_set" id="-_pgYR`m.jk63JQmV`zV">
+        <field name="VAR">var tick</field>
+        <value name="VALUE">
+          <block type="text" id="1B7ya-o{p6~/h~7u_f!K">
+            <field name="TEXT">Set</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_defnoreturn" id="Ds3m;ZF).MH}oBz,X-7W" x="0" y="393">
+    <field name="NAME">do something</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="Hs[Tc_$`=P[ghFAyr*6e">
+        <field name="VAR">var func</field>
+        <value name="VALUE">
+          <block type="text" id="nc=S{nAmW,cu$?A:!b}D">
+            <field name="TEXT">Set</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="i-CIx.(Onm4?ihxzA}Y]" x="0" y="485">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="procedures_callnoreturn" id="U.HDhi6r]?~+M}H4@5ZP">
+        <mutation name="do something"></mutation>
+        <next>
+          <block type="notify" id="MiIo!/^vGB5lvXaUy?d]">
+            <field name="NOTIFICATION_TYPE">success</field>
+            <field name="NOTIFICATION_SOUND">silent</field>
+            <value name="MESSAGE">
+              <shadow type="text" id="9b9#btBaJ5?:b1v^_^[`">
+                <field name="TEXT">var1</field>
+              </shadow>
+              <block type="text_join" id="`XHA5.+T.XqC8]gt-3zO">
+                <mutation items="4"></mutation>
+                <value name="ADD0">
+                  <block type="text" id="bkDXk#|=z*bV,Bm3?)E.">
+                    <field name="TEXT">Var tick: </field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="variables_get" id="lTJ,F#j,4}{.{jk!b[pJ">
+                    <field name="VAR">var tick</field>
+                  </block>
+                </value>
+                <value name="ADD2">
+                  <block type="text" id="f@ZAxV`uYTCtTD{RKG2W">
+                    <field name="TEXT"> | Var func: </field>
+                  </block>
+                </value>
+                <value name="ADD3">
+                  <block type="variables_get" id="L^FZP/WUZi1P}(^B@-x)">
+                    <field name="VAR">var func</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>

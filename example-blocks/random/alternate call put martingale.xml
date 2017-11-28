@@ -1,0 +1,150 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="loader" id="G8*bH0yYOiK7:XhZ-!pX" x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/0feb52b5802519cd4157b612d9bd3471/raw/martingale.xml</field>
+  </block>
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="53">
+    <statement name="SUBMARKET">
+      <block type="variables_set" id="6v!@?*xZA~*U{SuB=T[N">
+        <field name="VAR">Contract Type</field>
+        <value name="VALUE">
+          <block type="text" id="4^!Tx5_|Of5,0r})/9^d">
+            <field name="TEXT">Call</field>
+          </block>
+        </value>
+        <next>
+          <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+            <field name="MARKET_LIST">volidx</field>
+            <field name="SUBMARKET_LIST">random_index</field>
+            <field name="SYMBOL_LIST">R_100</field>
+            <field name="TRADETYPECAT_LIST">callput</field>
+            <field name="TRADETYPE_LIST">risefall</field>
+            <field name="TYPE_LIST">both</field>
+            <field name="CANDLEINTERVAL_LIST">60</field>
+            <field name="DURATIONTYPE_LIST">t</field>
+            <field name="PAYOUTTYPE_LIST">stake</field>
+            <field name="CURRENCY_LIST">USD</field>
+            <field name="RESTARTONERROR">FALSE</field>
+            <value name="DURATION">
+              <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+                <field name="NUM">5</field>
+              </block>
+            </value>
+            <value name="AMOUNT">
+              <block type="procedures_callreturn" id="chsmDPZclt/a]8,,uI?2">
+                <mutation name="Martingale Trade Amount"></mutation>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="320">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="controls_if" id="i^y1-),y7~|#4?F~nZ_|">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="logic_compare" id="!WkMU~7t-BaX/6mu`-0^">
+            <field name="OP">EQ</field>
+            <value name="A">
+              <block type="variables_get" id="nFY.TxN+a_J`Np?^d:2c">
+                <field name="VAR">Contract Type</field>
+              </block>
+            </value>
+            <value name="B">
+              <block type="text" id="2,4_9}MD6ZJ9Io([N~c;">
+                <field name="TEXT">Call</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+            <field name="PURCHASE_LIST">CALL</field>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="purchase" id="@5$RB6|F?Ws{|s)a6(3k">
+            <field name="PURCHASE_LIST">PUT</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="0" y="498">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="controls_if" id="fhx(fO!cb|asgk(ay{hB">
+        <value name="IF0">
+          <block type="contract_check_result" id="AnEQFO/5OWIoC#=IddTD">
+            <field name="CHECK_RESULT">loss</field>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="controls_if" id="1-c,VlN:,{n1.F271)z.">
+            <mutation else="1"></mutation>
+            <value name="IF0">
+              <block type="logic_compare" id="gxiH0*@=TH*=X8}I4~99">
+                <field name="OP">EQ</field>
+                <value name="A">
+                  <block type="variables_get" id="oJph;:)i1!I_WB0WcIXe">
+                    <field name="VAR">Contract Type</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="text" id="8,_RxM0Mz5s4IB8=I|YI">
+                    <field name="TEXT">Call</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set" id="NqLuJB2Ie+-fc%JKw[9s">
+                <field name="VAR">Contract Type</field>
+                <value name="VALUE">
+                  <block type="text" id="@?@7V9GA}$A%hK#uEmq|">
+                    <field name="TEXT">Put</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <statement name="ELSE">
+              <block type="variables_set" id="D7Gd;Qbdxw6C|V-UBB7?">
+                <field name="VAR">Contract Type</field>
+                <value name="VALUE">
+                  <block type="text" id="QH4m()a)1|soCbiE]$wx">
+                    <field name="TEXT">Call</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+          </block>
+        </statement>
+        <next>
+          <block type="controls_if" id="#=yO.C1rn7n]Zw*%E1AI">
+            <value name="IF0">
+              <block type="procedures_callreturn" id=")5H0+av/lasc#QI6to2^">
+                <mutation name="Martingale Trade Again After Purchase">
+                  <arg name="martingale:profit"></arg>
+                  <arg name="martingale:resultIsWin"></arg>
+                </mutation>
+                <value name="ARG0">
+                  <block type="read_details" id="(E,!25pd^Ev`yMmr[z*_">
+                    <field name="DETAIL_INDEX">4</field>
+                  </block>
+                </value>
+                <value name="ARG1">
+                  <block type="contract_check_result" id="^ShXafO+N,gqVXtl^w)e">
+                    <field name="CHECK_RESULT">win</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="trade_again" id=",VG2~pX|wvNj6hMyw=%~"></block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>

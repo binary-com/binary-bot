@@ -1,0 +1,212 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="0">
+    <statement name="SUBMARKET">
+      <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+        <field name="MARKET_LIST">volidx</field>
+        <field name="SUBMARKET_LIST">random_index</field>
+        <field name="SYMBOL_LIST">R_100</field>
+        <field name="TRADETYPECAT_LIST">callput</field>
+        <field name="TRADETYPE_LIST">risefall</field>
+        <field name="TYPE_LIST">both</field>
+        <field name="CANDLEINTERVAL_LIST">60</field>
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="PAYOUTTYPE_LIST">stake</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <field name="RESTARTONERROR">FALSE</field>
+        <value name="DURATION">
+          <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+            <field name="NUM">5</field>
+          </block>
+        </value>
+        <value name="AMOUNT">
+          <block type="math_number" id="|tIC~6lHx]cKt9rf1jFk">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="242">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="variables_set" id="wk#jhJJrkfeiLCzE5fHQ">
+        <field name="VAR">first candle is black</field>
+        <value name="VALUE">
+          <block type="is_candle_black" id="FOVMmO|bMQ^=5E0WD_ia">
+            <value name="OHLCOBJ">
+              <block type="get_ohlc" id=".``%QBgj|DW!UO$O6N@a">
+                <value name="CANDLEINDEX">
+                  <block type="math_number" id="T{%?/s1SHV-B6{h-uiZP">
+                    <field name="NUM">1</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="jLQONdQo)?Q|}KstpV8=">
+            <field name="VAR">second candle is black</field>
+            <value name="VALUE">
+              <block type="is_candle_black" id="$T~T]Hx1yY6_7mOdYMGv">
+                <value name="OHLCOBJ">
+                  <block type="get_ohlc" id="xov#|3]^i2=@YaGn3W[O">
+                    <value name="CANDLEINDEX">
+                      <block type="math_number" id="My7bu=5}wAd@$0vEf2lV">
+                        <field name="NUM">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set" id=",_gq6OiNM+/1`#25CTET">
+                <field name="VAR">third candle is black</field>
+                <value name="VALUE">
+                  <block type="is_candle_black" id="x9cW.s_,Uw+WWZyh$l,9">
+                    <value name="OHLCOBJ">
+                      <block type="get_ohlc" id="QJaCdy}}=%;^z5BP+moz">
+                        <value name="CANDLEINDEX">
+                          <block type="math_number" id="%h=Ks?U@VUSiCLWyb_e{">
+                            <field name="NUM">3</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <next>
+                  <block type="notify" id="gKtN#daV47e`qK$!,kSO">
+                    <field name="NOTIFICATION_TYPE">success</field>
+                    <value name="MESSAGE">
+                      <block type="text_join" id="t0sBn^N~q{q5r?)_Z=:P">
+                        <mutation items="3"></mutation>
+                        <value name="ADD0">
+                          <block type="variables_get" id="vpR;G40P1,+vzlBP-y]`">
+                            <field name="VAR">first candle is black</field>
+                          </block>
+                        </value>
+                        <value name="ADD1">
+                          <block type="variables_get" id="JwbewS)tQw}SU?:Qq;=g">
+                            <field name="VAR">second candle is black</field>
+                          </block>
+                        </value>
+                        <value name="ADD2">
+                          <block type="variables_get" id="[n`B:,dK;u@2Rx0i{T;V">
+                            <field name="VAR">third candle is black</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set" id="/y,vQ0jK]/w/-c}RIrfE">
+                        <field name="VAR">All black</field>
+                        <value name="VALUE">
+                          <block type="logic_operation" id="BcK31%Fb;VeWEt6Y5(d:">
+                            <field name="OP">AND</field>
+                            <value name="A">
+                              <block type="variables_get" id="b[%604ua**=PQ;j4R.#`">
+                                <field name="VAR">first candle is black</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="logic_operation" id="gKihUm@z?s{xx/9O1Z/=">
+                                <field name="OP">AND</field>
+                                <value name="A">
+                                  <block type="variables_get" id="y,_d-(yVl6Sa+211yZ8#">
+                                    <field name="VAR">second candle is black</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="variables_get" id="~{bPti8#LF]YfYU%wZ37">
+                                    <field name="VAR">third candle is black</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="variables_set" id="t1v@20*r_S(hE]OB4c@E">
+                            <field name="VAR">All white</field>
+                            <value name="VALUE">
+                              <block type="logic_operation" id="BZ446gB9;[h-~AgDzDbg">
+                                <field name="OP">AND</field>
+                                <value name="A">
+                                  <block type="logic_negate" id="gmI(S{Or;D#@p2qOai4x">
+                                    <value name="BOOL">
+                                      <block type="variables_get" id="CB`3lE3hk]Mu{2n=H`=y">
+                                        <field name="VAR">first candle is black</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="logic_operation" id="!H8Nl1:_^jJ8Zlfn--,Q">
+                                    <field name="OP">AND</field>
+                                    <value name="A">
+                                      <block type="logic_negate" id="F-F^}.@9a$%WE6keX9qE">
+                                        <value name="BOOL">
+                                          <block type="variables_get" id="MNMz?P^zH|#WXAq4R%pX">
+                                            <field name="VAR">second candle is black</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <value name="B">
+                                      <block type="logic_negate" id="TyzegN(`T*?Kd:f!UtFH">
+                                        <value name="BOOL">
+                                          <block type="variables_get" id="N{=b8f*mMJfkIvZ6RxEU">
+                                            <field name="VAR">third candle is black</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="controls_if" id="DX2I1HbkNU!ZO,sTDN51">
+                                <mutation elseif="1"></mutation>
+                                <value name="IF0">
+                                  <block type="variables_get" id="MGTe:k7lB9m0_0TFAGj^">
+                                    <field name="VAR">All black</field>
+                                  </block>
+                                </value>
+                                <statement name="DO0">
+                                  <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+                                    <field name="PURCHASE_LIST">PUT</field>
+                                  </block>
+                                </statement>
+                                <value name="IF1">
+                                  <block type="variables_get" id="okTsGWI:2u2SiRWE=|u+">
+                                    <field name="VAR">All white</field>
+                                  </block>
+                                </value>
+                                <statement name="DO1">
+                                  <block type="purchase" id="TmZ$lHqD4}@NFp9K+;F?">
+                                    <field name="PURCHASE_LIST">CALL</field>
+                                  </block>
+                                </statement>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="0" y="709">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="trade_again" id="SO*X=~i(5H%=zQ5%e+J$"></block>
+    </statement>
+  </block>
+</xml>

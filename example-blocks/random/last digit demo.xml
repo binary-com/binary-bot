@@ -1,0 +1,69 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="0">
+    <statement name="SUBMARKET">
+      <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+        <field name="MARKET_LIST">volidx</field>
+        <field name="SUBMARKET_LIST">random_index</field>
+        <field name="SYMBOL_LIST">R_100</field>
+        <field name="TRADETYPECAT_LIST">digits</field>
+        <field name="TRADETYPE_LIST">matchesdiffers</field>
+        <field name="TYPE_LIST">both</field>
+        <field name="CANDLEINTERVAL_LIST">60</field>
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="PAYOUTTYPE_LIST">stake</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <field name="RESTARTONERROR">FALSE</field>
+        <value name="DURATION">
+          <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+            <field name="NUM">5</field>
+          </block>
+        </value>
+        <value name="AMOUNT">
+          <block type="math_number" id="|tIC~6lHx]cKt9rf1jFk">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <value name="PREDICTION">
+          <block type="math_number" id="Bm/_14k}%TixIz)8q`}M">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="268">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="controls_if" id="2[|fWu_91j^]NA=6k#04">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="logic_compare" id="Lsv~]b`+%uz_GXWhS%z@">
+            <field name="OP">EQ</field>
+            <value name="A">
+              <block type="last_digit" id="mL(AfupzMJ1FwrgbvvWn"></block>
+            </value>
+            <value name="B">
+              <block type="math_number" id="LeI_H[.PF;lb8f)5ytdu">
+                <field name="NUM">1</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+            <field name="PURCHASE_LIST">DIGITMATCH</field>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="purchase" id="NbQ`Fs/=3SjM^/ylcoh5">
+            <field name="PURCHASE_LIST">DIGITDIFF</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="0" y="446">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="trade_again" id="dC!*k5JT%u:pq=NsZTX~"></block>
+    </statement>
+  </block>
+</xml>

@@ -1,0 +1,110 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="loader" id="K[P$QF,9SAl8xiB#ySQK" x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/is%2520stripes%2520pattern.xml</field>
+  </block>
+  <block type="loader" id="MKUHq|*T]vrN-L`0{|?e" x="0" y="53">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/is%2520candle%2520new.xml</field>
+  </block>
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="106">
+    <statement name="SUBMARKET">
+      <block type="variables_set" id="t+c?rAUfvQ4DBHZ7eg?k">
+        <field name="VAR">is first time</field>
+        <value name="VALUE">
+          <block type="logic_boolean" id="VFHTv+2r)3f5xO}hTY;;">
+            <field name="BOOL">TRUE</field>
+          </block>
+        </value>
+        <next>
+          <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+            <field name="MARKET_LIST">volidx</field>
+            <field name="SUBMARKET_LIST">random_index</field>
+            <field name="SYMBOL_LIST">R_100</field>
+            <field name="TRADETYPECAT_LIST">callput</field>
+            <field name="TRADETYPE_LIST">risefall</field>
+            <field name="TYPE_LIST">both</field>
+            <field name="CANDLEINTERVAL_LIST">60</field>
+            <field name="DURATIONTYPE_LIST">t</field>
+            <field name="PAYOUTTYPE_LIST">stake</field>
+            <field name="CURRENCY_LIST">USD</field>
+            <field name="RESTARTONERROR">FALSE</field>
+            <value name="DURATION">
+              <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+                <field name="NUM">5</field>
+              </block>
+            </value>
+            <value name="AMOUNT">
+              <block type="math_number" id="|tIC~6lHx]cKt9rf1jFk">
+                <field name="NUM">1</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="374">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="controls_if" id="b*h%a;|jqsCwb;#2;FB{">
+        <value name="IF0">
+          <block type="procedures_callreturn" id="kBSt,x?-Aw:?tl/*]lNO">
+            <mutation name="binary::is new candle"></mutation>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="controls_if" id="js6S3S_Tc4:~-f+7Dj,j">
+            <value name="IF0">
+              <block type="logic_operation" id="OGa;C)JuwU_*tID,3v_h">
+                <field name="OP">OR</field>
+                <value name="A">
+                  <block type="variables_get" id="I(35]}T%s24#M6eoNi2`">
+                    <field name="VAR">is first time</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="logic_negate" id="vR2q`(Y*/-;XV5`VnDOv">
+                    <value name="BOOL">
+                      <block type="procedures_callreturn" id="/7H=_qT[a/O(ZSzs@t)8">
+                        <mutation name="Binary::Is Stripes Pattern">
+                          <arg name="Binary::candle list"></arg>
+                          <arg name="Binary::count"></arg>
+                        </mutation>
+                        <value name="ARG0">
+                          <block type="ohlc" id="HABtPX[{7po7JlI^bsU+"></block>
+                        </value>
+                        <value name="ARG1">
+                          <block type="math_number" id="{.~,}qd^LxB#]mTC)(#E">
+                            <field name="NUM">5</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set" id="Vg6Iqh}qe(T(|Qq5x#/;">
+                <field name="VAR">is first time</field>
+                <value name="VALUE">
+                  <block type="logic_boolean" id="4i_W+-atYw1#oW-m8ovS">
+                    <field name="BOOL">FALSE</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+                    <field name="PURCHASE_LIST">CALL</field>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="0" y="628">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="trade_again" id="SO*X=~i(5H%=zQ5%e+J$"></block>
+    </statement>
+  </block>
+</xml>
