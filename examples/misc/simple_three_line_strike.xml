@@ -1,0 +1,164 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="0">
+    <statement name="SUBMARKET">
+      <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+        <field name="MARKET_LIST">volidx</field>
+        <field name="SUBMARKET_LIST">random_index</field>
+        <field name="SYMBOL_LIST">R_100</field>
+        <field name="TRADETYPECAT_LIST">callput</field>
+        <field name="TRADETYPE_LIST">risefall</field>
+        <field name="TYPE_LIST">both</field>
+        <field name="CANDLEINTERVAL_LIST">60</field>
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="PAYOUTTYPE_LIST">stake</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <field name="RESTARTONERROR">FALSE</field>
+        <value name="DURATION">
+          <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+            <field name="NUM">5</field>
+          </block>
+        </value>
+        <value name="AMOUNT">
+          <block type="math_number" id="|tIC~6lHx]cKt9rf1jFk">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="242">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="controls_if" id="xs(/8}*n#T:P#i.q79)D">
+        <value name="IF0">
+          <block type="logic_operation" id="8cD)y5V4R;gax.JHQ3f$">
+            <field name="OP">AND</field>
+            <value name="A">
+              <block type="logic_operation" id="uRz[hZvQ}J}MBtR)KWJ8">
+                <field name="OP">AND</field>
+                <value name="A">
+                  <block type="logic_negate" id=",o)a9N/EXEBVimLoUS2P">
+                    <value name="BOOL">
+                      <block type="is_candle_black" id="4[v$Md{h_zZmEF.r#X6D">
+                        <value name="OHLCOBJ">
+                          <block type="get_ohlc" id="1Z#AWMWW_I:5YkAmU(g(">
+                            <value name="CANDLEINDEX">
+                              <block type="math_number" id="Y1#`gxH0RNFTSE-=Ef(F">
+                                <field name="NUM">1</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="logic_negate" id="w(j#Ws27cykn,7[nD/|*">
+                    <value name="BOOL">
+                      <block type="is_candle_black" id="9na1ZP:7ZktdjJyGQ]oJ">
+                        <value name="OHLCOBJ">
+                          <block type="get_ohlc" id="enW!okcc_]6oc:h*g6C^">
+                            <value name="CANDLEINDEX">
+                              <block type="math_number" id="6(p0922S:V9_8fu@iRv+">
+                                <field name="NUM">2</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <value name="B">
+              <block type="logic_negate" id="I|OwdOG;Log{KSnhMr!R">
+                <value name="BOOL">
+                  <block type="is_candle_black" id="q{|-A?E#oWI+d}b.bEUc">
+                    <value name="OHLCOBJ">
+                      <block type="get_ohlc" id="wjE%_d~_xd`h17b2h@Rf">
+                        <value name="CANDLEINDEX">
+                          <block type="math_number" id="RUo.KaNxd1wwo[gJ]U5u">
+                            <field name="NUM">3</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+            <field name="PURCHASE_LIST">CALL</field>
+          </block>
+        </statement>
+        <next>
+          <block type="controls_if" id="=pPq{!ONmE4:,vI=.}{z">
+            <value name="IF0">
+              <block type="logic_operation" id="@pprqeNhjoC913_bI)~Z">
+                <field name="OP">AND</field>
+                <value name="A">
+                  <block type="logic_operation" id="!nN95tf}N:Hl7NY5rqmX">
+                    <field name="OP">AND</field>
+                    <value name="A">
+                      <block type="is_candle_black" id="_WYU~d=J3)!7GwNfecaV">
+                        <value name="OHLCOBJ">
+                          <block type="get_ohlc" id="kmxgo1(g!)=/xTL8)S}/">
+                            <value name="CANDLEINDEX">
+                              <block type="math_number" id="py;`s[OlCuD=S}H|Laa.">
+                                <field name="NUM">1</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="is_candle_black" id="8fN%E?Moh`Do*Nt/uE;~">
+                        <value name="OHLCOBJ">
+                          <block type="get_ohlc" id="X3:^8~|#dnvgw4bTMzrR">
+                            <value name="CANDLEINDEX">
+                              <block type="math_number" id="e0Q;H?Xusm/[%E}cx0i_">
+                                <field name="NUM">2</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="is_candle_black" id="0M3$0TzoxcNL*QZerhUX">
+                    <value name="OHLCOBJ">
+                      <block type="get_ohlc" id="Jypk2sF[lNF|vi7|a9DF">
+                        <value name="CANDLEINDEX">
+                          <block type="math_number" id="P:-5WokFHSJRz:40)f*r">
+                            <field name="NUM">3</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="purchase" id="^;.kS(htkeu@N@kEhO@I">
+                <field name="PURCHASE_LIST">PUT</field>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="0" y="500">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="trade_again" id="SO*X=~i(5H%=zQ5%e+J$"></block>
+    </statement>
+  </block>
+</xml>

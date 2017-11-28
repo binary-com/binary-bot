@@ -1,0 +1,371 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="loader" id="!u.3b{os+I8^++OC*3=u" x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/index.xml</field>
+  </block>
+  <block type="procedures_defreturn" id="36XGvExum=3rgWYYLmbO" collapsed="true" x="0" y="53">
+    <mutation>
+      <arg name="TLS:candleList"></arg>
+    </mutation>
+    <field name="NAME">Three Line Strike</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="3hNXhS4TU22;Egd)tZ7-">
+        <field name="VAR">TLS:candleList</field>
+        <value name="VALUE">
+          <block type="lists_getSublist" id=";jRL@:XtO?LN:[Q9W]t?">
+            <mutation at1="false" at2="true"></mutation>
+            <field name="WHERE1">FIRST</field>
+            <field name="WHERE2">FROM_END</field>
+            <value name="LIST">
+              <block type="variables_get" id="nK,mD[U~^#WPbvfI~7sJ">
+                <field name="VAR">TLS:candleList</field>
+              </block>
+            </value>
+            <value name="AT2">
+              <block type="math_number" id="@d]N^K[1Bl.y:4!nuY8~">
+                <field name="NUM">2</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="(]{jIHGAp`QH}HmXM0_~">
+            <field name="VAR">TLS:isDownward</field>
+            <value name="VALUE">
+              <block type="logic_boolean" id="zzg31[bu%IqJ`~E)U)5C">
+                <field name="BOOL">FALSE</field>
+              </block>
+            </value>
+            <next>
+              <block type="controls_if" id="PrMUFu/.1pek^i1O9IW^">
+                <value name="IF0">
+                  <block type="procedures_callreturn" id="pzItnS8uU6hb|oY:`v+x">
+                    <mutation name="is downtrend">
+                      <arg name="ID:values"></arg>
+                      <arg name="ID:period"></arg>
+                    </mutation>
+                    <value name="ARG0">
+                      <block type="lists_getSublist" id="3W4;*j?^f/#7m=SQ6@Qn">
+                        <mutation at1="false" at2="true"></mutation>
+                        <field name="WHERE1">FIRST</field>
+                        <field name="WHERE2">FROM_END</field>
+                        <value name="LIST">
+                          <block type="ohlc_values_in_list" id="mtyl`~ZV^%J~r8M~p;Z]">
+                            <field name="OHLCFIELD_LIST">close</field>
+                            <value name="OHLCLIST">
+                              <block type="variables_get" id="|[bS:P}YktF:T[_ta0{+">
+                                <field name="VAR">TLS:candleList</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <value name="AT2">
+                          <block type="math_number" id="|hQL_},c4nCnm5rNko=L">
+                            <field name="NUM">5</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <value name="ARG1">
+                      <block type="math_number" id="{t5;j,Q%+[#C6m!RuEPZ">
+                        <field name="NUM">5</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="variables_set" id="g.,;9o~t6CJ/(Od_bW(8">
+                    <field name="VAR">TLS:isDownward</field>
+                    <value name="VALUE">
+                      <block type="logic_boolean" id="0H{7zs:HC1~(`X/X,6z?">
+                        <field name="BOOL">TRUE</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set" id="QDK,Maisbc7D*Lnk;7V[">
+                        <field name="VAR">TLS:prevCandle</field>
+                        <value name="VALUE">
+                          <block type="lists_getIndex" id="qh=Vp@0(U7ecIG3pIu@K">
+                            <mutation statement="false" at="true"></mutation>
+                            <field name="MODE">GET</field>
+                            <field name="WHERE">FROM_END</field>
+                            <value name="VALUE">
+                              <block type="variables_get" id=":_%sjiVR@px4{PFV+*oO">
+                                <field name="VAR">TLS:candleList</field>
+                              </block>
+                            </value>
+                            <value name="AT">
+                              <block type="math_number" id="^%fTVaAXOfNPQyOy6Rv#">
+                                <field name="NUM">4</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="controls_forEach" id="jqM%xI?.a0tr-QBTxV:4">
+                            <field name="VAR">TLS:i</field>
+                            <value name="LIST">
+                              <block type="lists_getSublist" id="R}V.lx%;THav%r%qxn|y">
+                                <mutation at1="true" at2="false"></mutation>
+                                <field name="WHERE1">FROM_END</field>
+                                <field name="WHERE2">LAST</field>
+                                <value name="LIST">
+                                  <block type="variables_get" id="7%ZQ{#|3(Fdyt|7`g/po">
+                                    <field name="VAR">TLS:candleList</field>
+                                  </block>
+                                </value>
+                                <value name="AT1">
+                                  <block type="math_number" id="P}e/fGf!GZ6WV4==mX~/">
+                                    <field name="NUM">3</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <statement name="DO">
+                              <block type="variables_set" id="66B[UaUhoQ{7E`X}pK}H">
+                                <field name="VAR">TLS:isDownward</field>
+                                <value name="VALUE">
+                                  <block type="logic_operation" id="DoQLAG7snmP]1)C8FFdZ">
+                                    <field name="OP">AND</field>
+                                    <value name="A">
+                                      <block type="variables_get" id="oZ4tME#EHaV^|S!HRFOH">
+                                        <field name="VAR">TLS:isDownward</field>
+                                      </block>
+                                    </value>
+                                    <value name="B">
+                                      <block type="logic_compare" id=")zN4jlUBqtVSHmiTWaW5">
+                                        <field name="OP">LTE</field>
+                                        <value name="A">
+                                          <block type="read_ohlc_obj" id="|0VATC#t`HbojAklRCMN">
+                                            <field name="OHLCFIELD_LIST">low</field>
+                                            <value name="OHLCOBJ">
+                                              <block type="variables_get" id="6NIP/[`^tcq=S-jX[rj-">
+                                                <field name="VAR">TLS:i</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <value name="B">
+                                          <block type="read_ohlc_obj" id="^(A%J[%.Y8(hu(s]7KHC">
+                                            <field name="OHLCFIELD_LIST">low</field>
+                                            <value name="OHLCOBJ">
+                                              <block type="variables_get" id="}/hp}QH_XAD]w8W|-:XP">
+                                                <field name="VAR">TLS:prevCandle</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                              </block>
+                            </statement>
+                            <next>
+                              <block type="controls_forEach" id="Jc(ZzfUV8NH#hZMJd]*m">
+                                <field name="VAR">TLS:i</field>
+                                <value name="LIST">
+                                  <block type="lists_getSublist" id="C!C?In/#bLDQ0+#6+qhv">
+                                    <mutation at1="true" at2="false"></mutation>
+                                    <field name="WHERE1">FROM_END</field>
+                                    <field name="WHERE2">LAST</field>
+                                    <value name="LIST">
+                                      <block type="variables_get" id="}@%+ubWQ=7EpaeI-T,Ge">
+                                        <field name="VAR">TLS:candleList</field>
+                                      </block>
+                                    </value>
+                                    <value name="AT1">
+                                      <block type="math_number" id="l/Ry9X_Z/]9(5yr^1!bm">
+                                        <field name="NUM">4</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <statement name="DO">
+                                  <block type="variables_set" id="z|}v%v(|SljeNVZ!o+La">
+                                    <field name="VAR">TLS:isDownward</field>
+                                    <value name="VALUE">
+                                      <block type="logic_operation" id="=)pr4UwCVo_+;m)`8+#A">
+                                        <field name="OP">AND</field>
+                                        <value name="A">
+                                          <block type="variables_get" id="yE#x^/T)?r1ThjJc+{(U">
+                                            <field name="VAR">TLS:isDownward</field>
+                                          </block>
+                                        </value>
+                                        <value name="B">
+                                          <block type="logic_compare" id="G~0@_PBlL/ki7?V!SBp/">
+                                            <field name="OP">LTE</field>
+                                            <value name="A">
+                                              <block type="procedures_callreturn" id="x}nlYoMt@ez4.-=x=OAc">
+                                                <mutation name="lower shadow percentage">
+                                                  <arg name="LSP:candle"></arg>
+                                                </mutation>
+                                                <value name="ARG0">
+                                                  <block type="variables_get" id="fDU]5r:NH#IqF1sbCHmD">
+                                                    <field name="VAR">TLS:i</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="math_number" id="H{obTR;1j[HNv^PW/i{o">
+                                                <field name="NUM">0.3</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </statement>
+                                <next>
+                                  <block type="variables_set" id=":yt#jX2ctsYBnRShk;i(">
+                                    <field name="VAR">TLS:isDownward</field>
+                                    <value name="VALUE">
+                                      <block type="logic_operation" id=":@J}yG9m4ysU+#6Vx32%">
+                                        <field name="OP">AND</field>
+                                        <value name="A">
+                                          <block type="variables_get" id="i^d7f}eY5VX.UpCNp-u#">
+                                            <field name="VAR">TLS:isDownward</field>
+                                          </block>
+                                        </value>
+                                        <value name="B">
+                                          <block type="logic_compare" id="d86U9#L(/9VXtK*=bn*I">
+                                            <field name="OP">GT</field>
+                                            <value name="A">
+                                              <block type="read_ohlc_obj" id=".J?iMEEp=DSg:as~mZpX">
+                                                <field name="OHLCFIELD_LIST">close</field>
+                                                <value name="OHLCOBJ">
+                                                  <block type="lists_getIndex" id="@2iW`M(2o]r{,DxRwJ`#">
+                                                    <mutation statement="false" at="false"></mutation>
+                                                    <field name="MODE">GET</field>
+                                                    <field name="WHERE">LAST</field>
+                                                    <value name="VALUE">
+                                                      <block type="variables_get" id=",1tCncCxdR,r8|~7)dlL">
+                                                        <field name="VAR">TLS:candleList</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="read_ohlc_obj" id=",!MzxRc@0[dkTYspl64,">
+                                                <field name="OHLCFIELD_LIST">high</field>
+                                                <value name="OHLCOBJ">
+                                                  <block type="lists_getIndex" id="-_,/)x#{LxR+/:s!3W6h">
+                                                    <mutation statement="false" at="true"></mutation>
+                                                    <field name="MODE">GET</field>
+                                                    <field name="WHERE">FROM_END</field>
+                                                    <value name="VALUE">
+                                                      <block type="variables_get" id="|4:Z@k-s8qs^GV:x5T!m">
+                                                        <field name="VAR">TLS:candleList</field>
+                                                      </block>
+                                                    </value>
+                                                    <value name="AT">
+                                                      <block type="math_number" id="h;?.wZ|Y6~@X}i|Y*]xX">
+                                                        <field name="NUM">4</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="variables_set" id="KX@.vX+L[H}Ud6FL[BGp">
+                                        <field name="VAR">TLS:isDownward</field>
+                                        <value name="VALUE">
+                                          <block type="logic_operation" id="QwZP?/35;!6fS5CA+5Qw">
+                                            <field name="OP">AND</field>
+                                            <value name="A">
+                                              <block type="variables_get" id="^ifyR,.qFyvu0VndDb^J">
+                                                <field name="VAR">TLS:isDownward</field>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="logic_compare" id="Dp:r*^4(7#Uz4R)yZbh8">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="read_ohlc_obj" id="6vwi4.xHT-xjvCUps*#b">
+                                                    <field name="OHLCFIELD_LIST">low</field>
+                                                    <value name="OHLCOBJ">
+                                                      <block type="lists_getIndex" id="Z/TxZ:dbJ_sBPFQSKNxk">
+                                                        <mutation statement="false" at="false"></mutation>
+                                                        <field name="MODE">GET</field>
+                                                        <field name="WHERE">LAST</field>
+                                                        <value name="VALUE">
+                                                          <block type="variables_get" id="@1`Q[IOc!HYo8*0AE@.g">
+                                                            <field name="VAR">TLS:candleList</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="read_ohlc_obj" id="+]lpTt76+-iMKdK#jS{4">
+                                                    <field name="OHLCFIELD_LIST">open</field>
+                                                    <value name="OHLCOBJ">
+                                                      <block type="lists_getIndex" id="2;XK;o^hF:~JK}q;VcnL">
+                                                        <mutation statement="false" at="false"></mutation>
+                                                        <field name="MODE">GET</field>
+                                                        <field name="WHERE">LAST</field>
+                                                        <value name="VALUE">
+                                                          <block type="variables_get" id="]?v0xC.AbcY+N3`b~LNF">
+                                                            <field name="VAR">TLS:candleList</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get" id="x^u=uJ[HJ=Cfo)3_tPe6">
+        <field name="VAR">TLS:isDownward</field>
+      </block>
+    </value>
+  </block>
+  <block type="controls_if" id="C/8}M+fHt]7M;CHM);O]" x="0" y="105">
+    <value name="IF0">
+      <block type="procedures_callreturn" id="7#1zf7DPKKegFnQt;B?s">
+        <mutation name="Three Line Strike">
+          <arg name="TLS:candleList"></arg>
+        </mutation>
+        <value name="ARG0">
+          <block type="ohlc" id="ScxZKsa9JTfT~dqtx2#n" disabled="true"></block>
+        </value>
+      </block>
+    </value>
+    <statement name="DO0">
+      <block type="purchase" id="%+gfa9UQ0IUYc*o/j}:x" disabled="true">
+        <field name="PURCHASE_LIST">CALL</field>
+      </block>
+    </statement>
+  </block>
+</xml>

@@ -1,0 +1,79 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="tick_analysis" id="TvBQx[=BF)1oQhZ:uV{p" collapsed="true" x="0" y="0">
+    <statement name="TICKANALYSIS_STACK">
+      <block type="variables_set" id="~R:=zz1qwBcg?A^w?G/L">
+        <field name="VAR">binary::is the candle new</field>
+        <value name="VALUE">
+          <block type="logic_boolean" id="`;kb`)cxmsU#D:qGE[K!">
+            <field name="BOOL">FALSE</field>
+          </block>
+        </value>
+        <next>
+          <block type="controls_if" id=")+956do`Vd45#Ri:y=oc">
+            <value name="IF0">
+              <block type="logic_operation" id=".UeMK}Uc]zBFWWE,+~,=">
+                <field name="OP">OR</field>
+                <value name="A">
+                  <block type="logic_negate" id="OjNB9d5F9W7BZ2]r7b%{">
+                    <value name="BOOL">
+                      <block type="variables_get" id="K3P=3(q8n5xg8fDZrK]N">
+                        <field name="VAR">binary::current candle time</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="logic_compare" id="@zz9kXPIn*+e!l.U#^UJ">
+                    <field name="OP">NEQ</field>
+                    <value name="A">
+                      <block type="variables_get" id="IWyh5!(%PP}IW.PLGR$B">
+                        <field name="VAR">binary::current candle time</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="read_ohlc" id="/n]/cp7~0P?W}OW=EZ4Y">
+                        <field name="OHLCFIELD_LIST">epoch</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set" id=")yD6u069dPOv9p9Mm8AA">
+                <field name="VAR">binary::current candle time</field>
+                <value name="VALUE">
+                  <block type="read_ohlc" id="L]w.yHnN8]0Gah{i+tvE">
+                    <field name="OHLCFIELD_LIST">epoch</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="variables_set" id="kxLtw+j00sV/u?RP~mi-">
+                    <field name="VAR">binary::is the candle new</field>
+                    <value name="VALUE">
+                      <block type="logic_boolean" id="2HFdWG8`U2t[kl8ZpTOA">
+                        <field name="BOOL">TRUE</field>
+                      </block>
+                    </value>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_defreturn" id="5S~A!^;f!!}EaU48%U8v" collapsed="true" x="0" y="52">
+    <field name="NAME">binary::is new candle</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <value name="RETURN">
+      <block type="variables_get" id="mh;,*}1tZb!S2?)W7j~(">
+        <field name="VAR">binary::is the candle new</field>
+      </block>
+    </value>
+  </block>
+  <block type="procedures_callreturn" id="NZ^.Rh)d1s;`,+0|ebn#" x="0" y="104">
+    <mutation name="binary::is new candle"></mutation>
+  </block>
+</xml>

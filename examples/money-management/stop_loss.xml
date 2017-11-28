@@ -1,0 +1,97 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="procedures_defreturn" id="])S(F-Ou1dd21{+QRes*" collapsed="true" x="0" y="52">
+    <mutation>
+      <arg name="SL:sellIsAvailable"></arg>
+      <arg name="SL:profit"></arg>
+      <arg name="SL:stopLoss"></arg>
+    </mutation>
+    <field name="NAME">stop loss</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="N]d,a*xrL~cylZ~tg-DI">
+        <field name="VAR">SL:sell</field>
+        <value name="VALUE">
+          <block type="logic_boolean" id="oLVNUV9Mv#mz%i/CV~2A">
+            <field name="BOOL">FALSE</field>
+          </block>
+        </value>
+        <next>
+          <block type="controls_if" id="k(`h)yvxYWJ=i},GZ@@#">
+            <value name="IF0">
+              <block type="variables_get" id="a(3?_Q_@hLDJt]kQ0*W3">
+                <field name="VAR">SL:sellIsAvailable</field>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="controls_if" id="6)-A?80DnmBXUi.qN,=h">
+                <value name="IF0">
+                  <block type="logic_compare" id="KTuQbli^}_~Y)eo(TM`I">
+                    <field name="OP">LTE</field>
+                    <value name="A">
+                      <block type="variables_get" id="w4CKWfMD;Y2@vLC^P3);">
+                        <field name="VAR">SL:profit</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="math_single" id="[*Yn!#VIc`ACMA@K;~JF">
+                        <field name="OP">NEG</field>
+                        <value name="NUM">
+                          <shadow type="math_number" id="59:vDM3^HPS.E.i0lW;m">
+                            <field name="NUM">9</field>
+                          </shadow>
+                          <block type="variables_get" id="JtINoV6(|q`#r=s].f4D">
+                            <field name="VAR">SL:stopLoss</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="variables_set" id="Geq4]0d7#tWw:rVnCYV9">
+                    <field name="VAR">SL:sell</field>
+                    <value name="VALUE">
+                      <block type="logic_boolean" id="S^dArIafFckfkN=E8:]a">
+                        <field name="BOOL">TRUE</field>
+                      </block>
+                    </value>
+                  </block>
+                </statement>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get" id="zKYQ:+0SM#~@Bc-?c{C.">
+        <field name="VAR">SL:sell</field>
+      </block>
+    </value>
+  </block>
+  <block type="controls_if" id="{f}=rX~GL:5P-U7-_6mK" x="0" y="104">
+    <value name="IF0">
+      <block type="procedures_callreturn" id="p6#I%?Zj0=yL=k;L]?)1">
+        <mutation name="stop loss">
+          <arg name="SL:sellIsAvailable"></arg>
+          <arg name="SL:profit"></arg>
+          <arg name="SL:stopLoss"></arg>
+        </mutation>
+        <value name="ARG0">
+          <block type="check_sell" id="i,W{~kGv[mog}:,k-@An" disabled="true"></block>
+        </value>
+        <value name="ARG1">
+          <block type="sell_price" id="auhRu#KD7*P4:q!d1`f7" disabled="true"></block>
+        </value>
+        <value name="ARG2">
+          <block type="math_number" id="Jhirb3HNn(TDI,iB3K#c">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <statement name="DO0">
+      <block type="sell_at_market" id="WI|P]omW_:yU@CdHdecu" disabled="true"></block>
+    </statement>
+  </block>
+</xml>

@@ -1,0 +1,146 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="0">
+    <statement name="SUBMARKET">
+      <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+        <field name="MARKET_LIST">volidx</field>
+        <field name="SUBMARKET_LIST">random_index</field>
+        <field name="SYMBOL_LIST">R_100</field>
+        <field name="TRADETYPECAT_LIST">callput</field>
+        <field name="TRADETYPE_LIST">risefall</field>
+        <field name="TYPE_LIST">both</field>
+        <field name="CANDLEINTERVAL_LIST">60</field>
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="PAYOUTTYPE_LIST">stake</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <field name="RESTARTONERROR">FALSE</field>
+        <value name="DURATION">
+          <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+            <field name="NUM">5</field>
+          </block>
+        </value>
+        <value name="AMOUNT">
+          <block type="math_number" id="|tIC~6lHx]cKt9rf1jFk">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="242">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="variables_set" id="3voDgC,h4UJK5^{+_L[1">
+        <field name="VAR">threshold</field>
+        <value name="VALUE">
+          <block type="math_number" id=";J}`FbG=Gi~zrC?qj*rf">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="|O~uOx%R7xcXppR?f`0b">
+            <field name="VAR">sma_14</field>
+            <value name="VALUE">
+              <block type="sma" id="kq$GS{@iNS7#+=+8W!Yc">
+                <value name="INPUT">
+                  <block type="ticks" id="exm@PUH?S0OK5)a/)EXK"></block>
+                </value>
+                <value name="PERIOD">
+                  <block type="math_number" id="KrcM5RbOlG,?zh7;msT8">
+                    <field name="NUM">14</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set" id="x^dKV).m-X,_`wO3_P|B">
+                <field name="VAR">sma_21</field>
+                <value name="VALUE">
+                  <block type="sma" id="nNH7#:;T/^#O/YZ~~-}:">
+                    <value name="INPUT">
+                      <block type="ticks" id="VNy3C+nufM@oYON4w^rz"></block>
+                    </value>
+                    <value name="PERIOD">
+                      <block type="math_number" id="+e8buR94p;jNu11R~]{u">
+                        <field name="NUM">21</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <next>
+                  <block type="controls_if" id="X.`yb]NDRgu016t`QrCR">
+                    <value name="IF0">
+                      <block type="logic_compare" id="?bRZFp`@neix?u5q?.Ry">
+                        <field name="OP">LT</field>
+                        <value name="A">
+                          <block type="math_single" id="rO_U6HLhhmy2L{D0P_C$">
+                            <field name="OP">ABS</field>
+                            <value name="NUM">
+                              <shadow type="math_number" id="A{hd8uh?~owsKX:},#~E">
+                                <field name="NUM">9</field>
+                              </shadow>
+                              <block type="math_arithmetic" id="U91NyF57Wqc(fwOwzOXn">
+                                <field name="OP">MINUS</field>
+                                <value name="A">
+                                  <shadow type="math_number" id="LhXc68C]O/^TXabFnt@c">
+                                    <field name="NUM">1</field>
+                                  </shadow>
+                                  <block type="variables_get" id="U7@.nHqhxbS4bw{o)^Zj">
+                                    <field name="VAR">sma_14</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <shadow type="math_number" id="Y@;|lEDjJ,?qQymXGde5">
+                                    <field name="NUM">1</field>
+                                  </shadow>
+                                  <block type="variables_get" id="[nZ^LWcrplNR{K,6c3{,">
+                                    <field name="VAR">sma_21</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="variables_get" id="Wj@E6P]Q7HX/(6fnNOEM">
+                            <field name="VAR">threshold</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="controls_if" id="G:ww@-PT?pD6{2z^%)f#">
+                        <mutation else="1"></mutation>
+                        <value name="IF0">
+                          <block type="logic_compare" id="/Jhcimg|Jv$$mXxTv-:#">
+                            <field name="OP">GT</field>
+                            <value name="A">
+                              <block type="tick" id="1$4t__g3os)TtFK^Q7x."></block>
+                            </value>
+                            <value name="B">
+                              <block type="variables_get" id="|4M1A{n+tkW(xX_GA{]:">
+                                <field name="VAR">sma_14</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+                            <field name="PURCHASE_LIST">CALL</field>
+                          </block>
+                        </statement>
+                        <statement name="ELSE">
+                          <block type="purchase" id="%Z!5DX4+7|eWV`5-U*lb">
+                            <field name="PURCHASE_LIST">PUT</field>
+                          </block>
+                        </statement>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>

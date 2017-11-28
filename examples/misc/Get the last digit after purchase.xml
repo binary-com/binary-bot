@@ -1,0 +1,24 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="tick_analysis" id="jbV#@V5DQvEViKP`U%CJ" x="0" y="0">
+    <statement name="TICKANALYSIS_STACK">
+      <block type="variables_set" id="09Pr3D[aP0(@It:E$H3]">
+        <field name="VAR">Current Last Digit</field>
+        <value name="VALUE">
+          <block type="last_digit" id="aa-QjUpSyR@x,^!vWRWq"></block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="0" y="92">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="variables_set" id="JMS[dO]kxnQpszrmG58=">
+        <field name="VAR">Result Last Digit</field>
+        <value name="VALUE">
+          <block type="variables_get" id="=:rTu$uVI{CSpLD..qQQ">
+            <field name="VAR">Result Last Digit</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+</xml>

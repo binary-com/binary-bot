@@ -1,0 +1,106 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="loader" id="8*/J|~pCeu@4+@nfT{I1" x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/is%2520candle%2520new.xml</field>
+  </block>
+  <block type="trade" id="Yt52~)Nf#vNGlE+qP/vI" x="0" y="53">
+    <statement name="SUBMARKET">
+      <block type="r_100" id="VBu1:.ZV}*(8lnQ^?gjD">
+        <statement name="CONDITION">
+          <block type="risefall" id="AP@czKkb*En-BiAn)kAi">
+            <field name="TYPE_LIST">both</field>
+            <field name="CANDLEINTERVAL_LIST">60</field>
+            <field name="DURATIONTYPE_LIST">t</field>
+            <field name="PAYOUTTYPE_LIST">stake</field>
+            <field name="CURRENCY_LIST">USD</field>
+            <value name="DURATION">
+              <block type="math_number" id="la;K[YSxm8hvB/h,FMur">
+                <field name="NUM">5</field>
+              </block>
+            </value>
+            <value name="AMOUNT">
+              <block type="math_number" id="^qN(g:sLxu7KK:p=!kT2">
+                <field name="NUM">1</field>
+              </block>
+            </value>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="KN1,f]4$QK5.HU-x8z.a" x="0" y="357">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="controls_if" id="t?2jI7h:=XjftkjKUjtZ">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="procedures_callreturn" id="}top{jr,tQPmr|T3YZg1">
+            <mutation name="binary::is new candle"></mutation>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="purchase" id="g:BKQ+hl@Q+dz9Bu{SS;">
+            <field name="PURCHASE_LIST">CALL</field>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="controls_if" id="mYMaY=Zj!bi*qF3wQkwH">
+            <value name="IF0">
+              <block type="logic_compare" id="xI@r]{36B*aN39Ga/o6$">
+                <field name="OP">NEQ</field>
+                <value name="A">
+                  <block type="variables_get" id="8oz}@MllhxY4Es9ewC}F">
+                    <field name="VAR">last result</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="text" id="mjFcfxkaAAE:5E#l]H3+">
+                    <field name="TEXT">WIN</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="purchase" id="a[eV./hmXC:;dr*VbM/f">
+                <field name="PURCHASE_LIST">CALL</field>
+              </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="si+/*VwS7HpjJ^2f}|3g" x="0" y="573">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="controls_if" id="T:OB#jhbbKiBj!OvW~R*">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="contract_check_result" id="}I,%h*R43lliT%QzYNqC">
+            <field name="CHECK_RESULT">win</field>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="variables_set" id="3g?QZ{:x;.jUsf;Y1W0N">
+            <field name="VAR">last result</field>
+            <value name="VALUE">
+              <block type="text" id="P1-ZmcHdW~{cbvuUb^~M">
+                <field name="TEXT">WIN</field>
+              </block>
+            </value>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="variables_set" id="lF@.DB2qAr83B:P-q=%X">
+            <field name="VAR">last result</field>
+            <value name="VALUE">
+              <block type="text" id="^D._oSE15y,lkqoJ#Mn#">
+                <field name="TEXT">LOSS</field>
+              </block>
+            </value>
+          </block>
+        </statement>
+        <next>
+          <block type="trade_again" id="8LElz,B[r?0DxAy!IrI3"></block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>

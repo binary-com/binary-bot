@@ -1,0 +1,104 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="Yt52~)Nf#vNGlE+qP/vI" x="0" y="0">
+    <statement name="SUBMARKET">
+      <block type="variables_set" id="A`/oXhNmEs5:t._/y3hX">
+        <field name="VAR">Runs</field>
+        <value name="VALUE">
+          <block type="math_number" id="|kXGZ1OEb*?-o+Bgz|zr">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <next>
+          <block type="r_100" id="VBu1:.ZV}*(8lnQ^?gjD">
+            <statement name="CONDITION">
+              <block type="risefall" id="AP@czKkb*En-BiAn)kAi">
+                <field name="TYPE_LIST">both</field>
+                <field name="CANDLEINTERVAL_LIST">60</field>
+                <field name="DURATIONTYPE_LIST">t</field>
+                <field name="PAYOUTTYPE_LIST">stake</field>
+                <field name="CURRENCY_LIST">USD</field>
+                <value name="DURATION">
+                  <block type="math_number" id="la;K[YSxm8hvB/h,FMur">
+                    <field name="NUM">5</field>
+                  </block>
+                </value>
+                <value name="AMOUNT">
+                  <block type="math_number" id="^qN(g:sLxu7KK:p=!kT2">
+                    <field name="NUM">1</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="KN1,f]4$QK5.HU-x8z.a" x="0" y="330">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="math_change" id="32V_gqAML:MA1|1M(DyB">
+        <field name="VAR">Runs</field>
+        <value name="DELTA">
+          <shadow type="math_number" id="mqKZQ~fDmOpR#9V9H~.B">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="math_number" id="}NYz;6@t8^o}:iUH^7.K">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <next>
+          <block type="purchase" id="HFL@|cf$e$,?Mh=x9g0E">
+            <field name="PURCHASE_LIST">CALL</field>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="@AyTPcv?(w:rirJC)ME0" x="0" y="446">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="controls_if" id="AVT5}SJ#}~+HLYcLRZLK">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="logic_compare" id="FOIO_0cCJ`!;SCBIpZT2">
+            <field name="OP">EQ</field>
+            <value name="A">
+              <block type="variables_get" id="bO%uxqKC0Ck(BZj%Yg73">
+                <field name="VAR">Runs</field>
+              </block>
+            </value>
+            <value name="B">
+              <block type="math_number" id="kYQ=#+.kQr_U%qc8ZllQ">
+                <field name="NUM">3</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="variables_set" id="F/vFyKN94~/^t(@{Vs[|">
+            <field name="VAR">Runs</field>
+            <value name="VALUE">
+              <block type="math_number" id="Nb6|)65TcqZsMWIrh,zE">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+            <next>
+              <block type="timeout" id="16bKgX9_?DN+UfWg%He+">
+                <statement name="TIMEOUTSTACK">
+                  <block type="trade_again" id="mK:cN,r_T)m;8lPGD?)8"></block>
+                </statement>
+                <value name="SECONDS">
+                  <block type="math_number" id=";v+Z}S#Tn/qe#FFQf`NI">
+                    <field name="NUM">10</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="trade_again" id="D)vw!pA^S$@[]:byf*l@"></block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+</xml>

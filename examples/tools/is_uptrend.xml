@@ -1,0 +1,141 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="procedures_defreturn" id="^BtPrVqmTJNfy~9H7!h8" collapsed="true" x="0" y="52">
+    <mutation>
+      <arg name="IU:values"></arg>
+      <arg name="IU:period"></arg>
+    </mutation>
+    <field name="NAME">is uptrend</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="oFBB7QmQNLjoR)t6W!2C">
+        <field name="VAR">IU:sma</field>
+        <value name="VALUE">
+          <block type="emaa" id="Fj0!*RD(G,%]}o!L3G*w">
+            <value name="INPUT">
+              <block type="lists_getSublist" id="*ybSjprIC7@E3{u=cTOM">
+                <mutation at1="true" at2="false"></mutation>
+                <field name="WHERE1">FROM_END</field>
+                <field name="WHERE2">LAST</field>
+                <value name="LIST">
+                  <block type="variables_get" id="D3nDL-N084LOYR;6x;g7">
+                    <field name="VAR">IU:values</field>
+                  </block>
+                </value>
+                <value name="AT1">
+                  <block type="math_arithmetic" id="g%){+@+drna~~WjDHuwK">
+                    <field name="OP">MULTIPLY</field>
+                    <value name="A">
+                      <shadow type="math_number" id="V4cmRIpD@S]K~#|unBtt">
+                        <field name="NUM">1</field>
+                      </shadow>
+                      <block type="variables_get" id="zMK#Kv5n@MTwif[[]ry,">
+                        <field name="VAR">IU:period</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <shadow type="math_number" id="]BO9pYlPiisZCsLWQ}N?">
+                        <field name="NUM">1</field>
+                      </shadow>
+                      <block type="math_number" id="(OrjD.Jy1-5Wp{[1wdYK">
+                        <field name="NUM">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <value name="PERIOD">
+              <block type="variables_get" id="f(Vd)7V_x0(UQ_mGnXV@">
+                <field name="VAR">IU:period</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="DeEXlP=J_n#0vuW1G%pG">
+            <field name="VAR">IU:prev</field>
+            <value name="VALUE">
+              <block type="lists_getIndex" id="{CwG=-yF@mFq5,;W!9yb">
+                <mutation statement="false" at="false"></mutation>
+                <field name="MODE">GET</field>
+                <field name="WHERE">FIRST</field>
+                <value name="VALUE">
+                  <block type="variables_get" id="A}i@63~xLE5[z80%TPBC">
+                    <field name="VAR">IU:sma</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set" id="ya{SB(jt)[nQylUz?g,i">
+                <field name="VAR">IU:isUp</field>
+                <value name="VALUE">
+                  <block type="logic_boolean" id="oz,Osq,;N?pU*jC6nlC.">
+                    <field name="BOOL">TRUE</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="controls_forEach" id="@[yEmYG!/[|^]+D^YerX">
+                    <field name="VAR">IU:i</field>
+                    <value name="LIST">
+                      <block type="lists_getSublist" id="-gOGm1XUH7iPu0j*s-r0">
+                        <mutation at1="true" at2="false"></mutation>
+                        <field name="WHERE1">FROM_END</field>
+                        <field name="WHERE2">LAST</field>
+                        <value name="LIST">
+                          <block type="variables_get" id="*gJ4sZLz]x7oTTb+j`G+">
+                            <field name="VAR">IU:sma</field>
+                          </block>
+                        </value>
+                        <value name="AT1">
+                          <block type="math_number" id="~m.#FFdue~hkd4unG!}z">
+                            <field name="NUM">2</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO">
+                      <block type="variables_set" id="AI-=DajG}?M7U8qiYnP!">
+                        <field name="VAR">IU:isUp</field>
+                        <value name="VALUE">
+                          <block type="logic_operation" id="^hGB_rincn}d19e-5OZs">
+                            <field name="OP">AND</field>
+                            <value name="A">
+                              <block type="variables_get" id="MFY`^,IRwXwv)`_9nzQz">
+                                <field name="VAR">IU:isUp</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="logic_compare" id="k!SE1wW=)7,O;,Ru8|]|">
+                                <field name="OP">LTE</field>
+                                <value name="A">
+                                  <block type="variables_get" id="pEjpLJ()6]26Z!`XjgnR">
+                                    <field name="VAR">IU:prev</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="variables_get" id="3D`e3yhPS~]V;QG-Oq)5">
+                                    <field name="VAR">IU:i</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get" id="6FXu5;#,W=ZX:p0UqF2k">
+        <field name="VAR">IU:isUp</field>
+      </block>
+    </value>
+  </block>
+</xml>

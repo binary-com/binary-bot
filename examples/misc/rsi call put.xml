@@ -1,0 +1,133 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="0">
+    <statement name="SUBMARKET">
+      <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+        <field name="MARKET_LIST">volidx</field>
+        <field name="SUBMARKET_LIST">random_index</field>
+        <field name="SYMBOL_LIST">R_100</field>
+        <field name="TRADETYPECAT_LIST">callput</field>
+        <field name="TRADETYPE_LIST">risefall</field>
+        <field name="TYPE_LIST">both</field>
+        <field name="CANDLEINTERVAL_LIST">60</field>
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="PAYOUTTYPE_LIST">stake</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <field name="RESTARTONERROR">FALSE</field>
+        <value name="DURATION">
+          <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+        <value name="AMOUNT">
+          <block type="math_number" id="|tIC~6lHx]cKt9rf1jFk">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="640" y="4">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="timeout" id="v+/JD!yVDONl(80Lx%9{">
+        <statement name="TIMEOUTSTACK">
+          <block type="trade_again" id="SO*X=~i(5H%=zQ5%e+J$"></block>
+        </statement>
+        <value name="SECONDS">
+          <block type="math_number" id="sZN-C9/iFa}`K?S}$I#L">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="242">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="variables_set" id=",k3e|97Q#zy~St|},FIw">
+        <field name="VAR">RSI</field>
+        <value name="VALUE">
+          <block type="rsi" id="L`@9^C8dP8t_eY~kc`z@">
+            <value name="INPUT">
+              <block type="ohlc_values" id="zfL;*8=+xY4c;D.a+BNG">
+                <field name="OHLCFIELD_LIST">close</field>
+              </block>
+            </value>
+            <value name="PERIOD">
+              <block type="math_number" id="M`iwUevPD`7AM;@a_lxL">
+                <field name="NUM">14</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="notify" id="d6hoYghe$|5gGM!Uw4^E">
+            <field name="NOTIFICATION_TYPE">success</field>
+            <value name="MESSAGE">
+              <block type="text_join" id="0}QaY20UMMh`;6uUyJJV">
+                <mutation items="2"></mutation>
+                <value name="ADD0">
+                  <block type="text" id="rycoAM.71-1g2W0KNs9N">
+                    <field name="TEXT">RSI: </field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="variables_get" id="@6r^:%J(M%u/C:m.1,np">
+                    <field name="VAR">RSI</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="controls_if" id="s{kS1BqXYXkG~l9wQ|Ed">
+                <mutation else="1"></mutation>
+                <value name="IF0">
+                  <block type="logic_compare" id="}[99+Ny4yVf;!J=sZqZK">
+                    <field name="OP">GTE</field>
+                    <value name="A">
+                      <block type="variables_get" id="d2lEPSjR=xRctYlaXZ%/">
+                        <field name="VAR">RSI</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="math_number" id="EZ9`dW{*yzAaw.9JN?PD">
+                        <field name="NUM">70</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+                    <field name="PURCHASE_LIST">PUT</field>
+                  </block>
+                </statement>
+                <statement name="ELSE">
+                  <block type="controls_if" id=".w6#:3YN02iJYEn~*zeO">
+                    <value name="IF0">
+                      <block type="logic_compare" id="J8fPxAVJ=pJRsvb2*/,2">
+                        <field name="OP">LTE</field>
+                        <value name="A">
+                          <block type="variables_get" id="j/)Z{xC~w:%S~.$tPFcW">
+                            <field name="VAR">RSI</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="math_number" id="k^GA+}=[E*+b5DPc3-$O">
+                            <field name="NUM">30</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="purchase" id=")5}r:1X[+$9M7t|Yj`#$">
+                        <field name="PURCHASE_LIST">CALL</field>
+                      </block>
+                    </statement>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>
