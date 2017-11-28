@@ -1,0 +1,77 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="notify" id="#,rf,]i6*#d79X648A-)">
+        <field name="NOTIFICATION_TYPE">success</field>
+        <value name="MESSAGE">
+          <block type="lists_getIndex" id="uN6e8B+{)eE%Qk0f@g,G">
+            <mutation statement="false" at="true"></mutation>
+            <field name="MODE">GET</field>
+            <field name="WHERE">FROM_END</field>
+            <value name="VALUE">
+              <block type="ohlc_values" id="^qWfA#].}$r`Ulqktly6">
+                <field name="OHLCFIELD_LIST">close</field>
+              </block>
+            </value>
+            <value name="AT">
+              <block type="math_number" id="Wjv5st-Y6*a;0qdK3#G$">
+                <field name="NUM">2</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="notify" id="BlGn!zwK{I[f$Ay[?1e%">
+            <field name="NOTIFICATION_TYPE">info</field>
+            <value name="MESSAGE">
+              <block type="lists_getIndex" id="K5ux7v@=nC$Bya+N0u/M">
+                <mutation statement="false" at="true"></mutation>
+                <field name="MODE">GET</field>
+                <field name="WHERE">FROM_END</field>
+                <value name="VALUE">
+                  <block type="ticks" id="i5kOD@_f5FK5Ge}~PltZ"></block>
+                </value>
+                <value name="AT">
+                  <block type="math_number" id="!gHF1^b,H;RcJ4mL0Huj">
+                    <field name="NUM">2</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="notify" id="gk%ZH4,EqooyHF@}3xRt">
+                <field name="NOTIFICATION_TYPE">error</field>
+                <value name="MESSAGE">
+                  <block type="lists_getIndex" id="!5Lfh=Rz8p9Qq_WwLw*J">
+                    <mutation statement="false" at="true"></mutation>
+                    <field name="MODE">GET</field>
+                    <field name="WHERE">FROM_END</field>
+                    <value name="VALUE">
+                      <block type="rsia" id="A}sTTPQi$|)v[EGX8?_4">
+                        <value name="INPUT">
+                          <block type="ohlc_values" id="4GZ/5kQB6FU+uSPzPTlr">
+                            <field name="OHLCFIELD_LIST">close</field>
+                          </block>
+                        </value>
+                        <value name="PERIOD">
+                          <block type="math_number" id="Bs7,w_k1o-]^Rh^RZWI^">
+                            <field name="NUM">14</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <value name="AT">
+                      <block type="math_number" id=":FuXiS#L9jd)_X*:yQ6t">
+                        <field name="NUM">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>

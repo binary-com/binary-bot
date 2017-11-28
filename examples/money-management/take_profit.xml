@@ -1,0 +1,89 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="procedures_defreturn" id="[!.o}WDt*`sg4fXs5nKd" collapsed="true" x="0" y="0">
+    <mutation>
+      <arg name="TP:sellIsAvailable"></arg>
+      <arg name="TP:profit"></arg>
+      <arg name="TP:takeProfit"></arg>
+    </mutation>
+    <field name="NAME">take profit</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="JSpS-j^Aw2H!L1DE_QKP">
+        <field name="VAR">TP:sell</field>
+        <value name="VALUE">
+          <block type="logic_boolean" id="@~MmbC)mDt|H)f8V/b8%">
+            <field name="BOOL">FALSE</field>
+          </block>
+        </value>
+        <next>
+          <block type="controls_if" id="b-uEY6Mj^+SI)F8#O4@^">
+            <value name="IF0">
+              <block type="variables_get" id="AeoHt,LIb8eXOHSs)9eK">
+                <field name="VAR">TP:sellIsAvailable</field>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="controls_if" id="Pr9E;H{96`PE]d(mj#V5">
+                <value name="IF0">
+                  <block type="logic_compare" id="gugPmpS{Yy7-F%Vm~Y%r">
+                    <field name="OP">GTE</field>
+                    <value name="A">
+                      <block type="variables_get" id="jJGnoVyfg(1KrhW^OSDn">
+                        <field name="VAR">TP:profit</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="variables_get" id="U%2Z0ZQUSde3UTbG~;O-">
+                        <field name="VAR">TP:takeProfit</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="variables_set" id="}c:.J+yV=pu=/01(i1td">
+                    <field name="VAR">TP:sell</field>
+                    <value name="VALUE">
+                      <block type="logic_boolean" id="i6N_F23):4TQO,:OJm9d">
+                        <field name="BOOL">TRUE</field>
+                      </block>
+                    </value>
+                  </block>
+                </statement>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get" id="KXnRZMcsN+{|cVtKsx`P">
+        <field name="VAR">TP:sell</field>
+      </block>
+    </value>
+  </block>
+  <block type="controls_if" id="{f}=rX~GL:5P-U7-_6mK" x="0" y="52">
+    <value name="IF0">
+      <block type="procedures_callreturn" id=")iIO.6[jyb!4-2=r)%8z">
+        <mutation name="take profit">
+          <arg name="TP:sellIsAvailable"></arg>
+          <arg name="TP:profit"></arg>
+          <arg name="TP:takeProfit"></arg>
+        </mutation>
+        <value name="ARG0">
+          <block type="check_sell" id="i,W{~kGv[mog}:,k-@An" disabled="true"></block>
+        </value>
+        <value name="ARG1">
+          <block type="sell_price" id="auhRu#KD7*P4:q!d1`f7" disabled="true"></block>
+        </value>
+        <value name="ARG2">
+          <block type="math_number" id="Jhirb3HNn(TDI,iB3K#c">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <statement name="DO0">
+      <block type="sell_at_market" id="WI|P]omW_:yU@CdHdecu" disabled="true"></block>
+    </statement>
+  </block>
+</xml>

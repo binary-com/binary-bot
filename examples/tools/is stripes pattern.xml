@@ -1,0 +1,130 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="procedures_defreturn" id="%U7%_W^=L=#.I~+ZJv7U" collapsed="true">
+    <mutation>
+      <arg name="Binary::candle list"></arg>
+      <arg name="Binary::count"></arg>
+    </mutation>
+    <field name="NAME">Binary::Is Stripes Pattern</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="oWpS-m?|ii.q/rv-ImI[">
+        <field name="VAR">Binary::previous candle</field>
+        <value name="VALUE">
+          <block type="lists_getIndex" id="rO$nEla}B4Aov1te^4(]">
+            <mutation statement="false" at="true"></mutation>
+            <field name="MODE">GET</field>
+            <field name="WHERE">FROM_END</field>
+            <value name="VALUE">
+              <block type="variables_get" id="[zXLPdwDvq50`6P3G*H[">
+                <field name="VAR">Binary::candle list</field>
+              </block>
+            </value>
+            <value name="AT">
+              <block type="variables_get" id="IjGrj!$iD3UL6gro/];F">
+                <field name="VAR">Binary::count</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="phTWKu@ZI|JByCSlK$JE">
+            <field name="VAR">Binary::stripes pattern</field>
+            <value name="VALUE">
+              <block type="logic_boolean" id="a5%csSg3KD(*sLgN.GhA">
+                <field name="BOOL">TRUE</field>
+              </block>
+            </value>
+            <next>
+              <block type="controls_forEach" id="RWBxv/_0Dgu],Mx*3GTl">
+                <field name="VAR">Binary::candle</field>
+                <value name="LIST">
+                  <block type="lists_getSublist" id="D!;*gEkVj(Sz45(%Y4(}">
+                    <mutation at1="true" at2="false"></mutation>
+                    <field name="WHERE1">FROM_END</field>
+                    <field name="WHERE2">LAST</field>
+                    <value name="LIST">
+                      <block type="variables_get" id="p(J$*c,yum$V%m}@|`{9">
+                        <field name="VAR">Binary::candle list</field>
+                      </block>
+                    </value>
+                    <value name="AT1">
+                      <block type="math_arithmetic" id="4]I@d]e!o+@S4TQ?OW4a">
+                        <field name="OP">MINUS</field>
+                        <value name="A">
+                          <shadow type="math_number" id="d:xzr$Y`D@.:$$HRt`,0">
+                            <field name="NUM">1</field>
+                          </shadow>
+                          <block type="variables_get" id="w%1ACPGxZ6E6?!w@lUrL">
+                            <field name="VAR">Binary::count</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <shadow type="math_number" id="A}KK_Ov_T|-*ebg-89iq">
+                            <field name="NUM">1</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO">
+                  <block type="variables_set" id="?eM~l%ulpDNvRgwA.X*6">
+                    <field name="VAR">Binary::stripes pattern</field>
+                    <value name="VALUE">
+                      <block type="logic_operation" id=";77CQ8yNVtwcVJJq|ybg">
+                        <field name="OP">AND</field>
+                        <value name="A">
+                          <block type="variables_get" id="G?pqUK7]XSiIU~X)iAO;">
+                            <field name="VAR">Binary::stripes pattern</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="logic_compare" id="=wium5j`hD.jA4_#O6hU">
+                            <field name="OP">NEQ</field>
+                            <value name="A">
+                              <block type="is_candle_black" id="%#=J}y}M%;HKAEM]S5BA">
+                                <value name="OHLCOBJ">
+                                  <block type="variables_get" id="Rp:lnaBIF2X[~nD-E[/L">
+                                    <field name="VAR">Binary::candle</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="is_candle_black" id="J,dgKmFFx:vEB@=cYw_/">
+                                <value name="OHLCOBJ">
+                                  <block type="variables_get" id="D;eJO?|P]Ke_/=HFoeIk">
+                                    <field name="VAR">Binary::previous candle</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set" id="su-WO$GG(ZAuy/i1WV4/">
+                        <field name="VAR">Binary::previous candle</field>
+                        <value name="VALUE">
+                          <block type="variables_get" id=")`0m{:@M1yal%~{0uGZ)">
+                            <field name="VAR">Binary::candle</field>
+                          </block>
+                        </value>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get" id=".BB#@iUD/Li_Fz66@{n*">
+        <field name="VAR">Binary::stripes pattern</field>
+      </block>
+    </value>
+  </block>
+</xml>

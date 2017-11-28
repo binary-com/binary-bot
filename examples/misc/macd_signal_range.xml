@@ -1,0 +1,146 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <block type="trade" id="73vWdDagX-YhN)CtN.3D" x="0" y="0">
+    <statement name="SUBMARKET">
+      <block type="variables_set" id="XW!g:W,%0*[MWA9!BCc-">
+        <field name="VAR">Max</field>
+        <value name="VALUE">
+          <block type="math_number" id="U}yFrcAy([9Xth({_]p-">
+            <field name="NUM">0.0001</field>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="jDt)J!aWJaC)F/^lg@oH">
+            <field name="VAR">Max</field>
+            <value name="VALUE">
+              <block type="math_number" id="@)F%%ih8r]hM0(!jY34f">
+                <field name="NUM">-0.0001</field>
+              </block>
+            </value>
+            <next>
+              <block type="market" id="~T:?7-`j{)c/H5e]d.H9">
+                <field name="MARKET_LIST">volidx</field>
+                <field name="SUBMARKET_LIST">random_index</field>
+                <field name="SYMBOL_LIST">R_100</field>
+                <field name="TRADETYPECAT_LIST">callput</field>
+                <field name="TRADETYPE_LIST">risefall</field>
+                <field name="TYPE_LIST">both</field>
+                <field name="CANDLEINTERVAL_LIST">60</field>
+                <field name="DURATIONTYPE_LIST">t</field>
+                <field name="PAYOUTTYPE_LIST">stake</field>
+                <field name="CURRENCY_LIST">USD</field>
+                <field name="RESTARTONERROR">FALSE</field>
+                <value name="DURATION">
+                  <block type="math_number" id="0p-bjjEuB1k(LNWLaiS]">
+                    <field name="NUM">5</field>
+                  </block>
+                </value>
+                <value name="AMOUNT">
+                  <block type="math_number" id="|tIC~6lHx]cKt9rf1jFk">
+                    <field name="NUM">1</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id="tOc)]Xd=cAm0aiy+-8(8" x="0" y="294">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="variables_set" id="X{)m.oM,8MEMMMRIUqUs">
+        <field name="VAR">Signal</field>
+        <value name="VALUE">
+          <block type="lists_getIndex" id="#4Qsp5e|s,A[%?=}2{%;">
+            <mutation statement="false" at="false"></mutation>
+            <field name="MODE">GET</field>
+            <field name="WHERE">LAST</field>
+            <value name="VALUE">
+              <block type="macda" id="Aw{768HFHJJ;$?b#DfEV">
+                <field name="MACDFIELDS_LIST">2</field>
+                <value name="INPUT">
+                  <block type="ohlc_values" id="poy]Sb$T-hk1bxV@A9eZ">
+                    <field name="OHLCFIELD_LIST">open</field>
+                  </block>
+                </value>
+                <value name="FAST_EMA_PERIOD">
+                  <block type="math_number" id="[2N=oS~6w^%4J7)1D98K">
+                    <field name="NUM">12</field>
+                  </block>
+                </value>
+                <value name="SLOW_EMA_PERIOD">
+                  <block type="math_number" id="/MK;%sC70t9L4`aWLefK">
+                    <field name="NUM">26</field>
+                  </block>
+                </value>
+                <value name="SMA_PERIOD">
+                  <block type="math_number" id="cW!?$iXLgj7t[)K}X!C3">
+                    <field name="NUM">9</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="controls_if" id="W3?Ug/XHN=|kNzH!sCj=">
+            <value name="IF0">
+              <block type="logic_operation" id=".=#KA`FKcmAanbq9~cqz">
+                <field name="OP">AND</field>
+                <value name="A">
+                  <block type="logic_compare" id="%..Z9oe.^q2OcGyHNYC9">
+                    <field name="OP">LTE</field>
+                    <value name="A">
+                      <block type="variables_get" id="mz`*EpNbqhOSaQ)#`bRd">
+                        <field name="VAR">Signal</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="variables_get" id="Ksy3idQZpn@NpTKs9zEK">
+                        <field name="VAR">Max</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="logic_compare" id="!:5DqT`]uLY:J7J24WMP">
+                    <field name="OP">LTE</field>
+                    <value name="A">
+                      <block type="variables_get" id="7G)#$Go-yqyJ:[EioInp">
+                        <field name="VAR">Min</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="variables_get" id="?X:XZVwcZHXsc`_sVIHh">
+                        <field name="VAR">Signal</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="purchase" id="Q;`vp48|v7pG%t@W6`uQ">
+                <field name="PURCHASE_LIST">CALL</field>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="during_purchase" id="@G%][.+GU_K^7%1dgfoR" x="0" y="583">
+    <statement name="DURING_PURCHASE_STACK">
+      <block type="controls_if" id="js6S3S_Tc4:~-f+7Dj,j">
+        <value name="IF0">
+          <block type="check_sell" id="gI{65_9!{nCUJ:Z~}%iZ"></block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="Vt,CkLeK8E?%BmnB`~M)" x="0" y="708">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="trade_again" id="SO*X=~i(5H%=zQ5%e+J$"></block>
+    </statement>
+  </block>
+</xml>

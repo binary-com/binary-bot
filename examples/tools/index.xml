@@ -1,0 +1,17 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="loader" id="HuOfPv1`mYlorV#TMCz)" x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/body_percentage.xml</field>
+  </block>
+  <block type="loader" id="irebL:;[v)%g%tGWmU~V" x="0" y="53">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/is_downtrend.xml</field>
+  </block>
+  <block type="loader" id="|t4G;ZM,9!Y`f|*e5L[R" x="0" y="106">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/is_uptrend.xml</field>
+  </block>
+  <block type="loader" id="3eT[1]ianZLhr+6N.36w" x="0" y="159">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/lower_shadow_percentage.xml</field>
+  </block>
+  <block type="loader" id="upL=.I(/{22Smocym|@M" x="0" y="212">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/7cd7be9f3ce9004de767f4d4f6a6c5a0/raw/upper_shadow_percentage.xml</field>
+  </block>
+</xml>

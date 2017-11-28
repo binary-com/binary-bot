@@ -1,0 +1,11 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="loader" id="n)Bh^#g_[T4c.ASaNA0." x="0" y="0">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/8cfc8554f894311e9a80480d28882bf2/raw/stop_loss.xml</field>
+  </block>
+  <block type="loader" id=".AO7/ICmD[O8p_H+$i-P" x="0" y="53">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/8cfc8554f894311e9a80480d28882bf2/raw/take_profit.xml</field>
+  </block>
+  <block type="loader" id="G)ZMQuR6vs@V2?#_184K" x="0" y="106">
+    <field name="URL">https://gist.githubusercontent.com/aminmarashi/8cfc8554f894311e9a80480d28882bf2/raw/take_profit_and_stop_loss.xml</field>
+  </block>
+</xml>

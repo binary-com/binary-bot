@@ -1,0 +1,152 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="true">
+  <block type="procedures_defreturn" id="n|+o0QU.c(.9I+8K@f0h" collapsed="true" x="0" y="52">
+    <mutation>
+      <arg name="LSP:candle"></arg>
+    </mutation>
+    <field name="NAME">lower shadow percentage</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="8bO8P7[`IxjiXtRHXQyb">
+        <field name="VAR">LSP:candleSize</field>
+        <value name="VALUE">
+          <block type="math_arithmetic" id="#;vM^8eu,+}R8N+wmH`M">
+            <field name="OP">MINUS</field>
+            <value name="A">
+              <shadow type="math_number" id=":u[nCRZO%QwT=o6:^0-Z">
+                <field name="NUM">1</field>
+              </shadow>
+              <block type="read_ohlc_obj" id="w,zh:XzZC%;V]ZWCx!7)">
+                <field name="OHLCFIELD_LIST">high</field>
+                <value name="OHLCOBJ">
+                  <block type="variables_get" id="T]E3}a0)a2`1,MG:sW8G">
+                    <field name="VAR">LSP:candle</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <value name="B">
+              <shadow type="math_number" id=";-xKj!}te5*7yK(E,LOb">
+                <field name="NUM">1</field>
+              </shadow>
+              <block type="read_ohlc_obj" id="vZ?dTXv#ZsdIxryO.r7O">
+                <field name="OHLCFIELD_LIST">low</field>
+                <value name="OHLCOBJ">
+                  <block type="variables_get" id="odl8={M/p+r3,I),V4Jd">
+                    <field name="VAR">LSP:candle</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="controls_if" id="P/rv1f_%vGantc0Pw/~l">
+            <mutation else="1"></mutation>
+            <value name="IF0">
+              <block type="is_candle_black" id=":X14PQ_@i#Uti0}C@K8|">
+                <value name="OHLCOBJ">
+                  <block type="variables_get" id="+Z;GJ)hE]`wWZgR%C+!!">
+                    <field name="VAR">LSP:candle</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set" id="CJ1!ss|?*zQvPG2PS:bD">
+                <field name="VAR">LSP:shadowSize</field>
+                <value name="VALUE">
+                  <block type="math_arithmetic" id="yM.X1v[v1=K}x}6yB#S3">
+                    <field name="OP">MINUS</field>
+                    <value name="A">
+                      <shadow type="math_number" id="xDrGiaLCe3IhnfM1WvV!">
+                        <field name="NUM">1</field>
+                      </shadow>
+                      <block type="read_ohlc_obj" id="(NLbiIxDsg;tYUrGnfU6">
+                        <field name="OHLCFIELD_LIST">close</field>
+                        <value name="OHLCOBJ">
+                          <block type="variables_get" id="Rqk=]ATmWBO]!q:+we!#">
+                            <field name="VAR">LSP:candle</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <shadow type="math_number" id="]9alF38XG=Nk1.z|a:[9">
+                        <field name="NUM">1</field>
+                      </shadow>
+                      <block type="read_ohlc_obj" id="_5_*{@T`!)veTZ:[lELb">
+                        <field name="OHLCFIELD_LIST">low</field>
+                        <value name="OHLCOBJ">
+                          <block type="variables_get" id="r^O%HT^p=;_*fxAS}sh%">
+                            <field name="VAR">LSP:candle</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <statement name="ELSE">
+              <block type="variables_set" id="w!@c|s*DU;R|sj]BSs!b">
+                <field name="VAR">LSP:shadowSize</field>
+                <value name="VALUE">
+                  <block type="math_arithmetic" id="P[-i%%o~;v4T!pfZM|d3">
+                    <field name="OP">MINUS</field>
+                    <value name="A">
+                      <shadow type="math_number" id="xDrGiaLCe3IhnfM1WvV!">
+                        <field name="NUM">1</field>
+                      </shadow>
+                      <block type="read_ohlc_obj" id="yEBEqC~BhXw=K*C*ob8F">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <value name="OHLCOBJ">
+                          <block type="variables_get" id="%oRK(;D]]9^2PkaZe:ca">
+                            <field name="VAR">LSP:candle</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <shadow type="math_number" id="]9alF38XG=Nk1.z|a:[9">
+                        <field name="NUM">1</field>
+                      </shadow>
+                      <block type="read_ohlc_obj" id="TaP?40q!7=hqZ{}]1;3^">
+                        <field name="OHLCFIELD_LIST">low</field>
+                        <value name="OHLCOBJ">
+                          <block type="variables_get" id="1=P[Z#{+`_NyDl?y0Vq*">
+                            <field name="VAR">LSP:candle</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="math_arithmetic" id="m6+i.)ekffIAzdcqaFHA">
+        <field name="OP">DIVIDE</field>
+        <value name="A">
+          <shadow type="math_number" id="{2*90nh~)-;Hdbd]r(GU">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get" id="jSi,`OxSt,y]x4|ioJLM">
+            <field name="VAR">LSP:shadowSize</field>
+          </block>
+        </value>
+        <value name="B">
+          <shadow type="math_number" id="LZZJs=?xKP5KGaqhn^![">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get" id="61G[N)5H@-_JBHtITeAQ">
+            <field name="VAR">LSP:candleSize</field>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block>
+</xml>
