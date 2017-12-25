@@ -2,6 +2,7 @@ import JSInterpreter from 'js-interpreter';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
+import _Blockly from '../view/blockly';
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
@@ -15,6 +16,7 @@ export default class Interpreter {
     init() {
         this.$scope = createScope();
         this.bot = new Interface(this.$scope);
+        this.blockly = new _Blockly();
         this.stopped = false;
         this.$scope.observer.register('REVERT', watchName =>
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)
@@ -90,11 +92,16 @@ export default class Interpreter {
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = this.bot.tradeEngine;
                 this.stop();
-                this.init();
-                this.$scope.observer.register('Error', onError);
-                this.bot.tradeEngine.init(...initArgs);
-                this.bot.tradeEngine.start(tradeOptions);
-                this.revert(this.startState);
+                const unrecoverableErrorList = ['InsufficientBalance'];
+                if (unrecoverableErrorList.indexOf(e.name) === -1) {
+                    this.init();
+                    this.$scope.observer.register('Error', onError);
+                    this.bot.tradeEngine.init(...initArgs);
+                    this.bot.tradeEngine.start(tradeOptions);
+                    this.revert(this.startState);
+                } else {
+                    this.blockly.stop();
+                }
             };
 
             this.$scope.observer.register('Error', onError);
