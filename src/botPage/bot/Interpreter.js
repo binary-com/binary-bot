@@ -3,11 +3,11 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
 
-const unrecoverableErrorList = ['InsufficientBalance', 'CustomLimitsReached'];
+const unrecoverableErrors = ['InsufficientBalance', 'CustomLimitsReached'];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, e = {}) =>
-    unrecoverableErrorList.includes(e.name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+    unrecoverableErrors.includes(e.name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
