@@ -48,7 +48,7 @@ describe('Relative Strength Index', () => {
     beforeAll(done =>
         getIndicatorsFromApi().then(r => {
             result = r;
-            const ticks = result.ticks;
+            const { ticks } = result;
 
             expected = {
                 sma  : sma(ticks, { periods }),

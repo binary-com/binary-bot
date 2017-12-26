@@ -12,7 +12,7 @@ export const marketDropdown = block => {
         if (marketName === 'Invalid') {
             return [['', 'Invalid']];
         }
-        const submarkets = markets[marketName].submarkets;
+        const { submarkets } = markets[marketName];
         return Object.keys(submarkets).map(e => [submarkets[e].name, e]);
     };
     const getSymbols = () => {
@@ -21,8 +21,8 @@ export const marketDropdown = block => {
             return [['', '']];
         }
         const marketName = block.getFieldValue('MARKET_LIST');
-        const submarkets = markets[marketName].submarkets;
-        const symbols = submarkets[submarketName].symbols;
+        const { submarkets } = markets[marketName];
+        const { symbols } = submarkets[submarketName];
         return Object.keys(symbols).map(e => [symbols[e].display, symbols[e].symbol]);
     };
     const getMarket = () => Object.keys(markets).map(e => [markets[e].name, e]);
@@ -139,7 +139,10 @@ export const secondBarrierOffset = block => {
 
 export const prediction = block => {
     if (!block.getInput('PREDICTION')) {
-        block.appendValueInput('PREDICTION').setCheck('Number').appendField(translate('Prediction:'));
+        block
+            .appendValueInput('PREDICTION')
+            .setCheck('Number')
+            .appendField(translate('Prediction:'));
     }
 };
 

@@ -34,7 +34,7 @@ Blockly.Blocks.loader = {
             ev.blockId === this.id &&
             !this.disabled
         ) {
-            const recordUndo = Blockly.Events.recordUndo;
+            const { recordUndo } = Blockly.Events;
             Blockly.Events.recordUndo = false;
             deleteBlocksLoadedBy(this.id);
             loadRemote(this).then(
@@ -54,5 +54,5 @@ Blockly.Blocks.loader = {
 Blockly.JavaScript.loader = block =>
     block.loadedVariables.length
         ? // eslint-disable-next-line no-underscore-dangle
-          `var ${block.loadedVariables.map(v => Blockly.JavaScript.variableDB_.safeName_(v)).toString()};`
+        `var ${block.loadedVariables.map(v => Blockly.JavaScript.variableDB_.safeName_(v)).toString()};`
         : '';

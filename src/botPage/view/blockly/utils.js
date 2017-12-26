@@ -173,7 +173,7 @@ class DeleteStray extends Blockly.Events.Abstract {
         this.run(true);
     }
     run(redo) {
-        const recordUndo = Blockly.Events.recordUndo;
+        const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
         const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId);
         if (!sourceBlock) {
@@ -199,7 +199,7 @@ class Hide extends Blockly.Events.Abstract {
         this.run(true);
     }
     run() {
-        const recordUndo = Blockly.Events.recordUndo;
+        const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
         const sourceBlock = Blockly.mainWorkspace.getBlockById(this.blockId);
         const sourceHeader = Blockly.mainWorkspace.getBlockById(this.sourceHeaderId);
@@ -231,7 +231,10 @@ export const addDomAsBlock = blockXml => {
     backwardCompatibility(blockXml);
     const blockType = blockXml.getAttribute('type');
     if (isMainBlock(blockType)) {
-        Blockly.mainWorkspace.getTopBlocks().filter(b => b.type === blockType).forEach(b => b.dispose());
+        Blockly.mainWorkspace
+            .getTopBlocks()
+            .filter(b => b.type === blockType)
+            .forEach(b => b.dispose());
     }
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
 };
@@ -240,7 +243,7 @@ const replaceDeletedBlock = block => {
     const procedureName = block.getFieldValue('NAME');
     const oldProcedure = Blockly.Procedures.getDefinition(`${procedureName} (deleted)`, Blockly.mainWorkspace);
     if (oldProcedure) {
-        const recordUndo = Blockly.Events.recordUndo;
+        const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
         const f = block.getField('NAME');
         // eslint-disable-next-line no-underscore-dangle
@@ -252,7 +255,7 @@ const replaceDeletedBlock = block => {
 };
 
 export const recoverDeletedBlock = block => {
-    const recordUndo = Blockly.Events.recordUndo;
+    const { recordUndo } = Blockly.Events;
     Blockly.Events.recordUndo = false;
     block.setFieldValue(block.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME');
     block.setDisabled(false);
@@ -310,7 +313,7 @@ const loadBlocksFromHeader = (blockStr = '', header) =>
         }
         try {
             if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-                const recordUndo = Blockly.Events.recordUndo;
+                const { recordUndo } = Blockly.Events;
                 Blockly.Events.recordUndo = false;
                 addLoadersFirst(xml, header).then(
                     () => {
@@ -367,14 +370,18 @@ export const loadRemote = blockObj =>
                     .fail(e => {
                         if (e.status) {
                             reject(
-                                `${translate(
-                                    'An error occurred while trying to load the url'
-                                )}: ${e.status} ${e.statusText}`
+                                Error(
+                                    `${translate('An error occurred while trying to load the url')}: ${e.status} ${
+                                        e.statusText
+                                    }`
+                                )
                             );
                         } else {
                             reject(
-                                translate(
-                                    'Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'
+                                Error(
+                                    translate(
+                                        'Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'
+                                    )
                                 )
                             );
                         }
