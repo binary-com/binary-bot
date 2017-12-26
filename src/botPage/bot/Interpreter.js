@@ -2,11 +2,12 @@ import JSInterpreter from 'js-interpreter';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
-import _Blockly from '../view/blockly';
 
+const unrecoverableErrorList = ['InsufficientBalance', 'CustomLimitsReached'];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
-const shouldRestartOnError = bot => botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+const shouldRestartOnError = (bot, e = {}) =>
+    unrecoverableErrorList.includes(e.name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
@@ -16,7 +17,6 @@ export default class Interpreter {
     init() {
         this.$scope = createScope();
         this.bot = new Interface(this.$scope);
-        this.blockly = new _Blockly();
         this.stopped = false;
         this.$scope.observer.register('REVERT', watchName =>
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)
@@ -85,23 +85,18 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
-                if (e.name === 'CustomLimitsReached' || !shouldRestartOnError(this.bot) || !botStarted(this.bot)) {
+                if (!shouldRestartOnError(this.bot, e.name) || !botStarted(this.bot)) {
                     reject(e);
                     return;
                 }
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = this.bot.tradeEngine;
                 this.stop();
-                const unrecoverableErrorList = ['InsufficientBalance'];
-                if (unrecoverableErrorList.indexOf(e.name) === -1) {
-                    this.init();
-                    this.$scope.observer.register('Error', onError);
-                    this.bot.tradeEngine.init(...initArgs);
-                    this.bot.tradeEngine.start(tradeOptions);
-                    this.revert(this.startState);
-                } else {
-                    this.blockly.stop();
-                }
+                this.init();
+                this.$scope.observer.register('Error', onError);
+                this.bot.tradeEngine.init(...initArgs);
+                this.bot.tradeEngine.start(tradeOptions);
+                this.revert(this.startState);
             };
 
             this.$scope.observer.register('Error', onError);
