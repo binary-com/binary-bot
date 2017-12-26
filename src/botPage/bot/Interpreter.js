@@ -6,8 +6,8 @@ import Interface from './Interface';
 const unrecoverableErrors = ['InsufficientBalance', 'CustomLimitsReached'];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
-const shouldRestartOnError = (bot, e = {}) =>
-    unrecoverableErrors.includes(e.name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+const shouldRestartOnError = (bot, errorName = '') =>
+    !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
