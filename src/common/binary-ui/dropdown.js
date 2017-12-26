@@ -11,7 +11,10 @@ function hide_menu($element) {
 }
 
 function show_menu($element) {
-    $element.css('visibility', 'visible').css('display', 'block').animate({ opacity: 1 }, 100);
+    $element
+        .css('visibility', 'visible')
+        .css('display', 'block')
+        .animate({ opacity: 1 }, 100);
 }
 
 function navMenuListener() {
@@ -35,9 +38,19 @@ function topNavMenuListener() {
         hide_menu($('#language_select, #select_language'));
         var childMenu = $(this).find(' > ul'),
             $el = $('.top-nav-menu li ul');
-        if (childMenu.css('opacity') == 1 && $(event.target).find('span').hasClass('nav-caret')) {
+        if (
+            childMenu.css('opacity') == 1 &&
+            $(event.target)
+                .find('span')
+                .hasClass('nav-caret')
+        ) {
             hide_menu($el);
-        } else if (childMenu.css('opacity') == 0 && $(event.target).find('span').hasClass('nav-caret')) {
+        } else if (
+            childMenu.css('opacity') == 0 &&
+            $(event.target)
+                .find('span')
+                .hasClass('nav-caret')
+        ) {
             $el.animate({ opacity: 0 }, 100, function() {
                 $el.css('visibility', 'hidden');
                 show_menu(childMenu);

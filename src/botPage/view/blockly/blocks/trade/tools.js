@@ -47,7 +47,7 @@ export const extendParentFields = (parent, block, fields) => {
 };
 
 export const ignoreAndGroupEvents = f => {
-    const recordUndo = Blockly.Events.recordUndo;
+    const { recordUndo } = Blockly.Events;
     Blockly.Events.recordUndo = false;
     Blockly.Events.setGroup('BackwardCompatibility');
     f();

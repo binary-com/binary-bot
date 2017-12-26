@@ -36,28 +36,24 @@ export default class TradeInfoPanel extends Component {
                                 rel={el => (this.accountIDDropdown = el)}
                                 onChange={e => this.setState({ accountID: e.target.value })}
                             >
-                                {this.state.accountIDList.map(account =>
+                                {this.state.accountIDList.map(account => (
                                     <option value={account}>
-                                        {`${account}${account !== currentAccountID
-                                            ? ` - ${translate('Stopped')}`
-                                            : ''}`}
+                                        {`${account}${
+                                            account !== currentAccountID ? ` - ${translate('Stopped')}` : ''
+                                        }`}
                                     </option>
-                                )}
+                                ))}
                             </select>
                         </label>
                         <h3>
-                            <span>
-                                {translate('Summary')}
-                            </span>
+                            <span>{translate('Summary')}</span>
                         </h3>
 
                         <Summary accountID={accountID} />
                     </div>
                     <div>
                         <h3>
-                            <span>
-                                {translate('Trades')}
-                            </span>
+                            <span>{translate('Trades')}</span>
                         </h3>
 
                         <TradeTable accountID={accountID} />

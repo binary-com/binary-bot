@@ -38,7 +38,9 @@ const notify = ({ className, message, position = 'left', sound = 'silent' }) => 
         log(className, message);
         $.notify(message, { position: `bottom ${position}`, className });
         if (sound !== 'silent') {
-            $(`#${sound}`).get(0).play();
+            $(`#${sound}`)
+                .get(0)
+                .play();
         }
     }
 };
@@ -48,16 +50,15 @@ const notifyError = error => {
         return;
     }
 
-    let message = error.message;
+    let { message } = error;
     let errorCode = error.name;
 
     if (error.error) {
-        message = error.error.message;
-        errorCode = error.error.errorCode;
+        ({ message } = error.error);
+        ({ errorCode } = error.error);
         if (error.error.error) {
-            message = error.error.error.message;
-            message = error.error.error.message;
-            errorCode = error.error.error.errorCode;
+            ({ message } = error.error.error);
+            ({ errorCode } = error.error.error);
         }
     }
 
@@ -117,7 +118,9 @@ const waitForNotifications = () => {
 };
 
 const logHandler = () => {
-    const token = $('.account-id').first().attr('value');
+    const token = $('.account-id')
+        .first()
+        .attr('value');
     const userId = getToken(token).accountName;
 
     if (amplitude) {

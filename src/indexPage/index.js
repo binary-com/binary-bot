@@ -5,7 +5,7 @@ import { load as loadLang } from '../common/lang';
 import '../common/binary-ui/dropdown';
 
 if (getTokenList().length) {
-    location.pathname = `${location.pathname.replace(/\/+$/, '')}/bot.html`;
+    window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
 } else {
     loadLang();
     setAppId();

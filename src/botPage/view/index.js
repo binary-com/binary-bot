@@ -30,6 +30,8 @@ view.initPromise.then(() => {
     $('.barspinner').hide();
     trackJs.addMetadata('version', version);
     trackJs.configure({
-        userId: $('.account-id').first().text(),
+        userId: $('.account-id')
+            .first()
+            .text(),
     });
 });

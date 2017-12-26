@@ -68,9 +68,7 @@ class SaveContent extends PureComponent {
                     </div>
                 </div>
                 <div style={style.submitButton}>
-                    <button type="submit">
-                        {translate('Save')}
-                    </button>
+                    <button type="submit">{translate('Save')}</button>
                 </div>
             </form>
         );

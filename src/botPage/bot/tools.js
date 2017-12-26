@@ -28,7 +28,7 @@ export const tradeOptionToProposal = tradeOption =>
     }));
 
 export const getDirection = ticks => {
-    const length = ticks.length;
+    const { length } = ticks;
     const [tickOld, tickNew] = ticks.slice(-2);
 
     let direction = '';

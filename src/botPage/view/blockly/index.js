@@ -69,7 +69,9 @@ const loadBlocks = (xml, dropEvent = {}) => {
         loaders => {
             const addedBlocks = [
                 ...loaders,
-                ...Array.from(xml.children).map(block => addDomAsBlock(block)).filter(b => b),
+                ...Array.from(xml.children)
+                    .map(block => addDomAsBlock(block))
+                    .filter(b => b),
             ];
             cleanUpOnLoad(addedBlocks, dropEvent);
             fixCollapsedBlocks();

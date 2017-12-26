@@ -71,16 +71,10 @@ class LimitsContent extends PureComponent {
                             {translate('Maximum loss amount')}
                         </label>
                     </div>
-                    {this.state.error
-                        ? <p style={style.error}>
-                              {this.state.error}
-                          </p>
-                        : null}
+                    {this.state.error ? <p style={style.error}>{this.state.error}</p> : null}
                 </div>
                 <div style={style.submitButton}>
-                    <button type="submit">
-                        {translate('Start')}
-                    </button>
+                    <button type="submit">{translate('Start')}</button>
                 </div>
             </form>
         );
