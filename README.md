@@ -12,22 +12,22 @@ Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.
 ```
 git clone https://github.com/binary-com/binary-bot.git
 cd binary-bot
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 ## Deployment 
 
 ```
 gulp test-deploy
-npm run deploy
+yarn run deploy
 ```
 
 ## To update to latest version
 
 ```
 git pull
-npm install
+yarn install
 ```
 
 ## Running the CLI command
