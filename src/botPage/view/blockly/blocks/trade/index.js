@@ -3,7 +3,7 @@ import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils';
 import { defineContract } from '../images';
-import { updatePurchaseChoices } from '../shared';
+import { updatePurchaseChoices, getDependentDropdownCallback } from '../shared';
 import { marketDefPlaceHolders } from './tools';
 import backwardCompatibility from './backwardCompatibility';
 import tradeOptions from './tradeOptions';
@@ -58,14 +58,19 @@ const replaceInitializationBlocks = (trade, ev) => {
     }
 };
 
+const setDefaultFields = (trade, parentFieldName, childFieldName) => {
+    const defaultValue = getDependentDropdownCallback[parentFieldName](trade)()[0][1];
+    trade.setFieldValue(defaultValue, childFieldName);
+};
+
 const resetTradeFields = (trade, ev) => {
     if (ev.blockId === trade.id) {
         if (ev.element === 'field') {
             if (ev.name === 'MARKET_LIST') {
-                trade.setFieldValue('', 'SUBMARKET_LIST');
+                setDefaultFields(trade, ev.name, 'SUBMARKET_LIST');
             }
             if (ev.name === 'SUBMARKET_LIST') {
-                trade.setFieldValue('', 'SYMBOL_LIST');
+                setDefaultFields(trade, ev.name, 'SYMBOL_LIST');
             }
             if (ev.name === 'SYMBOL_LIST') {
                 trade.setFieldValue('', 'TRADETYPECAT_LIST');
@@ -90,8 +95,12 @@ Blockly.Blocks.trade = {
             .appendField(new Blockly.FieldImage(defineContract, 15, 15, 'T'))
             .appendField(translate('(1) Define your trade contract'));
         marketDefPlaceHolders(this);
-        this.appendStatementInput('INITIALIZATION').setCheck(null).appendField(`${translate('Run Once at Start')}:`);
-        this.appendStatementInput('SUBMARKET').setCheck(null).appendField(`${translate('Define Trade Options')}:`);
+        this.appendStatementInput('INITIALIZATION')
+            .setCheck(null)
+            .appendField(`${translate('Run Once at Start')}:`);
+        this.appendStatementInput('SUBMARKET')
+            .setCheck(null)
+            .appendField(`${translate('Define Trade Options')}:`);
         this.setPreviousStatement(true, null);
         this.setColour('#2a3052');
         this.setTooltip(
@@ -110,7 +119,9 @@ Blockly.Blocks.trade = {
 };
 
 Blockly.JavaScript.trade = block => {
-    const account = $('.account-id').first().attr('value');
+    const account = $('.account-id')
+        .first()
+        .attr('value');
     if (!account) {
         throw Error('Please login');
     }

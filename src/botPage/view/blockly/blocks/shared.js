@@ -1,6 +1,7 @@
 import { translate } from '../../../../common/i18n';
 import config from '../../../common/const';
 import { oppositesToDropdown } from '../utils';
+import { symbolApi } from '../../shared';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 
@@ -37,4 +38,31 @@ export const expectValue = (block, field) => {
         throw Error(translate(`${field} cannot be empty`));
     }
     return value;
+};
+
+export const getSubmarkets = block => () => {
+    const markets = symbolApi.activeSymbols.getMarkets();
+    const marketName = block.getFieldValue('MARKET_LIST');
+    if (marketName === 'Invalid') {
+        return [['', 'Invalid']];
+    }
+    const { submarkets } = markets[marketName];
+    return Object.keys(submarkets).map(e => [submarkets[e].name, e]);
+};
+
+const getSymbols = block => () => {
+    const markets = symbolApi.activeSymbols.getMarkets();
+    const submarketName = block.getFieldValue('SUBMARKET_LIST');
+    if (!submarketName || submarketName === 'Invalid') {
+        return [['', '']];
+    }
+    const marketName = block.getFieldValue('MARKET_LIST');
+    const { submarkets } = markets[marketName];
+    const { symbols } = submarkets[submarketName];
+    return Object.keys(symbols).map(e => [symbols[e].display, symbols[e].symbol]);
+};
+
+export const getDependentDropdownCallback = {
+    MARKET_LIST   : getSubmarkets,
+    SUBMARKET_LIST: getSymbols,
 };
