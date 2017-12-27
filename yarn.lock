@@ -1620,7 +1620,7 @@ clone@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.1.tgz#d217d1e961118e3ac9a4b8bba3285553bf647cdb"
 
-"clone@github:aminmarashi/clone#d97b4f":
+clone@aminmarashi/clone#d97b4f:
   version "2.1.1"
   resolved "https://codeload.github.com/aminmarashi/clone/tar.gz/d97b4f0ff3d3afebcaaf4a2ecc9c50fbce914900"
 
