@@ -40,7 +40,7 @@ export const expectValue = (block, field) => {
     return value;
 };
 
-export const getSubmarkets = block => () => {
+const getSubmarkets = block => () => {
     const markets = symbolApi.activeSymbols.getMarkets();
     const marketName = block.getFieldValue('MARKET_LIST');
     if (marketName === 'Invalid') {
@@ -62,7 +62,31 @@ const getSymbols = block => () => {
     return Object.keys(symbols).map(e => [symbols[e].display, symbols[e].symbol]);
 };
 
+const getTradeTypeCats = block => () => {
+    const symbol = block.getFieldValue('SYMBOL_LIST');
+    if (!symbol) {
+        return [['', '']];
+    }
+    const allowedCategories = symbolApi.getAllowedCategories(symbol.toLowerCase());
+    return Object.keys(config.conditionsCategoryName)
+        .filter(e => allowedCategories.indexOf(e) >= 0)
+        .map(e => [config.conditionsCategoryName[e], e]);
+};
+
+const getTradeTypes = block => () => {
+    const tradeTypeCat = block.getFieldValue('TRADETYPECAT_LIST');
+    if (!tradeTypeCat) {
+        return [['', '']];
+    }
+    return config.conditionsCategory[tradeTypeCat].map(e => [
+        config.opposites[e.toUpperCase()].map(c => c[Object.keys(c)[0]]).join('/'),
+        e,
+    ]);
+};
+
 export const getDependentDropdownCallback = {
-    MARKET_LIST   : getSubmarkets,
-    SUBMARKET_LIST: getSymbols,
+    MARKET_LIST      : getSubmarkets,
+    SUBMARKET_LIST   : getSymbols,
+    SYMBOL_LIST      : getTradeTypeCats,
+    TRADETYPECAT_LIST: getTradeTypes,
 };

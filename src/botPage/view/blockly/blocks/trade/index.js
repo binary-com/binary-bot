@@ -73,10 +73,10 @@ const resetTradeFields = (trade, ev) => {
                 setDefaultFields(trade, ev.name, 'SYMBOL_LIST');
             }
             if (ev.name === 'SYMBOL_LIST') {
-                trade.setFieldValue('', 'TRADETYPECAT_LIST');
+                setDefaultFields(trade, ev.name, 'TRADETYPECAT_LIST');
             }
             if (ev.name === 'TRADETYPECAT_LIST') {
-                trade.setFieldValue('', 'TRADETYPE_LIST');
+                setDefaultFields(trade, ev.name, 'TRADETYPE_LIST');
             }
             if (ev.name === 'TRADETYPE_LIST') {
                 if (ev.newValue) {
