@@ -3,7 +3,13 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
 
-const unrecoverableErrors = ['InsufficientBalance', 'CustomLimitsReached'];
+const unrecoverableErrors = [
+    'InsufficientBalance',
+    'CustomLimitsReached',
+    'OfferingsValidationError',
+    'InvalidCurrency',
+    'ContractBuyValidationError',
+];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, errorName = '') =>
