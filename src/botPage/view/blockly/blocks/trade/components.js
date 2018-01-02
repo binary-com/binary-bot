@@ -4,19 +4,17 @@ import { symbolApi } from '../../../shared';
 import { oppositesToDropdown } from '../../utils';
 import { caution } from '../images';
 import { getTradeType } from './tools';
-import { getDependentDropdownCallback } from '../shared';
+import { fieldGeneratorMapping } from '../shared';
 
 export const marketDropdown = block => {
-    const markets = symbolApi.activeSymbols.getMarkets();
-    const getMarket = () => Object.keys(markets).map(e => [markets[e].name, e]);
     block
         .appendDummyInput('MARKETDEFINITION')
         .appendField(`${translate('Market')}:`)
-        .appendField(new Blockly.FieldDropdown(getMarket), 'MARKET_LIST')
+        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.MARKET_LIST()), 'MARKET_LIST')
         .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getDependentDropdownCallback.MARKET_LIST(block)), 'SUBMARKET_LIST')
+        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.SUBMARKET_LIST(block)), 'SUBMARKET_LIST')
         .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getDependentDropdownCallback.SUBMARKET_LIST(block)), 'SYMBOL_LIST');
+        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.SYMBOL_LIST(block)), 'SYMBOL_LIST');
 };
 
 export const tradeTypeDropdown = block => {
