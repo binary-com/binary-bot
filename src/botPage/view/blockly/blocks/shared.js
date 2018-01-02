@@ -40,7 +40,14 @@ export const expectValue = (block, field) => {
     return value;
 };
 
-const getSubmarkets = block => () => {
+export const fieldGeneratorMapping = {};
+
+fieldGeneratorMapping.MARKET_LIST = () => () => {
+    const markets = symbolApi.activeSymbols.getMarkets();
+    return Object.keys(markets).map(e => [markets[e].name, e]);
+};
+
+fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
     const markets = symbolApi.activeSymbols.getMarkets();
     const marketName = block.getFieldValue('MARKET_LIST');
     if (marketName === 'Invalid') {
@@ -50,7 +57,7 @@ const getSubmarkets = block => () => {
     return Object.keys(submarkets).map(e => [submarkets[e].name, e]);
 };
 
-const getSymbols = block => () => {
+fieldGeneratorMapping.SYMBOL_LIST = block => () => {
     const markets = symbolApi.activeSymbols.getMarkets();
     const submarketName = block.getFieldValue('SUBMARKET_LIST');
     if (!submarketName || submarketName === 'Invalid') {
@@ -62,7 +69,7 @@ const getSymbols = block => () => {
     return Object.keys(symbols).map(e => [symbols[e].display, symbols[e].symbol]);
 };
 
-const getTradeTypeCats = block => () => {
+fieldGeneratorMapping.TRADETYPECAT_LIST = block => () => {
     const symbol = block.getFieldValue('SYMBOL_LIST');
     if (!symbol) {
         return [['', '']];
@@ -73,7 +80,7 @@ const getTradeTypeCats = block => () => {
         .map(e => [config.conditionsCategoryName[e], e]);
 };
 
-const getTradeTypes = block => () => {
+fieldGeneratorMapping.TRADETYPE_LIST = block => () => {
     const tradeTypeCat = block.getFieldValue('TRADETYPECAT_LIST');
     if (!tradeTypeCat) {
         return [['', '']];
@@ -84,9 +91,9 @@ const getTradeTypes = block => () => {
     ]);
 };
 
-export const getDependentDropdownCallback = {
-    MARKET_LIST      : getSubmarkets,
-    SUBMARKET_LIST   : getSymbols,
-    SYMBOL_LIST      : getTradeTypeCats,
-    TRADETYPECAT_LIST: getTradeTypes,
+export const dependentFieldMapping = {
+    MARKET_LIST      : 'SUBMARKET_LIST',
+    SUBMARKET_LIST   : 'SYMBOL_LIST',
+    SYMBOL_LIST      : 'TRADETYPECAT_LIST',
+    TRADETYPECAT_LIST: 'TRADETYPE_LIST',
 };

@@ -3,7 +3,7 @@ import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils';
 import { defineContract } from '../images';
-import { updatePurchaseChoices, getDependentDropdownCallback } from '../shared';
+import { updatePurchaseChoices, fieldGeneratorMapping, dependentFieldMapping } from '../shared';
 import { marketDefPlaceHolders } from './tools';
 import backwardCompatibility from './backwardCompatibility';
 import tradeOptions from './tradeOptions';
@@ -58,32 +58,23 @@ const replaceInitializationBlocks = (trade, ev) => {
     }
 };
 
-const setDefaultFields = (trade, parentFieldName, childFieldName) => {
-    const defaultValue = getDependentDropdownCallback[parentFieldName](trade)()[0][1];
+const setDefaultFields = (trade, parentFieldName) => {
+    const childFieldName = dependentFieldMapping[parentFieldName];
+    const [[, defaultValue]] = fieldGeneratorMapping[childFieldName](trade)();
     trade.setFieldValue(defaultValue, childFieldName);
 };
 
 const resetTradeFields = (trade, ev) => {
     if (ev.blockId === trade.id) {
         if (ev.element === 'field') {
-            if (ev.name === 'MARKET_LIST') {
-                setDefaultFields(trade, ev.name, 'SUBMARKET_LIST');
-            }
-            if (ev.name === 'SUBMARKET_LIST') {
-                setDefaultFields(trade, ev.name, 'SYMBOL_LIST');
-            }
-            if (ev.name === 'SYMBOL_LIST') {
-                setDefaultFields(trade, ev.name, 'TRADETYPECAT_LIST');
-            }
-            if (ev.name === 'TRADETYPECAT_LIST') {
-                setDefaultFields(trade, ev.name, 'TRADETYPE_LIST');
-            }
             if (ev.name === 'TRADETYPE_LIST') {
                 if (ev.newValue) {
                     trade.setFieldValue('both', 'TYPE_LIST');
                 } else {
                     trade.setFieldValue('', 'TYPE_LIST');
                 }
+            } else {
+                setDefaultFields(trade, ev.name);
             }
         }
     }
