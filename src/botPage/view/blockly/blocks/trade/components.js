@@ -4,65 +4,31 @@ import { symbolApi } from '../../../shared';
 import { oppositesToDropdown } from '../../utils';
 import { caution } from '../images';
 import { getTradeType } from './tools';
+import { getDependentDropdownCallback } from '../shared';
 
 export const marketDropdown = block => {
     const markets = symbolApi.activeSymbols.getMarkets();
-    const getSubmarkets = () => {
-        const marketName = block.getFieldValue('MARKET_LIST');
-        if (marketName === 'Invalid') {
-            return [['', 'Invalid']];
-        }
-        const { submarkets } = markets[marketName];
-        return Object.keys(submarkets).map(e => [submarkets[e].name, e]);
-    };
-    const getSymbols = () => {
-        const submarketName = block.getFieldValue('SUBMARKET_LIST');
-        if (!submarketName || submarketName === 'Invalid') {
-            return [['', '']];
-        }
-        const marketName = block.getFieldValue('MARKET_LIST');
-        const { submarkets } = markets[marketName];
-        const { symbols } = submarkets[submarketName];
-        return Object.keys(symbols).map(e => [symbols[e].display, symbols[e].symbol]);
-    };
     const getMarket = () => Object.keys(markets).map(e => [markets[e].name, e]);
     block
         .appendDummyInput('MARKETDEFINITION')
         .appendField(`${translate('Market')}:`)
         .appendField(new Blockly.FieldDropdown(getMarket), 'MARKET_LIST')
         .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getSubmarkets), 'SUBMARKET_LIST')
+        .appendField(new Blockly.FieldDropdown(getDependentDropdownCallback.MARKET_LIST(block)), 'SUBMARKET_LIST')
         .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getSymbols), 'SYMBOL_LIST');
+        .appendField(new Blockly.FieldDropdown(getDependentDropdownCallback.SUBMARKET_LIST(block)), 'SYMBOL_LIST');
 };
 
 export const tradeTypeDropdown = block => {
-    const getTradeTypeCats = () => {
-        const symbol = block.getFieldValue('SYMBOL_LIST');
-        if (!symbol) {
-            return [['', '']];
-        }
-        const allowedCategories = symbolApi.getAllowedCategories(symbol.toLowerCase());
-        return Object.keys(config.conditionsCategoryName)
-            .filter(e => allowedCategories.indexOf(e) >= 0)
-            .map(e => [config.conditionsCategoryName[e], e]);
-    };
-    const getTradeTypes = () => {
-        const tradeTypeCat = block.getFieldValue('TRADETYPECAT_LIST');
-        if (!tradeTypeCat) {
-            return [['', '']];
-        }
-        return config.conditionsCategory[tradeTypeCat].map(e => [
-            config.opposites[e.toUpperCase()].map(c => c[Object.keys(c)[0]]).join('/'),
-            e,
-        ]);
-    };
     block
         .appendDummyInput('TRADETYPEDEFINITION')
         .appendField(`${translate('Trade Type')}:`)
-        .appendField(new Blockly.FieldDropdown(getTradeTypeCats), 'TRADETYPECAT_LIST')
+        .appendField(new Blockly.FieldDropdown(getDependentDropdownCallback.SYMBOL_LIST(block)), 'TRADETYPECAT_LIST')
         .appendField('->')
-        .appendField(new Blockly.FieldDropdown(getTradeTypes), 'TRADETYPE_LIST');
+        .appendField(
+            new Blockly.FieldDropdown(getDependentDropdownCallback.TRADETYPECAT_LIST(block)),
+            'TRADETYPE_LIST'
+        );
 };
 
 export const contractTypes = block => {
