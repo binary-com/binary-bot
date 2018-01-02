@@ -9,6 +9,7 @@ const unrecoverableErrors = [
     'OfferingsValidationError',
     'InvalidCurrency',
     'ContractBuyValidationError',
+    'NotDefaultCurrency',
 ];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
