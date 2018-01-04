@@ -336,10 +336,10 @@ export default class View {
         });
 
         $('#continue-trading').click(() => {
-            const time = parseInt($('#realityDuration').val());
-            if (time >= 10 && time <= 120) {
+            const time = $('#realityDuration').val();
+            if (time.match(/^([1-5]\d|60)$/)) {
                 hideRealityCheck();
-                startRealityCheck(time);
+                startRealityCheck(parseInt(time));
             } else {
                 $('#rc-err').show();
             }
