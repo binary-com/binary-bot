@@ -22,10 +22,7 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice, currency }) => 
 
 const minHeight = 380;
 
-const ProfitColor = ({ value }) =>
-    <div style={value > 0 ? style.green : style.red}>
-        {value}
-    </div>;
+const ProfitColor = ({ value }) => <div style={value > 0 ? style.green : style.red}>{value}</div>;
 
 export default class TradeTable extends Component {
     constructor({ accountID }) {
@@ -66,7 +63,7 @@ export default class TradeTable extends Component {
 
             const accountStat = this.getAccountStat(accountID);
 
-            const rows = accountStat.rows;
+            const { rows } = accountStat;
             const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
 
             if (prevRowIndex >= 0) {
@@ -78,7 +75,7 @@ export default class TradeTable extends Component {
     }
     rowGetter(i) {
         const { accountID } = this.props;
-        const rows = this.state[accountID].rows;
+        const { rows } = this.state[accountID];
         return rows[rows.length - 1 - i];
     }
     export() {

@@ -40,4 +40,9 @@ lineReader
         code += `${line}\n`;
     })
     .on('error', e => log(e))
-    .on('close', () => interpreter.run(code).then(v => log(v.data)).catch(e => log(e)));
+    .on('close', () =>
+        interpreter
+            .run(code)
+            .then(v => log(v.data))
+            .catch(e => log(e))
+    );

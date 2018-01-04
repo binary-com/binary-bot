@@ -13,7 +13,7 @@ const parseAssetIndex = assetIndex => {
         parsed[symbol[0].toLowerCase()] = {};
 
         symbol[2].forEach(category => {
-            parsed[symbol[0].toLowerCase()][category[0].toLowerCase()] = category[2];
+            [, , parsed[symbol[0].toLowerCase()][category[0].toLowerCase()]] = category;
         });
     });
     return parsed;
