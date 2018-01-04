@@ -118,9 +118,13 @@ const updateTokenList = () => {
     if (tokenList.length === 0) {
         loginButton.show();
         accountList.hide();
-        $('.account-id').removeAttr('value').text('');
+        $('.account-id')
+            .removeAttr('value')
+            .text('');
         $('.account-type').text('');
-        $('.login-id-list').children().remove();
+        $('.login-id-list')
+            .children()
+            .remove();
     } else {
         loginButton.hide();
         accountList.show();
@@ -135,12 +139,15 @@ const updateTokenList = () => {
             const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
 
             if (tokenList.indexOf(tokenInfo) === 0) {
-                $('.account-id').attr('value', `${tokenInfo.token}`).text(`${tokenInfo.accountName}`);
+                $('.account-id')
+                    .attr('value', `${tokenInfo.token}`)
+                    .text(`${tokenInfo.accountName}`);
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a>` +
-                        '<div class="separator-line-thin-gray"></div>'
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${
+                        tokenInfo.accountName
+                    }</div></li></a>` + '<div class="separator-line-thin-gray"></div>'
                 );
             }
         });
@@ -156,7 +163,12 @@ export default class View {
                 this.blockly.initPromise.then(() => {
                     this.setElementActions();
                     $('#accountLis');
-                    startRealityCheck(null, $('.account-id').first().attr('value'));
+                    startRealityCheck(
+                        null,
+                        $('.account-id')
+                            .first()
+                            .attr('value')
+                    );
                     ReactDOM.render(<Tour />, $('#tour')[0]);
                     ReactDOM.render(
                         <OfficialVersionWarning
@@ -264,17 +276,21 @@ export default class View {
         };
 
         $('.panelExitButton').click(function onClick() {
-            $(this).parent().hide();
+            $(this)
+                .parent()
+                .hide();
         });
 
-        $('.draggable-dialog').hide().dialog({
-            resizable: false,
-            autoOpen : false,
-            width    : Math.min(document.body.offsetWidth, 700),
-            height   : Math.min(document.body.offsetHeight, 600),
-            closeText: '',
-            classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
-        });
+        $('.draggable-dialog')
+            .hide()
+            .dialog({
+                resizable: false,
+                autoOpen : false,
+                width    : Math.min(document.body.offsetWidth, 700),
+                height   : Math.min(document.body.offsetHeight, 600),
+                closeText: '',
+                classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
+            });
 
         $('#save-xml').click(() => saveDialog.save().then(arg => this.blockly.save(arg)));
 
@@ -320,10 +336,10 @@ export default class View {
         });
 
         $('#continue-trading').click(() => {
-            const time = parseInt($('#realityDuration').val());
-            if (time >= 10 && time <= 120) {
+            const time = $('#realityDuration').val();
+            if (time.match(/^([1-5]\d|60)$/)) {
                 hideRealityCheck();
-                startRealityCheck(time);
+                startRealityCheck(parseInt(time));
             } else {
                 $('#rc-err').show();
             }
@@ -337,7 +353,9 @@ export default class View {
         };
 
         $('#runButton').click(() => {
-            const token = $('.account-id').first().attr('value');
+            const token = $('.account-id')
+                .first()
+                .attr('value');
             const tokenObj = getToken(token);
             if (tokenObj && tokenObj.hasTradeLimitation) {
                 limits.getLimits().then(startBot);
@@ -346,7 +364,9 @@ export default class View {
             }
         });
 
-        $('#stopButton').click(e => stop(e)).hide();
+        $('#stopButton')
+            .click(e => stop(e))
+            .hide();
 
         $('#resetButton').click(() => {
             this.blockly.resetWorkspace();
@@ -421,7 +441,9 @@ export default class View {
 
         globalObserver.register('bot.info', info => {
             if ('profit' in info) {
-                const token = $('.account-id').first().attr('value');
+                const token = $('.account-id')
+                    .first()
+                    .attr('value');
                 const user = getToken(token);
                 globalObserver.emit('log.revenue', {
                     user,
