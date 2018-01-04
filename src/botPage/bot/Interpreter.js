@@ -3,9 +3,18 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
 
+const unrecoverableErrors = [
+    'InsufficientBalance',
+    'CustomLimitsReached',
+    'OfferingsValidationError',
+    'InvalidCurrency',
+    'ContractBuyValidationError',
+    'NotDefaultCurrency',
+];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
-const shouldRestartOnError = bot => botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+const shouldRestartOnError = (bot, errorName = '') =>
+    !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
@@ -83,7 +92,7 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
-                if (e.name === 'CustomLimitsReached' || !shouldRestartOnError(this.bot) || !botStarted(this.bot)) {
+                if (!shouldRestartOnError(this.bot, e.name) || !botStarted(this.bot)) {
                     reject(e);
                     return;
                 }
