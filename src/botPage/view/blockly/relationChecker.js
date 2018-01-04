@@ -6,7 +6,7 @@ import { symbolApi } from '../shared';
 import { translate } from '../../../common/i18n';
 import { findTopParentBlock, disable, enable, expandDuration } from './utils';
 
-const isInRange = (amount, min, max) => !isNaN(+amount) && +amount >= min && +amount <= max;
+const isInRange = (amount, min, max) => !Number.isNaN(+amount) && +amount >= min && +amount <= max;
 
 const getNumField = (block, fieldName) => {
     let field = block.getInputTargetBlock(fieldName);
@@ -47,7 +47,7 @@ const conditionFields = (blockObj, ev) => {
 
         if (duration) {
             duration = +duration;
-            const minDuration = symbolApi.getLimitation(symbol, tradeType).minDuration;
+            const { minDuration } = symbolApi.getLimitation(symbol, tradeType);
             const durationInSeconds = durationToSecond(duration + durationType);
             if (!durationInSeconds) {
                 globalObserver.emit('ui.log.warn', translate('Duration must be a positive integer'));

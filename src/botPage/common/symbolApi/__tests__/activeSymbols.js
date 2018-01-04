@@ -37,17 +37,27 @@ describe('ActiveSymbols', () => {
     });
     it('Should getMarkets have forex as a key', () => {
         const markets = activeSymbols.getMarkets();
-        expect(markets).to.be.an('Object').and.to.have.property('forex');
-        expect(markets.forex).to.have.property('name').and.to.be.a('String');
-        expect(markets.forex).to.have.property('is_active').and.to.be.a('Number');
-        expect(markets.forex).to.have.property('submarkets').and.to.be.an('Object');
+        expect(markets)
+            .to.be.an('Object')
+            .and.to.have.property('forex');
+        expect(markets.forex)
+            .to.have.property('name')
+            .and.to.be.a('String');
+        expect(markets.forex)
+            .to.have.property('is_active')
+            .and.to.be.a('Number');
+        expect(markets.forex)
+            .to.have.property('submarkets')
+            .and.to.be.an('Object');
     });
     it('Should getMarkets output match the market snapshot', () => {
         const markets = activeSymbols.getMarkets();
         const deepDiff = deep(setChecks(markets), setChecks(JSON.parse(expectedMarketStr)));
         if (deepDiff) {
             deepDiff.forEach(diff => {
-                expect(diff).to.have.property('kind').and.not.to.be.equal('E');
+                expect(diff)
+                    .to.have.property('kind')
+                    .and.not.to.be.equal('E');
             });
         }
     });

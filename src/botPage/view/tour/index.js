@@ -36,26 +36,27 @@ class Tour extends PureComponent {
             }
         };
         return (
-            !isDone('welcomeFinished') &&
-            <div className="tour-first-pop-up">
-                <Joyride
-                    autoStart
-                    run
-                    keyboardNavigation
-                    showOverlay={false}
-                    type="continuous"
-                    locale={{
-                        next: translate('Next'),
-                        back: translate('Back'),
-                        last: translate('Done'),
-                    }}
-                    ref={e => {
-                        this.joyride = e;
-                    }}
-                    steps={this.state.steps}
-                    callback={callback}
-                />
-            </div>
+            !isDone('welcomeFinished') && (
+                <div className="tour-first-pop-up">
+                    <Joyride
+                        autoStart
+                        run
+                        keyboardNavigation
+                        showOverlay={false}
+                        type="continuous"
+                        locale={{
+                            next: translate('Next'),
+                            back: translate('Back'),
+                            last: translate('Done'),
+                        }}
+                        ref={e => {
+                            this.joyride = e;
+                        }}
+                        steps={this.state.steps}
+                        callback={callback}
+                    />
+                </div>
+            )
         );
     }
 }

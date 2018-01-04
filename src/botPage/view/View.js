@@ -174,9 +174,9 @@ export default class View {
                         <OfficialVersionWarning
                             show={
                                 !(
-                                    typeof location !== 'undefined' &&
-                                    location.host === 'bot.binary.com' &&
-                                    location.pathname === '/bot.html'
+                                    typeof window.location !== 'undefined' &&
+                                    window.location.host === 'bot.binary.com' &&
+                                    window.location.pathname === '/bot.html'
                                 )
                             }
                         />,
@@ -202,10 +202,10 @@ export default class View {
             if (e.type === 'drop') {
                 e.stopPropagation();
                 e.preventDefault();
-                files = e.dataTransfer.files;
+                ({ files } = e.dataTransfer);
                 dropEvent = e;
             } else {
-                files = e.target.files;
+                ({ files } = e.target);
             }
             files = Array.from(files);
             files.forEach(file => {
