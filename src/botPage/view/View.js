@@ -337,9 +337,9 @@ export default class View {
 
         $('#continue-trading').click(() => {
             const time = $('#realityDuration').val();
-            if (time.match(/^([1-5]\d|60)$/)) {
+            if (time >= 10 && time <= 60) {
                 hideRealityCheck();
-                startRealityCheck(parseInt(time));
+                startRealityCheck(time);
             } else {
                 $('#rc-err').show();
             }
