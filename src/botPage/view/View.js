@@ -345,6 +345,13 @@ export default class View {
             }
         });
 
+        $('#realityDuration').keypress(e => {
+            const char = String.fromCharCode(e.which);
+            if ((!/[0-9]/.test(char) && [8, 37, 39].indexOf(e.keyCode) < 0) || /['%]/.test(char)) {
+                e.preventDefault();
+            }
+        });
+
         const startBot = limitations => {
             $('#stopButton').show();
             $('#runButton').hide();
