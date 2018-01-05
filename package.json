@@ -115,7 +115,7 @@
     "gulp-sourcemaps": "^2.6.2",
     "gulp-watch": "^4.3.11",
     "husky": "^0.14.3",
-    "i18next-scanner": "^2.2.1",
+    "i18next-scanner": "1.9.4",
     "immutable": "^3.8.2",
     "jest": "^19.0.2",
     "jquery": "3.2.1",
