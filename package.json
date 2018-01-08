@@ -58,12 +58,11 @@
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "gen-beta": "git checkout beta; yarn install ; gulp build-min; rm -rf beta; mkdir beta ; cp -r www/ beta/beta; git checkout -- src",
-    "gen-translation": "git checkout translation; yarn install ; gulp build-min; rm -rf translation; mkdir translation ; cp -r www/ translation/translation; git checkout -- src",
-    "deploy": "git checkout master ; yarn install ; gulp deploy",
-    "deploy-all": "yarn run gen-beta; yarn run gen-translation; yarn run deploy",
+    "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || exit 1; git stash; git checkout $b; yarn install --frozen-lockfile; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
+    "deploy": "d() { yarn gen-branch $1 || exit 1; git checkout master ; yarn install --frozen-lockfile; gulp deploy;}; d",
+    "deploy-all": "yarn gen-branch beta; yarn gen-branch translation; yarn deploy",
     "build": "webpack --config webpack.config.cli.js",
-    "prepublishOnly": "yarn run build",
+    "prepublishOnly": "yarn build",
     "precommit": "lint-staged"
   },
   "author": "Amin Marashi",
