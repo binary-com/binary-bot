@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import 'jquery-ui/ui/widgets/dialog';
 
-const createDialog = (el, title, { height = 150, width = 300, resize }) => {
+const createDialog = (el, title, { height = 150, width = 300, resize, resizable = true }) => {
     $(el).dialog({
-        resizable: true,
+        resizable,
         height,
         width,
         title,

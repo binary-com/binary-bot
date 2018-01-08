@@ -31,6 +31,12 @@ class LimitsContent extends PureComponent {
             });
         }
     }
+    componentDidMount() {
+        $('#limits-dialog-component').dialog({
+            close   : () => this.setState({ error: undefined }),
+            autoOpen: false,
+        });
+    }
     render() {
         return (
             <form
@@ -39,7 +45,7 @@ class LimitsContent extends PureComponent {
                 className="dialog-content"
                 style={style.content}
             >
-                <div style={style.limits}>
+                <div>
                     <div style={style.inputRow}>
                         <label style={style.field} htmlFor="limitation-max-trades">
                             <input
@@ -90,7 +96,7 @@ export default class Limits extends Dialog {
             this.limitsPromise(limits);
             this.close();
         };
-        super('limits-dialog', translate('Trade Limitations'), <LimitsContent onSave={onSave} />);
+        super('limits-dialog', translate('Trade Limitations'), <LimitsContent onSave={onSave} />, style.dialogLayout);
     }
     getLimits() {
         this.open();
