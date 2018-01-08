@@ -5,8 +5,7 @@ node_modules/
 npm-debug.log
 rev-manifest.json
 coverage
-beta/
-translation/
+branch/
 www
 .sass-cache
 lib/

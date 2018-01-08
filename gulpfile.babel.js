@@ -28,9 +28,7 @@ gulp.task('serve', ['open', 'connect'], () => {
 });
 
 gulp.task('deploy', ['build-min'], () =>
-    gulp
-        .src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', './beta/**', './translation/**', './old/**'])
-        .pipe(ghPages())
+    gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**', './branch/**', './old/**']).pipe(ghPages())
 );
 
 gulp.task('test-deploy', ['build-min', 'serve'], () => {});
