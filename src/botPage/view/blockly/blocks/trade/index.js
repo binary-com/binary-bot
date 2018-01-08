@@ -67,14 +67,15 @@ const setDefaultFields = (trade, parentFieldName) => {
 const resetTradeFields = (trade, ev) => {
     if (ev.blockId === trade.id) {
         if (ev.element === 'field') {
+            if (Object.keys(dependentFieldMapping).includes(ev.name)) {
+                setDefaultFields(trade, ev.name);
+            }
             if (ev.name === 'TRADETYPE_LIST') {
                 if (ev.newValue) {
                     trade.setFieldValue('both', 'TYPE_LIST');
                 } else {
                     trade.setFieldValue('', 'TYPE_LIST');
                 }
-            } else {
-                setDefaultFields(trade, ev.name);
             }
         }
     }
