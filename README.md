@@ -12,21 +12,30 @@ Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.
 ```
 git clone https://github.com/binary-com/binary-bot.git
 cd binary-bot
+git checkout dev
 yarn install
 yarn start
+```
+
+**Note:** Please branch your work from dev, and make sure your local dev is up-to-date with upstream
+
+### Deploying to local gh-pages
+
+```
+yarn deploy [branchname] # can contain /
 ```
 
 ## Deployment 
 
 ```
 gulp test-deploy
-yarn run deploy
+yarn deploy-all
 ```
 
 ## To update to latest version
 
 ```
-git pull
+git pull --rebase upstream dev
 yarn install
 ```
 
