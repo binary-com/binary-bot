@@ -60,5 +60,5 @@ export const saveAs = ({ data, filename, type }) => {
 
 export const restrictInputCharacter = ({ blacklistedCharacters }) => e => {
     const input = String.fromCharCode(e.which);
-    if (blacklistedCharacters.match(new RegExp(input))) e.preventDefault();
+    if (blacklistedCharacters.includes(input)) e.preventDefault();
 };
