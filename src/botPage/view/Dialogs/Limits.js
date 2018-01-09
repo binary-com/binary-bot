@@ -33,12 +33,21 @@ class LimitsContent extends PureComponent {
         }
     }
     componentDidMount() {
+        const cleanupLayout = () => {
+            $('#limitation-max-trades').val('');
+            $('#limitation-max-loss').val('');
+            this.setState({ error: undefined });
+        };
         $('#limits-dialog-component').dialog({
-            close   : () => this.setState({ error: undefined }),
+            close   : cleanupLayout,
             autoOpen: false,
         });
-        $('#limitation-max-trades').keypress(restrictInputCharacter({ blacklistedCharacters: '.-e' }));
-        $('#limitation-max-loss').keypress(restrictInputCharacter({ blacklistedCharacters: '-e' }));
+        $('#limitation-max-trades')
+            .val('')
+            .keypress(restrictInputCharacter({ blacklistedCharacters: '.-e' }));
+        $('#limitation-max-loss')
+            .val('')
+            .keypress(restrictInputCharacter({ blacklistedCharacters: '-e' }));
     }
     render() {
         return (
