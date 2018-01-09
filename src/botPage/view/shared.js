@@ -57,3 +57,8 @@ export const saveAs = ({ data, filename, type }) => {
     const blob = new Blob([data], { type });
     filesaver.saveAs(blob, filename);
 };
+
+export const restrictInputCharacter = ({ blacklistedCharacters }) => e => {
+    const input = String.fromCharCode(e.which);
+    if (blacklistedCharacters.includes(input)) e.preventDefault();
+};

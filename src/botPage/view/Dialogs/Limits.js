@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 import Dialog from './Dialog';
+import { restrictInputCharacter } from '../shared';
 
 class LimitsContent extends PureComponent {
     constructor() {
@@ -27,9 +28,22 @@ class LimitsContent extends PureComponent {
             }
         } else {
             this.setState({
-                error: translate('Both number of trades and loss amount have to be positive values.'),
+                error: translate('Please enter maximum number of trades and maximum loss amount'),
             });
         }
+    }
+    componentDidMount() {
+        const cleanupLayout = () => {
+            $(this.maxTradesDiv).val('');
+            $(this.maxLossDiv).val('');
+            this.setState({ error: undefined });
+        };
+        $('#limits-dialog-component').dialog({
+            close   : cleanupLayout,
+            autoOpen: false,
+        });
+        $(this.maxTradesDiv).keypress(restrictInputCharacter({ blacklistedCharacters: '.-e' }));
+        $(this.maxLossDiv).keypress(restrictInputCharacter({ blacklistedCharacters: '-e' }));
     }
     render() {
         return (
@@ -39,7 +53,7 @@ class LimitsContent extends PureComponent {
                 className="dialog-content"
                 style={style.content}
             >
-                <div style={style.limits}>
+                <div>
                     <div style={style.inputRow}>
                         <label style={style.field} htmlFor="limitation-max-trades">
                             <input
@@ -90,7 +104,7 @@ export default class Limits extends Dialog {
             this.limitsPromise(limits);
             this.close();
         };
-        super('limits-dialog', translate('Trade Limitations'), <LimitsContent onSave={onSave} />);
+        super('limits-dialog', translate('Trade Limitations'), <LimitsContent onSave={onSave} />, style.dialogLayout);
     }
     getLimits() {
         this.open();
