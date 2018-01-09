@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 import Dialog from './Dialog';
+import { restrictInputCharacter } from '../shared.js';
 
 class LimitsContent extends PureComponent {
     constructor() {
@@ -27,7 +28,7 @@ class LimitsContent extends PureComponent {
             }
         } else {
             this.setState({
-                error: translate('Both number of trades and loss amount have to be positive values.'),
+                error: translate('Please enter maximum number of trades and maximum loss amount'),
             });
         }
     }
@@ -36,6 +37,8 @@ class LimitsContent extends PureComponent {
             close   : () => this.setState({ error: undefined }),
             autoOpen: false,
         });
+        $('#limitation-max-trades').keypress(restrictInputCharacter({ blacklistedCharacters: '.-e' }));
+        $('#limitation-max-loss').keypress(restrictInputCharacter({ blacklistedCharacters: '-e' }));
     }
     render() {
         return (
