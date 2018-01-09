@@ -34,20 +34,16 @@ class LimitsContent extends PureComponent {
     }
     componentDidMount() {
         const cleanupLayout = () => {
-            $('#limitation-max-trades').val('');
-            $('#limitation-max-loss').val('');
+            $(this.maxTradesDiv).val('');
+            $(this.maxLossDiv).val('');
             this.setState({ error: undefined });
         };
         $('#limits-dialog-component').dialog({
             close   : cleanupLayout,
             autoOpen: false,
         });
-        $('#limitation-max-trades')
-            .val('')
-            .keypress(restrictInputCharacter({ blacklistedCharacters: '.-e' }));
-        $('#limitation-max-loss')
-            .val('')
-            .keypress(restrictInputCharacter({ blacklistedCharacters: '-e' }));
+        $(this.maxTradesDiv).keypress(restrictInputCharacter({ blacklistedCharacters: '.-e' }));
+        $(this.maxLossDiv).keypress(restrictInputCharacter({ blacklistedCharacters: '-e' }));
     }
     render() {
         return (
