@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 import Dialog from './Dialog';
-import { restrictInputCharacter } from '../shared.js';
+import { restrictInputCharacter } from '../shared';
 
 class LimitsContent extends PureComponent {
     constructor() {
