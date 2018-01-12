@@ -15,7 +15,7 @@ class LimitsContent extends PureComponent {
         };
     }
     submit() {
-        let maxLoss = this.state.maxLoss;
+        let { maxLoss } = this.state;
         const maxTrades = +this.state.maxTrades;
         this.setState({ error: '' });
         if (maxTrades <= 0 || maxTrades > 100) {
