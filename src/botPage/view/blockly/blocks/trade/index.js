@@ -59,6 +59,7 @@ const replaceInitializationBlocks = (trade, ev) => {
 };
 
 const setDefaultFields = (trade, parentFieldName) => {
+    if (!Object.keys(dependentFieldMapping).includes(ev.name)) return;
     const childFieldName = dependentFieldMapping[parentFieldName];
     const [[, defaultValue]] = fieldGeneratorMapping[childFieldName](trade)();
     trade.setFieldValue(defaultValue, childFieldName);
