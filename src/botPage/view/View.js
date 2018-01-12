@@ -337,11 +337,18 @@ export default class View {
 
         $('#continue-trading').click(() => {
             const time = parseInt($('#realityDuration').val());
-            if (time >= 10 && time <= 120) {
+            if (time >= 10 && time <= 60) {
                 hideRealityCheck();
                 startRealityCheck(time);
             } else {
                 $('#rc-err').show();
+            }
+        });
+
+        $('#realityDuration').keypress(e => {
+            const char = String.fromCharCode(e.which);
+            if (!/[0-9]/.test(char)) {
+                e.preventDefault();
             }
         });
 
