@@ -34,7 +34,7 @@ export default Engine =>
 
             accountStat.totalLosses += !win ? 1 : 0;
 
-            this.sessionProfit = roundBalance({ currency, balance: Number(this.sessionProfit) - Number(profit) });
+            this.sessionProfit = roundBalance({ currency, balance: Number(this.sessionProfit) + Number(profit) });
 
             accountStat.totalProfit = roundBalance({
                 currency,
