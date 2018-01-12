@@ -59,7 +59,7 @@ const replaceInitializationBlocks = (trade, ev) => {
 };
 
 const setDefaultFields = (trade, parentFieldName) => {
-    if (!Object.keys(dependentFieldMapping).includes(ev.name)) return;
+    if (!Object.keys(dependentFieldMapping).includes(parentFieldName)) return;
     const childFieldName = dependentFieldMapping[parentFieldName];
     const [[, defaultValue]] = fieldGeneratorMapping[childFieldName](trade)();
     trade.setFieldValue(defaultValue, childFieldName);
@@ -68,14 +68,13 @@ const setDefaultFields = (trade, parentFieldName) => {
 const resetTradeFields = (trade, ev) => {
     if (ev.blockId === trade.id) {
         if (ev.element === 'field') {
+            setDefaultFields(trade, ev.name);
             if (ev.name === 'TRADETYPE_LIST') {
                 if (ev.newValue) {
                     trade.setFieldValue('both', 'TYPE_LIST');
                 } else {
                     trade.setFieldValue('', 'TYPE_LIST');
                 }
-            } else {
-                setDefaultFields(trade, ev.name);
             }
         }
     }
