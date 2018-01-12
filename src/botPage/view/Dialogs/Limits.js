@@ -9,28 +9,28 @@ class LimitsContent extends PureComponent {
     constructor() {
         super();
         this.state = {
-            error: null,
+            error    : '',
+            maxLoss  : '',
+            maxTrades: '',
         };
     }
     submit() {
-        const maxLoss = +this.maxLossDiv.value;
-        const maxTrades = +this.maxTradesDiv.value;
-        if (maxLoss > 0 && maxTrades > 0) {
-            if (maxTrades <= 100) {
-                this.props.onSave({
-                    maxLoss,
-                    maxTrades,
-                });
-            } else {
-                this.setState({
-                    error: translate('Maximum allowed number of trades for each session is 100.'),
-                });
-            }
-        } else {
-            this.setState({
-                error: translate('Please enter maximum number of trades and maximum loss amount'),
-            });
+        let maxLoss = this.state.maxLoss;
+        const maxTrades = +this.state.maxTrades;
+        this.setState({ error: '' });
+        if (maxTrades <= 0 || maxTrades > 100) {
+            this.setState({ error: 'Max trade should be in range (1-100)' });
+            return;
         }
+        if (!maxLoss || !maxLoss.match(/^(?:\d*|\d*.\d\d?)$/) || maxLoss < 0.01) {
+            this.setState({ error: 'Max Loss should be a whole number or in multiples of 0.01' });
+            return;
+        }
+        maxLoss = +maxLoss;
+        this.props.onSave({
+            maxLoss,
+            maxTrades,
+        });
     }
     componentDidMount() {
         const cleanupLayout = () => {
@@ -44,6 +44,10 @@ class LimitsContent extends PureComponent {
         });
         $(this.maxTradesDiv).keypress(restrictInputCharacter({ blacklistedCharacters: '.-e' }));
         $(this.maxLossDiv).keypress(restrictInputCharacter({ blacklistedCharacters: '-e' }));
+    }
+    onChange(e) {
+        if ($(e.target).attr('id') === 'limitation-max-trades') this.setState({ maxTrades: e.target.value });
+        if ($(e.target).attr('id') === 'limitation-max-loss') this.setState({ maxLoss: e.target.value });
     }
     render() {
         return (
@@ -63,9 +67,8 @@ class LimitsContent extends PureComponent {
                                 }}
                                 type="number"
                                 id="limitation-max-trades"
-                                min="1"
-                                max="100"
                                 step="1"
+                                onChange={this.onChange.bind(this)}
                             />
                             {translate('Maximum number of trades')}
                         </label>
@@ -79,8 +82,8 @@ class LimitsContent extends PureComponent {
                                 }}
                                 type="number"
                                 id="limitation-max-loss"
-                                min="0.01"
-                                step="0.01"
+                                step="any"
+                                onChange={this.onChange.bind(this)}
                             />
                             {translate('Maximum loss amount')}
                         </label>

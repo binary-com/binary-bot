@@ -4,7 +4,7 @@ export const content = {
 
 export const dialogLayout = {
     height   : 'auto',
-    width    : 410,
+    width    : '25em',
     resizable: false,
 };
 
