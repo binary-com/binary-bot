@@ -15,18 +15,17 @@ class LimitsContent extends PureComponent {
         };
     }
     submit() {
-        let { maxLoss } = this.state;
-        const maxTrades = +this.state.maxTrades;
+        const maxLoss = parseInt(this.state.maxLoss);
+        const maxTrades = parseInt(this.state.maxTrades);
         this.setState({ error: '' });
         if (maxTrades <= 0 || maxTrades > 100) {
-            this.setState({ error: 'Max trade should be in range (1-100)' });
+            this.setState({ error: 'Max trade should be in range (1-100).' });
             return;
         }
-        if (!maxLoss || !maxLoss.match(/^(?:\d*|\d*.\d\d?)$/) || maxLoss < 0.01) {
-            this.setState({ error: 'Max Loss should be a whole number or in multiples of 0.01' });
+        if (!maxLoss) {
+            this.setState({ error: 'Please enter Max Loss greater than zero.' });
             return;
         }
-        maxLoss = +maxLoss;
         this.props.onSave({
             maxLoss,
             maxTrades,
@@ -34,20 +33,24 @@ class LimitsContent extends PureComponent {
     }
     componentDidMount() {
         const cleanupLayout = () => {
-            $(this.maxTradesDiv).val('');
-            $(this.maxLossDiv).val('');
-            this.setState({ error: undefined });
+            this.setState({
+                maxTrades: '',
+                maxLoss  : '',
+                error    : '',
+            });
         };
         $('#limits-dialog-component').dialog({
             close   : cleanupLayout,
             autoOpen: false,
         });
-        $(this.maxTradesDiv).keypress(restrictInputCharacter({ blacklistedCharacters: '.-e' }));
-        $(this.maxLossDiv).keypress(restrictInputCharacter({ blacklistedCharacters: '-e' }));
     }
-    onChange(e) {
-        if ($(e.target).attr('id') === 'limitation-max-trades') this.setState({ maxTrades: e.target.value });
-        if ($(e.target).attr('id') === 'limitation-max-loss') this.setState({ maxLoss: e.target.value });
+    onMaxTradeChange(e) {
+        if (restrictInputCharacter({ input: e.target.value, whitelistRegEx: '^[\\d]*$' }))
+        {this.setState({ maxTrades: e.target.value });}
+    }
+    onMaxLossChange(e) {
+        if (restrictInputCharacter({ input: e.target.value, whitelistRegEx: '^\\d*\\.?\\d*$' }))
+        {this.setState({ maxLoss: e.target.value });}
     }
     render() {
         return (
@@ -65,10 +68,12 @@ class LimitsContent extends PureComponent {
                                 ref={el => {
                                     this.maxTradesDiv = el;
                                 }}
-                                type="number"
+                                type="text"
                                 id="limitation-max-trades"
                                 step="1"
-                                onChange={this.onChange.bind(this)}
+                                maxLength="3"
+                                value={this.state.maxTrades}
+                                onChange={(...args) => this.onMaxTradeChange(...args)}
                             />
                             {translate('Maximum number of trades')}
                         </label>
@@ -80,10 +85,11 @@ class LimitsContent extends PureComponent {
                                 ref={el => {
                                     this.maxLossDiv = el;
                                 }}
-                                type="number"
+                                value={this.state.maxLoss}
+                                type="text"
                                 id="limitation-max-loss"
                                 step="any"
-                                onChange={this.onChange.bind(this)}
+                                onChange={(...args) => this.onMaxLossChange(...args)}
                             />
                             {translate('Maximum loss amount')}
                         </label>

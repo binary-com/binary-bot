@@ -58,7 +58,4 @@ export const saveAs = ({ data, filename, type }) => {
     filesaver.saveAs(blob, filename);
 };
 
-export const restrictInputCharacter = ({ blacklistedCharacters }) => e => {
-    const input = String.fromCharCode(e.which);
-    if (blacklistedCharacters.includes(input)) e.preventDefault();
-};
+export const restrictInputCharacter = ({ whitelistRegEx, input }) => input.match(new RegExp(whitelistRegEx));
