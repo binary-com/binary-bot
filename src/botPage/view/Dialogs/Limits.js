@@ -15,15 +15,15 @@ class LimitsContent extends PureComponent {
         };
     }
     submit() {
-        const maxLoss = parseInt(this.state.maxLoss);
-        const maxTrades = parseInt(this.state.maxTrades);
+        const maxLoss = parseFloat(this.state.maxLoss || 0);
+        const maxTrades = parseInt(this.state.maxTrades || 0);
         this.setState({ error: '' });
         if (maxTrades <= 0 || maxTrades > 100) {
-            this.setState({ error: 'Max trade should be in range (1-100).' });
+            this.setState({ error: 'Maximum number of trades should be in range (1-100).' });
             return;
         }
         if (!maxLoss) {
-            this.setState({ error: 'Please enter Max Loss greater than zero.' });
+            this.setState({ error: 'Please enter a Maximum Loss amount greater than zero.' });
             return;
         }
         this.props.onSave({
@@ -45,12 +45,14 @@ class LimitsContent extends PureComponent {
         });
     }
     onMaxTradeChange(e) {
-        if (restrictInputCharacter({ input: e.target.value, whitelistRegEx: '^[\\d]*$' }))
-        {this.setState({ maxTrades: e.target.value });}
+        if (restrictInputCharacter({ input: e.target.value, whitelistRegEx: '^[\\d]*$' })) {
+            this.setState({ maxTrades: e.target.value });
+        }
     }
     onMaxLossChange(e) {
-        if (restrictInputCharacter({ input: e.target.value, whitelistRegEx: '^\\d*\\.?\\d*$' }))
-        {this.setState({ maxLoss: e.target.value });}
+        if (restrictInputCharacter({ input: e.target.value, whitelistRegEx: '^\\d*\\.?\\d*$' })) {
+            this.setState({ maxLoss: e.target.value });
+        }
     }
     render() {
         return (
