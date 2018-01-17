@@ -14,7 +14,7 @@ const gen = env => {
 
 const addRev = () =>
     gulp
-        .src(['./www/js/{bot,index,endpoint}*.js'])
+        .src(['./www/js/{bot,index}*.js'])
         .pipe(rev())
         .pipe(through.obj(addToManifest))
         .pipe(gulp.dest('www/js'));
