@@ -9,7 +9,6 @@ require('./webpack');
 const getConfig = prefix => ({
     index     : `<script src="js/${prefix ? getManifest(`index${prefix}.js`) : 'index.js'}"></script>`,
     bot       : `<script src="js/${prefix ? getManifest(`bot${prefix}.js`) : 'bot.js'}"></script>`,
-    endpoint  : '<script src="js/endpoint.js"></script>',
     bundle    : `<script src="js/${getManifest('bundle.js')}"></script>`,
     bundle_css: `<link href="css/${getManifest('bundle.css')}" rel="stylesheet" />`,
     index_css : `<link href="css/${getManifest('index.css')}" rel="stylesheet" />`,

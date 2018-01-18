@@ -29,8 +29,9 @@ import TradeInfoPanel from './TradeInfoPanel';
 let realityCheckTimeout;
 
 const api = new LiveApi({
+    apiUrl  : `wss://${  getStorage('config.server_url')  }/websockets/v3`,
     language: getStorage('lang') || 'en',
-    appId   : getStorage('appId') || 1,
+    appId   : getStorage('config.app_id') || 1,
 });
 
 api.events.on('balance', response => {
@@ -405,9 +406,12 @@ export default class View {
 
         $('#login')
             .bind('click.login', () => {
+                const serverUrl = getStorage('config.server_url') || 'frontend.binaryws.com';
                 document.location =
-                    'https://oauth.binary.com/oauth2/authorize?app_id=' +
-                    `${getStorage('appId')}&l=${getLanguage().toUpperCase()}`;
+                    `https://${ 
+                        serverUrl 
+                    }/oauth2/authorize?app_id=` +
+                    `${getStorage('config.app_id')}&l=${getLanguage().toUpperCase()}`;
             })
             .text('Log in');
 

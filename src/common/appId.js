@@ -4,7 +4,8 @@ import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/st
 
 export const setAppId = () => {
     let appId = 0;
-    const appIdMap = JSON.parse(getStorage('appIdMap') || '{}');
+    setStorage('config.default_app_id', '1169');
+    if (getStorage('config.app_id')) return;
     if (document.location.port === '8080') {
         appId = 1168; // binary bot on localhost
     } else if (document.location.pathname.indexOf('/beta') >= 0) {
@@ -12,14 +13,9 @@ export const setAppId = () => {
     } else if (document.location.pathname.indexOf('/translation') >= 0) {
         appId = 1412; // binary bot translation
     } else {
-        appId = 1169; // binary bot
-        const urls = Object.keys(appIdMap);
-        const hostName = document.location.hostname;
-        urls.forEach(o => {
-            if (hostName.includes(o)) appId = appIdMap[o];
-        });
+        appId = localStorage.getItem('app_id') || 1169; // binary bot
     }
-    setStorage('appId', appId);
+    setStorage('config.app_id', appId);
 };
 
 const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));

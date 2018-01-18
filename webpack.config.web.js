@@ -31,9 +31,8 @@ const productionPlugins = production
 
 module.exports = {
     entry: {
-        bot     : path.join(__dirname, 'src', 'botPage', 'view'),
-        index   : path.join(__dirname, 'src', 'indexPage'),
-        endpoint: path.join(__dirname, 'src', 'endpointPage'),
+        bot  : path.join(__dirname, 'src', 'botPage', 'view'),
+        index: path.join(__dirname, 'src', 'indexPage'),
     },
     output: {
         filename         : production ? '[name].min.js' : '[name].js',
