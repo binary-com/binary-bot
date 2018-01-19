@@ -19,7 +19,7 @@ class LimitsContent extends PureComponent {
         const maxTrades = parseInt(this.state.maxTrades || 0);
         this.setState({ error: '' });
         if (maxTrades <= 0 || maxTrades > 100) {
-            this.setState({ error: 'Maximum number of trades should be in range (1-100).' });
+            this.setState({ error: 'Maximum number of trades should be between 1 and 100.' });
             return;
         }
         if (!maxLoss) {
