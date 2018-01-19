@@ -8,7 +8,7 @@ import TicksService from '../common/TicksService';
 export const createApi = () =>
     new LiveApi({
         // eslint-disable-next-line global-require
-        apiUrl  : `wss://${  getStorage('config.server_url')  }/websockets/v3`,
+        apiUrl  : `wss://${getStorage('config.server_url') || 'frontend.binaryws.com'}/websockets/v3`,
         websocket,
         language: getStorage('lang') || 'en',
         appId   : getStorage('config.app_id') || 1169,
