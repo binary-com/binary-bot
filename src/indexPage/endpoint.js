@@ -20,8 +20,8 @@ export default function endpoint() {
         });
 
         const init = () => {
-            const endpoint = getStorage('config.server_url');
-            $('#server_url').val(endpoint || 'frontend.binaryws.com');
+            const serverUrl = getStorage('config.server_url');
+            $('#server_url').val(serverUrl || 'frontend.binaryws.com');
             $('#app_id').val(getStorage('config.app_id') || '1');
         };
         init();
