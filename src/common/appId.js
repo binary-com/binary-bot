@@ -11,7 +11,7 @@ import {
 import { getLanguage } from './lang';
 
 export const setAppId = () => {
-    const appId = getDefaultEndpoint().appId;
+    const { appId } = getDefaultEndpoint();
     setStorage('config.default_app_id', appId);
     setStorage('config.app_id', getStorage('config.server_url') ? getStorage('config.app_id') || appId : appId);
 };
@@ -39,11 +39,13 @@ export const getDefaultEndpoint = () => ({
     appId: 1169,
 });
 
-export const getWebSocketURL = () => `wss://${getStorage('config.server_url') || getDefaultEndpoint().url}/websockets/v3`;
+export const getWebSocketURL = () =>
+    `wss://${getStorage('config.server_url') || getDefaultEndpoint().url}/websockets/v3`;
 
-export const getOAuthURL = () => `https://${getStorage('config.server_url') || getDefaultEndpoint().url}/oauth2/authorize?app_id=${getStorage(
-    'config.app_id'
-) || getDefaultEndpoint().appId}&l=${getLanguage().toUpperCase()}`;
+export const getOAuthURL = () =>
+    `https://${getStorage('config.server_url') || getDefaultEndpoint().url}/oauth2/authorize?app_id=${getStorage(
+        'config.app_id'
+    ) || getDefaultEndpoint().appId}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
     apiUrl   : getWebSocketURL(),

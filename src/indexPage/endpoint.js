@@ -16,9 +16,6 @@ export default function endpoint() {
                 language: 'en',
                 appId   : getStorage('config.app_id'),
             });
-            api.socket.onopen = () => {
-                console.log('Connected');
-            };
             api.socket.onerror = () => {
                 $('#error').show();
                 resetEndpoint();

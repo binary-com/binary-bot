@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { logoutAllTokens, getWebSocketURL, getOAuthURL } from '../../common/appId';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import {
     getTokenList,
@@ -25,6 +24,7 @@ import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
+import { logoutAllTokens, getWebSocketURL, getOAuthURL } from '../../common/appId';
 
 let realityCheckTimeout;
 
