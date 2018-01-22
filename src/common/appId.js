@@ -1,21 +1,19 @@
 import { parseQueryString } from 'binary-common-utils/lib/tools';
-import { addTokenIfValid } from 'binary-common-utils/lib/account';
-import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
+import { LiveApi } from 'binary-live-api';
+import {
+    addToken,
+    removeToken,
+    getTokenList,
+    removeAllTokens,
+    get as getStorage,
+    set as setStorage,
+} from 'binary-common-utils/lib/storageManager';
+import { getLanguage } from './lang';
 
 export const setAppId = () => {
-    let appId = 0;
-    setStorage('config.default_app_id', '1169');
-    if (getStorage('config.app_id')) return;
-    if (document.location.port === '8080') {
-        appId = 1168; // binary bot on localhost
-    } else if (document.location.pathname.indexOf('/beta') >= 0) {
-        appId = 1261; // binary bot beta
-    } else if (document.location.pathname.indexOf('/translation') >= 0) {
-        appId = 1412; // binary bot translation
-    } else {
-        appId = localStorage.getItem('app_id') || 1169; // binary bot
-    }
-    setStorage('config.app_id', appId);
+    const appId = getDefaultEndpoint().appId;
+    setStorage('config.default_app_id', appId);
+    setStorage('config.app_id', getStorage('config.server_url') ? getStorage('config.app_id') || appId : appId);
 };
 
 const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));
@@ -35,3 +33,64 @@ export const oauthLogin = (done = () => 0) => {
         done();
     }
 };
+
+export const getDefaultEndpoint = () => ({
+    url  : 'frontend.binaryws.com',
+    appId: 1169,
+});
+
+export const getWebSocketURL = () => `wss://${getStorage('config.server_url') || getDefaultEndpoint().url}/websockets/v3`;
+
+export const getOAuthURL = () => `https://${getStorage('config.server_url') || getDefaultEndpoint().url}/oauth2/authorize?app_id=${getStorage(
+    'config.app_id'
+) || getDefaultEndpoint().appId}&l=${getLanguage().toUpperCase()}`;
+
+const options = {
+    apiUrl   : getWebSocketURL(),
+    websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
+    language : getStorage('lang') || 'en',
+    appId    : getStorage('config.app_id') || getDefaultEndpoint().appId,
+};
+
+const addTokenIfValid = token =>
+    new Promise((resolve, reject) => {
+        const api = new LiveApi(options);
+        api
+            .authorize(token)
+            .then(response => {
+                const landingCompanyName = response.authorize.landing_company_name;
+                api.getLandingCompanyDetails(landingCompanyName).then(r => {
+                    addToken(
+                        token,
+                        response.authorize,
+                        !!r.landing_company_details.has_reality_check,
+                        ['iom', 'malta'].includes(landingCompanyName)
+                    );
+                    api.disconnect();
+                    resolve(null);
+                }, () => 0);
+            })
+            .catch(e => {
+                removeToken(token);
+                api.disconnect();
+                reject(e);
+            });
+    });
+
+export const logoutAllTokens = () =>
+    new Promise(resolve => {
+        const api = new LiveApi(options);
+        const tokenList = getTokenList();
+        const logout = () => {
+            removeAllTokens();
+            api.disconnect();
+            resolve();
+        };
+        if (tokenList.length === 0) {
+            logout();
+        } else {
+            api.authorize(tokenList[0].token).then(() => {
+                api.logOut().then(logout, logout);
+            }, logout);
+        }
+    });

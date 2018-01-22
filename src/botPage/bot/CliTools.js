@@ -4,14 +4,15 @@ import { get as getStorage } from 'binary-common-utils/lib/storageManager';
 import websocket from 'ws';
 import Interpreter from './Interpreter';
 import TicksService from '../common/TicksService';
+import { getWebSocketURL, getDefaultEndpoint } from '../../common/appId';
 
 export const createApi = () =>
     new LiveApi({
         // eslint-disable-next-line global-require
-        apiUrl  : `wss://${getStorage('config.server_url') || 'frontend.binaryws.com'}/websockets/v3`,
+        apiUrl  : getWebSocketURL(),
         websocket,
         language: getStorage('lang') || 'en',
-        appId   : getStorage('config.app_id') || 1169,
+        appId   : getStorage('config.app_id') || getDefaultEndpoint().appId,
     });
 
 export const createScope = () => {

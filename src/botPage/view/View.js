@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { logoutAllTokens } from 'binary-common-utils/lib/account';
+import { logoutAllTokens, getWebSocketURL, getOAuthURL } from '../../common/appId';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import {
     getTokenList,
@@ -29,9 +29,9 @@ import TradeInfoPanel from './TradeInfoPanel';
 let realityCheckTimeout;
 
 const api = new LiveApi({
-    apiUrl  : `wss://${getStorage('config.server_url') || 'frontend.binaryws.com'}/websockets/v3`,
+    apiUrl  : getWebSocketURL(),
     language: getStorage('lang') || 'en',
-    appId   : getStorage('config.app_id') || 1,
+    appId   : getStorage('config.app_id'),
 });
 
 api.events.on('balance', response => {
@@ -406,10 +406,7 @@ export default class View {
 
         $('#login')
             .bind('click.login', () => {
-                const serverUrl = getStorage('config.server_url') || 'frontend.binaryws.com';
-                document.location =
-                    `https://${serverUrl}/oauth2/authorize?app_id=` +
-                    `${getStorage('config.app_id')}&l=${getLanguage().toUpperCase()}`;
+                document.location = getOAuthURL();
             })
             .text('Log in');
 
