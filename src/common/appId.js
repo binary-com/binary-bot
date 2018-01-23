@@ -34,9 +34,11 @@ export const oauthLogin = (done = () => 0) => {
     }
 };
 
+export const getAppIdFallback = () => getStorage('config.app_id') || getDefaultEndpoint().appId;
+
 export const getDefaultEndpoint = () => ({
     url  : 'frontend.binaryws.com',
-    appId: 1169,
+    appId: getStorage('config.default_app_id'),
 });
 
 export const getWebSocketURL = () =>
@@ -51,7 +53,7 @@ const options = {
     apiUrl   : getWebSocketURL(),
     websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
     language : getStorage('lang') || 'en',
-    appId    : getStorage('config.app_id') || getDefaultEndpoint().appId,
+    appId    : getAppIdFallback(),
 };
 
 const addTokenIfValid = token =>

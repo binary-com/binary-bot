@@ -24,14 +24,14 @@ import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
-import { logoutAllTokens, getWebSocketURL, getOAuthURL } from '../../common/appId';
+import { logoutAllTokens, getWebSocketURL, getOAuthURL, getAppIdFallback } from '../../common/appId';
 
 let realityCheckTimeout;
 
 const api = new LiveApi({
     apiUrl  : getWebSocketURL(),
     language: getStorage('lang') || 'en',
-    appId   : getStorage('config.app_id'),
+    appId   : getAppIdFallback(),
 });
 
 api.events.on('balance', response => {

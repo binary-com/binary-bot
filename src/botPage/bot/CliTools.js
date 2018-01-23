@@ -4,7 +4,7 @@ import { get as getStorage } from 'binary-common-utils/lib/storageManager';
 import websocket from 'ws';
 import Interpreter from './Interpreter';
 import TicksService from '../common/TicksService';
-import { getWebSocketURL, getDefaultEndpoint } from '../../common/appId';
+import { getAppIdFallback, getWebSocketURL, getDefaultEndpoint } from '../../common/appId';
 
 export const createApi = () =>
     new LiveApi({
@@ -12,7 +12,7 @@ export const createApi = () =>
         apiUrl  : getWebSocketURL(),
         websocket,
         language: getStorage('lang') || 'en',
-        appId   : getStorage('config.app_id') || getDefaultEndpoint().appId,
+        appId   : getAppIdFallback(),
     });
 
 export const createScope = () => {

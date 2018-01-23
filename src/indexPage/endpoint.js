@@ -1,12 +1,15 @@
 import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
 import { LiveApi } from 'binary-live-api';
-import { getWebSocketURL, getDefaultEndpoint } from '../common/appId';
+import { getWebSocketURL, getDefaultEndpoint, getAppIdFallback } from '../common/appId';
 
 export default function endpoint() {
     if (!document.location.href.match(/endpoint\.html/)) return false;
     $(document).ready(() => {
         $('#error').hide();
+        $('#connected').hide();
         let api;
+        const generateConnectedMessage = () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`;
+        const generateErrorMessage = () => `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`;
         const initConnection = () => {
             if (api && api.disconnect) {
                 api.disconnect();
@@ -14,10 +17,17 @@ export default function endpoint() {
             api = new LiveApi({
                 apiUrl  : getWebSocketURL(),
                 language: 'en',
-                appId   : getStorage('config.app_id'),
+                appId   : getAppIdFallback(),
             });
+            api.socket.onopen = () => {
+                $('#connected')
+                    .html(generateConnectedMessage())
+                    .show();
+            };
             api.socket.onerror = () => {
-                $('#error').show();
+                $('#error')
+                    .html(generateErrorMessage())
+                    .show();
                 resetEndpoint();
                 init();
                 initConnection();
@@ -25,6 +35,7 @@ export default function endpoint() {
         };
         $('#new_endpoint').click(e => {
             $('#error').hide();
+            $('#connected').hide();
             e.preventDefault();
             const serverUrl = $('#server_url').val();
             const appId = $('#app_id').val();
