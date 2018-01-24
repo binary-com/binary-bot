@@ -3,9 +3,10 @@ import { expect } from 'chai';
 import { LiveApi } from 'binary-live-api';
 import websocket from 'ws';
 import _Symbol from '../index';
+import { getAppIdFallback } from '../../../../common/appId';
 
 describe('symbol', () => {
-    const api = new LiveApi({ websocket, appId: 1169 });
+    const api = new LiveApi({ websocket, appId: getAppIdFallback() });
     describe('Checking functions', () => {
         let symbol;
         // eslint-disable-next-line prefer-arrow-callback

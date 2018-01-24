@@ -38,7 +38,7 @@ export const getAppIdFallback = () => getStorage('config.app_id') || getDefaultE
 
 export const getDefaultEndpoint = () => ({
     url  : 'frontend.binaryws.com',
-    appId: getStorage('config.default_app_id'),
+    appId: getStorage('config.default_app_id') || 1169,
 });
 
 export const getWebSocketURL = () =>
