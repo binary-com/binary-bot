@@ -10,7 +10,7 @@ import {
 } from 'binary-common-utils/lib/storageManager';
 import { getLanguage } from './lang';
 
-export const setAppId = () => {
+export const setDefaultAppId = () => {
     const { appId } = getDefaultEndpoint();
     setStorage('config.default_app_id', appId);
     setStorage('config.app_id', getStorage('config.server_url') ? getStorage('config.app_id') || appId : appId);
@@ -38,7 +38,7 @@ export const getAppIdFallback = () => getStorage('config.app_id') || getDefaultE
 
 export const getDefaultEndpoint = () => ({
     url  : 'frontend.binaryws.com',
-    appId: getStorage('config.default_app_id') || 1169,
+    appId: getStorage('config.app_id') || getStorage('config.default_app_id') || 1169,
 });
 
 export const getWebSocketURL = () =>
@@ -56,9 +56,11 @@ const options = {
     appId    : getAppIdFallback(),
 };
 
+export const generateLiveApiInstance = () => new LiveApi(options);
+
 const addTokenIfValid = token =>
     new Promise((resolve, reject) => {
-        const api = new LiveApi(options);
+        const api = generateLiveApiInstance();
         api
             .authorize(token)
             .then(response => {
@@ -83,7 +85,7 @@ const addTokenIfValid = token =>
 
 export const logoutAllTokens = () =>
     new Promise(resolve => {
-        const api = new LiveApi(options);
+        const api = generateLiveApiInstance();
         const tokenList = getTokenList();
         const logout = () => {
             removeAllTokens();

@@ -1,16 +1,15 @@
 import filesaver from 'file-saver';
 import Observer from 'binary-common-utils/lib/observer';
-import { setAppId } from '../../common/appId';
+import { setDefaultAppId, generateLiveApiInstance } from '../../common/appId';
 import { load as loadLang } from '../../common/lang';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
-import { createApi } from '../bot/CliTools';
 
 loadLang();
 
-setAppId();
+setDefaultAppId();
 
-let tmpApi = createApi();
+let tmpApi = generateLiveApiInstance();
 
 export const symbolApi = new _Symbol(tmpApi);
 
@@ -22,10 +21,10 @@ export const symbolPromise = new Promise(resolve => {
     });
 });
 
-export const ticksService = new TicksService(createApi());
+export const ticksService = new TicksService(generateLiveApiInstance());
 
 export const createScope = () => {
-    const api = createApi();
+    const api = generateLiveApiInstance();
     const observer = new Observer();
 
     return { observer, api, ticksService, symbolApi };

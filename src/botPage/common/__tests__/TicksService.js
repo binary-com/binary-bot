@@ -1,12 +1,10 @@
 import { expect } from 'chai';
-import websocket from 'ws';
-import { LiveApi } from 'binary-live-api';
 import TicksService from '../TicksService';
-import { getAppIdFallback } from '../../../common/appId';
+import { generateLiveApiInstance } from '../../../common/appId';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
-const ticksService = new TicksService(new LiveApi({ websocket, appId: getAppIdFallback() }));
+const ticksService = new TicksService(generateLiveApiInstance());
 
 const isTick = t => Number.isInteger(t.epoch) && Number.isFinite(t.quote);
 

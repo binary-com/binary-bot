@@ -8,7 +8,6 @@ import {
     set as setStorage,
     getToken,
 } from 'binary-common-utils/lib/storageManager';
-import { LiveApi } from 'binary-live-api';
 import 'jquery-ui/ui/widgets/dialog';
 import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
@@ -24,15 +23,11 @@ import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
-import { logoutAllTokens, getWebSocketURL, getOAuthURL, getAppIdFallback } from '../../common/appId';
+import { logoutAllTokens, getOAuthURL, generateLiveApiInstance } from '../../common/appId';
 
 let realityCheckTimeout;
 
-const api = new LiveApi({
-    apiUrl  : getWebSocketURL(),
-    language: getStorage('lang') || 'en',
-    appId   : getAppIdFallback(),
-});
+const api = generateLiveApiInstance();
 
 api.events.on('balance', response => {
     const { balance: { balance: b, currency } } = response;
