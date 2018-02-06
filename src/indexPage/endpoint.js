@@ -1,8 +1,8 @@
 import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
 import { getDefaultEndpoint, generateLiveApiInstance } from '../common/appId';
 
-let api;
 const initConnection = () => {
+    let api;
     if (api && api.disconnect) {
         api.disconnect();
     }
