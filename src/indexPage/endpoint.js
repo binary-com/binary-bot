@@ -16,7 +16,7 @@ const initConnection = () => {
         $('#error')
             .html(generateErrorMessage())
             .show();
-        resetEndpoint();
+        EventHandlers.resetEndpoint();
         init();
         initConnection();
     };
