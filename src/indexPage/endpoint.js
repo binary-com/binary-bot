@@ -9,12 +9,12 @@ const initConnection = () => {
     api = generateLiveApiInstance();
     api.socket.onopen = () => {
         $('#connected')
-            .html(generateConnectedMessage())
+            .html(MessageProperties.connected())
             .show();
     };
     api.socket.onerror = () => {
         $('#error')
-            .html(generateErrorMessage())
+            .html(MessageProperties.error())
             .show();
         EventHandlers.resetEndpoint();
         init();
@@ -27,9 +27,11 @@ const init = () => {
     $('#server_url').val(serverUrl || getDefaultEndpoint().url);
     $('#app_id').val(getStorage('config.app_id') || getDefaultEndpoint().appId);
 };
-const generateConnectedMessage = () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`;
-const generateErrorMessage = () =>
-    `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`;
+
+let MessageProperties = {
+    connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
+    error    : () => `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`,
+};
 
 const EventHandlers = {};
 
