@@ -34,26 +34,23 @@ export const oauthLogin = (done = () => 0) => {
     }
 };
 
-export const getAppIdFallback = () => getStorage('config.app_id') || getDefaultEndpoint().appId;
+export const getDomainName = () => getStorage('config.server_url') || getDefaultEndpoint().url;
 
 export const getDefaultEndpoint = () => ({
     url  : 'frontend.binaryws.com',
     appId: getStorage('config.app_id') || getStorage('config.default_app_id') || 1169,
 });
 
-export const getWebSocketURL = () =>
-    `wss://${getStorage('config.server_url') || getDefaultEndpoint().url}/websockets/v3`;
+export const getWebSocketURL = () => `wss://${getDomainName()}/websockets/v3`;
 
 export const getOAuthURL = () =>
-    `https://${getStorage('config.server_url') || getDefaultEndpoint().url}/oauth2/authorize?app_id=${getStorage(
-        'config.app_id'
-    ) || getDefaultEndpoint().appId}&l=${getLanguage().toUpperCase()}`;
+    `https://${getDomainName()}/oauth2/authorize?app_id=${getDefaultEndpoint().appId}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
     apiUrl   : getWebSocketURL(),
     websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
     language : getStorage('lang') || 'en',
-    appId    : getAppIdFallback(),
+    appId    : getDefaultEndpoint().appId,
 };
 
 export const generateLiveApiInstance = () => new LiveApi(options);
