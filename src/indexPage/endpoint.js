@@ -1,41 +1,53 @@
 import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
 import { getDefaultEndpoint, generateLiveApiInstance } from '../common/appId';
 
-const initConnection = () => {
+const MessageProperties = {
+    connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
+    error    : () => `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`,
+};
+
+export default function endpoint() {
+    if (!document.location.href.match(/endpoint\.html/)) return false;
+    $(document).ready(() => {
+        $('#error').hide();
+        $('#connected').hide();
+
+        $('#new_endpoint').click(addEndpoint);
+        $('#reset').click(resetEndpoint);
+
+        init();
+    });
+    return true;
+}
+
+async function initConnection() {
     let api;
     if (api && api.disconnect) {
         api.disconnect();
     }
     api = generateLiveApiInstance();
-    api.socket.onopen = () => {
+    try {
+        await api.ping();
         $('#connected')
             .html(MessageProperties.connected())
             .show();
-    };
-    api.socket.onerror = () => {
+    } catch (e) {
         $('#error')
             .html(MessageProperties.error())
             .show();
-        EventHandlers.resetEndpoint();
+        resetEndpoint();
         init();
         initConnection();
-    };
-};
+    }
+}
 
-const init = () => {
+function init() {
     const serverUrl = getStorage('config.server_url');
     $('#server_url').val(serverUrl || getDefaultEndpoint().url);
     $('#app_id').val(getStorage('config.app_id') || getDefaultEndpoint().appId);
-};
+}
 
-let MessageProperties = {
-    connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
-    error    : () => `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`,
-};
-
-const EventHandlers = {};
-
-EventHandlers.newEndpoint = e => {
+function addEndpoint(e) {
     $('#error').hide();
     $('#connected').hide();
     e.preventDefault();
@@ -45,23 +57,9 @@ EventHandlers.newEndpoint = e => {
     setStorage('config.app_id', appId);
 
     initConnection();
-};
+}
 
-EventHandlers.resetEndpoint = () => {
+function resetEndpoint() {
     setStorage('config.app_id', getDefaultEndpoint().appId);
     setStorage('config.server_url', getDefaultEndpoint().url);
-};
-
-export default function endpoint() {
-    if (!document.location.href.match(/endpoint\.html/)) return false;
-    $(document).ready(() => {
-        $('#error').hide();
-        $('#connected').hide();
-
-        $('#new_endpoint').click(EventHandlers.newEndpoint);
-        $('#reset').click(EventHandlers.resetEndpoint);
-
-        init();
-    });
-    return true;
 }

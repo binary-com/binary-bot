@@ -10,12 +10,6 @@ import {
 } from 'binary-common-utils/lib/storageManager';
 import { getLanguage } from './lang';
 
-export const setDefaultAppId = () => {
-    const { appId } = getDefaultEndpoint();
-    setStorage('config.default_app_id', appId);
-    setStorage('config.app_id', getStorage('config.server_url') ? getStorage('config.app_id') || appId : appId);
-};
-
 const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));
 
 export const oauthLogin = (done = () => 0) => {
@@ -34,23 +28,30 @@ export const oauthLogin = (done = () => 0) => {
     }
 };
 
-export const getDomainName = () => getStorage('config.server_url') || getDefaultEndpoint().url;
+export const getCustomEndpoint = () => ({
+    url  : getStorage('config.server_url'),
+    appId: getStorage('config.app_id'),
+});
 
 export const getDefaultEndpoint = () => ({
     url  : 'frontend.binaryws.com',
-    appId: getStorage('config.app_id') || getStorage('config.default_app_id') || 1169,
+    appId: getStorage('config.default_app_id') || 1169,
 });
 
-export const getWebSocketURL = () => `wss://${getDomainName()}/websockets/v3`;
+export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
+
+export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().url;
+
+export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websockets/v3`;
 
 export const getOAuthURL = () =>
-    `https://${getDomainName()}/oauth2/authorize?app_id=${getDefaultEndpoint().appId}&l=${getLanguage().toUpperCase()}`;
+    `https://${getServerAddressFallback()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
     apiUrl   : getWebSocketURL(),
     websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
     language : getStorage('lang') || 'en',
-    appId    : getDefaultEndpoint().appId,
+    appId    : getAppIdFallback(),
 };
 
 export const generateLiveApiInstance = () => new LiveApi(options);

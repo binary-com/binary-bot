@@ -11,7 +11,6 @@ const loginCheck = () => {
         window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
     } else {
         loadLang();
-        setDefaultAppId();
         oauthLogin(() => {
             $('.show-on-load').show();
             $('.barspinner').hide();
