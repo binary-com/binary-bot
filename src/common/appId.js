@@ -43,6 +43,8 @@ export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEnd
 
 export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websockets/v3`;
 
+export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
+
 export const getOAuthURL = () =>
     `https://${getServerAddressFallback()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
@@ -54,6 +56,8 @@ const options = {
 };
 
 export const generateLiveApiInstance = () => new LiveApi(options);
+
+export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign(options, overrideOptions));
 
 const addTokenIfValid = token =>
     new Promise((resolve, reject) => {

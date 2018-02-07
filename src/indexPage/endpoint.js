@@ -1,5 +1,5 @@
 import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
-import { getDefaultEndpoint, generateLiveApiInstance } from '../common/appId';
+import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
 
 const MessageProperties = {
     connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
@@ -20,12 +20,15 @@ export default function endpoint() {
     return true;
 }
 
-async function initConnection() {
-    let api;
+let api; // to close the error connection
+async function checkConnection(appId, apiUrl) {
     if (api && api.disconnect) {
         api.disconnect();
     }
-    api = generateLiveApiInstance();
+    api = generateTestLiveApiInstance({
+        appId,
+        apiUrl: generateWebSocketURL(apiUrl),
+    });
     try {
         await api.ping();
         $('#connected')
@@ -37,7 +40,7 @@ async function initConnection() {
             .show();
         resetEndpoint();
         init();
-        initConnection();
+        checkConnection(getDefaultEndpoint().appId, getDefaultEndpoint().url);
     }
 }
 
@@ -56,7 +59,7 @@ function addEndpoint(e) {
     setStorage('config.server_url', serverUrl);
     setStorage('config.app_id', appId);
 
-    initConnection();
+    checkConnection(appId, serverUrl);
 }
 
 function resetEndpoint() {
