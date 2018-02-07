@@ -39,7 +39,7 @@ export const getDefaultEndpoint = () => ({
 
 export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
 
-export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().url;
+export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
 
 export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websockets/v3`;
 
