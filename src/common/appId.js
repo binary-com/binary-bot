@@ -6,7 +6,6 @@ import {
     getTokenList,
     removeAllTokens,
     get as getStorage,
-    set as setStorage,
 } from 'binary-common-utils/lib/storageManager';
 import { getLanguage } from './lang';
 
