@@ -10,9 +10,10 @@
         float: right;
         margin-bottom: 5px;
         background-color: $brand-gray;
-        border: 1px solid $toolbox-btn-active;
         padding: 2.5px 6px;
         color: $black;
+	width: 40px;
+	height: 40px;
     }
 
     .toolbox-button:hover {

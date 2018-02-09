@@ -36,6 +36,7 @@
     border-width: thin;
     color: $brand-dark-gray;
     border-right: 1px solid;
+    width: 11em;	
 }
 
 .blocklyIconShape {
@@ -54,6 +55,8 @@
 
 .blocklyTreeRow {
     margin-bottom: 0px !important;
+    height: 1.9em !important;
+    padding-top: 0.250em;
 }
 
 .blocklyToolboxDiv {
