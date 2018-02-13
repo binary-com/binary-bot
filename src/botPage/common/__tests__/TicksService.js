@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions */
-import 'jest-localstorage-mock';
 import TicksService from '../TicksService';
 import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../../../common/appId';
 
@@ -78,7 +77,6 @@ describe('Account', () => {
         });
     });
     describe('logout', () => {
-        let successfulLogout;
         it('Logout should be successful', () => {
             expect(logoutAllTokens).not.toThrow();
         });
