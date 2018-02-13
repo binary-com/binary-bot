@@ -59,7 +59,7 @@ export const generateLiveApiInstance = () => new LiveApi(options);
 
 export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign(options, overrideOptions));
 
-const addTokenIfValid = token =>
+export const addTokenIfValid = token =>
     new Promise((resolve, reject) => {
         const api = generateLiveApiInstance();
         api
