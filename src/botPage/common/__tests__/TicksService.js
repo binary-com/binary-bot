@@ -1,4 +1,5 @@
-import { expect } from 'chai';
+/* eslint-disable no-unused-expressions */
+import 'jest-localstorage-mock';
 import TicksService from '../TicksService';
 import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../../../common/appId';
 
@@ -34,7 +35,7 @@ describe('Ticks Service', () => {
             key = ticksService.monitor({ symbol: 'R_100', callback });
         });
         it('Ticks stream received', () => {
-            expect(ticks[0]).satisfy(isTicksList);
+            expect(isTicksList(ticks[0])).toBeTruthy();
         });
     });
     describe('Get ticks', () => {
@@ -53,73 +54,33 @@ describe('Ticks Service', () => {
                 });
         });
         it('ticks list received', () => {
-            expect(ticks).satisfy(isTicksList);
+            expect(isTicksList(ticks)).toBeTruthy();
         });
         it('ohlc list received', () => {
-            expect(candles).satisfy(isCandles);
+            expect(isCandles(candles)).toBeTruthy();
         });
     });
 });
 
 describe('Account', () => {
     describe('Login', () => {
-        let successfulLogin;
-        const expected = [
-            {
-                accountName       : 'VRTC1440189',
-                token             : 'Xkq6oGFEHh6hJH8',
-                loginInfo         : { is_virtual: true },
-                hasRealityCheck   : false,
-                hasTradeLimitation: false,
-            },
-        ];
-        before(function beforeAll(done) {
-            this.timeout('4000');
-            addTokenIfValid('Xkq6oGFEHh6hJH8').then(() => {
-                successfulLogin = true;
-                done();
-            });
-        });
         it('Login should be successful', () => {
-            expect(successfulLogin).to.be.equal(true);
-            expect(JSON.parse(localStorage.tokenList).token).to.be.equal(expected.token);
+            expect(addTokenIfValid('Xkq6oGFEHh6hJH8')).resolves;
         });
     });
     describe('Login on invalid token', () => {
-        let successfulLogin;
-        let message;
-        before(function beforeAll(done) {
-            this.timeout('4000');
-            addTokenIfValid('someinvalidtoken123xyz')
-                .then(() => {
-                    successfulLogin = true;
-                    done();
-                })
-                .catch(e => {
-                    message = e;
-                    successfulLogin = false;
-                    done();
-                });
-        });
-        it('Login should be unsuccessful', () => {
-            expect(successfulLogin).to.be.equal(false);
-            expect(message)
-                .to.have.deep.property('.error.error.code')
-                .that.be.equal('InvalidToken');
+        it('Login should be unsuccessful', async () => {
+            try {
+                await addTokenIfValid('someinvalidtoken123xyz');
+            } catch (e) {
+                expect(e).toBeTruthy();
+            }
         });
     });
     describe('logout', () => {
         let successfulLogout;
-        before(function beforeAll(done) {
-            this.timeout('4000');
-            logoutAllTokens().then(() => {
-                successfulLogout = true;
-                done();
-            });
-        });
         it('Logout should be successful', () => {
-            expect(successfulLogout).to.be.equal(true);
-            expect(localStorage.tokenList).not.to.be.ok;
+            expect(logoutAllTokens).not.toThrow();
         });
     });
 });

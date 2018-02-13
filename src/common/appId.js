@@ -59,30 +59,21 @@ export const generateLiveApiInstance = () => new LiveApi(options);
 
 export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign(options, overrideOptions));
 
-export const addTokenIfValid = token =>
-    new Promise((resolve, reject) => {
-        const api = generateLiveApiInstance();
-        api
-            .authorize(token)
-            .then(response => {
-                const landingCompanyName = response.authorize.landing_company_name;
-                api.getLandingCompanyDetails(landingCompanyName).then(r => {
-                    addToken(
-                        token,
-                        response.authorize,
-                        !!r.landing_company_details.has_reality_check,
-                        ['iom', 'malta'].includes(landingCompanyName)
-                    );
-                    api.disconnect();
-                    resolve(null);
-                }, () => 0);
-            })
-            .catch(e => {
-                removeToken(token);
-                api.disconnect();
-                reject(e);
-            });
-    });
+export async function addTokenIfValid(token) {
+    const api = generateLiveApiInstance();
+    try {
+        const { authorize } = await api.authorize(token);
+        const { landing_company_name: lcName } = authorize;
+        const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
+            lcName
+        );
+        addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName));
+    } catch (e) {
+        removeToken(token);
+        throw e;
+    }
+    return api.disconnect();
+}
 
 export const logoutAllTokens = () =>
     new Promise(resolve => {
