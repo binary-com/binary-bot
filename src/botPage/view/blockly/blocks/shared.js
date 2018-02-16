@@ -42,30 +42,55 @@ export const expectValue = (block, field) => {
 
 export const fieldGeneratorMapping = {};
 
+const getActiveSymbols = symbols =>
+    Object.keys(symbols).reduce(
+        (acc, symbol) =>
+            symbolApi.getAllowedCategories(symbol).length ? { ...acc, [symbol]: symbols[symbol] } : { ...acc },
+        {}
+    );
+
+const getActiveSubMarket = submarkets =>
+    Object.keys(submarkets).reduce(
+        (acc, submarket) =>
+            Object.keys(getActiveSymbols(submarkets[submarket].symbols)).length
+                ? { ...acc, [submarket]: submarkets[submarket] }
+                : { ...acc },
+        {}
+    );
+
+const getActiveMarket = markets =>
+    Object.keys(markets).reduce(
+        (acc, market) =>
+            Object.keys(getActiveSubMarket(markets[market].submarkets)).length
+                ? { ...acc, [market]: markets[market] }
+                : { ...acc },
+        {}
+    );
+
 fieldGeneratorMapping.MARKET_LIST = () => () => {
-    const markets = symbolApi.activeSymbols.getMarkets();
+    const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     return Object.keys(markets).map(e => [markets[e].name, e]);
 };
 
 fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
-    const markets = symbolApi.activeSymbols.getMarkets();
+    const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     const marketName = block.getFieldValue('MARKET_LIST');
     if (marketName === 'Invalid') {
         return [['', 'Invalid']];
     }
-    const { submarkets } = markets[marketName];
+    const submarkets = getActiveSubMarket(markets[marketName].submarkets);
     return Object.keys(submarkets).map(e => [submarkets[e].name, e]);
 };
 
 fieldGeneratorMapping.SYMBOL_LIST = block => () => {
-    const markets = symbolApi.activeSymbols.getMarkets();
+    const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     const submarketName = block.getFieldValue('SUBMARKET_LIST');
     if (!submarketName || submarketName === 'Invalid') {
         return [['', '']];
     }
     const marketName = block.getFieldValue('MARKET_LIST');
-    const { submarkets } = markets[marketName];
-    const { symbols } = submarkets[submarketName];
+    const submarkets = getActiveSubMarket(markets[marketName].submarkets);
+    const symbols = getActiveSymbols(submarkets[submarketName].symbols);
     return Object.keys(symbols).map(e => [symbols[e].display, symbols[e].symbol]);
 };
 
