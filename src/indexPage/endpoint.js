@@ -7,8 +7,8 @@ const MessageProperties = {
 };
 
 export default function endpoint() {
-    if (document.location.href.endsWith('/endpoint')) document.location.href += '.html';
     if (!document.location.href.match(/endpoint\.html/)) return false;
+    if (document.location.href.endsWith('/endpoint')) document.location.href += '.html';
     $(document).ready(() => {
         $('#error').hide();
         $('#connected').hide();
