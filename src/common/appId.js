@@ -15,7 +15,7 @@ export const setAppId = () => {
     } else {
         appId = 1169; // binary bot
     }
-    setStorage('appId', 12249);
+    setStorage('appId', appId);
 };
 
 const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));
