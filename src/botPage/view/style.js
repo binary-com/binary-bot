@@ -1,6 +1,11 @@
 export const content = {
     marginTop: '0.5em',
-    width    : '18em',
+};
+
+export const dialogLayout = {
+    height   : 'auto',
+    width    : '25em',
+    resizable: false,
 };
 
 export const error = {
@@ -9,15 +14,7 @@ export const error = {
 };
 
 export const submitButton = {
-    width     : '4em',
-    position  : 'absolute',
-    left      : '50%',
-    bottom    : '0.2em',
-    marginLeft: '-2em',
-};
-
-export const limits = {
-    float: 'left',
+    textAlign: 'center',
 };
 
 export const input = {

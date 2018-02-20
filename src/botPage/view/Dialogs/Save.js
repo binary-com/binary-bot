@@ -28,7 +28,7 @@ class SaveContent extends PureComponent {
                 className="dialog-content"
                 style={style.content}
             >
-                <div style={style.limits}>
+                <div>
                     <div style={style.inputRow}>
                         <label style={style.field} title={'Choose a filename to save'} htmlFor="save-filename">
                             {translate('Filename')}:

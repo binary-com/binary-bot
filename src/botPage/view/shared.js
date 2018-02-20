@@ -57,3 +57,5 @@ export const saveAs = ({ data, filename, type }) => {
     const blob = new Blob([data], { type });
     filesaver.saveAs(blob, filename);
 };
+
+export const restrictInputCharacter = ({ whitelistRegEx, input }) => input.match(new RegExp(whitelistRegEx));

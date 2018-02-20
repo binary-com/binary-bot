@@ -3,32 +3,55 @@ import PropTypes from 'prop-types';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 import Dialog from './Dialog';
+import { restrictInputCharacter } from '../shared';
 
 class LimitsContent extends PureComponent {
     constructor() {
         super();
         this.state = {
-            error: null,
+            error    : '',
+            maxLoss  : '',
+            maxTrades: '',
         };
     }
     submit() {
-        const maxLoss = +this.maxLossDiv.value;
-        const maxTrades = +this.maxTradesDiv.value;
-        if (maxLoss > 0 && maxTrades > 0) {
-            if (maxTrades <= 100) {
-                this.props.onSave({
-                    maxLoss,
-                    maxTrades,
-                });
-            } else {
-                this.setState({
-                    error: translate('Maximum allowed number of trades for each session is 100.'),
-                });
-            }
-        } else {
+        const maxLoss = parseFloat(this.state.maxLoss || 0);
+        const maxTrades = parseInt(this.state.maxTrades || 0);
+        this.setState({ error: '' });
+        if (maxTrades <= 0 || maxTrades > 100) {
+            this.setState({ error: 'Maximum number of trades should be between 1 and 100.' });
+            return;
+        }
+        if (!maxLoss) {
+            this.setState({ error: 'Please enter a Maximum Loss amount greater than zero.' });
+            return;
+        }
+        this.props.onSave({
+            maxLoss,
+            maxTrades,
+        });
+    }
+    componentDidMount() {
+        const cleanupLayout = () => {
             this.setState({
-                error: translate('Both number of trades and loss amount have to be positive values.'),
+                maxTrades: '',
+                maxLoss  : '',
+                error    : '',
             });
+        };
+        $('#limits-dialog-component').dialog({
+            close   : cleanupLayout,
+            autoOpen: false,
+        });
+    }
+    onMaxTradeChange(e) {
+        if (restrictInputCharacter({ input: e.target.value, whitelistRegEx: '^[\\d]*$' })) {
+            this.setState({ maxTrades: e.target.value });
+        }
+    }
+    onMaxLossChange(e) {
+        if (restrictInputCharacter({ input: e.target.value, whitelistRegEx: '^\\d*\\.?\\d*$' })) {
+            this.setState({ maxLoss: e.target.value });
         }
     }
     render() {
@@ -39,7 +62,7 @@ class LimitsContent extends PureComponent {
                 className="dialog-content"
                 style={style.content}
             >
-                <div style={style.limits}>
+                <div>
                     <div style={style.inputRow}>
                         <label style={style.field} htmlFor="limitation-max-trades">
                             <input
@@ -47,11 +70,12 @@ class LimitsContent extends PureComponent {
                                 ref={el => {
                                     this.maxTradesDiv = el;
                                 }}
-                                type="number"
+                                type="text"
                                 id="limitation-max-trades"
-                                min="1"
-                                max="100"
                                 step="1"
+                                maxLength="3"
+                                value={this.state.maxTrades}
+                                onChange={(...args) => this.onMaxTradeChange(...args)}
                             />
                             {translate('Maximum number of trades')}
                         </label>
@@ -63,10 +87,11 @@ class LimitsContent extends PureComponent {
                                 ref={el => {
                                     this.maxLossDiv = el;
                                 }}
-                                type="number"
+                                value={this.state.maxLoss}
+                                type="text"
                                 id="limitation-max-loss"
-                                min="0.01"
-                                step="0.01"
+                                step="any"
+                                onChange={(...args) => this.onMaxLossChange(...args)}
                             />
                             {translate('Maximum loss amount')}
                         </label>
@@ -90,7 +115,7 @@ export default class Limits extends Dialog {
             this.limitsPromise(limits);
             this.close();
         };
-        super('limits-dialog', translate('Trade Limitations'), <LimitsContent onSave={onSave} />);
+        super('limits-dialog', translate('Trade Limitations'), <LimitsContent onSave={onSave} />, style.dialogLayout);
     }
     getLimits() {
         this.open();
