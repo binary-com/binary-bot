@@ -1,7 +1,10 @@
 import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
 import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
 
-if (document.location.href.endsWith('/endpoint')) document.location.href += '.html';
+if (document.location.href.endsWith('/endpoint')) {
+    window.location.replace(`${document.location.href  }.html`);
+    throw new Error('Unexpected URL.');
+}
 
 const MessageProperties = {
     connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
