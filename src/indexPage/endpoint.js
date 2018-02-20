@@ -2,8 +2,8 @@ import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/st
 import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
 
 if (document.location.href.endsWith('/endpoint')) {
-    window.location.replace(`${document.location.href  }.html`);
-    throw new Error('Unexpected URL.');
+    window.location.replace(`${document.location.href}.html`);
+    throw new Error('Unexpected URL.'); // To prevent URL replace in index and further execution
 }
 
 const MessageProperties = {
