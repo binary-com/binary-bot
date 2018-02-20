@@ -1,6 +1,8 @@
 import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
 import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
 
+if (document.location.href.endsWith('/endpoint')) document.location.href += '.html';
+
 const MessageProperties = {
     connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
     error    : () => `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`,
@@ -8,7 +10,6 @@ const MessageProperties = {
 
 export default function endpoint() {
     if (!document.location.href.match(/endpoint\.html/)) return false;
-    if (document.location.href.endsWith('/endpoint')) document.location.href += '.html';
     $(document).ready(() => {
         $('#error').hide();
         $('#connected').hide();
