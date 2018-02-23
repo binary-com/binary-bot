@@ -128,7 +128,7 @@
     "prettier-eslint-cli": "^4.7.0",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
-    "react-data-grid": "^2.0.78",
+    "react-data-grid": "^3.0.0",
     "react-dom": "^15.6.2",
     "react-joyride": "^1.11.1",
     "redux": "^3.7.2",
