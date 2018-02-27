@@ -90,8 +90,6 @@ const addBlocklyTranslation = () => {
     $.ajaxPrefilter(options => {
         options.async = true; // eslint-disable-line no-param-reassign
     });
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
     let lang = getLanguage();
     if (lang === 'ach') {
         lang = 'en';
@@ -100,14 +98,14 @@ const addBlocklyTranslation = () => {
     } else if (lang === 'zh_tw') {
         lang = 'zh-hant';
     }
-    script.src = `https://blockly-demo.appspot.com/static/msg/js/${lang}.js`;
-    $('body').append(script);
+    return new Promise(resolve => {
+        $.getScript(`https://blockly-demo.appspot.com/static/msg/js/${lang}.js`, resolve);
+    });
 };
 export default class _Blockly {
     constructor() {
         this.blocksXmlStr = '';
         this.generatedJs = '';
-        addBlocklyTranslation();
         // eslint-disable-next-line no-underscore-dangle
         Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
         this.initPromise = new Promise(resolve => {
@@ -120,15 +118,20 @@ export default class _Blockly {
                     },
                     trashcan: false,
                 });
-                $.get('xml/main.xml', main => {
-                    this.overrideBlocklyDefaultShape();
-                    this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
-                    Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-                    this.zoomOnPlusMinus();
-                    Blockly.mainWorkspace.clearUndo();
-                    disposeBlocksWithLoaders();
-                    setTimeout(() => setBeforeUnload(true), 0);
-                    resolve();
+                addBlocklyTranslation().then(() => {
+                    $.get('xml/main.xml', main => {
+                        this.repaintDefaultColours();
+                        this.overrideBlocklyDefaultShape();
+                        this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
+                        Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+                        this.zoomOnPlusMinus();
+                        Blockly.mainWorkspace.clearUndo();
+                        disposeBlocksWithLoaders();
+                        setTimeout(() => {
+                            setBeforeUnload(true);
+                        }, 0);
+                        resolve();
+                    });
                 });
             });
         });
@@ -139,7 +142,9 @@ export default class _Blockly {
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
         Blockly.Events.setGroup(false);
     }
-    overrideBlocklyDefaultShape() {
+
+    /* eslint-disable class-methods-use-this */
+    repaintDefaultColours() {
         Blockly.Msg.LOGIC_HUE = '#DEDEDE';
         Blockly.Msg.LOOPS_HUE = '#DEDEDE';
         Blockly.Msg.MATH_HUE = '#DEDEDE';
@@ -150,7 +155,19 @@ export default class _Blockly {
         Blockly.Msg.VARIABLES_DYNAMIC_HUE = '#DEDEDE';
         Blockly.Msg.PROCEDURES_HUE = '#DEDEDE';
 
-        const addDownloadToMenu = block => {
+        Blockly.Blocks.logic.HUE = '#DEDEDE';
+        Blockly.Blocks.loops.HUE = '#DEDEDE';
+        Blockly.Blocks.math.HUE = '#DEDEDE';
+        Blockly.Blocks.texts.HUE = '#DEDEDE';
+        Blockly.Blocks.lists.HUE = '#DEDEDE';
+        Blockly.Blocks.colour.HUE = '#DEDEDE';
+        Blockly.Blocks.variables.HUE = '#DEDEDE';
+        Blockly.Blocks.procedures.HUE = '#DEDEDE';
+    }
+
+    /* eslint-disable class-methods-use-this */
+    overrideBlocklyDefaultShape() {
+        /* const addDownloadToMenu = block => {
             if (block instanceof Object) {
                 // eslint-disable-next-line no-param-reassign, max-len
                 block.customContextMenu = function customContextMenu(options) {
@@ -167,7 +184,7 @@ export default class _Blockly {
                     });
                 };
             }
-        };
+        }; */
         //        Object.keys(Blockly.Blocks).forEach(blockName => addDownloadToMenu(Blockly.Blocks[blockName]));
     }
     /* eslint-disable class-methods-use-this */
@@ -221,7 +238,9 @@ export default class _Blockly {
         setBeforeUnload(true);
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         Array.from(xml.children).forEach(blockDom => {
-            const block = Blockly.mainWorkspace.getBlockById(blockDom.getAttribute('id'));
+            const blockId = blockDom.getAttribute('id');
+            if (!blockId) return;
+            const block = Blockly.mainWorkspace.getBlockById(blockId);
             if ('loaderId' in block) {
                 blockDom.remove();
             }

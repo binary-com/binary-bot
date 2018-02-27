@@ -265,7 +265,7 @@ export const recoverDeletedBlock = block => {
 const addDomAsBlockFromHeader = (blockXml, header = null) => {
     const oldVars = [...Blockly.mainWorkspace.variableList];
     const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
-    Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter(v => {
+    /* Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter(v => {
         if (oldVars.indexOf(v) >= 0) {
             return true;
         }
@@ -273,7 +273,7 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
         return false;
     });
     replaceDeletedBlock(block);
-    Blockly.Events.fire(new Hide(block, header));
+    Blockly.Events.fire(new Hide(block, header)); */
     return block;
 };
 
