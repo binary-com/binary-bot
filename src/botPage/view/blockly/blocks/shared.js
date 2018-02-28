@@ -7,12 +7,22 @@ let purchaseChoices = [[translate('Click to select'), '']];
 
 export const getPurchaseChoices = () => purchaseChoices;
 
-export const updatePurchaseChoices = (contractType, oppositesName) => {
-    purchaseChoices = oppositesToDropdown(
-        config.opposites[oppositesName].filter(
-            k => (contractType === 'both' ? true : contractType === Object.keys(k)[0])
-        )
+const filterPurchaseChoices = (contractType, oppositesName) => {
+    const { [oppositesName]: tradeTypes } = config.opposites;
+
+    let tmpPurchaseChoices = tradeTypes.filter(
+        k => (contractType === 'both' ? true : contractType === Object.keys(k)[0])
     );
+
+    if (!tmpPurchaseChoices.length) {
+        tmpPurchaseChoices = tradeTypes;
+    }
+
+    return oppositesToDropdown(tmpPurchaseChoices);
+};
+
+export const updatePurchaseChoices = (contractType, oppositesName) => {
+    purchaseChoices = filterPurchaseChoices(contractType, oppositesName);
     const purchases = Blockly.mainWorkspace
         .getAllBlocks()
         .filter(r => ['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0);
@@ -20,9 +30,7 @@ export const updatePurchaseChoices = (contractType, oppositesName) => {
     purchases.forEach(purchase => {
         const value = purchase.getField('PURCHASE_LIST').getValue();
         Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
-        if (!purchaseChoices.length) {
-            purchase.getField('PURCHASE_LIST').setText('');
-        } else if (value === purchaseChoices[0][1]) {
+        if (value === purchaseChoices[0][1]) {
             purchase.getField('PURCHASE_LIST').setText(purchaseChoices[0][0]);
         } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
             purchase.getField('PURCHASE_LIST').setText(purchaseChoices[1][0]);
