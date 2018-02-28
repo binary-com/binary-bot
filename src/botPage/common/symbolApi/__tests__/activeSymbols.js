@@ -1,10 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { expect } from 'chai';
 import deep from 'deep-diff';
-import { LiveApi } from 'binary-live-api';
-import websocket from 'ws';
 import ActiveSymbols from '../activeSymbols';
-
+import { generateLiveApiInstance } from '../../../../common/appId';
 /*
  There is a market called forex, which has a submarket
  called major_pairs, which has a symbol called frxEURUSD
@@ -29,7 +27,7 @@ const setChecks = obj => {
 describe('ActiveSymbols', () => {
     let activeSymbols;
     beforeAll(done => {
-        const api = new LiveApi({ websocket, appId: 1169 });
+        const api = generateLiveApiInstance();
         api.getActiveSymbolsBrief().then(response => {
             activeSymbols = new ActiveSymbols(response.active_symbols);
             done();
