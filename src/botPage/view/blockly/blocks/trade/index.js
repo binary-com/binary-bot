@@ -58,11 +58,16 @@ const replaceInitializationBlocks = (trade, ev) => {
     }
 };
 
+const forceUpdateField = (trade, fieldName) => {
+    Blockly.Events.fire(new Blockly.Events.Change(trade, 'field', fieldName, '', trade.getFieldValue(fieldName)));
+};
+
 const setDefaultFields = (trade, parentFieldName) => {
     if (!Object.keys(dependentFieldMapping).includes(parentFieldName)) return;
     const childFieldName = dependentFieldMapping[parentFieldName];
     const [[, defaultValue]] = fieldGeneratorMapping[childFieldName](trade)();
     trade.setFieldValue(defaultValue, childFieldName);
+    if (childFieldName === 'TRADETYPECAT_LIST') forceUpdateField(trade, 'TRADETYPECAT_LIST');
 };
 
 const resetTradeFields = (trade, ev) => {
