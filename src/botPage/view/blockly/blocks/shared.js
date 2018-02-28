@@ -7,12 +7,22 @@ let purchaseChoices = [[translate('Click to select'), '']];
 
 export const getPurchaseChoices = () => purchaseChoices;
 
-export const updatePurchaseChoices = (contractType, oppositesName) => {
-    purchaseChoices = oppositesToDropdown(
-        config.opposites[oppositesName].filter(
-            k => (contractType === 'both' ? true : contractType === Object.keys(k)[0])
-        )
+const filterPurchaseChoices = (contractType, oppositesName) => {
+    const { [oppositesName]: tradeTypes } = config.opposites;
+
+    let tmpPurchaseChoices = tradeTypes.filter(
+        k => (contractType === 'both' ? true : contractType === Object.keys(k)[0])
     );
+
+    if (!tmpPurchaseChoices.length) {
+        tmpPurchaseChoices = tradeTypes;
+    }
+
+    return oppositesToDropdown(tmpPurchaseChoices);
+};
+
+export const updatePurchaseChoices = (contractType, oppositesName) => {
+    purchaseChoices = filterPurchaseChoices(contractType, oppositesName);
     const purchases = Blockly.mainWorkspace
         .getAllBlocks()
         .filter(r => ['purchase', 'payout', 'ask_price'].indexOf(r.type) >= 0);
