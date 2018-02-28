@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { logoutAllTokens } from 'binary-common-utils/lib/account';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import {
     getTokenList,
@@ -9,7 +8,6 @@ import {
     set as setStorage,
     getToken,
 } from 'binary-common-utils/lib/storageManager';
-import { LiveApi } from 'binary-live-api';
 import 'jquery-ui/ui/widgets/dialog';
 import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
@@ -25,13 +23,11 @@ import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
+import { logoutAllTokens, getOAuthURL, generateLiveApiInstance } from '../../common/appId';
 
 let realityCheckTimeout;
 
-const api = new LiveApi({
-    language: getStorage('lang') || 'en',
-    appId   : getStorage('appId') || 1,
-});
+const api = generateLiveApiInstance();
 
 api.events.on('balance', response => {
     const { balance: { balance: b, currency } } = response;
@@ -405,9 +401,7 @@ export default class View {
 
         $('#login')
             .bind('click.login', () => {
-                document.location =
-                    'https://oauth.binary.com/oauth2/authorize?app_id=' +
-                    `${getStorage('appId')}&l=${getLanguage().toUpperCase()}`;
+                document.location = getOAuthURL();
             })
             .text('Log in');
 

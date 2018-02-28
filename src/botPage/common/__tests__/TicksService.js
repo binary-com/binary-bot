@@ -1,11 +1,10 @@
-import { expect } from 'chai';
-import websocket from 'ws';
-import { LiveApi } from 'binary-live-api';
+/* eslint-disable no-unused-expressions */
 import TicksService from '../TicksService';
+import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../../../common/appId';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
-const ticksService = new TicksService(new LiveApi({ websocket, appId: 1169 }));
+const ticksService = new TicksService(generateLiveApiInstance());
 
 const isTick = t => Number.isInteger(t.epoch) && Number.isFinite(t.quote);
 
@@ -35,7 +34,7 @@ describe('Ticks Service', () => {
             key = ticksService.monitor({ symbol: 'R_100', callback });
         });
         it('Ticks stream received', () => {
-            expect(ticks[0]).satisfy(isTicksList);
+            expect(isTicksList(ticks[0])).toBeTruthy();
         });
     });
     describe('Get ticks', () => {
@@ -54,10 +53,32 @@ describe('Ticks Service', () => {
                 });
         });
         it('ticks list received', () => {
-            expect(ticks).satisfy(isTicksList);
+            expect(isTicksList(ticks)).toBeTruthy();
         });
         it('ohlc list received', () => {
-            expect(candles).satisfy(isCandles);
+            expect(isCandles(candles)).toBeTruthy();
+        });
+    });
+});
+
+describe('Account', () => {
+    describe('Login', () => {
+        it('Login should be successful', () => {
+            expect(addTokenIfValid('Xkq6oGFEHh6hJH8')).resolves;
+        });
+    });
+    describe('Login on invalid token', () => {
+        it('Login should be unsuccessful', async () => {
+            try {
+                await addTokenIfValid('someinvalidtoken123xyz');
+            } catch (e) {
+                expect(e).toBeTruthy();
+            }
+        });
+    });
+    describe('logout', () => {
+        it('Logout should be successful', () => {
+            expect(logoutAllTokens).not.toThrow();
         });
     });
 });
