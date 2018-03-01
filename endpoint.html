@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
+
+  <head>
 	<style id="antiClickjack">body{display:none !important;}</style>
 	<script type="text/javascript">
 		if (self === top) {
@@ -10,7 +11,6 @@
 			top.location = self.location;
 		}
 	</script>
-
 	<link rel="apple-touch-icon" sizes="57x57" href="https://style.binary.com/images/favicons/apple-touch-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="114x114" href="https://style.binary.com/images/favicons/apple-touch-icon-114x114.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="https://style.binary.com/images/favicons/apple-touch-icon-72x72.png">
@@ -53,88 +53,47 @@
 
 		amplitude.getInstance().init("8550b32c2a951c57e791d03c4c2ea55a");
 	</script>
-	<title>Welcome to the Binary Bot</title>
-<link href="css/index-92999299ca.css" rel="stylesheet" /><link rel="stylesheet" href="https://style.binary.com/binary.css">
-</head>
+    <title>Binary Bot</title>
+<link href="css/bundle-28d98ab8e2.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-6d23dee5a7.css" rel="stylesheet" />
+  </head>
 
-<body>
-<div class="barspinner dark">
-    <div class="rect1"></div>
-    <div class="rect2"></div>
-    <div class="rect3"></div>
-    <div class="rect4"></div>
-    <div class="rect5"></div>
-</div>
-	<div id="topbar">
-    <div class="wrapper show-on-load">
-<div class="languages">
-  <ul id="display_language">
-    <li>
-      <span class="world world-white"></span>
-      <span class="language"></span>
-      <span class="nav-caret"></span>
-    </li>
-  </ul>
-  <ul id="select_language">
-    <li>
-      <span class="world world-black"></span>
-        <span class="language"></span>
-      <span class="nav-caret"></span>
-    </li>
-    <li class="en">English</li>
-    <li class="de">Deutsch</li>
-    <li class="fr">Français</li>
-    <li class="id">Indonesia</li>
-    <li class="pl">Polish</li>
-    <li class="ru">Русский</li>
-    <li class="zh_cn">简体中文</li>
-    <li class="zh_tw">繁體中文</li>
-  <!--
-    <li class="es">Español</li>
-    <li class="it">Italiano</li>
-    <li class="pt">Português</li>
-    <li class="vi">Tiếng Việt</li>
-  -->  
-  </ul>
-</div>
-    </div>
-	</div>
-	<div id="header">
-		<div class="wrapper">
-      <div class="logo-wrapper">
+  <body>
+    <div id="header">
+      <div class="left-header">
+        <div class="logo-wrapper">
           <a href="https://www.binary.com" target="blank" id="logo">
-              <div class="logo-parent">
-                  <div class="logo">
-                      <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
-                  </div>
-                  <div class="binary-logo-text">
-                      <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
-                  </div>
+            <div class="logo-parent">
+              <div class="logo">
+                <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
               </div>
+              <div class="binary-logo-text">
+                <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
+              </div>
+            </div>
           </a>
+        </div>
       </div>
-		</div>
-	</div>
-	<div id="main">
-		<div>
-			<div class="content show-on-load">
-				<h1 class="center" data-i18n-text="Binary Bot"></h1>
-                <h3 class="center" data-i18n-text="Trade More Efficiently Than You Ever Thought Possible"></h3>
-                <div class="half-width">
-                    <p data-i18n-text="Interested in automating your preferred strategies for trading binary options?"></p>
-    				<p data-i18n-text="Binary Bot is our leading-edge programming tool which allows you to build trading apps with a simple “jigsaw puzzle-like” drag-and-drop function."></p>
-                    <p data-i18n-text="Dream up any number of binary options trading bots, from incredibly simple formulas to vastly complex algorithms. Then let them trade for you, even while you sleep."></p>
-    				<p><span data-i18n-text="Best of all, once you’ve built a bot, we can help you sell it to fellow traders in the"></span> <a href="https://shop.binary.com" target="_blank" data-i18n-text="Binary.com Shop"></a>. <span data-i18n-text="Receive 80% of the sales revenue from every purchase of your bot in our app store."></span></p>
-                </div>
-                <div class="half-width">
-                    <div class="right"><img src="image/binarylogo-puzzle.svg" alt=""></div>
-                </div>
-                <div class="clear">
-                    <p class="cta"><a class="button" href="bot.html"><span data-i18n-text="Begin Building a Bot Now"></span></a></p>
-                    <p class="center"><span data-i18n-text="Need further assistance?"></span> <a href="mailto:affiliates@binary.com" data-i18n-text="Contact us"></a>.</p>
-                </div>
-			</div>
-		</div>
-	</div>
-<script src="js/index-1e70ed755a.min.js"></script></body>
+    </div>
+
+
+    <div id="content-holder">
+        <div class="container">
+            <h1>Change API Endpoint</h1>
+            <div style="border: 1px solid #bababa; padding: 1em;border-radius: 0.5em;">
+                <form>
+                    <table id="details" style="width: 100%;">
+                        <tr><td style="text-align: right"><b>Server</b></td><td><input type="text" id="server_url" value="frontend.binaryws.com" maxlength=30 /><p class="hint no-margin">e.g. frontend.binaryws.com</p></td></tr>
+                        <tr><td style="text-align: right"><b>O Auth App ID</b></td><td><input type="text" id="app_id" value="1" maxlength=5 /><p class="hint no-margin">You have to register and get App ID before you can use different OAuth server for authentication. For more information refer to OAuth details on https://developers.binary.com/.</p><p style="color: red; font-size: 0.8em;" id="error">Unable to connect to Connect, fallback to default endpoint.</p><p id="connected"><b>Connected to the endpoint successfully!</b></p></td></tr>
+                        <tr><td style="text-align: right"><button class="button" id="new_endpoint" type="submit">Submit</button></td><td><button class="button" id="reset">Reset To Original Settings</button></td></tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="js/index-1e70ed755a.min.js"></script>  <style>
+    #details td {
+     border: none; 
+    }
+  </style>
+  </body>
 </html>
