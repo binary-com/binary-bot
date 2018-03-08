@@ -63,7 +63,6 @@
     "deploy-all": "yarn gen-branch beta; yarn gen-branch translation; yarn deploy",
     "build": "webpack --config webpack.config.cli.js",
     "prepublishOnly": "yarn build",
-    "newversion": "f(){ yarn version --new-version $@ && npm publish; }; f",
     "precommit": "lint-staged"
   },
   "author": "Amin Marashi",
