@@ -1,3 +1,4 @@
+/* eslint-disable */
 Blockly.FieldDropdown.prototype.render_ = function() {
     if (!this.visible_) {
         this.size_.width = 0;
@@ -51,10 +52,10 @@ Blockly.Field.prototype.init = function() {
     this.borderRect_ = Blockly.utils.createSvgElement(
         'rect',
         {
-            rx    : 4,
-            ry    : 4,
-            x     : -Blockly.BlockSvg.SEP_SPACE_X / 2,
-            y     : 0,
+            rx: 4,
+            ry: 4,
+            x: -Blockly.BlockSvg.SEP_SPACE_X / 2,
+            y: 0,
             height: 16,
         },
         this.fieldGroup_
