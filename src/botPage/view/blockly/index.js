@@ -15,6 +15,7 @@ import {
 import blocks from './blocks';
 import Interpreter from '../../bot/Interpreter';
 import { getLanguage } from '../../../common/lang';
+import './customBlockly';
 
 const setBeforeUnload = off => {
     if (off) {
