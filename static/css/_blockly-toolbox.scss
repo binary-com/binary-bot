@@ -8,6 +8,10 @@
     color: $white !important;
 }
 
+.blocklyTreeRow.blocklyTreeSelected {
+    background-color: #2a3052 !important;
+}
+
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
     background-color: $brand-dark-gray !important;
 }
