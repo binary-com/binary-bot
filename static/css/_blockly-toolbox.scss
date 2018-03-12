@@ -8,6 +8,18 @@
     color: $white !important;
 }
 
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen {
+    filter: invert(100%);
+}
+
+.blocklyTreeIcon.blocklyTreeIconOpen {
+    background-image: url(../image/down-arrow.png) !important;
+}
+
+.blocklyTreeIcon.blocklyTreeIconClosedLtr {
+    background-image: url(../image/down-arrow.png) !important;
+}
+
 .blocklyTreeRow.blocklyTreeSelected {
     background-color: #2a3052 !important;
 }
