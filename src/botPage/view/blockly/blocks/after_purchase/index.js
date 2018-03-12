@@ -9,10 +9,10 @@ import { finishSign } from '../images';
 Blockly.Blocks.after_purchase = {
     init: function init() {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldImage(finishSign, 15, 15, 'F'))
+            .appendField(new Blockly.FieldImage(finishSign, 25, 25, 'F'))
             .appendField(translate('(4) Get your trade result and trade again'));
         this.appendStatementInput('AFTERPURCHASE_STACK').setCheck('TradeAgain');
-        this.setColour('#2a3052');
+        this.setColour('#2a2552');
         this.setTooltip(
             translate('Get the previous trade information and result, then trade again (Runs on trade finish)')
         );

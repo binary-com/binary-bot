@@ -88,7 +88,7 @@ const resetTradeFields = (trade, ev) => {
 Blockly.Blocks.trade = {
     init: function init() {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldImage(defineContract, 15, 15, 'T'))
+            .appendField(new Blockly.FieldImage(defineContract, 25, 25, 'T'))
             .appendField(translate('(1) Define your trade contract'));
         marketDefPlaceHolders(this);
         this.appendDummyInput().appendField(`${translate('Run Once at Start')}:`);
