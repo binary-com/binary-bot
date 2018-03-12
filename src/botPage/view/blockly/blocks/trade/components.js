@@ -10,9 +10,9 @@ export const marketDropdown = block => {
         .appendDummyInput('MARKETDEFINITION')
         .appendField(`${translate('Market')}:`)
         .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.MARKET_LIST()), 'MARKET_LIST')
-        .appendField('->')
+        .appendField('>')
         .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.SUBMARKET_LIST(block)), 'SUBMARKET_LIST')
-        .appendField('->')
+        .appendField('>')
         .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.SYMBOL_LIST(block)), 'SYMBOL_LIST');
 };
 
@@ -21,7 +21,7 @@ export const tradeTypeDropdown = block => {
         .appendDummyInput('TRADETYPEDEFINITION')
         .appendField(`${translate('Trade Type')}:`)
         .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.TRADETYPECAT_LIST(block)), 'TRADETYPECAT_LIST')
-        .appendField('->')
+        .appendField('>')
         .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.TRADETYPE_LIST(block)), 'TRADETYPE_LIST');
 };
 

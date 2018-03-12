@@ -91,12 +91,10 @@ Blockly.Blocks.trade = {
             .appendField(new Blockly.FieldImage(defineContract, 15, 15, 'T'))
             .appendField(translate('(1) Define your trade contract'));
         marketDefPlaceHolders(this);
-        this.appendStatementInput('INITIALIZATION')
-            .setCheck(null)
-            .appendField(`${translate('Run Once at Start')}:`);
-        this.appendStatementInput('SUBMARKET')
-            .setCheck(null)
-            .appendField(`${translate('Define Trade Options')}:`);
+        this.appendDummyInput().appendField(`${translate('Run Once at Start')}:`);
+        this.appendStatementInput('INITIALIZATION').setCheck(null);
+        this.appendDummyInput().appendField(`${translate('Define Trade Options')}:`);
+        this.appendStatementInput('SUBMARKET').setCheck(null);
         this.setPreviousStatement(true, null);
         this.setColour('#2a3052');
         this.setTooltip(
