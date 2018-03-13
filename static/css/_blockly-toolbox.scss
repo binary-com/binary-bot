@@ -8,16 +8,19 @@
     color: $white !important;
 }
 
-.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen {
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen, 
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconClosedLtr {
     filter: invert(100%);
 }
 
 .blocklyTreeIcon.blocklyTreeIconOpen {
-    background-image: url(../image/down-arrow.png) !important;
+    background-image: url(../image/down-arrow.svg) !important;
+    background-position: -3px -6px !important;
 }
 
 .blocklyTreeIcon.blocklyTreeIconClosedLtr {
-    background-image: url(../image/down-arrow.png) !important;
+    background-image: url(../image/down-arrow.svg) !important;
+    background-position: -3px -6px !important;
 }
 
 .blocklyTreeRow.blocklyTreeSelected {
