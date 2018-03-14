@@ -235,3 +235,28 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
     inputRows.hasDummy = hasDummy;
     return inputRows;
 };
+Blockly.FieldLabel.prototype.init = function() {
+    if (this.textElement_) {
+        // Text has already been initialized once.
+        return;
+    }
+    // Build the DOM.
+    this.textElement_ = Blockly.utils.createSvgElement(
+        'text',
+        { class: 'blocklyText', y: this.size_.height - 3 },
+        null
+    );
+    if (this.class_) {
+        Blockly.utils.addClass(this.textElement_, this.class_);
+    }
+    if (!this.visible_) {
+        this.textElement_.style.display = 'none';
+    }
+    this.sourceBlock_.getSvgRoot().appendChild(this.textElement_);
+
+    // Configure the field to be transparent with respect to tooltips.
+    this.textElement_.tooltip = this.sourceBlock_;
+    Blockly.Tooltip.bindMouseEvents(this.textElement_);
+    // Force a render.
+    this.render_();
+};
