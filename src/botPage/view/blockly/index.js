@@ -130,6 +130,7 @@ export default class _Blockly {
                         disposeBlocksWithLoaders();
                         setTimeout(() => {
                             setBeforeUnload(true);
+                            Blockly.mainWorkspace.cleanUp();
                         }, 0);
                         resolve();
                     });
