@@ -17,15 +17,13 @@ import rootReducer from './state/reducers';
 import * as constants from './state/constants';
 import { start } from './state/actions';
 
-let prevTickValue = 0;
 const watchBefore = store =>
     watchScope({
         store,
         stopScope    : constants.DURING_PURCHASE,
         passScope    : constants.BEFORE_PURCHASE,
         passCondition: state => {
-            if (state.proposalsReady && (!prevTickValue || state.newTick !== prevTickValue)) {
-                prevTickValue = state.newTick;
+            if (state.proposalsReady) {
                 return true;
             }
             return false;
@@ -40,6 +38,7 @@ const watchDuring = store =>
         passCondition: state => state.openContract,
     });
 
+let prevTick;
 const watchScope = ({ store, stopScope, passScope, passCondition }) => {
     // in case watch is called after stop is fired
     if (store.getState().scope === stopScope) {
@@ -48,6 +47,9 @@ const watchScope = ({ store, stopScope, passScope, passCondition }) => {
     return new Promise(resolve => {
         const unsubscribe = store.subscribe(() => {
             const newState = store.getState();
+
+            if (newState.newTick === prevTick) return;
+            prevTick = newState.newTick;
 
             if (newState.scope === passScope && passCondition(newState)) {
                 unsubscribe();
