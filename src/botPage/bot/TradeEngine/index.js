@@ -20,26 +20,21 @@ import { start } from './state/actions';
 const watchBefore = store =>
     watchScope({
         store,
-        stopScope    : constants.DURING_PURCHASE,
-        passScope    : constants.BEFORE_PURCHASE,
-        passCondition: state => {
-            if (state.proposalsReady) {
-                return true;
-            }
-            return false;
-        },
+        stopScope: constants.DURING_PURCHASE,
+        passScope: constants.BEFORE_PURCHASE,
+        passFlag : 'proposalsReady',
     });
 
 const watchDuring = store =>
     watchScope({
         store,
-        stopScope    : constants.STOP,
-        passScope    : constants.DURING_PURCHASE,
-        passCondition: state => state.openContract,
+        stopScope: constants.STOP,
+        passScope: constants.DURING_PURCHASE,
+        passFlag : 'openContract',
     });
 
 let prevTick;
-const watchScope = ({ store, stopScope, passScope, passCondition }) => {
+const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     // in case watch is called after stop is fired
     if (store.getState().scope === stopScope) {
         return Promise.resolve(false);
@@ -51,7 +46,7 @@ const watchScope = ({ store, stopScope, passScope, passCondition }) => {
             if (newState.newTick === prevTick) return;
             prevTick = newState.newTick;
 
-            if (newState.scope === passScope && passCondition(newState)) {
+            if (newState.scope === passScope && newState[passFlag]) {
                 unsubscribe();
                 resolve(true);
             }
