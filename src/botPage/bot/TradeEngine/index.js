@@ -33,6 +33,9 @@ const watchDuring = store =>
         passFlag : 'openContract',
     });
 
+/* The watchScope function is called randomly and resets the prevTick
+ * which leads to the same problem we try to solve. So prevTick is isolated 
+ */
 let prevTick;
 const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     // in case watch is called after stop is fired
