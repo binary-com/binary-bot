@@ -62,17 +62,21 @@ export default class LogTable extends Component {
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
     render() {
-        return (
-            <div style={{ height: minHeight }}>
-                <ExportButton onClick={() => this.export()} />
-                <ReactDataGrid
-                    columns={this.columns}
-                    rowGetter={this.rowGetter.bind(this)}
-                    rowsCount={this.state.rows.length}
-                    minHeight={minHeight}
-                    rowRenderer={ColorFormatter}
-                />
-            </div>
-        );
+        if (this.props.action === 'export') {
+            this.export();
+        } else {
+            return (
+                <div style={{ height: minHeight }}>
+                    <ExportButton onClick={() => this.export()} />
+                    <ReactDataGrid
+                        columns={this.columns}
+                        rowGetter={this.rowGetter.bind(this)}
+                        rowsCount={this.state.rows.length}
+                        minHeight={minHeight}
+                        rowRenderer={ColorFormatter}
+                    />
+                </div>
+            );
+        }
     }
 }

@@ -424,8 +424,18 @@ export default class View {
             }
         });
 
+        const exportContent = () => {
+            ReactDOM.render(<LogTable action="export" />, $('#logTable')[0]);
+        };
+
         $('#logButton').click(() => {
             $('#logPanel').dialog('open');
+            $(
+                '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>'
+            ).insertBefore('.icon-close');
+            $('[aria-describedby="logPanel"] .icon-close').click(() => {
+                console.log('dey');
+            });
         });
     }
     stop() {
