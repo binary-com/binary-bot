@@ -56,7 +56,7 @@ export default class TradeInfoPanel extends Component {
                             <span>{translate('Trades')}</span>
                         </h3>
 
-                        <TradeTable accountID={accountID} />
+                        <TradeTable accountID={accountID} action={this.props.action} />
                     </div>
                 </div>
             </div>
