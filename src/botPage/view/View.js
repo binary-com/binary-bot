@@ -317,9 +317,36 @@ export default class View {
         $('#tradingViewButton').click(() => {
             tradingView.open();
         });
+        const exportContent = {};
+        exportContent.summaryPanel = () => {
+            ReactDOM.render(<TradeInfoPanel action="export" />, $('#summaryPanel')[0]);
+        };
+        exportContent.logPanel = () => {
+            ReactDOM.render(<LogTable action="export" />, $('#logTable')[0]);
+        };
+        const addExportButtonToPanel = panelId => {
+            const buttonHtml =
+                '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
+            const $button = $(buttonHtml);
+            const panelSelector = `[aria-describedby="${panelId}"]`;
+            if (!$(`${panelSelector} .icon-save`).length) {
+                $button.insertBefore(`${panelSelector} .icon-close`);
+                $($(`${panelSelector} .icon-save`)).click(() => {
+                    exportContent[panelId]();
+                });
+            }
+        };
         const showSummary = () => {
             $('#summaryPanel').dialog('open');
+            addExportButtonToPanel('summaryPanel');
         };
+        const showLog = () => {
+            $('#logPanel').dialog('open');
+            addExportButtonToPanel('logPanel');
+        };
+
+        $('#logButton').click(showLog);
+
         $('#showSummary').click(showSummary);
 
         $('#loadXml').click(() => {
@@ -422,20 +449,6 @@ export default class View {
                     e.preventDefault();
                 }
             }
-        });
-
-        const exportContent = () => {
-            ReactDOM.render(<LogTable action="export" />, $('#logTable')[0]);
-        };
-
-        $('#logButton').click(() => {
-            $('#logPanel').dialog('open');
-            $(
-                '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>'
-            ).insertBefore('.icon-close');
-            $('[aria-describedby="logPanel"] .icon-close').click(() => {
-                console.log('dey');
-            });
         });
     }
     stop() {

@@ -67,7 +67,6 @@ export default class LogTable extends Component {
         } else {
             return (
                 <div style={{ height: minHeight }}>
-                    <ExportButton onClick={() => this.export()} />
                     <ReactDataGrid
                         columns={this.columns}
                         rowGetter={this.rowGetter.bind(this)}
