@@ -5,7 +5,6 @@ import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
-import ExportButton from './react-components/ExportButton';
 
 const minHeight = 550;
 
@@ -62,20 +61,17 @@ export default class LogTable extends Component {
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
     render() {
-        if (this.props.action === 'export') {
-            this.export();
-        } else {
-            return (
-                <div style={{ height: minHeight }}>
-                    <ReactDataGrid
-                        columns={this.columns}
-                        rowGetter={this.rowGetter.bind(this)}
-                        rowsCount={this.state.rows.length}
-                        minHeight={minHeight}
-                        rowRenderer={ColorFormatter}
-                    />
-                </div>
-            );
-        }
+        if (this.props.action === 'export') this.export();
+        return (
+            <div style={{ height: minHeight }}>
+                <ReactDataGrid
+                    columns={this.columns}
+                    rowGetter={this.rowGetter.bind(this)}
+                    rowsCount={this.state.rows.length}
+                    minHeight={minHeight}
+                    rowRenderer={ColorFormatter}
+                />
+            </div>
+        );
     }
 }

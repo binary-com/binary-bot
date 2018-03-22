@@ -5,7 +5,6 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
-import ExportButton from '../react-components/ExportButton';
 import * as style from '../style';
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
