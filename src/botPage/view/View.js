@@ -331,6 +331,7 @@ export default class View {
             const panelSelector = `[aria-describedby="${panelId}"]`;
             if (!$(`${panelSelector} .icon-save`).length) {
                 $button.insertBefore(`${panelSelector} .icon-close`);
+                $(`${panelSelector} .icon-close`).blur();
                 $($(`${panelSelector} .icon-save`)).click(() => {
                     exportContent[panelId]();
                 });
