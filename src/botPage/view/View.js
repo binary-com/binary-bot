@@ -359,7 +359,7 @@ export default class View {
             hideRealityCheck();
         });
 
-        $('#continue-trading').click(() => {
+        const submitRealityCheck = () => {
             const time = parseInt($('#realityDuration').val());
             if (time >= 10 && time <= 60) {
                 hideRealityCheck();
@@ -367,11 +367,25 @@ export default class View {
             } else {
                 $('#rc-err').show();
             }
+        };
+
+        $('#continue-trading').click(() => {
+            submitRealityCheck();
         });
 
         $('#realityDuration').keypress(e => {
             const char = String.fromCharCode(e.which);
-            if (!/[0-9]/.test(char)) {
+            if (e.keyCode === 13) {
+                submitRealityCheck();
+            }
+            /* Unicode check is for firefox because it 
+             * trigger this event when backspace, arrow keys are pressed
+             * in chrome it is not triggered
+             */
+            const unicodeStrings = /[\u0008|\u0000]/;
+            if (unicodeStrings.test(char)) return;
+
+            if (!/([0-9])/.test(char)) {
                 e.preventDefault();
             }
         });
