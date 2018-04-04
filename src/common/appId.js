@@ -67,7 +67,7 @@ export async function addTokenIfValid(token) {
         const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
             lcName
         );
-        addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'uk');
+        addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
     } catch (e) {
         removeToken(token);
         throw e;
