@@ -5,6 +5,9 @@ body {
     max-width: 100%;
     overflow-x: hidden;
 }
+.top-image {
+    display: none;
+}
 #header {
     height: 81px;
     width: 100%;
@@ -52,16 +55,6 @@ body {
 ul.bullet {
     margin: 0 !important;
 }
-@media only screen and (max-width: 480px) {
-    .left,
-    .right {
-        width: 100%;
-        margin: 20px;
-        display: block;
-        vertical-align: top;
-    }
-}
-
 .barspinner {
     position: fixed;
     left: 50%;
@@ -69,24 +62,66 @@ ul.bullet {
     margin-left: -5rem;
     z-index: 9999;
 }
-
 .center {
     text-align: center;
 }
-
 .half-width {
     width: 50%;
     float: left;
 }
-
 .clear {
     clear: both;
 }
-
 .button span {
     text-transform: inherit !important;
 }
-
 .show-on-load {
     display: none;
+}
+/* Keep this below since css after this 
+ * will be interfering with small
+ * screen sizes
+ */
+@media only screen and (max-width: 980px) {
+    .half-width {
+        width: 49%;
+    }
+    .logo-parent {
+        margin-left: 21px;
+    }
+    .half-width  p {
+        padding: 0 20px 0 20px;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .top-image {
+        display: block;
+    }
+    .half-width {
+        width: 100%;
+    }
+    .half-width p, .half-width img {
+        margin: 1em; 
+    }
+    .bottom-image {
+        display: none;
+    }
+    .left,
+    .right {
+        width: 100%;
+        margin: 20px;
+        display: block;
+        vertical-align: top;
+    }
+    .clear {
+        position: sticky;
+        padding: 1px 0 1px 0;
+        bottom: 0;
+        background-color: #fff;
+        width: 100%;
+        box-shadow: 0 -2px 6px 0 rgba(0, 0, 0, 0.2);
+    }
+    p {
+        margin: 9px auto !important;
+    }
 }
