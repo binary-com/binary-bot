@@ -32,6 +32,13 @@ gulp test-deploy
 yarn deploy-all
 ```
 
+## Publishing a new version
+
+```
+yarn version --new-version patch
+npm publish
+```
+
 ## To update to latest version
 
 ```
