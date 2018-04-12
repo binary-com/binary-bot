@@ -5,7 +5,6 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
-import ExportButton from '../react-components/ExportButton';
 import * as style from '../style';
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
@@ -107,10 +106,9 @@ export default class TradeTable extends Component {
     render() {
         const { accountID } = this.props;
         const rows = accountID in this.state ? this.state[accountID].rows : [];
-
+        if (this.props.action === 'export') this.export();
         return (
             <div>
-                <ExportButton onClick={() => this.export()} customStyle={style.tradeTableExport} />
                 <ReactDataGrid
                     columns={this.columns}
                     rowGetter={this.rowGetter.bind(this)}
