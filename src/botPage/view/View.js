@@ -317,9 +317,37 @@ export default class View {
         $('#tradingViewButton').click(() => {
             tradingView.open();
         });
+        const exportContent = {};
+        exportContent.summaryPanel = () => {
+            ReactDOM.render(<TradeInfoPanel action="export" />, $('#summaryPanel')[0]);
+        };
+        exportContent.logPanel = () => {
+            ReactDOM.render(<LogTable action="export" />, $('#logTable')[0]);
+        };
+        const addExportButtonToPanel = panelId => {
+            const buttonHtml =
+                '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
+            const $button = $(buttonHtml);
+            const panelSelector = `[aria-describedby="${panelId}"]`;
+            if (!$(`${panelSelector} .icon-save`).length) {
+                $button.insertBefore(`${panelSelector} .icon-close`);
+                $(`${panelSelector} .icon-close`).blur();
+                $($(`${panelSelector} .icon-save`)).click(() => {
+                    exportContent[panelId]();
+                });
+            }
+        };
         const showSummary = () => {
             $('#summaryPanel').dialog('open');
+            addExportButtonToPanel('summaryPanel');
         };
+        const showLog = () => {
+            $('#logPanel').dialog('open');
+            addExportButtonToPanel('logPanel');
+        };
+
+        $('#logButton').click(showLog);
+
         $('#showSummary').click(showSummary);
 
         $('#loadXml').click(() => {
@@ -331,7 +359,7 @@ export default class View {
             hideRealityCheck();
         });
 
-        $('#continue-trading').click(() => {
+        const submitRealityCheck = () => {
             const time = parseInt($('#realityDuration').val());
             if (time >= 10 && time <= 60) {
                 hideRealityCheck();
@@ -339,11 +367,25 @@ export default class View {
             } else {
                 $('#rc-err').show();
             }
+        };
+
+        $('#continue-trading').click(() => {
+            submitRealityCheck();
         });
 
         $('#realityDuration').keypress(e => {
             const char = String.fromCharCode(e.which);
-            if (!/[0-9]/.test(char)) {
+            if (e.keyCode === 13) {
+                submitRealityCheck();
+            }
+            /* Unicode check is for firefox because it 
+             * trigger this event when backspace, arrow keys are pressed
+             * in chrome it is not triggered
+             */
+            const unicodeStrings = /[\u0008|\u0000]/;
+            if (unicodeStrings.test(char)) return;
+
+            if (!/([0-9])/.test(char)) {
                 e.preventDefault();
             }
         });
@@ -422,10 +464,6 @@ export default class View {
                     e.preventDefault();
                 }
             }
-        });
-
-        $('#logButton').click(() => {
-            $('#logPanel').dialog('open');
         });
     }
     stop() {
