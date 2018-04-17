@@ -24,6 +24,7 @@ import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
 import { logoutAllTokens, getOAuthURL, generateLiveApiInstance } from '../../common/appId';
+import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
 
@@ -153,37 +154,44 @@ export default class View {
     constructor() {
         logHandler();
         this.initPromise = new Promise(resolve => {
-            symbolPromise.then(() => {
-                updateTokenList();
-                this.blockly = new _Blockly();
-                this.blockly.initPromise.then(() => {
-                    this.setElementActions();
-                    $('#accountLis');
-                    startRealityCheck(
-                        null,
-                        $('.account-id')
-                            .first()
-                            .attr('value')
-                    );
-                    ReactDOM.render(<Tour />, $('#tour')[0]);
-                    ReactDOM.render(
-                        <OfficialVersionWarning
-                            show={
-                                !(
-                                    typeof window.location !== 'undefined' &&
-                                    window.location.host === 'bot.binary.com' &&
-                                    window.location.pathname === '/bot.html'
-                                )
-                            }
-                        />,
-                        $('#footer')[0]
-                    );
-                    ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
-                    ReactDOM.render(<LogTable />, $('#logTable')[0]);
-                    resolve();
+            updateConfigCurrencies().then(() => {
+                symbolPromise.then(() => {
+                    updateTokenList();
+                    this.blockly = new _Blockly();
+                    this.blockly.initPromise.then(() => {
+                        this.setElementActions();
+                        this.initRealityCheck();
+                        this.renderReactComponents();
+                        resolve();
+                    });
                 });
             });
         });
+    }
+    initRealityCheck() {
+        startRealityCheck(
+            null,
+            $('.account-id')
+                .first()
+                .attr('value')
+        );
+    }
+    renderReactComponents() {
+        ReactDOM.render(<Tour />, $('#tour')[0]);
+        ReactDOM.render(
+            <OfficialVersionWarning
+                show={
+                    !(
+                        typeof window.location !== 'undefined' &&
+                        window.location.host === 'bot.binary.com' &&
+                        window.location.pathname === '/bot.html'
+                    )
+                }
+            />,
+            $('#footer')[0]
+        );
+        ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
+        ReactDOM.render(<LogTable />, $('#logTable')[0]);
     }
     setFileBrowser() {
         const readFile = (f, dropEvent = {}) => {

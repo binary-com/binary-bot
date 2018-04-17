@@ -203,7 +203,7 @@ const config = {
     macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
 };
 
-async function updateConfigCurrencies() {
+export async function updateConfigCurrencies() {
     const api = generateLiveApiInstance();
     try {
         const response = await api.getPayoutCurrencies();
@@ -212,7 +212,5 @@ async function updateConfigCurrencies() {
         config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
     }
 }
-
-updateConfigCurrencies();
 
 export default config;
