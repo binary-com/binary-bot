@@ -98,6 +98,11 @@ class LimitsContent extends PureComponent {
                     </div>
                     {this.state.error ? <p style={style.error}>{this.state.error}</p> : null}
                 </div>
+                <p>
+                    {translate(
+                        'Trade limitations are required by our regulators. Your bot will conclude trading when one or both of the conditions are met.'
+                    )}
+                </p>
                 <div style={style.submitButton}>
                     <button type="submit">{translate('Start')}</button>
                 </div>

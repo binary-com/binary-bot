@@ -41,7 +41,7 @@ class Tour extends PureComponent {
                     <Joyride
                         autoStart
                         run
-                        keyboardNavigation
+                        keyboardNavigation={false}
                         showOverlay={false}
                         type="continuous"
                         locale={{
