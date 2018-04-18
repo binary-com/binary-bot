@@ -160,15 +160,15 @@ export default class View {
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
                         this.setElementActions();
-                        this.initRealityCheck();
-                        this.renderReactComponents();
+                        this.constructor.initRealityCheck();
+                        this.constructor.renderReactComponents();
                         resolve();
                     });
                 });
             });
         });
     }
-    initRealityCheck() {
+    static initRealityCheck() {
         startRealityCheck(
             null,
             $('.account-id')
@@ -176,7 +176,7 @@ export default class View {
                 .attr('value')
         );
     }
-    renderReactComponents() {
+    static renderReactComponents() {
         ReactDOM.render(<Tour />, $('#tour')[0]);
         ReactDOM.render(
             <OfficialVersionWarning
