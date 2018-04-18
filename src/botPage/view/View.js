@@ -25,6 +25,7 @@ import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
 import { logoutAllTokens, getOAuthURL, generateLiveApiInstance } from '../../common/appId';
 import { updateConfigCurrencies } from '../common/const';
+import { contract as broadcastContract } from '../bot/broadcast';
 
 let realityCheckTimeout;
 
@@ -452,7 +453,23 @@ export default class View {
         });
     }
     stop() {
+        try {
+            const contractId = this.blockly.interpreter.bot.tradeEngine.contractId;
+            if (contractId) {
+                alert(
+                    'The contract <ref> has been purchase and it cannot be revoked. To view the final result please use summary panel.'
+                );
+            }
+            api.subscribeToOpenContract(contractId);
+            this.addStopListeners();
+        } catch (e) {}
         this.blockly.stop();
+    }
+    addStopListeners() {
+        api.events.on('proposal_open_contract', r => {
+            const contract = r.proposal_open_contract;
+            broadcastContract({ accountID: $('.account-id').html(), ...contract });
+        });
     }
     addEventHandlers() {
         globalObserver.register('Error', error => {
