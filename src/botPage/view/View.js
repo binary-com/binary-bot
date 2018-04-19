@@ -150,6 +150,7 @@ const updateTokenList = () => {
         });
     }
 };
+
 export default class View {
     constructor() {
         logHandler();
@@ -160,39 +161,15 @@ export default class View {
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
                         this.setElementActions();
-                        this.constructor.initRealityCheck();
-                        this.constructor.renderReactComponents();
+                        initRealityCheck();
+                        renderReactComponents();
                         resolve();
                     });
                 });
             });
         });
     }
-    static initRealityCheck() {
-        startRealityCheck(
-            null,
-            $('.account-id')
-                .first()
-                .attr('value')
-        );
-    }
-    static renderReactComponents() {
-        ReactDOM.render(<Tour />, $('#tour')[0]);
-        ReactDOM.render(
-            <OfficialVersionWarning
-                show={
-                    !(
-                        typeof window.location !== 'undefined' &&
-                        window.location.host === 'bot.binary.com' &&
-                        window.location.pathname === '/bot.html'
-                    )
-                }
-            />,
-            $('#footer')[0]
-        );
-        ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
-        ReactDOM.render(<LogTable />, $('#logTable')[0]);
-    }
+
     setFileBrowser() {
         const readFile = (f, dropEvent = {}) => {
             const reader = new FileReader();
@@ -462,4 +439,30 @@ export default class View {
             }
         });
     }
+}
+
+function initRealityCheck() {
+    startRealityCheck(
+        null,
+        $('.account-id')
+            .first()
+            .attr('value')
+    );
+}
+function renderReactComponents() {
+    ReactDOM.render(<Tour />, $('#tour')[0]);
+    ReactDOM.render(
+        <OfficialVersionWarning
+            show={
+                !(
+                    typeof window.location !== 'undefined' &&
+                    window.location.host === 'bot.binary.com' &&
+                    window.location.pathname === '/bot.html'
+                )
+            }
+        />,
+        $('#footer')[0]
+    );
+    ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
+    ReactDOM.render(<LogTable />, $('#logTable')[0]);
 }
