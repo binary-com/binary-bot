@@ -471,11 +471,8 @@ export default class View {
         try {
             const contractId = this.blockly.interpreter.bot.tradeEngine.contractId;
             if (contractId) {
-                alert(
-                    'The contract <ref> has been purchase and it cannot be revoked. To view the final result please use summary panel.'
-                );
+                api.subscribeToOpenContract(contractId);
             }
-            api.subscribeToOpenContract(contractId);
             this.addStopListeners();
         } catch (e) {}
         this.blockly.stop();
