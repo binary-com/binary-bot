@@ -454,20 +454,17 @@ export default class View {
     }
     stop() {
         try {
-            const contractId = this.blockly.interpreter.bot.tradeEngine.contractId;
+            const { contractId } = this.blockly.interpreter.bot.tradeEngine;
             if (contractId) {
                 api.subscribeToOpenContract(contractId);
             }
             this.addStopListeners();
-        } catch (e) {}
+        } catch (e) {
+            console.error(e);
+        }
         this.blockly.stop();
     }
-    addStopListeners() {
-        api.events.on('proposal_open_contract', r => {
-            const contract = r.proposal_open_contract;
-            broadcastContract({ accountID: $('.account-id').html(), ...contract });
-        });
-    }
+
     addEventHandlers() {
         globalObserver.register('Error', error => {
             if (error.error && error.error.error.code === 'InvalidToken') {
@@ -517,4 +514,11 @@ function renderReactComponents() {
     );
     ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
     ReactDOM.render(<LogTable />, $('#logTable')[0]);
+}
+
+function addStopListeners() {
+    api.events.on('proposal_open_contract', r => {
+        const contract = r.proposal_open_contract;
+        broadcastContract({ accountID: $('.account-id').html(), ...contract });
+    });
 }
