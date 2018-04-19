@@ -473,10 +473,8 @@ export default class View {
             if (contractId) {
                 api.subscribeToOpenContract(contractId);
             }
-            this.addStopListeners();
-        } catch (e) {
-            console.error(e);
-        }
+            addStopListeners();
+        } catch (e) {} // eslint-disable-line no-empty
         this.blockly.stop();
     }
 
