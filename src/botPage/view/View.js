@@ -458,7 +458,10 @@ export default class View {
             if (contractId) {
                 api.subscribeToOpenContract(contractId);
             }
-            addStopListeners();
+            api.events.on('proposal_open_contract', r => {
+                const contract = r.proposal_open_contract;
+                broadcastContract({ accountID: $('.account-id').html(), ...contract });
+            });
         } catch (e) {} // eslint-disable-line no-empty
         this.blockly.stop();
     }
@@ -512,6 +515,13 @@ function renderReactComponents() {
     );
     ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
     ReactDOM.render(<LogTable />, $('#logTable')[0]);
+}
+
+function addStopListeners() {
+    api.events.on('proposal_open_contract', r => {
+        const contract = r.proposal_open_contract;
+        broadcastContract({ accountID: $('.account-id').html(), ...contract });
+    });
 }
 
 function addStopListeners() {
