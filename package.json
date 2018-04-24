@@ -58,8 +58,8 @@
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || exit 1; git stash; git checkout $b; yarn install --frozen-lockfile; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
-    "deploy": "d() { yarn gen-branch $1 || exit 1; git checkout master ; yarn install --frozen-lockfile; gulp deploy;}; d",
+    "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || exit 1; git stash; git checkout $b; yarn install --force --frozen-lockfile; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
+    "deploy": "d() { yarn gen-branch $1 || exit 1; git checkout master ; yarn install --force --frozen-lockfile; gulp deploy;}; d",
     "deploy-all": "yarn gen-branch beta; yarn gen-branch translation; yarn deploy",
     "build": "webpack --config webpack.config.cli.js",
     "prepublishOnly": "yarn build",
