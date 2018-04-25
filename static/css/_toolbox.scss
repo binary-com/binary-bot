@@ -4,17 +4,17 @@
     right: 0;
     width: 4em;
     text-align: center;
-    padding: 10px;
+    padding: 0.625em;
 
     .toolbox-button {
         float: right;
-        margin-bottom: 5px;
+        margin-bottom: 0.313em;
         background-color: $brand-gray;
-        padding: 2.5px 4px;
+        padding: 0.156em 0.250em;
         color: $black;
-	width: 40px;
-	height: 40px;
-        font-size: 24px;
+	width: 2.500em;
+	height: 2.500em;
+        font-size: 1.500em;
     }
 
     .toolbox-button:hover {
