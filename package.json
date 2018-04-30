@@ -85,7 +85,6 @@
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",
-    "blockly": "github:google/blockly#e0be7e4",
     "bootstrap": "^3.3.7",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
@@ -141,6 +140,7 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
+    "blockly": "github:google/blockly#7679d22",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0"
   }

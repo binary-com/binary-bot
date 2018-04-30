@@ -103,6 +103,22 @@ const addBlocklyTranslation = () => {
         $.getScript(`https://blockly-demo.appspot.com/static/msg/js/${lang}.js`, resolve);
     });
 };
+const onresize = e => {
+    let element = document.getElementById('blocklyArea');
+    const blocklyDiv = document.getElementById('blocklyDiv');
+    let x = 0;
+    let y = 0;
+    do {
+        x += element.offsetLeft;
+        y += element.offsetTop;
+        element = element.offsetParent;
+    } while (element);
+    // Position blocklyDiv over blocklyArea.
+    blocklyDiv.style.left = `${x  }px`;
+    blocklyDiv.style.top = `${y  }px`;
+    blocklyDiv.style.width = `${blocklyArea.offsetWidth  }px`;
+    blocklyDiv.style.height = `${blocklyArea.offsetHeight  }px`;
+};
 export default class _Blockly {
     constructor() {
         this.blocksXmlStr = '';
@@ -119,6 +135,9 @@ export default class _Blockly {
                     },
                     trashcan: false,
                 });
+                window.addEventListener('resize', onresize, false);
+                onresize();
+                Blockly.svgResize(workspace);
                 addBlocklyTranslation().then(() => {
                     $.get('xml/main.xml', main => {
                         this.repaintDefaultColours();
