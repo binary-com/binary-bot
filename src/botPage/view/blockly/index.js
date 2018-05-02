@@ -103,8 +103,9 @@ const addBlocklyTranslation = () => {
         $.getScript(`https://blockly-demo.appspot.com/static/msg/js/${lang}.js`, resolve);
     });
 };
-const onresize = e => {
+const onresize = () => {
     let element = document.getElementById('blocklyArea');
+    const blocklyArea = element;
     const blocklyDiv = document.getElementById('blocklyDiv');
     let x = 0;
     let y = 0;
@@ -114,11 +115,16 @@ const onresize = e => {
         element = element.offsetParent;
     } while (element);
     // Position blocklyDiv over blocklyArea.
-    blocklyDiv.style.left = `${x  }px`;
-    blocklyDiv.style.top = `${y  }px`;
-    blocklyDiv.style.width = `${blocklyArea.offsetWidth  }px`;
-    blocklyDiv.style.height = `${blocklyArea.offsetHeight  }px`;
+    blocklyDiv.style.left = `${x}px`;
+    blocklyDiv.style.top = `${y}px`;
+    blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
+    blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
 };
+const render = workspace => () => {
+    onresize();
+    Blockly.svgResize(workspace);
+};
+
 export default class _Blockly {
     constructor() {
         this.blocksXmlStr = '';
@@ -135,9 +141,9 @@ export default class _Blockly {
                     },
                     trashcan: false,
                 });
-                window.addEventListener('resize', onresize, false);
-                onresize();
-                Blockly.svgResize(workspace);
+                const renderInstance = render(workspace);
+                window.addEventListener('resize', renderInstance, false);
+                renderInstance();
                 addBlocklyTranslation().then(() => {
                     $.get('xml/main.xml', main => {
                         this.repaintDefaultColours();

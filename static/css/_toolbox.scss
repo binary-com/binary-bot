@@ -4,16 +4,16 @@
     right: 0;
     width: 4em;
     text-align: center;
-    padding: 0.625em;
+    padding: 2px 10px;
 
     .toolbox-button {
         float: right;
         margin-bottom: 0.313em;
         background-color: $brand-gray;
-        padding: 0.156em 0.250em;
+        padding: 0em;
         color: $black;
-	width: 2.500em;
-	height: 2.500em;
+	    width: 40px;
+	    height: 40px;
         font-size: 1.500em;
     }
 
