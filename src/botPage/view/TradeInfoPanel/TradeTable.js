@@ -51,9 +51,9 @@ export default class TradeTable extends Component {
             if (!info) {
                 return;
             }
-            const buy_date = new Date(info.date_start * 1000);
-            const timestamp = `${buy_date.toISOString().split('T')[0]} ${buy_date.toTimeString().slice(0, 8)} ${
-                buy_date.toTimeString().split(' ')[1]
+            const buyDate = new Date(info.date_start * 1000);
+            const timestamp = `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
+                buyDate.toTimeString().split(' ')[1]
             }`;
             const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
             const { accountID } = tradeObj;
