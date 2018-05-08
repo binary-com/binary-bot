@@ -95,7 +95,6 @@ Blockly.Blocks.trade = {
         this.appendStatementInput('INITIALIZATION').setCheck(null);
         this.appendDummyInput().appendField(`${translate('Define Trade Options')}:`);
         this.appendStatementInput('SUBMARKET').setCheck(null);
-        this.setPreviousStatement(true, null);
         this.setColour('#2a3052');
         this.setTooltip(
             translate('Define your trade contract and start the trade, add initializations here. (Runs on start)')
