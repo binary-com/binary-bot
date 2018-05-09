@@ -1,5 +1,5 @@
 <xml id="toolbox" style="display: none">
-	<category name="Logic" colour="#2a3052" i18n-text="Logic">
+	<category name="Logic" i18n-text="Logic">
 		<block type="controls_if"></block>
 		<block type="logic_compare"></block>
 		<block type="logic_operation"></block>
@@ -8,7 +8,7 @@
 		<block type="logic_null"></block>
 		<block type="logic_ternary"></block>
 	</category>
-	<category name="Math" colour="#2a3052" i18n-text="Math">
+	<category name="Math" i18n-text="Math">
 		<block type="math_number">
 		<field name="NUM">1</field>
 		</block>
@@ -105,7 +105,7 @@
 		<block type="math_random_float"></block>
 
 	</category>
-	<category name="Text" colour="#2a3052" i18n-text="Text">>
+	<category name="Text" i18n-text="Text">>
 		<block type="text"></block>
 		<block type="text_join"></block>
 		<block type="text_append">
@@ -182,8 +182,8 @@
 		</value>
 		</block>
 	</category>
-	<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
-		<category name="List" colour="#2a3052" i18n-text="List">>
+	<category name="Advanced" i18n-text="Advanced">
+		<category name="List" i18n-text="List">
 			<block type="lists_create_with">
 			<mutation items="0"></mutation>
 			</block>
@@ -234,9 +234,9 @@
 			</block>
 			<block type="lists_sort"></block>
 		</category>
-		<category name="Variable" id="Variables" colour="#2a3052" custom="VARIABLE" i18n-text="Variable">></category>
-		<category name="Functions" id="Functions" colour="#2a3052" custom="PROCEDURE" i18n-text="Functions"></category>
-		<category name="Loop" colour="#2a3052" i18n-text="Loop">
+		<category name="Variable" id="Variables" custom="VARIABLE" i18n-text="Variable">></category>
+		<category name="Functions" id="Functions" custom="PROCEDURE" i18n-text="Functions"></category>
+		<category name="Loop" i18n-text="Loop">
 			<block type="controls_repeat_ext"></block>
 			<block type="controls_repeat"></block>
 			<block type="controls_whileUntil"></block>
@@ -246,8 +246,8 @@
 			<block type="controls_flow_statements"></block>
 		</category>
 	</category>
-	<category name="Binary" colour="#2a3052" i18n-text="Binary">
-		<category name="Trade Definition" colour="#2a3052" i18n-text="Trade Definition">
+	<category name="Binary" i18n-text="Binary">
+		<category name="Trade Definition" i18n-text="Trade Definition">
 			<block type="trade"></block>
 			<block type="tradeOptions">
 				<value name="DURATION">
@@ -262,25 +262,25 @@
 				</value>
 			</block>
 		</category>
-		<category name="Before Purchase" colour="#2a3052" i18n-text="Before Purchase">
+		<category name="Before Purchase" i18n-text="Before Purchase">
 			<block type="before_purchase"></block>
 			<block type="payout"></block>
 			<block type="ask_price"></block>
 			<block type="purchase"></block>
 		</category>
-		<category name="During Purchase" colour="#2a3052" i18n-text="During Purchase">
+		<category name="During Purchase" i18n-text="During Purchase">
 			<block type="during_purchase"></block>
 			<block type="check_sell"></block>
 			<block type="sell_price"></block>
 			<block type="sell_at_market"></block>
 		</category>
-		<category name="After Purchase" colour="#2a3052" i18n-text="After Purchase">
+		<category name="After Purchase" i18n-text="After Purchase">
 			<block type="after_purchase"></block>
 			<block type="contract_check_result"></block>
 			<block type="read_details"></block>
 			<block type="trade_again"></block>
 		</category>
-		<category name="Tick Analysis" colour="#2a3052" i18n-text="Tick Analysis">
+		<category name="Tick Analysis" i18n-text="Tick Analysis">
 			<block type="tick_analysis"></block>
 			<block type="tick"></block>
 			<block type="last_digit"></block>
@@ -293,7 +293,7 @@
 				</value>
 			</block>
 			<block type="check_direction"></block>
-			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
+			<category name="Advanced" i18n-text="Advanced">
 				<block type="get_ohlc">
 					<value name="CANDLEINDEX">
 						<shadow type="math_number">
@@ -307,7 +307,7 @@
 				<block type="ohlc_values"></block>
 			</category>
 		</category>
-		<category name="Indicators" colour="#2a3052" i18n-text="Indicators">
+		<category name="Indicators" i18n-text="Indicators">
 			<block type="sma">
 				<value name="PERIOD">
 					<shadow type="math_number">
@@ -347,7 +347,7 @@
 					</shadow>
 				</value>
 			</block>
-			<category name="Advanced" colour="#2a3052" i18n-text="Advanced">
+			<category name="Advanced" i18n-text="Advanced">
 				<block type="smaa">
 					<value name="PERIOD">
 						<shadow type="math_number">
@@ -407,8 +407,8 @@
 				</block>
 			</category>
 		</category>
-		<category name="Tools" colour="#2a3052" i18n-text="Tools">
-			<category name="Time" colour="#2a3052" i18n-text="Time">
+		<category name="Tools" i18n-text="Tools">
+			<category name="Time" i18n-text="Time">
 				<block type="epoch"></block>
 				<block type="timeout">
 					<value name="SECONDS">
@@ -418,12 +418,12 @@
 					</value>
 				</block>
 			</category>
-			<category name="Candle" colour="#2a3052" i18n-text="Candle">
+			<category name="Candle" i18n-text="Candle">
 				<block type="is_candle_black"></block>
 				<block type="ohlc_values_in_list"></block>
 				<block type="read_ohlc_obj"></block>
 			</category>
-			<category name="Misc." colour="#2a3052" i18n-text="Misc.">
+			<category name="Misc." i18n-text="Misc.">
 				<block type="balance"></block>
 				<block type="total_profit"></block>
 				<block type="total_runs"></block>

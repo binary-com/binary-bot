@@ -24,6 +24,16 @@ body {
     width: 100%;
 }
 
+#blocklyArea {
+    height: 88%;
+}
+
+@media only screen and (max-height: 723px) {
+    #blocklyArea {
+        height: 86%;
+    }
+}
+
 #center {
     position: fixed;
     width: 1em;

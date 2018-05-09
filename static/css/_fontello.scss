@@ -1,11 +1,11 @@
 @font-face {
-  font-family: 'fontello';
-  src: url('../font/fontello.eot?47424536');
-  src: url('../font/fontello.eot?47424536#iefix') format('embedded-opentype'),
-       url('../font/fontello.woff2?47424536') format('woff2'),
-       url('../font/fontello.woff?47424536') format('woff'),
-       url('../font/fontello.ttf?47424536') format('truetype'),
-       url('../font/fontello.svg?47424536#fontello') format('svg');
+  font-family: 'binarybot';
+  src: url('../font/binarybot.eot?61837987');
+  src: url('../font/binarybot.eot?61837987#iefix') format('embedded-opentype'),
+       url('../font/binarybot.woff2?61837987') format('woff2'),
+       url('../font/binarybot.woff?61837987') format('woff'),
+       url('../font/binarybot.ttf?61837987') format('truetype'),
+       url('../font/binarybot.svg?61837987#binarybot') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,14 +14,14 @@
 /*
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: 'fontello';
-    src: url('../font/fontello.svg?47424536#fontello') format('svg');
+    font-family: 'binarybot';
+    src: url('../font/binarybot.svg?61837987#binarybot') format('svg');
   }
 }
 */
  
  [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "fontello";
+  font-family: "binarybot";
   font-style: normal;
   font-weight: normal;
   speak: none;

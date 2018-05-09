@@ -9,7 +9,7 @@ import { sellContract } from '../images';
 Blockly.Blocks.during_purchase = {
     init: function init() {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldImage(sellContract, 15, 15, 'S'))
+            .appendField(new Blockly.FieldImage(sellContract, 25, 25, 'S'))
             .appendField(translate('(3) Watch and sell your purchased contract'));
         this.appendStatementInput('DURING_PURCHASE_STACK').setCheck('SellAtMarket');
         this.setColour('#2a3052');
