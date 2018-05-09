@@ -31,10 +31,6 @@ let realityCheckTimeout;
 
 const api = generateLiveApiInstance();
 
-let realityCheckTimeout;
-
-const api = generateLiveApiInstance();
-
 api.events.on('balance', response => {
     const { balance: { balance: b, currency } } = response;
 
