@@ -24,8 +24,8 @@ export const input = {
 };
 
 export const filename = {
-    ...input,
-    width: '12em',
+    width : '12em',
+    margin: '0em 0em 0em 4.8em',
 };
 
 export const inputRow = {
@@ -37,7 +37,7 @@ export const field = {
 };
 
 export const checkbox = {
-    right: '0.5em',
+    margin: '0em 0em 0em 0.5em',
 };
 
 export const loading = {
