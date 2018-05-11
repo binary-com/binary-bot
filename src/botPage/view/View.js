@@ -340,6 +340,7 @@ export default class View {
         });
 
         $('#logout, #logout-reality-check').click(() => {
+            $('#summaryPanel select').html('');
             logout();
             hideRealityCheck();
         });
