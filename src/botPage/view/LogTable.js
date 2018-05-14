@@ -44,6 +44,10 @@ export default class LogTable extends Component {
         }
     }
     componentWillMount() {
+        globalObserver.register('log.export', () => {
+            this.export();
+        });
+
         globalObserver.register('bot.notify', log => {
             if (log) {
                 if (!Object.keys(log).length) {
@@ -61,7 +65,6 @@ export default class LogTable extends Component {
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
     render() {
-        if (this.props.action === 'export') this.export();
         return (
             <div style={{ height: minHeight }}>
                 <ReactDataGrid

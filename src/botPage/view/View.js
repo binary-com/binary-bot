@@ -304,10 +304,10 @@ export default class View {
         });
         const exportContent = {};
         exportContent.summaryPanel = () => {
-            ReactDOM.render(<TradeInfoPanel action="export" />, $('#summaryPanel')[0]);
+            globalObserver.emit('summary.export');
         };
         exportContent.logPanel = () => {
-            ReactDOM.render(<LogTable action="export" />, $('#logTable')[0]);
+            globalObserver.emit('log.export');
         };
         const addExportButtonToPanel = panelId => {
             const buttonHtml =

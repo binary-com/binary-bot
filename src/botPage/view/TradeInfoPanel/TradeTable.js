@@ -48,6 +48,9 @@ export default class TradeTable extends Component {
         ];
     }
     componentWillMount() {
+        globalObserver.register('summary.export', () => {
+            this.export();
+        });
         globalObserver.register('bot.contract', info => {
             if (!info) {
                 return;
@@ -106,7 +109,6 @@ export default class TradeTable extends Component {
     render() {
         const { accountID } = this.props;
         const rows = accountID in this.state ? this.state[accountID].rows : [];
-        if (this.props.action === 'export') this.export();
         return (
             <div>
                 <ReactDataGrid
