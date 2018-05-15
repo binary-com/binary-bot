@@ -54,7 +54,7 @@
 		amplitude.getInstance().init("8550b32c2a951c57e791d03c4c2ea55a");
 	</script>
     <title>Binary Bot</title>
-<link href="css/bundle-28d98ab8e2.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-6d23dee5a7.css" rel="stylesheet" />
+<link href="css/bundle-28d98ab8e2.css" rel="stylesheet" />    <link rel="stylesheet" href="https://style.binary.com/binary.css"> <link href="css/bot-b62e8018ac.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -187,12 +187,13 @@
         </div>
       </div>
     </div>
-    <div id="blocklyDiv"></div>
+    <div id="blocklyArea"><div>
+    <div id="blocklyDiv" style="position: absolute;"></div>
 
     <form id="fileUploadForm" style="display: none;">
       <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
     </form>
-    <div id="toolbox" class="actions_menu show-on-load">
+    <div id="toolbox" class="actions_menu show-on-load" style="position:absolute; top: 105px;">
       <button title="Load new blocks (xml file)" id="loadXml" class="toolbox-button icon-browse"></button>
       <button title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
       <button title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>
@@ -214,5 +215,5 @@
     <audio id="job-done" src="sound/job-done.ogg" autostart="false" ></audio>
     <audio id="error" src="sound/out-of-bounds.ogg" autostart="false" ></audio>
     <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false" ></audio>
-<script src="js/bundle-17bb7c4c76.js"></script><script src="js/bot-84d99b9e54.min.js"></script>  </body>
+<script src="js/bundle-e9c11ed5c6.js"></script><script src="js/bot-e834662dd7.min.js"></script>  </body>
 </html>
