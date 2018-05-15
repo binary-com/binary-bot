@@ -37,13 +37,12 @@ export default class TradeTable extends Component {
             },
         };
         this.columns = [
-            { key: 'id', width: 70, resizable: true, name: translate('Number') },
+            { key: 'timestamp', width: 150, resizable: true, name: translate('Timestamp') },
             { key: 'reference', width: 110, resizable: true, name: translate('Reference') },
             { key: 'contract_type', width: 80, resizable: true, name: translate('Trade type') },
             { key: 'entry_tick', width: 80, resizable: true, name: translate('Entry spot') },
             { key: 'exit_tick', width: 80, resizable: true, name: translate('Exit spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
-            { key: 'sell_price', width: 80, resizable: true, name: translate('Final price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
     }
@@ -55,7 +54,11 @@ export default class TradeTable extends Component {
             if (!info) {
                 return;
             }
-            const tradeObj = { reference: info.transaction_ids.buy, ...info };
+            const buyDate = new Date(info.date_start * 1000);
+            const timestamp = `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
+                buyDate.toTimeString().split(' ')[1]
+            }`;
+            const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
             const { accountID } = tradeObj;
 
             const trade = {
@@ -87,6 +90,7 @@ export default class TradeTable extends Component {
             data  : this.state[accountID].rows,
             fields: [
                 'id',
+                'timestamp',
                 'reference',
                 'contract_type',
                 'entry_tick',
