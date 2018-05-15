@@ -12,7 +12,7 @@ Blockly.Blocks.before_purchase = {
             .appendField(new Blockly.FieldImage(purchase, 25, 25, 'P'))
             .appendField(translate('(2) Watch and purchase your contract'));
         this.appendStatementInput('BEFOREPURCHASE_STACK').setCheck('Purchase');
-        this.setColour('#2a2552');
+        this.setColour('#2a3052');
         this.setTooltip(translate('Watch the tick stream and purchase the desired contract (Runs on tick update)'));
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
