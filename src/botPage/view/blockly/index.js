@@ -15,6 +15,7 @@ import {
 import blocks from './blocks';
 import Interpreter from '../../bot/Interpreter';
 import { getLanguage } from '../../../common/lang';
+import './customBlockly';
 
 const setBeforeUnload = off => {
     if (off) {
@@ -90,8 +91,6 @@ const addBlocklyTranslation = () => {
     $.ajaxPrefilter(options => {
         options.async = true; // eslint-disable-line no-param-reassign
     });
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
     let lang = getLanguage();
     if (lang === 'ach') {
         lang = 'en';
@@ -100,14 +99,36 @@ const addBlocklyTranslation = () => {
     } else if (lang === 'zh_tw') {
         lang = 'zh-hant';
     }
-    script.src = `https://blockly-demo.appspot.com/static/msg/js/${lang}.js`;
-    $('body').append(script);
+    return new Promise(resolve => {
+        $.getScript(`https://blockly-demo.appspot.com/static/msg/js/${lang}.js`, resolve);
+    });
 };
+const onresize = () => {
+    let element = document.getElementById('blocklyArea');
+    const blocklyArea = element;
+    const blocklyDiv = document.getElementById('blocklyDiv');
+    let x = 0;
+    let y = 0;
+    do {
+        x += element.offsetLeft;
+        y += element.offsetTop;
+        element = element.offsetParent;
+    } while (element);
+    // Position blocklyDiv over blocklyArea.
+    blocklyDiv.style.left = `${x}px`;
+    blocklyDiv.style.top = `${y}px`;
+    blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
+    blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
+};
+const render = workspace => () => {
+    onresize();
+    Blockly.svgResize(workspace);
+};
+
 export default class _Blockly {
     constructor() {
         this.blocksXmlStr = '';
         this.generatedJs = '';
-        addBlocklyTranslation();
         // eslint-disable-next-line no-underscore-dangle
         Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
         this.initPromise = new Promise(resolve => {
@@ -120,15 +141,24 @@ export default class _Blockly {
                     },
                     trashcan: false,
                 });
-                $.get('xml/main.xml', main => {
-                    this.overrideBlocklyDefaultShape();
-                    this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
-                    Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-                    this.zoomOnPlusMinus();
-                    Blockly.mainWorkspace.clearUndo();
-                    disposeBlocksWithLoaders();
-                    setTimeout(() => setBeforeUnload(true), 0);
-                    resolve();
+                const renderInstance = render(workspace);
+                window.addEventListener('resize', renderInstance, false);
+                renderInstance();
+                addBlocklyTranslation().then(() => {
+                    $.get('xml/main.xml', main => {
+                        this.repaintDefaultColours();
+                        this.overrideBlocklyDefaultShape();
+                        this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
+                        Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+                        this.zoomOnPlusMinus();
+                        Blockly.mainWorkspace.clearUndo();
+                        disposeBlocksWithLoaders();
+                        setTimeout(() => {
+                            setBeforeUnload(true);
+                            Blockly.mainWorkspace.cleanUp();
+                        }, 0);
+                        resolve();
+                    });
                 });
             });
         });
@@ -139,28 +169,32 @@ export default class _Blockly {
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
         Blockly.Events.setGroup(false);
     }
+
+    /* eslint-disable class-methods-use-this */
+    repaintDefaultColours() {
+        Blockly.Msg.LOGIC_HUE = '#DEDEDE';
+        Blockly.Msg.LOOPS_HUE = '#DEDEDE';
+        Blockly.Msg.MATH_HUE = '#DEDEDE';
+        Blockly.Msg.TEXTS_HUE = '#DEDEDE';
+        Blockly.Msg.LISTS_HUE = '#DEDEDE';
+        Blockly.Msg.COLOUR_HUE = '#DEDEDE';
+        Blockly.Msg.VARIABLES_HUE = '#DEDEDE';
+        Blockly.Msg.VARIABLES_DYNAMIC_HUE = '#DEDEDE';
+        Blockly.Msg.PROCEDURES_HUE = '#DEDEDE';
+
+        Blockly.Blocks.logic.HUE = '#DEDEDE';
+        Blockly.Blocks.loops.HUE = '#DEDEDE';
+        Blockly.Blocks.math.HUE = '#DEDEDE';
+        Blockly.Blocks.texts.HUE = '#DEDEDE';
+        Blockly.Blocks.lists.HUE = '#DEDEDE';
+        Blockly.Blocks.colour.HUE = '#DEDEDE';
+        Blockly.Blocks.variables.HUE = '#DEDEDE';
+        Blockly.Blocks.procedures.HUE = '#DEDEDE';
+    }
+
+    /* eslint-disable class-methods-use-this */
     overrideBlocklyDefaultShape() {
-        // eslint-disable-next-line no-underscore-dangle
-        Blockly.Blocks.text.newQuote_ = open => {
-            // eslint-disable-line no-underscore-dangle
-            let file;
-            if (open === this.RTL) {
-                file =
-                    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFpJREFUeNpiZGBg+M+ACRyh9H50CSYGEsEg1AACDlB8HxoAIKwAxAJIcu+h4u+RNcEUz0czMAFJroEBKfiQTUcG95FMF2BBUnAAiA8C8QM05z6A4o1A/AEgwACTSBqO/l02SwAAAABJRU5ErkJggg==';
-            } else {
-                file =
-                    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAAXNSR0IArs4c6QAAActpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx4bXA6Q3JlYXRvclRvb2w+QWRvYmUgSW1hZ2VSZWFkeTwveG1wOkNyZWF0b3JUb29sPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KKS7NPQAAAHFJREFUGBljYICAAiC1H4odIEJwsgHIgskpgEQFgPg9EP8H4vtAjAwUgByQOAjvB2IwaACSMMEEsAiCmI8k5wASZgRikOkgWz4AcSAQg8AFIAaJ3QdxgOABECeCGCANINPRgSNUYD+6BBO6ACH+INQAAKsvFws0VtvEAAAAAElFTkSuQmCC';
-            }
-            return new Blockly.FieldImage(file, 12, 12, '"');
-        };
-        Blockly.Blocks.texts.HUE = '#dedede';
-        Blockly.Blocks.math.HUE = '#dedede';
-        Blockly.Blocks.logic.HUE = '#dedede';
-        Blockly.Blocks.loops.HUE = '#dedede';
-        Blockly.Blocks.lists.HUE = '#dedede';
-        Blockly.Blocks.variables.HUE = '#dedede';
-        Blockly.Blocks.procedures.HUE = '#dedede';
-        const addDownloadToMenu = block => {
+        /* const addDownloadToMenu = block => {
             if (block instanceof Object) {
                 // eslint-disable-next-line no-param-reassign, max-len
                 block.customContextMenu = function customContextMenu(options) {
@@ -177,8 +211,8 @@ export default class _Blockly {
                     });
                 };
             }
-        };
-        Object.keys(Blockly.Blocks).forEach(blockName => addDownloadToMenu(Blockly.Blocks[blockName]));
+        }; */
+        //        Object.keys(Blockly.Blocks).forEach(blockName => addDownloadToMenu(Blockly.Blocks[blockName]));
     }
     /* eslint-disable class-methods-use-this */
     zoomOnPlusMinus(zoomIn) {
@@ -231,7 +265,9 @@ export default class _Blockly {
         setBeforeUnload(true);
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         Array.from(xml.children).forEach(blockDom => {
-            const block = Blockly.mainWorkspace.getBlockById(blockDom.getAttribute('id'));
+            const blockId = blockDom.getAttribute('id');
+            if (!blockId) return;
+            const block = Blockly.mainWorkspace.getBlockById(blockId);
             if ('loaderId' in block) {
                 blockDom.remove();
             }

@@ -88,16 +88,13 @@ const resetTradeFields = (trade, ev) => {
 Blockly.Blocks.trade = {
     init: function init() {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldImage(defineContract, 15, 15, 'T'))
+            .appendField(new Blockly.FieldImage(defineContract, 25, 25, 'T'))
             .appendField(translate('(1) Define your trade contract'));
         marketDefPlaceHolders(this);
-        this.appendStatementInput('INITIALIZATION')
-            .setCheck(null)
-            .appendField(`${translate('Run Once at Start')}:`);
-        this.appendStatementInput('SUBMARKET')
-            .setCheck(null)
-            .appendField(`${translate('Define Trade Options')}:`);
-        this.setPreviousStatement(true, null);
+        this.appendDummyInput().appendField(`${translate('Run Once at Start')}:`);
+        this.appendStatementInput('INITIALIZATION').setCheck(null);
+        this.appendDummyInput().appendField(`${translate('Define Trade Options')}:`);
+        this.appendStatementInput('SUBMARKET').setCheck(null);
         this.setColour('#2a3052');
         this.setTooltip(
             translate('Define your trade contract and start the trade, add initializations here. (Runs on start)')

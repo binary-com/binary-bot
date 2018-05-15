@@ -103,12 +103,13 @@
         </div>
       </div>
     </div>
-    <div id="blocklyDiv"></div>
+    <div id="blocklyArea"><div>
+    <div id="blocklyDiv" style="position: absolute;"></div>
 
     <form id="fileUploadForm" style="display: none;">
       <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
     </form>
-    <div id="toolbox" class="actions_menu show-on-load">
+    <div id="toolbox" class="actions_menu show-on-load" style="position:absolute; top: 105px;">
       <button title="Load new blocks (xml file)" id="loadXml" class="toolbox-button icon-browse"></button>
       <button title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
       <button title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>

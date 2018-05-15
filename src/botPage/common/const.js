@@ -1,6 +1,7 @@
 import { translate } from '../../common/i18n';
+import { generateLiveApiInstance } from '../../common/appId';
 
-const CRYPTO_CURRENCIES = ['BTC', 'LTC', 'BCH'];
+const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH'];
 
 const config = {
     lists: {
@@ -9,8 +10,7 @@ const config = {
             [translate('Stake'), 'stake'],
         ],
         CRYPTO_CURRENCIES,
-        CURRENCY: ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]),
-        DETAILS : [
+        DETAILS: [
             [translate('statement'), '1'],
             [translate('ask price'), '2'],
             [translate('payout'), '3'],
@@ -202,5 +202,15 @@ const config = {
     bbResult  : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
     macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
 };
+
+export async function updateConfigCurrencies() {
+    const api = generateLiveApiInstance();
+    try {
+        const response = await api.getPayoutCurrencies();
+        config.lists.CURRENCY = response.payout_currencies.map(c => [c, c]);
+    } catch (e) {
+        config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
+    }
+}
 
 export default config;
