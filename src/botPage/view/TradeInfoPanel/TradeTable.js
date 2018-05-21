@@ -5,7 +5,6 @@ import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
-import ExportButton from '../react-components/ExportButton';
 import * as style from '../style';
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
@@ -38,22 +37,28 @@ export default class TradeTable extends Component {
             },
         };
         this.columns = [
-            { key: 'id', width: 70, resizable: true, name: translate('Number') },
+            { key: 'timestamp', width: 150, resizable: true, name: translate('Timestamp') },
             { key: 'reference', width: 110, resizable: true, name: translate('Reference') },
             { key: 'contract_type', width: 80, resizable: true, name: translate('Trade type') },
             { key: 'entry_tick', width: 80, resizable: true, name: translate('Entry spot') },
             { key: 'exit_tick', width: 80, resizable: true, name: translate('Exit spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
-            { key: 'sell_price', width: 80, resizable: true, name: translate('Final price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
     }
     componentWillMount() {
+        globalObserver.register('summary.export', () => {
+            this.export();
+        });
         globalObserver.register('bot.contract', info => {
             if (!info) {
                 return;
             }
-            const tradeObj = { reference: info.transaction_ids.buy, ...info };
+            const buyDate = new Date(info.date_start * 1000);
+            const timestamp = `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
+                buyDate.toTimeString().split(' ')[1]
+            }`;
+            const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
             const { accountID } = tradeObj;
 
             const trade = {
@@ -85,6 +90,7 @@ export default class TradeTable extends Component {
             data  : this.state[accountID].rows,
             fields: [
                 'id',
+                'timestamp',
                 'reference',
                 'contract_type',
                 'entry_tick',
@@ -107,10 +113,8 @@ export default class TradeTable extends Component {
     render() {
         const { accountID } = this.props;
         const rows = accountID in this.state ? this.state[accountID].rows : [];
-
         return (
             <div>
-                <ExportButton onClick={() => this.export()} customStyle={style.tradeTableExport} />
                 <ReactDataGrid
                     columns={this.columns}
                     rowGetter={this.rowGetter.bind(this)}

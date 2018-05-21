@@ -24,6 +24,7 @@ import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
 import { logoutAllTokens, getOAuthURL, generateLiveApiInstance } from '../../common/appId';
+import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
 
@@ -149,42 +150,26 @@ const updateTokenList = () => {
         });
     }
 };
+
 export default class View {
     constructor() {
         logHandler();
         this.initPromise = new Promise(resolve => {
-            symbolPromise.then(() => {
-                updateTokenList();
-                this.blockly = new _Blockly();
-                this.blockly.initPromise.then(() => {
-                    this.setElementActions();
-                    $('#accountLis');
-                    startRealityCheck(
-                        null,
-                        $('.account-id')
-                            .first()
-                            .attr('value')
-                    );
-                    ReactDOM.render(<Tour />, $('#tour')[0]);
-                    ReactDOM.render(
-                        <OfficialVersionWarning
-                            show={
-                                !(
-                                    typeof window.location !== 'undefined' &&
-                                    window.location.host === 'bot.binary.com' &&
-                                    window.location.pathname === '/bot.html'
-                                )
-                            }
-                        />,
-                        $('#footer')[0]
-                    );
-                    ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
-                    ReactDOM.render(<LogTable />, $('#logTable')[0]);
-                    resolve();
+            updateConfigCurrencies().then(() => {
+                symbolPromise.then(() => {
+                    updateTokenList();
+                    this.blockly = new _Blockly();
+                    this.blockly.initPromise.then(() => {
+                        this.setElementActions();
+                        initRealityCheck();
+                        renderReactComponents();
+                        resolve();
+                    });
                 });
             });
         });
     }
+
     setFileBrowser() {
         const readFile = (f, dropEvent = {}) => {
             const reader = new FileReader();
@@ -317,9 +302,37 @@ export default class View {
         $('#tradingViewButton').click(() => {
             tradingView.open();
         });
+        const exportContent = {};
+        exportContent.summaryPanel = () => {
+            globalObserver.emit('summary.export');
+        };
+        exportContent.logPanel = () => {
+            globalObserver.emit('log.export');
+        };
+        const addExportButtonToPanel = panelId => {
+            const buttonHtml =
+                '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
+            const $button = $(buttonHtml);
+            const panelSelector = `[aria-describedby="${panelId}"]`;
+            if (!$(`${panelSelector} .icon-save`).length) {
+                $button.insertBefore(`${panelSelector} .icon-close`);
+                $(`${panelSelector} .icon-close`).blur();
+                $($(`${panelSelector} .icon-save`)).click(() => {
+                    exportContent[panelId]();
+                });
+            }
+        };
         const showSummary = () => {
             $('#summaryPanel').dialog('open');
+            addExportButtonToPanel('summaryPanel');
         };
+        const showLog = () => {
+            $('#logPanel').dialog('open');
+            addExportButtonToPanel('logPanel');
+        };
+
+        $('#logButton').click(showLog);
+
         $('#showSummary').click(showSummary);
 
         $('#loadXml').click(() => {
@@ -331,7 +344,7 @@ export default class View {
             hideRealityCheck();
         });
 
-        $('#continue-trading').click(() => {
+        const submitRealityCheck = () => {
             const time = parseInt($('#realityDuration').val());
             if (time >= 10 && time <= 60) {
                 hideRealityCheck();
@@ -339,11 +352,25 @@ export default class View {
             } else {
                 $('#rc-err').show();
             }
+        };
+
+        $('#continue-trading').click(() => {
+            submitRealityCheck();
         });
 
         $('#realityDuration').keypress(e => {
             const char = String.fromCharCode(e.which);
-            if (!/[0-9]/.test(char)) {
+            if (e.keyCode === 13) {
+                submitRealityCheck();
+            }
+            /* Unicode check is for firefox because it 
+             * trigger this event when backspace, arrow keys are pressed
+             * in chrome it is not triggered
+             */
+            const unicodeStrings = /[\u0008|\u0000]/;
+            if (unicodeStrings.test(char)) return;
+
+            if (!/([0-9])/.test(char)) {
                 e.preventDefault();
             }
         });
@@ -423,10 +450,6 @@ export default class View {
                 }
             }
         });
-
-        $('#logButton').click(() => {
-            $('#logPanel').dialog('open');
-        });
     }
     stop() {
         this.blockly.stop();
@@ -454,4 +477,30 @@ export default class View {
             }
         });
     }
+}
+
+function initRealityCheck() {
+    startRealityCheck(
+        null,
+        $('.account-id')
+            .first()
+            .attr('value')
+    );
+}
+function renderReactComponents() {
+    ReactDOM.render(<Tour />, $('#tour')[0]);
+    ReactDOM.render(
+        <OfficialVersionWarning
+            show={
+                !(
+                    typeof window.location !== 'undefined' &&
+                    window.location.host === 'bot.binary.com' &&
+                    window.location.pathname === '/bot.html'
+                )
+            }
+        />,
+        $('#footer')[0]
+    );
+    ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
+    ReactDOM.render(<LogTable />, $('#logTable')[0]);
 }

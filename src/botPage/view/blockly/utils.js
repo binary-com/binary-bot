@@ -239,7 +239,7 @@ export const addDomAsBlock = blockXml => {
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
 };
 
-const replaceDeletedBlock = block => {
+/* const replaceDeletedBlock = block => {
     const procedureName = block.getFieldValue('NAME');
     const oldProcedure = Blockly.Procedures.getDefinition(`${procedureName} (deleted)`, Blockly.mainWorkspace);
     if (oldProcedure) {
@@ -252,7 +252,7 @@ const replaceDeletedBlock = block => {
         block.setFieldValue(`${procedureName}`, 'NAME');
         Blockly.Events.recordUndo = recordUndo;
     }
-};
+}; */
 
 export const recoverDeletedBlock = block => {
     const { recordUndo } = Blockly.Events;
@@ -262,10 +262,10 @@ export const recoverDeletedBlock = block => {
     Blockly.Events.recordUndo = recordUndo;
 };
 
-const addDomAsBlockFromHeader = (blockXml, header = null) => {
-    const oldVars = [...Blockly.mainWorkspace.variableList];
+const addDomAsBlockFromHeader = (blockXml /* , header = null */) => {
+    // const oldVars = [...Blockly.mainWorkspace.variableList];
     const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
-    Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter(v => {
+    /* Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter(v => {
         if (oldVars.indexOf(v) >= 0) {
             return true;
         }
@@ -273,7 +273,7 @@ const addDomAsBlockFromHeader = (blockXml, header = null) => {
         return false;
     });
     replaceDeletedBlock(block);
-    Blockly.Events.fire(new Hide(block, header));
+    Blockly.Events.fire(new Hide(block, header)); */
     return block;
 };
 

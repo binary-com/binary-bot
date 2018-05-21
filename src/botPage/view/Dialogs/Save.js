@@ -30,7 +30,7 @@ class SaveContent extends PureComponent {
             >
                 <div>
                     <div style={style.inputRow}>
-                        <label style={style.field} title={'Choose a filename to save'} htmlFor="save-filename">
+                        <label title={'Choose a filename to save'} htmlFor="save-filename">
                             {translate('Filename')}:
                             <input
                                 style={style.filename}
@@ -46,7 +46,6 @@ class SaveContent extends PureComponent {
                     </div>
                     <div style={style.inputRow}>
                         <label
-                            style={style.field}
                             title={
                                 'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
                             }
@@ -84,7 +83,7 @@ export default class Save extends Dialog {
             this.limitsPromise(arg);
             this.close();
         };
-        super('save-dialog', translate('Save blocks as'), <SaveContent onSave={onSave} />);
+        super('save-dialog', translate('Save blocks as'), <SaveContent onSave={onSave} />, style.dialogLayout);
     }
     save() {
         this.open();

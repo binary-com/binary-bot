@@ -1,6 +1,6 @@
 {
   "name": "binary-bot",
-  "version": "8.4.6",
+  "version": "8.5.12",
   "description": "Visual automation for binary.com",
   "bin": {
     "bot": "lib/index.js"
@@ -58,8 +58,8 @@
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || exit 1; git stash; git checkout $b; yarn install --frozen-lockfile; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
-    "deploy": "d() { yarn gen-branch $1 || exit 1; git checkout master ; yarn install --frozen-lockfile; gulp deploy;}; d",
+    "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || exit 1; git stash; git checkout $b; yarn install --force --frozen-lockfile; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
+    "deploy": "d() { yarn gen-branch $1 || exit 1; git checkout master ; yarn install --force --frozen-lockfile; gulp deploy;}; d",
     "deploy-all": "yarn gen-branch beta; yarn gen-branch translation; yarn deploy",
     "build": "webpack --config webpack.config.cli.js",
     "prepublishOnly": "yarn build",
@@ -85,7 +85,6 @@
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",
-    "blockly": "github:google/blockly#0785a7b",
     "bootstrap": "^3.3.7",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
@@ -128,7 +127,7 @@
     "prettier-eslint-cli": "^4.7.0",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
-    "react-data-grid": "^2.0.78",
+    "react-data-grid": "^3.0.0",
     "react-dom": "^15.6.2",
     "react-joyride": "^1.11.1",
     "redux": "^3.7.2",
@@ -141,6 +140,7 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
+    "blockly": "github:google/blockly#7679d22",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0"
   }

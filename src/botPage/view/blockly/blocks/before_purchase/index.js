@@ -9,7 +9,7 @@ import { purchase } from '../images';
 Blockly.Blocks.before_purchase = {
     init: function init() {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldImage(purchase, 15, 15, 'P'))
+            .appendField(new Blockly.FieldImage(purchase, 25, 25, 'P'))
             .appendField(translate('(2) Watch and purchase your contract'));
         this.appendStatementInput('BEFOREPURCHASE_STACK').setCheck('Purchase');
         this.setColour('#2a3052');

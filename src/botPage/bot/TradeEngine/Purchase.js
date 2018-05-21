@@ -23,7 +23,7 @@ export default Engine =>
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
                 delayIndex = 0;
-                notify('info', `${translate('Bought')}: ${buy.longcode}`);
+                notify('info', `${translate('Bought')}: ${buy.longcode} (${translate('ID')}: ${buy.transaction_id})`);
                 info({
                     accountID      : this.accountInfo.loginid,
                     totalRuns      : this.updateAndReturnTotalRuns(),

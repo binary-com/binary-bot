@@ -28,7 +28,7 @@
         <h1 data-i18n-text="Reality Check"></h1>
         <p data-i18n-text="Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis."></p>
         <p data-i18n-text="Please specify your preferred reality-check interval in minutes">
-        <input id="realityDuration" interval="1" maxlength="4" min="1" size="6" type="number" value="10">
+        <input id="realityDuration" interval="1" maxlength="2" value="10">
         </p>
         <p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 60."></p>
         <div>
@@ -103,12 +103,13 @@
         </div>
       </div>
     </div>
-    <div id="blocklyDiv"></div>
+    <div id="blocklyArea"><div>
+    <div id="blocklyDiv" style="position: absolute;"></div>
 
     <form id="fileUploadForm" style="display: none;">
       <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
     </form>
-    <div id="toolbox" class="actions_menu show-on-load">
+    <div id="toolbox" class="actions_menu show-on-load" style="position:absolute; top: 105px;">
       <button title="Load new blocks (xml file)" id="loadXml" class="toolbox-button icon-browse"></button>
       <button title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
       <button title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>

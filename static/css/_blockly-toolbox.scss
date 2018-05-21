@@ -1,11 +1,34 @@
 @import 'color';
 
+.blocklyTreeRow {
+    box-shadow: inset 0 -0.063em 0 0 #dedede;
+}
+
 .blocklyText {
     fill: $black !important;
 }
 
 .blocklyTreeSelected .blocklyTreeLabel {
     color: $white !important;
+}
+
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen, 
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconClosedLtr {
+    filter: invert(100%);
+}
+
+.blocklyTreeIcon.blocklyTreeIconOpen {
+    background-image: url(../image/down-arrow.svg) !important;
+    background-position: -0.188em -0.375em !important;
+}
+
+.blocklyTreeIcon.blocklyTreeIconClosedLtr {
+    background-image: url(../image/down-arrow.svg) !important;
+    background-position: -0.188em -0.375em !important;
+}
+
+.blocklyTreeRow.blocklyTreeSelected {
+    background-color: #2a3052 !important;
 }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
@@ -28,14 +51,15 @@
     fill: $white !important;
     fill-opacity: 1 !important;
     stroke: $brand-dark-gray;
-    stroke-width: 1px;
+    stroke-width: 0.063em;
 }
 
 .blocklyToolboxDiv {
     background-color: $brand-gray !important;
     border-width: thin;
     color: $brand-dark-gray;
-    border-right: 1px solid;
+    border-right: 0.063em solid;
+    width: 11em;	
 }
 
 .blocklyIconShape {
@@ -54,6 +78,8 @@
 
 .blocklyTreeRow {
     margin-bottom: 0px !important;
+    height: 1.9em !important;
+    padding-top: 0.250em;
 }
 
 .blocklyToolboxDiv {
