@@ -218,7 +218,7 @@ export default class _Blockly {
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
         Blockly.Events.setGroup(false);
     }
-
+    /* eslint-disable class-methods-use-this */
     cleanUp() {
         Blockly.Events.setGroup(true);
         const topBlocks = Blockly.mainWorkspace.getTopBlocks(true);
@@ -236,6 +236,7 @@ export default class _Blockly {
         // Fire an event to allow scrollbars to resize.
         Blockly.mainWorkspace.resizeContents();
     }
+    /* eslint-disable class-methods-use-this */
     load(blockStr = '', dropEvent = {}) {
         let xml;
 
@@ -255,6 +256,7 @@ export default class _Blockly {
             throw createError('FileLoad', translate('Unable to load the block file.'));
         }
     }
+    /* eslint-disable class-methods-use-this */
     save(arg) {
         const { filename, collection } = arg;
 
@@ -343,11 +345,13 @@ while(true) {
             this.interpreter = null;
         }
     }
+    /* eslint-disable class-methods-use-this */
     undo() {
         Blockly.Events.setGroup('undo');
         Blockly.mainWorkspace.undo();
         Blockly.Events.setGroup(false);
     }
+    /* eslint-disable class-methods-use-this */
     redo() {
         Blockly.mainWorkspace.undo(true);
     }
