@@ -124,6 +124,55 @@ const render = workspace => () => {
     onresize();
     Blockly.svgResize(workspace);
 };
+const overrideBlocklyDefaultShape = () => {
+    const addDownloadToMenu = block => {
+        if (block instanceof Object) {
+            // eslint-disable-next-line no-param-reassign, max-len
+            block.customContextMenu = function customContextMenu(options) {
+                options.push({
+                    text    : translate('Download'),
+                    enabled : true,
+                    callback: () => {
+                        const xml = Blockly.Xml.textToDom(
+                            '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
+                        );
+                        xml.appendChild(Blockly.Xml.blockToDom(this));
+                        save('binary-bot-block', true, xml);
+                    },
+                });
+            };
+        }
+    };
+    Object.keys(Blockly.Blocks).forEach(blockName => addDownloadToMenu(Blockly.Blocks[blockName]));
+};
+const zoomOnPlusMinus = zoomIn => {
+    const metrics = Blockly.mainWorkspace.getMetrics();
+    if (zoomIn) {
+        Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, 1);
+    } else {
+        Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
+    }
+};
+const repaintDefaultColours = () => {
+    Blockly.Msg.LOGIC_HUE = '#DEDEDE';
+    Blockly.Msg.LOOPS_HUE = '#DEDEDE';
+    Blockly.Msg.MATH_HUE = '#DEDEDE';
+    Blockly.Msg.TEXTS_HUE = '#DEDEDE';
+    Blockly.Msg.LISTS_HUE = '#DEDEDE';
+    Blockly.Msg.COLOUR_HUE = '#DEDEDE';
+    Blockly.Msg.VARIABLES_HUE = '#DEDEDE';
+    Blockly.Msg.VARIABLES_DYNAMIC_HUE = '#DEDEDE';
+    Blockly.Msg.PROCEDURES_HUE = '#DEDEDE';
+
+    Blockly.Blocks.logic.HUE = '#DEDEDE';
+    Blockly.Blocks.loops.HUE = '#DEDEDE';
+    Blockly.Blocks.math.HUE = '#DEDEDE';
+    Blockly.Blocks.texts.HUE = '#DEDEDE';
+    Blockly.Blocks.lists.HUE = '#DEDEDE';
+    Blockly.Blocks.colour.HUE = '#DEDEDE';
+    Blockly.Blocks.variables.HUE = '#DEDEDE';
+    Blockly.Blocks.procedures.HUE = '#DEDEDE';
+};
 
 export default class _Blockly {
     constructor() {
@@ -146,11 +195,11 @@ export default class _Blockly {
                 renderInstance();
                 addBlocklyTranslation().then(() => {
                     $.get('xml/main.xml', main => {
-                        this.repaintDefaultColours();
-                        this.overrideBlocklyDefaultShape();
+                        repaintDefaultColours();
+                        overrideBlocklyDefaultShape();
                         this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
                         Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-                        this.zoomOnPlusMinus();
+                        zoomOnPlusMinus();
                         Blockly.mainWorkspace.clearUndo();
                         disposeBlocksWithLoaders();
                         setTimeout(() => {
@@ -170,59 +219,6 @@ export default class _Blockly {
         Blockly.Events.setGroup(false);
     }
 
-    /* eslint-disable class-methods-use-this */
-    repaintDefaultColours() {
-        Blockly.Msg.LOGIC_HUE = '#DEDEDE';
-        Blockly.Msg.LOOPS_HUE = '#DEDEDE';
-        Blockly.Msg.MATH_HUE = '#DEDEDE';
-        Blockly.Msg.TEXTS_HUE = '#DEDEDE';
-        Blockly.Msg.LISTS_HUE = '#DEDEDE';
-        Blockly.Msg.COLOUR_HUE = '#DEDEDE';
-        Blockly.Msg.VARIABLES_HUE = '#DEDEDE';
-        Blockly.Msg.VARIABLES_DYNAMIC_HUE = '#DEDEDE';
-        Blockly.Msg.PROCEDURES_HUE = '#DEDEDE';
-
-        Blockly.Blocks.logic.HUE = '#DEDEDE';
-        Blockly.Blocks.loops.HUE = '#DEDEDE';
-        Blockly.Blocks.math.HUE = '#DEDEDE';
-        Blockly.Blocks.texts.HUE = '#DEDEDE';
-        Blockly.Blocks.lists.HUE = '#DEDEDE';
-        Blockly.Blocks.colour.HUE = '#DEDEDE';
-        Blockly.Blocks.variables.HUE = '#DEDEDE';
-        Blockly.Blocks.procedures.HUE = '#DEDEDE';
-    }
-
-    /* eslint-disable class-methods-use-this */
-    overrideBlocklyDefaultShape() {
-        /* const addDownloadToMenu = block => {
-            if (block instanceof Object) {
-                // eslint-disable-next-line no-param-reassign, max-len
-                block.customContextMenu = function customContextMenu(options) {
-                    options.push({
-                        text    : translate('Download'),
-                        enabled : true,
-                        callback: () => {
-                            const xml = Blockly.Xml.textToDom(
-                                '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
-                            );
-                            xml.appendChild(Blockly.Xml.blockToDom(this));
-                            save('binary-bot-block', true, xml);
-                        },
-                    });
-                };
-            }
-        }; */
-        //        Object.keys(Blockly.Blocks).forEach(blockName => addDownloadToMenu(Blockly.Blocks[blockName]));
-    }
-    /* eslint-disable class-methods-use-this */
-    zoomOnPlusMinus(zoomIn) {
-        const metrics = Blockly.mainWorkspace.getMetrics();
-        if (zoomIn) {
-            Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, 1);
-        } else {
-            Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
-        }
-    }
     cleanUp() {
         Blockly.Events.setGroup(true);
         const topBlocks = Blockly.mainWorkspace.getTopBlocks(true);
