@@ -124,7 +124,7 @@ const render = workspace => () => {
     onresize();
     Blockly.svgResize(workspace);
 };
-const overrideBlocklyDefaultShape = () => {
+/* const overrideBlocklyDefaultShape = () => {
     const addDownloadToMenu = block => {
         if (block instanceof Object) {
             // eslint-disable-next-line no-param-reassign, max-len
@@ -144,7 +144,7 @@ const overrideBlocklyDefaultShape = () => {
         }
     };
     Object.keys(Blockly.Blocks).forEach(blockName => addDownloadToMenu(Blockly.Blocks[blockName]));
-};
+}; */
 const zoomOnPlusMinus = zoomIn => {
     const metrics = Blockly.mainWorkspace.getMetrics();
     if (zoomIn) {
@@ -196,7 +196,7 @@ export default class _Blockly {
                 addBlocklyTranslation().then(() => {
                     $.get('xml/main.xml', main => {
                         repaintDefaultColours();
-                        overrideBlocklyDefaultShape();
+                        // overrideBlocklyDefaultShape();
                         this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
                         Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
                         zoomOnPlusMinus();
