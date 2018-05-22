@@ -144,8 +144,10 @@ const overrideBlocklyDefaultShape = () => {
         }
     };
     Object.keys(Blockly.Blocks).forEach(blockName => {
-        if (blockName !== 'variables_get' && blockName !== 'variables_set')
-        {addDownloadToMenu(Blockly.Blocks[blockName]);}
+        const downloadDisabledBlocks = ['controls_forEach', 'controls_for', 'variables_get', 'variables_set'];
+        if (!downloadDisabledBlocks.includes(blockName)) {
+            addDownloadToMenu(Blockly.Blocks[blockName]);
+        }
     });
 };
 const zoomOnPlusMinus = zoomIn => {
