@@ -150,14 +150,6 @@ const overrideBlocklyDefaultShape = () => {
         }
     });
 };
-const zoomOnPlusMinus = zoomIn => {
-    const metrics = Blockly.mainWorkspace.getMetrics();
-    if (zoomIn) {
-        Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, 1);
-    } else {
-        Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
-    }
-};
 const repaintDefaultColours = () => {
     Blockly.Msg.LOGIC_HUE = '#DEDEDE';
     Blockly.Msg.LOOPS_HUE = '#DEDEDE';
@@ -204,7 +196,7 @@ export default class _Blockly {
                         overrideBlocklyDefaultShape();
                         this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
                         Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-                        zoomOnPlusMinus();
+                        this.zoomOnPlusMinus();
                         Blockly.mainWorkspace.clearUndo();
                         disposeBlocksWithLoaders();
                         setTimeout(() => {
@@ -216,6 +208,15 @@ export default class _Blockly {
                 });
             });
         });
+    }
+    /* eslint-disable class-methods-use-this */
+    zoomOnPlusMinus(zoomIn) {
+        const metrics = Blockly.mainWorkspace.getMetrics();
+        if (zoomIn) {
+            Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, 1);
+        } else {
+            Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
+        }
     }
     resetWorkspace() {
         Blockly.Events.setGroup('reset');
