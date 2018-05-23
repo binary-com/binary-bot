@@ -400,6 +400,7 @@ export default class View {
 
         $('#resetButton').click(() => {
             this.blockly.resetWorkspace();
+            setTimeout(() => this.blockly.cleanUp(), 0);
         });
 
         $('.login-id-list').on('click', 'a', e => {
