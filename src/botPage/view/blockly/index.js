@@ -183,8 +183,7 @@ export default class _Blockly {
                 const workspace = Blockly.inject('blocklyDiv', {
                     toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
                     zoom   : {
-                        controls: true,
-                        wheel   : false,
+                        wheel: false,
                     },
                     trashcan: false,
                 });
@@ -210,6 +209,7 @@ export default class _Blockly {
             });
         });
     }
+    /* eslint-disable class-methods-use-this */
     zoomOnPlusMinus(zoomIn) {
         const metrics = Blockly.mainWorkspace.getMetrics();
         if (zoomIn) {
