@@ -153,7 +153,7 @@ const config = {
             [translate('Minutes'), 'm'],
             [translate('Hours'), 'h'],
         ],
-        TOUCHNOTOUCH  : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
+        TOUCHNOTOUCH  : [[translate('Ticks'), 't'], [translate('Minutes'), 'm'], [translate('Hours'), 'h']],
         ENDSINOUT     : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
         STAYSINOUT    : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
         ASIANS        : [[translate('Ticks'), 't']],
