@@ -57,7 +57,6 @@ export default class TradeInfoPanel extends Component {
                         </h3>
 
                         <TradeTable accountID={accountID} />
-                        <p>{`*${  translate('Use export for detailed summary')}`}</p>
                     </div>
                 </div>
             </div>
