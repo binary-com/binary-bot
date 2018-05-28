@@ -41,7 +41,7 @@ export default class TradeTable extends Component {
             { key: 'reference', width: 110, resizable: true, name: translate('Reference') },
             { key: 'contract_type', width: 80, resizable: true, name: translate('Trade type') },
             { key: 'entry_tick', width: 80, resizable: true, name: translate('Entry spot') },
-            { key: 'exit_tick', width: 80, resizable: true, name: translate('Exit spot') },
+            { key: 'sell_spot', width: 80, resizable: true, name: translate('Sell spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
@@ -97,6 +97,7 @@ export default class TradeTable extends Component {
                 'contract_type',
                 'entry_tick',
                 'exit_tick',
+                'sell_spot',
                 'buy_price',
                 'sell_price',
                 'profit',
