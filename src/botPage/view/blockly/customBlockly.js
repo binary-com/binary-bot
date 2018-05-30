@@ -1,4 +1,5 @@
 /* eslint-disable */
+Blockly.WorkspaceAudio.prototype.preload = function() {};
 Blockly.FieldDropdown.prototype.render_ = function() {
     if (!this.visible_) {
         this.size_.width = 0;
