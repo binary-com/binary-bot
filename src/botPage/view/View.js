@@ -259,6 +259,7 @@ export default class View {
                 globalObserver.emit('ui.log.info', translate('Logged you out!'));
                 clearRealityCheck();
                 clearActiveTokens();
+                location.reload();
             });
         };
 
