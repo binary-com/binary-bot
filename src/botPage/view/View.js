@@ -23,7 +23,7 @@ import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
-import { logoutAllTokens, getOAuthURL, generateLiveApiInstance } from '../../common/appId';
+import { logoutAllTokens, getOAuthURL, generateLiveApiInstance, AppConstants } from '../../common/appId';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
@@ -155,7 +155,7 @@ const updateTokenList = () => {
         loginButton.hide();
         accountList.show();
 
-        const activeToken = getActiveToken(tokenList, getStorage('activeToken'));
+        const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
         addBalanceForToken(activeToken.token);
         if (!('loginInfo' in activeToken)) {
             removeAllTokens();
@@ -302,7 +302,7 @@ export default class View {
         };
 
         const clearActiveTokens = () => {
-            setStorage('activeToken', '');
+            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
         };
 
         $('.panelExitButton').click(function onClick() {
@@ -453,7 +453,7 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            setStorage('activeToken', $(e.currentTarget).attr('value'));
+            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, $(e.currentTarget).attr('value'));
             location.reload();
         });
 
