@@ -36,8 +36,20 @@ export const getCustomEndpoint = () => ({
     appId: getStorage('config.app_id'),
 });
 
+const isRealAccount = () => {
+    const accountList = JSON.parse(getStorage('tokenList'));
+    const activeToken = getStorage('activeToken');
+    let activeAccount = null;
+    let isReal = false;
+    try {
+        activeAccount = accountList.filter(account => account.token === activeToken);
+        isReal = !activeAccount[0].accountName.startsWith('VRT');
+    } catch (e) {}
+    return isReal;
+};
+
 export const getDefaultEndpoint = () => ({
-    url  : 'frontend.binaryws.com',
+    url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
     appId: getStorage('config.default_app_id') || 1169,
 });
 
