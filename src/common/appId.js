@@ -6,6 +6,7 @@ import {
     getTokenList,
     removeAllTokens,
     get as getStorage,
+    set as setStorage,
 } from 'binary-common-utils/lib/storageManager';
 import { getLanguage } from './lang';
 
@@ -24,6 +25,10 @@ export const oauthLogin = (done = () => 0) => {
     if (tokenList.length) {
         $('#main').hide();
         addAllTokens(tokenList).then(() => {
+            const accounts = getTokenList();
+            if (accounts.length) {
+                setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
+            }
             document.location = 'bot.html';
         });
     } else {
