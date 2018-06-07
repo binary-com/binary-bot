@@ -297,7 +297,12 @@ export default class View {
                 updateLogo();
                 globalObserver.emit('ui.log.info', translate('Logged you out!'));
                 clearRealityCheck();
+                clearActiveTokens();
             });
+        };
+
+        const clearActiveTokens = () => {
+            setStorage('activeToken', '');
         };
 
         $('.panelExitButton').click(function onClick() {
