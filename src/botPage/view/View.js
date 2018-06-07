@@ -155,7 +155,7 @@ const updateTokenList = () => {
         loginButton.hide();
         accountList.show();
 
-        const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
+        const activeToken = getActiveToken(tokenList, getStorage('activeToken'));
         addBalanceForToken(activeToken.token);
         if (!('loginInfo' in activeToken)) {
             removeAllTokens();
@@ -454,8 +454,35 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
+<<<<<<< HEAD
             setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, $(e.currentTarget).attr('value'));
             location.reload();
+||||||| merged common ancestors
+            resetRealityCheck($(e.currentTarget).attr('value'));
+            e.preventDefault();
+            const $el = $(e.currentTarget);
+            const $oldType = $el.find('li span');
+            const $oldTypeText = $oldType.text();
+            const $oldID = $el.find('li div');
+            const $oldIDText = $oldID.text();
+            const $oldValue = $el.attr('value');
+            const $newType = $('.account-type');
+            const $newTypeText = $newType.first().text();
+            const $newID = $('.account-id');
+            const $newIDText = $newID.first().text();
+            const $newValue = $newID.attr('value');
+            $oldType.html($newTypeText);
+            $oldID.html($newIDText);
+            $el.attr('value', $newValue);
+            $newType.html($oldTypeText);
+            $newID.html($oldIDText);
+            $newID.attr('value', $oldValue);
+            $('.topMenuBalance').text('\u2002');
+            addBalanceForToken($('#main-account .account-id').attr('value'));
+=======
+            setStorage('activeToken', $(e.currentTarget).attr('value'));
+            location.reload();
+>>>>>>> Refresh on account change
         });
 
         $('#login')
