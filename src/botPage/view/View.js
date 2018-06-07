@@ -141,6 +141,7 @@ const updateTokenList = () => {
             const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
 
             if (tokenInfo === activeToken) {
+                setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, tokenInfo.token);
                 $('.account-id')
                     .attr('value', `${tokenInfo.token}`)
                     .text(`${tokenInfo.accountName}`);
