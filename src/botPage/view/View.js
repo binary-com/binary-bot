@@ -108,6 +108,11 @@ const limits = new Limits();
 const saveDialog = new Save();
 // const chart = new Chart();
 
+const getActiveToken = (tokenList, activeToken) => {
+    const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
+    return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
+};
+
 const updateTokenList = () => {
     const tokenList = getTokenList();
     const loginButton = $('#login');
@@ -126,16 +131,16 @@ const updateTokenList = () => {
         loginButton.hide();
         accountList.show();
 
-        const firstToken = tokenList[0];
-        addBalanceForToken(firstToken.token);
-        if (!('loginInfo' in firstToken)) {
+        const activeToken = getActiveToken(tokenList, getStorage('activeToken'));
+        addBalanceForToken(activeToken.token);
+        if (!('loginInfo' in activeToken)) {
             removeAllTokens();
             updateTokenList();
         }
         tokenList.forEach(tokenInfo => {
             const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
 
-            if (tokenList.indexOf(tokenInfo) === 0) {
+            if (tokenInfo === activeToken) {
                 $('.account-id')
                     .attr('value', `${tokenInfo.token}`)
                     .text(`${tokenInfo.accountName}`);
@@ -417,27 +422,8 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            resetRealityCheck($(e.currentTarget).attr('value'));
-            e.preventDefault();
-            const $el = $(e.currentTarget);
-            const $oldType = $el.find('li span');
-            const $oldTypeText = $oldType.text();
-            const $oldID = $el.find('li div');
-            const $oldIDText = $oldID.text();
-            const $oldValue = $el.attr('value');
-            const $newType = $('.account-type');
-            const $newTypeText = $newType.first().text();
-            const $newID = $('.account-id');
-            const $newIDText = $newID.first().text();
-            const $newValue = $newID.attr('value');
-            $oldType.html($newTypeText);
-            $oldID.html($newIDText);
-            $el.attr('value', $newValue);
-            $newType.html($oldTypeText);
-            $newID.html($oldIDText);
-            $newID.attr('value', $oldValue);
-            $('.topMenuBalance').text('\u2002');
-            addBalanceForToken($('#main-account .account-id').attr('value'));
+            setStorage('activeToken', $(e.currentTarget).attr('value'));
+            location.reload();
         });
 
         $('#login')
