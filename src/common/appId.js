@@ -11,6 +11,10 @@ import { getLanguage } from './lang';
 
 const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));
 
+export const AppConstants = Object.freeze({
+    STORAGE_ACTIVE_TOKEN: 'activeToken',
+});
+
 export const oauthLogin = (done = () => 0) => {
     const queryStr = parseQueryString();
     let tokenList = [];
