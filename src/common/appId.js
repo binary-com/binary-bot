@@ -42,7 +42,7 @@ export const getCustomEndpoint = () => ({
 });
 
 const isRealAccount = () => {
-    const accountList = JSON.parse(getStorage('tokenList'));
+    const accountList = JSON.parse(getStorage('tokenList') || '{}');
     const activeToken = getStorage(AppConstants.STORAGE_ACTIVE_TOKEN);
     let activeAccount = null;
     let isReal = false;
