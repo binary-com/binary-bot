@@ -74,6 +74,8 @@ export default class TradeTable extends Component {
             const { rows } = accountStat;
             const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
 
+            if (!trade.hasOwnProperty('exit_tick')) trade.exit_tick = '-';
+
             if (prevRowIndex >= 0) {
                 this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
             } else {
