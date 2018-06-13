@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const watch = require('gulp-watch');
-const ghPages = require('gulp-gh-pages');
+const ghPages = require('gulp-gh-pages-will');
 const connect = require('gulp-connect');
 const open = require('gulp-open');
 require('./gulp/i18n');
