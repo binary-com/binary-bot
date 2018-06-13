@@ -151,6 +151,18 @@ const updateTokenList = () => {
     }
 };
 
+const toggleButtonHide = () => {
+    if (getTokenList().length) {
+        $('#runButton').show();
+        $('#showSummary').show();
+        $('#logButton').show();
+    } else {
+        $('#runButton').hide();
+        $('#showSummary').hide();
+        $('#logButton').hide();
+    }
+};
+
 export default class View {
     constructor() {
         logHandler();
@@ -162,6 +174,7 @@ export default class View {
                     this.blockly.initPromise.then(() => {
                         this.setElementActions();
                         initRealityCheck();
+                        toggleButtonHide();
                         renderReactComponents();
                         resolve();
                     });
