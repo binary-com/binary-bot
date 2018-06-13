@@ -180,7 +180,7 @@ const updateTokenList = () => {
     }
 };
 
-const toggleButtonHide = () => {
+const applyToolboxPermissions = () => {
     if (getTokenList().length) {
         $('#runButton').show();
         $('#showSummary').show();
@@ -203,7 +203,7 @@ export default class View {
                     this.blockly.initPromise.then(() => {
                         this.setElementActions();
                         initRealityCheck();
-                        toggleButtonHide();
+                        applyToolboxPermissions();
                         renderReactComponents();
                         if (!getTokenList().length) updateLogo();
                         resolve();
