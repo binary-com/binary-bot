@@ -106,7 +106,6 @@ const resetRealityCheck = token => {
 
 const limits = new Limits();
 const saveDialog = new Save();
-// const chart = new Chart();
 
 const getActiveToken = (tokenList, activeToken) => {
     const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
