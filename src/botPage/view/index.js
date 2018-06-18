@@ -28,6 +28,7 @@ const view = new View();
 view.initPromise.then(() => {
     $('.show-on-load').show();
     $('.barspinner').hide();
+    window.dispatchEvent(new Event('resize'));
     trackJs.addMetadata('version', version);
     trackJs.configure({
         userId: $('.account-id')
