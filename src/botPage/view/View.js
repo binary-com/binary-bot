@@ -266,6 +266,7 @@ export default class View {
         };
 
         const logout = () => {
+            window.onbeforeunload = null;
             logoutAllTokens().then(() => {
                 updateTokenList();
                 globalObserver.emit('ui.log.info', translate('Logged you out!'));
