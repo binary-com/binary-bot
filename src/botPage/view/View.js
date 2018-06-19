@@ -290,6 +290,7 @@ export default class View {
         const logout = () => {
             logoutAllTokens().then(() => {
                 updateTokenList();
+                updateLogo();
                 globalObserver.emit('ui.log.info', translate('Logged you out!'));
                 clearRealityCheck();
             });
