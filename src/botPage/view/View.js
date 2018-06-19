@@ -129,7 +129,7 @@ const updateLogo = token => {
     } else {
         $('.binary-logo-text > img').attr('src', 'https://style.binary.com/images/logo/type.svg');
     }
-    window.dispatchEvent(new Event('resize'));
+    setTimeout(() => window.dispatchEvent(new Event('resize')));
 };
 
 const updateTokenList = () => {
@@ -201,6 +201,7 @@ export default class View {
                         initRealityCheck();
                         toggleButtonHide();
                         renderReactComponents();
+                        updateLogo();
                         resolve();
                     });
                 });
