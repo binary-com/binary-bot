@@ -48,6 +48,14 @@ const addBalanceForToken = token => {
 const chart = new Chart();
 const tradingView = new TradingView();
 
+const setBeforeUnload = off => {
+    if (off) {
+        window.onbeforeunload = null;
+    } else {
+        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
+    }
+};
+
 const showRealityCheck = () => {
     $('.blocker').show();
     $('.reality-check').show();
@@ -170,24 +178,26 @@ const applyToolboxPermissions = () => {
 
 const showReloadPopup = () =>
     new Promise((resolve, reject) => {
+        setBeforeUnload(true);
         $('#reloadPanel').dialog({
             height : 'auto',
             width  : 400,
             modal  : true,
             buttons: [
                 {
+                    text : 'No',
+                    class: 'button-primary',
+                    click() {
+                        $(this).dialog('close');
+                        reject();
+                    },
+                },
+                {
                     text : 'Yes',
                     class: 'button-primary',
                     click() {
                         $(this).dialog('close');
                         resolve();
-                    },
-                },
-                {
-                    text : 'No',
-                    class: 'button-primary',
-                    click() {
-                        reject();
                     },
                 },
             ],
@@ -204,7 +214,6 @@ export default class View {
                     updateTokenList();
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
-                        showReloadPopup().then(() => alert('e'));
                         this.setElementActions();
                         initRealityCheck();
                         applyToolboxPermissions();
@@ -295,13 +304,17 @@ export default class View {
         };
 
         const logout = () => {
-            logoutAllTokens().then(() => {
-                updateTokenList();
-                globalObserver.emit('ui.log.info', translate('Logged you out!'));
-                clearRealityCheck();
-                clearActiveTokens();
-                location.reload();
-            });
+            showReloadPopup()
+                .then(() => {
+                    logoutAllTokens().then(() => {
+                        updateTokenList();
+                        globalObserver.emit('ui.log.info', translate('Logged you out!'));
+                        clearRealityCheck();
+                        clearActiveTokens();
+                        location.reload();
+                    });
+                })
+                .catch(() => {});
         };
 
         const clearActiveTokens = () => {
@@ -456,8 +469,12 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, $(e.currentTarget).attr('value'));
-            location.reload();
+            showReloadPopup()
+                .then(() => {
+                    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, $(e.currentTarget).attr('value'));
+                    location.reload();
+                })
+                .catch(() => {});
         });
 
         $('#login')
