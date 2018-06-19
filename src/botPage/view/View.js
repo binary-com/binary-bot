@@ -201,7 +201,7 @@ export default class View {
                         initRealityCheck();
                         toggleButtonHide();
                         renderReactComponents();
-                        updateLogo();
+                        if (!getTokenList().length) updateLogo();
                         resolve();
                     });
                 });
