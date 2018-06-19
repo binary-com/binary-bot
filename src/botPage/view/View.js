@@ -108,6 +108,30 @@ const limits = new Limits();
 const saveDialog = new Save();
 // const chart = new Chart();
 
+const getLandingCompanyForToken = id => {
+    let landingCompany;
+    let activeToken;
+    const tokenList = getTokenList();
+    if (tokenList.length) {
+        activeToken = tokenList.filter(token => token.token === id);
+        if (activeToken && activeToken.length === 1) {
+            landingCompany = activeToken[0].loginInfo.landing_company_name;
+        }
+    }
+    return landingCompany;
+};
+
+const updateLogo = token => {
+    $('.binary-logo-text > img').attr('src', '');
+    const currentLandingCompany = getLandingCompanyForToken(token);
+    if (currentLandingCompany === 'maltainvest') {
+        $('.binary-logo-text > img').attr('src', './image/binary-type-logo.svg');
+    } else {
+        $('.binary-logo-text > img').attr('src', 'https://style.binary.com/images/logo/type.svg');
+    }
+    setTimeout(() => window.dispatchEvent(new Event('resize')));
+};
+
 const updateTokenList = () => {
     const tokenList = getTokenList();
     const loginButton = $('#login');
@@ -127,6 +151,7 @@ const updateTokenList = () => {
         accountList.show();
 
         const firstToken = tokenList[0];
+        updateLogo(firstToken.token);
         addBalanceForToken(firstToken.token);
         if (!('loginInfo' in firstToken)) {
             removeAllTokens();
@@ -176,6 +201,7 @@ export default class View {
                         initRealityCheck();
                         toggleButtonHide();
                         renderReactComponents();
+                        if (!getTokenList().length) updateLogo();
                         resolve();
                     });
                 });
@@ -264,6 +290,7 @@ export default class View {
         const logout = () => {
             logoutAllTokens().then(() => {
                 updateTokenList();
+                updateLogo();
                 globalObserver.emit('ui.log.info', translate('Logged you out!'));
                 clearRealityCheck();
             });
@@ -417,6 +444,7 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
+            updateLogo($(e.currentTarget).attr('value'));
             resetRealityCheck($(e.currentTarget).attr('value'));
             e.preventDefault();
             const $el = $(e.currentTarget);
