@@ -192,6 +192,33 @@ const applyToolboxPermissions = () => {
     }
 };
 
+const showReloadPopup = () =>
+    new Promise((resolve, reject) => {
+        $('#reloadPanel').dialog({
+            height : 'auto',
+            width  : 400,
+            modal  : true,
+            buttons: [
+                {
+                    text : 'Yes',
+                    class: 'button-primary',
+                    click() {
+                        $(this).dialog('close');
+                        resolve();
+                    },
+                },
+                {
+                    text : 'No',
+                    class: 'button-primary',
+                    click() {
+                        reject();
+                    },
+                },
+            ],
+        });
+        $('#reloadPanel').dialog('open');
+    });
+
 export default class View {
     constructor() {
         logHandler();
@@ -201,6 +228,7 @@ export default class View {
                     updateTokenList();
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
+                        showReloadPopup().then(() => alert('e'));
                         this.setElementActions();
                         initRealityCheck();
                         applyToolboxPermissions();
