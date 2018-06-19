@@ -124,7 +124,7 @@ const getLandingCompanyForToken = id => {
 const updateLogo = token => {
     $('.binary-logo-text > img').attr('src', '');
     const currentLandingCompany = getLandingCompanyForToken(token);
-    if (currentLandingCompany === 'malta') {
+    if (currentLandingCompany === 'maltainvest') {
         $('.binary-logo-text > img').attr('src', './image/binary-type-logo.svg');
     } else {
         $('.binary-logo-text > img').attr('src', 'https://style.binary.com/images/logo/type.svg');
