@@ -180,13 +180,19 @@ const showReloadPopup = () =>
     new Promise((resolve, reject) => {
         setBeforeUnload(true);
         $('#reloadPanel').dialog({
-            height : 'auto',
-            width  : 400,
-            modal  : true,
+            height: 'auto',
+            width : 400,
+            modal : true,
+            open() {
+                $(this)
+                    .parent()
+                    .find('.ui-dialog-buttonset > button')
+                    .removeClass('ui-button ui-corner-all ui-widget');
+            },
             buttons: [
                 {
                     text : 'No',
-                    class: 'button-primary',
+                    class: 'button-secondary',
                     click() {
                         $(this).dialog('close');
                         reject();
