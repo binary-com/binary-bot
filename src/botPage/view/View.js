@@ -159,6 +159,7 @@ const updateTokenList = () => {
         accountList.show();
 
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
+        updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
         if (!('loginInfo' in activeToken)) {
             removeAllTokens();
