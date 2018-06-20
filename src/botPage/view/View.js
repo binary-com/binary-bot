@@ -107,11 +107,6 @@ const clearRealityCheck = () => {
     stopRealityCheck();
 };
 
-const resetRealityCheck = token => {
-    clearRealityCheck();
-    startRealityCheck(null, token);
-};
-
 const limits = new Limits();
 const saveDialog = new Save();
 // const chart = new Chart();
@@ -342,7 +337,7 @@ export default class View {
                         globalObserver.emit('ui.log.info', translate('Logged you out!'));
                         clearRealityCheck();
                         clearActiveTokens();
-                        location.reload();
+                        location.reload(); // eslint-disable-line no-restricted-globals
                     });
                 })
                 .catch(() => {});
@@ -503,7 +498,7 @@ export default class View {
             showReloadPopup()
                 .then(() => {
                     setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, $(e.currentTarget).attr('value'));
-                    location.reload();
+                    location.reload(); // eslint-disable-line no-restricted-globals
                 })
                 .catch(() => {});
         });

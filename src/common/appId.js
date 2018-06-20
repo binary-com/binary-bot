@@ -49,7 +49,7 @@ const isRealAccount = () => {
     try {
         activeAccount = accountList.filter(account => account.token === activeToken);
         isReal = !activeAccount[0].accountName.startsWith('VRT');
-    } catch (e) {}
+    } catch (e) {} // eslint-disable-line no-empty
     return isReal;
 };
 
