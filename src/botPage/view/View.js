@@ -201,7 +201,7 @@ const showReloadPopup = () =>
         setBeforeUnload(true);
         $('#reloadPanel').dialog({
             height: 'auto',
-            width : 400,
+            width : 600,
             modal : true,
             open() {
                 $(this)
