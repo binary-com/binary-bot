@@ -211,7 +211,7 @@ const showReloadPopup = () =>
             },
             buttons: [
                 {
-                    text : 'No',
+                    text : translate('No'),
                     class: 'button-secondary',
                     click() {
                         $(this).dialog('close');
@@ -219,7 +219,7 @@ const showReloadPopup = () =>
                     },
                 },
                 {
-                    text : 'Yes',
+                    text : translate('Yes'),
                     class: 'button-primary',
                     click() {
                         $(this).dialog('close');
