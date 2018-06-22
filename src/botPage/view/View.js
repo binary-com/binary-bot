@@ -307,7 +307,7 @@ export default class View {
             .dialog({
                 resizable: false,
                 autoOpen : false,
-                width    : Math.min(document.body.offsetWidth, 700),
+                width    : Math.min(document.body.offsetWidth, 770),
                 height   : Math.min(document.body.offsetHeight, 600),
                 closeText: '',
                 classes  : { 'ui-dialog-titlebar-close': 'icon-close' },

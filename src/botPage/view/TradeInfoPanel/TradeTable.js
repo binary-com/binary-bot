@@ -42,6 +42,7 @@ export default class TradeTable extends Component {
             { key: 'contract_type', width: 80, resizable: true, name: translate('Trade type') },
             { key: 'entry_tick', width: 80, resizable: true, name: translate('Entry spot') },
             { key: 'exit_tick', width: 80, resizable: true, name: translate('Exit spot') },
+            { key: 'sell_spot', width: 80, resizable: true, name: translate('Sell spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
         ];
@@ -73,6 +74,8 @@ export default class TradeTable extends Component {
             const { rows } = accountStat;
             const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
 
+            if (trade.is_expired && trade.is_sold && !trade.exit_tick) trade.exit_tick = '-';
+
             if (prevRowIndex >= 0) {
                 this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
             } else {
@@ -97,6 +100,7 @@ export default class TradeTable extends Component {
                 'contract_type',
                 'entry_tick',
                 'exit_tick',
+                'sell_spot',
                 'buy_price',
                 'sell_price',
                 'profit',
