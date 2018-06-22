@@ -6,10 +6,15 @@ import {
     getTokenList,
     removeAllTokens,
     get as getStorage,
+    set as setStorage,
 } from 'binary-common-utils/lib/storageManager';
 import { getLanguage } from './lang';
 
 const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));
+
+export const AppConstants = Object.freeze({
+    STORAGE_ACTIVE_TOKEN: 'activeToken',
+});
 
 export const oauthLogin = (done = () => 0) => {
     const queryStr = parseQueryString();
@@ -20,6 +25,10 @@ export const oauthLogin = (done = () => 0) => {
     if (tokenList.length) {
         $('#main').hide();
         addAllTokens(tokenList).then(() => {
+            const accounts = getTokenList();
+            if (accounts.length) {
+                setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
+            }
             document.location = 'bot.html';
         });
     } else {
@@ -32,8 +41,20 @@ export const getCustomEndpoint = () => ({
     appId: getStorage('config.app_id'),
 });
 
+const isRealAccount = () => {
+    const accountList = JSON.parse(getStorage('tokenList') || '{}');
+    const activeToken = getStorage(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
+    let activeAccount = null;
+    let isReal = false;
+    try {
+        activeAccount = accountList.filter(account => account.token === activeToken);
+        isReal = !activeAccount[0].accountName.startsWith('VRT');
+    } catch (e) {} // eslint-disable-line no-empty
+    return isReal;
+};
+
 export const getDefaultEndpoint = () => ({
-    url  : 'frontend.binaryws.com',
+    url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
     appId: getStorage('config.default_app_id') || 1169,
 });
 

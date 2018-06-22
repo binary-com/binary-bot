@@ -23,7 +23,7 @@ import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
-import { logoutAllTokens, getOAuthURL, generateLiveApiInstance } from '../../common/appId';
+import { logoutAllTokens, getOAuthURL, generateLiveApiInstance, AppConstants } from '../../common/appId';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
@@ -47,6 +47,14 @@ const addBalanceForToken = token => {
 
 const chart = new Chart();
 const tradingView = new TradingView();
+
+const setBeforeUnload = off => {
+    if (off) {
+        window.onbeforeunload = null;
+    } else {
+        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
+    }
+};
 
 const showRealityCheck = () => {
     $('.blocker').show();
@@ -99,11 +107,6 @@ const clearRealityCheck = () => {
     stopRealityCheck();
 };
 
-const resetRealityCheck = token => {
-    clearRealityCheck();
-    startRealityCheck(null, token);
-};
-
 const limits = new Limits();
 const saveDialog = new Save();
 // const chart = new Chart();
@@ -132,6 +135,11 @@ const updateLogo = token => {
     setTimeout(() => window.dispatchEvent(new Event('resize')));
 };
 
+const getActiveToken = (tokenList, activeToken) => {
+    const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
+    return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
+};
+
 const updateTokenList = () => {
     const tokenList = getTokenList();
     const loginButton = $('#login');
@@ -150,17 +158,17 @@ const updateTokenList = () => {
         loginButton.hide();
         accountList.show();
 
-        const firstToken = tokenList[0];
-        updateLogo(firstToken.token);
-        addBalanceForToken(firstToken.token);
-        if (!('loginInfo' in firstToken)) {
+        const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
+        updateLogo(activeToken.token);
+        addBalanceForToken(activeToken.token);
+        if (!('loginInfo' in activeToken)) {
             removeAllTokens();
             updateTokenList();
         }
         tokenList.forEach(tokenInfo => {
             const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
 
-            if (tokenList.indexOf(tokenInfo) === 0) {
+            if (tokenInfo === activeToken) {
                 $('.account-id')
                     .attr('value', `${tokenInfo.token}`)
                     .text(`${tokenInfo.accountName}`);
@@ -176,7 +184,7 @@ const updateTokenList = () => {
     }
 };
 
-const toggleButtonHide = () => {
+const applyToolboxPermissions = () => {
     if (getTokenList().length) {
         $('#runButton').show();
         $('#showSummary').show();
@@ -187,6 +195,41 @@ const toggleButtonHide = () => {
         $('#logButton').hide();
     }
 };
+
+const showReloadPopup = () =>
+    new Promise((resolve, reject) => {
+        setBeforeUnload(true);
+        $('#reloadPanel').dialog({
+            height: 'auto',
+            width : 600,
+            modal : true,
+            open() {
+                $(this)
+                    .parent()
+                    .find('.ui-dialog-buttonset > button')
+                    .removeClass('ui-button ui-corner-all ui-widget');
+            },
+            buttons: [
+                {
+                    text : translate('No'),
+                    class: 'button-secondary',
+                    click() {
+                        $(this).dialog('close');
+                        reject();
+                    },
+                },
+                {
+                    text : translate('Yes'),
+                    class: 'button-primary',
+                    click() {
+                        $(this).dialog('close');
+                        resolve();
+                    },
+                },
+            ],
+        });
+        $('#reloadPanel').dialog('open');
+    });
 
 export default class View {
     constructor() {
@@ -199,7 +242,7 @@ export default class View {
                     this.blockly.initPromise.then(() => {
                         this.setElementActions();
                         initRealityCheck();
-                        toggleButtonHide();
+                        applyToolboxPermissions();
                         renderReactComponents();
                         if (!getTokenList().length) updateLogo();
                         resolve();
@@ -288,12 +331,21 @@ export default class View {
         };
 
         const logout = () => {
-            logoutAllTokens().then(() => {
-                updateTokenList();
-                updateLogo();
-                globalObserver.emit('ui.log.info', translate('Logged you out!'));
-                clearRealityCheck();
-            });
+            showReloadPopup()
+                .then(() => {
+                    logoutAllTokens().then(() => {
+                        updateTokenList();
+                        globalObserver.emit('ui.log.info', translate('Logged you out!'));
+                        clearRealityCheck();
+                        clearActiveTokens();
+                        window.location.reload();
+                    });
+                })
+                .catch(() => {});
+        };
+
+        const clearActiveTokens = () => {
+            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
         };
 
         $('.panelExitButton').click(function onClick() {
@@ -444,28 +496,12 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            updateLogo($(e.currentTarget).attr('value'));
-            resetRealityCheck($(e.currentTarget).attr('value'));
-            e.preventDefault();
-            const $el = $(e.currentTarget);
-            const $oldType = $el.find('li span');
-            const $oldTypeText = $oldType.text();
-            const $oldID = $el.find('li div');
-            const $oldIDText = $oldID.text();
-            const $oldValue = $el.attr('value');
-            const $newType = $('.account-type');
-            const $newTypeText = $newType.first().text();
-            const $newID = $('.account-id');
-            const $newIDText = $newID.first().text();
-            const $newValue = $newID.attr('value');
-            $oldType.html($newTypeText);
-            $oldID.html($newIDText);
-            $el.attr('value', $newValue);
-            $newType.html($oldTypeText);
-            $newID.html($oldIDText);
-            $newID.attr('value', $oldValue);
-            $('.topMenuBalance').text('\u2002');
-            addBalanceForToken($('#main-account .account-id').attr('value'));
+            showReloadPopup()
+                .then(() => {
+                    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, $(e.currentTarget).attr('value'));
+                    window.location.reload();
+                })
+                .catch(() => {});
         });
 
         $('#login')
