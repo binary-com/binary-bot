@@ -338,7 +338,7 @@ export default class View {
                         globalObserver.emit('ui.log.info', translate('Logged you out!'));
                         clearRealityCheck();
                         clearActiveTokens();
-                        location.reload(); // eslint-disable-line no-restricted-globals
+                        window.location.reload();
                     });
                 })
                 .catch(() => {});
@@ -499,7 +499,7 @@ export default class View {
             showReloadPopup()
                 .then(() => {
                     setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, $(e.currentTarget).attr('value'));
-                    location.reload(); // eslint-disable-line no-restricted-globals
+                    window.location.reload();
                 })
                 .catch(() => {});
         });
