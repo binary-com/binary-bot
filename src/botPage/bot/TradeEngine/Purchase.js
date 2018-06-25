@@ -1,6 +1,6 @@
 import { translate } from '../../../common/i18n';
 import { recoverFromError, doUntilDone } from '../tools';
-import { info, notify } from '../broadcast';
+import { contractStatus, info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 
@@ -34,6 +34,7 @@ export default Engine =>
             };
 
             const action = () => this.api.buyContract(id, askPrice);
+            contractStatus();
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
