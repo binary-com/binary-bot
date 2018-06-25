@@ -112,7 +112,14 @@ export default class TradeInfoPanel extends Component {
                     <div>
                         <h4>
                             <span>{translate('Trades')}</span>
+<<<<<<< HEAD
                         </h4>
+||||||| merged common ancestors
+                        </h3>
+=======
+                        </h3>
+                        <p>{this.state.contractStatus}</p>
+>>>>>>> Prototype for contract status animation
 
                         <TradeTable accountID={accountID} />
                         <p id="sync-warning">
