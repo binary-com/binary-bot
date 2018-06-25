@@ -21,6 +21,9 @@ export default class TradeInfoPanel extends Component {
             }
             this.setState({ currentAccountID: accountID });
         });
+        globalObserver.register('contract.status', () => {
+            this.setState({ contractStatus: 'Purchase sent' });
+        });
     }
     render() {
         const { accountID, currentAccountID } = this.state;
@@ -55,6 +58,7 @@ export default class TradeInfoPanel extends Component {
                         <h3>
                             <span>{translate('Trades')}</span>
                         </h3>
+                        <p>{this.state.contractStatus}</p>
 
                         <TradeTable accountID={accountID} />
                     </div>
