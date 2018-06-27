@@ -126,9 +126,19 @@ export default class Interpreter {
         this.loop();
     }
     stop() {
-        this.$scope.api.disconnect();
-        globalObserver.emit('bot.stop');
-        this.stopped = true;
+        if (!this.bot.tradeEngine.isSold) {
+            globalObserver.register('contract.status', contractStatus => {
+                if (contractStatus === 'contract.sold') {
+                    this.$scope.api.disconnect();
+                    globalObserver.emit('bot.stop');
+                    this.stopped = true;
+                }
+            });
+        } else {
+            this.$scope.api.disconnect();
+            globalObserver.emit('bot.stop');
+            this.stopped = true;
+        }
     }
     createAsync(interpreter, func) {
         return interpreter.createAsyncFunction((...args) => {
