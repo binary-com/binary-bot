@@ -1,6 +1,6 @@
 import { translate } from '../../../common/i18n';
 import { recoverFromError, doUntilDone } from '../tools';
-import { notify } from '../broadcast';
+import { contractStatus, notify } from '../broadcast';
 import { DURING_PURCHASE } from './state/constants';
 
 let delayIndex = 0;
@@ -22,6 +22,7 @@ export default Engine =>
 
             const onSuccess = ({ sell: { sold_for: soldFor } }) => {
                 delayIndex = 0;
+                contractStatus('purchase.sold');
                 notify('info', `${translate('Sold for')}: ${soldFor}`);
                 return this.waitForAfter();
             };
