@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { translate } from '../../../common/i18n';
-import { tradePanelAccount } from '../style';
+import { warningText, tradePanelAccount } from '../style';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
 
