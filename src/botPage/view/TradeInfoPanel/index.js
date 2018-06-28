@@ -58,7 +58,6 @@ export default class TradeInfoPanel extends Component {
                         <h3>
                             <span>{translate('Trades')}</span>
                         </h3>
-                        <p>{this.state.contractStatus}</p>
 
                         <TradeTable accountID={accountID} />
                         <p style={warningText}>
