@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { translate } from '../../../common/i18n';
-import { tradePanelAccount } from '../style';
+import { warningText, tradePanelAccount } from '../style';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
 
@@ -61,6 +61,11 @@ export default class TradeInfoPanel extends Component {
                         <p>{this.state.contractStatus}</p>
 
                         <TradeTable accountID={accountID} />
+                        <p style={warningText}>
+                            {translate(
+                                'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system. You may refer to the Binary.com statement page for details of all completed transactions.'
+                            )}
+                        </p>
                     </div>
                 </div>
             </div>
