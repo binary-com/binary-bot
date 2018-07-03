@@ -125,19 +125,20 @@ export default class Interpreter {
         this.interpreter.paused_ = false;
         this.loop();
     }
+    terminateSession() {
+        this.$scope.api.disconnect();
+        globalObserver.emit('bot.stop');
+        this.stopped = true;
+    }
     stop() {
         if (!this.bot.tradeEngine.isSold) {
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus === 'contract.sold') {
-                    this.$scope.api.disconnect();
-                    globalObserver.emit('bot.stop');
-                    this.stopped = true;
+                    this.terminateSession();
                 }
             });
         } else {
-            this.$scope.api.disconnect();
-            globalObserver.emit('bot.stop');
-            this.stopped = true;
+            this.terminateSession();
         }
     }
     createAsync(interpreter, func) {
