@@ -1,5 +1,31 @@
 @import 'color';
 
+$static-circle-diameter: 1.5em;
+$dynamic-circle-diameter: 2em;
+$circle-color: #E98024;
+$disabled-color: #F2F2F2;
+
+@keyframes animate-circle {
+    0% { 
+        transform: translate(-50%, -50%) scale(0);
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+@keyframes animate-progress {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
 #summaryPanel {
     border-radius: 4px;
     border: 1px solid $brand-gray;
@@ -10,6 +36,78 @@
     #sync-warning {
         font-size: 12px;
         color: lightgray;
+    }
+    #current-trade-status {
+        padding-left: 13%;
+    }
+    .circle-wrapper {
+        width: $static-circle-diameter;
+        height: $static-circle-diameter;
+        display: inline-block;
+        .static-circle {
+            width: $static-circle-diameter;
+            height: $static-circle-diameter;
+            border-radius: 100%;
+            border: 0.4em solid $disabled-color;
+            display: inline-block;
+            position: relative;
+            background-color: $disabled-color;
+        }
+    }
+    .circle-wrapper.active {
+         .static-circle {
+            width: $static-circle-diameter;
+            height: $static-circle-diameter;
+            border-radius: 100%;
+            border: 0.4em solid $circle-color;
+            display: inline-block;
+            position: relative;
+            background-color: #FFF;
+            z-index: 1;
+        }
+        .dynamic-circle {
+            position: absolute;
+            width: $dynamic-circle-diameter;
+            height: $dynamic-circle-diameter;
+            background-color: $circle-color;
+            border-radius: 100%;
+            opacity: 0.32;
+            animation: animate-circle 0.8s infinite;
+            transform: translate(-50%, -50%);
+            margin-top: 0.7em;
+            margin-left: -0.75em;
+            animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+    }
+    .circle-wrapper.complete {
+         .static-circle {
+            width: $static-circle-diameter;
+            height: $static-circle-diameter;
+            border-radius: 100%;
+            border: 0.4em solid $circle-color;
+            display: inline-block;
+            position: relative;
+            background-color: #FFF;
+            z-index: 1;
+        }
+    }
+    .line {
+        position: relative;
+        display: inline-block;
+        top: -0.7em;
+        width: 15em;
+        height: 0.15em;
+        background-color: $disabled-color;
+    }
+    .line.active {
+         .progress-bar {
+            box-shadow: none;
+            height: 100%;
+            background-color: $circle-color;
+            display: inline-block;
+            animation: animate-progress 0.5s 1;
+            animation-fill-mode: forwards;
+        }   
     }
 }
 
