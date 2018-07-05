@@ -59,7 +59,7 @@ $disabled-color: #F2F2F2;
             display: inline-block;
             position: relative;
             background-color: #FFF;
-            z-index: 1;
+            z-index: 2;
         }
         .dynamic-circle {
             position: absolute;
@@ -73,6 +73,7 @@ $disabled-color: #F2F2F2;
             margin-top: 0.7em;
             margin-left: -0.75em;
             animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+            z-index: 1;
         }
     }
     .circle-wrapper.complete {
@@ -84,7 +85,7 @@ $disabled-color: #F2F2F2;
             display: inline-block;
             position: relative;
             background-color: #FFF;
-            z-index: 1;
+            z-index: 2;
         }
     }
     .line {
