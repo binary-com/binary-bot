@@ -21,7 +21,7 @@ const setBeforeUnload = off => {
     if (off) {
         window.onbeforeunload = null;
     } else {
-        //        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
+        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
     }
 };
 

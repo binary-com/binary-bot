@@ -243,7 +243,6 @@ export default class View {
                         this.setElementActions();
                         initRealityCheck();
                         applyToolboxPermissions();
-                        $('#summaryPanel').dialog('open');
                         renderReactComponents();
                         if (!getTokenList().length) updateLogo();
                         resolve();
