@@ -45,18 +45,23 @@ export default class TradeInfoPanel extends Component {
                                 ))}
                             </select>
                         </label>
-                        <h3>
+                        <h4>
                             <span>{translate('Summary')}</span>
-                        </h3>
+                        </h4>
 
                         <Summary accountID={accountID} />
                     </div>
                     <div>
-                        <h3>
+                        <h4>
                             <span>{translate('Trades')}</span>
-                        </h3>
+                        </h4>
 
                         <TradeTable accountID={accountID} />
+                        <p id="sync-warning">
+                            {translate(
+                                'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system. Please be aware that some completed transactions may not be displayed in the table if the bot is stopped while placing trades. You may refer to the Binary.com statement page for details of all completed transactions.'
+                            )}
+                        </p>
                     </div>
                 </div>
             </div>
