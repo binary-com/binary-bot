@@ -285,6 +285,9 @@
   box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1); }
   #summaryPanel p {
     margin: 0em; }
+  #summaryPanel #sync-warning {
+    font-size: 12px;
+    color: lightgray; }
 
 #fileBrowser {
   width: 388px;
@@ -863,4 +866,4 @@ body {
 label {
   margin-bottom: 0px; }
 
-/*# sourceMappingURL=bot-d4182e9752.css.map */
+/*# sourceMappingURL=bot-890ec9b8e0.css.map */
