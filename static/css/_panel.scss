@@ -22,6 +22,15 @@ $disabled-color: #F2F2F2;
         width: 0%;
     }
     100% {
+        width: 50%;
+    }
+}
+
+@keyframes animate-progress-complete {
+    0% {
+        width: 50%;
+    }
+    100% {
         width: 100%;
     }
 }
@@ -30,6 +39,9 @@ $disabled-color: #F2F2F2;
     border-radius: 4px;
     border: 1px solid $brand-gray;
     box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1);
+    .content-row {
+        margin-bottom: 1em;
+    }
     p {
          margin: 0em;
     }
@@ -37,13 +49,19 @@ $disabled-color: #F2F2F2;
         font-size: 12px;
         color: lightgray;
     }
-    #current-trade-status {
-        padding-left: 13%;
+    .stage {
+        display: inline-block;
+        margin: 0 3.8em 0 3.8em;
+    }
+    .stage-label {
+        text-align: center;
     }
     .circle-wrapper {
         width: $static-circle-diameter;
         height: $static-circle-diameter;
         display: inline-block;
+        transform: translate(-50%, 50%);
+        margin-left: 50%;
         .static-circle {
             width: $static-circle-diameter;
             height: $static-circle-diameter;
@@ -93,10 +111,10 @@ $disabled-color: #F2F2F2;
         }
     }
     .line {
-        position: relative;
+        position: absolute;
         display: inline-block;
-        top: -0.7em;
-        width: 15em;
+        top: 45.89%;
+        width: 27.5em;
         height: 0.15em;
         background-color: $disabled-color;
     }
@@ -109,6 +127,16 @@ $disabled-color: #F2F2F2;
             animation: animate-progress 0.5s 1;
             animation-fill-mode: forwards;
         }   
+    }
+    .line.complete {
+         .progress-bar {
+            box-shadow: none;
+            height: 100%;
+            background-color: $circle-color;
+            display: inline-block;
+            animation: animate-progress-complete 0.5s 1;
+            animation-fill-mode: forwards;
+        }
     }
 }
 
