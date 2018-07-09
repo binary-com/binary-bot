@@ -10,6 +10,12 @@ class AnimateTrade extends Component {
         globalObserver.register('bot.stop', () => {
             resetAnimation();
         });
+        $('#runButton').click(() => {
+            globalObserver.register('contract.status', contractStatus => {
+                this.setState({ contractStatus });
+                activateStage(contractStatus.id);
+            });
+        });
     }
     render() {
         return (
@@ -102,12 +108,6 @@ export default class TradeInfoPanel extends Component {
                 this.setState({ accountID });
             }
             this.setState({ currentAccountID: accountID });
-        });
-        $('#runButton').click(() => {
-            globalObserver.register('contract.status', contractStatus => {
-                this.setState({ contractStatus });
-                activateStage(contractStatus);
-            });
         });
     }
     render() {

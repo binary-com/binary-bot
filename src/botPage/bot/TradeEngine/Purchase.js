@@ -18,7 +18,10 @@ export default Engine =>
 
             const onSuccess = r => {
                 const { buy } = r;
-                contractStatus('contract.purchase_recieved');
+                contractStatus({
+                    id  : 'contract.purchase_recieved',
+                    data: buy.contract_id,
+                });
 
                 this.subscribeToOpenContract(buy.contract_id);
                 this.store.dispatch(purchaseSuccessful());
@@ -36,7 +39,10 @@ export default Engine =>
 
             const action = () => this.api.buyContract(id, askPrice);
             this.isSold = false;
-            contractStatus('contract.purchase_sent');
+            contractStatus({
+                id  : 'contract.purchase_sent',
+                data: askPrice,
+            });
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);

@@ -133,7 +133,7 @@ export default class Interpreter {
     stop() {
         if (this.bot.tradeEngine.isSold === false) {
             globalObserver.register('contract.status', contractStatus => {
-                if (contractStatus === 'contract.sold') {
+                if (contractStatus.id === 'contract.sold') {
                     this.terminateSession();
                     globalObserver.unregisterAll('contract.status');
                 }
