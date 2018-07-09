@@ -24,6 +24,10 @@ class AnimateTrade extends Component {
                                 <div className="progress-bar" />
                             </div>
                         </span>
+                        <div className="stage-tooltip">
+                            <div className="triangle" />
+                            <p>Buy amount: 1</p>
+                        </div>
                     </span>
                     <span className="stage">
                         <div className="stage-label">{translate('Buy succeeded')}</div>
@@ -31,6 +35,10 @@ class AnimateTrade extends Component {
                             <span className="static-circle" />
                             <span className="dynamic-circle" />
                         </span>
+                        <div className="stage-tooltip">
+                            <div className="triangle" />
+                            <p>Buy amount: 1</p>
+                        </div>
                     </span>
                     <span className="stage">
                         <div className="stage-label">{translate('Contract Sold')}</div>
@@ -38,6 +46,10 @@ class AnimateTrade extends Component {
                             <span className="static-circle" />
                             <span className="dynamic-circle" />
                         </span>
+                        <div className="stage-tooltip">
+                            <div className="triangle" />
+                            <p>Buy amount: 1</p>
+                        </div>
                     </span>
                 </div>
             </div>
@@ -52,22 +64,26 @@ const resetAnimation = () => {
     $('.line')
         .removeClass('active')
         .removeClass('complete');
+    $('.stage-tooltip').removeClass('active');
 };
 
 const activateStage = status => {
     if (status === 'contract.purchase_sent') {
         resetAnimation();
         $('.circle-wrapper:eq(0)').addClass('active');
+        $('.stage-tooltip:eq(0)').addClass('active');
     } else if (status === 'contract.purchase_recieved') {
         $('.circle-wrapper:eq(0)').removeClass('active');
         $('.circle-wrapper:eq(0)').addClass('complete');
         $('.line').addClass('active');
         $('.circle-wrapper:eq(1)').addClass('active');
+        $('.stage-tooltip:eq(1)').addClass('active');
     } else if (status === 'contract.sold') {
         $('.circle-wrapper:eq(1)').removeClass('active');
         $('.circle-wrapper:eq(1)').addClass('complete');
         $('.line').addClass('complete');
         $('.circle-wrapper:eq(2)').addClass('active');
+        $('.stage-tooltip:eq(2)').addClass('active');
     }
 };
 
