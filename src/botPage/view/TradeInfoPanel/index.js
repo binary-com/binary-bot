@@ -87,9 +87,11 @@ export default class TradeInfoPanel extends Component {
             }
             this.setState({ currentAccountID: accountID });
         });
-        globalObserver.register('contract.status', contractStatus => {
-            this.setState({ contractStatus });
-            activateStage(contractStatus);
+        $('#runButton').click(() => {
+            globalObserver.register('contract.status', contractStatus => {
+                this.setState({ contractStatus });
+                activateStage(contractStatus);
+            });
         });
     }
     render() {

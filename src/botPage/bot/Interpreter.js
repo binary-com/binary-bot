@@ -131,10 +131,11 @@ export default class Interpreter {
         this.stopped = true;
     }
     stop() {
-        if (!this.bot.tradeEngine.isSold) {
+        if (this.bot.tradeEngine.isSold === false) {
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus === 'contract.sold') {
                     this.terminateSession();
+                    globalObserver.unregisterAll('contract.status');
                 }
             });
         } else {

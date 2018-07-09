@@ -35,6 +35,7 @@ export default Engine =>
             };
 
             const action = () => this.api.buyContract(id, askPrice);
+            this.isSold = false;
             contractStatus('contract.purchase_sent');
 
             if (!this.options.timeMachineEnabled) {
