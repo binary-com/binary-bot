@@ -6,13 +6,23 @@ import Summary from './Summary';
 import TradeTable from './TradeTable';
 
 class AnimateTrade extends Component {
+    constructor() {
+        super();
+        this.state = {};
+    }
     componentWillMount() {
         globalObserver.register('bot.stop', () => {
             resetAnimation();
         });
         $('#runButton').click(() => {
             globalObserver.register('contract.status', contractStatus => {
-                this.setState({ contractStatus });
+                if (contractStatus.id === 'contract.purchase_sent') {
+                    this.setState({ buy_price: contractStatus.data });
+                } else if (contractStatus.id === 'contract.purchase_recieved') {
+                    this.setState({ buy_id: contractStatus.data });
+                } else if (contractStatus.id === 'contract.sold') {
+                    this.setState({ sell_id: contractStatus.data });
+                }
                 activateStage(contractStatus.id);
             });
         });
@@ -32,7 +42,9 @@ class AnimateTrade extends Component {
                         </span>
                         <div className="stage-tooltip">
                             <div className="triangle" />
-                            <p>Buy amount: 1</p>
+                            <p>
+                                {translate('Buy amount')}: {this.state.buy_price || 0}
+                            </p>
                         </div>
                     </span>
                     <span className="stage">
@@ -43,7 +55,9 @@ class AnimateTrade extends Component {
                         </span>
                         <div className="stage-tooltip">
                             <div className="triangle" />
-                            <p>Buy amount: 1</p>
+                            <p>
+                                {translate('ID')}: {this.state.buy_id || 0}
+                            </p>
                         </div>
                     </span>
                     <span className="stage">
@@ -54,7 +68,9 @@ class AnimateTrade extends Component {
                         </span>
                         <div className="stage-tooltip">
                             <div className="triangle" />
-                            <p>Buy amount: 1</p>
+                            <p>
+                                {translate('ID')}: {this.state.sell_id || 0}
+                            </p>
                         </div>
                     </span>
                 </div>

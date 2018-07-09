@@ -26,7 +26,7 @@ export default Engine =>
                 if (this.isSold) {
                     contractStatus({
                         id  : 'contract.sold',
-                        data: contract.profit,
+                        data: contract.transaction_ids.sell,
                     });
                     this.contractId = '';
                     this.updateTotals(contract);

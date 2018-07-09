@@ -20,7 +20,7 @@ export default Engine =>
                 const { buy } = r;
                 contractStatus({
                     id  : 'contract.purchase_recieved',
-                    data: buy.contract_id,
+                    data: buy.transaction_id,
                 });
 
                 this.subscribeToOpenContract(buy.contract_id);

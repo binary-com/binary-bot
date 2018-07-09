@@ -67,7 +67,7 @@ $disabled-color: #F2F2F2;
             transform: translate(-50%, -50%);
             height: 10px;
             width: 10px;
-            border: 10px solid orange;
+            border: 10px solid #fef1cf;
             border-top-color: transparent;
             border-left-color: transparent;
             border-right-color: transparent;
@@ -78,7 +78,7 @@ $disabled-color: #F2F2F2;
             margin-top: -0.8em;
             padding: 0.5em;
             border-radius: 0.5em;
-            background-color: orange;
+            background-color: #fef1cf;
         }
     }
     .stage-tooltip {
@@ -149,7 +149,7 @@ $disabled-color: #F2F2F2;
         position: absolute;
         display: inline-block;
         top: 45.89%;
-        width: 27.5em;
+        width: 28.5em;
         height: 0.15em;
         background-color: $disabled-color;
     }
