@@ -55,12 +55,12 @@ $disabled-color: #F2F2F2;
          margin: 0em;
     }
     #sync-warning {
-        font-size: 12px;
+        font-size: 11px;
         color: lightgray;
     }
     .stage {
         display: inline-block;
-        margin: 0 3.8em 0 3.8em;
+        margin: 0 10.25% 0 10.25%;
         .stage-tooltip .triangle {
             margin-top: 0.7em;
             margin-left: 50%;
@@ -72,10 +72,13 @@ $disabled-color: #F2F2F2;
             border-left-color: transparent;
             border-right-color: transparent;
         }
+        .stage-tooltip.top {
+            margin-bottom: 0.5em;
+        }
         .stage-tooltip p {
-            font-size: 12px;
+            font-size: 11px;
             text-align: center;
-            margin-top: -0.8em;
+            margin-top: -0.9em;
             padding: 0.5em;
             border-radius: 0.5em;
             background-color: #fef1cf;
@@ -90,6 +93,7 @@ $disabled-color: #F2F2F2;
     }
     .stage-label {
         text-align: center;
+        font-size: 11px;
     }
     .circle-wrapper {
         width: $static-circle-diameter;
@@ -149,7 +153,7 @@ $disabled-color: #F2F2F2;
         position: absolute;
         display: inline-block;
         top: 45.89%;
-        width: 28.5em;
+        width: 2020%;
         height: 0.15em;
         background-color: $disabled-color;
     }
@@ -210,7 +214,7 @@ $disabled-color: #F2F2F2;
         text-align: center !important;
         padding: 3px !important;
         height: 2em;
-        font-size: 14px;
+        font-size: 11px;
     }
 
     #chart {
@@ -253,12 +257,12 @@ $disabled-color: #F2F2F2;
         border-right: 1px solid #f2f2f2;
     }
     .react-grid-HeaderCell {
-        font-size: 14px;
+        font-size: 11px;
         border-bottom: 1px solid #f2f2f2;
         border-right: 1px solid #f2f2f2;
     }
     .react-grid-Row {
-        font-size: 14px;
+        font-size: 11px;
     }
 }
 

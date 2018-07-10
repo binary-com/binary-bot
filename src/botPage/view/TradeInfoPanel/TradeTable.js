@@ -19,7 +19,8 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice, currency }) => 
     return '';
 };
 
-const minHeight = 380;
+const minHeight = 290;
+const rowHeight = 25;
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.green : style.red}>{value}</div>;
 
@@ -126,6 +127,7 @@ export default class TradeTable extends Component {
                     rowGetter={this.rowGetter.bind(this)}
                     rowsCount={rows.length}
                     minHeight={minHeight}
+                    rowHeight={rowHeight}
                 />
             </div>
         );

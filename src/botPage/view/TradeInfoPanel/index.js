@@ -12,9 +12,15 @@ class AnimateTrade extends Component {
     }
     componentWillMount() {
         globalObserver.register('bot.stop', () => {
-            resetAnimation();
+            this.setState({ stopMessage: `${translate('Bot is stopped')}.` });
+            $('.circle-wrapper:eq(2)').removeClass('active');
+            $('.circle-wrapper:eq(2)').addClass('complete');
+        });
+        $('#stopButton').click(() => {
+            $('.stage-tooltip.top:eq(0)').addClass('active');
         });
         $('#runButton').click(() => {
+            this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus.id === 'contract.purchase_sent') {
                     this.setState({ buy_price: contractStatus.data });
@@ -40,7 +46,7 @@ class AnimateTrade extends Component {
                                 <div className="progress-bar" />
                             </div>
                         </span>
-                        <div className="stage-tooltip">
+                        <div className="stage-tooltip bottom">
                             <div className="triangle" />
                             <p>
                                 {translate('Buy amount')}: {this.state.buy_price || 0}
@@ -48,15 +54,18 @@ class AnimateTrade extends Component {
                         </div>
                     </span>
                     <span className="stage">
+                        <div className="stage-tooltip top">
+                            <p>{this.state.stopMessage}</p>
+                        </div>
                         <div className="stage-label">{translate('Buy succeeded')}</div>
                         <span className="circle-wrapper">
                             <span className="static-circle" />
                             <span className="dynamic-circle" />
                         </span>
-                        <div className="stage-tooltip">
+                        <div className="stage-tooltip bottom">
                             <div className="triangle" />
                             <p>
-                                {translate('ID')}: {this.state.buy_id || 0}
+                                {translate('ID')}: {this.state.buy_id || 'xxxxxxxxxxxx'}
                             </p>
                         </div>
                     </span>
@@ -66,10 +75,10 @@ class AnimateTrade extends Component {
                             <span className="static-circle" />
                             <span className="dynamic-circle" />
                         </span>
-                        <div className="stage-tooltip">
+                        <div className="stage-tooltip bottom">
                             <div className="triangle" />
                             <p>
-                                {translate('ID')}: {this.state.sell_id || 0}
+                                {translate('ID')}: {this.state.sell_id || 'xxxxxxxxxxxx'}
                             </p>
                         </div>
                     </span>
@@ -93,19 +102,19 @@ const activateStage = status => {
     if (status === 'contract.purchase_sent') {
         resetAnimation();
         $('.circle-wrapper:eq(0)').addClass('active');
-        $('.stage-tooltip:eq(0)').addClass('active');
+        $('.stage-tooltip.bottom:eq(0)').addClass('active');
     } else if (status === 'contract.purchase_recieved') {
         $('.circle-wrapper:eq(0)').removeClass('active');
         $('.circle-wrapper:eq(0)').addClass('complete');
         $('.line').addClass('active');
         $('.circle-wrapper:eq(1)').addClass('active');
-        $('.stage-tooltip:eq(1)').addClass('active');
+        $('.stage-tooltip.bottom:eq(1)').addClass('active');
     } else if (status === 'contract.sold') {
         $('.circle-wrapper:eq(1)').removeClass('active');
         $('.circle-wrapper:eq(1)').addClass('complete');
         $('.line').addClass('complete');
         $('.circle-wrapper:eq(2)').addClass('active');
-        $('.stage-tooltip:eq(2)').addClass('active');
+        $('.stage-tooltip.bottom:eq(2)').addClass('active');
     }
 };
 
