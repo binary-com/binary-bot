@@ -96,6 +96,7 @@ export default class Interpreter {
                     reject(e);
                     return;
                 }
+                this.isErrorTriggered = true;
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = this.bot.tradeEngine;
                 this.terminateSession();
@@ -116,6 +117,7 @@ export default class Interpreter {
     }
     loop() {
         if (this.stopped || !this.interpreter.run()) {
+            this.isErrorTriggered = false;
             this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value));
         }
     }
@@ -131,7 +133,7 @@ export default class Interpreter {
         this.stopped = true;
     }
     stop() {
-        if (this.bot.tradeEngine.isSold === false) {
+        if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus.id === 'contract.sold') {
                     this.terminateSession();
