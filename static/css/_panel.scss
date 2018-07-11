@@ -106,7 +106,7 @@ $disabled-color: #F2F2F2;
             width: $static-circle-diameter;
             height: $static-circle-diameter;
             border-radius: 100%;
-            border: 0.2em solid $disabled-color;
+            border: 0.25em solid $disabled-color;
             display: inline-block;
             position: relative;
             background-color: $disabled-color;
@@ -117,7 +117,7 @@ $disabled-color: #F2F2F2;
             width: $static-circle-diameter;
             height: $static-circle-diameter;
             border-radius: 100%;
-            border: 0.2em solid $circle-color;
+            border: 0.25em solid $circle-color;
             display: inline-block;
             position: relative;
             background-color: #FFF;
@@ -143,7 +143,7 @@ $disabled-color: #F2F2F2;
             width: $static-circle-diameter;
             height: $static-circle-diameter;
             border-radius: 100%;
-            border: 0.2em solid $circle-color;
+            border: 0.25em solid $circle-color;
             display: inline-block;
             position: relative;
             background-color: #FFF;
@@ -153,9 +153,9 @@ $disabled-color: #F2F2F2;
     .line {
         position: absolute;
         display: inline-block;
-        top: 43.8%;
+        top: 37.5%;
         width: 3050%;
-        height: 0.15em;
+        height: 0.25em;
         background-color: $disabled-color;
     }
     .line.active {

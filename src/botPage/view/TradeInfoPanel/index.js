@@ -5,6 +5,25 @@ import { warningText, tradePanelAccount } from '../style';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
 
+const resetAnimation = () => {
+    $('.circle-wrapper')
+        .removeClass('active')
+        .removeClass('complete');
+    $('.line')
+        .removeClass('active')
+        .removeClass('complete');
+    $('.stage-tooltip').removeClass('active');
+};
+
+const activateStage = index => {
+    if (index > 0) {
+        $(`.circle-wrapper:eq(${index - 1})`).removeClass('active');
+        $(`.circle-wrapper:eq(${index - 1})`).addClass('complete');
+    }
+    $(`.circle-wrapper:eq(${index})`).addClass('active');
+    $(`.stage-tooltip.bottom:eq(${index})`).addClass('active');
+};
+
 class AnimateTrade extends Component {
     constructor() {
         super();
@@ -20,16 +39,25 @@ class AnimateTrade extends Component {
         $('#runButton').click(() => {
             this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
             globalObserver.register('contract.status', contractStatus => {
-                if (contractStatus.id === 'contract.purchase_sent') {
-                    this.setState({ buy_price: contractStatus.data });
-                } else if (contractStatus.id === 'contract.purchase_recieved') {
-                    this.setState({ buy_id: contractStatus.data });
-                } else if (contractStatus.id === 'contract.sold') {
-                    this.setState({ sell_id: contractStatus.data });
-                }
-                activateStage(contractStatus.id);
+                this.animateStage(contractStatus);
             });
         });
+    }
+    animateStage(contractStatus) {
+        if (contractStatus.id === 'contract.purchase_sent') {
+            resetAnimation();
+            activateStage(0);
+            this.setState({ buy_price: contractStatus.data });
+        } else if (contractStatus.id === 'contract.purchase_recieved') {
+            $('.line').addClass('active');
+            activateStage(1);
+            this.setState({ buy_id: contractStatus.data });
+        } else if (contractStatus.id === 'contract.sold') {
+            $('.line').addClass('complete');
+            activateStage(2);
+            this.setState({ sell_id: contractStatus.data });
+        }
+        activateStage(contractStatus.id);
     }
     render() {
         return (
@@ -85,36 +113,6 @@ class AnimateTrade extends Component {
         );
     }
 }
-
-const resetAnimation = () => {
-    $('.circle-wrapper')
-        .removeClass('active')
-        .removeClass('complete');
-    $('.line')
-        .removeClass('active')
-        .removeClass('complete');
-    $('.stage-tooltip').removeClass('active');
-};
-
-const activateStage = status => {
-    if (status === 'contract.purchase_sent') {
-        resetAnimation();
-        $('.circle-wrapper:eq(0)').addClass('active');
-        $('.stage-tooltip.bottom:eq(0)').addClass('active');
-    } else if (status === 'contract.purchase_recieved') {
-        $('.circle-wrapper:eq(0)').removeClass('active');
-        $('.circle-wrapper:eq(0)').addClass('complete');
-        $('.line').addClass('active');
-        $('.circle-wrapper:eq(1)').addClass('active');
-        $('.stage-tooltip.bottom:eq(1)').addClass('active');
-    } else if (status === 'contract.sold') {
-        $('.circle-wrapper:eq(1)').removeClass('active');
-        $('.circle-wrapper:eq(1)').addClass('complete');
-        $('.line').addClass('complete');
-        $('.circle-wrapper:eq(2)').addClass('active');
-        $('.stage-tooltip.bottom:eq(2)').addClass('active');
-    }
-};
 
 export default class TradeInfoPanel extends Component {
     constructor() {
