@@ -37,6 +37,8 @@ class AnimateTrade extends Component {
             $('.stage-tooltip.top:eq(0)').addClass('active');
         });
         $('#runButton').click(() => {
+            $('.stage-tooltip.top:eq(0)').removeClass('active');
+            resetAnimation();
             this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
             globalObserver.register('contract.status', contractStatus => {
                 this.animateStage(contractStatus);
