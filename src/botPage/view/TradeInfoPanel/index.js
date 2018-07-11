@@ -13,8 +13,6 @@ class AnimateTrade extends Component {
     componentWillMount() {
         globalObserver.register('bot.stop', () => {
             this.setState({ stopMessage: `${translate('Bot is stopped')}.` });
-            $('.circle-wrapper:eq(2)').removeClass('active');
-            $('.circle-wrapper:eq(2)').addClass('complete');
         });
         $('#stopButton').click(() => {
             $('.stage-tooltip.top:eq(0)').addClass('active');
@@ -65,7 +63,7 @@ class AnimateTrade extends Component {
                         <div className="stage-tooltip bottom">
                             <div className="triangle" />
                             <p>
-                                {translate('ID')}: {this.state.buy_id || 'xxxxxxxxxxxx'}
+                                {translate('ID')}: {this.state.buy_id || ''}
                             </p>
                         </div>
                     </span>
@@ -78,7 +76,7 @@ class AnimateTrade extends Component {
                         <div className="stage-tooltip bottom">
                             <div className="triangle" />
                             <p>
-                                {translate('ID')}: {this.state.sell_id || 'xxxxxxxxxxxx'}
+                                {translate('ID')}: {this.state.sell_id || ''}
                             </p>
                         </div>
                     </span>

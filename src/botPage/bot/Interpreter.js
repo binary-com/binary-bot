@@ -92,11 +92,11 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
+                this.isErrorTriggered = true;
                 if (!shouldRestartOnError(this.bot, e.name) || !botStarted(this.bot)) {
                     reject(e);
                     return;
                 }
-                this.isErrorTriggered = true;
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = this.bot.tradeEngine;
                 this.terminateSession();
