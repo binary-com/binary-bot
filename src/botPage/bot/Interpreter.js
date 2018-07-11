@@ -98,7 +98,7 @@ export default class Interpreter {
                 }
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = this.bot.tradeEngine;
-                this.stop();
+                this.terminateSession();
                 this.init();
                 this.$scope.observer.register('Error', onError);
                 this.bot.tradeEngine.init(...initArgs);
