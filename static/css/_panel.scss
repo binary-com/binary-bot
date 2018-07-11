@@ -266,6 +266,13 @@ $disabled-color: #F2F2F2;
     }
 }
 
+#summaryPanel {
+    .react-grid-Row .react-grid-Cell:last-child, 
+    .react-grid-Row .react-grid-Cell:nth-last-child(2) {
+        text-align: right;
+    }
+}
+
 #tradeInfo {
     margin-bottom: 10px;
 }
