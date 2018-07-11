@@ -1,7 +1,7 @@
 @import 'color';
 
-$static-circle-diameter: 1.5em;
-$dynamic-circle-diameter: 2em;
+$static-circle-diameter: 1em;
+$dynamic-circle-diameter: 1.5em;
 $circle-color: #E98024;
 $disabled-color: #F2F2F2;
 
@@ -60,7 +60,7 @@ $disabled-color: #F2F2F2;
     }
     .stage {
         display: inline-block;
-        margin: 0 10.25% 0 10.25%;
+        margin: 0 9.975% 0 9.975%;
         .stage-tooltip .triangle {
             margin-top: 0.7em;
             margin-left: 50%;
@@ -82,6 +82,7 @@ $disabled-color: #F2F2F2;
             padding: 0.5em;
             border-radius: 0.5em;
             background-color: #fef1cf;
+            width: 100px;
         }
     }
     .stage-tooltip {
@@ -105,7 +106,7 @@ $disabled-color: #F2F2F2;
             width: $static-circle-diameter;
             height: $static-circle-diameter;
             border-radius: 100%;
-            border: 0.4em solid $disabled-color;
+            border: 0.2em solid $disabled-color;
             display: inline-block;
             position: relative;
             background-color: $disabled-color;
@@ -116,7 +117,7 @@ $disabled-color: #F2F2F2;
             width: $static-circle-diameter;
             height: $static-circle-diameter;
             border-radius: 100%;
-            border: 0.4em solid $circle-color;
+            border: 0.2em solid $circle-color;
             display: inline-block;
             position: relative;
             background-color: #FFF;
@@ -132,7 +133,7 @@ $disabled-color: #F2F2F2;
             animation: animate-circle 0.8s infinite;
             transform: translate(-50%, -50%);
             margin-top: 50%;
-            margin-left: -0.75em;
+            margin-left: -50%;
             animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
             z-index: 1;
         }
@@ -142,7 +143,7 @@ $disabled-color: #F2F2F2;
             width: $static-circle-diameter;
             height: $static-circle-diameter;
             border-radius: 100%;
-            border: 0.4em solid $circle-color;
+            border: 0.2em solid $circle-color;
             display: inline-block;
             position: relative;
             background-color: #FFF;
@@ -152,8 +153,8 @@ $disabled-color: #F2F2F2;
     .line {
         position: absolute;
         display: inline-block;
-        top: 45.89%;
-        width: 2020%;
+        top: 43.8%;
+        width: 3050%;
         height: 0.15em;
         background-color: $disabled-color;
     }
