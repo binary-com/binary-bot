@@ -535,6 +535,7 @@ export default class View {
     }
     addEventHandlers() {
         globalObserver.register('Error', error => {
+            $('#runButton').prop('disabled', false);
             if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
