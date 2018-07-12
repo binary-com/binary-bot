@@ -51,6 +51,14 @@ const config = {
                 PUT: translate('Fall'),
             },
         ],
+        RISEFALLEQUALS: [
+            {
+                CALLE: translate('Rise Equals'),
+            },
+            {
+                PUTE: translate('Fall Equals'),
+            },
+        ],
         HIGHERLOWER: [
             {
                 CALL: translate('Higher'),
@@ -147,6 +155,12 @@ const config = {
             [translate('Minutes'), 'm'],
             [translate('Hours'), 'h'],
         ],
+        RISEFALLEQUALS: [
+            [translate('Ticks'), 't'],
+            [translate('Seconds'), 's'],
+            [translate('Minutes'), 'm'],
+            [translate('Hours'), 'h'],
+        ],
         HIGHERLOWER: [
             [translate('Ticks'), 't'],
             [translate('Seconds'), 's'],
@@ -165,7 +179,7 @@ const config = {
     hasBarrierOffset      : ['HIGHERLOWER', 'TOUCHNOTOUCH', 'ENDSINOUT', 'STAYSINOUT'],
     hasSecondBarrierOffset: ['ENDSINOUT', 'STAYSINOUT'],
     conditionsCategory    : {
-        callput     : ['risefall', 'higherlower'],
+        callput     : ['risefall', 'risefallequals', 'higherlower'],
         touchnotouch: ['touchnotouch'],
         endsinout   : ['endsinout'],
         staysinout  : ['staysinout'],
@@ -182,6 +196,7 @@ const config = {
     },
     conditions: [
         'risefall',
+        'risefallequals',
         'higherlower',
         'touchnotouch',
         'endsinout',
