@@ -470,6 +470,7 @@ export default class View {
         const startBot = limitations => {
             $('#stopButton').show();
             $('#runButton').hide();
+            $('#runButton').prop('disabled', true);
             showSummary();
             this.blockly.run(limitations);
         };
@@ -534,11 +535,16 @@ export default class View {
     }
     addEventHandlers() {
         globalObserver.register('Error', error => {
+            $('#runButton').prop('disabled', false);
             if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
                 this.stop();
             }
+        });
+
+        globalObserver.register('bot.stop', () => {
+            $('#runButton').prop('disabled', false);
         });
 
         globalObserver.register('bot.info', info => {

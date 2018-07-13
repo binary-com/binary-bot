@@ -19,7 +19,8 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice, currency }) => 
     return '';
 };
 
-const minHeight = 380;
+const minHeight = 290;
+const rowHeight = 25;
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.green : style.red}>{value}</div>;
 
@@ -37,11 +38,11 @@ export default class TradeTable extends Component {
             },
         };
         this.columns = [
-            { key: 'timestamp', width: 150, resizable: true, name: translate('Timestamp') },
-            { key: 'reference', width: 110, resizable: true, name: translate('Reference') },
+            { key: 'timestamp', width: 176, resizable: true, name: translate('Timestamp') },
+            { key: 'reference', width: 87, resizable: true, name: translate('Reference') },
             { key: 'contract_type', width: 80, resizable: true, name: translate('Trade type') },
             { key: 'entry_tick', width: 80, resizable: true, name: translate('Entry spot') },
-            { key: 'exit_tick', width: 80, resizable: true, name: translate('Exit spot') },
+            { key: 'exit_tick', width: 70, resizable: true, name: translate('Exit spot') },
             { key: 'sell_spot', width: 80, resizable: true, name: translate('Sell spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
@@ -126,6 +127,7 @@ export default class TradeTable extends Component {
                     rowGetter={this.rowGetter.bind(this)}
                     rowsCount={rows.length}
                     minHeight={minHeight}
+                    rowHeight={rowHeight}
                 />
             </div>
         );
