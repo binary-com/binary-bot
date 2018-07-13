@@ -6,8 +6,8 @@ const steps = [
         text : `
           <p>
             ${translate('Ready to learn how to use Binary Bot?')}
-            <label>
-              <input type="checkbox" id="do-not-ask-me-again"></input>
+            <input type="checkbox" id="do-not-ask-me-again"></input>
+            <label for="do-not-ask-me-again">
               ${translate('Do not ask me again.')}
             </label>
           </p>
