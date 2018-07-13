@@ -78,3 +78,8 @@ export const green = { color: 'green' };
 export const red = { color: 'red' };
 
 export const tradePanelAccount = { float: 'right' };
+
+export const warningText = {
+    'font-size': '12px',
+    color      : 'lightgray',
+};

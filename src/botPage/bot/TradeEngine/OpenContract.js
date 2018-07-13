@@ -1,6 +1,6 @@
 import { roundBalance } from '../../common/tools';
 import { doUntilDone } from '../tools';
-import { contract as broadcastContract } from '../broadcast';
+import { contractStatus, contract as broadcastContract } from '../broadcast';
 import { sell, openContractReceived } from './state/actions';
 
 const AFTER_FINISH_TIMEOUT = 5;
@@ -24,6 +24,10 @@ export default Engine =>
                 broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
 
                 if (this.isSold) {
+                    contractStatus({
+                        id  : 'contract.sold',
+                        data: contract.transaction_ids.sell,
+                    });
                     this.contractId = '';
                     this.updateTotals(contract);
                     if (this.afterPromise) {
