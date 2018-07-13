@@ -45,6 +45,18 @@ class SaveContent extends PureComponent {
                         </label>
                     </div>
                     <div style={style.inputRow}>
+                        <input
+                            title={translate(
+                                'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
+                            )}
+                            name="save-is-collection"
+                            id="save-is-collection"
+                            type="checkbox"
+                            ref={el => {
+                                this.isCollection = el;
+                            }}
+                            style={style.checkbox}
+                        />
                         <label
                             title={
                                 'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
@@ -52,17 +64,6 @@ class SaveContent extends PureComponent {
                             htmlFor="save-is-collection"
                         >
                             {translate('Save As Collection')}
-                            <input
-                                title={translate(
-                                    'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
-                                )}
-                                name="save-is-collection"
-                                type="checkbox"
-                                ref={el => {
-                                    this.isCollection = el;
-                                }}
-                                style={style.checkbox}
-                            />
                         </label>
                     </div>
                 </div>
