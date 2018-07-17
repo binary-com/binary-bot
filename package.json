@@ -139,7 +139,7 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
-    "blockly": "github:google/blockly#7679d22",
+    "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0",
     "gulp-gh-pages-will": "^0.5.5"
