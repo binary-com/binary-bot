@@ -236,6 +236,11 @@ export const addDomAsBlock = blockXml => {
             .filter(b => b.type === blockType)
             .forEach(b => b.dispose());
     }
+    if (isProcedure(blockType)) {
+        Array.from(blockXml.getElementsByTagName('arg')).forEach(o => {
+            o.setAttribute('varId', o.getAttribute('varid'));
+        });
+    }
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
 };
 
