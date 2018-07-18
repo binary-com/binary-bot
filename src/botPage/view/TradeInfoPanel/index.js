@@ -97,7 +97,7 @@ class AnimateTrade extends Component {
                         </div>
                     </span>
                     <span className="stage">
-                        <div className="stage-label">{translate('Contract Sold')}</div>
+                        <div className="stage-label">{translate('Contract closed')}</div>
                         <span className="circle-wrapper">
                             <span className="static-circle" />
                             <span className="dynamic-circle" />
