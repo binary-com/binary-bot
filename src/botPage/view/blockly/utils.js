@@ -226,7 +226,11 @@ export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
     });
     Blockly.Events.setGroup(false);
 };
-
+export const fixArgumentAttribute = xml => {
+    Array.from(xml.getElementsByTagName('arg')).forEach(o => {
+        if (o.hasAttribute('varid')) o.setAttribute('varId', o.getAttribute('varid'));
+    });
+};
 export const addDomAsBlock = blockXml => {
     backwardCompatibility(blockXml);
     const blockType = blockXml.getAttribute('type');
@@ -237,9 +241,7 @@ export const addDomAsBlock = blockXml => {
             .forEach(b => b.dispose());
     }
     if (isProcedure(blockType)) {
-        Array.from(blockXml.getElementsByTagName('arg')).forEach(o => {
-            o.setAttribute('varId', o.getAttribute('varid'));
-        });
+        fixArgumentAttribute(blockXml);
     }
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
 };

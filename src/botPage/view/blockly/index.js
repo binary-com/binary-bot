@@ -11,6 +11,7 @@ import {
     addDomAsBlock,
     backwardCompatibility,
     fixCollapsedBlocks,
+    fixArgumentAttribute,
 } from './utils';
 import blocks from './blocks';
 import Interpreter from '../../bot/Interpreter';
@@ -50,10 +51,11 @@ const disposeBlocksWithLoaders = () => {
 const loadWorkspace = xml => {
     Blockly.Events.setGroup('load');
     Blockly.mainWorkspace.clear();
+    Array.from(xml.children).forEach(block => backwardCompatibility(block));
+    fixArgumentAttribute(xml);
+    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
     addLoadersFirst(xml).then(
         () => {
-            Array.from(xml.children).forEach(block => backwardCompatibility(block));
-            Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
             fixCollapsedBlocks();
             globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
             Blockly.Events.setGroup(false);
