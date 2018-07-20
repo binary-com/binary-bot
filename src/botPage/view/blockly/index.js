@@ -270,6 +270,13 @@ export default class _Blockly {
 
         setBeforeUnload(true);
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        const variablesElement = xml.getElementsByTagName('variables');
+        if (variablesElement.length && variablesElement[0].children.length && collection) {
+            throw new Error('VariableInCollection');
+        }
+        if (collection) {
+            variablesElement[0].remove();
+        }
         Array.from(xml.children).forEach(blockDom => {
             const blockId = blockDom.getAttribute('id');
             if (!blockId) return;
