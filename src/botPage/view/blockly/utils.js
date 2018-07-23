@@ -233,7 +233,7 @@ export const fixArgumentAttribute = xml => {
 };
 export const addDomAsBlock = blockXml => {
     if (blockXml.tagName === 'variables') {
-        return Blockly.Xml.domToVariables(blockXml);
+        return Blockly.Xml.domToVariables(blockXml, Blockly.mainWorkspace);
     }
     backwardCompatibility(blockXml);
     const blockType = blockXml.getAttribute('type');
