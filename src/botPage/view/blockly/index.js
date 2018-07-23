@@ -67,6 +67,10 @@ const loadWorkspace = xml => {
     );
 };
 const loadBlocks = (xml, dropEvent = {}) => {
+    const variables = xml.getElementsByTagName('variables');
+    if (variables.length) {
+        Blockly.Xml.domToVariables(variables, Blockly.mainWorkspace);
+    }
     Blockly.Events.setGroup('load');
     addLoadersFirst(xml).then(
         loaders => {
