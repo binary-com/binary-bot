@@ -68,7 +68,7 @@ const loadWorkspace = xml => {
 };
 const loadBlocks = (xml, dropEvent = {}) => {
     const variables = xml.getElementsByTagName('variables');
-    if (variables.length) {
+    if (variables.length > 0) {
         Blockly.Xml.domToVariables(variables[0], Blockly.mainWorkspace);
     }
     Blockly.Events.setGroup('load');
