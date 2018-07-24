@@ -69,7 +69,7 @@ const loadWorkspace = xml => {
 const loadBlocks = (xml, dropEvent = {}) => {
     const variables = xml.getElementsByTagName('variables');
     if (variables.length) {
-        Blockly.Xml.domToVariables(variables, Blockly.mainWorkspace);
+        Blockly.Xml.domToVariables(variables[0], Blockly.mainWorkspace);
     }
     Blockly.Events.setGroup('load');
     addLoadersFirst(xml).then(
@@ -274,7 +274,6 @@ export default class _Blockly {
 
         setBeforeUnload(true);
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-        const variablesElement = xml.getElementsByTagName('variables');
         Array.from(xml.children).forEach(blockDom => {
             const blockId = blockDom.getAttribute('id');
             if (!blockId) return;
