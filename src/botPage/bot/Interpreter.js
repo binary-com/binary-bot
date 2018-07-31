@@ -133,9 +133,13 @@ export default class Interpreter {
         this.stopped = true;
     }
     stop() {
+        let isStatusListener = false;
         if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
+            if (isStatusListener) return;
             globalObserver.register('contract.status', contractStatus => {
+                isStatusListener = true;
                 if (contractStatus.id === 'contract.sold') {
+                    isStatusListener = false;
                     this.terminateSession();
                     globalObserver.unregisterAll('contract.status');
                 }
