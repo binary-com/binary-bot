@@ -72,7 +72,7 @@ export const getOAuthURL = () =>
 const options = {
     apiUrl   : getWebSocketURL(),
     websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
-    language : getStorage('lang') || 'en',
+    language : getLanguage().toUpperCase(),
     appId    : getAppIdFallback(),
 };
 
