@@ -534,6 +534,10 @@ export default class View {
         this.blockly.stop();
     }
     addEventHandlers() {
+        window.addEventListener('storage', e => {
+            if (e.key === 'activeToken' && !e.newValue) window.location.reload();
+        });
+
         globalObserver.register('Error', error => {
             $('#runButton').prop('disabled', false);
             if (error.error && error.error.error.code === 'InvalidToken') {
