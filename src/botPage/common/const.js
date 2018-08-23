@@ -111,10 +111,10 @@ const config = {
         ],
         HIGHLOWTICKS: [
             {
-                HIGHTICK: translate('High Tick'),
+                TICKHIGH: translate('High Tick'),
             },
             {
-                LOWTICK: translate('Low Tick'),
+                TICKLOW: translate('Low Tick'),
             },
         ],
     },
