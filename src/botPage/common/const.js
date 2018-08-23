@@ -10,19 +10,6 @@ const config = {
             [translate('Stake'), 'stake'],
         ],
         CRYPTO_CURRENCIES,
-        DETAILS: [
-            [translate('statement'), '1'],
-            [translate('ask price'), '2'],
-            [translate('payout'), '3'],
-            [translate('profit'), '4'],
-            [translate('contract type'), '5'],
-            [translate('entry spot'), '6'],
-            [translate('entry value'), '7'],
-            [translate('exit spot'), '8'],
-            [translate('exit value'), '9'],
-            [translate('barrier'), '10'],
-            [translate('result'), '11'],
-        ],
         CHECK_RESULT     : [[translate('Win'), 'win'], [translate('Loss'), 'loss']],
         CHECK_DIRECTION  : [[translate('Rise'), 'rise'], [translate('Fall'), 'fall'], [translate('No Change'), '']],
         BALANCE_TYPE     : [[translate('string'), 'STR'], [translate('number'), 'NUM']],
@@ -41,7 +28,6 @@ const config = {
             [translate('Severe error'), 'severe-error'],
         ],
     },
-
     opposites: {
         RISEFALL: [
             {
@@ -123,6 +109,14 @@ const config = {
                 DIGITUNDER: translate('Under'),
             },
         ],
+        HIGHLOWTICKS: [
+            {
+                HIGHTICK: translate('High Tick'),
+            },
+            {
+                LOWTICK: translate('Low Tick'),
+            },
+        ],
     },
     barrierTypes: [['+', '+'], ['-', '-']],
     ohlcFields  : [
@@ -174,8 +168,9 @@ const config = {
         MATCHESDIFFERS: [[translate('Ticks'), 't']],
         EVENODD       : [[translate('Ticks'), 't']],
         OVERUNDER     : [[translate('Ticks'), 't']],
+        HIGHLOWTICKS  : [[translate('Ticks'), 't']],
     },
-    hasPrediction         : ['MATCHESDIFFERS', 'OVERUNDER'],
+    hasPrediction         : ['MATCHESDIFFERS', 'OVERUNDER', 'HIGHLOWTICKS'],
     hasBarrierOffset      : ['HIGHERLOWER', 'TOUCHNOTOUCH', 'ENDSINOUT', 'STAYSINOUT'],
     hasSecondBarrierOffset: ['ENDSINOUT', 'STAYSINOUT'],
     conditionsCategory    : {
@@ -185,6 +180,7 @@ const config = {
         staysinout  : ['staysinout'],
         asian       : ['asians'],
         digits      : ['matchesdiffers', 'evenodd', 'overunder'],
+        highlowticks: ['highlowticks'],
     },
     conditionsCategoryName: {
         callput     : translate('Up/Down'),
@@ -193,19 +189,8 @@ const config = {
         touchnotouch: translate('Touch/No Touch'),
         endsinout   : translate('Ends In/Out'),
         staysinout  : translate('Stays In/Goes Out'),
+        highlowticks: translate('High/Low Ticks'),
     },
-    conditions: [
-        'risefall',
-        'risefallequals',
-        'higherlower',
-        'touchnotouch',
-        'endsinout',
-        'staysinout',
-        'asians',
-        'matchesdiffers',
-        'evenodd',
-        'overunder',
-    ],
     scopeNames: {
         before_purchase: translate('Before Purchase'),
         during_purchase: translate('During Purchase'),
