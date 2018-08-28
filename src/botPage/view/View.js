@@ -539,6 +539,7 @@ export default class View {
     }
     addEventHandlers() {
         window.addEventListener('storage', e => {
+            window.onbeforeunload = null;
             if (e.key === 'activeToken' && !e.newValue) window.location.reload();
         });
 
