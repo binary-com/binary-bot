@@ -1,5 +1,8 @@
 import { translate } from '../../common/i18n';
 import { generateLiveApiInstance } from '../../common/appId';
+import { load as loadLang } from '../../common/lang';
+
+loadLang();
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH'];
 
