@@ -33,7 +33,7 @@ const api = generateLiveApiInstance();
 api.events.on('balance', response => {
     const { balance: { balance: b, currency } } = response;
 
-    const balance = roundBalance({ currency, balance: b });
+    const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
     $('.topMenuBalance').text(`${balance} ${currency}`);
 });
 
