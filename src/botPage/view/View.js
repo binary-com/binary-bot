@@ -33,7 +33,7 @@ const api = generateLiveApiInstance();
 api.events.on('balance', response => {
     const { balance: { balance: b, currency } } = response;
 
-    const balance = roundBalance({ currency, balance: b });
+    const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
     $('.topMenuBalance').text(`${balance} ${currency}`);
 });
 
@@ -534,6 +534,11 @@ export default class View {
         this.blockly.stop();
     }
     addEventHandlers() {
+        window.addEventListener('storage', e => {
+            window.onbeforeunload = null;
+            if (e.key === 'activeToken' && !e.newValue) window.location.reload();
+        });
+
         globalObserver.register('Error', error => {
             $('#runButton').prop('disabled', false);
             if (error.error && error.error.error.code === 'InvalidToken') {
