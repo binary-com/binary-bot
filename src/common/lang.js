@@ -19,6 +19,7 @@ const addUiLang = () => {
 };
 
 export const load = () => {
+    if (typeof $ !== 'function') return; // Adding this check to skip unit test
     const lang = getLanguage();
 
     $('#select_language li:not(:first)').click(function click() {
