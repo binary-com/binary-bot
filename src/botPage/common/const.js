@@ -133,6 +133,14 @@ const config = {
                 TICKLOW: translate('Low Tick'),
             },
         ],
+        RESET: [
+            {
+                RESETCALL: translate('Reset Call'),
+            },
+            {
+                RESETPUT: translate('Reset Put'),
+            },
+        ],
     },
     barrierTypes: [['+', '+'], ['-', '-']],
     ohlcFields  : [
@@ -177,6 +185,12 @@ const config = {
             [translate('Minutes'), 'm'],
             [translate('Hours'), 'h'],
         ],
+        RESET: [
+            [translate('Ticks'), 't'],
+            [translate('Seconds'), 's'],
+            [translate('Minutes'), 'm'],
+            [translate('Hours'), 'h'],
+        ],
         TOUCHNOTOUCH  : [[translate('Ticks'), 't'], [translate('Minutes'), 'm'], [translate('Hours'), 'h']],
         ENDSINOUT     : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
         STAYSINOUT    : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
@@ -197,6 +211,7 @@ const config = {
         asian       : ['asians'],
         digits      : ['matchesdiffers', 'evenodd', 'overunder'],
         highlowticks: ['highlowticks'],
+        reset       : ['reset'],
     },
     conditionsCategoryName: {
         callput     : translate('Up/Down'),
@@ -206,6 +221,7 @@ const config = {
         endsinout   : translate('Ends In/Out'),
         staysinout  : translate('Stays In/Goes Out'),
         highlowticks: translate('High/Low Ticks'),
+        reset       : translate('Reset Call/Reset Put'),
     },
     conditions: [
         'risefall',
