@@ -22,6 +22,7 @@ describe('symbol', () => {
                 'Touch/No Touch',
                 'Ends In/Out',
                 'Stays In/Goes Out',
+                'High/Low Ticks',
             ]);
             expect(symbol.getAllowedCategoryNames('FAKE')).to.be.empty;
         });

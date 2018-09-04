@@ -44,7 +44,6 @@ const config = {
             [translate('Severe error'), 'severe-error'],
         ],
     },
-
     opposites: {
         RISEFALL: [
             {
@@ -126,6 +125,14 @@ const config = {
                 DIGITUNDER: translate('Under'),
             },
         ],
+        HIGHLOWTICKS: [
+            {
+                TICKHIGH: translate('High Tick'),
+            },
+            {
+                TICKLOW: translate('Low Tick'),
+            },
+        ],
     },
     barrierTypes: [['+', '+'], ['-', '-']],
     ohlcFields  : [
@@ -177,8 +184,9 @@ const config = {
         MATCHESDIFFERS: [[translate('Ticks'), 't']],
         EVENODD       : [[translate('Ticks'), 't']],
         OVERUNDER     : [[translate('Ticks'), 't']],
+        HIGHLOWTICKS  : [[translate('Ticks'), 't']],
     },
-    hasPrediction         : ['MATCHESDIFFERS', 'OVERUNDER'],
+    hasPrediction         : ['MATCHESDIFFERS', 'OVERUNDER', 'HIGHLOWTICKS'],
     hasBarrierOffset      : ['HIGHERLOWER', 'TOUCHNOTOUCH', 'ENDSINOUT', 'STAYSINOUT'],
     hasSecondBarrierOffset: ['ENDSINOUT', 'STAYSINOUT'],
     conditionsCategory    : {
@@ -188,6 +196,7 @@ const config = {
         staysinout  : ['staysinout'],
         asian       : ['asians'],
         digits      : ['matchesdiffers', 'evenodd', 'overunder'],
+        highlowticks: ['highlowticks'],
     },
     conditionsCategoryName: {
         callput     : translate('Up/Down'),
@@ -196,6 +205,7 @@ const config = {
         touchnotouch: translate('Touch/No Touch'),
         endsinout   : translate('Ends In/Out'),
         staysinout  : translate('Stays In/Goes Out'),
+        highlowticks: translate('High/Low Ticks'),
     },
     conditions: [
         'risefall',
