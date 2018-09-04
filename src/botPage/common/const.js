@@ -44,7 +44,6 @@ const config = {
             [translate('Severe error'), 'severe-error'],
         ],
     },
-
     opposites: {
         RISEFALL: [
             {
@@ -126,6 +125,22 @@ const config = {
                 DIGITUNDER: translate('Under'),
             },
         ],
+        HIGHLOWTICKS: [
+            {
+                TICKHIGH: translate('High Tick'),
+            },
+            {
+                TICKLOW: translate('Low Tick'),
+            },
+        ],
+        RESET: [
+            {
+                RESETCALL: translate('Reset Call'),
+            },
+            {
+                RESETPUT: translate('Reset Put'),
+            },
+        ],
     },
     barrierTypes: [['+', '+'], ['-', '-']],
     ohlcFields  : [
@@ -170,6 +185,12 @@ const config = {
             [translate('Minutes'), 'm'],
             [translate('Hours'), 'h'],
         ],
+        RESET: [
+            [translate('Ticks'), 't'],
+            [translate('Seconds'), 's'],
+            [translate('Minutes'), 'm'],
+            [translate('Hours'), 'h'],
+        ],
         TOUCHNOTOUCH  : [[translate('Ticks'), 't'], [translate('Minutes'), 'm'], [translate('Hours'), 'h']],
         ENDSINOUT     : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
         STAYSINOUT    : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
@@ -177,8 +198,9 @@ const config = {
         MATCHESDIFFERS: [[translate('Ticks'), 't']],
         EVENODD       : [[translate('Ticks'), 't']],
         OVERUNDER     : [[translate('Ticks'), 't']],
+        HIGHLOWTICKS  : [[translate('Ticks'), 't']],
     },
-    hasPrediction         : ['MATCHESDIFFERS', 'OVERUNDER'],
+    hasPrediction         : ['MATCHESDIFFERS', 'OVERUNDER', 'HIGHLOWTICKS'],
     hasBarrierOffset      : ['HIGHERLOWER', 'TOUCHNOTOUCH', 'ENDSINOUT', 'STAYSINOUT'],
     hasSecondBarrierOffset: ['ENDSINOUT', 'STAYSINOUT'],
     conditionsCategory    : {
@@ -188,6 +210,8 @@ const config = {
         staysinout  : ['staysinout'],
         asian       : ['asians'],
         digits      : ['matchesdiffers', 'evenodd', 'overunder'],
+        highlowticks: ['highlowticks'],
+        reset       : ['reset'],
     },
     conditionsCategoryName: {
         callput     : translate('Up/Down'),
@@ -196,6 +220,8 @@ const config = {
         touchnotouch: translate('Touch/No Touch'),
         endsinout   : translate('Ends In/Out'),
         staysinout  : translate('Stays In/Goes Out'),
+        highlowticks: translate('High/Low Ticks'),
+        reset       : translate('Reset Call/Reset Put'),
     },
     conditions: [
         'risefall',
