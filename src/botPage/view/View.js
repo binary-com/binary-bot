@@ -484,6 +484,7 @@ export default class View {
                 .first()
                 .attr('value');
             const tokenObj = getToken(token);
+            initRealityCheck(() => this.blockly.stop());
             if (tokenObj && tokenObj.hasTradeLimitation) {
                 limits.getLimits().then(startBot);
             } else {
