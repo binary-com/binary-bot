@@ -542,6 +542,7 @@ export default class View {
         window.addEventListener('storage', e => {
             window.onbeforeunload = null;
             if (e.key === 'activeToken' && !e.newValue) window.location.reload();
+            if (e.key === 'realityCheckTime' && !e.newValue) hideRealityCheck();
         });
 
         globalObserver.register('Error', error => {
