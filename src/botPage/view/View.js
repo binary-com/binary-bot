@@ -435,7 +435,12 @@ export default class View {
             $('#files').click();
         });
 
-        $('#logout, #logout-reality-check').click(() => {
+        $('#logout').click(() => {
+            logout();
+            hideRealityCheck();
+        });
+
+        $('#logout-reality-check').click(() => {
             removeTokens();
             hideRealityCheck();
         });
