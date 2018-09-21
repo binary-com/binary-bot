@@ -242,7 +242,7 @@ export default class View {
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
                         this.setElementActions();
-                        initRealityCheck(() => this.blockly.stop());
+                        initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                         applyToolboxPermissions();
                         renderReactComponents();
                         if (!getTokenList().length) updateLogo();
@@ -444,7 +444,7 @@ export default class View {
             const time = parseInt($('#realityDuration').val());
             if (time >= 10 && time <= 60) {
                 hideRealityCheck();
-                startRealityCheck(time, null, () => $('#stopButton').trigger('click'));
+                startRealityCheck(time, null, () => $('#stopButton').triggerHandler('click'));
             } else {
                 $('#rc-err').show();
             }
@@ -484,7 +484,7 @@ export default class View {
                 .first()
                 .attr('value');
             const tokenObj = getToken(token);
-            initRealityCheck(() => this.blockly.stop());
+            initRealityCheck(() => $('#stopButton').triggerHandler('click'));
             if (tokenObj && tokenObj.hasTradeLimitation) {
                 limits.getLimits().then(startBot);
             } else {
