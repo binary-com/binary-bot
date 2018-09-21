@@ -72,23 +72,24 @@ const stopRealityCheck = () => {
     realityCheckTimeout = null;
 };
 
-const realityCheckInterval = () => {
+const realityCheckInterval = stopCallback => {
     realityCheckTimeout = setInterval(() => {
         const now = parseInt(new Date().getTime() / 1000);
         const checkTime = +getStorage('realityCheckTime');
         if (checkTime && now >= checkTime) {
             showRealityCheck();
             stopRealityCheck();
+            stopCallback();
         }
     }, 1000);
 };
 
-const startRealityCheck = (time, token) => {
+const startRealityCheck = (time, token, stopCallback) => {
     stopRealityCheck();
     if (time) {
         const start = parseInt(new Date().getTime() / 1000) + time * 60;
         setStorage('realityCheckTime', start);
-        realityCheckInterval();
+        realityCheckInterval(stopCallback);
     } else {
         const tokenObj = getToken(token);
         if (tokenObj.hasRealityCheck) {
@@ -96,7 +97,7 @@ const startRealityCheck = (time, token) => {
             if (!checkTime) {
                 showRealityCheck();
             } else {
-                realityCheckInterval();
+                realityCheckInterval(stopCallback);
             }
         }
     }
@@ -241,7 +242,7 @@ export default class View {
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
                         this.setElementActions();
-                        initRealityCheck();
+                        initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                         applyToolboxPermissions();
                         renderReactComponents();
                         if (!getTokenList().length) updateLogo();
@@ -330,16 +331,19 @@ export default class View {
             this.stop();
         };
 
+        const removeTokens = () => {
+            logoutAllTokens().then(() => {
+                updateTokenList();
+                globalObserver.emit('ui.log.info', translate('Logged you out!'));
+                clearRealityCheck();
+                clearActiveTokens();
+                window.location.reload();
+            });
+        };
         const logout = () => {
             showReloadPopup()
                 .then(() => {
-                    logoutAllTokens().then(() => {
-                        updateTokenList();
-                        globalObserver.emit('ui.log.info', translate('Logged you out!'));
-                        clearRealityCheck();
-                        clearActiveTokens();
-                        window.location.reload();
-                    });
+                    removeTokens();
                 })
                 .catch(() => {});
         };
@@ -431,8 +435,13 @@ export default class View {
             $('#files').click();
         });
 
-        $('#logout, #logout-reality-check').click(() => {
+        $('#logout').click(() => {
             logout();
+            hideRealityCheck();
+        });
+
+        $('#logout-reality-check').click(() => {
+            removeTokens();
             hideRealityCheck();
         });
 
@@ -440,7 +449,7 @@ export default class View {
             const time = parseInt($('#realityDuration').val());
             if (time >= 10 && time <= 60) {
                 hideRealityCheck();
-                startRealityCheck(time);
+                startRealityCheck(time, null, () => $('#stopButton').triggerHandler('click'));
             } else {
                 $('#rc-err').show();
             }
@@ -480,6 +489,7 @@ export default class View {
                 .first()
                 .attr('value');
             const tokenObj = getToken(token);
+            initRealityCheck(() => $('#stopButton').triggerHandler('click'));
             if (tokenObj && tokenObj.hasTradeLimitation) {
                 limits.getLimits().then(startBot);
             } else {
@@ -537,6 +547,7 @@ export default class View {
         window.addEventListener('storage', e => {
             window.onbeforeunload = null;
             if (e.key === 'activeToken' && !e.newValue) window.location.reload();
+            if (e.key === 'realityCheckTime') hideRealityCheck();
         });
 
         globalObserver.register('Error', error => {
@@ -568,12 +579,13 @@ export default class View {
     }
 }
 
-function initRealityCheck() {
+function initRealityCheck(stopCallback) {
     startRealityCheck(
         null,
         $('.account-id')
             .first()
-            .attr('value')
+            .attr('value'),
+        stopCallback
     );
 }
 function renderReactComponents() {
