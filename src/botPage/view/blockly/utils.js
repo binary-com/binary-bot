@@ -1,4 +1,4 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../../common/utils/observer';
 import config from '../../common/const';
 import { translate } from '../../../common/i18n';
 import { saveAs } from '../shared';

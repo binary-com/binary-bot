@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import 'jquery-ui/ui/widgets/dialog';
+import { observer as globalObserver } from '../../common/utils/observer';
 import {
     getTokenList,
     removeAllTokens,
     get as getStorage,
     set as setStorage,
     getToken,
-} from 'binary-common-utils/lib/storageManager';
-import 'jquery-ui/ui/widgets/dialog';
+} from '../../common/utils/storageManager';
 import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';

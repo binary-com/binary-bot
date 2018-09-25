@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 
