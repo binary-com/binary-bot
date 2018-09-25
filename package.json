@@ -65,7 +65,7 @@
     "prepublishOnly": "yarn build",
     "precommit": "lint-staged"
   },
-  "author": "Amin Marashi",
+  "author": "Binary.com",
   "license": "MIT",
   "devDependencies": {
     "app-module-path": "^2.2.0",
