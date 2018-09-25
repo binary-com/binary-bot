@@ -21,6 +21,7 @@ import { symbolPromise } from './shared';
 import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
+import ServerTime from './react-components/HeaderWidgets';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
 import { logoutAllTokens, getOAuthURL, generateLiveApiInstance, AppConstants } from '../../common/appId';
@@ -29,6 +30,10 @@ import { updateConfigCurrencies } from '../common/const';
 let realityCheckTimeout;
 
 const api = generateLiveApiInstance();
+
+api.send({ time: '1' }).then(response => {
+    ReactDOM.render(<ServerTime startTime={response.time} />, $('#server-time')[0]);
+});
 
 api.events.on('balance', response => {
     const { balance: { balance: b, currency } } = response;
