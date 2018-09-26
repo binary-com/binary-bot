@@ -22,6 +22,7 @@ import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import ServerTime from './react-components/HeaderWidgets';
+import PresenceCheck from './react-components/PresenceCheckWidget';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
 import { logoutAllTokens, getOAuthURL, generateLiveApiInstance, AppConstants } from '../../common/appId';
@@ -594,6 +595,7 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
+    ReactDOM.render(<PresenceCheck />, $('#server-status')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
     ReactDOM.render(
         <OfficialVersionWarning
