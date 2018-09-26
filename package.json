@@ -81,7 +81,6 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "binary-charts": "^9.2.7",
-    "binary-common-utils": "^8.0.0",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",

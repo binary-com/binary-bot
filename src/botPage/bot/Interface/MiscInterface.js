@@ -1,4 +1,4 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 export default Interface =>
     class extends Interface {

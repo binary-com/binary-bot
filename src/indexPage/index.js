@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import { getTokenList } from 'binary-common-utils/lib/storageManager';
+import { getTokenList } from '../common/utils/storageManager';
 import { oauthLogin } from '../common/appId';
 import { load as loadLang } from '../common/lang';
 import '../common/binary-ui/dropdown';

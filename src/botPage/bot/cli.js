@@ -1,8 +1,8 @@
 import 'babel-polyfill';
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import fs from 'fs';
 import readline from 'readline';
 import program from 'commander';
+import { observer as globalObserver } from '../../common/utils/observer';
 import { version } from '../../../package.json';
 import { createInterpreter } from './CliTools';
 

@@ -1,4 +1,4 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { findTopParentBlock } from '../../utils';
 import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, restart } from './components';
 

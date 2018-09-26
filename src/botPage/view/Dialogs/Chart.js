@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { BinaryChart } from 'binary-charts';
+import { observer as globalObserver } from '../../../common/utils/observer';
 import { ticksService } from '../shared';
 import { translate } from '../../../common/i18n';
 import { loading as loadingStyle } from '../style';

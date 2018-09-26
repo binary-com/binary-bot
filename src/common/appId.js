@@ -1,4 +1,3 @@
-import { parseQueryString } from 'binary-common-utils/lib/tools';
 import { LiveApi } from 'binary-live-api';
 import {
     addToken,
@@ -7,7 +6,8 @@ import {
     removeAllTokens,
     get as getStorage,
     set as setStorage,
-} from 'binary-common-utils/lib/storageManager';
+} from '../common/utils/storageManager';
+import { parseQueryString } from '../common/utils/tools';
 import { getLanguage } from './lang';
 
 const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));
