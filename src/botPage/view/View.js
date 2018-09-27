@@ -32,6 +32,19 @@ let realityCheckTimeout;
 
 const api = generateLiveApiInstance();
 
+api.send({ website_status: '1', subscribe: 1 });
+
+api.events.on('website_status', response => {
+    const { message } = response.website_status;
+    if (message) {
+        $.notify(message, {
+            position : 'bottom left',
+            autoHide : false,
+            className: 'warn',
+        });
+    }
+});
+
 api.send({ time: '1' }).then(response => {
     ReactDOM.render(<ServerTime startTime={response.time} />, $('#server-time')[0]);
 });
