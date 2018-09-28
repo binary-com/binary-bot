@@ -22,6 +22,10 @@ body {
     background-color: green;
 }
 
+#server-status .connecting {
+    background-color: yellow;
+}
+
 #server-status .offline {
     background-color: red;
 }

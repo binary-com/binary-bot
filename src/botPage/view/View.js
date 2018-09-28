@@ -22,7 +22,7 @@ import logHandler from './logger';
 import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import ServerTime from './react-components/HeaderWidgets';
-import PresenceCheck from './react-components/PresenceCheckWidget';
+import NetworkMonitor from './NetworkMonitor';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
 import { logoutAllTokens, getOAuthURL, generateLiveApiInstance, AppConstants } from '../../common/appId';
@@ -31,6 +31,8 @@ import { updateConfigCurrencies } from '../common/const';
 let realityCheckTimeout;
 
 const api = generateLiveApiInstance();
+
+new NetworkMonitor(api, $('#server-status'));
 
 api.send({ website_status: '1', subscribe: 1 });
 
@@ -608,7 +610,6 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
-    ReactDOM.render(<PresenceCheck />, $('#server-status')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
     ReactDOM.render(
         <OfficialVersionWarning
