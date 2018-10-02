@@ -10,11 +10,25 @@ import {
 import { parseQueryString } from '../common/utils/tools';
 import { getLanguage } from './lang';
 
-const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));
-
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
 });
+
+const queryToObjectArray = queryStr => {
+    const tokens = [];
+    Object.keys(queryStr).forEach(o => {
+        if (!/\d$/.test(o)) return;
+        const index = parseInt(o.slice(-1));
+        const key = o.slice(0, -1);
+        if (index <= tokens.length) {
+            tokens[index - 1][key] = queryStr[o];
+        } else {
+            tokens.push({});
+            tokens[index - 1][key] = queryStr[o];
+        }
+    });
+    return tokens;
+};
 
 export const oauthLogin = (done = () => 0) => {
     const queryStr = parseQueryString();
@@ -22,9 +36,12 @@ export const oauthLogin = (done = () => 0) => {
     tokenList = Object.keys(queryStr)
         .map(r => (r.indexOf('token') === 0 ? queryStr[r] : null))
         .filter(r => r);
-    if (tokenList.length) {
+
+    const tokenObjectList = queryToObjectArray(queryStr);
+
+    if (tokenObjectList.length) {
         $('#main').hide();
-        addAllTokens(tokenList).then(() => {
+        addTokenIfValid(tokenObjectList).then(() => {
             const accounts = getTokenList();
             if (accounts.length) {
                 setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
@@ -80,17 +97,22 @@ export const generateLiveApiInstance = () => new LiveApi(options);
 
 export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
 
-export async function addTokenIfValid(token) {
+export async function addTokenIfValid(tokenObjectList) {
     const api = generateLiveApiInstance();
     try {
-        const { authorize } = await api.authorize(token);
+        const { authorize } = await api.authorize(tokenObjectList[0].token);
         const { landing_company_name: lcName } = authorize;
         const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
             lcName
         );
-        addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
+        addToken(
+            tokenObjectList[0].token,
+            authorize,
+            !!hasRealityCheck,
+            ['iom', 'malta'].includes(lcName) && authorize.country === 'gb'
+        );
     } catch (e) {
-        removeToken(token);
+        removeToken(tokenObjectList[0].token);
         throw e;
     }
     return api.disconnect();
