@@ -41,7 +41,7 @@ export const oauthLogin = (done = () => 0) => {
 
     if (tokenObjectList.length) {
         $('#main').hide();
-        addTokenIfValid(tokenObjectList).then(() => {
+        addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
             const accounts = getTokenList();
             if (accounts.length) {
                 setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
@@ -97,20 +97,27 @@ export const generateLiveApiInstance = () => new LiveApi(options);
 
 export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
 
-export async function addTokenIfValid(tokenObjectList) {
+export async function addTokenIfValid(token, tokenObjectList) {
     const api = generateLiveApiInstance();
     try {
-        const { authorize } = await api.authorize(tokenObjectList[0].token);
+        const { authorize } = await api.authorize(token);
         const { landing_company_name: lcName } = authorize;
         const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
             lcName
         );
-        addToken(
-            tokenObjectList[0].token,
-            authorize,
-            !!hasRealityCheck,
-            ['iom', 'malta'].includes(lcName) && authorize.country === 'gb'
-        );
+        addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
+
+        const { account_list } = authorize;
+        if (account_list.length > 1) {
+            tokenObjectList.map(tokenObject => {
+                if (tokenObject.token !== token) {
+                    const account = account_list.filter(o => o.loginid === tokenObject.acct);
+                    if (account.length) {
+                        addToken(tokenObject.token, account[0], false, false);
+                    }
+                }
+            });
+        }
     } catch (e) {
         removeToken(tokenObjectList[0].token);
         throw e;
