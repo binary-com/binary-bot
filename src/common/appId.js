@@ -19,7 +19,8 @@ const queryToObjectArray = queryStr => {
     Object.keys(queryStr).forEach(o => {
         if (!/\d$/.test(o)) return;
         const index = parseInt(o.slice(-1));
-        const key = o.slice(0, -1);
+        let key = o.slice(0, -1);
+        key = key === 'acct' ? 'accountName' : key; // Make it consistent with storageManage naming
         if (index <= tokens.length) {
             tokens[index - 1][key] = queryStr[o];
         } else {
@@ -111,7 +112,7 @@ export async function addTokenIfValid(token, tokenObjectList) {
         if (account_list.length > 1) {
             tokenObjectList.map(tokenObject => {
                 if (tokenObject.token !== token) {
-                    const account = account_list.filter(o => o.loginid === tokenObject.acct);
+                    const account = account_list.filter(o => o.loginid === tokenObject.accountName);
                     if (account.length) {
                         addToken(tokenObject.token, account[0], false, false);
                     }

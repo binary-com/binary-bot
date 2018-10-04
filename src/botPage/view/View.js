@@ -23,7 +23,13 @@ import Tour from './tour';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import LogTable from './LogTable';
 import TradeInfoPanel from './TradeInfoPanel';
-import { logoutAllTokens, getOAuthURL, generateLiveApiInstance, AppConstants } from '../../common/appId';
+import {
+    logoutAllTokens,
+    getOAuthURL,
+    generateLiveApiInstance,
+    AppConstants,
+    addTokenIfValid,
+} from '../../common/appId';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
@@ -509,8 +515,13 @@ export default class View {
         $('.login-id-list').on('click', 'a', e => {
             showReloadPopup()
                 .then(() => {
-                    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, $(e.currentTarget).attr('value'));
-                    window.location.reload();
+                    const activeToken = $(e.currentTarget).attr('value');
+                    const tokenList = getTokenList();
+                    setStorage('tokenList', '');
+                    addTokenIfValid(activeToken, tokenList).then(() => {
+                        setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, activeToken);
+                        window.location.reload();
+                    });
                 })
                 .catch(() => {});
         });
