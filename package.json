@@ -84,7 +84,6 @@
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",
-    "bootstrap": "^3.3.7",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "deep-diff": "^0.3.8",
