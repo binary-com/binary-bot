@@ -37,12 +37,13 @@ new NetworkMonitor(api, $('#server-status'));
 api.send({ website_status: '1', subscribe: 1 });
 
 api.events.on('website_status', response => {
+    $('.web-status').trigger('notify-hide');
     const { message } = response.website_status;
     if (message) {
         $.notify(message, {
             position : 'bottom left',
             autoHide : false,
-            className: 'warn',
+            className: 'warn web-status',
         });
     }
 });
