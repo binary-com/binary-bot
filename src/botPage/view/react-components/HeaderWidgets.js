@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 export default class ServerTime extends Component {
-    constructor(api) {
+    constructor() {
         super();
         this.state = {};
     }

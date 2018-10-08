@@ -32,7 +32,7 @@ let realityCheckTimeout;
 
 const api = generateLiveApiInstance();
 
-new NetworkMonitor(api, $('#server-status'));
+new NetworkMonitor(api, $('#server-status')); // eslint-disable-line no-new
 
 api.send({ website_status: '1', subscribe: 1 });
 
