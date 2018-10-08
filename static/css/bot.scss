@@ -18,6 +18,30 @@ body {
     font-size: 1em;
 }
 
+#server-status .online {
+    background-color: green;
+}
+
+#server-status .connecting {
+    background-color: yellow;
+}
+
+#server-status .offline {
+    background-color: red;
+}
+
+#server-status span {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 100%;
+}
+
+#contact-us, #server-time, #server-status {
+    margin-right: 3em;
+    margin-top: 0.2em;
+}
+
 #blocklyDiv {
     position: absolute;
     height: 100%;
