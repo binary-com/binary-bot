@@ -1,6 +1,6 @@
 import { Map } from 'immutable';
 import { historyToTicks, getLast } from 'binary-utils';
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../common/utils/observer';
 import { doUntilDone, getUUID } from '../bot/tools';
 
 const parseTick = tick => ({

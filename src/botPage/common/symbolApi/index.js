@@ -1,4 +1,4 @@
-import { getObjectValue } from 'binary-common-utils/lib/tools';
+import { getObjectValue } from '../../../common/utils/tools';
 import config from '../../common/const';
 import ActiveSymbols from './activeSymbols';
 

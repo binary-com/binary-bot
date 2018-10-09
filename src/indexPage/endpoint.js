@@ -1,4 +1,4 @@
-import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
+import { get as getStorage, set as setStorage } from '../common/utils/storageManager';
 import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
 
 if (document.location.href.endsWith('/endpoint')) {

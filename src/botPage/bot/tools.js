@@ -1,4 +1,4 @@
-import { getUTCTime } from 'binary-common-utils/lib/tools';
+import { getUTCTime } from '../../common/utils/tools';
 import { translate } from '../../common/i18n';
 import { roundBalance } from '../common/tools';
 import { notify } from './broadcast';

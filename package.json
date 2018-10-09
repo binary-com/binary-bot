@@ -65,7 +65,7 @@
     "prepublishOnly": "yarn build",
     "precommit": "lint-staged"
   },
-  "author": "Amin Marashi",
+  "author": "Binary.com",
   "license": "MIT",
   "devDependencies": {
     "app-module-path": "^2.2.0",
@@ -81,11 +81,9 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "binary-charts": "^9.2.7",
-    "binary-common-utils": "^8.0.0",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",
-    "bootstrap": "^3.3.7",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "deep-diff": "^0.3.8",

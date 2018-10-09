@@ -1,5 +1,5 @@
 import JSInterpreter from 'js-interpreter';
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../common/utils/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
 
