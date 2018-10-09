@@ -33,10 +33,6 @@ const queryToObjectArray = queryStr => {
 
 export const oauthLogin = (done = () => 0) => {
     const queryStr = parseQueryString();
-    let tokenList = [];
-    tokenList = Object.keys(queryStr)
-        .map(r => (r.indexOf('token') === 0 ? queryStr[r] : null))
-        .filter(r => r);
 
     const tokenObjectList = queryToObjectArray(queryStr);
 
@@ -108,11 +104,11 @@ export async function addTokenIfValid(token, tokenObjectList) {
         );
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
-        const { account_list } = authorize;
-        if (account_list.length > 1) {
-            tokenObjectList.map(tokenObject => {
+        const { account_list: accountList } = authorize;
+        if (accountList.length > 1) {
+            tokenObjectList.forEach(tokenObject => {
                 if (tokenObject.token !== token) {
-                    const account = account_list.filter(o => o.loginid === tokenObject.accountName);
+                    const account = accountList.filter(o => o.loginid === tokenObject.accountName);
                     if (account.length) {
                         addToken(tokenObject.token, account[0], false, false);
                     }
