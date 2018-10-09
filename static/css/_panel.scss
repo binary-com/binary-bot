@@ -160,6 +160,7 @@ $disabled-color: #F2F2F2;
     }
     .line.active {
          .progress-bar {
+            float: left;
             box-shadow: none;
             height: 100%;
             background-color: $circle-color;
