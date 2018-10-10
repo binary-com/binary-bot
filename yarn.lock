@@ -1171,10 +1171,6 @@ binary-charts@^9.2.7:
     fbjs "^0.8.6"
     highcharts "^5.0.3"
 
-binary-common-utils@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/binary-common-utils/-/binary-common-utils-8.0.0.tgz#49bae5993c649b9a4087e51a14cae496b1c7d8b5"
-
 binary-extensions@^1.0.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
@@ -1250,10 +1246,6 @@ boom@5.x.x:
   resolved "https://registry.yarnpkg.com/boom/-/boom-5.2.0.tgz#5dd9da6ee3a5f302077436290cb717d3f4a54e02"
   dependencies:
     hoek "4.x.x"
-
-bootstrap@^3.3.7:
-  version "3.3.7"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
 
 brace-expansion@^1.0.0, brace-expansion@^1.1.7:
   version "1.1.11"

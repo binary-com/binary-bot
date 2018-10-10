@@ -1,5 +1,5 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
 import { expect } from 'chai';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { runAndGetResult } from '../../tools';
 
 describe('Misc. tools', () => {

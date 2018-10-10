@@ -1,5 +1,5 @@
-import { parseQueryString } from 'binary-common-utils/lib/tools';
-import { set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager';
+import { parseQueryString } from '../common/utils/tools';
+import { set as setStorage, get as getStorage } from '../common/utils/storageManager';
 import { supportedLanguages, translate, init } from './i18n';
 
 export const getLanguage = () => {

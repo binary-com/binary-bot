@@ -2,7 +2,7 @@ import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDataGrid from 'react-data-grid';
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../common/utils/observer';
 import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
 

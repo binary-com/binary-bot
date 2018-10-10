@@ -1,4 +1,4 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate, xml as translateXml } from '../../../common/i18n';
 import createError from '../../common/error';
 import {

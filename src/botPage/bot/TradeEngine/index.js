@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { durationToSecond } from 'binary-common-utils/lib/tools';
+import { durationToSecond } from '../../../common/utils/tools';
 import { translate } from '../../..//common/i18n';
 import createError from '../../common/error';
 import { doUntilDone } from '../tools';

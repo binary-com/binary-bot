@@ -1,4 +1,4 @@
-import Observer from 'binary-common-utils/lib/observer';
+import Observer from '../../common/utils/observer';
 import Interpreter from './Interpreter';
 import TicksService from '../common/TicksService';
 import { generateLiveApiInstance } from '../../common/appId';

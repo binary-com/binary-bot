@@ -1,5 +1,5 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
-import { getToken } from 'binary-common-utils/lib/storageManager';
+import { observer as globalObserver } from '../../common/utils/observer';
+import { getToken } from '../../common/utils/storageManager';
 import { translate } from '../../common/i18n';
 import { isVirtual } from '../common/tools';
 
