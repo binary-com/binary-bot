@@ -400,6 +400,7 @@
     height: 0.25em;
     background-color: #F2F2F2; }
   #summaryPanel .line.active .progress-bar {
+    float: left;
     box-shadow: none;
     height: 100%;
     background-color: #E98024;
@@ -862,6 +863,9 @@
   float: right;
   button-margin-left: 0.1em; }
 
+* {
+  box-sizing: border-box; }
+
 html,
 body {
   height: 100%;
@@ -871,6 +875,25 @@ body {
   overflow-x: hidden;
   overflow-y: hidden;
   font-size: 1em; }
+
+#server-status .online {
+  background-color: green; }
+
+#server-status .connecting {
+  background-color: yellow; }
+
+#server-status .offline {
+  background-color: red; }
+
+#server-status span {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 100%; }
+
+#contact-us, #server-time, #server-status {
+  margin-right: 3em;
+  margin-top: 0.2em; }
 
 #blocklyDiv {
   position: absolute;
@@ -998,4 +1021,4 @@ body {
 label {
   margin-bottom: 0px; }
 
-/*# sourceMappingURL=bot-8be168c9ee.css.map */
+/*# sourceMappingURL=bot-d6025fc696.css.map */
