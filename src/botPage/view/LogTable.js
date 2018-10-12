@@ -24,7 +24,7 @@ export default class LogTable extends Component {
             type     : PropTypes.string,
             timestamp: PropTypes.string,
             message  : PropTypes.string,
-        }).isRequired,
+        }),
     };
     constructor() {
         super();

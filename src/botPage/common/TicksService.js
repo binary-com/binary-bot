@@ -191,7 +191,10 @@ export default class TicksService {
     }
     observe() {
         this.api.events.on('tick', r => {
-            const { tick, tick: { symbol, id } } = r;
+            const {
+                tick,
+                tick: { symbol, id },
+            } = r;
 
             if (this.ticks.has(symbol)) {
                 this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
@@ -200,7 +203,10 @@ export default class TicksService {
         });
 
         this.api.events.on('ohlc', r => {
-            const { ohlc, ohlc: { symbol, granularity, id } } = r;
+            const {
+                ohlc,
+                ohlc: { symbol, granularity, id },
+            } = r;
 
             if (this.candles.hasIn([symbol, Number(granularity)])) {
                 this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);
@@ -244,5 +250,38 @@ export default class TicksService {
                 })
                 .catch(reject);
         });
+    }
+
+    _streamId = undefined;
+
+    requestAPI(data) {
+        return this.api.send(data);
+    }
+
+    requestSubscribe(request, callback) {
+        new Promise(reject => {
+            doUntilDone(() => this.api.getTickHistory(request.ticks_history, request))
+                .then(r => {
+                    callback(r);
+                })
+                .catch(reject);
+        });
+        if (request.style === 'ticks') {
+            this.api.events.on('tick', r => {
+                this._streamId = r.tick.id;
+                callback(r);
+            });
+        } else {
+            this.api.events.on('ohlc', r => {
+                this._streamId = r.ohlc.id;
+                callback(r);
+            });
+        }
+    }
+
+    requestForget(request, callback) {
+        if (this._streamId) {
+            this.api.send({ forget: this._streamId });
+        }
     }
 }
