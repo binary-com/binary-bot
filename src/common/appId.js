@@ -10,21 +10,35 @@ import {
 import { parseQueryString } from '../common/utils/tools';
 import { getLanguage } from './lang';
 
-const addAllTokens = tokenList => Promise.all(tokenList.map(token => addTokenIfValid(token)));
-
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
 });
 
+const queryToObjectArray = queryStr => {
+    const tokens = [];
+    Object.keys(queryStr).forEach(o => {
+        if (!/\d$/.test(o)) return;
+        const index = parseInt(o.slice(-1));
+        let key = o.slice(0, -1);
+        key = key === 'acct' ? 'accountName' : key; // Make it consistent with storageManage naming
+        if (index <= tokens.length) {
+            tokens[index - 1][key] = queryStr[o];
+        } else {
+            tokens.push({});
+            tokens[index - 1][key] = queryStr[o];
+        }
+    });
+    return tokens;
+};
+
 export const oauthLogin = (done = () => 0) => {
     const queryStr = parseQueryString();
-    let tokenList = [];
-    tokenList = Object.keys(queryStr)
-        .map(r => (r.indexOf('token') === 0 ? queryStr[r] : null))
-        .filter(r => r);
-    if (tokenList.length) {
+
+    const tokenObjectList = queryToObjectArray(queryStr);
+
+    if (tokenObjectList.length) {
         $('#main').hide();
-        addAllTokens(tokenList).then(() => {
+        addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
             const accounts = getTokenList();
             if (accounts.length) {
                 setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
@@ -80,17 +94,29 @@ export const generateLiveApiInstance = () => new LiveApi(options);
 
 export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
 
-export async function addTokenIfValid(token) {
+export async function addTokenIfValid(token, tokenObjectList) {
     const api = generateLiveApiInstance();
     try {
         const { authorize } = await api.authorize(token);
         const { landing_company_name: lcName } = authorize;
-        const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
-            lcName
-        );
+        const {
+            landing_company_details: { has_reality_check: hasRealityCheck },
+        } = await api.getLandingCompanyDetails(lcName);
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
+
+        const { account_list: accountList } = authorize;
+        if (accountList.length > 1) {
+            tokenObjectList.forEach(tokenObject => {
+                if (tokenObject.token !== token) {
+                    const account = accountList.filter(o => o.loginid === tokenObject.accountName);
+                    if (account.length) {
+                        addToken(tokenObject.token, account[0], false, false);
+                    }
+                }
+            });
+        }
     } catch (e) {
-        removeToken(token);
+        removeToken(tokenObjectList[0].token);
         throw e;
     }
     return api.disconnect();
