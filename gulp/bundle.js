@@ -18,6 +18,7 @@ gulp.task('bundle-js', () =>
             './node_modules/blockly/blocks_compressed.js',
             './node_modules/blockly/javascript_compressed.js',
             './node_modules/blockly/msg/messages.js',
+            './node_modules/@binary-com/smartcharts/dist/chartiq.min.js',
         ])
         .pipe(concat('bundle.js'))
         .pipe(rev())
@@ -27,7 +28,10 @@ gulp.task('bundle-js', () =>
 
 gulp.task('bundle-css', () =>
     gulp
-        .src(['node_modules/{bootstrap/dist/css/bootstrap.min,jquery-ui-css/jquery-ui.min}.css'])
+        .src([
+            'node_modules/{bootstrap/dist/css/bootstrap.min,jquery-ui-css/jquery-ui.min}.css',
+            './node_modules/@binary-com/smartcharts/dist/smartcharts.css',
+        ])
         .pipe(concatCss('bundle.css'))
         .pipe(rev())
         .pipe(through.obj(addToManifest))

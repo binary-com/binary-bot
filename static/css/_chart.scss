@@ -222,3 +222,26 @@
 .binary-chart-info-bar {
     display: none;
 }
+
+
+//smart-chart
+.cq-chart-controls .ic-icon-with-sub>svg {
+    padding: 0;
+}
+
+.smartcharts-mobile .cq-modal-dropdown.stxMenuActive {
+    position: absolute !important;
+}
+
+// .ciq-studies,
+// .ciq-chart-types {
+//     display: inline-block !important;
+// }
+
+// .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
+//     pointer-events: initial;
+// }
+
+.message-enter-done {
+    background-color: red;
+}
