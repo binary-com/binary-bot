@@ -1,5 +1,15 @@
-// import { CSSTransition }  from 'react-transition-group';
-import { SmartChart, ComparisonList } from '@binary-com/smartcharts';
+import {
+    SmartChart,
+    ChartTypes,
+    StudyLegend,
+    Comparison,
+    Views,
+    Timeperiod,
+    DrawTools,
+    Share,
+    ComparisonList,
+    ChartSize,
+} from '@binary-com/smartcharts';
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
@@ -21,6 +31,19 @@ class SmartChartContent extends PureComponent {
 
     renderTopWidgets = () => <ComparisonList />;
 
+    renderControls = () => (
+        <React.Fragment>
+            <ChartTypes />
+            <Timeperiod />
+            <StudyLegend />
+            <Comparison />
+            <DrawTools />
+            <Views />
+            <Share />
+            <ChartSize />
+        </React.Fragment>
+    );
+
     render() {
         return (
             <SmartChart
@@ -30,7 +53,7 @@ class SmartChartContent extends PureComponent {
                 isMobile={true}
                 // enableRouting
                 topWidgets={this.renderTopWidgets}
-                // chartControlsWidgets={this.renderControls}
+                chartControlsWidgets={this.renderControls}
                 requestAPI={requestAPI}
                 requestSubscribe={requestSubscribe}
                 requestForget={requestForget}

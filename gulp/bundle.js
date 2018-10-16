@@ -14,11 +14,11 @@ gulp.task('clean-bundle', () => gulp.src('./www/js/bundle*').pipe(paths(del)));
 gulp.task('bundle-js', () =>
     gulp
         .src([
+            './node_modules/@binary-com/smartcharts/dist/chartiq.min.js',
             './node_modules/blockly/blockly_compressed.js',
             './node_modules/blockly/blocks_compressed.js',
             './node_modules/blockly/javascript_compressed.js',
             './node_modules/blockly/msg/messages.js',
-            './node_modules/@binary-com/smartcharts/dist/chartiq.min.js',
         ])
         .pipe(concat('bundle.js'))
         .pipe(rev())
