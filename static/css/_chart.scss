@@ -223,25 +223,29 @@
     display: none;
 }
 
-
 //smart-chart
-.cq-chart-controls .ic-icon-with-sub>svg {
-    padding: 0;
-}
+.smartcharts-mobile {
+    /*
+      For charts app, we want the chart controls to still
+      be visible when its dropdown shows up. To do this we
+      assume the height of the chart controls is always 40px
+      in mobile:
+     */
+    .ciq-period, .cq-download, .ciq-views, .ciq-drawtools, .ciq-studies, .cq-chart-setting, .ciq-draw-tools, .cq-comparison-new, .ciq-chart-types {
+        .cq-menu-overlay {
+            height: calc(100% - 40px);
+        }
+    }
 
-.smartcharts-mobile .cq-modal-dropdown.stxMenuActive {
-    position: absolute !important;
-}
+    .cq-chart-size > div:first-child {
+        margin-right: 2em !important;
+    }
 
-// .ciq-studies,
-// .ciq-chart-types {
-//     display: inline-block !important;
-// }
-
-// .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
-//     pointer-events: initial;
-// }
-
-.message-enter-done {
-    background-color: red;
+    .cq-modal-dropdown.stxMenuActive {
+        position: absolute !important;
+    }
+ 
+    .cq-chart-controls .ic-icon-with-sub>svg {
+        padding: 0;
+    }    
 }

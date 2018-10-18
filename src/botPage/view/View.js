@@ -13,7 +13,6 @@ import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
-// import Chart from './Dialogs/Chart';
 import TradingView from './Dialogs/TradingView';
 import BinaryBotSmartChart from './Dialogs/BinaryBotSmartChart';
 import { getLanguage } from '../../common/lang';
@@ -75,8 +74,6 @@ const addBalanceForToken = token => {
         });
     });
 };
-
-// const chart = new Chart();
 
 const mySmartChart = new BinaryBotSmartChart();
 
