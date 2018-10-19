@@ -1,5 +1,6 @@
 import {
     SmartChart,
+    setSmartChartsPublicPath,
     ChartTypes,
     StudyLegend,
     Comparison,
@@ -15,6 +16,8 @@ import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
 import { ticksService } from '../shared';
 import { observer as globalObserver } from '../../../common/utils/observer';
+
+setSmartChartsPublicPath('./js/');
 
 const chartWidth = 500;
 const chartHeight = 500;
