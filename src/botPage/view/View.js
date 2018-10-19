@@ -76,7 +76,7 @@ const addBalanceForToken = token => {
     });
 };
 
-const chart = new Chart();
+const chart = new Chart(api);
 const tradingView = new TradingView();
 
 const setBeforeUnload = off => {
