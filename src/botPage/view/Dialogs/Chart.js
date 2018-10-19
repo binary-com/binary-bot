@@ -5,7 +5,6 @@ import { translate } from '../../../common/i18n';
 import { loading as loadingStyle } from '../style';
 import Dialog from './Dialog';
 import TicksService from '../../common/TicksService';
-import { generateLiveApiInstance } from '../../../common/appId';
 
 const chartWidth = 500;
 const chartHeight = 500;
