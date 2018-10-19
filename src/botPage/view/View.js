@@ -60,7 +60,9 @@ api.send({ time: '1' }).then(response => {
 });
 
 api.events.on('balance', response => {
-    const { balance: { balance: b, currency } } = response;
+    const {
+        balance: { balance: b, currency },
+    } = response;
 
     const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
     $('.topMenuBalance').text(`${balance} ${currency}`);
@@ -500,7 +502,7 @@ export default class View {
              * trigger this event when backspace, arrow keys are pressed
              * in chrome it is not triggered
              */
-            const unicodeStrings = /[\u0008|\u0000]/;
+            const unicodeStrings = /[\u0008|\u0000]/; /* eslint-disable-line no-control-regex */
             if (unicodeStrings.test(char)) return;
 
             if (!/([0-9])/.test(char)) {
