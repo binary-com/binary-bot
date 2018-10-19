@@ -1,18 +1,16 @@
 import filesaver from 'file-saver';
-import { generateLiveApiInstance } from '../../common/appId';
 import _Symbol from '../common/symbolApi';
 
-let tmpApi = generateLiveApiInstance();
+export let symbolApi;
 
-export const symbolApi = new _Symbol(tmpApi);
-
-export const symbolPromise = new Promise(resolve => {
-    symbolApi.initPromise.then(() => {
-        tmpApi.disconnect();
-        tmpApi = null;
-        resolve();
+export const symbolPromise = api => {
+    symbolApi = new _Symbol(api);
+    return new Promise(resolve => {
+        symbolApi.initPromise.then(() => {
+            resolve();
+        });
     });
-});
+};
 
 export const appendRow = (trade, state) => ({
     id  : state.id + 1,
