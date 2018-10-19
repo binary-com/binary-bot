@@ -1,5 +1,4 @@
 import filesaver from 'file-saver';
-import Observer from '../../common/utils/observer';
 import { generateLiveApiInstance } from '../../common/appId';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
