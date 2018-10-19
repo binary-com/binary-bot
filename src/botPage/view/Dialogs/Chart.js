@@ -1,14 +1,17 @@
 import React, { PureComponent } from 'react';
 import { BinaryChart } from 'binary-charts';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { ticksService } from '../shared';
 import { translate } from '../../../common/i18n';
 import { loading as loadingStyle } from '../style';
 import Dialog from './Dialog';
+import TicksService from '../../common/TicksService';
+import { generateLiveApiInstance } from '../../../common/appId';
 
 const chartWidth = 500;
 const chartHeight = 500;
 const headerSize = 50;
+
+let ticksService;
 
 class CustomBinaryChart extends BinaryChart {
     componentDidMount() {
@@ -148,7 +151,8 @@ class ChartContent extends PureComponent {
 }
 
 export default class Chart extends Dialog {
-    constructor() {
+    constructor(api) {
+        ticksService = new TicksService(api);
         super('chart-dialog', translate('Chart'), <ChartContent />, {
             width : chartWidth,
             height: chartHeight,

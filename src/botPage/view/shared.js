@@ -1,7 +1,6 @@
 import filesaver from 'file-saver';
 import { generateLiveApiInstance } from '../../common/appId';
 import _Symbol from '../common/symbolApi';
-import TicksService from '../common/TicksService';
 
 let tmpApi = generateLiveApiInstance();
 
@@ -14,8 +13,6 @@ export const symbolPromise = new Promise(resolve => {
         resolve();
     });
 });
-
-export const ticksService = new TicksService(generateLiveApiInstance());
 
 export const appendRow = (trade, state) => ({
     id  : state.id + 1,
