@@ -18,13 +18,6 @@ export const symbolPromise = new Promise(resolve => {
 
 export const ticksService = new TicksService(generateLiveApiInstance());
 
-export const createScope = () => {
-    const api = generateLiveApiInstance();
-    const observer = new Observer();
-
-    return { observer, api, ticksService, symbolApi };
-};
-
 export const appendRow = (trade, state) => ({
     id  : state.id + 1,
     rows: [
