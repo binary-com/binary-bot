@@ -63,7 +63,6 @@ export default class TicksService {
             });
         });
     }
-
     request(options) {
         const { symbol, granularity } = options;
 
@@ -79,7 +78,6 @@ export default class TicksService {
 
         return this.requestStream({ ...options, style });
     }
-
     monitor(options) {
         const { symbol, granularity, callback } = options;
 
@@ -111,7 +109,6 @@ export default class TicksService {
 
         this.unsubscribeIfEmptyListeners(options);
     }
-
     unsubscribeIfEmptyListeners(options) {
         const { symbol, granularity } = options;
 
@@ -137,7 +134,6 @@ export default class TicksService {
             this.unsubscribeAllAndSubscribeListeners(symbol);
         }
     }
-
     unsubscribeAllAndSubscribeListeners(symbol) {
         const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol]);
         const tickSubscription = this.subscriptions.getIn(['tick', symbol]);
@@ -147,29 +143,28 @@ export default class TicksService {
             ...(tickSubscription || []),
         ];
 
-        Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id)))); // .then(() => {
-        // const ohlcListeners = this.ohlcListeners.get(symbol);
+        Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id)))).then(() => {
+            const ohlcListeners = this.ohlcListeners.get(symbol);
 
-        // if (ohlcListeners) {
-        //     ohlcListeners.forEach((listener, granularity) => {
-        //         this.candles = this.candles.deleteIn([symbol, Number(granularity)]);
-        //         this.requestStream({
-        //             symbol,
-        //             granularity,
-        //             style: 'candles',
-        //         }).catch(e => globalObserver.emit('Error', e));
-        //     });
-        // }
+            if (ohlcListeners) {
+                ohlcListeners.forEach((listener, granularity) => {
+                    this.candles = this.candles.deleteIn([symbol, Number(granularity)]);
+                    this.requestStream({
+                        symbol,
+                        granularity,
+                        style: 'candles',
+                    }).catch(e => globalObserver.emit('Error', e));
+                });
+            }
 
-        // if (this.tickListeners.has(symbol)) {
-        //     this.ticks = this.ticks.delete(symbol);
-        //     this.requestStream({ symbol, style: 'ticks' }).catch(e => globalObserver.emit('Error', e));
-        // }
-        // });
+            if (this.tickListeners.has(symbol)) {
+                this.ticks = this.ticks.delete(symbol);
+                this.requestStream({ symbol, style: 'ticks' }).catch(e => globalObserver.emit('Error', e));
+            }
+        });
 
         this.subscriptions = new Map();
     }
-
     updateTicksAndCallListeners(symbol, ticks) {
         if (this.ticks.get(symbol) === ticks) {
             return;
@@ -179,10 +174,9 @@ export default class TicksService {
         const listeners = this.tickListeners.get(symbol);
 
         if (listeners) {
-            listeners.forEach(callback => callback(ticks));
+            listeners.forEach(callback => callback(this.ticks.get(symbol)));
         }
     }
-
     updateCandlesAndCallListeners(address, candles) {
         if (this.ticks.getIn(address) === candles) {
             return;
@@ -192,10 +186,9 @@ export default class TicksService {
         const listeners = this.ohlcListeners.getIn(address);
 
         if (listeners) {
-            listeners.forEach(callback => callback(candles));
+            listeners.forEach(callback => callback(this.candles.getIn(address)));
         }
     }
-
     observe() {
         this.api.events.on('tick', r => {
             const {
@@ -205,7 +198,7 @@ export default class TicksService {
 
             if (this.ticks.has(symbol)) {
                 this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
-                this.updateTicksAndCallListeners(symbol, r);
+                this.updateTicksAndCallListeners(symbol, updateTicks(this.ticks.get(symbol), parseTick(tick)));
             }
         });
 
@@ -218,15 +211,16 @@ export default class TicksService {
             if (this.candles.hasIn([symbol, Number(granularity)])) {
                 this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);
                 const address = [symbol, Number(granularity)];
-                this.updateCandlesAndCallListeners(address, r);
+                this.updateCandlesAndCallListeners(
+                    address,
+                    updateCandles(this.candles.getIn(address), parseOhlc(ohlc))
+                );
             }
         });
     }
-
     requestStream(options) {
         return this.requestPipSizes().then(() => this.requestTicks(options));
     }
-
     requestTicks(options) {
         const { symbol, granularity, style } = options;
 
@@ -243,11 +237,14 @@ export default class TicksService {
                 .then(r => {
                     if (style === 'ticks') {
                         const ticks = historyToTicks(r.history);
-                        this.updateTicksAndCallListeners(symbol, r);
+
+                        this.updateTicksAndCallListeners(symbol, ticks);
                         resolve(ticks);
                     } else {
                         const candles = parseCandles(r.candles);
-                        this.updateCandlesAndCallListeners([symbol, Number(granularity)], r);
+
+                        this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
+
                         resolve(candles);
                     }
                 })

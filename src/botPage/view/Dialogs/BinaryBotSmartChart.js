@@ -14,10 +14,14 @@ import {
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
-import { ticksService } from '../shared';
+import { generateLiveApiInstance } from '../../../common/appId';
+import SmartChartTicksService from '../../common/SmartChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
 setSmartChartsPublicPath('./js/');
+
+const api = generateLiveApiInstance();
+const ticksService = new SmartChartTicksService(api);
 
 const chartWidth = 500;
 const chartHeight = 500;
@@ -27,13 +31,34 @@ class SmartChartContent extends PureComponent {
         super();
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
-        this.state = { symbol: 'R_100' };
+        this.state = { symbol: 'R_100', barrierType: null, high: 0, low: 0 };
 
         globalObserver.register('bot.init', s => {
             if (this.symbol !== s) {
                 this.setState({ symbol: s });
             }
         });
+
+        globalObserver.register('bot.contract', c => {
+            if (c) {
+                if (c.is_sold) {
+                    this.setState({ barrierType: null });
+                } else {
+                    this.setState({ barrierType: this.getBarrierType(c.contract_type) });
+                    this.setState({ high: c.barrier });
+                    this.setState({ low: c.barrier });
+                }
+            }
+        });
+    }
+
+    getBarrierType(contractType) {
+        switch (contractType) {
+            case 'CALL':
+                return 'ABOVE';
+            default:
+                return '';
+        }
     }
 
     getKey({ ticks_history: symbol, granularity }) {
@@ -100,6 +125,23 @@ class SmartChartContent extends PureComponent {
     );
 
     render() {
+        const barriers = this.state.barrierType
+            ? [
+                {
+                    shade         : this.state.barrierType,
+                    shadeColor    : '#0000ff',
+                    color         : '#ff0027',
+                    // onChange: this.handleBarrierChange,
+                    relative      : false,
+                    draggable     : false,
+                    lineStyle     : 'dotted',
+                    hidePriceLines: false,
+                    high          : parseFloat(this.state.high),
+                    loaw          : parseFloat(this.state.low),
+                },
+            ]
+            : [];
+
         return (
             <SmartChart
                 id={this.chartId}
@@ -115,6 +157,7 @@ class SmartChartContent extends PureComponent {
                 // settings={settings}
                 // onSettingsChange={this.saveSettings}
                 // isConnectionOpened={isConnectionOpened}
+                barriers={barriers}
             />
         );
     }
