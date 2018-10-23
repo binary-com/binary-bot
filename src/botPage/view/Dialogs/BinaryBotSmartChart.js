@@ -54,8 +54,8 @@ class SmartChartContent extends PureComponent {
         globalObserver.register('bot.contract', c => {
             if (c) {
                 if (c.is_sold) {
-                    this.setState({ barrierType: null });
                     this.shouldBarrierDisplay = false;
+                    this.setState({ barrierType: null });
                 } else {
                     this.setState({ barrierType: BarrierTypes[c.contract_type] });
                     if (c.barrier) this.setState({ high: c.barrier });
@@ -135,7 +135,7 @@ class SmartChartContent extends PureComponent {
                 {
                     shade         : this.state.barrierType,
                     shadeColor    : '#0000ff',
-                    color         : '#ff0027',
+                    color         : '#c03',
                     relative      : false,
                     draggable     : false,
                     lineStyle     : 'dotted',
