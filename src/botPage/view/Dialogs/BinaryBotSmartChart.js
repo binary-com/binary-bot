@@ -23,6 +23,17 @@ setSmartChartsPublicPath('./js/');
 const api = generateLiveApiInstance();
 const ticksService = new SmartChartTicksService(api);
 
+export const BarrierTypes = {
+    CALL       : 'ABOVE',
+    PUT        : 'BELOW',
+    EXPIRYRANGE: 'BETWEEN',
+    EXPIRYMISS : 'OUTSIDE',
+    RANGE      : 'BETWEEN',
+    UPORDOWN   : 'OUTSIDE',
+    ONETOUCH   : 'NONE_SINGLE',
+    NOTOUCH    : 'NONE_SINGLE',
+};
+
 const chartWidth = 500;
 const chartHeight = 500;
 
@@ -31,7 +42,8 @@ class SmartChartContent extends PureComponent {
         super();
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
-        this.state = { symbol: 'R_100', barrierType: null, high: 0, low: 0 };
+        this.state = { symbol: 'R_100', barrierType: null, high: null, low: null };
+        this.shouldBarrierDisplay = false;
 
         globalObserver.register('bot.init', s => {
             if (this.symbol !== s) {
@@ -43,22 +55,15 @@ class SmartChartContent extends PureComponent {
             if (c) {
                 if (c.is_sold) {
                     this.setState({ barrierType: null });
+                    this.shouldBarrierDisplay = false;
                 } else {
-                    this.setState({ barrierType: this.getBarrierType(c.contract_type) });
-                    this.setState({ high: c.barrier });
-                    this.setState({ low: c.barrier });
+                    this.setState({ barrierType: BarrierTypes[c.contract_type] });
+                    if (c.barrier) this.setState({ high: c.barrier });
+                    if (c.high_barrier) this.setState({ high: c.high_barrier, low: c.low_barrier });
+                    this.shouldBarrierDisplay = true;
                 }
             }
         });
-    }
-
-    getBarrierType(contractType) {
-        switch (contractType) {
-            case 'CALL':
-                return 'ABOVE';
-            default:
-                return '';
-        }
     }
 
     getKey({ ticks_history: symbol, granularity }) {
@@ -125,19 +130,18 @@ class SmartChartContent extends PureComponent {
     );
 
     render() {
-        const barriers = this.state.barrierType
+        const barriers = this.shouldBarrierDisplay
             ? [
                 {
                     shade         : this.state.barrierType,
                     shadeColor    : '#0000ff',
                     color         : '#ff0027',
-                    // onChange: this.handleBarrierChange,
                     relative      : false,
                     draggable     : false,
                     lineStyle     : 'dotted',
                     hidePriceLines: false,
                     high          : parseFloat(this.state.high),
-                    loaw          : parseFloat(this.state.low),
+                    low           : parseFloat(this.state.low),
                 },
             ]
             : [];
@@ -146,17 +150,12 @@ class SmartChartContent extends PureComponent {
             <SmartChart
                 id={this.chartId}
                 symbol={this.state.symbol}
-                // onMessage={this.onMessage}
                 isMobile={true}
-                // enableRouting
                 topWidgets={this.renderTopWidgets}
                 chartControlsWidgets={this.renderControls}
                 requestAPI={this.requestAPI.bind(this)}
                 requestSubscribe={this.requestSubscribe.bind(this)}
                 requestForget={this.requestForget.bind(this)}
-                // settings={settings}
-                // onSettingsChange={this.saveSettings}
-                // isConnectionOpened={isConnectionOpened}
                 barriers={barriers}
             />
         );
