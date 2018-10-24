@@ -3,20 +3,6 @@ import { doUntilDone } from '../bot/tools';
 import TicksService from './TicksService';
 
 export default class SmartChartTicksService extends TicksService {
-    unsubscribeAllAndSubscribeListeners(symbol) {
-        const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol]);
-        const tickSubscription = this.subscriptions.getIn(['tick', symbol]);
-
-        const subscription = [
-            ...(ohlcSubscriptions ? Array.from(ohlcSubscriptions.values()) : []),
-            ...(tickSubscription || []),
-        ];
-
-        Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id))));
-
-        this.subscriptions = new Map();
-    }
-
     observe() {
         this.api.events.on('tick', r => {
             const {

@@ -143,25 +143,7 @@ export default class TicksService {
             ...(tickSubscription || []),
         ];
 
-        Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id)))).then(() => {
-            const ohlcListeners = this.ohlcListeners.get(symbol);
-
-            if (ohlcListeners) {
-                ohlcListeners.forEach((listener, granularity) => {
-                    this.candles = this.candles.deleteIn([symbol, Number(granularity)]);
-                    this.requestStream({
-                        symbol,
-                        granularity,
-                        style: 'candles',
-                    }).catch(e => globalObserver.emit('Error', e));
-                });
-            }
-
-            if (this.tickListeners.has(symbol)) {
-                this.ticks = this.ticks.delete(symbol);
-                this.requestStream({ symbol, style: 'ticks' }).catch(e => globalObserver.emit('Error', e));
-            }
-        });
+        Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id))));
 
         this.subscriptions = new Map();
     }
