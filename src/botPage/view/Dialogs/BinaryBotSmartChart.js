@@ -20,9 +20,6 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 
 setSmartChartsPublicPath('./js/');
 
-const api = generateLiveApiInstance();
-const ticksService = new SmartChartTicksService(api);
-
 export const BarrierTypes = {
     CALL       : 'ABOVE',
     PUT        : 'BELOW',
@@ -38,8 +35,12 @@ const chartWidth = 500;
 const chartHeight = 500;
 
 class SmartChartContent extends PureComponent {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        const { api } = props;
+        this.ticksService = new SmartChartTicksService(api);
+
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
         this.state = { symbol: 'R_100', barrierType: null, high: null, low: null };
@@ -71,7 +72,7 @@ class SmartChartContent extends PureComponent {
     }
 
     requestAPI(data) {
-        return ticksService.api.send(data);
+        return this.ticksService.api.send(data);
     }
 
     requestSubscribe(request, callback) {
@@ -80,13 +81,13 @@ class SmartChartContent extends PureComponent {
         const granularity = request.granularity;
 
         if (dataType === 'candles') {
-            this.listeners[this.getKey(request)] = ticksService.monitor({
+            this.listeners[this.getKey(request)] = this.ticksService.monitor({
                 symbol,
                 granularity,
                 callback,
             });
         } else {
-            this.listeners[this.getKey(request)] = ticksService.monitor({
+            this.listeners[this.getKey(request)] = this.ticksService.monitor({
                 symbol,
                 callback,
             });
@@ -100,13 +101,13 @@ class SmartChartContent extends PureComponent {
         const requsestKey = this.getKey(request);
 
         if (dataType === 'candles') {
-            ticksService.stopMonitor({
+            this.ticksService.stopMonitor({
                 symbol,
                 granularity,
                 key: this.listeners[requsestKey],
             });
         } else {
-            ticksService.stopMonitor({
+            this.ticksService.stopMonitor({
                 symbol,
                 key: this.listeners[requsestKey],
             });
@@ -163,8 +164,8 @@ class SmartChartContent extends PureComponent {
 }
 
 export default class BinaryBotSmartChart extends Dialog {
-    constructor() {
-        super('smartchart-dialog', translate('Smartchart Chart'), <SmartChartContent />, {
+    constructor(api) {
+        super('smartchart-dialog', translate('Smartchart Chart'), <SmartChartContent api={api} />, {
             width : chartWidth,
             height: chartHeight,
         });

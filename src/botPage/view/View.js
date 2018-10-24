@@ -75,7 +75,7 @@ const addBalanceForToken = token => {
     });
 };
 
-const mySmartChart = new BinaryBotSmartChart();
+const mySmartChart = new BinaryBotSmartChart(api);
 
 const tradingView = new TradingView();
 
