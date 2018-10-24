@@ -17,36 +17,9 @@ export default class SmartChartTicksService extends TicksService {
         this.subscriptions = new Map();
     }
 
-    updateTicksAndCallListeners(symbol, ticks) {
-        if (this.ticks.get(symbol) === ticks) {
-            return;
-        }
-        this.ticks = this.ticks.set(symbol, ticks);
-
-        const listeners = this.tickListeners.get(symbol);
-
-        if (listeners) {
-            listeners.forEach(callback => callback(ticks));
-        }
-    }
-
-    updateCandlesAndCallListeners(address, candles) {
-        if (this.ticks.getIn(address) === candles) {
-            return;
-        }
-        this.candles = this.candles.setIn(address, candles);
-
-        const listeners = this.ohlcListeners.getIn(address);
-
-        if (listeners) {
-            listeners.forEach(callback => callback(candles));
-        }
-    }
-
     observe() {
         this.api.events.on('tick', r => {
             const {
-                tick,
                 tick: { symbol, id },
             } = r;
 
@@ -58,7 +31,6 @@ export default class SmartChartTicksService extends TicksService {
 
         this.api.events.on('ohlc', r => {
             const {
-                ohlc,
                 ohlc: { symbol, granularity, id },
             } = r;
 
@@ -85,13 +57,9 @@ export default class SmartChartTicksService extends TicksService {
             )
                 .then(r => {
                     if (style === 'ticks') {
-                        // const ticks = historyToTicks(r.history);
                         this.updateTicksAndCallListeners(symbol, r);
-                        // resolve(ticks);
                     } else {
-                        // const candles = parseCandles(r.candles);
                         this.updateCandlesAndCallListeners([symbol, Number(granularity)], r);
-                        // resolve(candles);
                     }
                 })
                 .catch(reject);
