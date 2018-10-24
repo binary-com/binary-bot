@@ -37,14 +37,16 @@ const chartHeight = 500;
 class SmartChartContent extends PureComponent {
     constructor(props) {
         super(props);
-
         const { api } = props;
+        this.settings = { language: getLanguage() };
         this.ticksService = new SmartChartTicksService(api);
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
         this.state = { symbol: 'R_100', barrierType: null, high: null, low: null };
         this.shouldBarrierDisplay = false;
+    }
 
+    componentDidMount() {
         globalObserver.register('bot.init', s => {
             if (this.symbol !== s) {
                 this.setState({ symbol: s });
@@ -66,9 +68,10 @@ class SmartChartContent extends PureComponent {
         });
     }
 
-    getKey({ ticks_history: symbol, granularity }) {
-        return `${symbol}-${granularity}`;
-    }
+    getKey = request => {
+        const key = `${request.ticks_history}-${request.granularity}`;
+        return key;
+    };
 
     requestAPI(data) {
         return this.ticksService.api.send(data);
@@ -77,12 +80,12 @@ class SmartChartContent extends PureComponent {
     requestSubscribe(request, callback) {
         const symbol = request.ticks_history;
         const dataType = request.style;
-        const granularity = request.granularity;
+        const interval = request.granularity;
 
         if (dataType === 'candles') {
             this.listeners[this.getKey(request)] = this.ticksService.monitor({
                 symbol,
-                granularity,
+                interval,
                 callback,
             });
         } else {
@@ -93,16 +96,16 @@ class SmartChartContent extends PureComponent {
         }
     }
 
-    requestForget(request, callback) {
+    requestForget(request) {
         const symbol = request.ticks_history;
         const dataType = request.style;
-        const granularity = request.granularity;
+        const interval = request.granularity;
         const requsestKey = this.getKey(request);
 
         if (dataType === 'candles') {
             this.ticksService.stopMonitor({
                 symbol,
-                granularity,
+                interval,
                 key: this.listeners[requsestKey],
             });
         } else {
@@ -130,8 +133,6 @@ class SmartChartContent extends PureComponent {
     );
 
     render() {
-        const settings = { language: getLanguage() };
-
         const barriers = this.shouldBarrierDisplay
             ? [
                 {
@@ -159,7 +160,7 @@ class SmartChartContent extends PureComponent {
                 requestSubscribe={this.requestSubscribe.bind(this)}
                 requestForget={this.requestForget.bind(this)}
                 barriers={barriers}
-                settings={settings}
+                settings={this.settings}
             />
         );
     }

@@ -499,7 +499,7 @@ export default class View {
              * trigger this event when backspace, arrow keys are pressed
              * in chrome it is not triggered
              */
-            const unicodeStrings = /[\u0008|\u0000]/;
+            const unicodeStrings = /[\u0008|\u0000]/; // eslint-disable-line no-control-regex
             if (unicodeStrings.test(char)) return;
 
             if (!/([0-9])/.test(char)) {

@@ -1,4 +1,3 @@
-import { Map } from 'immutable';
 import { doUntilDone } from '../bot/tools';
 import TicksService from './TicksService';
 
