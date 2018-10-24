@@ -14,9 +14,9 @@ import {
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
-import { generateLiveApiInstance } from '../../../common/appId';
 import SmartChartTicksService from '../../common/SmartChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
+import { getLanguage } from '../../../common/lang';
 
 setSmartChartsPublicPath('./js/');
 
@@ -40,7 +40,6 @@ class SmartChartContent extends PureComponent {
 
         const { api } = props;
         this.ticksService = new SmartChartTicksService(api);
-
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
         this.state = { symbol: 'R_100', barrierType: null, high: null, low: null };
@@ -131,6 +130,8 @@ class SmartChartContent extends PureComponent {
     );
 
     render() {
+        const settings = { language: getLanguage() };
+
         const barriers = this.shouldBarrierDisplay
             ? [
                 {
@@ -158,6 +159,7 @@ class SmartChartContent extends PureComponent {
                 requestSubscribe={this.requestSubscribe.bind(this)}
                 requestForget={this.requestForget.bind(this)}
                 barriers={barriers}
+                settings={settings}
             />
         );
     }
