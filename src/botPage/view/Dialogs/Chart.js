@@ -78,11 +78,7 @@ class ChartContent extends PureComponent {
     }
 
     requestSubscribe(request, callback) {
-        const symbol = request.ticks_history;
-        const dataType = request.style;
-        /* eslint-disable-next-line prefer-destructuring */
-        const granularity = request.granularity;
-
+        const { ticks_history: symbol, style: dataType, granularity } = request;
         if (dataType === 'candles') {
             this.listeners[this.getKey(request)] = this.ticksService.monitor({
                 symbol,
@@ -98,12 +94,8 @@ class ChartContent extends PureComponent {
     }
 
     requestForget(request) {
-        const symbol = request.ticks_history;
-        const dataType = request.style;
-        /* eslint-disable-next-line prefer-destructuring */
-        const granularity = request.granularity;
+        const { ticks_history: symbol, style: dataType, granularity } = request;
         const requsestKey = this.getKey(request);
-
         if (dataType === 'candles') {
             this.ticksService.stopMonitor({
                 symbol,
