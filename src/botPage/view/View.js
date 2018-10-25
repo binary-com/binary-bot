@@ -141,7 +141,6 @@ const clearRealityCheck = () => {
 
 const limits = new Limits();
 const saveDialog = new Save();
-// const chart = new Chart();
 
 const getLandingCompanyForToken = id => {
     let landingCompany;

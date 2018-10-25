@@ -80,6 +80,7 @@ class ChartContent extends PureComponent {
     requestSubscribe(request, callback) {
         const symbol = request.ticks_history;
         const dataType = request.style;
+        /* eslint-disable-next-line prefer-destructuring */
         const granularity = request.granularity;
 
         if (dataType === 'candles') {
@@ -99,6 +100,7 @@ class ChartContent extends PureComponent {
     requestForget(request) {
         const symbol = request.ticks_history;
         const dataType = request.style;
+        /* eslint-disable-next-line prefer-destructuring */
         const granularity = request.granularity;
         const requsestKey = this.getKey(request);
 
