@@ -1,7 +1,7 @@
 import { doUntilDone } from '../bot/tools';
 import TicksService from './TicksService';
 
-export default class SmartChartTicksService extends TicksService {
+export default class ChartTicksService extends TicksService {
     observe() {
         this.api.events.on('tick', r => {
             const {

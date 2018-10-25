@@ -14,7 +14,7 @@ import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
 import TradingView from './Dialogs/TradingView';
-import BinaryBotSmartChart from './Dialogs/BinaryBotSmartChart';
+import Chart from './Dialogs/Chart';
 import { getLanguage } from '../../common/lang';
 import { roundBalance, isVirtual } from '../common/tools';
 import { symbolPromise } from './shared';
@@ -75,7 +75,7 @@ const addBalanceForToken = token => {
     });
 };
 
-const mySmartChart = new BinaryBotSmartChart(api);
+const chart = new Chart(api);
 
 const tradingView = new TradingView();
 
@@ -423,7 +423,7 @@ export default class View {
         });
 
         $('#chartButton').click(() => {
-            mySmartChart.open();
+            chart.open();
         });
 
         $('#tradingViewButton').click(() => {

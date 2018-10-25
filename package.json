@@ -80,7 +80,6 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-    "binary-charts": "^9.2.7",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",
@@ -137,7 +136,7 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
-    "@binary-com/smartcharts": "0.2.9",
+    "@binary-com/smartcharts": "0.3.0",
     "babel": "^6.23.0",
     "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.12.2",

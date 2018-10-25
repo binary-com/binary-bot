@@ -1,155 +1,174 @@
+import {
+    SmartChart,
+    setSmartChartsPublicPath,
+    ChartTypes,
+    StudyLegend,
+    Comparison,
+    Views,
+    Timeperiod,
+    DrawTools,
+    Share,
+    ComparisonList,
+    ChartSize,
+} from '@binary-com/smartcharts';
 import React, { PureComponent } from 'react';
-import { BinaryChart } from 'binary-charts';
-import { observer as globalObserver } from '../../../common/utils/observer';
-import { ticksService } from '../shared';
 import { translate } from '../../../common/i18n';
-import { loading as loadingStyle } from '../style';
 import Dialog from './Dialog';
+import ChartTicksService from '../../common/ChartTicksService';
+import { observer as globalObserver } from '../../../common/utils/observer';
+import { getLanguage } from '../../../common/lang';
+
+setSmartChartsPublicPath('./js/');
+
+export const BarrierTypes = {
+    CALL       : 'ABOVE',
+    PUT        : 'BELOW',
+    EXPIRYRANGE: 'BETWEEN',
+    EXPIRYMISS : 'OUTSIDE',
+    RANGE      : 'BETWEEN',
+    UPORDOWN   : 'OUTSIDE',
+    ONETOUCH   : 'NONE_SINGLE',
+    NOTOUCH    : 'NONE_SINGLE',
+};
 
 const chartWidth = 500;
 const chartHeight = 500;
-const headerSize = 50;
-
-class CustomBinaryChart extends BinaryChart {
-    componentDidMount() {
-        $('#chart-dialog-component').on('dialogresize', (_, { size }) => {
-            this.chart.setSize(size.width - 30, size.height - 100, false);
-        });
-    }
-    // eslint-disable-next-line class-methods-use-this
-    componentWillUnmount() {
-        $('#chart-dialog-component').off();
-    }
-}
 
 class ChartContent extends PureComponent {
-    constructor() {
-        super();
-        this.symbol = 'R_100';
-        this.chartType = 'line';
-        this.defaultPipSize = 2;
-        this.dataType = 'ticks';
-        this.granularity = 60;
-        this.listeners = {};
-        this.state = {
-            chartData: [],
-            contract : null,
-        };
-        this.getData = this.getData.bind(this);
-        this.updateTickListeners();
-        this.addEventHandlers();
+    constructor(props) {
+        super(props);
+        const { api } = props;
+        this.settings = { language: getLanguage() };
+        this.ticksService = new ChartTicksService(api);
+        this.listeners = [];
+        this.chartId = 'binary-bot-chart';
+        this.state = { symbol: 'R_100', barrierType: undefined, high: undefined, low: undefined };
+        this.shouldBarrierDisplay = false;
     }
-    addEventHandlers() {
+
+    componentDidMount() {
         globalObserver.register('bot.init', s => {
             if (this.symbol !== s) {
-                this.stopTickListeners();
-                this.symbol = s;
-                this.getData(undefined, undefined, this.dataType, this.granularity);
+                this.setState({ symbol: s });
             }
         });
+
         globalObserver.register('bot.contract', c => {
             if (c) {
                 if (c.is_sold) {
-                    this.setState({ contract: null });
+                    this.shouldBarrierDisplay = false;
+                    this.setState({ barrierType: null });
                 } else {
-                    this.setState({ contract: c });
+                    this.setState({ barrierType: BarrierTypes[c.contract_type] });
+                    if (c.barrier) this.setState({ high: c.barrier });
+                    if (c.high_barrier) this.setState({ high: c.high_barrier, low: c.low_barrier });
+                    this.shouldBarrierDisplay = true;
                 }
             }
         });
     }
-    stopTickListeners() {
-        if (this.listeners.ohlc) {
-            ticksService.stopMonitor({
-                symbol     : this.symbol,
-                granularity: this.granularity,
-                key        : this.listeners.ohlc,
+
+    getKey = request => {
+        const key = `${request.ticks_history}-${request.granularity}`;
+        return key;
+    };
+
+    requestAPI(data) {
+        return this.ticksService.api.send(data);
+    }
+
+    requestSubscribe(request, callback) {
+        const symbol = request.ticks_history;
+        const dataType = request.style;
+        const granularity = request.granularity;
+
+        if (dataType === 'candles') {
+            this.listeners[this.getKey(request)] = this.ticksService.monitor({
+                symbol,
+                granularity,
+                callback,
+            });
+        } else {
+            this.listeners[this.getKey(request)] = this.ticksService.monitor({
+                symbol,
+                callback,
             });
         }
-        if (this.listeners.tick) {
-            ticksService.stopMonitor({
-                symbol: this.symbol,
-                key   : this.listeners.tick,
+    }
+
+    requestForget(request) {
+        const symbol = request.ticks_history;
+        const dataType = request.style;
+        const granularity = request.granularity;
+        const requsestKey = this.getKey(request);
+
+        if (dataType === 'candles') {
+            this.ticksService.stopMonitor({
+                symbol,
+                granularity,
+                key: this.listeners[requsestKey],
+            });
+        } else {
+            this.ticksService.stopMonitor({
+                symbol,
+                key: this.listeners[requsestKey],
             });
         }
-        this.listeners = {};
+        delete this.listeners[requsestKey];
     }
-    updateTickListeners() {
-        return new Promise(resolve => {
-            const callback = response => {
-                this.setState({ chartData: response });
-                resolve();
-            };
 
-            if (this.dataType === 'candles') {
-                this.listeners.ohlc = ticksService.monitor({
-                    symbol     : this.symbol,
-                    granularity: this.granularity,
-                    callback,
-                });
-            } else {
-                this.listeners.tick = ticksService.monitor({
-                    symbol: this.symbol,
-                    callback,
-                });
-            }
-        });
-    }
-    getData(start, end, newDataType, newGranularity) {
-        this.stopTickListeners();
-        this.dataType = newDataType;
-        this.granularity = newGranularity;
-        return this.updateTickListeners();
-    }
-    getSymbol() {
-        return this.symbol;
-    }
-    componentWillUpdate() {
-        if (this.chartComponent && this.dataType === 'ticks' && this.state.contract) {
-            const { chart } = this.chartComponent;
-            const { dataMax } = chart.xAxis[0].getExtremes();
-            const { minRange } = chart.xAxis[0].options;
+    renderTopWidgets = () => <ComparisonList />;
 
-            chart.xAxis[0].setExtremes(dataMax - minRange, dataMax);
-        }
-    }
+    renderControls = () => (
+        <React.Fragment>
+            <ChartTypes />
+            <Timeperiod />
+            <StudyLegend />
+            <Comparison />
+            <DrawTools />
+            <Views />
+            <Share />
+            <ChartSize />
+        </React.Fragment>
+    );
+
     render() {
-        const isMinHeight = $(window).height() <= 360;
+        const barriers = this.shouldBarrierDisplay
+            ? [
+                {
+                    shade         : this.state.barrierType,
+                    shadeColor    : '#0000ff',
+                    color         : '#c03',
+                    relative      : false,
+                    draggable     : false,
+                    lineStyle     : 'dotted',
+                    hidePriceLines: false,
+                    high          : parseFloat(this.state.high),
+                    low           : parseFloat(this.state.low),
+                },
+            ]
+            : [];
 
-        if (!$('#chart-dialog-component:visible').length) {
-            return (
-                <div style={{ height: chartHeight - headerSize, width: chartWidth - headerSize }}>
-                    <div style={loadingStyle}>Loading...</div>
-                </div>
-            );
-        }
         return (
-            <CustomBinaryChart
-                className="trade-chart"
-                id="trade-chart0"
-                ref={component => (this.chartComponent = component)}
-                contract={
-                    this.state.contract && this.state.contract.underlying === this.symbol && this.dataType === 'ticks'
-                        ? this.state.contract
-                        : null
-                }
-                pipSize={ticksService.pipSizes ? ticksService.pipSizes[this.symbol] : this.defaultPipSize}
-                shiftMode="dynamic"
-                ticks={this.state.chartData}
-                getData={this.getData} // eslint-disable-line no-use-before-define
-                type={this.chartType}
-                hideToolbar={isMinHeight}
-                hideTimeFrame={isMinHeight}
-                onTypeChange={type => {
-                    this.chartType = type;
-                }}
+            <SmartChart
+                id={this.chartId}
+                symbol={this.state.symbol}
+                isMobile={true}
+                topWidgets={this.renderTopWidgets}
+                chartControlsWidgets={this.renderControls}
+                requestAPI={this.requestAPI.bind(this)}
+                requestSubscribe={this.requestSubscribe.bind(this)}
+                requestForget={this.requestForget.bind(this)}
+                barriers={barriers}
+                settings={this.settings}
             />
         );
     }
 }
 
 export default class Chart extends Dialog {
-    constructor() {
-        super('chart-dialog', translate('Chart'), <ChartContent />, {
+    constructor(api) {
+        super('chart-dialog', translate('Chart'), <ChartContent api={api} />, {
             width : chartWidth,
             height: chartHeight,
         });
