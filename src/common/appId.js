@@ -9,7 +9,7 @@ import {
 } from '../common/utils/storageManager';
 import { parseQueryString } from '../common/utils/tools';
 import { getLanguage } from './lang';
-import { AppIdMap } from './appIdResolver';
+import AppIdMap from './appIdResolver';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
