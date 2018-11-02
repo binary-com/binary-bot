@@ -75,6 +75,17 @@ export const getDefaultEndpoint = () => ({
     appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
 
+const isProduction = () => document.location.hostname.startsWith('bot.binary');
+
+const getExtension = () => document.location.hostname.split('.').slice(-1)[0];
+
+const generateOAuthDomain = () => {
+    if (isProduction()) {
+        return `oauth.binary.${getExtension()}`;
+    }
+    return 'oauth.binary.com';
+};
+
 export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
 
 export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
@@ -84,7 +95,7 @@ export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websoc
 export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
 
 export const getOAuthURL = () =>
-    `https://${getServerAddressFallback()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+    `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
     apiUrl   : getWebSocketURL(),
