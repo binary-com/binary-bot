@@ -9,6 +9,7 @@ import {
 } from '../common/utils/storageManager';
 import { parseQueryString } from '../common/utils/tools';
 import { getLanguage } from './lang';
+import { AppIdMap } from './appIdResolver';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
@@ -67,9 +68,11 @@ const isRealAccount = () => {
     return isReal;
 };
 
+const getDomainAppId = () => AppIdMap[document.location.hostname];
+
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
-    appId: getStorage('config.default_app_id') || 1169,
+    appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
 
 export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
