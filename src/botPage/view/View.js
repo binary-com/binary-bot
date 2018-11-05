@@ -32,7 +32,7 @@ import {
     AppConstants,
     addTokenIfValid,
 } from '../../common/appId';
-import AppIdMap from '../../common/appId';
+import AppIdMap from '../../common/appIdResolver';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
@@ -632,7 +632,7 @@ function renderReactComponents() {
             show={
                 !(
                     typeof window.location !== 'undefined' &&
-                    AppIdMap.hasOwnProperty(window.location.host) &&
+                    Object.prototype.hasOwnProperty.call(AppIdMap, window.location.host) &&
                     window.location.pathname === '/bot.html'
                 )
             }
