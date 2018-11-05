@@ -32,6 +32,7 @@ import {
     AppConstants,
     addTokenIfValid,
 } from '../../common/appId';
+import AppIdMap from '../../common/appIdResolver';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
@@ -59,9 +60,7 @@ api.send({ time: '1' }).then(response => {
 });
 
 api.events.on('balance', response => {
-    const {
-        balance: { balance: b, currency },
-    } = response;
+    const { balance: { balance: b, currency } } = response;
 
     const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
     $('.topMenuBalance').text(`${balance} ${currency}`);
@@ -273,7 +272,7 @@ export default class View {
                     this.blockly.initPromise.then(() => {
                         document
                             .getElementById('contact-us')
-                            .setAttribute('href', `https://www.binary.com/${  getLanguage()  }/contact.html`);
+                            .setAttribute('href', `https://www.binary.com/${getLanguage()}/contact.html`);
                         this.setElementActions();
                         initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                         applyToolboxPermissions();
@@ -633,7 +632,7 @@ function renderReactComponents() {
             show={
                 !(
                     typeof window.location !== 'undefined' &&
-                    window.location.host === 'bot.binary.com' &&
+                    Object.prototype.hasOwnProperty.call(AppIdMap, window.location.host) &&
                     window.location.pathname === '/bot.html'
                 )
             }
