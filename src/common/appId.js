@@ -75,7 +75,8 @@ export const getDefaultEndpoint = () => ({
     appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
 
-const isProduction = () => document.location.hostname.startsWith('bot.binary');
+const isProduction = () =>
+    document.location.hostname.startsWith('bot.binary') || document.location.hostname.startsWith('www.binary');
 
 const getExtension = () => document.location.hostname.split('.').slice(-1)[0];
 
@@ -113,9 +114,9 @@ export async function addTokenIfValid(token, tokenObjectList) {
     try {
         const { authorize } = await api.authorize(token);
         const { landing_company_name: lcName } = authorize;
-        const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
-            lcName
-        );
+        const {
+            landing_company_details: { has_reality_check: hasRealityCheck },
+        } = await api.getLandingCompanyDetails(lcName);
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
         const { account_list: accountList } = authorize;
