@@ -77,10 +77,7 @@ export const getDefaultEndpoint = () => ({
     appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
 
-export const isProduction = () => {
-    hostName.replace(/^www./, '');
-    return hostName in AppIdMap;
-};
+export const isProduction = () => hostName.replace(/^www./, '') in AppIdMap;
 
 const getExtension = () => hostName.split('.').slice(-1)[0];
 
