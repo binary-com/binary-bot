@@ -31,8 +31,8 @@ import {
     generateLiveApiInstance,
     AppConstants,
     addTokenIfValid,
+    isProduction,
 } from '../../common/appId';
-import AppIdMap from '../../common/appIdResolver';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
@@ -630,11 +630,7 @@ function renderReactComponents() {
     ReactDOM.render(
         <OfficialVersionWarning
             show={
-                !(
-                    typeof window.location !== 'undefined' &&
-                    Object.prototype.hasOwnProperty.call(AppIdMap, window.location.host) &&
-                    window.location.pathname === '/bot.html'
-                )
+                !(typeof window.location !== 'undefined' && isProduction() && window.location.pathname === '/bot.html')
             }
         />,
         $('#footer')[0]
