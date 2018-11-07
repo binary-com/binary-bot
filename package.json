@@ -123,9 +123,9 @@
     "notifyjs-browser": "^0.4.2",
     "prettier-eslint-cli": "^4.7.0",
     "prop-types": "^15.6.0",
-    "react": "^15.6.2",
+    "react": "16.2",
     "react-data-grid": "^3.0.0",
-    "react-dom": "^15.6.2",
+    "react-dom": "16.2",
     "react-joyride": "^1.11.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
@@ -137,9 +137,12 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
+    "binary-style": "^0.2.4",
     "blockly": "github:google/blockly#59e5ac6",
+    "coffeekraken-gridle": "^3.0.1",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0",
-    "gulp-gh-pages-will": "^0.5.5"
+    "gulp-gh-pages-will": "^0.5.5",
+    "react-render-html": "^0.6.0"
   }
 }
