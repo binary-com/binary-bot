@@ -31,8 +31,8 @@ import {
     generateLiveApiInstance,
     AppConstants,
     addTokenIfValid,
+    isProduction,
 } from '../../common/appId';
-import { isProduction } from '../../common/appId';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
