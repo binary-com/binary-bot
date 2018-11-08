@@ -3,10 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Footer from './react-components/footer.jsx';
 import { oauthLogin } from '../common/appId';
-import { load as loadLang, getLanguage } from '../common/lang';
+import { load as loadLang } from '../common/lang';
 import '../common/binary-ui/dropdown';
 import endpoint from './endpoint';
-import { isEuCountry, test as testToken } from '../common/footer-checks';
+import { isEuCountry } from '../common/footer-checks';
 import { getTokenList } from '../common/utils/storageManager';
 
 const loginCheck = () => {
