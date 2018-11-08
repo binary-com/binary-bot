@@ -7,11 +7,18 @@ require('./gulp/i18n');
 require('./gulp/build');
 require('./gulp/plato');
 
+const cors = function(req, res, next) {
+    next();
+};
+
 gulp.task('connect', () => {
     connect.server({
         root      : 'www',
         port      : 8080,
         livereload: true,
+        middleware() {
+            return [cors];
+        },
     });
 });
 
