@@ -1,5 +1,5 @@
 import React from 'react';
-const RenderHTML = require('react-render-html');
+import RenderHTML from 'react-render-html';
 import { translate as i18nTranslate } from '../../common/i18n.js';
 import { getLanguage } from '../../common/lang';
 import { isProduction } from '../../common/appId';
@@ -45,7 +45,7 @@ const SocialIcons = ({ networks }) => (
 );
 
 const Footer = () => (
-    <React.Fragment>
+    <div id="footer-container">
         <div id='footer-regulatory' className='primary-bg-color-dark gr-padding-10"'>
             <div className='container eu-hide'>
                 <div className='gr-row'>
@@ -163,7 +163,7 @@ const Footer = () => (
             </div>
         </div>
         <div id='end-note' className='invisible content-inverse-color center-text' />
-    </React.Fragment>
+    </div>
 );
 
 export default Footer;

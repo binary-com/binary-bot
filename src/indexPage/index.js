@@ -44,7 +44,6 @@ loginCheck();
 
 window.onload = () => {
     ReactDOM.render(<Footer />, document.getElementById('footer'));
-
     isEuCountry().then(isEu => {
         showHideEuElements(isEu);
         showWarning(isEu);
