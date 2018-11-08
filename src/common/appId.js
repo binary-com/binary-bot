@@ -15,6 +15,8 @@ export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
 });
 
+const hostName = document.location.hostname;
+
 const queryToObjectArray = queryStr => {
     const tokens = [];
     Object.keys(queryStr).forEach(o => {
@@ -68,17 +70,16 @@ const isRealAccount = () => {
     return isReal;
 };
 
-const getDomainAppId = () => AppIdMap[document.location.hostname];
+const getDomainAppId = () => AppIdMap[hostName];
 
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
     appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
 
-const isProduction = () =>
-    document.location.hostname.startsWith('bot.binary') || document.location.hostname.startsWith('www.binary');
+export const isProduction = () => hostName.replace(/^www./, '') in AppIdMap;
 
-const getExtension = () => document.location.hostname.split('.').slice(-1)[0];
+const getExtension = () => hostName.split('.').slice(-1)[0];
 
 const generateOAuthDomain = () => {
     if (isProduction()) {
