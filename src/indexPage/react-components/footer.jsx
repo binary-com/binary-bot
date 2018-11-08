@@ -2,25 +2,23 @@ import React from 'react';
 const RenderHTML = require('react-render-html');
 import { List } from './elements.jsx';
 import { translate as i18nTranslate } from '../../common/i18n.js';
-import { load as loadLang, getLanguage } from '../../common/lang';
+import { load as getLanguage } from '../../common/lang';
+import { isProduction } from '../../common/appId';
 
 const getDomainExtension = () => {
-    const hostname = document.location.hostname;
-    const hostParts = hostname.split('.');
-    return hostParts.length > 1 ? hostParts.splice(-1)[0] : false;
-
+    const hostParts = document.location.hostname.split('.');
+    return (hostParts.length > 1 ? hostParts.splice(-1)[0] : false);
 };
 
 const createSubdomainUrl = (subdomain, path = '') => {
     return `${document.location.protocol}//${subdomain}.${document.location.hostname}` + `${path.length > 0 ? '/' + path : ''}`;
 };
 
-const createUrl = (url, lang = getLanguage()) => {
-
-    if (getDomainExtension()) {
-        return `${document.location.protocol}//${document.location.hostname}.${getDomainExtension()}/${lang}/${url}.html`;
+const createUrl = (url, lang = getLanguage(), addLanguage = true) => {
+    if (isProduction()) {
+        return `${document.location.protocol}//${document.location.hostname}/${(addLanguage ? lang + '/' : '')}${url}.html`;
     } else {
-        return `${document.location.protocol}//${document.location.hostname}/${lang}/${url}.html`;
+        return `https://binary.com/${(addLanguage ? lang + '/' : '')}${url}.html`;
     }
 };
 
@@ -74,85 +72,7 @@ const StatusNotification = () => (
 );
 
 const Footer = () => (
-    <div id='footer' className='no-print'>
-        <div id='footer-menu' className='primary-bg-color'>
-            <div className='container'>
-                <div className='gr-row'>
-                    <div className='gr-6 gr-12-m'>
-                        <div className='gr-row'>
-                            <FooterColumn
-                                header={translate(['Our Company'])}
-                                items={[
-                                    { text: translate(['About Us']), href: createUrl('about-us') },
-                                    { text: translate(['Contact Us']), href: createUrl('contact'), className: 'hide show@mobile' },
-                                    { text: translate(['Regulatory Information']), href: createUrl('regulation') },
-                                    { text: translate(['Group History']), href: createUrl('group-history') },
-                                    { text: translate(['Binary in Numbers']), href: createUrl('binary-in-numbers') },
-                                    { text: translate(['Careers']), href: createUrl('careers') },
-                                    { text: translate(['Patents']), href: createUrl('legal/us_patents') },
-                                ]}
-                            />
-
-                            <FooterColumn
-                                header={translate(['Education'])}
-                                items={[
-                                    { text: translate(['Why Us?']), href: createUrl('why-us') },
-                                    { text: translate(['Getting Started']), href: createUrl('get-started') },
-                                    { text: translate(['Platform Tour']), href: createUrl('tour') },
-                                    { text: translate(['GamCare']), href: 'http://www.gamcare.org.uk/', target: '_blank', className: 'invisible eu-show' },
-                                    { text: translate(['Academy']), href: createSubdomainUrl('academy'), target: '_blank' },
-                                    { text: translate(['Webinars']), href: createSubdomainUrl('academy', 'en/events/'), target: '_blank' },
-                                    { text: translate(['Keep Safe']), href: createUrl('keep-safe'), className: 'client_logged_out' },
-                                ]}
-                            />
-
-                            <FooterColumn
-                                header={translate(['Banking'])}
-                                items={[
-                                    { text: translate(['Cashier']), href: createUrl('cashier') },
-                                    { text: translate(['Payment Methods']), href: createUrl('cashier/payment_methods') },
-                                ]}
-                            />
-                        </div>
-                    </div>
-                    <div className='gr-6 gr-12-m'>
-                        <div className='gr-row'>
-                            <FooterColumn
-                                header={translate(['Legal'])}
-                                items={[
-                                    { text: translate(['Terms and Conditions']), href: createUrl('terms-and-conditions') },
-                                    { text: translate(['Security and Privacy']), href: createUrl('terms-and-conditions'), param: '?anchor=security-and-privacy#privacy' },
-                                    { text: translate(['Responsible Trading']), href: createUrl('responsible-trading') },
-                                    { text: translate(['Complaints']), href: createUrl('terms-and-conditions'), param: '?anchor=complaints-and-disputes#legal-binary' },
-                                ]}
-                            />
-
-                            <FooterColumn
-                                header={translate(['Trading'])}
-                                items={[
-                                    { text: translate(['Platforms']), href: createUrl('platforms') },
-                                    { text: translate(['Asset Index']), href: createUrl('resources/asset_indexws') },
-                                    { text: translate(['Trading Times']), href: createUrl('resources/market_timesws') },
-                                    { text: translate(['Network Status']), href: 'https://binarycom.statuspage.io', target: '_blank' },
-                                ]}
-                            />
-
-                            <FooterColumn
-                                header={translate(['Partner With Us'])}
-                                items={[
-                                    { text: translate(['Affiliate Programme']), href: createUrl('affiliate/signup') },
-                                    { text: translate(['IB Programme']), href: createUrl('ib-programme/ib-signup') },
-                                    { text: translate(['API']), href: createSubdomainUrl('developers'), target: '_blank' },
-                                    { text: translate(['Binary Shop']), href: createSubdomainUrl('shop'), target: '_blank' },
-                                    { text: translate(['Charitable Activities']), href: createUrl('charity') },
-                                    { text: translate(['All Partnership Options']), href: createUrl('partners') },
-                                ]}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <React.Fragment>
         <div id='footer-regulatory' className='primary-bg-color-dark gr-padding-10"'>
             <div className='container eu-hide'>
                 <div className='gr-row'>
@@ -270,8 +190,7 @@ const Footer = () => (
             </div>
         </div>
         <div id='end-note' className='invisible content-inverse-color center-text' />
-        <StatusNotification />
-    </div>
+    </React.Fragment>
 );
 
 export default Footer;
