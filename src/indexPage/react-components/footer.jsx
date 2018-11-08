@@ -1,24 +1,14 @@
 import React from 'react';
 const RenderHTML = require('react-render-html');
-import { List } from './elements.jsx';
 import { translate as i18nTranslate } from '../../common/i18n.js';
-import { load as getLanguage } from '../../common/lang';
+import { getLanguage } from '../../common/lang';
 import { isProduction } from '../../common/appId';
-
-const getDomainExtension = () => {
-    const hostParts = document.location.hostname.split('.');
-    return (hostParts.length > 1 ? hostParts.splice(-1)[0] : false);
-};
-
-const createSubdomainUrl = (subdomain, path = '') => {
-    return `${document.location.protocol}//${subdomain}.${document.location.hostname}` + `${path.length > 0 ? '/' + path : ''}`;
-};
 
 const createUrl = (url, lang = getLanguage(), addLanguage = true) => {
     if (isProduction()) {
-        return `${document.location.protocol}//${document.location.hostname}/${(addLanguage ? lang + '/' : '')}${url}.html`;
+        return `${document.location.protocol}//${document.location.hostname}/${(addLanguage && lang ? lang + '/' : '')}${url}.html`;
     } else {
-        return `https://binary.com/${(addLanguage ? lang + '/' : '')}${url}.html`;
+        return `https://binary.com/${(addLanguage && lang ? lang + '/' : '')}${url}.html`;
     }
 };
 
@@ -35,19 +25,14 @@ const translate = (input) => {
                 translatedString = translatedString.replace(regex, replacement);
             });
 
-        return RenderHTML(translatedString);
+        const returnValue = RenderHTML(translatedString);
+        return returnValue;
 
     } else {
-        return i18nTranslate(input);
+        const returnValue = i18nTranslate(input);
+        return returnValue;
     }
 }
-
-const FooterColumn = ({ header, items }) => (
-    <div className='gr-4'>
-        <h4 className='secondary-color'><strong>{header}</strong></h4>
-        <List items={items} />
-    </div>
-);
 
 const SocialIcons = ({ networks }) => (
     <div id='social-icons' className='social-icons flex-row'>
@@ -56,18 +41,6 @@ const SocialIcons = ({ networks }) => (
                 <img src={`image/footer/${net.media}.svg`} />
             </a>
         ))}
-    </div>
-);
-
-const StatusNotification = () => (
-    <div id='status_notification'>
-        <div id='status_notification_type'>
-            <img src={'image/footer/server_status/ic-warning.svg'} alt='Information icon' />
-        </div>
-        <p id='status_notification_text' />
-        <div id='status_notification_close'>
-            <img src={'image/footer/server_status/ic-close.svg'} alt='Warning icon' />
-        </div>
     </div>
 );
 
@@ -105,13 +78,13 @@ const Footer = () => (
                 <div className='gr-row'>
                     <div className='gr-12'>
                         <p>
-                            {translate(['In the EU, financial products are offered by Binary Investments (Europe) Ltd., Mompalao Building, Suite 2, Tower Road, Msida MSD1825, Malta, regulated as a Category 3 Investment Services provider by the Malta Financial Services Authority ([_1]licence no. IS/70156[_2]).', `<a href="${createUrl('download/WS-Binary-Investments-Europe-Limited.pdf')}" target="_blank">`, '</a>'])}
+                            {translate(['In the EU, financial products are offered by Binary Investments (Europe) Ltd., Mompalao Building, Suite 2, Tower Road, Msida MSD1825, Malta, regulated as a Category 3 Investment Services provider by the Malta Financial Services Authority ([_1]licence no. IS/70156[_2]).', `<a href="${createUrl('download/WS-Binary-Investments-Europe-Limited.pdf', '', false)}" target="_blank">`, '</a>'])}
                         </p>
                         <p>
                             {translate(['Outside the EU, financial products are offered by Binary (C.R.) S.A., 5th Floor, Building 6 Centro Ejecutivo La Sabana, Sabana Sur, San José, Costa Rica, Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, regulated by the Vanuatu Financial Services Commission ([_1]view licence[_2]), Binary (BVI) Ltd, 2nd Floor, O’Neal Marketing Associates Building, Wickham’s Cay II, P.O. Box 3174, Road Town, Tortola VB1110, British Virgin Islands, regulated by the British Virgin Islands Financial Services Commission ([_3]licence no. SIBA/L/18/1114[_4]), and Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Labuan, Malaysia, regulated by the Labuan Financial Services Authority to carry on a money-broking business ([_5]licence no. MB/18/0024[_6])',
                                 '<a href="https://www.vfsc.vu/wp-content/uploads/2015/12/List-of-Licensees-under-Dealers-in-Securities-Licensing-Act-CAP-70-18.11.2016.pdf" target="_blank" rel="noopener noreferrer">', '</a>',
-                                `<a href="${createUrl('download/regulation/BVI_license.pdf')}" target="_blank">`, '</a>',
-                                `<a href="${createUrl('download/regulation/Labuan-license.pdf')}" target="_blank">`, '</a>'])}
+                                `<a href="${createUrl('download/regulation/BVI_license.pdf', '', false)}" target="_blank">`, '</a>',
+                                `<a href="${createUrl('download/regulation/Labuan-license.pdf', '', false)}" target="_blank">`, '</a>'])}
                         </p>
                         <p>
                             {translate(['This website’s services are not made available in certain countries such as the USA, Canada, Costa Rica, Hong Kong, Japan, or to persons under age 18.'])}
@@ -162,7 +135,7 @@ const Footer = () => (
                             {translate(['In the Isle of Man and the UK, Volatility Indices are offered by Binary (IOM) Ltd., First Floor, Millennium House, Victoria Road, Douglas, IM2 4RW, Isle of Man, British Isles; licensed and regulated respectively by (1) the Gambling Supervision Commission in the Isle of Man (current licence issued on 31 August 2017) and by (2) the Gambling Commission in the UK (licence [_1]reference no: 39172[_2]).', '<a href="https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39172" target="_blank" rel="noopener noreferrer">', '</a>'])}
                         </p>
                         <p>
-                            {translate(['In the rest of the EU, Volatility Indices are offered by Binary (Europe) Ltd., Mompalao Building, Suite 2, Tower Road, Msida MSD1825, Malta; licensed and regulated by (1) the Malta Gaming Authority in Malta (licence no. MGA/B2C/102/2000 issued on 01 August 2018), for UK clients by (2) the UK Gambling Commission (licence [_1]reference no: 39495[_2]), and for Irish clients by (3) the Revenue Commissioners in Ireland (Remote Bookmaker\'s Licence no. 1010285 issued on 1 July 2017). View complete [_3]Regulatory Information[_2].', '<a href="https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39495" target="_blank" rel="noopener noreferrer">', '</a>', `<a href="${createUrl('regulation')}">`])}
+                            {translate(['In the rest of the EU, Volatility Indices are offered by Binary (Europe) Ltd., Mompalao Building, Suite 2, Tower Road, Msida MSD1825, Malta; licensed and regulated by (1) the Malta Gaming Authority in Malta (licence no. MGA/B2C/102/2000 issued on 01 August 2018), for UK clients by (2) the UK Gambling Commission (licence [_1]reference no: 39495[_2]), and for Irish clients by (3) the Revenue Commissioners in Ireland (Remote Bookmaker\'s Licence no. 1010285 issued on 1 July 2017). View complete [_3]Regulatory Information[_2].', '<a href="https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39495" target="_blank" rel="noopener noreferrer">', '</a>', `<a href="${createUrl('regulation', '', false)}">`])}
                         </p>
                     </div>
                 </div>
