@@ -6,7 +6,7 @@ import { oauthLogin } from '../common/appId';
 import { load as loadLang } from '../common/lang';
 import '../common/binary-ui/dropdown';
 import endpoint from './endpoint';
-import { isEuCountry } from '../common/footer-checks';
+import isEuCountry from '../common/footer-checks';
 import { getTokenList } from '../common/utils/storageManager';
 
 const loginCheck = () => {
@@ -24,28 +24,15 @@ const loginCheck = () => {
 
 const showHideEuElements = isEu => {
     $('.eu-hide').attr('style', `display: ${isEu ? 'none' : 'block'} !important`);
-    $('.eu-show').attr('style', `display: ${isEu ? 'block' : 'none'} !important`);
-};
-
-const showWarning = isEu => {
-    const accounts = getTokenList();
-    let shouldShowWarning = false;
-
-    if (accounts.length) {
-        shouldShowWarning = accounts[0].landing_company_name === 'maltainvest' || accounts[0].is_virtual;
-    } else {
-        shouldShowWarning = isEu;
-    }
-
-    $('.eu-only').attr('style', `display: ${shouldShowWarning ? 'block' : 'none'} !important`);
+    $('.eu-show, .eu-only').attr('style', `display: ${isEu ? 'block' : 'none'} !important`);
 };
 
 loginCheck();
 
 window.onload = () => {
+    ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
     ReactDOM.render(<Footer />, document.getElementById('footer'));
     isEuCountry().then(isEu => {
         showHideEuElements(isEu);
-        showWarning(isEu);
     });
 };

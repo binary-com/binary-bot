@@ -1,38 +1,5 @@
 import React from 'react';
-import RenderHTML from 'react-render-html';
-import { translate as i18nTranslate } from '../../common/i18n.js';
-import { getLanguage } from '../../common/lang';
-import { isProduction } from '../../common/appId';
-
-const createUrl = (url, lang = getLanguage(), addLanguage = true) => {
-    if (isProduction()) {
-        return `${document.location.protocol}//${document.location.hostname}/${(addLanguage && lang ? lang + '/' : '')}${url}.html`;
-    } else {
-        return `https://binary.com/${(addLanguage && lang ? lang + '/' : '')}${url}.html`;
-    }
-};
-
-const translate = (input) => {
-
-    if (Array.isArray(input)) {
-
-        const stringToBeTranslated = input[0].replace(/\[_([0-9])\]/g, '%$1');
-        let translatedString = i18nTranslate(stringToBeTranslated);
-
-        input.slice(1)
-            .forEach((replacement, index) => {
-                const regex = new RegExp('%' + (index + 1), 'g')
-                translatedString = translatedString.replace(regex, replacement);
-            });
-
-        const returnValue = RenderHTML(translatedString);
-        return returnValue;
-
-    } else {
-        const returnValue = i18nTranslate(input);
-        return returnValue;
-    }
-}
+import { translate, createUrl } from '../../common/utils/tools';
 
 const SocialIcons = ({ networks }) => (
     <div id='social-icons' className='social-icons flex-row'>

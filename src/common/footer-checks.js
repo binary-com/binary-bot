@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { generateLiveApiInstance } from './appId';
 
-export async function isEuCountry() {
+export default async function isEuCountry() {
     const api = generateLiveApiInstance();
     const { website_status: { clients_country: clientsCountry } } = await api.send({ website_status: 1 });
     const { landing_company: { financial_company: financialCompany, gaming_company: gamingCompany } } = await api.send({

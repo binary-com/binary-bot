@@ -33,14 +33,14 @@ $COLOR_ACTIVE: #ff992a;
 
 $COLOR_NAV: #a1aab3;
 $COLOR_NAV_ACTIVE: #929ca6;
-$COLOR_NAV_BORDER: $primaryBrandColor; // #2a3052
+$COLOR_NAV_BORDER: #2a3052;
 
-$COLOR_ORANGE: $secondaryBrandColor; // #e98024
+$COLOR_ORANGE: #e98024;
 $COLOR_DARK_ORANGE: #d17320;
-$COLOR_LIGHT_BLUE: $lightBlue;       // #29abe2
-$COLOR_BLUE: $primaryBrandColor;     // #2a3052;
+$COLOR_LIGHT_BLUE: #29abe2;
+$COLOR_BLUE: #2a3052;
 $COLOR_BLUE_SHADE: #394171;
-$COLOR_DARK_BLUE: $darkPrimaryBrandColor; // #15212d
+$COLOR_DARK_BLUE: #15212d;
 
 // Utility colors
 $COLOR_BLACK: $black;
@@ -48,14 +48,14 @@ $COLOR_WHITE: $white;
 $COLOR_DARK_WHITE: #ccc;
 
 // Colors used for secondary purposes. To be used sparingly
-$COLOR_RED           : $negativeColor; // #c03
-$COLOR_YELLOW        : $noticeColor;   // #fef1cf
-$COLOR_LIGHT_GRAY    : $fillColor;     // #f2f2f2
-$COLOR_GRAY          : $borderColor;   // #dedede
+$COLOR_RED           : #c03;
+$COLOR_YELLOW        : #fef1cf;
+$COLOR_LIGHT_GRAY    : #f2f2f2;
+$COLOR_GRAY          : #dedede;
 $COLOR_DARK_GRAY     : #44484c;
-$COLOR_GREEN         : $positiveColor; // #2e8836
+$COLOR_GREEN         : #2e8836;
 /* stylelint-enable color-no-hex */
 
 // colors to remove
-$COLOR_GRAY_SHADE: $secondaryContentColor; // #c2c2c2
-$COLOR_DARK_GREEN: $darkPositiveColor;     // #14602b
+$COLOR_GRAY_SHADE: #c2c2c2;
+$COLOR_DARK_GREEN: #14602b;
