@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Logo from './react-components/logo.jsx';
 import Footer from './react-components/footer.jsx';
 import { oauthLogin } from '../common/appId';
 import { load as loadLang } from '../common/lang';

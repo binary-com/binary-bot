@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { LiveApi } from 'binary-live-api';
 import {
     addToken,
@@ -7,7 +8,7 @@ import {
     get as getStorage,
     set as setStorage,
 } from '../common/utils/storageManager';
-import { parseQueryString } from '../common/utils/tools';
+import { parseQueryString, isProduction } from '../common/utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 
@@ -54,7 +55,7 @@ export const oauthLogin = (done = () => 0) => {
 };
 
 export const getCustomEndpoint = () => ({
-    url  : getStorage('config.server_url'),
+    url: getStorage('config.server_url'),
     appId: getStorage('config.app_id'),
 });
 
@@ -73,11 +74,9 @@ const isRealAccount = () => {
 const getDomainAppId = () => AppIdMap[hostName];
 
 export const getDefaultEndpoint = () => ({
-    url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
+    url: isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
     appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
-
-export const isProduction = () => hostName.replace(/^www./, '') in AppIdMap;
 
 const getExtension = () => hostName.split('.').slice(-1)[0];
 
@@ -100,10 +99,10 @@ export const getOAuthURL = () =>
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
-    apiUrl   : getWebSocketURL(),
+    apiUrl: getWebSocketURL(),
     websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
-    language : getLanguage().toUpperCase(),
-    appId    : getAppIdFallback(),
+    language: getLanguage().toUpperCase(),
+    appId: getAppIdFallback(),
 };
 
 export const generateLiveApiInstance = () => new LiveApi(options);
@@ -115,9 +114,9 @@ export async function addTokenIfValid(token, tokenObjectList) {
     try {
         const { authorize } = await api.authorize(token);
         const { landing_company_name: lcName } = authorize;
-        const {
-            landing_company_details: { has_reality_check: hasRealityCheck },
-        } = await api.getLandingCompanyDetails(lcName);
+        const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
+            lcName
+        );
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
         const { account_list: accountList } = authorize;

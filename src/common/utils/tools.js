@@ -2,7 +2,7 @@
 import RenderHTML from 'react-render-html';
 import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
-import { isProduction } from '../../common/appId';
+import AppIdMap from '../../common/appIdResolver';
 
 export const parseQueryString = () => {
     if (typeof window === 'undefined') {
@@ -49,6 +49,8 @@ export const durationToSecond = duration => {
     }
     return 0;
 };
+
+export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap;
 
 export const createUrl = (path, lang = getLanguage(), addLanguage = true) => {
     const pathBit = path ? '/' + path + '.html' : '';
