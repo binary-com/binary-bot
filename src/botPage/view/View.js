@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'jquery-ui/ui/widgets/dialog';
@@ -49,8 +48,8 @@ api.events.on('website_status', response => {
     const { message } = response.website_status;
     if (message) {
         $.notify(message, {
-            position: 'bottom left',
-            autoHide: false,
+            position : 'bottom left',
+            autoHide : false,
             className: 'warn web-status',
         });
     }
@@ -232,8 +231,8 @@ const showReloadPopup = () =>
         setBeforeUnload(true);
         $('#reloadPanel').dialog({
             height: 'auto',
-            width: 600,
-            modal: true,
+            width : 600,
+            modal : true,
             open() {
                 $(this)
                     .parent()
@@ -242,7 +241,7 @@ const showReloadPopup = () =>
             },
             buttons: [
                 {
-                    text: translate('No'),
+                    text : translate('No'),
                     class: 'button-secondary',
                     click() {
                         $(this).dialog('close');
@@ -250,7 +249,7 @@ const showReloadPopup = () =>
                     },
                 },
                 {
-                    text: translate('Yes'),
+                    text : translate('Yes'),
                     class: 'button-primary',
                     click() {
                         $(this).dialog('close');
@@ -331,16 +330,16 @@ export default class View {
             .on('click', () => {
                 $.FileDialog({
                     // eslint-disable-line new-cap
-                    accept: '.xml',
-                    cancelButton: 'Close',
-                    dragMessage: 'Drop files here',
-                    dropheight: 400,
-                    errorMessage: 'An error occured while loading file',
-                    multiple: false,
-                    okButton: 'OK',
-                    readAs: 'DataURL',
+                    accept       : '.xml',
+                    cancelButton : 'Close',
+                    dragMessage  : 'Drop files here',
+                    dropheight   : 400,
+                    errorMessage : 'An error occured while loading file',
+                    multiple     : false,
+                    okButton     : 'OK',
+                    readAs       : 'DataURL',
                     removeMessage: 'Remove&nbsp;file',
-                    title: 'Load file',
+                    title        : 'Load file',
                 });
             })
             .on('files.bs.filedialog', ev => {
@@ -395,11 +394,11 @@ export default class View {
             .hide()
             .dialog({
                 resizable: false,
-                autoOpen: false,
-                width: Math.min(document.body.offsetWidth, 770),
-                height: Math.min(document.body.offsetHeight, 600),
+                autoOpen : false,
+                width    : Math.min(document.body.offsetWidth, 770),
+                height   : Math.min(document.body.offsetHeight, 600),
                 closeText: '',
-                classes: { 'ui-dialog-titlebar-close': 'icon-close' },
+                classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
             });
 
         $('#save-xml').click(() => saveDialog.save().then(arg => this.blockly.save(arg)));
@@ -609,7 +608,7 @@ export default class View {
                 const user = getToken(token);
                 globalObserver.emit('log.revenue', {
                     user,
-                    profit: info.profit,
+                    profit  : info.profit,
                     contract: info.contract,
                 });
             }
