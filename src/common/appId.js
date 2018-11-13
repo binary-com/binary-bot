@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { LiveApi } from 'binary-live-api';
 import {
     addToken,
@@ -55,7 +54,7 @@ export const oauthLogin = (done = () => 0) => {
 };
 
 export const getCustomEndpoint = () => ({
-    url: getStorage('config.server_url'),
+    url  : getStorage('config.server_url'),
     appId: getStorage('config.app_id'),
 });
 
@@ -74,7 +73,7 @@ const isRealAccount = () => {
 const getDomainAppId = () => AppIdMap[hostName];
 
 export const getDefaultEndpoint = () => ({
-    url: isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
+    url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
     appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
 
@@ -99,10 +98,10 @@ export const getOAuthURL = () =>
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
-    apiUrl: getWebSocketURL(),
+    apiUrl   : getWebSocketURL(),
     websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
-    language: getLanguage().toUpperCase(),
-    appId: getAppIdFallback(),
+    language : getLanguage().toUpperCase(),
+    appId    : getAppIdFallback(),
 };
 
 export const generateLiveApiInstance = () => new LiveApi(options);
