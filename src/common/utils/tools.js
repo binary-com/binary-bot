@@ -51,8 +51,8 @@ export const durationToSecond = duration => {
 
 export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap;
 
-export const createUrl = (path, lang = getLanguage(), addLanguage = true) => {
-    const pathBit = path ? `/${path}.html` : '';
+export const createUrl = (path, lang = getLanguage(), addLanguage = true, addHtmlExtension = true) => {
+    const pathBit = path ? `/${path}${addHtmlExtension ? '.html' : ''}` : '';
     const languageBit = addLanguage && lang ? `/${lang}` : '';
 
     if (isProduction()) {

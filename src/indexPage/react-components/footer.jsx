@@ -45,13 +45,13 @@ const Footer = () => (
                 <div className='gr-row'>
                     <div className='gr-12'>
                         <p>
-                            {translate(['In the EU, financial products are offered by Binary Investments (Europe) Ltd., Mompalao Building, Suite 2, Tower Road, Msida MSD1825, Malta, regulated as a Category 3 Investment Services provider by the Malta Financial Services Authority ([_1]licence no. IS/70156[_2]).', `<a href="${createUrl('download/WS-Binary-Investments-Europe-Limited.pdf', '', false)}" target="_blank">`, '</a>'])}
+                            {translate(['In the EU, financial products are offered by Binary Investments (Europe) Ltd., Mompalao Building, Suite 2, Tower Road, Msida MSD1825, Malta, regulated as a Category 3 Investment Services provider by the Malta Financial Services Authority ([_1]licence no. IS/70156[_2]).', `<a href="${createUrl('download/WS-Binary-Investments-Europe-Limited.pdf', '', false, false)}" target="_blank">`, '</a>'])}
                         </p>
                         <p>
                             {translate(['Outside the EU, financial products are offered by Binary (C.R.) S.A., 5th Floor, Building 6 Centro Ejecutivo La Sabana, Sabana Sur, San José, Costa Rica, Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, regulated by the Vanuatu Financial Services Commission ([_1]view licence[_2]), Binary (BVI) Ltd, 2nd Floor, O’Neal Marketing Associates Building, Wickham’s Cay II, P.O. Box 3174, Road Town, Tortola VB1110, British Virgin Islands, regulated by the British Virgin Islands Financial Services Commission ([_3]licence no. SIBA/L/18/1114[_4]), and Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Labuan, Malaysia, regulated by the Labuan Financial Services Authority to carry on a money-broking business ([_5]licence no. MB/18/0024[_6])',
                                 '<a href="https://www.vfsc.vu/wp-content/uploads/2015/12/List-of-Licensees-under-Dealers-in-Securities-Licensing-Act-CAP-70-18.11.2016.pdf" target="_blank" rel="noopener noreferrer">', '</a>',
-                                `<a href="${createUrl('download/regulation/BVI_license.pdf', '', false)}" target="_blank">`, '</a>',
-                                `<a href="${createUrl('download/regulation/Labuan-license.pdf', '', false)}" target="_blank">`, '</a>'])}
+                                `<a href="${createUrl('download/regulation/BVI_license.pdf', '', false, false)}" target="_blank">`, '</a>',
+                                `<a href="${createUrl('download/regulation/Labuan-license.pdf', '', false, false)}" target="_blank">`, '</a>'])}
                         </p>
                         <p>
                             {translate(['This website’s services are not made available in certain countries such as the USA, Canada, Costa Rica, Hong Kong, Japan, or to persons under age 18.'])}
