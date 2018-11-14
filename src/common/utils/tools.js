@@ -52,14 +52,13 @@ export const durationToSecond = duration => {
 export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap;
 
 export const createUrl = (path, lang = getLanguage(), addLanguage = true) => {
-    const pathBit = path ? `/${  path  }.html` : '';
-    const languageBit = addLanguage && lang ? `/${  lang}` : '';
+    const pathBit = path ? `/${path}.html` : '';
+    const languageBit = addLanguage && lang ? `/${lang}` : '';
 
     if (isProduction()) {
         return document.location.hostname + languageBit + pathBit;
-    } 
-    return `https://binary.com${  languageBit  }${pathBit}`;
-    
+    }
+    return `https://www.binary.com${languageBit}${pathBit}`;
 };
 
 export const translate = input => {
@@ -68,11 +67,10 @@ export const translate = input => {
         let translatedString = i18nTranslate(stringToBeTranslated);
 
         input.slice(1).forEach((replacement, index) => {
-            const regex = new RegExp(`%${  index + 1}`, 'g');
+            const regex = new RegExp(`%${index + 1}`, 'g');
             translatedString = translatedString.replace(regex, replacement);
         });
         return RenderHTML(translatedString);
-    } 
+    }
     return i18nTranslate(input);
-    
 };
