@@ -21,7 +21,7 @@ const loginCheck = () => {
 loginCheck();
 
 window.onload = () => {
-    const domainExtension = getExtension();
+    const domainExtension = 'me';
     const shopUrl = `https://shop.binary.${
         isProduction() ? (domainExtension === 'bot' ? 'com' : domainExtension) : 'com'
     }`;
