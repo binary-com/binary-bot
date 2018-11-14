@@ -79,7 +79,7 @@ export const getDefaultEndpoint = () => ({
 
 export const isProduction = () => hostName.replace(/^www./, '') in AppIdMap;
 
-const getExtension = () => hostName.split('.').slice(-1)[0];
+export const getExtension = () => hostName.split('.').slice(-1)[0];
 
 const generateOAuthDomain = () => {
     if (isProduction()) {
