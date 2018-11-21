@@ -31,6 +31,7 @@ import {
     generateLiveApiInstance,
     AppConstants,
     addTokenIfValid,
+    isProduction,
 } from '../../common/appId';
 import { updateConfigCurrencies } from '../common/const';
 
@@ -271,6 +272,9 @@ export default class View {
                     updateTokenList();
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
+                        document
+                            .getElementById('contact-us')
+                            .setAttribute('href', `https://www.binary.com/${getLanguage()}/contact.html`);
                         this.setElementActions();
                         initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                         applyToolboxPermissions();
@@ -628,11 +632,7 @@ function renderReactComponents() {
     ReactDOM.render(
         <OfficialVersionWarning
             show={
-                !(
-                    typeof window.location !== 'undefined' &&
-                    window.location.host === 'bot.binary.com' &&
-                    window.location.pathname === '/bot.html'
-                )
+                !(typeof window.location !== 'undefined' && isProduction() && window.location.pathname === '/bot.html')
             }
         />,
         $('#footer')[0]

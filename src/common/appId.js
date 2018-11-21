@@ -9,10 +9,13 @@ import {
 } from '../common/utils/storageManager';
 import { parseQueryString } from '../common/utils/tools';
 import { getLanguage } from './lang';
+import AppIdMap from './appIdResolver';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
 });
+
+const hostName = document.location.hostname;
 
 const queryToObjectArray = queryStr => {
     const tokens = [];
@@ -67,10 +70,23 @@ const isRealAccount = () => {
     return isReal;
 };
 
+const getDomainAppId = () => AppIdMap[hostName];
+
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
-    appId: getStorage('config.default_app_id') || 1169,
+    appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
+
+export const isProduction = () => hostName.replace(/^www./, '') in AppIdMap;
+
+const getExtension = () => hostName.split('.').slice(-1)[0];
+
+const generateOAuthDomain = () => {
+    if (isProduction()) {
+        return `oauth.binary.${getExtension()}`;
+    }
+    return 'oauth.binary.com';
+};
 
 export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
 
@@ -81,7 +97,7 @@ export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websoc
 export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
 
 export const getOAuthURL = () =>
-    `https://${getServerAddressFallback()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+    `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
     apiUrl   : getWebSocketURL(),
