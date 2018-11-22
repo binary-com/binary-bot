@@ -9,6 +9,7 @@ import {
     DrawTools,
     Share,
     ComparisonList,
+    CrosshairToggle,
     ChartSize,
 } from '@binary-com/smartcharts';
 import React, { PureComponent } from 'react';
@@ -115,6 +116,7 @@ class ChartContent extends PureComponent {
 
     renderControls = () => (
         <React.Fragment>
+            <CrosshairToggle />
             <ChartTypes />
             <Timeperiod />
             <StudyLegend />

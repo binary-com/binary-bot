@@ -9,10 +9,6 @@
         }
     }
 
-    .cq-chart-size > div:first-child {
-        margin-right: 2em !important;
-    }
-
     .cq-modal-dropdown.stxMenuActive {
         position: absolute !important;
     }
@@ -20,5 +16,34 @@
     .drag-price > .price {
         font-size: 10px;
         padding: 1px 5px;
+    }
+
+    .ic-icon > svg {
+        box-sizing: content-box !important;
+    }
+
+    .cq-chart-controls {
+        .cq-menu-btn > .cq-toggle {
+            padding: 0.35em 0em !important;
+        }
+        .ic-icon-with-sub {
+            &:hover .ic-subtitle {
+                visibility: visible;
+            }
+            .ic-subtitle {
+                visibility: hidden;
+                width: 60px;
+                color: #fff !important;
+                background: #15212d;
+                padding: 5px 0;
+                border-radius: 5px;
+                position: absolute;
+                z-index: 1;
+                bottom: 40px;
+                left: -15px;
+                display: block;
+                margin-bottom: 5px;
+            }
+        }
     }
 }
