@@ -7,7 +7,7 @@ import {
     get as getStorage,
     set as setStorage,
 } from '../common/utils/storageManager';
-import { parseQueryString } from '../common/utils/tools';
+import { parseQueryString, isProduction } from '../common/utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 
@@ -76,8 +76,6 @@ export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
     appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
-
-export const isProduction = () => hostName.replace(/^www./, '') in AppIdMap;
 
 const getExtension = () => hostName.split('.').slice(-1)[0];
 
