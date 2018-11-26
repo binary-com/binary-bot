@@ -21,9 +21,9 @@ const loginCheck = () => {
 loginCheck();
 
 window.onload = () => {
-    const domainExtension = 'me';
+    const domainExtension = getExtension();
     const shopUrl = `https://shop.binary.${
         isProduction() ? (domainExtension === 'bot' ? 'com' : domainExtension) : 'com'
-    }`;
+    }/collections/strategies`;
     $('#shop-url').attr('href', shopUrl);
 };
