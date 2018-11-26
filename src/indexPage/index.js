@@ -3,12 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Logo from './react-components/logo.jsx';
 import Footer from './react-components/footer.jsx';
-import { oauthLogin } from '../common/appId';
+import { getTokenList } from '../common/utils/storageManager';
+import { oauthLogin, getExtension } from '../common/appId';
+import { isProduction } from '../common/utils/tools';
 import { load as loadLang } from '../common/lang';
 import '../common/binary-ui/dropdown';
 import endpoint from './endpoint';
 import isEuCountry from '../common/footer-checks';
-import { getTokenList } from '../common/utils/storageManager';
 
 const loginCheck = () => {
     if (endpoint()) return;
@@ -36,4 +37,9 @@ window.onload = () => {
     isEuCountry().then(isEu => {
         showHideEuElements(isEu);
     });
+    const domainExtension = getExtension();
+    const shopUrl = `https://shop.binary.${
+        isProduction() ? (domainExtension === 'bot' ? 'com' : domainExtension) : 'com'
+    }/collections/strategies`;
+    $('#shop-url').attr('href', shopUrl);
 };
