@@ -7,7 +7,7 @@ import {
     get as getStorage,
     set as setStorage,
 } from '../common/utils/storageManager';
-import { parseQueryString } from '../common/utils/tools';
+import { parseQueryString, isProduction } from '../common/utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 

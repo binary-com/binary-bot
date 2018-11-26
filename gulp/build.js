@@ -29,5 +29,5 @@ const genHtml = min =>
 gulp.task('build-dev-html', genHtml);
 gulp.task('build-dev-js', ['webpack-dev'], genHtml);
 gulp.task('build-dev-static', ['static'], genHtml);
-gulp.task('build-min', ['static', 'webpack-prod', 'bundle-css', 'bundle-js'], () => genHtml(true));
-gulp.task('build', ['bundle-css', 'bundle-js', 'build-dev-js', 'build-dev-static']);
+gulp.task('build-min', ['static', 'webpack-prod', 'bundle-css', 'bundle-js', 'copy-jquery-img'], () => genHtml(true));
+gulp.task('build', ['bundle-css', 'bundle-js', 'build-dev-js', 'build-dev-static', 'copy-jquery-img']);

@@ -137,9 +137,11 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
+    "binary-style": "^0.2.4",
     "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0",
-    "gulp-gh-pages-will": "^0.5.5"
+    "gulp-gh-pages-will": "^0.5.5",
+    "react-render-html": "^0.5.2"
   }
 }
