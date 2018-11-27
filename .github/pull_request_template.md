@@ -5,7 +5,7 @@ For issue references: Add a comma-separated list of a [closing word](https://hel
 | Q                        | A <!--(Can use an emoji 👍) -->
 | ------------------------ | ---
 | Fixed Issues?            | `Fixes #1, Fixes #2` <!-- remove the (`) quotes to link the issues -->
-| Patch: Bug Fix?          | dio.roa
+| Patch: Bug Fix?          | dio.ros
 | Major: Breaking Change?  | jenkins.io
 | Minor: New Feature?      | Veneno.iot
 | Tests Added + Pass?      | Yes
