@@ -32,8 +32,8 @@ export const BarrierTypes = {
     NOTOUCH    : 'NONE_SINGLE',
 };
 
-const chartWidth = 500;
-const chartHeight = 500;
+const chartWidth = 600;
+const chartHeight = 600;
 
 class ChartContent extends PureComponent {
     constructor(props) {
@@ -165,8 +165,9 @@ class ChartContent extends PureComponent {
 export default class Chart extends Dialog {
     constructor(api) {
         super('chart-dialog', translate('Chart'), <ChartContent api={api} />, {
-            width : chartWidth,
-            height: chartHeight,
+            width    : chartWidth,
+            height   : chartHeight,
+            resizable: false,
         });
     }
 }
