@@ -31,8 +31,8 @@ import {
     generateLiveApiInstance,
     AppConstants,
     addTokenIfValid,
-    isProduction,
 } from '../../common/appId';
+import { isProduction } from '../../common/utils/tools';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
@@ -498,7 +498,7 @@ export default class View {
             if (e.keyCode === 13) {
                 submitRealityCheck();
             }
-            /* Unicode check is for firefox because it 
+            /* Unicode check is for firefox because it
              * trigger this event when backspace, arrow keys are pressed
              * in chrome it is not triggered
              */
