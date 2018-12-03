@@ -558,8 +558,7 @@ export default class View {
 
         $('#login')
             .bind('click.login', () => {
-                const test = showPopup('#loginPanel');
-                test
+                showPopup('#loginPanel')
                     .then(() => {
                         document.location = getOAuthURL();
                     })
