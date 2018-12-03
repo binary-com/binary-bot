@@ -226,10 +226,10 @@ const applyToolboxPermissions = () => {
     }
 };
 
-const showReloadPopup = () =>
+const showPopup = selector =>
     new Promise((resolve, reject) => {
         setBeforeUnload(true);
-        $('#reloadPanel').dialog({
+        $(selector).dialog({
             height: 'auto',
             width : 600,
             modal : true,
@@ -258,7 +258,7 @@ const showReloadPopup = () =>
                 },
             ],
         });
-        $('#reloadPanel').dialog('open');
+        $(selector).dialog('open');
     });
 
 export default class View {
@@ -373,7 +373,7 @@ export default class View {
             });
         };
         const logout = () => {
-            showReloadPopup()
+            showPopup('#reloadPanel')
                 .then(() => {
                     removeTokens();
                 })
@@ -539,7 +539,7 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            showReloadPopup()
+            showPopup('#reloadPanel')
                 .then(() => {
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
@@ -554,7 +554,12 @@ export default class View {
 
         $('#login')
             .bind('click.login', () => {
-                document.location = getOAuthURL();
+                const test = showPopup('#loginPanel');
+                test
+                    .then(() => {
+                        document.location = getOAuthURL();
+                    })
+                    .catch(() => {});
             })
             .text('Log in');
 
