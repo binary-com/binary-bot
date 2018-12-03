@@ -534,8 +534,12 @@ export default class View {
             .hide();
 
         $('#resetButton').click(() => {
-            this.blockly.resetWorkspace();
-            setTimeout(() => this.blockly.cleanUp(), 0);
+            showPopup('#reloadPanel')
+                .then(() => {
+                    this.blockly.resetWorkspace();
+                    setTimeout(() => this.blockly.cleanUp(), 0);
+                })
+                .catch(() => {});
         });
 
         $('.login-id-list').on('click', 'a', e => {
