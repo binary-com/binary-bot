@@ -1,10 +1,11 @@
 import filesaver from 'file-saver';
 import _Symbol from '../common/symbolApi';
 
-export let symbolApi;
+export const symbolApi = new _Symbol();
 
 export const symbolPromise = api => {
-    symbolApi = new _Symbol(api);
+    symbolApi.setApi(api);
+    symbolApi.fetch();
     return new Promise(resolve => {
         symbolApi.initPromise.then(() => {
             resolve();

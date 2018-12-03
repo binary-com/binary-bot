@@ -9,7 +9,9 @@ describe('symbol', () => {
         let symbol;
         // eslint-disable-next-line prefer-arrow-callback
         beforeAll(function beforeAll(done) {
-            symbol = new _Symbol(api);
+            symbol = new _Symbol();
+            symbol.setApi(api);
+            symbol.fetch();
             symbol.initPromise.then(() => {
                 done();
             });
