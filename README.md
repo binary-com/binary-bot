@@ -25,7 +25,7 @@ yarn start
 yarn deploy [branchname] # can contain /
 ```
 
-## Deployment 
+## Deployment/Release
 
 ```
 gulp test-deploy # for local test deploy
