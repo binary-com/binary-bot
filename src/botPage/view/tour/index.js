@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Joyride from 'react-joyride';
-import { setDone, isDone } from '../../../common/utils/storageManager';
+import { set, get, setDone, isDone } from '../../../common/utils/storageManager';
 import { translate } from '../../../common/i18n';
 import welcome from './welcome';
 
@@ -24,6 +24,7 @@ class Tour extends PureComponent {
                 next: () => this.joyride.next(),
                 stop: () => {
                     setDoneCheck();
+                    set('closedTourPopup', Date.now());
                     this.joyride.stop();
                 },
             };
@@ -35,8 +36,12 @@ class Tour extends PureComponent {
                 setDoneCheck();
             }
         };
+        const shouldShowTourPopup = () => {
+            const timeDifference = Date.now() - (parseInt(get('closedTourPopup')) || 0);
+            return !isDone('welcomeFinished') && timeDifference > 24 * 60 * 60 * 1000;
+        };
         return (
-            !isDone('welcomeFinished') && (
+            shouldShowTourPopup() && (
                 <div className="tour-first-pop-up">
                     <Joyride
                         autoStart
