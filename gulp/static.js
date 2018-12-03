@@ -27,3 +27,5 @@ gulp.task('static-css', ['sass'], () => gulp.src('static/css/*.css*').pipe(gulp.
 gulp.task('static', ['static-css'], () => gulp.src(['static/**', '!static/css/*']).pipe(gulp.dest('./www')));
 
 gulp.task('copy-jquery-img', () => gulp.src('node_modules/jquery-ui-css/images/*').pipe(gulp.dest('www/css/images')));
+
+gulp.task('copy-binary-css', () => gulp.src('node_modules/binary-style/binary.css').pipe(gulp.dest('www/css')));
