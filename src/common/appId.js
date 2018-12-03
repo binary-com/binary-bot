@@ -80,7 +80,10 @@ export const getDefaultEndpoint = () => ({
 export const getExtension = () => hostName.split('.').slice(-1)[0];
 
 const generateOAuthDomain = () => {
-    if (isProduction()) {
+    const endpointUrl = getCustomEndpoint().url;
+    if (endpointUrl) {
+        return endpointUrl;
+    } else if (isProduction()) {
         return `oauth.binary.${getExtension()}`;
     }
     return 'oauth.binary.com';
@@ -113,9 +116,9 @@ export async function addTokenIfValid(token, tokenObjectList) {
     try {
         const { authorize } = await api.authorize(token);
         const { landing_company_name: lcName } = authorize;
-        const {
-            landing_company_details: { has_reality_check: hasRealityCheck },
-        } = await api.getLandingCompanyDetails(lcName);
+        const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
+            lcName
+        );
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
         const { account_list: accountList } = authorize;
