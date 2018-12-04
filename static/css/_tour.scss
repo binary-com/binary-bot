@@ -2,7 +2,6 @@
 
 $joyride-color: $brand-orange;
 $joyride-button-bg-color: $brand-btn;
-$joyride-button-color: $brand-gray !important;
 $joyride-tooltip-width: (15em, 20em, 20em);
 
 @import '../../node_modules/react-joyride/lib/react-joyride';
@@ -33,6 +32,10 @@ $joyride-tooltip-width: (15em, 20em, 20em);
     &--primary {
         color: $white;
         background-color: $brand-btn;
+    }
+    &--primary:hover {
+        color: $white;
+        background-color: $brand-btn-active;
     }
     &--secondary {
         color: $black;
