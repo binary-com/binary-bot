@@ -28,4 +28,8 @@ gulp.task('static', ['static-css'], () => gulp.src(['static/**', '!static/css/*'
 
 gulp.task('copy-jquery-img', () => gulp.src('node_modules/jquery-ui-css/images/*').pipe(gulp.dest('www/css/images')));
 
-gulp.task('copy-binary-css', () => gulp.src('node_modules/binary-style/binary.css').pipe(gulp.dest('www/css')));
+gulp.task('copy-binary-style-css', () => gulp.src('node_modules/binary-style/binary.css').pipe(gulp.dest('www/css')));
+
+gulp.task('copy-binary-style-images', () =>
+    gulp.src('node_modules/binary-style/src/images/**').pipe(gulp.dest('www/image/binary-style'))
+);

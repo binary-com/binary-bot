@@ -31,7 +31,15 @@ gulp.task('build-dev-js', ['webpack-dev'], genHtml);
 gulp.task('build-dev-static', ['static'], genHtml);
 gulp.task(
     'build-min',
-    ['static', 'webpack-prod', 'bundle-css', 'bundle-js', 'copy-jquery-img', 'copy-binary-css'],
+    [
+        'static',
+        'webpack-prod',
+        'bundle-css',
+        'bundle-js',
+        'copy-jquery-img',
+        'copy-binary-css',
+        'copy-binary-style-images',
+    ],
     () => genHtml(true)
 );
 gulp.task('build', [
@@ -40,5 +48,6 @@ gulp.task('build', [
     'build-dev-js',
     'build-dev-static',
     'copy-jquery-img',
-    'copy-binary-css',
+    'copy-binary-style-css',
+    'copy-binary-style-images',
 ]);
