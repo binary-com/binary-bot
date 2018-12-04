@@ -543,7 +543,7 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            showPopup('#unsavedPanel')
+            showPopup('#reloadPanel')
                 .then(() => {
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
