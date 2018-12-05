@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Joyride from 'react-joyride';
-import { set, get, setDone, isDone } from '../../../common/utils/storageManager';
+import { setStorage, getStorage, setDone, isDone } from '../../../common/utils/storageManager';
 import { translate } from '../../../common/i18n';
 import welcome from './welcome';
 
@@ -24,7 +24,7 @@ class Tour extends PureComponent {
                 next: () => this.joyride.next(),
                 stop: () => {
                     setDoneCheck();
-                    set('closedTourPopup', Date.now());
+                    setStorage('closedTourPopup', Date.now());
                     this.joyride.stop();
                 },
             };
@@ -38,7 +38,7 @@ class Tour extends PureComponent {
         };
         const shouldShowTourPopup = () => {
             const dayHasPassed = () => {
-                const timeDifference = Date.now() - (parseInt(get('closedTourPopup')) || 0);
+                const timeDifference = Date.now() - (parseInt(getStorage('closedTourPopup')) || 0);
                 return timeDifference > 24 * 60 * 60 * 1000;
             };
             return !isDone('welcomeFinished') && dayHasPassed();
