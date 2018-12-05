@@ -226,10 +226,10 @@ const applyToolboxPermissions = () => {
     }
 };
 
-const showReloadPopup = () =>
+const showPopup = selector =>
     new Promise((resolve, reject) => {
         setBeforeUnload(true);
-        $('#reloadPanel').dialog({
+        $(selector).dialog({
             height: 'auto',
             width : 600,
             modal : true,
@@ -258,7 +258,7 @@ const showReloadPopup = () =>
                 },
             ],
         });
-        $('#reloadPanel').dialog('open');
+        $(selector).dialog('open');
     });
 
 export default class View {
@@ -373,7 +373,7 @@ export default class View {
             });
         };
         const logout = () => {
-            showReloadPopup()
+            showPopup('#reloadPanel')
                 .then(() => {
                     removeTokens();
                 })
@@ -534,12 +534,16 @@ export default class View {
             .hide();
 
         $('#resetButton').click(() => {
-            this.blockly.resetWorkspace();
-            setTimeout(() => this.blockly.cleanUp(), 0);
+            showPopup('#reloadPanel')
+                .then(() => {
+                    this.blockly.resetWorkspace();
+                    setTimeout(() => this.blockly.cleanUp(), 0);
+                })
+                .catch(() => {});
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            showReloadPopup()
+            showPopup('#reloadPanel')
                 .then(() => {
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
@@ -554,7 +558,11 @@ export default class View {
 
         $('#login')
             .bind('click.login', () => {
-                document.location = getOAuthURL();
+                showPopup('#loginPanel')
+                    .then(() => {
+                        document.location = getOAuthURL();
+                    })
+                    .catch(() => {});
             })
             .text('Log in');
 

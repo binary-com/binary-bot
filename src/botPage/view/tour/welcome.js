@@ -6,10 +6,6 @@ const steps = [
         text : `
           <p>
             ${translate('Ready to learn how to use Binary Bot?')}
-            <input type="checkbox" id="do-not-ask-me-again"></input>
-            <label for="do-not-ask-me-again">
-              ${translate('Do not ask me again.')}
-            </label>
           </p>
           <div class="tour-custom-buttons">
             <a class="button-secondary" onclick="tour.stop()">
@@ -18,6 +14,12 @@ const steps = [
             <a class="button" onclick="tour.next()">
                 <span>${translate('Yes')}</span>
             </a>
+          </div>
+          <div class="tour-custom-buttons">
+            <input type="checkbox" id="do-not-ask-me-again"></input>
+            <label for="do-not-ask-me-again">
+                ${translate('Do not ask me again.')}
+            </label>
           </div>
           `,
         selector: '#tour',
@@ -38,10 +40,7 @@ const steps = [
       <a target="blank" href="https://shop.binary.com/collections/strategies">
         ${translate('Download sample strategies')}
       </a>
-      ${translate('or')}
-        <a target="blank" href="https://github.com/binary-com/binary-bot#sample-blocks">
-          ${translate('Make your own strategies')}
-        </a>
+      ${translate('or')} ${translate('make your own strategies.')}
     </p>`,
         selector: '#center',
         position: 'bottom',
