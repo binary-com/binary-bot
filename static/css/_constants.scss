@@ -12,13 +12,16 @@ $FONT_SCALE: 1.2;
 $LINE_HEIGHT: 1.25;
 
 // Use only these font sizes throughout the site
-
-$FONT_SIZE_XXXL: 2em;
-$FONT_SIZE_XXL: 1.7em;
-$FONT_SIZE_XL: 1.4em;
-$FONT_SIZE_L: 1.2em;
-$FONT_SIZE_N: 1em;
 $FONT_SIZE_S: 0.85em;
+$FONT_SIZE_XS: $FONT_BASE / $FONT_SCALE / $FONT_SCALE; // .75614rem   =~ 12px
 
-$FONT_SIZE_DESKTOP: 12px;
-$FONT_SIZE_MOBILE: 14px;
+// Brand colors and derivatives
+/* stylelint-disable color-no-hex */
+$COLOR_ORANGE: #e98024;
+
+// Colors used for secondary purposes. To be used sparingly
+$COLOR_RED           : #c03;
+$COLOR_YELLOW        : #fef1cf;
+$COLOR_GRAY          : #dedede;
+$COLOR_DARK_GRAY     : #44484c;
+/* stylelint-enable color-no-hex */
