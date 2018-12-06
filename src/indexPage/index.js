@@ -11,6 +11,23 @@ import '../common/binary-ui/dropdown';
 import endpoint from './endpoint';
 import isEuCountry from '../common/footer-checks';
 
+const renderElements = () => {
+    const showHideEuElements = isEu => {
+        $('.eu-hide').attr('style', `display: ${isEu ? 'none' : 'block'} !important`);
+        $('.eu-show, .eu-only').attr('style', `display: ${isEu ? 'block' : 'none'} !important`);
+    };
+    ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
+    ReactDOM.render(<Footer />, document.getElementById('footer'));
+    isEuCountry().then(isEu => {
+        showHideEuElements(isEu);
+    });
+    const domainExtension = getExtension();
+    const shopUrl = `https://shop.binary.${
+        isProduction() ? (domainExtension === 'bot' ? 'com' : domainExtension) : 'com'
+    }/collections/strategies`;
+    $('#shop-url').attr('href', shopUrl);
+};
+
 const loginCheck = () => {
     if (endpoint()) return;
     if (getTokenList().length) {
@@ -20,22 +37,7 @@ const loginCheck = () => {
         oauthLogin(() => {
             $('.show-on-load').show();
             $('.barspinner').hide();
-            window.onload = () => {
-                const showHideEuElements = isEu => {
-                    $('.eu-hide').attr('style', `display: ${isEu ? 'none' : 'block'} !important`);
-                    $('.eu-show, .eu-only').attr('style', `display: ${isEu ? 'block' : 'none'} !important`);
-                };
-                ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
-                ReactDOM.render(<Footer />, document.getElementById('footer'));
-                isEuCountry().then(isEu => {
-                    showHideEuElements(isEu);
-                });
-                const domainExtension = getExtension();
-                const shopUrl = `https://shop.binary.${
-                    isProduction() ? (domainExtension === 'bot' ? 'com' : domainExtension) : 'com'
-                }/collections/strategies`;
-                $('#shop-url').attr('href', shopUrl);
-            };
+            renderElements();
         });
     }
 };
