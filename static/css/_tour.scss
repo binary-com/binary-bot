@@ -16,6 +16,9 @@ $joyride-tooltip-width: (15em, 20em, 20em);
 .tour-first-pop-up {
     .joyride-tooltip {
         position: fixed !important;
+        &__main {
+            padding-bottom: 0;
+        }
     }
 }
 
