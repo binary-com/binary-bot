@@ -37,10 +37,8 @@ class Tour extends PureComponent {
             }
         };
         const shouldShowTourPopup = () => {
-            const dayHasPassed = () => {
-                const timeDifference = Date.now() - (parseInt(getStorage('closedTourPopup')) || 0);
-                return timeDifference > 24 * 60 * 60 * 1000;
-            };
+            const dayHasPassed = () =>
+                Date.now() > (parseInt(getStorage('closedTourPopup')) || 0) + 24 * 60 * 60 * 1000;
             return !isDone('welcomeFinished') && dayHasPassed();
         };
         return (
