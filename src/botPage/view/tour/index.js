@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Joyride from 'react-joyride';
-import { setStorage, getStorage, setDone, isDone } from '../../../common/utils/storageManager';
+import { set as setStorage, get as getStorage, setDone, isDone } from '../../../common/utils/storageManager';
 import { translate } from '../../../common/i18n';
 import welcome from './welcome';
 
