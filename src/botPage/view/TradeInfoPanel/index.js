@@ -27,21 +27,26 @@ const activateStage = index => {
 class AnimateTrade extends Component {
     constructor() {
         super();
-        this.state = { stopMessage: `${translate('Bot is not running')}.` };
+        this.state = { stopMessage: `${translate('Bot is not running.')}` };
     }
     componentWillMount() {
         globalObserver.register('bot.stop', () => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
-            this.setState({ stopMessage: `${translate('Bot has stopped')}.` });
+            this.setState({ stopMessage: `${translate('Bot has stopped.')}` });
         });
         $('#stopButton').click(() => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
-            this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
+            this.setState({
+                stopMessage:
+                    $('.circle-wrapper.active').length > 0 && !$('.line.complete').length
+                        ? `${translate('Bot is stopping...')}`
+                        : `${translate('Bot has stopped.')}`,
+            });
         });
         $('#runButton').click(() => {
             resetAnimation();
             $('.stage-tooltip.top:eq(0)').addClass('running');
-            this.setState({ stopMessage: `${translate('Bot is running')}...` });
+            this.setState({ stopMessage: `${translate('Bot is running...')}` });
             globalObserver.register('contract.status', contractStatus => {
                 this.animateStage(contractStatus);
             });
