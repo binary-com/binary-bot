@@ -85,6 +85,11 @@ $disabled-color: #F2F2F2;
             background-color: #fef1cf;
             width: 120px;
         }
+        .stage-tooltip.running p {
+            color: #468847;
+            background-color: #DFF0D8;
+            border-color: #D6E9C6;
+        }
     }
     .stage-tooltip {
         visibility: hidden;
