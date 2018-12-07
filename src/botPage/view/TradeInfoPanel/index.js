@@ -12,7 +12,7 @@ const resetAnimation = () => {
     $('.line')
         .removeClass('active')
         .removeClass('complete');
-    $('.stage-tooltip').removeClass('active');
+    $('.stage-tooltip:not(.top)').removeClass('active');
 };
 
 const activateStage = index => {
@@ -27,18 +27,21 @@ const activateStage = index => {
 class AnimateTrade extends Component {
     constructor() {
         super();
-        this.state = { stopMessage: `${translate('Bot is stopped')}.` };
+        this.state = { stopMessage: `${translate('Bot is not running')}.` };
     }
     componentWillMount() {
         globalObserver.register('bot.stop', () => {
-            this.setState({ stopMessage: `${translate('Bot is stopped')}.` });
+            $('.stage-tooltip.top:eq(0)').removeClass('running');
+            this.setState({ stopMessage: `${translate('Bot has stopped')}.` });
         });
         $('#stopButton').click(() => {
-            $('.stage-tooltip.top:eq(0)').addClass('active');
+            $('.stage-tooltip.top:eq(0)').removeClass('running');
+            this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
         });
         $('#runButton').click(() => {
-            $('.stage-tooltip.top:eq(0)').removeClass('active');
             resetAnimation();
+            $('.stage-tooltip.top:eq(0)').addClass('running');
+            this.setState({ stopMessage: `${translate('Bot is running')}...` });
             globalObserver.register('contract.status', contractStatus => {
                 this.animateStage(contractStatus);
             });
@@ -46,7 +49,6 @@ class AnimateTrade extends Component {
     }
     animateStage(contractStatus) {
         if (contractStatus.id === 'contract.purchase_sent') {
-            this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
             resetAnimation();
             activateStage(0);
             this.setState({ buy_price: contractStatus.data });
@@ -82,7 +84,7 @@ class AnimateTrade extends Component {
                         </div>
                     </span>
                     <span className="stage">
-                        <div className="stage-tooltip top">
+                        <div className="stage-tooltip top active">
                             <p>{this.state.stopMessage}</p>
                         </div>
                         <div className="stage-label">{translate('Buy succeeded')}</div>
