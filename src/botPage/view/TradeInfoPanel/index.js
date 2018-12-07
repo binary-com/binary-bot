@@ -3,6 +3,7 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
+import RunButton from './RunButton';
 
 const resetAnimation = () => {
     $('.circle-wrapper')
@@ -138,6 +139,9 @@ export default class TradeInfoPanel extends Component {
         return (
             <div>
                 <div className="content">
+                    <div className="content-row">
+                        <RunButton />
+                    </div>
                     <div className="content-row">
                         <AnimateTrade />
                     </div>
