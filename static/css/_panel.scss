@@ -1,4 +1,5 @@
 @import 'color';
+@import 'toolbox';
 
 $static-circle-diameter: 1em;
 $dynamic-circle-diameter: 1.5em;
@@ -177,6 +178,23 @@ $disabled-color: #F2F2F2;
             display: inline-block;
             animation: animate-progress-complete 0.5s 1;
             animation-fill-mode: forwards;
+        }
+    }
+    .summary-toolbox {
+        text-align: center;
+
+        .toolbox-button {
+            margin: 0 auto 0.313em;
+            @include toolbox-button-base;
+            &:hover {
+                @include toolbox-runButton-hover;
+            }
+            &[disabled], &[disabled]:hover {
+                @include toolbox-runButton-disabled;
+            }
+        }
+        .toolbox-button:focus {
+            @include toolbox-button-focus;
         }
     }
 }
