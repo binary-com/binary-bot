@@ -189,6 +189,7 @@ $disabled-color: #F2F2F2;
         text-align: center;
 
         .toolbox-button {
+            border-radius: 50%;
             margin: 0 auto 0.313em;
             @include toolbox-button-base;
             &:hover {
