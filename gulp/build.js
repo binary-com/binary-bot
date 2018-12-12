@@ -39,7 +39,7 @@ gulp.task(
         'bundle-js',
         'copy-jquery-img',
         'copy-binary-css',
-        'copy-binary-style-images',
+        'copy-binary-style-img',
     ],
     () => genHtml(true)
 );
@@ -50,5 +50,5 @@ gulp.task('build', [
     'build-dev-static',
     'copy-jquery-img',
     'copy-binary-style-css',
-    'copy-binary-style-images',
+    'copy-binary-style-img',
 ]);
