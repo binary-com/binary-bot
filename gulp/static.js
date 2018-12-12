@@ -30,6 +30,6 @@ gulp.task('copy-jquery-img', () => gulp.src('node_modules/jquery-ui-css/images/*
 
 gulp.task('copy-binary-style-css', () => gulp.src('node_modules/binary-style/binary.css').pipe(gulp.dest('www/css')));
 
-gulp.task('copy-binary-style-images', () =>
+gulp.task('copy-binary-style-img', () =>
     gulp.src('node_modules/binary-style/src/images/**').pipe(gulp.dest('www/image/binary-style'))
 );
