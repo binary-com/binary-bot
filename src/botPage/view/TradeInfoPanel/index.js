@@ -36,12 +36,6 @@ class AnimateTrade extends Component {
         });
         $('#stopButton').click(() => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
-            this.setState({
-                stopMessage:
-                    $('.circle-wrapper.active').length > 0 && !$('.line.complete').length
-                        ? `${translate('Bot is stopping...')}`
-                        : `${translate('Bot has stopped.')}`,
-            });
         });
         $('#runButton').click(() => {
             resetAnimation();
@@ -54,6 +48,7 @@ class AnimateTrade extends Component {
     }
     animateStage(contractStatus) {
         if (contractStatus.id === 'contract.purchase_sent') {
+            this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
             resetAnimation();
             activateStage(0);
             this.setState({ buy_price: contractStatus.data });
