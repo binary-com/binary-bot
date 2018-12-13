@@ -48,7 +48,6 @@ class AnimateTrade extends Component {
     }
     animateStage(contractStatus) {
         if (contractStatus.id === 'contract.purchase_sent') {
-            this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
             resetAnimation();
             activateStage(0);
             this.setState({ buy_price: contractStatus.data });
