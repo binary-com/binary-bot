@@ -27,20 +27,30 @@ const activateStage = index => {
 class AnimateTrade extends Component {
     constructor() {
         super();
-        this.state = { stopMessage: `${translate('Bot is not running.')}` };
+        this.indicatorMessages = {
+            notRunning: translate('Bot is not running.'),
+            running   : translate('Bot is running...'),
+            stopping  : translate('Bot is stopping...'),
+            stopped   : translate('Bot has stoppped.'),
+        };
+        this.state = {
+            indicatorMessage: this.indicatorMessages.notRunning,
+            stopMessage     : this.indicatorMessages.stopped,
+        };
     }
     componentWillMount() {
         globalObserver.register('bot.stop', () => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
-            this.setState({ stopMessage: `${translate('Bot has stopped.')}` });
+            this.setState({ indicatorMessage: this.indicatorMessages.stopped });
         });
         $('#stopButton').click(() => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
+            this.setState({ indicatorMessage: this.state.stopMessage });
         });
         $('#runButton').click(() => {
             resetAnimation();
             $('.stage-tooltip.top:eq(0)').addClass('running');
-            this.setState({ stopMessage: `${translate('Bot is running...')}` });
+            this.setState({ indicatorMessage: this.indicatorMessages.running });
             globalObserver.register('contract.status', contractStatus => {
                 this.animateStage(contractStatus);
             });
@@ -50,7 +60,7 @@ class AnimateTrade extends Component {
         if (contractStatus.id === 'contract.purchase_sent') {
             resetAnimation();
             activateStage(0);
-            this.setState({ buy_price: contractStatus.data });
+            this.setState({ buy_price: contractStatus.data, stopMessage: this.indicatorMessages.stopping });
         } else if (contractStatus.id === 'contract.purchase_recieved') {
             $('.line').addClass('active');
             activateStage(1);
@@ -58,7 +68,7 @@ class AnimateTrade extends Component {
         } else if (contractStatus.id === 'contract.sold') {
             $('.line').addClass('complete');
             activateStage(2);
-            this.setState({ sell_id: contractStatus.data });
+            this.setState({ sell_id: contractStatus.data, stopMessage: this.indicatorMessages.stopped });
         }
         activateStage(contractStatus.id);
     }
@@ -84,7 +94,7 @@ class AnimateTrade extends Component {
                     </span>
                     <span className="stage">
                         <div className="stage-tooltip top active">
-                            <p>{this.state.stopMessage}</p>
+                            <p>{this.state.indicatorMessage}</p>
                         </div>
                         <div className="stage-label">{translate('Buy succeeded')}</div>
                         <span className="circle-wrapper">
