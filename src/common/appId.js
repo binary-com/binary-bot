@@ -7,7 +7,7 @@ import {
     get as getStorage,
     set as setStorage,
 } from '../common/utils/storageManager';
-import { parseQueryString } from '../common/utils/tools';
+import { parseQueryString, isProduction } from '../common/utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 
@@ -77,12 +77,13 @@ export const getDefaultEndpoint = () => ({
     appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
 });
 
-export const isProduction = () => hostName.replace(/^www./, '') in AppIdMap;
-
-const getExtension = () => hostName.split('.').slice(-1)[0];
+export const getExtension = () => hostName.split('.').slice(-1)[0];
 
 const generateOAuthDomain = () => {
-    if (isProduction()) {
+    const endpointUrl = getCustomEndpoint().url;
+    if (endpointUrl) {
+        return endpointUrl;
+    } else if (isProduction()) {
         return `oauth.binary.${getExtension()}`;
     }
     return 'oauth.binary.com';
