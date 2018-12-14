@@ -5,7 +5,8 @@
     {{> security }} {{> head }}
     <title>Binary Bot</title>
     {{> bundle_css }}
-    <link rel="stylesheet" href="https://style.binary.com/binary.css"> {{> bot_css }}
+    <link rel="stylesheet" href="css/binary.css">
+    {{> bot_css }}
   </head>
 
   <body>
@@ -15,10 +16,10 @@
           <a href="https://www.binary.com" target="blank" id="logo">
             <div class="logo-parent">
               <div class="logo">
-                <img class="responsive" src="https://style.binary.com/images/logo/symbol.svg" alt="Binary-logo" />
+                <img class="responsive" src="{{> binary_style_img }}/logo/symbol.svg" alt="Binary logo" />
               </div>
               <div class="binary-logo-text">
-                <img class="responsive" src="https://style.binary.com/images/logo/type.svg" alt="Binary-logo">
+                <img class="responsive" src="{{> binary_style_img }}/logo/type.svg" alt="Binary logo">
               </div>
             </div>
           </a>
