@@ -38,7 +38,7 @@ gulp.task(
         'bundle-css',
         'bundle-js',
         'copy-jquery-img',
-        'copy-binary-css',
+        'copy-binary-style-css',
         'copy-binary-style-img',
     ],
     () => genHtml(true)
