@@ -558,13 +558,10 @@ export default class View {
 
         $('#login')
             .bind('click.login', () => {
-                showPopup('#loginPanel')
-                    .then(() => {
-                        document.location = getOAuthURL();
-                    })
-                    .catch(() => {});
+                setBeforeUnload(true);
+                document.location = getOAuthURL();
             })
-            .text('Log in');
+            .text(translate('Log in'));
 
         $('#statement-reality-check').click(() => {
             document.location = `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`;
