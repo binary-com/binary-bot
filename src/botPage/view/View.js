@@ -31,8 +31,8 @@ import {
     generateLiveApiInstance,
     AppConstants,
     addTokenIfValid,
-    isProduction,
 } from '../../common/appId';
+import { isProduction } from '../../common/utils/tools';
 import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
@@ -160,7 +160,7 @@ const updateLogo = token => {
     if (currentLandingCompany === 'maltainvest') {
         $('.binary-logo-text > img').attr('src', './image/binary-type-logo.svg');
     } else {
-        $('.binary-logo-text > img').attr('src', 'https://style.binary.com/images/logo/type.svg');
+        $('.binary-logo-text > img').attr('src', './image/binary-style/logo/type.svg');
     }
     setTimeout(() => window.dispatchEvent(new Event('resize')));
 };
