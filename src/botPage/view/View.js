@@ -375,6 +375,7 @@ export default class View {
         const logout = () => {
             showPopup('#reloadPanel')
                 .then(() => {
+                    this.stop();
                     removeTokens();
                 })
                 .catch(() => {});
@@ -536,6 +537,7 @@ export default class View {
         $('#resetButton').click(() => {
             showPopup('#reloadPanel')
                 .then(() => {
+                    this.stop();
                     this.blockly.resetWorkspace();
                     setTimeout(() => this.blockly.cleanUp(), 0);
                 })
@@ -545,6 +547,7 @@ export default class View {
         $('.login-id-list').on('click', 'a', e => {
             showPopup('#reloadPanel')
                 .then(() => {
+                    this.stop();
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
                     setStorage('tokenList', '');
