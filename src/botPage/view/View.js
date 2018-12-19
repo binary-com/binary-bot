@@ -60,9 +60,7 @@ api.send({ time: '1' }).then(response => {
 });
 
 api.events.on('balance', response => {
-    const {
-        balance: { balance: b, currency },
-    } = response;
+    const { balance: { balance: b, currency } } = response;
 
     const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
     $('.topMenuBalance').text(`${balance} ${currency}`);
@@ -162,7 +160,7 @@ const updateLogo = token => {
     if (currentLandingCompany === 'maltainvest') {
         $('.binary-logo-text > img').attr('src', './image/binary-type-logo.svg');
     } else {
-        $('.binary-logo-text > img').attr('src', 'https://style.binary.com/images/logo/type.svg');
+        $('.binary-logo-text > img').attr('src', './image/binary-style/logo/type.svg');
     }
     setTimeout(() => window.dispatchEvent(new Event('resize')));
 };
