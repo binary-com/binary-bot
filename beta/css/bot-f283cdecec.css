@@ -1,175 +1,35 @@
 @charset "UTF-8";
-.highcharts-container {
-  width: 100% !important; }
-  .highcharts-container svg {
-    width: 100% !important; }
-
-.highcharts-loading {
-  background: transparent !important; }
-  .highcharts-loading > span {
-    padding: 0.5em 1em;
-    border-radius: 3px;
-    color: #bebebe !important;
-    background: #161a24 !important; }
-    .inverse .highcharts-loading > span {
-      color: #161a24 !important;
-      background: #bebebe !important; }
-
-.inverse .trade-chart {
-  color: #bebebe; }
-
-.trade-chart button,
-.contract-chart button {
-  color: #2a3052; }
-  .trade-chart button:hover,
-  .contract-chart button:hover {
-    background: #f2f2f2; }
-
-.inverse .trade-chart button, .inverse
-.contract-chart button {
-  color: #bebebe; }
-  .inverse .trade-chart button:hover, .inverse
-  .contract-chart button:hover {
-    background: rgba(190, 190, 190, 0.1); }
-
-@keyframes fadeIn {
-  99% {
-    visibility: hidden; }
-  100% {
-    visibility: visible; } }
-
-.trade-chart .binary-chart-zoom-controls,
-.contract-chart .binary-chart-zoom-controls {
-  visibility: hidden;
-  animation: 2s fadeIn !important;
-  animation-fill-mode: forwards;
-  transition: visibility 2s; }
-
-.trade-chart:hover .binary-chart-zoom-controls,
-.contract-chart:hover .binary-chart-zoom-controls {
-  visibility: visible; }
-
-.trade-chart {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  flex: 1; }
-  .trade-chart #trade-chart0,
-  .trade-chart #trade-chart1,
-  .trade-chart #trade-chart2,
-  .trade-chart #trade-chart3,
-  .trade-chart #trade-chart4 {
-    flex: 1; }
-
-.binary-chart-time-frame-picker {
-  min-height: 24px; }
-
-.binary-chart-time-frame-button {
-  background: #f2f2f2;
-  padding: 0 !important;
-  font-size: 14px;
-  font-weight: bold; }
-
-.binary-chart-time-frame-button + .binary-chart-time-frame-button {
-  margin-left: 2px; }
-
-.binary-chart-submenu {
-  border-radius: 3px;
-  background: #ffffff;
-  box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1);
-  padding: 0.5em; }
-
-.inverse .binary-chart-submenu {
-  background: #161a24; }
-
-.binary-chart-submenu button {
-  color: #3e3e3e;
-  background: transparent;
-  border-radius: 0; }
-
-.binary-chart-picker-item,
-.binary-chart-button {
-  text-align: left;
-  padding: 0.1em;
-  min-height: 1em;
-  min-width: 1em;
-  display: flex;
-  align-items: center;
-  font-size: 14px; }
-  .binary-chart-picker-item svg + span,
-  .binary-chart-button svg + span {
-    margin-left: 8px; }
-
-.binary-chart-button:hover,
-.binary-chart-picker-item:hover,
-.binary-chart-time-frame-button:hover {
-  color: #e98024;
-  text-decoration: none; }
-  .binary-chart-button:hover svg,
-  .binary-chart-picker-item:hover svg,
-  .binary-chart-time-frame-button:hover svg {
-    fill: #e98024; }
-
-.binary-chart-button:focus,
-.binary-chart-picker-item:focus,
-.binary-chart-time-frame-button:focus {
-  outline: none; }
-
-.inverse .binary-chart-button:hover, .inverse
-.binary-chart-picker-item:hover, .inverse
-.binary-chart-time-frame-button:hover {
-  box-shadow: 0 0 0 1px #bebebe; }
-
-.pressed {
-  background: #2a3052 !important; }
-  .pressed svg {
-    fill: #bebebe; }
-
-.binary-chart-zoom-button {
-  background: rgba(42, 48, 82, 0.1) !important; }
-  .binary-chart-zoom-button svg {
-    fill: #2a3052;
-    margin-bottom: 4px; }
-  .binary-chart-zoom-button:hover {
-    box-shadow: 0 0 0 0px #2a3052; }
-    .binary-chart-zoom-button:hover svg {
-      fill: #e98024; }
-
-.inverse .binary-chart-zoom-button {
-  background: rgba(190, 190, 190, 0.1) !important; }
-  .inverse .binary-chart-zoom-button svg {
-    fill: #bebebe; }
-  .inverse .binary-chart-zoom-button:hover {
-    background: rgba(190, 190, 190, 0.2) !important;
-    box-shadow: 0 0 0 1px #bebebe; }
-
-.binary-chart-toolbar {
-  min-height: 30px;
-  margin-bottom: 2px; }
-
-.binary-chart-toolbar > * {
-  margin-right: 2px; }
-
-.binary-chart-button {
-  background: #f2f2f2;
-  border-radius: 3px;
-  min-width: 1em;
-  padding: 0.3em 0.3em;
-  flex: 1;
-  align-items: center; }
-
-.binary-chart-button svg,
-.binary-chart-picker-item svg {
-  width: 16px;
-  height: 16px;
-  fill: #161a24; }
-
-.inverse .binary-chart-button svg, .inverse
-.binary-chart-picker-item svg {
-  fill: #ffffff; }
-
-.binary-chart-info-bar {
-  display: none; }
+.smartcharts-mobile {
+  /*
+      chart controls should still
+      be visible when its dropdown shows up.
+     */ }
+  .smartcharts-mobile .ciq-period .cq-menu-overlay, .smartcharts-mobile .cq-download .cq-menu-overlay, .smartcharts-mobile .ciq-views .cq-menu-overlay, .smartcharts-mobile .ciq-drawtools .cq-menu-overlay, .smartcharts-mobile .ciq-studies .cq-menu-overlay, .smartcharts-mobile .cq-chart-setting .cq-menu-overlay, .smartcharts-mobile .ciq-draw-tools .cq-menu-overlay, .smartcharts-mobile .cq-comparison-new .cq-menu-overlay, .smartcharts-mobile .ciq-chart-types .cq-menu-overlay {
+    height: calc(100% - 40px); }
+  .smartcharts-mobile .cq-modal-dropdown.stxMenuActive {
+    position: absolute !important; }
+  .smartcharts-mobile .drag-price > .price {
+    font-size: 10px;
+    padding: 1px 5px; }
+  .smartcharts-mobile .ic-icon > svg {
+    box-sizing: content-box !important; }
+  .smartcharts-mobile .cq-chart-controls .cq-menu-btn > .cq-toggle {
+    padding: 0.35em 0em !important; }
+  .smartcharts-mobile .cq-chart-controls .ic-icon-with-sub:hover .ic-subtitle {
+    visibility: visible; }
+  .smartcharts-mobile .cq-chart-controls .ic-icon-with-sub .ic-subtitle {
+    visibility: hidden;
+    width: 60px;
+    color: #fff !important;
+    background: #15212d;
+    padding: 5px 0;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 40px;
+    left: -15px;
+    display: block;
+    margin-bottom: 5px; }
 
 @font-face {
   font-family: 'binarybot';
@@ -279,6 +139,32 @@
   content: '\f201'; }
 
 /* '' */
+#toolbox {
+  position: absolute;
+  z-index: 99;
+  right: 0;
+  width: 4em;
+  text-align: center;
+  padding: 2px 10px; }
+  #toolbox #runButton[disabled], #toolbox #runButton[disabled]:hover {
+    background-color: #f2f2f2;
+    color: #dedede; }
+  #toolbox .toolbox-button {
+    float: right;
+    margin-bottom: 0.313em;
+    background-color: #f2f2f2;
+    color: #000000;
+    padding: 0em;
+    width: 40px;
+    height: 40px;
+    font-size: 1.500em; }
+  #toolbox .toolbox-button:hover {
+    background-color: #dddddd; }
+  #toolbox .toolbox-button:focus {
+    outline: none; }
+  #toolbox .box.is-dragover {
+    background-color: grey; }
+
 @keyframes animate-circle {
   0% {
     transform: translate(-50%, -50%) scale(0); }
@@ -339,6 +225,10 @@
       border-radius: 0.5em;
       background-color: #fef1cf;
       width: 120px; }
+    #summaryPanel .stage .stage-tooltip.running p {
+      color: #468847;
+      background-color: #DFF0D8;
+      border-color: #D6E9C6; }
   #summaryPanel .stage-tooltip {
     visibility: hidden; }
   #summaryPanel .stage-tooltip.active {
@@ -414,6 +304,24 @@
     display: inline-block;
     animation: animate-progress-complete 0.5s 1;
     animation-fill-mode: forwards; }
+  #summaryPanel .summary-toolbox {
+    text-align: center; }
+    #summaryPanel .summary-toolbox .toolbox-button {
+      border-radius: 50%;
+      margin: 0 auto 0.313em;
+      background-color: #f2f2f2;
+      color: #000000;
+      padding: 0em;
+      width: 40px;
+      height: 40px;
+      font-size: 1.500em; }
+      #summaryPanel .summary-toolbox .toolbox-button:hover {
+        background-color: #dddddd; }
+      #summaryPanel .summary-toolbox .toolbox-button[disabled], #summaryPanel .summary-toolbox .toolbox-button[disabled]:hover {
+        background-color: #f2f2f2;
+        color: #dedede; }
+    #summaryPanel .summary-toolbox .toolbox-button:focus {
+      outline: none; }
 
 #fileBrowser {
   width: 388px;
@@ -589,8 +497,8 @@
     float: right;
     margin-bottom: 0.313em;
     background-color: #f2f2f2;
-    padding: 0em;
     color: #000000;
+    padding: 0em;
     width: 40px;
     height: 40px;
     font-size: 1.500em; }
@@ -1021,4 +929,7 @@ body {
 label {
   margin-bottom: 0px; }
 
-/*# sourceMappingURL=bot-d6025fc696.css.map */
+.ui-icon {
+  background-image: none !important; }
+
+/*# sourceMappingURL=bot-f283cdecec.css.map */
