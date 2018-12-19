@@ -509,9 +509,9 @@ export default class View {
         });
 
         const startBot = limitations => {
-            $('#stopButton').show();
-            $('#runButton').hide();
-            $('#runButton').prop('disabled', true);
+            $('#stopButton, #summaryStopButton').show();
+            $('#runButton, #summaryRunButton').hide();
+            $('#runButton, #summaryRunButton').prop('disabled', true);
             showSummary();
             this.blockly.run(limitations);
         };
@@ -532,6 +532,14 @@ export default class View {
         $('#stopButton')
             .click(e => stop(e))
             .hide();
+
+        $('[aria-describedby="summaryPanel"]').on('click', '#summaryRunButton', () => {
+            $('#runButton').trigger('click');
+        });
+
+        $('[aria-describedby="summaryPanel"]').on('click', '#summaryStopButton', () => {
+            $('#stopButton').trigger('click');
+        });
 
         $('#resetButton').click(() => {
             this.blockly.resetWorkspace();
@@ -588,7 +596,7 @@ export default class View {
         });
 
         globalObserver.register('Error', error => {
-            $('#runButton').prop('disabled', false);
+            $('#runButton, #summaryRunButton').prop('disabled', false);
             if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
@@ -597,7 +605,7 @@ export default class View {
         });
 
         globalObserver.register('bot.stop', () => {
-            $('#runButton').prop('disabled', false);
+            $('#runButton, #summaryRunButton').prop('disabled', false);
         });
 
         globalObserver.register('bot.info', info => {
