@@ -1,4 +1,5 @@
 @import 'color';
+@import 'toolbox';
 
 $static-circle-diameter: 1em;
 $dynamic-circle-diameter: 1.5em;
@@ -83,6 +84,11 @@ $disabled-color: #F2F2F2;
             border-radius: 0.5em;
             background-color: #fef1cf;
             width: 120px;
+        }
+        .stage-tooltip.running p {
+            color: #468847;
+            background-color: #DFF0D8;
+            border-color: #D6E9C6;
         }
     }
     .stage-tooltip {
@@ -177,6 +183,24 @@ $disabled-color: #F2F2F2;
             display: inline-block;
             animation: animate-progress-complete 0.5s 1;
             animation-fill-mode: forwards;
+        }
+    }
+    .summary-toolbox {
+        text-align: center;
+
+        .toolbox-button {
+            border-radius: 50%;
+            margin: 0 auto 0.313em;
+            @include toolbox-button-base;
+            &:hover {
+                @include toolbox-runButton-hover;
+            }
+            &[disabled], &[disabled]:hover {
+                @include toolbox-runButton-disabled;
+            }
+        }
+        .toolbox-button:focus {
+            @include toolbox-button-focus;
         }
     }
 }
