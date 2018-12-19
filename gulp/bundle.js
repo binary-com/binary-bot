@@ -25,9 +25,16 @@ gulp.task('bundle-js', () =>
         .pipe(gulp.dest('www/js/'))
 );
 
+gulp.task('copy-js', () => {
+    gulp.src(['./node_modules/@binary-com/smartcharts/dist/*.smartcharts.*']).pipe(gulp.dest('www/js/'));
+});
+
 gulp.task('bundle-css', () =>
     gulp
-        .src(['node_modules/jquery-ui-css/jquery-ui.min.css'])
+        .src([
+            'node_modules/jquery-ui-css/jquery-ui.min.css',
+            './node_modules/@binary-com/smartcharts/dist/smartcharts.css',
+        ])
         .pipe(concatCss('bundle.css'))
         .pipe(rev())
         .pipe(through.obj(addToManifest))
