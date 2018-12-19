@@ -31,7 +31,7 @@ class AnimateTrade extends Component {
             notRunning: translate('Bot is not running.'),
             running   : translate('Bot is running...'),
             stopping  : translate('Bot is stopping...'),
-            stopped   : translate('Bot has stoppped.'),
+            stopped   : translate('Bot has stopped.'),
         };
         this.state = {
             indicatorMessage: this.indicatorMessages.notRunning,
