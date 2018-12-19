@@ -56,7 +56,7 @@ export const createUrl = (path, lang = getLanguage(), addLanguage = true, addHtm
     const languageBit = addLanguage && lang ? `/${lang}` : '';
 
     if (isProduction()) {
-        return `${document.location.protocol}//${document.location.hostname}${  languageBit  }${pathBit}`;
+        return `${document.location.protocol}//${document.location.hostname}${languageBit}${pathBit}`;
     }
     return `https://www.binary.com${languageBit}${pathBit}`;
 };
