@@ -13,8 +13,8 @@ import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
-import Chart from './Dialogs/Chart';
 import TradingView from './Dialogs/TradingView';
+import Chart from './Dialogs/Chart';
 import { getLanguage } from '../../common/lang';
 import { roundBalance, isVirtual } from '../common/tools';
 import { symbolPromise } from './shared';
@@ -74,7 +74,8 @@ const addBalanceForToken = token => {
     });
 };
 
-const chart = new Chart();
+const chart = new Chart(api);
+
 const tradingView = new TradingView();
 
 const setBeforeUnload = off => {
@@ -139,7 +140,6 @@ const clearRealityCheck = () => {
 
 const limits = new Limits();
 const saveDialog = new Save();
-// const chart = new Chart();
 
 const getLandingCompanyForToken = id => {
     let landingCompany;
@@ -496,11 +496,11 @@ export default class View {
             if (e.keyCode === 13) {
                 submitRealityCheck();
             }
-            /* Unicode check is for firefox because it 
+            /* Unicode check is for firefox because it
              * trigger this event when backspace, arrow keys are pressed
              * in chrome it is not triggered
              */
-            const unicodeStrings = /[\u0008|\u0000]/;
+            const unicodeStrings = /[\u0008|\u0000]/; // eslint-disable-line no-control-regex
             if (unicodeStrings.test(char)) return;
 
             if (!/([0-9])/.test(char)) {
