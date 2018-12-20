@@ -69,6 +69,7 @@ export const createUrl = (
                 case 'bot.binary.me':
                 case 'binary.bot':
                     domainExtension = '.me';
+                    break;
                 default:
                     domainExtension = '.com';
                     break;
