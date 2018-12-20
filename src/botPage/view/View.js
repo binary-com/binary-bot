@@ -373,7 +373,7 @@ export default class View {
             });
         };
         const logout = () => {
-            showPopup('#reloadPanel')
+            showPopup(getAccountSwitchPanelName())
                 .then(() => {
                     this.stop();
                     removeTokens();
@@ -384,6 +384,10 @@ export default class View {
         const clearActiveTokens = () => {
             setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
         };
+
+        const getReloadPanelName = () => (this.blockly.hasStarted() ? '#reloadPanelTrading' : '#reloadPanel');
+        const getAccountSwitchPanelName = () =>
+            this.blockly.hasStarted() ? '#switchAccountPanelTrading' : '#reloadPanel';
 
         $('.panelExitButton').click(function onClick() {
             $(this)
@@ -469,6 +473,7 @@ export default class View {
         });
 
         $('#logout').click(() => {
+            setBeforeUnload(true);
             logout();
             hideRealityCheck();
         });
@@ -535,7 +540,7 @@ export default class View {
             .hide();
 
         $('#resetButton').click(() => {
-            showPopup('#reloadPanel')
+            showPopup(getReloadPanelName())
                 .then(() => {
                     this.stop();
                     this.blockly.resetWorkspace();
@@ -545,7 +550,7 @@ export default class View {
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            showPopup('#reloadPanel')
+            showPopup(getAccountSwitchPanelName())
                 .then(() => {
                     this.stop();
                     const activeToken = $(e.currentTarget).attr('value');

@@ -367,5 +367,9 @@ while(true) {
     redo() {
         Blockly.mainWorkspace.undo(true);
     }
+    /* eslint-disable class-methods-use-this */
+    hasStarted() {
+        return this.interpreter && this.interpreter.hasStarted();
+    }
     /* eslint-enable */
 }
