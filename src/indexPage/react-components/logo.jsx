@@ -2,7 +2,7 @@ import React from 'react';
 import { createUrl } from '../../common/utils/tools';
 
 const Logo = () => (
-    <a href={createUrl('', '', false, false)} target="blank" id="logo">
+    <a href={createUrl(false, '', false, false)} target="blank" id="logo">
         <div className="logo-parent">
             <div className="logo">
                 <img className="responsive" src={'image/binary-style/logo/symbol.svg'} alt="Binary logo" />

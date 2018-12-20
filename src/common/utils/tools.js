@@ -51,14 +51,17 @@ export const durationToSecond = duration => {
 
 export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap;
 
-export const createUrl = (path, lang = getLanguage(), addLanguage = true, addHtmlExtension = true) => {
-    const pathBit = path ? `/${path}${addHtmlExtension ? '.html' : ''}` : '';
-    const languageBit = addLanguage && lang ? `/${lang}` : '';
-
+export const createUrl = (urlSubdomain = false, urlPath, shouldAddLanguage = true, shouldAddHtmlExtension = true) => {
+    const subdomain = urlSubdomain ? `${urlSubdomain}.` : 'www.';
+    const domainExtension = getExtension() ? `.${getExtension()}` : '';
+    const language = shouldAddLanguage ? `/${getLanguage()}` : '';
+    const path = urlPath ? `/${urlPath}` : '';
+    const htmlExtension = shouldAddHtmlExtension ? '.html' : '';
     if (isProduction()) {
-        return `${document.location.protocol}//${document.location.hostname}${languageBit}${pathBit}`;
-    }
-    return `https://www.binary.com${languageBit}${pathBit}`;
+        return `${document.location.protocol}//${subdomain}binary${domainExtension}${language}${path}${htmlExtension}`;
+    } 
+    return `https://binary.com${language}${path}${htmlExtension}`;
+    
 };
 
 export const translate = input => {
@@ -73,4 +76,10 @@ export const translate = input => {
         return RenderHTML(translatedString);
     }
     return i18nTranslate(input);
+};
+
+export const getExtension = () => {
+    const host = document.location.hostname;
+    const extension = host.split('.').slice(-1)[0];
+    return host !== extension ? extension : '';
 };
