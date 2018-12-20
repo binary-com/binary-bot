@@ -21,7 +21,7 @@ const renderElements = () => {
     isEuCountry().then(isEu => {
         showHideEuElements(isEu);
     });
-    $('#shop-url').attr('href', createUrl('shop', 'collections/strategies', false, false));
+    $('#shop-url').attr('href', createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true }));
 };
 
 const loginCheck = () => {

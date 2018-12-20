@@ -51,20 +51,15 @@ export const durationToSecond = duration => {
 
 export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap;
 
-export const createUrl = (
-    urlSubdomain = false,
-    urlPath,
-    shouldAddLanguage = true,
-    shouldAddHtmlExtension = true,
-    isNonBotPage = true
-) => {
-    const language = shouldAddLanguage ? `/${getLanguage()}` : '';
-    const path = urlPath ? `/${urlPath}` : '';
-    const htmlExtension = shouldAddHtmlExtension ? '.html' : '';
+export const createUrl = options => {
+    const getOption = property => Object.prototype.hasOwnProperty.call(options, property) && options[property];
+    const language = getOption('addLanguage') ? `/${getLanguage()}` : '';
+    const path = getOption('path') ? `/${getOption('path')}` : '';
+    const htmlExtension = getOption('addHtmlExtension') ? '.html' : '';
+    const subdomain = getOption('subdomain') ? `${getOption('subdomain')}.` : 'www.';
     if (isProduction()) {
-        const subdomain = urlSubdomain ? `${urlSubdomain}.` : 'www.';
-        let domainExtension = `.${getExtension}`;
-        if (isNonBotPage) {
+        let domainExtension = `.${getExtension()}`;
+        if (getOption('isNonBotPage')) {
             switch (document.location.hostname.replace(/^www./, '')) {
                 case 'bot.binary.me':
                 case 'binary.bot':
@@ -77,7 +72,7 @@ export const createUrl = (
         }
         return `${document.location.protocol}//${subdomain}binary${domainExtension}${language}${path}${htmlExtension}`;
     }
-    return `https://binary.com${language}${path}${htmlExtension}`;
+    return `https://${subdomain}binary.com${language}${path}${htmlExtension}`;
 };
 
 export const translate = input => {
