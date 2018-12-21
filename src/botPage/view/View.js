@@ -13,8 +13,8 @@ import _Blockly from './blockly';
 import { translate } from '../../common/i18n';
 import Save from './Dialogs/Save';
 import Limits from './Dialogs/Limits';
-import Chart from './Dialogs/Chart';
 import TradingView from './Dialogs/TradingView';
+import Chart from './Dialogs/Chart';
 import { getLanguage } from '../../common/lang';
 import { roundBalance, isVirtual } from '../common/tools';
 import { symbolPromise } from './shared';
@@ -60,9 +60,7 @@ api.send({ time: '1' }).then(response => {
 });
 
 api.events.on('balance', response => {
-    const {
-        balance: { balance: b, currency },
-    } = response;
+    const { balance: { balance: b, currency } } = response;
 
     const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
     $('.topMenuBalance').text(`${balance} ${currency}`);
@@ -77,6 +75,7 @@ const addBalanceForToken = token => {
 };
 
 const chart = new Chart(api);
+
 const tradingView = new TradingView();
 
 const setBeforeUnload = off => {
@@ -141,7 +140,6 @@ const clearRealityCheck = () => {
 
 const limits = new Limits();
 const saveDialog = new Save();
-// const chart = new Chart();
 
 const getLandingCompanyForToken = id => {
     let landingCompany;
@@ -162,7 +160,7 @@ const updateLogo = token => {
     if (currentLandingCompany === 'maltainvest') {
         $('.binary-logo-text > img').attr('src', './image/binary-type-logo.svg');
     } else {
-        $('.binary-logo-text > img').attr('src', 'https://style.binary.com/images/logo/type.svg');
+        $('.binary-logo-text > img').attr('src', './image/binary-style/logo/type.svg');
     }
     setTimeout(() => window.dispatchEvent(new Event('resize')));
 };
@@ -498,11 +496,11 @@ export default class View {
             if (e.keyCode === 13) {
                 submitRealityCheck();
             }
-            /* Unicode check is for firefox because it 
+            /* Unicode check is for firefox because it
              * trigger this event when backspace, arrow keys are pressed
              * in chrome it is not triggered
              */
-            const unicodeStrings = /[\u0008|\u0000]/; /* eslint-disable-line no-control-regex */
+            const unicodeStrings = /[\u0008|\u0000]/; // eslint-disable-line no-control-regex
             if (unicodeStrings.test(char)) return;
 
             if (!/([0-9])/.test(char)) {
@@ -511,9 +509,9 @@ export default class View {
         });
 
         const startBot = limitations => {
-            $('#stopButton').show();
-            $('#runButton').hide();
-            $('#runButton').prop('disabled', true);
+            $('#stopButton, #summaryStopButton').show();
+            $('#runButton, #summaryRunButton').hide();
+            $('#runButton, #summaryRunButton').prop('disabled', true);
             showSummary();
             this.blockly.run(limitations);
         };
@@ -534,6 +532,14 @@ export default class View {
         $('#stopButton')
             .click(e => stop(e))
             .hide();
+
+        $('[aria-describedby="summaryPanel"]').on('click', '#summaryRunButton', () => {
+            $('#runButton').trigger('click');
+        });
+
+        $('[aria-describedby="summaryPanel"]').on('click', '#summaryStopButton', () => {
+            $('#stopButton').trigger('click');
+        });
 
         $('#resetButton').click(() => {
             this.blockly.resetWorkspace();
@@ -590,7 +596,7 @@ export default class View {
         });
 
         globalObserver.register('Error', error => {
-            $('#runButton').prop('disabled', false);
+            $('#runButton, #summaryRunButton').prop('disabled', false);
             if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
@@ -599,7 +605,7 @@ export default class View {
         });
 
         globalObserver.register('bot.stop', () => {
-            $('#runButton').prop('disabled', false);
+            $('#runButton, #summaryRunButton').prop('disabled', false);
         });
 
         globalObserver.register('bot.info', info => {

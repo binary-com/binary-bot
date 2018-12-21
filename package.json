@@ -80,7 +80,6 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-    "binary-charts": "^9.2.7",
     "binary-indicators": "^1.5.2",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",
@@ -123,9 +122,9 @@
     "notifyjs-browser": "^0.4.2",
     "prettier-eslint-cli": "^4.7.0",
     "prop-types": "^15.6.0",
-    "react": "^15.6.2",
+    "react": "^16.4.0",
     "react-data-grid": "^3.0.0",
-    "react-dom": "^15.6.2",
+    "react-dom": "^16.4.0",
     "react-joyride": "^1.11.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
@@ -137,11 +136,18 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
+    "@binary-com/smartcharts": "0.3.3",
+    "babel": "^6.23.0",
     "binary-style": "^0.2.4",
     "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0",
     "gulp-gh-pages-will": "^0.5.5",
-    "react-render-html": "^0.5.2"
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.1.8",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-render-html": "^0.5.2",
+    "react-transition-group": "^2.3.1"
   }
 }

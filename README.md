@@ -25,11 +25,12 @@ yarn start
 yarn deploy [branchname] # can contain /
 ```
 
-## Deployment 
+## Deployment/Release
 
 ```
-gulp test-deploy
-yarn deploy-all
+gulp test-deploy # for local test deploy
+yarn deploy <branch-name> # to deploy a branch (eg., beta) and master
+yarn deploy-all # to deploy master, translations and beta
 ```
 
 ## Publishing a new version
