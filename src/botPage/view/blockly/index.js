@@ -349,8 +349,12 @@ while(true) {
     }
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            $('#runButton').show();
-            $('#stopButton').hide();
+            const $runButton = $('#runButton');
+            const $stopButton = $('#stopButton');
+            if ($runButton.is(':visible') || $stopButton.is(':visible')) {
+                $runButton.show();
+                $stopButton.hide();
+            }
         }
         if (this.interpreter) {
             this.interpreter.stop();
