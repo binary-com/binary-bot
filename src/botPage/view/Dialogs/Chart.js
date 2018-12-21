@@ -13,9 +13,6 @@ import {
     ChartSize,
 } from '@binary-com/smartcharts';
 import React, { PureComponent } from 'react';
-import { BinaryChart } from 'binary-charts';
-import { observer as globalObserver } from '../../../common/utils/observer';
-import { ticksService } from '../shared';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
@@ -23,20 +20,6 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 import { getLanguage } from '../../../common/lang';
 
 setSmartChartsPublicPath('./js/');
-
-let ticksService;
-
-class CustomBinaryChart extends BinaryChart {
-    componentDidMount() {
-        $('#chart-dialog-component').on('dialogresize', (_, { size }) => {
-            this.chart.setSize(size.width - 30, size.height - 100, false);
-        });
-    }
-    // eslint-disable-next-line class-methods-use-this
-    componentWillUnmount() {
-        $('#chart-dialog-component').off();
-    }
-}
 
 export const BarrierTypes = {
     CALL       : 'ABOVE',
