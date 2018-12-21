@@ -3,6 +3,7 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
+import RunButton from './RunButton';
 
 const resetAnimation = () => {
     $('.circle-wrapper')
@@ -11,7 +12,7 @@ const resetAnimation = () => {
     $('.line')
         .removeClass('active')
         .removeClass('complete');
-    $('.stage-tooltip').removeClass('active');
+    $('.stage-tooltip:not(.top)').removeClass('active');
 };
 
 const activateStage = index => {
@@ -26,18 +27,30 @@ const activateStage = index => {
 class AnimateTrade extends Component {
     constructor() {
         super();
-        this.state = { stopMessage: `${translate('Bot is stopped')}.` };
+        this.indicatorMessages = {
+            notRunning: translate('Bot is not running.'),
+            running   : translate('Bot is running...'),
+            stopping  : translate('Bot is stopping...'),
+            stopped   : translate('Bot has stopped.'),
+        };
+        this.state = {
+            indicatorMessage: this.indicatorMessages.notRunning,
+            stopMessage     : this.indicatorMessages.stopped,
+        };
     }
     componentWillMount() {
         globalObserver.register('bot.stop', () => {
-            this.setState({ stopMessage: `${translate('Bot is stopped')}.` });
+            $('.stage-tooltip.top:eq(0)').removeClass('running');
+            this.setState({ indicatorMessage: this.indicatorMessages.stopped });
         });
         $('#stopButton').click(() => {
-            $('.stage-tooltip.top:eq(0)').addClass('active');
+            $('.stage-tooltip.top:eq(0)').removeClass('running');
+            this.setState({ indicatorMessage: this.state.stopMessage });
         });
         $('#runButton').click(() => {
-            $('.stage-tooltip.top:eq(0)').removeClass('active');
             resetAnimation();
+            $('.stage-tooltip.top:eq(0)').addClass('running');
+            this.setState({ indicatorMessage: this.indicatorMessages.running });
             globalObserver.register('contract.status', contractStatus => {
                 this.animateStage(contractStatus);
             });
@@ -45,10 +58,9 @@ class AnimateTrade extends Component {
     }
     animateStage(contractStatus) {
         if (contractStatus.id === 'contract.purchase_sent') {
-            this.setState({ stopMessage: `${translate('Bot is stopping')}...` });
             resetAnimation();
             activateStage(0);
-            this.setState({ buy_price: contractStatus.data });
+            this.setState({ buy_price: contractStatus.data, stopMessage: this.indicatorMessages.stopping });
         } else if (contractStatus.id === 'contract.purchase_recieved') {
             $('.line').addClass('active');
             activateStage(1);
@@ -56,7 +68,7 @@ class AnimateTrade extends Component {
         } else if (contractStatus.id === 'contract.sold') {
             $('.line').addClass('complete');
             activateStage(2);
-            this.setState({ sell_id: contractStatus.data });
+            this.setState({ sell_id: contractStatus.data, stopMessage: this.indicatorMessages.stopped });
         }
         activateStage(contractStatus.id);
     }
@@ -81,8 +93,8 @@ class AnimateTrade extends Component {
                         </div>
                     </span>
                     <span className="stage">
-                        <div className="stage-tooltip top">
-                            <p>{this.state.stopMessage}</p>
+                        <div className="stage-tooltip top active">
+                            <p>{this.state.indicatorMessage}</p>
                         </div>
                         <div className="stage-label">{translate('Buy succeeded')}</div>
                         <span className="circle-wrapper">
@@ -138,6 +150,9 @@ export default class TradeInfoPanel extends Component {
         return (
             <div>
                 <div className="content">
+                    <div className="content-row">
+                        <RunButton />
+                    </div>
                     <div className="content-row">
                         <AnimateTrade />
                     </div>

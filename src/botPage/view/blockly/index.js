@@ -349,11 +349,11 @@ while(true) {
     }
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            const $runButton = $('#runButton');
-            const $stopButton = $('#stopButton');
-            if ($runButton.is(':visible') || $stopButton.is(':visible')) {
-                $runButton.show();
-                $stopButton.hide();
+            const $runButtons = $('#runButton, #summaryRunButton');
+            const $stopButtons = $('#stopButton, #summaryStopButton');
+            if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
+                $runButtons.show();
+                $stopButtons.hide();
             }
         }
         if (this.interpreter) {
