@@ -349,8 +349,12 @@ while(true) {
     }
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            $('#runButton, #summaryRunButton').show();
-            $('#stopButton, #summaryStopButton').hide();
+            const $runButtons = $('#runButton, #summaryRunButton');
+            const $stopButtons = $('#stopButton, #summaryStopButton');
+            if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
+                $runButtons.show();
+                $stopButtons.hide();
+            }
         }
         if (this.interpreter) {
             this.interpreter.stop();
@@ -366,6 +370,10 @@ while(true) {
     /* eslint-disable class-methods-use-this */
     redo() {
         Blockly.mainWorkspace.undo(true);
+    }
+    /* eslint-disable class-methods-use-this */
+    hasStarted() {
+        return this.interpreter && this.interpreter.hasStarted();
     }
     /* eslint-enable */
 }
