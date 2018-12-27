@@ -24,8 +24,13 @@
 
     .cq-chart-controls {
         .cq-menu-btn > .cq-toggle {
-            padding: 0.35em 0em !important;
+            padding: 0.35em 0em !important;          
         }
+
+        .cq-zoom-out {
+            padding-right: 2em !important;
+        }
+        
         .ic-icon-with-sub {
             &:hover .ic-subtitle {
                 visibility: visible;
