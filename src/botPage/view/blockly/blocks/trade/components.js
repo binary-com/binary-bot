@@ -9,7 +9,7 @@ export const marketDropdown = block => {
     block
         .appendDummyInput('MARKETDEFINITION')
         .appendField(`${translate('Market')}:`)
-        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.MARKET_LIST()), 'MARKET_LIST')
+        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.MARKET_LIST), 'MARKET_LIST')
         .appendField('>')
         .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.SUBMARKET_LIST(block)), 'SUBMARKET_LIST')
         .appendField('>')
