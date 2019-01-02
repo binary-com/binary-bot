@@ -46,9 +46,6 @@ export default () => {
         init: function init() {
             duration(this);
             payout(this);
-            prediction(this);
-            barrierOffset(this);
-            secondBarrierOffset(this);
             this.setInputsInline(false);
             this.setPreviousStatement(true, 'Condition');
         },

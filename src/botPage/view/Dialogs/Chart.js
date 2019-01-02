@@ -3,12 +3,10 @@ import {
     setSmartChartsPublicPath,
     ChartTypes,
     StudyLegend,
-    Comparison,
     Views,
     Timeperiod,
     DrawTools,
     Share,
-    ComparisonList,
     CrosshairToggle,
     ChartSize,
 } from '@binary-com/smartcharts';
@@ -112,7 +110,7 @@ class ChartContent extends PureComponent {
         delete this.listeners[requsestKey];
     }
 
-    renderTopWidgets = () => <ComparisonList />;
+    renderTopWidgets = () => <span />;
 
     renderControls = () => (
         <React.Fragment>
@@ -120,7 +118,6 @@ class ChartContent extends PureComponent {
             <ChartTypes />
             <Timeperiod />
             <StudyLegend />
-            <Comparison />
             <DrawTools />
             <Views />
             <Share />

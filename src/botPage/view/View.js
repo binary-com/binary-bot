@@ -226,10 +226,10 @@ const applyToolboxPermissions = () => {
     }
 };
 
-const showReloadPopup = () =>
+const showPopup = selector =>
     new Promise((resolve, reject) => {
         setBeforeUnload(true);
-        $('#reloadPanel').dialog({
+        $(selector).dialog({
             height: 'auto',
             width : 600,
             modal : true,
@@ -258,7 +258,7 @@ const showReloadPopup = () =>
                 },
             ],
         });
-        $('#reloadPanel').dialog('open');
+        $(selector).dialog('open');
     });
 
 export default class View {
@@ -373,8 +373,9 @@ export default class View {
             });
         };
         const logout = () => {
-            showReloadPopup()
+            showPopup(getAccountSwitchPanelName())
                 .then(() => {
+                    this.stop();
                     removeTokens();
                 })
                 .catch(() => {});
@@ -383,6 +384,10 @@ export default class View {
         const clearActiveTokens = () => {
             setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
         };
+
+        const getReloadPanelName = () => (this.blockly.hasStarted() ? '#reloadPanelTrading' : '#reloadPanel');
+        const getAccountSwitchPanelName = () =>
+            this.blockly.hasStarted() ? '#switchAccountPanelTrading' : '#reloadPanel';
 
         $('.panelExitButton').click(function onClick() {
             $(this)
@@ -468,6 +473,7 @@ export default class View {
         });
 
         $('#logout').click(() => {
+            setBeforeUnload(true);
             logout();
             hideRealityCheck();
         });
@@ -542,13 +548,19 @@ export default class View {
         });
 
         $('#resetButton').click(() => {
-            this.blockly.resetWorkspace();
-            setTimeout(() => this.blockly.cleanUp(), 0);
+            showPopup(getReloadPanelName())
+                .then(() => {
+                    this.stop();
+                    this.blockly.resetWorkspace();
+                    setTimeout(() => this.blockly.cleanUp(), 0);
+                })
+                .catch(() => {});
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            showReloadPopup()
+            showPopup(getAccountSwitchPanelName())
                 .then(() => {
+                    this.stop();
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
                     setStorage('tokenList', '');
@@ -562,9 +574,10 @@ export default class View {
 
         $('#login')
             .bind('click.login', () => {
+                setBeforeUnload(true);
                 document.location = getOAuthURL();
             })
-            .text('Log in');
+            .text(translate('Log in'));
 
         $('#statement-reality-check').click(() => {
             document.location = `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`;

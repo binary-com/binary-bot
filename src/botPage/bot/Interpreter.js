@@ -156,4 +156,7 @@ export default class Interpreter {
                 .catch(e => this.$scope.observer.emit('Error', e));
         });
     }
+    hasStarted() {
+        return !this.stopped;
+    }
 }

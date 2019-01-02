@@ -2,7 +2,6 @@
 
 $joyride-color: $brand-orange;
 $joyride-button-bg-color: $brand-btn;
-$joyride-button-color: $white !important;
 $joyride-tooltip-width: (15em, 20em, 20em);
 
 @import '../../node_modules/react-joyride/lib/react-joyride';
@@ -17,12 +16,35 @@ $joyride-tooltip-width: (15em, 20em, 20em);
 .tour-first-pop-up {
     .joyride-tooltip {
         position: fixed !important;
+        &__main {
+            padding-bottom: 0;
+        }
     }
 }
 
 .tour-custom-buttons {
-    float: right;
+    text-align: right;
+    margin-top: 1em;
     button: {
         margin-left: 0.1em;
+    }
+}
+
+.joyride-tooltip__button {
+    padding: 10px 25px;
+    &--primary {
+        color: $white;
+        background-color: $brand-btn;
+    }
+    &--primary:hover {
+        color: $white;
+        background-color: $brand-btn-active;
+    }
+    &--secondary {
+        color: $black;
+        background-color: $brand-gray;
+    }
+    &--secondary:hover {
+        background-color: #dedede;
     }
 }
