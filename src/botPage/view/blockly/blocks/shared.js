@@ -77,7 +77,7 @@ const getActiveMarket = markets =>
         {}
     );
 
-fieldGeneratorMapping.MARKET_LIST = () => () => {
+fieldGeneratorMapping.MARKET_LIST = () => {
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     return Object.keys(markets).map(e => [markets[e].name, e]);
 };
@@ -85,7 +85,7 @@ fieldGeneratorMapping.MARKET_LIST = () => () => {
 fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     const marketName = block.getFieldValue('MARKET_LIST');
-    if (marketName === 'Invalid') {
+    if (!marketName || marketName === 'Invalid') {
         return [['', 'Invalid']];
     }
     const submarkets = getActiveSubMarket(markets[marketName].submarkets);
