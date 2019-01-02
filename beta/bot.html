@@ -54,8 +54,8 @@
 		amplitude.getInstance().init("8550b32c2a951c57e791d03c4c2ea55a");
 	</script>
     <title>Binary Bot</title>
-<link href="css/bundle-f4307bf5f8.css" rel="stylesheet" />    <link rel="stylesheet" href="css/binary.css">
-<link href="css/bot-f283cdecec.css" rel="stylesheet" />  </head>
+<link href="css/bundle-2843b30938.css" rel="stylesheet" />    <link rel="stylesheet" href="css/binary.css">
+<link href="css/bot-373ee41217.css" rel="stylesheet" />  </head>
 
   <body>
     <div id="tour"></div>
@@ -69,13 +69,17 @@
     </span>
     <span id="summaryPanel" class="draggable-dialog" title="Summary">
     </span>
-    <span id="reloadPanel" class="draggable-dialog" title="Page reload warning!">
-        <p style="margin:0.7em" data-i18n-text="Are you sure you wish to proceed with your current action? Binary Bot will stop placing further trades. Ongoing trades (if available) will be completed by our system. All unsaved changes to your strategy will be lost."></p>
-        <br />
+    <span id="reloadPanel" class="draggable-dialog" title="Are you sure?">
+      <p style="margin:0.7em" data-i18n-text="Any unsaved changes will be lost. "></p>
+    </span>
+    <span id="reloadPanelTrading" class="draggable-dialog" title="Are you sure?">
+        <p style="margin:0.7em" data-i18n-text="Binary Bot will not place any new trades. Any trades already placed (but not expired) will be completed by our system. Any unsaved changes will be lost."></p>
         <p style="margin:0.7em" data-i18n-text="Note: Please see the Binary.com statement page for details of all confirmed transactions."></p>
     </span>
-
-
+    <span id="switchAccountPanelTrading" class="draggable-dialog" title="Are you sure?">
+        <p style="margin:0.7em" data-i18n-text="Binary Bot will not place any new trades. Current unexpired trades will be completed by our system. All unsaved changes will be lost."></p>
+        <p style="margin:0.7em" data-i18n-text="Note: Please see the Binary.com statement page for details of all confirmed transactions."></p>
+    </span>
     <div>
       <div class="blocker"></div>
       <div class="reality-check" style="display: none">
@@ -210,12 +214,12 @@
       <button title="Zoom Out (Ctrl + -)" id="zoomOut" class="toolbox-button icon-zoom-out"></button>
       <button title="Rearrange Vertically" id="rearrange" class="toolbox-button icon-sort"></button>
       <button title="Show/hide the summary pop-up" id="showSummary" class="toolbox-button icon-summary"></button>
-      <button title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
       <button title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
       <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
       <button title="Show log" id="logButton" class="toolbox-button icon-info"></button>
       <button title="Show chart" id="chartButton" class="toolbox-button icon-chart-line"></button>
       <button title="Show Trading View" id="tradingViewButton" class="toolbox-button icon-trading-view"></button>
+      <button title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
     </div>
     <div id="footer"></div>
     <audio id="announcement" src="sound/announcement.ogg" autostart="false" ></audio>
@@ -223,5 +227,5 @@
     <audio id="job-done" src="sound/job-done.ogg" autostart="false" ></audio>
     <audio id="error" src="sound/out-of-bounds.ogg" autostart="false" ></audio>
     <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false" ></audio>
-<script src="js/bundle-ca910a23e2.js"></script><script src="js/bot-6fdde75dc4.min.js"></script>  </body>
+<script src="js/bundle-ca910a23e2.js"></script><script src="js/bot-43b0936b8a.min.js"></script>  </body>
 </html>
