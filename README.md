@@ -13,8 +13,8 @@ Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.
 git clone https://github.com/binary-com/binary-bot.git
 cd binary-bot
 git checkout dev
-yarn install
-yarn start
+npm install
+npm run start
 ```
 
 **Note:** Please branch your work from dev, and make sure your local dev is up-to-date with upstream
@@ -22,21 +22,21 @@ yarn start
 ### Deploying to local gh-pages
 
 ```
-yarn deploy [branchname] # can contain /
+npm run deploy [branchname] # can contain /
 ```
 
 ## Deployment/Release
 
 ```
 gulp test-deploy # for local test deploy
-yarn deploy <branch-name> # to deploy a branch (eg., beta) and master
-yarn deploy-all # to deploy master, translations and beta
+npm run deploy <branch-name> # to deploy a branch (eg., beta) and master
+npm run deploy-all # to deploy master, translations and beta
 ```
 
 ## Publishing a new version
 
 ```
-yarn version --new-version patch
+npm run version --new-version patch
 npm publish
 ```
 
@@ -44,7 +44,7 @@ npm publish
 
 ```
 git pull --rebase upstream dev
-yarn install
+npm install
 ```
 
 ## Running the CLI command
