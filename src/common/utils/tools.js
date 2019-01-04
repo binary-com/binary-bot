@@ -51,14 +51,28 @@ export const durationToSecond = duration => {
 
 export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap;
 
-export const createUrl = (path, lang = getLanguage(), addLanguage = true, addHtmlExtension = true) => {
-    const pathBit = path ? `/${path}${addHtmlExtension ? '.html' : ''}` : '';
-    const languageBit = addLanguage && lang ? `/${lang}` : '';
-
+export const createUrl = options => {
+    const getOption = property => Object.prototype.hasOwnProperty.call(options, property) && options[property];
+    const language = getOption('addLanguage') ? `/${getLanguage()}` : '';
+    const path = getOption('path') ? `/${getOption('path')}` : '';
+    const htmlExtension = getOption('addHtmlExtension') ? '.html' : '';
+    const subdomain = getOption('subdomain') ? `${getOption('subdomain')}.` : 'www.';
     if (isProduction()) {
-        return `${document.location.protocol}//${document.location.hostname}${languageBit}${pathBit}`;
+        let domainExtension = `.${getExtension()}`;
+        if (getOption('isNonBotPage')) {
+            switch (document.location.hostname.replace(/^www./, '')) {
+                case 'bot.binary.me':
+                case 'binary.bot':
+                    domainExtension = '.me';
+                    break;
+                default:
+                    domainExtension = '.com';
+                    break;
+            }
+        }
+        return `${document.location.protocol}//${subdomain}binary${domainExtension}${language}${path}${htmlExtension}`;
     }
-    return `https://www.binary.com${languageBit}${pathBit}`;
+    return `https://${subdomain}binary.com${language}${path}${htmlExtension}`;
 };
 
 export const translate = input => {
@@ -73,4 +87,10 @@ export const translate = input => {
         return RenderHTML(translatedString);
     }
     return i18nTranslate(input);
+};
+
+export const getExtension = () => {
+    const host = document.location.hostname;
+    const extension = host.split('.').slice(-1)[0];
+    return host !== extension ? extension : '';
 };

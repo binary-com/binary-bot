@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import Logo from './react-components/logo.jsx';
 import Footer from './react-components/footer.jsx';
 import { getTokenList } from '../common/utils/storageManager';
-import { oauthLogin, getExtension } from '../common/appId';
-import { isProduction } from '../common/utils/tools';
+import { oauthLogin } from '../common/appId';
+import { createUrl } from '../common/utils/tools';
 import { load as loadLang } from '../common/lang';
 import '../common/binary-ui/dropdown';
 import endpoint from './endpoint';
@@ -21,11 +21,7 @@ const renderElements = () => {
     isEuCountry().then(isEu => {
         showHideEuElements(isEu);
     });
-    const domainExtension = getExtension();
-    const shopUrl = `https://shop.binary.${
-        isProduction() ? (domainExtension === 'bot' ? 'com' : domainExtension) : 'com'
-    }/collections/strategies`;
-    $('#shop-url').attr('href', shopUrl);
+    $('#shop-url').attr('href', createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true }));
 };
 
 const loginCheck = () => {

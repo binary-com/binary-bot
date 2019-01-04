@@ -173,10 +173,7 @@ export default class TicksService {
     }
     observe() {
         this.api.events.on('tick', r => {
-            const {
-                tick,
-                tick: { symbol, id },
-            } = r;
+            const { tick, tick: { symbol, id } } = r;
 
             if (this.ticks.has(symbol)) {
                 this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
@@ -185,10 +182,7 @@ export default class TicksService {
         });
 
         this.api.events.on('ohlc', r => {
-            const {
-                ohlc,
-                ohlc: { symbol, granularity, id },
-            } = r;
+            const { ohlc, ohlc: { symbol, granularity, id } } = r;
 
             if (this.candles.hasIn([symbol, Number(granularity)])) {
                 this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);
