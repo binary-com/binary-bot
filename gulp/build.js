@@ -27,12 +27,12 @@ const genHtml = min =>
         .pipe(gulp.dest('www'))
         .pipe(connect.reload());
 
-gulp.task('build-dev-html', genHtml);
-gulp.task('build-dev-js', ['webpack-dev'], genHtml);
-gulp.task('build-dev-static', ['static'], genHtml);
+gulp.task('build-dev-html', gulp.series(genHtml));
+gulp.task('build-dev-js', gulp.series('webpack-dev', genHtml));
+gulp.task('build-dev-static', gulp.series('static', genHtml));
 gulp.task(
     'build-min',
-    [
+    gulp.series(
         'static',
         'webpack-prod',
         'bundle-css',
@@ -41,16 +41,19 @@ gulp.task(
         'copy-binary-style-css',
         'copy-binary-style-img',
         'copy-js',
-    ],
-    () => genHtml(true)
+        () => genHtml(true)
+    )
 );
-gulp.task('build', [
-    'bundle-css',
-    'bundle-js',
-    'build-dev-js',
-    'build-dev-static',
-    'copy-jquery-img',
-    'copy-binary-style-css',
-    'copy-binary-style-img',
-    'copy-js',
-]);
+gulp.task(
+    'build',
+    gulp.series(
+        'bundle-css',
+        'bundle-js',
+        'build-dev-js',
+        'build-dev-static',
+        'copy-jquery-img',
+        'copy-binary-style-css',
+        'copy-binary-style-img',
+        'copy-js'
+    )
+);

@@ -19,9 +19,9 @@ const addRev = () =>
         .pipe(through.obj(addToManifest))
         .pipe(gulp.dest('www/js'));
 
-gulp.task('clean-webpack', () => gulp.src(['./www/js/{bot,index}*']).pipe(paths(del)));
+gulp.task('clean-webpack', gulp.series(() => gulp.src(['./www/js/{bot,index}*']).pipe(paths(del))));
 
-gulp.task('webpack-gen-dev', ['clean-webpack'], () => gen('development'));
-gulp.task('webpack-gen-prod', ['clean-webpack'], () => gen('production'));
-gulp.task('webpack-dev', ['webpack-gen-dev'], addRev);
-gulp.task('webpack-prod', ['webpack-gen-prod'], addRev);
+gulp.task('webpack-gen-dev', gulp.series('clean-webpack', () => gen('development')));
+gulp.task('webpack-gen-prod', gulp.series('clean-webpack', () => gen('production')));
+gulp.task('webpack-dev', gulp.series('webpack-gen-dev', addRev));
+gulp.task('webpack-prod', gulp.series('webpack-gen-prod', addRev));
