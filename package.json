@@ -102,7 +102,7 @@
     "gulp-concat-util": "^0.5.5",
     "gulp-connect": "^5.0.0",
     "gulp-mustache-plus": "^1.0.1",
-    "gulp-open": "^2.1.0",
+    "gulp-open": "^3.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-rev": "^8.1.1",
     "gulp-sass": "^3.1.0",
