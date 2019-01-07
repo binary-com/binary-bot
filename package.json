@@ -96,7 +96,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
     "file-saver": "^1.3.3",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-clean-css": "^3.9.0",
     "gulp-concat-css": "^2.3.0",
     "gulp-concat-util": "^0.5.5",
