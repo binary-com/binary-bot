@@ -28,16 +28,18 @@ export const backwardCompatibility = block => {
 
 export const removeUnavailableMarkets = block => {
     const containsUnavailableMarket = () =>
-        Array.from(block.getElementsByTagName('field')).some(field => {
-            if (field.getAttribute('name') === 'MARKET_LIST') {
-                const availableMarkets = fieldGeneratorMapping.MARKET_LIST().map(markets => markets[1]);
-                return !availableMarkets.includes(field.innerText);
-            }
-        });
+        Array.from(block.getElementsByTagName('field')).some(
+            field =>
+                field.getAttribute('name') === 'MARKET_LIST' &&
+                !fieldGeneratorMapping
+                    .MARKET_LIST()
+                    .map(markets => markets[1])
+                    .includes(field.innerText)
+        );
     if (containsUnavailableMarket()) {
-        const nodes_to_remove = ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST', 'TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
+        const nodesToRemove = ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST', 'TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
         Array.from(block.getElementsByTagName('field')).forEach(field => {
-            if (nodes_to_remove.includes(field.getAttribute('name'))) {
+            if (nodesToRemove.includes(field.getAttribute('name'))) {
                 block.removeChild(field);
             }
         });
