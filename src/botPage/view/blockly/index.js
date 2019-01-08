@@ -1,6 +1,5 @@
-import { observer as globalObserver } from '../../../common/utils/observer';
-import { translate, xml as translateXml } from '../../../common/i18n';
-import createError from '../../common/error';
+import './customBlockly';
+import blocks from './blocks';
 import {
     isMainBlock,
     save,
@@ -12,11 +11,13 @@ import {
     backwardCompatibility,
     fixCollapsedBlocks,
     fixArgumentAttribute,
+    removeUnavailableMarkets,
 } from './utils';
-import blocks from './blocks';
 import Interpreter from '../../bot/Interpreter';
+import createError from '../../common/error';
+import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
-import './customBlockly';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 const setBeforeUnload = off => {
     if (off) {
@@ -51,7 +52,10 @@ const disposeBlocksWithLoaders = () => {
 const loadWorkspace = xml => {
     Blockly.Events.setGroup('load');
     Blockly.mainWorkspace.clear();
-    Array.from(xml.children).forEach(block => backwardCompatibility(block));
+    Array.from(xml.children).forEach(block => {
+        backwardCompatibility(block);
+        removeUnavailableMarkets(block);
+    });
     fixArgumentAttribute(xml);
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
     addLoadersFirst(xml).then(
