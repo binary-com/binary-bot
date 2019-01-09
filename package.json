@@ -57,8 +57,9 @@
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || echo -e 'Branch not found b! Make sure it is created or checked out.' && exit 1; git stash; git checkout $b; rm -rf node_modules/; rm package-lock.json;npm install; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
-    "release": "d() { npm run gen-branch $1 || exit 1; gulp deploy;}; d",
+    "gen-branch": "gb() { b=$1; test -z $b && echo 'Please specify branch.' && exit 1; (git branch | grep $b) || echo 'Branch not found! Make sure it is created or checked out.' && exit 1; git stash; git checkout $b; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
+    "release": "d() { npm run gen-branch $1 || exit 1; gulp release-branch;}; d",
+    "release-production": "d() { git stash; git checkout master; gulp build-min; gulp release-master;}; d",
     "build": "webpack --config webpack.config.cli.js",
     "precommit": "lint-staged"
   },
