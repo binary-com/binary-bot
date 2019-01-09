@@ -60,7 +60,9 @@ api.send({ time: '1' }).then(response => {
 });
 
 api.events.on('balance', response => {
-    const { balance: { balance: b, currency } } = response;
+    const {
+        balance: { balance: b, currency },
+    } = response;
 
     const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
     $('.topMenuBalance').text(`${balance} ${currency}`);
@@ -215,15 +217,11 @@ const updateTokenList = () => {
 };
 
 const applyToolboxPermissions = () => {
-    if (getTokenList().length) {
-        $('#runButton').show();
-        $('#showSummary').show();
-        $('#logButton').show();
-    } else {
-        $('#runButton').hide();
-        $('#showSummary').hide();
-        $('#logButton').hide();
-    }
+    const fn = getTokenList().length ? 'show' : 'hide';
+    $('#runButton, #showSummary, #logButton')
+        [fn]()
+        .prevAll('.toolbox-separator:first')
+        [fn]();
 };
 
 const showPopup = selector =>
