@@ -39,7 +39,7 @@ module.exports = {
         sourceMapFilename: production ? '[name].min.js.map' : '[name].js.map',
     },
     devtool  : 'source-map',
-    watch    : !production,
+    watch    : false,
     target   : 'web',
     externals: {
         ws : 'WebSocket',

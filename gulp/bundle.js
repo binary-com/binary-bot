@@ -9,43 +9,44 @@ const rename = require('gulp-rename');
 const cleanCSS = require('gulp-clean-css');
 const { addToManifest } = require('./revision');
 
-gulp.task('clean-bundle', gulp.series(() => gulp.src('./www/js/bundle*').pipe(paths(del))));
+gulp.task('clean-bundle', gulp.parallel(() => gulp.src('./www/js/bundle*').pipe(paths(del))));
 
 gulp.task(
     'bundle-js',
-    gulp.series(() =>
-        gulp
-            .src([
-                './node_modules/blockly/blockly_compressed.js',
-                './node_modules/blockly/blocks_compressed.js',
-                './node_modules/blockly/javascript_compressed.js',
-                './node_modules/blockly/msg/messages.js',
-            ])
+    gulp.parallel(done => {
+        gulp.src([
+            './node_modules/blockly/blockly_compressed.js',
+            './node_modules/blockly/blocks_compressed.js',
+            './node_modules/blockly/javascript_compressed.js',
+            './node_modules/blockly/msg/messages.js',
+        ])
             .pipe(concat('bundle.js'))
             .pipe(rev())
             .pipe(through.obj(addToManifest))
-            .pipe(gulp.dest('www/js/'))
-    )
+            .pipe(gulp.dest('www/js/'));
+        done();
+    })
 );
 
 gulp.task(
     'copy-js',
-    gulp.series(() => {
+    gulp.parallel(done => {
         gulp.src(['./node_modules/@binary-com/smartcharts/dist/*.smartcharts.*']).pipe(gulp.dest('www/js/'));
+        done();
     })
 );
 
 gulp.task(
     'bundle-css',
-    gulp.series(() =>
-        gulp
-            .src([
-                'node_modules/jquery-ui-css/jquery-ui.min.css',
-                './node_modules/@binary-com/smartcharts/dist/smartcharts.css',
-            ])
+    gulp.parallel(done => {
+        gulp.src([
+            'node_modules/jquery-ui-css/jquery-ui.min.css',
+            './node_modules/@binary-com/smartcharts/dist/smartcharts.css',
+        ])
             .pipe(concatCss('bundle.css'))
             .pipe(rev())
             .pipe(through.obj(addToManifest))
-            .pipe(gulp.dest('www/css'))
-    )
+            .pipe(gulp.dest('www/css'));
+        done();
+    })
 );

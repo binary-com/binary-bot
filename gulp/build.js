@@ -23,13 +23,34 @@ const getConfig = prefix => ({
 const genHtml = min =>
     gulp
         .src('templates/*.mustache')
-        .pipe(mustache({}, {}, getConfig(typeof min === 'boolean' ? '.min' : '')))
+        .pipe(mustache({}, {}, getConfig(min === true ? '.min' : '')))
         .pipe(gulp.dest('www'))
         .pipe(connect.reload());
 
-gulp.task('build-dev-html', gulp.series(genHtml));
-gulp.task('build-dev-js', gulp.series('webpack-dev', genHtml));
-gulp.task('build-dev-static', gulp.series('static', genHtml));
+gulp.task(
+    'build-dev-html',
+    gulp.series(done => {
+        genHtml(false);
+        done();
+    })
+);
+
+gulp.task(
+    'build-dev-js',
+    gulp.series('webpack-dev', done => {
+        genHtml(false);
+        done();
+    })
+);
+
+gulp.task(
+    'build-dev-static',
+    gulp.series('static', done => {
+        genHtml(false);
+        done();
+    })
+);
+
 gulp.task(
     'build-min',
     gulp.series(
@@ -41,12 +62,16 @@ gulp.task(
         'copy-binary-style-css',
         'copy-binary-style-img',
         'copy-js',
-        () => genHtml(true)
+        done => {
+            genHtml(true);
+            done();
+        }
     )
 );
+
 gulp.task(
     'build',
-    gulp.series(
+    gulp.parallel(
         'bundle-css',
         'bundle-js',
         'build-dev-js',

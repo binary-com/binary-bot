@@ -9,30 +9,33 @@ require('./gulp/plato');
 
 gulp.task(
     'connect',
-    gulp.series(() => {
+    gulp.series(done => {
         connect.server({
             root      : 'www',
             port      : 8080,
             livereload: true,
         });
+        done();
     })
 );
 
 gulp.task(
     'open',
-    gulp.series(() =>
+    gulp.series(done => {
         gulp.src('www/index.html').pipe(
             open({
                 uri: 'http://localhost:8080/',
             })
-        )
-    )
+        );
+        done();
+    })
 );
 
 gulp.task(
     'serve',
-    gulp.series('open', 'connect', () => {
+    gulp.series('open', 'connect', done => {
         watch(['www/*.html']).pipe(connect.reload());
+        done();
     })
 );
 
@@ -47,30 +50,32 @@ gulp.task('test-deploy', gulp.series('build-min', 'serve', () => {}));
 
 gulp.task(
     'watch-static',
-    gulp.series(() =>
+    gulp.parallel(done => {
         gulp.watch(
             ['static/xml/**/*', 'static/*.html', 'static/css/*.scss'],
             {
                 debounceTimeout: 1000,
             },
-            ['build-dev-static']
-        )
-    )
+            gulp.series('build-dev-static')
+        );
+        done();
+    })
 );
 
 gulp.task(
     'watch-html',
-    gulp.series(() =>
+    gulp.series(done => {
         gulp.watch(
             ['templates/**/*'],
             {
                 debounceTimeout: 1000,
             },
-            ['build-dev-html']
-        )
-    )
+            gulp.series('build-dev-html')
+        );
+        done();
+    })
 );
 
-gulp.task('watch', gulp.series('serve', 'build', 'watch-static', 'watch-html'));
+gulp.task('watch', gulp.series('build', 'serve', 'watch-static', 'watch-html'));
 
 gulp.task('default', gulp.series('watch'));
