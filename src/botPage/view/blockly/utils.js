@@ -27,27 +27,23 @@ export const backwardCompatibility = block => {
 };
 
 export const removeUnavailableMarkets = block => {
-    const containsUnavailableMarket = () =>
-        Array.from(block.getElementsByTagName('field')).some(
-            field =>
-                field.getAttribute('name') === 'MARKET_LIST' &&
-                !fieldGeneratorMapping
-                    .MARKET_LIST()
-                    .map(markets => markets[1])
-                    .includes(field.innerText)
-        );
-    if (containsUnavailableMarket()) {
+    const containsUnavailableMarket = Array.from(block.getElementsByTagName('field')).some(
+        field =>
+            field.getAttribute('name') === 'MARKET_LIST' &&
+            !fieldGeneratorMapping
+                .MARKET_LIST()
+                .map(markets => markets[1])
+                .includes(field.innerText)
+    );
+    if (containsUnavailableMarket) {
         const nodesToRemove = ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST', 'TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
         Array.from(block.getElementsByTagName('field')).forEach(field => {
             if (nodesToRemove.includes(field.getAttribute('name'))) {
                 block.removeChild(field);
             }
         });
-        globalObserver.emit(
-            'ui.log.info',
-            translate('The markets for this strategy have been defaulted as they\'re not available in your jurisdiction')
-        );
     }
+    return containsUnavailableMarket;
 };
 
 const getCollapsedProcedures = () =>
