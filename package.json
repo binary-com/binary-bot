@@ -58,10 +58,8 @@
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || exit 1; git stash; git checkout $b; rm -rf node_modules/; rm package-lock.json;npm install; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
-    "deploy": "d() { npm run gen-branch $1 || exit 1; git checkout master;rm -rf node_modules/;rm package-lock.json; npm install; gulp deploy;}; d",
-    "deploy-all": "npm run gen-branch beta; npm run gen-branch translation; npm run deploy",
+    "deploy": "d() { npm run gen-branch $1 || exit 1; gulp deploy;}; d",
     "build": "webpack --config webpack.config.cli.js",
-    "prepublishOnly": "npm run build",
     "precommit": "lint-staged"
   },
   "author": "Binary.com",
