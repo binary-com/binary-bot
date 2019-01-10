@@ -116,28 +116,36 @@
         </div>
       </div>
     </div>
-    <div id="blocklyArea"><div>
+    <div id="toolbox" class="actions_menu show-on-load">
+      <button title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
+      <button title="Load new blocks (xml file)" id="loadXml" class="toolbox-button icon-browse"></button>
+      <button title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
+
+      <span class="toolbox-separator"></span>
+      <button title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>
+      <button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="toolbox-button icon-redo"></button>
+
+      <span class="toolbox-separator"></span>
+      <button title="Zoom In (Ctrl + +)" id="zoomIn" class="toolbox-button icon-zoom-in"></button>
+      <button title="Zoom Out (Ctrl + -)" id="zoomOut" class="toolbox-button icon-zoom-out"></button>
+      <button title="Rearrange Vertically" id="rearrange" class="toolbox-button icon-sort"></button>
+
+      <span class="toolbox-separator"></span>
+      <button title="Show/hide the summary pop-up" id="showSummary" class="toolbox-button icon-summary"></button>
+      <button title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
+      <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
+      <button title="Show log" id="logButton" class="toolbox-button icon-info"></button>
+
+      <span class="toolbox-separator"></span>
+      <button title="Show chart" id="chartButton" class="toolbox-button icon-chart-line"></button>
+      <button title="Show Trading View" id="tradingViewButton" class="toolbox-button icon-trading-view"></button>
+    </div>
+    <div id="blocklyArea"></div>
     <div id="blocklyDiv" style="position: absolute;"></div>
 
     <form id="fileUploadForm" style="display: none;">
       <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml" multiple/>
     </form>
-    <div id="toolbox" class="actions_menu show-on-load" style="position:absolute; top: 105px;">
-      <button title="Load new blocks (xml file)" id="loadXml" class="toolbox-button icon-browse"></button>
-      <button title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
-      <button title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>
-      <button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="toolbox-button icon-redo"></button>
-      <button title="Zoom In (Ctrl + +)" id="zoomIn" class="toolbox-button icon-zoom-in"></button>
-      <button title="Zoom Out (Ctrl + -)" id="zoomOut" class="toolbox-button icon-zoom-out"></button>
-      <button title="Rearrange Vertically" id="rearrange" class="toolbox-button icon-sort"></button>
-      <button title="Show/hide the summary pop-up" id="showSummary" class="toolbox-button icon-summary"></button>
-      <button title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
-      <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
-      <button title="Show log" id="logButton" class="toolbox-button icon-info"></button>
-      <button title="Show chart" id="chartButton" class="toolbox-button icon-chart-line"></button>
-      <button title="Show Trading View" id="tradingViewButton" class="toolbox-button icon-trading-view"></button>
-      <button title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
-    </div>
     <div id="footer"></div>
     <audio id="announcement" src="sound/announcement.ogg" autostart="false" ></audio>
     <audio id="earned-money" src="sound/coins.ogg" autostart="false" ></audio>
