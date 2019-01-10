@@ -24,6 +24,7 @@
     background-color: $brand-gray;
     border-bottom: 1px solid $brand-dark-gray;
     padding: 2px 3px;
+    z-index: 0;
 
     #runButton[disabled], #runButton[disabled]:hover {
         @include toolbox-runButton-disabled;
