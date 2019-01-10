@@ -50,6 +50,32 @@ const disposeBlocksWithLoaders = () => {
     });
 };
 const loadWorkspace = xml => {
+    const marketsWereRemoved = !Array.from(xml.children).every(block => !removeUnavailableMarkets(block));
+    if (marketsWereRemoved) {
+        $('#unavailableMarkets').dialog({
+            height: 'auto',
+            width : 600,
+            modal : true,
+            open() {
+                $(this)
+                    .parent()
+                    .find('.ui-dialog-buttonset > button')
+                    .removeClass('ui-button ui-corner-all ui-widget');
+            },
+            buttons: [
+                {
+                    text : translate('OK'),
+                    class: 'button-primary',
+                    click() {
+                        $(this).dialog('close');
+                    },
+                },
+            ],
+        });
+        $('#unavailableMarkets').dialog('open');
+        return;
+    }
+
     Blockly.Events.setGroup('load');
     Blockly.mainWorkspace.clear();
 
@@ -57,40 +83,13 @@ const loadWorkspace = xml => {
         backwardCompatibility(block);
     });
 
-    const marketsWereRemoved = !Array.from(xml.children).every(block => !removeUnavailableMarkets(block));
-
     fixArgumentAttribute(xml);
     Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
     addLoadersFirst(xml).then(
         () => {
             fixCollapsedBlocks();
             Blockly.Events.setGroup(false);
-            if (marketsWereRemoved) {
-                // Inform user strategy was partially loaded
-                $('#unavailableMarkets').dialog({
-                    height: 'auto',
-                    width : 600,
-                    modal : true,
-                    open() {
-                        $(this)
-                            .parent()
-                            .find('.ui-dialog-buttonset > button')
-                            .removeClass('ui-button ui-corner-all ui-widget');
-                    },
-                    buttons: [
-                        {
-                            text : translate('OK'),
-                            class: 'button-primary',
-                            click() {
-                                $(this).dialog('close');
-                            },
-                        },
-                    ],
-                });
-                $('#unavailableMarkets').dialog('open');
-            } else {
-                globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-            }
+            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
         },
         e => {
             Blockly.Events.setGroup(false);
