@@ -62,7 +62,7 @@ const steps = [
         text : `<p>
       ${translate('Control your blocks. Hold the cursor on each button for more info.')}
     </p>`,
-        selector: '#toolbox',
+        selector: '#zoomIn',
         position: 'left',
     },
     {
