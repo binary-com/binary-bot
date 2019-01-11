@@ -18,6 +18,8 @@ const getConfig = prefix => ({
     language        : 'templates/partials/language.mustache',
     loading         : 'templates/partials/loading.mustache',
     binary_style_img: 'image/binary-style',
+    elevio_script   :
+        '<script>!function(e,l,v,i,o,n){e[i]||(e[i]={}),e[i].account_id=n;var g,h;g=l.createElement(v),g.type="text/javascript",g.async=1,g.src=o+n,h=l.getElementsByTagName(v)[0],h.parentNode.insertBefore(g,h);e[i].q=[];e[i].on=function(z,y){e[i].q.push([z,y])}}(window,document,"script","_elev","https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=","5bbc2de0b7365");</script>',
 });
 
 const genHtml = min =>
