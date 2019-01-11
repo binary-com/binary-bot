@@ -35,10 +35,11 @@ class Tour extends PureComponent {
             // Scroll to highlighted element (req for Safari)
             if (data.step && data.step.selector) {
                 let element;
-                if (data.step.selector.charAt(0) === '.') {
-                    element = document.getElementsByClassName(data.step.selector.substring(1))[0];
+                const selector = data.step.selector; // eslint-disable-line prefer-destructuring
+                if (/^\./.test(selector)) {
+                    element = document.getElementsByClassName(selector.substring(1))[0]; // eslint-disable-line prefer-destructuring
                 } else {
-                    element = document.getElementById(data.step.selector.substring(1));
+                    element = document.getElementById(selector.substring(1));
                 }
                 if (element) {
                     element.scrollIntoView();
@@ -47,7 +48,7 @@ class Tour extends PureComponent {
             if (data.index === 0 && data.type === 'step:after') {
                 setDoneCheck();
             }
-        };
+        }; // hi
         const shouldShowTourPopup = () => {
             const dayHasPassed = () =>
                 Date.now() > (parseInt(getStorage('closedTourPopup')) || 0) + 24 * 60 * 60 * 1000;
