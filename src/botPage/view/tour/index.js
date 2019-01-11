@@ -48,7 +48,7 @@ class Tour extends PureComponent {
             if (data.index === 0 && data.type === 'step:after') {
                 setDoneCheck();
             }
-        }; // hi
+        };
         const shouldShowTourPopup = () => {
             const dayHasPassed = () =>
                 Date.now() > (parseInt(getStorage('closedTourPopup')) || 0) + 24 * 60 * 60 * 1000;
