@@ -18,9 +18,13 @@ const steps = [
             </label>
           </div>
           `,
-        selector: '#tour',
+        selector: '#center',
         position: 'top',
         style   : {
+            textAlign: 'center',
+            arrow    : {
+                display: 'none',
+            },
             button: {
                 display: 'none',
             },
@@ -38,8 +42,8 @@ const steps = [
       </a>
       ${translate('or')} ${translate('make your own strategies.')}
     </p>`,
-        selector: '#center',
-        position: 'bottom',
+        selector: '#workspace_center',
+        position: 'top',
     },
     {
         title: translate('Blocks toolbox'),
@@ -74,7 +78,12 @@ const steps = [
       </a>
     </p>`,
         selector: '#center',
-        position: 'bottom',
+        position: 'top',
+        style   : {
+            arrow: {
+                display: 'none',
+            },
+        },
     },
 ];
 
