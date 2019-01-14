@@ -6,8 +6,8 @@ import { translate } from '../common/i18n';
 const Elevio = (() => {
     const init = () => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
+        // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
-            // eslint-disable-line no-underscore-dangle
             const availableElevLanguages = ['es', 'id', 'pt', 'ru'];
             const currentLanguage = getLanguage().toLowerCase();
             if (availableElevLanguages.indexOf(currentLanguage) !== -1) {
