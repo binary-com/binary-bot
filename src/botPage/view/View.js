@@ -374,6 +374,7 @@ export default class View {
             showPopup(getAccountSwitchPanelName())
                 .then(() => {
                     this.stop();
+                    Elevio.logoutUser();
                     removeTokens();
                 })
                 .catch(() => {});
@@ -559,6 +560,7 @@ export default class View {
             showPopup(getAccountSwitchPanelName())
                 .then(() => {
                     this.stop();
+                    Elevio.logoutUser();
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
                     setStorage('tokenList', '');
