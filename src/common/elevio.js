@@ -33,9 +33,16 @@ const Elevio = (() => {
                         user_hash : response.get_settings.user_hash,
                     };
                     elev.setUser(userObject);
+                    api.disconnect();
                 });
             });
         }
+    };
+
+    // Elevio has a window._elev.logoutUser() fn, but it doesn't work
+    const logoutUser = () => {
+        sessionStorage.removeItem('_elevaddon-6app');
+        sessionStorage.removeItem('_elevaddon-6create');
     };
 
     const setTranslations = elev => {
@@ -50,6 +57,7 @@ const Elevio = (() => {
 
     return {
         init,
+        logoutUser,
     };
 })();
 
