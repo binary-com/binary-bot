@@ -243,20 +243,8 @@ const config = {
         timeout        : translate('Run After n Seconds'),
         interval       : translate('Run Every n Seconds'),
     },
-    bbResult     : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
-    macdFields   : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
-    durationRules: {
-        remove: {
-            callput     : ['d'],
-            touchnotouch: ['d'],
-            endsinout   : ['d'],
-            staysinout  : ['d'],
-            asian       : ['d'],
-            digits      : ['d'],
-            highlowticks: ['d'],
-            reset       : ['d'],
-        },
-    },
+    bbResult  : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
+    macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
 };
 
 export async function updateConfigCurrencies() {

@@ -174,19 +174,13 @@ export const getDurationOptions = (symbol, selectedContractType) => {
             if (contractType) {
                 const startIndex = defaultDurations.findIndex(d => d[1] === contractType[2].replace(/\d+/g, ''));
                 const endIndex = defaultDurations.findIndex(d => d[1] === contractType[3].replace(/\d+/g, ''));
-                const availableDurations = defaultDurations.slice(startIndex, endIndex + 1).filter(
-                    (
-                        duration // Apply custom rules e.g. remove day-durations from each contract type
-                    ) => !config.durationRules.remove[actualContractType].includes(duration[1])
-                );
+                const availableDurations = defaultDurations.slice(startIndex, endIndex + 1);
                 if (availableDurations.length) {
                     return availableDurations;
                 }
-                return [[translate('No available durations'), 'na']];
             }
         }
     }
-
     // Fallback to old hardcoded durations
     return config.durationTypes[selectedContractType.toUpperCase()];
 };
