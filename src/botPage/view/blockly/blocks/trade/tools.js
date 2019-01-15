@@ -1,6 +1,8 @@
-import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { findTopParentBlock } from '../../utils';
 import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, restart } from './components';
+import { findTopParentBlock } from '../../utils';
+import config from '../../../../common/const';
+import { translate } from '../../../../../common/i18n';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 
 export const getTradeType = block => {
     const tradeDefBlock = findTopParentBlock(block);
@@ -184,6 +186,7 @@ export const getDurationOptions = (symbol, selectedContractType) => {
             }
         }
     }
+
     // Fallback to old hardcoded durations
     return config.durationTypes[selectedContractType.toUpperCase()];
 };
