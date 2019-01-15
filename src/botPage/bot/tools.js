@@ -22,8 +22,8 @@ export const tradeOptionToProposal = tradeOption =>
         ...(type !== 'TICKLOW' &&
             type !== 'TICKHIGH' &&
             tradeOption.prediction !== undefined && {
-                barrier: tradeOption.prediction,
-            }),
+            barrier: tradeOption.prediction,
+        }),
         ...(tradeOption.barrierOffset !== undefined && {
             barrier: castBarrierToString(tradeOption.barrierOffset),
         }),
