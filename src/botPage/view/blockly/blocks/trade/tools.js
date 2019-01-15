@@ -160,7 +160,7 @@ export const getDurationOptions = (symbol, selectedContractType) => {
         [translate('Days'), 'd'],
     ];
 
-    // Resolve contract types like risefallequals to callput
+    // Resolve contract types e.g. risefallequals = callput
     const actualContractType = Object.keys(config.conditionsCategory).find(
         category =>
             category === selectedContractType || config.conditionsCategory[category].includes(selectedContractType)
@@ -168,9 +168,9 @@ export const getDurationOptions = (symbol, selectedContractType) => {
 
     const assetIndex = JSON.parse(sessionStorage.getItem('assetIndex')) || [];
     if (assetIndex) {
-        const asset = assetIndex.find(asset => asset[0] === symbol);
+        const asset = assetIndex.find(currentAsset => currentAsset[0] === symbol);
         if (asset) {
-            const contractType = asset[2].find(contractType => contractType[0] === actualContractType);
+            const contractType = asset[2].find(currentContractType => currentContractType[0] === actualContractType);
             if (contractType) {
                 const startIndex = defaultDurations.findIndex(d => d[1] === contractType[2].replace(/\d+/g, ''));
                 const endIndex = defaultDurations.findIndex(d => d[1] === contractType[3].replace(/\d+/g, ''));
