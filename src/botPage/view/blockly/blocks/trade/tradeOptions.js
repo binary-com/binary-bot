@@ -3,7 +3,7 @@ import config from '../../../../common/const';
 import { insideTrade } from '../../relationChecker';
 import { expectValue } from '../shared';
 import { findTopParentBlock } from '../../utils';
-import { setInputList, updateInputList } from './tools';
+import { setInputList, updateInputList, getDurationOptions, getSelectedSymbol, getTradeType } from './tools';
 
 export default () => {
     Blockly.Blocks.tradeOptions = {
@@ -23,7 +23,18 @@ export default () => {
             if (ev.name === 'TRADETYPE_LIST') {
                 if (ev.newValue) {
                     updateInputList(this);
-                    this.setFieldValue(config.durationTypes[ev.newValue.toUpperCase()][0][1], 'DURATIONTYPE_LIST');
+                    const symbol = getSelectedSymbol(this);
+                    this.setFieldValue(
+                        getDurationOptions(symbol, ev.newValue.toUpperCase())[0][1],
+                        'DURATIONTYPE_LIST'
+                    );
+                } else {
+                    this.setFieldValue('', 'DURATIONTYPE_LIST');
+                }
+            } else if (ev.name === 'SYMBOL_LIST') {
+                if (ev.newValue) {
+                    const tradeType = getTradeType(this);
+                    this.setFieldValue(getDurationOptions(ev.newValue, tradeType)[0][1], 'DURATIONTYPE_LIST');
                 } else {
                     this.setFieldValue('', 'DURATIONTYPE_LIST');
                 }
