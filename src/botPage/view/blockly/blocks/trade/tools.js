@@ -7,6 +7,11 @@ export const getTradeType = block => {
     return tradeDefBlock && tradeDefBlock.getFieldValue('TRADETYPE_LIST');
 };
 
+export const getSelectedSymbol = block => {
+    const tradeDefBlock = findTopParentBlock(block);
+    return tradeDefBlock && tradeDefBlock.getFieldValue('SYMBOL_LIST');
+};
+
 export const updateInputList = block => {
     const tradeType = getTradeType(block);
     if (tradeType) {
@@ -142,4 +147,43 @@ export const marketDefPlaceHolders = block => {
     contractTypes(block);
     candleInterval(block);
     restart(block);
+};
+
+export const getDurationOptions = (symbol, selectedContractType) => {
+    const defaultDurations = [
+        [translate('Ticks'), 't'],
+        [translate('Seconds'), 's'],
+        [translate('Minutes'), 'm'],
+        [translate('Hours'), 'h'],
+        [translate('Days'), 'd'],
+    ];
+
+    // Resolve contract types like risefallequals to callput
+    const actualContractType = Object.keys(config.conditionsCategory).find(
+        category =>
+            category === selectedContractType || config.conditionsCategory[category].includes(selectedContractType)
+    );
+
+    const assetIndex = JSON.parse(sessionStorage.getItem('assetIndex')) || [];
+    if (assetIndex) {
+        const asset = assetIndex.find(asset => asset[0] === symbol);
+        if (asset) {
+            const contractType = asset[2].find(contractType => contractType[0] === actualContractType);
+            if (contractType) {
+                const startIndex = defaultDurations.findIndex(d => d[1] === contractType[2].replace(/\d+/g, ''));
+                const endIndex = defaultDurations.findIndex(d => d[1] === contractType[3].replace(/\d+/g, ''));
+                const availableDurations = defaultDurations.slice(startIndex, endIndex + 1).filter(
+                    (
+                        duration // Apply custom rules e.g. remove day-durations from each contract type
+                    ) => !config.durationRules.remove[actualContractType].includes(duration[1])
+                );
+                if (availableDurations.length) {
+                    return availableDurations;
+                }
+                return [[translate('No available durations'), 'na']];
+            }
+        }
+    }
+    // Fallback to old hardcoded durations
+    return config.durationTypes[selectedContractType.toUpperCase()];
 };
