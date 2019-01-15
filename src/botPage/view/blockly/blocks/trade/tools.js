@@ -3,6 +3,7 @@ import { findTopParentBlock } from '../../utils';
 import config from '../../../../common/const';
 import { translate } from '../../../../../common/i18n';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
+import { get as getStorage } from '../../../../../common/utils/storageManager';
 
 export const getTradeType = block => {
     const tradeDefBlock = findTopParentBlock(block);
@@ -166,7 +167,7 @@ export const getDurationOptions = (symbol, selectedContractType) => {
             category === selectedContractType || config.conditionsCategory[category].includes(selectedContractType)
     );
 
-    const assetIndex = JSON.parse(sessionStorage.getItem('assetIndex')) || [];
+    const assetIndex = JSON.parse(getStorage('assetIndex')) || [];
     if (assetIndex) {
         const asset = assetIndex.find(currentAsset => currentAsset[0] === symbol);
         if (asset) {
