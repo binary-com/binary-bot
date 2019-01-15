@@ -1,9 +1,9 @@
+import { getTradeType, getSelectedSymbol, getDurationOptions } from './tools';
+import { caution } from '../images';
+import { fieldGeneratorMapping } from '../shared';
+import { oppositesToDropdown } from '../../utils';
 import config from '../../../../common/const';
 import { translate } from '../../../../../common/i18n';
-import { oppositesToDropdown } from '../../utils';
-import { caution } from '../images';
-import { getTradeType } from './tools';
-import { fieldGeneratorMapping } from '../shared';
 
 export const marketDropdown = block => {
     block
@@ -54,8 +54,9 @@ export const duration = block => {
     if (!block.getInput('DURATION')) {
         const getDurationTypes = () => {
             const tradeType = getTradeType(block);
-            if (tradeType) {
-                return config.durationTypes[tradeType.toUpperCase()];
+            const symbol = getSelectedSymbol(block);
+            if (symbol && tradeType) {
+                return getDurationOptions(symbol, tradeType);
             }
             return [[translate('Ticks'), 't']];
         };
