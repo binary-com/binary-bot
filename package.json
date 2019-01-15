@@ -136,7 +136,7 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
-    "@binary-com/smartcharts": "^0.3.7",
+    "@binary-com/smartcharts": "^0.3.8",
     "babel": "^6.23.0",
     "binary-style": "^0.2.4",
     "blockly": "github:google/blockly#59e5ac6",
