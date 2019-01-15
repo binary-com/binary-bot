@@ -1,7 +1,7 @@
-import { getObjectValue } from '../../../common/utils/tools';
-import config from '../../common/const';
 import ActiveSymbols from './activeSymbols';
-import { getTokenList } from '../../../common/utils/storageManager';
+import config from '../../common/const';
+import { set as setStorage, getTokenList } from '../../../common/utils/storageManager';
+import { getObjectValue } from '../../../common/utils/tools';
 
 const noop = () => {};
 
@@ -54,7 +54,7 @@ export default class _Symbol {
                 this.api.getActiveSymbolsBrief().then(r => {
                     this.activeSymbols = new ActiveSymbols(r.active_symbols);
                     this.api.getAssetIndex().then(r2 => {
-                        sessionStorage.setItem('assetIndex', JSON.stringify(r2.asset_index));
+                        setStorage('assetIndex', JSON.stringify(r2.asset_index));
                         parsedAssetIndex = parseAssetIndex(r2.asset_index);
                         resolve();
                     }, noop);
