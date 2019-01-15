@@ -40,12 +40,6 @@ const getCategoryForCondition = condition =>
         category => config.conditionsCategory[category].indexOf(condition.toLowerCase()) >= 0
     );
 
-const storeAssetIndex = assetIndex => {
-    const storedAssetIndex = JSON.parse(sessionStorage.getItem('assetIndex')) || [];
-    Object.assign(storedAssetIndex, assetIndex);
-    sessionStorage.setItem('assetIndex', JSON.stringify(assetIndex));
-};
-
 export default class _Symbol {
     constructor(api) {
         this.api = api;
@@ -60,7 +54,7 @@ export default class _Symbol {
                 this.api.getActiveSymbolsBrief().then(r => {
                     this.activeSymbols = new ActiveSymbols(r.active_symbols);
                     this.api.getAssetIndex().then(r2 => {
-                        storeAssetIndex(r2.asset_index);
+                        sessionStorage.setItem('assetIndex', JSON.stringify(r2.asset_index));
                         parsedAssetIndex = parseAssetIndex(r2.asset_index);
                         resolve();
                     }, noop);
