@@ -1,9 +1,9 @@
-import { translate } from '../../../../common/i18n';
-import config from '../../../common/const';
 import { oppositesToDropdown } from '../utils';
 import { symbolApi } from '../../shared';
-import { get as getStorage, set as setStorage } from '../../../../common/utils/storageManager';
+import config from '../../../common/const';
 import { generateLiveApiInstance } from '../../../../common/appId';
+import { translate } from '../../../../common/i18n';
+import { get as getStorage, set as setStorage } from '../../../../common/utils/storageManager';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 
