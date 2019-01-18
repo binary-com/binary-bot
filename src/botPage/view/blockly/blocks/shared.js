@@ -179,7 +179,7 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
                     }
                     return conditions.length;
                 });
-                // If `c.barrier_category` not found fallback to all contracts for durations
+                // If `barrierCategory` for `selectedContractType` not found fallback to all contracts for durations
                 return !conditions.includes(false);
             };
             return c.contract_category === contractCategory && meetsBarrierConditions();
