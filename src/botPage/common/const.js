@@ -204,7 +204,8 @@ const config = {
     hasBarrierOffset      : ['HIGHERLOWER', 'TOUCHNOTOUCH', 'ENDSINOUT', 'STAYSINOUT'],
     hasSecondBarrierOffset: ['ENDSINOUT', 'STAYSINOUT'],
     conditionsCategory    : {
-        callput     : ['risefall', 'risefallequals', 'higherlower'],
+        callput     : ['risefall', 'higherlower'],
+        callputequal: ['risefallequals'],
         touchnotouch: ['touchnotouch'],
         endsinout   : ['endsinout'],
         staysinout  : ['staysinout'],
@@ -215,6 +216,7 @@ const config = {
     },
     conditionsCategoryName: {
         callput     : translate('Up/Down'),
+        callputequal: translate('Up/Down Equals'),
         asian       : translate('Asians'),
         digits      : translate('Digits'),
         touchnotouch: translate('Touch/No Touch'),
@@ -235,6 +237,21 @@ const config = {
         'evenodd',
         'overunder',
     ],
+    barrierCategories: {
+        euro_atm: [
+            'callput',
+            'risefall',
+            'risefallequals',
+            'asians',
+            'matchesdiffers',
+            'evenodd',
+            'overunder',
+            'highlowticks',
+            'reset',
+        ],
+        euro_non_atm: ['endsinout', 'higherlower'],
+        american    : ['staysinout', 'touchnotouch'],
+    },
     scopeNames: {
         before_purchase: translate('Before Purchase'),
         during_purchase: translate('During Purchase'),
