@@ -198,8 +198,7 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
                 }
             });
         });
-        const isIntraday = contractsForContractCategory.every(c => c.expiry_type === 'intraday');
-        if (isIntraday) {
+        if (contractsForContractCategory.every(c => c.expiry_type === 'intraday')) {
             const dayDurationIndex = offeredDurations.findIndex(d => d[1] === 'd');
             if (dayDurationIndex) {
                 offeredDurations.splice(dayDurationIndex, 1);
