@@ -1,9 +1,9 @@
-import { translate } from '../../../../../common/i18n';
-import config from '../../../../common/const';
+import { setInputList, updateInputList, getTradeType, getSelectedSymbol } from './tools';
+import { expectValue, getAvailableDurations } from '../shared';
 import { insideTrade } from '../../relationChecker';
-import { expectValue } from '../shared';
 import { findTopParentBlock } from '../../utils';
-import { setInputList, updateInputList } from './tools';
+import config from '../../../../common/const';
+import { translate } from '../../../../../common/i18n';
 
 export default () => {
     Blockly.Blocks.tradeOptions = {
@@ -17,15 +17,37 @@ export default () => {
             if (ev.group === 'BackwardCompatibility') {
                 return;
             }
+            if (ev.type === Blockly.Events.CREATE) {
+                Blockly.Events.fire(
+                    new Blockly.Events.Change(this, 'field', 'SYMBOL_LIST', '', this.getFieldValue('SYMBOL_LIST'))
+                );
+            }
             if ([Blockly.Events.CREATE, Blockly.Events.CHANGE].includes(ev.type)) {
                 updateInputList(this);
             }
             if (ev.name === 'TRADETYPE_LIST') {
-                if (ev.newValue) {
-                    updateInputList(this);
-                    this.setFieldValue(config.durationTypes[ev.newValue.toUpperCase()][0][1], 'DURATIONTYPE_LIST');
-                } else {
-                    this.setFieldValue('', 'DURATIONTYPE_LIST');
+                updateInputList(this);
+            }
+            if (ev.name === 'SYMBOL_LIST' || ev.name === 'TRADETYPE_LIST') {
+                if (ev.oldValue !== ev.newValue) {
+                    const symbol = getSelectedSymbol(this);
+                    const tradeType = getTradeType(this);
+                    const durationTypeList = this.getField('DURATIONTYPE_LIST');
+
+                    const prevSelectedDuration = durationTypeList.getValue();
+                    this.setFieldValue(translate('Loading...'), 'DURATIONTYPE_LIST');
+
+                    getAvailableDurations(symbol, tradeType).then(durations => {
+                        // Prevent UI flickering by only updating field if options have changed
+                        // eslint-disable-next-line no-underscore-dangle
+                        if (JSON.stringify(durationTypeList.menuGenerator_) !== JSON.stringify(durations)) {
+                            durationTypeList.menuGenerator_ = durations; // eslint-disable-line no-underscore-dangle
+                        }
+                        // Maintain previously selected duration if possible (req for imported strategies)
+                        const selectedValue = durationTypeList.menuGenerator_.find(d => d[1] === prevSelectedDuration); // eslint-disable-line no-underscore-dangle
+                        const fieldValue = selectedValue ? prevSelectedDuration : durationTypeList.menuGenerator_[0][1]; // eslint-disable-line no-underscore-dangle
+                        this.setFieldValue(fieldValue, 'DURATIONTYPE_LIST');
+                    });
                 }
             }
         },
