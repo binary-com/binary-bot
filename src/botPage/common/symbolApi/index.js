@@ -1,6 +1,5 @@
 import ActiveSymbols from './activeSymbols';
 import config from '../../common/const';
-import { getTokenList } from '../../../common/utils/storageManager';
 import { getObjectValue } from '../../../common/utils/tools';
 
 const noop = () => {};
