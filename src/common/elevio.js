@@ -8,11 +8,11 @@ const Elevio = (() => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
         // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
-            const availableElevLanguages = ['es', 'id', 'pt', 'ru'];
-            const currentLanguage = getLanguage().toLowerCase();
-            if (availableElevLanguages.indexOf(currentLanguage) !== -1) {
-                window._elev.setLanguage(currentLanguage); // eslint-disable-line no-underscore-dangle
-            }
+            // const availableElevLanguages = ['es', 'id', 'pt', 'ru'];
+            // const currentLanguage = getLanguage().toLowerCase();
+            // if (availableElevLanguages.indexOf(currentLanguage) !== -1) {
+            //     window._elev.setLanguage(currentLanguage); // eslint-disable-line no-underscore-dangle
+            // }
             setUserInfo(elev);
             setTranslations(elev);
         });
