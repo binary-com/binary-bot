@@ -41,12 +41,12 @@ gulp.task(
 
 gulp.task(
     'release-branch',
-    gulp.series('build-min', () => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './branch/**']).pipe(ghPages()))
+    gulp.series(() => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './branch/**']).pipe(ghPages()))
 );
 
 gulp.task(
     'release-master',
-    gulp.series('build-min', () => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**']).pipe(ghPages()))
+    gulp.series(() => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**']).pipe(ghPages()))
 );
 
 gulp.task('test-deploy', gulp.series('build-min', 'serve', () => {}));

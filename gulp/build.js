@@ -53,7 +53,7 @@ gulp.task(
 
 gulp.task(
     'build-min',
-    gulp.series(
+    gulp.parallel(
         'static',
         'webpack-prod',
         'bundle-css',
