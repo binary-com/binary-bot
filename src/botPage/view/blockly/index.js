@@ -12,6 +12,7 @@ import {
     fixCollapsedBlocks,
     fixArgumentAttribute,
     removeUnavailableMarkets,
+    strategyHasValidTradeTypeCategory,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import createError from '../../common/error';
@@ -49,9 +50,8 @@ const disposeBlocksWithLoaders = () => {
         }
     });
 };
-const loadWorkspace = xml => {
-    const marketsWereRemoved = !Array.from(xml.children).every(block => !removeUnavailableMarkets(block));
-    if (marketsWereRemoved) {
+const marketsWereRemoved = xml => {
+    if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
         $('#unavailableMarkets').dialog({
             height: 'auto',
             width : 600,
@@ -73,8 +73,13 @@ const loadWorkspace = xml => {
             ],
         });
         $('#unavailableMarkets').dialog('open');
-        return;
+        return true;
     }
+    return false;
+};
+const loadWorkspace = xml => {
+    if (!strategyHasValidTradeTypeCategory(xml)) return;
+    if (marketsWereRemoved(xml)) return;
 
     Blockly.Events.setGroup('load');
     Blockly.mainWorkspace.clear();
@@ -97,7 +102,11 @@ const loadWorkspace = xml => {
         }
     );
 };
+
 const loadBlocks = (xml, dropEvent = {}) => {
+    if (!strategyHasValidTradeTypeCategory(xml)) return;
+    if (marketsWereRemoved(xml)) return;
+
     const variables = xml.getElementsByTagName('variables');
     if (variables.length > 0) {
         Blockly.Xml.domToVariables(variables[0], Blockly.mainWorkspace);
