@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 
-import bb, { bollingerBandsArray as bba } from 'binary-indicators/lib/bollingerBands';
-import rsi, { relativeStrengthIndexArray as rsia } from 'binary-indicators/lib/relativeStrengthIndex';
-import ema, { exponentialMovingAverageArray as emaa } from 'binary-indicators/lib/exponentialMovingAverage';
-import sma, { simpleMovingAverageArray as smaa } from 'binary-indicators/lib/simpleMovingAverage';
-import macda from 'binary-indicators/lib/macd';
+import bb, { bollingerBandsArray as bba } from '@binary-com/binary-indicators/lib/bollingerBands';
+import rsi, { relativeStrengthIndexArray as rsia } from '@binary-com/binary-indicators/lib/relativeStrengthIndex';
+import ema, { exponentialMovingAverageArray as emaa } from '@binary-com/binary-indicators/lib/exponentialMovingAverage';
+import sma, { simpleMovingAverageArray as smaa } from '@binary-com/binary-indicators/lib/simpleMovingAverage';
+import macda from '@binary-com/binary-indicators/lib/macd';
 
 import { runAndGetResult } from '../tools';
 

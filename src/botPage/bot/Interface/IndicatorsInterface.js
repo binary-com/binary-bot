@@ -1,8 +1,8 @@
-import sma, { simpleMovingAverageArray as smaa } from 'binary-indicators/lib/simpleMovingAverage';
-import ema, { exponentialMovingAverageArray as emaa } from 'binary-indicators/lib/exponentialMovingAverage';
-import bb, { bollingerBandsArray as bba } from 'binary-indicators/lib/bollingerBands';
-import rsi, { relativeStrengthIndexArray as rsia } from 'binary-indicators/lib/relativeStrengthIndex';
-import macda from 'binary-indicators/lib/macd';
+import sma, { simpleMovingAverageArray as smaa } from '@binary-com/binary-indicators/lib/simpleMovingAverage';
+import ema, { exponentialMovingAverageArray as emaa } from '@binary-com/binary-indicators/lib/exponentialMovingAverage';
+import bb, { bollingerBandsArray as bba } from '@binary-com/binary-indicators/lib/bollingerBands';
+import rsi, { relativeStrengthIndexArray as rsia } from '@binary-com/binary-indicators/lib/relativeStrengthIndex';
+import macda from '@binary-com/binary-indicators/lib/macd';
 
 export default Interface =>
     class extends Interface {
