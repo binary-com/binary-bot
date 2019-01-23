@@ -37,8 +37,7 @@ gulp.task(
 gulp.task(
     'webpack-gen-prod',
     gulp.series('clean-webpack', done => {
-        gen('production');
-        done();
+        gen('production').on('end', () => done());
     })
 );
 
