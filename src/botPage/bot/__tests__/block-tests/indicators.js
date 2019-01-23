@@ -4,7 +4,7 @@ import bb, { bollingerBandsArray as bba } from '@binary-com/binary-indicators/li
 import rsi, { relativeStrengthIndexArray as rsia } from '@binary-com/binary-indicators/lib/relativeStrengthIndex';
 import ema, { exponentialMovingAverageArray as emaa } from '@binary-com/binary-indicators/lib/exponentialMovingAverage';
 import sma, { simpleMovingAverageArray as smaa } from '@binary-com/binary-indicators/lib/simpleMovingAverage';
-// import macda from '@binary-com/binary-indicators/lib/macd';
+import macda from '@binary-com/binary-indicators/lib/macd';
 
 import { runAndGetResult } from '../tools';
 
