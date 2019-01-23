@@ -46,6 +46,52 @@ export const removeUnavailableMarkets = block => {
     return containsUnavailableMarket;
 };
 
+// Checks for a valid tradeTypeCategory, and attempts to fix if invalid
+// Some tradeTypes were moved to new tradeTypeCategories, this function allows older strategies to keep functioning
+export const strategyHasValidTradeTypeCategory = xml => {
+    const validTradeTypeCategory = Array.from(xml.children).some(
+        block =>
+            block.getAttribute('type') === 'trade' &&
+            Array.from(block.getElementsByTagName('field')).some(field => {
+                if (field.getAttribute('name') === 'TRADETYPE_LIST') {
+                    // Retrieves the correct TRADETYPECAT_LIST for this TRADETYPE_LIST e.g. 'risefallequals' = 'callputequal'
+                    const tradeTypeCategory = Object.keys(config.conditionsCategory).find(c =>
+                        config.conditionsCategory[c].includes(field.innerText)
+                    );
+                    // Check if the current TRADETYPECAT_LIST is equal to the tradeTypeCategory
+                    const tradeTypeCategoryIsEqual = Array.from(block.getElementsByTagName('field')).some(
+                        f => f.getAttribute('name') === 'TRADETYPECAT_LIST' && f.textContent === tradeTypeCategory
+                    );
+                    // If the Trade Type Category is invalid, try to fix it
+                    if (!tradeTypeCategoryIsEqual) {
+                        try {
+                            const tempWorkspace = new Blockly.Workspace({});
+                            const blocklyBlock = Blockly.Xml.domToBlock(block, tempWorkspace);
+                            const availableCategories = fieldGeneratorMapping.TRADETYPECAT_LIST(blocklyBlock)();
+                            return Array.from(block.getElementsByTagName('field')).some(
+                                f =>
+                                    f.getAttribute('name') === 'TRADETYPECAT_LIST' &&
+                                    availableCategories.some(
+                                        category =>
+                                            category[1] === tradeTypeCategory &&
+                                            Object.assign(f, { textContent: tradeTypeCategory })
+                                    )
+                            );
+                        } catch (e) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            })
+    );
+    if (!validTradeTypeCategory) {
+        globalObserver.emit('ui.log.error', translate('The strategy you tried to import is invalid.'));
+    }
+    return validTradeTypeCategory;
+};
+
 const getCollapsedProcedures = () =>
     Blockly.mainWorkspace
         .getTopBlocks()
