@@ -10,6 +10,7 @@ import {
 import { parseQueryString, isProduction, getExtension } from '../common/utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
+import Elevio from './elevio';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
@@ -114,9 +115,9 @@ export async function addTokenIfValid(token, tokenObjectList) {
     try {
         const { authorize } = await api.authorize(token);
         const { landing_company_name: lcName } = authorize;
-        const { landing_company_details: { has_reality_check: hasRealityCheck } } = await api.getLandingCompanyDetails(
-            lcName
-        );
+        const {
+            landing_company_details: { has_reality_check: hasRealityCheck },
+        } = await api.getLandingCompanyDetails(lcName);
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
         const { account_list: accountList } = authorize;
@@ -132,6 +133,7 @@ export async function addTokenIfValid(token, tokenObjectList) {
         }
     } catch (e) {
         removeToken(tokenObjectList[0].token);
+        Elevio.logoutUser();
         throw e;
     }
     return api.disconnect();

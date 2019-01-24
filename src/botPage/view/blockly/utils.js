@@ -1,7 +1,8 @@
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { fieldGeneratorMapping } from './blocks/shared';
+import { saveAs } from '../shared';
 import config from '../../common/const';
 import { translate } from '../../../common/i18n';
-import { saveAs } from '../shared';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
@@ -23,6 +24,26 @@ export const backwardCompatibility = block => {
     if (isMainBlock(block.getAttribute('type'))) {
         block.removeAttribute('deletable');
     }
+};
+
+export const removeUnavailableMarkets = block => {
+    const containsUnavailableMarket = Array.from(block.getElementsByTagName('field')).some(
+        field =>
+            field.getAttribute('name') === 'MARKET_LIST' &&
+            !fieldGeneratorMapping
+                .MARKET_LIST()
+                .map(markets => markets[1])
+                .includes(field.innerText)
+    );
+    if (containsUnavailableMarket) {
+        const nodesToRemove = ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST', 'TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
+        Array.from(block.getElementsByTagName('field')).forEach(field => {
+            if (nodesToRemove.includes(field.getAttribute('name'))) {
+                block.removeChild(field);
+            }
+        });
+    }
+    return containsUnavailableMarket;
 };
 
 const getCollapsedProcedures = () =>
