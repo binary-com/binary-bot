@@ -3,7 +3,7 @@ import { symbolApi } from '../../shared';
 import config from '../../../common/const';
 import { generateLiveApiInstance } from '../../../../common/appId';
 import { translate } from '../../../../common/i18n';
-import { get as getStorage, set as setStorage } from '../../../../common/utils/storageManager';
+import { get as getStorage, set as setStorage, getTokenList } from '../../../../common/utils/storageManager';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 
@@ -146,6 +146,13 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
     const getContractsForSymbolFromApi = async underlyingSymbol => {
         // Refactor this when reducing WS connections
         let api = generateLiveApiInstance();
+
+        // Try to authorize for accurate contracts response
+        const tokenList = getTokenList();
+        if (tokenList.length) {
+            await api.authorize(tokenList[0].token);
+        }
+
         const response = await api.getContractsForSymbol(underlyingSymbol);
         const contractsForSymbol = {};
         if (response.contracts_for) {
@@ -209,11 +216,8 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
                 offeredDurations.splice(dayDurationIndex, 1);
             }
         }
-        if (offeredDurations.length) {
-            offeredDurations.sort((a, b) => getDurationIndex(a[1]) - getDurationIndex(b[1]));
-            return offeredDurations;
-        }
-        return config.durationTypes[selectedContractType.toUpperCase()];
+        offeredDurations.sort((a, b) => getDurationIndex(a[1]) - getDurationIndex(b[1]));
+        return offeredDurations;
     };
     // Check if we have local data to get durations from
     const contractsForSymbol = contractsForStore.find(c => c.symbol === symbol);
