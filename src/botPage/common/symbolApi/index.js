@@ -48,7 +48,7 @@ export default class _Symbol {
             const promises = [];
             const tokenList = getTokenList();
             if (tokenList.length) {
-                promises.push(this.api.authorize(tokenList[0]));
+                promises.push(this.api.authorize(tokenList[0].token));
             }
             Promise.all(promises).finally(() => {
                 this.api.getActiveSymbolsBrief().then(r => {
