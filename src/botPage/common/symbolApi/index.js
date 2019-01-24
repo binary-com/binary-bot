@@ -1,6 +1,7 @@
 import ActiveSymbols from './activeSymbols';
 import config from '../../common/const';
 import { getObjectValue } from '../../../common/utils/tools';
+import { getTokenList } from '../../../common/utils/storageManager';
 
 const noop = () => {};
 
@@ -43,11 +44,19 @@ export default class _Symbol {
     constructor(api) {
         this.api = api;
         this.initPromise = new Promise(resolve => {
-            this.api.getActiveSymbolsBrief().then(r => {
-                this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                this.api.getAssetIndex().then(r2 => {
-                    parsedAssetIndex = parseAssetIndex(r2.asset_index);
-                    resolve();
+            // Authorize when possible for accurate offered symbols, assetindex
+            const promises = [];
+            const tokenList = getTokenList();
+            if (tokenList.length) {
+                promises.push(this.api.authorize(tokenList[0]));
+            }
+            Promise.all(promises).finally(() => {
+                this.api.getActiveSymbolsBrief().then(r => {
+                    this.activeSymbols = new ActiveSymbols(r.active_symbols);
+                    this.api.getAssetIndex().then(r2 => {
+                        parsedAssetIndex = parseAssetIndex(r2.asset_index);
+                        resolve();
+                    }, noop);
                 }, noop);
             }, noop);
         });
