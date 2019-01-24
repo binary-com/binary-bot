@@ -45,8 +45,14 @@ export default () => {
                         }
                         // Maintain previously selected duration if possible (req for imported strategies)
                         const selectedValue = durationTypeList.menuGenerator_.find(d => d[1] === prevSelectedDuration); // eslint-disable-line no-underscore-dangle
-                        const fieldValue = selectedValue ? prevSelectedDuration : durationTypeList.menuGenerator_[0][1]; // eslint-disable-line no-underscore-dangle
-                        this.setFieldValue(fieldValue, 'DURATIONTYPE_LIST');
+                        if (selectedValue) {
+                            this.setFieldValue(selectedValue[1], 'DURATIONTYPE_LIST');
+                            // eslint-disable-next-line no-underscore-dangle
+                        } else if (durationTypeList.menuGenerator_.length) {
+                            this.setFieldValue(durationTypeList.menuGenerator_[0][1], 'DURATIONTYPE_LIST'); // eslint-disable-line no-underscore-dangle
+                        } else {
+                            this.setFieldValue(translate('Not available'), 'DURATIONTYPE_LIST');
+                        }
                     });
                 }
             }
