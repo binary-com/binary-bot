@@ -17,7 +17,7 @@ export default () => {
             if (ev.group === 'BackwardCompatibility') {
                 return;
             }
-            if (ev.type === Blockly.Events.CREATE) {
+            if (ev.type === Blockly.Events.CREATE || ev.type === Blockly.Events.MOVE) {
                 Blockly.Events.fire(
                     new Blockly.Events.Change(this, 'field', 'SYMBOL_LIST', '', this.getFieldValue('SYMBOL_LIST'))
                 );
@@ -29,7 +29,7 @@ export default () => {
                 updateInputList(this);
             }
             if (ev.name === 'SYMBOL_LIST' || ev.name === 'TRADETYPE_LIST') {
-                if (ev.oldValue !== ev.newValue) {
+                if (ev.oldValue !== ev.newValue && this.parentBlock_ !== null) {
                     const symbol = getSelectedSymbol(this);
                     const tradeType = getTradeType(this);
                     const durationTypeList = this.getField('DURATIONTYPE_LIST');
