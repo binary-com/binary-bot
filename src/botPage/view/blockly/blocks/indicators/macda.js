@@ -17,9 +17,9 @@ Blockly.Blocks.macda = {
         this.appendValueInput('SLOW_EMA_PERIOD')
             .setCheck('Number')
             .appendField(translate('Slow EMA Period'));
-        this.appendValueInput('SMA_PERIOD')
+        this.appendValueInput('SIGNAL_EMA_PERIOD')
             .setCheck('Number')
-            .appendField(translate('SMA Period (for Signal)'));
+            .appendField(translate('Signal EMA Period'));
         this.setOutput(true, 'Array');
         this.setColour('#dedede');
         this.setTooltip(translate('Calculates Moving Average Convergence Divergence (MACD) list from a list'));
@@ -34,12 +34,13 @@ Blockly.JavaScript.macda = block => {
         Blockly.JavaScript.valueToCode(block, 'FAST_EMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '12';
     const slowEmaPeriod =
         Blockly.JavaScript.valueToCode(block, 'SLOW_EMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '26';
-    const smaPeriod = Blockly.JavaScript.valueToCode(block, 'SMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '9';
+    const signalEmaPeriod =
+        Blockly.JavaScript.valueToCode(block, 'SIGNAL_EMA_PERIOD', Blockly.JavaScript.ORDER_ATOMIC) || '9';
     return [
         `Bot.macda(${input}, {
     fastEmaPeriod: ${fastEmaPeriod},
     slowEmaPeriod: ${slowEmaPeriod},
-    signalSmaPeriod: ${smaPeriod},
+    signalEmaPeriod: ${signalEmaPeriod},
   }, ${macdField})`,
         Blockly.JavaScript.ORDER_NONE,
     ];
