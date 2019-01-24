@@ -57,7 +57,7 @@
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch;}; d",
+    "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch --branch $1;}; d",
     "release-production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d",
     "build": "webpack --config webpack.config.cli.js",
     "precommit": "lint-staged"
