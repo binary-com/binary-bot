@@ -139,7 +139,7 @@
     "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0",
-    "gulp-gh-pages-will": "^0.5.5",
+    "gh-pages": "^2.0.1",
     "mobx": "^5.0.3",
     "mobx-react": "^5.1.8",
     "react": "^16.4.0",
