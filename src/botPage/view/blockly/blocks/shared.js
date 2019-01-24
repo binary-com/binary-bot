@@ -182,6 +182,10 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
                 // If `barrierCategory` for `selectedContractType` not found fallback to all contracts for durations
                 return !conditions.includes(false);
             };
+            // We don't offer forward-starting contracts in Binary Bot, remove these
+            if (c.start_type === 'forward') {
+                return false;
+            }
             return c.contract_category === contractCategory && meetsBarrierConditions();
         });
 
@@ -198,6 +202,7 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
                 }
             });
         });
+        // If only intraday contracts are available, remove day-durations
         if (contractsForContractCategory.every(c => c.expiry_type === 'intraday')) {
             const dayDurationIndex = offeredDurations.findIndex(d => d[1] === 'd');
             if (dayDurationIndex) {
