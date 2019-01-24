@@ -23,8 +23,8 @@ gulp.task(
             .pipe(concat('bundle.js'))
             .pipe(rev())
             .pipe(through.obj(addToManifest))
-            .pipe(gulp.dest('www/js/'));
-        done();
+            .pipe(gulp.dest('www/js/'))
+            .on('end', () => done());
     })
 );
 
