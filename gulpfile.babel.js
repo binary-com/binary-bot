@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const watch = require('gulp-watch');
-const ghPages = require('gulp-gh-pages-will');
+const ghpages = require('gh-pages');
 const connect = require('gulp-connect');
 const open = require('gulp-open');
 require('./gulp/i18n');
@@ -41,12 +41,38 @@ gulp.task(
 
 gulp.task(
     'release-branch',
-    gulp.series(() => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './branch/**']).pipe(ghPages()))
+    gulp.series(done => {
+        const index = process.argv.indexOf('--branch');
+        let option = '';
+        if (index <= -1) {
+            throw 'Please specify branch';
+        } else {
+            option = process.argv[index + 1];
+        }
+        ghpages
+            .publish('www', {
+                dest: option,
+                add : true,
+            })
+            .then(done);
+    })
 );
 
 gulp.task(
     'release-master',
-    gulp.series(() => gulp.src(['404.md', 'LICENSE', 'README.md', 'CNAME', './www/**']).pipe(ghPages()))
+    gulp.series(done => {
+        ghpages
+            .publish('./', {
+                src: ['404.md', 'LICENSE', 'README.md', 'CNAME'],
+                add: true,
+            })
+            .then(() => {
+                ghpages.publish('www', {
+                    add: true,
+                });
+            })
+            .then(done);
+    })
 );
 
 gulp.task('test-deploy', gulp.series('build-min', 'serve', () => {}));
