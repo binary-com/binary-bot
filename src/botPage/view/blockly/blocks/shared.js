@@ -166,6 +166,12 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
                     accountName: tokenList[0].accountName,
                 });
             }
+            // Avoid duplicate symbols in contractsForStore
+            contractsForStore
+                .filter(c => c.symbol === underlyingSymbol)
+                .forEach(() =>
+                    contractsForStore.splice(contractsForStore.findIndex(c => c.symbol === underlyingSymbol), 1)
+                );
             contractsForStore.push(contractsForSymbol);
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
         }
