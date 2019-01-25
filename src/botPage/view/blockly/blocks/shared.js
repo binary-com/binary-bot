@@ -230,21 +230,26 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
         offeredDurations.sort((a, b) => getDurationIndex(a[1]) - getDurationIndex(b[1]));
         return offeredDurations;
     };
-    // Check if we have local data to get durations from
-    const contractsForSymbol = contractsForStore.find(c => c.symbol === symbol);
-    if (contractsForSymbol) {
-        const isExpiredData = () => Math.floor((Date.now() - contractsForSymbol.timestamp) / 1000) > 600;
-        const isDifferentAccount = () =>
-            tokenList.length && contractsForSymbol.accountName !== tokenList[0].accountName;
-        if (isExpiredData || isDifferentAccount) {
-            getContractsForSymbolFromApi(symbol);
-        }
-        // Returns cached data, but if isExpiredData or isDifferentAccount new data is req in background
-        return Promise.resolve(getDurationsForContract(contractsForSymbol.available));
-    }
-    return new Promise(resolve => {
+
+    const getFreshContractsFor = () => new Promise(resolve => {
         getContractsForSymbolFromApi(symbol).then(contractsForSymbolFromApi => {
             resolve(getDurationsForContract(contractsForSymbolFromApi.available));
         });
     });
+
+    // Check if we have local data to get durations from
+    const contractsForSymbol = contractsForStore.find(c => c.symbol === symbol);
+    if (contractsForSymbol) {
+        const isDifferentAccount = () =>
+            tokenList.length && contractsForSymbol.accountName !== tokenList[0].accountName;
+        const isExpiredData = () => Math.floor((Date.now() - contractsForSymbol.timestamp) / 1000) > 600;
+        if (isDifferentAccount()) {
+            return getFreshContractsFor();
+        } else if (isExpiredData()) {
+            // Return cached data, update cached data in background
+            getContractsForSymbolFromApi(symbol);
+        }
+        return Promise.resolve(getDurationsForContract(contractsForSymbol.available));
+    }
+    return getFreshContractsFor();
 };
