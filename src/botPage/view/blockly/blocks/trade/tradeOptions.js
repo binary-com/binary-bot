@@ -29,6 +29,7 @@ export default () => {
                 updateInputList(this);
             }
             if (ev.name === 'SYMBOL_LIST' || ev.name === 'TRADETYPE_LIST') {
+                // eslint-disable-next-line no-underscore-dangle
                 if (ev.oldValue !== ev.newValue && this.parentBlock_ !== null) {
                     const symbol = getSelectedSymbol(this);
                     const tradeType = getTradeType(this);
