@@ -213,7 +213,7 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
         const offeredDurations = [];
         contractsForContractCategory.forEach(c => {
             const startIndex = getDurationIndex(c.min_contract_duration);
-            const endIndex = getDurationIndex(c.max_contract_duration);
+            const endIndex = getDurationIndex(c.max_contract_duration === '1d' ? '24h' : c.max_contract_duration);
             defaultDurations.slice(startIndex, endIndex + 1).forEach(duration => {
                 if (!offeredDurations.includes(duration)) {
                     offeredDurations.push(duration);
@@ -223,7 +223,7 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
         // If only intraday contracts are available, remove day-durations
         if (contractsForContractCategory.every(c => c.expiry_type === 'intraday')) {
             const dayDurationIndex = offeredDurations.findIndex(d => d[1] === 'd');
-            if (dayDurationIndex) {
+            if (dayDurationIndex !== -1) {
                 offeredDurations.splice(dayDurationIndex, 1);
             }
         }
@@ -231,11 +231,12 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
         return offeredDurations;
     };
 
-    const getFreshContractsFor = () => new Promise(resolve => {
-        getContractsForSymbolFromApi(symbol).then(contractsForSymbolFromApi => {
-            resolve(getDurationsForContract(contractsForSymbolFromApi.available));
+    const getFreshContractsFor = () =>
+        new Promise(resolve => {
+            getContractsForSymbolFromApi(symbol).then(contractsForSymbolFromApi => {
+                resolve(getDurationsForContract(contractsForSymbolFromApi.available));
+            });
         });
-    });
 
     // Check if we have local data to get durations from
     const contractsForSymbol = contractsForStore.find(c => c.symbol === symbol);
