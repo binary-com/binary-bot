@@ -33,13 +33,6 @@ npm run deploy <branch-name> # to deploy a branch (eg., beta) and master
 npm run deploy-all # to deploy master, translations and beta
 ```
 
-## Publishing a new version
-
-```
-npm run version --new-version patch
-npm publish
-```
-
 ## To update to latest version
 
 ```
