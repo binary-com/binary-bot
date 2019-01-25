@@ -136,6 +136,7 @@ export const dependentFieldMapping = {
 
 export const getAvailableDurations = (symbol, selectedContractType) => {
     const contractsForStore = JSON.parse(getStorage('contractsForStore') || '[]');
+    const tokenList = getTokenList();
     const defaultDurations = [
         [translate('Ticks'), 't'],
         [translate('Seconds'), 's'],
@@ -148,7 +149,6 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
         let api = generateLiveApiInstance();
 
         // Try to authorize for accurate contracts response
-        const tokenList = getTokenList();
         if (tokenList.length) {
             await api.authorize(tokenList[0].token);
         }
@@ -161,6 +161,11 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
                 available: response.contracts_for.available,
                 timestamp: Date.now(),
             });
+            if (tokenList.length) {
+                Object.assign(contractsForSymbol, {
+                    accountName: tokenList[0].accountName,
+                });
+            }
             contractsForStore.push(contractsForSymbol);
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
         }
@@ -222,10 +227,13 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
     // Check if we have local data to get durations from
     const contractsForSymbol = contractsForStore.find(c => c.symbol === symbol);
     if (contractsForSymbol) {
-        // If `contracts_for` data is expired, request new data in background but return current cached data
-        if (Math.floor((Date.now() - contractsForSymbol.timestamp) / 1000) > 600) {
+        const isExpiredData = () => Math.floor((Date.now() - contractsForSymbol.timestamp) / 1000) > 600;
+        const isDifferentAccount = () =>
+            tokenList.length && contractsForSymbol.accountName !== tokenList[0].accountName;
+        if (isExpiredData || isDifferentAccount) {
             getContractsForSymbolFromApi(symbol);
         }
+        // Returns cached data, but if isExpiredData or isDifferentAccount new data is req in background
         return Promise.resolve(getDurationsForContract(contractsForSymbol.available));
     }
     return new Promise(resolve => {
