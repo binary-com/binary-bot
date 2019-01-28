@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
-const mustache = require('gulp-mustache-plus');
+const mustache = require('gulp-mustache');
 const { getManifest } = require('./revision');
 require('./static');
 require('./bundle');
