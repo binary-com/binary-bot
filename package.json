@@ -1,6 +1,5 @@
 {
   "name": "binary-bot",
-  "version": "8.5.12",
   "description": "Visual automation for binary.com",
   "bin": {
     "bot": "lib/index.js"
@@ -58,11 +57,9 @@
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || exit 1; git stash; git checkout $b; rm -rf node_modules/; rm package-lock.json;npm install; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
-    "deploy": "d() { npm run gen-branch $1 || exit 1; git checkout master;rm -rf node_modules/;rm package-lock.json; npm install; gulp deploy;}; d",
-    "deploy-all": "npm run gen-branch beta; npm run gen-branch translation; npm run deploy",
+    "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch --branch $1;}; d",
+    "release-production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d",
     "build": "webpack --config webpack.config.cli.js",
-    "prepublishOnly": "npm run build",
     "precommit": "lint-staged"
   },
   "author": "Binary.com",
@@ -96,13 +93,13 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
     "file-saver": "^1.3.3",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-clean-css": "^3.9.0",
     "gulp-concat-css": "^2.3.0",
     "gulp-concat-util": "^0.5.5",
     "gulp-connect": "^5.0.0",
     "gulp-mustache": "^4.1.0",
-    "gulp-open": "^2.1.0",
+    "gulp-open": "^3.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-rev": "^8.1.1",
     "gulp-sass": "^3.1.0",
@@ -142,7 +139,7 @@
     "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0",
-    "gulp-gh-pages-will": "^0.5.5",
+    "gh-pages": "^2.0.1",
     "mobx": "^5.0.3",
     "mobx-react": "^5.1.8",
     "react": "^16.4.0",
