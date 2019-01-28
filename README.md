@@ -14,7 +14,7 @@ git clone https://github.com/binary-com/binary-bot.git
 cd binary-bot
 git checkout dev
 npm install
-npm run start
+npm start
 ```
 
 **Note:** Please branch your work from dev, and make sure your local dev is up-to-date with upstream
@@ -22,15 +22,15 @@ npm run start
 ### Deploying to local gh-pages
 
 ```
-npm run deploy [branchname] # can contain /
+npm run release --branch [branchname] # can contain /
 ```
 
 ## Deployment/Release
 
 ```
 gulp test-deploy # for local test deploy
-npm run deploy <branch-name> # to deploy a branch (eg., beta) and master
-npm run deploy-all # to deploy master, translations and beta
+npm run release --branch <branch-name> # to deploy a branch (eg., beta)
+npm run release-production # to release it to production
 ```
 
 ## To update to latest version
