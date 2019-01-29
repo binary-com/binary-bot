@@ -1,10 +1,16 @@
-import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { findTopParentBlock } from '../../utils';
 import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, restart } from './components';
+import { findTopParentBlock } from '../../utils';
+
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 
 export const getTradeType = block => {
     const tradeDefBlock = findTopParentBlock(block);
     return tradeDefBlock && tradeDefBlock.getFieldValue('TRADETYPE_LIST');
+};
+
+export const getSelectedSymbol = block => {
+    const tradeDefBlock = findTopParentBlock(block);
+    return tradeDefBlock && tradeDefBlock.getFieldValue('SYMBOL_LIST');
 };
 
 export const updateInputList = block => {

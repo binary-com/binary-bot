@@ -18,21 +18,44 @@ const getConfig = prefix => ({
     language        : 'templates/partials/language.mustache',
     loading         : 'templates/partials/loading.mustache',
     binary_style_img: 'image/binary-style',
+    elevio_script   :
+        '<script>!function(e,l,v,i,o,n){e[i]||(e[i]={}),e[i].account_id=n;var g,h;g=l.createElement(v),g.type="text/javascript",g.async=1,g.src=o+n,h=l.getElementsByTagName(v)[0],h.parentNode.insertBefore(g,h);e[i].q=[];e[i].on=function(z,y){e[i].q.push([z,y])}}(window,document,"script","_elev","https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=","5bbc2de0b7365");</script>',
 });
 
 const genHtml = min =>
     gulp
         .src('templates/*.mustache')
-        .pipe(mustache({}, {}, getConfig(typeof min === 'boolean' ? '.min' : '')))
+        .pipe(mustache({}, {}, getConfig(min === true ? '.min' : '')))
         .pipe(gulp.dest('www'))
         .pipe(connect.reload());
 
-gulp.task('build-dev-html', genHtml);
-gulp.task('build-dev-js', ['webpack-dev'], genHtml);
-gulp.task('build-dev-static', ['static'], genHtml);
+gulp.task(
+    'build-dev-html',
+    gulp.series(done => {
+        genHtml(false);
+        done();
+    })
+);
+
+gulp.task(
+    'build-dev-js',
+    gulp.series('webpack-dev', done => {
+        genHtml(false);
+        done();
+    })
+);
+
+gulp.task(
+    'build-dev-static',
+    gulp.series('static', done => {
+        genHtml(false);
+        done();
+    })
+);
+
 gulp.task(
     'build-min',
-    [
+    gulp.series(
         'static',
         'webpack-prod',
         'bundle-css',
@@ -41,16 +64,23 @@ gulp.task(
         'copy-binary-style-css',
         'copy-binary-style-img',
         'copy-js',
-    ],
-    () => genHtml(true)
+        done => {
+            genHtml(true);
+            done();
+        }
+    )
 );
-gulp.task('build', [
-    'bundle-css',
-    'bundle-js',
-    'build-dev-js',
-    'build-dev-static',
-    'copy-jquery-img',
-    'copy-binary-style-css',
-    'copy-binary-style-img',
-    'copy-js',
-]);
+
+gulp.task(
+    'build',
+    gulp.parallel(
+        'bundle-css',
+        'bundle-js',
+        'build-dev-js',
+        'build-dev-static',
+        'copy-jquery-img',
+        'copy-binary-style-css',
+        'copy-binary-style-img',
+        'copy-js'
+    )
+);

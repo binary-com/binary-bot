@@ -2,7 +2,6 @@
 .publish
 static/css/*.css*
 node_modules/
-package-lock.json
 npm-debug.log
 rev-manifest.json
 coverage
@@ -11,3 +10,4 @@ www
 .sass-cache
 lib/
 old/
+CNAME

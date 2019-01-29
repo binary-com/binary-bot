@@ -1,7 +1,8 @@
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { fieldGeneratorMapping } from './blocks/shared';
+import { saveAs } from '../shared';
 import config from '../../common/const';
 import { translate } from '../../../common/i18n';
-import { saveAs } from '../shared';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
@@ -23,6 +24,72 @@ export const backwardCompatibility = block => {
     if (isMainBlock(block.getAttribute('type'))) {
         block.removeAttribute('deletable');
     }
+};
+
+export const removeUnavailableMarkets = block => {
+    const containsUnavailableMarket = Array.from(block.getElementsByTagName('field')).some(
+        field =>
+            field.getAttribute('name') === 'MARKET_LIST' &&
+            !fieldGeneratorMapping
+                .MARKET_LIST()
+                .map(markets => markets[1])
+                .includes(field.innerText)
+    );
+    if (containsUnavailableMarket) {
+        const nodesToRemove = ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST', 'TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
+        Array.from(block.getElementsByTagName('field')).forEach(field => {
+            if (nodesToRemove.includes(field.getAttribute('name'))) {
+                block.removeChild(field);
+            }
+        });
+    }
+    return containsUnavailableMarket;
+};
+
+// Checks for a valid tradeTypeCategory, and attempts to fix if invalid
+// Some tradeTypes were moved to new tradeTypeCategories, this function allows older strategies to keep functioning
+export const strategyHasValidTradeTypeCategory = xml => {
+    const validTradeTypeCategory = Array.from(xml.children).some(
+        block =>
+            block.getAttribute('type') === 'trade' &&
+            Array.from(block.getElementsByTagName('field')).some(field => {
+                if (field.getAttribute('name') === 'TRADETYPE_LIST') {
+                    // Retrieves the correct TRADETYPECAT_LIST for this TRADETYPE_LIST e.g. 'risefallequals' = 'callputequal'
+                    const tradeTypeCategory = Object.keys(config.conditionsCategory).find(c =>
+                        config.conditionsCategory[c].includes(field.innerText)
+                    );
+                    // Check if the current TRADETYPECAT_LIST is equal to the tradeTypeCategory
+                    const tradeTypeCategoryIsEqual = Array.from(block.getElementsByTagName('field')).some(
+                        f => f.getAttribute('name') === 'TRADETYPECAT_LIST' && f.textContent === tradeTypeCategory
+                    );
+                    // If the Trade Type Category is invalid, try to fix it
+                    if (!tradeTypeCategoryIsEqual) {
+                        try {
+                            const tempWorkspace = new Blockly.Workspace({});
+                            const blocklyBlock = Blockly.Xml.domToBlock(block, tempWorkspace);
+                            const availableCategories = fieldGeneratorMapping.TRADETYPECAT_LIST(blocklyBlock)();
+                            return Array.from(block.getElementsByTagName('field')).some(
+                                f =>
+                                    f.getAttribute('name') === 'TRADETYPECAT_LIST' &&
+                                    availableCategories.some(
+                                        category =>
+                                            category[1] === tradeTypeCategory &&
+                                            Object.assign(f, { textContent: tradeTypeCategory })
+                                    )
+                            );
+                        } catch (e) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            })
+    );
+    if (!validTradeTypeCategory) {
+        globalObserver.emit('ui.log.error', translate('The strategy you tried to import is invalid.'));
+    }
+    return validTradeTypeCategory;
 };
 
 const getCollapsedProcedures = () =>

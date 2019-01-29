@@ -1,6 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'jquery-ui/ui/widgets/dialog';
+import _Blockly from './blockly';
+import Chart from './Dialogs/Chart';
+import Limits from './Dialogs/Limits';
+import Save from './Dialogs/Save';
+import TradingView from './Dialogs/TradingView';
+import logHandler from './logger';
+import LogTable from './LogTable';
+import NetworkMonitor from './NetworkMonitor';
+import ServerTime from './react-components/HeaderWidgets';
+import OfficialVersionWarning from './react-components/OfficialVersionWarning';
+import { symbolPromise } from './shared';
+import Tour from './tour';
+import TradeInfoPanel from './TradeInfoPanel';
+import Elevio from '../../common/elevio';
+import { updateConfigCurrencies } from '../common/const';
+import { roundBalance, isVirtual } from '../common/tools';
+import {
+    logoutAllTokens,
+    getOAuthURL,
+    generateLiveApiInstance,
+    AppConstants,
+    addTokenIfValid,
+} from '../../common/appId';
+import { translate } from '../../common/i18n';
+import { getLanguage } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
     getTokenList,
@@ -9,31 +34,7 @@ import {
     set as setStorage,
     getToken,
 } from '../../common/utils/storageManager';
-import _Blockly from './blockly';
-import { translate } from '../../common/i18n';
-import Save from './Dialogs/Save';
-import Limits from './Dialogs/Limits';
-import TradingView from './Dialogs/TradingView';
-import Chart from './Dialogs/Chart';
-import { getLanguage } from '../../common/lang';
-import { roundBalance, isVirtual } from '../common/tools';
-import { symbolPromise } from './shared';
-import logHandler from './logger';
-import Tour from './tour';
-import OfficialVersionWarning from './react-components/OfficialVersionWarning';
-import ServerTime from './react-components/HeaderWidgets';
-import NetworkMonitor from './NetworkMonitor';
-import LogTable from './LogTable';
-import TradeInfoPanel from './TradeInfoPanel';
-import {
-    logoutAllTokens,
-    getOAuthURL,
-    generateLiveApiInstance,
-    AppConstants,
-    addTokenIfValid,
-} from '../../common/appId';
 import { isProduction } from '../../common/utils/tools';
-import { updateConfigCurrencies } from '../common/const';
 
 let realityCheckTimeout;
 
@@ -60,7 +61,9 @@ api.send({ time: '1' }).then(response => {
 });
 
 api.events.on('balance', response => {
-    const { balance: { balance: b, currency } } = response;
+    const {
+        balance: { balance: b, currency },
+    } = response;
 
     const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
     $('.topMenuBalance').text(`${balance} ${currency}`);
@@ -215,15 +218,11 @@ const updateTokenList = () => {
 };
 
 const applyToolboxPermissions = () => {
-    if (getTokenList().length) {
-        $('#runButton').show();
-        $('#showSummary').show();
-        $('#logButton').show();
-    } else {
-        $('#runButton').hide();
-        $('#showSummary').hide();
-        $('#logButton').hide();
-    }
+    const fn = getTokenList().length ? 'show' : 'hide';
+    $('#runButton, #showSummary, #logButton')
+        [fn]()
+        .prevAll('.toolbox-separator:first')
+        [fn]();
 };
 
 const showPopup = selector =>
@@ -376,6 +375,7 @@ export default class View {
             showPopup(getAccountSwitchPanelName())
                 .then(() => {
                     this.stop();
+                    Elevio.logoutUser();
                     removeTokens();
                 })
                 .catch(() => {});
@@ -561,6 +561,7 @@ export default class View {
             showPopup(getAccountSwitchPanelName())
                 .then(() => {
                     this.stop();
+                    Elevio.logoutUser();
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
                     setStorage('tokenList', '');

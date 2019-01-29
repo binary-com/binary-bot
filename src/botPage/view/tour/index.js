@@ -32,6 +32,19 @@ class Tour extends PureComponent {
     }
     render() {
         const callback = data => {
+            // Scroll to highlighted element (req for Safari)
+            if (data.step && data.step.selector) {
+                let element;
+                const selector = data.step.selector; // eslint-disable-line prefer-destructuring
+                if (/^\./.test(selector)) {
+                    element = document.getElementsByClassName(selector.substring(1))[0]; // eslint-disable-line prefer-destructuring
+                } else {
+                    element = document.getElementById(selector.substring(1));
+                }
+                if (element) {
+                    element.scrollIntoView();
+                }
+            }
             if (data.index === 0 && data.type === 'step:after') {
                 setDoneCheck();
             }
