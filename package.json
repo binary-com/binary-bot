@@ -98,7 +98,7 @@
     "gulp-concat-css": "^2.3.0",
     "gulp-concat-util": "^0.5.5",
     "gulp-connect": "^5.0.0",
-    "gulp-mustache-plus": "^1.0.1",
+    "gulp-mustache": "^4.1.0",
     "gulp-open": "^3.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-rev": "^8.1.1",
