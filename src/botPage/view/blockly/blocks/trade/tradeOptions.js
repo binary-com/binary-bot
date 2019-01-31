@@ -31,9 +31,11 @@ export default () => {
             if (ev.name === 'SYMBOL_LIST' || ev.name === 'TRADETYPE_LIST') {
                 // eslint-disable-next-line no-underscore-dangle
                 if (ev.oldValue !== ev.newValue && this.parentBlock_ !== null) {
+                    const durationTypeList = this.getField('DURATIONTYPE_LIST');
+                    if (durationTypeList === null) return;
+
                     const symbol = getSelectedSymbol(this);
                     const tradeType = getTradeType(this);
-                    const durationTypeList = this.getField('DURATIONTYPE_LIST');
 
                     const prevSelectedDuration = durationTypeList.getValue();
                     this.setFieldValue(translate('Loading...'), 'DURATIONTYPE_LIST');
