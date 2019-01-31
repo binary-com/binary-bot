@@ -49,17 +49,25 @@ export const removeUnavailableMarkets = block => {
 // Checks for a valid tradeTypeCategory, and attempts to fix if invalid
 // Some tradeTypes were moved to new tradeTypeCategories, this function allows older strategies to keep functioning
 export const strategyHasValidTradeTypeCategory = xml => {
-    const validTradeTypeCategory = Array.from(xml.children).some(
-        block =>
-            block.getAttribute('type') === 'trade' &&
-            Array.from(block.getElementsByTagName('field')).some(field => {
-                if (field.getAttribute('name') === 'TRADETYPE_LIST') {
+    const isTradeTypeListBlock = block =>
+        block.getAttribute('type') === 'trade' &&
+        Array.from(block.getElementsByTagName('field')).some(field => field.getAttribute('name') === 'TRADETYPE_LIST');
+    const xmlBlocks = Array.from(xml.children);
+    const containsTradeTypeBlock = xmlBlocks.some(block => isTradeTypeListBlock(block));
+    if (!containsTradeTypeBlock) {
+        return true;
+    }
+    const validTradeTypeCategory = xmlBlocks.some(block => {
+        if (isTradeTypeListBlock(block)) {
+            const xmlFields = Array.from(block.getElementsByTagName('field'));
+            return xmlFields.some(xmlField => {
+                if (xmlField.getAttribute('name') === 'TRADETYPE_LIST') {
                     // Retrieves the correct TRADETYPECAT_LIST for this TRADETYPE_LIST e.g. 'risefallequals' = 'callputequal'
                     const tradeTypeCategory = Object.keys(config.conditionsCategory).find(c =>
-                        config.conditionsCategory[c].includes(field.innerText)
+                        config.conditionsCategory[c].includes(xmlField.innerText)
                     );
                     // Check if the current TRADETYPECAT_LIST is equal to the tradeTypeCategory
-                    const tradeTypeCategoryIsEqual = Array.from(block.getElementsByTagName('field')).some(
+                    const tradeTypeCategoryIsEqual = xmlFields.some(
                         f => f.getAttribute('name') === 'TRADETYPECAT_LIST' && f.textContent === tradeTypeCategory
                     );
                     // If the Trade Type Category is invalid, try to fix it
@@ -68,7 +76,7 @@ export const strategyHasValidTradeTypeCategory = xml => {
                             const tempWorkspace = new Blockly.Workspace({});
                             const blocklyBlock = Blockly.Xml.domToBlock(block, tempWorkspace);
                             const availableCategories = fieldGeneratorMapping.TRADETYPECAT_LIST(blocklyBlock)();
-                            return Array.from(block.getElementsByTagName('field')).some(
+                            return xmlFields.some(
                                 f =>
                                     f.getAttribute('name') === 'TRADETYPECAT_LIST' &&
                                     availableCategories.some(
@@ -84,8 +92,10 @@ export const strategyHasValidTradeTypeCategory = xml => {
                     return true;
                 }
                 return false;
-            })
-    );
+            });
+        }
+        return false;
+    });
     if (!validTradeTypeCategory) {
         globalObserver.emit('ui.log.error', translate('The strategy you tried to import is invalid.'));
     }
