@@ -44,13 +44,7 @@ export default class _Symbol {
     constructor(api) {
         this.api = api;
         this.initPromise = new Promise(resolve => {
-            // Authorize when possible for accurate offered symbols, assetindex
-            const promises = [];
-            const tokenList = getTokenList();
-            if (tokenList.length) {
-                promises.push(this.api.authorize(tokenList[0].token));
-            }
-            Promise.all(promises).finally(() => {
+            const getActiveSymbolsPromise = () => {
                 this.api.getActiveSymbolsBrief().then(r => {
                     this.activeSymbols = new ActiveSymbols(r.active_symbols);
                     this.api.getAssetIndex().then(r2 => {
@@ -58,7 +52,18 @@ export default class _Symbol {
                         resolve();
                     }, noop);
                 }, noop);
-            }, noop);
+            };
+            // Authorize when possible for accurate offered symbols, assetindex
+            const getAuthorisePromise = () => {
+                const tokenList = getTokenList();
+                if (tokenList.length) {
+                    return this.api.authorize(tokenList[0].token);
+                }
+                return new Promise(r => r());
+            };
+            getAuthorisePromise()
+                .then(() => getActiveSymbolsPromise(), noop)
+                .catch(() => getActiveSymbolsPromise(), noop);
         });
     }
     /* eslint-disable class-methods-use-this */
