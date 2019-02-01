@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
-const mustache = require('gulp-mustache-plus');
+const mustache = require('gulp-mustache');
 const { getManifest } = require('./revision');
 require('./static');
 require('./bundle');
@@ -13,10 +13,6 @@ const getConfig = prefix => ({
     bundle_css      : `<link href="css/${getManifest('bundle.css')}" rel="stylesheet" />`,
     index_css       : `<link href="css/${getManifest('index.css')}" rel="stylesheet" />`,
     bot_css         : `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
-    head            : 'templates/partials/head.mustache',
-    security        : 'templates/partials/security.mustache',
-    language        : 'templates/partials/language.mustache',
-    loading         : 'templates/partials/loading.mustache',
     binary_style_img: 'image/binary-style',
     elevio_script   :
         '<script>!function(e,l,v,i,o,n){e[i]||(e[i]={}),e[i].account_id=n;var g,h;g=l.createElement(v),g.type="text/javascript",g.async=1,g.src=o+n,h=l.getElementsByTagName(v)[0],h.parentNode.insertBefore(g,h);e[i].q=[];e[i].on=function(z,y){e[i].q.push([z,y])}}(window,document,"script","_elev","https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=","5bbc2de0b7365");</script>',
@@ -25,8 +21,8 @@ const getConfig = prefix => ({
 const genHtml = min =>
     gulp
         .src('templates/*.mustache')
-        .pipe(mustache({}, {}, getConfig(min === true ? '.min' : '')))
-        .pipe(gulp.dest('www'))
+        .pipe(mustache({}, { extension: '.html' }, getConfig(min === true ? '.min' : '')))
+        .pipe(gulp.dest('./www'))
         .pipe(connect.reload());
 
 gulp.task(
