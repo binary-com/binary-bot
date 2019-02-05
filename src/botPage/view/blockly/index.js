@@ -429,7 +429,7 @@ Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
         }
         return false;
     }) &&
-        /* Remove delete all blocks, but only when 'Clean up blocks' is available
+        /* Remove delete all blocks, but only when 'Clean up blocks' is available (i.e. workspace)
          * This allows users to still delete root blocks containing blocks
          */
         menuOptions.some((option, i) => {
@@ -442,5 +442,14 @@ Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
             }
             return false;
         });
+    // Open the Elev.io widget when clicking 'Help'
+    if (window._elev) {
+        menuOptions.some(option => {
+            if (option.text === Blockly.Msg.HELP) {
+                option.callback = () => window._elev.open();
+                return true;
+            }
+        });
+    }
     originalContextMenuFn(e, menuOptions, rtl);
 };
