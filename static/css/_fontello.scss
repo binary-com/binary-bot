@@ -71,3 +71,12 @@
 .icon-info:before { content: '\f129'; } /* '' */
 .icon-sort:before { content: '\f160'; } /* '' */
 .icon-chart-line:before { content: '\f201'; } /* '' */
+.icon-hide-header {
+    &:before {
+        content: ' ';
+    }
+    background: url("../image/expand_less.svg") no-repeat center;
+    &.enabled {
+        background: url("../image/expand_more.svg") no-repeat center;
+    }
+}
