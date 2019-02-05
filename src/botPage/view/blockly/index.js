@@ -417,3 +417,30 @@ while(true) {
     }
     /* eslint-enable */
 }
+
+// Hooks to override default Blockly behaviour
+const originalContextMenuFn = Blockly.ContextMenu.show;
+Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
+    // Rename 'Clean up blocks'
+    menuOptions.some(option => {
+        if (option.text === Blockly.Msg.CLEAN_UP) {
+            option.text = translate('Rearrange vertically');
+            return true;
+        }
+        return false;
+    }) &&
+        /* Remove delete all blocks, but only when 'Clean up blocks' is available
+         * This allows users to still delete root blocks containing blocks
+         */
+        menuOptions.some((option, i) => {
+            if (
+                option.text === Blockly.Msg.DELETE_BLOCK ||
+                option.text.replace(/[0-9]+/, '%1') === Blockly.Msg.DELETE_X_BLOCKS
+            ) {
+                menuOptions.splice(i, 1);
+                return true;
+            }
+            return false;
+        });
+    originalContextMenuFn(e, menuOptions, rtl);
+};
