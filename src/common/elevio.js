@@ -13,8 +13,9 @@ const Elevio = (() => {
             // if (availableElevLanguages.indexOf(currentLanguage) !== -1) {
             //     window._elev.setLanguage(currentLanguage); // eslint-disable-line no-underscore-dangle
             // }
+            // eslint-disable-next-line no-underscore-dangle
             window._elev.setSettings({
-                page_url: document.location.hostname,
+                page_url: document.location.hostname + document.location.pathname,
             });
             setUserInfo(elev);
             setTranslations(elev);
