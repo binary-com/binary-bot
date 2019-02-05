@@ -419,12 +419,13 @@ while(true) {
 }
 
 // Hooks to override default Blockly behaviour
+/* eslint-disable no-unused-expressions */
 const originalContextMenuFn = Blockly.ContextMenu.show;
 Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
     // Rename 'Clean up blocks'
     menuOptions.some(option => {
         if (option.text === Blockly.Msg.CLEAN_UP) {
-            option.text = translate('Rearrange vertically');
+            option.text = translate('Rearrange vertically'); // eslint-disable-line no-param-reassign
             return true;
         }
         return false;
@@ -443,13 +444,16 @@ Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
             return false;
         });
     // Open the Elev.io widget when clicking 'Help'
+    // eslint-disable-next-line no-underscore-dangle
     if (window._elev) {
         menuOptions.some(option => {
             if (option.text === Blockly.Msg.HELP) {
-                option.callback = () => window._elev.open();
+                option.callback = () => window._elev.open(); // eslint-disable-line no-param-reassign, no-underscore-dangle
                 return true;
             }
+            return false;
         });
     }
     originalContextMenuFn(e, menuOptions, rtl);
 };
+/* eslint-enable */
