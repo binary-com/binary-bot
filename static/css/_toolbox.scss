@@ -59,6 +59,7 @@
 
 #toolbox-login {
     margin-top: 1px;
+    margin-right: 20px;
 }
 
 #toolbox-account {
@@ -71,6 +72,7 @@
     user-select: none;
     display: table-cell;
     vertical-align: middle;
+    padding-right: 20px;
     &>a {
         color: $black;
         &:hover, &:visited {
@@ -100,6 +102,7 @@
     z-index: 100;
     margin-top: -1px;
     background: none;
+    right: 20px;
     & li {
         height: 100%;
         & a {
