@@ -28,6 +28,9 @@ class Tour extends PureComponent {
                     setDoneCheck();
                     setStorage('closedTourPopup', Date.now());
                     this.joyride.stop();
+                    if ($('#toggleHeaderButton').is(':hidden')) {
+                        $('#toggleHeaderButton').show();
+                    }
                 },
             };
         }
@@ -47,15 +50,23 @@ class Tour extends PureComponent {
                     element.scrollIntoView();
                 }
             }
+            const $toggleHeaderButton = $('#toggleHeaderButton');
             if (data.type === 'step:after') {
-                let hasSupressedTour = false;
-                if (data.index === 0) {
-                    hasSupressedTour = setDoneCheck();
+                // Reveal header if user hid it so tour is working properly
+                const hasSupressedTour = data.index === 0 && setDoneCheck();
+                if (!hasSupressedTour) {
+                    if ($('#header').is(':hidden')) {
+                        $toggleHeaderButton.click();
+                    }
+                    if (data.index < welcome.length - 1) {
+                        $toggleHeaderButton.hide();
+                    } else {
+                        $toggleHeaderButton.show();
+                    }
                 }
-                // If user hid the header, reveal it so tour works properly
-                if (!hasSupressedTour && $('#header').is(':hidden')) {
-                    $('#toggleHeaderButton').click();
-                }
+            }
+            if (data.action === 'close' && $toggleHeaderButton.is(':hidden')) {
+                $toggleHeaderButton.show();
             }
         };
         const shouldShowTourPopup = () => {
