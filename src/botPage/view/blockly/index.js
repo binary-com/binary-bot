@@ -243,11 +243,11 @@ export default class _Blockly {
                         this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
                         Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
                         this.zoomOnPlusMinus();
-                        Blockly.mainWorkspace.clearUndo();
                         disposeBlocksWithLoaders();
                         setTimeout(() => {
                             setBeforeUnload(true);
                             Blockly.mainWorkspace.cleanUp();
+                            Blockly.mainWorkspace.clearUndo();
                         }, 0);
                         resolve();
                     });
