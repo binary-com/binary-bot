@@ -76,6 +76,18 @@ export const barrierOffset = block => {
             .setCheck('Number')
             .appendField(`${translate('Barrier Offset')} 1:`)
             .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'BARRIEROFFSETTYPE_LIST');
+    } else {
+        const barrierOffsetList = block.getField('BARRIEROFFSETTYPE_LIST');
+        barrierOffsetList.setValue('+');
+        if (!block.workspace.getBlockById('BARRIERVALUE')) {
+            //eslint-disable-line
+            const BarrierValue = block.workspace.newBlock('math_number', 'BARRIERVALUE');
+            BarrierValue.setFieldValue('0.036', 'NUM');
+            BarrierValue.setShadow(true);
+            BarrierValue.outputConnection.connect(block.getInput('BARRIEROFFSET').connection);
+            BarrierValue.initSvg();
+            BarrierValue.render();
+        }
     }
 };
 
@@ -86,6 +98,18 @@ export const secondBarrierOffset = block => {
             .setCheck('Number')
             .appendField(`${translate('Barrier Offset')} 2:`)
             .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'SECONDBARRIEROFFSETTYPE_LIST');
+    } else {
+        const barrierOffsetList = block.getField('SECONDBARRIEROFFSETTYPE_LIST');
+        barrierOffsetList.setValue('-');
+        if (!block.workspace.getBlockById('SECONDBARRIERVALUE')) {
+            //eslint-disable-line
+            const BarrierValue = block.workspace.newBlock('math_number', 'SECONDBARRIERVALUE');
+            BarrierValue.setFieldValue('0.036', 'NUM');
+            BarrierValue.setShadow(true);
+            BarrierValue.outputConnection.connect(block.getInput('SECONDBARRIEROFFSET').connection);
+            BarrierValue.initSvg();
+            BarrierValue.render();
+        }
     }
 };
 
