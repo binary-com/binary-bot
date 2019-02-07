@@ -58,7 +58,7 @@ const steps = [
         text : `<p>
       ${translate('Login before starting your bot. Always test your strategies with the virtual account.')}
     </p>`,
-        selector: '.right-header',
+        selector: '.intro-login-logout',
         position: 'left',
     },
     {
