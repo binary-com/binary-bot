@@ -56,10 +56,6 @@ api.events.on('website_status', response => {
     }
 });
 
-api.send({ time: '1' }).then(response => {
-    ReactDOM.render(<ServerTime startTime={response.time} />, $('#server-time')[0]);
-});
-
 api.events.on('balance', response => {
     const {
         balance: { balance: b, currency },
@@ -648,6 +644,7 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
+    ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
     ReactDOM.render(
         <OfficialVersionWarning
