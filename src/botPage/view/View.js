@@ -642,21 +642,17 @@ export default class View {
         const $header = $('#header');
         const $topbarAccount = $('#toolbox-account');
         const $toggleHeaderButton = $('.icon-hide-header');
-        const setAndResize = () => {
-            setStorage('showHeader', show);
-            window.dispatchEvent(new Event('resize'));
-        };
         if (show) {
             $header.show(0);
             $topbarAccount.hide(0);
             $toggleHeaderButton.removeClass('enabled');
-            setAndResize();
         } else {
             $header.hide(0);
             $topbarAccount.show(0);
             $toggleHeaderButton.addClass('enabled');
-            setAndResize();
         }
+        setStorage('showHeader', show);
+        window.dispatchEvent(new Event('resize'));
     };
 }
 
