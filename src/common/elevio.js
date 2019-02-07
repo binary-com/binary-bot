@@ -15,7 +15,7 @@ const Elevio = (() => {
             // }
             // eslint-disable-next-line no-underscore-dangle
             window._elev.setSettings({
-                page_url: `${document.location.protocol  }//${  document.location.hostname  }${document.location.pathname}`,
+                page_url: `${document.location.protocol}//${document.location.hostname}${document.location.pathname}`,
             });
             setUserInfo(elev);
             setTranslations(elev);
