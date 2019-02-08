@@ -8,7 +8,9 @@ const setDoneCheck = () => {
     const doNotAskCheck = document.getElementById('do-not-ask-me-again');
     if (doNotAskCheck && doNotAskCheck.checked) {
         setDone('welcomeFinished');
+        return true;
     }
+    return false;
 };
 
 class Tour extends PureComponent {
@@ -26,6 +28,9 @@ class Tour extends PureComponent {
                     setDoneCheck();
                     setStorage('closedTourPopup', Date.now());
                     this.joyride.stop();
+                    if ($('#toggleHeaderButton').is(':hidden')) {
+                        $('#toggleHeaderButton').show();
+                    }
                 },
             };
         }
@@ -45,8 +50,23 @@ class Tour extends PureComponent {
                     element.scrollIntoView();
                 }
             }
-            if (data.index === 0 && data.type === 'step:after') {
-                setDoneCheck();
+            const $toggleHeaderButton = $('#toggleHeaderButton');
+            if (data.type === 'step:after') {
+                // Reveal header if user hid it so tour is working properly
+                const hasSupressedTour = data.index === 0 && setDoneCheck();
+                if (!hasSupressedTour) {
+                    if ($('#header').is(':hidden')) {
+                        $toggleHeaderButton.click();
+                    }
+                    if (data.index < welcome.length - 1) {
+                        $toggleHeaderButton.hide();
+                    } else {
+                        $toggleHeaderButton.show();
+                    }
+                }
+            }
+            if (data.action === 'close' && $toggleHeaderButton.is(':hidden')) {
+                $toggleHeaderButton.show();
             }
         };
         const shouldShowTourPopup = () => {
