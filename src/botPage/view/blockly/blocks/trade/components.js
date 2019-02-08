@@ -82,7 +82,7 @@ export const barrierOffset = block => {
         if (!block.workspace.getBlockById('BARRIERVALUE')) {
             //eslint-disable-line
             const BarrierValue = block.workspace.newBlock('math_number', 'BARRIERVALUE');
-            BarrierValue.setFieldValue('0.036', 'NUM');
+            BarrierValue.setFieldValue('0.274', 'NUM');
             BarrierValue.setShadow(true);
             BarrierValue.outputConnection.connect(block.getInput('BARRIEROFFSET').connection);
             BarrierValue.initSvg();
@@ -104,7 +104,7 @@ export const secondBarrierOffset = block => {
         if (!block.workspace.getBlockById('SECONDBARRIERVALUE')) {
             //eslint-disable-line
             const BarrierValue = block.workspace.newBlock('math_number', 'SECONDBARRIERVALUE');
-            BarrierValue.setFieldValue('0.036', 'NUM');
+            BarrierValue.setFieldValue('0.274', 'NUM');
             BarrierValue.setShadow(true);
             BarrierValue.outputConnection.connect(block.getInput('SECONDBARRIEROFFSET').connection);
             BarrierValue.initSvg();
