@@ -141,6 +141,7 @@ export const dependentFieldMapping = {
 
 export const getAvailableDurations = (symbol, selectedContractType) => {
     const contractsForStore = JSON.parse(getStorage('contractsForStore') || '[]');
+    let tokenList = getTokenList();
     const defaultDurations = [
         [translate('Ticks'), 't'],
         [translate('Seconds'), 's'],
@@ -154,7 +155,6 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
         const api = generateLiveApiInstance();
 
         // Try to authorize for accurate contracts response
-        let tokenList = getTokenList();
         if (tokenList.length) {
             try {
                 await api.authorize(tokenList[0].token);
