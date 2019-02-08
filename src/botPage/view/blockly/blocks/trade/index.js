@@ -30,8 +30,7 @@ const decorateTrade = ev => {
     }
     if ([Blockly.Events.CHANGE, Blockly.Events.MOVE, Blockly.Events.CREATE].includes(ev.type)) {
         const symbol = trade.getFieldValue('SYMBOL_LIST');
-
-        if (symbol && (ev.group === 'reset' || ev.type !== Blockly.Events.CREATE)) {
+        if (symbol) {
             globalObserver.emit('bot.init', symbol);
         }
 

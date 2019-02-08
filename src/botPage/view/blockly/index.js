@@ -243,11 +243,11 @@ export default class _Blockly {
                         this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
                         Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
                         this.zoomOnPlusMinus();
-                        Blockly.mainWorkspace.clearUndo();
                         disposeBlocksWithLoaders();
                         setTimeout(() => {
                             setBeforeUnload(true);
                             Blockly.mainWorkspace.cleanUp();
+                            Blockly.mainWorkspace.clearUndo();
                         }, 0);
                         resolve();
                     });
@@ -417,3 +417,43 @@ while(true) {
     }
     /* eslint-enable */
 }
+
+// Hooks to override default Blockly behaviour
+/* eslint-disable no-unused-expressions */
+const originalContextMenuFn = Blockly.ContextMenu.show;
+Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
+    // Rename 'Clean up blocks'
+    menuOptions.some(option => {
+        if (option.text === Blockly.Msg.CLEAN_UP) {
+            option.text = translate('Rearrange vertically'); // eslint-disable-line no-param-reassign
+            return true;
+        }
+        return false;
+    }) &&
+        /* Remove delete all blocks, but only when 'Clean up blocks' is available (i.e. workspace)
+         * This allows users to still delete root blocks containing blocks
+         */
+        menuOptions.some((option, i) => {
+            if (
+                option.text === Blockly.Msg.DELETE_BLOCK ||
+                option.text.replace(/[0-9]+/, '%1') === Blockly.Msg.DELETE_X_BLOCKS
+            ) {
+                menuOptions.splice(i, 1);
+                return true;
+            }
+            return false;
+        });
+    // Open the Elev.io widget when clicking 'Help'
+    // eslint-disable-next-line no-underscore-dangle
+    if (window._elev) {
+        menuOptions.some(option => {
+            if (option.text === Blockly.Msg.HELP) {
+                option.callback = () => window._elev.open(); // eslint-disable-line no-param-reassign, no-underscore-dangle
+                return true;
+            }
+            return false;
+        });
+    }
+    originalContextMenuFn(e, menuOptions, rtl);
+};
+/* eslint-enable */
