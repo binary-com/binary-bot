@@ -56,10 +56,6 @@ api.events.on('website_status', response => {
     }
 });
 
-api.send({ time: '1' }).then(response => {
-    ReactDOM.render(<ServerTime startTime={response.time} />, $('#server-time')[0]);
-});
-
 api.events.on('balance', response => {
     const {
         balance: { balance: b, currency },
@@ -175,11 +171,12 @@ const getActiveToken = (tokenList, activeToken) => {
 
 const updateTokenList = () => {
     const tokenList = getTokenList();
-    const loginButton = $('#login');
-    const accountList = $('#account-list');
+    const loginButton = $('#login, #toolbox-login');
+    const accountList = $('#account-list, #toolbox-account-list');
     if (tokenList.length === 0) {
         loginButton.show();
         accountList.hide();
+
         $('.account-id')
             .removeAttr('value')
             .text('');
@@ -190,7 +187,6 @@ const updateTokenList = () => {
     } else {
         loginButton.hide();
         accountList.show();
-
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
         updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
@@ -200,7 +196,6 @@ const updateTokenList = () => {
         }
         tokenList.forEach(tokenInfo => {
             const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
-
             if (tokenInfo === activeToken) {
                 $('.account-id')
                     .attr('value', `${tokenInfo.token}`)
@@ -277,6 +272,7 @@ export default class View {
                         applyToolboxPermissions();
                         renderReactComponents();
                         if (!getTokenList().length) updateLogo();
+                        this.showHeader(getStorage('showHeader') !== 'false');
                         resolve();
                     });
                 });
@@ -468,11 +464,13 @@ export default class View {
 
         $('#showSummary').click(showSummary);
 
+        $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden')));
+
         $('#loadXml').click(() => {
             $('#files').click();
         });
 
-        $('#logout').click(() => {
+        $('#logout, #toolbox-logout').click(() => {
             setBeforeUnload(true);
             logout();
             hideRealityCheck();
@@ -573,7 +571,7 @@ export default class View {
                 .catch(() => {});
         });
 
-        $('#login')
+        $('#login, #toolbox-login')
             .bind('click.login', () => {
                 setBeforeUnload(true);
                 document.location = getOAuthURL();
@@ -636,6 +634,22 @@ export default class View {
             }
         });
     }
+    showHeader = show => {
+        const $header = $('#header');
+        const $topbarAccount = $('#toolbox-account');
+        const $toggleHeaderButton = $('.icon-hide-header');
+        if (show) {
+            $header.show(0);
+            $topbarAccount.hide(0);
+            $toggleHeaderButton.removeClass('enabled');
+        } else {
+            $header.hide(0);
+            $topbarAccount.show(0);
+            $toggleHeaderButton.addClass('enabled');
+        }
+        setStorage('showHeader', show);
+        window.dispatchEvent(new Event('resize'));
+    };
 }
 
 function initRealityCheck(stopCallback) {
@@ -648,6 +662,7 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
+    ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
     ReactDOM.render(
         <OfficialVersionWarning
