@@ -80,13 +80,12 @@ export const barrierOffset = block => {
         const barrierOffsetList = block.getField('BARRIEROFFSETTYPE_LIST');
         barrierOffsetList.setValue('+');
         if (!block.workspace.getBlockById('BARRIERVALUE')) {
-            //eslint-disable-line
-            const BarrierValue = block.workspace.newBlock('math_number', 'BARRIERVALUE');
-            BarrierValue.setFieldValue('0.274', 'NUM');
-            BarrierValue.setShadow(true);
-            BarrierValue.outputConnection.connect(block.getInput('BARRIEROFFSET').connection);
-            BarrierValue.initSvg();
-            BarrierValue.render();
+            const barrierValue = block.workspace.newBlock('math_number', 'BARRIERVALUE');
+            barrierValue.setFieldValue('0.274', 'NUM');
+            barrierValue.setShadow(true);
+            barrierValue.outputConnection.connect(block.getInput('BARRIEROFFSET').connection);
+            barrierValue.initSvg();
+            barrierValue.render();
         }
     }
 };
@@ -102,13 +101,12 @@ export const secondBarrierOffset = block => {
         const barrierOffsetList = block.getField('SECONDBARRIEROFFSETTYPE_LIST');
         barrierOffsetList.setValue('-');
         if (!block.workspace.getBlockById('SECONDBARRIERVALUE')) {
-            //eslint-disable-line
-            const BarrierValue = block.workspace.newBlock('math_number', 'SECONDBARRIERVALUE');
-            BarrierValue.setFieldValue('0.274', 'NUM');
-            BarrierValue.setShadow(true);
-            BarrierValue.outputConnection.connect(block.getInput('SECONDBARRIEROFFSET').connection);
-            BarrierValue.initSvg();
-            BarrierValue.render();
+            const secondBarrierValue = block.workspace.newBlock('math_number', 'SECONDBARRIERVALUE');
+            secondBarrierValue.setFieldValue('0.274', 'NUM');
+            secondBarrierValue.setShadow(true);
+            secondBarrierValue.outputConnection.connect(block.getInput('SECONDBARRIEROFFSET').connection);
+            secondBarrierValue.initSvg();
+            secondBarrierValue.render();
         }
     }
 };
