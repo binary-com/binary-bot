@@ -78,9 +78,9 @@ export const barrierOffset = block => {
             .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'BARRIEROFFSETTYPE_LIST');
     } else {
         const barrierOffsetList = block.getField('BARRIEROFFSETTYPE_LIST');
-        barrierOffsetList.setValue('+');
         if (!block.workspace.getBlockById('BARRIERVALUE')) {
             const barrierValue = block.workspace.newBlock('math_number', 'BARRIERVALUE');
+            barrierOffsetList.setValue('+');
             barrierValue.setFieldValue('0.274', 'NUM');
             barrierValue.setShadow(true);
             barrierValue.outputConnection.connect(block.getInput('BARRIEROFFSET').connection);
@@ -99,9 +99,9 @@ export const secondBarrierOffset = block => {
             .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'SECONDBARRIEROFFSETTYPE_LIST');
     } else {
         const barrierOffsetList = block.getField('SECONDBARRIEROFFSETTYPE_LIST');
-        barrierOffsetList.setValue('-');
         if (!block.workspace.getBlockById('SECONDBARRIERVALUE')) {
             const secondBarrierValue = block.workspace.newBlock('math_number', 'SECONDBARRIERVALUE');
+            barrierOffsetList.setValue('-');
             secondBarrierValue.setFieldValue('0.274', 'NUM');
             secondBarrierValue.setShadow(true);
             secondBarrierValue.outputConnection.connect(block.getInput('SECONDBARRIEROFFSET').connection);
