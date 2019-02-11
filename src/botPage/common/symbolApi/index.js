@@ -1,7 +1,7 @@
 import ActiveSymbols from './activeSymbols';
 import config from '../../common/const';
 import { getObjectValue } from '../../../common/utils/tools';
-import { getTokenList } from '../../../common/utils/storageManager';
+import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
 
 const noop = () => {};
 
@@ -44,7 +44,7 @@ export default class _Symbol {
     constructor(api) {
         this.api = api;
         this.initPromise = new Promise(resolve => {
-            const getActiveSymbolsPromise = () => {
+            const getActiveSymbolsLogic = () => {
                 this.api.getActiveSymbolsBrief().then(r => {
                     this.activeSymbols = new ActiveSymbols(r.active_symbols);
                     this.api.getAssetIndex().then(r2 => {
@@ -53,17 +53,19 @@ export default class _Symbol {
                     }, noop);
                 }, noop);
             };
-            // Authorize when possible for accurate offered symbols, assetindex
-            const getAuthorisePromise = () => {
-                const tokenList = getTokenList();
-                if (tokenList.length) {
-                    return this.api.authorize(tokenList[0].token);
-                }
-                return new Promise(r => r());
-            };
-            getAuthorisePromise()
-                .then(() => getActiveSymbolsPromise(), noop)
-                .catch(() => getActiveSymbolsPromise(), noop);
+            // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
+            const tokenList = getTokenList();
+            if (tokenList.length) {
+                this.api
+                    .authorize(tokenList[0].token)
+                    .then(getActiveSymbolsLogic())
+                    .catch(() => {
+                        removeAllTokens();
+                        getActiveSymbolsLogic();
+                    });
+            } else {
+                getActiveSymbolsLogic();
+            }
         });
     }
     /* eslint-disable class-methods-use-this */
