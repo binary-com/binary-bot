@@ -448,7 +448,7 @@ Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
     if (window._elev) {
         menuOptions.some(option => {
             if (option.text === Blockly.Msg.HELP) {
-                option.callback = () => window._elev.open(); // eslint-disable-line no-param-reassign, no-underscore-dangle
+                option.callback = () => window._elev.openHome(); // eslint-disable-line no-param-reassign, no-underscore-dangle
                 return true;
             }
             return false;
