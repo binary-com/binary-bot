@@ -110,6 +110,14 @@ body {
     display: table;
 }
 
+#all-accounts.main-nav, #toolbox-all-accounts.main-nav {
+    >li {
+        >ul {
+            width: 165px;
+        }
+    }
+}
+
 .left-header {
     float: left;
 }

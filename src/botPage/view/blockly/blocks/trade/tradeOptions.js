@@ -38,9 +38,13 @@ export default () => {
                     const tradeType = getTradeType(this);
 
                     const prevSelectedDuration = durationTypeList.getValue();
+
+                    Blockly.Events.recordUndo = false;
                     this.setFieldValue(translate('Loading...'), 'DURATIONTYPE_LIST');
+                    Blockly.Events.recordUndo = true;
 
                     getAvailableDurations(symbol, tradeType).then(durations => {
+                        Blockly.Events.recordUndo = false;
                         // Prevent UI flickering by only updating field if options have changed
                         // eslint-disable-next-line no-underscore-dangle
                         if (JSON.stringify(durationTypeList.menuGenerator_) !== JSON.stringify(durations)) {
@@ -56,6 +60,7 @@ export default () => {
                         } else {
                             this.setFieldValue(translate('Not available'), 'DURATIONTYPE_LIST');
                         }
+                        Blockly.Events.recordUndo = true;
                     });
                 }
             }
