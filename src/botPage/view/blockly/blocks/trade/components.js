@@ -85,7 +85,7 @@ export const barrierOffset = block => {
         ) {
             const barrierValue = block.workspace.newBlock('math_number', 'BARRIERVALUE');
             barrierOffsetList.setValue('+');
-            barrierValue.setFieldValue('0.274', 'NUM');
+            barrierValue.setFieldValue('0.27', 'NUM');
             barrierValue.setShadow(true);
             barrierValue.outputConnection.connect(block.getInput('BARRIEROFFSET').connection);
             barrierValue.initSvg();
@@ -110,7 +110,7 @@ export const secondBarrierOffset = block => {
         ) {
             const secondBarrierValue = block.workspace.newBlock('math_number', 'SECONDBARRIERVALUE');
             barrierOffsetList.setValue('-');
-            secondBarrierValue.setFieldValue('0.274', 'NUM');
+            secondBarrierValue.setFieldValue('0.27', 'NUM');
             secondBarrierValue.setShadow(true);
             secondBarrierValue.outputConnection.connect(block.getInput('SECONDBARRIEROFFSET').connection);
             secondBarrierValue.initSvg();
