@@ -35,6 +35,20 @@ export default Engine =>
                     contract_type  : contractType,
                     buy_price      : buy.buy_price,
                 });
+                if (window.trackJs && !this.accountInfo.is_virtual) {
+                    const filteredObject = (obj, propsToIgnore) => {
+                        const filteredObj = {};
+                        Object.keys(obj)
+                            .filter(prop => !propsToIgnore.includes(prop) && obj[prop] !== undefined)
+                            .forEach(prop => (filteredObj[prop] = obj[prop]));
+                        return filteredObj;
+                    };
+                    trackJs.console.info('purchase_info', {
+                        buy         : filteredObject(buy, ['longcode', 'shortcode']),
+                        tradeOptions: filteredObject(this.tradeOption, ['limitations', 'contractTypes']),
+                    });
+                    trackJs.track('Contract Purchase');
+                }
             };
 
             const action = () => this.api.buyContract(id, askPrice);
