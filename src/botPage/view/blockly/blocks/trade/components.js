@@ -106,7 +106,7 @@ export const secondBarrierOffset = block => {
 
         if (
             !block.workspace.getBlockById('SECONDBARRIERVALUE') &&
-            !block.getInput('BARRIEROFFSET').connection.isConnected()
+            !block.getInput('SECONDBARRIEROFFSET').connection.isConnected()
         ) {
             const secondBarrierValue = block.workspace.newBlock('math_number', 'SECONDBARRIERVALUE');
             barrierOffsetList.setValue('-');
