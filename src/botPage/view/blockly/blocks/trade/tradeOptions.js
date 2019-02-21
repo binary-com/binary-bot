@@ -216,6 +216,7 @@ export default () => {
                         // eslint-disable-next-line no-underscore-dangle
                     } else if (durationTypeList.menuGenerator_.length) {
                         durationTypeList.setValue('');
+                        // eslint-disable-next-line no-underscore-dangle
                         durationTypeList.setValue(durationTypeList.menuGenerator_[0][1]);
                     }
 
