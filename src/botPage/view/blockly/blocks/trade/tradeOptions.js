@@ -29,19 +29,17 @@ export default () => {
                 updateInputList(this);
                 const block = Blockly.mainWorkspace.getBlockById(ev.blockId);
                 if (ev.workspaceId === Blockly.mainWorkspace.id && block.type === 'trade') {
-                    ['SYMBOL_LIST', 'TRADETYPE_LIST', 'DURATIONTYPE_LIST'].forEach(field => {
-                        const changeEvent = new Blockly.Events.Change(
-                            this,
-                            'field',
-                            field,
-                            '',
-                            this.getFieldValue(field)
-                        );
-                        Blockly.Events.fire(changeEvent);
+                    const symbol = block.getFieldValue('SYMBOL_LIST');
+                    if (!symbol) return;
+
+                    this.pollForContracts(symbol).then(contracts => {
+                        this.updateBarrierOffsetBlocks(contracts);
+                        this.updatePredictionBlocks(contracts);
+                        this.updateDurationLists(contracts, false, false); // false because we want to maintain user's values on import
                     });
                 }
             } else if (ev.type === Blockly.Events.MOVE) {
-                // Make sure tradeOptions-blocks are consistent with symbol, tradeType when re-added to root-block
+                // Make sure tradeOptions-blocks are consistent with symbol/tradeType when re-added to root-block
                 if (!ev.oldParentId && ev.newParentId) {
                     const movedBlock = Blockly.mainWorkspace.getBlockById(ev.blockId);
                     const topParentBlock = findTopParentBlock(movedBlock);
@@ -55,7 +53,7 @@ export default () => {
                                 this.pollForContracts(symbol).then(contracts => {
                                     this.updateBarrierOffsetBlocks(contracts, [block.id]);
                                     this.updatePredictionBlocks(contracts, [block.id]);
-                                    this.updateDurationLists(contracts, [block.id]);
+                                    this.updateDurationLists(contracts, true, [block.id]);
                                 });
                             } else {
                                 block.getChildren().forEach(childBlock => {
@@ -75,11 +73,17 @@ export default () => {
                     this.pollForContracts(symbol).then(contracts => {
                         if (ev.name === 'SYMBOL_LIST') {
                             // Called to update duration options and min durations for symbol
-                            this.updateDurationLists(contracts);
-                        } else if (ev.name === 'TRADETYPE_LIST') {
+                            this.updateDurationLists(contracts, true);
+                        } else if (['TRADETYPECAT_LIST', 'TRADETYPE_LIST'].includes(ev.name)) {
                             // Both are called to check if these blocks are required
                             this.updatePredictionBlocks(contracts);
                             this.updateBarrierOffsetBlocks(contracts);
+
+                            // Called to default to smallest durations for symbol
+                            this.updateDurationLists(contracts, true);
+                        } else if (ev.name === 'DURATIONTYPE_LIST') {
+                            // Called to set min durations for selected unit
+                            this.updateDurationLists(contracts, true, [this.id]);
                         }
                         updateInputList(this);
                     });
@@ -107,7 +111,10 @@ export default () => {
                                 resolve(contracts.available);
                             }
                         }, 100);
-                        setTimeout(() => clearInterval(pollingFn), 10000);
+                        setTimeout(() => {
+                            clearInterval(pollingFn), 10000;
+                            resolve([]);
+                        });
                     }
                 } else {
                     resolve(contractsForSymbol.available);
@@ -176,7 +183,7 @@ export default () => {
                 });
             });
         },
-        updateDurationLists(contracts, updateOnly = []) {
+        updateDurationLists(contracts, defaultToMin = false, updateOnly = []) {
             getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
                 if (tradeOptionsBlock.disabled) return;
                 if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
@@ -193,10 +200,11 @@ export default () => {
                     if (JSON.stringify(durationTypeList.menuGenerator_) !== JSON.stringify(durationOptions)) {
                         durationTypeList.menuGenerator_ = durationOptions; // eslint-disable-line no-underscore-dangle
                     }
+
                     // Set duration to previous selected duration (required for imported strategies)
                     // eslint-disable-next-line no-underscore-dangle
                     const prevSelectedDuration = durationTypeList.menuGenerator_.find(
-                        duration => duration[1] === durationTypeList.getValue()
+                        d => d[1] === durationTypeList.getValue()
                     );
                     if (prevSelectedDuration) {
                         durationTypeList.setValue('');
@@ -206,11 +214,18 @@ export default () => {
                         durationTypeList.setValue('');
                         durationTypeList.setValue(durationTypeList.menuGenerator_[0][1]); // eslint-disable-line no-underscore-dangle
                     }
+
                     // Attach shadow block with min value (only when user hasn't already attached another output block)
                     if (durations.length) {
                         const durationInput = tradeOptionsBlock.getInput('DURATION');
                         if (!durationInput.connection.isConnected()) {
                             durationInput.attachShadowBlock(durations[0].minimum, 'NUM', 'math_number');
+                        } else if (defaultToMin) {
+                            const connectedBlock = durationInput.connection.targetBlock();
+                            const minDuration = durations.find(d => d.unit === durationTypeList.getValue());
+                            if (connectedBlock.isShadow() && minDuration) {
+                                connectedBlock.setFieldValue(minDuration.minimum, 'NUM');
+                            }
                         }
                     }
                 });
