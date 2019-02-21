@@ -318,7 +318,8 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
                 const durations = getDurationsForContracts([c], selectedContractType);
                 return durations.map(duration => duration.unit).includes(selectedDuration);
             });
-        } else {
+        }
+        if (!contract) {
             // Default to smallest barriers available
             contract = contractsForContractCategory
                 .sort((a, b) => {
