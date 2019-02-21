@@ -63,22 +63,9 @@ export default () => {
                 });
                 duration(this);
                 payout(this);
-                if (config.hasPrediction.indexOf(oppositesName) > -1) {
-                    prediction(this);
-                } else {
-                    this.removeInput('PREDICTION');
-                }
-                if (config.hasBarrierOffset.indexOf(oppositesName) > -1) {
-                    barrierOffset(this);
-                } else {
-                    this.removeInput('BARRIEROFFSET');
-                }
-                if (config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
-                    barrierOffset(this);
-                    secondBarrierOffset(this);
-                } else {
-                    this.removeInput('SECONDBARRIEROFFSET');
-                }
+                prediction(this);
+                barrierOffset(this);
+                secondBarrierOffset(this);
                 this.setInputsInline(false);
                 this.setPreviousStatement(true, 'Condition');
             },
