@@ -1,9 +1,16 @@
-import { setInputList, updateInputList, getTradeType, getSelectedSymbol } from './tools';
-import { expectValue, getAvailableDurations } from '../shared';
+import { setInputList, updateInputList, getParentValue } from './tools';
+import {
+    expectValue,
+    haveContractsForSymbol,
+    getContractsAvailableForSymbol,
+    getDurationsForContracts,
+    getBarriersForContracts,
+    getPredictionForContracts,
+} from '../shared';
 import { insideTrade } from '../../relationChecker';
-import { findTopParentBlock } from '../../utils';
-import config from '../../../../common/const';
+import { findTopParentBlock, hideInteractionsFromBlockly, getBlocksByType } from '../../utils';
 import { translate } from '../../../../../common/i18n';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 
 export default () => {
     Blockly.Blocks.tradeOptions = {
@@ -17,94 +24,216 @@ export default () => {
             if (ev.group === 'BackwardCompatibility') {
                 return;
             }
-            if (ev.type === Blockly.Events.CREATE || ev.type === Blockly.Events.MOVE) {
-                Blockly.Events.fire(
-                    new Blockly.Events.Change(this, 'field', 'SYMBOL_LIST', '', this.getFieldValue('SYMBOL_LIST'))
-                );
-            }
-            if ([Blockly.Events.CREATE, Blockly.Events.CHANGE].includes(ev.type)) {
+            if (ev.type === Blockly.Events.CREATE) {
+                // After creation emit change event so API-dependent fields become populated
                 updateInputList(this);
-            }
-            if (ev.name === 'TRADETYPE_LIST') {
-                updateInputList(this);
-            }
-            if (ev.name === 'SYMBOL_LIST' || ev.name === 'TRADETYPE_LIST') {
+                const block = Blockly.mainWorkspace.getBlockById(ev.blockId);
+                if (ev.workspaceId === Blockly.mainWorkspace.id && block.type === 'trade') {
+                    ['SYMBOL_LIST', 'TRADETYPE_LIST', 'DURATIONTYPE_LIST'].forEach(field => {
+                        const changeEvent = new Blockly.Events.Change(
+                            this,
+                            'field',
+                            field,
+                            '',
+                            this.getFieldValue(field)
+                        );
+                        Blockly.Events.fire(changeEvent);
+                    });
+                }
+            } else if (ev.type === Blockly.Events.MOVE) {
+                // Make sure tradeOptions-blocks are consistent with symbol, tradeType when re-added to root-block
+                if (!ev.oldParentId && ev.newParentId) {
+                    const movedBlock = Blockly.mainWorkspace.getBlockById(ev.blockId);
+                    const topParentBlock = findTopParentBlock(movedBlock);
+
+                    if (topParentBlock && topParentBlock.type === 'trade') {
+                        const symbol = topParentBlock.getFieldValue('SYMBOL_LIST');
+                        if (!symbol) return;
+
+                        const getNestedTradeOptions = block => {
+                            if (block.type === 'tradeOptions') {
+                                this.pollForContracts(symbol).then(contracts => {
+                                    this.updateBarrierOffsetBlocks(contracts, [block.id]);
+                                    this.updatePredictionBlocks(contracts, [block.id]);
+                                    this.updateDurationLists(contracts, [block.id]);
+                                });
+                            } else {
+                                block.getChildren().forEach(childBlock => {
+                                    getNestedTradeOptions(childBlock);
+                                });
+                            }
+                        };
+                        getNestedTradeOptions(movedBlock);
+                    }
+                }
+            } else if (ev.type === Blockly.Events.CHANGE) {
                 // eslint-disable-next-line no-underscore-dangle
-                if (ev.oldValue !== ev.newValue && this.parentBlock_ !== null) {
-                    const durationTypeList = this.getField('DURATIONTYPE_LIST');
-                    if (durationTypeList === null) return;
+                if (this.parentBlock_ !== null) {
+                    const symbol = getParentValue(this, 'SYMBOL_LIST');
+                    if (!symbol) return;
 
-                    const symbol = getSelectedSymbol(this);
-                    const tradeType = getTradeType(this);
-
-                    const prevSelectedDuration = durationTypeList.getValue();
-
-                    Blockly.Events.recordUndo = false;
-                    this.setFieldValue(translate('Loading...'), 'DURATIONTYPE_LIST');
-                    Blockly.Events.recordUndo = true;
-
-                    getAvailableDurations(symbol, tradeType).then(durations => {
-                        Blockly.Events.recordUndo = false;
-                        // Prevent UI flickering by only updating field if options have changed
-                        // eslint-disable-next-line no-underscore-dangle
-                        if (JSON.stringify(durationTypeList.menuGenerator_) !== JSON.stringify(durations)) {
-                            durationTypeList.menuGenerator_ = durations; // eslint-disable-line no-underscore-dangle
+                    this.pollForContracts(symbol).then(contracts => {
+                        if (ev.name === 'SYMBOL_LIST') {
+                            // Called to update duration options and min durations for symbol
+                            this.updateDurationLists(contracts);
+                        } else if (ev.name === 'TRADETYPE_LIST') {
+                            // Both are called to check if these blocks are required
+                            this.updatePredictionBlocks(contracts);
+                            this.updateBarrierOffsetBlocks(contracts);
                         }
-                        // Maintain previously selected duration if possible (req for imported strategies)
-                        const selectedValue = durationTypeList.menuGenerator_.find(d => d[1] === prevSelectedDuration); // eslint-disable-line no-underscore-dangle
-                        if (selectedValue) {
-                            this.setFieldValue(selectedValue[1], 'DURATIONTYPE_LIST');
-                            // eslint-disable-next-line no-underscore-dangle
-                        } else if (durationTypeList.menuGenerator_.length) {
-                            this.setFieldValue(durationTypeList.menuGenerator_[0][1], 'DURATIONTYPE_LIST'); // eslint-disable-line no-underscore-dangle
-                        } else {
-                            this.setFieldValue(translate('Not available'), 'DURATIONTYPE_LIST');
-                        }
-                        Blockly.Events.recordUndo = true;
+                        updateInputList(this);
                     });
                 }
             }
         },
+        pollForContracts(symbol) {
+            return new Promise(resolve => {
+                const contractsForSymbol = haveContractsForSymbol(symbol);
+                if (!haveContractsForSymbol(symbol)) {
+                    // Register an event and use as a lock to avoid spamming API
+                    const event = `contractsLoaded.${symbol}`;
+                    if (!globalObserver.isRegistered(event)) {
+                        globalObserver.register(event, () => {});
+                        getContractsAvailableForSymbol(symbol).then(contracts => {
+                            globalObserver.unregisterAll(event); // Release the lock
+                            resolve(contracts);
+                        });
+                    } else {
+                        // Request in progress, start polling localStorage until contracts are available.
+                        const pollingFn = setInterval(() => {
+                            const contracts = haveContractsForSymbol(symbol);
+                            if (contracts) {
+                                clearInterval(pollingFn);
+                                resolve(contracts.available);
+                            }
+                        }, 100);
+                        setTimeout(() => clearInterval(pollingFn), 10000);
+                    }
+                } else {
+                    resolve(contractsForSymbol.available);
+                }
+            });
+        },
+        updatePredictionBlocks(contracts, updateOnly = []) {
+            getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
+                if (tradeOptionsBlock.disabled) return;
+                if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
+
+                const predictionInput = tradeOptionsBlock.getInput('PREDICTION');
+                if (!predictionInput) return;
+
+                const tradeType = getParentValue(tradeOptionsBlock, 'TRADETYPE_LIST');
+                const predictionRange = getPredictionForContracts(contracts, tradeType);
+
+                hideInteractionsFromBlockly(() => {
+                    if (!predictionRange.length) {
+                        tradeOptionsBlock.removeInput('PREDICTION');
+                        return;
+                    }
+                    predictionInput.setVisible(true);
+
+                    // Attach shadow block with API-returned prediction-value (only if user hasn't defined a value)
+                    if (!predictionInput.connection.isConnected()) {
+                        predictionInput.attachShadowBlock(predictionRange[0], 'NUM', 'math_number');
+                    }
+                });
+            });
+        },
+        updateBarrierOffsetBlocks(contracts, updateOnly = []) {
+            getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
+                if (tradeOptionsBlock.disabled) return;
+                if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
+
+                const tradeType = getParentValue(tradeOptionsBlock, 'TRADETYPE_LIST');
+                const selectedDuration = tradeOptionsBlock.getFieldValue('DURATIONTYPE_LIST');
+                const barriers = getBarriersForContracts(contracts, tradeType, selectedDuration);
+
+                hideInteractionsFromBlockly(() => {
+                    const barrierBlockNames = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
+                    if (!Object.keys(barriers).length) {
+                        barrierBlockNames.forEach(barrierInputName => tradeOptionsBlock.removeInput(barrierInputName));
+                        return;
+                    }
+                    const barrierKeys = Object.keys(barriers);
+                    barrierKeys.forEach((barrier, index) => {
+                        const barrierBlock = tradeOptionsBlock.getInput(barrierBlockNames[index]);
+                        if (barrierBlock) {
+                            barrierBlock.setVisible(true);
+
+                            // Attach shadow block with API-returned barrier-value (only if user hasn't defined a value)
+                            if (!barrierBlock.connection.isConnected()) {
+                                barrierBlock.attachShadowBlock(barriers[barrier], 'NUM', 'math_number');
+                            }
+                        }
+                    });
+                    // Check if number of barriers returned by API is less than barrier inputs on our workspace
+                    // Remove leftover barrierBlockNames from the workspace
+                    if (barrierKeys.length < barrierBlockNames.length) {
+                        barrierBlockNames
+                            .slice(barrierKeys.length)
+                            .forEach(barrierName => tradeOptionsBlock.removeInput(barrierName));
+                    }
+                });
+            });
+        },
+        updateDurationLists(contracts, updateOnly = []) {
+            getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
+                if (tradeOptionsBlock.disabled) return;
+                if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
+
+                const tradeType = getParentValue(tradeOptionsBlock, 'TRADETYPE_LIST');
+                const durationTypeList = tradeOptionsBlock.getField('DURATIONTYPE_LIST');
+
+                const durations = getDurationsForContracts(contracts, tradeType);
+                const durationOptions = durations.map(duration => [duration.label, duration.unit]);
+
+                hideInteractionsFromBlockly(() => {
+                    // Prevent UI flickering by only updating field only if options have changed
+                    // eslint-disable-next-line no-underscore-dangle
+                    if (JSON.stringify(durationTypeList.menuGenerator_) !== JSON.stringify(durationOptions)) {
+                        durationTypeList.menuGenerator_ = durationOptions; // eslint-disable-line no-underscore-dangle
+                    }
+                    // Set duration to previous selected duration (required for imported strategies)
+                    // eslint-disable-next-line no-underscore-dangle
+                    const prevSelectedDuration = durationTypeList.menuGenerator_.find(
+                        duration => duration[1] === durationTypeList.getValue()
+                    );
+                    if (prevSelectedDuration) {
+                        durationTypeList.setValue('');
+                        durationTypeList.setValue(prevSelectedDuration[1]);
+                        // eslint-disable-next-line no-underscore-dangle
+                    } else if (durationTypeList.menuGenerator_.length) {
+                        durationTypeList.setValue('');
+                        durationTypeList.setValue(durationTypeList.menuGenerator_[0][1]); // eslint-disable-line no-underscore-dangle
+                    }
+                    // Attach shadow block with min value (only when user hasn't already attached another output block)
+                    if (durations.length) {
+                        const durationInput = tradeOptionsBlock.getInput('DURATION');
+                        if (!durationInput.connection.isConnected()) {
+                            durationInput.attachShadowBlock(durations[0].minimum, 'NUM', 'math_number');
+                        }
+                    }
+                });
+            });
+        },
     };
     Blockly.JavaScript.tradeOptions = block => {
-        const durationValue = expectValue(block, 'DURATION');
-        const durationType = block.getFieldValue('DURATIONTYPE_LIST');
-        const currency = block.getFieldValue('CURRENCY_LIST');
-        const amount = expectValue(block, 'AMOUNT');
         const tradeDefBlock = findTopParentBlock(block);
         if (!tradeDefBlock) {
             return '';
         }
-        const oppositesName = tradeDefBlock.getFieldValue('TRADETYPE_LIST').toUpperCase();
-        let predictionValue = 'undefined';
-        let barrierOffsetValue = 'undefined';
-        let secondBarrierOffsetValue = 'undefined';
-        if (config.hasPrediction.indexOf(oppositesName) > -1) {
-            predictionValue = expectValue(block, 'PREDICTION');
-        }
-        if (
-            config.hasBarrierOffset.indexOf(oppositesName) > -1 ||
-            config.hasSecondBarrierOffset.indexOf(oppositesName) > -1
-        ) {
-            const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-            const value = expectValue(block, 'BARRIEROFFSET');
-            barrierOffsetValue = `${barrierOffsetType}${value}`;
-        }
-        if (config.hasSecondBarrierOffset.indexOf(oppositesName) > -1) {
-            const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
-            const value = expectValue(block, 'SECONDBARRIEROFFSET');
-            secondBarrierOffsetValue = `${barrierOffsetType}${value}`;
-        }
+        const getInputValue = fieldName =>
+            Blockly.JavaScript.valueToCode(block, fieldName, Blockly.JavaScript.ORDER_ATOMIC) || 'undefined';
         const code = `
         Bot.start({
           limitations: BinaryBotPrivateLimitations,
-          duration: ${durationValue},
-          duration_unit: '${durationType}',
-          currency: '${currency}',
-          amount: ${amount},
-          prediction: ${predictionValue},
-          barrierOffset: ${barrierOffsetValue},
-          secondBarrierOffset: ${secondBarrierOffsetValue},
+          duration: ${expectValue(block, 'DURATION')},
+          duration_unit: '${block.getFieldValue('DURATIONTYPE_LIST')}',
+          currency: '${block.getFieldValue('CURRENCY_LIST')}',
+          amount: ${expectValue(block, 'AMOUNT')},
+          prediction: ${getInputValue('PREDICTION')},
+          barrierOffset: ${getInputValue('BARRIEROFFSET')},
+          secondBarrierOffset: ${getInputValue('SECONDBARRIEROFFSET')},
         });
       `;
         return code;
