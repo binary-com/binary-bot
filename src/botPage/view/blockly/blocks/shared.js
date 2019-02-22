@@ -236,7 +236,23 @@ export const getDurationsForContracts = (contractsAvailable, selectedContractTyp
     );
 };
 
-export const haveContractsForSymbol = underlyingSymbol => contractsForStore.find(c => c.symbol === underlyingSymbol);
+export const haveContractsForSymbol = underlyingSymbol => {
+    const contractsForSymbol = contractsForStore.find(c => c.symbol === underlyingSymbol);
+    if (!contractsForSymbol) {
+        return false;
+    }
+    const tokenList = getTokenList();
+    const isDifferentAccount = () => tokenList.length && contractsForSymbol.accountName !== tokenList[0].accountName;
+    if (isDifferentAccount()) {
+        return false;
+    }
+    // Data expired, serve cached data, but retrieve updated data async
+    const isExpiredData = () => Math.floor((Date.now() - contractsForSymbol.timestamp) / 1000) > 600;
+    if (isExpiredData()) {
+        getContractsAvailableForSymbolFromApi(underlyingSymbol);
+    }
+    return contractsForSymbol;
+};
 
 export const getContractsAvailableForSymbol = async underlyingSymbol => {
     const contractsForSymbol = haveContractsForSymbol(underlyingSymbol);
@@ -244,19 +260,6 @@ export const getContractsAvailableForSymbol = async underlyingSymbol => {
         const contractsAvailableForSymbol = await getContractsAvailableForSymbolFromApi(underlyingSymbol);
         return Promise.resolve(contractsAvailableForSymbol.available);
     }
-    // Different accounts have access to different markets, request and serve new data
-    const tokenList = getTokenList();
-    const isDifferentAccount = () => tokenList.length && contractsForSymbol.accountName !== tokenList[0].accountName;
-    if (isDifferentAccount()) {
-        const contractsAvailableForSymbol = await getContractsAvailableForSymbolFromApi(underlyingSymbol);
-        return Promise.resolve(contractsAvailableForSymbol.available);
-    }
-    // Data expired, serve cached data, but retrieve updated data async
-    const isExpiredData = () => Math.floor((Date.now() - contractsForSymbol.timestamp) / 1000) > 600;
-    if (isExpiredData()) {
-        getContractsAvailableForSymbolFromApi(underlyingSymbol);
-    }
-    // Not a different account or expired, return what we have.
     return Promise.resolve(contractsForSymbol.available);
 };
 
