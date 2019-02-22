@@ -246,10 +246,12 @@ export const haveContractsForSymbol = underlyingSymbol => {
     if (isDifferentAccount()) {
         return false;
     }
-    // Data expired, serve cached data, but retrieve updated data async
+    // Data expired, return cached data, retrieve updated data in background (if not already doing so)
     const isExpiredData = () => Math.floor((Date.now() - contractsForSymbol.timestamp) / 1000) > 600;
     if (isExpiredData()) {
-        getContractsAvailableForSymbolFromApi(underlyingSymbol);
+        if (!globalObserver.isRegistered(`contractsLoaded.${underlyingSymbol}`)) {
+            getContractsAvailableForSymbolFromApi(underlyingSymbol);
+        }
     }
     return contractsForSymbol;
 };
