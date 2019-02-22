@@ -300,7 +300,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
                 );
             contractsForStore.push(contractsForSymbol);
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
-            globalObserver.emit(`contractsLoaded.${underlyingSymbol}`);
+            globalObserver.unregisterAll(`contractsLoaded.${underlyingSymbol}`);
         }
     } catch (e) {
         if (window.trackJs) {
