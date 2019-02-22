@@ -306,7 +306,6 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
         if (window.trackJs) {
             trackJs.addMetadata('getContractsAvailableForSymbolFromApi Error', e.message);
         }
-        globalObserver.emit('ui.log.error', translate('Could not retrieve contracts'));
     }
     if (typeof api.disconnect === 'function') {
         api.disconnect();
