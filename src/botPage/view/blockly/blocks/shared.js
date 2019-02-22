@@ -249,7 +249,9 @@ export const haveContractsForSymbol = underlyingSymbol => {
     // Data expired, return cached data, retrieve updated data in background (if not already doing so)
     const isExpiredData = () => Math.floor((Date.now() - contractsForSymbol.timestamp) / 1000) > 600;
     if (isExpiredData()) {
-        if (!globalObserver.isRegistered(`contractsLoaded.${underlyingSymbol}`)) {
+        const event = `contractsLoaded.${underlyingSymbol}`;
+        if (!globalObserver.isRegistered(event)) {
+            globalObserver.register(event);
             getContractsAvailableForSymbolFromApi(underlyingSymbol);
         }
     }
@@ -298,6 +300,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
                 );
             contractsForStore.push(contractsForSymbol);
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
+            globalObserver.emit(`contractsLoaded.${underlyingSymbol}`);
         }
     } catch (e) {
         if (window.trackJs) {
