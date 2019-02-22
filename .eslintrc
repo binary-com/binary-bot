@@ -19,7 +19,6 @@
   "globals": {
     "Blockly": false,
     "trackJs": false,
-    "amplitude": false,
     "jest": false
   },
   "plugins": [
