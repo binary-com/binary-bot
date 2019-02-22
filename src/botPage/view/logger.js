@@ -1,7 +1,6 @@
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
 import { translate } from '../../common/i18n';
-import { isVirtual } from '../common/tools';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
