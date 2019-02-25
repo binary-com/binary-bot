@@ -53,6 +53,10 @@ export default class TradeTable extends Component {
             const { rows } = this.state[accountID];
             if (rows.length) this.export();
         });
+        globalObserver.register('summary.clear', () => {
+            const { accountID } = this.props;
+            this.setState({ [accountID]: this.state.initial });
+        });
         globalObserver.register('bot.contract', info => {
             if (!info) {
                 return;
