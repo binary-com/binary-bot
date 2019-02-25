@@ -7,6 +7,10 @@ import { getLanguage } from './lang';
 const Elevio = (() => {
     const init = () => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
+
+        // eslint-disable-next-line no-underscore-dangle
+        window._elev.on('widget:opened', () => window._elev.openArticle('43'));
+
         // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
             const availableLanguages = ['en']; // Enable when available: ['es', 'id', 'pt', 'ru']
