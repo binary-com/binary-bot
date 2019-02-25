@@ -3,7 +3,6 @@ import fs from 'fs';
 import readline from 'readline';
 import program from 'commander';
 import { observer as globalObserver } from '../../common/utils/observer';
-import { version } from '../../../package.json';
 import { createInterpreter } from './CliTools';
 
 const log = (...args) => console.log(`${new Date().toLocaleTimeString()}:`, ...args); // eslint-disable-line no-console
@@ -15,7 +14,6 @@ setInterval(() => {}, 2147483647); // Keep node alive
 let filename;
 
 program
-    .version(version)
     .usage('[filename]')
     .arguments('[filename]')
     .action(fn => {
