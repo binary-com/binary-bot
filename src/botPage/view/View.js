@@ -14,6 +14,7 @@ import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import { symbolPromise } from './shared';
 import Tour from './tour';
 import TradeInfoPanel from './TradeInfoPanel';
+import { showDialog } from '../bot/tools';
 import Elevio from '../../common/elevio';
 import { updateConfigCurrencies } from '../common/const';
 import { roundBalance, isVirtual } from '../common/tools';
@@ -220,41 +221,6 @@ const applyToolboxPermissions = () => {
         [fn]();
 };
 
-const showPopup = selector =>
-    new Promise((resolve, reject) => {
-        setBeforeUnload(true);
-        $(selector).dialog({
-            height: 'auto',
-            width : 600,
-            modal : true,
-            open() {
-                $(this)
-                    .parent()
-                    .find('.ui-dialog-buttonset > button')
-                    .removeClass('ui-button ui-corner-all ui-widget');
-            },
-            buttons: [
-                {
-                    text : translate('No'),
-                    class: 'button-secondary',
-                    click() {
-                        $(this).dialog('close');
-                        reject();
-                    },
-                },
-                {
-                    text : translate('Yes'),
-                    class: 'button-primary',
-                    click() {
-                        $(this).dialog('close');
-                        resolve();
-                    },
-                },
-            ],
-        });
-        $(selector).dialog('open');
-    });
-
 export default class View {
     constructor() {
         logHandler();
@@ -358,6 +324,33 @@ export default class View {
             this.stop();
         };
 
+        const getAccountSwitchText = () => {
+            if (this.blockly.hasStarted()) {
+                return [
+                    translate(
+                        'Binary Bot will not place any new trades. Any trades already placed (but not expired) will be completed by our system. Any unsaved changes will be lost.'
+                    ),
+                    translate(
+                        'Note: Please see the Binary.com statement page for details of all confirmed transactions.'
+                    ),
+                ];
+            }
+            return [translate('Any unsaved changes will be lost.')];
+        };
+
+        const logout = () => {
+            showDialog({
+                title: translate('Are you sure?'),
+                text : getAccountSwitchText(),
+            })
+                .then(() => {
+                    this.stop();
+                    Elevio.logoutUser();
+                    removeTokens();
+                })
+                .catch(() => {});
+        };
+
         const removeTokens = () => {
             logoutAllTokens().then(() => {
                 updateTokenList();
@@ -367,23 +360,10 @@ export default class View {
                 window.location.reload();
             });
         };
-        const logout = () => {
-            showPopup(getAccountSwitchPanelName())
-                .then(() => {
-                    this.stop();
-                    Elevio.logoutUser();
-                    removeTokens();
-                })
-                .catch(() => {});
-        };
 
         const clearActiveTokens = () => {
             setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
         };
-
-        const getReloadPanelName = () => (this.blockly.hasStarted() ? '#reloadPanelTrading' : '#reloadPanel');
-        const getAccountSwitchPanelName = () =>
-            this.blockly.hasStarted() ? '#switchAccountPanelTrading' : '#reloadPanel';
 
         $('.panelExitButton').click(function onClick() {
             $(this)
@@ -431,13 +411,16 @@ export default class View {
         $('#tradingViewButton').click(() => {
             tradingView.open();
         });
+
         const exportContent = {};
         exportContent.summaryPanel = () => {
             globalObserver.emit('summary.export');
         };
+
         exportContent.logPanel = () => {
             globalObserver.emit('log.export');
         };
+
         const addExportButtonToPanel = panelId => {
             const buttonHtml =
                 '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
@@ -451,16 +434,16 @@ export default class View {
                 });
             }
         };
+
         const showSummary = () => {
             $('#summaryPanel').dialog('open');
             addExportButtonToPanel('summaryPanel');
         };
-        const showLog = () => {
+
+        $('#logButton').click(() => {
             $('#logPanel').dialog('open');
             addExportButtonToPanel('logPanel');
-        };
-
-        $('#logButton').click(showLog);
+        });
 
         $('#showSummary').click(showSummary);
 
@@ -515,7 +498,7 @@ export default class View {
         const startBot = limitations => {
             $('#stopButton, #summaryStopButton').show();
             $('#runButton, #summaryRunButton').hide();
-            $('#runButton, #summaryRunButton').prop('disabled', true);
+            $('#runButton, #summaryRunButton, #summaryClearButton').prop('disabled', true);
             showSummary();
             this.blockly.run(limitations);
         };
@@ -546,17 +529,36 @@ export default class View {
         });
 
         $('#resetButton').click(() => {
-            showPopup(getReloadPanelName())
+            let dialogText;
+            if (this.blockly.hasStarted()) {
+                dialogText = [
+                    translate(
+                        'Binary Bot will not place any new trades. Any trades already placed (but not expired) will be completed by our system. Any unsaved changes will be lost.'
+                    ),
+                    translate(
+                        'Note: Please see the Binary.com statement page for details of all confirmed transactions.'
+                    ),
+                ];
+            } else {
+                dialogText = [translate('Any unsaved changes will be lost.')];
+            }
+            showDialog({
+                title: translate('Are you sure?'),
+                text : dialogText,
+            })
                 .then(() => {
                     this.stop();
                     this.blockly.resetWorkspace();
-                    setTimeout(() => this.blockly.cleanUp(), 0);
+                    this.blockly.cleanUp();
                 })
                 .catch(() => {});
         });
 
         $('.login-id-list').on('click', 'a', e => {
-            showPopup(getAccountSwitchPanelName())
+            showDialog({
+                title: translate('Are you sure?'),
+                text : getAccountSwitchText(),
+            })
                 .then(() => {
                     this.stop();
                     Elevio.logoutUser();
@@ -617,7 +619,7 @@ export default class View {
         });
 
         globalObserver.register('bot.stop', () => {
-            $('#runButton, #summaryRunButton').prop('disabled', false);
+            $('#runButton, #summaryRunButton, #summaryClearButton').prop('disabled', false);
         });
 
         globalObserver.register('bot.info', info => {
