@@ -13,7 +13,7 @@ const Elevio = (() => {
 
         // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
-            const availableLanguages = ['en']; // Enable when available: ['es', 'id', 'pt', 'ru']
+            const availableLanguages = ['en', 'es', 'id', 'pt', 'ru'];
             const currentLanguage = getLanguage();
             if (availableLanguages.includes(currentLanguage)) {
                 elev.setLanguage(currentLanguage);
