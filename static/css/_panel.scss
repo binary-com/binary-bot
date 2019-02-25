@@ -202,6 +202,10 @@ $disabled-color: #F2F2F2;
         .toolbox-button:focus {
             @include toolbox-button-focus;
         }
+        #summaryClearButton {
+            position: absolute;
+            right: -750px;
+        }
     }
 }
 
