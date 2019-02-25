@@ -72,6 +72,9 @@ const marketsWereRemoved = xml => {
                 },
             ],
         });
+        if (window.trackJs) {
+            trackJs.track('Invalid financial market');
+        }
         $('#unavailableMarkets').dialog('open');
         return true;
     }

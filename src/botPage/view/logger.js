@@ -1,7 +1,6 @@
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
 import { translate } from '../../common/i18n';
-import { isVirtual } from '../common/tools';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
@@ -91,8 +90,6 @@ const waitForNotifications = () => {
         'log.trade.finish',
     ];
 
-    const amplitudeList = ['log.bot.login', 'log.trade.finish'];
-
     logList.forEach(event => globalObserver.register(event, d => log('info', event, d)));
 
     globalObserver.register('Notify', notify);
@@ -102,21 +99,6 @@ const waitForNotifications = () => {
     notifList.forEach(className =>
         globalObserver.register(`ui.log.${className}`, message => notify({ className, message, position: 'right' }))
     );
-
-    amplitudeList.forEach(event => globalObserver.register(event, d => amplitude.getInstance().logEvent(event, d)));
-
-    globalObserver.register('log.revenue', data => {
-        const { user, profit, contract } = data;
-
-        if (typeof amplitude !== 'undefined' && !isVirtual(user)) {
-            const revenue = new amplitude.Revenue()
-                .setProductId(`${contract.underlying}.${contract.contract_type}`)
-                .setPrice(-profit)
-                .setRevenueType(profit < 0 ? 'loss' : 'win');
-
-            amplitude.getInstance().logRevenueV2(revenue, { contract });
-        }
-    });
 };
 
 const logHandler = () => {
@@ -124,10 +106,6 @@ const logHandler = () => {
         .first()
         .attr('value');
     const userId = getToken(token).accountName;
-
-    if (amplitude) {
-        amplitude.getInstance().setUserId(userId);
-    }
 
     if (trackJs) {
         trackJs.configure({ userId });
