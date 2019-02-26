@@ -9,9 +9,6 @@ const Elevio = (() => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
 
         // eslint-disable-next-line no-underscore-dangle
-        window._elev.on('widget:opened', () => window._elev.openArticle('43'));
-
-        // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
             const availableLanguages = ['en', 'es', 'id', 'pt', 'ru'];
             const currentLanguage = getLanguage();
