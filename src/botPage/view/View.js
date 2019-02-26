@@ -549,7 +549,7 @@ export default class View {
                 .then(() => {
                     this.stop();
                     this.blockly.resetWorkspace();
-                    this.blockly.cleanUp();
+                    setTimeout(() => this.blockly.cleanUp(), 0);
                 })
                 .catch(() => {});
         });
