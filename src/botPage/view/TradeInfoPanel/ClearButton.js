@@ -7,7 +7,11 @@ const ClearButton = () => {
     function confirmClearLog() {
         showDialog({
             title: translate('Are you sure?'),
-            text : [translate('This will clear all transactions in the summary panel.')],
+            text : [
+                translate(
+                    'This will clear all transactions in the summary panel, and all counters will be reset to zero.'
+                ),
+            ],
         })
             .then(() => globalObserver.emit('summary.clear'))
             .catch(() => {});
