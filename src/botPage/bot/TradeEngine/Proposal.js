@@ -112,6 +112,7 @@ export default Engine =>
                 isNotEqual('duration') ||
                 isNotEqual('amount') ||
                 isNotEqual('prediction') ||
+                isNotEqual('absoluteBarrier') ||
                 isNotEqual('barrierOffset') ||
                 isNotEqual('secondBarrierOffset')
             );
