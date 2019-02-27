@@ -78,7 +78,7 @@ export default () => {
                             this.updatePredictionBlocks(contracts);
                             this.updateBarrierOffsetBlocks(contracts, true);
                             // Called to default to smallest durations for symbol
-                            this.updateDurationLists(contracts, true, true);
+                            this.updateDurationLists(contracts, false, true);
                         } else if (ev.name === 'DURATIONTYPE_LIST' && ev.oldValue !== ev.newValue) {
                             // Called to set barriers based on duration
                             this.updateBarrierOffsetBlocks(contracts, true, [ev.blockId]);
