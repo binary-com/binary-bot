@@ -361,9 +361,7 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
                 if (barrierOffsetMatch) {
                     barriers.barrier = barrierOffsetMatch[1]; // eslint-disable-line prefer-destructuring
                 } else {
-                    // Return default value if we only get a barrier based on price (e.g. 234.1231)
-                    // as we can't calculate the offset since we don't stream price like SmartTrader
-                    barriers.barrier = 0.1;
+                    barriers.barrier = contract.barrier;
                 }
             }
         }
