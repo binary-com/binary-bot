@@ -346,15 +346,8 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
                     barriers.high_barrier = highBarrierOffsetMatch[1]; // eslint-disable-line prefer-destructuring
                     barriers.low_barrier = lowBarrierOffsetMatch[1]; // eslint-disable-line prefer-destructuring
                 } else {
-                    const countDecimals = number => {
-                        if (Math.floor(number) === number) return 0;
-                        return number.toString().split('.')[1].length || 0;
-                    };
-                    const highBarrier = parseFloat(contract.high_barrier);
-                    const lowBarrier = parseFloat(contract.low_barrier);
-                    const barrier = ((highBarrier - lowBarrier) / 2).toFixed(countDecimals(contract.high_barrier));
-                    barriers.high_barrier = barrier;
-                    barriers.low_barrier = barrier;
+                    barriers.high_barrier = contract.high_barrier;
+                    barriers.low_barrier = contract.low_barrier;
                 }
             } else if (contract.barriers === 1 && contract.barrier) {
                 const barrierOffsetMatch = contract.barrier.toString().match(offsetRegex);
