@@ -5,8 +5,6 @@ import { notify } from './broadcast';
 
 export const noop = () => {};
 
-const castBarrierToString = barrier => (barrier > 0 ? `+${barrier}` : `${barrier}`);
-
 export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => {
         const proposal = {
@@ -23,15 +21,17 @@ export const tradeOptionToProposal = tradeOption =>
         }
 
         if (!['TICKLOW', 'TICKHIGH'].includes(type) && tradeOption.prediction !== undefined) {
-            proposal.barrier = castBarrierToString(tradeOption.barrierOffset);
+            proposal.barrier = tradeOption.prediction;
         } else if (tradeOption.absoluteBarrier !== undefined) {
             proposal.barrier = `${tradeOption.absoluteBarrier}`;
         } else if (tradeOption.barrierOffset !== undefined) {
-            proposal.barrier = castBarrierToString(tradeOption.barrierOffset);
+            proposal.barrier = tradeOption.barrierOffset;
         }
 
-        if (tradeOption.secondBarrierOffset !== undefined) {
-            proposal.barrier2 = castBarrierToString(tradeOption.secondBarrierOffset);
+        if (tradeOption.secondAbsoluteBarrier !== undefined) {
+            proposal.barrier2 = tradeOption.secondAbsoluteBarrier;
+        } else if (tradeOption.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = tradeOption.secondBarrierOffset;
         }
         return proposal;
     });
