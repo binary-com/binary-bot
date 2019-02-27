@@ -71,7 +71,7 @@ export const payout = block => {
 
 const barrierOffsetGenerator = (inputName, block) => {
     if (!block.getInput(inputName)) {
-        // Determine amount of barrier-blocks on workspace
+        // Determine amount of barrierOffset-blocks on workspace
         const barrierNumber = block.inputList.filter(input => /BARRIEROFFSET$/.test(input.name)).length;
 
         // Set barrier options according to barrierNumber (i.e. + and -)
@@ -104,6 +104,19 @@ export const prediction = block => {
             .appendValueInput(inputName)
             .setCheck('Number')
             .appendField(`${translate('Prediction')}:`);
+
+        const input = block.getInput(inputName);
+        input.setVisible(false);
+    }
+};
+
+export const absoluteBarrier = block => {
+    const inputName = 'ABSOLUTEBARRIER';
+    if (!block.getInput(inputName)) {
+        block
+            .appendValueInput(inputName)
+            .setCheck('Number')
+            .appendField(`${translate('Barrier')}:`);
 
         const input = block.getInput(inputName);
         input.setVisible(false);
