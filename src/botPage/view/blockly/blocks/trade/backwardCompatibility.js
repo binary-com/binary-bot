@@ -2,7 +2,7 @@ import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
 import { symbolApi } from '../../../shared';
 import { setInputList, marketDefPlaceHolders, marketToTradeOption } from './tools';
-import { duration, payout, prediction, barrierOffset, secondBarrierOffset, absoluteBarrier } from './components';
+import { duration, payout, prediction, absoluteBarrierGenerator, barrierOffsetGenerator } from './components';
 
 const isBlockCreationEvent = (ev, block) => ev.type === Blockly.Events.CREATE && ev.ids.indexOf(block.id) >= 0;
 
@@ -47,9 +47,10 @@ export default () => {
             duration(this);
             payout(this);
             prediction(this);
-            absoluteBarrier(this);
-            barrierOffset(this);
-            secondBarrierOffset(this);
+            absoluteBarrierGenerator('ABSOLUTEBARRIER', this);
+            absoluteBarrierGenerator('SECONDABSOLUTEBARRIER', this);
+            barrierOffsetGenerator('BARRIEROFFSET', this);
+            barrierOffsetGenerator('SECONDBARRIEROFFSET', this);
             this.setInputsInline(false);
             this.setPreviousStatement(true, 'Condition');
         },
@@ -65,9 +66,10 @@ export default () => {
                 duration(this);
                 payout(this);
                 prediction(this);
-                absoluteBarrier(this);
-                barrierOffset(this);
-                secondBarrierOffset(this);
+                absoluteBarrierGenerator('ABSOLUTEBARRIER', this);
+                absoluteBarrierGenerator('SECONDABSOLUTEBARRIER', this);
+                barrierOffsetGenerator('BARRIEROFFSET', this);
+                barrierOffsetGenerator('SECONDBARRIEROFFSET', this);
                 this.setInputsInline(false);
                 this.setPreviousStatement(true, 'Condition');
             },
