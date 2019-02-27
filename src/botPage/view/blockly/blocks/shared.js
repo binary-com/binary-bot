@@ -117,7 +117,7 @@ fieldGeneratorMapping.SYMBOL_LIST = block => () => {
         Object.keys(symbols)
             .map(e => [symbols[e].display, symbols[e].symbol])
             // Filter out symbols we don't have contracts for (these symbols have only forward-starting)
-            .filter(symbol => !['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK'].includes(symbol[1]))
+            .filter(symbol => !['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK'].includes(symbol[1]))
     );
 };
 
