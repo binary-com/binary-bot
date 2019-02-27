@@ -11,6 +11,7 @@ import { insideTrade } from '../../relationChecker';
 import { findTopParentBlock, hideInteractionsFromBlockly, getBlocksByType } from '../../utils';
 import { translate } from '../../../../../common/i18n';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
+import config from '../../../../common/const';
 
 export default () => {
     Blockly.Blocks.tradeOptions = {
@@ -173,28 +174,43 @@ export default () => {
                         }
                     };
 
-                    const barrierBlockNames = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET', 'ABSOLUTEBARRIER'];
-                    if (!Object.keys(barriers).length) {
-                        barrierBlockNames.forEach(barrierInputName => tradeOptionsBlock.removeInput(barrierInputName));
+                    const absoluteBarrierNames = ['ABSOLUTEBARRIER', 'SECONDABSOLUTEBARRIER'];
+                    const barrierOffsetNames = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
+
+                    const barrierKeys = Object.keys(barriers);
+                    if (!barrierKeys.length) {
+                        [...absoluteBarrierNames, ...barrierOffsetNames].forEach(barrierInputName =>
+                            tradeOptionsBlock.removeInput(barrierInputName)
+                        );
                         return;
                     }
 
-                    const barrierKeys = Object.keys(barriers);
-                    if (barrierKeys.length === 1 && selectedDuration === 'd') {
-                        revealBarrierBlock(barrierKeys[0], 'ABSOLUTEBARRIER');
-                        barrierBlockNames
-                            .slice(0, 2)
-                            .forEach(barrierBlockName => tradeOptionsBlock.removeInput(barrierBlockName));
-                    } else {
-                        barrierKeys.forEach((barrier, index) => revealBarrierBlock(barrier, barrierBlockNames[index]));
-
-                        // Check if number of barriers returned by API is less than barrier inputs on our workspace
-                        // If any, remove leftover barrierBlockNames from the workspace
-                        if (barrierKeys.length < barrierBlockNames.length) {
-                            barrierBlockNames
-                                .slice(barrierKeys.length)
-                                .forEach(barrierName => tradeOptionsBlock.removeInput(barrierName));
+                    // Draw absolute barriers for day-durations
+                    if (selectedDuration === 'd') {
+                        if (barrierKeys.length === 1) {
+                            revealBarrierBlock(barrierKeys[0], absoluteBarrierNames[0]);
+                            // Update label to show 'Barrier' only
+                            const input = tradeOptionsBlock.getInput(absoluteBarrierNames[0]);
+                            input.fieldRow[0].setText(`${translate('Barrier')}:`);
+                        } else {
+                            barrierKeys.forEach((barrier, index) =>
+                                revealBarrierBlock(barrier, absoluteBarrierNames[index])
+                            );
+                            // Update labels to show 'High barrier' + 'Low barrier'
+                            absoluteBarrierNames.forEach((inputName, index) => {
+                                const input = tradeOptionsBlock.getInput(inputName);
+                                input.fieldRow[0].setText(`${config.absoluteBarrierLabels[index]}:`);
+                            });
                         }
+                        [...barrierOffsetNames, ...absoluteBarrierNames.slice(barrierKeys.length)].forEach(inputName =>
+                            tradeOptionsBlock.removeInput(inputName)
+                        );
+                    } else {
+                        // Draw barrier offsets for all other durations
+                        barrierKeys.forEach((barrier, index) => revealBarrierBlock(barrier, barrierOffsetNames[index]));
+                        [...absoluteBarrierNames, ...barrierOffsetNames.slice(barrierKeys.length)].forEach(inputName =>
+                            tradeOptionsBlock.removeInput(inputName)
+                        );
                     }
                 });
             });
@@ -254,21 +270,54 @@ export default () => {
         if (!tradeDefBlock) {
             return '';
         }
-        const getInputValue = fieldName =>
-            Blockly.JavaScript.valueToCode(block, fieldName, Blockly.JavaScript.ORDER_ATOMIC) || 'undefined';
+
+        const durationValue = expectValue(block, 'DURATION');
+        const durationType = block.getFieldValue('DURATIONTYPE_LIST');
+        const currency = block.getFieldValue('CURRENCY_LIST');
+        const amount = expectValue(block, 'AMOUNT');
+
+        const isVisibleField = field => block.getInput(field) && block.getInput(field).isVisible();
+
+        let predictionValue = 'undefined';
+        let absoluteBarrierValue = 'undefined';
+        const secondAbsoluteBarrierValue = 'undefined';
+        let barrierOffsetValue = 'undefined';
+        let secondBarrierOffsetValue = 'undefined';
+
+        if (isVisibleField('PREDICTION')) {
+            predictionValue = expectValue(block, 'PREDICTION');
+        }
+        if (isVisibleField('ABSOLUTEBARRIER')) {
+            absoluteBarrierValue = expectValue(block, 'ABSOLUTEBARRIER');
+        }
+        if (isVisibleField('SECONDABSOLUTEBARRIER')) {
+            absoluteBarrierValue = expectValue(block, 'SECONDABSOLUTEBARRIER');
+        }
+        if (isVisibleField('BARRIEROFFSET')) {
+            const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
+            const value = expectValue(block, 'BARRIEROFFSET');
+            barrierOffsetValue = `'${barrierOffsetType}${value}'`;
+        }
+        if (isVisibleField('SECONDBARRIEROFFSET')) {
+            const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
+            const value = expectValue(block, 'SECONDBARRIEROFFSET');
+            secondBarrierOffsetValue = `'${barrierOffsetType}${value}'`;
+        }
+
         const code = `
-        Bot.start({
-          limitations: BinaryBotPrivateLimitations,
-          duration: ${expectValue(block, 'DURATION')},
-          duration_unit: '${block.getFieldValue('DURATIONTYPE_LIST')}',
-          currency: '${block.getFieldValue('CURRENCY_LIST')}',
-          amount: ${expectValue(block, 'AMOUNT')},
-          prediction: ${getInputValue('PREDICTION')},
-          absoluteBarrier: ${getInputValue('ABSOLUTEBARRIER')},
-          barrierOffset: ${getInputValue('BARRIEROFFSET')},
-          secondBarrierOffset: ${getInputValue('SECONDBARRIEROFFSET')},
-        });
-      `;
+            Bot.start({
+            limitations: BinaryBotPrivateLimitations,
+            duration: ${durationValue},
+            duration_unit: '${durationType}',
+            currency: '${currency}',
+            amount: ${amount},
+            prediction: ${predictionValue},
+            absoluteBarrier: ${absoluteBarrierValue},
+            secondAbsoluteBarrier: ${secondAbsoluteBarrierValue},
+            barrierOffset: ${barrierOffsetValue},
+            secondBarrierOffset: ${secondBarrierOffsetValue},
+            });
+        `;
         return code;
     };
 };
