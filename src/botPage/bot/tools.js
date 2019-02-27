@@ -8,29 +8,33 @@ export const noop = () => {};
 const castBarrierToString = barrier => (barrier > 0 ? `+${barrier}` : `${barrier}`);
 
 export const tradeOptionToProposal = tradeOption =>
-    tradeOption.contractTypes.map(type => ({
-        duration_unit: tradeOption.duration_unit,
-        basis        : 'stake',
-        currency     : tradeOption.currency,
-        symbol       : tradeOption.symbol,
-        duration     : tradeOption.duration,
-        amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
-        contract_type: type,
-        ...(tradeOption.prediction !== undefined && {
-            selected_tick: tradeOption.prediction,
-        }),
-        ...(type !== 'TICKLOW' &&
-            type !== 'TICKHIGH' &&
-            tradeOption.prediction !== undefined && {
-            barrier: tradeOption.prediction,
-        }),
-        ...(tradeOption.barrierOffset !== undefined && {
-            barrier: castBarrierToString(tradeOption.barrierOffset),
-        }),
-        ...(tradeOption.secondBarrierOffset !== undefined && {
-            barrier2: castBarrierToString(tradeOption.secondBarrierOffset),
-        }),
-    }));
+    tradeOption.contractTypes.map(type => {
+        const proposal = {
+            duration_unit: tradeOption.duration_unit,
+            basis        : 'stake',
+            currency     : tradeOption.currency,
+            symbol       : tradeOption.symbol,
+            duration     : tradeOption.duration,
+            amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
+            contract_type: type,
+        };
+        if (tradeOption.prediction !== undefined) {
+            proposal.selected_tick = tradeOption.prediction;
+        }
+
+        if (!['TICKLOW', 'TICKHIGH'].includes(type) && tradeOption.prediction !== undefined) {
+            proposal.barrier = castBarrierToString(tradeOption.barrierOffset);
+        } else if (tradeOption.absoluteBarrier !== undefined) {
+            proposal.barrier = `${tradeOption.absoluteBarrier}`;
+        } else if (tradeOption.barrierOffset !== undefined) {
+            proposal.barrier = castBarrierToString(tradeOption.barrierOffset);
+        }
+
+        if (tradeOption.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = castBarrierToString(tradeOption.secondBarrierOffset);
+        }
+        return proposal;
+    });
 
 export const getDirection = ticks => {
     const { length } = ticks;
