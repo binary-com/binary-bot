@@ -113,6 +113,7 @@ export default Engine =>
                 isNotEqual('amount') ||
                 isNotEqual('prediction') ||
                 isNotEqual('absoluteBarrier') ||
+                isNotEqual('secondAbsoluteBarrier') ||
                 isNotEqual('barrierOffset') ||
                 isNotEqual('secondBarrierOffset')
             );
