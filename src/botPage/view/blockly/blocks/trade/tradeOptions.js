@@ -156,14 +156,8 @@ export default () => {
                 const barriers = getBarriersForContracts(contracts, tradeType, selectedDuration);
 
                 hideInteractionsFromBlockly(() => {
-                    const barrierBlockNames = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
-                    if (!Object.keys(barriers).length) {
-                        barrierBlockNames.forEach(barrierInputName => tradeOptionsBlock.removeInput(barrierInputName));
-                        return;
-                    }
-                    const barrierKeys = Object.keys(barriers);
-                    barrierKeys.forEach((barrier, index) => {
-                        const barrierInput = tradeOptionsBlock.getInput(barrierBlockNames[index]);
+                    const revealBarrierBlock = (barrier, inputName) => {
+                        const barrierInput = tradeOptionsBlock.getInput(inputName);
                         if (barrierInput) {
                             barrierInput.setVisible(true);
 
@@ -177,13 +171,30 @@ export default () => {
                                 }
                             }
                         }
-                    });
-                    // Check if number of barriers returned by API is less than barrier inputs on our workspace
-                    // If any, remove leftover barrierBlockNames from the workspace
-                    if (barrierKeys.length < barrierBlockNames.length) {
+                    };
+
+                    const barrierBlockNames = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET', 'ABSOLUTEBARRIER'];
+                    if (!Object.keys(barriers).length) {
+                        barrierBlockNames.forEach(barrierInputName => tradeOptionsBlock.removeInput(barrierInputName));
+                        return;
+                    }
+
+                    const barrierKeys = Object.keys(barriers);
+                    if (barrierKeys.length === 1 && selectedDuration === 'd') {
+                        revealBarrierBlock(barrierKeys[0], 'ABSOLUTEBARRIER');
                         barrierBlockNames
-                            .slice(barrierKeys.length)
-                            .forEach(barrierName => tradeOptionsBlock.removeInput(barrierName));
+                            .slice(0, 2)
+                            .forEach(barrierBlockName => tradeOptionsBlock.removeInput(barrierBlockName));
+                    } else {
+                        barrierKeys.forEach((barrier, index) => revealBarrierBlock(barrier, barrierBlockNames[index]));
+
+                        // Check if number of barriers returned by API is less than barrier inputs on our workspace
+                        // If any, remove leftover barrierBlockNames from the workspace
+                        if (barrierKeys.length < barrierBlockNames.length) {
+                            barrierBlockNames
+                                .slice(barrierKeys.length)
+                                .forEach(barrierName => tradeOptionsBlock.removeInput(barrierName));
+                        }
                     }
                 });
             });
@@ -253,6 +264,7 @@ export default () => {
           currency: '${block.getFieldValue('CURRENCY_LIST')}',
           amount: ${expectValue(block, 'AMOUNT')},
           prediction: ${getInputValue('PREDICTION')},
+          absoluteBarrier: ${getInputValue('ABSOLUTEBARRIER')},
           barrierOffset: ${getInputValue('BARRIEROFFSET')},
           secondBarrierOffset: ${getInputValue('SECONDBARRIEROFFSET')},
         });
