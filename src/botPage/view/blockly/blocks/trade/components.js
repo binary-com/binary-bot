@@ -89,7 +89,7 @@ export const barrierOffsetGenerator = (inputName, block) => {
     }
 };
 
-export const absoluteBarrierGenerator = (inputName, block, labels) => {
+export const absoluteBarrierGenerator = (inputName, block) => {
     if (!block.getInput(inputName)) {
         const barrierNumber = block.inputList.filter(input => /ABSOLUTEBARRIER$/.test(input.name)).length;
 
