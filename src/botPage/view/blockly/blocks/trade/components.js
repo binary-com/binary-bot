@@ -69,7 +69,7 @@ export const payout = block => {
     }
 };
 
-const barrierOffsetGenerator = (inputName, block) => {
+export const barrierOffsetGenerator = (inputName, block) => {
     if (!block.getInput(inputName)) {
         // Determine amount of barrierOffset-blocks on workspace
         const barrierNumber = block.inputList.filter(input => /BARRIEROFFSET$/.test(input.name)).length;
@@ -89,12 +89,19 @@ const barrierOffsetGenerator = (inputName, block) => {
     }
 };
 
-export const barrierOffset = block => {
-    barrierOffsetGenerator('BARRIEROFFSET', block);
-};
+export const absoluteBarrierGenerator = (inputName, block, labels) => {
+    if (!block.getInput(inputName)) {
+        const barrierNumber = block.inputList.filter(input => /ABSOLUTEBARRIER$/.test(input.name)).length;
 
-export const secondBarrierOffset = block => {
-    barrierOffsetGenerator('SECONDBARRIEROFFSET', block);
+        block
+            .appendValueInput(inputName)
+            .setCheck('Number')
+            // Label is a fallback value, proper labels are set in tradeOptions
+            .appendField(`${translate('Barrier')} ${barrierNumber + 1}:`);
+
+        const input = block.getInput(inputName);
+        input.setVisible(false);
+    }
 };
 
 export const prediction = block => {
@@ -104,19 +111,6 @@ export const prediction = block => {
             .appendValueInput(inputName)
             .setCheck('Number')
             .appendField(`${translate('Prediction')}:`);
-
-        const input = block.getInput(inputName);
-        input.setVisible(false);
-    }
-};
-
-export const absoluteBarrier = block => {
-    const inputName = 'ABSOLUTEBARRIER';
-    if (!block.getInput(inputName)) {
-        block
-            .appendValueInput(inputName)
-            .setCheck('Number')
-            .appendField(`${translate('Barrier')}:`);
 
         const input = block.getInput(inputName);
         input.setVisible(false);
