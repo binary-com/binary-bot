@@ -280,7 +280,7 @@ export default () => {
 
         let predictionValue = 'undefined';
         let absoluteBarrierValue = 'undefined';
-        const secondAbsoluteBarrierValue = 'undefined';
+        let secondAbsoluteBarrierValue = 'undefined';
         let barrierOffsetValue = 'undefined';
         let secondBarrierOffsetValue = 'undefined';
 
@@ -291,7 +291,7 @@ export default () => {
             absoluteBarrierValue = expectValue(block, 'ABSOLUTEBARRIER');
         }
         if (isVisibleField('SECONDABSOLUTEBARRIER')) {
-            absoluteBarrierValue = expectValue(block, 'SECONDABSOLUTEBARRIER');
+            secondAbsoluteBarrierValue = expectValue(block, 'SECONDABSOLUTEBARRIER');
         }
         if (isVisibleField('BARRIEROFFSET')) {
             const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
