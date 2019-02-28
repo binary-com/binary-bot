@@ -147,7 +147,7 @@ export default () => {
                 });
             });
         },
-        updateBarrierOffsetBlocks(contracts, useDefault = false, updateOnly = []) {
+        updateBarrierOffsetBlocks(contracts, useDefaultType = false, updateOnly = []) {
             getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
                 if (tradeOptionsBlock.disabled) return;
                 if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
@@ -157,61 +157,58 @@ export default () => {
                 const barriers = getBarriersForContracts(contracts, tradeType, selectedDuration);
 
                 hideInteractionsFromBlockly(() => {
-                    const revealBarrierBlock = (barrier, inputName) => {
+                    const revealBarrierBlock = (barrierValue, inputName) => {
                         const barrierInput = tradeOptionsBlock.getInput(inputName);
                         if (barrierInput) {
                             barrierInput.setVisible(true);
 
                             // Attach shadow block with API-returned barrier-value (only if user hasn't defined a value)
                             if (!barrierInput.connection.isConnected()) {
-                                barrierInput.attachShadowBlock(barriers[barrier], 'NUM', 'math_number');
-                            } else if (useDefault) {
+                                barrierInput.attachShadowBlock(barrierValue, 'NUM', 'math_number');
+                            } else if (useDefaultType) {
                                 const connectedBlock = barrierInput.connection.targetBlock();
                                 if (connectedBlock.isShadow()) {
-                                    connectedBlock.setFieldValue(barriers[barrier], 'NUM');
+                                    connectedBlock.setFieldValue(barrierValue, 'NUM');
                                 }
                             }
                         }
                     };
 
-                    const absoluteBarrierNames = ['ABSOLUTEBARRIER', 'SECONDABSOLUTEBARRIER'];
                     const barrierOffsetNames = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
+                    const removeInput = inputName => tradeOptionsBlock.removeInput(inputName);
+                    const updateList = (list, options, selected = null) => {
+                        list.menuGenerator_ = options; // eslint-disable-line no-underscore-dangle, no-param-reassign
+                        list.setValue('');
+                        list.setValue(selected || list.menuGenerator_[0][1]); // eslint-disable-line no-underscore-dangle
+                    };
 
-                    const barrierKeys = Object.keys(barriers);
-                    if (!barrierKeys.length) {
-                        [...absoluteBarrierNames, ...barrierOffsetNames].forEach(barrierInputName =>
-                            tradeOptionsBlock.removeInput(barrierInputName)
-                        );
+                    if (!barriers.values.length) {
+                        barrierOffsetNames.forEach(removeInput);
                         return;
                     }
 
-                    // Draw absolute barriers for day-durations
-                    if (selectedDuration === 'd') {
-                        if (barrierKeys.length === 1) {
-                            revealBarrierBlock(barrierKeys[0], absoluteBarrierNames[0]);
-                            // Update label to show 'Barrier' only
-                            const input = tradeOptionsBlock.getInput(absoluteBarrierNames[0]);
-                            input.fieldRow[0].setText(`${translate('Barrier')}:`);
-                        } else {
-                            barrierKeys.forEach((barrier, index) =>
-                                revealBarrierBlock(barrier, absoluteBarrierNames[index])
-                            );
-                            // Update labels to show 'High barrier' + 'Low barrier'
-                            absoluteBarrierNames.forEach((inputName, index) => {
-                                const input = tradeOptionsBlock.getInput(inputName);
-                                input.fieldRow[0].setText(`${config.absoluteBarrierLabels[index]}:`);
-                            });
-                        }
-                        [...barrierOffsetNames, ...absoluteBarrierNames.slice(barrierKeys.length)].forEach(inputName =>
-                            tradeOptionsBlock.removeInput(inputName)
-                        );
+                    if (barriers.allowBothTypes || selectedDuration === 'd') {
+                        barriers.values.forEach((barrierValue, index) => {
+                            const absoluteType = [[translate('Absolute'), 'absolute']];
+                            const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
+                            const selectedType = typeList.getValue();
+
+                            if (selectedDuration === 'd') {
+                                updateList(typeList, absoluteType, 'absolute');
+                            } else {
+                                updateList(typeList, config.barrierTypes.concat(absoluteType), selectedType);
+                            }
+                            revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
+                        });
                     } else {
-                        // Draw barrier offsets for all other durations
-                        barrierKeys.forEach((barrier, index) => revealBarrierBlock(barrier, barrierOffsetNames[index]));
-                        [...absoluteBarrierNames, ...barrierOffsetNames.slice(barrierKeys.length)].forEach(inputName =>
-                            tradeOptionsBlock.removeInput(inputName)
-                        );
+                        barriers.values.forEach((barrierValue, index) => {
+                            const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
+                            const selectedType = config.barrierTypes[index][1];
+                            updateList(typeList, config.barrierTypes, selectedType);
+                            revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
+                        });
                     }
+                    barrierOffsetNames.slice(barriers.values.length).forEach(removeInput);
                 });
             });
         },
@@ -279,29 +276,21 @@ export default () => {
         const isVisibleField = field => block.getInput(field) && block.getInput(field).isVisible();
 
         let predictionValue = 'undefined';
-        let absoluteBarrierValue = 'undefined';
-        let secondAbsoluteBarrierValue = 'undefined';
         let barrierOffsetValue = 'undefined';
         let secondBarrierOffsetValue = 'undefined';
 
         if (isVisibleField('PREDICTION')) {
             predictionValue = expectValue(block, 'PREDICTION');
         }
-        if (isVisibleField('ABSOLUTEBARRIER')) {
-            absoluteBarrierValue = expectValue(block, 'ABSOLUTEBARRIER');
-        }
-        if (isVisibleField('SECONDABSOLUTEBARRIER')) {
-            secondAbsoluteBarrierValue = expectValue(block, 'SECONDABSOLUTEBARRIER');
-        }
         if (isVisibleField('BARRIEROFFSET')) {
             const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
             const value = expectValue(block, 'BARRIEROFFSET');
-            barrierOffsetValue = `'${barrierOffsetType}${value}'`;
+            barrierOffsetValue = barrierOffsetType === 'absolute' ? `${value}` : `'${barrierOffsetType}${value}'`;
         }
         if (isVisibleField('SECONDBARRIEROFFSET')) {
             const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
             const value = expectValue(block, 'SECONDBARRIEROFFSET');
-            secondBarrierOffsetValue = `'${barrierOffsetType}${value}'`;
+            secondBarrierOffsetValue = barrierOffsetType === 'absolute' ? `${value}` : `'${barrierOffsetType}${value}'`;
         }
 
         const code = `
@@ -312,8 +301,6 @@ export default () => {
             currency: '${currency}',
             amount: ${amount},
             prediction: ${predictionValue},
-            absoluteBarrier: ${absoluteBarrierValue},
-            secondAbsoluteBarrier: ${secondAbsoluteBarrierValue},
             barrierOffset: ${barrierOffsetValue},
             secondBarrierOffset: ${secondBarrierOffsetValue},
             });
