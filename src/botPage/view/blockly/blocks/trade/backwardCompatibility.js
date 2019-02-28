@@ -2,7 +2,7 @@ import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
 import { symbolApi } from '../../../shared';
 import { setInputList, marketDefPlaceHolders, marketToTradeOption } from './tools';
-import { duration, payout, prediction, absoluteBarrierGenerator, barrierOffsetGenerator } from './components';
+import { duration, payout, prediction, barrierOffsetGenerator } from './components';
 
 const isBlockCreationEvent = (ev, block) => ev.type === Blockly.Events.CREATE && ev.ids.indexOf(block.id) >= 0;
 
@@ -47,8 +47,6 @@ export default () => {
             duration(this);
             payout(this);
             prediction(this);
-            absoluteBarrierGenerator('ABSOLUTEBARRIER', this);
-            absoluteBarrierGenerator('SECONDABSOLUTEBARRIER', this);
             barrierOffsetGenerator('BARRIEROFFSET', this);
             barrierOffsetGenerator('SECONDBARRIEROFFSET', this);
             this.setInputsInline(false);
@@ -66,8 +64,6 @@ export default () => {
                 duration(this);
                 payout(this);
                 prediction(this);
-                absoluteBarrierGenerator('ABSOLUTEBARRIER', this);
-                absoluteBarrierGenerator('SECONDABSOLUTEBARRIER', this);
                 barrierOffsetGenerator('BARRIEROFFSET', this);
                 barrierOffsetGenerator('SECONDBARRIEROFFSET', this);
                 this.setInputsInline(false);
