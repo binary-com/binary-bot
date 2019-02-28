@@ -9,6 +9,16 @@ const Elevio = (() => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
 
         // eslint-disable-next-line no-underscore-dangle
+        window._elev.on('widget:opened', () => {
+            if (localStorage.getItem('seenWhatsBinaryBot')) {
+                window._elev.open(); // eslint-disable-line no-underscore-dangle
+            } else {
+                localStorage.setItem('seenWhatsBinaryBot', true);
+                window._elev.openArticle(90); // eslint-disable-line no-underscore-dangle
+            }
+        });
+
+        // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
             const availableLanguages = ['en', 'es', 'id', 'pt', 'ru'];
             const currentLanguage = getLanguage();
