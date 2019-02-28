@@ -142,9 +142,8 @@ const config = {
             },
         ],
     },
-    barrierTypes         : [['+', '+'], ['-', '-']],
-    absoluteBarrierLabels: [translate('High barrier'), translate('Low barrier')],
-    ohlcFields           : [
+    barrierTypes: [['Offset +', '+'], ['Offset -', '-']],
+    ohlcFields  : [
         [translate('Open'), 'open'],
         [translate('High'), 'high'],
         [translate('Low'), 'low'],
