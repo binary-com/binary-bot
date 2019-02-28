@@ -74,30 +74,18 @@ export const barrierOffsetGenerator = (inputName, block) => {
         // Determine amount of barrierOffset-blocks on workspace
         const barrierNumber = block.inputList.filter(input => /BARRIEROFFSET$/.test(input.name)).length;
 
-        // Set barrier options according to barrierNumber (i.e. + and -)
+        // Set barrier options according to barrierNumber (i.e. Offset + and Offset -)
         const barrierOffsetList = new Blockly.FieldDropdown(config.barrierTypes);
+        barrierOffsetList.prefixField = null;
+        barrierOffsetList.menuGenerator_ = config.barrierTypes; // eslint-disable-line no-underscore-dangle
+        barrierOffsetList.setValue('');
         barrierOffsetList.setValue(config.barrierTypes[barrierNumber % config.barrierTypes.length][1]);
 
         block
             .appendValueInput(inputName)
             .setCheck('Number')
-            .appendField(`${translate('Barrier Offset')} ${barrierNumber + 1}:`)
+            .appendField(`${translate('Barrier')} ${barrierNumber + 1}:`)
             .appendField(barrierOffsetList, `${inputName}TYPE_LIST`);
-
-        const input = block.getInput(inputName);
-        input.setVisible(false);
-    }
-};
-
-export const absoluteBarrierGenerator = (inputName, block) => {
-    if (!block.getInput(inputName)) {
-        const barrierNumber = block.inputList.filter(input => /ABSOLUTEBARRIER$/.test(input.name)).length;
-
-        block
-            .appendValueInput(inputName)
-            .setCheck('Number')
-            // Label is a fallback value, proper labels are set in tradeOptions
-            .appendField(`${translate('Barrier')} ${barrierNumber + 1}:`);
 
         const input = block.getInput(inputName);
         input.setVisible(false);
