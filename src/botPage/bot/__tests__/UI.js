@@ -36,8 +36,6 @@ expectReturnTrue(
             currency: 'USD',
             amount: 1,
             prediction: undefined,
-            absoluteBarrier: undefined,
-            secondAbsoluteBarrier: undefined,
             barrierOffset: undefined,
             secondBarrierOffset: undefined,
           });
