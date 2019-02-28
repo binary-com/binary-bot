@@ -19,18 +19,12 @@ export const tradeOptionToProposal = tradeOption =>
         if (tradeOption.prediction !== undefined) {
             proposal.selected_tick = tradeOption.prediction;
         }
-
         if (!['TICKLOW', 'TICKHIGH'].includes(type) && tradeOption.prediction !== undefined) {
             proposal.barrier = tradeOption.prediction;
-        } else if (tradeOption.absoluteBarrier !== undefined) {
-            proposal.barrier = `${tradeOption.absoluteBarrier}`;
         } else if (tradeOption.barrierOffset !== undefined) {
             proposal.barrier = tradeOption.barrierOffset;
         }
-
-        if (tradeOption.secondAbsoluteBarrier !== undefined) {
-            proposal.barrier2 = tradeOption.secondAbsoluteBarrier;
-        } else if (tradeOption.secondBarrierOffset !== undefined) {
+        if (tradeOption.secondBarrierOffset !== undefined) {
             proposal.barrier2 = tradeOption.secondBarrierOffset;
         }
         return proposal;
