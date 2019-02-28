@@ -316,7 +316,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
 export const getBarriersForContracts = (contracts, selectedContractType, selectedDuration) => {
     const category = getContractCategory(selectedContractType);
     const contractsForContractCategory = filterContractsByCategory(contracts, category, selectedContractType);
-    const barriers = {};
+    const barriers = { values: [] };
     if (contractsForContractCategory) {
         let contract;
         if (selectedDuration) {
@@ -343,19 +343,26 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
                 const lowBarrierOffsetMatch = contract.low_barrier.toString().match(offsetRegex);
 
                 if (highBarrierOffsetMatch && lowBarrierOffsetMatch) {
-                    barriers.high_barrier = highBarrierOffsetMatch[1]; // eslint-disable-line prefer-destructuring
-                    barriers.low_barrier = lowBarrierOffsetMatch[1]; // eslint-disable-line prefer-destructuring
+                    // eslint-disable-next-line prefer-destructuring
+                    barriers.values.push(...[highBarrierOffsetMatch[1], lowBarrierOffsetMatch[1]]);
                 } else {
-                    barriers.high_barrier = contract.high_barrier;
-                    barriers.low_barrier = contract.low_barrier;
+                    barriers.values.push(...[contract.high_barrier, contract.low_barrier]);
                 }
             } else if (contract.barriers === 1 && contract.barrier) {
                 const barrierOffsetMatch = contract.barrier.toString().match(offsetRegex);
                 if (barrierOffsetMatch) {
-                    barriers.barrier = barrierOffsetMatch[1]; // eslint-disable-line prefer-destructuring
+                    // eslint-disable-next-line prefer-destructuring
+                    barriers.values.push(barrierOffsetMatch[1]);
                 } else {
-                    barriers.barrier = contract.barrier;
+                    barriers.values.push(contract.barrier);
                 }
+            }
+            const hasOffset = () =>
+                [contract.barrier, contract.high_barrier, contract.low_barrier].some(
+                    input => input && offsetRegex.test(input.toString())
+                );
+            if (['intraday', 'tick'].includes(contract.expiry_type) && hasOffset()) {
+                barriers.allowBothTypes = true; // Allow both offset + absolute barriers
             }
         }
     }
