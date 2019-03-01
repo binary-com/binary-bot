@@ -619,7 +619,7 @@ export default class View {
         });
 
         globalObserver.register('bot.stop', () => {
-            $('#runButton, #summaryRunButton, #summaryClearButton').prop('disabled', false);
+            $('#runButton, #summaryRunButton').prop('disabled', false);
         });
 
         globalObserver.register('bot.info', info => {
