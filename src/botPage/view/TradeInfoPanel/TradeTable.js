@@ -61,7 +61,7 @@ export default class TradeTable extends Component {
         globalObserver.register('bot.stop', () => {
             const { accountID } = this.props;
             const { rows } = this.state[accountID];
-            if (rows.length > 0) {
+            if (rows && rows.length > 0) {
                 globalObserver.emit('summary.enable_clear');
             }
         });
