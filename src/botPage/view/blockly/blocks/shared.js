@@ -336,7 +336,7 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
                 })
                 .shift();
         }
-        if (contract) {
+        if (contract && !['reset'].includes(contract.barrier_category)) {
             const offsetRegex = new RegExp('^[-|+]([0-9]+.[0-9]+)$');
             if (contract.barriers === 2 && contract.high_barrier && contract.low_barrier) {
                 const highBarrierOffsetMatch = contract.high_barrier.toString().match(offsetRegex);
