@@ -95,11 +95,14 @@ export default () => {
                                 }
                                 return 'BARRIEROFFSETTYPE_LIST';
                             };
-                            const otherBarrierList = this.getInput(otherBarrierListName());
+                            const otherBarrierList = this.getField(otherBarrierListName());
                             if (otherBarrierList) {
                                 if (ev.newValue === 'absolute') {
                                     otherBarrierList.setValue(ev.newValue);
-                                } else {
+                                } else if (
+                                    config.barrierTypes.findIndex(type => type[1] === otherBarrierList.getValue()) ===
+                                    -1
+                                ) {
                                     const value = config.barrierTypes.find(type => type[1] !== ev.newValue);
                                     otherBarrierList.setValue(value[1]);
                                 }
@@ -194,6 +197,7 @@ export default () => {
                     };
 
                     const barrierOffsetNames = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
+                    const barrierLabels = [translate('High barrier'), translate('Low barrier')];
                     const removeInput = inputName => tradeOptionsBlock.removeInput(inputName);
                     const updateList = (list, options, selected = null) => {
                         list.menuGenerator_ = options; // eslint-disable-line no-underscore-dangle, no-param-reassign
@@ -209,32 +213,28 @@ export default () => {
                     barriers.values.forEach((barrierValue, index) => {
                         const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
                         const typeInput = tradeOptionsBlock.getInput(barrierOffsetNames[index]);
-                        const absoluteLabels = [translate('High barrier'), translate('Low barrier')];
 
                         if (barriers.allowBothTypes || selectedDuration === 'd') {
                             const absoluteType = [[translate('Absolute'), 'absolute']];
 
                             if (selectedDuration === 'd') {
                                 updateList(typeList, absoluteType, 'absolute');
-                                if (barriers.values.length === 2) {
-                                    typeInput.fieldRow[0].setText(`${absoluteLabels[index]}:`);
-                                } else {
-                                    typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
-                                }
                             } else {
                                 updateList(
                                     typeList,
                                     config.barrierTypes.concat(absoluteType),
                                     config.barrierTypes[index][1]
                                 );
-                                typeInput.fieldRow[0].setText(`${translate('Barrier')} ${index + 1}:`);
                             }
-                            revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
                         } else {
                             updateList(typeList, config.barrierTypes, config.barrierTypes[index][1]);
-                            typeInput.fieldRow[0].setText(`${translate('Barrier')} ${index + 1}:`);
-                            revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
                         }
+                        if (barriers.values.length === 1) {
+                            typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
+                        } else {
+                            typeInput.fieldRow[0].setText(`${barrierLabels[index]}:`);
+                        }
+                        revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
                     });
                     barrierOffsetNames.slice(barriers.values.length).forEach(removeInput);
                 });
