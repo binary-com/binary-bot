@@ -14,6 +14,7 @@ export default class ClearButton extends React.PureComponent {
             this.setState({ isButtonDisabled: true });
         });
     }
+    // eslint-disable-next-line class-methods-use-this
     confirmClearLog() {
         showDialog({
             title: translate('Are you sure?'),
