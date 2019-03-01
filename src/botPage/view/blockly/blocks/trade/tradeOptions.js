@@ -29,7 +29,7 @@ export default () => {
                 // After creation emit change event so API-dependent fields become populated
                 updateInputList(this);
                 const block = Blockly.mainWorkspace.getBlockById(ev.blockId);
-                if (ev.workspaceId === Blockly.mainWorkspace.id && block.type === 'trade') {
+                if (block && block.type === 'trade' && ev.workspaceId === Blockly.mainWorkspace.id) {
                     const symbol = block.getFieldValue('SYMBOL_LIST');
                     if (!symbol) return;
 
@@ -85,6 +85,25 @@ export default () => {
                             this.updateBarrierOffsetBlocks(contracts, true, [ev.blockId]);
                             // Called to set min durations for selected unit
                             this.updateDurationLists(contracts, false, true, [ev.blockId]);
+                        } else if (
+                            ['BARRIEROFFSETTYPE_LIST', 'SECONDBARRIEROFFSETTYPE_LIST'].includes(ev.name) &&
+                            ev.oldValue !== ev.newValue
+                        ) {
+                            const otherBarrierListName = () => {
+                                if (ev.name === 'BARRIEROFFSETTYPE_LIST') {
+                                    return 'SECONDBARRIEROFFSETTYPE_LIST';
+                                }
+                                return 'BARRIEROFFSETTYPE_LIST';
+                            };
+                            const otherBarrierList = this.getInput(otherBarrierListName());
+                            if (otherBarrierList) {
+                                if (ev.newValue === 'absolute') {
+                                    otherBarrierList.setValue(ev.newValue);
+                                } else {
+                                    const value = config.barrierTypes.find(type => type[1] !== ev.newValue);
+                                    otherBarrierList.setValue(value[1]);
+                                }
+                            }
                         }
                         updateInputList(this);
                     });
@@ -187,27 +206,37 @@ export default () => {
                         return;
                     }
 
-                    if (barriers.allowBothTypes || selectedDuration === 'd') {
-                        barriers.values.forEach((barrierValue, index) => {
+                    barriers.values.forEach((barrierValue, index) => {
+                        const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
+                        const typeInput = tradeOptionsBlock.getInput(barrierOffsetNames[index]);
+                        const absoluteLabels = [translate('High barrier'), translate('Low barrier')];
+
+                        if (barriers.allowBothTypes || selectedDuration === 'd') {
                             const absoluteType = [[translate('Absolute'), 'absolute']];
                             const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
-                            const selectedType = typeList.getValue();
 
                             if (selectedDuration === 'd') {
                                 updateList(typeList, absoluteType, 'absolute');
+                                if (barriers.values.length === 2) {
+                                    typeInput.fieldRow[0].setText(`${absoluteLabels[index]}:`);
+                                } else {
+                                    typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
+                                }
                             } else {
-                                updateList(typeList, config.barrierTypes.concat(absoluteType), selectedType);
+                                updateList(
+                                    typeList,
+                                    config.barrierTypes.concat(absoluteType),
+                                    config.barrierTypes[index][1]
+                                );
+                                typeInput.fieldRow[0].setText(`${translate('Barrier')} ${index + 1}:`);
                             }
                             revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
-                        });
-                    } else {
-                        barriers.values.forEach((barrierValue, index) => {
-                            const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
-                            const selectedType = config.barrierTypes[index][1];
-                            updateList(typeList, config.barrierTypes, selectedType);
+                        } else {
+                            updateList(typeList, config.barrierTypes, config.barrierTypes[index][1]);
+                            typeInput.fieldRow[0].setText(`${translate('Barrier')} ${index + 1}:`);
                             revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
-                        });
-                    }
+                        }
+                    });
                     barrierOffsetNames.slice(barriers.values.length).forEach(removeInput);
                 });
             });
