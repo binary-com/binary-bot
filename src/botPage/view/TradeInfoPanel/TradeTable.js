@@ -2,7 +2,7 @@ import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { appendRow, updateRow, saveAs } from '../shared';
+import { appendRow, updateRow, saveAs, botIsRunning } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import * as style from '../style';
@@ -56,6 +56,14 @@ export default class TradeTable extends Component {
         globalObserver.register('summary.clear', () => {
             const { accountID } = this.props;
             this.setState({ [accountID]: this.state.initial });
+            globalObserver.emit('summary.disable_clear');
+        });
+        globalObserver.register('bot.stop', () => {
+            const { accountID } = this.props;
+            const { rows } = this.state[accountID];
+            if (rows.length > 0) {
+                globalObserver.emit('summary.enable_clear');
+            }
         });
         globalObserver.register('bot.contract', info => {
             if (!info) {
