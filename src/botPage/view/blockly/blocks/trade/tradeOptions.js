@@ -213,7 +213,6 @@ export default () => {
 
                         if (barriers.allowBothTypes || selectedDuration === 'd') {
                             const absoluteType = [[translate('Absolute'), 'absolute']];
-                            const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
 
                             if (selectedDuration === 'd') {
                                 updateList(typeList, absoluteType, 'absolute');
