@@ -3,8 +3,18 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import { translate } from '../../../common/utils/tools';
 
-const ClearButton = () => {
-    function confirmClearLog() {
+export default class ClearButton extends React.PureComponent {
+    constructor() {
+        super();
+        this.state = { isButtonDisabled: true };
+        globalObserver.register('summary.enable_clear', () => {
+            this.setState({ isButtonDisabled: false });
+        });
+        globalObserver.register('summary.disable_clear', () => {
+            this.setState({ isButtonDisabled: true });
+        });
+    }
+    confirmClearLog() {
         showDialog({
             title: translate('Are you sure?'),
             text : [
@@ -16,14 +26,15 @@ const ClearButton = () => {
             .then(() => globalObserver.emit('summary.clear'))
             .catch(() => {});
     }
-    return (
-        <button
-            title="Clear summary log"
-            id="summaryClearButton"
-            className="toolbox-button icon-clear"
-            onClick={confirmClearLog}
-        />
-    );
-};
-
-export default ClearButton;
+    render() {
+        return (
+            <button
+                title="Clear summary log"
+                id="summaryClearButton"
+                className="toolbox-button icon-clear"
+                onClick={this.confirmClearLog}
+                disabled={this.state.isButtonDisabled}
+            />
+        );
+    }
+}
