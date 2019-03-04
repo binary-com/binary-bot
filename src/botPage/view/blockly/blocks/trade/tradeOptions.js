@@ -26,7 +26,6 @@ export default () => {
                 return;
             }
             if (ev.type === Blockly.Events.CREATE) {
-                // After creation emit change event so API-dependent fields become populated
                 updateInputList(this);
                 const block = Blockly.mainWorkspace.getBlockById(ev.blockId);
                 if (block && block.type === 'trade' && ev.workspaceId === Blockly.mainWorkspace.id) {
@@ -34,9 +33,9 @@ export default () => {
                     if (!symbol) return;
 
                     this.pollForContracts(symbol).then(contracts => {
-                        this.updateBarrierOffsetBlocks(contracts, false, false);
+                        this.updateBarrierOffsetBlocks(contracts, false, false); // false false to maintain user's values on import
                         this.updatePredictionBlocks(contracts);
-                        this.updateDurationLists(contracts, false, false); // false because we want to maintain user's values on import
+                        this.updateDurationLists(contracts, false, false); // false false to maintain user's values on import
                     });
                 }
             } else if (ev.type === Blockly.Events.MOVE) {
@@ -52,10 +51,10 @@ export default () => {
                         const getNestedTradeOptions = block => {
                             if (block.type === 'tradeOptions') {
                                 this.pollForContracts(symbol).then(contracts => {
-                                    this.updateBarrierOffsetBlocks(contracts, true, true, [block.id]);
+                                    this.updateBarrierOffsetBlocks(contracts, false, false, [block.id]);
                                     this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', [ev.blockId], true);
                                     this.updatePredictionBlocks(contracts, [block.id]);
-                                    this.updateDurationLists(contracts, true, true, [block.id]);
+                                    this.updateDurationLists(contracts, false, false, [block.id]);
                                 });
                             }
                             block.getChildren().forEach(childBlock => {
