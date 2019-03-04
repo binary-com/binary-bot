@@ -78,6 +78,7 @@ export default () => {
                             // Both are called to check if these blocks are required
                             this.updatePredictionBlocks(contracts);
                             this.updateBarrierOffsetBlocks(contracts, false, true);
+                            this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', ev.blockId, true);
                             // Called to default to smallest durations for symbol
                             this.updateDurationLists(contracts, false, true);
                         } else if (ev.name === 'DURATIONTYPE_LIST' && ev.oldValue !== ev.newValue) {
