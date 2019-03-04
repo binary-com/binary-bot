@@ -49,19 +49,18 @@ export default class TradeTable extends Component {
     }
     componentWillMount() {
         globalObserver.register('summary.export', () => {
-            const { accountID } = this.props;
-            const { rows } = this.state[accountID];
-            if (rows.length) this.export();
+            const accountData = this.state[this.props.accountID];
+            if (accountData && accountData.rows.length > 0) {
+                this.export();
+            }
         });
         globalObserver.register('summary.clear', () => {
-            const { accountID } = this.props;
-            this.setState({ [accountID]: this.state.initial });
+            this.setState({ [this.props.accountID]: { ...this.state.initial } });
             globalObserver.emit('summary.disable_clear');
         });
         globalObserver.register('bot.stop', () => {
-            const { accountID } = this.props;
-            const { rows } = this.state[accountID];
-            if (rows && rows.length > 0) {
+            const accountData = this.state[this.props.accountID];
+            if (accountData && accountData.rows.length > 0) {
                 globalObserver.emit('summary.enable_clear');
             }
         });

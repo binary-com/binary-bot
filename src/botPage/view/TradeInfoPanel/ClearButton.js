@@ -7,12 +7,8 @@ export default class ClearButton extends React.PureComponent {
     constructor() {
         super();
         this.state = { isButtonDisabled: true };
-        globalObserver.register('summary.enable_clear', () => {
-            this.setState({ isButtonDisabled: false });
-        });
-        globalObserver.register('summary.disable_clear', () => {
-            this.setState({ isButtonDisabled: true });
-        });
+        globalObserver.register('summary.enable_clear', () => this.setState({ isButtonDisabled: false }));
+        globalObserver.register('summary.disable_clear', () => this.setState({ isButtonDisabled: true }));
     }
     // eslint-disable-next-line class-methods-use-this
     confirmClearLog() {
