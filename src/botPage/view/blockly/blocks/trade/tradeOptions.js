@@ -34,7 +34,7 @@ export default () => {
                     if (!symbol) return;
 
                     this.pollForContracts(symbol).then(contracts => {
-                        this.updateBarrierOffsetBlocks(contracts);
+                        this.updateBarrierOffsetBlocks(contracts, false, false);
                         this.updatePredictionBlocks(contracts);
                         this.updateDurationLists(contracts, false, false); // false because we want to maintain user's values on import
                     });
@@ -52,7 +52,8 @@ export default () => {
                         const getNestedTradeOptions = block => {
                             if (block.type === 'tradeOptions') {
                                 this.pollForContracts(symbol).then(contracts => {
-                                    this.updateBarrierOffsetBlocks(contracts, true, [block.id]);
+                                    this.updateBarrierOffsetBlocks(contracts, true, true, [block.id]);
+                                    this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', [ev.blockId], true);
                                     this.updatePredictionBlocks(contracts, [block.id]);
                                     this.updateDurationLists(contracts, true, true, [block.id]);
                                 });
@@ -77,36 +78,23 @@ export default () => {
                         } else if (['TRADETYPE_LIST'].includes(ev.name) && ev.oldValue !== ev.newValue) {
                             // Both are called to check if these blocks are required
                             this.updatePredictionBlocks(contracts);
-                            this.updateBarrierOffsetBlocks(contracts, true);
+                            this.updateBarrierOffsetBlocks(contracts, false, true);
                             // Called to default to smallest durations for symbol
                             this.updateDurationLists(contracts, false, true);
                         } else if (ev.name === 'DURATIONTYPE_LIST' && ev.oldValue !== ev.newValue) {
                             // Called to set barriers based on duration
-                            this.updateBarrierOffsetBlocks(contracts, true, [ev.blockId]);
+                            this.updateBarrierOffsetBlocks(contracts, true, true, [ev.blockId]);
+                            this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', [ev.blockId], true);
                             // Called to set min durations for selected unit
                             this.updateDurationLists(contracts, false, true, [ev.blockId]);
                         } else if (
                             ['BARRIEROFFSETTYPE_LIST', 'SECONDBARRIEROFFSETTYPE_LIST'].includes(ev.name) &&
                             ev.oldValue !== ev.newValue
                         ) {
-                            const otherBarrierListName = () => {
-                                if (ev.name === 'BARRIEROFFSETTYPE_LIST') {
-                                    return 'SECONDBARRIEROFFSETTYPE_LIST';
-                                }
-                                return 'BARRIEROFFSETTYPE_LIST';
-                            };
-                            const otherBarrierList = this.getField(otherBarrierListName());
-                            if (otherBarrierList) {
-                                if (ev.newValue === 'absolute') {
-                                    otherBarrierList.setValue(ev.newValue);
-                                } else if (
-                                    config.barrierTypes.findIndex(type => type[1] === otherBarrierList.getValue()) ===
-                                    -1
-                                ) {
-                                    const value = config.barrierTypes.find(type => type[1] !== ev.newValue);
-                                    otherBarrierList.setValue(value[1]);
-                                }
-                            }
+                            // Called to set default values based on barrier type
+                            this.updateBarrierOffsetBlocks(contracts, false, true, [ev.blockId]);
+                            // Suggests same type barriers
+                            this.applyBarrierHandlebars(ev.name, [ev.blockId], false);
                         }
                         updateInputList(this);
                     });
@@ -169,25 +157,27 @@ export default () => {
                 });
             });
         },
-        updateBarrierOffsetBlocks(contracts, useDefaultType = false, updateOnly = []) {
+        updateBarrierOffsetBlocks(contracts, useDefaultType = false, setDefaultValue = false, updateOnly = []) {
             getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
                 if (tradeOptionsBlock.disabled) return;
                 if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
 
                 const tradeType = getParentValue(tradeOptionsBlock, 'TRADETYPE_LIST');
                 const selectedDuration = tradeOptionsBlock.getFieldValue('DURATIONTYPE_LIST');
-                const barriers = getBarriersForContracts(contracts, tradeType, selectedDuration);
+                const selectedBarrierTypes = [
+                    tradeOptionsBlock.getFieldValue('BARRIEROFFSETTYPE_LIST'),
+                    tradeOptionsBlock.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST'),
+                ];
+                const barriers = getBarriersForContracts(contracts, tradeType, selectedDuration, selectedBarrierTypes);
 
                 hideInteractionsFromBlockly(() => {
                     const revealBarrierBlock = (barrierValue, inputName) => {
                         const barrierInput = tradeOptionsBlock.getInput(inputName);
                         if (barrierInput) {
                             barrierInput.setVisible(true);
-
-                            // Attach shadow block with API-returned barrier-value (only if user hasn't defined a value)
                             if (!barrierInput.connection.isConnected()) {
                                 barrierInput.attachShadowBlock(barrierValue, 'NUM', 'math_number');
-                            } else if (useDefaultType) {
+                            } else if (setDefaultValue) {
                                 const connectedBlock = barrierInput.connection.targetBlock();
                                 if (connectedBlock.isShadow()) {
                                     connectedBlock.setFieldValue(barrierValue, 'NUM');
@@ -199,10 +189,18 @@ export default () => {
                     const barrierOffsetNames = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
                     const barrierLabels = [translate('High barrier'), translate('Low barrier')];
                     const removeInput = inputName => tradeOptionsBlock.removeInput(inputName);
-                    const updateList = (list, options, selected = null) => {
+
+                    const updateList = (list, options) => {
+                        const prevSelectedType = options.find(option => option[1] === list.getValue());
                         list.menuGenerator_ = options; // eslint-disable-line no-underscore-dangle, no-param-reassign
-                        list.setValue('');
-                        list.setValue(selected || list.menuGenerator_[0][1]); // eslint-disable-line no-underscore-dangle
+                        if (!useDefaultType && prevSelectedType) {
+                            list.setValue('');
+                            list.setValue(prevSelectedType[1]);
+                            // eslint-disable-next-line no-underscore-dangle
+                        } else if (list.menuGenerator_.length) {
+                            list.setValue('');
+                            list.setValue(list.menuGenerator_[0][1]); // eslint-disable-line no-underscore-dangle
+                        }
                     };
 
                     if (!barriers.values.length) {
@@ -213,22 +211,16 @@ export default () => {
                     barriers.values.forEach((barrierValue, index) => {
                         const typeList = tradeOptionsBlock.getField(`${barrierOffsetNames[index]}TYPE_LIST`);
                         const typeInput = tradeOptionsBlock.getInput(barrierOffsetNames[index]);
+                        const absoluteType = [[translate('Absolute'), 'absolute']];
 
-                        if (barriers.allowBothTypes || selectedDuration === 'd') {
-                            const absoluteType = [[translate('Absolute'), 'absolute']];
-
-                            if (selectedDuration === 'd') {
-                                updateList(typeList, absoluteType, 'absolute');
-                            } else {
-                                updateList(
-                                    typeList,
-                                    config.barrierTypes.concat(absoluteType),
-                                    config.barrierTypes[index][1]
-                                );
-                            }
+                        if (selectedDuration === 'd') {
+                            updateList(typeList, absoluteType);
+                        } else if (barriers.allowBothTypes || barriers.allowAbsoluteType) {
+                            updateList(typeList, [...config.barrierTypes, ...absoluteType]);
                         } else {
-                            updateList(typeList, config.barrierTypes, config.barrierTypes[index][1]);
+                            updateList(typeList, config.barrierTypes);
                         }
+
                         if (barriers.values.length === 1) {
                             typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
                         } else {
@@ -288,6 +280,31 @@ export default () => {
                     }
                 });
             });
+        },
+        applyBarrierHandlebars(barrierFieldName, blockId, forceDistinct = false) {
+            const block = Blockly.mainWorkspace.getBlockById(blockId);
+            const newValue = block.getFieldValue(barrierFieldName);
+
+            const otherBarrierListName = () => {
+                if (barrierFieldName === 'BARRIEROFFSETTYPE_LIST') {
+                    return 'SECONDBARRIEROFFSETTYPE_LIST';
+                }
+                return 'BARRIEROFFSETTYPE_LIST';
+            };
+
+            const otherBarrierList = block.getField(otherBarrierListName());
+            if (otherBarrierList) {
+                const otherBarrierType = otherBarrierList.getValue();
+                if (
+                    config.barrierTypes.findIndex(t => t[1] === newValue) !== -1 &&
+                    (otherBarrierType === 'absolute' || forceDistinct)
+                ) {
+                    const otherValue = config.barrierTypes.find(t => t[1] !== newValue);
+                    otherBarrierList.setValue(otherValue[1]);
+                } else if (newValue === 'absolute' && otherBarrierType !== 'absolute') {
+                    otherBarrierList.setValue('absolute');
+                }
+            }
         },
     };
     Blockly.JavaScript.tradeOptions = block => {
