@@ -313,57 +313,70 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
     return contractsForSymbol;
 };
 
-export const getBarriersForContracts = (contracts, selectedContractType, selectedDuration) => {
+export const getBarriersForContracts = (contracts, selectedContractType, selectedDuration, selectedBarrierTypes) => {
+    const barriers = { values: [] };
     const category = getContractCategory(selectedContractType);
     const contractsForContractCategory = filterContractsByCategory(contracts, category, selectedContractType);
-    const barriers = { values: [] };
+
+    const offsetRegex = new RegExp('^[-|+]([0-9]+.[0-9]+)$');
+    const isOffset = input => input && offsetRegex.test(input.toString());
+
     if (contractsForContractCategory) {
-        let contract;
-        if (selectedDuration) {
-            // Find barriers based on selected duration (e.g. Hours & days can have different barrier values)
+        const barrierProps = ['high_barrier', 'low_barrier'];
+
+        selectedBarrierTypes.forEach((barrierType, index) => {
+            const selectedOffset = ['+', '-'].includes(barrierType);
+
+            // Find barriers based on selected duration & by selected barrier type
+            // i.e. Hours & days can have different barrier values, offset + absolute sometimes have different values
+            let contract;
             contract = contractsForContractCategory.find(c => {
                 const durations = getDurationsForContracts([c], selectedContractType);
-                return durations.map(duration => duration.unit).includes(selectedDuration);
+                if (durations.map(duration => duration.unit).includes(selectedDuration)) {
+                    const barrierIsOffset = () => isOffset(c.barrier || c[barrierProps[index]]);
+                    return (selectedOffset && barrierIsOffset()) || (!selectedOffset && !barrierIsOffset());
+                }
+                return false;
             });
-        }
-        if (!contract) {
-            // Default to smallest barriers available
-            contract = contractsForContractCategory
-                .sort((a, b) => {
-                    const barrierValueA = a.barrier || a.high_barrier;
-                    const barrierValueB = b.barrier || b.high_barrier;
-                    return parseFloat(barrierValueA) - parseFloat(barrierValueB);
-                })
-                .shift();
-        }
-        if (contract && !['reset'].includes(contract.barrier_category)) {
-            const offsetRegex = new RegExp('^[-|+]([0-9]+.[0-9]+)$');
-            if (contract.barriers === 2 && contract.high_barrier && contract.low_barrier) {
-                const highBarrierOffsetMatch = contract.high_barrier.toString().match(offsetRegex);
-                const lowBarrierOffsetMatch = contract.low_barrier.toString().match(offsetRegex);
+            if (!contract) {
+                contract = contractsForContractCategory.find(c => barrierType === 'absolute' && !isOffset(c.barrier || c.high_barrier));
+            }
+            // Fallback to contract with smallest barriers
+            if (!contract) {
+                contract = contractsForContractCategory
+                    .sort((a, b) => {
+                        const c = a.barrier || a.high_barrier;
+                        const d = b.barrier || b.high_barrier;
+                        return parseFloat(c) - parseFloat(d);
+                    })
+                    .shift();
+            }
+            const barrierlessCategories = ['reset'];
+            if (contract && !barrierlessCategories.includes(contract.barrier_category)) {
+                const propName = contract.barriers === 1 ? 'barrier' : barrierProps[index];
+                if (contract[propName]) {
+                    const barrierMatch = contract[propName].toString().match(offsetRegex);
+                    barriers.values[index] = barrierMatch ? barrierMatch[1] : contract[propName];
+                }
 
-                if (highBarrierOffsetMatch && lowBarrierOffsetMatch) {
-                    // eslint-disable-next-line prefer-destructuring
-                    barriers.values.push(...[highBarrierOffsetMatch[1], lowBarrierOffsetMatch[1]]);
-                } else {
-                    barriers.values.push(...[contract.high_barrier, contract.low_barrier]);
+                if (['intraday', 'tick'].includes(contract.expiry_type) && isOffset(contract[propName])) {
+                    barriers.allowBothTypes = true; // Allow both offset + absolute barriers
+                } else if (barrierType === 'absolute' && !isOffset(contract[propName])) {
+                    barriers.allowAbsoluteType = true;
                 }
-            } else if (contract.barriers === 1 && contract.barrier) {
-                const barrierOffsetMatch = contract.barrier.toString().match(offsetRegex);
-                if (barrierOffsetMatch) {
-                    // eslint-disable-next-line prefer-destructuring
-                    barriers.values.push(barrierOffsetMatch[1]);
-                } else {
-                    barriers.values.push(contract.barrier);
+
+                if (contract.barriers === 1) {
+                    selectedBarrierTypes.splice(index + 1, 1);
                 }
             }
-            const hasOffset = () =>
-                [contract.barrier, contract.high_barrier, contract.low_barrier].some(
-                    input => input && offsetRegex.test(input.toString())
-                );
-            if (['intraday', 'tick'].includes(contract.expiry_type) && hasOffset()) {
-                barriers.allowBothTypes = true; // Allow both offset + absolute barriers
-            }
+        });
+        if (
+            barriers.values.length === 2 &&
+            selectedBarrierTypes.every(val => val === selectedBarrierTypes[0]) &&
+            barriers.values.every(val => val === barriers.values[0])
+        ) {
+            // Set distinct values if equal barrier types have equal values
+            barriers.values[1] = (barriers.values[0] * 0.95).toFixed(1);
         }
     }
     return barriers;
