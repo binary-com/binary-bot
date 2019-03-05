@@ -334,12 +334,13 @@ export default () => {
         if (isVisibleField('BARRIEROFFSET')) {
             const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
             const value = expectValue(block, 'BARRIEROFFSET');
-            barrierOffsetValue = barrierOffsetType === 'absolute' ? `${value}` : `'${barrierOffsetType}${value}'`;
+            barrierOffsetValue = barrierOffsetType === 'absolute' ? `'${value}'` : `'${barrierOffsetType}${value}'`;
         }
         if (isVisibleField('SECONDBARRIEROFFSET')) {
             const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
             const value = expectValue(block, 'SECONDBARRIEROFFSET');
-            secondBarrierOffsetValue = barrierOffsetType === 'absolute' ? `${value}` : `'${barrierOffsetType}${value}'`;
+            secondBarrierOffsetValue =
+                barrierOffsetType === 'absolute' ? `'${value}'` : `'${barrierOffsetType}${value}'`;
         }
 
         const code = `
