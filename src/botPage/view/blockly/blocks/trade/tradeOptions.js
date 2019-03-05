@@ -78,13 +78,14 @@ export default () => {
                             // Both are called to check if these blocks are required
                             this.updatePredictionBlocks(contracts);
                             this.updateBarrierOffsetBlocks(contracts, true, true);
-                            this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', [ev.blockId], true);
+                            // Handlebars for all tradeOptions barrier-blocks
+                            this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', true);
                             // Called to default to smallest durations for symbol
                             this.updateDurationLists(contracts, false, true);
                         } else if (ev.name === 'DURATIONTYPE_LIST' && ev.oldValue !== ev.newValue) {
                             // Called to set barriers based on duration
                             this.updateBarrierOffsetBlocks(contracts, true, true, [ev.blockId]);
-                            this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', [ev.blockId], true);
+                            this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', true, [ev.blockId]);
                             // Called to set min durations for selected unit
                             this.updateDurationLists(contracts, false, true, [ev.blockId]);
                         } else if (
@@ -94,7 +95,7 @@ export default () => {
                             // Called to set default values based on barrier type
                             this.updateBarrierOffsetBlocks(contracts, false, true, [ev.blockId]);
                             // Suggests same type barriers
-                            this.applyBarrierHandlebars(ev.name, [ev.blockId], false);
+                            this.applyBarrierHandlebars(ev.name, false, [ev.blockId]);
                         }
                         updateInputList(this);
                     });
@@ -281,30 +282,33 @@ export default () => {
                 });
             });
         },
-        applyBarrierHandlebars(barrierFieldName, blockId, forceDistinct = false) {
-            const block = Blockly.mainWorkspace.getBlockById(blockId);
-            const newValue = block.getFieldValue(barrierFieldName);
+        applyBarrierHandlebars(barrierFieldName, forceDistinct = false, updateOnly = []) {
+            getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
+                if (tradeOptionsBlock.disabled) return;
+                if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
 
-            const otherBarrierListName = () => {
-                if (barrierFieldName === 'BARRIEROFFSETTYPE_LIST') {
-                    return 'SECONDBARRIEROFFSETTYPE_LIST';
-                }
-                return 'BARRIEROFFSETTYPE_LIST';
-            };
+                const newValue = tradeOptionsBlock.getFieldValue(barrierFieldName);
+                const otherBarrierListName = () => {
+                    if (barrierFieldName === 'BARRIEROFFSETTYPE_LIST') {
+                        return 'SECONDBARRIEROFFSETTYPE_LIST';
+                    }
+                    return 'BARRIEROFFSETTYPE_LIST';
+                };
 
-            const otherBarrierList = block.getField(otherBarrierListName());
-            if (otherBarrierList) {
-                const otherBarrierType = otherBarrierList.getValue();
-                if (
-                    config.barrierTypes.findIndex(t => t[1] === newValue) !== -1 &&
-                    (otherBarrierType === 'absolute' || forceDistinct)
-                ) {
-                    const otherValue = config.barrierTypes.find(t => t[1] !== newValue);
-                    otherBarrierList.setValue(otherValue[1]);
-                } else if (newValue === 'absolute' && otherBarrierType !== 'absolute') {
-                    otherBarrierList.setValue('absolute');
+                const otherBarrierList = tradeOptionsBlock.getField(otherBarrierListName());
+                if (otherBarrierList) {
+                    const otherBarrierType = otherBarrierList.getValue();
+                    if (
+                        config.barrierTypes.findIndex(t => t[1] === newValue) !== -1 &&
+                        (otherBarrierType === 'absolute' || forceDistinct)
+                    ) {
+                        const otherValue = config.barrierTypes.find(t => t[1] !== newValue);
+                        otherBarrierList.setValue(otherValue[1]);
+                    } else if (newValue === 'absolute' && otherBarrierType !== 'absolute') {
+                        otherBarrierList.setValue('absolute');
+                    }
                 }
-            }
+            });
         },
     };
     Blockly.JavaScript.tradeOptions = block => {
