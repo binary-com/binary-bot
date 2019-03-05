@@ -80,3 +80,12 @@
         background: url("../image/expand_more.svg") no-repeat center;
     }
 }
+.icon-clear {
+    &:before {
+        content: ' ';
+    }
+    background: url("../image/clear.svg") no-repeat center;
+    &:disabled {
+        background: url("../image/clear-disabled.svg") no-repeat center;
+    }
+}
