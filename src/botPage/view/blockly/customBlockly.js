@@ -261,3 +261,30 @@ Blockly.FieldLabel.prototype.init = function() {
     // Force a render.
     this.render_();
 };
+// Override inline editor blockly
+Blockly.FieldTextInput.prototype.showInlineEditor_ = function(quietInput) {
+    Blockly.WidgetDiv.show(this, this.sourceBlock_.RTL, this.widgetDispose_());
+    var div = Blockly.WidgetDiv.DIV;
+    // Create the input.
+    var htmlInput = document.createElement('input');
+    htmlInput.className = 'blocklyHtmlInput';
+    htmlInput.setAttribute('spellcheck', this.spellcheck_);
+    htmlInput.setAttribute('data-lpignore', 'true');
+    var fontSize = Blockly.FieldTextInput.FONTSIZE * this.workspace_.scale + 'pt';
+    div.style.fontSize = fontSize;
+    htmlInput.style.fontSize = fontSize;
+
+    Blockly.FieldTextInput.htmlInput_ = htmlInput;
+    div.appendChild(htmlInput);
+
+    htmlInput.value = htmlInput.defaultValue = this.text_;
+    htmlInput.oldValue_ = null;
+    this.validate_();
+    this.resizeEditor_();
+    if (!quietInput) {
+        htmlInput.focus();
+        htmlInput.select();
+    }
+
+    this.bindEvents_(htmlInput);
+};

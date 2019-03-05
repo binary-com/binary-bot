@@ -2,19 +2,33 @@ import { generateLiveApiInstance } from './appId';
 // import { getLanguage } from '../common/lang';
 import { getTokenList } from './utils/storageManager';
 import { translate } from '../common/i18n';
+import { getLanguage } from './lang';
 
 const Elevio = (() => {
     const init = () => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
+
+        // eslint-disable-next-line no-underscore-dangle
+        window._elev.on('widget:opened', () => {
+            if (localStorage.getItem('seenWhatsBinaryBot')) {
+                window._elev.open(); // eslint-disable-line no-underscore-dangle
+            } else {
+                localStorage.setItem('seenWhatsBinaryBot', true);
+                window._elev.openArticle(90); // eslint-disable-line no-underscore-dangle
+            }
+        });
+
         // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
-            // const availableElevLanguages = ['es', 'id', 'pt', 'ru'];
-            // const currentLanguage = getLanguage().toLowerCase();
-            // if (availableElevLanguages.indexOf(currentLanguage) !== -1) {
-            //     window._elev.setLanguage(currentLanguage); // eslint-disable-line no-underscore-dangle
-            // }
-            // eslint-disable-next-line no-underscore-dangle
-            window._elev.setSettings({
+            const availableLanguages = ['en', 'es', 'id', 'pt', 'ru'];
+            const currentLanguage = getLanguage();
+            if (availableLanguages.includes(currentLanguage)) {
+                elev.setLanguage(currentLanguage);
+            } else {
+                elev.setLanguage('en');
+            }
+
+            elev.setSettings({
                 page_url: `${document.location.protocol}//${document.location.hostname}${document.location.pathname}`,
             });
             setUserInfo(elev);

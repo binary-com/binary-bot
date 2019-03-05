@@ -97,7 +97,12 @@ export const strategyHasValidTradeTypeCategory = xml => {
         return false;
     });
     if (!validTradeTypeCategory) {
-        globalObserver.emit('ui.log.error', translate('The strategy you tried to import is invalid.'));
+        const errorMessage = translate('The strategy you tried to import is invalid.');
+        globalObserver.emit('ui.log.error', errorMessage);
+
+        if (window.trackJs) {
+            trackJs.track(errorMessage);
+        }
     }
     return validTradeTypeCategory;
 };

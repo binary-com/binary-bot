@@ -135,7 +135,7 @@
         font-size: $FONT_SIZE_XS;
         position: fixed;
         bottom: 0;
-        z-index: 10000;
+        z-index: 100 !important;
         width: 100%;
     }
     #status_notification {
