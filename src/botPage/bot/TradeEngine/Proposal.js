@@ -46,8 +46,8 @@ export default Engine =>
             this.store.dispatch(clearProposals());
         }
         requestProposals() {
-            this.proposalTemplates.map(proposal => {
-                doUntilDone(() => {
+            this.proposalTemplates.map(proposal =>
+                doUntilDone(() =>
                     this.api
                         .subscribeToPriceForContractProposal({
                             ...proposal,
@@ -58,22 +58,21 @@ export default Engine =>
                         })
                         .catch(e => {
                             if (e.error.error.code === 'ContractBuyValidationError') {
-                                const proposal = e.error.echo_req;
-                                const passthrough = proposal.passthrough;
+                                const { uuid } = e.error.echo_req.passthrough;
 
-                                if (!this.data.hasIn(['forgetProposals', passthrough.uuid])) {
-                                    this.data = this.data.setIn(['proposals', passthrough.uuid], {
+                                if (!this.data.hasIn(['forgetProposals', uuid])) {
+                                    this.data = this.data.setIn(['proposals', uuid], {
                                         ...proposal,
-                                        ...passthrough,
-                                        error: e,
+                                        contractType: proposal.contract_type,
+                                        error       : e,
                                     });
                                 }
                             } else {
                                 this.$scope.observer.emit('Error', e);
                             }
-                        });
-                });
-            });
+                        })
+                )
+            );
         }
         observeProposals() {
             this.listen('proposal', r => {
