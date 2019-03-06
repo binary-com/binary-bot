@@ -157,3 +157,48 @@ export const createDetails = contract => {
 };
 
 export const getUUID = () => `${new Date().getTime() * Math.random()}`;
+
+export const showDialog = options =>
+    new Promise((resolve, reject) => {
+        const $dialog = $('<div/>', { class: 'draggable-dialog', title: options.title });
+        options.text.forEach(text => $dialog.append(`<p style="margin: 0.7em;">${text}</p>`));
+        const defaultButtons = [
+            {
+                text : translate('No'),
+                class: 'button-secondary',
+                click() {
+                    $(this).dialog('close');
+                    $(this).remove();
+                    reject();
+                },
+            },
+            {
+                text : translate('Yes'),
+                class: 'button-primary',
+                click() {
+                    $(this).dialog('close');
+                    $(this).remove();
+                    resolve();
+                },
+            },
+        ];
+        const dialogOptions = {
+            autoOpen : false,
+            classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
+            closeText: '',
+            height   : 'auto',
+            width    : 600,
+            modal    : true,
+            resizable: false,
+            open() {
+                $(this)
+                    .parent()
+                    .find('.ui-dialog-buttonset > button')
+                    .removeClass('ui-button ui-corner-all ui-widget');
+            },
+        };
+        Object.assign(dialogOptions, { buttons: options.buttons || defaultButtons });
+
+        $dialog.dialog(dialogOptions);
+        $dialog.dialog('open');
+    });

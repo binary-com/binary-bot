@@ -187,6 +187,7 @@ $disabled-color: #F2F2F2;
     }
     .summary-toolbox {
         text-align: center;
+        position: relative;
 
         .toolbox-button {
             border-radius: 50%;
@@ -201,6 +202,10 @@ $disabled-color: #F2F2F2;
         }
         .toolbox-button:focus {
             @include toolbox-button-focus;
+        }
+        #summaryClearButton {
+            position: absolute;
+            right: 10px;
         }
     }
 }

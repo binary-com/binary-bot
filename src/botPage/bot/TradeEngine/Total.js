@@ -2,6 +2,7 @@ import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import { info, notify } from '../broadcast';
 import createError from '../../common/error';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 const skeleton = {
     totalProfit: 0,
@@ -20,6 +21,14 @@ export default Engine =>
             super();
             this.sessionRuns = 0;
             this.sessionProfit = 0;
+
+            globalObserver.register('summary.clear', () => {
+                this.sessionRuns = 0;
+                this.sessionProfit = 0;
+
+                const { loginid: accountID } = this.accountInfo;
+                globalStat[accountID] = { ...skeleton };
+            });
         }
         updateTotals(contract) {
             const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
@@ -87,7 +96,9 @@ export default Engine =>
                 return;
             }
 
-            const { limitations: { maxLoss, maxTrades } } = tradeOption;
+            const {
+                limitations: { maxLoss, maxTrades },
+            } = tradeOption;
 
             if (maxLoss && maxTrades) {
                 if (this.sessionRuns >= maxTrades) {
