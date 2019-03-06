@@ -11,6 +11,7 @@ const unrecoverableErrors = [
     'ContractBuyValidationError',
     'NotDefaultCurrency',
     'PleaseAuthenticate',
+    'FinancialAssessmentRequired',
 ];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
