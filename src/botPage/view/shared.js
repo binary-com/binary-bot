@@ -1,7 +1,7 @@
 import filesaver from 'file-saver';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
-import { binaryApi, generateLiveApiInstance } from '../../common/appId';
+import { binaryApi } from '../../common/appId';
 
 export const symbolApi = new _Symbol(binaryApi);
 export const symbolPromise = () => new Promise(resolve => symbolApi.initPromise.then(() => resolve()));
