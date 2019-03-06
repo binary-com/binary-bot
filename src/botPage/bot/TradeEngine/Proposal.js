@@ -21,7 +21,11 @@ export default Engine =>
 
             this.data.get('proposals').forEach(proposal => {
                 if (proposal.contractType === contractType) {
-                    toBuy = proposal;
+                    if (proposal.error) {
+                        throw Error(proposal.error.error.error.message);
+                    } else {
+                        toBuy = proposal;
+                    }
                 }
             });
 
@@ -42,19 +46,34 @@ export default Engine =>
             this.store.dispatch(clearProposals());
         }
         requestProposals() {
-            Promise.all(
-                this.proposalTemplates.map(proposal =>
-                    doUntilDone(() =>
-                        this.api.subscribeToPriceForContractProposal({
+            this.proposalTemplates.map(proposal => {
+                doUntilDone(() => {
+                    this.api
+                        .subscribeToPriceForContractProposal({
                             ...proposal,
                             passthrough: {
                                 contractType: proposal.contract_type,
                                 uuid        : getUUID(),
                             },
                         })
-                    )
-                )
-            ).catch(e => this.$scope.observer.emit('Error', e));
+                        .catch(e => {
+                            if (e.error.error.code === 'ContractBuyValidationError') {
+                                const proposal = e.error.echo_req;
+                                const passthrough = proposal.passthrough;
+
+                                if (!this.data.hasIn(['forgetProposals', passthrough.uuid])) {
+                                    this.data = this.data.setIn(['proposals', passthrough.uuid], {
+                                        ...proposal,
+                                        ...passthrough,
+                                        error: e,
+                                    });
+                                }
+                            } else {
+                                this.$scope.observer.emit('Error', e);
+                            }
+                        });
+                });
+            });
         }
         observeProposals() {
             this.listen('proposal', r => {
@@ -84,12 +103,15 @@ export default Engine =>
             return Promise.all(
                 proposals.map(proposal => {
                     const { uuid: id } = proposal;
+                    const removeProposal = uuid => {
+                        this.data = this.data.deleteIn(['forgetProposals', uuid]);
+                    };
 
-                    this.data = this.data.setIn(['forgetProposals', id], true);
-
-                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => {
-                        this.data = this.data.deleteIn(['forgetProposals', id]);
-                    });
+                    if (proposal.error) {
+                        removeProposal(id);
+                        return Promise.resolve();
+                    }
+                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => removeProposal(id));
                 })
             );
         }
