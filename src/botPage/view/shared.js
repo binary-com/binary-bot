@@ -1,29 +1,12 @@
 import filesaver from 'file-saver';
-import Observer from '../../common/utils/observer';
-import { generateLiveApiInstance } from '../../common/appId';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
+import { binaryApi, generateLiveApiInstance } from '../../common/appId';
 
-let tmpApi = generateLiveApiInstance();
+export const symbolApi = new _Symbol(binaryApi);
+export const symbolPromise = () => new Promise(resolve => symbolApi.initPromise.then(() => resolve()));
 
-export const symbolApi = new _Symbol(tmpApi);
-
-export const symbolPromise = new Promise(resolve => {
-    symbolApi.initPromise.then(() => {
-        tmpApi.disconnect();
-        tmpApi = null;
-        resolve();
-    });
-});
-
-export const ticksService = new TicksService(generateLiveApiInstance());
-
-export const createScope = () => {
-    const api = generateLiveApiInstance();
-    const observer = new Observer();
-
-    return { observer, api, ticksService, symbolApi };
-};
+export const ticksService = new TicksService(binaryApi);
 
 export const appendRow = (trade, state) => ({
     id  : state.id + 1,
