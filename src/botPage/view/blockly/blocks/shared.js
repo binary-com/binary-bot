@@ -339,7 +339,9 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
                 return false;
             });
             if (!contract) {
-                contract = contractsForContractCategory.find(c => barrierType === 'absolute' && !isOffset(c.barrier || c.high_barrier));
+                contract = contractsForContractCategory.find(
+                    c => barrierType === 'absolute' && !isOffset(c.barrier || c.high_barrier)
+                );
             }
             // Fallback to contract with smallest barriers
             if (!contract) {
@@ -399,7 +401,7 @@ export const getPredictionForContracts = (contracts, selectedContractType) => {
         const contract = contractsForContractCategory.find(c =>
             contractMapping[selectedContractType].includes(c.contract_type)
         );
-        if (contract.last_digit_range) {
+        if (contract && contract.last_digit_range) {
             predictionRange.push(...contract.last_digit_range);
         } else {
             predictionRange.push(0);
