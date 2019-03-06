@@ -1,8 +1,8 @@
-import { generateLiveApiInstance } from './appId';
 // import { getLanguage } from '../common/lang';
 import { getTokenList } from './utils/storageManager';
 import { translate } from '../common/i18n';
 import { getLanguage } from './lang';
+import { binaryApi } from './appId';
 
 const Elevio = (() => {
     const init = () => {
@@ -39,20 +39,16 @@ const Elevio = (() => {
     const setUserInfo = elev => {
         const tokenList = getTokenList();
         if (tokenList.length) {
-            const api = generateLiveApiInstance(); // Refactor when reducing WS connections
             const activeToken = tokenList[0];
-            api.authorize(activeToken.token).then(() => {
-                api.send({ get_settings: 1 }).then(response => {
-                    const isVirtual = activeToken.loginInfo.is_virtual;
-                    const userObject = {
-                        email     : response.get_settings.email,
-                        first_name: isVirtual ? 'Virtual' : response.get_settings.first_name,
-                        last_name : isVirtual ? activeToken.loginInfo.loginid : response.get_settings.first_name,
-                        user_hash : response.get_settings.user_hash,
-                    };
-                    elev.setUser(userObject);
-                    api.disconnect();
-                });
+            binaryApi.send({ get_settings: 1 }).then(response => {
+                const isVirtual = activeToken.loginInfo.is_virtual;
+                const userObject = {
+                    email     : response.get_settings.email,
+                    first_name: isVirtual ? 'Virtual' : response.get_settings.first_name,
+                    last_name : isVirtual ? activeToken.loginInfo.loginid : response.get_settings.first_name,
+                    user_hash : response.get_settings.user_hash,
+                };
+                elev.setUser(userObject);
             });
         }
     };
