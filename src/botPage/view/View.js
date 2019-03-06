@@ -18,13 +18,7 @@ import { showDialog } from '../bot/tools';
 import Elevio from '../../common/elevio';
 import { updateConfigCurrencies } from '../common/const';
 import { roundBalance, isVirtual } from '../common/tools';
-import {
-    logoutAllTokens,
-    getOAuthURL,
-    generateLiveApiInstance,
-    AppConstants,
-    addTokenIfValid,
-} from '../../common/appId';
+import { logoutAllTokens, getOAuthURL, AppConstants, addTokenIfValid, binaryApi } from '../../common/appId';
 import { translate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
@@ -39,13 +33,11 @@ import { isProduction } from '../../common/utils/tools';
 
 let realityCheckTimeout;
 
-const api = generateLiveApiInstance();
+new NetworkMonitor(binaryApi, $('#server-status')); // eslint-disable-line no-new
 
-new NetworkMonitor(api, $('#server-status')); // eslint-disable-line no-new
+binaryApi.send({ website_status: '1', subscribe: 1 });
 
-api.send({ website_status: '1', subscribe: 1 });
-
-api.events.on('website_status', response => {
+binaryApi.events.on('website_status', response => {
     $('.web-status').trigger('notify-hide');
     const { message } = response.website_status;
     if (message) {
@@ -57,7 +49,7 @@ api.events.on('website_status', response => {
     }
 });
 
-api.events.on('balance', response => {
+binaryApi.events.on('balance', response => {
     const {
         balance: { balance: b, currency },
     } = response;
@@ -66,15 +58,15 @@ api.events.on('balance', response => {
     $('.topMenuBalance').text(`${balance} ${currency}`);
 });
 
-const addBalanceForToken = token => {
-    api.authorize(token).then(() => {
-        api.send({ forget_all: 'balance' }).then(() => {
-            api.subscribeToBalance();
+const addBalanceForToken = () => {
+    if (getTokenList().length) {
+        binaryApi.send({ forget_all: 'balance' }).then(() => {
+            binaryApi.subscribeToBalance();
         });
-    });
+    }
 };
 
-const chart = new Chart(api);
+const chart = new Chart(binaryApi);
 
 const tradingView = new TradingView();
 
@@ -226,7 +218,7 @@ export default class View {
         logHandler();
         this.initPromise = new Promise(resolve => {
             updateConfigCurrencies().then(() => {
-                symbolPromise.then(() => {
+                symbolPromise().then(() => {
                     updateTokenList();
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
@@ -665,7 +657,7 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
-    ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
+    ReactDOM.render(<ServerTime api={binaryApi} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
     ReactDOM.render(
         <OfficialVersionWarning
