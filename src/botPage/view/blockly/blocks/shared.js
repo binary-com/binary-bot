@@ -1,14 +1,9 @@
-import { oppositesToDropdown } from '../utils';
 import { symbolApi } from '../../shared';
+import { binaryApi } from '../../../../common/appId';
+import { oppositesToDropdown } from '../utils';
 import config from '../../../common/const';
-import { generateLiveApiInstance } from '../../../../common/appId';
 import { translate } from '../../../../common/i18n';
-import {
-    get as getStorage,
-    set as setStorage,
-    getTokenList,
-    removeAllTokens,
-} from '../../../../common/utils/storageManager';
+import { get as getStorage, set as setStorage, getTokenList } from '../../../../common/utils/storageManager';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 
@@ -141,7 +136,7 @@ export const dependentFieldMapping = {
 
 export const getAvailableDurations = (symbol, selectedContractType) => {
     const contractsForStore = JSON.parse(getStorage('contractsForStore') || '[]');
-    let tokenList = getTokenList();
+    const tokenList = getTokenList();
     const defaultDurations = [
         [translate('Ticks'), 't'],
         [translate('Seconds'), 's'],
@@ -151,20 +146,7 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
     ];
 
     const getContractsForSymbolFromApi = async underlyingSymbol => {
-        // Refactor this when reducing WS connections
-        const api = generateLiveApiInstance();
-
-        // Try to authorize for accurate contracts response
-        if (tokenList.length) {
-            try {
-                await api.authorize(tokenList[0].token);
-            } catch (e) {
-                removeAllTokens();
-                tokenList = [];
-            }
-        }
-
-        const response = await api.getContractsForSymbol(underlyingSymbol);
+        const response = await binaryApi.getContractsForSymbol(underlyingSymbol);
         const contractsForSymbol = {};
         if (response.contracts_for) {
             Object.assign(contractsForSymbol, {
@@ -186,7 +168,6 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
             contractsForStore.push(contractsForSymbol);
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
         }
-        api.disconnect();
         return contractsForSymbol;
     };
     const getDurationsForContract = contractsForSymbol => {
