@@ -1,20 +1,14 @@
 import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, restart } from './components';
 import { findTopParentBlock } from '../../utils';
-
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 
-export const getTradeType = block => {
-    const tradeDefBlock = findTopParentBlock(block);
-    return tradeDefBlock && tradeDefBlock.getFieldValue('TRADETYPE_LIST');
-};
-
-export const getSelectedSymbol = block => {
-    const tradeDefBlock = findTopParentBlock(block);
-    return tradeDefBlock && tradeDefBlock.getFieldValue('SYMBOL_LIST');
+export const getParentValue = (block, fieldName) => {
+    const parentBlock = findTopParentBlock(block);
+    return parentBlock && parentBlock.getFieldValue(fieldName);
 };
 
 export const updateInputList = block => {
-    const tradeType = getTradeType(block);
+    const tradeType = getParentValue(block, 'TRADETYPE_LIST');
     if (tradeType) {
         Blockly.Blocks[tradeType].init.call(block);
     }
