@@ -99,34 +99,13 @@ export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/
 export const getOAuthURL = () =>
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
-const options = {
-    apiUrl   : getWebSocketURL(),
-    websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
-    language : getLanguage().toUpperCase(),
-    appId    : getAppIdFallback(),
-};
-
-export const generateLiveApiInstance = () => new LiveApi(options);
-
-export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
-
-export const binaryApi = generateLiveApiInstance();
-
-const tokenList = getTokenList();
-if (tokenList.length) {
-    binaryApi
-        .authorize(tokenList[0].token)
-        .then(() => {})
-        .catch(() => logoutAllTokens());
-}
-
 export async function addTokenIfValid(token, tokenObjectList) {
     try {
-        const { authorize } = await binaryApi.authorize(token);
+        const { authorize } = await binaryApi.api.authorize(token);
         const { landing_company_name: lcName } = authorize;
         const {
             landing_company_details: { has_reality_check: hasRealityCheck },
-        } = await binaryApi.getLandingCompanyDetails(lcName);
+        } = await binaryApi.api.getLandingCompanyDetails(lcName);
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
         const { account_list: accountList } = authorize;
@@ -156,8 +135,51 @@ export const logoutAllTokens = () =>
         if (tokenList.length === 0) {
             logout();
         } else {
-            binaryApi.authorize(tokenList[0].token).then(() => {
-                binaryApi.logOut().then(logout, logout);
+            binaryApi.api.authorize(tokenList[0].token).then(() => {
+                binaryApi.api.logOut().then(logout, logout);
             }, logout);
         }
     });
+
+const options = {
+    apiUrl   : getWebSocketURL(),
+    websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
+    language : getLanguage().toUpperCase(),
+    appId    : getAppIdFallback(),
+};
+
+export const generateLiveApiInstance = () => new LiveApi(options);
+
+export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
+
+class BinaryApi {
+    constructor() {
+        this.api = generateLiveApiInstance();
+        this.isAuthorised = false;
+    }
+    authorisePromise() {
+        return new Promise(resolve => {
+            if (this.isAuthorised) {
+                return resolve();
+            }
+            const tokenList = getTokenList();
+            if (tokenList.length) {
+                this.api
+                    .authorize(tokenList[0].token)
+                    .then(() => {
+                        this.isAuthorised = true;
+                        resolve();
+                    })
+                    .catch(() => {
+                        this.isAuthorised = false;
+                        logoutAllTokens();
+                        resolve();
+                    });
+            } else {
+                resolve();
+            }
+        });
+    }
+}
+
+export const binaryApi = new BinaryApi();
