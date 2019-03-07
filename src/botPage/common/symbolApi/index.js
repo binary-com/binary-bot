@@ -40,15 +40,17 @@ const getCategoryForCondition = condition =>
     );
 
 export default class _Symbol {
-    constructor(api) {
+    constructor(binaryApi) {
         this.initPromise = new Promise(resolve => {
-            api.getActiveSymbolsBrief().then(response => {
-                this.activeSymbols = new ActiveSymbols(response.active_symbols);
-                api.getAssetIndex().then(response2 => {
-                    parsedAssetIndex = parseAssetIndex(response2.asset_index);
-                    resolve();
+            binaryApi.authorisePromise().then(() => {
+                binaryApi.api.getActiveSymbolsBrief().then(response => {
+                    this.activeSymbols = new ActiveSymbols(response.active_symbols);
+                    binaryApi.api.getAssetIndex().then(response2 => {
+                        parsedAssetIndex = parseAssetIndex(response2.asset_index);
+                        resolve();
+                    }, noop);
                 }, noop);
-            }, noop);
+            });
         });
     }
     /* eslint-disable class-methods-use-this */
