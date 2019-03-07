@@ -1,8 +1,8 @@
-// import { getLanguage } from '../common/lang';
+import { binaryApi } from './appId';
+import { getLanguage } from './lang';
 import { getTokenList } from './utils/storageManager';
 import { translate } from '../common/i18n';
-import { getLanguage } from './lang';
-import { binaryApi } from './appId';
+// import { getLanguage } from '../common/lang';
 
 const Elevio = (() => {
     const init = () => {
@@ -40,7 +40,7 @@ const Elevio = (() => {
         const tokenList = getTokenList();
         if (tokenList.length) {
             const activeToken = tokenList[0];
-            binaryApi.send({ get_settings: 1 }).then(response => {
+            binaryApi.api.send({ get_settings: 1 }).then(response => {
                 const isVirtual = activeToken.loginInfo.is_virtual;
                 const userObject = {
                     email     : response.get_settings.email,

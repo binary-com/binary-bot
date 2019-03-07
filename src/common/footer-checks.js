@@ -4,10 +4,10 @@ import { binaryApi } from './appId';
 export default async function isEuCountry() {
     const {
         website_status: { clients_country: clientsCountry },
-    } = await binaryApi.send({ website_status: 1 });
+    } = await binaryApi.api.send({ website_status: 1 });
     const {
         landing_company: { financial_company: financialCompany, gaming_company: gamingCompany },
-    } = await binaryApi.send({
+    } = await binaryApi.api.send({
         landing_company: clientsCountry,
     });
 
