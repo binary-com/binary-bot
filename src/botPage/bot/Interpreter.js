@@ -128,7 +128,7 @@ export default class Interpreter {
         this.loop();
     }
     terminateSession() {
-        this.$scope.api.disconnect();
+        this.$scope.api.send({ forget_all: 'proposal' });
         globalObserver.emit('bot.stop');
         this.stopped = true;
     }
