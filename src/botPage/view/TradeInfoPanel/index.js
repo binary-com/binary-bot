@@ -4,6 +4,7 @@ import { translate } from '../../../common/i18n';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
 import RunButton from './RunButton';
+import ClearButton from './ClearButton';
 
 const resetAnimation = () => {
     $('.circle-wrapper')
@@ -151,7 +152,10 @@ export default class TradeInfoPanel extends Component {
             <div>
                 <div className="content">
                     <div className="content-row">
-                        <RunButton />
+                        <div className="summary-toolbox">
+                            <RunButton />
+                            <ClearButton />
+                        </div>
                     </div>
                     <div className="content-row">
                         <AnimateTrade />
@@ -162,7 +166,6 @@ export default class TradeInfoPanel extends Component {
                     <div className="content-row">
                         <Summary accountID={accountID} />
                     </div>
-
                     <div>
                         <p id="sync-warning">
                             {translate(

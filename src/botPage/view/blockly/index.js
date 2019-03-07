@@ -19,6 +19,7 @@ import createError from '../../common/error';
 import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
+import { showDialog } from '../../bot/tools';
 
 const setBeforeUnload = off => {
     if (off) {
@@ -52,16 +53,12 @@ const disposeBlocksWithLoaders = () => {
 };
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        $('#unavailableMarkets').dialog({
-            height: 'auto',
-            width : 600,
-            modal : true,
-            open() {
-                $(this)
-                    .parent()
-                    .find('.ui-dialog-buttonset > button')
-                    .removeClass('ui-button ui-corner-all ui-widget');
-            },
+        if (window.trackJs) {
+            trackJs.track('Invalid financial market');
+        }
+        showDialog({
+            title  : translate('Warning'),
+            text   : [translate('This strategy is not available in your country.')],
             buttons: [
                 {
                     text : translate('OK'),
@@ -71,11 +68,9 @@ const marketsWereRemoved = xml => {
                     },
                 },
             ],
-        });
-        if (window.trackJs) {
-            trackJs.track('Invalid financial market');
-        }
-        $('#unavailableMarkets').dialog('open');
+        })
+            .then(() => {})
+            .catch(() => {});
         return true;
     }
     return false;
