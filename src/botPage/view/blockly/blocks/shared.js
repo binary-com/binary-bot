@@ -1,9 +1,9 @@
 import { symbolApi } from '../../shared';
-import { binaryApi } from '../../../../common/appId';
 import { oppositesToDropdown } from '../utils';
 import config from '../../../common/const';
 import { translate } from '../../../../common/i18n';
 import { get as getStorage, set as setStorage, getTokenList } from '../../../../common/utils/storageManager';
+import { binaryApi } from '../../../../common/appId';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 
@@ -146,7 +146,7 @@ export const getAvailableDurations = (symbol, selectedContractType) => {
     ];
 
     const getContractsForSymbolFromApi = async underlyingSymbol => {
-        const response = await binaryApi.getContractsForSymbol(underlyingSymbol);
+        const response = await binaryApi.api.getContractsForSymbol(underlyingSymbol);
         const contractsForSymbol = {};
         if (response.contracts_for) {
             Object.assign(contractsForSymbol, {

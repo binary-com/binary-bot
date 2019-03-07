@@ -4,9 +4,10 @@ import TicksService from '../common/TicksService';
 import { binaryApi } from '../../common/appId';
 
 export const symbolApi = new _Symbol(binaryApi);
+
 export const symbolPromise = () => new Promise(resolve => symbolApi.initPromise.then(() => resolve()));
 
-export const ticksService = new TicksService(binaryApi);
+export const ticksService = new TicksService(binaryApi.api);
 
 export const appendRow = (trade, state) => ({
     id  : state.id + 1,
