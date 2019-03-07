@@ -96,7 +96,7 @@ export default Engine =>
         checkProposalReady() {
             const proposals = this.data.get('proposals');
 
-            if (proposals && proposals.size === this.proposalTemplates.length) {
+            if (proposals && this.proposalTemplates && proposals.size === this.proposalTemplates.length) {
                 this.startPromise.then(() => this.store.dispatch(proposalsReady()));
             }
         }
