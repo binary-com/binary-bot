@@ -3,20 +3,21 @@ import { observer as globalObserver } from '../../common/utils/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
 
-const unrecoverableErrors = [
-    'InsufficientBalance',
-    'CustomLimitsReached',
-    'OfferingsValidationError',
-    'InvalidCurrency',
-    'ContractBuyValidationError',
-    'NotDefaultCurrency',
-    'PleaseAuthenticate',
-    'FinancialAssessmentRequired',
+const reversibleErrors = [
+    'InvalidBarrierForSpot',
+    'BarrierOutOfRange',
+    'InvalidHighLowBarrrierRange',
+    'InvalidLowBarrrierRange',
+    'NoReturn',
+    'StakeLimits',
+    'PayoutLimits',
+    'InvalidBarrierRange',
 ];
+
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
-const shouldRestartOnError = (bot, errorName = '') =>
-    !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+const shouldRestartOnError = (bot, errorName) => reversibleErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
