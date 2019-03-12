@@ -1,3 +1,5 @@
+import { translate } from '../../../common/utils/tools';
+
 /* eslint-disable */
 Blockly.WorkspaceAudio.prototype.preload = function() {};
 Blockly.FieldDropdown.prototype.render_ = function() {
@@ -287,4 +289,48 @@ Blockly.FieldTextInput.prototype.showInlineEditor_ = function(quietInput) {
     }
 
     this.bindEvents_(htmlInput);
+};
+const originalContextMenuFn = Blockly.ContextMenu.show;
+Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
+    // Rename 'Clean up blocks'
+    menuOptions.some(option => {
+        if (option.text === Blockly.Msg.CLEAN_UP) {
+            option.text = translate('Rearrange vertically'); // eslint-disable-line no-param-reassign
+            return true;
+        }
+        return false;
+    }) &&
+        /* Remove delete all blocks, but only when 'Clean up blocks' is available (i.e. workspace)
+         * This allows users to still delete root blocks containing blocks
+         */
+        menuOptions.some((option, i) => {
+            if (
+                option.text === Blockly.Msg.DELETE_BLOCK ||
+                option.text.replace(/[0-9]+/, '%1') === Blockly.Msg.DELETE_X_BLOCKS
+            ) {
+                menuOptions.splice(i, 1);
+                return true;
+            }
+            return false;
+        });
+    // Open the Elev.io widget when clicking 'Help'
+    // eslint-disable-next-line no-underscore-dangle
+    if (window._elev) {
+        menuOptions.some(option => {
+            if (option.text === Blockly.Msg.HELP) {
+                option.callback = () => window._elev.open(); // eslint-disable-line no-param-reassign, no-underscore-dangle
+                return true;
+            }
+            return false;
+        });
+    }
+    originalContextMenuFn(e, menuOptions, rtl);
+};
+Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockType) {
+    const shadowBlock = this.sourceBlock_.workspace.newBlock(shadowBlockType);
+    shadowBlock.setShadow(true);
+    shadowBlock.setFieldValue(value, name); // Refactor when using shadow block for strings in future
+    shadowBlock.outputConnection.connect(this.connection);
+    shadowBlock.initSvg();
+    shadowBlock.render();
 };
