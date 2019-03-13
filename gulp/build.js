@@ -60,6 +60,7 @@ gulp.task(
         'copy-binary-style-css',
         'copy-binary-style-img',
         'copy-js',
+        'pull-blockly-translations',
         done => {
             genHtml(true);
             done();
@@ -77,6 +78,7 @@ gulp.task(
         'copy-jquery-img',
         'copy-binary-style-css',
         'copy-binary-style-img',
-        'copy-js'
+        'copy-js',
+        'pull-blockly-translations'
     )
 );
