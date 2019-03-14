@@ -489,3 +489,9 @@ export const loadRemote = blockObj =>
             }
         }
     });
+
+export const hideInteractionsFromBlockly = callback => {
+    Blockly.Events.recordUndo = false;
+    callback();
+    Blockly.Events.recordUndo = true;
+};
