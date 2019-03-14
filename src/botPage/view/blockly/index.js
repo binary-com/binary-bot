@@ -144,7 +144,7 @@ const addBlocklyTranslation = () => {
         lang = 'zh-hant';
     }
     return new Promise(resolve => {
-        $.getScript(`https://blockly-demo.appspot.com/static/msg/js/${lang}.js`, resolve);
+        $.getScript(`translations/${lang}.js`, resolve);
     });
 };
 const onresize = () => {

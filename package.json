@@ -100,6 +100,7 @@
     "gulp-connect": "^5.0.0",
     "gulp-mustache": "^4.1.0",
     "gulp-open": "^3.0.1",
+    "gulp-remote-src": "^0.4.4",
     "gulp-rename": "^1.2.2",
     "gulp-rev": "^8.1.1",
     "gulp-sass": "^3.1.0",
