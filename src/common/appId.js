@@ -71,7 +71,7 @@ const isRealAccount = () => {
     return isReal;
 };
 
-const getDomainAppId = () => AppIdMap[hostName];
+const getDomainAppId = () => AppIdMap[hostName.replace(/^www./, '')];
 
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
