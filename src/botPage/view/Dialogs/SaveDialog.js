@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 import Dialog from './Dialog';
-import googleDrive from '../../../common/integrations/gdrive';
+import googleDrive from '../../../common/integrations/GoogleDrive';
 import { cleanBeforeExport } from '../blockly/utils';
 import { observer as globalObserver } from '../../../common/utils/observer';
 

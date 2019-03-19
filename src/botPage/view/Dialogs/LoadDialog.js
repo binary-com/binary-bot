@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
-import googleDrive from '../../../common/integrations/gdrive';
+import googleDrive from '../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
 class LoadContent extends PureComponent {
