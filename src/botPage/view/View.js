@@ -4,7 +4,9 @@ import 'jquery-ui/ui/widgets/dialog';
 import _Blockly from './blockly';
 import Chart from './Dialogs/Chart';
 import Limits from './Dialogs/Limits';
-import Save from './Dialogs/Save';
+import IntegrationsDialog from './Dialogs/IntegrationsDialog';
+import LoadDialog from './Dialogs/LoadDialog';
+import SaveDialog from './Dialogs/SaveDialog';
 import TradingView from './Dialogs/TradingView';
 import logHandler from './logger';
 import LogTable from './LogTable';
@@ -26,6 +28,7 @@ import {
     addTokenIfValid,
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
+import googleDrive from '../../common/integrations/GoogleDrive';
 import { getLanguage } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
@@ -139,7 +142,9 @@ const clearRealityCheck = () => {
 };
 
 const limits = new Limits();
-const saveDialog = new Save();
+const integrationsDialog = new IntegrationsDialog();
+const loadDialog = new LoadDialog();
+const saveDialog = new SaveDialog();
 
 const getLandingCompanyForToken = id => {
     let landingCompany;
@@ -346,6 +351,7 @@ export default class View {
                 .then(() => {
                     this.stop();
                     Elevio.logoutUser();
+                    googleDrive.signOut();
                     removeTokens();
                 })
                 .catch(() => {});
@@ -381,6 +387,10 @@ export default class View {
                 closeText: '',
                 classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
             });
+
+        $('#integrations').click(() => integrationsDialog.open());
+
+        $('#load-xml').click(() => loadDialog.open());
 
         $('#save-xml').click(() => saveDialog.save().then(arg => this.blockly.save(arg)));
 
@@ -448,10 +458,6 @@ export default class View {
         $('#showSummary').click(showSummary);
 
         $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden')));
-
-        $('#loadXml').click(() => {
-            $('#files').click();
-        });
 
         $('#logout, #toolbox-logout').click(() => {
             setBeforeUnload(true);
