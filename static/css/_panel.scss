@@ -351,7 +351,7 @@ $disabled-color: #F2F2F2;
         border-radius: 10px;
         & .description {
             margin-left: 21px;
-            margin-top: 0.5em;
+            margin-top: 0.2em;
             margin-bottom: 0;
         }
     }
@@ -365,10 +365,10 @@ $disabled-color: #F2F2F2;
         h2 {
             color: $black;
             font-size: 20px;
-            margin: 0 0 0.1em 0;
+            margin: 0 0 0.2em 0;
         }
         .description {
-            margin: 0 0 0.1em 0;
+            margin: 0 0 0.2em 0;
         }
         .left {
             width: 60%;
@@ -384,7 +384,7 @@ $disabled-color: #F2F2F2;
             }
         }
         .integration-user {
-            color: $brand-dark-gray;
+            color: #b9b9b9;
             font-size: 75%;
         }
     }
