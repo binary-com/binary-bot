@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
-import { translate } from '../../../common/i18n';
 import GoogleDriveIntegration from '../react-components/Integrations/GoogleDriveIntegration';
 import * as style from '../style';
+import { translate } from '../../../common/i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
 class IntegrationsContent extends PureComponent {

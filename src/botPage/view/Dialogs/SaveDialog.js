@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from '../../../common/i18n';
-import * as style from '../style';
+import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
-import googleDrive from '../../../common/integrations/GoogleDrive';
 import { cleanBeforeExport } from '../blockly/utils';
+import * as style from '../style';
+import { translate } from '../../../common/i18n';
+import googleDrive from '../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
 class SaveContent extends PureComponent {

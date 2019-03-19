@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
-import { translate } from '../../../common/i18n';
 import * as style from '../style';
+import { translate } from '../../../common/i18n';
 import googleDrive from '../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
