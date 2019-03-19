@@ -89,3 +89,9 @@
         background: url("../image/clear-disabled.svg") no-repeat center;
     }
 }
+.icon-integrations {
+    &:before {
+        content: ' ';
+    }
+    background: url("../image/integrations.svg") no-repeat center;
+}
