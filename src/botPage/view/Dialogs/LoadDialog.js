@@ -23,7 +23,10 @@ class LoadContent extends PureComponent {
     submit() {
         switch (this.state.loadType) {
             case 'google-drive':
-                googleDrive.createFilePicker().then(() => this.props.closeDialog());
+                googleDrive
+                    .createFilePicker()
+                    .then(() => this.props.closeDialog())
+                    .catch(() => {});
                 break;
             default:
                 $('#files').click();
