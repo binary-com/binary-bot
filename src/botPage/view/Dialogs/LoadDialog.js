@@ -9,10 +9,7 @@ import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/util
 class LoadContent extends PureComponent {
     constructor() {
         super();
-        this.state = {
-            loadType         : 'local',
-            closeOtherDialogs: true,
-        };
+        this.state = { loadType: 'local' };
     }
 
     onChange(event) {
