@@ -1,4 +1,3 @@
-/* global google */
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
@@ -43,10 +42,7 @@ class SaveContent extends PureComponent {
                     this.props.closeDialog();
                     removeSpinnerInButton($(this.submitButton), initialButtonText);
                 })
-                .catch(error => {
-                    if (error !== google.picker.Action.CANCEL) {
-                        globalObserver.emit('ui.log.warn', error.message);
-                    }
+                .catch(() => {
                     removeSpinnerInButton($(this.submitButton), initialButtonText);
                 });
         } else {

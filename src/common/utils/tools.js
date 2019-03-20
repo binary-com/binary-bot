@@ -1,4 +1,5 @@
 import RenderHTML from 'react-render-html';
+import { observer as globalObserver } from './observer';
 import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
@@ -110,4 +111,11 @@ export const showSpinnerInButton = $buttonElement => {
 
 export const removeSpinnerInButton = ($buttonElement, initialText) => {
     $buttonElement.html(() => initialText).prop('disabled', false);
+};
+
+export const trackAndEmitError = (message, object = {}) => {
+    globalObserver.emit('ui.log.warn', message);
+    if (window.trackJs) {
+        trackJs.console.error(message, object);
+    }
 };

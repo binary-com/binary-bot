@@ -75,7 +75,7 @@ class LoadContent extends PureComponent {
                             this.submitButton = el;
                         }}
                     >
-                        {translate('Save')}
+                        {translate('Load')}
                     </button>
                 </div>
             </form>
