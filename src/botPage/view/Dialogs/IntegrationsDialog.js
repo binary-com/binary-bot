@@ -1,23 +1,14 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import Dialog from './Dialog';
 import GoogleDriveIntegration from '../react-components/Integrations/GoogleDriveIntegration';
 import * as style from '../style';
 import { translate } from '../../../common/i18n';
-import { observer as globalObserver } from '../../../common/utils/observer';
 
-class IntegrationsContent extends PureComponent {
-    constructor() {
-        super();
-    }
-
-    render() {
-        return (
-            <div id="integrations-dialog" className="dialog-content" style={style.content}>
-                <GoogleDriveIntegration />
-            </div>
-        );
-    }
-}
+const IntegrationsContent = () => (
+    <div id="integrations-dialog" className="dialog-content" style={style.content}>
+        <GoogleDriveIntegration />
+    </div>
+);
 
 export default class IntegrationsDialog extends Dialog {
     constructor() {

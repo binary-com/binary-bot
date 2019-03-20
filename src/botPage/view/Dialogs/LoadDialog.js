@@ -1,9 +1,9 @@
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
 import * as style from '../style';
 import { translate } from '../../../common/i18n';
 import googleDrive from '../../../common/integrations/GoogleDrive';
-import { observer as globalObserver } from '../../../common/utils/observer';
 import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/utils/tools';
 
 class LoadContent extends PureComponent {
@@ -20,23 +20,21 @@ class LoadContent extends PureComponent {
     }
 
     submit() {
-        switch (this.state.loadType) {
-            case 'google-drive':
-                showSpinnerInButton($(this.submitButton));
-                googleDrive
-                    .createFilePicker()
-                    .then(() => {
-                        this.props.closeDialog();
-                        removeSpinnerInButton($(this.submitButton), translate('Load'));
-                    })
-                    .catch(() => {
-                        removeSpinnerInButton($(this.submitButton), translate('Load'));
-                    });
-                break;
-            default:
-                $('#files').click();
-                this.props.closeDialog();
-                break;
+        if (this.state.loadType === 'google-drive') {
+            const initialButtonText = $(this.submitButton).text();
+            showSpinnerInButton($(this.submitButton));
+            googleDrive
+                .createFilePicker()
+                .then(() => {
+                    this.props.closeDialog();
+                    removeSpinnerInButton($(this.submitButton), initialButtonText);
+                })
+                .catch(() => {
+                    removeSpinnerInButton($(this.submitButton), initialButtonText);
+                });
+        } else {
+            $('#files').click();
+            this.props.closeDialog();
         }
     }
 
@@ -59,7 +57,7 @@ class LoadContent extends PureComponent {
                             defaultChecked={true}
                             onChange={e => this.onChange(e)}
                         />
-                        <label htmlFor="load-local">{translate('Local')}</label>
+                        <label htmlFor="load-local">{translate('My computer')}</label>
                     </span>
                     <span className="integration-option">
                         <input
@@ -80,7 +78,7 @@ class LoadContent extends PureComponent {
                             this.submitButton = el;
                         }}
                     >
-                        {translate('Load')}
+                        {translate('Save')}
                     </button>
                 </div>
             </form>

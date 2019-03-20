@@ -1,3 +1,4 @@
+/* global google */
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
@@ -21,41 +22,38 @@ class SaveContent extends PureComponent {
         const filename = $(this.filename).val() || 'binary-bot';
         const collection = $(this.isCollection).prop('checked');
 
-        switch (this.state.saveType) {
-            case 'google-drive':
-                showSpinnerInButton($(this.submitButton));
+        if (this.state.saveType === 'google-drive') {
+            const initialButtonText = $(this.submitButton).text();
+            showSpinnerInButton($(this.submitButton));
 
-                const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-                cleanBeforeExport(xml);
+            const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+            cleanBeforeExport(xml);
 
-                xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-                xml.setAttribute('collection', collection);
+            xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+            xml.setAttribute('collection', collection);
 
-                googleDrive
-                    .saveFile({
-                        name    : filename,
-                        content : Blockly.Xml.domToPrettyText(xml),
-                        mimeType: 'application/xml',
-                    })
-                    .then(() => {
-                        globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive'));
-                        this.props.closeDialog();
-                        removeSpinnerInButton($(this.submitButton), translate('Save'));
-                    })
-                    .catch(error => {
-                        if (error !== google.picker.Action.CANCEL) {
-                            globalObserver.emit('ui.log.warn', error.message);
-                        }
-                        removeSpinnerInButton($(this.submitButton), translate('Save'));
-                    });
-                break;
-
-            default:
-                this.props.onSave({
-                    filename,
-                    collection,
+            googleDrive
+                .saveFile({
+                    name    : filename,
+                    content : Blockly.Xml.domToPrettyText(xml),
+                    mimeType: 'application/xml',
+                })
+                .then(() => {
+                    globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive'));
+                    this.props.closeDialog();
+                    removeSpinnerInButton($(this.submitButton), initialButtonText);
+                })
+                .catch(error => {
+                    if (error !== google.picker.Action.CANCEL) {
+                        globalObserver.emit('ui.log.warn', error.message);
+                    }
+                    removeSpinnerInButton($(this.submitButton), initialButtonText);
                 });
-                break;
+        } else {
+            this.props.onSave({
+                filename,
+                collection,
+            });
         }
     }
 
@@ -96,7 +94,7 @@ class SaveContent extends PureComponent {
                             defaultChecked={true}
                             onChange={e => this.onChange(e)}
                         />
-                        <label htmlFor="save-local">{translate('Local')}</label>
+                        <label htmlFor="save-local">{translate('My computer')}</label>
                     </span>
                     <span className="integration-option">
                         <input

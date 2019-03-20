@@ -13,6 +13,7 @@ export default class GoogleDriveIntegration extends PureComponent {
         globalObserver.register('googledrive.authorise', data => this.setState(data));
     }
 
+    // eslint-disable-next-line class-methods-use-this
     render() {
         return (
             <div className="integration input-row last">
