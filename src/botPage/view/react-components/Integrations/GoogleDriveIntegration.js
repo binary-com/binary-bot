@@ -10,7 +10,7 @@ export default class GoogleDriveIntegration extends PureComponent {
     }
 
     componentDidMount() {
-        globalObserver.register('integrations.googledrive', data => this.setState(data));
+        globalObserver.register('googledrive.authorise', data => this.setState(data));
     }
 
     render() {
