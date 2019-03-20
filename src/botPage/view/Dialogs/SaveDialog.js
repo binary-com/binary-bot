@@ -17,11 +17,6 @@ class SaveContent extends PureComponent {
         };
     }
 
-    componentDidMount() {
-        globalObserver.register('dialog.load.opened', this.props.closeDialog);
-        globalObserver.register('dialog.integrations.opened', this.props.closeDialog);
-    }
-
     submit() {
         const filename = $(this.filename).val() || 'binary-bot';
         const collection = $(this.isCollection).prop('checked');
@@ -174,6 +169,7 @@ export default class SaveDialog extends Dialog {
             <SaveContent onSave={onSave} closeDialog={closeDialog} />,
             style.dialogLayout
         );
+        this.registerCloseOnOtherDialog();
     }
 
     save() {
@@ -181,10 +177,5 @@ export default class SaveDialog extends Dialog {
         return new Promise(resolve => {
             this.limitsPromise = resolve;
         });
-    }
-
-    open() {
-        super.open();
-        globalObserver.emit('dialog.save.opened');
     }
 }

@@ -10,11 +10,6 @@ class IntegrationsContent extends PureComponent {
         super();
     }
 
-    componentDidMount() {
-        globalObserver.register('dialog.load.opened', this.props.closeDialog);
-        globalObserver.register('dialog.save.opened', this.props.closeDialog);
-    }
-
     render() {
         return (
             <div id="integrations-dialog" className="dialog-content" style={style.content}>
@@ -33,10 +28,6 @@ export default class IntegrationsDialog extends Dialog {
             width : 500,
             height: 'auto',
         });
-    }
-
-    open() {
-        super.open();
-        globalObserver.emit('dialog.integrations.opened');
+        this.registerCloseOnOtherDialog();
     }
 }

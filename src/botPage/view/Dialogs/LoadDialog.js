@@ -9,12 +9,10 @@ import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/util
 class LoadContent extends PureComponent {
     constructor() {
         super();
-        this.state = { loadType: 'local' };
-    }
-
-    componentDidMount() {
-        globalObserver.register('dialog.save.opened', this.props.closeDialog);
-        globalObserver.register('dialog.integrations.opened', this.props.closeDialog);
+        this.state = {
+            loadType         : 'local',
+            closeOtherDialogs: true,
+        };
     }
 
     onChange(event) {
@@ -97,10 +95,6 @@ export default class LoadDialog extends Dialog {
             this.close();
         };
         super('load-dialog', translate('Load blocks'), <LoadContent closeDialog={closeDialog} />, style.dialogLayout);
-    }
-
-    open() {
-        super.open();
-        globalObserver.emit('dialog.load.opened');
+        this.registerCloseOnOtherDialog();
     }
 }
