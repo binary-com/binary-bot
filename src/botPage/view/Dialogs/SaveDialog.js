@@ -6,6 +6,7 @@ import * as style from '../style';
 import { translate } from '../../../common/i18n';
 import googleDrive from '../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../common/utils/observer';
+import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/utils/tools';
 
 class SaveContent extends PureComponent {
     constructor() {
@@ -27,6 +28,8 @@ class SaveContent extends PureComponent {
 
         switch (this.state.saveType) {
             case 'google-drive':
+                showSpinnerInButton($(this.submitButton));
+
                 const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
                 cleanBeforeExport(xml);
 
@@ -42,9 +45,13 @@ class SaveContent extends PureComponent {
                     .then(() => {
                         globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive'));
                         this.props.closeDialog();
+                        removeSpinnerInButton($(this.submitButton), translate('Save'));
                     })
-                    .catch(e => {
-                        globalObserver.emit('ui.log.warn', e.message);
+                    .catch(error => {
+                        if (error !== google.picker.Action.CANCEL) {
+                            globalObserver.emit('ui.log.warn', error.message);
+                        }
+                        removeSpinnerInButton($(this.submitButton), translate('Save'));
                     });
                 break;
 
@@ -132,8 +139,15 @@ class SaveContent extends PureComponent {
                         {translate('Save your blocks and settings for re-use in other strategies')}
                     </div>
                 </div>
-                <div id="save-buttons" className="center-text input-row last">
-                    <button type="submit">{translate('Save')}</button>
+                <div className="center-text input-row last">
+                    <button
+                        type="submit"
+                        ref={el => {
+                            this.submitButton = el;
+                        }}
+                    >
+                        {translate('Save')}
+                    </button>
                 </div>
             </form>
         );

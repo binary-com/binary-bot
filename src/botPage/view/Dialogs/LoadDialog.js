@@ -4,6 +4,7 @@ import * as style from '../style';
 import { translate } from '../../../common/i18n';
 import googleDrive from '../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../common/utils/observer';
+import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/utils/tools';
 
 class LoadContent extends PureComponent {
     constructor() {
@@ -23,10 +24,16 @@ class LoadContent extends PureComponent {
     submit() {
         switch (this.state.loadType) {
             case 'google-drive':
+                showSpinnerInButton($(this.submitButton));
                 googleDrive
                     .createFilePicker()
-                    .then(() => this.props.closeDialog())
-                    .catch(() => {});
+                    .then(() => {
+                        this.props.closeDialog();
+                        removeSpinnerInButton($(this.submitButton), translate('Load'));
+                    })
+                    .catch(() => {
+                        removeSpinnerInButton($(this.submitButton), translate('Load'));
+                    });
                 break;
             default:
                 $('#files').click();
@@ -68,7 +75,13 @@ class LoadContent extends PureComponent {
                     </span>
                 </div>
                 <div className="center-text input-row last">
-                    <button id="load-strategy" type="submit">
+                    <button
+                        id="load-strategy"
+                        type="submit"
+                        ref={el => {
+                            this.submitButton = el;
+                        }}
+                    >
                         {translate('Load')}
                     </button>
                 </div>
