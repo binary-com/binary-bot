@@ -56,7 +56,7 @@ class LoadContent extends PureComponent {
                         />
                         <label htmlFor="load-local">{translate('My computer')}</label>
                     </span>
-                    <span className="integration-option">
+                    <span className="integration-option invisible">
                         <input
                             type="radio"
                             id="load-google-drive"

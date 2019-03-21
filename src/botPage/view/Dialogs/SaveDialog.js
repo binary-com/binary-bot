@@ -92,7 +92,7 @@ class SaveContent extends PureComponent {
                         />
                         <label htmlFor="save-local">{translate('My computer')}</label>
                     </span>
-                    <span className="integration-option">
+                    <span className="integration-option invisible">
                         <input
                             type="radio"
                             id="save-google-drive"
