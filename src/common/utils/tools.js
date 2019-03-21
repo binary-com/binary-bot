@@ -116,6 +116,6 @@ export const removeSpinnerInButton = ($buttonElement, initialText) => {
 export const trackAndEmitError = (message, object = {}) => {
     globalObserver.emit('ui.log.warn', message);
     if (window.trackJs) {
-        trackJs.console.error(message, object);
+        trackJs.track(`${message} - Error: ${JSON.stringify(object)}`);
     }
 };
