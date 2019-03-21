@@ -30,6 +30,7 @@ class AnimateTrade extends Component {
         super();
         this.indicatorMessages = {
             notRunning: translate('Bot is not running.'),
+            starting  : translate('Bot is starting...'),
             running   : translate('Bot is running...'),
             stopping  : translate('Bot is stopping...'),
             stopped   : translate('Bot has stopped.'),
@@ -40,18 +41,24 @@ class AnimateTrade extends Component {
         };
     }
     componentWillMount() {
+        globalObserver.register('bot.running', () => {
+            $('.stage-tooltip.top:eq(0)').addClass('running');
+            this.setState({ indicatorMessage: this.indicatorMessages.running });
+        });
         globalObserver.register('bot.stop', () => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
             this.setState({ indicatorMessage: this.indicatorMessages.stopped });
         });
+
         $('#stopButton').click(() => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
             this.setState({ indicatorMessage: this.state.stopMessage });
         });
+
         $('#runButton').click(() => {
             resetAnimation();
             $('.stage-tooltip.top:eq(0)').addClass('running');
-            this.setState({ indicatorMessage: this.indicatorMessages.running });
+            this.setState({ indicatorMessage: this.indicatorMessages.starting });
             globalObserver.register('contract.status', contractStatus => {
                 this.animateStage(contractStatus);
             });
