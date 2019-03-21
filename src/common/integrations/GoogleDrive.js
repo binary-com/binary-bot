@@ -129,25 +129,27 @@ class GoogleDrive {
                     });
             };
 
-            this.authorise().then(() => {
-                const mimeTypes = ['application/xml'];
-                const docsView = new google.picker.DocsView();
-                docsView.setMimeTypes(mimeTypes.join(','));
-                docsView.setIncludeFolders(true);
-                docsView.setOwnedByMe(true);
+            this.authorise()
+                .then(() => {
+                    const mimeTypes = ['application/xml'];
+                    const docsView = new google.picker.DocsView();
+                    docsView.setMimeTypes(mimeTypes.join(','));
+                    docsView.setIncludeFolders(true);
+                    docsView.setOwnedByMe(true);
 
-                const picker = new google.picker.PickerBuilder();
-                picker
-                    .setTitle(translate('Select a Binary Bot strategy'))
-                    .setLocale(this.getPickerLanguage())
-                    .setAppId(this.appId)
-                    .setOAuthToken(gapi.auth.getToken().access_token)
-                    .addView(docsView)
-                    .setDeveloperKey(this.apiKey)
-                    .setCallback(userPickedFile)
-                    .build()
-                    .setVisible(true);
-            });
+                    const picker = new google.picker.PickerBuilder();
+                    picker
+                        .setTitle(translate('Select a Binary Bot strategy'))
+                        .setLocale(this.getPickerLanguage())
+                        .setAppId(this.appId)
+                        .setOAuthToken(gapi.auth.getToken().access_token)
+                        .addView(docsView)
+                        .setDeveloperKey(this.apiKey)
+                        .setCallback(userPickedFile)
+                        .build()
+                        .setVisible(true);
+                })
+                .catch(() => reject());
         });
     }
 
@@ -231,29 +233,31 @@ class GoogleDrive {
                 xhr.send(formData);
             };
 
-            this.authorise().then(() => {
-                // Calling getDefaultFolderId() ensures there's at least one folder available to save to.
-                // FilePicker doesn't allow for folder creation, so a user without any folder in
-                // their drive couldn't select anything.
-                this.getDefaultFolderId().then(() => {
-                    const view = new google.picker.DocsView();
-                    view.setIncludeFolders(true)
-                        .setSelectFolderEnabled(true)
-                        .setMimeTypes('application/vnd.google-apps.folder');
+            this.authorise()
+                .then(() => {
+                    // Calling getDefaultFolderId() ensures there's at least one folder available to save to.
+                    // FilePicker doesn't allow for folder creation, so a user without any folder in
+                    // their drive couldn't select anything.
+                    this.getDefaultFolderId().then(() => {
+                        const view = new google.picker.DocsView();
+                        view.setIncludeFolders(true)
+                            .setSelectFolderEnabled(true)
+                            .setMimeTypes('application/vnd.google-apps.folder');
 
-                    const picker = new google.picker.PickerBuilder();
-                    picker
-                        .setTitle(translate('Select a folder'))
-                        .addView(view)
-                        .setLocale(this.getPickerLanguage())
-                        .setAppId(this.appId)
-                        .setOAuthToken(gapi.auth.getToken().access_token)
-                        .setDeveloperKey(this.apiKey)
-                        .setCallback(savePickerCallback)
-                        .build()
-                        .setVisible(true);
-                });
-            });
+                        const picker = new google.picker.PickerBuilder();
+                        picker
+                            .setTitle(translate('Select a folder'))
+                            .addView(view)
+                            .setLocale(this.getPickerLanguage())
+                            .setAppId(this.appId)
+                            .setOAuthToken(gapi.auth.getToken().access_token)
+                            .setDeveloperKey(this.apiKey)
+                            .setCallback(savePickerCallback)
+                            .build()
+                            .setVisible(true);
+                    });
+                })
+                .catch(() => reject());
         });
     }
 }
