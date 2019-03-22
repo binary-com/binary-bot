@@ -15,10 +15,15 @@ export default class IntegrationsDialog extends Dialog {
         const closeDialog = () => {
             this.close();
         };
-        super('integrations-dialog', translate('Integrations'), <IntegrationsContent closeDialog={closeDialog} />, {
-            width : 500,
-            height: 'auto',
-        });
+        super(
+            'integrations-dialog',
+            translate('Google Drive Integration'),
+            <IntegrationsContent closeDialog={closeDialog} />,
+            {
+                width : 500,
+                height: 'auto',
+            }
+        );
         this.registerCloseOnOtherDialog();
     }
 }
