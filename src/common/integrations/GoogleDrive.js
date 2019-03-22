@@ -121,6 +121,9 @@ class GoogleDrive {
                             }
                         })
                         .catch(error => {
+                            if (error.status && error.status === 401) {
+                                this.signOut();
+                            }
                             trackAndEmitError(translate('There was an error retrieving data from Google Drive'), error);
                             reject(error);
                         });
@@ -131,24 +134,37 @@ class GoogleDrive {
 
             this.authorise()
                 .then(() => {
-                    const mimeTypes = ['application/xml'];
-                    const docsView = new google.picker.DocsView();
-                    docsView.setMimeTypes(mimeTypes.join(','));
-                    docsView.setIncludeFolders(true);
-                    docsView.setOwnedByMe(true);
+                    // FilePicker open doesn't give an unauthorised error, so check if we can list files
+                    // first before attempting to open it (user revoked permissions through accounts.google.com)
+                    gapi.client.drive.files
+                        .list()
+                        .then(() => {
+                            const mimeTypes = ['application/xml'];
+                            const docsView = new google.picker.DocsView();
+                            docsView.setMimeTypes(mimeTypes.join(','));
+                            docsView.setIncludeFolders(true);
+                            docsView.setOwnedByMe(true);
 
-                    const picker = new google.picker.PickerBuilder();
-                    picker
-                        .setOrigin(`${window.location.protocol}//${window.location.host}`)
-                        .setTitle(translate('Select a Binary Bot strategy'))
-                        .setLocale(this.getPickerLanguage())
-                        .setAppId(this.appId)
-                        .setOAuthToken(gapi.auth.getToken().access_token)
-                        .addView(docsView)
-                        .setDeveloperKey(this.apiKey)
-                        .setCallback(userPickedFile)
-                        .build()
-                        .setVisible(true);
+                            const picker = new google.picker.PickerBuilder();
+                            picker
+                                .setOrigin(`${window.location.protocol}//${window.location.host}`)
+                                .setTitle(translate('Select a Binary Bot strategy'))
+                                .setLocale(this.getPickerLanguage())
+                                .setAppId(this.appId)
+                                .setOAuthToken(gapi.auth.getToken().access_token)
+                                .addView(docsView)
+                                .setDeveloperKey(this.apiKey)
+                                .setCallback(userPickedFile)
+                                .build()
+                                .setVisible(true);
+                        })
+                        .catch(error => {
+                            if (error.status && error.status === 401) {
+                                this.signOut();
+                            }
+                            trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
+                            reject(error);
+                        });
                 })
                 .catch(error => reject(error));
         });
@@ -184,6 +200,9 @@ class GoogleDrive {
                             })
                             .then(createFileResponse => resolve(createFileResponse.result.id))
                             .catch(error => {
+                                if (error.status && error.status === 401) {
+                                    this.signOut();
+                                }
                                 trackAndEmitError(
                                     translate('There was an error retrieving files from Google Drive'),
                                     error
@@ -192,6 +211,9 @@ class GoogleDrive {
                             });
                     })
                     .catch(error => {
+                        if (error.status && error.status === 401) {
+                            this.signOut();
+                        }
                         trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
                         reject(error);
                     });
@@ -224,6 +246,9 @@ class GoogleDrive {
                         if (xhr.status === 200) {
                             resolve();
                         } else {
+                            if (xhr.status === 401) {
+                                this.signOut();
+                            }
                             trackAndEmitError(translate('There was an error processing your request'), xhr.status);
                             reject();
                         }
@@ -239,25 +264,27 @@ class GoogleDrive {
                     // Calling getDefaultFolderId() ensures there's at least one folder available to save to.
                     // FilePicker doesn't allow for folder creation, so a user without any folder in
                     // their drive couldn't select anything.
-                    this.getDefaultFolderId().then(() => {
-                        const view = new google.picker.DocsView();
-                        view.setIncludeFolders(true)
-                            .setSelectFolderEnabled(true)
-                            .setMimeTypes('application/vnd.google-apps.folder');
+                    this.getDefaultFolderId()
+                        .then(() => {
+                            const view = new google.picker.DocsView();
+                            view.setIncludeFolders(true)
+                                .setSelectFolderEnabled(true)
+                                .setMimeTypes('application/vnd.google-apps.folder');
 
-                        const picker = new google.picker.PickerBuilder();
-                        picker
-                            .setOrigin(`${window.location.protocol}//${window.location.host}`)
-                            .setTitle(translate('Select a folder'))
-                            .addView(view)
-                            .setLocale(this.getPickerLanguage())
-                            .setAppId(this.appId)
-                            .setOAuthToken(gapi.auth.getToken().access_token)
-                            .setDeveloperKey(this.apiKey)
-                            .setCallback(savePickerCallback)
-                            .build()
-                            .setVisible(true);
-                    });
+                            const picker = new google.picker.PickerBuilder();
+                            picker
+                                .setOrigin(`${window.location.protocol}//${window.location.host}`)
+                                .setTitle(translate('Select a folder'))
+                                .addView(view)
+                                .setLocale(this.getPickerLanguage())
+                                .setAppId(this.appId)
+                                .setOAuthToken(gapi.auth.getToken().access_token)
+                                .setDeveloperKey(this.apiKey)
+                                .setCallback(savePickerCallback)
+                                .build()
+                                .setVisible(true);
+                        })
+                        .catch(error => reject(error));
                 })
                 .catch(error => reject(error));
         });
