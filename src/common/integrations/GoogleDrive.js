@@ -64,10 +64,26 @@ class GoogleDrive {
     }
 
     authorise() {
-        if (this.isAuthorised) {
-            return Promise.resolve();
-        }
-        return this.googleAuth.signIn({ prompt: 'select_account' });
+        return new Promise((resolve, reject) => {
+            if (this.isAuthorised) {
+                resolve();
+            } else {
+                this.googleAuth
+                    .signIn({ prompt: 'select_account' })
+                    .then(() => resolve())
+                    .catch(response => {
+                        if (response.error === 'access_denied') {
+                            globalObserver.emit(
+                                'ui.log.warn',
+                                translate(
+                                    'Please grant permission to view and manage Google Drive folders created with Binary Bot'
+                                )
+                            );
+                        }
+                        reject(response);
+                    });
+            }
+        });
     }
 
     signOut() {
