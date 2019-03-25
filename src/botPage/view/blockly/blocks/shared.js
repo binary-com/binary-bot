@@ -353,8 +353,8 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
                     })
                     .shift();
             }
-            const barrierlessCategories = ['reset'];
-            if (contract && !barrierlessCategories.includes(contract.barrier_category)) {
+            const barrierlessCategories = ['reset', 'runs'];
+            if (contract && !barrierlessCategories.includes(contract.contract_category)) {
                 const propName = contract.barriers === 1 ? 'barrier' : barrierProps[index];
                 if (contract[propName]) {
                     const barrierMatch = contract[propName].toString().match(offsetRegex);
