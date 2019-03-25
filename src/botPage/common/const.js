@@ -141,6 +141,14 @@ const config = {
                 RESETPUT: translate('Reset Put'),
             },
         ],
+        RUNS: [
+            {
+                RUNHIGH: translate('Only Ups'),
+            },
+            {
+                RUNLOW: translate('Only Downs'),
+            },
+        ],
     },
     barrierTypes: [['Offset +', '+'], ['Offset -', '-']],
     ohlcFields  : [
@@ -176,6 +184,7 @@ const config = {
         digits      : ['matchesdiffers', 'evenodd', 'overunder'],
         highlowticks: ['highlowticks'],
         reset       : ['reset'],
+        runs        : ['runs'],
     },
     conditionsCategoryName: {
         callput     : translate('Up/Down'),
@@ -187,6 +196,7 @@ const config = {
         staysinout  : translate('Stays In/Goes Out'),
         highlowticks: translate('High/Low Ticks'),
         reset       : translate('Reset Call/Reset Put'),
+        runs        : translate('Only Ups/Only Downs'),
     },
     conditions: [
         'risefall',
@@ -203,7 +213,7 @@ const config = {
     barrierCategories: {
         euro_atm     : ['callput', 'risefall', 'risefallequals'],
         euro_non_atm : ['endsinout', 'higherlower'],
-        american     : ['staysinout', 'touchnotouch', 'highlowticks'],
+        american     : ['staysinout', 'touchnotouch', 'highlowticks', 'runs'],
         non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],
         asian        : ['asian'],
         reset        : ['reset'],
