@@ -58,7 +58,7 @@ export default class _Symbol {
             if (tokenList.length) {
                 this.api
                     .authorize(tokenList[0].token)
-                    .then(getActiveSymbolsLogic())
+                    .then(() => getActiveSymbolsLogic())
                     .catch(() => {
                         removeAllTokens();
                         getActiveSymbolsLogic();
