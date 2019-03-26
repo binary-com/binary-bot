@@ -141,8 +141,16 @@ const config = {
                 RESETPUT: translate('Reset Put'),
             },
         ],
+        RUNS: [
+            {
+                RUNHIGH: translate('Only Ups'),
+            },
+            {
+                RUNLOW: translate('Only Downs'),
+            },
+        ],
     },
-    barrierTypes: [['+', '+'], ['-', '-']],
+    barrierTypes: [['Offset +', '+'], ['Offset -', '-']],
     ohlcFields  : [
         [translate('Open'), 'open'],
         [translate('High'), 'high'],
@@ -165,45 +173,8 @@ const config = {
         [translate('8 hours'), '28800'],
         [translate('1 day'), '86400'],
     ],
-    mainBlocks   : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
-    durationTypes: {
-        RISEFALL: [
-            [translate('Ticks'), 't'],
-            [translate('Seconds'), 's'],
-            [translate('Minutes'), 'm'],
-            [translate('Hours'), 'h'],
-        ],
-        RISEFALLEQUALS: [
-            [translate('Ticks'), 't'],
-            [translate('Seconds'), 's'],
-            [translate('Minutes'), 'm'],
-            [translate('Hours'), 'h'],
-        ],
-        HIGHERLOWER: [
-            [translate('Ticks'), 't'],
-            [translate('Seconds'), 's'],
-            [translate('Minutes'), 'm'],
-            [translate('Hours'), 'h'],
-        ],
-        RESET: [
-            [translate('Ticks'), 't'],
-            [translate('Seconds'), 's'],
-            [translate('Minutes'), 'm'],
-            [translate('Hours'), 'h'],
-        ],
-        TOUCHNOTOUCH  : [[translate('Ticks'), 't'], [translate('Minutes'), 'm'], [translate('Hours'), 'h']],
-        ENDSINOUT     : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
-        STAYSINOUT    : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
-        ASIANS        : [[translate('Ticks'), 't']],
-        MATCHESDIFFERS: [[translate('Ticks'), 't']],
-        EVENODD       : [[translate('Ticks'), 't']],
-        OVERUNDER     : [[translate('Ticks'), 't']],
-        HIGHLOWTICKS  : [[translate('Ticks'), 't']],
-    },
-    hasPrediction         : ['MATCHESDIFFERS', 'OVERUNDER', 'HIGHLOWTICKS'],
-    hasBarrierOffset      : ['HIGHERLOWER', 'TOUCHNOTOUCH', 'ENDSINOUT', 'STAYSINOUT'],
-    hasSecondBarrierOffset: ['ENDSINOUT', 'STAYSINOUT'],
-    conditionsCategory    : {
+    mainBlocks        : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
+    conditionsCategory: {
         callput     : ['risefall', 'higherlower'],
         callputequal: ['risefallequals'],
         touchnotouch: ['touchnotouch'],
@@ -213,6 +184,7 @@ const config = {
         digits      : ['matchesdiffers', 'evenodd', 'overunder'],
         highlowticks: ['highlowticks'],
         reset       : ['reset'],
+        runs        : ['runs'],
     },
     conditionsCategoryName: {
         callput     : translate('Up/Down'),
@@ -224,6 +196,7 @@ const config = {
         staysinout  : translate('Stays In/Goes Out'),
         highlowticks: translate('High/Low Ticks'),
         reset       : translate('Reset Call/Reset Put'),
+        runs        : translate('Only Ups/Only Downs'),
     },
     conditions: [
         'risefall',
@@ -240,7 +213,7 @@ const config = {
     barrierCategories: {
         euro_atm     : ['callput', 'risefall', 'risefallequals'],
         euro_non_atm : ['endsinout', 'higherlower'],
-        american     : ['staysinout', 'touchnotouch', 'highlowticks'],
+        american     : ['staysinout', 'touchnotouch', 'highlowticks', 'runs'],
         non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],
         asian        : ['asian'],
         reset        : ['reset'],

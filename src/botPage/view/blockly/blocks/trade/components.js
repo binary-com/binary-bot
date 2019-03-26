@@ -69,62 +69,39 @@ export const payout = block => {
     }
 };
 
-export const barrierOffset = block => {
-    if (!block.getInput('BARRIEROFFSET')) {
+export const barrierOffsetGenerator = (inputName, block) => {
+    if (!block.getInput(inputName)) {
+        // Determine amount of barrierOffset-blocks on workspace
+        const barrierNumber = block.inputList.filter(input => /BARRIEROFFSET$/.test(input.name)).length;
+
+        // Set barrier options according to barrierNumber (i.e. Offset + and Offset -)
+        const barrierOffsetList = new Blockly.FieldDropdown(config.barrierTypes);
+        barrierOffsetList.prefixField = null;
+        barrierOffsetList.menuGenerator_ = config.barrierTypes; // eslint-disable-line no-underscore-dangle
+        barrierOffsetList.setValue('');
+        barrierOffsetList.setValue(config.barrierTypes[barrierNumber % config.barrierTypes.length][1]);
+
         block
-            .appendValueInput('BARRIEROFFSET')
+            .appendValueInput(inputName)
             .setCheck('Number')
-            .appendField(`${translate('Barrier Offset')} 1:`)
-            .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'BARRIEROFFSETTYPE_LIST');
-    } else {
-        const barrierOffsetList = block.getField('BARRIEROFFSETTYPE_LIST');
+            .appendField(`${translate('Barrier')} ${barrierNumber + 1}:`)
+            .appendField(barrierOffsetList, `${inputName}TYPE_LIST`);
 
-        if (
-            !block.workspace.getBlockById('BARRIERVALUE') &&
-            !block.getInput('BARRIEROFFSET').connection.isConnected()
-        ) {
-            const barrierValue = block.workspace.newBlock('math_number', 'BARRIERVALUE');
-            barrierOffsetList.setValue('+');
-            barrierValue.setFieldValue('0.27', 'NUM');
-            barrierValue.setShadow(true);
-            barrierValue.outputConnection.connect(block.getInput('BARRIEROFFSET').connection);
-            barrierValue.initSvg();
-            barrierValue.render();
-        }
-    }
-};
-
-export const secondBarrierOffset = block => {
-    if (!block.getInput('SECONDBARRIEROFFSET')) {
-        block
-            .appendValueInput('SECONDBARRIEROFFSET')
-            .setCheck('Number')
-            .appendField(`${translate('Barrier Offset')} 2:`)
-            .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'SECONDBARRIEROFFSETTYPE_LIST');
-    } else {
-        const barrierOffsetList = block.getField('SECONDBARRIEROFFSETTYPE_LIST');
-
-        if (
-            !block.workspace.getBlockById('SECONDBARRIERVALUE') &&
-            !block.getInput('SECONDBARRIEROFFSET').connection.isConnected()
-        ) {
-            const secondBarrierValue = block.workspace.newBlock('math_number', 'SECONDBARRIERVALUE');
-            barrierOffsetList.setValue('-');
-            secondBarrierValue.setFieldValue('0.27', 'NUM');
-            secondBarrierValue.setShadow(true);
-            secondBarrierValue.outputConnection.connect(block.getInput('SECONDBARRIEROFFSET').connection);
-            secondBarrierValue.initSvg();
-            secondBarrierValue.render();
-        }
+        const input = block.getInput(inputName);
+        input.setVisible(false);
     }
 };
 
 export const prediction = block => {
-    if (!block.getInput('PREDICTION')) {
+    const inputName = 'PREDICTION';
+    if (!block.getInput(inputName)) {
         block
-            .appendValueInput('PREDICTION')
+            .appendValueInput(inputName)
             .setCheck('Number')
-            .appendField(translate('Prediction:'));
+            .appendField(`${translate('Prediction')}:`);
+
+        const input = block.getInput(inputName);
+        input.setVisible(false);
     }
 };
 

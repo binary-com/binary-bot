@@ -19,6 +19,7 @@ import createError from '../../common/error';
 import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
+import { showDialog } from '../../bot/tools';
 
 const setBeforeUnload = off => {
     if (off) {
@@ -52,16 +53,12 @@ const disposeBlocksWithLoaders = () => {
 };
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        $('#unavailableMarkets').dialog({
-            height: 'auto',
-            width : 600,
-            modal : true,
-            open() {
-                $(this)
-                    .parent()
-                    .find('.ui-dialog-buttonset > button')
-                    .removeClass('ui-button ui-corner-all ui-widget');
-            },
+        if (window.trackJs) {
+            trackJs.track('Invalid financial market');
+        }
+        showDialog({
+            title  : translate('Warning'),
+            text   : [translate('This strategy is not available in your country.')],
             buttons: [
                 {
                     text : translate('OK'),
@@ -71,11 +68,9 @@ const marketsWereRemoved = xml => {
                     },
                 },
             ],
-        });
-        if (window.trackJs) {
-            trackJs.track('Invalid financial market');
-        }
-        $('#unavailableMarkets').dialog('open');
+        })
+            .then(() => {})
+            .catch(() => {});
         return true;
     }
     return false;
@@ -149,7 +144,7 @@ const addBlocklyTranslation = () => {
         lang = 'zh-hant';
     }
     return new Promise(resolve => {
-        $.getScript(`https://blockly-demo.appspot.com/static/msg/js/${lang}.js`, resolve);
+        $.getScript(`translations/${lang}.js`, resolve);
     });
 };
 const onresize = () => {
@@ -420,43 +415,3 @@ while(true) {
     }
     /* eslint-enable */
 }
-
-// Hooks to override default Blockly behaviour
-/* eslint-disable no-unused-expressions */
-const originalContextMenuFn = Blockly.ContextMenu.show;
-Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
-    // Rename 'Clean up blocks'
-    menuOptions.some(option => {
-        if (option.text === Blockly.Msg.CLEAN_UP) {
-            option.text = translate('Rearrange vertically'); // eslint-disable-line no-param-reassign
-            return true;
-        }
-        return false;
-    }) &&
-        /* Remove delete all blocks, but only when 'Clean up blocks' is available (i.e. workspace)
-         * This allows users to still delete root blocks containing blocks
-         */
-        menuOptions.some((option, i) => {
-            if (
-                option.text === Blockly.Msg.DELETE_BLOCK ||
-                option.text.replace(/[0-9]+/, '%1') === Blockly.Msg.DELETE_X_BLOCKS
-            ) {
-                menuOptions.splice(i, 1);
-                return true;
-            }
-            return false;
-        });
-    // Open the Elev.io widget when clicking 'Help'
-    // eslint-disable-next-line no-underscore-dangle
-    if (window._elev) {
-        menuOptions.some(option => {
-            if (option.text === Blockly.Msg.HELP) {
-                option.callback = () => window._elev.openHome(); // eslint-disable-line no-param-reassign, no-underscore-dangle
-                return true;
-            }
-            return false;
-        });
-    }
-    originalContextMenuFn(e, menuOptions, rtl);
-};
-/* eslint-enable */

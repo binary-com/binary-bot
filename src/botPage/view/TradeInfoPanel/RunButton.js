@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from '../../../common/i18n';
 
 const RunButton = () => (
-    <div className="summary-toolbox">
+    <React.Fragment>
         <button title="Run the bot" id="summaryRunButton" className="toolbox-button icon-run" />
         <button
             title={translate('Stop the bot')}
@@ -10,7 +10,7 @@ const RunButton = () => (
             className="toolbox-button icon-stop"
             style={{ display: 'none' }}
         />
-    </div>
+    </React.Fragment>
 );
 
 export default RunButton;

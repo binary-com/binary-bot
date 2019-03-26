@@ -25,6 +25,7 @@ describe('symbol', () => {
                 'Stays In/Goes Out',
                 'High/Low Ticks',
                 'Reset Call/Reset Put',
+                'Only Ups/Only Downs',
             ]);
             expect(symbol.getAllowedCategoryNames('FAKE')).to.be.empty;
         });
