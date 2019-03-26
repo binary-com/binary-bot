@@ -4,11 +4,7 @@
       <block type="tradeOptions" id="x=V33~4Lb|(sLv`J[:Eb">
         <field name="DURATIONTYPE_LIST">t</field>
         <field name="CURRENCY_LIST">USD</field>
-        <value name="DURATION">
-          <shadow type="math_number" id="O*@58sDc=!cOO}*b2vf9">
-            <field name="NUM">5</field>
-          </shadow>
-        </value>
+        <value name="DURATION"></value>
         <value name="AMOUNT">
           <shadow type="math_number" id="ml)25~7^q}3I9}vjf:%K">
             <field name="NUM">1</field>
