@@ -312,15 +312,10 @@ export default () => {
         },
     };
     Blockly.JavaScript.tradeOptions = block => {
-        const tradeDefBlock = findTopParentBlock(block);
-        if (!tradeDefBlock) {
-            return '';
-        }
-
-        const durationValue = expectValue(block, 'DURATION');
+        const durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC) || '0';
         const durationType = block.getFieldValue('DURATIONTYPE_LIST');
         const currency = block.getFieldValue('CURRENCY_LIST');
-        const amount = expectValue(block, 'AMOUNT');
+        const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC) || '0';
 
         const isVisibleField = field => block.getInput(field) && block.getInput(field).isVisible();
 
@@ -329,18 +324,29 @@ export default () => {
         let secondBarrierOffsetValue = 'undefined';
 
         if (isVisibleField('PREDICTION')) {
-            predictionValue = expectValue(block, 'PREDICTION');
+            predictionValue =
+                Blockly.JavaScript.valueToCode(block, 'PREDICTION', Blockly.JavaScript.ORDER_ATOMIC) || '0';
         }
+
+        const getBarrierValue = (barrierOffsetType, value) => {
+            // Variables should not be encapsulated in quotes
+            if (/^(\d+(\.\d+)?)$/.test(value)) {
+                return barrierOffsetType === 'absolute' ? `'${value}'` : `'${barrierOffsetType}${value}'`;
+            }
+            return barrierOffsetType === 'absolute' ? value : `'${barrierOffsetType}' + ${value}`;
+        };
+
         if (isVisibleField('BARRIEROFFSET')) {
             const barrierOffsetType = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
-            const value = expectValue(block, 'BARRIEROFFSET');
-            barrierOffsetValue = barrierOffsetType === 'absolute' ? `'${value}'` : `'${barrierOffsetType}${value}'`;
+            const value =
+                Blockly.JavaScript.valueToCode(block, 'BARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            barrierOffsetValue = getBarrierValue(barrierOffsetType, value);
         }
         if (isVisibleField('SECONDBARRIEROFFSET')) {
             const barrierOffsetType = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
-            const value = expectValue(block, 'SECONDBARRIEROFFSET');
-            secondBarrierOffsetValue =
-                barrierOffsetType === 'absolute' ? `'${value}'` : `'${barrierOffsetType}${value}'`;
+            const value =
+                Blockly.JavaScript.valueToCode(block, 'SECONDBARRIEROFFSET', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            secondBarrierOffsetValue = getBarrierValue(barrierOffsetType, value);
         }
 
         const code = `
