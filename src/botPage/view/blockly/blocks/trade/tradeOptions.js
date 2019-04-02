@@ -1,6 +1,5 @@
 import { setInputList, updateInputList, getParentValue } from './tools';
 import {
-    expectValue,
     haveContractsForSymbol,
     getContractsAvailableForSymbol,
     getDurationsForContracts,
