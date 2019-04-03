@@ -14,7 +14,7 @@ const SocialIcons = ({ networks }) => (
 const Footer = () => (
     <div id="footer-container">
         <div id='footer-regulatory' className='primary-bg-color-dark gr-padding-10"'>
-            <div className='container eu-hide'>
+            <div className='container eu-hide invisible'>
                 <div className='gr-row'>
                     <div className='gr-12'>
                         <div className='icon-row flex-row gr-child'>

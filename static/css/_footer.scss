@@ -23,7 +23,7 @@
         text-decoration: underline;
     }
     #footer-regulatory {
-        padding-bottom: 30px;
+        padding-bottom: 0px;
 
         a, p, .fld-risk-warning legend {
             font-size: 13px !important;
@@ -40,6 +40,7 @@
             margin: 0 0 10px;
         }
         .fld-risk-warning {
+            margin-bottom: 30px;
             border-color: $COLOR_DARK_GRAY;
 
             legend {
@@ -57,6 +58,7 @@
             }
         }
         .risk-warning {
+            margin-bottom: 30px;
             p {
                 font-size: 16px;
             }
