@@ -79,6 +79,9 @@ const Footer = () => (
                                         <img className='responsive' src={'image/footer/mga-logo-footer.svg'} />
                                     </a>
                                 </div>
+                                <div className='age-restriction'>
+                                    <img className='responsive' src={'image/footer/18+.svg'} />
+                                </div>
                             </div>
                             <SocialIcons
                                 networks={[
