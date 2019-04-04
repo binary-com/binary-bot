@@ -185,4 +185,24 @@
             margin-left: 0;
         }
     }
+    @media screen and (max-width: 400px) {
+        .regulation-logos {
+            
+
+            .vanuatu-icon {
+                width: 120px;
+                margin-left: -30px;
+                margin-right: 0;
+            }
+            .bvi-icon {
+                width: 100px;
+                margin-left: -30px;
+                margin-right: 0;
+            }
+            .labuan-icon {
+                width: 110px;
+                margin: 0px;
+            }
+        }
+    }
 }
