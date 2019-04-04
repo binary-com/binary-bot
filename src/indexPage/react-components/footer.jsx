@@ -14,7 +14,7 @@ const SocialIcons = ({ networks }) => (
 const Footer = () => (
     <div id="footer-container">
         <div id='footer-regulatory' className='primary-bg-color-dark gr-padding-10"'>
-            <div className='container eu-hide'>
+            <div className='container eu-hide invisible'>
                 <div className='gr-row'>
                     <div className='gr-12'>
                         <div className='icon-row flex-row gr-child'>
@@ -78,6 +78,9 @@ const Footer = () => (
                                     <a className='lga-icon' href='https://www.authorisation.mga.org.mt/verification.aspx?lang=EN&company=a5fd1edc-d072-4c26-b0cd-ab3fa0f0cc40&details=1' target='_blank' rel='noopener noreferrer'>
                                         <img className='responsive' src={'image/footer/mga-logo-footer.svg'} />
                                     </a>
+                                </div>
+                                <div className='age-restriction'>
+                                    <img className='responsive' src={'image/footer/18+.svg'} />
                                 </div>
                             </div>
                             <SocialIcons
