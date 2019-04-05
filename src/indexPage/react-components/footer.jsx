@@ -32,7 +32,6 @@ const Footer = () => (
                             <SocialIcons
                                 networks={[
                                     { media: 'youtube', href: 'https://www.youtube.com/user/BinaryTradingVideos' },
-                                    { media: 'google-plus', href: 'https://plus.google.com/+Binarydotcom' },
                                     { media: 'facebook', href: 'https://www.facebook.com/binarydotcom' },
                                     { media: 'twitter', href: 'https://twitter.com/Binarydotcom' },
                                     { media: 'telegram', href: 'https://t.me/binarydotcom' },
@@ -86,7 +85,6 @@ const Footer = () => (
                             <SocialIcons
                                 networks={[
                                     { media: 'youtube', href: 'https://www.youtube.com/user/BinaryTradingVideos' },
-                                    { media: 'google-plus', href: 'https://plus.google.com/+Binarydotcom' },
                                     { media: 'facebook', href: 'https://www.facebook.com/binarydotcom' },
                                     { media: 'twitter', href: 'https://twitter.com/Binarydotcom' },
                                     { media: 'telegram', href: 'https://t.me/binarydotcom' },
