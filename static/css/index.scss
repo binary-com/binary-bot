@@ -82,6 +82,15 @@ ul.bullet {
 .show-on-load {
     display: none;
 }
+#split-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    .puzzle-logo {
+        padding-left: 20px;
+    }
+}
+
 /* Keep this below since css after this 
  * will be interfering with small
  * screen sizes
@@ -98,6 +107,10 @@ ul.bullet {
     }
 }
 @media only screen and (max-width: 480px) {
+    #split-container {
+        display: block;
+        width: auto;
+    }
     .top-image {
         display: block;
     }
