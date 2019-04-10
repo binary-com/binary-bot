@@ -209,47 +209,51 @@ class GoogleDrive {
             if (!this.isAuthorised) {
                 authorisePromise.push(this.authorise);
             }
-            Promise.all(authorisePromise).then(() => {
-                gapi.client.drive.files
-                    .list({ q: 'trashed=false' })
-                    // eslint-disable-next-line consistent-return
-                    .then(response => {
-                        const botFolder = response.result.files.find(
-                            file =>
-                                file.name === this.botFolderName &&
-                                file.mimeType === 'application/vnd.google-apps.folder'
-                        );
-                        if (botFolder) {
-                            return resolve(botFolder.id);
-                        }
-                        gapi.client.drive.files
-                            .create({
-                                resource: {
-                                    name    : this.botFolderName,
-                                    mimeType: 'application/vnd.google-apps.folder',
-                                    fields  : 'id',
-                                },
-                            })
-                            .then(createFileResponse => resolve(createFileResponse.result.id))
-                            .catch(error => {
-                                if (error.status && error.status === 401) {
-                                    this.signOut();
-                                }
-                                trackAndEmitError(
-                                    translate('There was an error retrieving files from Google Drive'),
-                                    error
-                                );
-                                reject(error);
-                            });
-                    })
-                    .catch(error => {
-                        if (error.status && error.status === 401) {
-                            this.signOut();
-                        }
-                        trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
-                        reject(error);
-                    });
-            });
+            Promise.all(authorisePromise)
+                .then(() => {
+                    gapi.client.drive.files
+                        .list({ q: 'trashed=false' })
+                        // eslint-disable-next-line consistent-return
+                        .then(response => {
+                            const botFolder = response.result.files.find(
+                                file =>
+                                    file.name === this.botFolderName &&
+                                    file.mimeType === 'application/vnd.google-apps.folder'
+                            );
+                            if (botFolder) {
+                                return resolve(botFolder.id);
+                            }
+                            gapi.client.drive.files
+                                .create({
+                                    resource: {
+                                        name    : this.botFolderName,
+                                        mimeType: 'application/vnd.google-apps.folder',
+                                        fields  : 'id',
+                                    },
+                                })
+                                .then(createFileResponse => resolve(createFileResponse.result.id))
+                                .catch(error => {
+                                    if (error.status && error.status === 401) {
+                                        this.signOut();
+                                    }
+                                    trackAndEmitError(
+                                        translate('There was an error retrieving files from Google Drive'),
+                                        error
+                                    );
+                                    reject(error);
+                                });
+                        })
+                        .catch(error => {
+                            if (error.status && error.status === 401) {
+                                this.signOut();
+                            }
+                            trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
+                            reject(error);
+                        });
+                })
+                .catch(() => {
+                    /* Auth error, already handled in authorise()-promise */
+                });
         });
     }
 
