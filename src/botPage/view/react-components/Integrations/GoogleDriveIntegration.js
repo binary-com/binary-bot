@@ -19,7 +19,7 @@ export default class GoogleDriveIntegration extends PureComponent {
             <div className="integration input-row last">
                 <div className="left">
                     <h2>Google Drive</h2>
-                    <div className="description">{translate('Save blocks and strategies to')} Google Drive</div>
+                    <div className="description">{translate('Save your blocks and strategies to Google Drive')}</div>
                     {googleDrive.isAuthorised && (
                         <div className="integration-user">
                             {`${translate('You are logged in as')} ${googleDrive.profile.getEmail()}`}
