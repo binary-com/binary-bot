@@ -3,14 +3,12 @@ import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
 import { translate, trackAndEmitError } from '../utils/tools';
 import { loadWorkspace, loadBlocks } from '../../botPage/view/blockly';
+import config from '../../botPage/common/const';
 
 class GoogleDrive {
     constructor() {
         this.botFolderName = `Binary Bot - ${translate('Strategies')}`;
-        this.appId = '';
-        this.apiKey = '';
-        this.clientId = '';
-
+        this.setInfo(config);
         this.googleAuth = null;
         this.isAuthorised = null;
         this.profile = null;
@@ -43,12 +41,24 @@ class GoogleDrive {
                                 .removeClass('invisible');
                         },
                         error => {
-                            trackAndEmitError(translate('There was an error initialising Google Drive'), error);
+                            if (window.trackJs) {
+                                trackJs.track(
+                                    `${translate(
+                                        'There was an error initialising Google Drive'
+                                    )} - Error: ${JSON.stringify(error)}`
+                                );
+                            }
                         }
                     );
             },
             onerror: error => {
-                trackAndEmitError(translate('There was an error loading Google Drive libraries'), error);
+                if (window.trackJs) {
+                    trackJs.track(
+                        `${translate('There was an error loading Google Drive libraries')} - Error: ${JSON.stringify(
+                            error
+                        )}`
+                    );
+                }
             },
         });
     }
@@ -91,6 +101,12 @@ class GoogleDrive {
             return this.googleAuth.signOut();
         }
         return Promise.resolve();
+    }
+
+    setInfo(data) {
+        this.clientId = data.gd.cid;
+        this.appId = data.gd.aid;
+        this.apiKey = data.gd.api;
     }
 
     // eslint-disable-next-line class-methods-use-this
