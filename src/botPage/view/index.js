@@ -2,9 +2,9 @@
 import 'babel-polyfill';
 import 'jquery-ui/ui/widgets/dialog';
 import 'notifyjs-browser';
+import View from './View';
 import '../../common/binary-ui/dropdown';
 import Elevio from '../../common/elevio';
-import View from './View';
 
 $.ajaxSetup({
     cache: false,

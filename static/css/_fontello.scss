@@ -89,3 +89,9 @@
         background: url("../image/clear-disabled.svg") no-repeat center;
     }
 }
+.icon-integrations {
+    &:before {
+        content: ' ';
+    }
+    background: url("../image/google_drive.svg") no-repeat center;
+}

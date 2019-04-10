@@ -321,3 +321,71 @@ $disabled-color: #F2F2F2;
 .ui-dialog-content {
     padding: 0px !important;
 }
+
+#load-dialog, #save-dialog {
+    .integration-option {
+        margin: 0.5em;
+    }
+}
+
+#load-dialog, #save-dialog, #integrations-dialog {
+    .input-row {
+        margin: 1em 0;
+    }
+    .input-row.last {
+       margin-bottom: 0;
+    }
+    & .description {
+        font-size: 75%;
+    }
+}
+
+#save-dialog {
+    #save-filename {
+        width: 100%;
+        height: 40px;
+    }
+    #collection {
+        padding: 1.2em;
+        border: 1px solid $brand-gray;
+        border-radius: 10px;
+        & .description {
+            margin-left: 21px;
+            margin-top: 0.2em;
+            margin-bottom: 0;
+        }
+    }
+}
+
+#integrations-dialog {
+    .integration {
+        display: table;
+        width: 100%;
+
+        h2 {
+            color: $black;
+            font-size: 20px;
+            margin: 0 0 0.2em 0;
+        }
+        .description {
+            margin: 0 0 0.2em 0;
+        }
+        .left {
+            width: 60%;
+            display: table-cell;
+            vertical-align: top;
+        }
+        .right {
+            width: 39%;
+            display: table-cell;
+            text-align: right;
+            & > a {
+                display: block;
+            }
+        }
+        .integration-user {
+            color: #b9b9b9;
+            font-size: 75%;
+        }
+    }
+}
