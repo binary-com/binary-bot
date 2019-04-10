@@ -16,6 +16,7 @@ import Ticks from './Ticks';
 import rootReducer from './state/reducers';
 import * as constants from './state/constants';
 import { start } from './state/actions';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 const watchBefore = store =>
     watchScope({
@@ -34,7 +35,7 @@ const watchDuring = store =>
     });
 
 /* The watchScope function is called randomly and resets the prevTick
- * which leads to the same problem we try to solve. So prevTick is isolated 
+ * which leads to the same problem we try to solve. So prevTick is isolated
  */
 let prevTick;
 const watchScope = ({ store, stopScope, passScope, passFlag }) => {
@@ -89,6 +90,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
         }
+
+        globalObserver.emit('bot.running');
 
         this.tradeOptions = expectTradeOptions(tradeOptions);
 

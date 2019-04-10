@@ -14,7 +14,7 @@ const SocialIcons = ({ networks }) => (
 const Footer = () => (
     <div id="footer-container">
         <div id='footer-regulatory' className='primary-bg-color-dark gr-padding-10"'>
-            <div className='container eu-hide'>
+            <div className='container eu-hide invisible'>
                 <div className='gr-row'>
                     <div className='gr-12'>
                         <div className='icon-row flex-row gr-child'>
@@ -32,7 +32,6 @@ const Footer = () => (
                             <SocialIcons
                                 networks={[
                                     { media: 'youtube', href: 'https://www.youtube.com/user/BinaryTradingVideos' },
-                                    { media: 'google-plus', href: 'https://plus.google.com/+Binarydotcom' },
                                     { media: 'facebook', href: 'https://www.facebook.com/binarydotcom' },
                                     { media: 'twitter', href: 'https://twitter.com/Binarydotcom' },
                                     { media: 'telegram', href: 'https://t.me/binarydotcom' },
@@ -79,11 +78,13 @@ const Footer = () => (
                                         <img className='responsive' src={'image/footer/mga-logo-footer.svg'} />
                                     </a>
                                 </div>
+                                <div className='age-restriction'>
+                                    <img className='responsive' src={'image/footer/18+.svg'} />
+                                </div>
                             </div>
                             <SocialIcons
                                 networks={[
                                     { media: 'youtube', href: 'https://www.youtube.com/user/BinaryTradingVideos' },
-                                    { media: 'google-plus', href: 'https://plus.google.com/+Binarydotcom' },
                                     { media: 'facebook', href: 'https://www.facebook.com/binarydotcom' },
                                     { media: 'twitter', href: 'https://twitter.com/Binarydotcom' },
                                     { media: 'telegram', href: 'https://t.me/binarydotcom' },
