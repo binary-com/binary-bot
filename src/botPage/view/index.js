@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import 'babel-polyfill';
+import '@babel/polyfill';
 import 'jquery-ui/ui/widgets/dialog';
 import 'notifyjs-browser';
 import View from './View';

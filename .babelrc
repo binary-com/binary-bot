@@ -1,0 +1,36 @@
+{
+    "presets": [
+      "@babel/preset-react",
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "browsers": [
+              "last 2 versions",
+              "ios_saf >= 8",
+              "not IE <= 10",
+              "chrome >= 49",
+              "firefox >= 49",
+              "> 1%"
+            ]
+          },
+          "loose": true,
+          "useBuiltIns": "usage"
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-object-rest-spread",
+        {
+          "useBuiltIns": "usage"
+        }
+      ],
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "useBuiltIns": "usage"
+        }
+      ]
+    ]
+}
