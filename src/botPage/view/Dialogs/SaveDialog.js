@@ -142,8 +142,8 @@ class SaveContent extends PureComponent {
         );
     }
 
-    static props: {
-        onSave: PropTypes.func,
+    static props = {
+        onSave     : PropTypes.func,
         closeDialog: PropTypes.func,
     };
 }

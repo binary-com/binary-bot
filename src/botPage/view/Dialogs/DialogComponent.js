@@ -24,9 +24,9 @@ export default class PanelComponent extends PureComponent {
             </div>
         );
     }
-    static props: {
-        id: PropTypes.string,
-        title: PropTypes.string,
+    static props = {
+        id     : PropTypes.string,
+        title  : PropTypes.string,
         content: PropTypes.object,
         options: PropTypes.object,
     };
