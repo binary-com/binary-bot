@@ -81,7 +81,8 @@ class LoadContent extends PureComponent {
             </form>
         );
     }
-    static props: { closeDialog: PropTypes.func };
+
+    static props = { closeDialog: PropTypes.func };
 }
 
 export default class LoadDialog extends Dialog {
