@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import fs from 'fs';
 import readline from 'readline';
 import program from 'commander';

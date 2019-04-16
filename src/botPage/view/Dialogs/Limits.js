@@ -109,7 +109,7 @@ class LimitsContent extends PureComponent {
             </form>
         );
     }
-    static props: {
+    static props = {
         onSave: PropTypes.func,
     };
 }
