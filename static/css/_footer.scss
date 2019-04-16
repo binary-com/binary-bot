@@ -23,7 +23,7 @@
         text-decoration: underline;
     }
     #footer-regulatory {
-        padding-bottom: 30px;
+        padding-bottom: 0px;
 
         a, p, .fld-risk-warning legend {
             font-size: 13px !important;
@@ -40,6 +40,7 @@
             margin: 0 0 10px;
         }
         .fld-risk-warning {
+            margin-bottom: 30px;
             border-color: $COLOR_DARK_GRAY;
 
             legend {
@@ -57,6 +58,7 @@
             }
         }
         .risk-warning {
+            margin-bottom: 30px;
             p {
                 font-size: 16px;
             }
@@ -95,6 +97,9 @@
         display: flex;
         align-items: flex-start;
         flex-direction: column-reverse;
+    }
+    .age-restriction {
+        width: 50px;
     }
     .social-icons {
         margin-left: auto;
@@ -178,6 +183,24 @@
         }
         .social-icons {
             margin-left: 0;
+        }
+    }
+    @media screen and (max-width: 400px) {
+        .regulation-logos {
+            .vanuatu-icon {
+                width: 120px;
+                margin-left: -30px;
+                margin-right: 0;
+            }
+            .bvi-icon {
+                width: 100px;
+                margin-left: -30px;
+                margin-right: 0;
+            }
+            .labuan-icon {
+                width: 110px;
+                margin: 0px;
+            }
         }
     }
 }

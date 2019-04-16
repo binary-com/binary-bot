@@ -1,4 +1,5 @@
 import RenderHTML from 'react-render-html';
+import { observer as globalObserver } from './observer';
 import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
@@ -93,4 +94,28 @@ export const getExtension = () => {
     const host = document.location.hostname;
     const extension = host.split('.').slice(-1)[0];
     return host !== extension ? extension : '';
+};
+
+export const showSpinnerInButton = $buttonElement => {
+    $buttonElement
+        .html(() => {
+            const barspinner = $('<div class="barspinner white" />');
+            Array.from(new Array(5)).forEach((x, i) => {
+                const rect = $(`<div class="rect${i + 1}" />`);
+                barspinner.append(rect);
+            });
+            return barspinner;
+        })
+        .prop('disabled', true);
+};
+
+export const removeSpinnerInButton = ($buttonElement, initialText) => {
+    $buttonElement.html(() => initialText).prop('disabled', false);
+};
+
+export const trackAndEmitError = (message, object = {}) => {
+    globalObserver.emit('ui.log.error', message);
+    if (window.trackJs) {
+        trackJs.track(`${message} - Error: ${JSON.stringify(object)}`);
+    }
 };
