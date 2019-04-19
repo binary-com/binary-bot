@@ -4,45 +4,10 @@
   "bin": {
     "bot": "lib/index.js"
   },
-  "babel": {
-    "babelrc": false,
-    "presets": [
-      "react",
-      [
-        "env",
-        {
-          "targets": {
-            "browsers": [
-              "last 2 versions",
-              "ios_saf >= 8",
-              "not IE <= 10",
-              "chrome >= 49",
-              "firefox >= 49",
-              "> 1%"
-            ]
-          },
-          "loose": true,
-          "useBuiltIns": true
-        }
-      ]
-    ],
-    "plugins": [
-      [
-        "transform-object-rest-spread",
-        {
-          "useBuiltIns": true
-        }
-      ],
-      [
-        "transform-class-properties",
-        {
-          "useBuiltIns": true
-        }
-      ]
-    ]
-  },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/.jest",
+    "setupFilesAfterEnv": [
+      "<rootDir>/.jest"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "tools.js"
@@ -65,19 +30,20 @@
   "author": "Binary.com",
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "@binary-com/binary-indicators": "^1.6.0",
     "app-module-path": "^2.2.0",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.1.2",
-    "babel-jest": "^19.0.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^9.0.0",
+    "babel-jest": "^24.7.1",
+    "babel-loader": "^8.0.0",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",
     "chai": "^4.1.2",
@@ -109,7 +75,7 @@
     "husky": "^0.14.3",
     "i18next-scanner": "1.9.4",
     "immutable": "^3.8.2",
-    "jest": "^20.0.4",
+    "jest": "^24.7.1",
     "jquery": "3.2.1",
     "jquery-ui": "1.12.1",
     "jquery-ui-css": "1.11.4",
@@ -130,16 +96,15 @@
     "trackjs": "^2.10.2",
     "vinyl-paths": "^2.1.0",
     "webpack": "^3.10.0",
-    "webpack-stream": "^4.0.0",
-    "ws": "^3.3.3"
+    "webpack-stream": "^4.0.0"
   },
   "dependencies": {
     "@binary-com/smartcharts": "^0.3.9",
-    "babel": "^6.23.0",
     "binary-style": "^0.2.4",
     "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0",
+    "core-js": "^2.6.5",
     "gh-pages": "^2.0.1",
     "mobx": "^5.0.3",
     "mobx-react": "^5.1.8",

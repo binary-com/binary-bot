@@ -495,3 +495,14 @@ export const hideInteractionsFromBlockly = callback => {
     callback();
     Blockly.Events.recordUndo = true;
 };
+
+export const cleanBeforeExport = xml => {
+    Array.from(xml.children).forEach(blockDom => {
+        const blockId = blockDom.getAttribute('id');
+        if (!blockId) return;
+        const block = Blockly.mainWorkspace.getBlockById(blockId);
+        if ('loaderId' in block) {
+            blockDom.remove();
+        }
+    });
+};

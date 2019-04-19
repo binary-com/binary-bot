@@ -13,6 +13,7 @@ import {
     fixArgumentAttribute,
     removeUnavailableMarkets,
     strategyHasValidTradeTypeCategory,
+    cleanBeforeExport,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import createError from '../../common/error';
@@ -75,7 +76,7 @@ const marketsWereRemoved = xml => {
     }
     return false;
 };
-const loadWorkspace = xml => {
+export const loadWorkspace = xml => {
     if (!strategyHasValidTradeTypeCategory(xml)) return;
     if (marketsWereRemoved(xml)) return;
 
@@ -101,7 +102,7 @@ const loadWorkspace = xml => {
     );
 };
 
-const loadBlocks = (xml, dropEvent = {}) => {
+export const loadBlocks = (xml, dropEvent = {}) => {
     if (!strategyHasValidTradeTypeCategory(xml)) return;
     if (marketsWereRemoved(xml)) return;
 
@@ -293,7 +294,7 @@ export default class _Blockly {
         try {
             xml = Blockly.Xml.textToDom(blockStr);
         } catch (e) {
-            throw createError('FileLoad', translate('Unrecognized file format.'));
+            throw createError('FileLoad', translate('Unrecognized file format'));
         }
 
         try {
@@ -303,7 +304,7 @@ export default class _Blockly {
                 loadWorkspace(xml);
             }
         } catch (e) {
-            throw createError('FileLoad', translate('Unable to load the block file.'));
+            throw createError('FileLoad', translate('Unable to load the block file'));
         }
     }
     /* eslint-disable class-methods-use-this */
@@ -311,15 +312,10 @@ export default class _Blockly {
         const { filename, collection } = arg;
 
         setBeforeUnload(true);
+
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-        Array.from(xml.children).forEach(blockDom => {
-            const blockId = blockDom.getAttribute('id');
-            if (!blockId) return;
-            const block = Blockly.mainWorkspace.getBlockById(blockId);
-            if ('loaderId' in block) {
-                blockDom.remove();
-            }
-        });
+        cleanBeforeExport(xml);
+
         save(filename, collection, xml);
     }
     run(limitations = {}) {

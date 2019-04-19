@@ -45,7 +45,7 @@ gulp.task(
         const index = process.argv.indexOf('--branch');
         let option = '';
         if (index <= -1) {
-            throw 'Please specify branch';
+            throw Error('Please specify branch');
         } else {
             option = process.argv[index + 1];
         }

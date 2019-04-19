@@ -100,10 +100,9 @@ export const getOAuthURL = () =>
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
-    apiUrl   : getWebSocketURL(),
-    websocket: typeof WebSocket === 'undefined' ? require('ws') : undefined, // eslint-disable-line global-require
-    language : getLanguage().toUpperCase(),
-    appId    : getAppIdFallback(),
+    apiUrl  : getWebSocketURL(),
+    language: getLanguage().toUpperCase(),
+    appId   : getAppIdFallback(),
 };
 
 export const generateLiveApiInstance = () => new LiveApi(options);
