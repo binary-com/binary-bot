@@ -89,3 +89,13 @@
         background: url("../image/clear-disabled.svg") no-repeat center;
     }
 }
+
+.icon-refresh {
+    &:before {
+      content: ' ';
+  }
+  background: url("../image/refresh.svg") no-repeat center;
+  &:disabled {
+      background: url("../image/refresh-disabled.svg") no-repeat center;
+  }
+}
