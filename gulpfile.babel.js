@@ -12,7 +12,7 @@ gulp.task(
     gulp.series(done => {
         connect.server({
             root      : 'www',
-            port      : 80,
+            port      : 8080,
             livereload: true,
         });
         done();
@@ -24,7 +24,7 @@ gulp.task(
     gulp.series(done => {
         gulp.src('www/index.html').pipe(
             open({
-                uri: 'http://localhost:80/',
+                uri: 'http://localhost:8080/',
             })
         );
         done();

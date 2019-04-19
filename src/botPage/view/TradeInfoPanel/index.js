@@ -5,7 +5,6 @@ import Summary from './Summary';
 import TradeTable from './TradeTable';
 import RunButton from './RunButton';
 import ClearButton from './ClearButton';
-import RefreshButton from './RefreshButton';
 
 const resetAnimation = () => {
     $('.circle-wrapper')
@@ -155,7 +154,6 @@ export default class TradeInfoPanel extends Component {
                     <div className="content-row">
                         <div className="summary-toolbox">
                             <RunButton />
-                            <RefreshButton />
                             <ClearButton />
                         </div>
                     </div>
