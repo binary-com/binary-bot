@@ -12,8 +12,7 @@ export default class RefreshButton extends React.PureComponent {
     }
     // eslint-disable-next-line class-methods-use-this
     refreshTable() {
-        const b = prompt('wanna refresh');
-        console.log(b);
+        globalObserver.emit('summary.refresh');
     }
     render() {
         return (

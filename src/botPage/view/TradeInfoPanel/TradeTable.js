@@ -2,6 +2,7 @@ import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from '../../../common/utils/observer';
+import { contract as broadcastContract } from '../../bot/broadcast';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
@@ -36,6 +37,7 @@ export default class TradeTable extends Component {
                 id  : 0,
                 rows: [],
             },
+            // newData: [],
         };
         this.columns = [
             { key: 'timestamp', width: 192, resizable: true, name: translate('Timestamp') },
@@ -63,6 +65,23 @@ export default class TradeTable extends Component {
             if (accountData && accountData.rows.length > 0) {
                 globalObserver.emit('summary.enable_clear');
             }
+        });
+        globalObserver.register('summary.refresh', () => {
+            const { accountID, api } = this.props;
+            const { rows } = this.state[accountID];
+            this.setState({ [accountID]: { ...this.state.initial } });
+
+            // eslint-disable-next-line array-callback-return
+            rows.map(row => {
+                const contractID = row.contract_id;
+                api.subscribeToOpenContract(contractID).then(r => {
+                    // const data = this.state.newData.slice();
+                    // data.push(contract)
+                    // this.setState({newData: data})
+                    const contract = r.proposal_open_contract;
+                    broadcastContract({ accountID: this.props.accountID, ...contract });
+                });
+            });
         });
         globalObserver.register('bot.contract', info => {
             if (!info) {
