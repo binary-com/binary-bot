@@ -4,6 +4,7 @@ import 'notifyjs-browser';
 import View from './View';
 import '../../common/binary-ui/dropdown';
 import Elevio from '../../common/elevio';
+import GTM from '../../common/gtm';
 
 $.ajaxSetup({
     cache: false,
@@ -29,6 +30,7 @@ view.initPromise.then(() => {
     $('.barspinner').hide();
     window.dispatchEvent(new Event('resize'));
     Elevio.init();
+    GTM.setVisitorId();
     trackJs.configure({
         userId: $('.account-id')
             .first()
