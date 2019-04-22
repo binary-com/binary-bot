@@ -39,6 +39,7 @@ import {
     getToken,
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
+import GTM from '../../common/gtm';
 
 let realityCheckTimeout;
 
@@ -352,6 +353,7 @@ export default class View {
                     this.stop();
                     Elevio.logoutUser();
                     googleDrive.signOut();
+                    GTM.setVisitorId();
                     removeTokens();
                 })
                 .catch(() => {});
@@ -569,6 +571,7 @@ export default class View {
                 .then(() => {
                     this.stop();
                     Elevio.logoutUser();
+                    GTM.setVisitorId();
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
                     setStorage('tokenList', '');

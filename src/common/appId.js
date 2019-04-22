@@ -11,6 +11,7 @@ import { parseQueryString, isProduction, getExtension } from '../common/utils/to
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 import Elevio from './elevio';
+import GTM from './gtm';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
@@ -133,6 +134,7 @@ export async function addTokenIfValid(token, tokenObjectList) {
     } catch (e) {
         removeToken(tokenObjectList[0].token);
         Elevio.logoutUser();
+        GTM.setVisitorId();
         throw e;
     }
     return api.disconnect();
