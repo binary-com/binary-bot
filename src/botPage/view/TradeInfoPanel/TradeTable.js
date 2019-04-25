@@ -19,6 +19,13 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice, currency }) => 
     return '';
 };
 
+const getTimestamp = date => {
+    const buyDate = new Date(date * 1000);
+    return `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
+        buyDate.toTimeString().split(' ')[1]
+    }`;
+};
+
 const minHeight = 290;
 const rowHeight = 25;
 
@@ -68,10 +75,9 @@ export default class TradeTable extends Component {
             const { accountID, api } = this.props;
             const { rows } = this.state[accountID];
 
-            // eslint-disable-next-line array-callback-return
-            rows.map(row => {
+            rows.forEach(row => {
                 const contractID = row.contract_id;
-                api.subscribeToOpenContract(contractID).then(r => {
+                api.getContractInfo(contractID).then(r => {
                     const contract = r.proposal_open_contract;
                     this.updateTable({ accountID: this.props.accountID, ...contract });
                 });
@@ -81,10 +87,7 @@ export default class TradeTable extends Component {
             if (!info) {
                 return;
             }
-            const buyDate = new Date(info.date_start * 1000);
-            const timestamp = `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
-                buyDate.toTimeString().split(' ')[1]
-            }`;
+            const timestamp = getTimestamp(info.date_start);
             const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
             const { accountID } = tradeObj;
 
@@ -140,13 +143,7 @@ export default class TradeTable extends Component {
         return this.state[accountID];
     }
     updateTable(info) {
-        if (!info) {
-            return;
-        }
-        const buyDate = new Date(info.date_start * 1000);
-        const timestamp = `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
-            buyDate.toTimeString().split(' ')[1]
-        }`;
+        const timestamp = getTimestamp(info.date_start);
         const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
         const { accountID } = tradeObj;
 
