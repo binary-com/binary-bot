@@ -20,10 +20,17 @@ class LimitsContent extends PureComponent {
     submit() {
         this.setState({ error: '' });
 
+        const onSave = () => {
+            this.props.onSave({
+                maxTrades: this.state.maxTrades,
+                maxLoss  : this.state.maxLosses,
+            });
+        };
+
         if (!this.state.maxLosses) {
             this.updateMaxLosses()
                 .then(() => {
-                    this.props.onSave({ maxTrades: this.state.maxTrades });
+                    onSave();
                 })
                 .catch(() => {
                     this.setState({
@@ -40,7 +47,7 @@ class LimitsContent extends PureComponent {
             return;
         }
 
-        this.props.onSave({ maxTrades: this.state.maxTrades });
+        onSave();
     }
 
     updateMaxLosses() {
