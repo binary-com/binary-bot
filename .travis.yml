@@ -1,5 +1,7 @@
 language: node_js
-node_js: node
+node_js: "10.15.3"
+before_install: npm i -g npm@6.9.0
+install: npm ci
 cache:
     directories: 
         - node_modules
