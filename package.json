@@ -92,7 +92,6 @@
     "prop-types": "^15.6.0",
     "react-data-grid": "^3.0.0",
     "react-joyride": "^1.11.1",
-    "react-render-html": "^0.6.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "sha1": "^1.1.1",
@@ -109,6 +108,7 @@
     "mobx-react": "^5.1.8",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "react-render-html": "^0.6.0",
     "react-transition-group": "^2.3.1"
   }
 }
