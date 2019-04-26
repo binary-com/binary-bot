@@ -171,7 +171,7 @@ export default class TradeInfoPanel extends Component {
                         <AnimateTrade />
                     </div>
                     <div className="content-row">
-                        <TradeTable accountID={accountID} />
+                        <TradeTable accountID={accountID} api={this.props.api} />
                     </div>
                     <div className="content-row">
                         <Summary accountID={accountID} />
