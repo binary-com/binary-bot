@@ -142,7 +142,6 @@ const clearRealityCheck = () => {
     stopRealityCheck();
 };
 
-const limits = new Limits();
 const integrationsDialog = new IntegrationsDialog();
 const loadDialog = new LoadDialog();
 const saveDialog = new SaveDialog();
@@ -518,8 +517,13 @@ export default class View {
                 .attr('value');
             const tokenObj = getToken(token);
             initRealityCheck(() => $('#stopButton').triggerHandler('click'));
+
             if (tokenObj && tokenObj.hasTradeLimitation) {
-                limits.getLimits().then(startBot);
+                const limits = new Limits(api);
+                limits
+                    .getLimits()
+                    .then(startBot)
+                    .catch(() => {});
             } else {
                 startBot();
             }
