@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
@@ -19,6 +20,13 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice, currency }) => 
     return '';
 };
 
+const getTimestamp = date => {
+    const buyDate = new Date(date * 1000);
+    return `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
+        buyDate.toTimeString().split(' ')[1]
+    }`;
+};
+
 const minHeight = 290;
 const rowHeight = 25;
 
@@ -36,6 +44,7 @@ export default class TradeTable extends Component {
                 id  : 0,
                 rows: [],
             },
+            test: {},
         };
         this.columns = [
             { key: 'timestamp', width: 192, resizable: true, name: translate('Timestamp') },
@@ -48,6 +57,8 @@ export default class TradeTable extends Component {
         ];
     }
     componentWillMount() {
+        const { api } = this.props;
+
         globalObserver.register('summary.export', () => {
             const accountData = this.state[this.props.accountID];
             if (accountData && accountData.rows.length > 0) {
@@ -68,10 +79,7 @@ export default class TradeTable extends Component {
             if (!info) {
                 return;
             }
-            const buyDate = new Date(info.date_start * 1000);
-            const timestamp = `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
-                buyDate.toTimeString().split(' ')[1]
-            }`;
+            const timestamp = getTimestamp(info.date_start);
             const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
             const { accountID } = tradeObj;
 
@@ -93,6 +101,87 @@ export default class TradeTable extends Component {
                 this.setState({ [accountID]: appendRow(trade, accountStat) });
             }
         });
+        globalObserver.register('contract.settled', contract => {
+            const registerTimeout = contract => {
+                setTimeout(() => {
+                    const contractID = contract.contract_id;
+                    this.refreshContract(api, contractID);
+                    // globalObserver.emit('ui.log.success', contractId);
+
+                    // const accountStat = this.getAccountStat(this.props.accountID);
+                    // const { id } = this.state[this.props.accountID];
+
+                    // const rows = accountStat.rows.slice();
+                    // const updatedRows = rows.map(row => {
+                    //     if (row.contract_id === contractId) {
+                    //         row.contract_type = 'Settled';
+                    //         return row;
+                    //     }
+                    //     return row;
+                    // });
+                    // this.setState({ [this.props.accountID]: { id, 'rows': updatedRows } });
+                }, 3000);
+            };
+
+            registerTimeout(contract);
+        });
+    }
+    refreshContract(api, contractID) {
+        api.getContractInfo(contractID).then(r => {
+            const contract = r.proposal_open_contract;
+            // this.updateTable(contract);
+
+            const timestamp = getTimestamp(contract.date_start);
+            const tradeObj = { reference: contract.transaction_ids.buy, ...contract, timestamp };
+            const { accountID } = this.props;
+
+            const trade = {
+                ...tradeObj,
+                profit: getProfit(tradeObj),
+            };
+
+            if (trade.is_expired && trade.is_sold && !trade.exit_tick) trade.exit_tick = '-';
+
+            const { id } = this.state[accountID];
+            const rows = this.state[accountID].rows.slice();
+            const updatedRows = rows.map(row => {
+                const { reference } = row;
+                if (reference === trade.reference) {
+                    return {
+                        reference,
+                        ...trade,
+                    };
+                }
+                return row;
+            });
+            this.setState({ [accountID]: { id, rows: updatedRows } });
+        });
+    }
+    updateTable(info) {
+        const timestamp = getTimestamp(info.date_start);
+        const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
+        const { accountID } = tradeObj;
+
+        const trade = {
+            ...tradeObj,
+            profit: getProfit(tradeObj),
+        };
+
+        if (trade.is_expired && trade.is_sold && !trade.exit_tick) trade.exit_tick = '-';
+
+        const { id } = this.state[accountID];
+        const rows = this.state[accountID].rows.slice();
+        const updatedRows = rows.map(row => {
+            const { reference } = row;
+            if (reference === trade.reference) {
+                return {
+                    reference,
+                    ...trade,
+                };
+            }
+            return row;
+        });
+        this.setState({ [accountID]: { id, rows: updatedRows } });
     }
     rowGetter(i) {
         const { accountID } = this.props;
