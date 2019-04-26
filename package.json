@@ -76,7 +76,7 @@
     "i18next-scanner": "1.9.4",
     "immutable": "^3.8.2",
     "jest": "^24.7.1",
-    "jquery": "3.2.1",
+    "jquery": "^3.4.0",
     "jquery-ui": "1.12.1",
     "jquery-ui-css": "1.11.4",
     "js-interpreter": "^1.4.6",
