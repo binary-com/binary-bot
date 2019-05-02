@@ -31,6 +31,7 @@ const minHeight = 290;
 const rowHeight = 25;
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.green : style.red}>{value}</div>;
+const StatusColor = ({ value }) => <div style={value === 'Settled' ? style.green : style.red}>{value}</div>;
 
 export default class TradeTable extends Component {
     constructor({ accountID }) {
@@ -47,12 +48,13 @@ export default class TradeTable extends Component {
         };
         this.columns = [
             { key: 'timestamp', width: 192, resizable: true, name: translate('Timestamp') },
-            { key: 'reference', width: 142, resizable: true, name: translate('Reference') },
-            { key: 'contract_type', width: 104, resizable: true, name: translate('Trade type') },
-            { key: 'entry_tick', width: 80, resizable: true, name: translate('Entry spot') },
-            { key: 'exit_tick', width: 70, resizable: true, name: translate('Exit spot') },
+            { key: 'reference', width: 110, resizable: true, name: translate('Reference') },
+            { key: 'contract_type', width: 70, resizable: true, name: translate('Trade type') },
+            { key: 'entry_tick', width: 75, resizable: true, name: translate('Entry spot') },
+            { key: 'exit_tick', width: 75, resizable: true, name: translate('Exit spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
+            { key: 'contract_status', width: 65, resizable: true, name: translate('Status'), formatter: StatusColor },
         ];
     }
     componentWillMount() {
@@ -84,7 +86,8 @@ export default class TradeTable extends Component {
 
             const trade = {
                 ...tradeObj,
-                profit: getProfit(tradeObj),
+                profit         : getProfit(tradeObj),
+                contract_status: 'Pending',
             };
 
             const accountStat = this.getAccountStat(accountID);
@@ -130,6 +133,7 @@ export default class TradeTable extends Component {
                 const { reference } = row;
                 if (reference === trade.reference) {
                     return {
+                        contract_status: 'Settled',
                         reference,
                         ...trade,
                     };
