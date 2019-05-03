@@ -73,9 +73,13 @@ export const bottomWarning = {
 
 export const bottomWarningLink = { textDecoration: 'underline' };
 
-export const green = { color: 'green', float: 'left' };
+export const green = { color: 'green' };
 
-export const red = { color: 'red', float: 'left' };
+export const greenLeft = { color: 'green', float: 'left' };
+
+export const red = { color: 'red' };
+
+export const redLeft = { color: 'red', float: 'left' };
 
 export const tradePanelAccount = { float: 'right' };
 

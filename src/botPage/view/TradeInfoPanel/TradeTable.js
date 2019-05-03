@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
@@ -30,8 +29,10 @@ const getTimestamp = date => {
 const minHeight = 290;
 const rowHeight = 25;
 
-const ProfitColor = ({ value }) => <div style={value > 0 ? style.green : style.red}>{value}</div>;
-const StatusColor = ({ value }) => <div style={value === 'Settled' ? style.green : style.red}>{value}</div>;
+const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
+const StatusColor = ({ value }) => (
+    <div style={value === translate('Settled') ? style.greenLeft : style.redLeft}>{value}</div>
+);
 
 export default class TradeTable extends Component {
     constructor({ accountID }) {
@@ -54,7 +55,7 @@ export default class TradeTable extends Component {
             { key: 'exit_tick', width: 75, resizable: true, name: translate('Exit spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
-            { key: 'contract_status', width: 65, resizable: true, name: translate('Status'), formatter: StatusColor },
+            { key: 'contract_status', width: 70, resizable: true, name: translate('Status'), formatter: StatusColor },
         ];
     }
     componentWillMount() {
@@ -87,7 +88,7 @@ export default class TradeTable extends Component {
             const trade = {
                 ...tradeObj,
                 profit         : getProfit(tradeObj),
-                contract_status: 'Pending',
+                contract_status: translate('Pending'),
             };
 
             const accountStat = this.getAccountStat(accountID);
@@ -133,7 +134,7 @@ export default class TradeTable extends Component {
                 const { reference } = row;
                 if (reference === trade.reference) {
                     return {
-                        contract_status: 'Settled',
+                        contract_status: translate('Settled'),
                         reference,
                         ...trade,
                     };
