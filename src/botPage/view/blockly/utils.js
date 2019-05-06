@@ -148,18 +148,32 @@ export const deleteBlockIfExists = block => {
 
 export const setBlockTextColor = block => {
     Blockly.Events.recordUndo = false;
-    if (block.inputList instanceof Array) {
-        Array.from(block.inputList).forEach(inp =>
-            inp.fieldRow.forEach(field => {
-                if (field instanceof Blockly.FieldLabel) {
-                    const svgElement = field.getSvgRoot();
-                    if (svgElement) {
-                        svgElement.style.setProperty('fill', 'white', 'important');
-                    }
+
+    block.inputList.forEach(input => {
+        input.fieldRow.forEach(field => {
+            // Update FieldLabels
+            if (field instanceof Blockly.FieldLabel) {
+                const svgElement = field.getSvgRoot();
+                if (svgElement) {
+                    svgElement.style.setProperty('fill', 'white', 'important');
                 }
-            })
-        );
-    }
+            }
+
+            // Update shadow block labels
+            if (field instanceof Blockly.FieldTextInput) {
+                const svgElement = field.getSvgRoot();
+                if (svgElement) {
+                    svgElement.childNodes.forEach(childNode => {
+                        if (childNode.nodeName === 'text') {
+                            childNode.style.setProperty('fill', 'white', 'important');
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    // ???
     const field = block.getField();
     if (field) {
         const svgElement = field.getSvgRoot();
@@ -494,6 +508,12 @@ export const hideInteractionsFromBlockly = callback => {
     Blockly.Events.recordUndo = false;
     callback();
     Blockly.Events.recordUndo = true;
+};
+
+export const hideEventsFromBlockly = callback => {
+    Blockly.Events.disable();
+    callback();
+    Blockly.Events.enable();
 };
 
 export const cleanBeforeExport = xml => {
