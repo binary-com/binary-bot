@@ -14,7 +14,7 @@ Blockly.Blocks.purchase = {
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
     onchange: function onchange(ev) {
-        insideBeforePurchase(this, ev, 'Purchase');
+        // insideBeforePurchase(this, ev, 'Purchase');
     },
 };
 Blockly.JavaScript.purchase = block => {

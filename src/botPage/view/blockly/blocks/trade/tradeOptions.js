@@ -18,6 +18,7 @@ export default () => {
             setInputList(this);
             this.setPreviousStatement(true, 'TradeOptions');
             this.setColour('#f2f2f2');
+            this.setInputsInline(false);
         },
         onchange: function onchange(ev) {
             insideTrade(this, ev, translate('Trade Options'));
@@ -151,9 +152,9 @@ export default () => {
                     predictionInput.setVisible(true);
 
                     // Attach shadow block with API-returned prediction-value (only if user hasn't defined a value)
-                    if (!predictionInput.connection.isConnected()) {
-                        predictionInput.attachShadowBlock(predictionRange[0], 'NUM', 'math_number');
-                    }
+                    // if (!predictionInput.connection.isConnected()) {
+                    //     predictionInput.attachShadowBlock(predictionRange[0], 'NUM', 'math_number');
+                    // }
                 });
             });
         },
@@ -176,7 +177,7 @@ export default () => {
                         if (barrierInput) {
                             barrierInput.setVisible(true);
                             if (!barrierInput.connection.isConnected()) {
-                                barrierInput.attachShadowBlock(barrierValue, 'NUM', 'math_number');
+                                // barrierInput.attachShadowBlock(barrierValue, 'NUM', 'math_number');
                             } else if (setDefaultValue) {
                                 const connectedBlock = barrierInput.connection.targetBlock();
                                 if (connectedBlock.isShadow()) {
@@ -268,7 +269,7 @@ export default () => {
                     if (durations.length) {
                         const durationInput = tradeOptionsBlock.getInput('DURATION');
                         if (!durationInput.connection.isConnected()) {
-                            durationInput.attachShadowBlock(durations[0].minimum, 'NUM', 'math_number');
+                            // durationInput.attachShadowBlock(durations[0].minimum, 'NUM', 'math_number');
                         } else if (setMinDuration) {
                             const connectedBlock = durationInput.connection.targetBlock();
                             const minDuration = durations.find(d => d.unit === selectedDuration);
@@ -310,6 +311,7 @@ export default () => {
             });
         },
     };
+
     Blockly.JavaScript.tradeOptions = block => {
         const durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC) || '0';
         const durationType = block.getFieldValue('DURATIONTYPE_LIST');

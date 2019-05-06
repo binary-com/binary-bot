@@ -409,3 +409,34 @@ export const getPredictionForContracts = (contracts, selectedContractType) => {
     }
     return predictionRange;
 };
+
+export const pollForContracts = symbol =>
+    new Promise(resolve => {
+        const contractsForSymbol = haveContractsForSymbol(symbol);
+        if (!contractsForSymbol) {
+            // Register an event and use as a lock to avoid spamming API
+            const event = `contractsLoaded.${symbol}`;
+            if (!globalObserver.isRegistered(event)) {
+                globalObserver.register(event, () => {});
+                getContractsAvailableForSymbol(symbol).then(contracts => {
+                    globalObserver.unregisterAll(event); // Release the lock
+                    resolve(contracts);
+                });
+            } else {
+                // Request in progress, start polling localStorage until contracts are available.
+                const pollingFn = setInterval(() => {
+                    const contracts = haveContractsForSymbol(symbol);
+                    if (contracts) {
+                        clearInterval(pollingFn);
+                        resolve(contracts.available);
+                    }
+                }, 100);
+                setTimeout(() => {
+                    clearInterval(pollingFn);
+                    resolve([]);
+                }, 10000);
+            }
+        } else {
+            resolve(contractsForSymbol.available);
+        }
+    });
