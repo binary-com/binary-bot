@@ -48,10 +48,11 @@
 }
 
 .blocklyFlyoutBackground {
-    fill: $white !important;
+    fill: #fcfcfc !important;
     fill-opacity: 1 !important;
     stroke: $brand-dark-gray;
-    stroke-width: 0.063em;
+    stroke-width: 0.15em;
+    stroke-linecap: round;
 }
 
 .blocklyToolboxDiv {
@@ -59,7 +60,6 @@
     border-width: thin;
     color: $brand-dark-gray;
     border-right: 0.063em solid;
-    width: 11em;	
 }
 
 .blocklyIconShape {
@@ -69,11 +69,6 @@
 .blocklyIconGroup:not(:hover),
 .blocklyIconGroupReadonly {
     opacity: 1 !important;
-}
-
-.blocklyScrollbarVertical,
-.blocklyScrollbarHorizontal {
-    display: none;
 }
 
 .blocklyTreeRow {
@@ -92,6 +87,19 @@
     position: absolute;
 }
 
-.blocklyMainBackground {
-    stroke: none;
+.scratchCategoryMenu {
+    width: 100%;
+    color: #575E75;
+    font-size: 1em;
+    user-select: none;
+}
+
+.scratchCategoryMenuItem {
+    padding: 0.5em 1em;
+    cursor: pointer;
+    text-align: left;
+}
+
+.scratchCategoryItemBubble {
+    display: none;
 }

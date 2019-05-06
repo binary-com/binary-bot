@@ -1,443 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xml id="toolbox" style="display: none">
-	<category name="Logic" i18n-text="Logic">
-		<block type="controls_if"></block>
-		<block type="logic_compare"></block>
-		<block type="logic_operation"></block>
-		<block type="logic_negate"></block>
-		<block type="logic_boolean"></block>
-		<block type="logic_null"></block>
-		<block type="logic_ternary"></block>
-	</category>
-	<category name="Math" i18n-text="Math">
-		<block type="math_number">
-		<field name="NUM">1</field>
-		</block>
-		<block type="math_arithmetic">
-		<value name="A">
-		<shadow type="math_number">
-		<field name="NUM">1</field>
-		</shadow>
-		</value>
-		<value name="B">
-		<shadow type="math_number">
-		<field name="NUM">1</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_single">
-		<value name="NUM">
-		<shadow type="math_number">
-		<field name="NUM">9</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_trig">
-		<value name="NUM">
-		<shadow type="math_number">
-		<field name="NUM">45</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_constant"></block>
-		<block type="math_number_property">
-		<value name="NUMBER_TO_CHECK">
-		<shadow type="math_number">
-		<field name="NUM">0</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_change">
-		<value name="DELTA">
-		<shadow type="math_number">
-		<field name="NUM">1</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_round">
-		<value name="NUM">
-		<shadow type="math_number">
-		<field name="NUM">3.1</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_on_list"></block>
-		<block type="math_modulo">
-		<value name="DIVIDEND">
-		<shadow type="math_number">
-		<field name="NUM">64</field>
-		</shadow>
-		</value>
-		<value name="DIVISOR">
-		<shadow type="math_number">
-		<field name="NUM">10</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_constrain">
-		<value name="VALUE">
-		<shadow type="math_number">
-		<field name="NUM">50</field>
-		</shadow>
-		</value>
-		<value name="LOW">
-		<shadow type="math_number">
-		<field name="NUM">1</field>
-		</shadow>
-		</value>
-		<value name="HIGH">
-		<shadow type="math_number">
-		<field name="NUM">100</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_random_int">
-		<value name="FROM">
-		<shadow type="math_number">
-		<field name="NUM">1</field>
-		</shadow>
-		</value>
-		<value name="TO">
-		<shadow type="math_number">
-		<field name="NUM">100</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="math_random_float"></block>
-
-	</category>
-	<category name="Text" i18n-text="Text">>
-		<block type="text"></block>
-		<block type="text_join"></block>
-		<block type="text_append">
-		<value name="TEXT">
-		<shadow type="text"></shadow>
-		</value>
-		</block>
-		<block type="text_length">
-		<value name="VALUE">
-		<shadow type="text">
-		<field name="TEXT">abc</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="text_isEmpty">
-		<value name="VALUE">
-		<shadow type="text">
-		<field name="TEXT"></field>
-		</shadow>
-		</value>
-		</block>
-		<block type="text_indexOf">
-		<value name="VALUE">
-		<block type="variables_get">
-		<field name="VAR">text</field>
-		</block>
-		</value>
-		<value name="FIND">
-		<shadow type="text">
-		<field name="TEXT">abc</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="text_charAt">
-		<value name="VALUE">
-		<block type="variables_get">
-		<field name="VAR">text</field>
-		</block>
-		</value>
-		</block>
-		<block type="text_getSubstring">
-		<value name="STRING">
-		<block type="variables_get">
-		<field name="VAR">text</field>
-		</block>
-		</value>
-		</block>
-		<block type="text_changeCase">
-		<value name="TEXT">
-		<shadow type="text">
-		<field name="TEXT">abc</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="text_trim">
-		<value name="TEXT">
-		<shadow type="text">
-		<field name="TEXT">abc</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="text_print">
-		<value name="TEXT">
-		<shadow type="text">
-		<field name="TEXT">abc</field>
-		</shadow>
-		</value>
-		</block>
-		<block type="text_prompt_ext">
-		<value name="TEXT">
-		<shadow type="text">
-		<field name="TEXT">abc</field>
-		</shadow>
-		</value>
-		</block>
-	</category>
-	<category name="Advanced" i18n-text="Advanced">
-		<category name="List" i18n-text="List">
-			<block type="lists_create_with">
-			<mutation items="0"></mutation>
-			</block>
-			<block type="lists_create_with"></block>
-			<block type="lists_repeat">
-			<value name="NUM">
-			<shadow type="math_number">
-			<field name="NUM">5</field>
-			</shadow>
-			</value>
-			</block>
-			<block type="lists_length"></block>
-			<block type="lists_isEmpty"></block>
-			<block type="lists_indexOf">
-			<value name="VALUE">
-			<block type="variables_get">
-			<field name="VAR">list</field>
-			</block>
-			</value>
-			</block>
-			<block type="lists_getIndex">
-			<value name="VALUE">
-			<block type="variables_get">
-			<field name="VAR">list</field>
-			</block>
-			</value>
-			</block>
-			<block type="lists_setIndex">
-			<value name="LIST">
-			<block type="variables_get">
-			<field name="VAR">list</field>
-			</block>
-			</value>
-			</block>
-			<block type="lists_getSublist">
-			<value name="LIST">
-			<block type="variables_get">
-			<field name="VAR">list</field>
-			</block>
-			</value>
-			</block>
-			<block type="lists_split">
-			<value name="DELIM">
-			<shadow type="text">
-			<field name="TEXT">,</field>
-			</shadow>
-			</value>
-			</block>
-			<block type="lists_sort"></block>
-		</category>
-		<category name="Variable" id="Variables" custom="VARIABLE" i18n-text="Variable">></category>
-		<category name="Functions" id="Functions" custom="PROCEDURE" i18n-text="Functions"></category>
-		<category name="Loop" i18n-text="Loop">
-			<block type="controls_repeat_ext"></block>
-			<block type="controls_repeat"></block>
-			<block type="controls_whileUntil"></block>
-			<block type="controls_for"></block>
-			<block type="controls_forEach"></block>
-			<block type="controls_for"></block>
-			<block type="controls_flow_statements"></block>
-		</category>
-	</category>
-	<category name="Binary" i18n-text="Binary">
-		<category name="Trade Definition" i18n-text="Trade Definition">
-			<block type="trade"></block>
-			<block type="tradeOptions">
-				<value name="DURATION">
-					<shadow type="math_number">
-						<field name="NUM">5</field>
-					</shadow>
-				</value>
-				<value name="AMOUNT">
-					<shadow type="math_number">
-						<field name="NUM">1</field>
-					</shadow>
-				</value>
-			</block>
-		</category>
-		<category name="Before Purchase" i18n-text="Before Purchase">
-			<block type="before_purchase"></block>
-			<block type="payout"></block>
-			<block type="ask_price"></block>
-			<block type="purchase"></block>
-		</category>
-		<category name="During Purchase" i18n-text="During Purchase">
-			<block type="during_purchase"></block>
-			<block type="check_sell"></block>
-			<block type="sell_price"></block>
-			<block type="sell_at_market"></block>
-		</category>
-		<category name="After Purchase" i18n-text="After Purchase">
-			<block type="after_purchase"></block>
-			<block type="contract_check_result"></block>
-			<block type="read_details"></block>
-			<block type="trade_again"></block>
-		</category>
-		<category name="Tick Analysis" i18n-text="Tick Analysis">
-			<block type="tick_analysis"></block>
-			<block type="tick"></block>
-			<block type="last_digit"></block>
-			<block type="read_ohlc">
-				<field name="OHLCFIELD_LIST">open</field>
-				<value name="CANDLEINDEX">
-					<shadow type="math_number">
-						<field name="NUM">1</field>
-					</shadow>
-				</value>
-			</block>
-			<block type="check_direction"></block>
-			<category name="Advanced" i18n-text="Advanced">
-				<block type="get_ohlc">
-					<value name="CANDLEINDEX">
-						<shadow type="math_number">
-							<field name="NUM">1</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="ticks"></block>
-				<block type="lastDigitList"></block>
-				<block type="ohlc"></block>
-				<block type="ohlc_values"></block>
-			</category>
-		</category>
-		<category name="Indicators" i18n-text="Indicators">
-			<block type="sma">
-				<value name="PERIOD">
-					<shadow type="math_number">
-						<field name="NUM">10</field>
-					</shadow>
-				</value>
-			</block>
-			<block type="ema">
-				<value name="PERIOD">
-					<shadow type="math_number">
-						<field name="NUM">10</field>
-					</shadow>
-				</value>
-			</block>
-			<block type="bb">
-				<field name="BBRESULT_LIST">1</field>
-				<value name="PERIOD">
-					<shadow type="math_number">
-						<field name="NUM">10</field>
-					</shadow>
-				</value>
-				<value name="UPMULTIPLIER">
-					<shadow type="math_number">
-						<field name="NUM">5</field>
-					</shadow>
-				</value>
-				<value name="DOWNMULTIPLIER">
-					<shadow type="math_number">
-						<field name="NUM">5</field>
-					</shadow>
-				</value>
-			</block>
-			<block type="rsi">
-				<value name="PERIOD">
-					<shadow type="math_number">
-						<field name="NUM">10</field>
-					</shadow>
-				</value>
-			</block>
-			<category name="Advanced" i18n-text="Advanced">
-				<block type="smaa">
-					<value name="PERIOD">
-						<shadow type="math_number">
-							<field name="NUM">10</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="emaa">
-					<value name="PERIOD">
-						<shadow type="math_number">
-							<field name="NUM">10</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="bba">
-					<field name="BBRESULT_LIST">1</field>
-					<value name="PERIOD">
-						<shadow type="math_number">
-							<field name="NUM">10</field>
-						</shadow>
-					</value>
-					<value name="UPMULTIPLIER">
-						<shadow type="math_number">
-							<field name="NUM">5</field>
-						</shadow>
-					</value>
-					<value name="DOWNMULTIPLIER">
-						<shadow type="math_number">
-							<field name="NUM">5</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="rsia">
-					<value name="PERIOD">
-						<shadow type="math_number">
-							<field name="NUM">10</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="macda">
-					<field name="MACDFIELDS_LIST">0</field>
-					<value name="FAST_EMA_PERIOD">
-						<shadow type="math_number">
-							<field name="NUM">12</field>
-						</shadow>
-					</value>
-					<value name="SLOW_EMA_PERIOD">
-						<shadow type="math_number">
-							<field name="NUM">26</field>
-						</shadow>
-					</value>
-					<value name="SIGNAL_EMA_PERIOD">
-						<shadow type="math_number">
-							<field name="NUM">9</field>
-						</shadow>
-					</value>
-				</block>
-			</category>
-		</category>
-		<category name="Tools" i18n-text="Tools">
-			<category name="Time" i18n-text="Time">
-				<block type="epoch"></block>
-				<block type="timeout">
-					<value name="SECONDS">
-						<shadow type="math_number">
-							<field name="NUM">1</field>
-						</shadow>
-					</value>
-				</block>
-			</category>
-			<category name="Candle" i18n-text="Candle">
-				<block type="is_candle_black"></block>
-				<block type="ohlc_values_in_list"></block>
-				<block type="read_ohlc_obj"></block>
-			</category>
-			<category name="Misc." i18n-text="Misc.">
-				<block type="balance"></block>
-				<block type="total_profit"></block>
-				<block type="total_runs"></block>
-				<block type="notify">
-					<field name="NOTIFICATION_TYPE">success</field>
-					<value name="MESSAGE">
-						<shadow type="text">
-							<field name="TEXT">abc</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="loader"></block>
-				<block type="block_holder"></block>
-			</category>
-		</category>
-	</category>
+    <category name="Logic" id="Logic" i18n-text="Logic">
+        <block type="controls_if" id="25y0{4I9Kmh*+qHfx}CC" />
+        <block type="controls_if" id="O865XaF)t6mdF3jZYZt[">
+            <mutation else="1"></mutation>
+        </block>
+        <block type="logic_compare" />
+        <block type="logic_operation" />
+        <block type="logic_negate" />
+        <block type="logic_boolean" />
+        <block type="logic_null" />
+        <block type="logic_ternary" />
+    </category>
+    <category name="Math" id="Math" i18n-text="Math">
+        <block type="math_number" />
+        <block type="math_arithmetic" id="OAssmBPh11b.[#H,5P[;">
+            <field name="OP">ADD</field>
+            <value name="A">
+                <shadow type="math_number" id="4nmsW-cP;nc]sYzRpX.6">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="B">
+                <shadow type="math_number" id="/RG=%%RG?/k0EMi9uE0D">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_single" id="Pjrrb[u-3N9Bix`5,nY[">
+            <field name="OP">ROOT</field>
+            <value name="NUM">
+                <shadow type="math_number" id="LoL9F5.`+P#P#}An2^c~">
+                    <field name="NUM">9</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_trig" id="k;z/y[bbhD!B=C@dp)3y">
+            <field name="OP">SIN</field>
+            <value name="NUM">
+                <shadow type="math_number" id="LoL9F5.`+P#P#}An2^c~">
+                    <field name="NUM">45</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_constant" />
+        <block type="math_number_property" id="shnfrdZfy]G:3L]jjVrh">
+            <mutation divisor_input="false"></mutation>
+            <field name="PROPERTY">EVEN</field>
+            <value name="NUMBER_TO_CHECK">
+                <shadow type="math_number" id="voq%CrdLHh,~#hxI7HcG">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_change" id="s,$moQ3cX1U1IjosGyba">
+            <field name="VAR" id="|Gsb$q;*UivX00M|)BFR" variabletype="">item</field>
+            <value name="DELTA">
+                <shadow type="math_number" id="voq%CrdLHh,~#hxI7HcG">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_on_list" />
+        <block type="math_round" id="X`eguw9tq,kA38X(a3tB">
+            <field name="OP">ROUND</field>
+            <value name="NUM">
+                <shadow type="math_number" id=":_qyF~:]{-$iYI$^K@$5">
+                    <field name="NUM">3.1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_modulo" id="Cs}h%DonHzvAJu]uXD1*">
+            <value name="DIVIDEND">
+                <shadow type="math_number" id=":_qyF~:]{-$iYI$^K@$5">
+                    <field name="NUM">64</field>
+                </shadow>
+            </value>
+            <value name="DIVISOR">
+                <shadow type="math_number" id="v[6#F4]DH/yRIrA!Lt)u">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_constrain" id="}hnyiv#@Yb]iCG8xqOne">
+            <value name="VALUE">
+                <shadow type="math_number" id="!ju3lce`e`BgYKhmzQ1e">
+                    <field name="NUM">50</field>
+                </shadow>
+            </value>
+            <value name="LOW">
+                <shadow type="math_number" id="EzX%SzXIuT,$_j$Jb*MZ">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="HIGH">
+                <shadow type="math_number" id="w@w3T^=S{l|+:4Xr=7aW">
+                    <field name="NUM">100</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_random_int" id="s`P4^VYQyi;,_wVHT9^U">
+            <value name="FROM">
+                <shadow type="math_number" id="]n3J][=_9Q;IbmbExVVS">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="TO">
+                <shadow type="math_number" id="~||amUo=wqD5Lx@pOt`f">
+                    <field name="NUM">100</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_random_float" />
+    </category>
+    <category name="Text" id="Text" i18n-text="Text">
+        <block type="text" id="LaD}4ftg(4VJqKVs9Tym">
+            <field name="TEXT">abc</field>
+        </block>
+        <block type="text_join" id="Xkx^7~h=NOQr=,OET7.9">
+            <field name="VARIABLE" id="vFqd?BUlJ`dro3z}X.W3" variabletype="">text</field>
+            <statement name="STACK">
+                <block type="text_statement" id="$ilEJ4]UP0Hh/SvQC0(@" movable="false">
+                    <value name="TEXT">
+                        <shadow type="text" id="l7?F-5B:9i_L``TL)3C:">
+                            <field name="TEXT">abc</field>
+                        </shadow>
+                    </value>
+                </block>
+            </statement>
+        </block>
+        <block type="text_append" id="YQ1@SvEnkwR!eStyG~-x">
+            <field name="VAR" id="vFqd?BUlJ`dro3z}X.W3" variabletype="">text</field>
+            <value name="TEXT">
+                <shadow type="text" id="|KNc~i?n@M6*JxUWGBx~">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_length" id="XrN._ex;MPsx#=R1a;I`">
+            <value name="VALUE">
+                <shadow type="text" id="No/m!FtH,5dmcNux2i*%">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_isEmpty">
+            <value name="VALUE">
+                <shadow type="text" id="|KNc~i?n@M6*JxUWGBx~">
+                    <field name="TEXT"></field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_indexOf" id=":Nu#}f*p|8VriJM^iAy~">
+            <field name="END">FIRST</field>
+            <value name="VALUE">
+                <block type="variables_get" id="(SE`|`=?epPF~~|bmVs?">
+                    <field name="VAR" id="$.Nr9hi8[e*0NtRm(`.6" variabletype="">text</field>
+                </block>
+            </value>
+            <value name="FIND">
+                <shadow type="text" id="jm_ab9/e}3=F;`!_Fl=D">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_charAt" id="e0p:?fLYPWT3IEys{hJ(">
+            <mutation at="true"></mutation>
+            <field name="WHERE">FROM_START</field>
+            <value name="VALUE">
+                <block type="variables_get" id=";G%yAVY5!}GibZC^tsj:">
+                    <field name="VAR" id="$.Nr9hi8[e*0NtRm(`.6" variabletype="">item</field>
+                </block>
+            </value>
+            <value name="AT">
+                <shadow type="math_number" id="xs+XY4~aA4;kp,_FJT;5">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_getSubstring" id="c9Xkc+(tr-S,n)30@jN+">
+            <mutation at1="true" at2="true"></mutation>
+            <field name="WHERE1">FROM_START</field>
+            <field name="WHERE2">FROM_START</field>
+            <value name="STRING">
+                <block type="variables_get" id="15%e^(6n_um@i1L:-S;u">
+                    <field name="VAR" id="$.Nr9hi8[e*0NtRm(`.6" variabletype="">text</field>
+                </block>
+            </value>
+            <value name="AT1">
+                <shadow type="math_number" id="(LkQ#dMdO|_ucg{R8G6G">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+            <value name="AT2">
+                <shadow type="math_number" id="Sjyikx|g8K}w|br@yQ=c">
+                    <field name="NUM">2</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_changeCase" id="pyZb:MZuoPxenbjjYPvZ">
+            <field name="CASE">UPPERCASE</field>
+            <value name="TEXT">
+                <shadow type="text" id="41w*1A3k3f^b@fymjHy7">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_trim" id="l:):-|zFAC;CxQ9$7@Q1">
+            <field name="MODE">BOTH</field>
+            <value name="TEXT">
+                <shadow type="text" id="41w*1A3k3f^b@fymjHy7">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_print" id="o0=HA)0gD1U%~qX}3k7|">
+            <value name="TEXT">
+                <shadow type="text" id="P_Uyg0u(]S0=dXQb.cI|">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_prompt_ext" id="S[u95%[)wPjA5QUA`#CB">
+            <field name="TYPE">TEXT</field>
+            <value name="TEXT">
+                <shadow type="text" id="P_Uyg0u(]S0=dXQb.cI|">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+    </category>
+    <category name="Lists" id="Lists" i18n-text="Lists">
+        <block type="lists_create_with" id="Pp-(m?:jb-mT,3:xXY!d" x="272" y="182">
+            <field name="VARIABLE" id="[m|R?tV-XKJm,SvC8*.v" variabletype="">list</field>
+            <statement name="STACK">
+                <block type="lists_statement" id="]sRj[@jh]Si(G/,4ci`~" movable="false">
+                    <next>
+                        <block type="lists_statement" id="Qyx|$Mi3;Dn-$ai}Rgq3" movable="false"></block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="lists_repeat" id="{X}Sl;Vn+R{7#$=y=@;Y" x="122" y="176">
+            <field name="VARIABLE" id="[m|R?tV-XKJm,SvC8*.v" variabletype="">list</field>
+            <value name="NUM">
+                <shadow type="math_number" id="Diz;vrNcq]*NvYAO%.n#">
+                    <field name="NUM">5</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="lists_length"></block>
+        <block type="lists_isEmpty"></block>
+        <block type="lists_indexOf"></block>
+        <block type="lists_getIndex"></block>
+        <block type="lists_setIndex"></block>
+        <block type="lists_getSublist"></block>
+        <block type="lists_split" id="U(axM7Xdyg[]B[y`Oowo" x="90" y="295">
+            <mutation mode="SPLIT"></mutation>
+            <field name="MODE">SPLIT</field>
+            <value name="DELIM">
+                <shadow type="text" id="~CmdypN@x^qa{-i0tv5(">
+                    <field name="TEXT">,</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="lists_sort"></block>
+    </category>
+    <category name="Variables" id="Variables" i18n-text="Variables" custom="VARIABLE" />
+    <category name="Functions" id="Functions" i18n-text="Functions" custom="PROCEDURE" />
+    <category name="Loops" id="Loops" i18n-text="Loops">
+        <block type="controls_repeat_ext"></block>
+        <block type="controls_repeat"></block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for"></block>
+        <block type="controls_forEach"></block>
+        <block type="controls_flow_statements"></block>
+    </category>
+    <category name="Trade Definition" id="Trade Definition" i18n-text="Trade Definition">
+        <block type="trade_definition" id="iK*RCu[%(c1QiwNK,*C;">
+            <statement name="TRADE_OPTIONS">
+                <block type="trade_definition_market" id="co?OD;y+~17PzTa=|1C3" deletable="false" movable="false">
+                    <field name="MARKET_LIST">forex</field>
+                    <field name="SUBMARKET_LIST">smart_fx</field>
+                    <field name="SYMBOL_LIST">WLDAUD</field>
+                    <next>
+                        <block type="trade_definition_tradetype" id=",0V-nva)xkw^6Nc^s!k}" deletable="false" movable="false">
+                            <field name="TRADETYPECAT_LIST">callput</field>
+                            <field name="TRADETYPE_LIST">risefall</field>
+                            <next>
+                                <block type="trade_definition_contracttype" id="FUE_MEcO|@z=3lKk|1j~" deletable="false" movable="false">
+                                    <field name="TYPE_LIST">both</field>
+                                    <next>
+                                        <block type="trade_definition_candleinterval" id="k@oe!,yPxnRJY~%]ePmD" deletable="false" movable="false">
+                                            <field name="CANDLEINTERVAL_LIST">60</field>
+                                            <next>
+                                                <block type="trade_definition_restartbuysell" id="{_=3S78UV[gC+`K:g*ZO" deletable="false" movable="false">
+                                                    <value name="TIME_MACHINE_ENABLED">
+                                                        <block type="logic_boolean" id="EQ/@K88T5@YZ}J0t?+pd">
+                                                            <field name="BOOL">FALSE</field>
+                                                        </block>
+                                                    </value>
+                                                    <next>
+                                                        <block type="trade_definition_restartonerror" id="LXdDQ!2,ep.Wkb#?JoU-" deletable="false" movable="false">
+                                                            <value name="RESTARTONERROR">
+                                                                <block type="logic_boolean" id="bWhp7p7GaHRUxXfBBmR$">
+                                                                    <field name="BOOL">FALSE</field>
+                                                                </block>
+                                                            </value>
+                                                        </block>
+                                                    </next>
+                                                </block>
+                                            </next>
+                                        </block>
+                                    </next>
+                                </block>
+                            </next>
+                        </block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="trade_definition_tradeoptions" id="[hP[=$sWJH!F[hiN6^Dp">
+            <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
+            <field name="DURATIONTYPE_LIST"></field>
+            <field name="CURRENCY_LIST">AUD</field>
+        </block>
+    </category>
+    <category name="Before Purchase" id="Before Purchase" i18n-text="Before Purchase">
+        <block type="before_purchase"></block>
+        <block type="payout"></block>
+        <block type="ask_price"></block>
+        <block type="purchase"></block>
+    </category>
+    <category name="During Purchase" id="During Purchase" i18n-text="During Purchase">
+        <block type="during_purchase"></block>
+        <block type="check_sell"></block>
+        <block type="sell_price"></block>
+        <block type="sell_at_market"></block>
+    </category>
+    <category name="After Purchase" id="After Purchase" i18n-text="After Purchase">
+        <block type="after_purchase"></block>
+        <block type="contract_check_result"></block>
+        <block type="read_details"></block>
+        <block type="trade_again"></block>
+    </category>
+    <category name="Tick Analysis/Simple" id="Tick Analysis/Simple" i18n-text="Tick Analysis/Simple">
+        <block type="tick_analysis"></block>
+        <block type="tick"></block>
+        <block type="last_digit"></block>
+        <block type="read_ohlc" id="%A.M;9K_O$Z0~*Zj!V7}" x="-270" y="109">
+            <field name="OHLCFIELD_LIST">open</field>
+            <field name="CANDLEINTERVAL_LIST">default</field>
+            <value name="CANDLEINDEX">
+            <shadow type="math_number" id="zq8Z}zTs1Z?QeXN+O-v7">
+                <field name="NUM">1</field>
+            </shadow>
+            </value>
+        </block>
+        <block type="check_direction"></block>
+    </category>
+    <category name="Tick Analysis/Advanced" id="Tick Analysis/Advanced" i18n-text="Tick Analysis/Advanced">
+        <block type="get_ohlc" id="yeld0A(:uu~z=+!Xz7}I" x="-46" y="132">
+            <field name="CANDLEINTERVAL_LIST">default</field>
+            <value name="CANDLEINDEX">
+                <shadow type="math_number" id="cu`/=D9=Rb_YL5@+7_[_">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="ticks"></block>
+        <block type="lastDigitList"></block>
+        <block type="ohlc"></block>
+        <block type="ohlc_values"></block>
+    </category>
+    <category name="Indicators/Simple" id="Indicators/Simple" i18n-text="Indicators/Simple">
+        <block type="bb_statement" id="9#c/zD4x5}?4]xJ=T?WZ">
+            <field name="BBRESULT_LIST">0</field>
+            <statement name="STATEMENT">
+                <block type="input_list" id="YEf:KZ)djRnGuIWsbK0I" deletable="false" movable="false">
+                    <next>
+                        <block type="period" id="4JoaJd$?9-|ep;BKs?1l" deletable="false" movable="false">
+                            <value name="PERIOD">
+                                <shadow type="math_number" id="A!}V!GH=QTNG!U7[qjZU">
+                                    <field name="NUM">2</field>
+                                </shadow>
+                            </value>
+                            <next>
+                                <block type="std_dev_multiplier_up" id="i1W-voX=`T?TXXbY.JhA" deletable="false" movable="false">
+                                    <value name="UPMULTIPLIER">
+                                        <shadow type="math_number" id="*05PQw+{!FYYOYbO*Ky|">
+                                            <field name="NUM">10</field>
+                                        </shadow>
+                                    </value>
+                                    <next>
+                                        <block type="std_dev_multiplier_down" id="N~OFQVtnsG0Zd*N;A/-K">
+                                            <value name="DOWNMULTIPLIER">
+                                                <shadow type="math_number" id="`cE%5kSvXBA2).?/A(Q%">
+                                                    <field name="NUM">5</field>
+                                                </shadow>
+                                            </value>
+                                        </block>
+                                    </next>
+                                </block>
+                            </next>
+                        </block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="ema_statement" id="Z/5nx6dNAP7kjiN1)MgG">
+            <statement name="STATEMENT">
+                <block type="input_list" id="3#dzWIAVR5[g7;bg,NGp" deletable="false" movable="false">
+                    <next>
+                        <block type="period" id="P[axo:k75yG+5TE!2:fl" deletable="false" movable="false">
+                            <value name="PERIOD">
+                                <shadow type="math_number" id="%rlgsK%F0SuR-2T4)f3_">
+                                    <field name="NUM">0</field>
+                                </shadow>
+                            </value>
+                        </block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="rsi_statement" id="ZT9(`Caxnm^,(K.TeP~n">
+            <statement name="STATEMENT">
+                <block type="input_list" id="gW-z$c-LuE#%q?}mhG3]" deletable="false" movable="false">
+                    <next>
+                        <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
+                            <value name="PERIOD">
+                                <shadow type="math_number" id="%rlgsK%F0SuR-2T4)f3_">
+                                    <field name="NUM">0</field>
+                                </shadow>
+                            </value>
+                        </block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="sma_statement" id="5bNx,|zqxar{CpD^O%,t">
+            <statement name="STATEMENT">
+                <block type="input_list" id="z8;vVQ4YJD$Wsf;R;Owp">
+                    <next>
+                        <block type="period" id="|EXCh3ND2F=k2P5eACka"></block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+    </category>
+    <category name="Indicators/Advanced" id="Indicators/Advanced" i18n-text="Indicators/Advanced">
+        <block type="bba_statement" id="sVo{WVqrFi??^_q?3QXz">
+            <field name="BBRESULT_LIST">0</field>
+            <statement name="STATEMENT">
+                <block type="input_list" id="M[#(wGh_pN4}tUbwU?5E">
+                    <next>
+                        <block type="period" id="FGp#37KSX8]fU?-8$?pR">
+                            <next>
+                                <block type="std_dev_multiplier_up" id=",cF=@Z-z._K]9U@:#ZGf">
+                                    <next>
+                                        <block type="std_dev_multiplier_down" id="8)hd}Rf]-IZPl^9~pCv/"></block>
+                                    </next>
+                                </block>
+                            </next>
+                        </block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="emaa_statement" id="71@BxZ6McrKkhbT*=PR)">
+            <statement name="STATEMENT">
+                <block type="input_list" id="A$H~q8PfKI-nF8L;kb#?">
+                    <next>
+                        <block type="period" id="K?O-^yCRro1Lvbx284{t"></block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="macda_statement" id="T9qw}dc3tCMR#,#G!J!s">
+            <field name="MACDFIELDS_LIST">1</field>
+            <statement name="STATEMENT">
+                <block type="input_list" id="B`uY;~5nX#sEu+8[0_7t">
+                    <next>
+                        <block type="fast_ema_period" id="5V1qLGCim83iik=b5kp2">
+                            <next>
+                                <block type="slow_ema_period" id="J%EVbnaiy%cXi|lgfbB|">
+                                    <next>
+                                        <block type="signal_ema_period" id="]yf3wSSP/^g_i$4JS2J6"></block>
+                                    </next>
+                                </block>
+                            </next>
+                        </block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="rsia_statement" id="JnSqyfy(dbLm41r3jVT2">
+            <statement name="STATEMENT">
+                <block type="input_list" id="XdAI4dqW2u9HRYS~kPF%">
+                    <next>
+                        <block type="period" id=")B/(=Ki*2B=^R]m,Ov!Y"></block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+        <block type="smaa_statement" id=",_$%/oC+:6DZNC4K_zFH">
+            <statement name="STATEMENT">
+                <block type="input_list" id="AnFeLyL}jGlxa/f@*#|p">
+                    <next>
+                        <block type="period" id="LCaoz@R*iIC;)J7#KBV0"></block>
+                    </next>
+                </block>
+            </statement>
+        </block>
+    </category>
+    <category name="Time" id="Time" i18n-text="Time">
+        <block type="epoch"></block>
+        <block type="timeout"></block>
+    </category>
+    <category name="Candle" id="Candle" i18n-text="Candle">
+        <block type="is_candle_black"></block>
+        <block type="ohlc_values_in_list"></block>
+        <block type="read_ohlc_obj"></block>
+    </category>
+    <category name="Misc." id="Misc." i18n-text="Misc.">
+        <block type="balance"></block>
+        <block type="total_profit"></block>
+        <block type="total_runs"></block>
+        <block type="notify" id="Upgf|PIq-mC+z*mgB,ZO" x="120" y="240">
+            <field name="NOTIFICATION_TYPE">success</field>
+            <field name="NOTIFICATION_SOUND">silent</field>
+            <value name="MESSAGE">
+                <shadow type="text" id="|=(,)@]VV}L4FLlpo,o+">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="loader"></block>
+        <block type="block_holder"></block>
+    </category>
+    <category name="DevTools" id="DevTools" i18n-text="DevTools">
+        <block type="trade_definition" />
+        <block type="trade_definition_market" />
+        <block type="trade_definition_tradetype" />
+        <block type="trade_definition_contracttype" />
+        <block type="trade_definition_candleinterval" />
+        <block type="trade_definition_restartbuysell" />
+        <block type="trade_definition_restartonerror" />
+        <block type="trade_definition_tradeoptions" />
+        <block type="input_list"></block>
+        <block type="period"></block>
+        <block type="std_dev_multiplier_up"></block>
+        <block type="std_dev_multiplier_down"></block>
+        <block type="fast_ema_period"></block>
+        <block type="slow_ema_period"></block>
+        <block type="signal_ema_period"></block>
+    </category>
 </xml>
