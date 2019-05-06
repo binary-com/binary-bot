@@ -19,10 +19,18 @@ const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice, currency }) => 
     return '';
 };
 
+const getTimestamp = date => {
+    const buyDate = new Date(date * 1000);
+    return `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
+        buyDate.toTimeString().split(' ')[1]
+    }`;
+};
+
 const minHeight = 290;
 const rowHeight = 25;
 
-const ProfitColor = ({ value }) => <div style={value > 0 ? style.green : style.red}>{value}</div>;
+const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
+const StatusFormat = ({ value }) => <div style={style.left}>{value}</div>;
 
 export default class TradeTable extends Component {
     constructor({ accountID }) {
@@ -39,15 +47,18 @@ export default class TradeTable extends Component {
         };
         this.columns = [
             { key: 'timestamp', width: 192, resizable: true, name: translate('Timestamp') },
-            { key: 'reference', width: 142, resizable: true, name: translate('Reference') },
-            { key: 'contract_type', width: 104, resizable: true, name: translate('Trade type') },
-            { key: 'entry_tick', width: 80, resizable: true, name: translate('Entry spot') },
-            { key: 'exit_tick', width: 70, resizable: true, name: translate('Exit spot') },
+            { key: 'reference', width: 110, resizable: true, name: translate('Reference') },
+            { key: 'contract_type', width: 70, resizable: true, name: translate('Trade type') },
+            { key: 'entry_tick', width: 75, resizable: true, name: translate('Entry spot') },
+            { key: 'exit_tick', width: 75, resizable: true, name: translate('Exit spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
+            { key: 'contract_status', width: 70, resizable: true, name: translate('Status'), formatter: StatusFormat },
         ];
     }
     componentWillMount() {
+        const { api } = this.props;
+
         globalObserver.register('summary.export', () => {
             const accountData = this.state[this.props.accountID];
             if (accountData && accountData.rows.length > 0) {
@@ -68,16 +79,14 @@ export default class TradeTable extends Component {
             if (!info) {
                 return;
             }
-            const buyDate = new Date(info.date_start * 1000);
-            const timestamp = `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
-                buyDate.toTimeString().split(' ')[1]
-            }`;
+            const timestamp = getTimestamp(info.date_start);
             const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
             const { accountID } = tradeObj;
 
             const trade = {
                 ...tradeObj,
-                profit: getProfit(tradeObj),
+                profit         : getProfit(tradeObj),
+                contract_status: translate('Pending'),
             };
 
             const accountStat = this.getAccountStat(accountID);
@@ -92,6 +101,45 @@ export default class TradeTable extends Component {
             } else {
                 this.setState({ [accountID]: appendRow(trade, accountStat) });
             }
+        });
+        globalObserver.register('contract.settled', contract => {
+            this.registerTimeout(api, contract);
+        });
+    }
+    registerTimeout = (api, contract) => {
+        setTimeout(() => {
+            const contractID = contract.contract_id;
+            this.refreshContract(api, contractID);
+        }, 3000);
+    };
+    refreshContract(api, contractID) {
+        api.getContractInfo(contractID).then(r => {
+            const contract = r.proposal_open_contract;
+            const timestamp = getTimestamp(contract.date_start);
+            const tradeObj = { reference: contract.transaction_ids.buy, ...contract, timestamp };
+            const { accountID } = this.props;
+
+            const trade = {
+                ...tradeObj,
+                profit: getProfit(tradeObj),
+            };
+
+            if (trade.is_expired && trade.is_sold && !trade.exit_tick) trade.exit_tick = '-';
+
+            const { id } = this.state[accountID];
+            const rows = this.state[accountID].rows.slice();
+            const updatedRows = rows.map(row => {
+                const { reference } = row;
+                if (reference === trade.reference) {
+                    return {
+                        contract_status: translate('Settled'),
+                        reference,
+                        ...trade,
+                    };
+                }
+                return row;
+            });
+            this.setState({ [accountID]: { id, rows: updatedRows } });
         });
     }
     rowGetter(i) {

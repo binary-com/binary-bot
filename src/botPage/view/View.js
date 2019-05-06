@@ -688,6 +688,6 @@ function renderReactComponents() {
         />,
         $('#footer')[0]
     );
-    ReactDOM.render(<TradeInfoPanel />, $('#summaryPanel')[0]);
+    ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
     ReactDOM.render(<LogTable />, $('#logTable')[0]);
 }
