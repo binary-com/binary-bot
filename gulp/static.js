@@ -44,3 +44,8 @@ gulp.task(
     'copy-binary-style-img',
     gulp.series(() => gulp.src('node_modules/binary-style/src/images/**').pipe(gulp.dest('www/image/binary-style')))
 );
+
+gulp.task(
+    'copy-scratch-media',
+    gulp.series(() => gulp.src('node_modules/scratch-blocks/media/**').pipe(gulp.dest('www/image/scratch')))
+);

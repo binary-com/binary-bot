@@ -15,10 +15,9 @@ gulp.task(
     'bundle-js',
     gulp.parallel(done => {
         gulp.src([
-            './node_modules/blockly/blockly_compressed.js',
-            './node_modules/blockly/blocks_compressed.js',
-            './node_modules/blockly/javascript_compressed.js',
-            './node_modules/blockly/msg/messages.js',
+            './node_modules/scratch-blocks/blockly_compressed_vertical.js',
+            './node_modules/scratch-blocks/msg/messages.js',
+            './node_modules/blockly/generators/javascript.js',
         ])
             .pipe(concat('bundle.js'))
             .pipe(rev())
