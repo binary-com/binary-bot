@@ -19,16 +19,16 @@
                     <next>
                       <block type="trade_definition_restartbuysell" id="{_=3S78UV[gC+`K:g*ZO" deletable="false" movable="false">
                         <value name="TIME_MACHINE_ENABLED">
-                          <block type="logic_boolean" id="EQ/@K88T5@YZ}J0t?+pd">
+                          <shadow type="logic_boolean" id="EQ/@K88T5@YZ}J0t?+pd">
                             <field name="BOOL">FALSE</field>
-                          </block>
+                          </shadow>
                         </value>
                         <next>
                           <block type="trade_definition_restartonerror" id="LXdDQ!2,ep.Wkb#?JoU-" deletable="false" movable="false">
                             <value name="RESTARTONERROR">
-                              <block type="logic_boolean" id="bWhp7p7GaHRUxXfBBmR$">
+                              <shadow type="logic_boolean" id="bWhp7p7GaHRUxXfBBmR$">
                                 <field name="BOOL">FALSE</field>
-                              </block>
+                              </shadow>
                             </value>
                           </block>
                         </next>
