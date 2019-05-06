@@ -12,23 +12,8 @@ Blockly.Blocks.contract_check_result = {
         this.setTooltip(translate('True if the result matches the selection'));
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
-    onchange(event) {
-        // insideAfterPurchase(this, ev, 'Check Result');
-
-        if (event.type === Blockly.Events.END_DRAG) {
-            // Ensure block is in `trade_definition` block
-            const parentBlock = this.getParent();
-            while (parentBlock !== null) {
-                if (parentBlock.type === 'trade_definition') {
-                    this.setDisabled(false);
-                    return;
-                }
-            }
-
-            $.notify('Woops, not in correct parent.');
-            this.unplug();
-            this.setDisabled(true);
-        }
+    onchange: function onchange(ev) {
+        insideAfterPurchase(this, ev, 'Check Result');
     },
 };
 Blockly.JavaScript.contract_check_result = block => {

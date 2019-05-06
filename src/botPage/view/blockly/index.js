@@ -239,7 +239,7 @@ export default class _Blockly {
                 });
 
                 workspace.addChangeListener(event => {
-                    $.notify(`Event: ${event.type} -- Name: ${event.name}`);
+                    $.notify(`Event: ${event.type}`);
                 });
 
                 const renderInstance = render(workspace);
