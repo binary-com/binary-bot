@@ -1,5 +1,6 @@
-import './customBlockly';
-import blocks from './blocks';
+// Override Scratch
+import './overrides';
+import './blocks';
 import {
     isMainBlock,
     save,
@@ -23,6 +24,7 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 
 const setBeforeUnload = off => {
+    return;
     if (off) {
         window.onbeforeunload = null;
     } else {
@@ -172,6 +174,7 @@ const render = workspace => () => {
 const overrideBlocklyDefaultShape = () => {
     const addDownloadToMenu = block => {
         if (block instanceof Object) {
+            return;
             // eslint-disable-next-line no-param-reassign, max-len
             block.customContextMenu = function customContextMenu(options) {
                 options.push({
@@ -206,14 +209,14 @@ const repaintDefaultColours = () => {
     Blockly.Msg.VARIABLES_DYNAMIC_HUE = '#DEDEDE';
     Blockly.Msg.PROCEDURES_HUE = '#DEDEDE';
 
-    Blockly.Blocks.logic.HUE = '#DEDEDE';
-    Blockly.Blocks.loops.HUE = '#DEDEDE';
-    Blockly.Blocks.math.HUE = '#DEDEDE';
-    Blockly.Blocks.texts.HUE = '#DEDEDE';
-    Blockly.Blocks.lists.HUE = '#DEDEDE';
-    Blockly.Blocks.colour.HUE = '#DEDEDE';
-    Blockly.Blocks.variables.HUE = '#DEDEDE';
-    Blockly.Blocks.procedures.HUE = '#DEDEDE';
+    // Blockly.Blocks.logic.HUE = '#DEDEDE';
+    // Blockly.Blocks.loops.HUE = '#DEDEDE';
+    // Blockly.Blocks.math.HUE = '#DEDEDE';
+    // Blockly.Blocks.texts.HUE = '#DEDEDE';
+    // Blockly.Blocks.lists.HUE = '#DEDEDE';
+    // Blockly.Blocks.colour.HUE = '#DEDEDE';
+    // Blockly.Blocks.variables.HUE = '#DEDEDE';
+    // Blockly.Blocks.procedures.HUE = '#DEDEDE';
 };
 
 export default class _Blockly {
@@ -221,17 +224,24 @@ export default class _Blockly {
         this.blocksXmlStr = '';
         this.generatedJs = '';
         // eslint-disable-next-line no-underscore-dangle
-        Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
+        // Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
         this.initPromise = new Promise(resolve => {
             $.get('xml/toolbox.xml', toolboxXml => {
-                blocks();
                 const workspace = Blockly.inject('blocklyDiv', {
                     toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
                     zoom   : {
-                        wheel: false,
+                        wheel     : true,
+                        startScale: 1.1,
                     },
-                    trashcan: false,
+                    trashcan  : true,
+                    scrollbars: true,
+                    media     : 'image/scratch/',
                 });
+
+                workspace.addChangeListener(event => {
+                    $.notify(`Event: ${event.type} -- Name: ${event.name}`);
+                });
+
                 const renderInstance = render(workspace);
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
@@ -319,20 +329,20 @@ export default class _Blockly {
         save(filename, collection, xml);
     }
     run(limitations = {}) {
-        disableStrayBlocks();
+        // disableStrayBlocks();
+
+        const workspaceCode = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
+
         let code;
         try {
             code = `
 var BinaryBotPrivateInit, BinaryBotPrivateStart, BinaryBotPrivateBeforePurchase, BinaryBotPrivateDuringPurchase, BinaryBotPrivateAfterPurchase;
-
 var BinaryBotPrivateLastTickTime
 var BinaryBotPrivateTickAnalysisList = [];
-
 function BinaryBotPrivateRun(f, arg) {
  if (f) return f(arg);
  return false;
 }
-
 function BinaryBotPrivateTickAnalysis() {
  var currentTickTime = Bot.getLastTick(true).epoch
  if (currentTickTime === BinaryBotPrivateLastTickTime) {
@@ -343,13 +353,9 @@ function BinaryBotPrivateTickAnalysis() {
    BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
  }
 }
-
 var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-
-${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
-
+${workspaceCode}
 BinaryBotPrivateRun(BinaryBotPrivateInit);
-
 while(true) {
  BinaryBotPrivateTickAnalysis();
  BinaryBotPrivateRun(BinaryBotPrivateStart)
