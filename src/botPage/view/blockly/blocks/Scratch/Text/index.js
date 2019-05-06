@@ -1,0 +1,13 @@
+import './text';
+import './text_join';
+import './text_statement';
+import './text_append';
+import './text_length';
+import './text_isEmpty';
+import './text_indexOf';
+import './text_charAt';
+import './text_getSubstring';
+import './text_changeCase';
+import './text_trim';
+import './text_print';
+import './text_prompt_ext';
