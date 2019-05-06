@@ -83,6 +83,8 @@ export const redLeft = { color: 'red', float: 'left' };
 
 export const tradePanelAccount = { float: 'right' };
 
+export const left = { float: 'left' };
+
 export const warningText = {
     'font-size': '12px',
     color      : 'lightgray',

@@ -30,9 +30,7 @@ const minHeight = 290;
 const rowHeight = 25;
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
-const StatusColor = ({ value }) => (
-    <div style={value === translate('Settled') ? style.greenLeft : style.redLeft}>{value}</div>
-);
+const StatusFormat = ({ value }) => <div style={style.left}>{value}</div>;
 
 export default class TradeTable extends Component {
     constructor({ accountID }) {
@@ -55,7 +53,7 @@ export default class TradeTable extends Component {
             { key: 'exit_tick', width: 75, resizable: true, name: translate('Exit spot') },
             { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
             { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
-            { key: 'contract_status', width: 70, resizable: true, name: translate('Status'), formatter: StatusColor },
+            { key: 'contract_status', width: 70, resizable: true, name: translate('Status'), formatter: StatusFormat },
         ];
     }
     componentWillMount() {
