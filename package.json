@@ -76,7 +76,7 @@
     "i18next-scanner": "1.9.4",
     "immutable": "^3.8.2",
     "jest": "^24.7.1",
-    "jquery": "^3.4.0",
+    "jquery": "3.2.1",
     "jquery-ui": "1.12.1",
     "jquery-ui-css": "1.11.4",
     "js-interpreter": "^1.4.6",
@@ -92,6 +92,8 @@
     "react-joyride": "^1.11.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "scratch-blocks": "0.1.0-prerelease.1556115881",
+    "blockly": "github:google/blockly#9c4f9d6",
     "sha1": "^1.1.1",
     "trackjs": "^2.10.2",
     "vinyl-paths": "^2.1.0",
@@ -101,7 +103,6 @@
   "dependencies": {
     "@binary-com/smartcharts": "^0.3.9",
     "binary-style": "^0.2.4",
-    "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.12.2",
     "concat-stream": "^1.6.0",
     "core-js": "^2.6.5",
@@ -111,6 +112,7 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-render-html": "^0.5.2",
-    "react-transition-group": "^2.3.1"
+    "react-transition-group": "^2.3.1",
+    "rxjs-compat": "^6.5.1"
   }
 }
