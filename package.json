@@ -102,7 +102,7 @@
     "binary-style": "^0.2.4",
     "blockly": "github:google/blockly#59e5ac6",
     "commander": "^2.20.0",
-    "concat-stream": "^1.6.0",
+    "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",
     "gh-pages": "^2.0.1",
     "mobx": "^5.0.3",
