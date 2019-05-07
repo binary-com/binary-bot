@@ -10,7 +10,7 @@ Blockly.Blocks.macda_statement = {
                 {
                     type    : 'field_variable',
                     name    : 'VARIABLE',
-                    variable: 'bb',
+                    variable: 'macda',
                 },
                 {
                     type   : 'field_dropdown',
@@ -37,7 +37,7 @@ Blockly.Blocks.macda_statement = {
         });
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,
-    requiredParamBlocks: ['input_list', 'period', 'fast_ema_period', 'slow_ema_period', 'signal_ema_period'],
+    requiredParamBlocks: ['input_list', 'fast_ema_period', 'slow_ema_period', 'signal_ema_period'],
 };
 
 Blockly.JavaScript.macda_statement = block => {
