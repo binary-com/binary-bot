@@ -18,6 +18,7 @@ Blockly.Blocks.lists_setIndex = {
         this.appendDummyInput('AT');
         this.appendValueInput('TO').appendField(translate('as'));
 
+        // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
             Blockly.Colours.Binary.colour,
             Blockly.Colours.Binary.colourSecondary,
@@ -26,7 +27,7 @@ Blockly.Blocks.lists_setIndex = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
 
-        this.updateAt_(true);
+        this.updateAt(true);
     },
     mutationToDom() {
         const container = document.createElement('mutation');
@@ -37,9 +38,9 @@ Blockly.Blocks.lists_setIndex = {
     },
     domToMutation(xmlElement) {
         const isAt = xmlElement.getAttribute('at') !== 'false';
-        this.updateAt_(isAt);
+        this.updateAt(isAt);
     },
-    updateAt_(isAt) {
+    updateAt(isAt) {
         this.removeInput('AT', true);
 
         if (isAt) {
@@ -51,7 +52,7 @@ Blockly.Blocks.lists_setIndex = {
         const menu = new Blockly.FieldDropdown(this.WHERE_OPTIONS, value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
-                this.updateAt_(newAt);
+                this.updateAt(newAt);
                 this.setFieldValue(value, 'WHERE');
                 return null;
             }
@@ -77,6 +78,7 @@ Blockly.JavaScript.lists_setIndex = block => {
             return '';
         }
 
+        // eslint-disable-next-line no-underscore-dangle
         const listVar = Blockly.JavaScript.variableDB_.getDistinctName('tmpList', Blockly.Variables.NAME_TYPE);
         const code = `var ${listVar} = ${list};\n`;
 
@@ -117,6 +119,7 @@ Blockly.JavaScript.lists_setIndex = block => {
     } else if (where === 'RANDOM') {
         code = cacheList();
 
+        // eslint-disable-next-line no-underscore-dangle
         const xVar = Blockly.JavaScript.variableDB_.getDistinctName('tmpX', Blockly.Variables.NAME_TYPE);
 
         code += `var ${xVar} = Math.floor(Math.random() * ${list}.length);\n`;

@@ -1,12 +1,10 @@
-import { translate } from '../../../../../../../common/i18n';
 import { getBarriersForContracts, pollForContracts, getDurationsForContracts } from '../../../shared';
-import { findTopParentBlock, hideEventsFromBlockly } from '../../../../utils';
 import config from '../../../../../../common/const';
+import { translate } from '../../../../../../../common/i18n';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
         this.jsonInit({
-            type    : 'trade_definition',
             message0: translate('Duration: %1 %2 Stake: %3 %4'),
             args0   : [
                 {
@@ -90,26 +88,28 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         }
     },
     createPredictionInput(predictionRange) {
-        hideEventsFromBlockly(() => {
-            if (this.getInput('PREDICTION')) {
-                return;
-            }
+        Blockly.Events.disable();
 
-            this.appendDummyInput('PREDICTION_LABEL').appendField(translate('Prediction:'));
+        if (this.getInput('PREDICTION')) {
+            return;
+        }
 
-            const predictionInput = this.appendValueInput('PREDICTION');
+        this.appendDummyInput('PREDICTION_LABEL').appendField(translate('Prediction:'));
 
-            // We can't determine which contract a user buys, so sometimes the prediction range
-            // returned may not be valid, start at minimum index 1 (if possible) to bypass that
-            const index = Math.min(1, predictionRange.length - 1);
-            const shadowBlock = this.workspace.newBlock('math_number');
+        const predictionInput = this.appendValueInput('PREDICTION');
 
-            shadowBlock.setShadow(true);
-            shadowBlock.setFieldValue(predictionRange[index], 'NUM');
-            shadowBlock.outputConnection.connect(predictionInput.connection);
-            shadowBlock.initSvg();
-            shadowBlock.render(true);
-        });
+        // We can't determine which contract a user buys, so sometimes the prediction range
+        // returned may not be valid, start at minimum index 1 (if possible) to bypass that
+        const index = Math.min(1, predictionRange.length - 1);
+        const shadowBlock = this.workspace.newBlock('math_number');
+
+        shadowBlock.setShadow(true);
+        shadowBlock.setFieldValue(predictionRange[index], 'NUM');
+        shadowBlock.outputConnection.connect(predictionInput.connection);
+        shadowBlock.initSvg();
+        shadowBlock.render(true);
+
+        Blockly.Events.enable();
     },
     createBarrierInput(barriers, startIndex = 0) {
         const inputNames = ['BARRIER', 'SECONDBARRIER'];
@@ -213,6 +213,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         } else if (hasFirstBarrier) {
             this.createBarrierInput({ values: [1] });
         } else if (hasPrediction) {
+            this.createPredictionInput([1]);
         }
     },
     // Export mutations to XML

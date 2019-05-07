@@ -17,6 +17,7 @@ Blockly.Blocks.lists_getSublist = {
         this.appendDummyInput('AT1');
         this.appendDummyInput('AT2');
 
+        // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
             Blockly.Colours.Binary.colour,
             Blockly.Colours.Binary.colourSecondary,
@@ -25,8 +26,8 @@ Blockly.Blocks.lists_getSublist = {
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
 
-        this.updateAt_(1, true);
-        this.updateAt_(2, true);
+        this.updateAt(1, true);
+        this.updateAt(2, true);
     },
     mutationToDom() {
         const container = document.createElement('mutation');
@@ -41,10 +42,10 @@ Blockly.Blocks.lists_getSublist = {
     domToMutation(xmlElement) {
         const isAt1 = xmlElement.getAttribute('at1') === 'true';
         const isAt2 = xmlElement.getAttribute('at2') === 'true';
-        this.updateAt_(1, isAt1);
-        this.updateAt_(2, isAt2);
+        this.updateAt(1, isAt1);
+        this.updateAt(2, isAt2);
     },
-    updateAt_(n, isAt) {
+    updateAt(n, isAt) {
         this.removeInput(`AT${n}`);
 
         if (isAt) {
@@ -56,7 +57,7 @@ Blockly.Blocks.lists_getSublist = {
         const menu = new Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
-                this.updateAt_(n, newAt);
+                this.updateAt(n, newAt);
                 this.setFieldValue(value, `WHERE${n}`);
                 return null;
             }
@@ -99,17 +100,19 @@ Blockly.JavaScript.lists_getSublist = block => {
 
         code = `${list}.slice(${at1}, ${at2})`;
     } else {
-        const at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
-        const at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
+        at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
+        at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
         const wherePascalCase = {
             FROM_START: 'FromStart',
             FROM_END  : 'FromEnd',
         };
         const getIndex = (listName, where, at) => (where === 'FROM_END' ? `${listName}.length - 1 - ${at}` : at);
 
+        // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_(
             `subsequence${wherePascalCase[where1]}${wherePascalCase[where2]}`,
             [
+                // eslint-disable-next-line no-underscore-dangle
                 `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(sequence, at1, at2) {
                 var start = ${getIndex('sequence', where1, 'at1')};
                 var end = ${getIndex('sequence', where2, 'at2')};

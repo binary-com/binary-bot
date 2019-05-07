@@ -1,4 +1,4 @@
-import { minusIconDark, lockIconDark } from '../../images';
+import { minusIconDark } from '../../images';
 
 Blockly.Blocks.text_statement = {
     init() {
@@ -10,8 +10,6 @@ Blockly.Blocks.text_statement = {
                     name: 'TEXT',
                 },
             ],
-            nextStatement    : 'text_statement',
-            previousStatement: 'text_statement',
             colour           : Blockly.Colours.BinaryLessGray.colour,
             colourSecondary  : Blockly.Colours.BinaryLessGray.colourSecondary,
             colourTertiary   : Blockly.Colours.BinaryLessGray.colourTertiary,

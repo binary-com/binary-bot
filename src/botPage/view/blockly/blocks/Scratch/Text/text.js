@@ -18,6 +18,7 @@ Blockly.Blocks.text = {
 };
 
 Blockly.JavaScript.text = block => {
+    // eslint-disable-next-line no-underscore-dangle
     const code = Blockly.JavaScript.quote_(block.getFieldValue('TEXT'));
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

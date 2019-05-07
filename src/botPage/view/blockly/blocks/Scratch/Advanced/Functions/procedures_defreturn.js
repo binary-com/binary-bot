@@ -3,8 +3,8 @@ import { plusIconDark } from '../../../images';
 
 Blockly.Blocks.procedures_defreturn = {
     init() {
-        this.arguments_ = [];
-        this.argumentVarModels_ = [];
+        this.arguments = [];
+        this.argumentVarModels = [];
 
         this.jsonInit({
             message0: translate('function %1 %2 %3'),
@@ -42,19 +42,18 @@ Blockly.Blocks.procedures_defreturn = {
         nameField.setValidator(Blockly.Procedures.rename);
 
         // Render a ➕-icon for adding parameters
-        const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick_());
+        const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
         this.appendDummyInput('ADD_ICON').appendField(fieldImage);
         this.moveInputBefore('ADD_ICON', 'RETURN');
 
-        this.setStatements_(true);
-        this.registerWorkspaceListener();
+        this.setStatements(true);
     },
-    onAddClick_   : Blockly.Blocks.procedures_defnoreturn.onAddClick_,
-    onchange      : Blockly.Blocks.procedures_defnoreturn.onchange,
-    setStatements_: Blockly.Blocks.procedures_defnoreturn.setStatements_,
-    updateParams_ : Blockly.Blocks.procedures_defnoreturn.updateParams_,
-    mutationToDom : Blockly.Blocks.procedures_defnoreturn.mutationToDom,
-    domToMutation : Blockly.Blocks.procedures_defnoreturn.domToMutation,
+    onAddClick   : Blockly.Blocks.procedures_defnoreturn.onAddClick,
+    onchange     : Blockly.Blocks.procedures_defnoreturn.onchange,
+    setStatements: Blockly.Blocks.procedures_defnoreturn.setStatements,
+    updateParams : Blockly.Blocks.procedures_defnoreturn.updateParams,
+    mutationToDom: Blockly.Blocks.procedures_defnoreturn.mutationToDom,
+    domToMutation: Blockly.Blocks.procedures_defnoreturn.domToMutation,
     /**
      * Return the signature of this procedure definition.
      * @return {!Array} Tuple containing three elements:
@@ -64,16 +63,16 @@ Blockly.Blocks.procedures_defreturn = {
      * @this Blockly.Block
      */
     getProcedureDef() {
-        return [this.getFieldValue('NAME'), this.arguments_, true];
+        return [this.getFieldValue('NAME'), this.arguments, true];
     },
     getProcedureCallers      : Blockly.Blocks.procedures_defnoreturn.getProcedureCallers,
     getVars                  : Blockly.Blocks.procedures_defnoreturn.getVars,
     getVarModels             : Blockly.Blocks.procedures_defnoreturn.getVarModels,
     renameVarById            : Blockly.Blocks.procedures_defnoreturn.renameVarById,
     updateVarName            : Blockly.Blocks.procedures_defnoreturn.updateVarName,
-    displayRenamedVar_       : Blockly.Blocks.procedures_defnoreturn.displayRenamedVar_,
+    displayRenamedVar        : Blockly.Blocks.procedures_defnoreturn.displayRenamedVar,
     customContextMenu        : Blockly.Blocks.procedures_defnoreturn.customContextMenu,
-    callType_                : 'procedures_callreturn',
+    callType                 : 'procedures_callreturn',
     registerWorkspaceListener: Blockly.Blocks.procedures_defnoreturn.registerWorkspaceListener,
 };
 

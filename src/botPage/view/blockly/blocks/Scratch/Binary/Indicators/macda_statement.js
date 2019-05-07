@@ -41,6 +41,7 @@ Blockly.Blocks.macda_statement = {
 };
 
 Blockly.JavaScript.macda_statement = block => {
+    // eslint-disable-next-line no-underscore-dangle
     const varName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE

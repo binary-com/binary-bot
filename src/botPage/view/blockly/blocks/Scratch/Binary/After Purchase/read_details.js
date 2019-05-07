@@ -1,4 +1,3 @@
-import { insideAfterPurchase } from '../../../../relationChecker';
 import config from '../../../../../../common/const';
 import { translate } from '../../../../../../../common/utils/tools';
 

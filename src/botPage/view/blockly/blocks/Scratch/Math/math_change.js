@@ -27,6 +27,7 @@ Blockly.Blocks.math_change = {
 
 Blockly.JavaScript.math_change = block => {
     const variable = block.getFieldValue('VAR');
+    // eslint-disable-next-line no-underscore-dangle
     const argument0 = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);
     const argument1 = Blockly.JavaScript.valueToCode(block, 'DELTA', Blockly.JavaScript.ORDER_ADDITION) || '0';
 

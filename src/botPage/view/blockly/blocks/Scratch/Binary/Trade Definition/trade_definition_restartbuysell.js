@@ -1,7 +1,6 @@
 Blockly.Blocks.trade_definition_restartbuysell = {
     init() {
         this.jsonInit({
-            type    : 'trade_definition',
             message0: 'Restart buy/sell on error (disable for better performance): %1',
             args0   : [
                 {
@@ -10,8 +9,6 @@ Blockly.Blocks.trade_definition_restartbuysell = {
                     check: 'Boolean',
                 },
             ],
-            previousStatement: 'trade_definition',
-            nextStatement    : 'trade_definition',
             colour           : Blockly.Colours.BinaryLessPurple.colour,
             colourSecondary  : Blockly.Colours.Binary.colourSecondary,
             colourTertiary   : Blockly.Colours.BinaryLessPurple.colourTertiary,

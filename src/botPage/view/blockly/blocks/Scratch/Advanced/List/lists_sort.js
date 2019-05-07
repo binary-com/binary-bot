@@ -37,7 +37,9 @@ Blockly.JavaScript.lists_sort = block => {
     const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_FUNCTION_CALL) || '[]';
     const direction = block.getFieldValue('DIRECTION') === 'ASCENDING' ? 1 : -1;
     const type = block.getFieldValue('TYPE');
+    // eslint-disable-next-line no-underscore-dangle
     const getCompareFunctionName = Blockly.JavaScript.provideFunction_('listsGetSortCompare', [
+        // eslint-disable-next-line no-underscore-dangle
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(type, direction) {
             var compareFuncs = {
                 "NUMERIC": function(a, b) {

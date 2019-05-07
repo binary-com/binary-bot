@@ -1,12 +1,11 @@
-import { translate } from '../../../../../../../common/i18n';
-import { setBlockTextColor, hideEventsFromBlockly } from '../../../../utils';
 import { defineContract } from '../../../images';
+import { setBlockTextColor } from '../../../../utils';
 import config from '../../../../../../common/const';
+import { translate } from '../../../../../../../common/i18n';
 
 Blockly.Blocks.trade_definition = {
     init() {
         this.jsonInit({
-            type    : 'trade_definition',
             message0: translate('%1 (1) Define your trade contract %2'),
             message1: '%1',
             message2: translate('Run Once at Start: %1'),
@@ -101,7 +100,9 @@ Blockly.Blocks.trade_definition = {
             }
         });
 
-        const paramsToReadd = this.requiredParamBlocks.filter(blockName => blocksInStatement.findIndex(block => block.type === blockName) === -1);
+        const paramsToReadd = this.requiredParamBlocks.filter(
+            blockName => blocksInStatement.findIndex(block => block.type === blockName) === -1
+        );
 
         paramsToReadd.forEach(blockName => {
             Blockly.Events.disable();

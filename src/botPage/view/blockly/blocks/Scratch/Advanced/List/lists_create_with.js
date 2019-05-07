@@ -64,6 +64,7 @@ Blockly.Blocks.lists_create_with = {
 
 Blockly.JavaScript.lists_create_with = block => {
     const variable = block.getFieldValue('VARIABLE');
+    // eslint-disable-next-line no-underscore-dangle
     const varName = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);
     const elements = [];
 

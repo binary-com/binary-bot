@@ -69,7 +69,9 @@ Blockly.JavaScript.math_number_property = block => {
     let code;
 
     if (property === 'PRIME') {
+        // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_('mathIsPrime', [
+            // eslint-disable-next-line no-underscore-dangle
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}_(n) {
                 // https://en.wikipedia.org/wiki/Primality_test#Naive_methods
                 if (n == 2 || n == 3) {

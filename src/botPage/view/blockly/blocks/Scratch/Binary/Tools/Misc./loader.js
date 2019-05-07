@@ -62,6 +62,7 @@ Blockly.Blocks.loader = {
 
 Blockly.JavaScript.loader = block => {
     if (block.loadedVariables.length) {
+        // eslint-disable-next-line no-underscore-dangle
         return `var ${block.loadedVariables.map(v => Blockly.JavaScript.variableDB_.safeName_(v)).toString()}`;
     }
     return '';

@@ -29,11 +29,14 @@ Blockly.Blocks.lists_repeat = {
 };
 
 Blockly.JavaScript.lists_repeat = block => {
+    // eslint-disable-next-line no-underscore-dangle
     const varName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
+    // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.provideFunction_('listsRepeat', [
+        // eslint-disable-next-line no-underscore-dangle
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(value, n) {
             var array = [];
             for (var i = 0; i < n; i++) {

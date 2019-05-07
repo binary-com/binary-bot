@@ -31,32 +31,32 @@ Blockly.Blocks.text_charAt = {
         const dropdown = this.getField('WHERE');
         dropdown.setValidator(value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
-            if (newAt !== this.isAt_) {
-                this.updateAt_(newAt);
+            if (newAt !== this.isAt) {
+                this.updateAt(newAt);
                 this.setFieldValue(value, 'WHERE');
                 return null;
             }
             return undefined;
         });
 
-        this.updateAt_(true);
+        this.updateAt(true);
     },
     mutationToDom() {
         const container = document.createElement('mutation');
-        container.setAttribute('at', !!this.isAt_);
+        container.setAttribute('at', !!this.isAt);
         return container;
     },
     domToMutation(xmlElement) {
-        const isAt = xmlElement.getAttribute('at') != 'false';
-        this.updateAt_(isAt);
+        const isAt = xmlElement.getAttribute('at') !== 'false';
+        this.updateAt(isAt);
     },
-    updateAt_(isAt) {
+    updateAt(isAt) {
         this.removeInput('AT', true);
         if (isAt) {
             this.appendValueInput('AT').setCheck('Number');
         }
 
-        this.isAt_ = isAt;
+        this.isAt = isAt;
         this.initSvg();
         this.render(false);
     },
@@ -81,7 +81,9 @@ Blockly.JavaScript.text_charAt = block => {
     } else if (where === 'LAST') {
         code = `${text}.slice(-1)`;
     } else if (where === 'RANDOM') {
+        // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_('textRandomLetter', [
+            // eslint-disable-next-line no-underscore-dangle
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(text) {
                 var x = Math.floor(Math.random() * text.length);
                 return text[x];

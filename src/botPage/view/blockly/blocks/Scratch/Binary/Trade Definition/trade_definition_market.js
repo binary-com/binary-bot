@@ -3,7 +3,6 @@ import { fieldGeneratorMapping } from '../../../shared';
 Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
-            type    : 'trade_definition',
             message0: 'Market: %1 Submarket: %2 Symbol: %3',
             args0   : [
                 {
@@ -22,8 +21,6 @@ Blockly.Blocks.trade_definition_market = {
                     options: [['', '']],
                 },
             ],
-            previousStatement: 'trade_definition',
-            nextStatement    : 'trade_definition',
             colour           : Blockly.Colours.BinaryLessPurple.colour,
             colourSecondary  : Blockly.Colours.Binary.colourSecondary,
             colourTertiary   : Blockly.Colours.BinaryLessPurple.colourTertiary,

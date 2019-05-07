@@ -10,8 +10,6 @@ Blockly.Blocks.lists_statement = {
                     name: 'VALUE',
                 },
             ],
-            nextStatement    : 'text_statement',
-            previousStatement: 'text_statement',
             colour           : Blockly.Colours.BinaryLessGray.colour,
             colourSecondary  : Blockly.Colours.BinaryLessGray.colourSecondary,
             colourTertiary   : Blockly.Colours.BinaryLessGray.colourTertiary,

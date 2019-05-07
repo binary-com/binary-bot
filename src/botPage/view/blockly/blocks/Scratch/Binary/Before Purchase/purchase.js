@@ -1,4 +1,3 @@
-import { insideBeforePurchase } from '../../../../relationChecker';
 import { getPurchaseChoices, updatePurchaseChoices } from '../../../shared';
 import { translate } from '../../../../../../../common/i18n';
 

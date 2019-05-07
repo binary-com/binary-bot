@@ -24,29 +24,19 @@ Blockly.Blocks.text_append = {
     },
 };
 
-/**
- * Enclose the provided value in 'String(...)' function.
- * Leave string literals alone.
- * @param {string} value Code evaluating to a value.
- * @return {string} Code evaluating to a string.
- * @private
- */
-Blockly.JavaScript.text.forceString_ = function(value) {
-    if (Blockly.JavaScript.text.forceString_.strRegExp.test(value)) {
-        return value;
-    }
-    return `String(${value})`;
-};
-
-/**
- * Regular expression to detect a single-quoted string literal.
- */
-Blockly.JavaScript.text.forceString_.strRegExp = /^\s*'([^']|\\')*'\s*$/;
-
 Blockly.JavaScript.text_append = block => {
+    const forceString = value => {
+        const strRegExp = /^\s*'([^']|\\')*'\s*$/;
+        if (strRegExp.test(value)) {
+            return value;
+        }
+        return `String(${value})`;
+    };
+
+    // eslint-disable-next-line no-underscore-dangle
     const varName = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     const value = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || '\'\'';
 
-    const code = `${varName} += ${Blockly.JavaScript.text.forceString_(value)};\n`;
+    const code = `${varName} += ${forceString(value)};\n`;
     return code;
 };

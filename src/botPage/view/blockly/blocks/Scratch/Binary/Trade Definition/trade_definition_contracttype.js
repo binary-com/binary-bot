@@ -5,7 +5,6 @@ import config from '../../../../../../common/const';
 Blockly.Blocks.trade_definition_contracttype = {
     init() {
         this.jsonInit({
-            type    : 'trade_definition',
             message0: 'Contract Type: %1',
             args0   : [
                 {
@@ -14,8 +13,6 @@ Blockly.Blocks.trade_definition_contracttype = {
                     options: [['', '']],
                 },
             ],
-            previousStatement: 'trade_definition',
-            nextStatement    : 'trade_definition',
             colour           : Blockly.Colours.BinaryLessPurple.colour,
             colourSecondary  : Blockly.Colours.Binary.colourSecondary,
             colourTertiary   : Blockly.Colours.BinaryLessPurple.colourTertiary,

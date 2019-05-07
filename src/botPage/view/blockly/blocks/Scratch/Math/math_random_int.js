@@ -29,7 +29,9 @@ Blockly.JavaScript.math_random_int = block => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'FROM', Blockly.JavaScript.ORDER_COMMA) || '0';
     const argument1 = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_COMMA) || '0';
 
+    // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.provideFunction_('mathRandomInt', [
+        // eslint-disable-next-line no-underscore-dangle
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(a, b) {
             if (a > b) {
                 // Swap a and b to ensure a is smaller.

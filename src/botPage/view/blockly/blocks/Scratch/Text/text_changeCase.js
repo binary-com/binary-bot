@@ -43,7 +43,9 @@ Blockly.JavaScript.text_changeCase = block => {
     if (operator) {
         code = `${text}${operator}`;
     } else {
+        // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_('textToTitleCase', [
+            // eslint-disable-next-line no-underscore-dangle
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(str) {
                 return str.toLowerCase().split(' ').map(function(word) {
                     return word.replace(word[0], word[0].toUpperCase());

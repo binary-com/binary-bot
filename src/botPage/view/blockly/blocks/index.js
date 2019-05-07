@@ -1,10 +1,4 @@
-// import './tools';
-// import './ticks';
-// import './before_purchase';
-// import './during_purchase';
-// import './after_purchase';
-// import './indicators';
-
+/* eslint-disable */
 import './Scratch/Logic';
 import './Scratch/Math';
 import './Scratch/Text';
@@ -24,3 +18,4 @@ import './Scratch/Binary/Trade Definition';
 import './Scratch/Binary/Before Purchase';
 import './Scratch/Binary/During Purchase';
 import './Scratch/Binary/After Purchase';
+/* eslint-enable */

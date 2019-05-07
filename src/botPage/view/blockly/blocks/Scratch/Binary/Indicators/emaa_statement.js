@@ -35,6 +35,7 @@ Blockly.Blocks.emaa_statement = {
 };
 
 Blockly.JavaScript.emaa_statement = block => {
+    // eslint-disable-next-line no-underscore-dangle
     const varName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE

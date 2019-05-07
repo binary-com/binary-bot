@@ -7,7 +7,7 @@ import { setBlockTextColor } from '../../../../utils';
  */
 Blockly.Blocks.procedures_ifreturn = {
     init() {
-        this.hasReturnValue_ = true;
+        this.hasReturnValue = true;
 
         this.jsonInit({
             message0: translate('if %1 return %2'),
@@ -35,7 +35,7 @@ Blockly.Blocks.procedures_ifreturn = {
      */
     mutationToDom() {
         const container = document.createElement('mutation');
-        container.setAttribute('value', Number(this.hasReturnValue_));
+        container.setAttribute('value', Number(this.hasReturnValue));
         return container;
     },
     /**
@@ -45,9 +45,9 @@ Blockly.Blocks.procedures_ifreturn = {
      */
     domToMutation(xmlElement) {
         const value = xmlElement.getAttribute('value');
-        this.hasReturnValue_ = value === 1;
+        this.hasReturnValue = value === 1;
 
-        if (!this.hasReturnValue_) {
+        if (!this.hasReturnValue) {
             this.removeInput('VALUE');
             this.appendDummyInput('VALUE').appendField(translate('return'));
             this.initSvg();
@@ -86,16 +86,16 @@ Blockly.Blocks.procedures_ifreturn = {
             };
 
             // If needed, toggle whether this block has a return value.
-            if (block.type == 'procedures_defnoreturn' && this.hasReturnValue_) {
+            if (block.type === 'procedures_defnoreturn' && this.hasReturnValue) {
                 this.removeInput('VALUE');
                 this.appendDummyInput('VALUE').appendField(translate('return'));
                 rerender();
-                this.hasReturnValue_ = false;
-            } else if (block.type == 'procedures_defreturn' && !this.hasReturnValue_) {
+                this.hasReturnValue = false;
+            } else if (block.type === 'procedures_defreturn' && !this.hasReturnValue) {
                 this.removeInput('VALUE');
                 this.appendValueInput('VALUE').appendField(translate('return'));
                 rerender();
-                this.hasReturnValue_ = true;
+                this.hasReturnValue = true;
             }
 
             if (!this.isInFlyout) {
@@ -117,7 +117,7 @@ Blockly.JavaScript.procedures_ifreturn = block => {
     const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || 'false';
 
     let branch;
-    if (block.hasReturnValue_) {
+    if (block.hasReturnValue) {
         const value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_NONE) || 'null';
         branch = `return ${value};\n`;
     } else {

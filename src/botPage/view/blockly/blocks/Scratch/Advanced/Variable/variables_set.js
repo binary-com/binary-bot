@@ -28,6 +28,7 @@ Blockly.Blocks.variables_set = {
 
 Blockly.JavaScript.variables_set = block => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+    // eslint-disable-next-line no-underscore-dangle
     const varName = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
     const code = `${varName} = ${argument0};\n`;

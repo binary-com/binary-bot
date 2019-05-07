@@ -39,10 +39,12 @@ Blockly.JavaScript.controls_repeat_ext = block => {
     branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
 
     let code = '';
+    // eslint-disable-next-line no-underscore-dangle
     const loopVar = Blockly.JavaScript.variableDB_.getDistinctName('count', Blockly.Variables.NAME_TYPE);
     let endVar = repeats;
 
     if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
+        // eslint-disable-next-line no-underscore-dangle
         endVar = Blockly.JavaScript.variableDB_.getDistinctName('repeat_end', Blockly.Variables.NAME_TYPE);
         code += `var ${endVar} = ${repeats}\n`;
     }

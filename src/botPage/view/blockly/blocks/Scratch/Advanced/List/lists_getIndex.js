@@ -16,7 +16,7 @@ Blockly.Blocks.lists_getIndex = {
         ];
         const modeMenu = new Blockly.FieldDropdown(this.MODE_OPTIONS, value => {
             const isStatement = value === 'REMOVE';
-            this.updateStatement_(isStatement);
+            this.updateStatement(isStatement);
         });
 
         this.appendValueInput('VALUE')
@@ -24,6 +24,7 @@ Blockly.Blocks.lists_getIndex = {
             .appendField(translate('in list'));
         this.appendDummyInput().appendField(modeMenu, 'MODE');
         this.appendDummyInput('AT');
+        // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
             Blockly.Colours.Binary.colour,
             Blockly.Colours.Binary.colourSecondary,
@@ -31,7 +32,7 @@ Blockly.Blocks.lists_getIndex = {
         );
         this.setOutput(true, null);
 
-        this.updateAt_(true);
+        this.updateAt(true);
     },
     mutationToDom() {
         const container = document.createElement('mutation');
@@ -45,12 +46,12 @@ Blockly.Blocks.lists_getIndex = {
     },
     domToMutation(xmlElement) {
         const isStatement = xmlElement.getAttribute('statement') === 'true';
-        this.updateStatement_(isStatement);
+        this.updateStatement(isStatement);
 
         const isAt = xmlElement.getAttribute('at') !== 'false';
-        this.updateAt_(isAt);
+        this.updateAt(isAt);
     },
-    updateStatement_(newStatement) {
+    updateStatement(newStatement) {
         const oldStatement = !this.outputConnection;
 
         if (newStatement !== oldStatement) {
@@ -64,7 +65,7 @@ Blockly.Blocks.lists_getIndex = {
             this.render(false);
         }
     },
-    updateAt_(isAt) {
+    updateAt(isAt) {
         this.removeInput('AT', true);
 
         if (isAt) {
@@ -76,7 +77,7 @@ Blockly.Blocks.lists_getIndex = {
         const menu = new Blockly.FieldDropdown(this.WHERE_OPTIONS, value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
-                this.updateAt_(newAt);
+                this.updateAt(newAt);
                 this.setFieldValue(value, 'WHERE');
                 return null;
             }
@@ -142,7 +143,9 @@ Blockly.JavaScript.lists_getIndex = block => {
             return `${list}.splice(${at}, 1);\n`;
         }
     } else if (where === 'RANDOM') {
+        // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_('listsGetRandomItem', [
+            // eslint-disable-next-line no-underscore-dangle
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list, remove) {
                 var x = Math.floor(Math.random() * list.length);
                 if (remove) {

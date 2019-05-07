@@ -4,7 +4,7 @@ Blockly.Blocks.lists_split = {
     init() {
         const dropdown = new Blockly.FieldDropdown(
             [[translate('make list from text'), 'SPLIT'], [translate('make text from list'), 'JOIN']],
-            newMode => this.updateType_(newMode)
+            newMode => this.updateType(newMode)
         );
 
         this.appendValueInput('INPUT')
@@ -18,6 +18,8 @@ Blockly.Blocks.lists_split = {
 
         this.setOutput(true, 'Array');
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+
+        // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
             Blockly.Colours.Binary.colour,
             Blockly.Colours.Binary.colourSecondary,
@@ -30,9 +32,9 @@ Blockly.Blocks.lists_split = {
         return container;
     },
     domToMutation(xmlElement) {
-        this.updateType_(xmlElement.getAttribute('mode'));
+        this.updateType(xmlElement.getAttribute('mode'));
     },
-    updateType_(newMode) {
+    updateType(newMode) {
         const delimInput = this.getInput('DELIM');
         const spaceField = this.getField('SPACE1');
 

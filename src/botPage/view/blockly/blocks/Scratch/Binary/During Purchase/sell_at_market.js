@@ -1,4 +1,3 @@
-import { insideDuringPurchase } from '../../../../relationChecker';
 import { translate } from '../../../../../../../common/utils/tools';
 
 Blockly.Blocks.sell_at_market = {

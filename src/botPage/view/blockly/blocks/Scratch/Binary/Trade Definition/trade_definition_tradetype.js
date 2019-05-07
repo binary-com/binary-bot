@@ -11,7 +11,6 @@ import { translate } from '../../../../../../../common/utils/tools';
 Blockly.Blocks.trade_definition_tradetype = {
     init() {
         this.jsonInit({
-            type    : 'trade_definition',
             message0: translate('Trade Category: %1 Trade Type: %2'),
             args0   : [
                 {
@@ -25,8 +24,6 @@ Blockly.Blocks.trade_definition_tradetype = {
                     options: [['', '']],
                 },
             ],
-            previousStatement: 'trade_definition',
-            nextStatement    : 'trade_definition',
             colour           : Blockly.Colours.BinaryLessPurple.colour,
             colourSecondary  : Blockly.Colours.Binary.colourSecondary,
             colourTertiary   : Blockly.Colours.BinaryLessPurple.colourTertiary,

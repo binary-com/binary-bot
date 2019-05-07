@@ -33,6 +33,7 @@ Blockly.Blocks.controls_forEach = {
 };
 
 Blockly.JavaScript.controls_forEach = block => {
+    // eslint-disable-next-line no-underscore-dangle
     const variable0 = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     const argument0 = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';
 
@@ -44,10 +45,12 @@ Blockly.JavaScript.controls_forEach = block => {
     // Cache non-trivial values to variables to prevent repeated look-ups.
     let listVar = argument0;
     if (!argument0.match(/^\w+$/)) {
+        // eslint-disable-next-line no-underscore-dangle
         listVar = Blockly.JavaScript.variableDB_.getDistinctName(`${variable0}_list`, Blockly.Variables.NAME_TYPE);
         code = `var ${listVar} = ${argument0};\n`;
     }
 
+    // eslint-disable-next-line no-underscore-dangle
     const indexVar = Blockly.JavaScript.variableDB_.getDistinctName(`${variable0}_list`, Blockly.Variables.NAME_TYPE);
 
     code += `

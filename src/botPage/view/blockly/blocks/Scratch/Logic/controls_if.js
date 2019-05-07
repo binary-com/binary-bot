@@ -3,8 +3,8 @@ import { translate } from '../../../../../../common/i18n';
 
 Blockly.Blocks.controls_if = {
     init() {
-        this.elseIfCount_ = 0;
-        this.elseCount_ = 0;
+        this.elseIfCount = 0;
+        this.elseCount = 0;
 
         this.jsonInit({
             message0: translate('if %1 then'),
@@ -30,7 +30,7 @@ Blockly.Blocks.controls_if = {
             nextStatement    : null,
         });
 
-        const addInputIcon = this.getAddInputIcon_();
+        const addInputIcon = this.getAddInputIcon();
         this.appendDummyInput('MUTATOR').appendField(addInputIcon);
     },
     /**
@@ -39,17 +39,17 @@ Blockly.Blocks.controls_if = {
      * @this Blockly.Block
      */
     mutationToDom() {
-        if (!this.elseIfCount_ && !this.elseCount_) {
+        if (!this.elseIfCount && !this.elseCount) {
             return null;
         }
 
         const container = document.createElement('mutation');
 
-        if (this.elseIfCount_) {
-            container.setAttribute('elseif', this.elseIfCount_);
+        if (this.elseIfCount) {
+            container.setAttribute('elseif', this.elseIfCount);
         }
 
-        if (this.elseCount_) {
+        if (this.elseCount) {
             container.setAttribute('else', 1);
         }
 
@@ -61,12 +61,12 @@ Blockly.Blocks.controls_if = {
      * @this Blockly.Block
      */
     domToMutation(xmlElement) {
-        this.elseIfCount_ = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
-        this.elseCount_ = parseInt(xmlElement.getAttribute('else'), 10) || 0;
+        this.elseIfCount = parseInt(xmlElement.getAttribute('elseif')) || 0;
+        this.elseCount = parseInt(xmlElement.getAttribute('else')) || 0;
 
-        this.updateShape_();
+        this.updateShape();
     },
-    updateShape_() {
+    updateShape() {
         // Delete everything.
         if (this.getInput('ELSE')) {
             this.removeInput('ELSE');
@@ -85,51 +85,51 @@ Blockly.Blocks.controls_if = {
         }
 
         // Rebuild block
-        for (let i = 1; i <= this.elseIfCount_; i++) {
-            this.appendDummyInput(`IF_LABEL${i}`).appendField(translate('else if'));
-            this.appendValueInput(`IF${i}`).setCheck('Boolean');
-            this.appendDummyInput(`THEN_LABEL${i}`).appendField(translate('then'));
-            this.appendDummyInput(`DELETE_ICON${i}`).appendField(this.getRemoveInputIcon_(i, false));
-            this.appendStatementInput(`DO${i}`);
+        for (let j = 1; j <= this.elseIfCount; j++) {
+            this.appendDummyInput(`IF_LABEL${j}`).appendField(translate('else if'));
+            this.appendValueInput(`IF${j}`).setCheck('Boolean');
+            this.appendDummyInput(`THEN_LABEL${j}`).appendField(translate('then'));
+            this.appendDummyInput(`DELETE_ICON${j}`).appendField(this.getRemoveInputIcon(j, false));
+            this.appendStatementInput(`DO${j}`);
         }
 
-        if (this.elseCount_) {
+        if (this.elseCount) {
             this.appendDummyInput('ELSE_LABEL').appendField(translate('else'));
-            this.appendDummyInput('DELETE_ELSE').appendField(this.getRemoveInputIcon_(this.elseIfCount_ + 1, true));
+            this.appendDummyInput('DELETE_ELSE').appendField(this.getRemoveInputIcon(this.elseIfCount + 1, true));
             this.appendStatementInput('ELSE');
         }
 
-        this.appendDummyInput('MUTATOR').appendField(this.getAddInputIcon_());
+        this.appendDummyInput('MUTATOR').appendField(this.getAddInputIcon());
 
         this.initSvg();
         this.render();
     },
-    getAddInputIcon_() {
+    getAddInputIcon() {
         const onAddClick = () => {
             if (!this.workspace || this.isInFlyout) {
                 return;
             }
 
-            const newInputNum = this.elseIfCount_ + 1;
+            const newInputNum = this.elseIfCount + 1;
 
-            if (this.elseCount_ === 0) {
+            if (this.elseCount === 0) {
                 // No `elseif`, just add an `else`-statement
                 this.appendDummyInput('ELSE_LABEL').appendField(translate('else'));
-                this.appendDummyInput('DELETE_ELSE').appendField(this.getRemoveInputIcon_(newInputNum, true));
+                this.appendDummyInput('DELETE_ELSE').appendField(this.getRemoveInputIcon(newInputNum, true));
                 this.appendStatementInput('ELSE');
 
-                this.elseCount_++;
+                this.elseCount++;
             } else {
                 // We've already got `elseif` + `else`, keep adding more `elseif`'s
                 this.appendDummyInput(`IF_LABEL${newInputNum}`).appendField(translate('else if'));
                 this.appendValueInput(`IF${newInputNum}`).setCheck('Boolean');
                 this.appendDummyInput(`THEN_LABEL${newInputNum}`).appendField(translate('then'));
                 this.appendDummyInput(`DELETE_ICON${newInputNum}`).appendField(
-                    this.getRemoveInputIcon_(newInputNum, false)
+                    this.getRemoveInputIcon(newInputNum, false)
                 );
                 this.appendStatementInput(`DO${newInputNum}`);
 
-                this.elseIfCount_++;
+                this.elseIfCount++;
             }
 
             // We already have an else, this input needs to be moved to the bottom where it belongs.
@@ -149,7 +149,7 @@ Blockly.Blocks.controls_if = {
         const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', onAddClick);
         return fieldImage;
     },
-    getRemoveInputIcon_(index, isElseStack) {
+    getRemoveInputIcon(index, isElseStack) {
         const onRemoveClick = () => {
             if (!this.workspace || this.isInFlyout) {
                 return;
@@ -159,7 +159,7 @@ Blockly.Blocks.controls_if = {
                 this.removeInput('ELSE_LABEL');
                 this.removeInput('DELETE_ELSE');
                 this.removeInput('ELSE');
-                this.elseCount_ = 0;
+                this.elseCount = 0;
             } else {
                 // Determine which label it is, has to be done inside this function.
                 const inputNames = ['IF_LABEL', 'IF', 'THEN_LABEL', 'DELETE_ICON', 'DO'];
@@ -180,12 +180,13 @@ Blockly.Blocks.controls_if = {
 
                         // Re-attach click handler with correct index.
                         if (inputName === 'DELETE_ICON') {
-                            largerInput.fieldRow.forEach((field, fieldIndex) => {
+                            for (let k = 0; k < largerInput.fieldRow.length; k++) {
+                                const field = largerInput.fieldRow[k];
                                 field.dispose();
-                                largerInput.fieldRow.splice(fieldIndex, 1);
-                            });
+                                largerInput.fieldRow.splice(k, 1);
+                            }
 
-                            largerInput.appendField(this.getRemoveInputIcon_(newIndex, false));
+                            largerInput.appendField(this.getRemoveInputIcon(newIndex, false));
                         }
 
                         i++;
@@ -195,7 +196,7 @@ Blockly.Blocks.controls_if = {
                     }
                 });
 
-                this.elseIfCount_--;
+                this.elseIfCount--;
             }
         };
 

@@ -3,9 +3,9 @@ import { translate } from '../../../../../../../common/i18n';
 
 Blockly.Blocks.procedures_callnoreturn = {
     init() {
-        this.arguments_ = [];
-        this.argumentVarModels_ = [];
-        this.previousDisabledState_ = false;
+        this.arguments = [];
+        this.argumentVarModels = [];
+        this.previousDisabledState = false;
 
         this.jsonInit({
             message0: '%1 %2',
@@ -46,12 +46,12 @@ Blockly.Blocks.procedures_callnoreturn = {
             return;
         }
 
-        if (event.type == Blockly.Events.BLOCK_CREATE && event.ids.indexOf(this.id) !== -1) {
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.indexOf(this.id) !== -1) {
             // Look for the case where a procedure call was created (usually through
             // paste) and there is no matching definition.  In this case, create
             // an empty definition block with the correct signature.
             const name = this.getProcedureCall();
-            const def = this.getProcedureDefinition(name);
+            let def = this.getProcedureDefinition(name);
 
             // Set data of `this` block to 'procedure definition'-block `id` so we can keep track of their relation.
             if (!def) {
@@ -63,7 +63,7 @@ Blockly.Blocks.procedures_callnoreturn = {
 
             if (
                 def &&
-                (def.type !== this.defType_ || JSON.stringify(def.arguments_) !== JSON.stringify(this.arguments_))
+                (def.type !== this.defType || JSON.stringify(def.arguments) !== JSON.stringify(this.arguments))
             ) {
                 // The signatures don't match.
                 def = null;
@@ -83,7 +83,7 @@ Blockly.Blocks.procedures_callnoreturn = {
                  */
                 const xml = document.createElement('xml');
                 const block = document.createElement('block');
-                block.setAttribute('type', this.defType_);
+                block.setAttribute('type', this.defType);
 
                 const xy = this.getRelativeToSurfaceXY();
                 const x = xy.x + Blockly.SNAP_RADIUS * (this.RTL ? -1 : 1);
@@ -130,16 +130,17 @@ Blockly.Blocks.procedures_callnoreturn = {
                     // This should only be possible programatically and may indicate a problem
                     // with event grouping. If you see this message please investigate. If the
                     // use ends up being valid we may need to reorder events in the undo stack.
+                    // eslint-disable-next-line no-console
                     console.log('Saw an existing group while responding to a definition change');
                 }
 
                 Blockly.Events.setGroup(event.group);
 
                 if (event.newValue) {
-                    this.previousDisabledState_ = this.disabled;
+                    this.previousDisabledState = this.disabled;
                     this.setDisabled(true);
                 } else {
-                    this.setDisabled(this.previousDisabledState_);
+                    this.setDisabled(this.previousDisabledState);
                 }
 
                 Blockly.Events.setGroup(oldGroup);
@@ -188,24 +189,24 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @private
      * @this Blockly.Block
      */
-    setProcedureParameters_(paramNames) {
+    setProcedureParameters(paramNames) {
         // Rebuild the block's arguments.
-        this.arguments_ = [].concat(paramNames);
+        this.arguments = [].concat(paramNames);
 
         // And rebuild the argument model list.
-        this.argumentVarModels_ = this.arguments_.map(argumentName =>
+        this.argumentVarModels = this.arguments.map(argumentName =>
             Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, argumentName, '')
         );
 
-        this.updateShape_();
+        this.updateShape();
     },
     /**
      * Modify this block to have the correct number of arguments.
      * @private
      * @this Blockly.Block
      */
-    updateShape_() {
-        this.arguments_.forEach((argumentName, i) => {
+    updateShape() {
+        this.arguments.forEach((argumentName, i) => {
             let field = this.getField(`ARGNAME${i}`);
             if (field) {
                 // Ensure argument name is up to date.
@@ -226,6 +227,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         });
 
         // Remove deleted inputs.
+        let i = this.arguments.length;
         while (this.getInput(`ARG${i}`)) {
             this.removeInput(`ARG${i}`);
             i++;
@@ -235,7 +237,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         const topRow = this.getInput('TOPROW');
 
         if (topRow) {
-            if (this.arguments_.length) {
+            if (this.arguments.length) {
                 if (!this.getField('WITH')) {
                     topRow.appendField(translate('with:'), 'WITH');
                     topRow.init();
@@ -254,7 +256,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         const container = document.createElement('mutation');
         container.setAttribute('name', this.getProcedureCall());
 
-        this.arguments_.forEach(argumentName => {
+        this.arguments.forEach(argumentName => {
             const parameter = document.createElement('arg');
             parameter.setAttribute('name', argumentName);
             container.appendChild(parameter);
@@ -281,7 +283,7 @@ Blockly.Blocks.procedures_callnoreturn = {
             }
         });
 
-        this.setProcedureParameters_(args, paramIds);
+        this.setProcedureParameters(args, paramIds);
     },
     /**
      * Return all variables referenced by this block.
@@ -289,7 +291,7 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @this Blockly.Block
      */
     getVarModels() {
-        return this.argumentVarModels_;
+        return this.argumentVarModels;
     },
     /**
      * Add menu option to find the definition block for this call.
@@ -304,7 +306,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         }
 
         const name = this.getProcedureCall();
-        const workspace = this.workspace;
+        const { workspace } = this;
 
         const option = { enabled: true };
         option.text = translate('Highlight function definition');
@@ -318,15 +320,16 @@ Blockly.Blocks.procedures_callnoreturn = {
 
         options.push(option);
     },
-    defType_: 'procedures_defnoreturn',
+    defType: 'procedures_defnoreturn',
 };
 
 Blockly.JavaScript.procedures_callnoreturn = block => {
+    // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
         Blockly.Procedures.NAME_TYPE
     );
-    const args = block.arguments_.map(
+    const args = block.arguments.map(
         (arg, i) => Blockly.JavaScript.valueToCode(block, `ARG${i}`, Blockly.JavaScript.ORDER_COMMA) || 'null'
     );
 

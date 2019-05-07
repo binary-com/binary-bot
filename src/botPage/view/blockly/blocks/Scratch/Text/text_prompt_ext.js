@@ -44,6 +44,7 @@ Blockly.JavaScript.text_prompt_ext = block => {
 
     if (block.getField('TEXT')) {
         // Internal message
+        // eslint-disable-next-line no-underscore-dangle
         msg = Blockly.JavaScript.quote_(block.getFieldValue('TEXT'));
     } else {
         // External message

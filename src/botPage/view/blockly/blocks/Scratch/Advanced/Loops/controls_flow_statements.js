@@ -24,10 +24,6 @@ Blockly.Blocks.controls_flow_statements = {
 };
 
 Blockly.JavaScript.controls_flow_statements = block => {
-    // Flow statements: continue, break.
-    if (block.getFieldValue('FLOW') === 'BREAK') {
-        return 'break;\n';
-    } else if (block.getFieldValue('FLOW') === 'CONTINUE') {
-        return 'continue;\n';
-    }
+    const keyword = block.getFieldValue('FLOW') === 'BREAK' ? 'break' : 'continue';
+    return `${keyword};\n`;
 };
