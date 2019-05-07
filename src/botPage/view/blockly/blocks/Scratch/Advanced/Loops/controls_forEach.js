@@ -23,11 +23,11 @@ Blockly.Blocks.controls_forEach = {
                     name: 'DO',
                 },
             ],
-            colour          : Blockly.Colours.Binary.colour,
-            colourSecondary : Blockly.Colours.Binary.colourSecondary,
-            colourTertiary  : Blockly.Colours.Binary.colourTertiary,
-            previousStaement: null,
-            nextStatement   : null,
+            colour           : Blockly.Colours.Binary.colour,
+            colourSecondary  : Blockly.Colours.Binary.colourSecondary,
+            colourTertiary   : Blockly.Colours.Binary.colourTertiary,
+            previousStatement: null,
+            nextStatement    : null,
         });
     },
 };
