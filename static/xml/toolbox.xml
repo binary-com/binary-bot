@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <xml id="toolbox" style="display: none">
     <category name="Logic" id="Logic" i18n-text="Logic">
         <block type="controls_if" id="25y0{4I9Kmh*+qHfx}CC" />
@@ -231,7 +230,7 @@
         </block>
     </category>
     <category name="Lists" id="Lists" i18n-text="Lists">
-        <block type="lists_create_with" id="Pp-(m?:jb-mT,3:xXY!d" x="272" y="182">
+        <block type="lists_create_with" id="Pp-(m?:jb-mT,3:xXY!d">
             <field name="VARIABLE" id="[m|R?tV-XKJm,SvC8*.v" variabletype="">list</field>
             <statement name="STACK">
                 <block type="lists_statement" id="]sRj[@jh]Si(G/,4ci`~" movable="false">
@@ -241,7 +240,7 @@
                 </block>
             </statement>
         </block>
-        <block type="lists_repeat" id="{X}Sl;Vn+R{7#$=y=@;Y" x="122" y="176">
+        <block type="lists_repeat" id="{X}Sl;Vn+R{7#$=y=@;Y">
             <field name="VARIABLE" id="[m|R?tV-XKJm,SvC8*.v" variabletype="">list</field>
             <value name="NUM">
                 <shadow type="math_number" id="Diz;vrNcq]*NvYAO%.n#">
@@ -255,7 +254,7 @@
         <block type="lists_getIndex"></block>
         <block type="lists_setIndex"></block>
         <block type="lists_getSublist"></block>
-        <block type="lists_split" id="U(axM7Xdyg[]B[y`Oowo" x="90" y="295">
+        <block type="lists_split" id="U(axM7Xdyg[]B[y`Oowo">
             <mutation mode="SPLIT"></mutation>
             <field name="MODE">SPLIT</field>
             <value name="DELIM">
@@ -320,10 +319,20 @@
                 </block>
             </statement>
         </block>
-        <block type="trade_definition_tradeoptions" id="[hP[=$sWJH!F[hiN6^Dp">
+        <block type="trade_definition_tradeoptions" id="DW=a_=[$iCjzqa]R6zFf">
             <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
             <field name="DURATIONTYPE_LIST"></field>
-            <field name="CURRENCY_LIST">AUD</field>
+            <field name="CURRENCY_LIST">USD</field>
+            <value name="DURATION">
+                <shadow type="math_number" id="?`:T4uJ)K,QD$mm3srjX">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="AMOUNT">
+                <shadow type="math_number" id="?`:Ta92)K,QD$mm3srjX">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
         </block>
     </category>
     <category name="Before Purchase" id="Before Purchase" i18n-text="Before Purchase">
@@ -348,19 +357,19 @@
         <block type="tick_analysis"></block>
         <block type="tick"></block>
         <block type="last_digit"></block>
-        <block type="read_ohlc" id="%A.M;9K_O$Z0~*Zj!V7}" x="-270" y="109">
+        <block type="read_ohlc" id="%A.M;9K_O$Z0~*Zj!V7}" x="-270">
             <field name="OHLCFIELD_LIST">open</field>
             <field name="CANDLEINTERVAL_LIST">default</field>
             <value name="CANDLEINDEX">
-            <shadow type="math_number" id="zq8Z}zTs1Z?QeXN+O-v7">
-                <field name="NUM">1</field>
-            </shadow>
+                <shadow type="math_number" id="zq8Z}zTs1Z?QeXN+O-v7">
+                    <field name="NUM">1</field>
+                </shadow>
             </value>
         </block>
         <block type="check_direction"></block>
     </category>
     <category name="Tick Analysis/Advanced" id="Tick Analysis/Advanced" i18n-text="Tick Analysis/Advanced">
-        <block type="get_ohlc" id="yeld0A(:uu~z=+!Xz7}I" x="-46" y="132">
+        <block type="get_ohlc" id="yeld0A(:uu~z=+!Xz7}I" x="-46">
             <field name="CANDLEINTERVAL_LIST">default</field>
             <value name="CANDLEINDEX">
                 <shadow type="math_number" id="cu`/=D9=Rb_YL5@+7_[_">
@@ -382,14 +391,14 @@
                         <block type="period" id="4JoaJd$?9-|ep;BKs?1l" deletable="false" movable="false">
                             <value name="PERIOD">
                                 <shadow type="math_number" id="A!}V!GH=QTNG!U7[qjZU">
-                                    <field name="NUM">2</field>
+                                    <field name="NUM">10</field>
                                 </shadow>
                             </value>
                             <next>
                                 <block type="std_dev_multiplier_up" id="i1W-voX=`T?TXXbY.JhA" deletable="false" movable="false">
                                     <value name="UPMULTIPLIER">
                                         <shadow type="math_number" id="*05PQw+{!FYYOYbO*Ky|">
-                                            <field name="NUM">10</field>
+                                            <field name="NUM">5</field>
                                         </shadow>
                                     </value>
                                     <next>
@@ -415,7 +424,7 @@
                         <block type="period" id="P[axo:k75yG+5TE!2:fl" deletable="false" movable="false">
                             <value name="PERIOD">
                                 <shadow type="math_number" id="%rlgsK%F0SuR-2T4)f3_">
-                                    <field name="NUM">0</field>
+                                    <field name="NUM">10</field>
                                 </shadow>
                             </value>
                         </block>
@@ -430,7 +439,7 @@
                         <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
                             <value name="PERIOD">
                                 <shadow type="math_number" id="%rlgsK%F0SuR-2T4)f3_">
-                                    <field name="NUM">0</field>
+                                    <field name="NUM">10</field>
                                 </shadow>
                             </value>
                         </block>
@@ -440,9 +449,15 @@
         </block>
         <block type="sma_statement" id="5bNx,|zqxar{CpD^O%,t">
             <statement name="STATEMENT">
-                <block type="input_list" id="z8;vVQ4YJD$Wsf;R;Owp">
+                <block type="input_list" id="gW-z$c-LuE#%q?}mhG3]" deletable="false" movable="false">
                     <next>
-                        <block type="period" id="|EXCh3ND2F=k2P5eACka"></block>
+                        <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
+                            <value name="PERIOD">
+                                <shadow type="math_number" id="%rlgsK%F0SuR-2T4)f3_">
+                                    <field name="NUM">10</field>
+                                </shadow>
+                            </value>
+                        </block>
                     </next>
                 </block>
             </statement>
@@ -452,13 +467,29 @@
         <block type="bba_statement" id="sVo{WVqrFi??^_q?3QXz">
             <field name="BBRESULT_LIST">0</field>
             <statement name="STATEMENT">
-                <block type="input_list" id="M[#(wGh_pN4}tUbwU?5E">
+                <block type="input_list" id="YEf:KZ)djRnGuIWsbK0I" deletable="false" movable="false">
                     <next>
-                        <block type="period" id="FGp#37KSX8]fU?-8$?pR">
+                        <block type="period" id="4JoaJd$?9-|ep;BKs?1l" deletable="false" movable="false">
+                            <value name="PERIOD">
+                                <shadow type="math_number" id="A!}V!GH=QTNG!U7[qjZU">
+                                    <field name="NUM">10</field>
+                                </shadow>
+                            </value>
                             <next>
-                                <block type="std_dev_multiplier_up" id=",cF=@Z-z._K]9U@:#ZGf">
+                                <block type="std_dev_multiplier_up" id="i1W-voX=`T?TXXbY.JhA" deletable="false" movable="false">
+                                    <value name="UPMULTIPLIER">
+                                        <shadow type="math_number" id="*05PQw+{!FYYOYbO*Ky|">
+                                            <field name="NUM">5</field>
+                                        </shadow>
+                                    </value>
                                     <next>
-                                        <block type="std_dev_multiplier_down" id="8)hd}Rf]-IZPl^9~pCv/"></block>
+                                        <block type="std_dev_multiplier_down" id="N~OFQVtnsG0Zd*N;A/-K">
+                                            <value name="DOWNMULTIPLIER">
+                                                <shadow type="math_number" id="`cE%5kSvXBA2).?/A(Q%">
+                                                    <field name="NUM">5</field>
+                                                </shadow>
+                                            </value>
+                                        </block>
                                     </next>
                                 </block>
                             </next>
@@ -469,9 +500,15 @@
         </block>
         <block type="emaa_statement" id="71@BxZ6McrKkhbT*=PR)">
             <statement name="STATEMENT">
-                <block type="input_list" id="A$H~q8PfKI-nF8L;kb#?">
+                <block type="input_list" id="3#dzWIAVR5[g7;bg,NGp" deletable="false" movable="false">
                     <next>
-                        <block type="period" id="K?O-^yCRro1Lvbx284{t"></block>
+                        <block type="period" id="P[axo:k75yG+5TE!2:fl" deletable="false" movable="false">
+                            <value name="PERIOD">
+                                <shadow type="math_number" id="%rlgsK%F0SuR-2T4)f3_">
+                                    <field name="NUM">10</field>
+                                </shadow>
+                            </value>
+                        </block>
                     </next>
                 </block>
             </statement>
@@ -479,13 +516,29 @@
         <block type="macda_statement" id="T9qw}dc3tCMR#,#G!J!s">
             <field name="MACDFIELDS_LIST">1</field>
             <statement name="STATEMENT">
-                <block type="input_list" id="B`uY;~5nX#sEu+8[0_7t">
+                <block type="input_list" id="Ppo];`FZ!Ejz~MRe%n2V" deletable="false" movable="false">
                     <next>
-                        <block type="fast_ema_period" id="5V1qLGCim83iik=b5kp2">
+                        <block type="fast_ema_period" id="Zxu(vt/%98rC5)#cL{!]" deletable="false" movable="false">
+                            <value name="FAST_EMA_PERIOD">
+                                <block type="math_number" id="^SE#]Eum=waX!HG#Hl2e">
+                                    <field name="NUM">12</field>
+                                </block>
+                            </value>
                             <next>
-                                <block type="slow_ema_period" id="J%EVbnaiy%cXi|lgfbB|">
+                                <block type="slow_ema_period" id="7Sb[s2}@$l}X^8=ihSOq" deletable="false" movable="false">
+                                    <value name="SLOW_EMA_PERIOD">
+                                        <block type="math_number" id="cg.ZqX:3}yzmmBOfbz(x">
+                                            <field name="NUM">26</field>
+                                        </block>
+                                    </value>
                                     <next>
-                                        <block type="signal_ema_period" id="]yf3wSSP/^g_i$4JS2J6"></block>
+                                        <block type="signal_ema_period" id=",.Qq;$_`q#i:jflF^!1t" deletable="false" movable="false">
+                                            <value name="SIGNAL_EMA_PERIOD">
+                                                <block type="math_number" id="+Om17H}ve;=!0#@QqEZ?">
+                                                    <field name="NUM">9</field>
+                                                </block>
+                                            </value>
+                                        </block>
                                     </next>
                                 </block>
                             </next>
@@ -496,18 +549,30 @@
         </block>
         <block type="rsia_statement" id="JnSqyfy(dbLm41r3jVT2">
             <statement name="STATEMENT">
-                <block type="input_list" id="XdAI4dqW2u9HRYS~kPF%">
+                <block type="input_list" id="gW-z$c-LuE#%q?}mhG3]" deletable="false" movable="false">
                     <next>
-                        <block type="period" id=")B/(=Ki*2B=^R]m,Ov!Y"></block>
+                        <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
+                            <value name="PERIOD">
+                                <shadow type="math_number" id="%rlgsK%F0SuR-2T4)f3_">
+                                    <field name="NUM">10</field>
+                                </shadow>
+                            </value>
+                        </block>
                     </next>
                 </block>
             </statement>
         </block>
         <block type="smaa_statement" id=",_$%/oC+:6DZNC4K_zFH">
             <statement name="STATEMENT">
-                <block type="input_list" id="AnFeLyL}jGlxa/f@*#|p">
+                <block type="input_list" id="gW-z$c-LuE#%q?}mhG3]" deletable="false" movable="false">
                     <next>
-                        <block type="period" id="LCaoz@R*iIC;)J7#KBV0"></block>
+                        <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
+                            <value name="PERIOD">
+                                <shadow type="math_number" id="%rlgsK%F0SuR-2T4)f3_">
+                                    <field name="NUM">10</field>
+                                </shadow>
+                            </value>
+                        </block>
                     </next>
                 </block>
             </statement>
@@ -515,7 +580,13 @@
     </category>
     <category name="Time" id="Time" i18n-text="Time">
         <block type="epoch"></block>
-        <block type="timeout"></block>
+        <block type="timeout" id="}G;0^^`LE3Tng=3%s7XA">
+            <value name="SECONDS">
+                <shadow type="math_number" id="XNX%7;tQNDJtME~@=UG;">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
     </category>
     <category name="Candle" id="Candle" i18n-text="Candle">
         <block type="is_candle_black"></block>
@@ -526,7 +597,7 @@
         <block type="balance"></block>
         <block type="total_profit"></block>
         <block type="total_runs"></block>
-        <block type="notify" id="Upgf|PIq-mC+z*mgB,ZO" x="120" y="240">
+        <block type="notify" id="Upgf|PIq-mC+z*mgB,ZO">
             <field name="NOTIFICATION_TYPE">success</field>
             <field name="NOTIFICATION_SOUND">silent</field>
             <value name="MESSAGE">
