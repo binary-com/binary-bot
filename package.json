@@ -48,7 +48,7 @@
     "chai": "^4.1.2",
     "coveralls": "^3.0.3",
     "deep-diff": "^1.0.2",
-    "del": "^3.0.0",
+    "del": "^4.1.1",
     "es6-plato": "^1.1.5",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
