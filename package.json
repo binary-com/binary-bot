@@ -49,7 +49,7 @@
     "coveralls": "^3.0.3",
     "deep-diff": "^1.0.2",
     "del": "^4.1.1",
-    "es6-plato": "^1.1.5",
+    "es6-plato": "^1.1.6",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-binary": "^1.0.2",
