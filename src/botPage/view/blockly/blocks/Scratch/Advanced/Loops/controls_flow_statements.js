@@ -3,7 +3,7 @@ import { translate } from '../../../../../../../common/i18n';
 Blockly.Blocks.controls_flow_statements = {
     init() {
         this.jsonInit({
-            message0: '%1',
+            message0: translate('%1 of loop'),
             args0   : [
                 {
                     type   : 'field_dropdown',
