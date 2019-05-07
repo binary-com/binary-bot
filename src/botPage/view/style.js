@@ -75,9 +75,15 @@ export const bottomWarningLink = { textDecoration: 'underline' };
 
 export const green = { color: 'green' };
 
+export const greenLeft = { color: 'green', float: 'left' };
+
 export const red = { color: 'red' };
 
+export const redLeft = { color: 'red', float: 'left' };
+
 export const tradePanelAccount = { float: 'right' };
+
+export const left = { float: 'left' };
 
 export const warningText = {
     'font-size': '12px',
