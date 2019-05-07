@@ -76,6 +76,12 @@ Blockly.Blocks.procedures_defnoreturn = {
 
                         const paramField = this.getField('PARAMS');
                         paramField.setText(`${translate('with: ')} ${this.arguments.join(', ')}`);
+
+                        this.getProcedureCallers().forEach(block => {
+                            block.setProcedureParameters(this.arguments);
+                            block.initSvg();
+                            block.render(false);
+                        });
                     }
                 }
             });
