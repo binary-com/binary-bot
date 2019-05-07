@@ -19,7 +19,8 @@
   "globals": {
     "Blockly": false,
     "trackJs": false,
-    "jest": false
+    "jest": false,
+    "goog": false
   },
   "plugins": [
     "react"
