@@ -24,7 +24,6 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 
 const setBeforeUnload = off => {
-    return;
     if (off) {
         window.onbeforeunload = null;
     } else {
@@ -174,7 +173,6 @@ const render = workspace => () => {
 const overrideBlocklyDefaultShape = () => {
     const addDownloadToMenu = block => {
         if (block instanceof Object) {
-            return;
             // eslint-disable-next-line no-param-reassign, max-len
             block.customContextMenu = function customContextMenu(options) {
                 options.push({
@@ -329,7 +327,7 @@ export default class _Blockly {
         save(filename, collection, xml);
     }
     run(limitations = {}) {
-        // disableStrayBlocks();
+        disableStrayBlocks();
 
         const workspaceCode = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
 
