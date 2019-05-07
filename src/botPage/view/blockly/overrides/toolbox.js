@@ -21,7 +21,6 @@ Blockly.Toolbox.prototype.showCategory_ = function(categoryName) {
         return;
     }
 
-    // allContents.push(labelXML.firstChild);
     allContents = allContents.concat(category.getContents());
 
     // TEMP: For testing only, generate labels for each block for QA
@@ -30,7 +29,7 @@ Blockly.Toolbox.prototype.showCategory_ = function(categoryName) {
         allContents.forEach(node => {
             if (node.nodeName === 'block') {
                 const type = node.getAttribute('type');
-                const labelString = `<xml><label text="[type: ${type}]" id="${type}" category-label="true" web-class="description"></label></xml>`;
+                const labelString = `<xml><label text="[type: ${type}]" web-class="description"></label></xml>`;
 
                 const labelXml = Blockly.Xml.textToDom(labelString);
                 newAllContents.push(...[labelXml.firstChild, node]);
@@ -39,7 +38,6 @@ Blockly.Toolbox.prototype.showCategory_ = function(categoryName) {
     } else {
         newAllContents = allContents;
     }
-    // /TESTING ONLY
 
     this.flyout_.autoClose = true;
     this.flyout_.show(newAllContents);
