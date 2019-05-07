@@ -35,7 +35,7 @@ Blockly.JavaScript.math_random_int = block => {
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(a, b) {
             if (a > b) {
                 // Swap a and b to ensure a is smaller.
-                const c = a;
+                var c = a;
                 a = b;
                 b = c;
             }
