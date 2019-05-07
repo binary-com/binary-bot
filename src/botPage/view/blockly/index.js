@@ -236,10 +236,6 @@ export default class _Blockly {
                     media     : 'image/scratch/',
                 });
 
-                workspace.addChangeListener(event => {
-                    $.notify(`Event: ${event.type}`);
-                });
-
                 const renderInstance = render(workspace);
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
