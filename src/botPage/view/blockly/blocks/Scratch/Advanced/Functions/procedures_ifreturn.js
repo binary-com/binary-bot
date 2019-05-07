@@ -45,7 +45,7 @@ Blockly.Blocks.procedures_ifreturn = {
      */
     domToMutation(xmlElement) {
         const value = xmlElement.getAttribute('value');
-        this.hasReturnValue = value === 1;
+        this.hasReturnValue = value === '1';
 
         if (!this.hasReturnValue) {
             this.removeInput('VALUE');
@@ -125,7 +125,7 @@ Blockly.JavaScript.procedures_ifreturn = block => {
     }
 
     const code = `
-    if ${condition} {
+    if (${condition}) {
         ${branch}
     }\n`;
     return code;
