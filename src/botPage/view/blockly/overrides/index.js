@@ -1,4 +1,3 @@
-/* eslint-disable */
 import './block';
 import './block_svg';
 import './colours';
@@ -12,4 +11,3 @@ import './icon';
 import './procedures';
 import './toolbox';
 import './variables';
-/* eslint-enable */
