@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+
 Blockly.Block.prototype.getSiblings = function() {
     const siblings = [this];
     ['getPreviousBlock', 'getNextBlock'].forEach(functionName => {

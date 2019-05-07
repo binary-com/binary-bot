@@ -1,3 +1,4 @@
+/* eslint-disable func-names, no-underscore-dangle */
 /**
  * Margin around the edges of the blocks in the flyout.
  * @type {number}
@@ -17,13 +18,13 @@ Blockly.Flyout.prototype.MARGIN = 24;
 Blockly.Flyout.prototype.positionAt_ = function(width, height, x, y) {
     this.svgGroup_.setAttribute('width', width);
     this.svgGroup_.setAttribute('height', height);
-    if (this.svgGroup_.tagName == 'svg') {
-        var transform = `translate(${x}px,${y}px)`;
+    if (this.svgGroup_.tagName === 'svg') {
+        const transform = `translate(${x}px,${y}px)`;
         Blockly.utils.setCssTransform(this.svgGroup_, transform);
     } else {
         // IE and Edge don't support CSS transforms on SVG elements so
         // it's important to set the transform on the SVG element itself
-        var transform = `translate(${x},${y})`;
+        const transform = `translate(${x},${y})`;
         this.svgGroup_.setAttribute('transform', transform);
     }
 

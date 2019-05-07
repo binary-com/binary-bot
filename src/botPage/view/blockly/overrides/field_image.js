@@ -1,61 +1,31 @@
-/**
- * @license
- * Visual Blocks Editor
- *
- * Copyright 2012 Google Inc.
- * https://developers.google.com/blockly/
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
- * @fileoverview Image field.  Used for pictures, icons, etc.
- * @author fraser@google.com (Neil Fraser)
- */
-
-goog.provide('Blockly.FieldImage');
-
-goog.require('Blockly.Field');
-goog.require('Blockly.utils');
-
-goog.require('goog.math.Size');
-
+/* eslint-disable func-names, no-underscore-dangle */
 /**
  * Class for an image on a block.
+ * binary-bot: Blockly implementation vs. Scratch for click handlers
  * @param {string} src The URL of the image.
  * @param {number} width Width of the image.
  * @param {number} height Height of the image.
- * @param {string=} opt_alt Optional alt text for when block is collapsed.
- * @param {Function=} opt_onClick Optional function to be called when the image
- *     is clicked.  If opt_onClick is defined, opt_alt must also be defined.
- * @param {boolean=} opt_flipRtl Whether to flip the icon in RTL.
+ * @param {string=} optAlt Optional alt text for when block is collapsed.
+ * @param {Function=} optOnClick Optional function to be called when the image
+ *     is clicked.  If optOnClick is defined, optAlt must also be defined.
+ * @param {boolean=} optFlipRtl Whether to flip the icon in RTL.
  * @extends {Blockly.Field}
  * @constructor
  */
-Blockly.FieldImage = function(src, width, height, opt_alt, opt_onClick, opt_flipRtl) {
+Blockly.FieldImage = function(src, width, height, optAlt, optOnClick, optFlipRtl) {
     this.sourceBlock_ = null;
 
     // Ensure height and width are numbers.  Strings are bad at math.
     this.height_ = Number(height);
     this.width_ = Number(width);
     this.size_ = new goog.math.Size(this.width_, this.height_);
-    this.flipRtl_ = opt_flipRtl;
+    this.flipRtl_ = optFlipRtl;
     this.tooltip_ = '';
     this.setValue(src);
-    this.setText(opt_alt);
+    this.setText(optAlt);
 
-    if (typeof opt_onClick === 'function') {
-        this.clickHandler_ = opt_onClick;
+    if (typeof optOnClick === 'function') {
+        this.clickHandler_ = optOnClick;
     }
 };
 goog.inherits(Blockly.FieldImage, Blockly.Field);

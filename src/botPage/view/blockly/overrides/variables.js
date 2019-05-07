@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /**
  * Find all user-created variables that are in use in the workspace.
  * For use by generators.
@@ -10,23 +11,25 @@
 Blockly.Variables.allUsedVarModels = function(ws) {
     const blocks = ws.getAllBlocks(false);
     const variableHash = Object.create(null);
+
     // Iterate through every block and add each variable to the hash.
-    for (let i = 0; i < blocks.length; i++) {
-        const blockVariables = blocks[i].getVarModels();
+    blocks.forEach(block => {
+        const blockVariables = block.getVarModels();
         if (blockVariables) {
-            for (let j = 0; j < blockVariables.length; j++) {
-                const variable = blockVariables[j];
-                var id = variable.getId();
+            blockVariables.forEach(blockVariable => {
+                const id = blockVariable.getId();
                 if (id) {
-                    variableHash[id] = variable;
+                    variableHash[id] = blockVariable;
                 }
-            }
+            });
         }
-    }
+    });
+
     // Flatten the hash into a list.
     const variableList = [];
-    for (var id in variableHash) {
+    Object.keys(variableHash).forEach(id => {
         variableList.push(variableHash[id]);
-    }
+    });
+
     return variableList;
 };

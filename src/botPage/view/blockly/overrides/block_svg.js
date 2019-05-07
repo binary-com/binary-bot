@@ -1,9 +1,10 @@
+/* eslint-disable func-names, no-underscore-dangle */
 /**
  * Set whether the block is disabled or not.
  * @param {boolean} disabled True if disabled.
  */
 Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
-    if (this.disabled != disabled) {
+    if (this.disabled !== disabled) {
         Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
         if (this.rendered) {
             this.updateDisabled();
@@ -27,7 +28,7 @@ Blockly.BlockSvg.prototype.updateDisabled = function() {
         }
     }
     const children = this.getChildren(false);
-    for (var i = 0, child; (child = children[i]); i++) {
+    children.forEach(child => {
         child.updateDisabled();
-    }
+    });
 };

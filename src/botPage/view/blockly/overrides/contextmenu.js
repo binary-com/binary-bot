@@ -1,3 +1,4 @@
+// eslint-disable-next-line func-names
 Blockly.ContextMenu.blockDeleteOption = function(block) {
     // Option to delete this block but not blocks lower in the stack.
     // Count the number of blocks that are nested in this block,
@@ -10,7 +11,7 @@ Blockly.ContextMenu.blockDeleteOption = function(block) {
     }
     const deleteOption = {
         text:
-            descendantCount == 1
+            descendantCount === 1
                 ? Blockly.Msg.DELETE_BLOCK
                 : Blockly.Msg.DELETE_X_BLOCKS.replace('%1', String(descendantCount)),
         enabled: true,

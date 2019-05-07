@@ -1,3 +1,4 @@
+/* eslint-disable func-names, no-underscore-dangle */
 // /**
 //  * Fill the toolbox with categories and blocks.
 //  * @param {!Node} newTree DOM tree of blocks.
@@ -15,36 +16,23 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
 Blockly.Toolbox.prototype.showCategory_ = function(categoryName) {
     let allContents = [];
 
-    const category = this.categoryMenu_.categories_.find(category => category.name_ === categoryName);
+    const category = this.categoryMenu_.categories_.find(menuCategory => menuCategory.name_ === categoryName);
     if (!category) {
         return;
     }
 
-    // const labelString = '<xml>' +
-    // `<label text="${category.name_}" id="${category.id_}" category-label="true" showStatusButton="${category.showStatusButton_}" web-class="categoryLabel">` +
-    // '</label>' +
-    // '</xml>';
-
-    // const labelXML = Blockly.Xml.textToDom(labelString);
-
     // allContents.push(labelXML.firstChild);
     allContents = allContents.concat(category.getContents());
 
-    // TESTING ONLY: Generate labels for each block for QA
+    // TEMP: For testing only, generate labels for each block for QA
     let newAllContents = [];
     if (Array.isArray(allContents) && allContents.length > 1) {
-        allContents.forEach((node, index) => {
+        allContents.forEach(node => {
             if (node.nodeName === 'block') {
                 const type = node.getAttribute('type');
-
-                const labelString =
-                    '<xml>' +
-                    `<label text="[type: ${type}]" id="${type}" category-label="true" web-class="description">` +
-                    '</label>' +
-                    '</xml>';
+                const labelString = `<xml><label text="[type: ${type}]" id="${type}" category-label="true" web-class="description"></label></xml>`;
 
                 const labelXml = Blockly.Xml.textToDom(labelString);
-
                 newAllContents.push(...[labelXml.firstChild, node]);
             }
         });
@@ -59,11 +47,10 @@ Blockly.Toolbox.prototype.showCategory_ = function(categoryName) {
 
 /**
  * Opens the selected category
- * binary-bot: unlike in Scratch, we want to have category-specific flyouts.
+ * binary-bot: unlike in Scratch, we want to have category-specific flyouts + removed opt_shouldScroll
  * @param {Blockly.Toolbox.Category} item The category to select.
- * @param {boolean=} opt_shouldScroll Whether to scroll to the selected category. Unused in Binary Bot.
  */
-Blockly.Toolbox.prototype.setSelectedItem = function(item, opt_shouldScroll) {
+Blockly.Toolbox.prototype.setSelectedItem = function(item) {
     if (this.selectedItem_) {
         // They selected a different category but one was already open.  Close it.
         this.selectedItem_.setSelected(false);
@@ -107,7 +94,7 @@ Blockly.Toolbox.prototype.position = function() {
         treeDiv.style.height = 'auto';
         treeDiv.style.width = `${svgSize.width}px`;
         this.height = treeDiv.offsetHeight;
-        if (this.toolboxPosition == Blockly.TOOLBOX_AT_TOP) {
+        if (this.toolboxPosition === Blockly.TOOLBOX_AT_TOP) {
             // Top
             treeDiv.style.top = '0';
         } else {
@@ -115,7 +102,7 @@ Blockly.Toolbox.prototype.position = function() {
             treeDiv.style.bottom = '0';
         }
     } else {
-        if (this.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
+        if (this.toolboxPosition === Blockly.TOOLBOX_AT_RIGHT) {
             // Right
             treeDiv.style.right = '0';
         } else {

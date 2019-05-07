@@ -1,3 +1,4 @@
+/* eslint-disable func-names, no-underscore-dangle */
 import { translate } from '../../../../common/i18n';
 
 /**
@@ -16,12 +17,12 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
         // <block type="procedures_defnoreturn" gap="16">
         //     <field name="NAME">do something</field>
         // </block>
-        var block = document.createElement('block');
+        const block = document.createElement('block');
         block.setAttribute('type', 'procedures_defnoreturn');
         block.setAttribute('gap', 16);
 
         // TEMP
-        var nameField = document.createElement('field');
+        const nameField = document.createElement('field');
         nameField.setAttribute('name', 'NAME');
         nameField.appendChild(document.createTextNode(translate('do something')));
 
@@ -38,12 +39,14 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
         // <block type="procedures_defreturn" gap="16">
         //     <field name="NAME">do something</field>
         // </block>
-        var block = document.createElement('block');
+        const block = document.createElement('block');
         block.setAttribute('type', 'procedures_defreturn');
         block.setAttribute('gap', 16);
-        var nameField = document.createElement('field');
+
+        const nameField = document.createElement('field');
         nameField.setAttribute('name', 'NAME');
         nameField.appendChild(document.createTextNode(translate('do something')));
+
         block.appendChild(nameField);
         xmlList.push(block);
     }
@@ -54,7 +57,7 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
         xmlList.push(label);
 
         // <block type="procedures_ifreturn" gap="16"></block>
-        var block = document.createElement('block');
+        const block = document.createElement('block');
         block.setAttribute('type', 'procedures_ifreturn');
         block.setAttribute('gap', 16);
         xmlList.push(block);
@@ -69,6 +72,7 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
         for (let i = 0; i < procedureList.length; i++) {
             const name = procedureList[i][0];
             const args = procedureList[i][1];
+
             // <block type="procedures_callnoreturn" gap="16">
             //   <mutation name="do something">
             //     <arg name="x"></arg>
@@ -82,11 +86,11 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
             mutation.setAttribute('name', name);
             block.appendChild(mutation);
 
-            for (let j = 0; j < args.length; j++) {
+            args.forEach(argumentName => {
                 const arg = document.createElement('arg');
-                arg.setAttribute('name', args[j]);
+                arg.setAttribute('name', argumentName);
                 mutation.appendChild(arg);
-            }
+            });
 
             xmlList.push(block);
         }
@@ -120,19 +124,14 @@ Blockly.Procedures.getDefinition = function(name, workspace) {
 
 // Scratch has a broken version where they return `false` if Blockly.Names.equals(procName[0], name).
 // https://github.com/LLK/scratch-blocks/pull/1930
-Blockly.Procedures.isNameUsed = function(name, workspace, opt_exclude) {
+Blockly.Procedures.isNameUsed = function(name, workspace, optExclude) {
     const blocks = workspace.getAllBlocks(false);
     // Iterate through every block and check the name.
-    for (let i = 0; i < blocks.length; i++) {
-        if (blocks[i] == opt_exclude) {
-            continue;
+    return blocks.some(block => {
+        if (block !== optExclude && block.getProcedureDef) {
+            const procName = block.getProcedureDef();
+            return Blockly.Names.equals(procName[0], name);
         }
-        if (blocks[i].getProcedureDef) {
-            const procName = blocks[i].getProcedureDef();
-            if (Blockly.Names.equals(procName[0], name)) {
-                return true;
-            }
-        }
-    }
-    return false;
+        return false;
+    });
 };
