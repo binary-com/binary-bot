@@ -2,31 +2,35 @@ import { roundBalance } from '../../common/tools';
 import { info } from '../broadcast';
 import { doUntilDone } from '../tools';
 
-let balance = 0;
 let balanceStr = '';
 
 export default Engine =>
     class Balance extends Engine {
-        subscribeToBalance() {
-            doUntilDone(() => this.api.subscribeToBalance()).catch(e => this.$scope.observer.emit('Error', e));
-
-            return new Promise(r => {
-                this.balancePromise = r;
-            });
-        }
         observeBalance() {
             this.listen('balance', r => {
-                const { balance: { balance: b, currency } } = r;
+                const {
+                    balance: { balance: b, currency },
+                } = r;
 
-                balance = roundBalance({ currency, balance: b });
-                balanceStr = `${balance} ${currency}`;
+                this.balance = roundBalance({ currency, balance: b });
+                balanceStr = `${this.balance} ${currency}`;
 
-                this.balancePromise();
                 info({ accountID: this.accountInfo.loginid, balance: balanceStr });
             });
         }
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
-            return type === 'STR' ? balanceStr : Number(balance);
+            const { scope } = this.store.getState();
+
+            // Deduct trade `amount` in this scope for correct value in `balance`-block
+            if (scope === 'BEFORE_PURCHASE') {
+                this.balance = roundBalance({
+                    currency: this.tradeOptions.currency,
+                    balance : Number(this.balance) - this.tradeOptions.amount,
+                });
+                balanceStr = `${this.balance} ${this.tradeOptions.currency}`;
+            }
+
+            return type === 'STR' ? balanceStr : Number(this.balance);
         }
     };
