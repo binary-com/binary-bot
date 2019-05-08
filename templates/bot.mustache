@@ -20,10 +20,10 @@
     <span id="integrations-dialog"></span>
     <span id="chart-dialog"></span>
     <span id="trading-view-dialog"></span>
-    <span id="logPanel" class="draggable-dialog" title="Log">
+    <span id="logPanel" class="draggable-dialog" data-i18n-title="Log">
       <div id="logTable" class="logTable-scroll"></div>
     </span>
-    <span id="summaryPanel" class="draggable-dialog" title="Summary"></span>
+    <span id="summaryPanel" class="draggable-dialog" data-i18n-title="Summary"></span>
     <div>
         <div class="blocker"></div>
         <div class="reality-check" style="display: none">
@@ -111,32 +111,32 @@
         </div>
     </div>
     <div id="toolbox" class="actions_menu show-on-load">
-        <button title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
-        <button title="Load new blocks (xml file)" id="load-xml" class="toolbox-button icon-browse"></button>
-        <button title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
-        <button title="Connect Binary Bot to your Google Drive to easily save and re-use your blocks" id="integrations" class="toolbox-button icon-integrations invisible"></button>
+        <button data-i18n-title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
+        <button data-i18n-title="Load new blocks (xml file)" id="load-xml" class="toolbox-button icon-browse"></button>
+        <button data-i18n-title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
+        <button data-i18n-title="Connect Binary Bot to your Google Drive to easily save and re-use your blocks" id="integrations" class="toolbox-button icon-integrations invisible"></button>
 
         <span class="toolbox-separator"></span>
-        <button title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>
-        <button title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="toolbox-button icon-redo"></button>
+        <button data-i18n-title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>
+        <button data-i18n-title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="toolbox-button icon-redo"></button>
 
         <span class="toolbox-separator"></span>
-        <button title="Zoom In (Ctrl + +)" id="zoomIn" class="toolbox-button icon-zoom-in"></button>
-        <button title="Zoom Out (Ctrl + -)" id="zoomOut" class="toolbox-button icon-zoom-out"></button>
-        <button title="Rearrange Vertically" id="rearrange" class="toolbox-button icon-sort"></button>
+        <button data-i18n-title="Zoom In (Ctrl + +)" id="zoomIn" class="toolbox-button icon-zoom-in"></button>
+        <button data-i18n-title="Zoom Out (Ctrl + -)" id="zoomOut" class="toolbox-button icon-zoom-out"></button>
+        <button data-i18n-title="Rearrange Vertically" id="rearrange" class="toolbox-button icon-sort"></button>
 
         <span class="toolbox-separator"></span>
-        <button title="Show/hide the summary pop-up" id="showSummary" class="toolbox-button icon-summary"></button>
-        <button title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
-        <button title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
-        <button title="Show log" id="logButton" class="toolbox-button icon-info"></button>
+        <button data-i18n-title="Show/hide the summary pop-up" id="showSummary" class="toolbox-button icon-summary"></button>
+        <button data-i18n-title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
+        <button data-i18n-title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
+        <button data-i18n-title="Show log" id="logButton" class="toolbox-button icon-info"></button>
 
         <span class="toolbox-separator"></span>
-        <button title="Show chart" id="chartButton" class="toolbox-button icon-chart-line"></button>
-        <button title="Show Trading View" id="tradingViewButton" class="toolbox-button icon-trading-view"></button>
+        <button data-i18n-title="Show chart" id="chartButton" class="toolbox-button icon-chart-line"></button>
+        <button data-i18n-title="Show Trading View" id="tradingViewButton" class="toolbox-button icon-trading-view"></button>
 
         <span class="toolbox-separator"></span>
-        <button title="Toggle header" id="toggleHeaderButton" class="toolbox-button icon-hide-header"></button>
+        <button data-i18n-title="Toggle header" id="toggleHeaderButton" class="toolbox-button icon-hide-header"></button>
 
         {{! Toolbox main account + list }}
         <div id="toolbox-account" class="right-header" style="display: none">
@@ -168,7 +168,7 @@
     <div id="blocklyDiv" style="position: absolute;"></div>
 
     <form id="fileUploadForm" style="display: none;">
-        <input title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml"
+        <input data-i18n-title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml"
             multiple />
     </form>
     <div id="footer"></div>
