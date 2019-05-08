@@ -1,5 +1,4 @@
 import { generateLiveApiInstance } from './appId';
-// import { getLanguage } from '../common/lang';
 import { getTokenList } from './utils/storageManager';
 import { translate } from '../common/i18n';
 import { getLanguage } from './lang';
