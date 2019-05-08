@@ -53,22 +53,20 @@ export const durationToSecond = duration => {
 export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap;
 
 export const createUrl = options => {
-    const getOption = property => Object.prototype.hasOwnProperty.call(options, property) && options[property];
-    const language = getOption('addLanguage') ? `/${getLanguage()}` : '';
-    const path = getOption('path') ? `/${getOption('path')}` : '';
-    const htmlExtension = getOption('addHtmlExtension') ? '.html' : '';
-    const subdomain = getOption('subdomain') ? `${getOption('subdomain')}.` : 'www.';
+    const subdomain = options.subdomain ? `${options.subdomain}.` : 'www.';
+    const language = options.addLanguage ? `/${getLanguage()}` : '';
+    const path = options.path ? `/${options.path}` : '';
+    const htmlExtension = options.addHtmlExtension ? '.html' : '';
+
     if (isProduction()) {
         let domainExtension = `.${getExtension()}`;
-        if (getOption('isNonBotPage')) {
-            switch (document.location.hostname.replace(/^www./, '')) {
-                case 'bot.binary.me':
-                case 'binary.bot':
-                    domainExtension = '.me';
-                    break;
-                default:
-                    domainExtension = '.com';
-                    break;
+        if (options.isNonBotPage) {
+            if (options.isFooter) {
+                domainExtension = options.isIndonesia ? '.me' : '.com';
+            } else {
+                const hostname = document.location.hostname.replace(/^www./, '');
+                const meDomains = ['bot.binary.me', 'binary.bot'];
+                domainExtension = meDomains.includes(hostname) ? '.me' : '.com';
             }
         }
         return `${document.location.protocol}//${subdomain}binary${domainExtension}${language}${path}${htmlExtension}`;
