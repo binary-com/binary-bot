@@ -28,12 +28,14 @@ export default class GoogleDriveIntegration extends PureComponent {
                 </div>
                 <div className="right">
                     <a
+                        id="connect-google-drive"
                         onClick={() => googleDrive.authorise()}
                         className={!googleDrive.isAuthorised ? 'button' : 'button-disabled'}
                     >
                         <span>{translate('Connect')}</span>
                     </a>
                     <a
+                        id="disconnect-google-drive"
                         onClick={() => googleDrive.signOut()}
                         className={googleDrive.isAuthorised ? 'button' : 'button-disabled'}
                     >
