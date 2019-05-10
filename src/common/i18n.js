@@ -40,6 +40,20 @@ export const init = lang => {
 
 export const translate = str => (str && t(sha1(str))) || str;
 
+export const translateLangToLang = (str, fromLang, toLang) => {
+    if (supportedLanguages[fromLang]) {
+        const hashIndex = Object.values(supportedLanguages[fromLang]).findIndex(translatedStr => str === translatedStr);
+        if (hashIndex !== -1) {
+            const hash = Object.keys(supportedLanguages[fromLang])[hashIndex];
+            const translatedStr = supportedLanguages[toLang][hash];
+            if (translatedStr) {
+                return translatedStr;
+            }
+        }
+    }
+    return str;
+};
+
 export const xml = dom => {
     const categories = Array.from(dom.getElementsByTagName('category') || []);
     categories.forEach(child => {
