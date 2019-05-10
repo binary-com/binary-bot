@@ -25,6 +25,7 @@ const GTM = (() => {
 
     return {
         setVisitorId,
+        pushDataLayer,
     };
 })();
 
