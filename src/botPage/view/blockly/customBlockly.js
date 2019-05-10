@@ -344,11 +344,8 @@ Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockTyp
  */
 Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
     // eslint-disable-next-line no-underscore-dangle
-    const engCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
-    GTM.pushDataLayer({
-        event: 'Click Block Category',
-        'Block Category Name': engCategoryName,
-    });
+    const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
+    GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
 
     // Expand icon.
     if (this.hasChildren() && this.isUserCollapsible_) {
