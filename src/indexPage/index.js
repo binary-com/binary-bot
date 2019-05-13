@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import endpoint from './endpoint';
 import Logo from './react-components/logo.jsx';
 import Footer from './react-components/footer.jsx';
-import { getTokenList } from '../common/utils/storageManager';
 import { oauthLogin } from '../common/appId';
-import { createUrl } from '../common/utils/tools';
-import { load as loadLang } from '../common/lang';
 import '../common/binary-ui/dropdown';
-import endpoint from './endpoint';
 import isEuCountry from '../common/footer-checks';
+import GTM from '../common/gtm.js';
+import { load as loadLang } from '../common/lang';
+import { getTokenList } from '../common/utils/storageManager';
+import { createUrl } from '../common/utils/tools';
 
 const renderElements = () => {
     const showHideEuElements = isEu => {
@@ -33,6 +34,7 @@ const loginCheck = () => {
             $('.show-on-load').show();
             $('.barspinner').hide();
             renderElements();
+            GTM.init();
         });
     }
 };
