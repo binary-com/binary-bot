@@ -16,6 +16,10 @@ const addUiLang = () => {
 
         el.text(translate($(this).attr('data-i18n-text'))).append(contents);
     });
+
+    document.querySelectorAll('[data-i18n-title').forEach(titleNode => {
+        titleNode.setAttribute('title', translate(titleNode.getAttribute('data-i18n-title')));
+    });
 };
 
 export const load = () => {
