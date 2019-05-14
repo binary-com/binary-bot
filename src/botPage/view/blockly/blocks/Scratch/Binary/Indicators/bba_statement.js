@@ -10,7 +10,7 @@ Blockly.Blocks.bba_statement = {
                 {
                     type    : 'field_variable',
                     name    : 'VARIABLE',
-                    variable: 'bb',
+                    variable: 'bba',
                 },
                 {
                     type   : 'field_dropdown',
@@ -47,10 +47,10 @@ Blockly.JavaScript.bba_statement = block => {
         Blockly.Variables.NAME_TYPE
     );
     const bbResult = block.getFieldValue('BBRESULT_LIST');
-    const input = block.getChildFieldValue('input_list', 'INPUT_LIST') || '[]';
-    const period = block.getChildFieldValue('period', 'PERIOD') || '10';
-    const stdDevUp = block.getChildFieldValue('std_dev_multiplier_up', 'UPMULTIPLIER') || '5';
-    const stdDevDown = block.getChildFieldValue('std_dev_multiplier_down', 'DOWNMULTIPLIER') || '5';
+    const input = block.childValueToCode('input_list', 'INPUT_LIST') || '[]';
+    const period = block.childValueToCode('period', 'PERIOD') || '10';
+    const stdDevUp = block.childValueToCode('std_dev_multiplier_up', 'UPMULTIPLIER') || '5';
+    const stdDevDown = block.childValueToCode('std_dev_multiplier_down', 'DOWNMULTIPLIER') || '5';
 
     const code = `${varName} = Bot.bba(${input}, { periods: ${period}, stdDevUp: ${stdDevUp}, stdDevDown: ${stdDevDown} }, ${bbResult});\n`;
     return code;

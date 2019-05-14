@@ -40,8 +40,8 @@ Blockly.JavaScript.emaa_statement = block => {
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
-    const input = block.getChildFieldValue('input_list', 'INPUT_LIST') || '[]';
-    const period = block.getChildFieldValue('period', 'PERIOD') || '10';
+    const input = block.childValueToCode('input_list', 'INPUT_LIST') || '[]';
+    const period = block.childValueToCode('period', 'PERIOD') || '10';
 
     const code = `${varName} = Bot.emaa(${input}, ${period});\n`;
     return code;
