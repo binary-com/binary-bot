@@ -1,4 +1,4 @@
-import { deleteBlocksLoadedBy, loadRemote, recoverDeletedBlock } from '../../../../../utils';
+import { loadRemote } from '../../../../../utils';
 import { observer as globalObserver } from '../../../../../../../../common/utils/observer';
 import { translate } from '../../../../../../../../common/utils/tools';
 
@@ -6,6 +6,7 @@ Blockly.Blocks.loader = {
     init() {
         this.loadedByMe = [];
         this.loadedVariables = [];
+        this.currentUrl = '';
 
         this.jsonInit({
             message0: translate('Load block from: %1'),
@@ -21,41 +22,50 @@ Blockly.Blocks.loader = {
             colourTertiary : Blockly.Colours.Binary.colourTertiary,
             tooltip        : translate('Load blocks from URL'),
         });
+
+        const urlField = this.getField('URL');
+        // eslint-disable-next-line no-underscore-dangle
+        urlField.onFinishEditing_ = newValue => this.onFinishEditingUrl(newValue);
     },
-    onchange(ev) {
-        if (!this.isInFlyout && ev.type === 'change' && ev.element === 'disabled' && ev.blockId === this.id) {
-            if (ev.newValue === true) {
-                deleteBlocksLoadedBy(this.id);
-            } else {
-                const loader = Blockly.mainWorkspace.getBlockById(ev.blockId);
-                if (loader && loader.loadedByMe) {
-                    loader.loadedByMe.forEach(blockId =>
-                        recoverDeletedBlock(Blockly.mainWorkspace.getBlockById(blockId))
-                    );
-                }
+    onFinishEditingUrl(newValue) {
+        if (this.currentUrl === newValue) {
+            return;
+        }
+
+        if (this.disabled) {
+            const hasKnownUrl = this.workspace
+                .getAllBlocks()
+                .some(block => block.type === 'loader' && block.id !== this.id && block.currentUrl === this.currentUrl);
+            if (hasKnownUrl) {
+                this.setDisabled(false);
             }
         }
 
-        if (
-            !this.isInFlyout &&
-            (ev.type === 'change' && ev.element === 'field') &&
-            ev.blockId === this.id &&
-            !this.disabled
-        ) {
-            const { recordUndo } = Blockly.Events;
+        const { recordUndo } = Blockly.Events;
+        Blockly.Events.recordUndo = false;
 
-            Blockly.Events.recordUndo = false;
-            deleteBlocksLoadedBy(this.id);
-            loadRemote(this).then(
-                () => {
-                    Blockly.Events.recordUndo = recordUndo;
-                    globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-                },
-                e => {
-                    Blockly.Events.recordUndo = recordUndo;
-                    throw e;
+        loadRemote(this)
+            .then(() => {
+                Blockly.Events.recordUndo = recordUndo;
+                globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
+            })
+            .catch(errorMsg => {
+                Blockly.Events.recordUndo = recordUndo;
+                globalObserver.emit('ui.log.error', errorMsg);
+            });
+
+        this.currentUrl = this.getFieldValue('URL');
+    },
+    onchange(event) {
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            this.currentUrl = this.getFieldValue('URL');
+            this.workspace.getAllBlocks().forEach(block => {
+                if (block.type === 'loader' && block.id !== this.id) {
+                    if (block.currentUrl === this.currentUrl) {
+                        this.setDisabled(true);
+                    }
                 }
-            );
+            });
         }
     },
 };
