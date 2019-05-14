@@ -412,33 +412,35 @@ export const addLoadersFirst = (xml, header = null) =>
 const loadBlocksFromHeader = (blockStr = '', header) =>
     new Promise((resolve, reject) => {
         let xml;
+
         try {
             xml = Blockly.Xml.textToDom(blockStr);
         } catch (e) {
             reject(translate('Unrecognized file format.'));
         }
+
         try {
-            if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+            const isCollection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
+            if (isCollection) {
                 const { recordUndo } = Blockly.Events;
                 Blockly.Events.recordUndo = false;
-                addLoadersFirst(xml, header).then(
-                    () => {
-                        Array.from(xml.children)
-                            .filter(
-                                block =>
-                                    block.getAttribute('type') === 'tick_analysis' ||
-                                    isProcedure(block.getAttribute('type'))
-                            )
-                            .forEach(block => addDomAsBlockFromHeader(block, header));
 
+                // Retrieves the URL from each loader and loads blocks from their URLs, we have to
+                // do this because onFinishEditing_ function is not called when adding blocks to workspace.
+                addLoadersFirst(xml, header)
+                    .then(() => {
+                        Array.from(xml.children).forEach(node => {
+                            if (node.tagName === 'block') {
+                                addDomAsBlockFromHeader(node, header);
+                            }
+                        });
                         Blockly.Events.recordUndo = recordUndo;
                         resolve();
-                    },
-                    e => {
+                    })
+                    .catch(e => {
                         Blockly.Events.recordUndo = recordUndo;
                         reject(e);
-                    }
-                );
+                    });
             } else {
                 reject(translate('Remote blocks to load must be a collection.'));
             }
@@ -447,58 +449,53 @@ const loadBlocksFromHeader = (blockStr = '', header) =>
         }
     });
 
-export const loadRemote = blockObj =>
+export const loadRemote = loaderBlock =>
     new Promise((resolve, reject) => {
-        let url = blockObj.getFieldValue('URL');
+        let url = loaderBlock.getFieldValue('URL');
+
         if (url.indexOf('http') !== 0) {
             url = `http://${url}`;
         }
+
         if (!url.match(/[^/]*\.[a-zA-Z]{3}$/) && url.slice(-1)[0] !== '/') {
             reject(translate('Target must be an xml file'));
         } else {
             if (url.slice(-1)[0] === '/') {
                 url += 'index.xml';
             }
-            let isNew = true;
-            getTopBlocksByType('loader').forEach(block => {
-                if (block.id !== blockObj.id && block.url === url) {
-                    isNew = false;
-                }
-            });
-            if (!isNew) {
-                disable(blockObj);
+
+            const isKnownUrl = getTopBlocksByType('loader').some(
+                block => block.id !== loaderBlock.id && block.url === url
+            );
+
+            if (isKnownUrl) {
+                loaderBlock.setDisabled(true);
                 reject(translate('This url is already loaded'));
             } else {
-                $.ajax({
-                    type: 'GET',
-                    url,
-                })
+                $.ajax({ type: 'GET', url })
                     .fail(e => {
+                        let errorMsg;
+
                         if (e.status) {
-                            reject(
-                                Error(
-                                    `${translate('An error occurred while trying to load the url')}: ${e.status} ${
-                                        e.statusText
-                                    }`
-                                )
-                            );
+                            errorMsg = `${translate('An error occured while trying to load the url:')} ${e.status} ${
+                                e.statusText
+                            }`;
                         } else {
-                            reject(
-                                Error(
-                                    translate(
-                                        'Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'
-                                    )
-                                )
-                            );
+                            errorMsg = `${translate(
+                                'Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'
+                            )}`;
                         }
-                        deleteBlocksLoadedBy(blockObj.id);
+
+                        reject(Error(errorMsg));
                     })
                     .done(xml => {
-                        loadBlocksFromHeader(xml, blockObj).then(() => {
-                            enable(blockObj);
-                            blockObj.url = url; // eslint-disable-line no-param-reassign
-                            resolve(blockObj);
-                        }, reject);
+                        loadBlocksFromHeader(xml, loaderBlock)
+                            .then(() => {
+                                loaderBlock.setDisabled(false);
+                                loaderBlock.url = url; // eslint-disable-line no-param-reassign
+                                resolve(loaderBlock);
+                            })
+                            .catch(reject);
                     });
             }
         }
