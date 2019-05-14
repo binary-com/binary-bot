@@ -107,9 +107,28 @@ export default class TradeTable extends Component {
         });
     }
     registerTimeout = (api, contract) => {
-        setTimeout(() => {
+        const exponentialBackoff = (max, delay) => {
+            const { accountID } = this.props;
+            const rows = this.state[accountID].rows.slice();
             const contractID = contract.contract_id;
+
             this.refreshContract(api, contractID);
+
+            let currentStatus = '';
+            rows.forEach(row => {
+                if (row.contract_id === contractID) {
+                    currentStatus = row.contract_status;
+                }
+            });
+
+            if (currentStatus !== translate('Settled') && max > 0) {
+                setTimeout(() => {
+                    exponentialBackoff(max - 1, delay * 2);
+                }, delay * 1000);
+            }
+        };
+        setTimeout(() => {
+            exponentialBackoff(5, 1);
         }, 3000);
     };
     refreshContract(api, contractID) {
