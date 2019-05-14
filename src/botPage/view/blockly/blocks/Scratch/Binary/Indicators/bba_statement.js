@@ -1,5 +1,6 @@
 import config from '../../../../../../common/const';
 import { translate } from '../../../../../../../common/utils/tools';
+import { expectValue } from '../../../../../../../botPage/view/blockly/blocks/shared';
 
 Blockly.Blocks.bba_statement = {
     init() {
@@ -47,7 +48,7 @@ Blockly.JavaScript.bba_statement = block => {
         Blockly.Variables.NAME_TYPE
     );
     const bbResult = block.getFieldValue('BBRESULT_LIST');
-    const input = block.childValueToCode('input_list', 'INPUT_LIST') || '[]';
+    const input = expectValue(block.getChildByType('input_list'), 'INPUT_LIST');
     const period = block.childValueToCode('period', 'PERIOD') || '10';
     const stdDevUp = block.childValueToCode('std_dev_multiplier_up', 'UPMULTIPLIER') || '5';
     const stdDevDown = block.childValueToCode('std_dev_multiplier_down', 'DOWNMULTIPLIER') || '5';

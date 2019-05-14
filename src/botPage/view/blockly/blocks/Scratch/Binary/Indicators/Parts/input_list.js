@@ -8,7 +8,7 @@ Blockly.Blocks.input_list = {
                 {
                     type : 'input_value',
                     name : 'INPUT_LIST',
-                    check: null,
+                    check: 'Array',
                 },
             ],
             colour           : Blockly.Colours.BinaryLessGray.colour,

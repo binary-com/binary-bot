@@ -1,5 +1,6 @@
 import config from '../../../../../../common/const';
 import { translate } from '../../../../../../../common/i18n';
+import { expectValue } from '../../../../../../../botPage/view/blockly/blocks/shared';
 
 Blockly.Blocks.macda_statement = {
     init() {
@@ -47,7 +48,7 @@ Blockly.JavaScript.macda_statement = block => {
         Blockly.Variables.NAME_TYPE
     );
     const macdField = block.getFieldValue('MACDFIELDS_LIST');
-    const input = block.childValueToCode('input_list', 'INPUT_LIST') || '[]';
+    const input = expectValue(block.getChildByType('input_list'), 'INPUT_LIST');
     const fastEmaPeriod = block.childValueToCode('fast_ema_period', 'FAST_EMA_PERIOD') || '12';
     const slowEmaPeriod = block.childValueToCode('slow_ema_period', 'SLOW_EMA_PERIOD') || '26';
     const signalEmaPeriod = block.childValueToCode('signal_ema_period', 'SIGNAL_EMA_PERIOD') || '9';

@@ -1,4 +1,5 @@
 import { translate } from '../../../../../../../common/utils/tools';
+import { expectValue } from '../../../../../../../botPage/view/blockly/blocks/shared';
 
 Blockly.Blocks.rsia_statement = {
     init() {
@@ -40,7 +41,7 @@ Blockly.JavaScript.rsia_statement = block => {
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
-    const input = block.childValueToCode('input_list', 'INPUT_LIST') || '[]';
+    const input = expectValue(block.getChildByType('input_list'), 'INPUT_LIST');
     const period = block.childValueToCode('period', 'PERIOD') || '10';
 
     const code = `${varName} = Bot.rsia(${input}, ${period});\n`;
