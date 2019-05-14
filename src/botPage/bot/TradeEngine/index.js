@@ -114,9 +114,12 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             this.listen('authorize', ({ authorize }) => {
                 this.accountInfo = authorize;
                 this.token = token;
-                resolve();
+                this.api.subscribeToBalance().then(r => {
+                    this.balance = Number(r.balance.balance);
+                    resolve();
+                });
             })
-        ).then(() => this.subscribeToBalance());
+        );
     }
     getContractDuration() {
         const { duration, duration_unit: durationUnit } = this.tradeOptions;
