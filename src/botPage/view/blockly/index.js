@@ -5,7 +5,6 @@ import {
     isMainBlock,
     save,
     disable,
-    deleteBlocksLoadedBy,
     addLoadersFirst,
     cleanUpOnLoad,
     addDomAsBlock,
@@ -42,14 +41,6 @@ const disableStrayBlocks = () => {
             !block.disabled
         ) {
             disable(block, translate('Blocks must be inside block holders, main blocks or functions'));
-        }
-    });
-};
-const disposeBlocksWithLoaders = () => {
-    Blockly.mainWorkspace.addChangeListener(ev => {
-        setBeforeUnload();
-        if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader' && ev.group !== 'undo') {
-            deleteBlocksLoadedBy(ev.blockId, ev.group);
         }
     });
 };
@@ -246,7 +237,6 @@ export default class _Blockly {
                         this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
                         Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
                         this.zoomOnPlusMinus();
-                        disposeBlocksWithLoaders();
                         setTimeout(() => {
                             setBeforeUnload(true);
                             Blockly.mainWorkspace.cleanUp();
