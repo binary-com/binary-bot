@@ -325,8 +325,6 @@ export default class _Blockly {
     run(limitations = {}) {
         disableStrayBlocks();
 
-        const workspaceCode = Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
-
         let code;
         try {
             code = `
@@ -348,7 +346,7 @@ function BinaryBotPrivateTickAnalysis() {
  }
 }
 var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-${workspaceCode}
+${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 BinaryBotPrivateRun(BinaryBotPrivateInit);
 while(true) {
  BinaryBotPrivateTickAnalysis();
