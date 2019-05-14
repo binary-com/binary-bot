@@ -15,6 +15,9 @@ Blockly.Blocks.math_number = {
             colourSecondary: '#ffffff',
             colourTertiary : '#ffffff',
         });
+
+        const fieldInput = this.getField('NUM');
+        fieldInput.setValidator(input => (/^-?[0-9][0-9,\.]*$/.test(input) ? undefined : null));
     },
 };
 
