@@ -132,7 +132,7 @@ Blockly.JavaScript.lists_getIndex = block => {
             return `${list}.splice(${at}, 1);\n`;
         }
     } else if (where === 'FROM_END') {
-        const at = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, true);
+        const at = Blockly.JavaScript.getAdjusted(block, 'AT', 1, true);
         if (mode === 'GET') {
             code = `${list}.slice(${at})[0]`;
             order = Blockly.JavaScript.ORDER_FUNCTION_CALL;
