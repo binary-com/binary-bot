@@ -90,11 +90,11 @@ Blockly.JavaScript.math_single = block => {
     if (operator === 'LOG10') {
         code = `Math.log(${arg}) / Math.log(10)`;
     } else if (operator === 'ASIN') {
-        code = `Math.asin(${arg} / 180 * Math.PI)`;
+        code = `Math.asin(${arg}) / Math.PI * 180`;
     } else if (operator === 'ACOS') {
-        code = `Math.acos(${arg} / 180 * Math.PI)`;
+        code = `Math.acos(${arg}) / Math.PI * 180`;
     } else if (operator === 'ATAN') {
-        code = `Math.atan(${arg} / 180 * Math.PI)`;
+        code = `Math.atan(${arg}) / Math.PI * 180`;
     }
 
     return [code, Blockly.JavaScript.ORDER_DIVISION];
