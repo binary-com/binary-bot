@@ -17,7 +17,13 @@ Blockly.Blocks.math_number = {
         });
 
         const fieldInput = this.getField('NUM');
-        fieldInput.setValidator(input => (/^-?[0-9][0-9,\.]*$/.test(input) ? undefined : null));
+        fieldInput.setValidator(input => this.numberValidator(input));
+    },
+    numberValidator(input) {
+        if (/^-?[0-9][0-9,\.]*$/.test(input)) {
+            return undefined;
+        }
+        return null;
     },
 };
 
