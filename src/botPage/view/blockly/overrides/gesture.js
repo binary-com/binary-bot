@@ -1,3 +1,5 @@
+/* eslint-disable func-names, no-underscore-dangle */
+
 /**
  * Whether this gesture is a click on a field.  This should only be called when
  * ending a gesture (mouse up, touch end).

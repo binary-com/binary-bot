@@ -44,7 +44,9 @@ Blockly.JavaScript.controls_whileUntil = block => {
         argument0 = `!${argument0}`;
     }
 
+    // eslint-disable-next-line no-underscore-dangle
     const maxLoops = Blockly.JavaScript.variableDB_.getDistinctName('maxLoops', Blockly.Variables.NAME_TYPE);
+    // eslint-disable-next-line no-underscore-dangle
     const currentLoop = Blockly.JavaScript.variableDB_.getDistinctName('currentLoop', Blockly.Variables.NAME_TYPE);
 
     return `

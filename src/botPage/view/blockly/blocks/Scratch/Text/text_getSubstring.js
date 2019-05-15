@@ -134,13 +134,12 @@ Blockly.JavaScript.text_getSubstring = block => {
         const getIndex = (stringName, where, optAt) => {
             if (where === 'FIRST') {
                 return '0';
-            } else if (where == 'FROM_END') {
+            } else if (where === 'FROM_END') {
                 return `${stringName}.length - 1 - ${optAt}`;
-            } else if (where == 'LAST') {
+            } else if (where === 'LAST') {
                 return `${stringName}.length - 1`;
-            } 
+            }
             return optAt;
-            
         };
         const wherePascalCase = {
             FIRST     : 'First',
