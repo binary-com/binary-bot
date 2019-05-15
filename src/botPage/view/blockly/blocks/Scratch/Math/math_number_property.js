@@ -72,7 +72,7 @@ Blockly.JavaScript.math_number_property = block => {
         // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_('mathIsPrime', [
             // eslint-disable-next-line no-underscore-dangle
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}_(n) {
+            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(n) {
                 // https://en.wikipedia.org/wiki/Primality_test#Naive_methods
                 if (n == 2 || n == 3) {
                     return true;
@@ -80,15 +80,15 @@ Blockly.JavaScript.math_number_property = block => {
 
                 // False if n is NaN, negative, is 1, or not whole.
                 // And false if n is divisible by 2 or 3.
-                if (isNaN(n)) || n <= 1 || n % 1 != 0 || n % 2 == 0 || n % 3 == 0) {
+                if (isNaN(n) || n <= 1 || n % 1 != 0 || n % 2 == 0 || n % 3 == 0) {
                     return false;
                 }
 
                 // Check all the numbers of form 6k +/- 1, up to sqrt(n).
-                for (let i  = 6; x <= Math.sqrt(n) + 1; x += 6) {
-                    if (n % (x - 1) == 0 || n % (x + 1) == 0 {
+                for (var x  = 6; x <= Math.sqrt(n) + 1; x += 6) {
+                    if (n % (x - 1) == 0 || n % (x + 1) == 0) {
                         return false;
-                    })
+                    }
                 }
                 return true;
             }`,
