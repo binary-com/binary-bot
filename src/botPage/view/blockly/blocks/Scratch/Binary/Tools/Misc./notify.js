@@ -35,7 +35,7 @@ Blockly.Blocks.notify = {
 Blockly.JavaScript.notify = block => {
     const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
     const sound = block.getFieldValue('NOTIFICATION_SOUND');
-    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE') || '';
+    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE') || `"${translate('<empty message>')}"`;
 
     const code = `Bot.notify({ className: '${notificationType}', message: ${message}, sound: '${sound}'});\n`;
     return code;
