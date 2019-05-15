@@ -2,6 +2,8 @@ import { minusIconDark } from '../../../images';
 
 Blockly.Blocks.lists_statement = {
     init() {
+        this.requiredParentId = '';
+
         this.jsonInit({
             message0: '%1',
             args0   : [
@@ -29,16 +31,29 @@ Blockly.Blocks.lists_statement = {
         this.unplug(true);
         this.dispose();
     },
-    onchange() {
+    onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        // Self-destruct if located outside `lists_create_with`
         const surroundParent = this.getSurroundParent();
-        if (!surroundParent || surroundParent.type !== 'lists_create_with') {
-            this.unplug(true);
-            this.dispose();
+        if (event.type === Blockly.Events.END_DRAG) {
+            if (!this.requiredParentId && surroundParent.type === 'lists_create_with') {
+                this.requiredParentId = surroundParent.id;
+            } else if (!surroundParent || surroundParent.id !== this.requiredParentId) {
+                Blockly.Events.disable();
+                this.unplug(false);
+
+                const parentBlock = this.workspace.getAllBlocks().find(block => block.id === this.requiredParentId);
+
+                if (parentBlock) {
+                    const parentConnection = parentBlock.getLastConnectionInStatement('STACK');
+                    parentConnection.connect(this.previousConnection);
+                } else {
+                    this.dispose();
+                }
+                Blockly.Events.enable();
+            }
         }
     },
 };

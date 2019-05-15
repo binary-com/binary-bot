@@ -2,6 +2,8 @@ import { translate } from '../../../../../../../../common/utils/tools';
 
 Blockly.Blocks.input_list = {
     init() {
+        this.requiredParentId = '';
+
         this.jsonInit({
             message0: translate('Input List %1'),
             args0   : [
@@ -26,12 +28,22 @@ Blockly.Blocks.input_list = {
             return;
         }
 
+        const surroundParent = this.getSurroundParent();
         if (event.type === Blockly.Events.END_DRAG) {
-            const surroundParent = this.getSurroundParent();
-            if (!surroundParent || !this.allowedParents.includes(surroundParent.type)) {
+            if (!this.requiredParentId && this.allowedParents.includes(surroundParent.type)) {
+                this.requiredParentId = surroundParent.id;
+            } else if (!surroundParent || surroundParent.id !== this.requiredParentId) {
                 Blockly.Events.disable();
-                this.unplug(true);
-                this.dispose();
+                this.unplug(false);
+
+                const parentBlock = this.workspace.getAllBlocks().find(block => block.id === this.requiredParentId);
+
+                if (parentBlock) {
+                    const parentConnection = parentBlock.getLastConnectionInStatement('STATEMENT');
+                    parentConnection.connect(this.previousConnection);
+                } else {
+                    this.dispose();
+                }
                 Blockly.Events.enable();
             }
         }

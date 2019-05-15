@@ -37,6 +37,7 @@ Blockly.Blocks.lists_create_with = {
         }
 
         const statementBlock = this.workspace.newBlock('lists_statement');
+        statementBlock.requiredParentId = this.id;
         statementBlock.setMovable(false);
         statementBlock.initSvg();
         statementBlock.render();

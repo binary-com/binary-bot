@@ -74,8 +74,16 @@ Blockly.Blocks.trade_definition_market = {
     enforceParent() {
         if (!this.isDescendantOf('trade_definition')) {
             Blockly.Events.disable();
-            this.unplug(true);
-            this.dispose();
+            this.unplug(false);
+
+            const tradeDefinitionBlock = this.workspace.getAllBlocks().find(block => block.type === 'trade_definition');
+            if (tradeDefinitionBlock) {
+                const connection = tradeDefinitionBlock.getLastConnectionInStatement('TRADE_OPTIONS');
+                connection.connect(this.previousConnection);
+            } else {
+                this.dispose();
+            }
+
             Blockly.Events.enable();
         }
     },

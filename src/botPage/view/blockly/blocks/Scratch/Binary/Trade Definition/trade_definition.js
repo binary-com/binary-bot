@@ -91,34 +91,13 @@ Blockly.Blocks.trade_definition = {
     // this statement to only allow `trade_definition` type blocks.
     enforceTradeDefinitionType() {
         const blocksInStatement = this.getBlocksInStatement('TRADE_OPTIONS');
-
         blocksInStatement.forEach(block => {
             if (!/^trade_definition_.+$/.test(block.type)) {
                 Blockly.Events.disable();
-                block.unplug(true);
+                block.unplug(false);
                 Blockly.Events.enable();
             }
         });
-
-        const paramsToReadd = this.requiredParamBlocks.filter(
-            blockName => blocksInStatement.findIndex(block => block.type === blockName) === -1
-        );
-
-        paramsToReadd.forEach(blockName => {
-            Blockly.Events.disable();
-
-            const block = this.workspace.newBlock(blockName);
-            block.initSvg();
-            block.render();
-
-            const lastConnection = this.getLastConnectionInStatement('TRADE_OPTIONS');
-            lastConnection.connect(block.previousConnection);
-
-            Blockly.Events.enable();
-        });
-
-        // Send CREATE event to re-populate dropdowns.
-        this.onchange({ type: Blockly.Events.BLOCK_CREATE, blockId: this.id });
     },
     requiredParamBlocks: [
         'trade_definition_market',

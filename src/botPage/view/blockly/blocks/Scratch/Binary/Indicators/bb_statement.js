@@ -43,32 +43,13 @@ Blockly.Blocks.bb_statement = {
         }
 
         if (event.type === Blockly.Events.END_DRAG) {
-            // Only allow `indicator_parts` type blocks
             const blocksInStatement = this.getBlocksInStatement('STATEMENT');
             blocksInStatement.forEach(block => {
-                if (this.requiredParamBlocks && !this.requiredParamBlocks.includes(block.type)) {
+                if (!this.requiredParamBlocks.includes(block.type)) {
                     Blockly.Events.disable();
-                    block.unplug();
+                    block.unplug(false);
                     Blockly.Events.enable();
                 }
-            });
-
-            // Ensure indicator has required param blocks
-            const parametersToReadd = this.requiredParamBlocks.filter(
-                paramName => blocksInStatement.findIndex(block => block.type === paramName) === -1
-            );
-
-            parametersToReadd.forEach(paramName => {
-                Blockly.Events.disable();
-
-                const paramBlock = this.workspace.newBlock(paramName);
-                paramBlock.initSvg();
-                paramBlock.render();
-
-                const connection = this.getLastConnectionInStatement('STATEMENT');
-                connection.connect(paramBlock.previousConnection);
-
-                Blockly.Events.enable();
             });
         }
     },

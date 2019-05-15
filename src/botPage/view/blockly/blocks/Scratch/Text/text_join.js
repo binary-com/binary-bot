@@ -39,6 +39,7 @@ Blockly.Blocks.text_join = {
         Blockly.Events.setGroup(true);
 
         const textBlock = this.workspace.newBlock('text_statement');
+        textBlock.requiredParentId = this.id;
         textBlock.setMovable(false);
         textBlock.initSvg();
         textBlock.render();
