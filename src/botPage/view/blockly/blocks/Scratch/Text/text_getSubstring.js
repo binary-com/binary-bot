@@ -129,7 +129,19 @@ Blockly.JavaScript.text_getSubstring = block => {
     } else {
         at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
         at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
-        const { getIndex_ } = Blockly.JavaScript.text;
+
+        // binary-bot: Blockly.JavaScript.text.getIndex_ (Blockly)
+        const getIndex = (stringName, where, optAt) => {
+            if (where === 'FIRST') {
+                return '0';
+            } else if (where == 'FROM_END') {
+                return `${stringName}.length - 1 - ${optAt}`;
+            } else if (where == 'LAST') {
+                return `${stringName}.length - 1`;
+            } 
+            return optAt;
+            
+        };
         const wherePascalCase = {
             FIRST     : 'First',
             LAST      : 'Last',
@@ -146,8 +158,8 @@ Blockly.JavaScript.text_getSubstring = block => {
                     ${where1 === 'FROM_END' || where1 === 'FROM_START' ? ', at1' : ''}
                     ${where2 === 'FROM_END' || where2 === 'FROM_START' ? ', at2' : ''}
                 ) {
-                    var start = ${getIndex_('sequence', where1, 'at1')};
-                    var end = ${getIndex_('sequence', where2, 'at2')};
+                    var start = ${getIndex('sequence', where1, 'at1')};
+                    var end = ${getIndex('sequence', where2, 'at2')};
                     return sequence.slice(start, end);
                 }`,
             ]
