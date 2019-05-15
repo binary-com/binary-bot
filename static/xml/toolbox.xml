@@ -387,6 +387,12 @@
             <field name="BBRESULT_LIST">0</field>
             <statement name="STATEMENT">
                 <block type="input_list" id="YEf:KZ)djRnGuIWsbK0I" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="period" id="4JoaJd$?9-|ep;BKs?1l" deletable="false" movable="false">
                             <value name="PERIOD">
@@ -420,6 +426,12 @@
         <block type="ema_statement" id="Z/5nx6dNAP7kjiN1)MgG">
             <statement name="STATEMENT">
                 <block type="input_list" id="3#dzWIAVR5[g7;bg,NGp" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="period" id="P[axo:k75yG+5TE!2:fl" deletable="false" movable="false">
                             <value name="PERIOD">
@@ -435,6 +447,12 @@
         <block type="rsi_statement" id="ZT9(`Caxnm^,(K.TeP~n">
             <statement name="STATEMENT">
                 <block type="input_list" id="gW-z$c-LuE#%q?}mhG3]" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
                             <value name="PERIOD">
@@ -450,6 +468,12 @@
         <block type="sma_statement" id="5bNx,|zqxar{CpD^O%,t">
             <statement name="STATEMENT">
                 <block type="input_list" id="gW-z$c-LuE#%q?}mhG3]" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
                             <value name="PERIOD">
@@ -468,6 +492,12 @@
             <field name="BBRESULT_LIST">0</field>
             <statement name="STATEMENT">
                 <block type="input_list" id="YEf:KZ)djRnGuIWsbK0I" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="period" id="4JoaJd$?9-|ep;BKs?1l" deletable="false" movable="false">
                             <value name="PERIOD">
@@ -501,6 +531,12 @@
         <block type="emaa_statement" id="71@BxZ6McrKkhbT*=PR)">
             <statement name="STATEMENT">
                 <block type="input_list" id="3#dzWIAVR5[g7;bg,NGp" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="period" id="P[axo:k75yG+5TE!2:fl" deletable="false" movable="false">
                             <value name="PERIOD">
@@ -517,6 +553,12 @@
             <field name="MACDFIELDS_LIST">1</field>
             <statement name="STATEMENT">
                 <block type="input_list" id="Ppo];`FZ!Ejz~MRe%n2V" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="fast_ema_period" id="Zxu(vt/%98rC5)#cL{!]" deletable="false" movable="false">
                             <value name="FAST_EMA_PERIOD">
@@ -550,6 +592,12 @@
         <block type="rsia_statement" id="JnSqyfy(dbLm41r3jVT2">
             <statement name="STATEMENT">
                 <block type="input_list" id="gW-z$c-LuE#%q?}mhG3]" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
                             <value name="PERIOD">
@@ -565,6 +613,12 @@
         <block type="smaa_statement" id=",_$%/oC+:6DZNC4K_zFH">
             <statement name="STATEMENT">
                 <block type="input_list" id="gW-z$c-LuE#%q?}mhG3]" deletable="false" movable="false">
+                <value name="INPUT_LIST">
+                    <shadow type="ohlc_values" id="hW5=pFTe#uDY@ldDEfkx">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <field name="CANDLEINTERVAL_LIST">default</field>
+                    </shadow>
+                </value>
                     <next>
                         <block type="period" id="sy1[$hFuwegmjkhJXI(:" deletable="false" movable="false">
                             <value name="PERIOD">
