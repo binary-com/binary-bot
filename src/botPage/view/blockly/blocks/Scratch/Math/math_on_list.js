@@ -63,7 +63,7 @@ Blockly.JavaScript.math_on_list = block => {
     } else if (operation === 'MEDIAN') {
         const functionName = Blockly.JavaScript.provideFunction_('mathMedian', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
-                const localList = myList.filter(function(x) { 
+                var localList = myList.filter(function(x) { 
                     return typeof x == 'number'; 
                 });
                 if (!localList.length) {
@@ -85,16 +85,16 @@ Blockly.JavaScript.math_on_list = block => {
     } else if (operation === 'MODE') {
         const functionName = Blockly.JavaScript.provideFunction_('mathModes', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(values) {
-                const modes = [];
-                const counts = [];
-                let maxCount = 0;
+                var modes = [];
+                var counts = [];
+                var maxCount = 0;
 
-                for (let i = 0; i < values.length; i++) {
-                    const value = values[i];
-                    let found = false;
-                    let thisCount;
+                for (var i = 0; i < values.length; i++) {
+                    var value = values[i];
+                    var found = false;
+                    var thisCount;
 
-                    for (let j = 0; j < counts.length; j++) {
+                    for (var j = 0; j < counts.length; j++) {
                         if (counts[j][0] === value) {
                             thisCount = ++counts[j][1];
                             found = true;
@@ -109,7 +109,7 @@ Blockly.JavaScript.math_on_list = block => {
                     maxCount = Math.max(thisCount, maxCount);
                 }
                 
-                for (let j = 0; j < counts.length; j++) {
+                for (var j = 0; j < counts.length; j++) {
                     if (counts[j][1] == maxCount) {
                         modes.push(counts[j][0]);
                     }
@@ -124,17 +124,17 @@ Blockly.JavaScript.math_on_list = block => {
     } else if (operation === 'STD_DEV') {
         const functionName = Blockly.JavaScript.provideFunction_('mathStandardDeviation', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(numbers) {
-                const n = numbers.length;
+                var n = numbers.length;
                 if (!n) {
                     return null;
                 }
 
-                const mean = numbers.reduce(function(x, y) {
+                var mean = numbers.reduce(function(x, y) {
                     return x + y;
                 }) / n;
 
-                let variance = 0;
-                for (let j = 0; j < n; j++) {
+                var variance = 0;
+                for (var j = 0; j < n; j++) {
                     variance += Math.pow(numbers[j] - mean, 2);
                 }
                 variance = variance / n;
@@ -147,7 +147,7 @@ Blockly.JavaScript.math_on_list = block => {
     } else if (operation === 'RANDOM') {
         const functionName = Blockly.JavaScript.provideFunction_('mathRandomList', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
-                const x = Math.floor(Math.random() * list.length);
+                var x = Math.floor(Math.random() * list.length);
                 return list[x];
             }`,
         ]);
