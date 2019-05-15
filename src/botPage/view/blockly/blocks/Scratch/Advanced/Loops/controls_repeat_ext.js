@@ -55,5 +55,3 @@ Blockly.JavaScript.controls_repeat_ext = block => {
     }\n`;
     return code;
 };
-
-Blockly.JavaScript.controls_repeat = Blockly.JavaScript.controls_repeat_ext;
