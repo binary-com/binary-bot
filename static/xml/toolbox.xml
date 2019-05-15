@@ -172,7 +172,7 @@
                 </block>
             </value>
             <value name="AT">
-                <shadow type="math_number" id="xs+XY4~aA4;kp,_FJT;5">
+                <shadow type="math_number_positive" id="xs+XY4~aA4;kp,_FJT;5">
                     <field name="NUM">1</field>
                 </shadow>
             </value>
@@ -187,12 +187,12 @@
                 </block>
             </value>
             <value name="AT1">
-                <shadow type="math_number" id="(LkQ#dMdO|_ucg{R8G6G">
+                <shadow type="math_number_positive" id="(LkQ#dMdO|_ucg{R8G6G">
                     <field name="NUM">0</field>
                 </shadow>
             </value>
             <value name="AT2">
-                <shadow type="math_number" id="Sjyikx|g8K}w|br@yQ=c">
+                <shadow type="math_number_positive" id="Sjyikx|g8K}w|br@yQ=c">
                     <field name="NUM">2</field>
                 </shadow>
             </value>
