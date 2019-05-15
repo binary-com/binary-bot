@@ -13,8 +13,8 @@ Blockly.Blocks.text_charAt = {
                     type   : 'field_dropdown',
                     name   : 'WHERE',
                     options: [
-                        ['#', 'FROM_START'],
-                        [translate('# from end'), 'FROM_END'],
+                        [translate('letter #'), 'FROM_START'],
+                        [translate('letter # from end'), 'FROM_END'],
                         [translate('first letter'), 'FIRST'],
                         [translate('last letter'), 'LAST'],
                         [translate('random letter'), 'RANDOM'],
