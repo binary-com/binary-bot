@@ -44,7 +44,18 @@ Blockly.JavaScript.controls_whileUntil = block => {
         argument0 = `!${argument0}`;
     }
 
-    return `while (${argument0}) {
-        ${branch}
-    }\n`;
+    const maxLoops = Blockly.JavaScript.variableDB_.getDistinctName('maxLoops', Blockly.Variables.NAME_TYPE);
+    const currentLoop = Blockly.JavaScript.variableDB_.getDistinctName('currentLoop', Blockly.Variables.NAME_TYPE);
+
+    return `
+        var ${maxLoops} = 10000;
+        var ${currentLoop} = 0;
+
+        while (${argument0}) {
+            ${branch}
+            ${currentLoop}++;
+            if (${currentLoop} > ${maxLoops}) {
+                throw new Error("${translate('Infinite loop detected')}");
+            }
+        }\n`;
 };
