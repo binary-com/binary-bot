@@ -1,4 +1,5 @@
 import { fieldGeneratorMapping } from '../../../shared';
+import { observer as globalObserver } from '../../../../../../../common/utils/observer';
 
 Blockly.Blocks.trade_definition_market = {
     init() {
@@ -36,6 +37,8 @@ Blockly.Blocks.trade_definition_market = {
         if (!this.workspace || this.isInFlyout || !allowedEvents.includes(event.type) || this.workspace.isDragging()) {
             return;
         }
+
+        globalObserver.emit('bot.init', this.getFieldValue('SYMBOL_LIST'));
 
         const topParentBlock = this.getTopParent();
         if (!topParentBlock || topParentBlock.type !== 'trade_definition') {
