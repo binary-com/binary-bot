@@ -16,7 +16,7 @@ Blockly.Blocks.math_number_property = {
                         [translate('even'), 'EVEN'],
                         [translate('odd'), 'ODD'],
                         [translate('prime'), 'PRIME'],
-                        [translate('whole'), 'WHOLE '],
+                        [translate('whole'), 'WHOLE'],
                         [translate('positive'), 'POSITIVE'],
                         [translate('negative'), 'NEGATIVE'],
                         [translate('divisible by'), 'DIVISIBLE_BY'],
