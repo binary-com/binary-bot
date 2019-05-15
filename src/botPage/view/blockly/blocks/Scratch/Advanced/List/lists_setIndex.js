@@ -90,7 +90,7 @@ Blockly.JavaScript.lists_setIndex = block => {
 
     if (where === 'FIRST') {
         if (mode === 'SET') {
-            code = `list[0] = ${value};\n`;
+            code = `${list}[0] = ${value};\n`;
         } else if (mode === 'INSERT') {
             code = `${list}.unshift(${value});\n`;
         }
