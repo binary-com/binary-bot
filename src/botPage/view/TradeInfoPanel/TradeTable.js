@@ -85,8 +85,9 @@ export default class TradeTable extends Component {
 
             const trade = {
                 ...tradeObj,
-                profit         : getProfit(tradeObj),
-                contract_status: translate('Pending'),
+                profit          : getProfit(tradeObj),
+                contract_status : translate('Pending'),
+                contract_settled: false,
             };
 
             const accountStat = this.getAccountStat(accountID);
@@ -103,36 +104,41 @@ export default class TradeTable extends Component {
             }
         });
         globalObserver.register('contract.settled', contract => {
-            this.registerTimeout(api, contract);
+            const contractID = contract.contract_id;
+            this.settleContract(api, contractID);
         });
     }
-    registerTimeout = (api, contract) => {
-        const exponentialBackoff = (max, delay) => {
-            const { accountID } = this.props;
-            const rows = this.state[accountID].rows.slice();
-            const contractID = contract.contract_id;
 
-            this.refreshContract(api, contractID);
+    async settleContract(api, contractID) {
+        let settled = false;
+        let delay = 3000;
 
-            let currentStatus = '';
-            rows.forEach(row => {
-                if (row.contract_id === contractID) {
-                    currentStatus = row.contract_status;
+        const sleep = d => new Promise(resolve => setTimeout(() => resolve(), d));
+
+        while (!settled) {
+            await sleep(delay);
+
+            try {
+                alert('Calling API now...');
+                await this.refreshContract(api, contractID);
+
+                const { accountID } = this.props;
+                const rows = this.state[accountID].rows.slice();
+                const contractRow = rows.find(row => row.contract_id === contractID);
+
+                if (contractRow && contractRow.contract_settled) {
+                    settled = true;
                 }
-            });
-
-            if (currentStatus !== translate('Settled') && max > 0) {
-                setTimeout(() => {
-                    exponentialBackoff(max - 1, delay * 2);
-                }, delay * 1000);
+            } catch (e) {
+                // Do nothing. Loop again.
+            } finally {
+                delay *= 1.5;
             }
-        };
-        setTimeout(() => {
-            exponentialBackoff(5, 1);
-        }, 3000);
-    };
+        }
+    }
+
     refreshContract(api, contractID) {
-        api.getContractInfo(contractID).then(r => {
+        return api.getContractInfo(contractID).then(r => {
             const contract = r.proposal_open_contract;
             const timestamp = getTimestamp(contract.date_start);
             const tradeObj = { reference: contract.transaction_ids.buy, ...contract, timestamp };
@@ -151,7 +157,8 @@ export default class TradeTable extends Component {
                 const { reference } = row;
                 if (reference === trade.reference) {
                     return {
-                        contract_status: translate('Settled'),
+                        contract_status : translate('Settled'),
+                        contract_settled: true,
                         reference,
                         ...trade,
                     };
