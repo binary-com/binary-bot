@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
@@ -119,7 +120,6 @@ export default class TradeTable extends Component {
             await sleep(delay);
 
             try {
-                alert('Calling API now...');
                 await this.refreshContract(api, contractID);
 
                 const { accountID } = this.props;
