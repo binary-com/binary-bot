@@ -114,10 +114,10 @@ export default class TradeTable extends Component {
         let settled = false;
         let delay = 3000;
 
-        const sleep = d => new Promise(resolve => setTimeout(() => resolve(), d));
+        const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay);
 
         while (!settled) {
-            await sleep(delay);
+            await sleep();
 
             try {
                 await this.refreshContract(api, contractID);
