@@ -3,7 +3,7 @@ import { translate } from '../../../../../common/i18n';
 Blockly.Blocks.notify_telegram = {
     init() {
         this.jsonInit({
-            message0: translate('Notify Telegram %1 Bot ID: %2 Chat ID: %3 Message: %4'),
+            message0: translate('Notify Telegram %1 Access Token: %2 Chat ID: %3 Message: %4'),
             args0   : [
                 {
                     type: 'input_dummy',
