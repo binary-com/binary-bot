@@ -10,7 +10,7 @@ Blockly.Blocks.notify_telegram = {
                 },
                 {
                     type: 'input_value',
-                    name: 'TELEGRAM_BOT_ID',
+                    name: 'TELEGRAM_ACCESS_TOKEN',
                 },
                 {
                     type: 'input_value',
@@ -31,14 +31,14 @@ Blockly.Blocks.notify_telegram = {
 };
 
 Blockly.JavaScript.notify_telegram = block => {
-    const botId = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_BOT_ID') || '';
+    const accessToken = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_ACCESS_TOKEN') || '';
     const chatId = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_CHAT_ID') || '';
     const message = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_MESSAGE') || '';
 
-    if (!botId || !chatId || !message) {
+    if (!accessToken || !chatId || !message) {
         return '';
     }
 
-    const code = `Bot.notifyTelegram(${botId}, ${chatId}, ${message});\n`;
+    const code = `Bot.notifyTelegram(${accessToken}, ${chatId}, ${message});\n`;
     return code;
 };
