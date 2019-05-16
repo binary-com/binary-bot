@@ -4,6 +4,7 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 
 export default Interface =>
     class extends Interface {
+        // eslint-disable-next-line class-methods-use-this
         notifyTelegram(accessToken, chatId, message) {
             const url = encodeURI(
                 `https://api.telegram.org/bot${accessToken}/sendMessage?chat_id=${chatId}&text=${message}`
