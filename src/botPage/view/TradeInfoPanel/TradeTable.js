@@ -114,7 +114,7 @@ export default class TradeTable extends Component {
         let settled = false;
         let delay = 3000;
 
-        const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay);
+        const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay));
 
         while (!settled) {
             await sleep();
