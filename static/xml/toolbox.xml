@@ -435,7 +435,7 @@
                     </value>
                 </block>
                 <block type="notify_telegram" id=":L;o$/S0X^2^nt%taS5}">
-                    <value name="TELEGRAM_BOT_ID">
+                    <value name="TELEGRAM_ACCESS_TOKEN">
                         <shadow type="text">
                             <field name="TEXT"></field>
                         </shadow>
