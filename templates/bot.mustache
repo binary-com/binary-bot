@@ -165,7 +165,11 @@
 
     <div id="blocklyArea"></div>
     <div id="blocklyDiv" style="position: absolute;"></div>
-
+    
+    <form id="fileUploadForm" style="display: none;">
+        <input data-i18n-title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml"
+            multiple />
+    </form>
     <div id="footer"></div>
     <audio id="announcement" src="sound/announcement.ogg" autostart="false"></audio>
     <audio id="earned-money" src="sound/coins.ogg" autostart="false"></audio>
