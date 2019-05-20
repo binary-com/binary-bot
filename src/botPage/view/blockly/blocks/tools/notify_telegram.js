@@ -1,4 +1,5 @@
 import { translate } from '../../../../../common/i18n';
+import { notify } from '../../../../bot/broadcast';
 
 Blockly.Blocks.notify_telegram = {
     init() {
@@ -31,9 +32,10 @@ Blockly.Blocks.notify_telegram = {
 };
 
 Blockly.JavaScript.notify_telegram = block => {
-    const accessToken = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_ACCESS_TOKEN') || '';
-    const chatId = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_CHAT_ID') || '';
-    const message = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_MESSAGE') || '';
+    const accessToken =
+        Blockly.JavaScript.valueToCode(block, 'TELEGRAM_ACCESS_TOKEN', Blockly.JavaScript.ORDER_ATOMIC) || '';
+    const chatId = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_CHAT_ID', Blockly.JavaScript.ORDER_ATOMIC) || '';
+    const message = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) || '';
 
     if (!accessToken || !chatId || !message) {
         return '';
