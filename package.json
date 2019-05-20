@@ -94,7 +94,7 @@
     "react-data-grid": "^3.0.0",
     "react-dom": "^16.8.6",
     "react-joyride": "^1.11.1",
-    "redux": "^3.7.2",
+    "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
     "sha1": "^1.1.1",
     "trackjs": "^2.10.2",
