@@ -5,13 +5,16 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 export default Interface =>
     class extends Interface {
         // eslint-disable-next-line class-methods-use-this
-        notifyTelegram(accessToken, chatId, message) {
-            const url = encodeURI(
-                `https://api.telegram.org/bot${accessToken}/sendMessage?chat_id=${chatId}&text=${message}`
-            );
+        notifyTelegram(accessToken, chatId, text) {
+            const url = `https://api.telegram.org/bot${accessToken}/sendMessage`;
             const onError = () => notify('warn', translate('The Telegram notification could not be sent'));
 
-            fetch(url)
+            fetch(url, {
+                method : 'POST',
+                mode   : 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body   : JSON.stringify({ chat_id: chatId, text }),
+            })
                 .then(response => {
                     if (!response.ok) {
                         onError();
