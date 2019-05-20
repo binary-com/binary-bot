@@ -85,7 +85,7 @@
     "jquery-ui-css": "1.11.4",
     "js-interpreter": "^1.4.6",
     "json2csv": "^3.11.5",
-    "lint-staged": "^6.0.0",
+    "lint-staged": "^8.1.7",
     "loader-utils": "^1.1.0",
     "notifyjs-browser": "^0.4.2",
     "prettier-eslint-cli": "^4.7.0",
