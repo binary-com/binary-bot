@@ -25,8 +25,12 @@
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch --branch $1;}; d",
     "release-production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d",
-    "build": "webpack --config webpack.config.cli.js",
-    "precommit": "lint-staged"
+    "build": "webpack --config webpack.config.cli.js"
+  },
+  "husky": {
+      "hooks": {
+          "pre-commit": "lint-staged"
+      }
   },
   "author": "Binary.com",
   "license": "MIT",
@@ -72,7 +76,7 @@
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-watch": "^5.0.1",
-    "husky": "^0.14.3",
+    "husky": "^2.3.0",
     "i18next-scanner": "1.9.4",
     "immutable": "^3.8.2",
     "jest": "^24.7.1",
