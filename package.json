@@ -20,6 +20,7 @@
     ]
   },
   "scripts": {
+    "fix": "eslint src/ --fix",
     "start": "gulp watch",
     "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch --branch $1;}; d",
@@ -42,7 +43,7 @@
     "app-module-path": "^2.2.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
-    "babel-loader": "^8.0.5",
+    "babel-loader": "^8.0.6",
     "binary-live-api": "^29.0.0",
     "binary-utils": "^4.23.0",
     "chai": "^4.1.2",
