@@ -111,7 +111,7 @@
     "core-js": "^2.6.5",
     "gh-pages": "^2.0.1",
     "mobx": "^5.9.4",
-    "mobx-react": "^5.1.8",
+    "mobx-react": "^5.4.4",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-render-html": "^0.5.2",
