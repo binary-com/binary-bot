@@ -69,7 +69,7 @@
     "gulp-remote-src": "^0.4.4",
     "gulp-rename": "^1.2.2",
     "gulp-rev": "^9.0.0",
-    "gulp-sass": "^3.1.0",
+    "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.2",
     "gulp-watch": "^4.3.11",
     "husky": "^0.14.3",
