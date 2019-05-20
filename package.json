@@ -71,7 +71,7 @@
     "gulp-rev": "^9.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-watch": "^4.3.11",
+    "gulp-watch": "^5.0.1",
     "husky": "^0.14.3",
     "i18next-scanner": "1.9.4",
     "immutable": "^3.8.2",
