@@ -90,7 +90,7 @@
     "notifyjs-browser": "^0.4.2",
     "prettier-eslint-cli": "^4.7.0",
     "prop-types": "^15.7.2",
-    "react": "^16.4.0",
+    "react": "^16.8.6",
     "react-data-grid": "^3.0.0",
     "react-dom": "^16.4.0",
     "react-joyride": "^1.11.1",
@@ -112,7 +112,6 @@
     "gh-pages": "^2.0.1",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.4",
-    "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-render-html": "^0.5.2",
     "react-transition-group": "^2.3.1"
