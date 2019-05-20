@@ -89,7 +89,7 @@
     "loader-utils": "^1.1.0",
     "notifyjs-browser": "^0.4.2",
     "prettier-eslint-cli": "^4.7.0",
-    "prop-types": "^15.6.0",
+    "prop-types": "^15.7.2",
     "react": "^16.4.0",
     "react-data-grid": "^3.0.0",
     "react-dom": "^16.4.0",
