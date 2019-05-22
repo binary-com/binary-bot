@@ -18,7 +18,7 @@ export default Engine =>
 
             if (!this.isSellAtMarketAvailable()) {
                 if (this.hasEntryTick) {
-                    const error = new Error(translate('Sell is not available'));
+                    const error = new Error(translate('Resale of this contract is not offered.'));
                     error.name = 'SellNotAvailable';
                     throw error;
                 } else {
