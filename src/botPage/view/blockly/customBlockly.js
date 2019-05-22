@@ -1,4 +1,6 @@
-import { translate } from '../../../common/utils/tools';
+import GTM from '../../../common/gtm';
+import { translate, translateLangToLang } from '../../../common/i18n';
+import { getLanguage } from '../../../common/lang';
 
 /* eslint-disable */
 Blockly.WorkspaceAudio.prototype.preload = function() {};
@@ -333,4 +335,26 @@ Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockTyp
     shadowBlock.outputConnection.connect(this.connection);
     shadowBlock.initSvg();
     shadowBlock.render();
+};
+
+/**
+ * Expand or collapse the node on mouse click.
+ * @param {!goog.events.BrowserEvent} _e The browser event.
+ * @override
+ */
+Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
+    // eslint-disable-next-line no-underscore-dangle
+    const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
+    GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
+
+    // Expand icon.
+    if (this.hasChildren() && this.isUserCollapsible_) {
+        this.toggle();
+        this.select();
+    } else if (this.isSelected()) {
+        this.getTree().setSelectedItem(null);
+    } else {
+        this.select();
+    }
+    this.updateRow();
 };

@@ -5,9 +5,26 @@ import { getTokenList } from './utils/storageManager';
 const GTM = (() => {
     const isGtmApplicable = () => Object.values(AppIdMap).includes(`${getAppIdFallback()}`);
 
-    const pushDataLayer = data => {
+    const init = () => {
         if (isGtmApplicable()) {
-            // eslint-disable-next-line no-undef
+            const gtmTag =
+                '(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({\'gtm.start\': new Date().getTime(),event:\'gtm.js\'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';j.async=true;j.src= \'https://www.googletagmanager.com/gtm.js?id=\'+i+dl;f.parentNode.insertBefore(j,f); })(window,document,\'script\',\'dataLayer\',\'GTM-P97C2DZ\');';
+
+            const script = document.createElement('script');
+            script.innerHTML = gtmTag;
+            document.body.appendChild(script);
+
+            const interval = setInterval(() => {
+                if (dataLayer) {
+                    setVisitorId();
+                    clearInterval(interval);
+                }
+            }, 500);
+        }
+    };
+
+    const pushDataLayer = data => {
+        if (isGtmApplicable() && dataLayer) {
             dataLayer.push({
                 ...data,
             });
@@ -24,6 +41,8 @@ const GTM = (() => {
     };
 
     return {
+        init,
+        pushDataLayer,
         setVisitorId,
     };
 })();
