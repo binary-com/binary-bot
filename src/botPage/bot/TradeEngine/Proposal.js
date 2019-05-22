@@ -56,6 +56,7 @@ export default Engine =>
                                 uuid        : getUUID(),
                             },
                         })
+                        // eslint-disable-next-line consistent-return
                         .catch(e => {
                             if (e && e.name === 'RateLimit') {
                                 return Promise.reject(e);
