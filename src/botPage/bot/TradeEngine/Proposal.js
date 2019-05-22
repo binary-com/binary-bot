@@ -57,7 +57,13 @@ export default Engine =>
                             },
                         })
                         .catch(e => {
-                            if (e.error.error.code === 'ContractBuyValidationError') {
+                            if (e && e.name === 'RateLimit') {
+                                return Promise.reject(e);
+                            }
+
+                            const errorCode = e.error && e.error.error && e.error.error.code;
+
+                            if (errorCode === 'ContractBuyValidationError') {
                                 const { uuid } = e.error.echo_req.passthrough;
 
                                 if (!this.data.hasIn(['forgetProposals', uuid])) {
