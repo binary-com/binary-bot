@@ -17,7 +17,13 @@ export default Engine =>
             }
 
             if (!this.isSellAtMarketAvailable()) {
-                throw Error(translate('Sell is not available'));
+                if (this.hasEntryTick) {
+                    const error = new Error(translate('Resale of this contract is not offered.'));
+                    error.name = 'SellNotAvailable';
+                    throw error;
+                } else {
+                    return Promise.resolve();
+                }
             }
 
             const onSuccess = ({ sell: { sold_for: soldFor } }) => {
