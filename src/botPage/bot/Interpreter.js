@@ -17,6 +17,15 @@ const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+
+const shouldStopOnError = (bot, errorName = '') => {
+    const stopErrors = ['SellNotAvailable'];
+    if (stopErrors.includes(errorName) && botInitialized(bot)) {
+        return true;
+    }
+    return false;
+};
+
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
@@ -94,11 +103,20 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
+
+                if (shouldStopOnError(this.bot, e.name)) {
+                    globalObserver.emit('ui.log.error', e.message);
+                    $('#stopButton').trigger('click');
+                    this.stop();
+                    return;
+                }
+
                 this.isErrorTriggered = true;
                 if (!shouldRestartOnError(this.bot, e.name) || !botStarted(this.bot)) {
                     reject(e);
                     return;
                 }
+
                 globalObserver.emit('Error', e);
                 const { initArgs, tradeOptions } = this.bot.tradeEngine;
                 this.terminateSession();
