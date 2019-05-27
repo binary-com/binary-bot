@@ -36,7 +36,7 @@ const customTransform = function _transform(file, enc, done) {
     parser.parseAttrFromString(
         content,
         {
-            list: ['data-i18n-text', 'i18n-text'],
+            list: ['data-i18n-text', 'i18n-text', 'data-i18n-title'],
         },
         key => {
             const value = key;
