@@ -21,6 +21,7 @@ import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
+import GTM from '../../../common/gtm';
 
 const setBeforeUnload = off => {
     if (off) {
@@ -225,6 +226,30 @@ export default class _Blockly {
                     trashcan  : true,
                     scrollbars: true,
                     media     : 'image/scratch/',
+                });
+                workspace.addChangeListener(event => {
+                    if (event.type === Blockly.Events.BLOCK_CREATE) {
+                        event.ids.forEach(id => {
+                            const block = workspace.getBlockById(id);
+                            if (block) {
+                                GTM.pushDataLayer({
+                                    event     : 'Block Event',
+                                    blockEvent: event.type,
+                                    blockType : block.type,
+                                });
+                            }
+                        });
+                    } else if (event.type === Blockly.Events.BLOCK_DELETE) {
+                        const dom = Blockly.Xml.textToDom(`<xml>${event.oldXml.outerHTML}</xml>`);
+                        const blockNodes = dom.getElementsByTagName('block');
+                        Array.from(blockNodes).forEach(blockNode => {
+                            GTM.pushDataLayer({
+                                event     : 'Block Event',
+                                blockEvent: event.type,
+                                blockType : blockNode.getAttribute('type'),
+                            });
+                        });
+                    }
                 });
 
                 const renderInstance = render(workspace);

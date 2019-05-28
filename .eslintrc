@@ -20,7 +20,8 @@
     "Blockly": false,
     "trackJs": false,
     "jest": false,
-    "goog": false
+    "goog": false,
+    "dataLayer": false
   },
   "plugins": [
     "react"
