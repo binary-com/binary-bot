@@ -20,7 +20,7 @@ Blockly.Blocks.math_number = {
         fieldInput.setValidator(input => this.numberValidator(input));
     },
     numberValidator(input) {
-        if (/^-?([0][,.]|[1-9]+[,.])?([0]|[1-9]*)$/.test(input)) {
+        if (/^-?([0][,.]|[1-9]+[,.])?([0]|[1-9])*$/.test(input)) {
             return undefined;
         }
         return null;

@@ -1,7 +1,7 @@
 Blockly.Blocks.math_number_positive = {
     init: Blockly.Blocks.math_number.init,
     numberValidator(input) {
-        if (/^([0][,.]|[1-9]+[,.])?([0]|[1-9]*)$/.test(input)) {
+        if (/^([0][,.]|[1-9]+[,.])?([0]|[1-9])*$/.test(input)) {
             return undefined;
         }
         return null;
