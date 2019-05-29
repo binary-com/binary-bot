@@ -80,8 +80,13 @@ export default class TradeTable extends Component {
             if (!info) {
                 return;
             }
-            const timestamp = getTimestamp(info.date_start);
-            const tradeObj = { reference: info.transaction_ids.buy, ...info, timestamp };
+
+            const tradeObj = {
+                ...info,
+                reference: info.transaction_ids.buy,
+                buy_price: roundBalance({ balance: info.buy_price, currency: info.currency }),
+                timestamp: getTimestamp(info.date_start),
+            };
             const { accountID } = tradeObj;
 
             const trade = {
@@ -140,10 +145,13 @@ export default class TradeTable extends Component {
     refreshContract(api, contractID) {
         return api.getContractInfo(contractID).then(r => {
             const contract = r.proposal_open_contract;
-            const timestamp = getTimestamp(contract.date_start);
-            const tradeObj = { reference: contract.transaction_ids.buy, ...contract, timestamp };
+            const tradeObj = {
+                ...contract,
+                reference: contract.transaction_ids.buy,
+                buy_price: roundBalance({ balance: contract.buy_price, currency: contract.currency }),
+                timestamp: getTimestamp(contract.date_start),
+            };
             const { accountID } = this.props;
-
             const trade = {
                 ...tradeObj,
                 profit: getProfit(tradeObj),
