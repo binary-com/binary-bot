@@ -138,10 +138,12 @@ export default Engine =>
 
             return (
                 isNotEqual('duration') ||
+                isNotEqual('duration_unit') ||
                 isNotEqual('amount') ||
                 isNotEqual('prediction') ||
                 isNotEqual('barrierOffset') ||
-                isNotEqual('secondBarrierOffset')
+                isNotEqual('secondBarrierOffset') ||
+                isNotEqual('symbol')
             );
         }
     };
