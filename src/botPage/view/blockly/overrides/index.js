@@ -4,6 +4,7 @@ import './colours';
 import './data_category';
 import './field_dropdown';
 import './field_image';
+import './field_textinput';
 import './flyout_base';
 import './flyout_vertical';
 import './gesture';
