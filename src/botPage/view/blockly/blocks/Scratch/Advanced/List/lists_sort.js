@@ -46,13 +46,19 @@ Blockly.JavaScript.lists_sort = block => {
                     return parseFloat(a) - parseFloat(b);
                 },
                 "TEXT": function(a, b) {
-                    return a.toString() > b.toString() ? 1 : -1;
+                    var a_ = a.toString();
+                    var b_ = b.toString();
+                    return (a_ === b_ ? 0 : a_ > b_ ? 1 : -1);
                 },
                 "IGNORE_CASE": function(a, b) {
-                    return a.toString().toLowerCase() > b.toString().toLowerCase() ? 1 : -1;
+                    var a_ = a.toString().toLowerCase();
+                    var b_ = b.toString().toLowerCase();
+                    return (a_ === b_ ? 0 : a_ > b_ ? 1 : -1);
                 }
             };
+
             var compare = compareFuncs[type];
+            
             return function(a, b) { 
                 return compare(a, b) * direction; 
             }
