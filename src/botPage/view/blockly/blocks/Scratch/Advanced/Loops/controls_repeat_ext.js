@@ -46,7 +46,7 @@ Blockly.JavaScript.controls_repeat_ext = block => {
     if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
         // eslint-disable-next-line no-underscore-dangle
         endVar = Blockly.JavaScript.variableDB_.getDistinctName('repeat_end', Blockly.Variables.NAME_TYPE);
-        code += `var ${endVar} = ${repeats}\n`;
+        code += `var ${endVar} = ${repeats};\n`;
     }
 
     code += `
