@@ -35,10 +35,9 @@ Blockly.JavaScript.controls_repeat_ext = block => {
         repeats = Blockly.JavaScript.valueToCode(block, 'TIMES') || '0';
     }
 
-    let branch = Blockly.JavaScript.statementToCode(block, 'DO');
-    branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
-
+    const branch = Blockly.JavaScript.statementToCode(block, 'DO');
     let code = '';
+
     // eslint-disable-next-line no-underscore-dangle
     const loopVar = Blockly.JavaScript.variableDB_.getDistinctName('count', Blockly.Variables.NAME_TYPE);
     let endVar = repeats;
