@@ -56,8 +56,15 @@ export default Engine =>
                                 uuid        : getUUID(),
                             },
                         })
+                        // eslint-disable-next-line consistent-return
                         .catch(e => {
-                            if (e.error.error.code === 'ContractBuyValidationError') {
+                            if (e && e.name === 'RateLimit') {
+                                return Promise.reject(e);
+                            }
+
+                            const errorCode = e.error && e.error.error && e.error.error.code;
+
+                            if (errorCode === 'ContractBuyValidationError') {
                                 const { uuid } = e.error.echo_req.passthrough;
 
                                 if (!this.data.hasIn(['forgetProposals', uuid])) {
@@ -131,10 +138,12 @@ export default Engine =>
 
             return (
                 isNotEqual('duration') ||
+                isNotEqual('duration_unit') ||
                 isNotEqual('amount') ||
                 isNotEqual('prediction') ||
                 isNotEqual('barrierOffset') ||
-                isNotEqual('secondBarrierOffset')
+                isNotEqual('secondBarrierOffset') ||
+                isNotEqual('symbol')
             );
         }
     };

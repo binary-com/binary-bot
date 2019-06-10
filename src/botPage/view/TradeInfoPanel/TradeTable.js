@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
@@ -85,8 +86,9 @@ export default class TradeTable extends Component {
 
             const trade = {
                 ...tradeObj,
-                profit         : getProfit(tradeObj),
-                contract_status: translate('Pending'),
+                profit          : getProfit(tradeObj),
+                contract_status : translate('Pending'),
+                contract_settled: false,
             };
 
             const accountStat = this.getAccountStat(accountID);
@@ -103,17 +105,40 @@ export default class TradeTable extends Component {
             }
         });
         globalObserver.register('contract.settled', contract => {
-            this.registerTimeout(api, contract);
+            const contractID = contract.contract_id;
+            this.settleContract(api, contractID);
         });
     }
-    registerTimeout = (api, contract) => {
-        setTimeout(() => {
-            const contractID = contract.contract_id;
-            this.refreshContract(api, contractID);
-        }, 3000);
-    };
+
+    async settleContract(api, contractID) {
+        let settled = false;
+        let delay = 3000;
+
+        const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay));
+
+        while (!settled) {
+            await sleep();
+
+            try {
+                await this.refreshContract(api, contractID);
+
+                const { accountID } = this.props;
+                const rows = this.state[accountID].rows.slice();
+                const contractRow = rows.find(row => row.contract_id === contractID);
+
+                if (contractRow && contractRow.contract_settled) {
+                    settled = true;
+                }
+            } catch (e) {
+                // Do nothing. Loop again.
+            } finally {
+                delay *= 1.5;
+            }
+        }
+    }
+
     refreshContract(api, contractID) {
-        api.getContractInfo(contractID).then(r => {
+        return api.getContractInfo(contractID).then(r => {
             const contract = r.proposal_open_contract;
             const timestamp = getTimestamp(contract.date_start);
             const tradeObj = { reference: contract.transaction_ids.buy, ...contract, timestamp };
@@ -132,7 +157,8 @@ export default class TradeTable extends Component {
                 const { reference } = row;
                 if (reference === trade.reference) {
                     return {
-                        contract_status: translate('Settled'),
+                        contract_status : translate('Settled'),
+                        contract_settled: true,
                         reference,
                         ...trade,
                     };
