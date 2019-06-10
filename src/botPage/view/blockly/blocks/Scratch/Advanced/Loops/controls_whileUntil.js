@@ -33,20 +33,29 @@ Blockly.Blocks.controls_whileUntil = {
 };
 
 Blockly.JavaScript.controls_whileUntil = block => {
+    const branch = Blockly.JavaScript.statementToCode(block, 'DO');
     const until = block.getFieldValue('MODE') === 'UNTIL';
     const order = until ? Blockly.JavaScript.ORDER_LOGICAL_NOT : Blockly.JavaScript.ORDER_NONE;
-
     let argument0 = Blockly.JavaScript.valueToCode(block, 'BOOL', order) || 'false';
-    let branch = Blockly.JavaScript.statementToCode(block, 'DO');
-
-    branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
 
     if (until) {
         argument0 = `!${argument0}`;
     }
 
+    const maxLoopVar = Blockly.JavaScript.variableDB_.getDistinctName('maxLoops', Blockly.Variables.NAME_TYPE);
+    const currentLoopVar = Blockly.JavaScript.variableDB_.getDistinctName('currentLoop', Blockly.Variables.NAME_TYPE);
+
     return `
+        var ${maxLoopVar} = 10000;
+        var ${currentLoopVar} = 0;
+
         while (${argument0}) {
+            if (${currentLoopVar} > ${maxLoopVar}) {
+                throw new Error("${translate('Infinite loop detected')}");
+            } else {
+                ${currentLoopVar}++;
+            }
+            
             ${branch}
         }\n`;
 };
