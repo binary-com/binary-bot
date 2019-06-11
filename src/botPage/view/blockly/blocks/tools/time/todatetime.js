@@ -5,7 +5,7 @@ import { translate } from '../../../../../../common/i18n';
 Blockly.Blocks.todatetime = {
     init: function init() {
         this.appendDummyInput();
-        this.appendValueInput('TIMESTAMP').appendField(translate('To Date/Time'));
+        this.appendValueInput('TIMESTAMP').appendField('To Date/Time');
         this.setInputsInline(true);
         this.setOutput(true, 'String');
         this.setColour('#dedede');
@@ -19,19 +19,18 @@ Blockly.Blocks.todatetime = {
 };
 
 Blockly.JavaScript.todatetime = block => {
-    // const timestamp = Blockly.JavaScript.valueToCode(block, 'TIMESTAMP', Blockly.JavaScript.ORDER_ATOMIC);
-    // const code = `Bot.timestampToDateTimeString(${timestamp})`;
-    // return [code, Blockly.JavaScript.ORDER_ATOMIC];
-
     const timestamp = Blockly.JavaScript.valueToCode(block, 'TIMESTAMP', Blockly.JavaScript.ORDER_ATOMIC);
 
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.provideFunction_('timestampToDateString', [
         // eslint-disable-next-line no-underscore-dangle
+
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(timestamp) {
             var dateTime;
             if(typeof timestamp == 'number') {
                 dateTime = new Date(timestamp * 1000);
+            } else {
+                return '${translate('Invalid timestamp')}: ' + timestamp;
             }
             return [
                 dateTime.getFullYear().toString(),

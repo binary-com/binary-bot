@@ -31,8 +31,13 @@ Blockly.JavaScript.totimestamp = block => {
     const functionName = Blockly.JavaScript.provideFunction_('dateTimeStringToTimestamp', [
         // eslint-disable-next-line no-underscore-dangle
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(dateTimeString) {
-            var date = new Date(dateTimeString);
-            return date ? date.getTime() / 1000 : 'Invalid date/time';
+            var p = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]))/;
+            if(p.test(dateTimeString)) {
+                var date = new Date(dateTimeString);
+            } else {
+                return '${translate('Invalid date/time')}: ' + dateTimeString;
+            }
+            return date ? date.getTime() / 1000 : '${translate('Invalid date/time')}: ' + dateTimeString;
         }`,
     ]);
 
