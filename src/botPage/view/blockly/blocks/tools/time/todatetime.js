@@ -26,22 +26,7 @@ Blockly.JavaScript.todatetime = block => {
         // eslint-disable-next-line no-underscore-dangle
 
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(timestamp) {
-            var dateTime;
-            if(typeof timestamp == 'number') {
-                dateTime = new Date(timestamp * 1000);
-            } else {
-                return '${translate('Invalid timestamp')}: ' + timestamp;
-            }
-            return [
-                dateTime.getFullYear().toString(),
-                dateTime.getMonth()+1 < 10 ? '0' + (dateTime.getMonth()+1) : dateTime.getMonth()+1,
-                dateTime.getDate() < 10 ? '0' + dateTime.getDate() : dateTime.getDate()
-            ].join('-') + ' ' + 
-            [
-                dateTime.getHours() < 10 ? '0' + dateTime.getHours() : dateTime.getHours(),
-                dateTime.getMinutes() < 10 ? '0' + dateTime.getMinutes() : dateTime.getMinutes(),
-                dateTime.getSeconds() < 10 ? '0' + dateTime.getSeconds() : dateTime.getSeconds()
-            ].join(':');
+            return Bot.toDateTime(timestamp);
         }`,
     ]);
 
