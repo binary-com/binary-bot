@@ -5,6 +5,7 @@ import Summary from './Summary';
 import TradeTable from './TradeTable';
 import RunButton from './RunButton';
 import ClearButton from './ClearButton';
+import { roundBalance } from '../../common/tools';
 
 const resetAnimation = () => {
     $('.circle-wrapper')
@@ -71,7 +72,14 @@ class AnimateTrade extends Component {
         if (contractStatus.id === 'contract.purchase_sent') {
             resetAnimation();
             activateStage(0);
-            this.setState({ buy_price: contractStatus.data, stopMessage: this.indicatorMessages.stopping });
+
+            this.setState({
+                buy_price: roundBalance({
+                    balance : contractStatus.proposal.ask_price,
+                    currency: contractStatus.currency,
+                }),
+                stopMessage: this.indicatorMessages.stopping,
+            });
         } else if (contractStatus.id === 'contract.purchase_recieved') {
             $('.line').addClass('active');
             activateStage(1);
@@ -81,6 +89,7 @@ class AnimateTrade extends Component {
             activateStage(2);
             this.setState({ sell_id: contractStatus.data, stopMessage: this.indicatorMessages.stopped });
         }
+
         activateStage(contractStatus.id);
     }
     render() {
