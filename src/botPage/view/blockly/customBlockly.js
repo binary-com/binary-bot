@@ -358,3 +358,21 @@ Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
     }
     this.updateRow();
 };
+
+/**
+ * Preload all the audio files so that they play quickly when asked for.
+ * @package
+ */
+Blockly.WorkspaceAudio.prototype.preload = function() {
+    for (var name in this.SOUNDS_) {
+        var sound = this.SOUNDS_[name];
+        sound.volume = 0.01;
+        sound.play().catch(function() {});
+        sound.pause();
+        // iOS can only process one sound at a time.  Trying to load more than one
+        // corrupts the earlier ones.  Just load one and leave the others uncached.
+        if (goog.userAgent.IPAD || goog.userAgent.IPHONE) {
+            break;
+        }
+    }
+};
