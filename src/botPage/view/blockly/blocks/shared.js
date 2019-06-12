@@ -302,7 +302,9 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
             globalObserver.unregisterAll(`contractsLoaded.${underlyingSymbol}`);
         }
-    } catch (e) {}
+    } catch (e) {
+    /* Empty block statement. */
+    }
     if (typeof api.disconnect === 'function') {
         api.disconnect();
     }
