@@ -55,9 +55,6 @@ const disposeBlocksWithLoaders = () => {
 };
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        if (window.trackJs) {
-            trackJs.track('Invalid financial market');
-        }
         showDialog({
             title  : translate('Warning'),
             text   : [translate('This strategy is not available in your country.')],

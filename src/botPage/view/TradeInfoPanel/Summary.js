@@ -23,9 +23,13 @@ export default class Summary extends Component {
 
         const { totalRuns, totalStake, totalPayout, totalWins, totalLosses, totalProfit, balance } =
             accountID in this.state ? this.state[accountID] : {};
+        const WinRate = (totalWins / (totalWins+totalLosses)*100).toFixed(2);
 
         const profitColor = {
             color: totalProfit > 0 ? 'green' : 'red',
+        };
+        const winRateColor = {
+            color: WinRate > 50 ? 'green' : 'red',
         };
         return (
             <table>
@@ -35,6 +39,7 @@ export default class Summary extends Component {
                         <th>{translate('No. of runs')}</th>
                         <th>{translate('Total stake')}</th>
                         <th>{translate('Total payout')}</th>
+                        <th>{translate('W/R%')}</th>
                         <th>{translate('Win')}</th>
                         <th>{translate('Loss')}</th>
                         <th>{translate('Total profit/loss')}</th>
@@ -47,15 +52,10 @@ export default class Summary extends Component {
                         <td className="totalRuns">{totalRuns}</td>
                         <td className="totalStake">{totalStake}</td>
                         <td className="totalPayout">{totalPayout}</td>
-                        <td style={style.green} className="totalWins">
-                            {totalWins}
-                        </td>
-                        <td style={style.red} className="totalLosses">
-                            {totalLosses}
-                        </td>
-                        <td style={profitColor} className="totalProfit">
-                            {totalProfit}
-                        </td>
+                        <td style={winRateColor} className="WinRate">{isNaN(WinRate)?0:WinRate}</td>
+                        <td style={style.green} className="totalWins">{totalWins}</td>
+                        <td style={style.red} className="totalLosses">{totalLosses}</td>
+                        <td style={profitColor} className="totalProfit">{totalProfit}</td>
                         <td className="balance">{balance}</td>
                     </tr>
                 </tbody>

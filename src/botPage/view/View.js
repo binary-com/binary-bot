@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'jquery-ui/ui/widgets/dialog';
 import _Blockly from './blockly';
-import Chart from './Dialogs/Chart';
 import Limits from './Dialogs/Limits';
 import IntegrationsDialog from './Dialogs/IntegrationsDialog';
 import LoadDialog from './Dialogs/LoadDialog';
@@ -17,9 +16,8 @@ import { symbolPromise } from './shared';
 import Tour from './tour';
 import TradeInfoPanel from './TradeInfoPanel';
 import { showDialog } from '../bot/tools';
-import Elevio from '../../common/elevio';
-import { updateConfigCurrencies } from '../common/const';
-import { roundBalance, isVirtual } from '../common/tools';
+import config, { updateConfigCurrencies } from '../common/const';
+import { isVirtual } from '../common/tools';
 import {
     logoutAllTokens,
     getOAuthURL,
@@ -66,8 +64,16 @@ api.events.on('balance', response => {
         balance: { balance: b, currency },
     } = response;
 
-    const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
-    $('.topMenuBalance').text(`${balance} ${currency}`);
+    const elTopMenuBalances = document.querySelectorAll('.topMenuBalance');
+    const localString = getLanguage().replace('_', '-');
+    const balance = (+b).toLocaleString(localString, {
+        minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2,
+    });
+
+    elTopMenuBalances.forEach(elTopMenuBalance => {
+        const element = elTopMenuBalance;
+        element.textContent = `${balance} ${currency}`;
+    });
 });
 
 const addBalanceForToken = token => {
@@ -77,8 +83,6 @@ const addBalanceForToken = token => {
         });
     });
 };
-
-const chart = new Chart(api);
 
 const tradingView = new TradingView();
 
@@ -350,7 +354,6 @@ export default class View {
             })
                 .then(() => {
                     this.stop();
-                    Elevio.logoutUser();
                     googleDrive.signOut();
                     GTM.setVisitorId();
                     removeTokens();
@@ -413,10 +416,6 @@ export default class View {
 
         $('#rearrange').click(() => {
             this.blockly.cleanUp();
-        });
-
-        $('#chartButton').click(() => {
-            chart.open();
         });
 
         $('#tradingViewButton').click(() => {
@@ -574,7 +573,6 @@ export default class View {
             })
                 .then(() => {
                     this.stop();
-                    Elevio.logoutUser();
                     GTM.setVisitorId();
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();

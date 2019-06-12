@@ -1,5 +1,4 @@
 @import 'color';
-@import 'chart';
 @import 'fontello';
 @import 'panel';
 @import 'blockly-toolbox';
@@ -207,10 +206,6 @@ label {
 
 .ui-icon {
     background-image: none !important;
-}
-
-#_elev_io ._1g6cj {
-    z-index: 10000 !important;
 }
 
 .notifyjs-corner {

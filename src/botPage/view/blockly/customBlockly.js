@@ -315,17 +315,6 @@ Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
             }
             return false;
         });
-    // Open the Elev.io widget when clicking 'Help'
-    // eslint-disable-next-line no-underscore-dangle
-    if (window._elev) {
-        menuOptions.some(option => {
-            if (option.text === Blockly.Msg.HELP) {
-                option.callback = () => window._elev.open(); // eslint-disable-line no-param-reassign, no-underscore-dangle
-                return true;
-            }
-            return false;
-        });
-    }
     originalContextMenuFn(e, menuOptions, rtl);
 };
 Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockType) {

@@ -20,20 +20,8 @@ gulp.task(
 );
 
 gulp.task(
-    'open',
-    gulp.series(done => {
-        gulp.src('www/index.html').pipe(
-            open({
-                uri: 'http://localhost:8080/',
-            })
-        );
-        done();
-    })
-);
-
-gulp.task(
     'serve',
-    gulp.series('open', 'connect', done => {
+    gulp.series('connect', done => {
         watch(['www/*.html']).pipe(connect.reload());
         done();
     })

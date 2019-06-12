@@ -302,11 +302,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
             globalObserver.unregisterAll(`contractsLoaded.${underlyingSymbol}`);
         }
-    } catch (e) {
-        if (window.trackJs) {
-            trackJs.addMetadata('getContractsAvailableForSymbolFromApi Error', e.message);
-        }
-    }
+    } catch (e) {}
     if (typeof api.disconnect === 'function') {
         api.disconnect();
     }

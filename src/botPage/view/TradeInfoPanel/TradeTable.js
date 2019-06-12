@@ -190,7 +190,7 @@ export default class TradeTable extends Component {
                 'profit',
             ],
         });
-        saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
+        saveAs({ data, filename: 'TradeTable.csv', type: 'text/csv;charset=utf-8' });
     }
     getAccountStat(accountID) {
         if (!(accountID in this.state)) {

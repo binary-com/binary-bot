@@ -62,7 +62,7 @@ export default class LogTable extends Component {
     }
     export() {
         const data = json2csv({ data: this.state.rows, fields: ['timestamp', 'message'] });
-        saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
+        saveAs({ data, filename: 'LogTable.csv', type: 'text/csv;charset=utf-8' });
     }
     render() {
         return (

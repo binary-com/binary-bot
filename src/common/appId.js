@@ -10,7 +10,6 @@ import {
 import { parseQueryString, isProduction, getExtension } from '../common/utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
-import Elevio from './elevio';
 import GTM from './gtm';
 
 export const AppConstants = Object.freeze({
@@ -133,7 +132,6 @@ export async function addTokenIfValid(token, tokenObjectList) {
         }
     } catch (e) {
         removeToken(tokenObjectList[0].token);
-        Elevio.logoutUser();
         GTM.setVisitorId();
         throw e;
     }

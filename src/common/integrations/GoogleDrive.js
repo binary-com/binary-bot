@@ -40,25 +40,7 @@ class GoogleDrive {
                                 .parent()
                                 .removeClass('invisible');
                         },
-                        error => {
-                            if (window.trackJs) {
-                                trackJs.track(
-                                    `${translate(
-                                        'There was an error initialising Google Drive'
-                                    )} - Error: ${JSON.stringify(error)}`
-                                );
-                            }
-                        }
                     );
-            },
-            onerror: error => {
-                if (window.trackJs) {
-                    trackJs.track(
-                        `${translate('There was an error loading Google Drive libraries')} - Error: ${JSON.stringify(
-                            error
-                        )}`
-                    );
-                }
             },
         });
     }

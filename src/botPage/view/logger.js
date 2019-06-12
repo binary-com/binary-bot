@@ -70,10 +70,6 @@ const notifyError = error => {
     const errorWithCode = new Error(error);
     errorWithCode.message = errorCode ? `${errorCode}: ${message}` : message;
 
-    if (trackJs && isNewError(message)) {
-        trackJs.track(errorWithCode);
-    }
-
     notify({ className: 'error', message, position: 'right' });
 };
 
@@ -106,10 +102,6 @@ const logHandler = () => {
         .first()
         .attr('value');
     const userId = getToken(token).accountName;
-
-    if (trackJs) {
-        trackJs.configure({ userId });
-    }
 
     waitForNotifications();
 };

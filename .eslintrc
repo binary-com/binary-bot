@@ -18,7 +18,6 @@
   },
   "globals": {
     "Blockly": false,
-    "trackJs": false,
     "jest": false,
     "dataLayer": false
   },

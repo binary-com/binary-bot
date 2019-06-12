@@ -55,20 +55,6 @@
     </div>
 
     <div id="header" style="display: none;">
-        <div class="left-header">
-            <div class="logo-wrapper">
-                <a href="https://www.binary.com" target="blank" id="logo">
-                    <div class="logo-parent">
-                        <div class="logo">
-                            <img class="responsive" src="{{> binary_style_img }}/logo/symbol.svg" alt="Binary logo" />
-                        </div>
-                        <div class="binary-logo-text">
-                            <img class="responsive" src="" alt="">
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
         <div class="right-header show-on-load">
             <div class="intro-login-logout">
                 <div id="account-list">
@@ -131,7 +117,6 @@
         <button data-i18n-title="Show log" id="logButton" class="toolbox-button icon-info"></button>
 
         <span class="toolbox-separator"></span>
-        <button data-i18n-title="Show chart" id="chartButton" class="toolbox-button icon-chart-line"></button>
         <button data-i18n-title="Show Trading View" id="tradingViewButton" class="toolbox-button icon-trading-view"></button>
 
         <span class="toolbox-separator"></span>
@@ -177,7 +162,6 @@
     <audio id="error" src="sound/out-of-bounds.ogg" autostart="false"></audio>
     <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false"></audio>
     {{> bundle}} {{> bot}}
-    {{> elevio_script }}
     {{> gtm_iframe }}
     <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
     <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
