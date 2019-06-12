@@ -16,9 +16,4 @@ view.initPromise.then(() => {
     $('.barspinner').hide();
     window.dispatchEvent(new Event('resize'));
     GTM.init();
-    /*trackJs.configure({
-        userId: $('.account-id')
-            .first()
-            .text(),
-    });*/
 });
