@@ -9,9 +9,6 @@ $.ajaxSetup({
     cache: false,
 });
 
-// Should stay below the window._trackJs config
-//require('trackjs');
-
 const view = new View();
 
 view.initPromise.then(() => {
