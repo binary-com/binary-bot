@@ -1,7 +1,4 @@
-// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wupwb4
 import { translate } from '../../../../../../common/i18n';
-// import { dateToTimeString } from 'binary-utils/lib';
-// import { disable } from '../../../utils';
 
 Blockly.Blocks.totimestamp = {
     init: function init() {
@@ -15,7 +12,6 @@ Blockly.Blocks.totimestamp = {
                 'Converts a string representing a date/time string into seconds since Epoch. Input format: yyyy-mm-dd hh:mm:ss'
             )
         );
-        // this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
 };
 

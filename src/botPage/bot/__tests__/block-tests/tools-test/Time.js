@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { run, runAndGetResult } from '../tools';
+import { run, runAndGetResult } from '../../tools';
 
 describe('Time in tools', () => {
     let result;
