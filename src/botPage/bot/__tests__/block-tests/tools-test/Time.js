@@ -28,30 +28,16 @@ describe('Time in tools', () => {
     });
 });
 
-describe('Convert to date/time string', () => {
-    const timestamp = '1560238593';
+describe('Convert timestamp to date/time and back', () => {
+    const timestamp = Math.ceil(new Date().getTime() / 1000);
     let result;
     beforeAll(done => {
-        run(`(function() {return Bot.toDateTime(${timestamp});})()`).then(v => {
+        run(`(function() {return Bot.toTimestamp(Bot.toDateTime(${timestamp}));})()`).then(v => {
             result = v;
             done();
         });
     });
     it('converts timestamp to date/time string', () => {
-        expect(result).satisfy(dt => dt === '2019-06-11 15:36:33');
-    });
-});
-
-describe('Convert to timestamp', () => {
-    const dateTime = '2019-06-11 15:36:33';
-    let result;
-    beforeAll(done => {
-        run(`(function() {return Bot.toTimestamp('${dateTime}');})()`).then(v => {
-            result = v;
-            done();
-        });
-    });
-    it('converts date/time string to timestamp', () => {
-        expect(result).satisfy(ts => ts === 1560238593);
+        expect(result).satisfy(dt => dt === timestamp);
     });
 });
