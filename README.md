@@ -1,16 +1,16 @@
-[![Build Status](https://travis-ci.org/binary-com/binary-bot.svg?branch=master)](https://travis-ci.org/binary-com/binary-bot)
-[![Coverage Status](https://coveralls.io/repos/github/binary-com/binary-bot/badge.svg?branch=master)](https://coveralls.io/github/binary-com/binary-bot?branch=master)
+[![Build Status](https://travis-ci.org/nextnaro/binary-bot.svg?branch=master)](https://travis-ci.org/nextnaro/PutCall.Co-Binary-Bot)
+[![Coverage Status](https://coveralls.io/repos/github/nextnaro/PutCall.Co-Binary-Bot/badge.svg?branch=master)](https://coveralls.io/github/nextnaro/PutCall.Co-Binary-Bot?branch=master)
 
 # Binary Bot
 
 Visual automation for binary.com [bot.binary.com](https://bot.binary.com)
 
-Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.
+Visit [wiki](https://github.com/nextnaro/PutCall.Co-Binary-Bot/wiki) for more info.
 
 ## Development
 
 ```
-git clone https://github.com/binary-com/binary-bot.git
+git clone https://github.com/nextnaro/PutCall.Co-Binary-Bot.git
 cd binary-bot
 git checkout dev
 npm install
