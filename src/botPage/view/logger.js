@@ -1,5 +1,5 @@
 import { observer as globalObserver } from '../../common/utils/observer';
-import { getToken } from '../../common/utils/storageManager';
+// import { getToken } from '../../common/utils/storageManager';
 import { translate } from '../../common/i18n';
 
 const log = (type, ...args) => {
@@ -32,7 +32,7 @@ const isNewMessage = (shown = []) => msg => {
 
 const isNewNotification = isNewMessage();
 
-const isNewError = isNewMessage();
+// const isNewError = isNewMessage();
 
 const notify = ({ className, message, position = 'left', sound = 'silent' }) => {
     if (message && (position === 'left' || isNewNotification(message))) {
@@ -98,10 +98,10 @@ const waitForNotifications = () => {
 };
 
 const logHandler = () => {
-    const token = $('.account-id')
-        .first()
-        .attr('value');
-    const userId = getToken(token).accountName;
+    // const token = $('.account-id')
+    //    .first()
+    //    .attr('value');
+    // const userId = getToken(token).accountName;
 
     waitForNotifications();
 };

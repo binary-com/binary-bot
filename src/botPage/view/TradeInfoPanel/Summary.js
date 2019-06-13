@@ -52,7 +52,7 @@ export default class Summary extends Component {
                         <td className="totalRuns">{totalRuns}</td>
                         <td className="totalStake">{totalStake}</td>
                         <td className="totalPayout">{totalPayout}</td>
-                        <td style={winRateColor} className="WinRate">{isNaN(WinRate)?0:WinRate}</td>
+                        <td style={winRateColor} className="WinRate">{WinRate}</td>
                         <td style={style.green} className="totalWins">{totalWins}</td>
                         <td style={style.red} className="totalLosses">{totalLosses}</td>
                         <td style={profitColor} className="totalProfit">{totalProfit}</td>

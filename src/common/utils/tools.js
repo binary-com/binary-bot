@@ -113,6 +113,6 @@ export const removeSpinnerInButton = ($buttonElement, initialText) => {
     $buttonElement.html(() => initialText).prop('disabled', false);
 };
 
-export const trackAndEmitError = (message, object = {}) => {
+export const trackAndEmitError = (message) => {
     globalObserver.emit('ui.log.error', message);
 };
