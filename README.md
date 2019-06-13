@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/nextnaro/binary-bot.svg?branch=master)](https://travis-ci.org/nextnaro/PutCall.Co-Binary-Bot)
+[![Build Status](https://travis-ci.org/nextnaro/PutCall.Co-Binary-Bot.svg?branch=dev)](https://travis-ci.org/nextnaro/PutCall.Co-Binary-Bot)
 [![Coverage Status](https://coveralls.io/repos/github/nextnaro/PutCall.Co-Binary-Bot/badge.svg?branch=master)](https://coveralls.io/github/nextnaro/PutCall.Co-Binary-Bot?branch=master)
 
 # Binary Bot
