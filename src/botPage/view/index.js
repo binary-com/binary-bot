@@ -5,6 +5,7 @@ import View from './View';
 import '../../common/binary-ui/dropdown';
 import Elevio from '../../common/elevio';
 import GTM from '../../common/gtm';
+import { isProduction } from '../../common/utils/tools';
 
 $.ajaxSetup({
     cache: false,
@@ -14,7 +15,7 @@ $.ajaxSetup({
 window._trackJs = {
     token      : '346262e7ffef497d85874322fff3bbf8',
     application: 'binary-bot',
-    enabled    : window.location.hostname !== 'localhost',
+    enabled    : isProduction(),
     console    : {
         display: false,
     },
