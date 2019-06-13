@@ -1,97 +1,97 @@
-@import 'color';
+@import "color";
 
 .blocklyTreeRow {
-    box-shadow: inset 0 -0.063em 0 0 #dedede;
+	box-shadow: inset 0 -0.063em 0 0 #dedede;
 }
 
 .blocklyText {
-    fill: $black !important;
+	fill: $black !important;
 }
 
 .blocklyTreeSelected .blocklyTreeLabel {
-    color: $white !important;
+	color: $white !important;
 }
 
-.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen, 
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen,
 .blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconClosedLtr {
-    filter: invert(100%);
+	filter: invert(100%);
 }
 
 .blocklyTreeIcon.blocklyTreeIconOpen {
-    background-image: url(../image/down-arrow.svg) !important;
-    background-position: -0.188em -0.375em !important;
+	background-image: url(../image/down-arrow.svg) !important;
+	background-position: -0.188em -0.375em !important;
 }
 
 .blocklyTreeIcon.blocklyTreeIconClosedLtr {
-    background-image: url(../image/down-arrow.svg) !important;
-    background-position: -0.188em -0.375em !important;
+	background-image: url(../image/down-arrow.svg) !important;
+	background-position: -0.188em -0.375em !important;
 }
 
 .blocklyTreeRow.blocklyTreeSelected {
-    background-color: #2a3052 !important;
+	background-color: #2a3052 !important;
 }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
-    background-color: $brand-dark-gray !important;
+	background-color: $brand-dark-gray !important;
 }
 
 .blocklyToolboxDiv .blocklyTreeRow {
-    color: $black;
+	color: $black;
 }
 
 .blocklyEditableText tspan {
-    fill: $black !important;
+	fill: $black !important;
 }
 
 .blocklyEditableText rect {
-    fill-opacity: 1 !important;
+	fill-opacity: 1 !important;
 }
 
 .blocklyFlyoutBackground {
-    fill: $white !important;
-    fill-opacity: 1 !important;
-    stroke: $brand-dark-gray;
-    stroke-width: 0.063em;
+	fill: $white !important;
+	fill-opacity: 1 !important;
+	stroke: $brand-dark-gray;
+	stroke-width: 0.063em;
 }
 
 .blocklyToolboxDiv {
-    background-color: $brand-gray !important;
-    border-width: thin;
-    color: $brand-dark-gray;
-    border-right: 0.063em solid;
-    width: 11em;	
+	background-color: $brand-gray !important;
+	border-width: thin;
+	color: $brand-dark-gray;
+	border-right: 0.063em solid;
+	width: 15em;
 }
 
 .blocklyIconShape {
-    fill: #2a3052 !important;
+	fill: #2a3052 !important;
 }
 
 .blocklyIconGroup:not(:hover),
 .blocklyIconGroupReadonly {
-    opacity: 1 !important;
+	opacity: 1 !important;
 }
 
 .blocklyScrollbarVertical,
 .blocklyScrollbarHorizontal {
-    display: none;
+	display: none;
 }
 
 .blocklyTreeRow {
-    margin-bottom: 0px !important;
-    height: 1.9em !important;
-    padding-top: 0.250em;
+	margin-bottom: 0px !important;
+	height: 1.9em !important;
+	padding-top: 0.25em;
 }
 
 .blocklyToolboxDiv {
-    z-index: 99 !important;
-    left: -100%;
-    overflow-x: hidden !important;
+	z-index: 99 !important;
+	left: -100%;
+	overflow-x: hidden !important;
 }
 
 .blocklySvg {
-    position: absolute;
+	position: absolute;
 }
 
 .blocklyMainBackground {
-    stroke: none;
+	stroke: none;
 }
