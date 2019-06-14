@@ -5,6 +5,7 @@ import {
     getDurationsForContracts,
     getBarriersForContracts,
     getPredictionForContracts,
+    disabledRunButton,
 } from '../shared';
 import { insideTrade } from '../../relationChecker';
 import { findTopParentBlock, hideInteractionsFromBlockly, getBlocksByType } from '../../utils';
@@ -102,8 +103,20 @@ export default () => {
             }
         },
         pollForContracts(symbol) {
+            disabledRunButton(true);
             return new Promise(resolve => {
                 const contractsForSymbol = haveContractsForSymbol(symbol);
+
+                const resolvePollingFn = (pollingFn, resolveObj) => {
+                    clearInterval(pollingFn);
+                    resolvePollForContract(resolveObj);
+                };
+
+                const resolvePollForContract = resolveObj => {
+                    disabledRunButton(false);
+                    resolve(resolveObj);
+                };
+
                 if (!contractsForSymbol) {
                     // Register an event and use as a lock to avoid spamming API
                     const event = `contractsLoaded.${symbol}`;
@@ -111,24 +124,22 @@ export default () => {
                         globalObserver.register(event, () => {});
                         getContractsAvailableForSymbol(symbol).then(contracts => {
                             globalObserver.unregisterAll(event); // Release the lock
-                            resolve(contracts);
+                            resolvePollForContract(contracts);
                         });
                     } else {
                         // Request in progress, start polling localStorage until contracts are available.
                         const pollingFn = setInterval(() => {
                             const contracts = haveContractsForSymbol(symbol);
                             if (contracts) {
-                                clearInterval(pollingFn);
-                                resolve(contracts.available);
+                                resolvePollingFn(pollingFn, contracts.available);
                             }
                         }, 100);
                         setTimeout(() => {
-                            clearInterval(pollingFn);
-                            resolve([]);
+                            resolvePollingFn(pollingFn, []);
                         }, 10000);
                     }
                 } else {
-                    resolve(contractsForSymbol.available);
+                    resolvePollForContract(contractsForSymbol.available);
                 }
             });
         },
