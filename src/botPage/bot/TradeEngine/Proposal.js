@@ -34,8 +34,8 @@ export default Engine =>
             }
 
             return {
-                id      : toBuy.id,
-                askPrice: toBuy.ask_price,
+                proposal: toBuy,
+                currency: this.tradeOption.currency,
             };
         }
         renewProposalsOnPurchase() {

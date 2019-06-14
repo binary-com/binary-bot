@@ -14,20 +14,25 @@ export default Engine =>
                 return Promise.resolve();
             }
 
-            const { id, askPrice } = this.selectProposal(contractType);
-
+            const { currency, proposal } = this.selectProposal(contractType);
             const onSuccess = r => {
                 const { buy } = r;
+
                 contractStatus({
                     id  : 'contract.purchase_recieved',
                     data: buy.transaction_id,
+                    proposal,
+                    currency,
                 });
 
                 this.subscribeToOpenContract(buy.contract_id);
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
+
                 delayIndex = 0;
+
                 notify('info', `${translate('Bought')}: ${buy.longcode} (${translate('ID')}: ${buy.transaction_id})`);
+
                 info({
                     accountID      : this.accountInfo.loginid,
                     totalRuns      : this.updateAndReturnTotalRuns(),
@@ -37,12 +42,16 @@ export default Engine =>
                 });
             };
 
-            const action = () => this.api.buyContract(id, askPrice);
             this.isSold = false;
+
             contractStatus({
                 id  : 'contract.purchase_sent',
-                data: askPrice,
+                data: proposal.ask_price,
+                proposal,
+                currency,
             });
+
+            const action = () => this.api.buyContract(proposal.id, proposal.ask_price);
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
