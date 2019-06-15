@@ -9,7 +9,7 @@ Blockly.Blocks.totimestamp = {
         this.setColour('#dedede');
         this.setTooltip(
             translate(
-                'Converts a string representing a date/time string into seconds since Epoch. Input format: yyyy-mm-dd hh:mm:ss'
+                'Converts a string representing a date/time string into seconds since Epoch. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825. Time and time zone offset are optional.'
             )
         );
     },

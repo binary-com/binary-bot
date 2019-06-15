@@ -16,28 +16,33 @@ export default Interface => class extends IndicatorsInterface(
                     }
                     return `${input}`;
                 }
+                const invalidTimestamp = () => `${translate('Invalid timestamp')}: ${timestamp}`;
                 if(typeof timestamp === 'number') {
                     const dateTime = new Date(timestamp * 1000);
-
-                    const year = dateTime.getFullYear();
-                    const month = getTwoDigitValue(dateTime.getMonth() + 1);
-                    const day = getTwoDigitValue(dateTime.getDate());
-                    const hours = getTwoDigitValue(dateTime.getHours());
-                    const minutes = getTwoDigitValue(dateTime.getMinutes());
-                    const seconds = getTwoDigitValue(dateTime.getSeconds());
-
-                    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                    if(dateTime.getTime()) {
+                        const year = dateTime.getFullYear();
+                        const month = getTwoDigitValue(dateTime.getMonth() + 1);
+                        const day = getTwoDigitValue(dateTime.getDate());
+                        const hours = getTwoDigitValue(dateTime.getHours());
+                        const minutes = getTwoDigitValue(dateTime.getMinutes());
+                        const seconds = getTwoDigitValue(dateTime.getSeconds());
+                        const formatGTMoffset = () => {
+                            const GMToffsetRaw = dateTime.getTimezoneOffset();
+                            const sign = GMToffsetRaw > 0 ? '-' : '+';
+                            const GMToffset = Math.abs(GMToffsetRaw);
+                            const h = Math.floor(GMToffset / 60);
+                            const m = GMToffset - h * 60;
+                            return `GMT${sign}${getTwoDigitValue(h)}${getTwoDigitValue(m)}`;
+                        }
+                        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${formatGTMoffset()}`;
+                    }
+                    return invalidTimestamp();
                 } 
-                return `${translate('Invalid timestamp')}: ${timestamp}`;                
+                return invalidTimestamp();                
             },
             toTimestamp: (dateTimeString) => {
-                const p = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]))$/;
-                const invalidDateTime = () => `${translate('Invalid date/time')}: ${dateTimeString}`;
-                if (p.test(dateTimeString)) {
-                    const date = new Date(dateTimeString);
-                    return date ? date.getTime() / 1000 : invalidDateTime();
-                } 
-                return invalidDateTime();    
+                const date = new Date(dateTimeString.substr(0,19)).getTime();
+                return date ? Math.floor(date / 1000) : `${translate('Invalid date/time')}: ${dateTimeString}`;
             },
             ...this.getCandleInterface(),
             ...this.getMiscInterface(),
