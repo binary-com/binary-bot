@@ -1,6 +1,7 @@
 import GTM from '../../../common/gtm';
 import { translate, translateLangToLang } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
+import { save } from './utils';
 
 /* eslint-disable */
 Blockly.WorkspaceAudio.prototype.preload = function() {};
@@ -358,3 +359,263 @@ Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
     }
     this.updateRow();
 };
+
+// https://groups.google.com/forum/#!msg/blockly/eS1V49pI9c8/VEh5UuUcBAAJ
+// Custom Variable Block with Download Context Menu
+Blockly.defineBlocksWithJsonArray([
+    // BEGIN JSON EXTRACT
+    // Block for variable getter.
+    {
+        type: 'variables_get',
+        message0: '%1',
+        args0: [
+            {
+                type: 'field_variable',
+                name: 'VAR',
+                variable: '%{BKY_VARIABLES_DEFAULT_NAME}',
+            },
+        ],
+        colour: '#DEDEDE',
+        output: null,
+        helpUrl: '%{BKY_VARIABLES_GET_HELPURL}',
+        tooltip: '%{BKY_VARIABLES_GET_TOOLTIP}',
+        extensions: ['customContextMenu_variableSetterGetter'],
+    },
+    // Block for variable setter.
+    {
+        type: 'variables_set',
+        message0: '%{BKY_VARIABLES_SET}',
+        args0: [
+            {
+                type: 'field_variable',
+                name: 'VAR',
+                variable: '%{BKY_VARIABLES_DEFAULT_NAME}',
+            },
+            {
+                type: 'input_value',
+                name: 'VALUE',
+            },
+        ],
+        colour: '#DEDEDE',
+        previousStatement: null,
+        nextStatement: null,
+        tooltip: '%{BKY_VARIABLES_SET_TOOLTIP}',
+        helpUrl: '%{BKY_VARIABLES_SET_HELPURL}',
+        extensions: ['customContextMenu_variableSetterGetter'],
+    },
+]); // END JSON EXTRACT (Do not delete this comment.)
+
+/**
+ * Mixin to add context menu items to create getter/setter blocks for this
+ * setter/getter.
+ * Used by blocks 'variables_set' and 'variables_get'.
+ * @mixin
+ * @augments Blockly.Block
+ * @package
+ * @readonly
+ */
+Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN = {
+    /**
+     * Add menu option to create getter/setter block for this setter/getter.
+     * @param {!Array} options List of menu options to add to.
+     * @this Blockly.Block
+     */
+    customContextMenu: function(options) {
+        if (!this.isInFlyout) {
+            // Getter blocks have the option to create a setter block, and vice versa.
+            if (this.type == 'variables_get') {
+                var opposite_type = 'variables_set';
+                var contextMenuMsg = Blockly.Msg['VARIABLES_GET_CREATE_SET'];
+            } else {
+                var opposite_type = 'variables_get';
+                var contextMenuMsg = Blockly.Msg['VARIABLES_SET_CREATE_GET'];
+            }
+
+            var option = { enabled: this.workspace.remainingCapacity() > 0 };
+            var name = this.getField('VAR').getText();
+            option.text = contextMenuMsg.replace('%1', name);
+            var xmlField = document.createElement('field');
+            xmlField.setAttribute('name', 'VAR');
+            xmlField.appendChild(document.createTextNode(name));
+            var xmlBlock = document.createElement('block');
+            xmlBlock.setAttribute('type', opposite_type);
+            xmlBlock.appendChild(xmlField);
+            option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+            options.push(option);
+
+            const downloadOption = {
+                text: translate('Download'),
+                enabled: true,
+                callback: () => {
+                    const xml = Blockly.Xml.textToDom(
+                        '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
+                    );
+                    xml.appendChild(Blockly.Xml.blockToDom(this));
+                    save('binary-bot-block', true, xml);
+                },
+            };
+            options.push(downloadOption);
+            // Getter blocks have the option to rename or delete that variable.
+        } else {
+            if (this.type == 'variables_get' || this.type == 'variables_get_reporter') {
+                var renameOption = {
+                    text: Blockly.Msg.RENAME_VARIABLE,
+                    enabled: true,
+                    callback: Blockly.Constants.Variables.RENAME_OPTION_CALLBACK_FACTORY(this),
+                };
+                var name = this.getField('VAR').getText();
+                var deleteOption = {
+                    text: Blockly.Msg.DELETE_VARIABLE.replace('%1', name),
+                    enabled: true,
+                    callback: Blockly.Constants.Variables.DELETE_OPTION_CALLBACK_FACTORY(this),
+                };
+                options.unshift(renameOption);
+                options.unshift(deleteOption);
+            }
+        }
+    },
+};
+
+Blockly.Extensions.registerMixin(
+    'customContextMenu_variableSetterGetter',
+    Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN
+);
+
+// Custom Loop block with download Context Menu
+Blockly.defineBlocksWithJsonArray([
+    // Block for 'for' loop.
+    {
+        type: 'controls_for',
+        message0: '%{BKY_CONTROLS_FOR_TITLE}',
+        args0: [
+            {
+                type: 'field_variable',
+                name: 'VAR',
+                variable: null,
+            },
+            {
+                type: 'input_value',
+                name: 'FROM',
+                check: 'Number',
+                align: 'RIGHT',
+            },
+            {
+                type: 'input_value',
+                name: 'TO',
+                check: 'Number',
+                align: 'RIGHT',
+            },
+            {
+                type: 'input_value',
+                name: 'BY',
+                check: 'Number',
+                align: 'RIGHT',
+            },
+        ],
+        message1: '%{BKY_CONTROLS_REPEAT_INPUT_DO} %1',
+        args1: [
+            {
+                type: 'input_statement',
+                name: 'DO',
+            },
+        ],
+        colour: '#DEDEDE',
+        inputsInline: true,
+        previousStatement: null,
+        nextStatement: null,
+        style: 'loop_blocks',
+        helpUrl: '%{BKY_CONTROLS_FOR_HELPURL}',
+        extensions: ['customContextMenu_newGetVariableBlock', 'controls_for_customTooltip'],
+    },
+    // Block for 'for each' loop.
+    {
+        type: 'controls_forEach',
+        message0: '%{BKY_CONTROLS_FOREACH_TITLE}',
+        args0: [
+            {
+                type: 'field_variable',
+                name: 'VAR',
+                variable: null,
+            },
+            {
+                type: 'input_value',
+                name: 'LIST',
+                check: 'Array',
+            },
+        ],
+        message1: '%{BKY_CONTROLS_REPEAT_INPUT_DO} %1',
+        args1: [
+            {
+                type: 'input_statement',
+                name: 'DO',
+            },
+        ],
+        colour: '#DEDEDE',
+        previousStatement: null,
+        nextStatement: null,
+        style: 'loop_blocks',
+        helpUrl: '%{BKY_CONTROLS_FOREACH_HELPURL}',
+        extensions: ['customContextMenu_newGetVariableBlock', 'controls_forEach_customTooltip'],
+    },
+]);
+
+/**
+ * Mixin to add a context menu item to create a 'variables_get' block.
+ * Used by blocks 'controls_for' and 'controls_forEach'.
+ * @mixin
+ * @augments Blockly.Block
+ * @package
+ * @readonly
+ */
+Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN = {
+    /**
+     * Add context menu option to create getter block for the loop's variable.
+     * (customContextMenu support limited to web BlockSvg.)
+     * @param {!Array} options List of menu options to add to.
+     * @this Blockly.Block
+     */
+    customContextMenu: function(options) {
+        if (this.isInFlyout) {
+            return;
+        }
+        var variable = this.getField('VAR').getVariable();
+        var varName = variable.name;
+        if (!this.isCollapsed() && varName != null) {
+            var option = { enabled: true };
+            option.text = Blockly.Msg['VARIABLES_SET_CREATE_GET'].replace('%1', varName);
+            var xmlField = Blockly.Variables.generateVariableFieldDom(variable);
+            var xmlBlock = document.createElement('block');
+            xmlBlock.setAttribute('type', 'variables_get');
+            xmlBlock.appendChild(xmlField);
+            option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+            options.push(option);
+        }
+        const downloadOption = {
+            text: translate('Download'),
+            enabled: true,
+            callback: () => {
+                const xml = Blockly.Xml.textToDom(
+                    '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
+                );
+                xml.appendChild(Blockly.Xml.blockToDom(this));
+                save('binary-bot-block', true, xml);
+            },
+        };
+        options.push(downloadOption);
+    },
+};
+
+Blockly.Extensions.registerMixin(
+    'customContextMenu_newGetVariableBlock',
+    Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN
+);
+
+Blockly.Extensions.register(
+    'controls_for_customTooltip',
+    Blockly.Extensions.buildTooltipWithFieldText('%{BKY_CONTROLS_FOR_TOOLTIP}', 'VAR')
+);
+
+Blockly.Extensions.register(
+    'controls_forEach_customTooltip',
+    Blockly.Extensions.buildTooltipWithFieldText('%{BKY_CONTROLS_FOREACH_TOOLTIP}', 'VAR')
+);
