@@ -59,9 +59,14 @@ $disabled-color: #F2F2F2;
         font-size: 11px;
         color: lightgray;
     }
+    #current-trade-status{
+        margin-top: 3.5em;
+    }
     .stage {
         display: inline-block;
         margin: 0 8.68% 0 8.68%;
+        vertical-align: top;
+        max-width: 120px;
         .stage-tooltip .triangle {
             margin-top: 0.7em;
             margin-left: 50%;
@@ -75,11 +80,13 @@ $disabled-color: #F2F2F2;
         }
         .stage-tooltip.top {
             margin-bottom: 0.5em;
+            margin-top: -2.5em;
+            position: absolute;
         }
         .stage-tooltip p {
             font-size: 11px;
             text-align: center;
-            margin-top: -0.9em;
+            margin-top: -0.91em;
             padding: 0.5em;
             border-radius: 0.5em;
             background-color: #fef1cf;
@@ -101,6 +108,7 @@ $disabled-color: #F2F2F2;
     .stage-label {
         text-align: center;
         font-size: 11px;
+        min-height: 24px;
     }
     .circle-wrapper {
         width: $static-circle-diameter;
