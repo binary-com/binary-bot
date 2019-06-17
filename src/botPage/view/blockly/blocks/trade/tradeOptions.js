@@ -5,7 +5,7 @@ import {
     getDurationsForContracts,
     getBarriersForContracts,
     getPredictionForContracts,
-    disabledRunButton,
+    disableRunButton,
 } from '../shared';
 import { insideTrade } from '../../relationChecker';
 import { findTopParentBlock, hideInteractionsFromBlockly, getBlocksByType } from '../../utils';
@@ -103,17 +103,16 @@ export default () => {
             }
         },
         pollForContracts(symbol) {
-            disabledRunButton(true);
+            disableRunButton(true);
             return new Promise(resolve => {
                 const contractsForSymbol = haveContractsForSymbol(symbol);
-
                 const resolvePollingFn = (pollingFn, resolveObj) => {
                     clearInterval(pollingFn);
-                    resolvePollForContract(resolveObj);
+                    resolveContracts(resolveObj);
                 };
 
-                const resolvePollForContract = resolveObj => {
-                    disabledRunButton(false);
+                const resolveContracts = resolveObj => {
+                    disableRunButton(false);
                     resolve(resolveObj);
                 };
 
@@ -124,7 +123,7 @@ export default () => {
                         globalObserver.register(event, () => {});
                         getContractsAvailableForSymbol(symbol).then(contracts => {
                             globalObserver.unregisterAll(event); // Release the lock
-                            resolvePollForContract(contracts);
+                            resolveContracts(contracts);
                         });
                     } else {
                         // Request in progress, start polling localStorage until contracts are available.
@@ -139,7 +138,7 @@ export default () => {
                         }, 10000);
                     }
                 } else {
-                    resolvePollForContract(contractsForSymbol.available);
+                    resolveContracts(contractsForSymbol.available);
                 }
             });
         },
