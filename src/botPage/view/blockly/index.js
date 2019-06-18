@@ -317,24 +317,22 @@ export default class _Blockly {
     load(blockStr = '', dropEvent = {}) {
         let xml;
 
-        const validateXML = xml => {
+        const validateXML = xmlStr => {
             if (document.implementation.createDocument) {
                 let xmlDoc;
 
                 try {
-                    xmlDoc = new DOMParser().parseFromString(xml, 'application/xml');
+                    xmlDoc = new DOMParser().parseFromString(xmlStr, 'application/xml');
                 } catch (err) {
                     return false;
                 }
 
                 if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
                     return false;
-                } 
+                }
                 return true;
-                
-            } 
+            }
             return false;
-            
         };
 
         if (!validateXML(blockStr)) {
