@@ -107,15 +107,6 @@ Blockly.Blocks.trade = {
             resetTradeFields(this, ev);
         }
         decorateTrade(ev);
-
-        // **index > 4** Initialization input start at 4
-        this.getDescendants()
-            .filter((desc, index) => index > 4)
-            .forEach(desc => {
-                if (desc.type === 'total_runs' || desc.type === 'total_profit') {
-                    desc.unplug();
-                }
-            });
     },
 };
 

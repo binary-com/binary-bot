@@ -94,6 +94,14 @@ const insideMain = (blockObj, ev, name, topName, topDesc) =>
 
 export const insideTrade = (...args) => insideMain(...args, 'trade', 'trade') && conditionFields(...args);
 
+export const beforeAuthenticate = blockObj => {
+    const rootBlock = blockObj.getRootBlock();
+
+    if (rootBlock.type === 'trade') {
+        blockObj.unplug();
+    }
+};
+
 export const insideBeforePurchase = (...args) => insideMain(...args, 'before_purchase', 'Before Purchase');
 
 export const insideDuringPurchase = (...args) => insideMain(...args, 'during_purchase', 'During Purchase');
