@@ -7,3 +7,5 @@ import './block_holder';
 import './loader';
 import './candle';
 import './time';
+import './webhook';
+import './webhook_payload';

@@ -453,6 +453,22 @@
                 <block type="loader"></block>
                 <block type="block_holder"></block>
             </category>
+            <category name="Webhooks" i18n-text="Webhooks">
+                <block type="webhook">
+                    <value name="WEBHOOK_URL">
+                        <shadow type="text">
+                            <field name="TEXT">https://example.com</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="webhook_payload">
+                    <value name="WEBHOOK_VALUE">
+                        <shadow type="text">
+                            <field name="TEXT">abc</field>
+                        </shadow>
+                    </value>
+              </block>
+            </category>
         </category>
     </category>
 </xml>
