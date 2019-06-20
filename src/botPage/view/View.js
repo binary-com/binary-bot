@@ -512,7 +512,7 @@ export default class View {
 
         const startBot = limitations => {
             const $runButtons = $('#runButton, #summaryRunButton');
-            const $stopButton = $('#stopButton, #summaryStopButton');
+            const $stopButtons = $('#stopButton, #summaryStopButton');
             $stopButton.show();
             $runButton.hide();
             $runButton.prop('disabled', true);
