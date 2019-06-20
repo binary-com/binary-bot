@@ -106,10 +106,6 @@ export default () => {
             disableRunButton(true);
             return new Promise(resolve => {
                 const contractsForSymbol = haveContractsForSymbol(symbol);
-                const resolvePollingFn = (pollingFn, resolveObj) => {
-                    clearInterval(pollingFn);
-                    resolveContracts(resolveObj);
-                };
 
                 const resolveContracts = resolveObj => {
                     disableRunButton(false);
