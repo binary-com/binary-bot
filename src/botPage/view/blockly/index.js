@@ -318,6 +318,18 @@ export default class _Blockly {
         let xml;
 
         try {
+            const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
+
+            if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
+                return;
+            }
+        } catch (err) {
+            globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
+            return;
+        }
+
+        try {
             xml = Blockly.Xml.textToDom(blockStr);
         } catch (e) {
             throw createError('FileLoad', translate('Unrecognized file format'));
