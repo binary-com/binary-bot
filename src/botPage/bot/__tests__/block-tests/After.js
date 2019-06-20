@@ -21,7 +21,7 @@ describe('After Purchase Blocks', () => {
     it('After purchase api', () => {
         expectResultTypes(result, [
             'boolean', // is result win
-            'string', // statement
+            'number', // statement
         ]);
     });
 });
