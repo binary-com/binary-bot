@@ -51,6 +51,7 @@ Blockly.JavaScript.webhook = block => {
         return '';
     }
 
+    // JSON does not aceept single quote
     payload = payload.replace(/'/g, '"');
 
     const code = `Bot.sendWebhook(${url}, {${payload.trim().slice(0, -1)}});\n`;

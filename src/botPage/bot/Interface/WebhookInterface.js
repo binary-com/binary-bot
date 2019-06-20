@@ -7,7 +7,7 @@ export default Interface =>
         sendWebhook(url, payload) {
             const onError = () => notify('warn', translate('The webhook could not be sent'));
 
-            fetch(`https://cors-anywhere.herokuapp.com/${url}`, {
+            fetch(`${url}`, {
                 method : 'POST',
                 mode   : 'cors',
                 headers: { 'Content-Type': 'application/json' },
