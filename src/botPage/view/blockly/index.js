@@ -317,20 +317,14 @@ export default class _Blockly {
     load(blockStr = '', dropEvent = {}) {
         let xml;
 
-        const validateXML = xmlStr => {
-            try {
-                const xmlDoc = new DOMParser().parseFromString(xmlStr, 'application/xml');
+        try {
+            const xmlDoc = new DOMParser().parseFromString(xmlStr, 'application/xml');
 
-                if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
-                    return false;
-                }
-                return true;
-            } catch (err) {
-                return false;
+            if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
+                return;
             }
-        };
-
-        if (!validateXML(blockStr)) {
+        } catch (err) {
             globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
             return;
         }
