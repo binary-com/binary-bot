@@ -130,11 +130,13 @@ export default () => {
                         const pollingFn = setInterval(() => {
                             const contracts = haveContractsForSymbol(symbol);
                             if (contracts) {
-                                resolvePollingFn(pollingFn, contracts.available);
+                                clearInterval(pollingFn);
+                                resolveContracts(contracts.available);
                             }
                         }, 100);
                         setTimeout(() => {
-                            resolvePollingFn(pollingFn, []);
+                            clearInterval(pollingFn);
+                            resolveContracts([]);
                         }, 10000);
                     }
                 } else {
