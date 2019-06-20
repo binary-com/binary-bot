@@ -318,7 +318,7 @@ export default class _Blockly {
         let xml;
 
         try {
-            const xmlDoc = new DOMParser().parseFromString(xmlStr, 'application/xml');
+            const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
 
             if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
                 globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
