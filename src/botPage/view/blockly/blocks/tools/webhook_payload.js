@@ -14,7 +14,7 @@ Blockly.Blocks.webhook_payload = {
                 {
                     type : 'input_value',
                     name : 'WEBHOOK_VALUE',
-                    check: ['Number', 'String'],
+                    check: ['Number', 'String', 'Boolean'],
                 },
             ],
             colour           : '#dedede',
