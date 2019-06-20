@@ -513,9 +513,9 @@ export default class View {
         const startBot = limitations => {
             const $runButtons = $('#runButton, #summaryRunButton');
             const $stopButtons = $('#stopButton, #summaryStopButton');
-            $stopButton.show();
-            $runButton.hide();
-            $runButton.prop('disabled', true);
+            $stopButtons.show();
+            $runButtons.hide();
+            $runButtons.prop('disabled', true);
             globalObserver.emit('summary.disable_clear');
             showSummary();
             this.blockly.run(limitations);
