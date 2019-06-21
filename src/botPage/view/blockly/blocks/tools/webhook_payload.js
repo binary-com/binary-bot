@@ -4,7 +4,7 @@ import { expectValue } from '../shared';
 Blockly.Blocks.webhook_payload = {
     init() {
         this.jsonInit({
-            message0: translate('Key : %1 Value : %2'),
+            message0: translate('Key: %1 Value: %2'),
             args0   : [
                 {
                     type: 'field_input',
@@ -12,9 +12,8 @@ Blockly.Blocks.webhook_payload = {
                     text: 'default',
                 },
                 {
-                    type : 'input_value',
-                    name : 'WEBHOOK_VALUE',
-                    check: ['Number', 'String', 'Boolean'],
+                    type: 'input_value',
+                    name: 'WEBHOOK_VALUE',
                 },
             ],
             colour           : '#dedede',

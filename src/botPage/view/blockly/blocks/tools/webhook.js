@@ -34,7 +34,7 @@ Blockly.Blocks.webhook = {
 
             while (currentBlock !== null) {
                 if (currentBlock.type !== 'webhook_payload') {
-                    currentBlock.unplug();
+                    currentBlock.unplug(true);
                 }
 
                 currentBlock = currentBlock.getNextBlock();
