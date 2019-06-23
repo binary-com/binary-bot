@@ -17,9 +17,9 @@ export default Interface => class extends IndicatorsInterface(
                     return `${input}`;
                 }
                 const invalidTimestamp = () => `${translate('Invalid timestamp')}: ${timestamp}`;
-                if(typeof timestamp === 'number') {
+                if (typeof timestamp === 'number') {
                     const dateTime = new Date(timestamp * 1000);
-                    if(dateTime.getTime()) {
+                    if (dateTime.getTime()) {
                         const year = dateTime.getFullYear();
                         const month = getTwoDigitValue(dateTime.getMonth() + 1);
                         const day = getTwoDigitValue(dateTime.getDate());
@@ -37,12 +37,22 @@ export default Interface => class extends IndicatorsInterface(
                         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${formatGTMoffset()}`;
                     }
                     return invalidTimestamp();
-                } 
-                return invalidTimestamp();                
+                }
+                return invalidTimestamp();
             },
             toTimestamp: (dateTimeString) => {
-                const date = new Date(dateTimeString.substr(0,19)).getTime();
-                return date ? Math.floor(date / 1000) : `${translate('Invalid date/time')}: ${dateTimeString}`;
+                const invalidDatetime = () => `${translate('Invalid date/time')}: ${dateTimeString}`;
+                if (typeof dateTimeString === 'string') {
+                    const tmp = dateTimeString.replace(/\s+/g, 'T').substr(0, 19);
+                    const dateTime = tmp[tmp.length - 1] === 'T' ? tmp.substr(0, tmp.length - 1) : tmp;
+                    const p = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])(T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?)?)/;
+                    if (p.test(dateTime)) {
+                        const date = new Date(dateTime);
+                        return date ? date.getTime() / 1000 : invalidDatetime();
+                    }
+                    return invalidDatetime();
+                }
+                return invalidDatetime();
             },
             ...this.getCandleInterface(),
             ...this.getMiscInterface(),
