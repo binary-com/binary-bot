@@ -16,25 +16,20 @@ Blockly.Blocks.webhook_payload = {
                     name: 'WEBHOOK_VALUE',
                 },
             ],
-            colour           : '#dedede',
-            previousStatement: null,
-            nextStatement    : null,
-            tooltip          : translate('Payload for webhook'),
+            colour : '#dedede',
+            output : null,
+            tooltip: translate('Payload for webhook'),
         });
     },
 };
 
 Blockly.JavaScript.webhook_payload = block => {
     const key = block.getFieldValue('WEBHOOK_KEY') || '';
-    let value = expectValue(block, 'WEBHOOK_VALUE');
+    const value = expectValue(block, 'WEBHOOK_VALUE');
 
     if (!key || !value) {
         return '';
     }
 
-    if (typeof value !== 'string') {
-        value = value.toString();
-    }
-
-    return `'${key}':${value},`;
+    return [`{"${key}":${value}}`, Blockly.JavaScript.ORDER_ATOMIC];
 };
