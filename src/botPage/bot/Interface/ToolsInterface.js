@@ -48,8 +48,11 @@ export default Interface => class extends IndicatorsInterface(
                     const p = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])(T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?)?)/;
                     if (p.test(dateTime)) {
                         const date = new Date(dateTime);
-                        return date ? date.getTime() / 1000 : invalidDatetime();
+                        // return `ok: ${  date}`;
+                        // eslint-disable-next-line no-restricted-globals
+                        return date instanceof Date && !isNaN(date) ? date.getTime() / 1000 : invalidDatetime();
                     }
+                    // return `not ok: ${  dateTime}`;
                     return invalidDatetime();
                 }
                 return invalidDatetime();
