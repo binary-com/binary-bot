@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { translate } from '../../../../../common/i18n';
 import { expectValue } from '../shared';
 
@@ -37,6 +38,7 @@ Blockly.Blocks.webhook = {
      * @this Blockly.Block
      */
     domToMutation(xmlElement) {
+        // eslint-disable-next-line radix
         this.itemCount_ = parseInt(xmlElement.getAttribute('items'), 10);
         this.updateShape_();
     },
@@ -49,6 +51,7 @@ Blockly.Blocks.webhook = {
     decompose(workspace) {
         const containerBlock = workspace.newBlock('lists_create_with_container');
         containerBlock.initSvg();
+        // eslint-disable-next-line prefer-destructuring
         let connection = containerBlock.getInput('STACK').connection;
         for (let i = 0; i < this.itemCount_; i++) {
             const itemBlock = workspace.newBlock('lists_create_with_item');
@@ -72,17 +75,17 @@ Blockly.Blocks.webhook = {
             itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
         }
         // Disconnect any children that don't belong.
-        for (var i = 0; i < this.itemCount_; i++) {
-            const connection = this.getInput(`ADD${  i}`).connection.targetConnection;
-            if (connection && connections.indexOf(connection) == -1) {
+        for (let i = 0; i < this.itemCount_; i++) {
+            const connection = this.getInput(`ADD${i}`).connection.targetConnection;
+            if (connection && connections.indexOf(connection) === -1) {
                 connection.disconnect();
             }
         }
         this.itemCount_ = connections.length;
         this.updateShape_();
         // Reconnect any child blocks.
-        for (var i = 0; i < this.itemCount_; i++) {
-            Blockly.Mutator.reconnect(connections[i], this, `ADD${  i}`);
+        for (let i = 0; i < this.itemCount_; i++) {
+            Blockly.Mutator.reconnect(connections[i], this, `ADD${i}`);
         }
     },
     /**
@@ -94,7 +97,7 @@ Blockly.Blocks.webhook = {
         let itemBlock = containerBlock.getInputTargetBlock('STACK');
         let i = 0;
         while (itemBlock) {
-            const input = this.getInput(`ADD${  i}`);
+            const input = this.getInput(`ADD${i}`);
             itemBlock.valueConnection_ = input && input.connection.targetConnection;
             i++;
             itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
@@ -111,18 +114,18 @@ Blockly.Blocks.webhook = {
         } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
             this.appendDummyInput('EMPTY').appendField(Blockly.Msg.LISTS_CREATE_EMPTY_TITLE);
         }
-        // Add new inputs.
-        for (var i = 0; i < this.itemCount_; i++) {
-            if (!this.getInput(`ADD${  i}`)) {
-                const input = this.appendValueInput(`ADD${  i}`);
-                if (i == 0) {
+        let i;
+        for (i = 0; i < this.itemCount_; i++) {
+            if (!this.getInput(`ADD${i}`)) {
+                const input = this.appendValueInput(`ADD${i}`);
+                if (i === 0) {
                     input.appendField(translate('Payload:'));
                 }
             }
         }
         // Remove deleted inputs.
-        while (this.getInput(`ADD${  i}`)) {
-            this.removeInput(`ADD${  i}`);
+        while (this.getInput(`ADD${i}`)) {
+            this.removeInput(`ADD${i}`);
             i++;
         }
     },
@@ -146,7 +149,7 @@ Blockly.JavaScript.webhook = block => {
     const url = expectValue(block, 'WEBHOOK_URL');
     const payloads = new Array(block.itemCount_);
     for (let i = 0; i < block.itemCount_; i++) {
-        payloads[i] = Blockly.JavaScript.valueToCode(block, `ADD${  i}`, Blockly.JavaScript.ORDER_ATOMIC) || null;
+        payloads[i] = Blockly.JavaScript.valueToCode(block, `ADD${i}`, Blockly.JavaScript.ORDER_ATOMIC) || null;
     }
 
     if (!url || !payloads) {
