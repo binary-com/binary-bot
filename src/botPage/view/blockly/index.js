@@ -331,6 +331,21 @@ export default class _Blockly {
 
         try {
             xml = Blockly.Xml.textToDom(blockStr);
+            const blocklyXml = xml.querySelectorAll('block');
+
+            if (blocklyXml.length <= 0) {
+                globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
+                return;
+            }
+
+            blocklyXml.forEach(block => {
+                const blockType = block.attributes.type.nodeValue;
+
+                if (!Object.keys(Blockly.Blocks).includes(blockType)) {
+                    globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
+                    throw createError('FileLoad', translate('Unrecognized file format'));
+                }
+            });
         } catch (e) {
             throw createError('FileLoad', translate('Unrecognized file format'));
         }
