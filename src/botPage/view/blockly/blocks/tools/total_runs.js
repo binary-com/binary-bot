@@ -10,13 +10,17 @@ Blockly.Blocks.total_runs = {
         this.setTooltip(translate('Returns the number of runs since the beginning'));
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
-    onchange: function onchange(ev) {
+    onchange: ev => {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
         if (ev.type === Blockly.Events.MOVE) {
-            beforeAuthenticate(this);
+            const rootBlock = this.getRootBlock();
+
+            if (rootBlock.type === 'trade') {
+                this.unplug();
+            }
         }
     },
 };
