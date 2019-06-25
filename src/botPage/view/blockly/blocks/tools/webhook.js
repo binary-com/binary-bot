@@ -112,7 +112,7 @@ Blockly.Blocks.webhook = {
         if (this.itemCount_ && this.getInput('EMPTY')) {
             this.removeInput('EMPTY');
         } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
-            this.appendDummyInput('EMPTY').appendField(Blockly.Msg.LISTS_CREATE_EMPTY_TITLE);
+            this.appendDummyInput('EMPTY').appendField(translate('Empty payload'));
         }
         let i;
         for (i = 0; i < this.itemCount_; i++) {
