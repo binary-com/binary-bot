@@ -1,6 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3bwqd4
 import { translate } from '../../../../../common/i18n';
-import { beforeAuthenticate } from '../../relationChecker';
 
 Blockly.Blocks.total_runs = {
     init: function init() {
