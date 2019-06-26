@@ -20,6 +20,8 @@ export default function endpoint() {
         $('#new_endpoint').click(addEndpoint);
         $('#reset').click(resetEndpoint);
 
+        $('#server_url').keyup(validateURL);
+
         init();
     });
     return true;
@@ -64,6 +66,15 @@ function addEndpoint(e) {
     setStorage('config.server_url', serverUrl);
     setStorage('config.app_id', appId);
 
+    const UrlReg = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+
+    if (!UrlReg.test(serverUrl)) {
+        $('#error')
+            .html('Please enter a valid server URL')
+            .show();
+        return;
+    }
+
     checkConnection(appId, serverUrl);
 }
 
@@ -71,3 +82,5 @@ function resetEndpoint() {
     setStorage('config.app_id', getDefaultEndpoint().appId);
     setStorage('config.server_url', getDefaultEndpoint().url);
 }
+
+const validateURL = e => {};
