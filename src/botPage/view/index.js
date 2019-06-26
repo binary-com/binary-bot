@@ -4,6 +4,7 @@ import 'notifyjs-browser';
 import View from './View';
 import '../../common/binary-ui/dropdown';
 import GTM from '../../common/gtm';
+import { isProduction } from '../../common/utils/tools';
 
 $.ajaxSetup({
     cache: false,

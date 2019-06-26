@@ -402,7 +402,7 @@ export const getPredictionForContracts = (contracts, selectedContractType) => {
         if (contract && contract.last_digit_range) {
             predictionRange.push(...contract.last_digit_range);
         } else {
-            predictionRange.push(0);
+            predictionRange.push(1, 2, 3, 4, 5);
         }
     }
     return predictionRange;
