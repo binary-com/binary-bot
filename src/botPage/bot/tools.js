@@ -134,7 +134,7 @@ export const doUntilDone = (f, types) => {
     });
 };
 
-export const createDetails = contract => {
+export const createDetails = (contract, pipSize) => {
     const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
     const profit = Number(roundBalance({ currency, balance: sellPrice - buyPrice }));
     const result = profit < 0 ? 'loss' : 'win';
@@ -151,6 +151,8 @@ export const createDetails = contract => {
         +contract.exit_tick,
         +(contract.barrier ? contract.barrier : 0),
         result,
+        parseFloat(contract.entry_tick).toFixed(pipSize),
+        parseFloat(contract.exit_tick).toFixed(pipSize),
     ];
 };
 
