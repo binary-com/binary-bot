@@ -334,7 +334,12 @@ export default class _Blockly {
             const blocklyXml = xml.querySelectorAll('block');
 
             if (blocklyXml.length <= 0) {
-                globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
+                globalObserver.emit(
+                    'ui.log.warn',
+                    `${translate(
+                        'Unsupported strategy. Binary Bot only accepts XML scripts from Binary.com sources. Please load a supported file.'
+                    )}`
+                );
                 return;
             }
 
