@@ -65,9 +65,9 @@ function addEndpoint(e) {
     setStorage('config.server_url', serverUrl);
     setStorage('config.app_id', appId);
 
-    const UrlReg = /^(?:http(s)?:\/\/)?[\w.-]+(?:.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
+    const urlReg = /^(?:http(s)?:\/\/)?[\w.-]+(?:.[\w.-]+)+[\w-._~:/?#[\]@!$&'()*+,;=.]+$/;
 
-    if (!UrlReg.test(serverUrl)) {
+    if (!urlReg.test(serverUrl)) {
         $('#error')
             .html(translate('Please enter a valid server URL'))
             .show();
