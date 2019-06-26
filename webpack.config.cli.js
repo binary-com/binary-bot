@@ -2,12 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry : path.join(__dirname, 'src', 'botPage', 'bot', 'cli.js'),
+    entry : path.join(__dirname, 'src', 'botPage', 'bot', 'index.js'),
     output: {
-        path    : path.resolve(__dirname, 'lib'),
-        filename: 'index.js',
+        path         : path.resolve(__dirname, 'lib'),
+        filename     : 'index.js',
+        libraryTarget: 'umd',
     },
-    target: 'node',
     module: {
         rules: [
             {
@@ -18,9 +18,13 @@ module.exports = {
         ],
     },
     plugins: [
-        new webpack.BannerPlugin({
-            banner: '#!/usr/bin/env node',
-            raw   : true,
+        new webpack.optimize.UglifyJsPlugin({
+            include  : /\.js$/,
+            minimize : true,
+            sourceMap: true,
+            compress : {
+                warnings: false,
+            },
         }),
     ],
 };
