@@ -1,6 +1,5 @@
 import JSInterpreter from 'js-interpreter';
 import { observer as globalObserver } from '../../common/utils/observer';
-import { createScope } from './CliTools';
 import Interface from './Interface';
 
 const unrecoverableErrors = [
@@ -29,12 +28,9 @@ const shouldStopOnError = (bot, errorName = '') => {
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
-    constructor() {
-        this.init();
-    }
-    init() {
-        this.$scope = createScope();
-        this.bot = new Interface(this.$scope);
+    constructor($scope) {
+        this.$scope = $scope;
+        this.bot = new Interface($scope);
         this.stopped = false;
         this.$scope.observer.register('REVERT', watchName =>
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)
