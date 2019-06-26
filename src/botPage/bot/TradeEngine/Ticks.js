@@ -31,18 +31,33 @@ export default Engine =>
                 tickListenerKey = key;
             }
         }
-        getTicks() {
+        getTicks(toString = false) {
             return new Promise(resolve =>
-                this.$scope.ticksService
-                    .request({ symbol: this.symbol })
-                    .then(ticks => resolve(ticks.map(o => o.quote)))
+                this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks =>
+                    resolve(
+                        ticks.map(o => {
+                            if (toString) {
+                                return o.quote.toFixed(this.getPipSize());
+                            } 
+                            return o.quote;
+                            
+                        })
+                    )
+                )
             );
         }
-        getLastTick(raw) {
+        getLastTick(raw, toString = false) {
             return new Promise(resolve =>
                 this.$scope.ticksService
                     .request({ symbol: this.symbol })
-                    .then(ticks => resolve(raw ? getLast(ticks) : getLast(ticks).quote))
+                    .then(ticks => raw ? getLast(ticks) : getLast(ticks).quote)
+                    .then(lastTick => {
+                        if (toString && !raw) {
+                            resolve(lastTick.toFixed(this.getPipSize()));
+                        } else {
+                            resolve(lastTick);
+                        }
+                    })
             );
         }
         getLastDigit() {

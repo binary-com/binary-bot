@@ -14,4 +14,16 @@ Blockly.Blocks.tick = {
         mainScope(this, ev, 'Tick Value');
     },
 };
-Blockly.JavaScript.tick = () => ['Bot.getLastTick()', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.tick = () => ['Bot.getLastTick(false, false)', Blockly.JavaScript.ORDER_ATOMIC];
+
+Blockly.Blocks.tick_string = {
+    init: function init() {
+        this.appendDummyInput().appendField(translate('Last Tick String'));
+        this.setOutput(true, 'Number');
+        this.setColour('#f2f2f2');
+        this.setTooltip(translate('Returns the tick value received by a before purchase block (String)'));
+        this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+    },
+    onchange: Blockly.Blocks.tick.onchange,
+};
+Blockly.JavaScript.tick_string = () => ['Bot.getLastTick(false, true)', Blockly.JavaScript.ORDER_ATOMIC];
