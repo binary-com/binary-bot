@@ -75,7 +75,7 @@ const getDomainAppId = () => AppIdMap[hostName.replace(/^www./, '')];
 
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
-    appId: getStorage('config.default_app_id') || getDomainAppId() || 1169,
+    appId: getStorage('config.default_app_id') || getDomainAppId() || 18683,
 });
 
 const generateOAuthDomain = () => {
