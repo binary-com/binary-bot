@@ -15,7 +15,7 @@ Blockly.Blocks.webhook = {
             colour           : '#dedede',
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Send payload to URL'),
+            tooltip          : translate('Sends real-time information to your app'),
         });
 
         this.itemCount_ = 3;
