@@ -238,7 +238,7 @@ export default class View {
     constructor() {
         logHandler();
         this.initPromise = new Promise(resolve => {
-            updateConfigCurrencies().then(() => {
+            updateConfigCurrencies(api).then(() => {
                 symbolPromise.then(() => {
                     updateTokenList();
                     this.blockly = new _Blockly();

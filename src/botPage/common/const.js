@@ -1,5 +1,4 @@
 import { translate } from '../../common/i18n';
-import { generateLiveApiInstance } from '../../common/appId';
 import { load as loadLang } from '../../common/lang';
 
 loadLang();
@@ -236,8 +235,7 @@ const config = {
     },
 };
 
-export async function updateConfigCurrencies() {
-    const api = generateLiveApiInstance();
+export async function updateConfigCurrencies(api) {
     try {
         const response = await api.getPayoutCurrencies();
         config.lists.CURRENCY = response.payout_currencies.map(c => [c, c]);
