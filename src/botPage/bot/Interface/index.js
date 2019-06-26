@@ -1,5 +1,4 @@
 import TradeEngine from '../TradeEngine';
-import { noop, createDetails } from '../tools';
 import TicksInterface from './TicksInterface';
 import ToolsInterface from './ToolsInterface';
 
@@ -7,6 +6,28 @@ import ToolsInterface from './ToolsInterface';
  * Bot - Bot Module
  * @namespace Bot
  */
+
+export const noop = () => {};
+
+export const createDetails = contract => {
+    const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
+    const profit = Number(roundBalance({ currency, balance: sellPrice - buyPrice }));
+    const result = profit < 0 ? 'loss' : 'win';
+
+    return [
+        contract.transaction_ids.buy,
+        +contract.buy_price,
+        +contract.sell_price,
+        profit,
+        contract.contract_type,
+        getUTCTime(new Date(parseInt(`${contract.entry_tick_time}000`))),
+        +contract.entry_tick,
+        getUTCTime(new Date(parseInt(`${contract.exit_tick_time}000`))),
+        +contract.exit_tick,
+        +(contract.barrier ? contract.barrier : 0),
+        result,
+    ];
+};
 
 export default class Interface extends ToolsInterface(TicksInterface(class {})) {
     constructor($scope) {
