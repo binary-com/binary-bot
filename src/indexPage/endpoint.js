@@ -20,8 +20,6 @@ export default function endpoint() {
         $('#new_endpoint').click(addEndpoint);
         $('#reset').click(resetEndpoint);
 
-        $('#server_url').keyup(validateURL);
-
         init();
     });
     return true;
@@ -66,6 +64,7 @@ function addEndpoint(e) {
     setStorage('config.server_url', serverUrl);
     setStorage('config.app_id', appId);
 
+    // eslint-disable-next-line no-useless-escape
     const UrlReg = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
 
     if (!UrlReg.test(serverUrl)) {
@@ -82,5 +81,3 @@ function resetEndpoint() {
     setStorage('config.app_id', getDefaultEndpoint().appId);
     setStorage('config.server_url', getDefaultEndpoint().url);
 }
-
-const validateURL = e => {};
