@@ -19,9 +19,11 @@ import Interpreter from '../../bot/Interpreter';
 import createError from '../../common/error';
 import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
+import { get as getStorage, remove } from '../../../common/utils/storageManager';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
+import { AppConstants } from '../../../common/appId';
 
 const setBeforeUnload = off => {
     if (off) {
@@ -262,7 +264,10 @@ export default class _Blockly {
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
                 addBlocklyTranslation().then(() => {
-                    $.get('xml/main.xml', main => {
+                    const defaultStrat = getStorage(AppConstants.STORAGE_STRATEGY);
+                    const xmlFile = defaultStrat ? `xml/${defaultStrat}.xml` : 'xml/main.xml';
+
+                    $.get(xmlFile, main => {
                         repaintDefaultColours();
                         overrideBlocklyDefaultShape();
                         this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
@@ -275,6 +280,8 @@ export default class _Blockly {
                             Blockly.mainWorkspace.clearUndo();
                         }, 0);
                         resolve();
+                    }).then(() => {
+                        remove(AppConstants.STORAGE_STRATEGY);
                     });
                 });
             });
