@@ -43,13 +43,31 @@ export default Interface => class extends IndicatorsInterface(
             toTimestamp: (dateTimeString) => {
                 const invalidDatetime = () => `${translate('Invalid date/time')}: ${dateTimeString}`;
                 if (typeof dateTimeString === 'string') {
-                    const tmp = dateTimeString.replace(/\s+/g, 'T').substr(0, 19);
-                    const dateTime = tmp[tmp.length - 1] === 'T' ? tmp.substr(0, tmp.length - 1) : tmp;
-                    const p = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])(T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9]))?)?)/;
-                    if (p.test(dateTime)) {
-                        const date = new Date(dateTime);
+                    const dateTime = dateTimeString
+                        .replace(/[^0-9.:-\s]/g, '')
+                        .replace(/\s+/g,' ')
+                        .replace(/\s$/,'')
+                        .split(' ');        
+                
+                    const d = /^[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+                    const t = /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9])?)?$/;
+            
+                    let validatedDateTime;
+                
+                    if(dateTime.length >= 2) {
+                        validatedDateTime = d.test(dateTime[0]) && t.test(dateTime[1]) ? `${dateTime[0]}T${dateTime[1]}` : null;
+                    } else if(dateTime.length === 1) {
+                        validatedDateTime = d.test(dateTime[0]) ? dateTime[0] : null;
+                    } else {
+                        validatedDateTime = null;
+                    }
+
+                    if(validatedDateTime) {
+                        const dateObj = new Date(validatedDateTime);
                         // eslint-disable-next-line no-restricted-globals
-                        return date instanceof Date && !isNaN(date) ? date.getTime() / 1000 : invalidDatetime();
+                        if(dateObj instanceof Date && !isNaN(dateObj)) {
+                            return  dateObj.getTime() / 1000;
+                        }
                     }
                     return invalidDatetime();
                 }
