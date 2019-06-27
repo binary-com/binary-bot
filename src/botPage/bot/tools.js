@@ -151,8 +151,8 @@ export const createDetails = (contract, pipSize) => {
         +contract.exit_tick,
         +(contract.barrier ? contract.barrier : 0),
         result,
-        parseFloat(contract.entry_tick).toFixed(pipSize),
-        parseFloat(contract.exit_tick).toFixed(pipSize),
+        (+contract.entry_tick).toFixed(pipSize),
+        (+contract.exit_tick).toFixed(pipSize),
     ];
 };
 
