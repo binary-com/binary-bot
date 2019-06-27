@@ -46,7 +46,7 @@ export default Interface => class extends IndicatorsInterface(
                     const dateTime = dateTimeString
                         .replace(/[^0-9.:-\s]/g, '')
                         .replace(/\s+/g,' ')
-                        .replace(/\s$/,'')
+                        .trim()
                         .split(' ');        
                 
                     const d = /^[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
