@@ -16,7 +16,7 @@ import {
     cleanBeforeExport,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import createError from '../../common/error';
+import { createErrorAndEmit } from '../../common/error';
 import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
@@ -315,45 +315,44 @@ export default class _Blockly {
     }
     /* eslint-disable class-methods-use-this */
     load(blockStr = '', dropEvent = {}) {
-        let xml;
+        const unrecognisedMsg = () => translate('Unrecognized file format');
 
         try {
             const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
 
-            if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
-                globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
-                return;
+            if (xmlDoc.getElementsByTagName('parsererror').length) {
+                throw 0;
             }
         } catch (err) {
-            globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
-            return;
+            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
         }
 
+        let xml;
         try {
             xml = Blockly.Xml.textToDom(blockStr);
-            const blocklyXml = xml.querySelectorAll('block');
-
-            if (blocklyXml.length <= 0) {
-                globalObserver.emit(
-                    'ui.log.warn',
-                    `${translate(
-                        'Unsupported strategy. Binary Bot only accepts XML scripts from Binary.com sources. Please load a supported file.'
-                    )}`
-                );
-                return;
-            }
-
-            blocklyXml.forEach(block => {
-                const blockType = block.attributes.type.nodeValue;
-
-                if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-                    globalObserver.emit('ui.log.warn', `${translate('Unrecognized file format')}`);
-                    throw createError('FileLoad', translate('Unrecognized file format'));
-                }
-            });
         } catch (e) {
-            throw createError('FileLoad', translate('Unrecognized file format'));
+            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
         }
+
+        const blocklyXml = xml.querySelectorAll('block');
+
+        if (!blocklyXml.length) {
+            throw createErrorAndEmit(
+                'FileLoad',
+                'XML file contains unsupported elements. Please check or modify file.'
+            );
+        }
+
+        blocklyXml.forEach(block => {
+            const blockType = block.attributes.type.nodeValue;
+
+            if (!Object.keys(Blockly.Blocks).includes(blockType)) {
+                throw createErrorAndEmit(
+                    'FileLoad',
+                    'XML file contains unsupported elements. Please check or modify file'
+                );
+            }
+        });
 
         try {
             if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
@@ -362,7 +361,7 @@ export default class _Blockly {
                 loadWorkspace(xml);
             }
         } catch (e) {
-            throw createError('FileLoad', translate('Unable to load the block file'));
+            throw createErrorAndEmit('FileLoad', translate('Unable to load the block file'));
         }
     }
     /* eslint-disable class-methods-use-this */
