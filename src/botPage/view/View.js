@@ -18,8 +18,8 @@ import Tour from './tour';
 import TradeInfoPanel from './TradeInfoPanel';
 import { showDialog } from '../bot/tools';
 import Elevio from '../../common/elevio';
-import { updateConfigCurrencies } from '../common/const';
-import { roundBalance, isVirtual } from '../common/tools';
+import config, { updateConfigCurrencies } from '../common/const';
+import { isVirtual } from '../common/tools';
 import {
     logoutAllTokens,
     getOAuthURL,
@@ -66,8 +66,16 @@ api.events.on('balance', response => {
         balance: { balance: b, currency },
     } = response;
 
-    const balance = (+roundBalance({ currency, balance: b })).toLocaleString(getLanguage().replace('_', '-'));
-    $('.topMenuBalance').text(`${balance} ${currency}`);
+    const elTopMenuBalances = document.querySelectorAll('.topMenuBalance');
+    const localString = getLanguage().replace('_', '-');
+    const balance = (+b).toLocaleString(localString, {
+        minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2,
+    });
+
+    elTopMenuBalances.forEach(elTopMenuBalance => {
+        const element = elTopMenuBalance;
+        element.textContent = `${balance} ${currency}`;
+    });
 });
 
 const addBalanceForToken = token => {
@@ -503,9 +511,11 @@ export default class View {
         });
 
         const startBot = limitations => {
-            $('#stopButton, #summaryStopButton').show();
-            $('#runButton, #summaryRunButton').hide();
-            $('#runButton, #summaryRunButton').prop('disabled', true);
+            const $runButtons = $('#runButton, #summaryRunButton');
+            const $stopButtons = $('#stopButton, #summaryStopButton');
+            $stopButtons.show();
+            $runButtons.hide();
+            $runButtons.prop('disabled', true);
             globalObserver.emit('summary.disable_clear');
             showSummary();
             this.blockly.run(limitations);
@@ -633,7 +643,15 @@ export default class View {
         });
 
         globalObserver.register('bot.stop', () => {
-            $('#runButton, #summaryRunButton').prop('disabled', false);
+            const $runButtons = $('#runButton, #summaryRunButton');
+            const $stopButtons = $('#stopButton, #summaryStopButton');
+            if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
+                $runButtons.show();
+                $stopButtons.hide();
+
+                $stopButtons.prop('disabled', false);
+                $runButtons.prop('disabled', false);
+            }
         });
 
         globalObserver.register('bot.info', info => {
