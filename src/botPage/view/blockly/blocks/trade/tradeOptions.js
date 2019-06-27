@@ -5,6 +5,7 @@ import {
     getDurationsForContracts,
     getBarriersForContracts,
     getPredictionForContracts,
+    disableRunButton,
 } from '../shared';
 import { insideTrade } from '../../relationChecker';
 import { findTopParentBlock, hideInteractionsFromBlockly, getBlocksByType } from '../../utils';
@@ -102,8 +103,15 @@ export default () => {
             }
         },
         pollForContracts(symbol) {
+            disableRunButton(true);
             return new Promise(resolve => {
                 const contractsForSymbol = haveContractsForSymbol(symbol);
+
+                const resolveContracts = resolveObj => {
+                    disableRunButton(false);
+                    resolve(resolveObj);
+                };
+
                 if (!contractsForSymbol) {
                     // Register an event and use as a lock to avoid spamming API
                     const event = `contractsLoaded.${symbol}`;
@@ -111,7 +119,7 @@ export default () => {
                         globalObserver.register(event, () => {});
                         getContractsAvailableForSymbol(symbol).then(contracts => {
                             globalObserver.unregisterAll(event); // Release the lock
-                            resolve(contracts);
+                            resolveContracts(contracts);
                         });
                     } else {
                         // Request in progress, start polling localStorage until contracts are available.
@@ -119,16 +127,16 @@ export default () => {
                             const contracts = haveContractsForSymbol(symbol);
                             if (contracts) {
                                 clearInterval(pollingFn);
-                                resolve(contracts.available);
+                                resolveContracts(contracts.available);
                             }
                         }, 100);
                         setTimeout(() => {
                             clearInterval(pollingFn);
-                            resolve([]);
+                            resolveContracts([]);
                         }, 10000);
                     }
                 } else {
-                    resolve(contractsForSymbol.available);
+                    resolveContracts(contractsForSymbol.available);
                 }
             });
         },
