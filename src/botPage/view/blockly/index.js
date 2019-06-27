@@ -321,7 +321,7 @@ export default class _Blockly {
             const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
 
             if (xmlDoc.getElementsByTagName('parsererror').length) {
-                throw 0;
+                throw new Error();
             }
         } catch (err) {
             throw createErrorAndEmit('FileLoad', unrecognisedMsg());
@@ -344,7 +344,7 @@ export default class _Blockly {
         }
 
         blocklyXml.forEach(block => {
-            const blockType = block.attributes.type.nodeValue;
+            const blockType = block.getAttribute('type');
 
             if (!Object.keys(Blockly.Blocks).includes(blockType)) {
                 throw createErrorAndEmit(
