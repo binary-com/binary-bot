@@ -9,7 +9,7 @@ Blockly.Blocks.total_profit = {
         this.setTooltip(translate('Returns the total profit'));
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
-    onchange: ev => {
+    onchange: function onchange(ev) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
