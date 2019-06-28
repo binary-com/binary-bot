@@ -109,17 +109,17 @@ Blockly.Blocks.trade = {
 
         decorateTrade(ev);
 
-        const initInput = this.getInputTargetBlock('INITIALIZATION');
+        // const initInput = this.getInputTargetBlock('INITIALIZATION');
 
-        if (initInput) {
-            const initChild = initInput.getChildren();
+        // if (initInput) {
+        //     const initChild = initInput.getChildren();
 
-            initChild.forEach(child => {
-                if (child.type === 'total_profit' || child.type === 'total_runs') {
-                    child.unplug(true);
-                }
-            });
-        }
+        //     initChild.forEach(child => {
+        //         if (child.type === 'total_profit' || child.type === 'total_runs') {
+        //             child.unplug(true);
+        //         }
+        //     });
+        // }
     },
 };
 
