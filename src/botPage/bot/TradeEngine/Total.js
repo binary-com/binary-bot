@@ -86,7 +86,7 @@ export default Engine =>
             const accountStat = this.getAccountStat();
             return accountStat.totalRuns;
         }
-        getTotalProfit(toString = false, currency) {
+        getTotalProfit(toString, currency) {
             const accountStat = this.getAccountStat();
             return toString
                 ? roundBalance({
