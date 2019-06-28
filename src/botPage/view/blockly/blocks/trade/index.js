@@ -106,6 +106,16 @@ Blockly.Blocks.trade = {
             replaceInitializationBlocks(this, ev);
             resetTradeFields(this, ev);
         }
+
+        const initStatement = this.getInputTargetBlock('INITIALIZATION');
+        const initChild = initStatement.getChildren();
+
+        initChild.forEach(child => {
+            if (child.type === 'total_profit' || child.type === 'total_runs') {
+                child.unplug(true);
+            }
+        });
+
         decorateTrade(ev);
     },
 };
