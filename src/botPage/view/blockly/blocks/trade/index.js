@@ -107,16 +107,19 @@ Blockly.Blocks.trade = {
             resetTradeFields(this, ev);
         }
 
-        const initStatement = this.getInputTargetBlock('INITIALIZATION');
-        const initChild = initStatement.getChildren();
-
-        initChild.forEach(child => {
-            if (child.type === 'total_profit' || child.type === 'total_runs') {
-                child.unplug(true);
-            }
-        });
-
         decorateTrade(ev);
+
+        const initInput = this.getInputTargetBlock('INITIALIZATION');
+
+        if (initInput) {
+            const initChild = initInput.getChildren();
+
+            initChild.forEach(child => {
+                if (child.type === 'total_profit' || child.type === 'total_runs') {
+                    child.unplug(true);
+                }
+            });
+        }
     },
 };
 
