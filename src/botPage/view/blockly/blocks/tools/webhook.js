@@ -38,8 +38,7 @@ Blockly.Blocks.webhook = {
      * @this Blockly.Block
      */
     domToMutation(xmlElement) {
-        // eslint-disable-next-line radix
-        this.itemCount_ = parseInt(xmlElement.getAttribute('items'), 10);
+        this.itemCount_ = parseInt(xmlElement.getAttribute('items'));
         this.updateShape_();
     },
     /**
