@@ -86,9 +86,14 @@ export default Engine =>
             const accountStat = this.getAccountStat();
             return accountStat.totalRuns;
         }
-        getTotalProfit() {
+        getTotalProfit(toString = false, currency) {
             const accountStat = this.getAccountStat();
-            return Number(accountStat.totalProfit);
+            return toString
+                ? roundBalance({
+                    currency,
+                    balance: +accountStat.totalProfit,
+                })
+                : +accountStat.totalProfit;
         }
         /* eslint-enable */
         checkLimits(tradeOption) {

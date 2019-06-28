@@ -29,7 +29,8 @@ export default Interface =>
                 notifyTelegram: this.notifyTelegram,
                 getTotalRuns  : () => this.tradeEngine.getTotalRuns(),
                 getBalance    : type => this.tradeEngine.getBalance(type),
-                getTotalProfit: () => this.tradeEngine.getTotalProfit(),
+                getTotalProfit: (...args) =>
+                    this.tradeEngine.getTotalProfit(...args, this.tradeEngine.tradeOptions.currency),
             };
         }
     };

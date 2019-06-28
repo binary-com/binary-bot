@@ -424,6 +424,7 @@
             <category name="Misc." i18n-text="Misc.">
                 <block type="balance"></block>
                 <block type="total_profit"></block>
+                <block type="total_profit_string"></block>
                 <block type="total_runs"></block>
                 <block type="notify">
                     <field name="NOTIFICATION_TYPE">success</field>
