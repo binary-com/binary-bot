@@ -18,7 +18,7 @@ Blockly.Blocks.webhook = {
             tooltip          : translate('Sends a POST request to a URL'),
         });
 
-        this.itemCount_ = 3;
+        this.itemCount_ = 1;
         this.updateShape_();
         this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
     },
@@ -51,8 +51,8 @@ Blockly.Blocks.webhook = {
     decompose(workspace) {
         const containerBlock = workspace.newBlock('lists_create_with_container');
         containerBlock.initSvg();
-        // eslint-disable-next-line prefer-destructuring
-        let connection = containerBlock.getInput('STACK').connection;
+
+        let { connection } = containerBlock.getInput('STACK');
         for (let i = 0; i < this.itemCount_; i++) {
             const itemBlock = workspace.newBlock('lists_create_with_item');
             itemBlock.initSvg();
@@ -137,7 +137,7 @@ Blockly.Blocks.webhook = {
         if (ev.type === Blockly.Events.MOVE) {
             for (let i = 0; i < this.itemCount_; i++) {
                 const currentBlock = this.getInputTargetBlock(`ADD${i}`);
-                if (currentBlock && currentBlock.type !== 'webhook_payload') {
+                if (currentBlock && currentBlock.type !== 'key_value_pair') {
                     currentBlock.unplug(true);
                 }
             }
@@ -147,20 +147,20 @@ Blockly.Blocks.webhook = {
 
 Blockly.JavaScript.webhook = block => {
     const url = expectValue(block, 'WEBHOOK_URL');
-    const payloads = new Array(block.itemCount_);
+    const payload = new Array(block.itemCount_);
     for (let i = 0; i < block.itemCount_; i++) {
-        payloads[i] = Blockly.JavaScript.valueToCode(block, `ADD${i}`, Blockly.JavaScript.ORDER_ATOMIC) || null;
+        payload[i] = Blockly.JavaScript.valueToCode(block, `ADD${i}`, Blockly.JavaScript.ORDER_ATOMIC) || null;
     }
 
-    if (!url || !payloads) {
+    if (!url || !payload) {
         return '';
     }
 
-    const params = payloads
-        .filter(p => p !== null)
-        .map(payload => {
+    const params = payload
+        .filter(item => item !== null)
+        .map(item => {
             const regExp = /^{(.*?)}$/;
-            return payload && payload.match(regExp)[1];
+            return item && item.match(regExp)[1];
         });
 
     const code = `Bot.sendWebhook(${url}, {${params}});\n`;

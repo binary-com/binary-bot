@@ -1,19 +1,19 @@
 import { translate } from '../../../../../common/i18n';
 import { expectValue } from '../shared';
 
-Blockly.Blocks.webhook_payload = {
+Blockly.Blocks.key_value_pair = {
     init() {
         this.jsonInit({
             message0: translate('Key: %1 Value: %2'),
             args0   : [
                 {
                     type: 'field_input',
-                    name: 'WEBHOOK_KEY',
+                    name: 'KEY',
                     text: 'default',
                 },
                 {
                     type: 'input_value',
-                    name: 'WEBHOOK_VALUE',
+                    name: 'VALUE',
                 },
             ],
             colour : '#dedede',
@@ -23,9 +23,9 @@ Blockly.Blocks.webhook_payload = {
     },
 };
 
-Blockly.JavaScript.webhook_payload = block => {
-    const key = block.getFieldValue('WEBHOOK_KEY') || '';
-    const value = expectValue(block, 'WEBHOOK_VALUE');
+Blockly.JavaScript.key_value_pair = block => {
+    const key = block.getFieldValue('KEY') || '';
+    const value = expectValue(block, 'VALUE');
 
     if (!key || !value) {
         return '';
