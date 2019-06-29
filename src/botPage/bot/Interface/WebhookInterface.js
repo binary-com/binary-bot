@@ -5,7 +5,7 @@ export default Interface =>
     class extends Interface {
         // eslint-disable-next-line class-methods-use-this
         sendWebhook(url, payload) {
-            const onError = e => notify('warn', translate('Unable to send webhook'));
+            const onError = () => notify('warn', translate('Unable to send webhook'));
             const fetchOption = {
                 method : 'POST',
                 mode   : 'cors',

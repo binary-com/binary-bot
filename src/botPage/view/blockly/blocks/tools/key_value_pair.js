@@ -1,5 +1,4 @@
 import { translate } from '../../../../../common/i18n';
-import { expectValue } from '../shared';
 
 Blockly.Blocks.key_value_pair = {
     init() {
