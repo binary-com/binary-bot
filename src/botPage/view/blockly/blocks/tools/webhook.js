@@ -80,7 +80,9 @@ Blockly.Blocks.webhook = {
                 const targetBlock = connection.getSourceBlock();
 
                 connection.disconnect();
-                targetBlock.isShadow() && targetBlock.dispose(false);
+                if (targetBlock.isShadow()) {
+                    targetBlock.dispose(false);
+                }
             }
         }
         this.itemCount_ = connections.length;
