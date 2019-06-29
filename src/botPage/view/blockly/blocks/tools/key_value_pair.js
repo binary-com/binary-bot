@@ -18,16 +18,16 @@ Blockly.Blocks.key_value_pair = {
             ],
             colour : '#dedede',
             output : null,
-            tooltip: translate('Payload for webhook'),
+            tooltip: translate('Returns a string representation of a key value pair'),
         });
     },
 };
 
 Blockly.JavaScript.key_value_pair = block => {
     const key = block.getFieldValue('KEY') || '';
-    const value = expectValue(block, 'VALUE');
+    const value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || null;
 
-    if (!key || !value) {
+    if (!key) {
         return '';
     }
 

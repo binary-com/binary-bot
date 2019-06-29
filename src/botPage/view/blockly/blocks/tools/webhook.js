@@ -19,7 +19,7 @@ Blockly.Blocks.webhook = {
         });
 
         this.itemCount_ = 1;
-        this.updateShape_();
+        this.updateShape_(false);
         this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
     },
     /**
@@ -39,7 +39,7 @@ Blockly.Blocks.webhook = {
      */
     domToMutation(xmlElement) {
         this.itemCount_ = parseInt(xmlElement.getAttribute('items'));
-        this.updateShape_();
+        this.updateShape_(true);
     },
     /**
      * Populate the mutator's dialog with this block's components.
@@ -77,11 +77,14 @@ Blockly.Blocks.webhook = {
         for (let i = 0; i < this.itemCount_; i++) {
             const connection = this.getInput(`ADD${i}`).connection.targetConnection;
             if (connection && connections.indexOf(connection) === -1) {
+                const targetBlock = connection.getSourceBlock();
+
                 connection.disconnect();
+                targetBlock.isShadow() && targetBlock.dispose(false);
             }
         }
         this.itemCount_ = connections.length;
-        this.updateShape_();
+        this.updateShape_(true);
         // Reconnect any child blocks.
         for (let i = 0; i < this.itemCount_; i++) {
             Blockly.Mutator.reconnect(connections[i], this, `ADD${i}`);
@@ -107,7 +110,7 @@ Blockly.Blocks.webhook = {
      * @private
      * @this Blockly.Block
      */
-    updateShape_() {
+    updateShape_(render) {
         if (this.itemCount_ && this.getInput('EMPTY')) {
             this.removeInput('EMPTY');
         } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
@@ -117,9 +120,17 @@ Blockly.Blocks.webhook = {
         for (i = 0; i < this.itemCount_; i++) {
             if (!this.getInput(`ADD${i}`)) {
                 const input = this.appendValueInput(`ADD${i}`);
+
                 if (i === 0) {
                     input.appendField(translate('Payload:'));
                 }
+
+                const { connection } = input;
+                const keypair = this.workspace.newBlock('key_value_pair', `keyvalue${i}`);
+                keypair.setShadow(true);
+                keypair.initSvg();
+                render && keypair.render();
+                keypair.outputConnection.connect(connection);
             }
         }
         // Remove deleted inputs.
@@ -146,22 +157,22 @@ Blockly.Blocks.webhook = {
 
 Blockly.JavaScript.webhook = block => {
     const url = expectValue(block, 'WEBHOOK_URL');
-    const payload = new Array(block.itemCount_);
+
+    if (!block.itemCount_) {
+        return `Bot.sendWebhook(${url}, null);\n`;
+    }
+
+    const keypairs = new Array(block.itemCount_);
     for (let i = 0; i < block.itemCount_; i++) {
-        payload[i] = Blockly.JavaScript.valueToCode(block, `ADD${i}`, Blockly.JavaScript.ORDER_ATOMIC) || null;
+        keypairs[i] = Blockly.JavaScript.valueToCode(block, `ADD${i}`, Blockly.JavaScript.ORDER_ATOMIC) || null;
     }
 
-    if (!url || !payload) {
-        return '';
-    }
-
-    const params = payload
+    const params = keypairs
         .filter(item => item !== null)
         .map(item => {
             const regExp = /^{(.*?)}$/;
             return item && item.match(regExp)[1];
         });
 
-    const code = `Bot.sendWebhook(${url}, {${params}});\n`;
-    return code;
+    return `Bot.sendWebhook(${url}, {${params}});\n`;
 };
