@@ -285,6 +285,7 @@ export default class View {
                     globalObserver.emit('ui.log.info', `${translate('File is not supported:')} ${file.name}`);
                 }
             });
+            $('#files').val('');
         };
 
         const handleDragOver = e => {
