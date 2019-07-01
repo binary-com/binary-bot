@@ -1,6 +1,7 @@
 import GTM from '../../../common/gtm';
 import { translate, translateLangToLang } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
+import { save } from './utils';
 
 /* eslint-disable */
 Blockly.WorkspaceAudio.prototype.preload = function() {};
@@ -375,4 +376,30 @@ Blockly.WorkspaceAudio.prototype.preload = function() {
             break;
         }
     }
+};
+
+// https://groups.google.com/forum/#!msg/blockly/eS1V49pI9c8/VEh5UuUcBAAJ
+const addDownloadOption = (callback, options, block) => {
+    options.push({
+        text: translate('Download'),
+        enabled: true,
+        callback: () => {
+            const xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
+            xml.appendChild(Blockly.Xml.blockToDom(block));
+            save('binary-bot-block', true, xml);
+        },
+    });
+    callback(options);
+};
+
+const originalCustomContextVarFn =
+    Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN.customContextMenu;
+Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN.customContextMenu = function(options) {
+    addDownloadOption(originalCustomContextVarFn.bind(this), options, this);
+};
+
+const originalCustomContextLoopFn =
+    Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN.customContextMenu;
+Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN.customContextMenu = function(options) {
+    addDownloadOption(originalCustomContextLoopFn.bind(this), options, this);
 };

@@ -409,3 +409,7 @@ export const getPredictionForContracts = (contracts, selectedContractType) => {
     }
     return predictionRange;
 };
+
+export const disableRunButton = isDisabled => {
+    $('#runButton, #summaryRunButton').attr('disabled', isDisabled);
+};

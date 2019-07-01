@@ -512,9 +512,11 @@ export default class View {
         });
 
         const startBot = limitations => {
-            $('#stopButton, #summaryStopButton').show();
-            $('#runButton, #summaryRunButton').hide();
-            $('#runButton, #summaryRunButton').prop('disabled', true);
+            const $runButtons = $('#runButton, #summaryRunButton');
+            const $stopButtons = $('#stopButton, #summaryStopButton');
+            $stopButtons.show();
+            $runButtons.hide();
+            $runButtons.prop('disabled', true);
             globalObserver.emit('summary.disable_clear');
             showSummary();
             this.blockly.run(limitations);
@@ -642,7 +644,15 @@ export default class View {
         });
 
         globalObserver.register('bot.stop', () => {
-            $('#runButton, #summaryRunButton').prop('disabled', false);
+            const $runButtons = $('#runButton, #summaryRunButton');
+            const $stopButtons = $('#stopButton, #summaryStopButton');
+            if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
+                $runButtons.show();
+                $stopButtons.hide();
+
+                $stopButtons.prop('disabled', false);
+                $runButtons.prop('disabled', false);
+            }
         });
 
         globalObserver.register('bot.info', info => {
