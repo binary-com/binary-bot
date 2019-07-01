@@ -131,7 +131,9 @@ Blockly.Blocks.webhook = {
                 const keypair = this.workspace.newBlock('key_value_pair', `keyvalue${i}`);
                 keypair.setShadow(true);
                 keypair.initSvg();
-                render && keypair.render();
+                if (render) {
+                    keypair.render();
+                }
                 keypair.outputConnection.connect(connection);
             }
         }
