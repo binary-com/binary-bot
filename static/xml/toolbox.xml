@@ -458,6 +458,10 @@
                             <field name="TEXT">https://example.com</field>
                         </shadow>
                     </value>
+                    <value name="ADD0">
+                        <block type="key_value_pair">
+                        </block>
+                    </value>
                 </block>
                 <block type="key_value_pair">
                 </block>

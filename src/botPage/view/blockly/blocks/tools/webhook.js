@@ -39,7 +39,7 @@ Blockly.Blocks.webhook = {
      */
     domToMutation(xmlElement) {
         this.itemCount_ = parseInt(xmlElement.getAttribute('items'));
-        this.updateShape_(true);
+        this.updateShape_(false);
     },
     /**
      * Populate the mutator's dialog with this block's components.
@@ -73,46 +73,15 @@ Blockly.Blocks.webhook = {
             connections.push(itemBlock.valueConnection_);
             itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
         }
-        // Disconnect any children that don't belong.
-        for (let i = 0; i < this.itemCount_; i++) {
-            const connection = this.getInput(`ADD${i}`).connection.targetConnection;
-            if (connection && connections.indexOf(connection) === -1) {
-                const targetBlock = connection.getSourceBlock();
-
-                connection.disconnect();
-                if (targetBlock.isShadow()) {
-                    targetBlock.dispose(false);
-                }
-            }
-        }
         this.itemCount_ = connections.length;
         this.updateShape_(true);
-        // Reconnect any child blocks.
-        for (let i = 0; i < this.itemCount_; i++) {
-            Blockly.Mutator.reconnect(connections[i], this, `ADD${i}`);
-        }
-    },
-    /**
-     * Store pointers to any connected child blocks.
-     * @param {!Blockly.Block} containerBlock Root block in mutator.
-     * @this Blockly.Block
-     */
-    saveConnections(containerBlock) {
-        let itemBlock = containerBlock.getInputTargetBlock('STACK');
-        let i = 0;
-        while (itemBlock) {
-            const input = this.getInput(`ADD${i}`);
-            itemBlock.valueConnection_ = input && input.connection.targetConnection;
-            i++;
-            itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
-        }
     },
     /**
      * Modify this block to have the correct number of inputs.
      * @private
      * @this Blockly.Block
      */
-    updateShape_(render) {
+    updateShape_(attachInput) {
         if (this.itemCount_ && this.getInput('EMPTY')) {
             this.removeInput('EMPTY');
         } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
@@ -127,13 +96,13 @@ Blockly.Blocks.webhook = {
                     input.appendField(translate('Payload:'));
                 }
 
+                if (!attachInput) {
+                    return;
+                }
                 const { connection } = input;
                 const keypair = this.workspace.newBlock('key_value_pair', `keyvalue${i}`);
-                keypair.setShadow(true);
                 keypair.initSvg();
-                if (render) {
-                    keypair.render();
-                }
+                keypair.render();
                 keypair.outputConnection.connect(connection);
             }
         }
