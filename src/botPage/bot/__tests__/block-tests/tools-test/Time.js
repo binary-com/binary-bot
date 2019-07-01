@@ -27,3 +27,17 @@ describe('Time in tools', () => {
         expect(time2 - time1).most(3);
     });
 });
+
+describe('Convert timestamp to date/time and back', () => {
+    const timestamp = Math.ceil(new Date().getTime() / 1000);
+    let result;
+    beforeAll(done => {
+        run(`(function() {return Bot.toTimestamp(Bot.toDateTime(${timestamp}));})()`).then(v => {
+            result = v;
+            done();
+        });
+    });
+    it('converts timestamp to date/time string', () => {
+        expect(result).satisfy(dt => dt === timestamp);
+    });
+});
