@@ -5,3 +5,4 @@ install: npm ci
 cache:
     directories: 
         - node_modules
+script: travis_retry npm test
