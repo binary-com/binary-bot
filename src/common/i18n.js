@@ -12,6 +12,7 @@ import es from './translations/es_ES/i10n.json';
 import fr from './translations/fr_FR/i10n.json';
 import en from './translations/en/i10n.json';
 import ach from './translations/ach_UG/i10n.json';
+import th from './translations/th_TH/i10n.json';
 
 export const supportedLanguages = {
     zh_tw: zhTw,
@@ -27,6 +28,7 @@ export const supportedLanguages = {
     fr,
     en,
     ach,
+    th,
 };
 
 const fallbackLang = en;
