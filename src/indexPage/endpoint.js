@@ -60,7 +60,7 @@ function addEndpoint(e) {
     $('#error').hide();
     $('#connected').hide();
     e.preventDefault();
-    const serverUrl = $('#server_url').val();
+    const serverUrl = $('#server_url').val().replace(/[><()\/\"\']/g, '');
     const appId = $('#app_id').val();
     setStorage('config.server_url', serverUrl);
     setStorage('config.app_id', appId);
