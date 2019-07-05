@@ -410,6 +410,20 @@
         <category name="Tools" i18n-text="Tools">
             <category name="Time" i18n-text="Time">
                 <block type="epoch"></block>
+                <block type="totimestamp">
+                    <value name="DATETIME">
+                        <shadow type="text">
+                            <field name="TEXT">yyyy-mm-dd hh:mm:ss</field>
+                        </shadow>
+                    </value>                
+                </block>
+                <block type="todatetime">
+                    <value name="TIMESTAMP">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                </block>                
                 <block type="timeout">
                     <value name="SECONDS">
                         <shadow type="math_number">
