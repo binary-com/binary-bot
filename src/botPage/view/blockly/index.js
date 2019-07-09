@@ -440,11 +440,17 @@ while(true) {
     }
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            const el_run_buttons = document.querySelectorAll('#runButton, #summaryRunButton');
-            const el_stop_buttons = document.querySelectorAll('#stopButton, #summaryStopButton');
+            const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+            const elStopButtons = document.querySelectorAll('#stopButton, #summaryStopButton');
 
-            el_run_buttons.forEach(el_run_button => (el_run_button.style.display = 'initial'));
-            el_stop_buttons.forEach(el_stop_button => (el_stop_button.style.display = 'none'));
+            elRunButtons.forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = 'initial';
+            });
+            elStopButtons.forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = null;
+            });
         }
         if (this.interpreter) {
             this.interpreter.stop();

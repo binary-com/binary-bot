@@ -152,7 +152,7 @@ export default class Interpreter {
         this.stopped = true;
 
         globalObserver.emit('bot.stop');
-        globalObserver.setState({ is_running: false });
+        globalObserver.setState({ isRunning: false });
     }
     stop() {
         if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
