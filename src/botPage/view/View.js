@@ -645,7 +645,10 @@ export default class View {
         });
 
         globalObserver.register('Error', error => {
-            getRunButtonElements().forEach(elRunButton => elRunButton.removeAttribute('disabled'));
+            getRunButtonElements().forEach(el => {
+                const elRunButton = el;
+                elRunButton.removeAttribute('disabled');
+            });
 
             if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
