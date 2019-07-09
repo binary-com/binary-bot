@@ -511,11 +511,17 @@ export default class View {
         });
 
         const startBot = limitations => {
-            const $runButtons = $('#runButton, #summaryRunButton');
-            const $stopButtons = $('#stopButton, #summaryStopButton');
-            $stopButtons.show();
-            $runButtons.hide();
-            $runButtons.prop('disabled', true);
+            const el_run_buttons = document.querySelectorAll('#runButton, #summaryRunButton');
+            const el_stop_buttons = document.querySelectorAll('#stopButton, #summaryStopButton');
+
+            el_run_buttons.forEach(el_run_button => {
+                el_run_button.style.display = 'none';
+                el_run_button.setAttributeNode(document.createAttribute('disabled'));
+            });
+            el_stop_buttons.forEach(el_stop_button => {
+                el_stop_button.style.display = 'initial';
+            });
+
             globalObserver.emit('summary.disable_clear');
             showSummary();
             this.blockly.run(limitations);
@@ -627,6 +633,9 @@ export default class View {
         this.blockly.stop();
     }
     addEventHandlers() {
+        const getRunButtonElements = () => document.querySelectorAll('#runButton, #summaryRunButton');
+        const getStopButtonElements = () => document.querySelectorAll('#stopButton, #summaryStopButton');
+
         window.addEventListener('storage', e => {
             window.onbeforeunload = null;
             if (e.key === 'activeToken' && !e.newValue) window.location.reload();
@@ -634,7 +643,8 @@ export default class View {
         });
 
         globalObserver.register('Error', error => {
-            $('#runButton, #summaryRunButton').prop('disabled', false);
+            getRunButtonElements().forEach(el_run_button => el_run_button.removeAttribute('disabled'));
+
             if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
@@ -642,16 +652,28 @@ export default class View {
             }
         });
 
-        globalObserver.register('bot.stop', () => {
-            const $runButtons = $('#runButton, #summaryRunButton');
-            const $stopButtons = $('#stopButton, #summaryStopButton');
-            if ($runButtons.is(':visible') || $stopButtons.is(':visible')) {
-                $runButtons.show();
-                $stopButtons.hide();
+        globalObserver.register('bot.running', () => {
+            getRunButtonElements().forEach(el_run_button => {
+                el_run_button.style.display = 'none';
+                el_run_button.setAttributeNode(document.createAttribute('disabled'));
+            });
+            getStopButtonElements().forEach(el_stop_button => {
+                el_stop_button.style.display = 'inline-block';
+                el_stop_button.removeAttribute('disabled');
+            });
+        });
 
-                $stopButtons.prop('disabled', false);
-                $runButtons.prop('disabled', false);
-            }
+        globalObserver.register('bot.stop', () => {
+            // Enable run button, this event is emitted after the interpreter
+            // killed the API connection.
+            getStopButtonElements().forEach(el_stop_button => {
+                el_stop_button.style.display = 'none';
+                el_stop_button.removeAttribute('disabled');
+            });
+            getRunButtonElements().forEach(el_run_button => {
+                el_run_button.style.display = null;
+                el_run_button.removeAttribute('disabled');
+            });
         });
 
         globalObserver.register('bot.info', info => {
