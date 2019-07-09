@@ -521,7 +521,7 @@ export default class View {
             });
             elStopButtons.forEach(el => {
                 const elStopButton = el;
-                elStopButton.style.display = 'initial';
+                elStopButton.style.display = 'inline-block';
             });
 
             globalObserver.emit('summary.disable_clear');
@@ -675,7 +675,7 @@ export default class View {
             // killed the API connection.
             getStopButtonElements().forEach(el => {
                 const elStopButton = el;
-                elStopButton.style.display = 'none';
+                elStopButton.style.display = null;
                 elStopButton.removeAttribute('disabled');
             });
             getRunButtonElements().forEach(el => {
