@@ -149,8 +149,10 @@ export default class Interpreter {
     }
     terminateSession() {
         this.$scope.api.disconnect();
-        globalObserver.emit('bot.stop');
         this.stopped = true;
+
+        globalObserver.emit('bot.stop');
+        globalObserver.setState({ is_running: false });
     }
     stop() {
         if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
