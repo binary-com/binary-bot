@@ -440,7 +440,11 @@ while(true) {
     }
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            $('#stopButton, #summaryStopButton').prop('disabled', true);
+            const el_run_buttons = document.querySelectorAll('#runButton, #summaryRunButton');
+            const el_stop_buttons = document.querySelectorAll('#stopButton, #summaryStopButton');
+
+            el_run_buttons.forEach(el_run_button => (el_run_button.style.display = 'initial'));
+            el_stop_buttons.forEach(el_stop_button => (el_stop_button.style.display = 'none'));
         }
         if (this.interpreter) {
             this.interpreter.stop();
