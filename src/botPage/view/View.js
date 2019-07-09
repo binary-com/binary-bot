@@ -511,15 +511,17 @@ export default class View {
         });
 
         const startBot = limitations => {
-            const el_run_buttons = document.querySelectorAll('#runButton, #summaryRunButton');
-            const el_stop_buttons = document.querySelectorAll('#stopButton, #summaryStopButton');
+            const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+            const elStopButtons = document.querySelectorAll('#stopButton, #summaryStopButton');
 
-            el_run_buttons.forEach(el_run_button => {
-                el_run_button.style.display = 'none';
-                el_run_button.setAttributeNode(document.createAttribute('disabled'));
+            elRunButtons.forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = 'none';
+                elRunButton.setAttributeNode(document.createAttribute('disabled'));
             });
-            el_stop_buttons.forEach(el_stop_button => {
-                el_stop_button.style.display = 'initial';
+            elStopButtons.forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = 'initial';
             });
 
             globalObserver.emit('summary.disable_clear');
@@ -643,7 +645,7 @@ export default class View {
         });
 
         globalObserver.register('Error', error => {
-            getRunButtonElements().forEach(el_run_button => el_run_button.removeAttribute('disabled'));
+            getRunButtonElements().forEach(elRunButton => elRunButton.removeAttribute('disabled'));
 
             if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
@@ -653,26 +655,30 @@ export default class View {
         });
 
         globalObserver.register('bot.running', () => {
-            getRunButtonElements().forEach(el_run_button => {
-                el_run_button.style.display = 'none';
-                el_run_button.setAttributeNode(document.createAttribute('disabled'));
+            getRunButtonElements().forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = 'none';
+                elRunButton.setAttributeNode(document.createAttribute('disabled'));
             });
-            getStopButtonElements().forEach(el_stop_button => {
-                el_stop_button.style.display = 'inline-block';
-                el_stop_button.removeAttribute('disabled');
+            getStopButtonElements().forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = 'inline-block';
+                elStopButton.removeAttribute('disabled');
             });
         });
 
         globalObserver.register('bot.stop', () => {
             // Enable run button, this event is emitted after the interpreter
             // killed the API connection.
-            getStopButtonElements().forEach(el_stop_button => {
-                el_stop_button.style.display = 'none';
-                el_stop_button.removeAttribute('disabled');
+            getStopButtonElements().forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = 'none';
+                elStopButton.removeAttribute('disabled');
             });
-            getRunButtonElements().forEach(el_run_button => {
-                el_run_button.style.display = null;
-                el_run_button.removeAttribute('disabled');
+            getRunButtonElements().forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = null;
+                elRunButton.removeAttribute('disabled');
             });
         });
 
