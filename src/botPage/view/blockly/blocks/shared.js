@@ -410,6 +410,21 @@ export const getPredictionForContracts = (contracts, selectedContractType) => {
     return predictionRange;
 };
 
-export const disableRunButton = isDisabled => {
-    $('#runButton, #summaryRunButton').attr('disabled', isDisabled);
+export const disableRunButton = shouldDisable => {
+    const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+    const isRunning = globalObserver.getState('isRunning');
+
+    elRunButtons.forEach(elRunButton => {
+        if (isRunning) {
+            if (shouldDisable) {
+                elRunButton.setAttributeNode(document.createAttribute('disabled'));
+            } else {
+                // Do not enable. The bot is running.
+            }
+        } else if (shouldDisable) {
+            elRunButton.setAttributeNode(document.createAttribute('disabled'));
+        } else {
+            elRunButton.removeAttribute('disabled');
+        }
+    });
 };
