@@ -16,7 +16,7 @@ import {
     cleanBeforeExport,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import createError from '../../common/error';
+import { createErrorAndEmit } from '../../common/error';
 import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
@@ -319,13 +319,44 @@ export default class _Blockly {
     }
     /* eslint-disable class-methods-use-this */
     load(blockStr = '', dropEvent = {}) {
-        let xml;
+        const unrecognisedMsg = () => translate('Unrecognized file format');
 
+        try {
+            const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
+
+            if (xmlDoc.getElementsByTagName('parsererror').length) {
+                throw new Error();
+            }
+        } catch (err) {
+            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
+        }
+
+        let xml;
         try {
             xml = Blockly.Xml.textToDom(blockStr);
         } catch (e) {
-            throw createError('FileLoad', translate('Unrecognized file format'));
+            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
         }
+
+        const blocklyXml = xml.querySelectorAll('block');
+
+        if (!blocklyXml.length) {
+            throw createErrorAndEmit(
+                'FileLoad',
+                'XML file contains unsupported elements. Please check or modify file.'
+            );
+        }
+
+        blocklyXml.forEach(block => {
+            const blockType = block.getAttribute('type');
+
+            if (!Object.keys(Blockly.Blocks).includes(blockType)) {
+                throw createErrorAndEmit(
+                    'FileLoad',
+                    'XML file contains unsupported elements. Please check or modify file'
+                );
+            }
+        });
 
         try {
             if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
@@ -334,7 +365,7 @@ export default class _Blockly {
                 loadWorkspace(xml);
             }
         } catch (e) {
-            throw createError('FileLoad', translate('Unable to load the block file'));
+            throw createErrorAndEmit('FileLoad', translate('Unable to load the block file'));
         }
     }
     /* eslint-disable class-methods-use-this */
@@ -413,7 +444,17 @@ while(true) {
     }
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            $('#stopButton, #summaryStopButton').prop('disabled', true);
+            const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+            const elStopButtons = document.querySelectorAll('#stopButton, #summaryStopButton');
+
+            elRunButtons.forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = 'initial';
+            });
+            elStopButtons.forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = null;
+            });
         }
         if (this.interpreter) {
             this.interpreter.stop();

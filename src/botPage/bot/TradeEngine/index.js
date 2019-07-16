@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { durationToSecond } from '../../../common/utils/tools';
 import { translate } from '../../..//common/i18n';
-import createError from '../../common/error';
+import { createError } from '../../common/error';
 import { doUntilDone } from '../tools';
 import { expectInitArg, expectTradeOptions } from '../sanitize';
 import Proposal from './Proposal';
@@ -92,6 +92,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         }
 
         globalObserver.emit('bot.running');
+        globalObserver.setState({ isRunning: true });
 
         this.tradeOptions = expectTradeOptions(tradeOptions);
 
