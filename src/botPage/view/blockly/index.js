@@ -22,6 +22,7 @@ import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
+import { parseQueryString } from '../../../common/utils/tools';
 
 const setBeforeUnload = off => {
     if (off) {
@@ -262,7 +263,10 @@ export default class _Blockly {
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
                 addBlocklyTranslation().then(() => {
-                    $.get('xml/main.xml', main => {
+                    const defaultStrat = parseQueryString().strategy;
+                    const xmlFile = defaultStrat ? `xml/${defaultStrat}.xml` : 'xml/main.xml';
+
+                    $.get(xmlFile, main => {
                         repaintDefaultColours();
                         overrideBlocklyDefaultShape();
                         this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
@@ -440,7 +444,17 @@ while(true) {
     }
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            $('#stopButton, #summaryStopButton').prop('disabled', true);
+            const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+            const elStopButtons = document.querySelectorAll('#stopButton, #summaryStopButton');
+
+            elRunButtons.forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = 'initial';
+            });
+            elStopButtons.forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = null;
+            });
         }
         if (this.interpreter) {
             this.interpreter.stop();
