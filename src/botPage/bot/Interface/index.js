@@ -37,7 +37,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         };
     }
     getBotInterface() {
-        const getDetail = i => createDetails(this.get('contract'))[i];
+        const getDetail = (i, pipSize) => createDetails(this.get('contract'), pipSize)[i];
 
         return {
             init           : (...args) => this.tradeEngine.init(...args),
@@ -50,7 +50,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             sellAtMarket   : () => this.tradeEngine.sellAtMarket(),
             getSellPrice   : () => this.getSellPrice(),
             isResult       : result => getDetail(10) === result,
-            readDetails    : i => getDetail(i - 1),
+            readDetails    : i => getDetail(i - 1, this.tradeEngine.getPipSize()),
         };
     }
     sleep(arg = 1) {
