@@ -106,6 +106,7 @@ Blockly.Blocks.trade = {
             replaceInitializationBlocks(this, ev);
             resetTradeFields(this, ev);
         }
+
         decorateTrade(ev);
     },
 };

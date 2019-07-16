@@ -9,5 +9,18 @@ Blockly.Blocks.total_profit = {
         this.setTooltip(translate('Returns the total profit'));
         this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
     },
+    onchange: function onchange(ev) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+            return;
+        }
+
+        if (ev.type === Blockly.Events.MOVE) {
+            const inputStatement = this.getRootInputTargetBlock();
+
+            if (inputStatement === 'INITIALIZATION') {
+                this.unplug(true);
+            }
+        }
+    },
 };
 Blockly.JavaScript.total_profit = () => ['Bot.getTotalProfit()', Blockly.JavaScript.ORDER_ATOMIC];
