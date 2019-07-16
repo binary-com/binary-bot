@@ -455,7 +455,9 @@ export default class View {
         };
 
         const showSummary = () => {
-            $('#summaryPanel').dialog('open');
+            $('#summaryPanel')
+                .dialog('option', 'minWidth', 770)
+                .dialog('open');
             addExportButtonToPanel('summaryPanel');
         };
 
