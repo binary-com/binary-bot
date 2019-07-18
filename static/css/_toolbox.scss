@@ -27,7 +27,7 @@
     z-index: 0;
     overflow: auto;
 
-    #runButton[disabled], #runButton[disabled]:hover {
+    #runButton[disabled], #runButton[disabled]:hover, #stopButton[disabled], #stopButton[disabled] {
         @include toolbox-runButton-disabled;
     }
 

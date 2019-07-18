@@ -511,9 +511,19 @@ export default class View {
         });
 
         const startBot = limitations => {
-            $('#stopButton, #summaryStopButton').show();
-            $('#runButton, #summaryRunButton').hide();
-            $('#runButton, #summaryRunButton').prop('disabled', true);
+            const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+            const elStopButtons = document.querySelectorAll('#stopButton, #summaryStopButton');
+
+            elRunButtons.forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = 'none';
+                elRunButton.setAttributeNode(document.createAttribute('disabled'));
+            });
+            elStopButtons.forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = 'inline-block';
+            });
+
             globalObserver.emit('summary.disable_clear');
             showSummary();
             this.blockly.run(limitations);
@@ -625,6 +635,9 @@ export default class View {
         this.blockly.stop();
     }
     addEventHandlers() {
+        const getRunButtonElements = () => document.querySelectorAll('#runButton, #summaryRunButton');
+        const getStopButtonElements = () => document.querySelectorAll('#stopButton, #summaryStopButton');
+
         window.addEventListener('storage', e => {
             window.onbeforeunload = null;
             if (e.key === 'activeToken' && !e.newValue) window.location.reload();
@@ -632,7 +645,11 @@ export default class View {
         });
 
         globalObserver.register('Error', error => {
-            $('#runButton, #summaryRunButton').prop('disabled', false);
+            getRunButtonElements().forEach(el => {
+                const elRunButton = el;
+                elRunButton.removeAttribute('disabled');
+            });
+
             if (error.error && error.error.error.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
@@ -640,8 +657,32 @@ export default class View {
             }
         });
 
+        globalObserver.register('bot.running', () => {
+            getRunButtonElements().forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = 'none';
+                elRunButton.setAttributeNode(document.createAttribute('disabled'));
+            });
+            getStopButtonElements().forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = 'inline-block';
+                elStopButton.removeAttribute('disabled');
+            });
+        });
+
         globalObserver.register('bot.stop', () => {
-            $('#runButton, #summaryRunButton').prop('disabled', false);
+            // Enable run button, this event is emitted after the interpreter
+            // killed the API connection.
+            getStopButtonElements().forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = null;
+                elStopButton.removeAttribute('disabled');
+            });
+            getRunButtonElements().forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = null;
+                elRunButton.removeAttribute('disabled');
+            });
         });
 
         globalObserver.register('bot.info', info => {

@@ -3,6 +3,7 @@ import { Map, List } from 'immutable';
 export default class Observer {
     constructor() {
         this.eam = new Map(); // event action map
+        this.state = {};
     }
     register(event, _action, once, unregisterIfError, unregisterAllBefore) {
         if (unregisterAllBefore) {
@@ -52,6 +53,12 @@ export default class Observer {
         if (this.eam.has(event)) {
             this.eam.get(event).forEach(action => action.action(data));
         }
+    }
+    setState(state = {}) {
+        this.state = Object.assign({}, this.state, state);
+    }
+    getState(key) {
+        return this.state[key];
     }
 }
 
