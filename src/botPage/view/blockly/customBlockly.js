@@ -435,4 +435,25 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout_ = function() {
         return true;
     }
     return false;
+}
+
+/*
+ * Return the parent block or null if this block is at the top level.
+ * @return {Blockly.Block} The block that holds the current block.
+ */
+Blockly.Block.prototype.getRootInputTargetBlock = function() {
+    let inputName;
+    let currentBlock = this.getParent();
+
+    while (currentBlock) {
+        const rootBlock = this.getRootBlock();
+        const currentInput = rootBlock.getInputWithBlock(currentBlock);
+
+        if (currentInput && currentInput.name) {
+            inputName = currentInput.name;
+        }
+        currentBlock = currentBlock.getParent();
+    }
+
+    return inputName;
 };
