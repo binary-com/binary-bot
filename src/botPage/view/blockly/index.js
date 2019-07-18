@@ -440,7 +440,17 @@ while(true) {
     }
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
-            $('#stopButton, #summaryStopButton').prop('disabled', true);
+            const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+            const elStopButtons = document.querySelectorAll('#stopButton, #summaryStopButton');
+
+            elRunButtons.forEach(el => {
+                const elRunButton = el;
+                elRunButton.style.display = 'initial';
+            });
+            elStopButtons.forEach(el => {
+                const elStopButton = el;
+                elStopButton.style.display = null;
+            });
         }
         if (this.interpreter) {
             this.interpreter.stop();
