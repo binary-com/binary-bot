@@ -419,7 +419,7 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout_ = function() {
     if (this.targetBlock_.disabled) {
         return false;
     }
-    GTM.pushDataLayer({ event: 'Drag n Drop', type: this.targetBlock_.type });
+    GTM.pushDataLayer({ event: 'Block Event', blockEvent: 'Drag n Drop' });
     if (!this.flyout_.isScrollable() || this.flyout_.isDragTowardWorkspace(this.currentDragDeltaXY_)) {
         this.startWorkspace_ = this.flyout_.targetWorkspace_;
         this.startWorkspace_.updateScreenCalculationsIfScrolled();
