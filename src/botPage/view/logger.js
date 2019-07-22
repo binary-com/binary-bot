@@ -37,6 +37,7 @@ const isNewError = isNewMessage();
 const notify = ({ className, message, position = 'left', sound = 'silent' }) => {
     if (message && (position === 'left' || isNewNotification(message))) {
         log(className, message);
+
         $.notify(message, { position: `bottom ${position}`, className });
         if (sound !== 'silent') {
             $(`#${sound}`)

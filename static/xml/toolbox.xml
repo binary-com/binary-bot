@@ -281,6 +281,7 @@
         <category name="Tick Analysis" i18n-text="Tick Analysis">
             <block type="tick_analysis"></block>
             <block type="tick"></block>
+            <block type="tick_string"></block>
             <block type="last_digit"></block>
             <block type="read_ohlc">
                 <field name="OHLCFIELD_LIST">open</field>
@@ -300,6 +301,7 @@
                     </value>
                 </block>
                 <block type="ticks"></block>
+                <block type="ticks_string"></block>
                 <block type="lastDigitList"></block>
                 <block type="ohlc"></block>
                 <block type="ohlc_values"></block>
@@ -438,6 +440,7 @@
             <category name="Misc." i18n-text="Misc.">
                 <block type="balance"></block>
                 <block type="total_profit"></block>
+                <block type="total_profit_string"></block>
                 <block type="total_runs"></block>
                 <block type="notify">
                     <field name="NOTIFICATION_TYPE">success</field>
