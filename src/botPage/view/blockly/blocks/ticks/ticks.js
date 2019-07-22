@@ -14,4 +14,16 @@ Blockly.Blocks.ticks = {
         mainScope(this, ev, 'Ticks List');
     },
 };
-Blockly.JavaScript.ticks = () => ['Bot.getTicks()', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.ticks = () => ['Bot.getTicks(false)', Blockly.JavaScript.ORDER_ATOMIC];
+
+Blockly.Blocks.ticks_string = {
+    init: function init() {
+        this.appendDummyInput().appendField(translate('Ticks String List'));
+        this.setOutput(true, 'Array');
+        this.setColour('#f2f2f2');
+        this.setTooltip(translate('Returns the list of tick values (String)'));
+        this.setHelpUrl('https://github.com/binary-com/binary-bot/wiki');
+    },
+    onchange: Blockly.Blocks.ticks.onchange,
+};
+Blockly.JavaScript.ticks_string = () => ['Bot.getTicks(true)', Blockly.JavaScript.ORDER_ATOMIC];
