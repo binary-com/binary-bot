@@ -469,6 +469,19 @@
                 </block>
                 <block type="loader"></block>
                 <block type="block_holder"></block>
+                <block type="webhook">
+                    <value name="WEBHOOK_URL">
+                        <shadow type="text">
+                            <field name="TEXT">https://example.com</field>
+                        </shadow>
+                    </value>
+                    <value name="ADD0">
+                        <block type="key_value_pair">
+                        </block>
+                    </value>
+                </block>
+                <block type="key_value_pair">
+                </block>
             </category>
         </category>
     </category>
