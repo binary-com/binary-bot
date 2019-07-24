@@ -8,11 +8,14 @@ let delayIndex = 0;
 export default Engine =>
     class Sell extends Engine {
         isSellAtMarketAvailable() {
+            console.log('Called isSellAtMarketAvailable');
             return this.contractId && !this.isSold && this.isSellAvailable && !this.isExpired;
         }
         sellAtMarket() {
+            console.log('called sellAtMarket');
             // Prevent calling sell twice
             if (this.store.getState().scope !== DURING_PURCHASE) {
+                console.log('Scope is not DURING_PURCHASE');
                 return Promise.resolve();
             }
 

@@ -74,6 +74,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
     init(...args) {
+        console.log('Init called', args);
         const [token, options] = expectInitArg(args);
 
         const { symbol } = options;
@@ -90,6 +91,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
         }
+
+        console.log('Start called', tradeOptions);
 
         globalObserver.emit('bot.running');
         globalObserver.setState({ isRunning: true });
@@ -135,6 +138,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.observeProposals();
     }
     watch(watchName) {
+        console.log('Watching', watchName);
         if (watchName === 'before') {
             return watchBefore(this.store);
         }
