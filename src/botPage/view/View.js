@@ -285,6 +285,7 @@ export default class View {
                     globalObserver.emit('ui.log.info', `${translate('File is not supported:')} ${file.name}`);
                 }
             });
+            $('#files').val('');
         };
 
         const handleDragOver = e => {
@@ -455,7 +456,9 @@ export default class View {
         };
 
         const showSummary = () => {
-            $('#summaryPanel').dialog('open');
+            $('#summaryPanel')
+                .dialog('option', 'minWidth', 770)
+                .dialog('open');
             addExportButtonToPanel('summaryPanel');
         };
 

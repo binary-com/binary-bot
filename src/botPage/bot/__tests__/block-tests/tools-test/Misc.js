@@ -17,7 +17,7 @@ describe('Misc. tools', () => {
         Bot.notify({ message: 'Test', className: 'info'})
         watch('before')
         result.totalRuns = Bot.getTotalRuns();
-        result.totalProfit = Bot.getTotalProfit();
+        result.totalProfit = Bot.getTotalProfit(false, null);
         result.balance = Bot.getBalance('NUM')
         result.balanceStr = Bot.getBalance('STR')
     `
@@ -47,7 +47,9 @@ describe('Misc. tools', () => {
     });
 
     it('Notify', () => {
-        const { notify: { className, message } } = observed;
+        const {
+            notify: { className, message },
+        } = observed;
 
         expect(className).equal('info');
         expect(message).equal('Test');
