@@ -419,8 +419,9 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout_ = function() {
     if (this.targetBlock_.disabled) {
         return false;
     }
-    GTM.pushDataLayer({ event: 'Block Event', blockEvent: 'Drag n Drop' });
+
     if (!this.flyout_.isScrollable() || this.flyout_.isDragTowardWorkspace(this.currentDragDeltaXY_)) {
+        GTM.pushDataLayer({ event: 'Block Event', blockEvent: 'Drag n Drop' });
         this.startWorkspace_ = this.flyout_.targetWorkspace_;
         this.startWorkspace_.updateScreenCalculationsIfScrolled();
         // Start the event group now, so that the same event group is used for block
@@ -435,7 +436,7 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout_ = function() {
         return true;
     }
     return false;
-}
+};
 
 /*
  * Return the parent block or null if this block is at the top level.
