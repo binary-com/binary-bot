@@ -33,7 +33,7 @@ export const parts = {
   `,
     waitToSell: `
         while (watch('during')) {
-            console.log('Attempting to sell...');
+          console.log('Attempting to sell...', Date.now());
           if (Bot.isSellAvailable()) {
             Bot.sellAtMarket();
           }
