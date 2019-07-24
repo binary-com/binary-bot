@@ -66,7 +66,9 @@ export const expectReturnTrue = (msg, code) =>
         let value;
 
         beforeAll(done => {
+            console.log('Running code...', code);
             run(code).then(v => {
+                console.log('Returned value:', v);
                 value = v;
                 done();
             });
