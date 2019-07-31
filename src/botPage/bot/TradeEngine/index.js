@@ -115,10 +115,16 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             this.listen('authorize', ({ authorize }) => {
                 this.accountInfo = authorize;
                 this.token = token;
-                this.api.subscribeToBalance().then(r => {
-                    this.balance = Number(r.balance.balance);
+
+                // Only subscribe to balance in browser, not for tests.
+                if (document) {
+                    this.api.subscribeToBalance().then(r => {
+                        this.balance = Number(r.balance.balance);
+                        resolve();
+                    });
+                } else {
                     resolve();
-                });
+                }
             })
         );
     }
