@@ -118,8 +118,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
                 // Only subscribe to balance in browser, not for tests.
                 if (document) {
-                    this.api.subscribeToBalance().then(r => {
-                        this.balance = Number(r.balance.balance);
+                    this.api.subscribeToBalance().then(response => {
+                        globalObserver.setState({
+                            balance : Number(response.balance.balance),
+                            currency: response.balance.currency,
+                        });
                         resolve();
                     });
                 } else {

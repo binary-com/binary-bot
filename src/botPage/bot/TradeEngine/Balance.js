@@ -1,7 +1,8 @@
 import { roundBalance } from '../../common/tools';
 import { info } from '../broadcast';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
-let balanceStr = '';
+const balanceStr = '';
 
 export default Engine =>
     class Balance extends Engine {
@@ -11,8 +12,10 @@ export default Engine =>
                     balance: { balance: b, currency },
                 } = r;
 
-                this.balance = roundBalance({ currency, balance: b });
-                balanceStr = `${this.balance} ${currency}`;
+                const balance = roundBalance({ currency, balance: b });
+                const balanceStr = `${balance} ${currency}`;
+
+                globalObserver.setState({ balance, currency });
 
                 info({ accountID: this.accountInfo.loginid, balance: balanceStr });
             });
@@ -20,16 +23,18 @@ export default Engine =>
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
             const { scope } = this.store.getState();
-            let { balance } = this;
+            const currency = globalObserver.getState('currency');
+            let balance = globalObserver.getState('balance');
 
             // Deduct trade `amount` in this scope for correct value in `balance`-block
             if (scope === 'BEFORE_PURCHASE') {
                 balance = roundBalance({
-                    currency: this.tradeOptions.currency,
-                    balance : Number(balance) - this.tradeOptions.amount,
+                    balance: Number(balance) - this.tradeOptions.amount,
+                    currency,
                 });
-                balanceStr = `${balance} ${this.tradeOptions.currency}`;
             }
+
+            const balanceStr = `${balance} ${currency}`;
 
             return type === 'STR' ? balanceStr : Number(balance);
         }
