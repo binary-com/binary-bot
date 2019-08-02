@@ -2,8 +2,6 @@ import { roundBalance } from '../../common/tools';
 import { info } from '../broadcast';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
-const balanceStr = '';
-
 export default Engine =>
     class Balance extends Engine {
         observeBalance() {
