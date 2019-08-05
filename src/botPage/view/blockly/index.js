@@ -266,20 +266,26 @@ export default class _Blockly {
                     const defaultStrat = parseQueryString().strategy;
                     const xmlFile = defaultStrat ? `xml/${defaultStrat}.xml` : 'xml/main.xml';
 
-                    $.get(xmlFile, main => {
-                        repaintDefaultColours();
-                        overrideBlocklyDefaultShape();
-                        this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
-                        Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
-                        this.zoomOnPlusMinus();
-                        disposeBlocksWithLoaders();
-                        setTimeout(() => {
-                            setBeforeUnload(true);
-                            Blockly.mainWorkspace.cleanUp();
-                            Blockly.mainWorkspace.clearUndo();
-                        }, 0);
-                        resolve();
-                    });
+                    const getFile = xml => {
+                        $.get(xml, main => {
+                            repaintDefaultColours();
+                            overrideBlocklyDefaultShape();
+                            this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
+                            Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+                            this.zoomOnPlusMinus();
+                            disposeBlocksWithLoaders();
+                            setTimeout(() => {
+                                setBeforeUnload(true);
+                                Blockly.mainWorkspace.cleanUp();
+                                Blockly.mainWorkspace.clearUndo();
+                            }, 0);
+                            resolve();
+                        }).catch(() => {
+                            getFile('xml/main.xml');
+                        });
+                    };
+
+                    getFile(xmlFile);
                 });
             });
         });
