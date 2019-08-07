@@ -279,9 +279,18 @@ export default class _Blockly {
                                 Blockly.mainWorkspace.cleanUp();
                                 Blockly.mainWorkspace.clearUndo();
                             }, 0);
+
+                            localStorage.setItem('previousStrat', xml);
                             resolve();
                         }).catch(() => {
-                            getFile('xml/main.xml');
+                            const previousStrat = localStorage.getItem('previousStrat') || 'xml/main.xml';
+                            getFile(previousStrat);
+
+                            globalObserver.emit('Notify', {
+                                className: 'warn',
+                                message  : translate('Invalid link'),
+                                position : 'right',
+                            });
                         });
                     };
 
