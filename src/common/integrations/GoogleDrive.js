@@ -7,6 +7,7 @@ import config from '../../botPage/common/const';
 
 class GoogleDrive {
     constructor() {
+        this.botFolderName = `Binary Bot - ${translate('Strategies')}`;
         this.setInfo(config);
         this.googleAuth = null;
         this.isAuthorised = null;
