@@ -288,7 +288,7 @@ export default class _Blockly {
 
                             globalObserver.emit('Notify', {
                                 className: 'warn',
-                                message  : translate('Invalid link'),
+                                message  : translate('The strategy you tried to load is invalid'),
                                 position : 'right',
                             });
                         });
