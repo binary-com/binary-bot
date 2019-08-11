@@ -173,6 +173,7 @@ class GoogleDrive {
                         .then(() => {
                             const docsView = new google.picker.DocsView();
                             docsView.setIncludeFolders(true);
+                            docsView.setMimeTypes(['text/xml', 'application/xml']);
 
                             const picker = new google.picker.PickerBuilder();
                             picker
