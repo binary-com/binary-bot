@@ -32,7 +32,7 @@ export default Engine =>
                 });
             }
 
-            const balanceStr = `${balance} ${currency}`;
+            const balanceStr = `${balance}`;
 
             return type === 'STR' ? balanceStr : Number(balance);
         }
