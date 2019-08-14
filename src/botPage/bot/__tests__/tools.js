@@ -15,7 +15,8 @@ export const start = options =>
     `
         Bot.start({
           amount: 1,
-          currency: 'USD', ${options || ''}
+          currency: 'USD', ${options || ''},
+          basis: 'stake',
         });
 `;
 
