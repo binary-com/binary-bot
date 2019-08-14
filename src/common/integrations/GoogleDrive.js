@@ -23,7 +23,7 @@ class GoogleDrive {
                     .init({
                         apiKey       : this.apiKey,
                         clientId     : this.clientId,
-                        scope        : 'https://www.googleapis.com/auth/drive.file',
+                        scope        : 'https://www.googleapis.com/auth/drive',
                         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
                     })
                     .then(
@@ -85,9 +85,7 @@ class GoogleDrive {
                         if (response.error === 'access_denied') {
                             globalObserver.emit(
                                 'ui.log.warn',
-                                translate(
-                                    'Please grant permission to view and manage Google Drive folders created with Binary Bot'
-                                )
+                                translate('Please grant permission to view and manage your Google Drive files')
                             );
                         }
                         reject(response);
@@ -127,6 +125,7 @@ class GoogleDrive {
             const userPickedFile = data => {
                 if (data.action === google.picker.Action.PICKED) {
                     const fileId = data.docs[0].id;
+
                     gapi.client.drive.files
                         .get({
                             alt     : 'media',
@@ -136,10 +135,10 @@ class GoogleDrive {
                         .then(response => {
                             try {
                                 const xmlDom = Blockly.Xml.textToDom(response.body);
-                                const loadFunction =
-                                    xmlDom.hasAttribute('collection') && xmlDom.getAttribute('collection') === 'true'
-                                        ? loadBlocks
-                                        : loadWorkspace;
+                                const isCollection =
+                                    xmlDom.hasAttribute('collection') && xmlDom.getAttribute('collection') === 'true';
+                                const loadFunction = isCollection ? loadBlocks : loadWorkspace;
+
                                 try {
                                     loadFunction(xmlDom);
                                     resolve();
@@ -156,6 +155,7 @@ class GoogleDrive {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
+
                             trackAndEmitError(translate('There was an error retrieving data from Google Drive'), error);
                             reject(error);
                         });
@@ -171,11 +171,9 @@ class GoogleDrive {
                     gapi.client.drive.files
                         .list()
                         .then(() => {
-                            const mimeTypes = ['application/xml'];
                             const docsView = new google.picker.DocsView();
-                            docsView.setMimeTypes(mimeTypes.join(','));
                             docsView.setIncludeFolders(true);
-                            docsView.setOwnedByMe(true);
+                            docsView.setMimeTypes(['text/xml', 'application/xml']);
 
                             const picker = new google.picker.PickerBuilder();
                             picker
@@ -194,6 +192,7 @@ class GoogleDrive {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
+
                             trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
                             reject(error);
                         });
@@ -205,51 +204,40 @@ class GoogleDrive {
     getDefaultFolderId() {
         return new Promise((resolve, reject) => {
             // Avoid duplicate auth flow by checking if user is already authed
-            const authorisePromise = [];
-            if (!this.isAuthorised) {
-                authorisePromise.push(this.authorise);
-            }
-            Promise.all(authorisePromise)
+            Promise.all(!this.isAuthorised ? this.authorise : [])
                 .then(() => {
-                    gapi.client.drive.files
-                        .list({ q: 'trashed=false' })
-                        // eslint-disable-next-line consistent-return
-                        .then(response => {
-                            const botFolder = response.result.files.find(
-                                file =>
-                                    file.name === this.botFolderName &&
-                                    file.mimeType === 'application/vnd.google-apps.folder'
-                            );
-                            if (botFolder) {
-                                return resolve(botFolder.id);
-                            }
-                            gapi.client.drive.files
-                                .create({
-                                    resource: {
-                                        name    : this.botFolderName,
-                                        mimeType: 'application/vnd.google-apps.folder',
-                                        fields  : 'id',
-                                    },
-                                })
-                                .then(createFileResponse => resolve(createFileResponse.result.id))
-                                .catch(error => {
-                                    if (error.status && error.status === 401) {
-                                        this.signOut();
-                                    }
-                                    trackAndEmitError(
-                                        translate('There was an error retrieving files from Google Drive'),
-                                        error
-                                    );
-                                    reject(error);
-                                });
-                        })
-                        .catch(error => {
-                            if (error.status && error.status === 401) {
-                                this.signOut();
-                            }
-                            trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
-                            reject(error);
-                        });
+                    // eslint-disable-next-line
+                    gapi.client.drive.files.list({ q: 'trashed=false' }).then(response => {
+                        const folder = response.result.files.find(
+                            file => file.mimeType === 'application/vnd.google-apps.folder'
+                        );
+
+                        if (folder) {
+                            return resolve();
+                        }
+
+                        gapi.client.drive.files
+                            .create({
+                                resource: {
+                                    name    : this.botFolderName,
+                                    mimeType: 'application/vnd.google-apps.folder',
+                                    fields  : 'id',
+                                },
+                            })
+                            .then(() => resolve())
+                            .catch(error => {
+                                if (error.status && error.status === 401) {
+                                    this.signOut();
+                                }
+
+                                trackAndEmitError(
+                                    translate('There was an error retrieving files from Google Drive'),
+                                    error
+                                );
+
+                                reject(error);
+                            });
+                    });
                 })
                 .catch(() => {
                     /* Auth error, already handled in authorise()-promise */
@@ -285,6 +273,7 @@ class GoogleDrive {
                             if (xhr.status === 401) {
                                 this.signOut();
                             }
+
                             trackAndEmitError(translate('There was an error processing your request'), xhr.status);
                             reject();
                         }
