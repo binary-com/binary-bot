@@ -32,6 +32,7 @@ describe('Interface', () => {
                 currency     : 'USD',
                 duration     : 5,
                 duration_unit: 't',
+                basis        : 'stake',
             });
 
             watch('before').then(c => {

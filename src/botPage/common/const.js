@@ -8,10 +8,6 @@ const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH'];
 
 const config = {
     lists: {
-        PAYOUTTYPE: [
-            // [translate('Payout'), 'payout'],
-            [translate('Stake'), 'stake'],
-        ],
         CRYPTO_CURRENCIES,
         DETAILS: [
             [translate('statement'), '1'],

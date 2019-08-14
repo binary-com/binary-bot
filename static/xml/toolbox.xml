@@ -259,6 +259,18 @@
                     </shadow>
                 </value>
             </block>
+            <block type="tradeOptions_payout">
+                <value name="DURATION">
+                    <shadow type="math_number">
+                        <field name="NUM">5</field>
+                    </shadow>
+                </value>
+                <value name="AMOUNT">
+                    <shadow type="math_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+            </block>
         </category>
         <category name="Before Purchase" i18n-text="Before Purchase">
             <block type="before_purchase"></block>
