@@ -40,6 +40,7 @@ import {
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
+import { saveBeforeUnload } from './blockly/utils';
 
 let realityCheckTimeout;
 
@@ -466,7 +467,7 @@ export default class View {
         $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden')));
 
         $('#logout, #toolbox-logout').click(() => {
-            saveBeforeUnload(true);
+            saveBeforeUnload();
             logout();
             hideRealityCheck();
         });
