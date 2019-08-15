@@ -506,3 +506,9 @@ export const cleanBeforeExport = xml => {
         }
     });
 };
+
+export const importFile = xml => new Promise(resolve => {
+    $.get(xml, dom => {
+        resolve(dom);
+    });
+});
