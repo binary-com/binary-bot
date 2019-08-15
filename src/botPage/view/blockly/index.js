@@ -15,6 +15,7 @@ import {
     strategyHasValidTradeTypeCategory,
     cleanBeforeExport,
     importFile,
+    saveBeforeUnload,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import { createErrorAndEmit } from '../../common/error';
@@ -49,7 +50,7 @@ const disableStrayBlocks = () => {
 };
 const disposeBlocksWithLoaders = () => {
     Blockly.mainWorkspace.addChangeListener(ev => {
-        setBeforeUnload();
+        saveBeforeUnload();
         if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader' && ev.group !== 'undo') {
             deleteBlocksLoadedBy(ev.blockId, ev.group);
         }
@@ -267,20 +268,30 @@ export default class _Blockly {
                     const defaultStrat = parseQueryString().strategy;
                     const xmlFile = defaultStrat ? `xml/${defaultStrat}.xml` : 'xml/main.xml';
 
-                    importFile(xmlFile).then(dom => {
-                        repaintDefaultColours();
-                        overrideBlocklyDefaultShape();
-                        this.blocksXmlStr = Blockly.Xml.domToPrettyText(dom);
-                        Blockly.Xml.domToWorkspace(dom.getElementsByTagName('xml')[0], workspace);
-                        this.zoomOnPlusMinus();
-                        disposeBlocksWithLoaders();
-                        setTimeout(() => {
-                            setBeforeUnload(true);
-                            Blockly.mainWorkspace.cleanUp();
-                            Blockly.mainWorkspace.clearUndo();
-                        }, 0);
-                        resolve();
-                    });
+                    const getFile = xml => {
+                        importFile(xml)
+                            .then(dom => {
+                                repaintDefaultColours();
+                                overrideBlocklyDefaultShape();
+                                this.blocksXmlStr = Blockly.Xml.domToPrettyText(dom);
+                                Blockly.Xml.domToWorkspace(dom.getElementsByTagName('xml')[0], workspace);
+                                this.zoomOnPlusMinus();
+                                disposeBlocksWithLoaders();
+                                setTimeout(() => {
+                                    saveBeforeUnload(true);
+                                    Blockly.mainWorkspace.cleanUp();
+                                    Blockly.mainWorkspace.clearUndo();
+                                }, 0);
+
+                                localStorage.setItem('previousStrat', xml);
+                                resolve();
+                            })
+                            .catch(xml => {
+                                getFile(xml);
+                            });
+                    };
+
+                    getFile(xmlFile);
                 });
             });
         });
@@ -376,7 +387,7 @@ export default class _Blockly {
     save(arg) {
         const { filename, collection } = arg;
 
-        setBeforeUnload(true);
+        saveBeforeUnload(true);
 
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);

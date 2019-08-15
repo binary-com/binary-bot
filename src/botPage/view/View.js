@@ -92,14 +92,6 @@ const chart = new Chart(api);
 
 const tradingView = new TradingView();
 
-const setBeforeUnload = off => {
-    if (off) {
-        window.onbeforeunload = null;
-    } else {
-        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
-    }
-};
-
 const showRealityCheck = () => {
     $('.blocker').show();
     $('.reality-check').show();
@@ -474,7 +466,7 @@ export default class View {
         $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden')));
 
         $('#logout, #toolbox-logout').click(() => {
-            setBeforeUnload(true);
+            saveBeforeUnload(true);
             logout();
             hideRealityCheck();
         });
@@ -612,7 +604,7 @@ export default class View {
 
         $('#login, #toolbox-login')
             .bind('click.login', () => {
-                setBeforeUnload(true);
+                saveBeforeUnload(true);
                 document.location = getOAuthURL();
             })
             .text(translate('Log in'));

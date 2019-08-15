@@ -507,8 +507,26 @@ export const cleanBeforeExport = xml => {
     });
 };
 
-export const importFile = xml => new Promise(resolve => {
-    $.get(xml, dom => {
-        resolve(dom);
+export const importFile = xml =>
+    new Promise((resolve, reject) => {
+        $.get(xml, dom => {
+            resolve(dom);
+        }).catch(() => {
+            const previousStrat = localStorage.getItem('previousStrat') || 'xml/main.xml';
+            reject(previousStrat);
+
+            globalObserver.emit('Notify', {
+                className: 'warn',
+                message  : translate('The strategy you tried to load is invalid'),
+                position : 'right',
+            });
+        });
     });
-});
+
+export const saveBeforeUnload = off => {
+    if (off) {
+        window.onbeforeunload = null;
+    } else {
+        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
+    }
+};
