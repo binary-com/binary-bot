@@ -26,14 +26,6 @@ import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
 import { parseQueryString } from '../../../common/utils/tools';
 
-const setBeforeUnload = off => {
-    if (off) {
-        window.onbeforeunload = null;
-    } else {
-        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
-    }
-};
-
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
     topBlocks.forEach(block => {
