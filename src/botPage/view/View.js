@@ -76,6 +76,8 @@ api.events.on('balance', response => {
         const element = elTopMenuBalance;
         element.textContent = `${balance} ${currency}`;
     });
+
+    globalObserver.setState({ balance: b, currency });
 });
 
 const addBalanceForToken = token => {
