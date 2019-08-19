@@ -257,7 +257,7 @@ export default class _Blockly {
                 renderInstance();
                 addBlocklyTranslation().then(() => {
                     const defaultStrat = parseQueryString().strategy;
-                    const xmlFile = defaultStrat ? `xml/${defaultStrat}.xml` : 'xml/main.xml';
+                    const xmlFile = `xml/${defaultStrat}.xml`;
 
                     const loadDomToWorkspace = dom => {
                         repaintDefaultColours();
