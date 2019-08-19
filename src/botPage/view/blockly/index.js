@@ -214,7 +214,6 @@ const repaintDefaultColours = () => {
 
 export default class _Blockly {
     constructor() {
-        this.blocksXmlStr = '';
         this.generatedJs = '';
         // eslint-disable-next-line no-underscore-dangle
         Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
@@ -260,26 +259,33 @@ export default class _Blockly {
                     const defaultStrat = parseQueryString().strategy;
                     const xmlFile = defaultStrat ? `xml/${defaultStrat}.xml` : 'xml/main.xml';
 
+                    const loadDomToWorkspace = dom => {
+                        repaintDefaultColours();
+                        overrideBlocklyDefaultShape();
+                        Blockly.Xml.domToWorkspace(dom, workspace);
+                        this.zoomOnPlusMinus();
+                        disposeBlocksWithLoaders();
+                        setTimeout(() => {
+                            saveBeforeUnload(true);
+                            Blockly.mainWorkspace.cleanUp();
+                            Blockly.mainWorkspace.clearUndo();
+                        }, 0);
+                    };
+
                     const getFile = xml => {
                         importFile(xml)
                             .then(dom => {
-                                repaintDefaultColours();
-                                overrideBlocklyDefaultShape();
-                                this.blocksXmlStr = Blockly.Xml.domToPrettyText(dom);
-                                Blockly.Xml.domToWorkspace(dom.getElementsByTagName('xml')[0], workspace);
-                                this.zoomOnPlusMinus();
-                                disposeBlocksWithLoaders();
-                                setTimeout(() => {
-                                    saveBeforeUnload(true);
-                                    Blockly.mainWorkspace.cleanUp();
-                                    Blockly.mainWorkspace.clearUndo();
-                                }, 0);
-
-                                localStorage.setItem('previousStrat', xml);
+                                loadDomToWorkspace(dom.getElementsByTagName('xml')[0]);
                                 resolve();
                             })
-                            .catch(xml => {
-                                getFile(xml);
+                            .catch(text => {
+                                if (text) {
+                                    const previousStrat = Blockly.Xml.textToDom(text);
+                                    loadDomToWorkspace(previousStrat);
+                                    resolve();
+                                } else {
+                                    getFile('xml/main.xml');
+                                }
                             });
                     };
 

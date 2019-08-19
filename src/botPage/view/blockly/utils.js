@@ -512,8 +512,8 @@ export const importFile = xml =>
         $.get(xml, dom => {
             resolve(dom);
         }).catch(() => {
-            const previousStrat = localStorage.getItem('previousStrat') || 'xml/main.xml';
-            reject(previousStrat);
+            const previous_workspace_text = sessionStorage.getItem('previousStrat');
+            reject(previous_workspace_text);
 
             globalObserver.emit('Notify', {
                 className: 'warn',
@@ -527,6 +527,9 @@ export const saveBeforeUnload = off => {
     if (off) {
         window.onbeforeunload = null;
     } else {
-        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
+        window.onbeforeunload = () => {
+            const currentDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+            sessionStorage.setItem('previousStrat', Blockly.Xml.domToPrettyText(currentDom));
+        };
     }
 };
