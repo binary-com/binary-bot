@@ -512,8 +512,8 @@ export const importFile = xml =>
         $.get(xml, dom => {
             resolve(dom);
         }).catch(() => {
-            const previous_workspace_text = sessionStorage.getItem('previousStrat');
-            reject(previous_workspace_text);
+            const previousWorkspaceText = sessionStorage.getItem('previousStrat');
+            reject(previousWorkspaceText);
 
             globalObserver.emit('Notify', {
                 className: 'warn',
