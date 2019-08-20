@@ -278,8 +278,8 @@ export default class _Blockly {
                                 localStorage.setItem('previousStrat', xml);
                                 resolve();
                             })
-                            .catch(xml => {
-                                getFile(xml);
+                            .catch(previousXml => {
+                                getFile(previousXml);
                             });
                     };
 
