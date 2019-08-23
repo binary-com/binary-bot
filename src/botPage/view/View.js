@@ -605,7 +605,7 @@ export default class View {
 
         $('#login, #toolbox-login')
             .bind('click.login', () => {
-                saveBeforeUnload(true);
+                saveBeforeUnload();
                 document.location = getOAuthURL();
             })
             .text(translate('Log in'));

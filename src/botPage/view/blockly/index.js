@@ -16,6 +16,7 @@ import {
     cleanBeforeExport,
     importFile,
     saveBeforeUnload,
+    removeParam,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import { createErrorAndEmit } from '../../common/error';
@@ -266,7 +267,7 @@ export default class _Blockly {
                         this.zoomOnPlusMinus();
                         disposeBlocksWithLoaders();
                         setTimeout(() => {
-                            saveBeforeUnload(true);
+                            saveBeforeUnload();
                             Blockly.mainWorkspace.cleanUp();
                             Blockly.mainWorkspace.clearUndo();
                         }, 0);
@@ -285,6 +286,14 @@ export default class _Blockly {
                                     resolve();
                                 } else {
                                     getFile('xml/main.xml');
+                                }
+
+                                if (defaultStrat) {
+                                    globalObserver.emit('Notify', {
+                                        className: 'warn',
+                                        message  : translate('The strategy you tried to load is invalid'),
+                                        position : 'right',
+                                    });
                                 }
                             });
                     };
@@ -371,6 +380,8 @@ export default class _Blockly {
             }
         });
 
+        removeParam('strategy');
+
         try {
             if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
                 loadBlocks(xml, dropEvent);
@@ -385,7 +396,7 @@ export default class _Blockly {
     save(arg) {
         const { filename, collection } = arg;
 
-        saveBeforeUnload(true);
+        saveBeforeUnload();
 
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);
