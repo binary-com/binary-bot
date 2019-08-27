@@ -506,3 +506,44 @@ export const cleanBeforeExport = xml => {
         }
     });
 };
+
+export const importFile = xml =>
+    new Promise((resolve, reject) => {
+        $.get(xml, dom => {
+            resolve(dom);
+        }).catch(() => {
+            const previousWorkspaceText = localStorage.getItem('previousStrat');
+            reject(previousWorkspaceText);
+        });
+    });
+
+export const saveBeforeUnload = () => {
+    window.onbeforeunload = () => {
+        const currentDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        localStorage.setItem('previousStrat', Blockly.Xml.domToPrettyText(currentDom));
+        return null;
+    };
+};
+
+export const removeParam = key => {
+    const sourceURL = window.location.href;
+    let rtn = sourceURL.split('?')[0];
+    let paramsArr = [];
+    const queryString = sourceURL.indexOf('?') !== -1 ? sourceURL.split('?')[1] : '';
+    if (queryString !== '') {
+        paramsArr = queryString.split('&');
+        for (let i = paramsArr.length - 1; i >= 0; i -= 1) {
+            const paramPair = paramsArr[i];
+            const paramKey = paramPair.split('=');
+            const param = paramKey[0];
+            if (param === key) {
+                paramsArr.splice(i, 1);
+            }
+        }
+        if (paramsArr.length) {
+            rtn = `${rtn}?${paramsArr.join('&')}`;
+        }
+    }
+
+    window.history.pushState({}, window.title, rtn);
+};
