@@ -253,6 +253,15 @@ export default class _Blockly {
                     }
                 });
 
+                // Add your custom category callbacks below.
+                workspace.registerToolboxCategoryCallback('BOT_CUUTINH_SIDEWAY', async () => {
+                    const xmlString = await fetch('xml/main.xml').then(response => response.text());
+                    const xml = Blockly.Xml.textToDom(xmlString);
+
+                    loadWorkspace(xml);
+                    workspace.toolbox_.clearSelection(); // eslint-disable-line
+                });
+
                 const renderInstance = render(workspace);
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
