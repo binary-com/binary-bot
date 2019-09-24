@@ -8,3 +8,9 @@ jobs:
       - run:
           name: install-dependency
           command: npm i
+      - run:
+          name: Test
+          command: npm test
+      - run:
+          name: Build
+          command: npm run build
