@@ -13,4 +13,4 @@ jobs:
           command: npm test
       - run:
           name: Build
-          command: npm run build
+          command: npm run build-min
