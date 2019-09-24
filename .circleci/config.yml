@@ -6,11 +6,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Dependency
+          name: Install dependency
           command: npm i
       - run:
-          name: Test
+          name: Perform unit tests
           command: npm test
       - run:
-          name: Build
+          name: Build code
           command: npm run build-min
+      - run:
+          name: Build image
+          command: docker build -t binary-bot-nginx .  
