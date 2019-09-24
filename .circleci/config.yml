@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install-dependency
+          name: Install Dependency
           command: npm i
       - run:
           name: Test
