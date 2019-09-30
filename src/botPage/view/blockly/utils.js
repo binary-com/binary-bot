@@ -107,6 +107,32 @@ export const strategyHasValidTradeTypeCategory = xml => {
     return validTradeTypeCategory;
 };
 
+export const updateRenamedMarkets = xml => {
+    const elementRenames = {
+        MARKET_LIST: {
+            volidx: 'synthetic_index',
+        },
+    };
+
+    const fields = xml.getElementsByTagName('field');
+
+    Array.from(fields).forEach(field => {
+        if (!field.hasAttribute('name')) {
+            return;
+        }
+
+        Object.keys(elementRenames).forEach(elementRename => {
+            if (elementRename === field.getAttribute('name')) {
+                Object.keys(elementRenames[elementRename]).forEach(replacement_key => {
+                    if (replacement_key === field.textContent) {
+                        field.textContent = elementRenames[elementRename][replacement_key];
+                    }
+                });
+            }
+        });
+    });
+};
+
 const getCollapsedProcedures = () =>
     Blockly.mainWorkspace
         .getTopBlocks()
