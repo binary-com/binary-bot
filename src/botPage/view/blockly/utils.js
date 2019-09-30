@@ -107,7 +107,7 @@ export const strategyHasValidTradeTypeCategory = xml => {
     return validTradeTypeCategory;
 };
 
-export const updateRenamedMarkets = xml => {
+export const updateRenamedFields = xml => {
     const elementRenames = {
         MARKET_LIST: {
             volidx: 'synthetic_index',
@@ -123,9 +123,10 @@ export const updateRenamedMarkets = xml => {
 
         Object.keys(elementRenames).forEach(elementRename => {
             if (elementRename === field.getAttribute('name')) {
-                Object.keys(elementRenames[elementRename]).forEach(replacement_key => {
-                    if (replacement_key === field.textContent) {
-                        field.textContent = elementRenames[elementRename][replacement_key];
+                Object.keys(elementRenames[elementRename]).forEach(replacementKey => {
+                    if (replacementKey === field.textContent) {
+                        // eslint-disable-next-line no-param-reassign
+                        field.textContent = elementRenames[elementRename][replacementKey];
                     }
                 });
             }
