@@ -1,4 +1,6 @@
-version: 2
+orbs:
+  gcp-gcr: circleci/gcp-gcr@0.6.1
+version: 2.1
 jobs:
   build:
     machine: true
@@ -17,10 +19,12 @@ jobs:
           command: npm run build-min
       - run:
           name: Build image
-          command: docker build -t binary-bot-nginx .  
+          # command: docker build -t binary-bot-nginx .  
+          - gcp-gcr/build-image:
+              image: binary-bot-nginx
       - run:
           name: Tag Image
           command: docker tag binary-bot-nginx gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest
-      - run:
-          name: Push Image to GCP
-          command: docker push gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest
+          #      - run:
+          #name: Push Image to GCP
+          #command: docker push gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest
