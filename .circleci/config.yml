@@ -1,5 +1,6 @@
 orbs:
   docker: circleci/docker@0.5.13
+  gcp-gke: circleci/gcp-gke@0.2.0
 version: 2.1
 jobs:
   build:
@@ -25,3 +26,16 @@ jobs:
       - docker/check
       - docker/push:
           image: gokulakrishna/binary-bot
+workflows:
+  deploy_kubernetes:
+    jobs:
+      - build
+      - gcp-gke/publish-and-rollout-image:
+          requires:
+            - build
+          cluster: binary-bot
+          deployment: binary-bot-node
+          container: binary-bot
+          registry-url: docker.io
+          tag: $CIRCLE_SHA1 
+          image: gokulakrishna
