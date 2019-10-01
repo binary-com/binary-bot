@@ -24,4 +24,4 @@ jobs:
           image: binary-bot
       - docker/check
       - docker/push:
-          image: binary-bot
+          image: gokulakrishna/binary-bot
