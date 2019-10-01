@@ -29,7 +29,6 @@ jobs:
 workflows:
   deploy_kubernetes:
     jobs:
-      - build
       - gcp-gke/publish-and-rollout-image:
           requires:
             - build
