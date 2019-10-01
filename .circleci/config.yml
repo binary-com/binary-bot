@@ -21,7 +21,7 @@ jobs:
           #name: Build image
           # command: docker build -t binary-bot-nginx .  
       - docker/build:
-          image: binary-bot-nginx
+          image: binary-bot
       - docker/check
       - docker/push:
-          image: binary-bot-nginx
+          image: binary-bot
