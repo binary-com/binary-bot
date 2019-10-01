@@ -22,9 +22,5 @@ jobs:
           # command: docker build -t binary-bot-nginx .  
       - docker/build:
           image: binary-bot-nginx
-      - run:
-          name: Tag Image
-          command: docker tag binary-bot-nginx gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest
-          #      - run:
-          #name: Push Image to GCP
-          #command: docker push gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest
+      - docker/push:
+          image: binary-bot-nginx
