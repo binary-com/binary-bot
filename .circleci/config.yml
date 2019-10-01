@@ -3,7 +3,7 @@ orbs:
   gcp-gke: circleci/gcp-gke@0.2.0
 version: 2.1
 jobs:
-  build:
+  build_binary_bot:
     machine: true
     #docker:
     #  - image: circleci/node:10.16.3
@@ -31,7 +31,7 @@ workflows:
     jobs:
       - gcp-gke/publish-and-rollout-image:
           requires:
-            - build
+            - build_binary_bot
           cluster: binary-bot
           deployment: binary-bot-node
           container: binary-bot
