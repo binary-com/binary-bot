@@ -22,6 +22,7 @@ jobs:
 #      - docker/push:
 #          image: gokulakrishna/binary-bot
       - gcp-gke/init
+      - gcp-gke/install
       - gcp-gke/rollout-image:
           cluster: binary-bot-circleci
           deployment: binary-bot-circleci-deployment
