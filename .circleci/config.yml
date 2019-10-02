@@ -30,6 +30,7 @@ workflows:
   deploy_kubernetes:
     jobs:
       - gcp-gke/publish-and-rollout-image:
+          - build_binary_bot
           requires:
             - build_binary_bot
           cluster: binary-bot
