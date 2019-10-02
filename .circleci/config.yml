@@ -23,7 +23,7 @@ jobs:
 #          image: gokulakrishna/binary-bot
       - gcp-gke/init
       - gcp-gke/rollout-image:
-          cluster: binary-bot-circleci-cluster
+          cluster: binary-bot-circleci
           deployment: binary-bot-circleci-deployment
           container: binary-bot
           image: gokulakrishna/binary-bot
