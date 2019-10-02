@@ -5,37 +5,30 @@ version: 2.1
 jobs:
   build_binary_bot:
     machine: true
-    #docker:
-    #  - image: circleci/node:10.16.3
     steps:
-      - checkout
-      - run:
-          name: Install dependency
-          command: npm i
-      - run:
-          name: Perform unit tests
-          command: npm test
-      - run:
-          name: Build code
-          command: npm run build-min
-          #- run:
-          #name: Build image
-          # command: docker build -t binary-bot-nginx .  
-      - docker/build:
+#      - checkout
+#      - run:
+#          name: Install dependency
+#          command: npm i
+#      - run:
+#          name: Perform unit tests
+#          command: npm test
+#      - run:
+#          name: Build code
+#          command: npm run build-min
+#      - docker/build:
+#          image: gokulakrishna/binary-bot
+#      - docker/check
+#      - docker/push:
+#          image: gokulakrishna/binary-bot
+      - gcp-gke/rollout-image:
+          cluster: binary-bot-circleci-cluster
+          deployment: binary-bot-circleci-deployment
+          container: binary-bot
           image: gokulakrishna/binary-bot
-      - docker/check
-      - docker/push:
-          image: gokulakrishna/binary-bot
+          registry-url: docker.io
+          tag: 62148a0ff665da4c8a41c5c35544842df987608e
 workflows:
   deploy_kubernetes:
     jobs:
       - build_binary_bot
-      - gcp-gke/publish-and-rollout-image:
-          requires:
-            - build_binary_bot
-          cluster: binary-bot
-          deployment: binary-bot-node
-          container: binary-bot
-          registry-url: docker.io
-          tag: $CIRCLE_SHA1 
-          image: gokulakrishna
