@@ -1,6 +1,7 @@
 orbs:
   docker: circleci/docker@0.5.13
   gcp-gke: circleci/gcp-gke@0.2.0
+  gcp-gcr: circleci/gcp-gcr@0.6.1
 version: 2.1
 jobs:
   build_binary_bot:
@@ -23,11 +24,7 @@ jobs:
 #          image: gokulakrishna/binary-bot
       - gcp-gke/init
       - gcp-gke/install
-      - gcp-gke/rollout-image:
-          cluster: binary-bot-circleci
-          deployment: binary-bot-circleci-deployment
-          container: binary-bot
-          image: gokulakrishna/binary-bot
+      - gcp-gcr/gcr-auth
 workflows:
   deploy_kubernetes:
     jobs:
