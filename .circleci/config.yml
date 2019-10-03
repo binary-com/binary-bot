@@ -25,6 +25,12 @@ jobs:
       - gcp-gke/init
       - gcp-gke/install
       - gcp-gcr/gcr-auth
+      - run:
+          name: Install auth
+          command: gcloud container clusters get-credentials binary-bot-circleci
+      - run:
+          name: Deploy GCP
+          command: kubectl create deployment new-deployment --image=docker.io/gokulakrishna/binary-bot:62148a0ff665da4c8a41c5c35544842df987608e
 workflows:
   deploy_kubernetes:
     jobs:
