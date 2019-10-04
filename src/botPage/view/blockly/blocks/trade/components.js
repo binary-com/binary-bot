@@ -8,7 +8,7 @@ export const marketDropdown = block => {
     block
         .appendDummyInput('MARKETDEFINITION')
         .appendField(`${translate('Market')}:`)
-        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.MARKET_LIST), 'MARKET_LIST')
+        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.MARKET_LIST()), 'MARKET_LIST')
         .appendField('>')
         .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.SUBMARKET_LIST(block)), 'SUBMARKET_LIST')
         .appendField('>')
@@ -28,10 +28,10 @@ export const contractTypes = block => {
     if (!block.getInput('CONTRACT_TYPE')) {
         const getContractTypes = () => {
             const tradeType = block.getFieldValue('TRADETYPE_LIST');
-            if (tradeType) {
+            if (tradeType && tradeType !== 'na') {
                 return [[translate('Both'), 'both'], ...oppositesToDropdown(config.opposites[tradeType.toUpperCase()])];
             }
-            return [['', '']];
+            return [[translate('Not available'), 'na']];
         };
         block
             .appendDummyInput('CONTRACT_TYPE')
