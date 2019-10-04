@@ -16,6 +16,10 @@ let purchaseChoices = [[translate('Click to select'), '']];
 export const getPurchaseChoices = () => purchaseChoices;
 
 const filterPurchaseChoices = (contractType, oppositesName) => {
+    if (oppositesName.toLowerCase() === 'na') {
+        return [[translate('Not available'), 'na']];
+    }
+
     const { [oppositesName]: tradeTypes } = config.opposites;
 
     let tmpPurchaseChoices = tradeTypes.filter(k =>
@@ -86,46 +90,79 @@ const getActiveMarket = markets =>
 
 fieldGeneratorMapping.MARKET_LIST = () => {
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
+
+    if (Object.keys(markets).length === 0) {
+        return [[translate('Not available'), 'na']];
+    }
     return Object.keys(markets).map(e => [markets[e].name, e]);
 };
 
 fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     const marketName = block.getFieldValue('MARKET_LIST');
-    if (!marketName || marketName === 'Invalid') {
-        return [['', 'Invalid']];
+    const submarketOptions = [];
+
+    if (Object.keys(markets).length > 0 && marketName !== 'na') {
+        const marketObj = markets[marketName];
+
+        if (marketObj) {
+            const submarkets = getActiveSubMarket(marketObj.submarkets);
+
+            submarketOptions.push(
+                ...Object.keys(submarkets)
+                    .map(e => [submarkets[e].name, e])
+                    // Filter out markets we don't have contracts for
+                    .filter(submarket => !['energy'].includes(submarket[1]))
+            );
+        }
     }
-    const submarkets = getActiveSubMarket(markets[marketName].submarkets);
-    return (
-        Object.keys(submarkets)
-            .map(e => [submarkets[e].name, e])
-            // Filter out markets we don't have contracts for
-            .filter(submarket => !['energy'].includes(submarket[1]))
-    );
+
+    if (submarketOptions.length === 0) {
+        return [[translate('Not available'), 'na']];
+    }
+
+    return submarketOptions;
 };
 
 fieldGeneratorMapping.SYMBOL_LIST = block => () => {
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
     const submarketName = block.getFieldValue('SUBMARKET_LIST');
-    if (!submarketName || submarketName === 'Invalid') {
-        return [['', '']];
+    const symbolOptions = [];
+
+    if (Object.keys(markets).length > 0 && submarketName !== 'na') {
+        const marketName = block.getFieldValue('MARKET_LIST');
+        const marketObj = markets[marketName];
+
+        if (marketObj) {
+            const { submarkets } = marketObj;
+
+            if (Object.keys(submarkets).length > 0 && submarkets[submarketName]) {
+                const symbols = getActiveSymbols(submarkets[submarketName].symbols);
+
+                symbolOptions.push(
+                    ...Object.keys(symbols)
+                        .map(e => [symbols[e].display, symbols[e].symbol])
+                        // Filter out symbols we don't have contracts for (these symbols have only forward-starting)
+                        .filter(symbol => !['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK'].includes(symbol[1]))
+                );
+            }
+        }
     }
-    const marketName = block.getFieldValue('MARKET_LIST');
-    const submarkets = getActiveSubMarket(markets[marketName].submarkets);
-    const symbols = getActiveSymbols(submarkets[submarketName].symbols);
-    return (
-        Object.keys(symbols)
-            .map(e => [symbols[e].display, symbols[e].symbol])
-            // Filter out symbols we don't have contracts for (these symbols have only forward-starting)
-            .filter(symbol => !['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK'].includes(symbol[1]))
-    );
+
+    if (symbolOptions.length === 0) {
+        return [[translate('Not available'), 'na']];
+    }
+
+    return symbolOptions;
 };
 
 fieldGeneratorMapping.TRADETYPECAT_LIST = block => () => {
     const symbol = block.getFieldValue('SYMBOL_LIST');
-    if (!symbol) {
-        return [['', '']];
+
+    if (!symbol || symbol === 'na') {
+        return [[translate('Not available'), 'na']];
     }
+
     const allowedCategories = symbolApi.getAllowedCategories(symbol.toLowerCase());
     return Object.keys(config.conditionsCategoryName)
         .filter(e => allowedCategories.indexOf(e) >= 0)
@@ -134,9 +171,11 @@ fieldGeneratorMapping.TRADETYPECAT_LIST = block => () => {
 
 fieldGeneratorMapping.TRADETYPE_LIST = block => () => {
     const tradeTypeCat = block.getFieldValue('TRADETYPECAT_LIST');
-    if (!tradeTypeCat) {
-        return [['', '']];
+
+    if (!tradeTypeCat || tradeTypeCat === 'na') {
+        return [[translate('Not available'), 'na']];
     }
+
     return (
         config.conditionsCategory[tradeTypeCat]
             .map(e => [config.opposites[e.toUpperCase()].map(c => c[Object.keys(c)[0]]).join('/'), e])
