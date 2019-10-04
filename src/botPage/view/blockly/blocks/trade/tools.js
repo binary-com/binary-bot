@@ -9,7 +9,7 @@ export const getParentValue = (block, fieldName) => {
 
 export const updateInputList = block => {
     const tradeType = getParentValue(block, 'TRADETYPE_LIST');
-    if (tradeType) {
+    if (Blockly.Blocks[tradeType]) {
         Blockly.Blocks[tradeType].init.call(block);
     }
 };
