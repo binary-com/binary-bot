@@ -107,6 +107,13 @@ Blockly.Blocks.trade = {
             resetTradeFields(this, ev);
         }
 
+        if (ev.type === Blockly.Events.BLOCK_CREATE && ev.group !== 'load') {
+            const marketField = this.getField('MARKET_LIST');
+
+            marketField.setValue('');
+            marketField.setValue(market_field.menuGenerator_[0][1]); // eslint-disable-line
+        }
+
         decorateTrade(ev);
     },
 };
