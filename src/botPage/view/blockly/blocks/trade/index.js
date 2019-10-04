@@ -111,7 +111,7 @@ Blockly.Blocks.trade = {
             const marketField = this.getField('MARKET_LIST');
 
             marketField.setValue('');
-            marketField.setValue(market_field.menuGenerator_[0][1]); // eslint-disable-line
+            marketField.setValue(marketField.menuGenerator_[0][1]); // eslint-disable-line
         }
 
         decorateTrade(ev);
