@@ -107,7 +107,7 @@ Blockly.Blocks.trade = {
             resetTradeFields(this, ev);
         }
 
-        if (ev.type === Blockly.Events.BLOCK_CREATE && ev.group !== 'load') {
+        if (ev.type === Blockly.Events.BLOCK_CREATE && ev.group !== 'load' && ev.ids.includes(this.id)) {
             const marketField = this.getField('MARKET_LIST');
             marketField.setValue('');
             marketField.setValue(marketField.menuGenerator_[0][1]); // eslint-disable-line
