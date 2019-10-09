@@ -1,0 +1,586 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+  <variables>
+    <variable type="" id="tn=^?qQS4P|c7a/FmAWB">candle_list</variable>
+    <variable type="" id="%fRZBML*Lk%W%U`N3r8U">heikin-ashi</variable>
+    <variable type="" id="D}d+yJ+gykcsI^gbS/#T">close_heikin_ashi</variable>
+    <variable type="" id="pf*.}[KanXuo?(g^vjL1">open_heikin_ashi</variable>
+    <variable type="" id="}4^u]W27_,Aj|KfZc{;m">high_heikin_ashi</variable>
+    <variable type="" id="D!I.w;?Escaa0~}MOMQ*">low_heikin_ashi</variable>
+    <variable type="" id="[1)}J4#DpAs9Hc[VwR`n">i</variable>
+  </variables>
+  <block type="trade" id="xgH69|xFn9=70w.*3Vo@" x="26" y="-215">
+    <field name="MARKET_LIST">forex</field>
+    <field name="SUBMARKET_LIST">major_pairs</field>
+    <field name="SYMBOL_LIST">frxAUDJPY</field>
+    <field name="TRADETYPECAT_LIST">callput</field>
+    <field name="TRADETYPE_LIST">risefall</field>
+    <field name="TYPE_LIST">both</field>
+    <field name="CANDLEINTERVAL_LIST">60</field>
+    <field name="TIME_MACHINE_ENABLED">FALSE</field>
+    <field name="RESTARTONERROR">TRUE</field>
+    <statement name="SUBMARKET">
+      <block type="tradeOptions" id="x=V33~4Lb|(sLv`J[:Eb">
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="CURRENCY_LIST">USD</field>
+        <field name="BARRIEROFFSETTYPE_LIST">+</field>
+        <field name="SECONDBARRIEROFFSETTYPE_LIST">-</field>
+        <value name="DURATION">
+          <shadow type="math_number" id="J0:DW41}PIfD*##+xZpa">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+        <value name="AMOUNT">
+          <shadow type="math_number" id="ml)25~7^q}3I9}vjf:%K">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_defreturn" id="tW0nzONLT_MVvi,57m|/" x="895" y="-216">
+    <mutation>
+      <arg name="candle_list" varid="tn=^?qQS4P|c7a/FmAWB"></arg>
+    </mutation>
+    <field name="NAME">Create Heikin-Ashi candles</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="Eg|]9|QkVi+JZ#t5+)@a">
+        <field name="VAR" id="D}d+yJ+gykcsI^gbS/#T" variabletype="">close_heikin_ashi</field>
+        <value name="VALUE">
+          <block type="math_on_list" id="+y_/DF)V`kEO5E=t7dlh">
+            <mutation op="AVERAGE"></mutation>
+            <field name="OP">AVERAGE</field>
+            <value name="LIST">
+              <block type="lists_create_with" id=")RG8.QVw_}J|]eNL(}p)">
+                <mutation items="4"></mutation>
+                <value name="ADD0">
+                  <block type="read_ohlc_obj" id="T3;4nZ@$9V:E.@sx=%#9">
+                    <field name="OHLCFIELD_LIST">open</field>
+                    <value name="OHLCOBJ">
+                      <block type="lists_getIndex" id="Hb$Q?b?Tz2;fx4KGBVE3">
+                        <mutation statement="false" at="false"></mutation>
+                        <field name="MODE">GET</field>
+                        <field name="WHERE">FIRST</field>
+                        <value name="VALUE">
+                          <block type="variables_get" id="h=iOQ8B##pGl9a${X6/n">
+                            <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="read_ohlc_obj" id="b+-X6(Qd!3}P0OUP`Jao">
+                    <field name="OHLCFIELD_LIST">close</field>
+                    <value name="OHLCOBJ">
+                      <block type="lists_getIndex" id="UFhO1=YW[DIO@-N^EpI~">
+                        <mutation statement="false" at="false"></mutation>
+                        <field name="MODE">GET</field>
+                        <field name="WHERE">FIRST</field>
+                        <value name="VALUE">
+                          <block type="variables_get" id="+mMRXsMz{nhOK~#DH)AN">
+                            <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <value name="ADD2">
+                  <block type="read_ohlc_obj" id="@+A4`{Z^,A~d#hv=tsxM">
+                    <field name="OHLCFIELD_LIST">high</field>
+                    <value name="OHLCOBJ">
+                      <block type="lists_getIndex" id="PtPeo5ju3wJljT${)5EZ">
+                        <mutation statement="false" at="false"></mutation>
+                        <field name="MODE">GET</field>
+                        <field name="WHERE">FIRST</field>
+                        <value name="VALUE">
+                          <block type="variables_get" id=":NLH`+Fg`r~}MzlF~4}u">
+                            <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <value name="ADD3">
+                  <block type="read_ohlc_obj" id="W6Fg]qWTQ-WI~3qnV]e?">
+                    <field name="OHLCFIELD_LIST">low</field>
+                    <value name="OHLCOBJ">
+                      <block type="lists_getIndex" id="$|bhithC^CTI)[O2*1,C">
+                        <mutation statement="false" at="false"></mutation>
+                        <field name="MODE">GET</field>
+                        <field name="WHERE">FIRST</field>
+                        <value name="VALUE">
+                          <block type="variables_get" id="pxK+_m,[I`!(hR8naDXv">
+                            <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id="V++k?;5{?h4(k-9gz9=z">
+            <field name="VAR" id="pf*.}[KanXuo?(g^vjL1" variabletype="">open_heikin_ashi</field>
+            <value name="VALUE">
+              <block type="math_on_list" id="w4Z{,FS2wC6!z0mT{^9^">
+                <mutation op="AVERAGE"></mutation>
+                <field name="OP">AVERAGE</field>
+                <value name="LIST">
+                  <block type="lists_create_with" id="[k2(PJutj56bc~So3FDK">
+                    <mutation items="2"></mutation>
+                    <value name="ADD0">
+                      <block type="read_ohlc_obj" id="us-)o;H8`L,ivH0s(g#u">
+                        <field name="OHLCFIELD_LIST">open</field>
+                        <value name="OHLCOBJ">
+                          <block type="lists_getIndex" id="CL4.%5zL7B@~{4~^J93,">
+                            <mutation statement="false" at="false"></mutation>
+                            <field name="MODE">GET</field>
+                            <field name="WHERE">FIRST</field>
+                            <value name="VALUE">
+                              <block type="variables_get" id="Hala4h^rL8V_)L3J}u`+">
+                                <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <value name="ADD1">
+                      <block type="read_ohlc_obj" id="*Lbgc.=`n}.1y}4-_+fx">
+                        <field name="OHLCFIELD_LIST">close</field>
+                        <value name="OHLCOBJ">
+                          <block type="lists_getIndex" id="y_Mb}{_)JCrGl%cwW3BL">
+                            <mutation statement="false" at="false"></mutation>
+                            <field name="MODE">GET</field>
+                            <field name="WHERE">FIRST</field>
+                            <value name="VALUE">
+                              <block type="variables_get" id="+7`i.!OxN}hx3t:7gP$f">
+                                <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set" id="MVnmorQ]X[72{[3eY6a6">
+                <field name="VAR" id="}4^u]W27_,Aj|KfZc{;m" variabletype="">high_heikin_ashi</field>
+                <value name="VALUE">
+                  <block type="read_ohlc_obj" id="NC80VU8s-lZFUx7Z,fho">
+                    <field name="OHLCFIELD_LIST">high</field>
+                    <value name="OHLCOBJ">
+                      <block type="lists_getIndex" id="bog:XL*uX5VQ%z7p,Lp!">
+                        <mutation statement="false" at="false"></mutation>
+                        <field name="MODE">GET</field>
+                        <field name="WHERE">FIRST</field>
+                        <value name="VALUE">
+                          <block type="variables_get" id="rRJ/h2UAGs46N.?;j%A~">
+                            <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <next>
+                  <block type="variables_set" id="YW:}guI*n_=Y.i/-=8Xn">
+                    <field name="VAR" id="D!I.w;?Escaa0~}MOMQ*" variabletype="">low_heikin_ashi</field>
+                    <value name="VALUE">
+                      <block type="read_ohlc_obj" id="-kuwfdP6(K^`~1ZJ9^%(">
+                        <field name="OHLCFIELD_LIST">low</field>
+                        <value name="OHLCOBJ">
+                          <block type="lists_getIndex" id="_wDPwIN8Y[44e)5/L=@r">
+                            <mutation statement="false" at="false"></mutation>
+                            <field name="MODE">GET</field>
+                            <field name="WHERE">FIRST</field>
+                            <value name="VALUE">
+                              <block type="variables_get" id="b/p*O``0G(*tPv##vSEa">
+                                <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set" id=",`+Lj9R_XD)}BSc0oc#X">
+                        <field name="VAR" id="%fRZBML*Lk%W%U`N3r8U" variabletype="">heikin-ashi</field>
+                        <value name="VALUE">
+                          <block type="lists_create_with" id="=?q4hc#d;GtuJUU6}[sA">
+                            <mutation items="0"></mutation>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="lists_setIndex" id="wSefPNIN|8]u/BA@6G(y">
+                            <mutation at="false"></mutation>
+                            <field name="MODE">INSERT</field>
+                            <field name="WHERE">FIRST</field>
+                            <value name="LIST">
+                              <block type="variables_get" id="tj[rCtK9-2fxLr+C#NSt">
+                                <field name="VAR" id="%fRZBML*Lk%W%U`N3r8U" variabletype="">heikin-ashi</field>
+                              </block>
+                            </value>
+                            <value name="TO">
+                              <block type="lists_create_with" id="x83S$vb=8g!xcmdxu@y2">
+                                <mutation items="4"></mutation>
+                                <value name="ADD0">
+                                  <block type="variables_get" id="^#`a#NBxLIOfmH.KAY}N">
+                                    <field name="VAR" id="pf*.}[KanXuo?(g^vjL1" variabletype="">open_heikin_ashi</field>
+                                  </block>
+                                </value>
+                                <value name="ADD1">
+                                  <block type="variables_get" id="[~DJpsM%T,M2J%8_MrNQ">
+                                    <field name="VAR" id="D}d+yJ+gykcsI^gbS/#T" variabletype="">close_heikin_ashi</field>
+                                  </block>
+                                </value>
+                                <value name="ADD2">
+                                  <block type="variables_get" id=";I;x2d,kgGTR}HfT/l*D">
+                                    <field name="VAR" id="}4^u]W27_,Aj|KfZc{;m" variabletype="">high_heikin_ashi</field>
+                                  </block>
+                                </value>
+                                <value name="ADD3">
+                                  <block type="variables_get" id="($s)|y/44_vMuwN.URz^">
+                                    <field name="VAR" id="D!I.w;?Escaa0~}MOMQ*" variabletype="">low_heikin_ashi</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="controls_for" id="1ZjxNK*@Y22#I89yY{UW">
+                                <field name="VAR" id="[1)}J4#DpAs9Hc[VwR`n" variabletype="">i</field>
+                                <value name="FROM">
+                                  <block type="math_number" id="fZ{Ti@2dgKWtzWCKH4m%">
+                                    <field name="NUM">2</field>
+                                  </block>
+                                </value>
+                                <value name="TO">
+                                  <block type="math_number" id="VqHSlWb]Y6=v9Rl$k;Bt">
+                                    <field name="NUM">999</field>
+                                  </block>
+                                </value>
+                                <value name="BY">
+                                  <block type="math_number" id="o_GqlfO,JBk2r`Y)0uyE">
+                                    <field name="NUM">1</field>
+                                  </block>
+                                </value>
+                                <statement name="DO">
+                                  <block type="variables_set" id="Xi!U3v)~Na*MeF_Bi`bT">
+                                    <field name="VAR" id="D}d+yJ+gykcsI^gbS/#T" variabletype="">close_heikin_ashi</field>
+                                    <value name="VALUE">
+                                      <block type="math_on_list" id=";`o}%md!Dlu4JWtZL2hP">
+                                        <mutation op="AVERAGE"></mutation>
+                                        <field name="OP">AVERAGE</field>
+                                        <value name="LIST">
+                                          <block type="lists_create_with" id="Zn;fHHJCP=fx*}[Lz8Fw">
+                                            <mutation items="4"></mutation>
+                                            <value name="ADD0">
+                                              <block type="read_ohlc_obj" id="K@Ow?!6[@ufk{z0JA)/X">
+                                                <field name="OHLCFIELD_LIST">open</field>
+                                                <value name="OHLCOBJ">
+                                                  <block type="lists_getIndex" id="OH`+aCp4=E[MB]w3bWM~">
+                                                    <mutation statement="false" at="true"></mutation>
+                                                    <field name="MODE">GET</field>
+                                                    <field name="WHERE">FROM_START</field>
+                                                    <value name="VALUE">
+                                                      <block type="variables_get" id="/VNjYP5t|d5[RSOmHuk$">
+                                                        <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                                                      </block>
+                                                    </value>
+                                                    <value name="AT">
+                                                      <block type="variables_get" id="QE+:O6!pTQy;O=rapsI}">
+                                                        <field name="VAR" id="[1)}J4#DpAs9Hc[VwR`n" variabletype="">i</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="ADD1">
+                                              <block type="read_ohlc_obj" id="uoAj$QN4vz20M[H3htnh">
+                                                <field name="OHLCFIELD_LIST">close</field>
+                                                <value name="OHLCOBJ">
+                                                  <block type="lists_getIndex" id="W{S.qBEFlrO|(mVuy*23">
+                                                    <mutation statement="false" at="true"></mutation>
+                                                    <field name="MODE">GET</field>
+                                                    <field name="WHERE">FROM_START</field>
+                                                    <value name="VALUE">
+                                                      <block type="variables_get" id="e/4.pfd%nB@AsKBsYzBh">
+                                                        <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                                                      </block>
+                                                    </value>
+                                                    <value name="AT">
+                                                      <block type="variables_get" id="O2@^PiWD}!O2g`_/R~w;">
+                                                        <field name="VAR" id="[1)}J4#DpAs9Hc[VwR`n" variabletype="">i</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="ADD2">
+                                              <block type="read_ohlc_obj" id="ao)#XNGP8YLoDsUth16/">
+                                                <field name="OHLCFIELD_LIST">high</field>
+                                                <value name="OHLCOBJ">
+                                                  <block type="lists_getIndex" id="U6g^cBE*b4MQCLxr@%]6">
+                                                    <mutation statement="false" at="true"></mutation>
+                                                    <field name="MODE">GET</field>
+                                                    <field name="WHERE">FROM_START</field>
+                                                    <value name="VALUE">
+                                                      <block type="variables_get" id="-lK27,K{QKH#)=Vfv!@c">
+                                                        <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                                                      </block>
+                                                    </value>
+                                                    <value name="AT">
+                                                      <block type="variables_get" id="HSS!85IS]8QWz`MJnGtR">
+                                                        <field name="VAR" id="[1)}J4#DpAs9Hc[VwR`n" variabletype="">i</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="ADD3">
+                                              <block type="read_ohlc_obj" id="Lk+rOw6C2;N^l,UYe,.1">
+                                                <field name="OHLCFIELD_LIST">low</field>
+                                                <value name="OHLCOBJ">
+                                                  <block type="lists_getIndex" id="1o|_p?j!6Nk?z6L8dgPK">
+                                                    <mutation statement="false" at="true"></mutation>
+                                                    <field name="MODE">GET</field>
+                                                    <field name="WHERE">FROM_START</field>
+                                                    <value name="VALUE">
+                                                      <block type="variables_get" id="JAXxfBp$?fk,2`U(xEix">
+                                                        <field name="VAR" id="tn=^?qQS4P|c7a/FmAWB" variabletype="">candle_list</field>
+                                                      </block>
+                                                    </value>
+                                                    <value name="AT">
+                                                      <block type="variables_get" id="0B^Z)H%FK?(bKHZt~t}1">
+                                                        <field name="VAR" id="[1)}J4#DpAs9Hc[VwR`n" variabletype="">i</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="variables_set" id="})whvBN:ENGgGFK`cQds">
+                                        <field name="VAR" id="pf*.}[KanXuo?(g^vjL1" variabletype="">open_heikin_ashi</field>
+                                        <value name="VALUE">
+                                          <block type="math_on_list" id="9*}%qdg`vOe|JNhx-,(o">
+                                            <mutation op="AVERAGE"></mutation>
+                                            <field name="OP">AVERAGE</field>
+                                            <value name="LIST">
+                                              <block type="lists_create_with" id="T$.*5tu`NL`5yKyWTi9!">
+                                                <mutation items="2"></mutation>
+                                                <value name="ADD0">
+                                                  <block type="lists_getIndex" id="F8tW7Aoeh0Fm]Zd9+uVF">
+                                                    <mutation statement="false" at="true"></mutation>
+                                                    <field name="MODE">GET</field>
+                                                    <field name="WHERE">FROM_START</field>
+                                                    <value name="VALUE">
+                                                      <block type="lists_getIndex" id="Tw8zAy{N_I;aucGP,*!%">
+                                                        <mutation statement="false" at="true"></mutation>
+                                                        <field name="MODE">GET</field>
+                                                        <field name="WHERE">FROM_START</field>
+                                                        <value name="VALUE">
+                                                          <block type="variables_get" id="cpfP}FQ]w-=:vCT-[-bO">
+                                                            <field name="VAR" id="%fRZBML*Lk%W%U`N3r8U" variabletype="">heikin-ashi</field>
+                                                          </block>
+                                                        </value>
+                                                        <value name="AT">
+                                                          <block type="math_arithmetic" id="xrm~5V9D:m4azYA~5iYQ">
+                                                            <field name="OP">MINUS</field>
+                                                            <value name="A">
+                                                              <shadow type="math_number" id="RUPS3!I-nB6v^d_K4riW">
+                                                                <field name="NUM">1</field>
+                                                              </shadow>
+                                                              <block type="variables_get" id="+7AX!eQ*#K%InzpLGmX+">
+                                                                <field name="VAR" id="[1)}J4#DpAs9Hc[VwR`n" variabletype="">i</field>
+                                                              </block>
+                                                            </value>
+                                                            <value name="B">
+                                                              <shadow type="math_number" id="aPs3xu(-uOQYu3Kt3n5k">
+                                                                <field name="NUM">1</field>
+                                                              </shadow>
+                                                            </value>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                    <value name="AT">
+                                                      <block type="math_number" id="3m*-nfP5p0uKTz,AnG`*">
+                                                        <field name="NUM">1</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD1">
+                                                  <block type="lists_getIndex" id="3p!.?JC+BA^HAE$yViUI">
+                                                    <mutation statement="false" at="true"></mutation>
+                                                    <field name="MODE">GET</field>
+                                                    <field name="WHERE">FROM_START</field>
+                                                    <value name="VALUE">
+                                                      <block type="lists_getIndex" id="eQ^Z=@6t5^)w_g.dOq^1">
+                                                        <mutation statement="false" at="true"></mutation>
+                                                        <field name="MODE">GET</field>
+                                                        <field name="WHERE">FROM_START</field>
+                                                        <value name="VALUE">
+                                                          <block type="variables_get" id="LB$BxcikZO5?@l.POLnf">
+                                                            <field name="VAR" id="%fRZBML*Lk%W%U`N3r8U" variabletype="">heikin-ashi</field>
+                                                          </block>
+                                                        </value>
+                                                        <value name="AT">
+                                                          <block type="math_arithmetic" id="[7gILthR[~Kf/u~``8yj">
+                                                            <field name="OP">MINUS</field>
+                                                            <value name="A">
+                                                              <shadow type="math_number" id="lH`voaGmGd=hiC=WWy~v">
+                                                                <field name="NUM">1</field>
+                                                              </shadow>
+                                                              <block type="variables_get" id="dxUGAsmCyP;R7g+k_=Ag">
+                                                                <field name="VAR" id="[1)}J4#DpAs9Hc[VwR`n" variabletype="">i</field>
+                                                              </block>
+                                                            </value>
+                                                            <value name="B">
+                                                              <shadow type="math_number" id="5b1=MMEx_1cf[ziH3:vR">
+                                                                <field name="NUM">1</field>
+                                                              </shadow>
+                                                            </value>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                    <value name="AT">
+                                                      <block type="math_number" id="f+|/9Uz(g6m}k))l]3gr">
+                                                        <field name="NUM">2</field>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <next>
+                                          <block type="lists_setIndex" id="94m+g4!L}r-`r:B^Y,]z">
+                                            <mutation at="true"></mutation>
+                                            <field name="MODE">INSERT</field>
+                                            <field name="WHERE">FROM_START</field>
+                                            <value name="LIST">
+                                              <block type="variables_get" id=":lO+m,wtE5D9f9Uvtq}K">
+                                                <field name="VAR" id="%fRZBML*Lk%W%U`N3r8U" variabletype="">heikin-ashi</field>
+                                              </block>
+                                            </value>
+                                            <value name="AT">
+                                              <block type="variables_get" id="00g_qk9~5@A`^6xIPOD^">
+                                                <field name="VAR" id="[1)}J4#DpAs9Hc[VwR`n" variabletype="">i</field>
+                                              </block>
+                                            </value>
+                                            <value name="TO">
+                                              <block type="lists_create_with" id="zX[0Lu0FO^C/9zrBsJVZ">
+                                                <mutation items="4"></mutation>
+                                                <value name="ADD0">
+                                                  <block type="variables_get" id=".B8Z9;nd0(-/Z@1Sn7q:">
+                                                    <field name="VAR" id="pf*.}[KanXuo?(g^vjL1" variabletype="">open_heikin_ashi</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD1">
+                                                  <block type="variables_get" id="hcuiHC!@qFIqyp0d/B*V">
+                                                    <field name="VAR" id="D}d+yJ+gykcsI^gbS/#T" variabletype="">close_heikin_ashi</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD2">
+                                                  <block type="variables_get" id="qQ0vBDS-8t|$iX%}]Nrf">
+                                                    <field name="VAR" id="}4^u]W27_,Aj|KfZc{;m" variabletype="">high_heikin_ashi</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD3">
+                                                  <block type="variables_get" id="Qtu=MVz8r(|l$W3h3Nq(">
+                                                    <field name="VAR" id="D!I.w;?Escaa0~}MOMQ*" variabletype="">low_heikin_ashi</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </statement>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get" id="[|B9Pn3M%u@]@@eDNp{L">
+        <field name="VAR" id="%fRZBML*Lk%W%U`N3r8U" variabletype="">heikin-ashi</field>
+      </block>
+    </value>
+  </block>
+  <block type="before_purchase" id="i-CIx.(Onm4?ihxzA}Y]" x="25" y="180">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="variables_set" id="GUGwegZj.sNH1BPZ21T9">
+        <field name="VAR" id="%fRZBML*Lk%W%U`N3r8U" variabletype="">heikin-ashi</field>
+        <value name="VALUE">
+          <block type="procedures_callreturn" id="O^M(K@gO@71Ds@V1fmhq">
+            <mutation name="Create Heikin-Ashi candles">
+              <arg name="candle_list"></arg>
+            </mutation>
+            <value name="ARG0">
+              <block type="ohlc" id=")4@0^p#14}{rg?RBf0@(">
+                <field name="CANDLEINTERVAL_LIST">default</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="notify" id="KLEqP7iUU%JIUQ]MKQm`">
+            <field name="NOTIFICATION_TYPE">success</field>
+            <field name="NOTIFICATION_SOUND">silent</field>
+            <value name="MESSAGE">
+              <shadow type="text" id="$QP6;~JMHKAFGL]1Dz(}">
+                <field name="TEXT">abc</field>
+              </shadow>
+              <block type="variables_get" id="+K8jP;~RX5T=NmFoI7g1">
+                <field name="VAR" id="%fRZBML*Lk%W%U`N3r8U" variabletype="">heikin-ashi</field>
+              </block>
+            </value>
+            <next>
+              <block type="purchase" id="W6q#Z-I3q3d[d3-`S[dS">
+                <field name="PURCHASE_LIST">CALL</field>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="D^Jz1^n=2vtZku1vBN@;" x="24" y="375">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="trade_again" id="c)S|KjoQdXc8l#J@5z3P"></block>
+    </statement>
+  </block>
+</xml>
