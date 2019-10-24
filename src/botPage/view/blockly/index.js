@@ -17,7 +17,6 @@ import {
     importFile,
     saveBeforeUnload,
     removeParam,
-    updateRenamedFields,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import { createErrorAndEmit } from '../../common/error';
@@ -75,7 +74,6 @@ const marketsWereRemoved = xml => {
     return false;
 };
 export const loadWorkspace = xml => {
-    updateRenamedFields(xml);
     if (!strategyHasValidTradeTypeCategory(xml)) return;
     if (marketsWereRemoved(xml)) return;
 
@@ -102,7 +100,6 @@ export const loadWorkspace = xml => {
 };
 
 export const loadBlocks = (xml, dropEvent = {}) => {
-    updateRenamedFields(xml);
     if (!strategyHasValidTradeTypeCategory(xml)) return;
     if (marketsWereRemoved(xml)) return;
 
