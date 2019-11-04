@@ -40,7 +40,6 @@ import {
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
-import { saveBeforeUnload } from './blockly/utils';
 
 let realityCheckTimeout;
 
@@ -77,8 +76,6 @@ api.events.on('balance', response => {
         const element = elTopMenuBalance;
         element.textContent = `${balance} ${currency}`;
     });
-
-    globalObserver.setState({ balance: b, currency });
 });
 
 const addBalanceForToken = token => {
@@ -92,6 +89,14 @@ const addBalanceForToken = token => {
 const chart = new Chart(api);
 
 const tradingView = new TradingView();
+
+const setBeforeUnload = off => {
+    if (off) {
+        window.onbeforeunload = null;
+    } else {
+        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
+    }
+};
 
 const showRealityCheck = () => {
     $('.blocker').show();
@@ -467,7 +472,7 @@ export default class View {
         $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden')));
 
         $('#logout, #toolbox-logout').click(() => {
-            saveBeforeUnload();
+            setBeforeUnload(true);
             logout();
             hideRealityCheck();
         });
@@ -605,7 +610,7 @@ export default class View {
 
         $('#login, #toolbox-login')
             .bind('click.login', () => {
-                saveBeforeUnload();
+                setBeforeUnload(true);
                 document.location = getOAuthURL();
             })
             .text(translate('Log in'));

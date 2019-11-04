@@ -8,6 +8,10 @@ const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH'];
 
 const config = {
     lists: {
+        PAYOUTTYPE: [
+            // [translate('Payout'), 'payout'],
+            [translate('Stake'), 'stake'],
+        ],
         CRYPTO_CURRENCIES,
         DETAILS: [
             [translate('statement'), '1'],
@@ -228,9 +232,9 @@ const config = {
     bbResult  : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
     macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
     gd        : {
-        cid: '828416594271-qj2dnf4u2omg1iugangbtsrq6p0a55oc.apps.googleusercontent.com',
-        aid: 'derivbot-248506',
-        api: 'AIzaSyBDYQ7IIgGxM14IeAV5JrtaJNYjxB4A5jo',
+        cid: '646610722767-7ivdbunktgtnumj23en9gkecbgtf2ur7.apps.googleusercontent.com',
+        aid: 'binarybot-237009',
+        api: 'AIzaSyBieTeLip_lVQZUimIuJypU1kJyqOvQRgc',
     },
 };
 
