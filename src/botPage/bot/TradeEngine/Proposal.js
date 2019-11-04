@@ -109,15 +109,18 @@ export default Engine =>
             return Promise.all(
                 proposals.map(proposal => {
                     const { uuid: id } = proposal;
-                    const removeProposal = uuid => {
-                        this.data = this.data.deleteIn(['forgetProposals', uuid]);
+                    const removeProposal = () => {
+                        this.data = this.data.deleteIn(['forgetProposals', id]);
                     };
 
+                    this.data = this.data.setIn(['forgetProposals', id], true);
+
                     if (proposal.error) {
-                        removeProposal(id);
+                        removeProposal();
                         return Promise.resolve();
                     }
-                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => removeProposal(id));
+
+                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => removeProposal());
                 })
             );
         }
