@@ -49,7 +49,7 @@ export default () => {
                         if (!symbol) return;
 
                         const getNestedTradeOptions = block => {
-                            if (block.type === 'tradeOptions') {
+                            if (/^tradeOptions/.test(block.type)) {
                                 this.pollForContracts(symbol).then(contracts => {
                                     this.updateBarrierOffsetBlocks(contracts, false, false, [block.id]);
                                     this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', [ev.blockId], true);
@@ -141,7 +141,7 @@ export default () => {
             });
         },
         updatePredictionBlocks(contracts, updateOnly = []) {
-            getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
+            getBlocksByType(this.type).forEach(tradeOptionsBlock => {
                 if (tradeOptionsBlock.disabled) return;
                 if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
 
@@ -166,7 +166,7 @@ export default () => {
             });
         },
         updateBarrierOffsetBlocks(contracts, useDefaultType = false, setDefaultValue = false, updateOnly = []) {
-            getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
+            getBlocksByType(this.type).forEach(tradeOptionsBlock => {
                 if (tradeOptionsBlock.disabled) return;
                 if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
 
@@ -241,7 +241,7 @@ export default () => {
             });
         },
         updateDurationLists(contracts, useDefaultUnit = false, setMinDuration = false, updateOnly = []) {
-            getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
+            getBlocksByType(this.type).forEach(tradeOptionsBlock => {
                 if (tradeOptionsBlock.disabled) return;
                 if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
 
@@ -290,7 +290,7 @@ export default () => {
             });
         },
         applyBarrierHandlebars(barrierFieldName, forceDistinct = false, updateOnly = []) {
-            getBlocksByType('tradeOptions').forEach(tradeOptionsBlock => {
+            getBlocksByType(this.type).forEach(tradeOptionsBlock => {
                 if (tradeOptionsBlock.disabled) return;
                 if (updateOnly.length && !updateOnly.includes(tradeOptionsBlock.id)) return;
 
@@ -318,6 +318,8 @@ export default () => {
             });
         },
     };
+    Blockly.Blocks.tradeOptions_payout = Blockly.Blocks.tradeOptions;
+
     Blockly.JavaScript.tradeOptions = block => {
         const durationValue = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.JavaScript.ORDER_ATOMIC) || '0';
         const durationType = block.getFieldValue('DURATIONTYPE_LIST');
@@ -366,8 +368,10 @@ export default () => {
             prediction: ${predictionValue},
             barrierOffset: ${barrierOffsetValue},
             secondBarrierOffset: ${secondBarrierOffsetValue},
+            basis: '${block.type === 'tradeOptions_payout' ? 'payout' : 'stake'}',
             });
         `;
         return code;
     };
+    Blockly.JavaScript.tradeOptions_payout = Blockly.JavaScript.tradeOptions;
 };
