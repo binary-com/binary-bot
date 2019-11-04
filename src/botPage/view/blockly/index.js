@@ -14,6 +14,10 @@ import {
     removeUnavailableMarkets,
     strategyHasValidTradeTypeCategory,
     cleanBeforeExport,
+    importFile,
+    saveBeforeUnload,
+    removeParam,
+    updateRenamedFields,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import { createErrorAndEmit } from '../../common/error';
@@ -23,14 +27,6 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
 import { parseQueryString } from '../../../common/utils/tools';
-
-const setBeforeUnload = off => {
-    if (off) {
-        window.onbeforeunload = null;
-    } else {
-        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
-    }
-};
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -48,7 +44,7 @@ const disableStrayBlocks = () => {
 };
 const disposeBlocksWithLoaders = () => {
     Blockly.mainWorkspace.addChangeListener(ev => {
-        setBeforeUnload();
+        saveBeforeUnload();
         if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader' && ev.group !== 'undo') {
             deleteBlocksLoadedBy(ev.blockId, ev.group);
         }
@@ -79,6 +75,7 @@ const marketsWereRemoved = xml => {
     return false;
 };
 export const loadWorkspace = xml => {
+    updateRenamedFields(xml);
     if (!strategyHasValidTradeTypeCategory(xml)) return;
     if (marketsWereRemoved(xml)) return;
 
@@ -105,6 +102,7 @@ export const loadWorkspace = xml => {
 };
 
 export const loadBlocks = (xml, dropEvent = {}) => {
+    updateRenamedFields(xml);
     if (!strategyHasValidTradeTypeCategory(xml)) return;
     if (marketsWereRemoved(xml)) return;
 
@@ -220,7 +218,6 @@ const repaintDefaultColours = () => {
 
 export default class _Blockly {
     constructor() {
-        this.blocksXmlStr = '';
         this.generatedJs = '';
         // eslint-disable-next-line no-underscore-dangle
         Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
@@ -264,22 +261,47 @@ export default class _Blockly {
                 renderInstance();
                 addBlocklyTranslation().then(() => {
                     const defaultStrat = parseQueryString().strategy;
-                    const xmlFile = defaultStrat ? `xml/${defaultStrat}.xml` : 'xml/main.xml';
+                    const xmlFile = `xml/${defaultStrat}.xml`;
 
-                    $.get(xmlFile, main => {
+                    const loadDomToWorkspace = dom => {
                         repaintDefaultColours();
                         overrideBlocklyDefaultShape();
-                        this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
-                        Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+                        Blockly.Xml.domToWorkspace(dom, workspace);
                         this.zoomOnPlusMinus();
                         disposeBlocksWithLoaders();
                         setTimeout(() => {
-                            setBeforeUnload(true);
+                            saveBeforeUnload();
                             Blockly.mainWorkspace.cleanUp();
                             Blockly.mainWorkspace.clearUndo();
                         }, 0);
-                        resolve();
-                    });
+                    };
+
+                    const getFile = xml => {
+                        importFile(xml)
+                            .then(dom => {
+                                loadDomToWorkspace(dom.getElementsByTagName('xml')[0]);
+                                resolve();
+                            })
+                            .catch(text => {
+                                if (text) {
+                                    const previousStrat = Blockly.Xml.textToDom(text);
+                                    loadDomToWorkspace(previousStrat);
+                                    resolve();
+                                } else {
+                                    getFile('xml/main.xml');
+                                }
+
+                                if (defaultStrat) {
+                                    globalObserver.emit('Notify', {
+                                        className: 'warn',
+                                        message  : translate('The strategy you tried to load is invalid'),
+                                        position : 'right',
+                                    });
+                                }
+                            });
+                    };
+
+                    getFile(xmlFile);
                 });
             });
         });
@@ -294,10 +316,13 @@ export default class _Blockly {
         }
     }
     resetWorkspace() {
-        Blockly.Events.setGroup('reset');
-        Blockly.mainWorkspace.clear();
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
-        Blockly.Events.setGroup(false);
+        importFile('xml/main.xml').then(dom => {
+            Blockly.Events.setGroup('reset');
+            Blockly.mainWorkspace.clear();
+            Blockly.Xml.domToWorkspace(dom.getElementsByTagName('xml')[0], Blockly.mainWorkspace);
+            Blockly.Events.setGroup(false);
+            this.cleanUp();
+        });
     }
     /* eslint-disable class-methods-use-this */
     cleanUp() {
@@ -358,6 +383,8 @@ export default class _Blockly {
             }
         });
 
+        removeParam('strategy');
+
         try {
             if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
                 loadBlocks(xml, dropEvent);
@@ -372,7 +399,7 @@ export default class _Blockly {
     save(arg) {
         const { filename, collection } = arg;
 
-        setBeforeUnload(true);
+        saveBeforeUnload();
 
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);

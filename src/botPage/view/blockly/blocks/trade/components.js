@@ -61,11 +61,17 @@ export const duration = block => {
 
 export const payout = block => {
     if (!block.getInput('AMOUNT')) {
-        block
-            .appendValueInput('AMOUNT')
-            .setCheck('Number')
-            .appendField(`${translate('Stake')}:`)
-            .appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST');
+        const amountInput = block.appendValueInput('AMOUNT');
+
+        amountInput.setCheck('Number');
+
+        if (block.type === 'tradeOptions_payout') {
+            amountInput.appendField(`${translate('Payout')}:`);
+        } else {
+            amountInput.appendField(`${translate('Stake')}:`);
+        }
+
+        amountInput.appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST');
     }
 };
 

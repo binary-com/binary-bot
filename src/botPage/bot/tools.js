@@ -9,7 +9,7 @@ export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => {
         const proposal = {
             duration_unit: tradeOption.duration_unit,
-            basis        : 'stake',
+            basis        : tradeOption.basis,
             currency     : tradeOption.currency,
             symbol       : tradeOption.symbol,
             duration     : tradeOption.duration,
