@@ -1,12 +1,11 @@
 import CandleInterface from './CandleInterface';
 import MiscInterface from './MiscInterface';
 import IndicatorsInterface from './IndicatorsInterface';
-import WebhookInterface from './WebhookInterface';
 import { translate } from '../../../common/i18n';
 
 // prettier-ignore
 export default Interface => class extends IndicatorsInterface(
-    MiscInterface(CandleInterface(WebhookInterface(Interface)))) {
+    MiscInterface(CandleInterface(Interface))) {
     getToolsInterface() {
         return {
             getTime   : () => parseInt(new Date().getTime() / 1000),
@@ -77,7 +76,6 @@ export default Interface => class extends IndicatorsInterface(
             ...this.getCandleInterface(),
             ...this.getMiscInterface(),
             ...this.getIndicatorsInterface(),
-            ...this.getWebhookInterface(),
         };
     }
 };

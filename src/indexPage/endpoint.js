@@ -65,7 +65,7 @@ function addEndpoint(e) {
     setStorage('config.server_url', serverUrl);
     setStorage('config.app_id', appId);
 
-    const urlReg = /^(?:http(s)?:\/\/)?[\w.-]+(?:.[\w.-]+)+[\w-._~:?#[\]@!$&'()*+,;=.]+$/;
+    const urlReg = /^(?:http(s)?:\/\/)?[\w.-]+(?:.[\w.-]+)+[\w-._~:\/?#[\]@!$&'()*+,;=.]+$/;
 
     if (!urlReg.test(serverUrl)) {
         $('#error')
