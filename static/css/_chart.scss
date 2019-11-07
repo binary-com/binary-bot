@@ -1,15 +1,25 @@
 .smartcharts-mobile {
+    font-size: 10px;
+
     /*
       chart controls should still
       be visible when its dropdown shows up.
      */
-    .ciq-period, .cq-download, .ciq-views, .ciq-drawtools, .ciq-studies, .cq-chart-setting, .ciq-draw-tools, .cq-comparison-new, .ciq-chart-types {
+    .ciq-period, 
+    .cq-download, 
+    .ciq-views, 
+    .ciq-drawtools, 
+    .ciq-studies, 
+    .cq-chart-setting, 
+    .ciq-draw-tools, 
+    .cq-comparison-new, 
+    .ciq-chart-types {
         .cq-menu-overlay {
             height: calc(100% - 40px);
         }
     }
 
-    .cq-modal-dropdown.stxMenuActive {
+    .cq-modal-dropdown {
         position: absolute !important;
     }
 

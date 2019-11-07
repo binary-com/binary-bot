@@ -55,6 +55,11 @@ const notifyError = error => {
     let { message } = error;
     let errorCode = error.name;
 
+    // It's a dirty job, but somebody's gotta do it.
+    if (message === 'Cannot read property \'open_time\' of undefined') {
+        return;
+    }
+
     if (error.error) {
         ({ message } = error.error);
         ({ errorCode } = error.error);
