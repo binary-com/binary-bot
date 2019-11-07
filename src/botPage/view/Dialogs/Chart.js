@@ -41,13 +41,19 @@ class ChartContent extends PureComponent {
         this.ticksService = new ChartTicksService(api);
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
-        this.state = { symbol: 'R_100', barrierType: undefined, high: undefined, low: undefined };
+        this.state = {
+            granularity: null,
+            symbol     : 'R_100',
+            barrierType: undefined,
+            high       : undefined,
+            low        : undefined,
+        };
         this.shouldBarrierDisplay = false;
     }
 
     componentDidMount() {
         globalObserver.register('bot.init', s => {
-            if (this.symbol !== s) {
+            if (this.state.symbol !== s) {
                 this.setState({ symbol: s });
             }
         });
@@ -116,7 +122,7 @@ class ChartContent extends PureComponent {
         <React.Fragment>
             <CrosshairToggle />
             <ChartTypes />
-            <Timeperiod />
+            <Timeperiod enabled={true} onChange={granularity => this.setState({ granularity })} />
             <StudyLegend />
             <DrawTools />
             <Views />
@@ -145,6 +151,7 @@ class ChartContent extends PureComponent {
         return (
             <SmartChart
                 id={this.chartId}
+                granularity={this.state.granularity}
                 symbol={this.state.symbol}
                 isMobile={true}
                 topWidgets={this.renderTopWidgets}
