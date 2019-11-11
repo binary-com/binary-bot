@@ -42,7 +42,8 @@ class ChartContent extends PureComponent {
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
         this.state = {
-            granularity: null,
+            chartType  : 'mountain',
+            granularity: 0,
             symbol     : 'R_100',
             barrierType: undefined,
             high       : undefined,
@@ -121,7 +122,7 @@ class ChartContent extends PureComponent {
     renderControls = () => (
         <React.Fragment>
             <CrosshairToggle />
-            <ChartTypes />
+            <ChartTypes enabled={true} onChange={chartType => this.setState({ chartType })} />
             <Timeperiod enabled={true} onChange={granularity => this.setState({ granularity })} />
             <StudyLegend />
             <DrawTools />
@@ -151,6 +152,7 @@ class ChartContent extends PureComponent {
         return (
             <SmartChart
                 id={this.chartId}
+                chartType={this.state.chartType}
                 granularity={this.state.granularity}
                 symbol={this.state.symbol}
                 isMobile={true}
