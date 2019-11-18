@@ -372,6 +372,33 @@ export default class _Blockly {
             );
         }
 
+        if (xml.hasAttribute('is_dbot')) {
+            showDialog({
+                title  : translate('Unsupported strategy'),
+                text   : [translate('Sorry, this strategy can’t be used with Binary Bot. You may only use it with DBot.')],
+                buttons: [
+                    {
+                        text : translate('Cancel'),
+                        class: 'button-secondary',
+                        click() {
+                            $(this).dialog('close');
+                            $(this).remove();
+                        },
+                    },
+                    {
+                        text : translate('Take me to DBot'),
+                        class: 'button-primary',
+                        click() {
+                            window.location.href = 'https://deriv.app/bot';
+                        },
+                    },
+                ],
+            })
+                .then(() => {})
+                .catch(() => {});
+            return;
+        }
+
         blocklyXml.forEach(block => {
             const blockType = block.getAttribute('type');
 
