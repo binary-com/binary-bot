@@ -61,21 +61,21 @@ commands:
       - run: 
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_SHA1} .
+            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:beta-${CIRCLE_SHA1} .
       - run: 
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_SHA1}
+            docker push ${DOCKHUB_ORGANISATION}/binary-static-bot:beta-${CIRCLE_SHA1}
   k8s_deploy:
     description: "Deploy to k8s cluster"
     steps:
       - k8s/install-kubectl
       - run: 
-          name: Deploying to k8s cluster for service binary-bot
+          name: Deploying to k8s cluster for service binary-bot-beta
           command: |
             echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/bot-binary-com bot-binary-com=${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_SHA1}
+            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/bot-beta-binary-com bot-beta-binary-com=${DOCKHUB_ORGANISATION}/binary-static-bot:beta-${CIRCLE_SHA1}
 
 jobs:
   release:
@@ -94,5 +94,5 @@ workflows:
       - release:
           filters:
             branches:
-              only: /^master$/
+              only: /^beta$/
 
