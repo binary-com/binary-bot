@@ -52,7 +52,7 @@ commands:
     steps:
       - run:
           name: "yarn build"
-          command: gulp build-min
+          command: node_modules/gulp/bin/gulp.js build-min
 
   docker:
     description: "Build and Push image to docker hub"
