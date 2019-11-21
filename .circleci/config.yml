@@ -1,0 +1,98 @@
+version: 2.1
+orbs:
+  k8s: circleci/kubernetes@0.7.0
+commands:
+  git_checkout_from_cache:
+    description: "Git checkout and save cache"
+    steps:
+      - restore_cache:
+          name: Git restore cache
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - run: 
+          name: Fetch git tags 
+          command: |
+            mkdir -p ~/.ssh
+            echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ== ' >> ~/.ssh/known_hosts
+            # Fetch tags if git cache is present
+            if [ -e /home/circleci/project/.git ]
+            then
+              git fetch origin --tags
+            fi
+      - checkout
+      - run:
+          name: Compress git objects 
+          command: git gc
+      - save_cache:
+          name: Git save cache
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+  npm_install:
+    description: "Install npm modules"
+    steps:
+      - restore_cache:
+          name: Restore npm cache
+          keys:
+            - npm-v1-{{ checksum "package.json" }}
+            - npm-v1-
+      - run:
+          name: Install npm modules
+          command: yarn
+      - save_cache:
+          name: Save NPM cache
+          key: npm-v1-{{ checksum "package.json" }}
+          paths:
+            - "node_modules"
+
+  build:
+    description: "Build"
+    steps:
+      - run:
+          name: "yarn build"
+          command: node_modules/gulp/bin/gulp.js build-min
+
+  docker:
+    description: "Build and Push image to docker hub"
+    steps:
+      - setup_remote_docker
+      - run: 
+          name: Building docker image
+          command: |
+            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:beta-${CIRCLE_SHA1} .
+      - run: 
+          name: Pushing Image to docker hub
+          command: |
+            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+            docker push ${DOCKHUB_ORGANISATION}/binary-static-bot:beta-${CIRCLE_SHA1}
+  k8s_deploy:
+    description: "Deploy to k8s cluster"
+    steps:
+      - k8s/install-kubectl
+      - run: 
+          name: Deploying to k8s cluster for service binary-bot-beta
+          command: |
+            echo $CA_CRT | base64 --decode > ca.crt
+            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/bot-beta-binary-com bot-beta-binary-com=${DOCKHUB_ORGANISATION}/binary-static-bot:beta-${CIRCLE_SHA1}
+
+jobs:
+  release:
+    docker:
+      - image: circleci/node:12.13.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install
+      - build
+      - docker
+      - k8s_deploy
+      
+workflows:
+  release:
+    jobs:
+      - release:
+          filters:
+            branches:
+              only: /^beta$/
+
