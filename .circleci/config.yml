@@ -61,26 +61,26 @@ commands:
       - run: 
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-tradingview:${CIRCLE_SHA1} .
+            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_SHA1} .
       - run: 
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/binary-static-tradingview:${CIRCLE_SHA1}
+            docker push ${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_SHA1}
   k8s_deploy:
     description: "Deploy to k8s cluster"
     steps:
       - k8s/install-kubectl
       - run: 
-          name: Deploying to k8s cluster for service binary-tradingview
+          name: Deploying to k8s cluster for service binary-bot
           command: |
             echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/tradingview-binary-com tradingview-binary-com=${DOCKHUB_ORGANISATION}/binary-static-tradingview:${CIRCLE_SHA1}
+            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/bot-binary-com bot-binary-com=${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_SHA1}
 
 jobs:
   release:
     docker:
-      - image: circleci/node:9.9.0-stretch
+      - image: circleci/node:12.13.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install
