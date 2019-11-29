@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'jquery-ui/ui/widgets/dialog';
-import _Blockly from './blockly';
+import _Blockly, { load } from './blockly';
 import Chart from './Dialogs/Chart';
 import Limits from './Dialogs/Limits';
 import IntegrationsDialog from './Dialogs/IntegrationsDialog';
@@ -254,10 +254,11 @@ export default class View {
         });
     }
 
+    // eslint-disable-next-line class-methods-use-this
     setFileBrowser() {
         const readFile = (f, dropEvent = {}) => {
             const reader = new FileReader();
-            reader.onload = e => this.blockly.load(e.target.result, dropEvent);
+            reader.onload = e => load(e.target.result, dropEvent);
             reader.readAsText(f);
         };
 
