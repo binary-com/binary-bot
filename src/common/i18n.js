@@ -1,7 +1,6 @@
 import sha1 from 'sha1';
 import zhTw from './translations/zh_TW/i10n.json';
 import de from './translations/de_DE/i10n.json';
-import id from './translations/id_ID/i10n.json';
 import zhCn from './translations/zh_CN/i10n.json';
 import it from './translations/it_IT/i10n.json';
 import vi from './translations/vi_VN/i10n.json';
@@ -16,7 +15,6 @@ import ach from './translations/ach_UG/i10n.json';
 export const supportedLanguages = {
     zh_tw: zhTw,
     de,
-    id,
     zh_cn: zhCn,
     it,
     vi,
