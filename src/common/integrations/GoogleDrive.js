@@ -2,8 +2,8 @@
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
 import { translate, trackAndEmitError } from '../utils/tools';
-import { loadWorkspace, loadBlocks } from '../../botPage/view/blockly';
 import config from '../../botPage/common/const';
+import { load } from '../../botPage/view/blockly';
 
 class GoogleDrive {
     constructor() {
@@ -134,18 +134,8 @@ class GoogleDrive {
                         })
                         .then(response => {
                             try {
-                                const xmlDom = Blockly.Xml.textToDom(response.body);
-                                const isCollection =
-                                    xmlDom.hasAttribute('collection') && xmlDom.getAttribute('collection') === 'true';
-                                const loadFunction = isCollection ? loadBlocks : loadWorkspace;
-
-                                try {
-                                    loadFunction(xmlDom);
-                                    resolve();
-                                } catch (error) {
-                                    trackAndEmitError(translate('Could not load Google Drive blocks'), error);
-                                    reject(error);
-                                }
+                                load(response.body);
+                                resolve();
                             } catch (error) {
                                 trackAndEmitError(translate('Unrecognized file format'), error);
                                 reject(error);
