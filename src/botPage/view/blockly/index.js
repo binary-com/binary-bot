@@ -42,6 +42,7 @@ const disableStrayBlocks = () => {
         }
     });
 };
+
 const disposeBlocksWithLoaders = () => {
     Blockly.mainWorkspace.addChangeListener(ev => {
         saveBeforeUnload();
@@ -50,6 +51,7 @@ const disposeBlocksWithLoaders = () => {
         }
     });
 };
+
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
         if (window.trackJs) {
@@ -74,6 +76,174 @@ const marketsWereRemoved = xml => {
     }
     return false;
 };
+
+const xmlToStr = xml => {
+    const serializer = new XMLSerializer();
+    return serializer.serializeToString(xml);
+};
+
+const addBlocklyTranslation = () => {
+    $.ajaxPrefilter(options => {
+        options.async = true; // eslint-disable-line no-param-reassign
+    });
+    let lang = getLanguage();
+    if (lang === 'ach') {
+        lang = 'en';
+    } else if (lang === 'zh_cn') {
+        lang = 'zh-hans';
+    } else if (lang === 'zh_tw') {
+        lang = 'zh-hant';
+    }
+    return new Promise(resolve => {
+        $.getScript(`translations/${lang}.js`, resolve);
+    });
+};
+
+const onresize = () => {
+    let element = document.getElementById('blocklyArea');
+    const blocklyArea = element;
+    const blocklyDiv = document.getElementById('blocklyDiv');
+    let x = 0;
+    let y = 0;
+    do {
+        x += element.offsetLeft;
+        y += element.offsetTop;
+        element = element.offsetParent;
+    } while (element);
+    // Position blocklyDiv over blocklyArea.
+    blocklyDiv.style.left = `${x}px`;
+    blocklyDiv.style.top = `${y}px`;
+    blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
+    blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
+};
+
+const render = workspace => () => {
+    onresize();
+    Blockly.svgResize(workspace);
+};
+
+const overrideBlocklyDefaultShape = () => {
+    const addDownloadToMenu = block => {
+        if (block instanceof Object) {
+            // eslint-disable-next-line no-param-reassign, max-len
+            block.customContextMenu = function customContextMenu(options) {
+                options.push({
+                    text    : translate('Download'),
+                    enabled : true,
+                    callback: () => {
+                        const xml = Blockly.Xml.textToDom(
+                            '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
+                        );
+                        xml.appendChild(Blockly.Xml.blockToDom(this));
+                        save('binary-bot-block', true, xml);
+                    },
+                });
+            };
+        }
+    };
+    Object.keys(Blockly.Blocks).forEach(blockName => {
+        const downloadDisabledBlocks = ['controls_forEach', 'controls_for', 'variables_get', 'variables_set'];
+        if (!downloadDisabledBlocks.includes(blockName)) {
+            addDownloadToMenu(Blockly.Blocks[blockName]);
+        }
+    });
+};
+
+const repaintDefaultColours = () => {
+    Blockly.Msg.LOGIC_HUE = '#DEDEDE';
+    Blockly.Msg.LOOPS_HUE = '#DEDEDE';
+    Blockly.Msg.MATH_HUE = '#DEDEDE';
+    Blockly.Msg.TEXTS_HUE = '#DEDEDE';
+    Blockly.Msg.LISTS_HUE = '#DEDEDE';
+    Blockly.Msg.COLOUR_HUE = '#DEDEDE';
+    Blockly.Msg.VARIABLES_HUE = '#DEDEDE';
+    Blockly.Msg.VARIABLES_DYNAMIC_HUE = '#DEDEDE';
+    Blockly.Msg.PROCEDURES_HUE = '#DEDEDE';
+
+    Blockly.Blocks.logic.HUE = '#DEDEDE';
+    Blockly.Blocks.loops.HUE = '#DEDEDE';
+    Blockly.Blocks.math.HUE = '#DEDEDE';
+    Blockly.Blocks.texts.HUE = '#DEDEDE';
+    Blockly.Blocks.lists.HUE = '#DEDEDE';
+    Blockly.Blocks.colour.HUE = '#DEDEDE';
+    Blockly.Blocks.variables.HUE = '#DEDEDE';
+    Blockly.Blocks.procedures.HUE = '#DEDEDE';
+};
+
+export const load = (blockStr, dropEvent = {}) => {
+    const unrecognisedMsg = () => translate('Unrecognized file format');
+
+    try {
+        const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
+
+        if (xmlDoc.getElementsByTagName('parsererror').length) {
+            throw new Error();
+        }
+    } catch (err) {
+        throw createErrorAndEmit('FileLoad', unrecognisedMsg());
+    }
+
+    let xml;
+    try {
+        xml = Blockly.Xml.textToDom(blockStr);
+    } catch (e) {
+        throw createErrorAndEmit('FileLoad', unrecognisedMsg());
+    }
+
+    const blocklyXml = xml.querySelectorAll('block');
+
+    if (!blocklyXml.length) {
+        throw createErrorAndEmit('FileLoad', 'XML file contains unsupported elements. Please check or modify file.');
+    }
+
+    if (xml.hasAttribute('is_dbot')) {
+        showDialog({
+            title  : translate('Unsupported strategy'),
+            text   : [translate('Sorry, this strategy can’t be used with Binary Bot. You may only use it with DBot.')],
+            buttons: [
+                {
+                    text : translate('Cancel'),
+                    class: 'button-secondary',
+                    click() {
+                        $(this).dialog('close');
+                        $(this).remove();
+                    },
+                },
+                {
+                    text : translate('Take me to DBot'),
+                    class: 'button-primary',
+                    click() {
+                        window.location.href = 'https://deriv.app/bot';
+                    },
+                },
+            ],
+        })
+            .then(() => {})
+            .catch(() => {});
+        return;
+    }
+
+    blocklyXml.forEach(block => {
+        const blockType = block.getAttribute('type');
+
+        if (!Object.keys(Blockly.Blocks).includes(blockType)) {
+            throw createErrorAndEmit('FileLoad', 'XML file contains unsupported elements. Please check or modify file');
+        }
+    });
+
+    removeParam('strategy');
+
+    try {
+        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+            loadBlocks(xml, dropEvent);
+        } else {
+            loadWorkspace(xml);
+        }
+    } catch (e) {
+        throw createErrorAndEmit('FileLoad', translate('Unable to load the block file'));
+    }
+};
+
 export const loadWorkspace = xml => {
     updateRenamedFields(xml);
     if (!strategyHasValidTradeTypeCategory(xml)) return;
@@ -127,93 +297,6 @@ export const loadBlocks = (xml, dropEvent = {}) => {
             throw e;
         }
     );
-};
-const xmlToStr = xml => {
-    const serializer = new XMLSerializer();
-    return serializer.serializeToString(xml);
-};
-const addBlocklyTranslation = () => {
-    $.ajaxPrefilter(options => {
-        options.async = true; // eslint-disable-line no-param-reassign
-    });
-    let lang = getLanguage();
-    if (lang === 'ach') {
-        lang = 'en';
-    } else if (lang === 'zh_cn') {
-        lang = 'zh-hans';
-    } else if (lang === 'zh_tw') {
-        lang = 'zh-hant';
-    }
-    return new Promise(resolve => {
-        $.getScript(`translations/${lang}.js`, resolve);
-    });
-};
-const onresize = () => {
-    let element = document.getElementById('blocklyArea');
-    const blocklyArea = element;
-    const blocklyDiv = document.getElementById('blocklyDiv');
-    let x = 0;
-    let y = 0;
-    do {
-        x += element.offsetLeft;
-        y += element.offsetTop;
-        element = element.offsetParent;
-    } while (element);
-    // Position blocklyDiv over blocklyArea.
-    blocklyDiv.style.left = `${x}px`;
-    blocklyDiv.style.top = `${y}px`;
-    blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
-    blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
-};
-const render = workspace => () => {
-    onresize();
-    Blockly.svgResize(workspace);
-};
-const overrideBlocklyDefaultShape = () => {
-    const addDownloadToMenu = block => {
-        if (block instanceof Object) {
-            // eslint-disable-next-line no-param-reassign, max-len
-            block.customContextMenu = function customContextMenu(options) {
-                options.push({
-                    text    : translate('Download'),
-                    enabled : true,
-                    callback: () => {
-                        const xml = Blockly.Xml.textToDom(
-                            '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
-                        );
-                        xml.appendChild(Blockly.Xml.blockToDom(this));
-                        save('binary-bot-block', true, xml);
-                    },
-                });
-            };
-        }
-    };
-    Object.keys(Blockly.Blocks).forEach(blockName => {
-        const downloadDisabledBlocks = ['controls_forEach', 'controls_for', 'variables_get', 'variables_set'];
-        if (!downloadDisabledBlocks.includes(blockName)) {
-            addDownloadToMenu(Blockly.Blocks[blockName]);
-        }
-    });
-};
-const repaintDefaultColours = () => {
-    Blockly.Msg.LOGIC_HUE = '#DEDEDE';
-    Blockly.Msg.LOOPS_HUE = '#DEDEDE';
-    Blockly.Msg.MATH_HUE = '#DEDEDE';
-    Blockly.Msg.TEXTS_HUE = '#DEDEDE';
-    Blockly.Msg.LISTS_HUE = '#DEDEDE';
-    Blockly.Msg.COLOUR_HUE = '#DEDEDE';
-    Blockly.Msg.VARIABLES_HUE = '#DEDEDE';
-    Blockly.Msg.VARIABLES_DYNAMIC_HUE = '#DEDEDE';
-    Blockly.Msg.PROCEDURES_HUE = '#DEDEDE';
-
-    Blockly.Blocks.logic.HUE = '#DEDEDE';
-    Blockly.Blocks.loops.HUE = '#DEDEDE';
-    Blockly.Blocks.math.HUE = '#DEDEDE';
-    Blockly.Blocks.texts.HUE = '#DEDEDE';
-    Blockly.Blocks.lists.HUE = '#DEDEDE';
-    Blockly.Blocks.colour.HUE = '#DEDEDE';
-    Blockly.Blocks.variables.HUE = '#DEDEDE';
-    Blockly.Blocks.procedures.HUE = '#DEDEDE';
 };
 
 export default class _Blockly {
@@ -341,59 +424,6 @@ export default class _Blockly {
         Blockly.Events.setGroup(false);
         // Fire an event to allow scrollbars to resize.
         Blockly.mainWorkspace.resizeContents();
-    }
-    /* eslint-disable class-methods-use-this */
-    load(blockStr = '', dropEvent = {}) {
-        const unrecognisedMsg = () => translate('Unrecognized file format');
-
-        try {
-            const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
-
-            if (xmlDoc.getElementsByTagName('parsererror').length) {
-                throw new Error();
-            }
-        } catch (err) {
-            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
-        }
-
-        let xml;
-        try {
-            xml = Blockly.Xml.textToDom(blockStr);
-        } catch (e) {
-            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
-        }
-
-        const blocklyXml = xml.querySelectorAll('block');
-
-        if (!blocklyXml.length) {
-            throw createErrorAndEmit(
-                'FileLoad',
-                'XML file contains unsupported elements. Please check or modify file.'
-            );
-        }
-
-        blocklyXml.forEach(block => {
-            const blockType = block.getAttribute('type');
-
-            if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-                throw createErrorAndEmit(
-                    'FileLoad',
-                    'XML file contains unsupported elements. Please check or modify file'
-                );
-            }
-        });
-
-        removeParam('strategy');
-
-        try {
-            if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-                loadBlocks(xml, dropEvent);
-            } else {
-                loadWorkspace(xml);
-            }
-        } catch (e) {
-            throw createErrorAndEmit('FileLoad', translate('Unable to load the block file'));
-        }
     }
     /* eslint-disable class-methods-use-this */
     save(arg) {
