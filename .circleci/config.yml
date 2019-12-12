@@ -134,13 +134,7 @@ jobs:
 workflows:
   test:
     jobs:
-      - test:
-          filters:
-            branches:
-              only: 
-                - master
-                - beta
-                - dev
+      - test
 
   release:
     jobs:
