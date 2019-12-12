@@ -96,7 +96,7 @@ commands:
       - run:
           name: Run tests
           command: |
-            for i in {1..3}; do npm test; if [[ $? == 0 ]]; then break; fi; done
+            for i in {1..3}; do npm test && break; done
 
 jobs:
   test:
