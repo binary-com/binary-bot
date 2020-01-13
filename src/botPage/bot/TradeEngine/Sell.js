@@ -44,14 +44,12 @@ export default Engine =>
                             // finish.
                             notify('warn', error.message);
                             return Promise.resolve();
-                        } 
-                            // In all other cases, throw a custom error that will stop the bot (after the current contract has finished).
-                            // See interpreter for SellNotAvailableCustom.
-                            const error = new Error(error.message);
-                            error.name = 'SellNotAvailableCustom';
-                            console.log(error);
-                            throw error;
-                        
+                        }
+                        // In all other cases, throw a custom error that will stop the bot (after the current contract has finished).
+                        // See interpreter for SellNotAvailableCustom.
+                        const custom_error = new Error(error.message);
+                        custom_error.name = 'SellNotAvailableCustom';
+                        throw custom_error;
                     });
 
             if (!this.options.timeMachineEnabled) {
