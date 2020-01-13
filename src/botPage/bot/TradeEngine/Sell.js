@@ -28,26 +28,31 @@ export default Engine =>
                 return this.waitForAfter();
             };
 
-            const action = () => this.api
-                .sellContract(this.contractId, 0)
-                .then(response => {
-                    onSuccess(response.sell.sold_for);
-                })
-                .catch(response => {
-                    const {
-                        error: { error },
-                    } = response;
-                    if (error.code && error.code === 'InvalidOfferings') {
-                        // "InvalidOfferings" may occur when user tries to sell the contract too close
-                        // to the expiry time. We shouldn't interrupt the bot but instead let the contract
-                        // finish.
-                        notify('warn', error.message);
-                        return Promise.resolve();
-                    } 
-                    // In all other cases, throw an error.
-                    throw response;
+            const action = () =>
+                this.api
+                    .sellContract(this.contractId, 0)
+                    .then(response => {
+                        onSuccess(response.sell.sold_for);
+                    })
+                    .catch(response => {
+                        const {
+                            error: { error },
+                        } = response;
+                        if (error.code === 'InvalidOfferings') {
+                            // "InvalidOfferings" may occur when user tries to sell the contract too close
+                            // to the expiry time. We shouldn't interrupt the bot but instead let the contract
+                            // finish.
+                            notify('warn', error.message);
+                            return Promise.resolve();
+                        } 
+                            // In all other cases, throw a custom error that will stop the bot (after the current contract has finished).
+                            // See interpreter for SellNotAvailableCustom.
+                            const error = new Error(error.message);
+                            error.name = 'SellNotAvailableCustom';
+                            console.log(error);
+                            throw error;
                         
-                });
+                    });
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action);
