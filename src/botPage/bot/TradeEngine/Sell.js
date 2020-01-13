@@ -47,9 +47,9 @@ export default Engine =>
                         }
                         // In all other cases, throw a custom error that will stop the bot (after the current contract has finished).
                         // See interpreter for SellNotAvailableCustom.
-                        const custom_error = new Error(error.message);
-                        custom_error.name = 'SellNotAvailableCustom';
-                        throw custom_error;
+                        const customError = new Error(error.message);
+                        customError.name = 'SellNotAvailableCustom';
+                        throw customError;
                     });
 
             if (!this.options.timeMachineEnabled) {
