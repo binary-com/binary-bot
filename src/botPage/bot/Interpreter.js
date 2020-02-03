@@ -19,7 +19,7 @@ const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
-    const stopErrors = ['SellNotAvailable'];
+    const stopErrors = ['SellNotAvailableCustom'];
     if (stopErrors.includes(errorName) && botInitialized(bot)) {
         return true;
     }
