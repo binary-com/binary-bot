@@ -343,7 +343,7 @@ export default class _Blockly {
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
                 addBlocklyTranslation().then(() => {
-                    const defaultStrat = parseQueryString().strategy;
+                    const defaultStrat = parseQueryString().strategy || 'main';
                     const xmlFile = `xml/${defaultStrat}.xml`;
 
                     const loadDomToWorkspace = dom => {
