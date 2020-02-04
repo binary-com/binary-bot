@@ -201,7 +201,7 @@ export const load = (blockStr, dropEvent = {}) => {
             'FileLoad',
             translate('XML file contains unsupported elements. Please check or modify file.')
         );
-        globalObserver.emit(error);
+        globalObserver.emit('Error', error);
         return;
     }
 

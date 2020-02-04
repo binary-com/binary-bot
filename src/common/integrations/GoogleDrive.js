@@ -139,7 +139,7 @@ class GoogleDrive {
                                 resolve();
                             } catch (e) {
                                 const error = new TrackJSError('GoogleDrive', translate('Unrecognized file format'), e);
-                                globalObserver.emit(error);
+                                globalObserver.emit('Error', error);
                                 reject(e);
                             }
                         })
@@ -153,7 +153,7 @@ class GoogleDrive {
                                 translate('There was an error retrieving data from Google Drive'),
                                 e
                             );
-                            globalObserver.emit(error);
+                            globalObserver.emit('Error', error);
                             reject(e);
                         });
                 } else if (data.action === google.picker.Action.CANCEL) {
@@ -195,7 +195,7 @@ class GoogleDrive {
                                 translate('There was an error listing files from Google Drive'),
                                 e
                             );
-                            globalObserver.emit(error);
+                            globalObserver.emit('Error', error);
                             reject(e);
                         });
                 })
@@ -237,7 +237,7 @@ class GoogleDrive {
                                     translate('There was an error retrieving files from Google Drive'),
                                     e
                                 );
-                                globalObserver.emit(error);
+                                globalObserver.emit('Error', error);
                                 reject(e);
                             });
                     });
@@ -282,7 +282,7 @@ class GoogleDrive {
                                 translate('There was an error processing your request'),
                                 xhr
                             );
-                            globalObserver.emit(error);
+                            globalObserver.emit('Error', error);
                             reject();
                         }
                     };
