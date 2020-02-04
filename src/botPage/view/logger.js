@@ -1,6 +1,5 @@
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
-import { trackJSNetworkMonitor } from '../../../../deriv-app/packages/trader/src/Services/trackjs';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
