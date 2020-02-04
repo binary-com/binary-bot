@@ -26,11 +26,11 @@ const notify = ({ className, message, position = 'left', sound = 'silent' }) => 
 };
 
 export class TrackJSError extends Error {
-    constructor(type, message, opt_custom_data) {
+    constructor(type, message, optCustomData) {
         super(message);
         this.name = type;
         this.code = type;
-        this.data = opt_custom_data;
+        this.data = optCustomData;
     }
 }
 

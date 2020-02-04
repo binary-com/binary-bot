@@ -2,7 +2,6 @@ import { roundBalance } from '../../common/tools';
 import { doUntilDone } from '../tools';
 import { contractStatus, contractSettled, contract as broadcastContract } from '../broadcast';
 import { sell, openContractReceived } from './state/actions';
-import { saveBeforeUnload } from '../../view/blockly/utils';
 import { observer } from '../../../common/utils/observer';
 
 const AFTER_FINISH_TIMEOUT = 5;

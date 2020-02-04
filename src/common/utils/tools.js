@@ -1,9 +1,7 @@
 import RenderHTML from 'react-render-html';
-import { observer as globalObserver } from './observer';
 import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
-import { TrackJSError } from '../../botPage/view/logger';
 
 export const parseQueryString = () => {
     if (typeof window === 'undefined') {
