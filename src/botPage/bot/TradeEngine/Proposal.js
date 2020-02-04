@@ -1,5 +1,5 @@
 import { translate } from '../../../common/i18n';
-import { tradeOptionToProposal, doUntilDone, getUUID } from '../tools';
+import { tradeOptionToProposal, doUntilDone } from '../tools';
 import { proposalsReady, clearProposals } from './state/actions';
 
 export default Engine =>
@@ -49,13 +49,7 @@ export default Engine =>
             this.proposalTemplates.map(proposal =>
                 doUntilDone(() =>
                     this.api
-                        .subscribeToPriceForContractProposal({
-                            ...proposal,
-                            passthrough: {
-                                contractType: proposal.contract_type,
-                                uuid        : getUUID(),
-                            },
-                        })
+                        .subscribeToPriceForContractProposal(proposal)
                         // eslint-disable-next-line consistent-return
                         .catch(e => {
                             if (e && e.name === 'RateLimit') {
@@ -127,8 +121,14 @@ export default Engine =>
         checkProposalReady() {
             const proposals = this.data.get('proposals');
 
-            if (proposals && proposals.size === this.proposalTemplates.length) {
-                this.startPromise.then(() => this.store.dispatch(proposalsReady()));
+            if (proposals && proposals.size) {
+                const isSameWithTemplate = this.proposalTemplates.every(p =>
+                    this.data.getIn(['proposals', p.passthrough.uuid])
+                );
+
+                if (isSameWithTemplate) {
+                    this.startPromise.then(() => this.store.dispatch(proposalsReady()));
+                }
             }
         }
         isNewTradeOption(tradeOption) {
