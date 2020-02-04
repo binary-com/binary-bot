@@ -2,6 +2,8 @@ import { roundBalance } from '../../common/tools';
 import { doUntilDone } from '../tools';
 import { contractStatus, contractSettled, contract as broadcastContract } from '../broadcast';
 import { sell, openContractReceived } from './state/actions';
+import { saveBeforeUnload } from '../../view/blockly/utils';
+import { observer } from '../../../common/utils/observer';
 
 const AFTER_FINISH_TIMEOUT = 5;
 
@@ -43,7 +45,6 @@ export default Engine =>
                     this.store.dispatch(openContractReceived());
                     if (!this.isExpired) {
                         this.resetSubscriptionTimeout();
-                        
                     }
                 }
             });
@@ -61,10 +62,13 @@ export default Engine =>
 
             this.unsubscribeOpenContract();
 
-            doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
-                ({
-                    proposal_open_contract: { id: this.openContractId },
-                } = r);
+            doUntilDone(() =>
+                this.api.subscribeToOpenContract(contractId).then(response => {
+                    this.openContractId = response.proposal_open_contract.id;
+                })
+            ).catch(error => {
+                observer.emit('reset_animation');
+                observer.emit('Error', error);
             });
         }
         resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {
