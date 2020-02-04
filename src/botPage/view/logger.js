@@ -26,6 +26,15 @@ const notify = ({ className, message, position = 'left', sound = 'silent' }) => 
     }
 };
 
+export class TrackJSError extends Error {
+    constructor(type, message, opt_custom_data) {
+        super(message);
+        this.name = type;
+        this.code = type;
+        this.data = opt_custom_data;
+    }
+}
+
 const notifyError = error => {
     if (!error) {
         return;
@@ -34,7 +43,10 @@ const notifyError = error => {
     let message;
     let code;
 
-    if (error.error) {
+    if (typeof error === 'string') {
+        code = 'Unknown';
+        message = error;
+    } else if (error.error) {
         if (error.error.error) {
             ({ message } = error.error.error);
             ({ code } = error.error.error);
@@ -42,6 +54,9 @@ const notifyError = error => {
             ({ message } = error.error);
             ({ code } = error.error);
         }
+    } else {
+        ({ message } = error);
+        ({ code } = error);
     }
 
     // Exceptions:
