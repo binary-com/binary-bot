@@ -123,7 +123,7 @@ export default Engine =>
 
             if (proposals && proposals.size) {
                 const isSameWithTemplate = this.proposalTemplates.every(p =>
-                    this.data.getIn(['proposals', p.passthrough.uuid])
+                    this.data.hasIn(['proposals', p.passthrough.uuid])
                 );
 
                 if (isSameWithTemplate) {
