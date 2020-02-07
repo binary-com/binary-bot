@@ -62,25 +62,25 @@ commands:
             pushd www/
             tar -cvf artifact.tar *
             mv artifact.tar ${OLDPWD}/
+      - run:
+          name: "Tag commit id as artifact identifer"
+          command: echo "${CIRCLE_SHA1}" > artifact-info.txt
   upload_artifact:
     description: "upload artifact to s3"
     steps:
       - s3/copy:    
           from: artifact.tar
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/'  # using ${CIRCLE_BRANCH} for separating build artifact by branch
+          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
           aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
           aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
           aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
+          arguments: '--metadata "{\"x-amz-artifact-id\": \"${CIRCLE_SHA1}\" }"'
   upload_checksum:
-    description: "upload artifact checksum to s3"
+    description: "upload artifact commit id to s3"
     steps:
-      - run: 
-          name: 
-          command: |
-            sha256sum artifact.tar | cut -d ' ' -f 1 > artifact-info.txt
       - s3/copy:    
           from: artifact-info.txt
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/'  # using ${CIRCLE_BRANCH} for separating build artifact by branch
+          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
           aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
           aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
           aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
@@ -163,10 +163,10 @@ jobs:
       - compress
       - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
       - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint before actual deployment
-      #- docker:
-      #    target: "production"
-      #- k8s_deploy:
-      #    target: "production"
+      - docker:
+          target: "production"
+      - k8s_deploy:
+          target: "production"
 
 workflows:
   test:
@@ -187,5 +187,5 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
-          context: binary-frontend-deploy
+          context: binary-frontend-artifact-upload
 
