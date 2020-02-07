@@ -135,7 +135,11 @@ jobs:
     steps:
       - git_checkout_from_cache
       - npm_install
-      - npm_test
+      #- npm_test
+      - build
+      - compress
+      - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
+      - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint before actual deployment
 
   release_beta:
     docker:
@@ -170,8 +174,8 @@ jobs:
 workflows:
   test:
     jobs:
-      - test
-
+      - test:
+          context: binary-frontend-deploy
   release:
     jobs:
       - release_beta:
