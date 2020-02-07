@@ -187,5 +187,5 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
-          context: binary-frontend-deploy
+          context: binary-frontend-artifact-upload
 
