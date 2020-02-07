@@ -148,13 +148,10 @@ jobs:
       - git_checkout_from_cache
       - npm_install
       - build
-      - compress
-      - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
-      - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint before actual deployment
-      #- docker:
-      #    target: "beta"
-      #- k8s_deploy:
-      #    target: "beta"
+      - docker:
+          target: "beta"
+      - k8s_deploy:
+          target: "beta"
       
   release_production:
     docker:
@@ -184,7 +181,6 @@ workflows:
               ignore: /.*/
             tags:
               only: /^beta.*/
-          context: binary-frontend-deploy
       - release_production:
           filters:
             branches:
