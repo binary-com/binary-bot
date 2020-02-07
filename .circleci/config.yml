@@ -67,7 +67,7 @@ commands:
     steps:
       - s3/copy:    
           from: artifact.tar
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}'  # using ${CIRCLE_BRANCH} for separating build artifact by branch
+          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/'  # using ${CIRCLE_BRANCH} for separating build artifact by branch
           aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
           aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
           aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
@@ -80,7 +80,7 @@ commands:
             sha256sum artifact.tar | cut -d ' ' -f 1 > artifact-info.txt
       - s3/copy:    
           from: artifact-info.txt
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}'  # using ${CIRCLE_BRANCH} for separating build artifact by branch
+          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/'  # using ${CIRCLE_BRANCH} for separating build artifact by branch
           aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
           aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
           aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
