@@ -4,6 +4,7 @@ import { observer as globalObserver } from '../../common/utils/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
 
+/* eslint-disable func-names, no-underscore-dangle */
 JSInterpreter.prototype.takeStateSnapshot = function() {
     const newStateStack = clone(this.stateStack, undefined, undefined, undefined, true);
     return newStateStack;
@@ -14,6 +15,7 @@ JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
     this.global = this.stateStack[0].scope;
     this.initFunc_(this, this.global);
 };
+/* eslint-enable */
 
 const unrecoverableErrors = [
     'InsufficientBalance',
