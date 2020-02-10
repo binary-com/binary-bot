@@ -15,6 +15,10 @@ export const tradeOptionToProposal = tradeOption =>
             duration     : tradeOption.duration,
             amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
             contract_type: type,
+            passthrough  : {
+                contractType: type,
+                uuid        : getUUID(),
+            },
         };
         if (tradeOption.prediction !== undefined) {
             proposal.selected_tick = tradeOption.prediction;
