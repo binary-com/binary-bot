@@ -378,7 +378,8 @@ export default class _Blockly {
                         const previousStrat = getPreviousStrat();
 
                         if (previousStrat) {
-                            loadDomToWorkspace(previousStrat);
+                            const previousStratDOM = Blockly.Xml.textToDom(previousStrat);
+                            loadDomToWorkspace(previousStratDOM);
                             resolve();
                             return;
                         }
