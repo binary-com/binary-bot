@@ -571,3 +571,5 @@ export const removeParam = key => {
 
     window.history.pushState({}, window.title, rtn);
 };
+
+export const getPreviousStrat = () => localStorage.getItem('previousStrat');

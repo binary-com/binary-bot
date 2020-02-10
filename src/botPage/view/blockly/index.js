@@ -18,6 +18,7 @@ import {
     saveBeforeUnload,
     removeParam,
     updateRenamedFields,
+    getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import { translate, xml as translateXml } from '../../../common/i18n';
@@ -358,9 +359,6 @@ export default class _Blockly {
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
                 addBlocklyTranslation().then(() => {
-                    const defaultStrat = parseQueryString().strategy || 'main';
-                    const xmlFile = `xml/${defaultStrat}.xml`;
-
                     const loadDomToWorkspace = dom => {
                         repaintDefaultColours();
                         overrideBlocklyDefaultShape();
@@ -374,29 +372,26 @@ export default class _Blockly {
                         }, 0);
                     };
 
-                    const getFile = xml => {
-                        importFile(xml)
-                            .then(dom => {
-                                loadDomToWorkspace(dom.getElementsByTagName('xml')[0]);
-                                resolve();
-                            })
-                            .catch(text => {
-                                if (text) {
-                                    const previousStrat = Blockly.Xml.textToDom(text);
-                                    loadDomToWorkspace(previousStrat);
-                                    resolve();
-                                } else {
-                                    getFile('xml/main.xml');
-                                }
+                    let defaultStrat = parseQueryString().strategy;
 
-                                if (defaultStrat) {
-                                    globalObserver.emit('Notify', {
-                                        className: 'warn',
-                                        message  : translate('The strategy you tried to load is invalid'),
-                                        position : 'right',
-                                    });
-                                }
-                            });
+                    if (!defaultStrat) {
+                        const previousStrat = getPreviousStrat();
+
+                        if (previousStrat) {
+                            loadDomToWorkspace(previousStrat);
+                            resolve();
+                            return;
+                        }
+
+                        defaultStrat = 'main';
+                    }
+
+                    const xmlFile = `xml/${defaultStrat}.xml`;
+                    const getFile = xml => {
+                        importFile(xml).then(dom => {
+                            loadDomToWorkspace(dom.getElementsByTagName('xml')[0]);
+                            resolve();
+                        });
                     };
 
                     getFile(xmlFile);
