@@ -71,7 +71,7 @@ export default class Interpreter {
             const pseudoBotIf = interpreter.nativeToPseudo(BotIf);
 
             Object.entries(ticksIf).forEach(([name, f]) => {
-                interpreter.setProperty(pseudoBotIf, name, this.createAsync(interpreter, args => f(args)));
+                interpreter.setProperty(pseudoBotIf, name, this.createAsync(interpreter, f));
             });
 
             interpreter.setProperty(
