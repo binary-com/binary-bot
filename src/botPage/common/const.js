@@ -232,6 +232,7 @@ const config = {
         aid: 'derivbot-248506',
         api: 'AIzaSyBDYQ7IIgGxM14IeAV5JrtaJNYjxB4A5jo',
     },
+    quick_strategies: ['martingale', 'dalembert'],
 };
 
 export async function updateConfigCurrencies() {
