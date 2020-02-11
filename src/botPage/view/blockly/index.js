@@ -28,6 +28,7 @@ import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
 import { parseQueryString } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
+import config from '../../common/const';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -374,7 +375,7 @@ export default class _Blockly {
 
                     let defaultStrat = parseQueryString().strategy;
 
-                    if (!defaultStrat) {
+                    if (!defaultStrat || !config.quick_strategies.includes(defaultStrat)) {
                         const previousStrat = getPreviousStrat();
 
                         if (previousStrat) {
