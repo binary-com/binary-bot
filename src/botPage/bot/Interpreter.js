@@ -205,7 +205,8 @@ export default class Interpreter {
         // TODO: This is a workaround, create issue on original repo, once fixed
         // remove this. We don't know how many args are going to be passed, so we
         // assume a max of 100.
-        Object.defineProperty(asyncFunc, 'length', { value: 100 });
+        const MAX_ACCEPTABLE_FUNC_ARGS = 100;
+        Object.defineProperty(asyncFunc, 'length', { value: MAX_ACCEPTABLE_FUNC_ARGS + 1 });
         return interpreter.createAsyncFunction(asyncFunc);
     }
     hasStarted() {
