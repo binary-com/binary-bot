@@ -3,6 +3,7 @@ import { saveAs } from '../shared';
 import config from '../../common/const';
 import { translate } from '../../../common/i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
+import { TrackJSError } from '../logger';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
@@ -97,12 +98,8 @@ export const strategyHasValidTradeTypeCategory = xml => {
         return false;
     });
     if (!validTradeTypeCategory) {
-        const errorMessage = translate('The strategy you tried to import is invalid.');
-        globalObserver.emit('ui.log.error', errorMessage);
-
-        if (window.trackJs) {
-            trackJs.track(errorMessage);
-        }
+        const error = new TrackJSError('FileLoad', translate('The strategy you tried to import is invalid.'));
+        globalObserver.emit('Error', error);
     }
     return validTradeTypeCategory;
 };
@@ -574,3 +571,5 @@ export const removeParam = key => {
 
     window.history.pushState({}, window.title, rtn);
 };
+
+export const getPreviousStrat = () => localStorage.getItem('previousStrat');
