@@ -52,34 +52,37 @@ export default Engine =>
             this.store.dispatch(clearProposals());
         }
         requestProposals() {
-            this.proposalTemplates.map(proposal =>
-                doUntilDone(() =>
-                    this.api
-                        .subscribeToPriceForContractProposal(proposal)
-                        // eslint-disable-next-line consistent-return
-                        .catch(e => {
-                            if (e && e.name === 'RateLimit') {
-                                return Promise.reject(e);
-                            }
-
-                            const errorCode = e.error && e.error.error && e.error.error.code;
-
-                            if (errorCode === 'ContractBuyValidationError') {
-                                const { uuid } = e.error.echo_req.passthrough;
-
-                                if (!this.data.hasIn(['forgetProposals', uuid])) {
-                                    this.data = this.data.setIn(['proposals', uuid], {
-                                        ...proposal,
-                                        contractType: proposal.contract_type,
-                                        error       : e,
-                                    });
+            Promise.all(
+                this.proposalTemplates.map(proposal =>
+                    doUntilDone(() =>
+                        this.api
+                            .subscribeToPriceForContractProposal(proposal)
+                            // eslint-disable-next-line consistent-return
+                            .catch(e => {
+                                if (e && e.name === 'RateLimit') {
+                                    return Promise.reject(e);
                                 }
-                            } else {
-                                this.$scope.observer.emit('Error', e);
-                            }
-                        })
+
+                                const errorCode = e.error && e.error.error && e.error.error.code;
+
+                                if (errorCode === 'ContractBuyValidationError') {
+                                    const { uuid } = e.error.echo_req.passthrough;
+
+                                    if (!this.data.hasIn(['forgetProposals', uuid])) {
+                                        // Add to proposals map with error. Will later be shown to user, see selectProposal.
+                                        this.data = this.data.setIn(['proposals', uuid], {
+                                            ...proposal,
+                                            contractType: proposal.contract_type,
+                                            error       : e,
+                                        });
+                                    }
+                                } else {
+                                    this.$scope.observer.emit('Error', e);
+                                }
+                            })
+                    )
                 )
-            );
+            ).catch(e => this.$scope.observer.emit('Error', e));
         }
         observeProposals() {
             this.listen('proposal', r => {
