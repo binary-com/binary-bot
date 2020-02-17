@@ -23,7 +23,8 @@ export default Engine =>
             this.data.get('proposals').forEach(proposal => {
                 if (proposal.contractType === contractType) {
                     if (proposal.error) {
-                        throw Error(proposal.error.error.error.message);
+                        const { error } = proposal.error;
+                        throw new TrackJSError(error.error.code, error.error.message, error);
                     } else {
                         toBuy = proposal;
                     }
