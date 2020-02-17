@@ -99,12 +99,25 @@ const getBackoffDelay = (error, delayIndex) => {
     return linearIncrease * 1000;
 };
 
-export const shouldThrowError = (e, types = [], delayIndex = 0) =>
-    e &&
-    (!types
-        .concat(['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'])
-        .includes(e.name) ||
-        (e.name !== 'DisconnectError' && delayIndex > maxRetries));
+export const shouldThrowError = (error, types = [], delayIndex = 0) => {
+    if (!error) {
+        return false;
+    }
+
+    const defaultErrors = ['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'];
+
+    const errors = types.concat(defaultErrors);
+
+    if (errors.includes(error.name)) {
+        // If error is unrecoverable, throw error.
+        return true;
+    } else if (error.name !== 'DisconnectError' && delayIndex > maxRetries) {
+        // If exceeded maxRetries, throw error.
+        return true;
+    }
+
+    return false;
+};
 
 export const recoverFromError = (f, r, types, delayIndex) =>
     new Promise((resolve, reject) => {
@@ -125,14 +138,24 @@ export const recoverFromError = (f, r, types, delayIndex) =>
         });
     });
 
-export const doUntilDone = (f, types) => {
+export const doUntilDone = (func, errorTypes) => {
     let delayIndex = 0;
+    const criticalErrors = ['InvalidToken', 'AuthorizationRequired'];
 
     return new Promise((resolve, reject) => {
+        delayIndex++;
+
         const repeat = () => {
-            recoverFromError(f, (errorCode, makeDelay) => makeDelay().then(repeat), types, delayIndex++)
+            const makeDelayFunc = (errorCode, makeDelay) => makeDelay().then(repeat);
+            recoverFromError(func, makeDelayFunc, errorTypes, delayIndex)
                 .then(resolve)
-                .catch(reject);
+                .catch(e => {
+                    reject(e);
+
+                    if (criticalErrors.includes(e.name)) {
+                        window.location.reload();
+                    }
+                });
         };
         repeat();
     });
