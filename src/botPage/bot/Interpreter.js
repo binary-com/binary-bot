@@ -8,7 +8,6 @@ const unrecoverableErrors = [
     'CustomLimitsReached',
     'OfferingsValidationError',
     'InvalidCurrency',
-    'ContractBuyValidationError',
     'NotDefaultCurrency',
     'PleaseAuthenticate',
     'FinancialAssessmentRequired',
