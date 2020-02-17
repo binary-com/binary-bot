@@ -1,6 +1,7 @@
 import { translate } from '../../../common/i18n';
 import { tradeOptionToProposal, doUntilDone } from '../tools';
 import { proposalsReady, clearProposals } from './state/actions';
+import { TrackJSError } from '../../view/logger';
 
 export default Engine =>
     class Proposal extends Engine {
@@ -30,7 +31,11 @@ export default Engine =>
             });
 
             if (!toBuy) {
-                throw Error(translate('Selected proposal does not exist'));
+                throw new TrackJSError(
+                    'CustomInvalidProposal',
+                    translate('Selected proposal does not exist'),
+                    Array.from(this.data.get('proposals')).map(proposal => proposal[1])
+                );
             }
 
             return {
