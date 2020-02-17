@@ -105,7 +105,6 @@ export const shouldThrowError = (error, types = [], delayIndex = 0) => {
     }
 
     const defaultErrors = ['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'];
-
     const errors = types.concat(defaultErrors);
 
     if (errors.includes(error.name)) {
