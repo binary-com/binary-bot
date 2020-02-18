@@ -57,7 +57,7 @@ export default Engine =>
                     doUntilDone(() =>
                         this.api.subscribeToPriceForContractProposal(proposal).catch(e => {
                             if (e && e.name === 'RateLimit') {
-                                return e;
+                                return Promise.reject(e);
                             }
 
                             const errorCode = e.error && e.error.error && e.error.error.code;
