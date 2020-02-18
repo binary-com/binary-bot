@@ -105,9 +105,14 @@ export const shouldThrowError = (error, types = [], delayIndex = 0) => {
     }
 
     const defaultErrors = ['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'];
+    const authErrors = ['InvalidToken', 'AuthorizationRequired'];
     const errors = types.concat(defaultErrors);
 
-    if (errors.includes(error.name)) {
+    if (authErrors.includes(error.name)) {
+        // If auth error, reload page.
+        window.location.reload();
+        return true;
+    } else if (!errors.includes(error.name)) {
         // If error is unrecoverable, throw error.
         return true;
     } else if (error.name !== 'DisconnectError' && delayIndex > maxRetries) {
@@ -137,24 +142,14 @@ export const recoverFromError = (f, r, types, delayIndex) =>
         });
     });
 
-export const doUntilDone = (func, errorTypes) => {
+export const doUntilDone = (f, types) => {
     let delayIndex = 0;
-    const criticalErrors = ['InvalidToken', 'AuthorizationRequired'];
 
     return new Promise((resolve, reject) => {
-        delayIndex++;
-
         const repeat = () => {
-            const makeDelayFunc = (errorCode, makeDelay) => makeDelay().then(repeat);
-            recoverFromError(func, makeDelayFunc, errorTypes, delayIndex)
+            recoverFromError(f, (errorCode, makeDelay) => makeDelay().then(repeat), types, delayIndex++)
                 .then(resolve)
-                .catch(e => {
-                    reject(e);
-
-                    if (criticalErrors.includes(e.name)) {
-                        window.location.reload();
-                    }
-                });
+                .catch(reject);
         };
         repeat();
     });
