@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   k8s: circleci/kubernetes@0.7.0
+  s3: circleci/aws-s3@1.0.13
 commands:
   git_checkout_from_cache:
     description: "Git checkout and save cache"
@@ -46,14 +47,43 @@ commands:
           key: npm-v1-{{ checksum "package.json" }}
           paths:
             - "node_modules"
-
   build:
     description: "Build"
     steps:
       - run:
           name: "yarn build"
           command: node_modules/gulp/bin/gulp.js build-min
-
+  compress:
+    description: "Compress"
+    steps:
+      - run:
+          name: "Compress"
+          command: |
+            pushd www/
+            tar -cvf artifact.tar *
+            mv artifact.tar ${OLDPWD}/
+      - run:
+          name: "Tag commit id as artifact identifer"
+          command: echo "${CIRCLE_SHA1}" > artifact-info.txt
+  upload_artifact:
+    description: "upload artifact to s3"
+    steps:
+      - s3/copy:    
+          from: artifact.tar
+          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
+          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
+          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
+          arguments: '--metadata "{\"x-amz-artifact-id\": \"${CIRCLE_SHA1}\" }"'
+  upload_checksum:
+    description: "upload artifact commit id to s3"
+    steps:
+      - s3/copy:    
+          from: artifact-info.txt
+          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
+          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
+          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
   docker:
     description: "Build and Push image to docker hub"
     parameters:
@@ -126,6 +156,9 @@ jobs:
       - git_checkout_from_cache
       - npm_install
       - build
+      - compress
+      - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
+      - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint before actual deployment
       - docker:
           target: "production"
       - k8s_deploy:
@@ -134,8 +167,8 @@ jobs:
 workflows:
   test:
     jobs:
-      - test
-
+      - test:
+          context: binary-frontend-deploy
   release:
     jobs:
       - release_beta:
@@ -150,4 +183,5 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
+          context: binary-frontend-artifact-upload
 
