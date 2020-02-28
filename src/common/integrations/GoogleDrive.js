@@ -24,7 +24,7 @@ class GoogleDrive {
                     .init({
                         apiKey       : this.apiKey,
                         clientId     : this.clientId,
-                        scope        : 'https://www.googleapis.com/auth/drive',
+                        scope        : 'https://www.googleapis.com/auth/drive.file',
                         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
                     })
                     .then(
