@@ -68,7 +68,7 @@ const notifyError = error => {
 
     if (trackJs) {
         trackJs.console.log(error);
-        trackJs.track(code);
+        trackJs.track(code || error.name);
     }
 };
 
