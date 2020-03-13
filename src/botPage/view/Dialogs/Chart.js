@@ -16,7 +16,6 @@ import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { getLanguage } from '../../../common/lang';
-import { fieldGeneratorMapping } from '../blockly/blocks/shared';
 
 setSmartChartsPublicPath('./js/');
 
