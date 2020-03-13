@@ -2,7 +2,6 @@ import { Map } from 'immutable';
 import { historyToTicks, getLast } from 'binary-utils';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { doUntilDone, getUUID } from '../bot/tools';
-import { getTokenList, removeAllTokens } from '../../common/utils/storageManager';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,
@@ -55,30 +54,15 @@ export default class TicksService {
         }
 
         return new Promise(resolve => {
-            const getActiveSymbols = () => {
-                this.api.getActiveSymbolsBrief().then(r => {
-                    const { active_symbols: symbols } = r;
-                    this.pipSizes = symbols.reduce((accumulator, currSymbol) => {
-                        // eslint-disable-next-line no-param-reassign
-                        accumulator[currSymbol.symbol] = `${currSymbol.pip}`.length - 2;
-                        return accumulator;
-                    }, {});
-                    resolve(this.pipSizes);
-                });
-            };
-
-            const tokenList = getTokenList();
-            if (tokenList.length) {
-                this.api
-                    .authorize(tokenList[0].token)
-                    .then(() => getActiveSymbols())
-                    .catch(() => {
-                        removeAllTokens();
-                        getActiveSymbols();
-                    });
-            } else {
-                getActiveSymbols();
-            }
+            this.api.getActiveSymbolsBrief().then(r => {
+                const { active_symbols: symbols } = r;
+                this.pipSizes = symbols.reduce((accumulator, currSymbol) => {
+                    // eslint-disable-next-line no-param-reassign
+                    accumulator[currSymbol.symbol] = `${currSymbol.pip}`.length - 2;
+                    return accumulator;
+                }, {});
+                resolve(this.pipSizes);
+            });
         });
     }
     request(options) {
