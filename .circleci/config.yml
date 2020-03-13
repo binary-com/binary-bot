@@ -96,7 +96,7 @@ commands:
           command: |
             build_tag="${CIRCLE_SHA1}"
             [ "<< parameters.target >>" == "beta" ] && build_tag="beta-${CIRCLE_SHA1}"
-            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${build_tag} .
+            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${build_tag} -t ${DOCKHUB_ORGANISATION}/binary-static-bot:latest.
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -104,6 +104,7 @@ commands:
             [ "<< parameters.target >>" == "beta" ] && build_tag="beta-${CIRCLE_SHA1}"
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push ${DOCKHUB_ORGANISATION}/binary-static-bot:${build_tag}
+            docker push ${DOCKHUB_ORGANISATION}/binary-static-bot:latest
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:
