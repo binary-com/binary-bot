@@ -3,7 +3,7 @@ import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { appendRow, updateRow, saveAs, ticksService } from '../shared';
+import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import * as style from '../style';
@@ -58,8 +58,7 @@ export default class TradeTable extends Component {
         ];
     }
 
-    static getTradeObject(pipSizes, contract) {
-        const symbolPipSize = pipSizes[contract.underlying];
+    static getTradeObject(contract) {
         const tradeObj = {
             ...contract,
             reference: `${contract.transaction_ids.buy}`,
@@ -68,11 +67,11 @@ export default class TradeTable extends Component {
         };
 
         if (contract.entry_tick) {
-            tradeObj.entry_tick = (+contract.entry_tick).toFixed(symbolPipSize);
+            tradeObj.entry_tick = contract.entry_spot_display_value;
         }
 
         if (contract.exit_tick) {
-            tradeObj.exit_tick = (+contract.exit_tick).toFixed(symbolPipSize);
+            tradeObj.exit_tick = contract.exit_tick_display_value;
         }
 
         return tradeObj;
@@ -105,30 +104,28 @@ export default class TradeTable extends Component {
                 return;
             }
 
-            ticksService.requestPipSizes().then(pipSizes => {
-                const tradeObj = TradeTable.getTradeObject(pipSizes, contract);
-                const trade = {
-                    ...tradeObj,
-                    profit          : getProfit(tradeObj),
-                    contract_status : translate('Pending'),
-                    contract_settled: false,
-                };
+            const tradeObj = TradeTable.getTradeObject(contract);
+            const trade = {
+                ...tradeObj,
+                profit          : getProfit(tradeObj),
+                contract_status : translate('Pending'),
+                contract_settled: false,
+            };
 
-                const { accountID } = tradeObj;
-                const accountStat = this.getAccountStat(accountID);
-                const { rows } = accountStat;
-                const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
+            const { accountID } = tradeObj;
+            const accountStat = this.getAccountStat(accountID);
+            const { rows } = accountStat;
+            const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
 
-                if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-                    trade.exit_tick = '-';
-                }
+            if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+                trade.exit_tick = '-';
+            }
 
-                if (prevRowIndex >= 0) {
-                    this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
-                } else {
-                    this.setState({ [accountID]: appendRow(trade, accountStat) });
-                }
-            });
+            if (prevRowIndex >= 0) {
+                this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
+            } else {
+                this.setState({ [accountID]: appendRow(trade, accountStat) });
+            }
         });
 
         globalObserver.register('contract.settled', contract => {
@@ -166,38 +163,36 @@ export default class TradeTable extends Component {
 
     refreshContract(api, contractID) {
         return api.getContractInfo(contractID).then(r => {
-            ticksService.requestPipSizes().then(pipSizes => {
-                const contract = r.proposal_open_contract;
-                const tradeObj = TradeTable.getTradeObject(pipSizes, contract);
-                const trade = {
-                    ...tradeObj,
-                    profit: getProfit(tradeObj),
-                };
+            const contract = r.proposal_open_contract;
+            const tradeObj = TradeTable.getTradeObject(contract);
+            const trade = {
+                ...tradeObj,
+                profit: getProfit(tradeObj),
+            };
 
-                if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-                    trade.exit_tick = '-';
+            if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+                trade.exit_tick = '-';
+            }
+
+            const { accountID } = this.props;
+            const { id } = this.state[accountID];
+            const rows = this.state[accountID].rows.slice();
+
+            const updatedRows = rows.map(row => {
+                const { reference } = row;
+
+                if (reference === trade.reference) {
+                    return {
+                        contract_status : translate('Settled'),
+                        contract_settled: true,
+                        reference,
+                        ...trade,
+                    };
                 }
-
-                const { accountID } = this.props;
-                const { id } = this.state[accountID];
-                const rows = this.state[accountID].rows.slice();
-
-                const updatedRows = rows.map(row => {
-                    const { reference } = row;
-
-                    if (reference === trade.reference) {
-                        return {
-                            contract_status : translate('Settled'),
-                            contract_settled: true,
-                            reference,
-                            ...trade,
-                        };
-                    }
-                    return row;
-                });
-
-                this.setState({ [accountID]: { id, rows: updatedRows } });
+                return row;
             });
+
+            this.setState({ [accountID]: { id, rows: updatedRows } });
         });
     }
 
