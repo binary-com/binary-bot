@@ -16,6 +16,7 @@ import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { getLanguage } from '../../../common/lang';
+import { fieldGeneratorMapping } from '../blockly/blocks/shared';
 
 setSmartChartsPublicPath('./js/');
 
@@ -44,7 +45,7 @@ class ChartContent extends PureComponent {
         this.state = {
             chartType  : 'mountain',
             granularity: 0,
-            symbol     : '',
+            symbol     : 'R_100',
             barrierType: undefined,
             high       : undefined,
             low        : undefined,
