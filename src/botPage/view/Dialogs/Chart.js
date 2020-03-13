@@ -44,7 +44,7 @@ class ChartContent extends PureComponent {
         this.state = {
             chartType  : 'mountain',
             granularity: 0,
-            symbol     : 'R_100',
+            symbol     : '',
             barrierType: undefined,
             high       : undefined,
             low        : undefined,
@@ -54,7 +54,7 @@ class ChartContent extends PureComponent {
 
     componentDidMount() {
         globalObserver.register('bot.init', s => {
-            if (this.state.symbol !== s) {
+            if (s && this.state.symbol !== s) {
                 this.setState({ symbol: s });
             }
         });
