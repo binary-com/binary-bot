@@ -96,7 +96,7 @@ commands:
           command: |
             build_tag="${CIRCLE_SHA1}"
             [ "<< parameters.target >>" == "beta" ] && build_tag="beta-${CIRCLE_SHA1}"
-            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${build_tag} -t ${DOCKHUB_ORGANISATION}/binary-static-bot:latest.
+            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${build_tag} -t ${DOCKHUB_ORGANISATION}/binary-static-bot:latest
       - run:
           name: Pushing Image to docker hub
           command: |
