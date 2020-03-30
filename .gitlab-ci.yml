@@ -1,9 +1,0 @@
-image: ubuntu
-
-pages:
-  script:
-    - "rm -rf ./public && mkdir ./public" # Reset the GitLab Pages directory
-    - "bash -O extglob -c 'cp -r !(.*|public) ./public/'" # Copy artifacts to the GitLab Pages directory
-  artifacts:
-    paths:
-      - ./public
