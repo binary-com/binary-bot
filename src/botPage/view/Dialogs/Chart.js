@@ -9,7 +9,7 @@ import {
     Share,
     CrosshairToggle,
     ChartSize,
-} from '@binary-com/smartcharts';
+} from 'smartcharts-beta';
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
@@ -121,7 +121,7 @@ class ChartContent extends PureComponent {
 
     renderControls = () => (
         <React.Fragment>
-            <CrosshairToggle />
+            <CrosshairToggle enabled={false} />
             <ChartTypes enabled={true} onChange={chartType => this.setState({ chartType })} />
             <Timeperiod enabled={true} onChange={granularity => this.setState({ granularity })} />
             <StudyLegend />
@@ -163,6 +163,7 @@ class ChartContent extends PureComponent {
                 requestForget={this.requestForget.bind(this)}
                 barriers={barriers}
                 settings={this.settings}
+                enabledNavigationWidget={false}
             />
         );
     }
