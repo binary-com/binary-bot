@@ -1,64 +1,64 @@
-.smartcharts-mobile {
-    font-size: 10px;
+// .smartcharts-mobile {
+//     font-size: 10px;
 
-    /*
-      chart controls should still
-      be visible when its dropdown shows up.
-     */
-    .ciq-period, 
-    .cq-download, 
-    .ciq-views, 
-    .ciq-drawtools, 
-    .ciq-studies, 
-    .cq-chart-setting, 
-    .ciq-draw-tools, 
-    .cq-comparison-new, 
-    .ciq-chart-types {
-        .cq-menu-overlay {
-            height: calc(100% - 40px);
-        }
-    }
+//     /*
+//       chart controls should still
+//       be visible when its dropdown shows up.
+//      */
+//     .ciq-period, 
+//     .cq-download, 
+//     .ciq-views, 
+//     .ciq-drawtools, 
+//     .ciq-studies, 
+//     .cq-chart-setting, 
+//     .ciq-draw-tools, 
+//     .cq-comparison-new, 
+//     .ciq-chart-types {
+//         .cq-menu-overlay {
+//             height: calc(100% - 40px);
+//         }
+//     }
 
-    .cq-modal-dropdown {
-        position: absolute !important;
-    }
+//     .cq-modal-dropdown {
+//         position: absolute !important;
+//     }
 
-    .drag-price > .price {
-        font-size: 10px;
-        padding: 1px 5px;
-    }
+//     .drag-price > .price {
+//         font-size: 10px;
+//         padding: 1px 5px;
+//     }
 
-    .ic-icon > svg {
-        box-sizing: content-box !important;
-    }
+//     .ic-icon > svg {
+//         box-sizing: content-box !important;
+//     }
 
-    .cq-chart-controls {
-        .cq-menu-btn > .cq-toggle {
-            padding: 0.35em 0em !important;
-        }
+//     .cq-chart-controls {
+//         .cq-menu-btn > .cq-toggle {
+//             padding: 0.35em 0em !important;
+//         }
 
-        .cq-chart-size > :first-child {
-            margin-right: 2em !important;
-        }
+//         .cq-chart-size > :first-child {
+//             margin-right: 2em !important;
+//         }
         
-        .ic-icon-with-sub {
-            &:hover .ic-subtitle {
-                visibility: visible;
-            }
-            .ic-subtitle {
-                visibility: hidden;
-                width: 60px;
-                color: #fff !important;
-                background: #15212d;
-                padding: 5px 0;
-                border-radius: 5px;
-                position: absolute;
-                z-index: 1;
-                bottom: 40px;
-                left: -15px;
-                display: block;
-                margin-bottom: 5px;
-            }
-        }
-    }
-}
+//         .ic-icon-with-sub {
+//             &:hover .ic-subtitle {
+//                 visibility: visible;
+//             }
+//             .ic-subtitle {
+//                 visibility: hidden;
+//                 width: 60px;
+//                 color: #fff !important;
+//                 background: #15212d;
+//                 padding: 5px 0;
+//                 border-radius: 5px;
+//                 position: absolute;
+//                 z-index: 1;
+//                 bottom: 40px;
+//                 left: -15px;
+//                 display: block;
+//                 margin-bottom: 5px;
+//             }
+//         }
+//     }
+// }

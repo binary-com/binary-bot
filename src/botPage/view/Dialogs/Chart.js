@@ -155,7 +155,7 @@ class ChartContent extends PureComponent {
                 chartType={this.state.chartType}
                 granularity={this.state.granularity}
                 symbol={this.state.symbol}
-                isMobile={true}
+                isMobile={false}
                 topWidgets={this.renderTopWidgets}
                 chartControlsWidgets={this.renderControls}
                 requestAPI={this.requestAPI.bind(this)}
