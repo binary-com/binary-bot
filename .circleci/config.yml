@@ -190,6 +190,7 @@ workflows:
               ignore: /.*/
             tags:
               only: /^beta.*/
+          context: binary-frontend-artifact-upload
       - release_production:
           filters:
             branches:
