@@ -1,14 +1,11 @@
 import {
     SmartChart,
     setSmartChartsPublicPath,
-    ChartTypes,
     StudyLegend,
     Views,
-    Timeperiod,
     DrawTools,
     Share,
-    CrosshairToggle,
-    ChartSize,
+    ChartMode,
 } from 'smartcharts-beta';
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
@@ -121,14 +118,14 @@ class ChartContent extends PureComponent {
 
     renderControls = () => (
         <React.Fragment>
-            <CrosshairToggle enabled={false} />
-            <ChartTypes enabled={true} onChange={chartType => this.setState({ chartType })} />
-            <Timeperiod enabled={true} onChange={granularity => this.setState({ granularity })} />
-            <StudyLegend />
+            <ChartMode
+                onChartType={chartType => this.setState({ chartType })}
+                onGranularity={granularity => this.setState({ granularity })}
+            />
+            <StudyLegend searchInputClassName="data-hj-whitelist" />
             <DrawTools />
-            <Views />
+            <Views searchInputClassName="data-hj-whitelist" />
             <Share />
-            <ChartSize />
         </React.Fragment>
     );
 
@@ -151,19 +148,18 @@ class ChartContent extends PureComponent {
 
         return (
             <SmartChart
-                id={this.chartId}
+                barriers={barriers}
+                chartControlsWidgets={this.renderControls}
                 chartType={this.state.chartType}
                 granularity={this.state.granularity}
-                symbol={this.state.symbol}
+                id={this.chartId}
                 isMobile={false}
-                topWidgets={this.renderTopWidgets}
-                chartControlsWidgets={this.renderControls}
                 requestAPI={this.requestAPI.bind(this)}
-                requestSubscribe={this.requestSubscribe.bind(this)}
                 requestForget={this.requestForget.bind(this)}
-                barriers={barriers}
+                requestSubscribe={this.requestSubscribe.bind(this)}
                 settings={this.settings}
-                enabledNavigationWidget={false}
+                symbol={this.state.symbol}
+                topWidgets={this.renderTopWidgets}
             />
         );
     }
