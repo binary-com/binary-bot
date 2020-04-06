@@ -102,7 +102,7 @@
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {
-    "@binary-com/smartcharts": "^0.6.1",
+    "smartcharts-beta": "^0.8.0-betam.10",
     "binary-style": "^0.2.4",
     "blockly": "github:google/blockly#59e5ac6",
     "clone": "aminmarashi/clone#d97b4f",
