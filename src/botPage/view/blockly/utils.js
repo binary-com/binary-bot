@@ -3,6 +3,7 @@ import { saveAs } from '../shared';
 import config from '../../common/const';
 import { translate } from '../../../common/i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
+import { TrackJSError } from '../logger';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
@@ -97,14 +98,37 @@ export const strategyHasValidTradeTypeCategory = xml => {
         return false;
     });
     if (!validTradeTypeCategory) {
-        const errorMessage = translate('The strategy you tried to import is invalid.');
-        globalObserver.emit('ui.log.error', errorMessage);
-
-        if (window.trackJs) {
-            trackJs.track(errorMessage);
-        }
+        const error = new TrackJSError('FileLoad', translate('The strategy you tried to import is invalid.'));
+        globalObserver.emit('Error', error);
     }
     return validTradeTypeCategory;
+};
+
+export const updateRenamedFields = xml => {
+    const elementRenames = {
+        MARKET_LIST: {
+            volidx: 'synthetic_index',
+        },
+    };
+
+    const fields = xml.getElementsByTagName('field');
+
+    Array.from(fields).forEach(field => {
+        if (!field.hasAttribute('name')) {
+            return;
+        }
+
+        Object.keys(elementRenames).forEach(elementRename => {
+            if (elementRename === field.getAttribute('name')) {
+                Object.keys(elementRenames[elementRename]).forEach(replacementKey => {
+                    if (replacementKey === field.textContent) {
+                        // eslint-disable-next-line no-param-reassign
+                        field.textContent = elementRenames[elementRename][replacementKey];
+                    }
+                });
+            }
+        });
+    });
 };
 
 const getCollapsedProcedures = () =>
@@ -506,3 +530,46 @@ export const cleanBeforeExport = xml => {
         }
     });
 };
+
+export const importFile = xml =>
+    new Promise((resolve, reject) => {
+        $.get(xml, dom => {
+            resolve(dom);
+        }).catch(() => {
+            const previousWorkspaceText = localStorage.getItem('previousStrat');
+            reject(previousWorkspaceText);
+        });
+    });
+
+export const saveBeforeUnload = () => {
+    window.onbeforeunload = () => {
+        const currentDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        localStorage.setItem('previousStrat', Blockly.Xml.domToPrettyText(currentDom));
+        return null;
+    };
+};
+
+export const removeParam = key => {
+    const sourceURL = window.location.href;
+    let rtn = sourceURL.split('?')[0];
+    let paramsArr = [];
+    const queryString = sourceURL.indexOf('?') !== -1 ? sourceURL.split('?')[1] : '';
+    if (queryString !== '') {
+        paramsArr = queryString.split('&');
+        for (let i = paramsArr.length - 1; i >= 0; i -= 1) {
+            const paramPair = paramsArr[i];
+            const paramKey = paramPair.split('=');
+            const param = paramKey[0];
+            if (param === key) {
+                paramsArr.splice(i, 1);
+            }
+        }
+        if (paramsArr.length) {
+            rtn = `${rtn}?${paramsArr.join('&')}`;
+        }
+    }
+
+    window.history.pushState({}, window.title, rtn);
+};
+
+export const getPreviousStrat = () => localStorage.getItem('previousStrat');

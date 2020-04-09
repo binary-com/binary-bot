@@ -38,6 +38,7 @@ expectReturnTrue(
             prediction: undefined,
             barrierOffset: undefined,
             secondBarrierOffset: undefined,
+            basis: 'stake',
           });
         }
 

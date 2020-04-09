@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'jquery-ui/ui/widgets/dialog';
-import _Blockly from './blockly';
+import _Blockly, { load } from './blockly';
 import Chart from './Dialogs/Chart';
 import Limits from './Dialogs/Limits';
 import IntegrationsDialog from './Dialogs/IntegrationsDialog';
@@ -40,6 +40,7 @@ import {
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
+import { saveBeforeUnload } from './blockly/utils';
 
 let realityCheckTimeout;
 
@@ -76,6 +77,8 @@ api.events.on('balance', response => {
         const element = elTopMenuBalance;
         element.textContent = `${balance} ${currency}`;
     });
+
+    globalObserver.setState({ balance: b, currency });
 });
 
 const addBalanceForToken = token => {
@@ -89,14 +92,6 @@ const addBalanceForToken = token => {
 const chart = new Chart(api);
 
 const tradingView = new TradingView();
-
-const setBeforeUnload = off => {
-    if (off) {
-        window.onbeforeunload = null;
-    } else {
-        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
-    }
-};
 
 const showRealityCheck = () => {
     $('.blocker').show();
@@ -217,9 +212,7 @@ const updateTokenList = () => {
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${
-                        tokenInfo.accountName
-                    }</div></li></a><div class="separator-line-thin-gray"></div>`
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a><div class="separator-line-thin-gray"></div>`
                 );
             }
         });
@@ -259,10 +252,11 @@ export default class View {
         });
     }
 
+    // eslint-disable-next-line class-methods-use-this
     setFileBrowser() {
         const readFile = (f, dropEvent = {}) => {
             const reader = new FileReader();
-            reader.onload = e => this.blockly.load(e.target.result, dropEvent);
+            reader.onload = e => load(e.target.result, dropEvent);
             reader.readAsText(f);
         };
 
@@ -472,7 +466,7 @@ export default class View {
         $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden')));
 
         $('#logout, #toolbox-logout').click(() => {
-            setBeforeUnload(true);
+            saveBeforeUnload();
             logout();
             hideRealityCheck();
         });
@@ -610,7 +604,7 @@ export default class View {
 
         $('#login, #toolbox-login')
             .bind('click.login', () => {
-                setBeforeUnload(true);
+                saveBeforeUnload();
                 document.location = getOAuthURL();
             })
             .text(translate('Log in'));

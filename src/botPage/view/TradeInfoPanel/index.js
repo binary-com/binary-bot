@@ -50,6 +50,10 @@ class AnimateTrade extends Component {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
             this.setState({ indicatorMessage: this.indicatorMessages.stopped });
         });
+        globalObserver.register('reset_animation', () => {
+            resetAnimation();
+            this.setState({ indicatorMessage: this.indicatorMessages.stopped });
+        });
 
         $('#stopButton').click(() => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');

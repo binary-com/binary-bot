@@ -14,23 +14,21 @@ import {
     removeUnavailableMarkets,
     strategyHasValidTradeTypeCategory,
     cleanBeforeExport,
+    importFile,
+    saveBeforeUnload,
+    removeParam,
+    updateRenamedFields,
+    getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import { createErrorAndEmit } from '../../common/error';
 import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
 import { parseQueryString } from '../../../common/utils/tools';
-
-const setBeforeUnload = off => {
-    if (off) {
-        window.onbeforeunload = null;
-    } else {
-        window.onbeforeunload = () => 'You have some unsaved blocks, do you want to save them before you exit?';
-    }
-};
+import { TrackJSError } from '../logger';
+import config from '../../common/const';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -46,14 +44,16 @@ const disableStrayBlocks = () => {
         }
     });
 };
+
 const disposeBlocksWithLoaders = () => {
     Blockly.mainWorkspace.addChangeListener(ev => {
-        setBeforeUnload();
+        saveBeforeUnload();
         if (ev.type === 'delete' && ev.oldXml.getAttribute('type') === 'loader' && ev.group !== 'undo') {
             deleteBlocksLoadedBy(ev.blockId, ev.group);
         }
     });
 };
+
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
         if (window.trackJs) {
@@ -78,62 +78,12 @@ const marketsWereRemoved = xml => {
     }
     return false;
 };
-export const loadWorkspace = xml => {
-    if (!strategyHasValidTradeTypeCategory(xml)) return;
-    if (marketsWereRemoved(xml)) return;
 
-    Blockly.Events.setGroup('load');
-    Blockly.mainWorkspace.clear();
-
-    Array.from(xml.children).forEach(block => {
-        backwardCompatibility(block);
-    });
-
-    fixArgumentAttribute(xml);
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
-    addLoadersFirst(xml).then(
-        () => {
-            fixCollapsedBlocks();
-            Blockly.Events.setGroup(false);
-            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-        },
-        e => {
-            Blockly.Events.setGroup(false);
-            throw e;
-        }
-    );
-};
-
-export const loadBlocks = (xml, dropEvent = {}) => {
-    if (!strategyHasValidTradeTypeCategory(xml)) return;
-    if (marketsWereRemoved(xml)) return;
-
-    const variables = xml.getElementsByTagName('variables');
-    if (variables.length > 0) {
-        Blockly.Xml.domToVariables(variables[0], Blockly.mainWorkspace);
-    }
-    Blockly.Events.setGroup('load');
-    addLoadersFirst(xml).then(
-        loaders => {
-            const addedBlocks = [
-                ...loaders,
-                ...Array.from(xml.children)
-                    .map(block => addDomAsBlock(block))
-                    .filter(b => b),
-            ];
-            cleanUpOnLoad(addedBlocks, dropEvent);
-            fixCollapsedBlocks();
-            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-        },
-        e => {
-            throw e;
-        }
-    );
-};
 const xmlToStr = xml => {
     const serializer = new XMLSerializer();
     return serializer.serializeToString(xml);
 };
+
 const addBlocklyTranslation = () => {
     $.ajaxPrefilter(options => {
         options.async = true; // eslint-disable-line no-param-reassign
@@ -150,6 +100,7 @@ const addBlocklyTranslation = () => {
         $.getScript(`translations/${lang}.js`, resolve);
     });
 };
+
 const onresize = () => {
     let element = document.getElementById('blocklyArea');
     const blocklyArea = element;
@@ -167,10 +118,12 @@ const onresize = () => {
     blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
     blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
 };
+
 const render = workspace => () => {
     onresize();
     Blockly.svgResize(workspace);
 };
+
 const overrideBlocklyDefaultShape = () => {
     const addDownloadToMenu = block => {
         if (block instanceof Object) {
@@ -197,6 +150,7 @@ const overrideBlocklyDefaultShape = () => {
         }
     });
 };
+
 const repaintDefaultColours = () => {
     Blockly.Msg.LOGIC_HUE = '#DEDEDE';
     Blockly.Msg.LOOPS_HUE = '#DEDEDE';
@@ -218,9 +172,152 @@ const repaintDefaultColours = () => {
     Blockly.Blocks.procedures.HUE = '#DEDEDE';
 };
 
+export const load = (blockStr, dropEvent = {}) => {
+    const unrecognisedMsg = () => translate('Unrecognized file format');
+
+    try {
+        const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
+
+        if (xmlDoc.getElementsByTagName('parsererror').length) {
+            throw new Error();
+        }
+    } catch (err) {
+        const error = new TrackJSError('FileLoad', unrecognisedMsg(), err);
+        globalObserver.emit('Error', error);
+        return;
+    }
+
+    let xml;
+    try {
+        xml = Blockly.Xml.textToDom(blockStr);
+    } catch (e) {
+        const error = new TrackJSError('FileLoad', unrecognisedMsg(), e);
+        globalObserver.emit('Error', error);
+        return;
+    }
+
+    const blocklyXml = xml.querySelectorAll('block');
+
+    if (!blocklyXml.length) {
+        const error = new TrackJSError(
+            'FileLoad',
+            translate('XML file contains unsupported elements. Please check or modify file.')
+        );
+        globalObserver.emit('Error', error);
+        return;
+    }
+
+    if (xml.hasAttribute('is_dbot')) {
+        showDialog({
+            title  : translate('Unsupported strategy'),
+            text   : [translate('Sorry, this strategy can’t be used with Binary Bot. You may only use it with DBot.')],
+            buttons: [
+                {
+                    text : translate('Cancel'),
+                    class: 'button-secondary',
+                    click() {
+                        $(this).dialog('close');
+                        $(this).remove();
+                    },
+                },
+                {
+                    text : translate('Take me to DBot'),
+                    class: 'button-primary',
+                    click() {
+                        window.location.href = 'https://deriv.app/bot';
+                    },
+                },
+            ],
+        })
+            .then(() => {})
+            .catch(() => {});
+        return;
+    }
+
+    blocklyXml.forEach(block => {
+        const blockType = block.getAttribute('type');
+
+        if (!Object.keys(Blockly.Blocks).includes(blockType)) {
+            const error = new TrackJSError(
+                'FileLoad',
+                translate('XML file contains unsupported elements. Please check or modify file.')
+            );
+            globalObserver.emit('Error', error);
+            throw error;
+        }
+    });
+
+    removeParam('strategy');
+
+    try {
+        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
+            loadBlocks(xml, dropEvent);
+        } else {
+            loadWorkspace(xml);
+        }
+    } catch (e) {
+        const error = new TrackJSError('FileLoad', translate('Unable to load the block file'), e);
+        globalObserver.emit('Error', error);
+    }
+};
+
+export const loadWorkspace = xml => {
+    updateRenamedFields(xml);
+    if (!strategyHasValidTradeTypeCategory(xml)) return;
+    if (marketsWereRemoved(xml)) return;
+
+    Blockly.Events.setGroup('load');
+    Blockly.mainWorkspace.clear();
+
+    Array.from(xml.children).forEach(block => {
+        backwardCompatibility(block);
+    });
+
+    fixArgumentAttribute(xml);
+    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    addLoadersFirst(xml).then(
+        () => {
+            fixCollapsedBlocks();
+            Blockly.Events.setGroup(false);
+            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
+        },
+        e => {
+            Blockly.Events.setGroup(false);
+            throw e;
+        }
+    );
+};
+
+export const loadBlocks = (xml, dropEvent = {}) => {
+    updateRenamedFields(xml);
+    if (!strategyHasValidTradeTypeCategory(xml)) return;
+    if (marketsWereRemoved(xml)) return;
+
+    const variables = xml.getElementsByTagName('variables');
+    if (variables.length > 0) {
+        Blockly.Xml.domToVariables(variables[0], Blockly.mainWorkspace);
+    }
+    Blockly.Events.setGroup('load');
+    addLoadersFirst(xml).then(
+        loaders => {
+            const addedBlocks = [
+                ...loaders,
+                ...Array.from(xml.children)
+                    .map(block => addDomAsBlock(block))
+                    .filter(b => b),
+            ];
+            cleanUpOnLoad(addedBlocks, dropEvent);
+            fixCollapsedBlocks();
+            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
+        },
+        e => {
+            throw e;
+        }
+    );
+};
+
 export default class _Blockly {
     constructor() {
-        this.blocksXmlStr = '';
         this.generatedJs = '';
         // eslint-disable-next-line no-underscore-dangle
         Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
@@ -263,23 +360,43 @@ export default class _Blockly {
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
                 addBlocklyTranslation().then(() => {
-                    const defaultStrat = parseQueryString().strategy;
-                    const xmlFile = defaultStrat ? `xml/${defaultStrat}.xml` : 'xml/main.xml';
-
-                    $.get(xmlFile, main => {
+                    const loadDomToWorkspace = dom => {
                         repaintDefaultColours();
                         overrideBlocklyDefaultShape();
-                        this.blocksXmlStr = Blockly.Xml.domToPrettyText(main);
-                        Blockly.Xml.domToWorkspace(main.getElementsByTagName('xml')[0], workspace);
+                        Blockly.Xml.domToWorkspace(dom, workspace);
                         this.zoomOnPlusMinus();
                         disposeBlocksWithLoaders();
                         setTimeout(() => {
-                            setBeforeUnload(true);
+                            saveBeforeUnload();
                             Blockly.mainWorkspace.cleanUp();
                             Blockly.mainWorkspace.clearUndo();
                         }, 0);
-                        resolve();
-                    });
+                    };
+
+                    let defaultStrat = parseQueryString().strategy;
+
+                    if (!defaultStrat || !config.quick_strategies.includes(defaultStrat)) {
+                        const previousStrat = getPreviousStrat();
+
+                        if (previousStrat) {
+                            const previousStratDOM = Blockly.Xml.textToDom(previousStrat);
+                            loadDomToWorkspace(previousStratDOM);
+                            resolve();
+                            return;
+                        }
+
+                        defaultStrat = 'main';
+                    }
+
+                    const xmlFile = `xml/${defaultStrat}.xml`;
+                    const getFile = xml => {
+                        importFile(xml).then(dom => {
+                            loadDomToWorkspace(dom.getElementsByTagName('xml')[0]);
+                            resolve();
+                        });
+                    };
+
+                    getFile(xmlFile);
                 });
             });
         });
@@ -294,10 +411,13 @@ export default class _Blockly {
         }
     }
     resetWorkspace() {
-        Blockly.Events.setGroup('reset');
-        Blockly.mainWorkspace.clear();
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(this.blocksXmlStr), Blockly.mainWorkspace);
-        Blockly.Events.setGroup(false);
+        importFile('xml/main.xml').then(dom => {
+            Blockly.Events.setGroup('reset');
+            Blockly.mainWorkspace.clear();
+            Blockly.Xml.domToWorkspace(dom.getElementsByTagName('xml')[0], Blockly.mainWorkspace);
+            Blockly.Events.setGroup(false);
+            this.cleanUp();
+        });
     }
     /* eslint-disable class-methods-use-this */
     cleanUp() {
@@ -318,61 +438,10 @@ export default class _Blockly {
         Blockly.mainWorkspace.resizeContents();
     }
     /* eslint-disable class-methods-use-this */
-    load(blockStr = '', dropEvent = {}) {
-        const unrecognisedMsg = () => translate('Unrecognized file format');
-
-        try {
-            const xmlDoc = new DOMParser().parseFromString(blockStr, 'application/xml');
-
-            if (xmlDoc.getElementsByTagName('parsererror').length) {
-                throw new Error();
-            }
-        } catch (err) {
-            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
-        }
-
-        let xml;
-        try {
-            xml = Blockly.Xml.textToDom(blockStr);
-        } catch (e) {
-            throw createErrorAndEmit('FileLoad', unrecognisedMsg());
-        }
-
-        const blocklyXml = xml.querySelectorAll('block');
-
-        if (!blocklyXml.length) {
-            throw createErrorAndEmit(
-                'FileLoad',
-                'XML file contains unsupported elements. Please check or modify file.'
-            );
-        }
-
-        blocklyXml.forEach(block => {
-            const blockType = block.getAttribute('type');
-
-            if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-                throw createErrorAndEmit(
-                    'FileLoad',
-                    'XML file contains unsupported elements. Please check or modify file'
-                );
-            }
-        });
-
-        try {
-            if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-                loadBlocks(xml, dropEvent);
-            } else {
-                loadWorkspace(xml);
-            }
-        } catch (e) {
-            throw createErrorAndEmit('FileLoad', translate('Unable to load the block file'));
-        }
-    }
-    /* eslint-disable class-methods-use-this */
     save(arg) {
         const { filename, collection } = arg;
 
-        setBeforeUnload(true);
+        saveBeforeUnload();
 
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);

@@ -1,15 +1,12 @@
 import {
     SmartChart,
     setSmartChartsPublicPath,
-    ChartTypes,
     StudyLegend,
     Views,
-    Timeperiod,
     DrawTools,
     Share,
-    CrosshairToggle,
-    ChartSize,
-} from '@binary-com/smartcharts';
+    ChartMode,
+} from 'smartcharts-beta';
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
@@ -41,13 +38,20 @@ class ChartContent extends PureComponent {
         this.ticksService = new ChartTicksService(api);
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
-        this.state = { symbol: 'R_100', barrierType: undefined, high: undefined, low: undefined };
+        this.state = {
+            chartType  : 'mountain',
+            granularity: 0,
+            symbol     : 'R_100',
+            barrierType: undefined,
+            high       : undefined,
+            low        : undefined,
+        };
         this.shouldBarrierDisplay = false;
     }
 
     componentDidMount() {
         globalObserver.register('bot.init', s => {
-            if (this.symbol !== s) {
+            if (s && this.state.symbol !== s) {
                 this.setState({ symbol: s });
             }
         });
@@ -114,14 +118,14 @@ class ChartContent extends PureComponent {
 
     renderControls = () => (
         <React.Fragment>
-            <CrosshairToggle />
-            <ChartTypes />
-            <Timeperiod />
-            <StudyLegend />
+            <ChartMode
+                onChartType={chartType => this.setState({ chartType })}
+                onGranularity={granularity => this.setState({ granularity })}
+            />
+            <StudyLegend searchInputClassName="data-hj-whitelist" />
             <DrawTools />
-            <Views />
+            <Views searchInputClassName="data-hj-whitelist" />
             <Share />
-            <ChartSize />
         </React.Fragment>
     );
 
@@ -144,16 +148,18 @@ class ChartContent extends PureComponent {
 
         return (
             <SmartChart
-                id={this.chartId}
-                symbol={this.state.symbol}
-                isMobile={true}
-                topWidgets={this.renderTopWidgets}
-                chartControlsWidgets={this.renderControls}
-                requestAPI={this.requestAPI.bind(this)}
-                requestSubscribe={this.requestSubscribe.bind(this)}
-                requestForget={this.requestForget.bind(this)}
                 barriers={barriers}
+                chartControlsWidgets={this.renderControls}
+                chartType={this.state.chartType}
+                granularity={this.state.granularity}
+                id={this.chartId}
+                isMobile={false}
+                requestAPI={this.requestAPI.bind(this)}
+                requestForget={this.requestForget.bind(this)}
+                requestSubscribe={this.requestSubscribe.bind(this)}
                 settings={this.settings}
+                symbol={this.state.symbol}
+                topWidgets={this.renderTopWidgets}
             />
         );
     }

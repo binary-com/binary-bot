@@ -8,7 +8,7 @@ export const marketDropdown = block => {
     block
         .appendDummyInput('MARKETDEFINITION')
         .appendField(`${translate('Market')}:`)
-        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.MARKET_LIST), 'MARKET_LIST')
+        .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.MARKET_LIST()), 'MARKET_LIST')
         .appendField('>')
         .appendField(new Blockly.FieldDropdown(fieldGeneratorMapping.SUBMARKET_LIST(block)), 'SUBMARKET_LIST')
         .appendField('>')
@@ -28,10 +28,10 @@ export const contractTypes = block => {
     if (!block.getInput('CONTRACT_TYPE')) {
         const getContractTypes = () => {
             const tradeType = block.getFieldValue('TRADETYPE_LIST');
-            if (tradeType) {
+            if (tradeType && tradeType !== 'na') {
                 return [[translate('Both'), 'both'], ...oppositesToDropdown(config.opposites[tradeType.toUpperCase()])];
             }
-            return [['', '']];
+            return [[translate('Not available'), 'na']];
         };
         block
             .appendDummyInput('CONTRACT_TYPE')
@@ -61,11 +61,17 @@ export const duration = block => {
 
 export const payout = block => {
     if (!block.getInput('AMOUNT')) {
-        block
-            .appendValueInput('AMOUNT')
-            .setCheck('Number')
-            .appendField(`${translate('Stake')}:`)
-            .appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST');
+        const amountInput = block.appendValueInput('AMOUNT');
+
+        amountInput.setCheck('Number');
+
+        if (block.type === 'tradeOptions_payout') {
+            amountInput.appendField(`${translate('Payout')}:`);
+        } else {
+            amountInput.appendField(`${translate('Stake')}:`);
+        }
+
+        amountInput.appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST');
     }
 };
 

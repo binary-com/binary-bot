@@ -1,6 +1,7 @@
 import { translate } from '../../../common/i18n';
-import { tradeOptionToProposal, doUntilDone, getUUID } from '../tools';
+import { tradeOptionToProposal, doUntilDone } from '../tools';
 import { proposalsReady, clearProposals } from './state/actions';
+import { TrackJSError } from '../../view/logger';
 
 export default Engine =>
     class Proposal extends Engine {
@@ -22,7 +23,8 @@ export default Engine =>
             this.data.get('proposals').forEach(proposal => {
                 if (proposal.contractType === contractType) {
                     if (proposal.error) {
-                        throw Error(proposal.error.error.error.message);
+                        const { error } = proposal.error;
+                        throw new TrackJSError(error.error.code, error.error.message, error);
                     } else {
                         toBuy = proposal;
                     }
@@ -30,7 +32,11 @@ export default Engine =>
             });
 
             if (!toBuy) {
-                throw Error(translate('Selected proposal does not exist'));
+                throw new TrackJSError(
+                    'CustomInvalidProposal',
+                    translate('Selected proposal does not exist'),
+                    Array.from(this.data.get('proposals')).map(proposal => proposal[1])
+                );
             }
 
             return {
@@ -46,20 +52,12 @@ export default Engine =>
             this.store.dispatch(clearProposals());
         }
         requestProposals() {
-            this.proposalTemplates.map(proposal =>
-                doUntilDone(() =>
-                    this.api
-                        .subscribeToPriceForContractProposal({
-                            ...proposal,
-                            passthrough: {
-                                contractType: proposal.contract_type,
-                                uuid        : getUUID(),
-                            },
-                        })
-                        // eslint-disable-next-line consistent-return
-                        .catch(e => {
+            Promise.all(
+                this.proposalTemplates.map(proposal =>
+                    doUntilDone(() =>
+                        this.api.subscribeToPriceForContractProposal(proposal).catch(e => {
                             if (e && e.name === 'RateLimit') {
-                                return Promise.reject(e);
+                                throw e;
                             }
 
                             const errorCode = e.error && e.error.error && e.error.error.code;
@@ -68,18 +66,22 @@ export default Engine =>
                                 const { uuid } = e.error.echo_req.passthrough;
 
                                 if (!this.data.hasIn(['forgetProposals', uuid])) {
+                                    // Add to proposals map with error. Will later be shown to user, see selectProposal.
                                     this.data = this.data.setIn(['proposals', uuid], {
                                         ...proposal,
-                                        contractType: proposal.contract_type,
-                                        error       : e,
+                                        ...proposal.passthrough,
+                                        error: e,
                                     });
                                 }
-                            } else {
-                                this.$scope.observer.emit('Error', e);
+
+                                return null;
                             }
+
+                            throw e;
                         })
+                    )
                 )
-            );
+            ).catch(e => this.$scope.observer.emit('Error', e));
         }
         observeProposals() {
             this.listen('proposal', r => {
@@ -109,15 +111,18 @@ export default Engine =>
             return Promise.all(
                 proposals.map(proposal => {
                     const { uuid: id } = proposal;
-                    const removeProposal = uuid => {
-                        this.data = this.data.deleteIn(['forgetProposals', uuid]);
+                    const removeProposal = () => {
+                        this.data = this.data.deleteIn(['forgetProposals', id]);
                     };
 
+                    this.data = this.data.setIn(['forgetProposals', id], true);
+
                     if (proposal.error) {
-                        removeProposal(id);
+                        removeProposal();
                         return Promise.resolve();
                     }
-                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => removeProposal(id));
+
+                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => removeProposal());
                 })
             );
         }
@@ -125,7 +130,13 @@ export default Engine =>
             const proposals = this.data.get('proposals');
 
             if (proposals && proposals.size === this.proposalTemplates.length) {
-                this.startPromise.then(() => this.store.dispatch(proposalsReady()));
+                const isSameWithTemplate = this.proposalTemplates.every(p =>
+                    this.data.hasIn(['proposals', p.passthrough.uuid])
+                );
+
+                if (isSameWithTemplate) {
+                    this.startPromise.then(() => this.store.dispatch(proposalsReady()));
+                }
             }
         }
         isNewTradeOption(tradeOption) {

@@ -46,10 +46,10 @@ describe('i18n is able to', () => {
         });
     });
 
-    describe('translate a text (id)', () => {
-        beforeAll(() => init('id'));
+    describe('translate a text (de)', () => {
+        beforeAll(() => init('de'));
         it('Find translation of "Logic"', () => {
-            expect(translate('Logic')).to.be.equal('Logika');
+            expect(translate('Logic')).to.be.equal('Logik');
         });
     });
 
@@ -69,11 +69,11 @@ describe('i18n is able to', () => {
     });
 
     describe('translate an xml file (id)', () => {
-        const expected = ['Logika', 'Static'];
+        const expected = ['Logik', 'Static'];
         const result = [];
 
         beforeAll(() => {
-            init('id');
+            init('de');
             const translated = translateXml(dom);
             const elements = Array.from(translated.getElementsByTagName('category'));
             elements.forEach(el => result.push(el.getAttribute('name')));
