@@ -67,11 +67,11 @@ const notifyError = error => {
 
     notify({ className: 'error', message, position: 'right' });
 
-    if (trackJs) {
+    if (trackJs && isProduction()) {
         trackJs.console.log(error);
-        if (isProduction()) {
-            trackJs.track(code || error.name);
-        }
+        trackJs.track(code || error.name);
+    } else {
+        console.log(error);
     }
 };
 
