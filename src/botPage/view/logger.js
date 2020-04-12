@@ -70,8 +70,6 @@ const notifyError = error => {
     if (trackJs && isProduction()) {
         trackJs.console.log(error);
         trackJs.track(code || error.name);
-    } else {
-        console.log(error);
     }
 };
 
