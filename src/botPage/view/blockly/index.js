@@ -26,7 +26,7 @@ import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
-import { parseQueryString } from '../../../common/utils/tools';
+import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import config from '../../common/const';
 
@@ -56,7 +56,7 @@ const disposeBlocksWithLoaders = () => {
 
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        if (window.trackJs) {
+        if (window.trackJs && isProduction()) {
             trackJs.track('Invalid financial market');
         }
         showDialog({

@@ -1,5 +1,6 @@
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
+import { isProduction } from '../../common/utils/tools';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
@@ -66,7 +67,7 @@ const notifyError = error => {
 
     notify({ className: 'error', message, position: 'right' });
 
-    if (trackJs) {
+    if (trackJs && isProduction()) {
         trackJs.console.log(error);
         trackJs.track(code || error.name);
     }
