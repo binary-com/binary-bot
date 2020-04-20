@@ -89,8 +89,6 @@ const addBalanceForToken = token => {
     });
 };
 
-const chart = new Chart(api);
-
 const tradingView = new TradingView();
 
 const showRealityCheck = () => {
@@ -212,7 +210,9 @@ const updateTokenList = () => {
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a><div class="separator-line-thin-gray"></div>`
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${
+                        tokenInfo.accountName
+                    }</div></li></a><div class="separator-line-thin-gray"></div>`
                 );
             }
         });
@@ -419,6 +419,7 @@ export default class View {
         });
 
         $('#chartButton').click(() => {
+            const chart = new Chart(api);
             chart.open();
         });
 
