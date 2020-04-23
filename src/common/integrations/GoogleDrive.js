@@ -1,9 +1,10 @@
 /* global google,gapi */
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
-import { translate, trackAndEmitError } from '../utils/tools';
+import { translate, isProduction } from '../utils/tools';
 import config from '../../botPage/common/const';
 import { load } from '../../botPage/view/blockly';
+import { TrackJSError } from '../../botPage/view/logger';
 
 class GoogleDrive {
     constructor() {
@@ -23,7 +24,7 @@ class GoogleDrive {
                     .init({
                         apiKey       : this.apiKey,
                         clientId     : this.clientId,
-                        scope        : 'https://www.googleapis.com/auth/drive',
+                        scope        : 'https://www.googleapis.com/auth/drive.file',
                         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
                     })
                     .then(
@@ -41,7 +42,7 @@ class GoogleDrive {
                                 .removeClass('invisible');
                         },
                         error => {
-                            if (window.trackJs) {
+                            if (window.trackJs && isProduction()) {
                                 trackJs.track(
                                     `${translate(
                                         'There was an error initialising Google Drive'
@@ -52,7 +53,7 @@ class GoogleDrive {
                     );
             },
             onerror: error => {
-                if (window.trackJs) {
+                if (window.trackJs && isProduction()) {
                     trackJs.track(
                         `${translate('There was an error loading Google Drive libraries')} - Error: ${JSON.stringify(
                             error
@@ -136,18 +137,24 @@ class GoogleDrive {
                             try {
                                 load(response.body);
                                 resolve();
-                            } catch (error) {
-                                trackAndEmitError(translate('Unrecognized file format'), error);
-                                reject(error);
+                            } catch (e) {
+                                const error = new TrackJSError('GoogleDrive', translate('Unrecognized file format'), e);
+                                globalObserver.emit('Error', error);
+                                reject(e);
                             }
                         })
-                        .catch(error => {
+                        .catch(e => {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
 
-                            trackAndEmitError(translate('There was an error retrieving data from Google Drive'), error);
-                            reject(error);
+                            const error = new TrackJSError(
+                                'GoogleDrive',
+                                translate('There was an error retrieving data from Google Drive'),
+                                e
+                            );
+                            globalObserver.emit('Error', error);
+                            reject(e);
                         });
                 } else if (data.action === google.picker.Action.CANCEL) {
                     reject();
@@ -178,13 +185,18 @@ class GoogleDrive {
                                 .build()
                                 .setVisible(true);
                         })
-                        .catch(error => {
+                        .catch(e => {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
 
-                            trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
-                            reject(error);
+                            const error = new TrackJSError(
+                                'GoogleDrive',
+                                translate('There was an error listing files from Google Drive'),
+                                e
+                            );
+                            globalObserver.emit('Error', error);
+                            reject(e);
                         });
                 })
                 .catch(error => reject(error));
@@ -215,17 +227,18 @@ class GoogleDrive {
                                 },
                             })
                             .then(() => resolve())
-                            .catch(error => {
+                            .catch(e => {
                                 if (error.status && error.status === 401) {
                                     this.signOut();
                                 }
 
-                                trackAndEmitError(
+                                const error = new TrackJSError(
+                                    'GoogleDrive',
                                     translate('There was an error retrieving files from Google Drive'),
-                                    error
+                                    e
                                 );
-
-                                reject(error);
+                                globalObserver.emit('Error', error);
+                                reject(e);
                             });
                     });
                 })
@@ -264,7 +277,12 @@ class GoogleDrive {
                                 this.signOut();
                             }
 
-                            trackAndEmitError(translate('There was an error processing your request'), xhr.status);
+                            const error = new TrackJSError(
+                                'GoogleDrive',
+                                translate('There was an error processing your request'),
+                                xhr
+                            );
+                            globalObserver.emit('Error', error);
                             reject();
                         }
                     };

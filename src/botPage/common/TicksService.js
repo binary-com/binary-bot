@@ -56,9 +56,11 @@ export default class TicksService {
         return new Promise(resolve => {
             this.api.getActiveSymbolsBrief().then(r => {
                 const { active_symbols: symbols } = r;
-                this.pipSizes = symbols
-                    .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
-                    .toObject();
+                this.pipSizes = symbols.reduce((accumulator, currSymbol) => {
+                    // eslint-disable-next-line no-param-reassign
+                    accumulator[currSymbol.symbol] = `${currSymbol.pip}`.length - 2;
+                    return accumulator;
+                }, {});
                 resolve(this.pipSizes);
             });
         });
@@ -173,7 +175,10 @@ export default class TicksService {
     }
     observe() {
         this.api.events.on('tick', r => {
-            const { tick, tick: { symbol, id } } = r;
+            const {
+                tick,
+                tick: { symbol, id },
+            } = r;
 
             if (this.ticks.has(symbol)) {
                 this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
@@ -182,7 +187,10 @@ export default class TicksService {
         });
 
         this.api.events.on('ohlc', r => {
-            const { ohlc, ohlc: { symbol, granularity, id } } = r;
+            const {
+                ohlc,
+                ohlc: { symbol, granularity, id },
+            } = r;
 
             if (this.candles.hasIn([symbol, Number(granularity)])) {
                 this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);

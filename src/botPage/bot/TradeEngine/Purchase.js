@@ -3,6 +3,7 @@ import { recoverFromError, doUntilDone } from '../tools';
 import { contractStatus, info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
+import GTM from '../../../common/gtm';
 
 let delayIndex = 0;
 
@@ -17,6 +18,7 @@ export default Engine =>
             const { currency, proposal } = this.selectProposal(contractType);
             const onSuccess = r => {
                 const { buy } = r;
+                GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
 
                 contractStatus({
                     id  : 'contract.purchase_recieved',

@@ -1,6 +1,6 @@
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
-import { translate } from '../../common/i18n';
+import { isProduction } from '../../common/utils/tools';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
@@ -15,88 +15,66 @@ const log = (type, ...args) => {
     globalObserver.emit('bot.notify', { type, timestamp, message: args.join(':') });
 };
 
-const isNewMessage = (shown = []) => msg => {
-    const timestamp = parseInt(new Date().getTime() / 1000);
-
-    const shownMsg = shown.find(e => e.msg === msg);
-    if (shownMsg) {
-        const oldTimestamp = shownMsg.timestamp;
-
-        shownMsg.timestamp = timestamp;
-        return timestamp - oldTimestamp >= 1;
-    }
-
-    shown.push({ msg, timestamp });
-    return true;
-};
-
-const isNewNotification = isNewMessage();
-
-const isNewError = isNewMessage();
-
 const notify = ({ className, message, position = 'left', sound = 'silent' }) => {
-    if (message && (position === 'left' || isNewNotification(message))) {
-        log(className, message);
+    log(className, message);
 
-        $.notify(message, { position: `bottom ${position}`, className });
-        if (sound !== 'silent') {
-            $(`#${sound}`)
-                .get(0)
-                .play();
-        }
+    $.notify(message, { position: `bottom ${position}`, className });
+    if (sound !== 'silent') {
+        $(`#${sound}`)
+            .get(0)
+            .play();
     }
 };
+
+export class TrackJSError extends Error {
+    constructor(type, message, optCustomData) {
+        super(message);
+        this.name = type;
+        this.code = type;
+        this.data = optCustomData;
+    }
+}
 
 const notifyError = error => {
     if (!error) {
         return;
     }
 
-    let { message } = error;
-    let errorCode = error.name;
+    let message;
+    let code;
 
-    // It's a dirty job, but somebody's gotta do it.
+    if (typeof error === 'string') {
+        code = 'Unknown';
+        message = error;
+    } else if (error.error) {
+        if (error.error.error) {
+            ({ message } = error.error.error);
+            ({ code } = error.error.error);
+        } else {
+            ({ message } = error.error);
+            ({ code } = error.error);
+        }
+    } else {
+        ({ message } = error);
+        ({ code } = error);
+    }
+
+    // Exceptions:
     if (message === 'Cannot read property \'open_time\' of undefined') {
+        // SmartCharts error workaround, don't log nor show.
         return;
     }
 
-    if (error.error) {
-        ({ message } = error.error);
-        ({ errorCode } = error.error);
-        if (error.error.error) {
-            ({ message } = error.error.error);
-            ({ errorCode } = error.error.error);
-        }
-    }
-
-    if (errorCode === 'DisconnectError') {
-        message = translate('Connection lost before receiving the response from the server');
-    }
-
-    const errorWithCode = new Error(error);
-    errorWithCode.message = errorCode ? `${errorCode}: ${message}` : message;
-
-    if (trackJs && isNewError(message)) {
-        trackJs.track(errorWithCode);
-    }
-
     notify({ className: 'error', message, position: 'right' });
+
+    if (trackJs && isProduction()) {
+        trackJs.console.log(error);
+        trackJs.track(code || error.name);
+    }
 };
 
 const waitForNotifications = () => {
     const notifList = ['success', 'info', 'warn', 'error'];
-
-    const logList = [
-        'log.bot.start',
-        'log.bot.login',
-        'log.bot.proposal',
-        'log.purchase.start',
-        'log.trade.purchase',
-        'log.trade.update',
-        'log.trade.finish',
-    ];
-
-    logList.forEach(event => globalObserver.register(event, d => log('info', event, d)));
 
     globalObserver.register('Notify', notify);
 

@@ -18,15 +18,17 @@ import {
     saveBeforeUnload,
     removeParam,
     updateRenamedFields,
+    getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import { createErrorAndEmit } from '../../common/error';
 import { translate, xml as translateXml } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
-import { parseQueryString } from '../../../common/utils/tools';
+import { parseQueryString, isProduction } from '../../../common/utils/tools';
+import { TrackJSError } from '../logger';
+import config from '../../common/const';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -54,7 +56,7 @@ const disposeBlocksWithLoaders = () => {
 
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        if (window.trackJs) {
+        if (window.trackJs && isProduction()) {
             trackJs.track('Invalid financial market');
         }
         showDialog({
@@ -180,20 +182,29 @@ export const load = (blockStr, dropEvent = {}) => {
             throw new Error();
         }
     } catch (err) {
-        throw createErrorAndEmit('FileLoad', unrecognisedMsg());
+        const error = new TrackJSError('FileLoad', unrecognisedMsg(), err);
+        globalObserver.emit('Error', error);
+        return;
     }
 
     let xml;
     try {
         xml = Blockly.Xml.textToDom(blockStr);
     } catch (e) {
-        throw createErrorAndEmit('FileLoad', unrecognisedMsg());
+        const error = new TrackJSError('FileLoad', unrecognisedMsg(), e);
+        globalObserver.emit('Error', error);
+        return;
     }
 
     const blocklyXml = xml.querySelectorAll('block');
 
     if (!blocklyXml.length) {
-        throw createErrorAndEmit('FileLoad', 'XML file contains unsupported elements. Please check or modify file.');
+        const error = new TrackJSError(
+            'FileLoad',
+            translate('XML file contains unsupported elements. Please check or modify file.')
+        );
+        globalObserver.emit('Error', error);
+        return;
     }
 
     if (xml.hasAttribute('is_dbot')) {
@@ -227,7 +238,12 @@ export const load = (blockStr, dropEvent = {}) => {
         const blockType = block.getAttribute('type');
 
         if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-            throw createErrorAndEmit('FileLoad', 'XML file contains unsupported elements. Please check or modify file');
+            const error = new TrackJSError(
+                'FileLoad',
+                translate('XML file contains unsupported elements. Please check or modify file.')
+            );
+            globalObserver.emit('Error', error);
+            throw error;
         }
     });
 
@@ -240,7 +256,8 @@ export const load = (blockStr, dropEvent = {}) => {
             loadWorkspace(xml);
         }
     } catch (e) {
-        throw createErrorAndEmit('FileLoad', translate('Unable to load the block file'));
+        const error = new TrackJSError('FileLoad', translate('Unable to load the block file'), e);
+        globalObserver.emit('Error', error);
     }
 };
 
@@ -343,9 +360,6 @@ export default class _Blockly {
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
                 addBlocklyTranslation().then(() => {
-                    const defaultStrat = parseQueryString().strategy;
-                    const xmlFile = `xml/${defaultStrat}.xml`;
-
                     const loadDomToWorkspace = dom => {
                         repaintDefaultColours();
                         overrideBlocklyDefaultShape();
@@ -359,29 +373,27 @@ export default class _Blockly {
                         }, 0);
                     };
 
-                    const getFile = xml => {
-                        importFile(xml)
-                            .then(dom => {
-                                loadDomToWorkspace(dom.getElementsByTagName('xml')[0]);
-                                resolve();
-                            })
-                            .catch(text => {
-                                if (text) {
-                                    const previousStrat = Blockly.Xml.textToDom(text);
-                                    loadDomToWorkspace(previousStrat);
-                                    resolve();
-                                } else {
-                                    getFile('xml/main.xml');
-                                }
+                    let defaultStrat = parseQueryString().strategy;
 
-                                if (defaultStrat) {
-                                    globalObserver.emit('Notify', {
-                                        className: 'warn',
-                                        message  : translate('The strategy you tried to load is invalid'),
-                                        position : 'right',
-                                    });
-                                }
-                            });
+                    if (!defaultStrat || !config.quick_strategies.includes(defaultStrat)) {
+                        const previousStrat = getPreviousStrat();
+
+                        if (previousStrat) {
+                            const previousStratDOM = Blockly.Xml.textToDom(previousStrat);
+                            loadDomToWorkspace(previousStratDOM);
+                            resolve();
+                            return;
+                        }
+
+                        defaultStrat = 'main';
+                    }
+
+                    const xmlFile = `xml/${defaultStrat}.xml`;
+                    const getFile = xml => {
+                        importFile(xml).then(dom => {
+                            loadDomToWorkspace(dom.getElementsByTagName('xml')[0]);
+                            resolve();
+                        });
                     };
 
                     getFile(xmlFile);

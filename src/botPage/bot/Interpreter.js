@@ -1,17 +1,32 @@
+import clone from 'clone';
 import JSInterpreter from 'js-interpreter';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
+
+/* eslint-disable func-names, no-underscore-dangle */
+JSInterpreter.prototype.takeStateSnapshot = function() {
+    const newStateStack = clone(this.stateStack, undefined, undefined, undefined, true);
+    return newStateStack;
+};
+
+JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
+    this.stateStack = clone(snapshot, undefined, undefined, undefined, true);
+    this.globalObject = this.stateStack[0].scope.object;
+    this.initFunc_(this, this.globalObject);
+};
+/* eslint-enable */
 
 const unrecoverableErrors = [
     'InsufficientBalance',
     'CustomLimitsReached',
     'OfferingsValidationError',
     'InvalidCurrency',
-    'ContractBuyValidationError',
     'NotDefaultCurrency',
     'PleaseAuthenticate',
     'FinancialAssessmentRequired',
+    'AuthorizationRequired',
+    'InvalidToken',
 ];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
@@ -19,7 +34,7 @@ const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
-    const stopErrors = ['SellNotAvailable'];
+    const stopErrors = ['SellNotAvailableCustom'];
     if (stopErrors.includes(errorName) && botInitialized(bot)) {
         return true;
     }
@@ -54,9 +69,9 @@ export default class Interpreter {
 
             const pseudoBotIf = interpreter.nativeToPseudo(BotIf);
 
-            Object.entries(ticksIf).forEach(([name, f]) =>
-                interpreter.setProperty(pseudoBotIf, name, this.createAsync(interpreter, f))
-            );
+            Object.entries(ticksIf).forEach(([name, f]) => {
+                interpreter.setProperty(pseudoBotIf, name, this.createAsync(interpreter, f));
+            });
 
             interpreter.setProperty(
                 pseudoBotIf,
@@ -148,7 +163,14 @@ export default class Interpreter {
         this.loop();
     }
     terminateSession() {
-        this.$scope.api.disconnect();
+        const { socket } = this.$scope.api;
+        if (socket.readyState === 0) {
+            socket.addEventListener('open', () => {
+                this.$scope.api.disconnect();
+            });
+        } else if (socket.readyState === 1) {
+            this.$scope.api.disconnect();
+        }
         this.stopped = true;
 
         globalObserver.emit('bot.stop');
@@ -167,16 +189,31 @@ export default class Interpreter {
         }
     }
     createAsync(interpreter, func) {
-        return interpreter.createAsyncFunction((...args) => {
+        const asyncFunc = (...args) => {
             const callback = args.pop();
 
-            func(...args.map(arg => interpreter.pseudoToNative(arg)))
+            // Workaround for unknown number of args
+            const reversedArgs = args.slice().reverse();
+            const firsDefinedArgIdx = reversedArgs.findIndex(arg => arg !== undefined);
+
+            // Remove extra undefined args from end of the args
+            const functionArgs = firsDefinedArgIdx < 0 ? [] : reversedArgs.slice(firsDefinedArgIdx).reverse();
+            // End of workaround
+
+            func(...functionArgs.map(arg => interpreter.pseudoToNative(arg)))
                 .then(rv => {
                     callback(interpreter.nativeToPseudo(rv));
                     this.loop();
                 })
                 .catch(e => this.$scope.observer.emit('Error', e));
-        });
+        };
+
+        // TODO: This is a workaround, create issue on original repo, once fixed
+        // remove this. We don't know how many args are going to be passed, so we
+        // assume a max of 100.
+        const MAX_ACCEPTABLE_FUNC_ARGS = 100;
+        Object.defineProperty(asyncFunc, 'length', { value: MAX_ACCEPTABLE_FUNC_ARGS + 1 });
+        return interpreter.createAsyncFunction(asyncFunc);
     }
     hasStarted() {
         return !this.stopped;

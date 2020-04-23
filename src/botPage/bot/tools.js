@@ -15,6 +15,10 @@ export const tradeOptionToProposal = tradeOption =>
             duration     : tradeOption.duration,
             amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
             contract_type: type,
+            passthrough  : {
+                contractType: type,
+                uuid        : getUUID(),
+            },
         };
         if (tradeOption.prediction !== undefined) {
             proposal.selected_tick = tradeOption.prediction;
@@ -95,12 +99,29 @@ const getBackoffDelay = (error, delayIndex) => {
     return linearIncrease * 1000;
 };
 
-export const shouldThrowError = (e, types = [], delayIndex = 0) =>
-    e &&
-    (!types
-        .concat(['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'])
-        .includes(e.name) ||
-        (e.name !== 'DisconnectError' && delayIndex > maxRetries));
+export const shouldThrowError = (error, types = [], delayIndex = 0) => {
+    if (!error) {
+        return false;
+    }
+
+    const defaultErrors = ['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'];
+    const authErrors = ['InvalidToken', 'AuthorizationRequired'];
+    const errors = types.concat(defaultErrors);
+
+    if (authErrors.includes(error.name)) {
+        // If auth error, reload page.
+        window.location.reload();
+        return true;
+    } else if (!errors.includes(error.name)) {
+        // If error is unrecoverable, throw error.
+        return true;
+    } else if (error.name !== 'DisconnectError' && delayIndex > maxRetries) {
+        // If exceeded maxRetries, throw error.
+        return true;
+    }
+
+    return false;
+};
 
 export const recoverFromError = (f, r, types, delayIndex) =>
     new Promise((resolve, reject) => {
