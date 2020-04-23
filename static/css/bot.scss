@@ -218,6 +218,8 @@ label {
 }
 
 .dbot-banner {
+    -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: antialiased;
     align-items: center;
     display: flex;
     float: left;
@@ -230,16 +232,17 @@ label {
     }
     &__ad {
         color: #fff;
-        margin-right: 32px;
+        margin-right: 11px;
+        display: flex;
+        justify-content: center;
 
         &-title {
+            font-weight: normal;
             font-size: 14px;
-            line-height: 1.43;
         }
         &-subtitle {
             font-size: 16px;
             font-weight: bold;
-            line-height: 1.5;
         }
     }
     &__button {
