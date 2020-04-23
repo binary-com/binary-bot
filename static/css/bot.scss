@@ -1,5 +1,6 @@
 @import 'color';
 @import 'chart';
+@import 'dbot-banner';
 @import 'fontello';
 @import 'panel';
 @import 'blockly-toolbox';
@@ -215,71 +216,6 @@ label {
 
 .notifyjs-corner {
     z-index: 10001 !important;
-}
-
-.dbot-banner {
-    -webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: antialiased;
-    align-items: center;
-    display: flex;
-    float: left;
-    height: calc(100% - 20px);
-    margin: 10px 0;
-
-    &__icon {
-        margin-right: 8px;
-        margin-left: 32px;
-    }
-    &__ad {
-        color: #fff;
-        margin-right: 11px;
-        display: flex;
-        justify-content: center;
-
-        &-title {
-            font-weight: normal;
-            font-size: 14px;
-        }
-        &-subtitle {
-            font-size: 16px;
-            font-weight: bold;
-        }
-    }
-    &__button {
-        font-size: 14px;
-        background-color: #ff444f;
-        font-weight: bold;
-        width: 120px;
-        vertical-align: middle;
-        align-items: center;
-        justify-content: center;
-        touch-action: manipulation;
-        cursor: pointer;
-        white-space: nowrap;
-        padding: 0 1.6rem;
-        display: inline-flex;
-        border: 0;
-        height: 32px;
-        border-radius: 4px;
-        transition: all .2s cubic-bezier(.65,.05,.36,1);
-        outline: 0;
-        position: relative;
-        text-decoration: none;
-        text-transform: none!important;
-
-        &:hover {
-            background: #eb3e48;
-        }
-
-        &:focus {
-            outline: none;
-        }
-    }
-    &__separator {
-        width: 2px;
-        height: 100%;
-        background-color: #17212c;
-    }
 }
 
 @media only screen and (max-width: 600px) {
