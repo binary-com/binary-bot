@@ -217,17 +217,3 @@ label {
 .notifyjs-corner {
     z-index: 10001 !important;
 }
-
-@media only screen and (max-width: 600px) {
-    .dbot-banner {
-        display: none;
-    }
-}
-
-@media only screen and (max-width: 769px) {
-    .dbot-banner {
-        &__separator {
-            display: none;
-        }
-    }
-}
