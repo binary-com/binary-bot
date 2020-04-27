@@ -43,6 +43,7 @@ import GTM from '../../common/gtm';
 import { saveBeforeUnload } from './blockly/utils';
 
 let realityCheckTimeout;
+let chart;
 
 const api = generateLiveApiInstance();
 
@@ -419,7 +420,10 @@ export default class View {
         });
 
         $('#chartButton').click(() => {
-            const chart = new Chart(api);
+            if (!chart) {
+                chart = new Chart(api);
+            }
+
             chart.open();
         });
 
