@@ -28,6 +28,7 @@ import {
     addTokenIfValid,
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
+import isEuCountry, { showHideEuElements } from '../../common/footer-checks';
 import googleDrive from '../../common/integrations/GoogleDrive';
 import { getLanguage } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
@@ -212,7 +213,9 @@ const updateTokenList = () => {
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a><div class="separator-line-thin-gray"></div>`
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${
+                        tokenInfo.accountName
+                    }</div></li></a><div class="separator-line-thin-gray"></div>`
                 );
             }
         });
@@ -724,6 +727,7 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
+    isEuCountry().then(isEu => showHideEuElements(isEu));
     ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
     ReactDOM.render(

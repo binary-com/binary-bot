@@ -5,17 +5,13 @@ import Logo from './react-components/logo.jsx';
 import Footer from './react-components/footer.jsx';
 import { oauthLogin } from '../common/appId';
 import '../common/binary-ui/dropdown';
-import isEuCountry from '../common/footer-checks';
+import isEuCountry, { showHideEuElements } from '../common/footer-checks';
 import GTM from '../common/gtm';
 import { load as loadLang } from '../common/lang';
 import { getTokenList } from '../common/utils/storageManager';
 import { createUrl } from '../common/utils/tools';
 
 const renderElements = () => {
-    const showHideEuElements = isEu => {
-        $('.eu-hide').attr('style', `display: ${isEu ? 'none' : 'block'} !important`);
-        $('.eu-show, .eu-only').attr('style', `display: ${isEu ? 'block' : 'none'} !important`);
-    };
     ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
     ReactDOM.render(<Footer />, document.getElementById('footer'));
     isEuCountry().then(isEu => {
