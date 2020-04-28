@@ -41,7 +41,6 @@ class ChartContent extends PureComponent {
         this.state = {
             chartType  : 'mountain',
             granularity: 0,
-            symbol     : 'R_100',
             barrierType: undefined,
             high       : undefined,
             low        : undefined,
