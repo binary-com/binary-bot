@@ -20,20 +20,8 @@ export default Engine =>
         }
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
-            const { scope } = this.store.getState();
-            const currency = globalObserver.getState('currency');
-            let balance = globalObserver.getState('balance');
-
-            // Deduct trade `amount` in this scope for correct value in `balance`-block
-            if (scope === 'BEFORE_PURCHASE') {
-                balance = roundBalance({
-                    balance: Number(balance) - this.tradeOptions.amount,
-                    currency,
-                });
-            }
-
+            const balance = globalObserver.getState('balance');
             const balanceStr = `${balance}`;
-
             return type === 'STR' ? balanceStr : Number(balance);
         }
     };
