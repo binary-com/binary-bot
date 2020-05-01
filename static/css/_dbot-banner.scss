@@ -1,4 +1,6 @@
 .dbot-banner {
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap');
+    font-family: 'IBM Plex Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: antialiased;
     align-items: center;
@@ -14,17 +16,14 @@
     }
     &__ad {
         color: #fff;
-        margin-right: 11px;
+        margin-right: 16px;
         display: flex;
         justify-content: center;
 
-        &-title {
-            font-weight: normal;
-            font-size: 14px;
-        }
-        &-subtitle {
+        &-text {
             font-size: 16px;
             font-weight: bold;
+            line-height: 1.5;
         }
     }
     &__button {
@@ -37,7 +36,7 @@
         touch-action: manipulation;
         cursor: pointer;
         white-space: nowrap;
-        padding: 0 1.6rem;
+        padding: 0 16px;
         display: inline-flex;
         border: 0;
         height: 32px;

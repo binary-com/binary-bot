@@ -28,7 +28,7 @@ import {
     addTokenIfValid,
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
-import isEuCountry, { showHideEuElements } from '../../common/footer-checks';
+import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
 import googleDrive from '../../common/integrations/GoogleDrive';
 import { getLanguage } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
@@ -187,6 +187,9 @@ const updateTokenList = () => {
         loginButton.show();
         accountList.hide();
 
+        // If logged out, determine EU based on IP.
+        isEuCountry(api).then(isEu => showHideEuElements(isEu));
+
         $('.account-id')
             .removeAttr('value')
             .text('');
@@ -197,13 +200,17 @@ const updateTokenList = () => {
     } else {
         loginButton.hide();
         accountList.show();
+
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
+        showHideEuElements(hasEuAccount(tokenList));
         updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
+
         if (!('loginInfo' in activeToken)) {
             removeAllTokens();
             updateTokenList();
         }
+
         tokenList.forEach(tokenInfo => {
             const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
             if (tokenInfo === activeToken) {
@@ -234,7 +241,7 @@ export default class View {
     constructor() {
         logHandler();
         this.initPromise = new Promise(resolve => {
-            updateConfigCurrencies().then(() => {
+            updateConfigCurrencies(api).then(() => {
                 symbolPromise.then(() => {
                     updateTokenList();
                     this.blockly = new _Blockly();
@@ -727,7 +734,6 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
-    isEuCountry().then(isEu => showHideEuElements(isEu));
     ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
     ReactDOM.render(
