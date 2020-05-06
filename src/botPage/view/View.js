@@ -28,6 +28,7 @@ import {
     addTokenIfValid,
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
+import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
 import googleDrive from '../../common/integrations/GoogleDrive';
 import { getLanguage } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
@@ -43,6 +44,7 @@ import GTM from '../../common/gtm';
 import { saveBeforeUnload } from './blockly/utils';
 
 let realityCheckTimeout;
+let chart;
 
 const api = generateLiveApiInstance();
 
@@ -88,8 +90,6 @@ const addBalanceForToken = token => {
         });
     });
 };
-
-const chart = new Chart(api);
 
 const tradingView = new TradingView();
 
@@ -186,6 +186,9 @@ const updateTokenList = () => {
         loginButton.show();
         accountList.hide();
 
+        // If logged out, determine EU based on IP.
+        isEuCountry(api).then(isEu => showHideEuElements(isEu));
+
         $('.account-id')
             .removeAttr('value')
             .text('');
@@ -196,13 +199,17 @@ const updateTokenList = () => {
     } else {
         loginButton.hide();
         accountList.show();
+
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
+        showHideEuElements(hasEuAccount(tokenList));
         updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
+
         if (!('loginInfo' in activeToken)) {
             removeAllTokens();
             updateTokenList();
         }
+
         tokenList.forEach(tokenInfo => {
             const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
             if (tokenInfo === activeToken) {
@@ -212,7 +219,9 @@ const updateTokenList = () => {
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a><div class="separator-line-thin-gray"></div>`
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${
+                        tokenInfo.accountName
+                    }</div></li></a><div class="separator-line-thin-gray"></div>`
                 );
             }
         });
@@ -231,7 +240,7 @@ export default class View {
     constructor() {
         logHandler();
         this.initPromise = new Promise(resolve => {
-            updateConfigCurrencies().then(() => {
+            updateConfigCurrencies(api).then(() => {
                 symbolPromise.then(() => {
                     updateTokenList();
                     this.blockly = new _Blockly();
@@ -419,6 +428,10 @@ export default class View {
         });
 
         $('#chartButton').click(() => {
+            if (!chart) {
+                chart = new Chart(api);
+            }
+
             chart.open();
         });
 

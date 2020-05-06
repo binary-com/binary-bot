@@ -235,8 +235,7 @@ const config = {
     quick_strategies: ['martingale', 'dalembert'],
 };
 
-export async function updateConfigCurrencies() {
-    const api = generateLiveApiInstance();
+export async function updateConfigCurrencies(api = generateLiveApiInstance()) {
     try {
         const response = await api.getPayoutCurrencies();
         config.lists.CURRENCY = response.payout_currencies.map(c => [c, c]);
