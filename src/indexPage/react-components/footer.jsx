@@ -32,8 +32,8 @@ const Footer = () => (
                             <SocialIcons
                                 networks={[
                                     { media: 'youtube', href: 'https://www.youtube.com/user/BinaryTradingVideos' },
-                                    { media: 'facebook', href: 'https://www.facebook.com/binarydotcom' },
-                                    { media: 'twitter', href: 'https://twitter.com/Binarydotcom' },
+                                    { media: 'facebook', href: 'https://www.facebook.com/derivdotcom' },
+                                    { media: 'twitter', href: 'https://twitter.com/derivdotcom' },
                                     { media: 'telegram', href: 'https://t.me/binarydotcom' },
                                     { media: 'reddit', href: 'https://www.reddit.com/r/binarydotcom/' },
                                 ]}
