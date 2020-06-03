@@ -48,10 +48,7 @@ const customTransform = function _transform(file, enc, done) {
     done();
 };
 
-gulp.task(
-    'clean-i18n',
-    gulp.series(() => gulp.src(['src/common/translations/en/*']).pipe(paths(del)))
-);
+gulp.task('clean-i18n', gulp.series(() => gulp.src(['src/common/translations/en/*']).pipe(paths(del))));
 
 gulp.task(
     'i18n-xml',
@@ -86,13 +83,10 @@ gulp.task(
 gulp.task(
     'pull-blockly-translations',
     gulp.series(done => {
-        const blocklyLanguages = ['en', 'de', 'it', 'vi', 'pl', 'ru', 'pt', 'es', 'fr', 'zh-hans', 'zh-hant'];
-        remoteSrc(
-            blocklyLanguages.map(lang => `${lang}.js?_=${Date.now()}`),
-            {
-                base: 'https://blockly-demo.appspot.com/static/msg/js/',
-            }
-        )
+        const blocklyLanguages = ['en', 'de', 'id', 'it', 'vi', 'pl', 'ru', 'pt', 'es', 'fr', 'zh-hans', 'zh-hant'];
+        remoteSrc(blocklyLanguages.map(lang => `${lang}.js?_=${Date.now()}`), {
+            base: 'https://blockly-demo.appspot.com/static/msg/js/',
+        })
             .pipe(rename(path => (path.extname = '.js')))
             .pipe(gulp.dest('www/translations'));
         done();
