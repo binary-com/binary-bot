@@ -72,6 +72,7 @@ export default () => {
 
                     this.pollForContracts(symbol).then(contracts => {
                         if (ev.name === 'SYMBOL_LIST' && ev.oldValue !== ev.newValue) {
+                            globalObserver.setState({ symbol: ev.newValue });
                             // Called to update duration options and set min durations
                             this.updateDurationLists(contracts, true, true);
                         } else if (['TRADETYPE_LIST'].includes(ev.name) && ev.oldValue !== ev.newValue) {
