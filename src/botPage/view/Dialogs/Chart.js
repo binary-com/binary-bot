@@ -44,6 +44,7 @@ class ChartContent extends PureComponent {
             barrierType: undefined,
             high       : undefined,
             low        : undefined,
+            symbol     : globalObserver.getState('symbol'),
         };
         this.shouldBarrierDisplay = false;
     }
