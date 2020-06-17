@@ -27,6 +27,7 @@ const unrecoverableErrors = [
     'FinancialAssessmentRequired',
     'AuthorizationRequired',
     'InvalidToken',
+    'ClientUnwelcome',
 ];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
@@ -163,7 +164,14 @@ export default class Interpreter {
         this.loop();
     }
     terminateSession() {
-        this.$scope.api.disconnect();
+        const { socket } = this.$scope.api;
+        if (socket.readyState === 0) {
+            socket.addEventListener('open', () => {
+                this.$scope.api.disconnect();
+            });
+        } else if (socket.readyState === 1) {
+            this.$scope.api.disconnect();
+        }
         this.stopped = true;
 
         globalObserver.emit('bot.stop');

@@ -1,7 +1,7 @@
 /* global google,gapi */
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
-import { translate } from '../utils/tools';
+import { translate, isProduction } from '../utils/tools';
 import config from '../../botPage/common/const';
 import { load } from '../../botPage/view/blockly';
 import { TrackJSError } from '../../botPage/view/logger';
@@ -42,7 +42,7 @@ class GoogleDrive {
                                 .removeClass('invisible');
                         },
                         error => {
-                            if (window.trackJs) {
+                            if (window.trackJs && isProduction()) {
                                 trackJs.track(
                                     `${translate(
                                         'There was an error initialising Google Drive'
@@ -53,7 +53,7 @@ class GoogleDrive {
                     );
             },
             onerror: error => {
-                if (window.trackJs) {
+                if (window.trackJs && isProduction()) {
                     trackJs.track(
                         `${translate('There was an error loading Google Drive libraries')} - Error: ${JSON.stringify(
                             error
