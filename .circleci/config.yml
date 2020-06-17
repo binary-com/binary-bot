@@ -177,10 +177,10 @@ jobs:
 workflows:
   test:
     jobs:
-      - test
+      - test:
           filters:
             branches:
-              only: /^master$/
+              ignore: /^master$/
   release:
     jobs:
       - release_beta:
