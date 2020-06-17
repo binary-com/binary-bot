@@ -75,7 +75,7 @@ commands:
             - "c5:a7:d0:64:8d:7c:44:f7:6c:84:a9:b2:67:3e:9d:00"
       - run:
           name: Deploy docs to gh-pages branch
-          command: gh-pages -d www --branch << parameters.target_branch >>
+          command: gh-pages -d www --branch << parameters.target_branch >> --message '[skip ci]'
   docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
