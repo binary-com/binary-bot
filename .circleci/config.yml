@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   k8s: circleci/kubernetes@0.7.0
-  s3: circleci/aws-s3@1.0.13
 commands:
   git_checkout_from_cache:
     description: "Git checkout and save cache"
@@ -53,38 +52,31 @@ commands:
       - run:
           name: "yarn build"
           command: node_modules/gulp/bin/gulp.js build-min
-  compress:
-    description: "Compress"
+  deploy:
+    description: "Deploy to static branches"
+    parameters:
+      target_branch:
+        type: string
     steps:
+      - checkout
+      - attach_workspace:
+          at: www
       - run:
-          name: "Compress"
+          name: Tag build
+          command: echo "<< parameters.target_branch >> $(date)" > www/version
+      - run:
+          name: Install and configure dependencies
           command: |
-            pushd www/
-            tar -cvf artifact.tar *
-            mv artifact.tar ${OLDPWD}/
+            sudo npm install -g gh-pages@2.0.1
+            git config user.email "ci-build@binary.com"
+            git config user.name "ci-build"
+      - add_ssh_keys:
+          fingerprints:
+            - "c5:a7:d0:64:8d:7c:44:f7:6c:84:a9:b2:67:3e:9d:00"
       - run:
-          name: "Tag commit id as artifact identifer"
-          command: echo "${CIRCLE_SHA1}" > artifact-info.txt
-  upload_artifact:
-    description: "upload artifact to s3"
-    steps:
-      - s3/copy:
-          from: artifact.tar
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
-          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
-          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
-          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
-          arguments: '--metadata "{\"x-amz-artifact-id\": \"${CIRCLE_SHA1}\" }"'
-  upload_checksum:
-    description: "upload artifact commit id to s3"
-    steps:
-      - s3/copy:
-          from: artifact-info.txt
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
-          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
-          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
-          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
-  docker:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages -d www --branch << parameters.target_branch >>
+  docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
       target:
@@ -130,7 +122,7 @@ commands:
               fi
             done
 
-  npm_test:
+  test:
     description: Run test
     steps:
       - run:
@@ -145,30 +137,35 @@ jobs:
     steps:
       - git_checkout_from_cache
       - npm_install
-      - npm_test
+      - test
 
   release_beta:
     docker:
-      - image: circleci/node:12.13.0-stretch
+      - image: circleci/node:8.10.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install
       - build
-      - docker:
-          target: "beta"
-      - k8s_deploy:
-          target: "beta"
+      - deploy:
+          target_branch: "staging"
 
   release_production:
+    docker:
+      - image: circleci/node:8.10.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install
+      - build
+      - deploy:
+          target_branch: "production"
+
+  release_aws_production:
     docker:
       - image: circleci/node:12.13.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install
       - build
-      - compress
-      - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
-      - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint before actual deployment
       - docker:
           target: "production"
       - k8s_deploy:
@@ -183,10 +180,13 @@ workflows:
       - release_beta:
           filters:
             branches:
+              only: /^master$/
+      - release_production:
+          filters:
+            branches:
               ignore: /.*/
             tags:
-              only: /^beta.*/
-          context: binary-frontend-artifact-upload
+              only: /^production.*/
       - release_production:
           filters:
             branches:
