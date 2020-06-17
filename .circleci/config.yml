@@ -178,7 +178,7 @@ workflows:
   test:
     jobs:
       - test
-         filters:
+          filters:
             branches:
               only: /^master$/
   release:
