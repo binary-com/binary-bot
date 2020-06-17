@@ -169,7 +169,7 @@ jobs:
       - npm_install
       - test
       - build
-      - docker:
+      - docker_build_push:
           target: "production"
       - k8s_deploy:
           target: "production"
@@ -177,7 +177,10 @@ jobs:
 workflows:
   test:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore: /^master$/
   release:
     jobs:
       - release_beta:
