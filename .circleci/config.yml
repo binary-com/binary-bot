@@ -145,6 +145,7 @@ jobs:
     steps:
       - git_checkout_from_cache
       - npm_install
+      - test
       - build
       - deploy:
           target_branch: "staging"
@@ -155,6 +156,7 @@ jobs:
     steps:
       - git_checkout_from_cache
       - npm_install
+      - test
       - build
       - deploy:
           target_branch: "production"
@@ -165,6 +167,7 @@ jobs:
     steps:
       - git_checkout_from_cache
       - npm_install
+      - test
       - build
       - docker:
           target: "production"
