@@ -169,7 +169,7 @@ jobs:
       - npm_install
       - test
       - build
-      - docker:
+      - docker_build_push:
           target: "production"
       - k8s_deploy:
           target: "production"
