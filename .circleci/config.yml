@@ -190,7 +190,7 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
-      - release_production:
+      - release_aws_production:
           filters:
             branches:
               ignore: /.*/
