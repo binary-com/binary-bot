@@ -27,9 +27,6 @@ const activateStage = index => {
 };
 
 class AnimateTrade extends Component {
-    componentDidUpdate(prevProps, prevState) {
-        console.log({ prevState, state: this.state });
-    }
     constructor() {
         super();
         this.indicatorMessages = {
