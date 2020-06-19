@@ -534,7 +534,6 @@ export default class View {
                 elStopButton.style.display = 'inline-block';
             });
 
-            globalObserver.emit('summary.disable_clear');
             showSummary();
             this.blockly.run(limitations);
         };
