@@ -153,7 +153,6 @@ export default class Interpreter {
     }
     loop() {
         if (this.stopped || !this.interpreter.run()) {
-            this.isErrorTriggered = false;
             this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value));
         }
     }
@@ -173,6 +172,7 @@ export default class Interpreter {
             this.$scope.api.disconnect();
         }
         this.stopped = true;
+        this.isErrorTriggered = false;
 
         globalObserver.emit('bot.stop');
         globalObserver.setState({ isRunning: false });
