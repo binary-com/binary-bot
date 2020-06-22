@@ -135,10 +135,6 @@ commands:
       target:
         type: string
     steps:
-      - slack/notify:
-          color: "#42e2f4"
-          message: Binary bot release << parameters.target >> done!
-          webhook: ${SLACK_WEBHOOK}
       - slack/status:
           # fail_only: true
           failure_message: Binary bot release << parameters.target >> failed!
