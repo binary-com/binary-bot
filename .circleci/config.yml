@@ -138,7 +138,7 @@ commands:
       - slack/status:
           # fail_only: true
           failure_message: Binary bot release << parameters.target >> failed!
-          success_message: Binary bot release << parameters.target >> done!
+          success_message: Binary bot release << parameters.target >> done! version {{lookup('file', 'www/version') }}
           webhook: ${SLACK_WEBHOOK} 
 jobs:
   test:
