@@ -42,6 +42,12 @@ class AnimateTrade extends Component {
         };
     }
     componentWillMount() {
+        const resetSummary = () => {
+            resetAnimation();
+            this.setState({ indicatorMessage: this.indicatorMessages.notRunning });
+        };
+        globalObserver.register('reset_animation', resetSummary);
+        globalObserver.register('summary.clear', resetSummary);
         globalObserver.register('bot.running', () => {
             $('.stage-tooltip.top:eq(0)').addClass('running');
             this.setState({ indicatorMessage: this.indicatorMessages.running });
@@ -50,39 +56,31 @@ class AnimateTrade extends Component {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
             this.setState({ indicatorMessage: this.indicatorMessages.stopped });
         });
-        globalObserver.register('reset_animation', () => {
-            resetAnimation();
-            this.setState({ indicatorMessage: this.indicatorMessages.stopped });
-        });
-
         $('#stopButton').click(() => {
             $('.stage-tooltip.top:eq(0)').removeClass('running');
-            this.setState({ indicatorMessage: this.state.stopMessage });
+            this.setState({
+                indicatorMessage: globalObserver.getState('isRunning')
+                    ? this.indicatorMessages.stopping
+                    : this.indicatorMessages.stopped,
+            });
         });
-
         $('#runButton').click(() => {
             resetAnimation();
             $('.stage-tooltip.top:eq(0)').addClass('running');
-            this.setState({
-                indicatorMessage: this.indicatorMessages.starting,
-                stopMessage     : this.indicatorMessages.stopped,
-            });
-            globalObserver.register('contract.status', contractStatus => {
-                this.animateStage(contractStatus);
-            });
+            this.setState({ indicatorMessage: this.indicatorMessages.starting });
+            globalObserver.emit('summary.disable_clear');
+            globalObserver.register('contract.status', contractStatus => this.animateStage(contractStatus));
         });
     }
     animateStage(contractStatus) {
         if (contractStatus.id === 'contract.purchase_sent') {
             resetAnimation();
             activateStage(0);
-
             this.setState({
                 buy_price: roundBalance({
                     balance : contractStatus.proposal.ask_price,
                     currency: contractStatus.currency,
                 }),
-                stopMessage: this.indicatorMessages.stopping,
             });
         } else if (contractStatus.id === 'contract.purchase_recieved') {
             $('.line').addClass('active');
@@ -91,7 +89,7 @@ class AnimateTrade extends Component {
         } else if (contractStatus.id === 'contract.sold') {
             $('.line').addClass('complete');
             activateStage(2);
-            this.setState({ sell_id: contractStatus.data, stopMessage: this.indicatorMessages.stopped });
+            this.setState({ sell_id: contractStatus.data });
         }
 
         activateStage(contractStatus.id);
