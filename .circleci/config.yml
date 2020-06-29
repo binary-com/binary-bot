@@ -139,7 +139,6 @@ commands:
           include_project_field: false
           failure_message: "<< parameters.target >> release failed for binary bot with version $(cat www/version)"
           success_message: "<< parameters.target >> release succeeded for binary bot with version $(cat www/version)"
-
           webhook: ${SLACK_WEBHOOK} 
 jobs:
   test:
