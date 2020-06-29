@@ -64,7 +64,7 @@ commands:
           at: www
       - run:
           name: Tag build
-          command: echo "<< parameters.target_branch >> $(date)" > www/version
+          command: echo "<< parameters.target_branch >> $(date -u +'%Y-%m-%dT%H:%M:%SZ')" > public/version
       - run:
           name: Install and configure dependencies
           command: |
@@ -136,10 +136,11 @@ commands:
         type: string
     steps:
       - slack/status:
-          # fail_only: true
-          failure_message: Binary bot release << parameters.target >> failed!
-          success_message: Binary bot release << parameters.target >> done! version $(cat www/version | base64)
-          webhook: ${SLACK_WEBHOOK} 
+          include_project_field: false
+          failure_message: "<< parameters.target >> release failed for binary bot with version $(cat www/version)"
+          success_message: "<< parameters.target >> release succeeded for binary bot with version $(cat www/version)"
+
+          webhook: 'https://hooks.slack.com/services/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'
 jobs:
   test:
     docker:
@@ -160,7 +161,7 @@ jobs:
       - deploy:
           target_branch: "staging"
       - notify_slack:
-          target: "staging"
+          target: "Staging"
 
   release_production:
     docker:
@@ -173,7 +174,7 @@ jobs:
       - deploy:
           target_branch: "production"
       - notify_slack:
-          target: "production"
+          target: "Production"
 
   release_aws_production:
     docker:
@@ -188,7 +189,7 @@ jobs:
       - k8s_deploy:
           target: "production"
       - notify_slack:
-          target: "production"
+          target: "Production"
 
 workflows:
   test:
