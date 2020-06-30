@@ -131,14 +131,11 @@ commands:
             for i in {1..3}; do npm test && break; done
   notify_slack:
     description: "Notify slack"
-    parameters:
-      target:
-        type: string
     steps:
       - slack/status:
           include_project_field: false
-          failure_message: "<< parameters.target >> release failed for binary bot with version $(cat www/version)"
-          success_message: "<< parameters.target >> release succeeded for binary bot with version $(cat www/version)"
+          failure_message: "Release failed for binary bot with version *$(cat www/version)*"
+          success_message: "Release succeeded for binary bot with version *$(cat www/version)*"
           webhook: ${SLACK_WEBHOOK} 
 jobs:
   test:
@@ -149,7 +146,7 @@ jobs:
       - npm_install
       - test
 
-  release_beta:
+  release_staging:
     docker:
       - image: circleci/node:8.10.0-stretch
     steps:
@@ -159,9 +156,7 @@ jobs:
       - build
       - deploy:
           target_branch: "staging"
-      - notify_slack:
-          target: "Staging"
-
+      - notify_slack
   release_production:
     docker:
       - image: circleci/node:8.10.0-stretch
@@ -172,9 +167,7 @@ jobs:
       - build
       - deploy:
           target_branch: "production"
-      - notify_slack:
-          target: "Production"
-
+      - notify_slack
   release_aws_production:
     docker:
       - image: circleci/node:12.13.0-stretch
@@ -187,8 +180,7 @@ jobs:
           target: "production"
       - k8s_deploy:
           target: "production"
-      - notify_slack:
-          target: "Production"
+      - notify_slack
 
 workflows:
   test:
@@ -199,7 +191,7 @@ workflows:
               ignore: /^master$/
   release:
     jobs:
-      - release_beta:
+      - release_staging:
           filters:
             branches:
               only: /^master$/
