@@ -180,7 +180,6 @@ jobs:
           target: "production"
       - k8s_deploy:
           target: "production"
-      - notify_slack
 
 workflows:
   test:
