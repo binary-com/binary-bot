@@ -224,7 +224,7 @@ export const load = (blockStr, dropEvent = {}) => {
                     text : translate('Take me to DBot'),
                     class: 'button-primary',
                     click() {
-                        window.location.href = 'https://deriv.app/bot';
+                        window.location.href = 'https://app.deriv.com/bot';
                     },
                 },
             ],
