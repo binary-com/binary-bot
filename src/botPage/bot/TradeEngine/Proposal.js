@@ -9,33 +9,43 @@ export default Engine =>
             if (!this.isNewTradeOption(tradeOption)) {
                 return;
             }
+
+            // Generate a purchase reference when trade options are different from previous trade options.
+            // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
+            this.regeneratePurchaseReference();
             this.tradeOption = tradeOption;
-            this.proposalTemplates = tradeOptionToProposal(tradeOption);
+            this.proposalTemplates = tradeOptionToProposal(tradeOption, this.getPurchaseReference());
             this.renewProposalsOnPurchase();
         }
         selectProposal(contractType) {
-            let toBuy;
+            const { proposals } = this.data;
 
-            if (!this.data.has('proposals')) {
+            if (proposals.length === 0) {
                 throw Error(translate('Proposals are not ready'));
             }
 
-            this.data.get('proposals').forEach(proposal => {
-                if (proposal.contractType === contractType) {
+            const toBuy = proposals.find(proposal => {
+                if (
+                    proposal.contractType === contractType &&
+                    proposal.purchaseReference === this.getPurchaseReference()
+                ) {
                     if (proposal.error) {
-                        const { error } = proposal.error;
-                        throw new TrackJSError(error.error.code, error.error.message, error);
-                    } else {
-                        toBuy = proposal;
+                        const { error } = proposal.error.error;
+                        const { code, message } = error;
+                        throw new TrackJSError(code, message, error);
                     }
+
+                    return proposal;
                 }
+
+                return false;
             });
 
             if (!toBuy) {
                 throw new TrackJSError(
                     'CustomInvalidProposal',
                     translate('Selected proposal does not exist'),
-                    Array.from(this.data.get('proposals')).map(proposal => proposal[1])
+                    this.data.proposals
                 );
             }
 
@@ -48,93 +58,73 @@ export default Engine =>
             this.unsubscribeProposals().then(() => this.requestProposals());
         }
         clearProposals() {
-            this.data = this.data.set('proposals', new Map());
+            this.data.proposals = [];
             this.store.dispatch(clearProposals());
         }
         requestProposals() {
             Promise.all(
                 this.proposalTemplates.map(proposal =>
-                    doUntilDone(() =>
-                        this.api.subscribeToPriceForContractProposal(proposal).catch(e => {
-                            if (e && e.name === 'RateLimit') {
-                                throw e;
-                            }
-
-                            const errorCode = e.error && e.error.error && e.error.error.code;
-
-                            if (errorCode === 'ContractBuyValidationError') {
-                                const { uuid } = e.error.echo_req.passthrough;
-
-                                if (!this.data.hasIn(['forgetProposals', uuid])) {
-                                    // Add to proposals map with error. Will later be shown to user, see selectProposal.
-                                    this.data = this.data.setIn(['proposals', uuid], {
-                                        ...proposal,
-                                        ...proposal.passthrough,
-                                        error: e,
-                                    });
-                                }
-
-                                return null;
-                            }
-
-                            throw e;
-                        })
-                    )
+                    doUntilDone(() => this.api.subscribeToPriceForContractProposal(proposal))
                 )
             ).catch(e => this.$scope.observer.emit('Error', e));
         }
         observeProposals() {
-            this.listen('proposal', r => {
-                const { proposal, passthrough } = r;
-                const id = passthrough.uuid;
+            this.listen('proposal', response => {
+                const { passthrough, proposal } = response;
 
-                if (!this.data.hasIn(['forgetProposals', id])) {
-                    this.data = this.data.setIn(['proposals', id], {
-                        ...proposal,
-                        ...passthrough,
-                    });
+                if (
+                    this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
+                    !this.data.forgetProposals.includes(proposal.id)
+                ) {
+                    // Add proposals based on the ID returned by the API.
+                    this.data.proposals.push({ ...proposal, ...passthrough });
                     this.checkProposalReady();
                 }
             });
         }
         unsubscribeProposals() {
-            const proposalObj = this.data.get('proposals');
-
-            if (!proposalObj) {
-                return Promise.resolve();
-            }
-
-            const proposals = Array.from(proposalObj.values());
+            const { proposals } = this.data;
+            const removeForgetProposalById = forgetProposalId => {
+                this.data.forgetProposals = this.data.forgetProposals.filter(id => id !== forgetProposalId);
+            };
 
             this.clearProposals();
 
             return Promise.all(
                 proposals.map(proposal => {
-                    const { uuid: id } = proposal;
-                    const removeProposal = () => {
-                        this.data = this.data.deleteIn(['forgetProposals', id]);
-                    };
-
-                    this.data = this.data.setIn(['forgetProposals', id], true);
+                    if (!this.data.forgetProposals.includes(proposal.id)) {
+                        this.data.forgetProposals.push(proposal.id);
+                    }
 
                     if (proposal.error) {
-                        removeProposal();
+                        removeForgetProposalById(proposal.id);
                         return Promise.resolve();
                     }
 
-                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => removeProposal());
+                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() =>
+                        removeForgetProposalById(proposal.id)
+                    );
                 })
             );
         }
         checkProposalReady() {
-            const proposals = this.data.get('proposals');
+            // Proposals are considered ready when the proposals in our memory match the ones
+            // we've requested from the API, we determine this by checking the passthrough of the response.
+            const { proposals } = this.data;
 
-            if (proposals && proposals.size === this.proposalTemplates.length) {
-                const isSameWithTemplate = this.proposalTemplates.every(p =>
-                    this.data.hasIn(['proposals', p.passthrough.uuid])
-                );
+            if (proposals.length > 0) {
+                const hasEqualLength = proposals.length === this.proposalTemplates.length;
+                const hasEqualProposals = () =>
+                    this.proposalTemplates.every(
+                        template =>
+                            proposals.findIndex(
+                                proposal =>
+                                    proposal.purchaseReference === template.passthrough.purchaseReference &&
+                                    proposal.contractType === template.contract_type
+                            ) !== -1
+                    );
 
-                if (isSameWithTemplate) {
+                if (hasEqualLength && hasEqualProposals()) {
                     this.startPromise.then(() => this.store.dispatch(proposalsReady()));
                 }
             }
@@ -145,16 +135,18 @@ export default Engine =>
                 return true;
             }
 
-            const isNotEqual = key => this.tradeOption[key] !== tradeOption[key];
-
-            return (
-                isNotEqual('duration') ||
-                isNotEqual('duration_unit') ||
-                isNotEqual('amount') ||
-                isNotEqual('prediction') ||
-                isNotEqual('barrierOffset') ||
-                isNotEqual('secondBarrierOffset') ||
-                isNotEqual('symbol')
-            );
+            // Compare incoming "tradeOption" argument with "this.tradeOption", if any
+            // of the values is different, this is a new tradeOption and new proposals
+            // should be generated.
+            return [
+                'amount',
+                'barrierOffset',
+                'basis',
+                'duration',
+                'duration_unit',
+                'prediction',
+                'secondBarrierOffset',
+                'symbol',
+            ].some(value => this.tradeOption[value] !== tradeOption[value]);
         }
     };
