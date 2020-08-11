@@ -18,7 +18,7 @@ export default Engine =>
 
                 this.setContractFlags(contract);
 
-                this.data = this.data.set('contract', contract);
+                this.data.contract = contract;
 
                 broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
 
@@ -36,8 +36,6 @@ export default Engine =>
                     }
 
                     this.store.dispatch(sell());
-
-                    this.unsubscribeOpenContract();
 
                     this.cancelSubscriptionTimeout();
                 } else {
@@ -59,8 +57,6 @@ export default Engine =>
             }
             this.contractId = contractId;
 
-            this.unsubscribeOpenContract();
-
             doUntilDone(() =>
                 this.api.subscribeToOpenContract(contractId).then(response => {
                     this.openContractId = response.proposal_open_contract.id;
@@ -79,11 +75,6 @@ export default Engine =>
         }
         cancelSubscriptionTimeout() {
             clearTimeout(this.subscriptionTimeout);
-        }
-        unsubscribeOpenContract() {
-            if (this.openContractId) {
-                doUntilDone(() => this.api.unsubscribeByID(this.openContractId));
-            }
         }
         setContractFlags(contract) {
             const {
@@ -105,7 +96,7 @@ export default Engine =>
             return this.contractId && contractId === this.contractId;
         }
         getSellPrice() {
-            const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.get('contract');
+            const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.contract;
             return Number(roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) }));
         }
     };
