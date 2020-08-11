@@ -40,17 +40,18 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         const getDetail = (i, pipSize) => createDetails(this.get('contract'), pipSize)[i];
 
         return {
-            init           : (...args) => this.tradeEngine.init(...args),
-            start          : (...args) => this.tradeEngine.start(...args),
-            stop           : (...args) => this.tradeEngine.stop(...args),
-            purchase       : contractType => this.tradeEngine.purchase(contractType),
-            getAskPrice    : contractType => Number(this.getProposal(contractType).ask_price),
-            getPayout      : contractType => Number(this.getProposal(contractType).payout),
-            isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
-            sellAtMarket   : () => this.tradeEngine.sellAtMarket(),
-            getSellPrice   : () => this.getSellPrice(),
-            isResult       : result => getDetail(10) === result,
-            readDetails    : i => getDetail(i - 1, this.tradeEngine.getPipSize()),
+            init                : (...args) => this.tradeEngine.init(...args),
+            start               : (...args) => this.tradeEngine.start(...args),
+            stop                : (...args) => this.tradeEngine.stop(...args),
+            purchase            : (...args) => this.tradeEngine.purchase(...args),
+            getPurchaseReference: () => this.tradeEngine.getPurchaseReference(),
+            getAskPrice         : contractType => Number(this.getProposal(contractType).ask_price),
+            getPayout           : contractType => Number(this.getProposal(contractType).payout),
+            isSellAvailable     : () => this.tradeEngine.isSellAtMarketAvailable(),
+            sellAtMarket        : () => this.tradeEngine.sellAtMarket(),
+            getSellPrice        : () => this.getSellPrice(),
+            isResult            : result => getDetail(10) === result,
+            readDetails         : i => getDetail(i - 1, this.tradeEngine.getPipSize()),
         };
     }
     sleep(arg = 1) {
