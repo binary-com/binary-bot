@@ -94,7 +94,6 @@ export default class Interpreter {
                 'purchase',
                 this.createAsync(interpreter, botInterface.purchase)
             );
-
             interpreter.setProperty(
                 pseudoBotInterface,
                 'sellAtMarket',
