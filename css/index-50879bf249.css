@@ -1,0 +1,356 @@
+/* stylelint-disable color-no-hex */
+/* stylelint-enable color-no-hex */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap");
+.dbot-banner {
+  font-family: 'IBM Plex Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+  align-items: center;
+  align-self: center;
+  display: flex;
+  float: left;
+  height: calc(100% - 20px);
+  margin: 10px 0; }
+  .dbot-banner__icon {
+    margin-right: 8px;
+    margin-left: 32px; }
+  .dbot-banner__ad {
+    color: #fff;
+    margin-right: 16px;
+    display: flex;
+    justify-content: center; }
+    .dbot-banner__ad-text {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.5; }
+  .dbot-banner__button {
+    font-size: 14px;
+    background-color: #ff444f;
+    font-weight: bold;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0 16px;
+    display: inline-flex;
+    border: 0;
+    height: 32px;
+    border-radius: 4px;
+    transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
+    outline: 0;
+    position: relative;
+    text-decoration: none;
+    text-transform: none !important; }
+    .dbot-banner__button:hover {
+      background: #eb3e48; }
+    .dbot-banner__button:focus {
+      outline: none; }
+  .dbot-banner__separator {
+    width: 2px;
+    height: 36px;
+    background-color: #17212c; }
+
+@media only screen and (max-width: 520px) {
+  .dbot-banner {
+    display: none; } }
+
+@media only screen and (max-width: 700px) {
+  .dbot-banner__separator {
+    display: none; } }
+
+#footer .container {
+  max-width: 1200px; }
+
+#footer #footer-menu h4 {
+  font-size: 0.85em; }
+
+#footer #footer-menu ul {
+  padding: 0px; }
+
+#footer #footer-menu li {
+  line-height: 1;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto; }
+
+#footer .content-inverse-color a {
+  text-decoration: underline; }
+
+#footer #footer-regulatory {
+  padding-bottom: 0px; }
+  #footer #footer-regulatory a, #footer #footer-regulatory p, #footer #footer-regulatory .fld-risk-warning legend {
+    font-size: 13px !important; }
+  #footer #footer-regulatory a, #footer #footer-regulatory p {
+    font-weight: 100; }
+  #footer #footer-regulatory a {
+    color: #dedede; }
+  #footer #footer-regulatory p, #footer #footer-regulatory .fld-risk-warning legend {
+    color: #a8a8a8;
+    text-align: justify;
+    margin: 0 0 10px; }
+  #footer #footer-regulatory .fld-risk-warning {
+    margin-bottom: 30px;
+    border-color: #44484c; }
+    #footer #footer-regulatory .fld-risk-warning legend {
+      text-transform: uppercase; }
+  #footer #footer-regulatory .about-binary {
+    border-top: 1px solid #44484c;
+    border-bottom: 1px solid #44484c;
+    padding: 10px 0;
+    margin-bottom: 10px; }
+    #footer #footer-regulatory .about-binary p {
+      margin: 0; }
+  #footer #footer-regulatory .risk-warning {
+    margin-bottom: 30px; }
+    #footer #footer-regulatory .risk-warning p {
+      font-size: 16px; }
+  #footer #footer-regulatory #ratelimit-error-message, #footer #footer-regulatory #site-status-message {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #fef1cf;
+    z-index: 999; }
+  #footer #footer-regulatory #site-status-message {
+    z-index: 9999; }
+
+#footer .iom-icon {
+  width: 90px; }
+
+#footer .lga-icon {
+  width: 100px; }
+
+#footer .gamstop-icon {
+  width: 109px; }
+
+#footer .gamstop-icon.data-show-visible + .lga-icon {
+  width: 70px;
+  margin-bottom: 3px;
+  margin-left: -10px; }
+
+#footer .flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center; }
+
+#footer .lga-gamstop-icon-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column-reverse; }
+
+#footer .age-restriction {
+  width: 50px; }
+
+#footer .social-icons {
+  margin-left: auto; }
+  #footer .social-icons > *:not(:first-child) {
+    margin-left: 10px; }
+  #footer .social-icons img {
+    height: 35px;
+    width: 35px; }
+
+#footer .icon-row {
+  padding-top: 10px;
+  padding-bottom: 14px; }
+
+#footer .regulation-logos > * {
+  margin-right: 20px; }
+
+#footer .regulation-logos .vanuatu-icon {
+  width: 160px;
+  margin-left: -30px;
+  margin-right: 0; }
+
+#footer .regulation-logos .bvi-icon {
+  width: 115px;
+  margin-left: -30px;
+  margin-right: 0; }
+
+#footer .regulation-logos .labuan-icon {
+  width: 120px; }
+
+#footer #end-note {
+  line-height: 25px;
+  background: #c03;
+  font-size: 10.41667px;
+  position: fixed;
+  bottom: 0;
+  z-index: 100 !important;
+  width: 100%; }
+
+#footer #status_notification {
+  animation: moveInBottom 0.2s ease-in;
+  background-color: #e98024;
+  display: none;
+  align-items: center;
+  padding: 10px 7px;
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  left: 8px;
+  border-radius: 5px;
+  z-index: 1000; }
+  #footer #status_notification_text {
+    color: #ffffff;
+    font-size: 0.85em;
+    margin: 0 auto 0 0; }
+  #footer #status_notification_type {
+    padding-right: 7px; }
+  #footer #status_notification_close {
+    padding-left: 7px; }
+    #footer #status_notification_close:hover {
+      cursor: pointer; }
+
+@media screen and (max-width: 590px) {
+  #footer .icon-row {
+    flex-direction: column; }
+    #footer .icon-row > * {
+      margin-right: 0;
+      margin-bottom: 20px; }
+  #footer .social-icons {
+    margin-left: 0; } }
+
+@media screen and (max-width: 400px) {
+  #footer .regulation-logos .vanuatu-icon {
+    width: 120px;
+    margin-left: -30px;
+    margin-right: 0; }
+  #footer .regulation-logos .bvi-icon {
+    width: 100px;
+    margin-left: -30px;
+    margin-right: 0; }
+  #footer .regulation-logos .labuan-icon {
+    width: 110px;
+    margin: 0px; } }
+
+html,
+body {
+  height: 100%;
+  margin: 0px;
+  max-width: 100%;
+  overflow-x: hidden; }
+
+.top-image {
+  display: none; }
+
+#header {
+  height: 81px;
+  width: 100%;
+  background-color: #2a3052;
+  border-top: 2px solid #394171;
+  border-bottom: 4px solid #e98024; }
+
+#header .wrapper,
+#topbar .wrapper {
+  max-width: 960px;
+  margin: 0 auto; }
+
+#topbar {
+  background-color: #15212d;
+  width: 100%;
+  color: #fff;
+  line-height: 1;
+  font-size: 70%;
+  text-align: right;
+  padding: 3px 20px;
+  display: table; }
+
+#main {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto; }
+
+.left,
+.right {
+  width: 45%;
+  margin: 20px;
+  display: inline-block;
+  vertical-align: top; }
+
+.right img {
+  width: 200%; }
+
+.cta {
+  margin: 30px auto;
+  text-align: center; }
+
+.contact {
+  text-align: center; }
+
+ul.bullet {
+  margin: 0 !important; }
+
+.barspinner {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -5rem;
+  z-index: 9999; }
+
+.center {
+  text-align: center; }
+
+.half-width {
+  width: 50%;
+  float: left; }
+
+.clear {
+  clear: both; }
+
+.button span {
+  text-transform: inherit !important; }
+
+.show-on-load {
+  display: none; }
+
+#split-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%; }
+  #split-container .puzzle-logo {
+    padding-left: 20px; }
+
+/* Keep this below since css after this 
+ * will be interfering with small
+ * screen sizes
+ */
+@media only screen and (max-width: 980px) {
+  .half-width {
+    width: 49%; }
+  .logo-parent {
+    margin-left: 21px; }
+  .half-width p {
+    padding: 0 20px 0 20px; } }
+
+@media only screen and (max-width: 480px) {
+  #split-container {
+    display: block;
+    width: auto; }
+  .top-image {
+    display: block; }
+  .half-width {
+    width: 100%; }
+  .half-width p, .half-width img {
+    margin: 1em; }
+  .bottom-image {
+    display: none; }
+  .left,
+  .right {
+    width: 100%;
+    margin: 20px;
+    display: block;
+    vertical-align: top; }
+  .clear {
+    position: sticky;
+    padding: 1px 0 1px 0;
+    bottom: 0;
+    background-color: #fff;
+    width: 100%;
+    box-shadow: 0 -2px 6px 0 rgba(0, 0, 0, 0.2); }
+  p {
+    margin: 9px auto !important; } }
+
+/*# sourceMappingURL=index-50879bf249.css.map */
