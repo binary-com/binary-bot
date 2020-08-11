@@ -74,7 +74,7 @@ export default Engine =>
 
                 if (
                     this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
-                    !this.data.forgetProposals.includes(proposal.id)
+                    !this.data.forgetProposalIds.includes(proposal.id)
                 ) {
                     // Add proposals based on the ID returned by the API.
                     this.data.proposals.push({ ...proposal, ...passthrough });
@@ -85,15 +85,15 @@ export default Engine =>
         unsubscribeProposals() {
             const { proposals } = this.data;
             const removeForgetProposalById = forgetProposalId => {
-                this.data.forgetProposals = this.data.forgetProposals.filter(id => id !== forgetProposalId);
+                this.data.forgetProposalIds = this.data.forgetProposalIds.filter(id => id !== forgetProposalId);
             };
 
             this.clearProposals();
 
             return Promise.all(
                 proposals.map(proposal => {
-                    if (!this.data.forgetProposals.includes(proposal.id)) {
-                        this.data.forgetProposals.push(proposal.id);
+                    if (!this.data.forgetProposalIds.includes(proposal.id)) {
+                        this.data.forgetProposalIds.push(proposal.id);
                     }
 
                     if (proposal.error) {

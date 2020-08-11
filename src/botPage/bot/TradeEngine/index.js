@@ -70,9 +70,9 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.$scope = $scope;
         this.observe();
         this.data = {
-            contract       : {},
-            proposals      : [],
-            forgetProposals: [],
+            contract         : {},
+            proposals        : [],
+            forgetProposalIds: [],
         };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
