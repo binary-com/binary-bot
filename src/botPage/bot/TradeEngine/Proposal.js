@@ -29,6 +29,10 @@ export default Engine =>
                     proposal.contractType === contractType &&
                     proposal.purchaseReference === this.getPurchaseReference()
                 ) {
+                    // Below happens when a user has had one of the proposals return
+                    // with a ContractBuyValidationError. We allow the logic to continue
+                    // to here cause the opposite proposal may still be valid. Only once
+                    // they attempt to purchase the errored proposal we will intervene.
                     if (proposal.error) {
                         const { error } = proposal.error.error;
                         const { code, message } = error;
@@ -64,7 +68,23 @@ export default Engine =>
         requestProposals() {
             Promise.all(
                 this.proposalTemplates.map(proposal =>
-                    doUntilDone(() => this.api.subscribeToPriceForContractProposal(proposal))
+                    doUntilDone(() =>
+                        this.api.subscribeToPriceForContractProposal(proposal).catch(error => {
+                            // We intercept ContractBuyValidationError as user may have specified
+                            // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
+                            // the other is valid. We will error on Purchase rather than here.
+                            if (error && error.name === 'ContractBuyValidationError') {
+                                this.data.proposals.push({
+                                    ...error.error.echo_req,
+                                    ...error.error.echo_req.passthrough,
+                                    error,
+                                });
+                                return null;
+                            }
+
+                            throw error;
+                        })
+                    )
                 )
             ).catch(e => this.$scope.observer.emit('Error', e));
         }
