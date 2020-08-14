@@ -81,6 +81,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         return this.tradeEngine.getSellPrice();
     }
     get(key) {
-        return this.tradeEngine.getData().get(key);
+        return this.tradeEngine.getData()[key];
     }
 }
