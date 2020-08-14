@@ -37,7 +37,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         };
     }
     getBotInterface() {
-        const getDetail = (i, pipSize) => createDetails(this.get('contract'), pipSize)[i];
+        const getDetail = (i, pipSize) => createDetails(this.data.contract, pipSize)[i];
 
         return {
             init                : (...args) => this.tradeEngine.init(...args),
@@ -65,22 +65,12 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         );
     }
     getProposal(contractType) {
-        const proposals = this.get('proposals');
-
-        let proposal;
-
-        proposals.forEach(p => {
-            if (p.contractType === contractType) {
-                proposal = p;
-            }
-        });
-
-        return proposal;
+        return this.data.proposals.find(
+            proposal =>
+                proposal.contractType === contractType && proposal.purchaseReference === this.getPurchaseReference()
+        );
     }
     getSellPrice() {
         return this.tradeEngine.getSellPrice();
-    }
-    get(key) {
-        return this.tradeEngine.getData()[key];
     }
 }
