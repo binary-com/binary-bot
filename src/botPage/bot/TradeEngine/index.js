@@ -1,4 +1,3 @@
-import { Map } from 'immutable';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { durationToSecond } from '../../../common/utils/tools';
@@ -70,7 +69,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.observer = $scope.observer;
         this.$scope = $scope;
         this.observe();
-        this.data = new Map();
+        this.data = {
+            contract         : {},
+            proposals        : [],
+            forgetProposalIds: [],
+        };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
     init(...args) {
