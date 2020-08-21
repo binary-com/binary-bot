@@ -65,7 +65,7 @@ export const setDone = varName => {
 };
 
 export const set = (varName, value) => {
-    store[varName] = value;
+    store[varName] = escape(value);
 };
 
 export const get = varName => store[varName];
