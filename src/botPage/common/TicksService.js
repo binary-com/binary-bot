@@ -46,6 +46,8 @@ export default class TicksService {
         this.tickListeners = new Map();
         this.ohlcListeners = new Map();
         this.subscriptions = new Map();
+        this.ticks_history_promise = null;
+        this.active_symbols_promise = null;
         this.observe();
     }
     requestPipSizes() {
@@ -53,17 +55,20 @@ export default class TicksService {
             return Promise.resolve(this.pipSizes);
         }
 
-        return new Promise(resolve => {
-            this.api.getActiveSymbolsBrief().then(r => {
-                const { active_symbols: symbols } = r;
-                this.pipSizes = symbols.reduce((accumulator, currSymbol) => {
-                    // eslint-disable-next-line no-param-reassign
-                    accumulator[currSymbol.symbol] = `${currSymbol.pip}`.length - 2;
-                    return accumulator;
-                }, {});
-                resolve(this.pipSizes);
+        if (!this.active_symbols_promise) {
+            this.active_symbols_promise = new Promise(resolve => {
+                this.api.getActiveSymbolsBrief().then(r => {
+                    const { active_symbols: symbols } = r;
+                    this.pipSizes = symbols.reduce((accumulator, currSymbol) => {
+                        // eslint-disable-next-line no-param-reassign
+                        accumulator[currSymbol.symbol] = `${currSymbol.pip}`.length - 2;
+                        return accumulator;
+                    }, {});
+                    resolve(this.pipSizes);
+                });
             });
-        });
+        }
+        return this.active_symbols_promise;
     }
     request(options) {
         const { symbol, granularity } = options;
@@ -208,31 +213,34 @@ export default class TicksService {
     requestTicks(options) {
         const { symbol, granularity, style } = options;
 
-        return new Promise((resolve, reject) => {
-            doUntilDone(() =>
-                this.api.getTickHistory(symbol, {
-                    subscribe  : 1,
-                    end        : 'latest',
-                    count      : 1000,
-                    granularity: granularity ? Number(granularity) : undefined,
-                    style,
-                })
-            )
-                .then(r => {
-                    if (style === 'ticks') {
-                        const ticks = historyToTicks(r.history);
+        if (!this.ticks_history_promise) {
+            this.ticks_history_promise = new Promise((resolve, reject) => {
+                doUntilDone(() =>
+                    this.api.getTickHistory(symbol, {
+                        subscribe  : 1,
+                        end        : 'latest',
+                        count      : 1000,
+                        granularity: granularity ? Number(granularity) : undefined,
+                        style,
+                    })
+                )
+                    .then(r => {
+                        if (style === 'ticks') {
+                            const ticks = historyToTicks(r.history);
 
-                        this.updateTicksAndCallListeners(symbol, ticks);
-                        resolve(ticks);
-                    } else {
-                        const candles = parseCandles(r.candles);
+                            this.updateTicksAndCallListeners(symbol, ticks);
+                            resolve(ticks);
+                        } else {
+                            const candles = parseCandles(r.candles);
 
-                        this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
+                            this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
 
-                        resolve(candles);
-                    }
-                })
-                .catch(reject);
-        });
+                            resolve(candles);
+                        }
+                    })
+                    .catch(reject);
+            });
+        }
+        return this.ticks_history_promise;
     }
 }
