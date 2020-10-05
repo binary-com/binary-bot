@@ -50,3 +50,16 @@ export const load = () => {
 
     addUiLang();
 };
+
+export const showRelatedBanner = () => {
+    if (getLanguage() === 'pt') {
+        document.querySelectorAll(`.${getLanguage()}-show`).forEach(el => {
+            el.classList.remove('invisible');
+        });
+        // TODO: Whenever banners for all languages were added remove else part of the condition.
+    } else {
+        document.querySelectorAll('.any-show').forEach(el => {
+            el.classList.remove('invisible');
+        });
+    }
+};

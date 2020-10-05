@@ -30,7 +30,7 @@ import {
 import { translate } from '../../common/i18n';
 import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
 import googleDrive from '../../common/integrations/GoogleDrive';
-import { getLanguage } from '../../common/lang';
+import { getLanguage, showRelatedBanner } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
     getTokenList,
@@ -188,6 +188,7 @@ const updateTokenList = () => {
 
         // If logged out, determine EU based on IP.
         isEuCountry(api).then(isEu => showHideEuElements(isEu));
+        showRelatedBanner();
 
         $('.account-id')
             .removeAttr('value')
@@ -202,6 +203,7 @@ const updateTokenList = () => {
 
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
         showHideEuElements(hasEuAccount(tokenList));
+        showRelatedBanner();
         updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
 
