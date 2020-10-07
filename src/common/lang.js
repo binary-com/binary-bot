@@ -51,7 +51,7 @@ export const load = () => {
     addUiLang();
 };
 
-export const showdBanner = () => {
+export const showBanner = () => {
     if (getLanguage() === 'pt') {
         document.querySelectorAll(`.${getLanguage()}-show`).forEach(el => {
             el.classList.remove('invisible');
