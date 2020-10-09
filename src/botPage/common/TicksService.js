@@ -208,39 +208,53 @@ export default class TicksService {
         });
     }
     requestStream(options) {
-        return this.requestPipSizes().then(() => this.requestTicks(options));
+        const { style } = options;
+
+        if (style === 'ticks') {
+            if (!this.ticks_history_promise) {
+                this.ticks_history_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+            }
+
+            return this.ticks_history_promise;
+        }
+
+        if (style === 'candles') {
+            if (!this.candles_promise) {
+                this.candles_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+            }
+
+            return this.candles_promise;
+        }
+
+        return [];
     }
     requestTicks(options) {
         const { symbol, granularity, style } = options;
 
-        if (!this.ticks_history_promise) {
-            this.ticks_history_promise = new Promise((resolve, reject) => {
-                doUntilDone(() =>
-                    this.api.getTickHistory(symbol, {
-                        subscribe  : 1,
-                        end        : 'latest',
-                        count      : 1000,
-                        granularity: granularity ? Number(granularity) : undefined,
-                        style,
-                    })
-                )
-                    .then(r => {
-                        if (style === 'ticks') {
-                            const ticks = historyToTicks(r.history);
+        return new Promise((resolve, reject) => {
+            doUntilDone(() =>
+                this.api.getTickHistory(symbol, {
+                    subscribe  : 1,
+                    end        : 'latest',
+                    count      : 1000,
+                    granularity: granularity ? Number(granularity) : undefined,
+                    style,
+                })
+            )
+                .then(r => {
+                    if (style === 'ticks') {
+                        const ticks = historyToTicks(r.history);
 
-                            this.updateTicksAndCallListeners(symbol, ticks);
-                            resolve(ticks);
-                        } else {
-                            const candles = parseCandles(r.candles);
+                        this.updateTicksAndCallListeners(symbol, ticks);
+                        resolve(ticks);
+                    } else {
+                        const candles = parseCandles(r.candles);
 
-                            this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
-
-                            resolve(candles);
-                        }
-                    })
-                    .catch(reject);
-            });
-        }
-        return this.ticks_history_promise;
+                        this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
+                        resolve(candles);
+                    }
+                })
+                .catch(reject);
+        });
     }
 }
