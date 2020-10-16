@@ -47,6 +47,7 @@ export default class TicksService {
         this.ohlcListeners = new Map();
         this.subscriptions = new Map();
         this.ticks_history_promise = null;
+        this.candles_promise = null;
         this.active_symbols_promise = null;
         this.observe();
     }
@@ -209,21 +210,28 @@ export default class TicksService {
     }
     requestStream(options) {
         const { style } = options;
+        const stringifiedOptions = JSON.stringify(options);
 
         if (style === 'ticks') {
-            if (!this.ticks_history_promise) {
-                this.ticks_history_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+            if (!this.ticks_history_promise || this.ticks_history_promise.stringifiedOptions !== stringifiedOptions) {
+                this.ticks_history_promise = {
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    stringifiedOptions,
+                };
             }
 
-            return this.ticks_history_promise;
+            return this.ticks_history_promise.promise;
         }
 
         if (style === 'candles') {
-            if (!this.candles_promise) {
-                this.candles_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+            if (!this.candles_promise || this.candles_promise.stringifiedOptions !== stringifiedOptions) {
+                this.candles_promise = {
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    stringifiedOptions,
+                };
             }
 
-            return this.candles_promise;
+            return this.candles_promise.promise;
         }
 
         return [];
