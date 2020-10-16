@@ -47,6 +47,7 @@ export default class TicksService {
         this.ohlcListeners = new Map();
         this.subscriptions = new Map();
         this.ticks_history_promise = null;
+        this.candles_promise = null;
         this.active_symbols_promise = null;
         this.observe();
     }
