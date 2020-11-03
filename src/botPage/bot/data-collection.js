@@ -121,7 +121,7 @@ export default class DataCollection {
 
     getUTCDate = () => {
         const date = new Date();
-        return Date.UTC(
+        const utcDate = Date.UTC(
             date.getUTCFullYear(),
             date.getUTCMonth(),
             date.getUTCDate(),
@@ -129,6 +129,8 @@ export default class DataCollection {
             date.getUTCMinutes(),
             date.getUTCMinutes()
         );
+
+        return Math.floor(utcDate / 1000);
     };
 }
 
