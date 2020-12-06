@@ -1,10 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import 'babel-polyfill';
 import 'jquery-ui/ui/widgets/dialog';
 import 'notifyjs-browser';
 import View from './View';
 import '../../common/binary-ui/dropdown';
-import { version } from '../../../package.json';
+import Elevio from '../../common/elevio';
+import GTM from '../../common/gtm';
+import { isProduction } from '../../common/utils/tools';
 
 $.ajaxSetup({
     cache: false,
@@ -14,7 +15,7 @@ $.ajaxSetup({
 window._trackJs = {
     token      : '346262e7ffef497d85874322fff3bbf8',
     application: 'binary-bot',
-    enabled    : window.location.hostname !== 'localhost',
+    enabled    : isProduction(),
     console    : {
         display: false,
     },
@@ -28,7 +29,9 @@ const view = new View();
 view.initPromise.then(() => {
     $('.show-on-load').show();
     $('.barspinner').hide();
-    trackJs.addMetadata('version', version);
+    window.dispatchEvent(new Event('resize'));
+    Elevio.init();
+    GTM.init();
     trackJs.configure({
         userId: $('.account-id')
             .first()

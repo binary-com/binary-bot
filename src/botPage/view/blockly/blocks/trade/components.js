@@ -1,9 +1,8 @@
+import { caution } from '../images';
+import { fieldGeneratorMapping } from '../shared';
+import { oppositesToDropdown } from '../../utils';
 import config from '../../../../common/const';
 import { translate } from '../../../../../common/i18n';
-import { oppositesToDropdown } from '../../utils';
-import { caution } from '../images';
-import { getTradeType } from './tools';
-import { fieldGeneratorMapping } from '../shared';
 
 export const marketDropdown = block => {
     block
@@ -29,10 +28,10 @@ export const contractTypes = block => {
     if (!block.getInput('CONTRACT_TYPE')) {
         const getContractTypes = () => {
             const tradeType = block.getFieldValue('TRADETYPE_LIST');
-            if (tradeType) {
+            if (tradeType && tradeType !== 'na') {
                 return [[translate('Both'), 'both'], ...oppositesToDropdown(config.opposites[tradeType.toUpperCase()])];
             }
-            return [['', '']];
+            return [[translate('Not available'), 'na']];
         };
         block
             .appendDummyInput('CONTRACT_TYPE')
@@ -52,57 +51,63 @@ export const candleInterval = block => {
 
 export const duration = block => {
     if (!block.getInput('DURATION')) {
-        const getDurationTypes = () => {
-            const tradeType = getTradeType(block);
-            if (tradeType) {
-                return config.durationTypes[tradeType.toUpperCase()];
-            }
-            return [[translate('Ticks'), 't']];
-        };
         block
             .appendValueInput('DURATION')
             .setCheck('Number')
             .appendField(translate('Duration:'))
-            .appendField(new Blockly.FieldDropdown(getDurationTypes), 'DURATIONTYPE_LIST');
+            .appendField(new Blockly.FieldDropdown([['', '']]), 'DURATIONTYPE_LIST');
     }
 };
 
 export const payout = block => {
     if (!block.getInput('AMOUNT')) {
-        block
-            .appendValueInput('AMOUNT')
-            .setCheck('Number')
-            .appendField(`${translate('Stake')}:`)
-            .appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST');
+        const amountInput = block.appendValueInput('AMOUNT');
+
+        amountInput.setCheck('Number');
+
+        if (block.type === 'tradeOptions_payout') {
+            amountInput.appendField(`${translate('Payout')}:`);
+        } else {
+            amountInput.appendField(`${translate('Stake')}:`);
+        }
+
+        amountInput.appendField(new Blockly.FieldDropdown(config.lists.CURRENCY), 'CURRENCY_LIST');
     }
 };
 
-export const barrierOffset = block => {
-    if (!block.getInput('BARRIEROFFSET')) {
-        block
-            .appendValueInput('BARRIEROFFSET')
-            .setCheck('Number')
-            .appendField(`${translate('Barrier Offset')} 1:`)
-            .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'BARRIEROFFSETTYPE_LIST');
-    }
-};
+export const barrierOffsetGenerator = (inputName, block) => {
+    if (!block.getInput(inputName)) {
+        // Determine amount of barrierOffset-blocks on workspace
+        const barrierNumber = block.inputList.filter(input => /BARRIEROFFSET$/.test(input.name)).length;
 
-export const secondBarrierOffset = block => {
-    if (!block.getInput('SECONDBARRIEROFFSET')) {
+        // Set barrier options according to barrierNumber (i.e. Offset + and Offset -)
+        const barrierOffsetList = new Blockly.FieldDropdown(config.barrierTypes);
+        barrierOffsetList.prefixField = null;
+        barrierOffsetList.menuGenerator_ = config.barrierTypes; // eslint-disable-line no-underscore-dangle
+        barrierOffsetList.setValue('');
+        barrierOffsetList.setValue(config.barrierTypes[barrierNumber % config.barrierTypes.length][1]);
+
         block
-            .appendValueInput('SECONDBARRIEROFFSET')
+            .appendValueInput(inputName)
             .setCheck('Number')
-            .appendField(`${translate('Barrier Offset')} 2:`)
-            .appendField(new Blockly.FieldDropdown(config.barrierTypes), 'SECONDBARRIEROFFSETTYPE_LIST');
+            .appendField(`${translate('Barrier')} ${barrierNumber + 1}:`)
+            .appendField(barrierOffsetList, `${inputName}TYPE_LIST`);
+
+        const input = block.getInput(inputName);
+        input.setVisible(false);
     }
 };
 
 export const prediction = block => {
-    if (!block.getInput('PREDICTION')) {
+    const inputName = 'PREDICTION';
+    if (!block.getInput(inputName)) {
         block
-            .appendValueInput('PREDICTION')
+            .appendValueInput(inputName)
             .setCheck('Number')
-            .appendField(translate('Prediction:'));
+            .appendField(`${translate('Prediction')}:`);
+
+        const input = block.getInput(inputName);
+        input.setVisible(false);
     }
 };
 

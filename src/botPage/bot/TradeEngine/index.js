@@ -1,9 +1,8 @@
-import { Map } from 'immutable';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { durationToSecond } from 'binary-common-utils/lib/tools';
+import { durationToSecond } from '../../../common/utils/tools';
 import { translate } from '../../..//common/i18n';
-import createError from '../../common/error';
+import { createError } from '../../common/error';
 import { doUntilDone } from '../tools';
 import { expectInitArg, expectTradeOptions } from '../sanitize';
 import Proposal from './Proposal';
@@ -16,6 +15,7 @@ import Ticks from './Ticks';
 import rootReducer from './state/reducers';
 import * as constants from './state/constants';
 import { start } from './state/actions';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 const watchBefore = store =>
     watchScope({
@@ -34,7 +34,7 @@ const watchDuring = store =>
     });
 
 /* The watchScope function is called randomly and resets the prevTick
- * which leads to the same problem we try to solve. So prevTick is isolated 
+ * which leads to the same problem we try to solve. So prevTick is isolated
  */
 let prevTick;
 const watchScope = ({ store, stopScope, passScope, passFlag }) => {
@@ -69,7 +69,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.observer = $scope.observer;
         this.$scope = $scope;
         this.observe();
-        this.data = new Map();
+        this.data = {
+            contract         : {},
+            proposals        : [],
+            forgetProposalIds: [],
+        };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
     init(...args) {
@@ -89,6 +93,9 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
         }
+
+        globalObserver.emit('bot.running');
+        globalObserver.setState({ isRunning: true });
 
         this.tradeOptions = expectTradeOptions(tradeOptions);
 
@@ -111,9 +118,25 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             this.listen('authorize', ({ authorize }) => {
                 this.accountInfo = authorize;
                 this.token = token;
-                resolve();
+
+                // Only subscribe to balance in browser, not for tests.
+                if (document) {
+                    this.api.subscribeToBalance().then(response => {
+                        const {
+                            balance: { balance, currency },
+                        } = response;
+
+                        globalObserver.setState({
+                            balance: Number(balance),
+                            currency,
+                        });
+                        resolve();
+                    });
+                } else {
+                    resolve();
+                }
             })
-        ).then(() => this.subscribeToBalance());
+        );
     }
     getContractDuration() {
         const { duration, duration_unit: durationUnit } = this.tradeOptions;

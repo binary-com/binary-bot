@@ -1,7 +1,9 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { fieldGeneratorMapping } from './blocks/shared';
+import { saveAs } from '../shared';
 import config from '../../common/const';
 import { translate } from '../../../common/i18n';
-import { saveAs } from '../shared';
+import { observer as globalObserver } from '../../../common/utils/observer';
+import { TrackJSError } from '../logger';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 
@@ -23,6 +25,110 @@ export const backwardCompatibility = block => {
     if (isMainBlock(block.getAttribute('type'))) {
         block.removeAttribute('deletable');
     }
+};
+
+export const removeUnavailableMarkets = block => {
+    const containsUnavailableMarket = Array.from(block.getElementsByTagName('field')).some(
+        field =>
+            field.getAttribute('name') === 'MARKET_LIST' &&
+            !fieldGeneratorMapping
+                .MARKET_LIST()
+                .map(markets => markets[1])
+                .includes(field.innerText)
+    );
+    if (containsUnavailableMarket) {
+        const nodesToRemove = ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST', 'TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
+        Array.from(block.getElementsByTagName('field')).forEach(field => {
+            if (nodesToRemove.includes(field.getAttribute('name'))) {
+                block.removeChild(field);
+            }
+        });
+    }
+    return containsUnavailableMarket;
+};
+
+// Checks for a valid tradeTypeCategory, and attempts to fix if invalid
+// Some tradeTypes were moved to new tradeTypeCategories, this function allows older strategies to keep functioning
+export const strategyHasValidTradeTypeCategory = xml => {
+    const isTradeTypeListBlock = block =>
+        block.getAttribute('type') === 'trade' &&
+        Array.from(block.getElementsByTagName('field')).some(field => field.getAttribute('name') === 'TRADETYPE_LIST');
+    const xmlBlocks = Array.from(xml.children);
+    const containsTradeTypeBlock = xmlBlocks.some(block => isTradeTypeListBlock(block));
+    if (!containsTradeTypeBlock) {
+        return true;
+    }
+    const validTradeTypeCategory = xmlBlocks.some(block => {
+        if (isTradeTypeListBlock(block)) {
+            const xmlFields = Array.from(block.getElementsByTagName('field'));
+            return xmlFields.some(xmlField => {
+                if (xmlField.getAttribute('name') === 'TRADETYPE_LIST') {
+                    // Retrieves the correct TRADETYPECAT_LIST for this TRADETYPE_LIST e.g. 'risefallequals' = 'callputequal'
+                    const tradeTypeCategory = Object.keys(config.conditionsCategory).find(c =>
+                        config.conditionsCategory[c].includes(xmlField.innerText)
+                    );
+                    // Check if the current TRADETYPECAT_LIST is equal to the tradeTypeCategory
+                    const tradeTypeCategoryIsEqual = xmlFields.some(
+                        f => f.getAttribute('name') === 'TRADETYPECAT_LIST' && f.textContent === tradeTypeCategory
+                    );
+                    // If the Trade Type Category is invalid, try to fix it
+                    if (!tradeTypeCategoryIsEqual) {
+                        try {
+                            const tempWorkspace = new Blockly.Workspace({});
+                            const blocklyBlock = Blockly.Xml.domToBlock(block, tempWorkspace);
+                            const availableCategories = fieldGeneratorMapping.TRADETYPECAT_LIST(blocklyBlock)();
+                            return xmlFields.some(
+                                f =>
+                                    f.getAttribute('name') === 'TRADETYPECAT_LIST' &&
+                                    availableCategories.some(
+                                        category =>
+                                            category[1] === tradeTypeCategory &&
+                                            Object.assign(f, { textContent: tradeTypeCategory })
+                                    )
+                            );
+                        } catch (e) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            });
+        }
+        return false;
+    });
+    if (!validTradeTypeCategory) {
+        const error = new TrackJSError('FileLoad', translate('The strategy you tried to import is invalid.'));
+        globalObserver.emit('Error', error);
+    }
+    return validTradeTypeCategory;
+};
+
+export const updateRenamedFields = xml => {
+    const elementRenames = {
+        MARKET_LIST: {
+            volidx: 'synthetic_index',
+        },
+    };
+
+    const fields = xml.getElementsByTagName('field');
+
+    Array.from(fields).forEach(field => {
+        if (!field.hasAttribute('name')) {
+            return;
+        }
+
+        Object.keys(elementRenames).forEach(elementRename => {
+            if (elementRename === field.getAttribute('name')) {
+                Object.keys(elementRenames[elementRename]).forEach(replacementKey => {
+                    if (replacementKey === field.textContent) {
+                        // eslint-disable-next-line no-param-reassign
+                        field.textContent = elementRenames[elementRename][replacementKey];
+                    }
+                });
+            }
+        });
+    });
 };
 
 const getCollapsedProcedures = () =>
@@ -226,8 +332,15 @@ export const deleteBlocksLoadedBy = (id, eventGroup = true) => {
     });
     Blockly.Events.setGroup(false);
 };
-
+export const fixArgumentAttribute = xml => {
+    Array.from(xml.getElementsByTagName('arg')).forEach(o => {
+        if (o.hasAttribute('varid')) o.setAttribute('varId', o.getAttribute('varid'));
+    });
+};
 export const addDomAsBlock = blockXml => {
+    if (blockXml.tagName === 'variables') {
+        return Blockly.Xml.domToVariables(blockXml, Blockly.mainWorkspace);
+    }
     backwardCompatibility(blockXml);
     const blockType = blockXml.getAttribute('type');
     if (isMainBlock(blockType)) {
@@ -235,6 +348,9 @@ export const addDomAsBlock = blockXml => {
             .getTopBlocks()
             .filter(b => b.type === blockType)
             .forEach(b => b.dispose());
+    }
+    if (isProcedure(blockType)) {
+        fixArgumentAttribute(blockXml);
     }
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
 };
@@ -397,3 +513,63 @@ export const loadRemote = blockObj =>
             }
         }
     });
+
+export const hideInteractionsFromBlockly = callback => {
+    Blockly.Events.recordUndo = false;
+    callback();
+    Blockly.Events.recordUndo = true;
+};
+
+export const cleanBeforeExport = xml => {
+    Array.from(xml.children).forEach(blockDom => {
+        const blockId = blockDom.getAttribute('id');
+        if (!blockId) return;
+        const block = Blockly.mainWorkspace.getBlockById(blockId);
+        if ('loaderId' in block) {
+            blockDom.remove();
+        }
+    });
+};
+
+export const importFile = xml =>
+    new Promise((resolve, reject) => {
+        $.get(xml, dom => {
+            resolve(dom);
+        }).catch(() => {
+            const previousWorkspaceText = localStorage.getItem('previousStrat');
+            reject(previousWorkspaceText);
+        });
+    });
+
+export const saveBeforeUnload = () => {
+    window.onbeforeunload = () => {
+        const currentDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        localStorage.setItem('previousStrat', Blockly.Xml.domToPrettyText(currentDom));
+        return null;
+    };
+};
+
+export const removeParam = key => {
+    const sourceURL = window.location.href;
+    let rtn = sourceURL.split('?')[0];
+    let paramsArr = [];
+    const queryString = sourceURL.indexOf('?') !== -1 ? sourceURL.split('?')[1] : '';
+    if (queryString !== '') {
+        paramsArr = queryString.split('&');
+        for (let i = paramsArr.length - 1; i >= 0; i -= 1) {
+            const paramPair = paramsArr[i];
+            const paramKey = paramPair.split('=');
+            const param = paramKey[0];
+            if (param === key) {
+                paramsArr.splice(i, 1);
+            }
+        }
+        if (paramsArr.length) {
+            rtn = `${rtn}?${paramsArr.join('&')}`;
+        }
+    }
+
+    window.history.pushState({}, window.title, rtn);
+};
+
+export const getPreviousStrat = () => localStorage.getItem('previousStrat');

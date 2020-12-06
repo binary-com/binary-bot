@@ -6,23 +6,25 @@ const steps = [
         text : `
           <p>
             ${translate('Ready to learn how to use Binary Bot?')}
-            <label>
-              <input type="checkbox" id="do-not-ask-me-again"></input>
-              ${translate('Do not ask me again.')}
-            </label>
           </p>
           <div class="tour-custom-buttons">
-            <a class="button-secondary" onclick="tour.stop()">
-                <span>${translate('No Thanks')}</span>
-            </a>
-            <a class="button" onclick="tour.next()">
-                <span>${translate('Yes')}</span>
-            </a>
+            <a class="button-secondary" onclick="tour.stop()"><span>${translate('No Thanks')}</span></a>
+            <a class="button" onclick="tour.next()"><span>${translate('Yes')}</span></a>
+          </div>
+          <div class="tour-custom-buttons">
+            <input type="checkbox" id="do-not-ask-me-again"></input>
+            <label for="do-not-ask-me-again">
+                ${translate('Do not ask me again.')}
+            </label>
           </div>
           `,
-        selector: '#tour',
+        selector: '#center',
         position: 'top',
         style   : {
+            textAlign: 'center',
+            arrow    : {
+                display: 'none',
+            },
             button: {
                 display: 'none',
             },
@@ -38,13 +40,10 @@ const steps = [
       <a target="blank" href="https://shop.binary.com/collections/strategies">
         ${translate('Download sample strategies')}
       </a>
-      ${translate('or')}
-        <a target="blank" href="https://github.com/binary-com/binary-bot#sample-blocks">
-          ${translate('Make your own strategies')}
-        </a>
+      ${translate('or')} ${translate('make your own strategies.')}
     </p>`,
-        selector: '#center',
-        position: 'bottom',
+        selector: '#workspace_center',
+        position: 'top',
     },
     {
         title: translate('Blocks toolbox'),
@@ -59,7 +58,7 @@ const steps = [
         text : `<p>
       ${translate('Login before starting your bot. Always test your strategies with the virtual account.')}
     </p>`,
-        selector: '.right-header',
+        selector: '.intro-login-logout',
         position: 'left',
     },
     {
@@ -67,7 +66,7 @@ const steps = [
         text : `<p>
       ${translate('Control your blocks. Hold the cursor on each button for more info.')}
     </p>`,
-        selector: '#toolbox',
+        selector: '#zoomIn',
         position: 'left',
     },
     {
@@ -79,7 +78,12 @@ const steps = [
       </a>
     </p>`,
         selector: '#center',
-        position: 'bottom',
+        position: 'top',
+        style   : {
+            arrow: {
+                display: 'none',
+            },
+        },
     },
 ];
 

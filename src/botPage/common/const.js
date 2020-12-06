@@ -1,14 +1,13 @@
 import { translate } from '../../common/i18n';
 import { generateLiveApiInstance } from '../../common/appId';
+import { load as loadLang } from '../../common/lang';
+
+loadLang();
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH'];
 
 const config = {
     lists: {
-        PAYOUTTYPE: [
-            // [translate('Payout'), 'payout'],
-            [translate('Stake'), 'stake'],
-        ],
         CRYPTO_CURRENCIES,
         DETAILS: [
             [translate('statement'), '1'],
@@ -18,8 +17,10 @@ const config = {
             [translate('contract type'), '5'],
             [translate('entry spot'), '6'],
             [translate('entry value'), '7'],
+            [translate('entry value string'), '12'],
             [translate('exit spot'), '8'],
             [translate('exit value'), '9'],
+            [translate('exit value string'), '13'],
             [translate('barrier'), '10'],
             [translate('result'), '11'],
         ],
@@ -41,7 +42,6 @@ const config = {
             [translate('Severe error'), 'severe-error'],
         ],
     },
-
     opposites: {
         RISEFALL: [
             {
@@ -49,6 +49,14 @@ const config = {
             },
             {
                 PUT: translate('Fall'),
+            },
+        ],
+        RISEFALLEQUALS: [
+            {
+                CALLE: translate('Rise Equals'),
+            },
+            {
+                PUTE: translate('Fall Equals'),
             },
         ],
         HIGHERLOWER: [
@@ -115,8 +123,32 @@ const config = {
                 DIGITUNDER: translate('Under'),
             },
         ],
+        HIGHLOWTICKS: [
+            {
+                TICKHIGH: translate('High Tick'),
+            },
+            {
+                TICKLOW: translate('Low Tick'),
+            },
+        ],
+        RESET: [
+            {
+                RESETCALL: translate('Reset Call'),
+            },
+            {
+                RESETPUT: translate('Reset Put'),
+            },
+        ],
+        RUNS: [
+            {
+                RUNHIGH: translate('Only Ups'),
+            },
+            {
+                RUNLOW: translate('Only Downs'),
+            },
+        ],
     },
-    barrierTypes: [['+', '+'], ['-', '-']],
+    barrierTypes: [['Offset +', '+'], ['Offset -', '-']],
     ohlcFields  : [
         [translate('Open'), 'open'],
         [translate('High'), 'high'],
@@ -126,62 +158,47 @@ const config = {
     ],
     candleIntervals: [
         [translate('Default'), 'default'],
-        ['1 minute', '60'],
-        ['2 minutes', '120'],
-        ['3 minutes', '180'],
-        ['5 minutes', '300'],
-        ['10 minutes', '600'],
-        ['15 minutes', '900'],
-        ['30 minutes', '1800'],
-        ['1 hour', '3600'],
-        ['2 hours', '7200'],
-        ['4 hours', '14400'],
-        ['8 hours', '28800'],
-        ['1 day', '86400'],
+        [translate('1 minute'), '60'],
+        [translate('2 minutes'), '120'],
+        [translate('3 minutes'), '180'],
+        [translate('5 minutes'), '300'],
+        [translate('10 minutes'), '600'],
+        [translate('15 minutes'), '900'],
+        [translate('30 minutes'), '1800'],
+        [translate('1 hour'), '3600'],
+        [translate('2 hours'), '7200'],
+        [translate('4 hours'), '14400'],
+        [translate('8 hours'), '28800'],
+        [translate('1 day'), '86400'],
     ],
-    mainBlocks   : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
-    durationTypes: {
-        RISEFALL: [
-            [translate('Ticks'), 't'],
-            [translate('Seconds'), 's'],
-            [translate('Minutes'), 'm'],
-            [translate('Hours'), 'h'],
-        ],
-        HIGHERLOWER: [
-            [translate('Ticks'), 't'],
-            [translate('Seconds'), 's'],
-            [translate('Minutes'), 'm'],
-            [translate('Hours'), 'h'],
-        ],
-        TOUCHNOTOUCH  : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
-        ENDSINOUT     : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
-        STAYSINOUT    : [[translate('Minutes'), 'm'], [translate('Hours'), 'h']],
-        ASIANS        : [[translate('Ticks'), 't']],
-        MATCHESDIFFERS: [[translate('Ticks'), 't']],
-        EVENODD       : [[translate('Ticks'), 't']],
-        OVERUNDER     : [[translate('Ticks'), 't']],
-    },
-    hasPrediction         : ['MATCHESDIFFERS', 'OVERUNDER'],
-    hasBarrierOffset      : ['HIGHERLOWER', 'TOUCHNOTOUCH', 'ENDSINOUT', 'STAYSINOUT'],
-    hasSecondBarrierOffset: ['ENDSINOUT', 'STAYSINOUT'],
-    conditionsCategory    : {
+    mainBlocks        : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
+    conditionsCategory: {
         callput     : ['risefall', 'higherlower'],
+        callputequal: ['risefallequals'],
         touchnotouch: ['touchnotouch'],
         endsinout   : ['endsinout'],
         staysinout  : ['staysinout'],
         asian       : ['asians'],
         digits      : ['matchesdiffers', 'evenodd', 'overunder'],
+        highlowticks: ['highlowticks'],
+        reset       : ['reset'],
+        runs        : ['runs'],
     },
     conditionsCategoryName: {
         callput     : translate('Up/Down'),
+        callputequal: translate('Up/Down Equals'),
         asian       : translate('Asians'),
         digits      : translate('Digits'),
         touchnotouch: translate('Touch/No Touch'),
         endsinout   : translate('Ends In/Out'),
         staysinout  : translate('Stays In/Goes Out'),
+        highlowticks: translate('High/Low Ticks'),
+        reset       : translate('Reset Call/Reset Put'),
+        runs        : translate('Only Ups/Only Downs'),
     },
     conditions: [
         'risefall',
+        'risefallequals',
         'higherlower',
         'touchnotouch',
         'endsinout',
@@ -191,6 +208,15 @@ const config = {
         'evenodd',
         'overunder',
     ],
+    barrierCategories: {
+        euro_atm     : ['callput', 'risefall', 'risefallequals'],
+        euro_non_atm : ['endsinout', 'higherlower'],
+        american     : ['staysinout', 'touchnotouch', 'highlowticks', 'runs'],
+        non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],
+        asian        : ['asian'],
+        reset        : ['reset'],
+        lookback     : ['lookback'],
+    },
     scopeNames: {
         before_purchase: translate('Before Purchase'),
         during_purchase: translate('During Purchase'),
@@ -201,10 +227,15 @@ const config = {
     },
     bbResult  : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
     macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
+    gd        : {
+        cid: '828416594271-qj2dnf4u2omg1iugangbtsrq6p0a55oc.apps.googleusercontent.com',
+        aid: 'derivbot-248506',
+        api: 'AIzaSyBDYQ7IIgGxM14IeAV5JrtaJNYjxB4A5jo',
+    },
+    quick_strategies: ['martingale', 'dalembert'],
 };
 
-export async function updateConfigCurrencies() {
-    const api = generateLiveApiInstance();
+export async function updateConfigCurrencies(api = generateLiveApiInstance()) {
     try {
         const response = await api.getPayoutCurrencies();
         config.lists.CURRENCY = response.payout_currencies.map(c => [c, c]);

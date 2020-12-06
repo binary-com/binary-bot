@@ -1,4 +1,10 @@
+import GTM from '../../../common/gtm';
+import { translate, translateLangToLang } from '../../../common/i18n';
+import { getLanguage } from '../../../common/lang';
+import { save } from './utils';
+
 /* eslint-disable */
+Blockly.WorkspaceAudio.prototype.preload = function() {};
 Blockly.FieldDropdown.prototype.render_ = function() {
     if (!this.visible_) {
         this.size_.width = 0;
@@ -259,4 +265,162 @@ Blockly.FieldLabel.prototype.init = function() {
     Blockly.Tooltip.bindMouseEvents(this.textElement_);
     // Force a render.
     this.render_();
+};
+// Override inline editor blockly
+Blockly.FieldTextInput.prototype.showInlineEditor_ = function(quietInput) {
+    Blockly.WidgetDiv.show(this, this.sourceBlock_.RTL, this.widgetDispose_());
+    var div = Blockly.WidgetDiv.DIV;
+    // Create the input.
+    var htmlInput = document.createElement('input');
+    htmlInput.className = 'blocklyHtmlInput';
+    htmlInput.setAttribute('spellcheck', this.spellcheck_);
+    htmlInput.setAttribute('data-lpignore', 'true');
+    var fontSize = Blockly.FieldTextInput.FONTSIZE * this.workspace_.scale + 'pt';
+    div.style.fontSize = fontSize;
+    htmlInput.style.fontSize = fontSize;
+
+    Blockly.FieldTextInput.htmlInput_ = htmlInput;
+    div.appendChild(htmlInput);
+
+    htmlInput.value = htmlInput.defaultValue = this.text_;
+    htmlInput.oldValue_ = null;
+    this.validate_();
+    this.resizeEditor_();
+    if (!quietInput) {
+        htmlInput.focus();
+        htmlInput.select();
+    }
+
+    this.bindEvents_(htmlInput);
+};
+const originalContextMenuFn = Blockly.ContextMenu.show;
+Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
+    // Rename 'Clean up blocks'
+    menuOptions.some(option => {
+        if (option.text === Blockly.Msg.CLEAN_UP) {
+            option.text = translate('Rearrange vertically'); // eslint-disable-line no-param-reassign
+            return true;
+        }
+        return false;
+    }) &&
+        /* Remove delete all blocks, but only when 'Clean up blocks' is available (i.e. workspace)
+         * This allows users to still delete root blocks containing blocks
+         */
+        menuOptions.some((option, i) => {
+            if (
+                option.text === Blockly.Msg.DELETE_BLOCK ||
+                option.text.replace(/[0-9]+/, '%1') === Blockly.Msg.DELETE_X_BLOCKS
+            ) {
+                menuOptions.splice(i, 1);
+                return true;
+            }
+            return false;
+        });
+    // Open the Elev.io widget when clicking 'Help'
+    // eslint-disable-next-line no-underscore-dangle
+    if (window._elev) {
+        menuOptions.some(option => {
+            if (option.text === Blockly.Msg.HELP) {
+                option.callback = () => window._elev.open(); // eslint-disable-line no-param-reassign, no-underscore-dangle
+                return true;
+            }
+            return false;
+        });
+    }
+    originalContextMenuFn(e, menuOptions, rtl);
+};
+Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockType) {
+    const shadowBlock = this.sourceBlock_.workspace.newBlock(shadowBlockType);
+    shadowBlock.setShadow(true);
+    shadowBlock.setFieldValue(value, name); // Refactor when using shadow block for strings in future
+    shadowBlock.outputConnection.connect(this.connection);
+    shadowBlock.initSvg();
+    shadowBlock.render();
+};
+
+/**
+ * Expand or collapse the node on mouse click.
+ * @param {!goog.events.BrowserEvent} _e The browser event.
+ * @override
+ */
+Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
+    // eslint-disable-next-line no-underscore-dangle
+    const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
+    GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
+
+    // Expand icon.
+    if (this.hasChildren() && this.isUserCollapsible_) {
+        this.toggle();
+        this.select();
+    } else if (this.isSelected()) {
+        this.getTree().setSelectedItem(null);
+    } else {
+        this.select();
+    }
+    this.updateRow();
+};
+
+/**
+ * Preload all the audio files so that they play quickly when asked for.
+ * @package
+ */
+Blockly.WorkspaceAudio.prototype.preload = function() {
+    for (var name in this.SOUNDS_) {
+        var sound = this.SOUNDS_[name];
+        sound.volume = 0.01;
+        sound.play().catch(function() {});
+        sound.pause();
+        // iOS can only process one sound at a time.  Trying to load more than one
+        // corrupts the earlier ones.  Just load one and leave the others uncached.
+        if (goog.userAgent.IPAD || goog.userAgent.IPHONE) {
+            break;
+        }
+    }
+};
+
+// https://groups.google.com/forum/#!msg/blockly/eS1V49pI9c8/VEh5UuUcBAAJ
+const addDownloadOption = (callback, options, block) => {
+    options.push({
+        text: translate('Download'),
+        enabled: true,
+        callback: () => {
+            const xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
+            xml.appendChild(Blockly.Xml.blockToDom(block));
+            save('binary-bot-block', true, xml);
+        },
+    });
+    callback(options);
+};
+
+const originalCustomContextVarFn =
+    Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN.customContextMenu;
+Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN.customContextMenu = function(options) {
+    addDownloadOption(originalCustomContextVarFn.bind(this), options, this);
+};
+
+const originalCustomContextLoopFn =
+    Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN.customContextMenu;
+Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN.customContextMenu = function(options) {
+    addDownloadOption(originalCustomContextLoopFn.bind(this), options, this);
+};
+
+/**
+ * Return the parent block or null if this block is at the top level.
+ * @return {Blockly.Block} The block that holds the current block.
+ */
+Blockly.Block.prototype.getRootInputTargetBlock = function() {
+    let inputName;
+    let currentBlock = this.getParent();
+
+    while (currentBlock) {
+        const rootBlock = this.getRootBlock();
+        const currentInput = rootBlock.getInputWithBlock(currentBlock);
+
+        if (currentInput && currentInput.name) {
+            inputName = currentInput.name;
+        }
+        currentBlock = currentBlock.getParent();
+    }
+
+    return inputName;
 };

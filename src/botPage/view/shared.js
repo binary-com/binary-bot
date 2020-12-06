@@ -1,11 +1,8 @@
 import filesaver from 'file-saver';
-import Observer from 'binary-common-utils/lib/observer';
+import Observer from '../../common/utils/observer';
 import { generateLiveApiInstance } from '../../common/appId';
-import { load as loadLang } from '../../common/lang';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
-
-loadLang();
 
 let tmpApi = generateLiveApiInstance();
 

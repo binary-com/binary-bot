@@ -1,10 +1,12 @@
 import { translate } from '../../../common/i18n';
-import { recoverFromError, doUntilDone } from '../tools';
-import { info, notify } from '../broadcast';
+import { getUUID, recoverFromError, doUntilDone } from '../tools';
+import { contractStatus, info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
+import GTM from '../../../common/gtm';
 
 let delayIndex = 0;
+let purchaseReference;
 
 export default Engine =>
     class Purchase extends Engine {
@@ -14,16 +16,28 @@ export default Engine =>
                 return Promise.resolve();
             }
 
-            const { id, askPrice } = this.selectProposal(contractType);
+            const { currency, proposal } = this.selectProposal(contractType);
+            const onSuccess = response => {
+                // Don't unnecessarily send a forget request for a purchased contract.
+                this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
+                const { buy } = response;
+                GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
 
-            const onSuccess = r => {
-                const { buy } = r;
+                contractStatus({
+                    id  : 'contract.purchase_recieved',
+                    data: buy.transaction_id,
+                    proposal,
+                    currency,
+                });
 
                 this.subscribeToOpenContract(buy.contract_id);
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
+
                 delayIndex = 0;
+
                 notify('info', `${translate('Bought')}: ${buy.longcode} (${translate('ID')}: ${buy.transaction_id})`);
+
                 info({
                     accountID      : this.accountInfo.loginid,
                     totalRuns      : this.updateAndReturnTotalRuns(),
@@ -33,7 +47,16 @@ export default Engine =>
                 });
             };
 
-            const action = () => this.api.buyContract(id, askPrice);
+            this.isSold = false;
+
+            contractStatus({
+                id  : 'contract.purchase_sent',
+                data: proposal.ask_price,
+                proposal,
+                currency,
+            });
+
+            const action = () => this.api.buyContract(proposal.id, proposal.ask_price);
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
@@ -61,4 +84,8 @@ export default Engine =>
                 delayIndex++
             ).then(onSuccess);
         }
+        getPurchaseReference = () => purchaseReference;
+        regeneratePurchaseReference = () => {
+            purchaseReference = getUUID();
+        };
     };

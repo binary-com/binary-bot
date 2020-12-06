@@ -59,7 +59,7 @@
     border-width: thin;
     color: $brand-dark-gray;
     border-right: 0.063em solid;
-    width: 11em;	
+    min-width: 11em;
 }
 
 .blocklyIconShape {
@@ -83,7 +83,6 @@
 }
 
 .blocklyToolboxDiv {
-    position: fixed !important;
     z-index: 99 !important;
     left: -100%;
     overflow-x: hidden !important;
@@ -91,4 +90,8 @@
 
 .blocklySvg {
     position: absolute;
+}
+
+.blocklyMainBackground {
+    stroke: none;
 }

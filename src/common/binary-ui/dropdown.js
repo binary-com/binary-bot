@@ -22,7 +22,15 @@ function navMenuListener() {
         event.stopPropagation();
         hide_menu($('.top-nav-menu li ul'));
         hide_menu($('#language_select, #select_language'));
-        var $el = $('#all-accounts, #all-accounts-top');
+        let $el;
+        if ($(this).is('#toolbox-main-account')) {
+            $el = $('#toolbox-all-accounts');
+            hide_menu($('#all-accounts'));
+        } else {
+            $el = $('#all-accounts');
+            hide_menu($('#toolbox-all-accounts'));
+        }
+
         if ($el.css('opacity') == 1) {
             hide_menu($el);
         } else {
@@ -34,7 +42,7 @@ function navMenuListener() {
 function topNavMenuListener() {
     $('.top-nav-menu > li').on('click', function(event) {
         event.stopPropagation();
-        hide_menu($('#all-accounts, #all-accounts-top'));
+        hide_menu($('#all-accounts, #toolbox-all-accounts'));
         hide_menu($('#language_select, #select_language'));
         var childMenu = $(this).find(' > ul'),
             $el = $('.top-nav-menu li ul');
@@ -61,7 +69,7 @@ function topNavMenuListener() {
 
 function documentListener() {
     $(document).on('click', function() {
-        hide_menu($('#all-accounts, #all-accounts-top'));
+        hide_menu($('#all-accounts, #toolbox-all-accounts'));
         hide_menu($('.top-nav-menu li ul'));
         hide_menu($('#language_select, #select_language'));
     });
@@ -71,7 +79,7 @@ function langListener() {
     $('.languages').on('click', function(event) {
         event.stopPropagation();
         hide_menu($('.top-nav-menu li ul'));
-        hide_menu($('#all-accounts, #all-accounts-top'));
+        hide_menu($('#all-accounts, #toolbox-all-accounts'));
         var $el = $('#language_select, #select_language');
         if ($el.css('opacity') == 1) {
             hide_menu($el);

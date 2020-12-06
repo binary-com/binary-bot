@@ -1,7 +1,8 @@
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import { info, notify } from '../broadcast';
-import createError from '../../common/error';
+import { createError } from '../../common/error';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 const skeleton = {
     totalProfit: 0,
@@ -20,6 +21,14 @@ export default Engine =>
             super();
             this.sessionRuns = 0;
             this.sessionProfit = 0;
+
+            globalObserver.register('summary.clear', () => {
+                this.sessionRuns = 0;
+                this.sessionProfit = 0;
+
+                const { loginid: accountID } = this.accountInfo;
+                globalStat[accountID] = { ...skeleton };
+            });
         }
         updateTotals(contract) {
             const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
@@ -77,9 +86,14 @@ export default Engine =>
             const accountStat = this.getAccountStat();
             return accountStat.totalRuns;
         }
-        getTotalProfit() {
+        getTotalProfit(toString, currency) {
             const accountStat = this.getAccountStat();
-            return Number(accountStat.totalProfit);
+            return toString && accountStat.totalProfit !== 0
+                ? roundBalance({
+                    currency,
+                    balance: +accountStat.totalProfit,
+                })
+                : +accountStat.totalProfit;
         }
         /* eslint-enable */
         checkLimits(tradeOption) {
@@ -87,7 +101,9 @@ export default Engine =>
                 return;
             }
 
-            const { limitations: { maxLoss, maxTrades } } = tradeOption;
+            const {
+                limitations: { maxLoss, maxTrades },
+            } = tradeOption;
 
             if (maxLoss && maxTrades) {
                 if (this.sessionRuns >= maxTrades) {

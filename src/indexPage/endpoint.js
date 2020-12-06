@@ -1,5 +1,6 @@
-import { get as getStorage, set as setStorage } from 'binary-common-utils/lib/storageManager';
+import { get as getStorage, set as setStorage } from '../common/utils/storageManager';
 import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
+import { translate } from '../common/utils/tools';
 
 if (document.location.href.endsWith('/endpoint')) {
     window.location.replace(`${document.location.href}.html`);
@@ -63,6 +64,15 @@ function addEndpoint(e) {
     const appId = $('#app_id').val();
     setStorage('config.server_url', serverUrl);
     setStorage('config.app_id', appId);
+
+    const urlReg = /^(?:http(s)?:\/\/)?[\w.-]+(?:.[\w.-]+)+[\w-._~:?#[\]@!$&'()*+,;=.]+$/;
+
+    if (!urlReg.test(serverUrl)) {
+        $('#error')
+            .html(translate('Please enter a valid server URL'))
+            .show();
+        return;
+    }
 
     checkConnection(appId, serverUrl);
 }

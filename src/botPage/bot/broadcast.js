@@ -1,6 +1,10 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../common/utils/observer';
 
 export const contract = c => globalObserver.emit('bot.contract', c);
+
+export const contractStatus = c => globalObserver.emit('contract.status', c);
+
+export const contractSettled = c => globalObserver.emit('contract.settled', c);
 
 export const info = i => globalObserver.emit('bot.info', i);
 

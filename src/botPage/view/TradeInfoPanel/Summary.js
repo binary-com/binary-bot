@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 
 export default class Summary extends Component {
+    constructor({ accountID }) {
+        super();
+        this.state = { [accountID]: {} };
+    }
     componentWillMount() {
         globalObserver.register('bot.info', info => {
             const { accountID } = info;
             this.setState({ [accountID]: { ...this.state[accountID], ...info } });
         });
-    }
-    constructor({ accountID }) {
-        super();
-        this.state = { [accountID]: {} };
+        globalObserver.register('summary.clear', () => {
+            const { accountID } = this.props;
+            this.setState({ [accountID]: {} });
+        });
     }
     render() {
         const { accountID } = this.props;

@@ -1,7 +1,6 @@
 import sha1 from 'sha1';
 import zhTw from './translations/zh_TW/i10n.json';
 import de from './translations/de_DE/i10n.json';
-import id from './translations/id_ID/i10n.json';
 import zhCn from './translations/zh_CN/i10n.json';
 import it from './translations/it_IT/i10n.json';
 import vi from './translations/vi_VN/i10n.json';
@@ -12,11 +11,11 @@ import es from './translations/es_ES/i10n.json';
 import fr from './translations/fr_FR/i10n.json';
 import en from './translations/en/i10n.json';
 import ach from './translations/ach_UG/i10n.json';
+import id from './translations/id_ID/i10n.json';
 
 export const supportedLanguages = {
     zh_tw: zhTw,
     de,
-    id,
     zh_cn: zhCn,
     it,
     vi,
@@ -27,6 +26,7 @@ export const supportedLanguages = {
     fr,
     en,
     ach,
+    id,
 };
 
 const fallbackLang = en;
@@ -39,6 +39,20 @@ export const init = lang => {
 };
 
 export const translate = str => (str && t(sha1(str))) || str;
+
+export const translateLangToLang = (str, fromLang, toLang) => {
+    if (supportedLanguages[fromLang]) {
+        const hashIndex = Object.values(supportedLanguages[fromLang]).findIndex(translatedStr => str === translatedStr);
+        if (hashIndex !== -1) {
+            const hash = Object.keys(supportedLanguages[fromLang])[hashIndex];
+            const translatedStr = supportedLanguages[toLang][hash];
+            if (translatedStr) {
+                return translatedStr;
+            }
+        }
+    }
+    return str;
+};
 
 export const xml = dom => {
     const categories = Array.from(dom.getElementsByTagName('category') || []);

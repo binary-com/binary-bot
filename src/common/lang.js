@@ -1,5 +1,5 @@
-import { parseQueryString } from 'binary-common-utils/lib/tools';
-import { set as setStorage, get as getStorage } from 'binary-common-utils/lib/storageManager';
+import { parseQueryString } from '../common/utils/tools';
+import { set as setStorage, get as getStorage } from '../common/utils/storageManager';
 import { supportedLanguages, translate, init } from './i18n';
 
 export const getLanguage = () => {
@@ -16,9 +16,14 @@ const addUiLang = () => {
 
         el.text(translate($(this).attr('data-i18n-text'))).append(contents);
     });
+
+    document.querySelectorAll('[data-i18n-title]').forEach(titleNode => {
+        titleNode.setAttribute('title', translate(titleNode.getAttribute('data-i18n-title')));
+    });
 };
 
 export const load = () => {
+    if (typeof $ !== 'function') return; // Adding this check to skip unit test
     const lang = getLanguage();
 
     $('#select_language li:not(:first)').click(function click() {
@@ -44,4 +49,17 @@ export const load = () => {
     init(lang);
 
     addUiLang();
+};
+
+export const showBanner = () => {
+    if (getLanguage() === 'pt') {
+        document.querySelectorAll(`.${getLanguage()}-show`).forEach(el => {
+            el.classList.remove('invisible');
+        });
+        // TODO: Whenever banners for all languages were added remove else part of the condition.
+    } else {
+        document.querySelectorAll('.any-show').forEach(el => {
+            el.classList.remove('invisible');
+        });
+    }
 };

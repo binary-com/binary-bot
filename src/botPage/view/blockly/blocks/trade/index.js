@@ -1,4 +1,4 @@
-import { observer as globalObserver } from 'binary-common-utils/lib/observer';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils';
@@ -30,8 +30,7 @@ const decorateTrade = ev => {
     }
     if ([Blockly.Events.CHANGE, Blockly.Events.MOVE, Blockly.Events.CREATE].includes(ev.type)) {
         const symbol = trade.getFieldValue('SYMBOL_LIST');
-
-        if (symbol && (ev.group === 'reset' || ev.type !== Blockly.Events.CREATE)) {
+        if (symbol) {
             globalObserver.emit('bot.init', symbol);
         }
 
@@ -107,6 +106,13 @@ Blockly.Blocks.trade = {
             replaceInitializationBlocks(this, ev);
             resetTradeFields(this, ev);
         }
+
+        if (ev.type === Blockly.Events.BLOCK_CREATE && ev.group !== 'load' && ev.ids.includes(this.id)) {
+            const marketField = this.getField('MARKET_LIST');
+            marketField.setValue('');
+            marketField.setValue(marketField.menuGenerator_[0][1]); // eslint-disable-line
+        }
+
         decorateTrade(ev);
     },
 };

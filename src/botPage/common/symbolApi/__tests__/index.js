@@ -17,11 +17,15 @@ describe('symbol', () => {
         it('getAllowedCategoryNames returns allowed category names', () => {
             expect(symbol.getAllowedCategoryNames('r_100')).to.be.ok.and.to.have.all.members([
                 'Up/Down',
+                'Up/Down Equals',
                 'Digits',
                 'Asians',
                 'Touch/No Touch',
                 'Ends In/Out',
                 'Stays In/Goes Out',
+                'High/Low Ticks',
+                'Reset Call/Reset Put',
+                'Only Ups/Only Downs',
             ]);
             expect(symbol.getAllowedCategoryNames('FAKE')).to.be.empty;
         });

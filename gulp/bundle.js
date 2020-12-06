@@ -9,27 +9,44 @@ const rename = require('gulp-rename');
 const cleanCSS = require('gulp-clean-css');
 const { addToManifest } = require('./revision');
 
-gulp.task('clean-bundle', () => gulp.src('./www/js/bundle*').pipe(paths(del)));
+gulp.task('clean-bundle', gulp.parallel(() => gulp.src('./www/js/bundle*').pipe(paths(del))));
 
-gulp.task('bundle-js', () =>
-    gulp
-        .src([
+gulp.task(
+    'bundle-js',
+    gulp.parallel(done => {
+        gulp.src([
             './node_modules/blockly/blockly_compressed.js',
             './node_modules/blockly/blocks_compressed.js',
             './node_modules/blockly/javascript_compressed.js',
             './node_modules/blockly/msg/messages.js',
         ])
-        .pipe(concat('bundle.js'))
-        .pipe(rev())
-        .pipe(through.obj(addToManifest))
-        .pipe(gulp.dest('www/js/'))
+            .pipe(concat('bundle.js'))
+            .pipe(rev())
+            .pipe(through.obj(addToManifest))
+            .pipe(gulp.dest('www/js/'))
+            .on('end', () => done());
+    })
 );
 
-gulp.task('bundle-css', () =>
-    gulp
-        .src(['node_modules/{bootstrap/dist/css/bootstrap.min,jquery-ui-css/jquery-ui.min}.css'])
-        .pipe(concatCss('bundle.css'))
-        .pipe(rev())
-        .pipe(through.obj(addToManifest))
-        .pipe(gulp.dest('www/css'))
+gulp.task(
+    'copy-js',
+    gulp.parallel(done => {
+        gulp.src(['./node_modules/smartcharts-beta/dist/*.smartcharts.*']).pipe(gulp.dest('www/js/'));
+        done();
+    })
+);
+
+gulp.task(
+    'bundle-css',
+    gulp.parallel(done => {
+        gulp.src([
+            'node_modules/jquery-ui-css/jquery-ui.min.css',
+            './node_modules/smartcharts-beta/dist/smartcharts.css',
+        ])
+            .pipe(concatCss('bundle.css'))
+            .pipe(rev())
+            .pipe(through.obj(addToManifest))
+            .pipe(gulp.dest('www/css'));
+        done();
+    })
 );

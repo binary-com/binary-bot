@@ -38,4 +38,4 @@ function analysis() {
     return plato.inspect(src, outputDir, platoArgs);
 }
 
-gulp.task('analysis', analysis);
+gulp.task('analysis', gulp.series(analysis));

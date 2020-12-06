@@ -1,31 +1,38 @@
-import { getUTCTime } from 'binary-common-utils/lib/tools';
+import { getUTCTime } from '../../common/utils/tools';
 import { translate } from '../../common/i18n';
 import { roundBalance } from '../common/tools';
 import { notify } from './broadcast';
 
 export const noop = () => {};
 
-const castBarrierToString = barrier => (barrier > 0 ? `+${barrier}` : `${barrier}`);
-
-export const tradeOptionToProposal = tradeOption =>
-    tradeOption.contractTypes.map(type => ({
-        duration_unit: tradeOption.duration_unit,
-        basis        : 'stake',
-        currency     : tradeOption.currency,
-        symbol       : tradeOption.symbol,
-        duration     : tradeOption.duration,
-        amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
-        contract_type: type,
-        ...(tradeOption.prediction !== undefined && {
-            barrier: tradeOption.prediction,
-        }),
-        ...(tradeOption.barrierOffset !== undefined && {
-            barrier: castBarrierToString(tradeOption.barrierOffset),
-        }),
-        ...(tradeOption.secondBarrierOffset !== undefined && {
-            barrier2: castBarrierToString(tradeOption.secondBarrierOffset),
-        }),
-    }));
+export const tradeOptionToProposal = (tradeOption, purchaseReference) =>
+    tradeOption.contractTypes.map(type => {
+        const proposal = {
+            duration_unit: tradeOption.duration_unit,
+            basis        : tradeOption.basis,
+            currency     : tradeOption.currency,
+            symbol       : tradeOption.symbol,
+            duration     : tradeOption.duration,
+            amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
+            contract_type: type,
+            passthrough  : {
+                contractType: type,
+                purchaseReference,
+            },
+        };
+        if (tradeOption.prediction !== undefined) {
+            proposal.selected_tick = tradeOption.prediction;
+        }
+        if (!['TICKLOW', 'TICKHIGH'].includes(type) && tradeOption.prediction !== undefined) {
+            proposal.barrier = tradeOption.prediction;
+        } else if (tradeOption.barrierOffset !== undefined) {
+            proposal.barrier = tradeOption.barrierOffset;
+        }
+        if (tradeOption.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = tradeOption.secondBarrierOffset;
+        }
+        return proposal;
+    });
 
 export const getDirection = ticks => {
     const { length } = ticks;
@@ -92,12 +99,29 @@ const getBackoffDelay = (error, delayIndex) => {
     return linearIncrease * 1000;
 };
 
-export const shouldThrowError = (e, types = [], delayIndex = 0) =>
-    e &&
-    (!types
-        .concat(['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'])
-        .includes(e.name) ||
-        (e.name !== 'DisconnectError' && delayIndex > maxRetries));
+export const shouldThrowError = (error, types = [], delayIndex = 0) => {
+    if (!error) {
+        return false;
+    }
+
+    const defaultErrors = ['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'];
+    const authErrors = ['InvalidToken', 'AuthorizationRequired'];
+    const errors = types.concat(defaultErrors);
+
+    if (authErrors.includes(error.name)) {
+        // If auth error, reload page.
+        window.location.reload();
+        return true;
+    } else if (!errors.includes(error.name)) {
+        // If error is unrecoverable, throw error.
+        return true;
+    } else if (error.name !== 'DisconnectError' && delayIndex > maxRetries) {
+        // If exceeded maxRetries, throw error.
+        return true;
+    }
+
+    return false;
+};
 
 export const recoverFromError = (f, r, types, delayIndex) =>
     new Promise((resolve, reject) => {
@@ -131,7 +155,7 @@ export const doUntilDone = (f, types) => {
     });
 };
 
-export const createDetails = contract => {
+export const createDetails = (contract, pipSize) => {
     const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
     const profit = Number(roundBalance({ currency, balance: sellPrice - buyPrice }));
     const result = profit < 0 ? 'loss' : 'win';
@@ -148,7 +172,54 @@ export const createDetails = contract => {
         +contract.exit_tick,
         +(contract.barrier ? contract.barrier : 0),
         result,
+        (+contract.entry_tick).toFixed(pipSize),
+        (+contract.exit_tick).toFixed(pipSize),
     ];
 };
 
 export const getUUID = () => `${new Date().getTime() * Math.random()}`;
+
+export const showDialog = options =>
+    new Promise((resolve, reject) => {
+        const $dialog = $('<div/>', { class: 'draggable-dialog', title: options.title });
+        options.text.forEach(text => $dialog.append(`<p style="margin: 0.7em;">${text}</p>`));
+        const defaultButtons = [
+            {
+                text : translate('No'),
+                class: 'button-secondary',
+                click() {
+                    $(this).dialog('close');
+                    $(this).remove();
+                    reject();
+                },
+            },
+            {
+                text : translate('Yes'),
+                class: 'button-primary',
+                click() {
+                    $(this).dialog('close');
+                    $(this).remove();
+                    resolve();
+                },
+            },
+        ];
+        const dialogOptions = {
+            autoOpen : false,
+            classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
+            closeText: '',
+            height   : 'auto',
+            width    : 600,
+            modal    : true,
+            resizable: false,
+            open() {
+                $(this)
+                    .parent()
+                    .find('.ui-dialog-buttonset > button')
+                    .removeClass('ui-button ui-corner-all ui-widget');
+            },
+        };
+        Object.assign(dialogOptions, { buttons: options.buttons || defaultButtons });
+
+        $dialog.dialog(dialogOptions);
+        $dialog.dialog('open');
+    });

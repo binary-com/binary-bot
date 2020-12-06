@@ -1,0 +1,206 @@
+
+#footer {
+    .container {
+        max-width: 1200px;
+    }
+    #footer-menu {
+        h4 {
+            font-size: $FONT_SIZE_S;
+        }
+        ul {
+            padding: 0px;
+        }
+        li {
+            line-height: 1;
+            word-wrap: break-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            -moz-hyphens: auto;
+            hyphens: auto;
+        }
+    }
+    .content-inverse-color a {
+        text-decoration: underline;
+    }
+    #footer-regulatory {
+        padding-bottom: 0px;
+
+        a, p, .fld-risk-warning legend {
+            font-size: 13px !important;
+        }
+        a, p {
+            font-weight: 100;
+        }
+        a {
+            color: $COLOR_GRAY;
+        }
+        p, .fld-risk-warning legend {
+            color: #a8a8a8; // stylelint-disable color-no-hex
+            text-align: justify;
+            margin: 0 0 10px;
+        }
+        .fld-risk-warning {
+            margin-bottom: 30px;
+            border-color: $COLOR_DARK_GRAY;
+
+            legend {
+                text-transform: uppercase;
+            }
+        }
+        .about-binary {
+            border-top: 1px solid $COLOR_DARK_GRAY;
+            border-bottom: 1px solid $COLOR_DARK_GRAY;
+            padding: 10px 0;
+            margin-bottom: 10px;
+
+            p {
+                margin: 0;
+            }
+        }
+        .risk-warning {
+            margin-bottom: 30px;
+            p {
+                font-size: 16px;
+            }
+        }
+        #ratelimit-error-message, #site-status-message {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: $COLOR_YELLOW;
+            z-index: 999;
+        }
+        #site-status-message {
+            z-index: 9999;
+        }
+    }
+    .iom-icon {
+        width: 90px;
+    }
+    .lga-icon {
+        width: 100px;
+    }
+    .gamstop-icon {
+        width: 109px;
+    }
+    .gamstop-icon.data-show-visible + .lga-icon {
+        width: 70px;
+        margin-bottom: 3px;
+        margin-left: -10px;
+    }
+    .flex-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .lga-gamstop-icon-container {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column-reverse;
+    }
+    .age-restriction {
+        width: 50px;
+    }
+    .social-icons {
+        margin-left: auto;
+
+        > *:not(:first-child) {
+            margin-left: 10px;
+        }
+        img {
+            height: 35px;
+            width: 35px;
+        }
+    }
+    .icon-row {
+        padding-top: 10px;
+        padding-bottom: 14px;
+    }
+    .regulation-logos {
+        > * {
+            margin-right: 20px;
+        }
+        .vanuatu-icon {
+            width: 160px;
+            margin-left: -30px;
+            margin-right: 0;
+        }
+        .bvi-icon {
+            width: 115px;
+            margin-left: -30px;
+            margin-right: 0;
+        }
+        .labuan-icon {
+            width: 120px;
+        }
+    }
+    #end-note {
+        line-height: 25px;
+        background: $COLOR_RED;
+        font-size: $FONT_SIZE_XS;
+        position: fixed;
+        bottom: 0;
+        z-index: 100 !important;
+        width: 100%;
+    }
+    #status_notification {
+        animation: moveInBottom 0.2s ease-in;
+        background-color: $COLOR_ORANGE;
+        display: none;
+        align-items: center;
+        padding: 10px 7px;
+        position: fixed;
+        bottom: 8px;
+        right: 8px;
+        left: 8px;
+        border-radius: 5px;
+        z-index: 1000;
+
+        &_text {
+            color: $white;
+            font-size: $FONT_SIZE_S;
+            margin: 0 auto 0 0;
+        }
+        &_type {
+            padding-right: 7px;
+        }
+        &_close {
+            padding-left: 7px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+    @media screen and (max-width: 590px) {
+        .icon-row {
+            flex-direction: column;
+
+            > * {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+        .social-icons {
+            margin-left: 0;
+        }
+    }
+    @media screen and (max-width: 400px) {
+        .regulation-logos {
+            .vanuatu-icon {
+                width: 120px;
+                margin-left: -30px;
+                margin-right: 0;
+            }
+            .bvi-icon {
+                width: 100px;
+                margin-left: -30px;
+                margin-right: 0;
+            }
+            .labuan-icon {
+                width: 110px;
+                margin: 0px;
+            }
+        }
+    }
+}

@@ -1,32 +1,27 @@
 import { roundBalance } from '../../common/tools';
 import { info } from '../broadcast';
-import { doUntilDone } from '../tools';
-
-let balance = 0;
-let balanceStr = '';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 export default Engine =>
     class Balance extends Engine {
-        subscribeToBalance() {
-            doUntilDone(() => this.api.subscribeToBalance()).catch(e => this.$scope.observer.emit('Error', e));
-
-            return new Promise(r => {
-                this.balancePromise = r;
-            });
-        }
         observeBalance() {
             this.listen('balance', r => {
-                const { balance: { balance: b, currency } } = r;
+                const {
+                    balance: { balance: b, currency },
+                } = r;
 
-                balance = roundBalance({ currency, balance: b });
-                balanceStr = `${balance} ${currency}`;
+                const balance = roundBalance({ currency, balance: b });
+                const balanceStr = `${balance} ${currency}`;
 
-                this.balancePromise();
+                globalObserver.setState({ balance, currency });
+
                 info({ accountID: this.accountInfo.loginid, balance: balanceStr });
             });
         }
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
+            const balance = globalObserver.getState('balance');
+            const balanceStr = `${balance}`;
             return type === 'STR' ? balanceStr : Number(balance);
         }
     };

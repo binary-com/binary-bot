@@ -1,6 +1,7 @@
-import { getObjectValue } from 'binary-common-utils/lib/tools';
-import config from '../../common/const';
 import ActiveSymbols from './activeSymbols';
+import config from '../../common/const';
+import { getObjectValue } from '../../../common/utils/tools';
+import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
 
 const noop = () => {};
 
@@ -43,13 +44,28 @@ export default class _Symbol {
     constructor(api) {
         this.api = api;
         this.initPromise = new Promise(resolve => {
-            this.api.getActiveSymbolsBrief().then(r => {
-                this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                this.api.getAssetIndex().then(r2 => {
-                    parsedAssetIndex = parseAssetIndex(r2.asset_index);
-                    resolve();
+            const getActiveSymbolsLogic = () => {
+                this.api.getActiveSymbolsBrief().then(r => {
+                    this.activeSymbols = new ActiveSymbols(r.active_symbols);
+                    this.api.getAssetIndex().then(r2 => {
+                        parsedAssetIndex = parseAssetIndex(r2.asset_index);
+                        resolve();
+                    }, noop);
                 }, noop);
-            }, noop);
+            };
+            // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
+            const tokenList = getTokenList();
+            if (tokenList.length) {
+                this.api
+                    .authorize(tokenList[0].token)
+                    .then(() => getActiveSymbolsLogic())
+                    .catch(() => {
+                        removeAllTokens();
+                        getActiveSymbolsLogic();
+                    });
+            } else {
+                getActiveSymbolsLogic();
+            }
         });
     }
     /* eslint-disable class-methods-use-this */

@@ -1,49 +1,13 @@
 {
   "name": "binary-bot",
-  "version": "8.5.12",
   "description": "Visual automation for binary.com",
   "bin": {
     "bot": "lib/index.js"
   },
-  "babel": {
-    "babelrc": false,
-    "presets": [
-      "react",
-      [
-        "env",
-        {
-          "targets": {
-            "browsers": [
-              "last 2 versions",
-              "ios_saf >= 8",
-              "not IE <= 10",
-              "chrome >= 49",
-              "firefox >= 49",
-              "> 1%"
-            ]
-          },
-          "loose": true,
-          "useBuiltIns": true
-        }
-      ]
-    ],
-    "plugins": [
-      [
-        "transform-object-rest-spread",
-        {
-          "useBuiltIns": true
-        }
-      ],
-      [
-        "transform-class-properties",
-        {
-          "useBuiltIns": true
-        }
-      ]
-    ]
-  },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/.jest",
+    "setupFilesAfterEnv": [
+      "<rootDir>/.jest"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "tools.js"
@@ -57,40 +21,40 @@
   },
   "scripts": {
     "start": "gulp watch",
-    "test": "eslint src/ && jest -w 10 --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "gen-branch": "gb() { b=$1; test -z $b && exit 0; (git branch | grep $b) || exit 1; git stash; git checkout $b; yarn install --force --frozen-lockfile; gulp build-min; rm -rf branch/$b; mkdir -p branch/$b ; cp -r www/ branch/$b;}; gb",
-    "deploy": "d() { yarn gen-branch $1 || exit 1; git checkout master ; yarn install --force --frozen-lockfile; gulp deploy;}; d",
-    "deploy-all": "yarn gen-branch beta; yarn gen-branch translation; yarn deploy",
+    "test": "eslint src/",
+    "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch --branch $1;}; d",
+    "release-production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d",
     "build": "webpack --config webpack.config.cli.js",
-    "prepublishOnly": "yarn build",
-    "precommit": "lint-staged"
+    "build-min": "gulp build-min"
   },
-  "author": "Amin Marashi",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "author": "Binary.com",
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.4.4",
+    "@binary-com/binary-indicators": "^1.6.3",
     "app-module-path": "^2.2.0",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.1.2",
-    "babel-jest": "^19.0.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
-    "binary-charts": "^9.2.7",
-    "binary-common-utils": "^8.0.0",
-    "binary-indicators": "^1.5.2",
-    "binary-live-api": "^29.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "binary-live-api": "^29.0.1",
     "binary-utils": "^4.23.0",
-    "bootstrap": "^3.3.7",
     "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
-    "deep-diff": "^0.3.8",
-    "del": "^3.0.0",
-    "es6-plato": "^1.0.15",
+    "coveralls": "^3.0.3",
+    "deep-diff": "^1.0.2",
+    "del": "^4.1.1",
+    "es6-plato": "^1.2.2",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-binary": "^1.0.2",
@@ -98,50 +62,59 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
-    "file-saver": "^1.3.3",
-    "gulp": "^3.9.1",
-    "gulp-clean-css": "^3.9.0",
-    "gulp-concat-css": "^2.3.0",
+    "file-saver": "^2.0.2",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-concat-css": "^3.1.0",
     "gulp-concat-util": "^0.5.5",
     "gulp-connect": "^5.0.0",
-    "gulp-gh-pages": "^0.5.4",
-    "gulp-mustache-plus": "^1.0.1",
-    "gulp-open": "^2.1.0",
+    "gulp-mustache": "^4.1.1",
+    "gulp-open": "^3.0.1",
+    "gulp-remote-src": "^0.4.4",
     "gulp-rename": "^1.2.2",
-    "gulp-rev": "^8.1.1",
-    "gulp-sass": "^3.1.0",
-    "gulp-sourcemaps": "^2.6.2",
-    "gulp-watch": "^4.3.11",
-    "husky": "^0.14.3",
-    "i18next-scanner": "1.9.4",
+    "gulp-rev": "^9.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-watch": "^5.0.1",
+    "husky": "^2.3.0",
+    "i18next-scanner": "^1.9.4",
     "immutable": "^3.8.2",
-    "jest": "20",
-    "jquery": "3.2.1",
+    "jest": "^24.8.0",
+    "jquery": "^3.5.1",
     "jquery-ui": "1.12.1",
     "jquery-ui-css": "1.11.4",
-    "js-interpreter": "^1.4.6",
+    "js-interpreter": "^2.2.0",
     "json2csv": "^3.11.5",
-    "lint-staged": "^6.0.0",
+    "lint-staged": "^8.1.7",
     "loader-utils": "^1.1.0",
     "notifyjs-browser": "^0.4.2",
     "prettier-eslint-cli": "^4.7.0",
-    "prop-types": "^15.6.0",
-    "react": "^15.6.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
     "react-data-grid": "^3.0.0",
-    "react-dom": "^15.6.2",
+    "react-dom": "^16.8.6",
     "react-joyride": "^1.11.1",
-    "redux": "^3.7.2",
+    "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
     "sha1": "^1.1.1",
     "trackjs": "^2.10.2",
     "vinyl-paths": "^2.1.0",
     "webpack": "^3.10.0",
-    "webpack-stream": "^4.0.0",
-    "ws": "^3.3.3"
+    "webpack-stream": "^4.0.0"
   },
   "dependencies": {
-    "blockly": "github:google/blockly#7679d22",
-    "commander": "^2.12.2",
-    "concat-stream": "^1.6.0"
+    "binary-style": "^0.2.4",
+    "blockly": "github:google/blockly#59e5ac6",
+    "commander": "^2.20.0",
+    "concat-stream": "^2.0.0",
+    "core-js": "^2.6.5",
+    "crc-32": "^1.2.0",
+    "gh-pages": "^2.0.1",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.4",
+    "pako": "^1.0.11",
+    "react-render-html": "^0.6.0",
+    "react-transition-group": "^4.0.1",
+    "smartcharts-beta": "^0.8.0-betam.11"
   }
 }

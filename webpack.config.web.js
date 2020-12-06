@@ -42,7 +42,7 @@ module.exports = {
     watch    : !production,
     target   : 'web',
     externals: {
-        ws: 'WebSocket',
+        CIQ: 'CIQ',
     },
     module: {
         rules: [
