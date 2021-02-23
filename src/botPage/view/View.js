@@ -188,6 +188,7 @@ const updateTokenList = () => {
 
         // If logged out, determine EU based on IP.
         isEuCountry(api).then(isEu => showHideEuElements(isEu));
+        showBanner();
 
         $('.account-id')
             .removeAttr('value')
@@ -202,6 +203,7 @@ const updateTokenList = () => {
 
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
         showHideEuElements(hasEuAccount(tokenList));
+        showBanner();
         updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
 
