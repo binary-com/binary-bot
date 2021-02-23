@@ -29,9 +29,7 @@
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "import/no-extraneous-dependencies": 0,
-    "linebreak-style": 0,
-    "template-curly-spacing": "off",
-    "indent": "off"
+    "linebreak-style": 0
   },
   "settings": {
     "react": {
