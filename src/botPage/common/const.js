@@ -239,8 +239,8 @@ export async function updateConfigCurrencies(api = generateLiveApiInstance()) {
     try {
         const response = await api.getPayoutCurrencies();
         config.lists.CURRENCY = response.payout_currencies.map(c => {
-            if (c === 'UST') c = 'USDT';
-            [c, c];
+            if (c === 'UST') return ['USDT', 'USDT'];
+            return [c, c];
         });
     } catch (e) {
         config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
