@@ -30,7 +30,7 @@ import {
 import { translate } from '../../common/i18n';
 import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
 import googleDrive from '../../common/integrations/GoogleDrive';
-import { getLanguage } from '../../common/lang';
+import { getLanguage, showBanner } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
     getTokenList,
@@ -188,6 +188,7 @@ const updateTokenList = () => {
 
         // If logged out, determine EU based on IP.
         isEuCountry(api).then(isEu => showHideEuElements(isEu));
+        showBanner();
 
         $('.account-id')
             .removeAttr('value')
@@ -202,6 +203,7 @@ const updateTokenList = () => {
 
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
         showHideEuElements(hasEuAccount(tokenList));
+        showBanner();
         updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
 
@@ -211,9 +213,7 @@ const updateTokenList = () => {
         }
 
         tokenList.forEach(tokenInfo => {
-            const prefix = isVirtual(tokenInfo)
-                ? 'Virtual Account'
-                : `${tokenInfo.loginInfo.currency === 'UST' ? 'USDT' : tokenInfo.loginInfo.currency} Account`;
+            const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
             if (tokenInfo === activeToken) {
                 $('.account-id')
                     .attr('value', `${tokenInfo.token}`)
