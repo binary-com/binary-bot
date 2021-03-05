@@ -218,9 +218,9 @@ export const hasAllRequiredBlocks = workspace => {
     const { mandatoryMainBlocks } = config;
     const requiredBlockTypes = [...mandatoryMainBlocks];
     const allBlockTypes = blocksInWorspace.map(block => block.type);
-    const hasAllRequiredBlocks = requiredBlockTypes.every(blockType => allBlockTypes.includes(blockType));
+    const allRequiredBlocksPresent = requiredBlockTypes.every(blockType => allBlockTypes.includes(blockType));
 
-    return hasAllRequiredBlocks;
+    return allRequiredBlocksPresent;
 };
 
 export const findTopParentBlock = b => {
