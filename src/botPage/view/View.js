@@ -557,7 +557,7 @@ export default class View {
 
         $('#runButton').click(() => {
             // setTimeout is needed to ensure correct event sequence
-            if (!checkForRequiredBlocks()) return setTimeout(() => $('#stopButton').triggerHandler('click'));
+            if (!checkForRequiredBlocks()) setTimeout(() => $('#stopButton').triggerHandler('click'));
 
             const token = $('.account-id')
                 .first()
