@@ -41,7 +41,7 @@ import {
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
-import { saveBeforeUnload } from './blockly/utils';
+import { hasAllRequiredBlocks, saveBeforeUnload } from './blockly/utils';
 
 let realityCheckTimeout;
 let chart;
@@ -236,6 +236,21 @@ const applyToolboxPermissions = () => {
         [fn]()
         .prevAll('.toolbox-separator:first')
         [fn]();
+};
+
+const checkForRequiredBlocks = () => {
+    if (!hasAllRequiredBlocks(Blockly.mainWorkspace)) {
+        const error = new Error(
+            translate(
+                'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
+            )
+        );
+        globalObserver.emit('Error', error);
+
+        return false;
+    }
+
+    return true;
 };
 
 export default class View {
@@ -541,6 +556,9 @@ export default class View {
         };
 
         $('#runButton').click(() => {
+            // setTimeout is needed to ensure correct event sequence
+            if (!checkForRequiredBlocks()) return setTimeout(() => $('#stopButton').triggerHandler('click'));
+
             const token = $('.account-id')
                 .first()
                 .attr('value');
