@@ -214,13 +214,13 @@ export const getTopBlocksByType = type => Blockly.mainWorkspace.getTopBlocks().f
 export const getMainBlocks = () => config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b);
 
 export const hasAllRequiredBlocks = workspace => {
-    const blocks_in_workspace = workspace.getAllBlocks();
+    const blocksInWorspace = workspace.getAllBlocks();
     const { mandatoryMainBlocks } = config;
-    const required_block_types = [...mandatoryMainBlocks];
-    const all_block_types = blocks_in_workspace.map(block => block.type);
-    const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
+    const requiredBlockTypes = [...mandatoryMainBlocks];
+    const allBlockTypes = blocksInWorspace.map(block => block.type);
+    const hasAllRequiredBlocks = requiredBlockTypes.every(blockType => allBlockTypes.includes(blockType));
 
-    return has_all_required_blocks;
+    return hasAllRequiredBlocks;
 };
 
 export const findTopParentBlock = b => {
