@@ -217,7 +217,7 @@ export const hasAllRequiredBlocks = workspace => {
     const blocksInWorkspace = workspace.getAllBlocks();
     const { mandatoryMainBlocks } = config;
     const requiredBlockTypes = [...mandatoryMainBlocks];
-    const allBlockTypes = blocksInWorspace.map(block => block.type);
+    const allBlockTypes = blocksInWorkspace.map(block => block.type);
     const isAllRequiredBlocksPresent = requiredBlockTypes.every(blockType => allBlockTypes.includes(blockType));
 
     return isAllRequiredBlocksPresent;
