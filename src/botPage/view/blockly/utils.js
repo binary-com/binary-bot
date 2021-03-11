@@ -214,7 +214,7 @@ export const getTopBlocksByType = type => Blockly.mainWorkspace.getTopBlocks().f
 export const getMainBlocks = () => config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b);
 
 export const hasAllRequiredBlocks = workspace => {
-    const blocksInWorspace = workspace.getAllBlocks();
+    const blocksInWorkspace = workspace.getAllBlocks();
     const { mandatoryMainBlocks } = config;
     const requiredBlockTypes = [...mandatoryMainBlocks];
     const allBlockTypes = blocksInWorspace.map(block => block.type);
