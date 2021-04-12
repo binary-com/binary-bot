@@ -18,7 +18,7 @@ gulp.task(
             './node_modules/blockly/blockly_compressed.js',
             './node_modules/blockly/blocks_compressed.js',
             './node_modules/blockly/javascript_compressed.js',
-            './node_modules/blockly/msg/messages.js',
+            './node_modules/blockly/msg/en.js',
         ])
             .pipe(concat('bundle.js'))
             .pipe(rev())
