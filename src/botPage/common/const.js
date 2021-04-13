@@ -171,7 +171,15 @@ const config = {
         [translate('8 hours'), '28800'],
         [translate('1 day'), '86400'],
     ],
-    mainBlocks        : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
+    mainBlocks          : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
+    mandatoryBlocks     : ['trade', 'before_purchase', 'tradeOptions', 'purchase'],
+    mandatoryMainBlocks : ['trade', 'before_purchase'],
+    mandatoryBlocksNames: {
+        trade          : translate('(1) Define your trade contract'),
+        before_purchase: translate('(2) Watch and purchase your contract'),
+        tradeOptions   : translate('Trade Options'),
+        purchase       : translate('Purchase'),
+    },
     conditionsCategory: {
         callput     : ['risefall', 'higherlower'],
         callputequal: ['risefallequals'],

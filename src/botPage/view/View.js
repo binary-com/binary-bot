@@ -41,7 +41,12 @@ import {
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
-import { saveBeforeUnload } from './blockly/utils';
+import {
+    getMissingBlocksTypes,
+    getDisabledMandatoryBlocks,
+    getUnattachedMandatoryPairs,
+    saveBeforeUnload,
+} from './blockly/utils';
 
 let realityCheckTimeout;
 let chart;
@@ -236,6 +241,43 @@ const applyToolboxPermissions = () => {
         [fn]()
         .prevAll('.toolbox-separator:first')
         [fn]();
+};
+
+const checkForRequiredBlocks = () => {
+    const displayError = errorMessage => {
+        const error = new Error(errorMessage);
+        globalObserver.emit('Error', error);
+    };
+
+    const uiNames = { ...config.mandatoryBlocksNames };
+    const missingBlocksTypes = getMissingBlocksTypes();
+    const disabledBlocksTypes = getDisabledMandatoryBlocks().map(block => block.type);
+    const unattachedPairs = getUnattachedMandatoryPairs();
+
+    if (missingBlocksTypes.length) {
+        missingBlocksTypes.forEach(blockType =>
+            displayError(`"${uiNames[blockType]}" block should be added to the workspace.`)
+        );
+        return false;
+    }
+
+    if (disabledBlocksTypes.length) {
+        disabledBlocksTypes.forEach(blockType => displayError(`"${uiNames[blockType]}" block should be enabled.`));
+        return false;
+    }
+
+    if (unattachedPairs.length) {
+        unattachedPairs.forEach(pair =>
+            displayError(
+                `"${uiNames[pair.childBlock.type]}" ${translate('must be added inside:')} "${
+                    uiNames[pair.parentBlock.type]
+                }"`
+            )
+        );
+        return false;
+    }
+
+    return true;
 };
 
 export default class View {
@@ -541,6 +583,12 @@ export default class View {
         };
 
         $('#runButton').click(() => {
+            // setTimeout is needed to ensure correct event sequence
+            if (!checkForRequiredBlocks()) {
+                setTimeout(() => $('#stopButton').triggerHandler('click'));
+                return;
+            }
+
             const token = $('.account-id')
                 .first()
                 .attr('value');
