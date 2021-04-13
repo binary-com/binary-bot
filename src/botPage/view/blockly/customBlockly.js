@@ -14,8 +14,11 @@ Blockly.FieldDropdown.prototype.render_ = function() {
         // Update arrow's colour.
         this.arrow_.style.fill = this.sourceBlock_.getColour();
     }
-    goog.dom.removeChildren(this.textElement_);
-    goog.dom.removeNode(this.imageElement_);
+    Blockly.utils.dom.removeChildren(this.textElement_); //goog == Blockly.utils
+    // for (let child in this.textElement_){
+    //     Blockly.utils.dom.removeNode(child);
+    // }
+    Blockly.utils.dom.removeNode(this.imageElement_);
     this.imageElement_ = null;
 
     if (this.imageJson_) {
@@ -51,11 +54,11 @@ Blockly.Field.prototype.init = function() {
         return;
     }
     // Build the DOM.
-    this.fieldGroup_ = Blockly.utils.createSvgElement('g', {}, null);
+    this.fieldGroup_ = Blockly.utils.dom.createSvgElement('g', {}, null);
     if (!this.visible_) {
         this.fieldGroup_.style.display = 'none';
     }
-    this.borderRect_ = Blockly.utils.createSvgElement(
+    this.borderRect_ = Blockly.utils.dom.createSvgElement(
         'rect',
         {
             rx: 4,
@@ -66,7 +69,7 @@ Blockly.Field.prototype.init = function() {
         },
         this.fieldGroup_
     );
-    this.textElement_ = Blockly.utils.createSvgElement(
+    this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         { class: 'blocklyText', y: this.size_.height - 10 },
         this.fieldGroup_
@@ -84,7 +87,7 @@ Blockly.FieldLabel.prototype.init = function() {
         return;
     }
     // Build the DOM.
-    this.textElement_ = Blockly.utils.createSvgElement(
+    this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         { class: 'blocklyText', y: this.size_.height - 2 },
         null
@@ -247,7 +250,7 @@ Blockly.FieldLabel.prototype.init = function() {
         return;
     }
     // Build the DOM.
-    this.textElement_ = Blockly.utils.createSvgElement(
+    this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         { class: 'blocklyText', y: this.size_.height - 3 },
         null
@@ -340,25 +343,25 @@ Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockTyp
 
 /**
  * Expand or collapse the node on mouse click.
- * @param {!goog.events.BrowserEvent} _e The browser event.
+ * @param {!Blockly.utils.events.BrowserEvent} _e The browser event.
  * @override
  */
-Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
-    // eslint-disable-next-line no-underscore-dangle
-    const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
-    GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
+// Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
+//     // eslint-disable-next-line no-underscore-dangle
+//     const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
+//     GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
 
-    // Expand icon.
-    if (this.hasChildren() && this.isUserCollapsible_) {
-        this.toggle();
-        this.select();
-    } else if (this.isSelected()) {
-        this.getTree().setSelectedItem(null);
-    } else {
-        this.select();
-    }
-    this.updateRow();
-};
+//     // Expand icon.
+//     if (this.hasChildren() && this.isUserCollapsible_) {
+//         this.toggle();
+//         this.select();
+//     } else if (this.isSelected()) {
+//         this.getTree().setSelectedItem(null);
+//     } else {
+//         this.select();
+//     }
+//     this.updateRow();
+// };
 
 /**
  * Preload all the audio files so that they play quickly when asked for.
@@ -372,7 +375,8 @@ Blockly.WorkspaceAudio.prototype.preload = function() {
         sound.pause();
         // iOS can only process one sound at a time.  Trying to load more than one
         // corrupts the earlier ones.  Just load one and leave the others uncached.
-        if (goog.userAgent.IPAD || goog.userAgent.IPHONE) {
+        if (Blockly.utils.userAgent.IPAD || Blockly.utils.userAgent.IPHONE) {
+            // notes
             break;
         }
     }
