@@ -213,14 +213,33 @@ export const getTopBlocksByType = type => Blockly.mainWorkspace.getTopBlocks().f
 
 export const getMainBlocks = () => config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b);
 
-export const hasAllRequiredBlocks = workspace => {
-    const blocksInWorspace = workspace.getAllBlocks();
-    const { mandatoryMainBlocks } = config;
-    const requiredBlockTypes = [...mandatoryMainBlocks];
-    const allBlockTypes = blocksInWorspace.map(block => block.type);
-    const isAllRequiredBlocksPresent = requiredBlockTypes.every(blockType => allBlockTypes.includes(blockType));
+export const getMandatoryBlocks = () => config.mandatoryBlocks.map(type => getBlockByType(type)).filter(b => b);
 
-    return isAllRequiredBlocksPresent;
+export const getMandatoryMainBlocks = () => config.mandatoryMainBlocks.map(type => getBlockByType(type)).filter(b => b);
+
+export const getMissingBlocksTypes = () => {
+    const presentBlocks = getMandatoryBlocks();
+    const missingBlocksTypes = config.mandatoryBlocks.filter(type => !presentBlocks.find(block => block.type === type));
+
+    return missingBlocksTypes;
+};
+
+export const getDisabledMandatoryBlocks = () => {
+    const presentMainBlocks = getMandatoryMainBlocks();
+    const disabledMainBlocks = presentMainBlocks.filter(block => block.disabled);
+
+    return disabledMainBlocks;
+};
+
+export const getUnattachedMandatoryPairs = () => {
+    const presentMainBlocks = getMandatoryMainBlocks();
+    const emptyMainBlocks = presentMainBlocks.filter(block => !block.childBlocks_.length);
+    const unattachedPairs = emptyMainBlocks.map(block => ({
+        parentBlock: block,
+        childBlock : block.type === 'trade' ? getBlockByType('tradeOptions') : getBlockByType('purchase'),
+    }));
+
+    return unattachedPairs;
 };
 
 export const findTopParentBlock = b => {

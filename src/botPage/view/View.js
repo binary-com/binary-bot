@@ -41,7 +41,12 @@ import {
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
-import { hasAllRequiredBlocks, saveBeforeUnload } from './blockly/utils';
+import {
+    getMissingBlocksTypes,
+    getDisabledMandatoryBlocks,
+    getUnattachedMandatoryPairs,
+    saveBeforeUnload,
+} from './blockly/utils';
 
 let realityCheckTimeout;
 let chart;
@@ -239,14 +244,36 @@ const applyToolboxPermissions = () => {
 };
 
 const checkForRequiredBlocks = () => {
-    if (!hasAllRequiredBlocks(Blockly.mainWorkspace)) {
-        const error = new Error(
-            translate(
-                'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
+    const displayError = errorMessage => {
+        const error = new Error(errorMessage);
+        globalObserver.emit('Error', error);
+    };
+
+    const uiNames = { ...config.mandatoryBlocksNames };
+    const missingBlocksTypes = getMissingBlocksTypes();
+    const disabledBlocksTypes = getDisabledMandatoryBlocks().map(block => block.type);
+    const unattachedPairs = getUnattachedMandatoryPairs();
+
+    if (missingBlocksTypes.length) {
+        missingBlocksTypes.forEach(blockType =>
+            displayError(`"${uiNames[blockType]}" block should be added to the workspace.`)
+        );
+        return false;
+    }
+
+    if (disabledBlocksTypes.length) {
+        disabledBlocksTypes.forEach(blockType => displayError(`"${uiNames[blockType]}" block should be enabled.`));
+        return false;
+    }
+
+    if (unattachedPairs.length) {
+        unattachedPairs.forEach(pair =>
+            displayError(
+                `"${uiNames[pair.childBlock.type]}" ${translate('must be added inside:')} "${
+                    uiNames[pair.parentBlock.type]
+                }"`
             )
         );
-        globalObserver.emit('Error', error);
-
         return false;
     }
 
