@@ -217,6 +217,9 @@ export const getMandatoryBlocks = () => config.mandatoryBlocks.map(type => getBl
 
 export const getMandatoryMainBlocks = () => config.mandatoryMainBlocks.map(type => getBlockByType(type)).filter(b => b);
 
+export const hasChildOfType = (block, childType) =>
+    block.childBlocks_.find(child => child.type === childType || hasChildOfType(child, childType));
+
 export const getMissingBlocksTypes = () => {
     const presentBlocks = getMandatoryBlocks();
     const missingBlocksTypes = config.mandatoryBlocks.filter(type => !presentBlocks.find(block => block.type === type));
@@ -235,8 +238,7 @@ export const getUnattachedMandatoryPairs = () => {
     const presentMandatoryMainBlocks = getMandatoryMainBlocks();
     const unattachedPairs = config.mandatoryBlockPairs.filter(pair =>
         presentMandatoryMainBlocks.find(
-            block =>
-                block.type === pair.parentBlock && !block.childBlocks_.find(child => child.type === pair.childBlock)
+            block => block.type === pair.parentBlock && !hasChildOfType(block, pair.childBlock)
         )
     );
 
