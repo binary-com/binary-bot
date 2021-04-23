@@ -184,7 +184,7 @@ const config = {
             childBlock : 'purchase',
         },
     ],
-    mandatoryBlockLabels: {
+    blockLabels: {
         trade          : translate('(1) Define your trade contract'),
         before_purchase: translate('(2) Watch and purchase your contract'),
         tradeOptions   : translate('Trade Options'),
