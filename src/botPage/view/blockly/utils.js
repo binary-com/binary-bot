@@ -225,19 +225,20 @@ export const getMissingBlocksTypes = () => {
 };
 
 export const getDisabledMandatoryBlocks = () => {
-    const presentMainBlocks = getMandatoryMainBlocks();
-    const disabledMainBlocks = presentMainBlocks.filter(block => block.disabled);
+    const presentMandatoryMainBlocks = getMandatoryMainBlocks();
+    const disabledMandatoryMainBlocks = presentMandatoryMainBlocks.filter(block => block.disabled);
 
-    return disabledMainBlocks;
+    return disabledMandatoryMainBlocks;
 };
 
 export const getUnattachedMandatoryPairs = () => {
-    const presentMainBlocks = getMandatoryMainBlocks();
-    const emptyMainBlocks = presentMainBlocks.filter(block => !block.childBlocks_.length);
-    const unattachedPairs = emptyMainBlocks.map(block => ({
-        parentBlock: block,
-        childBlock : block.type === 'trade' ? getBlockByType('tradeOptions') : getBlockByType('purchase'),
-    }));
+    const presentMandatoryMainBlocks = getMandatoryMainBlocks();
+    const unattachedPairs = config.mandatoryBlockPairs.filter(pair =>
+        presentMandatoryMainBlocks.find(
+            block =>
+                block.type === pair.parentBlock && !block.childBlocks_.find(child => child.type === pair.childBlock)
+        )
+    );
 
     return unattachedPairs;
 };

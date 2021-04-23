@@ -249,28 +249,30 @@ const checkForRequiredBlocks = () => {
         globalObserver.emit('Error', error);
     };
 
-    const uiNames = { ...config.mandatoryBlocksNames };
+    const mandatoryBlockLabels = { ...config.mandatoryBlockLabels };
     const missingBlocksTypes = getMissingBlocksTypes();
     const disabledBlocksTypes = getDisabledMandatoryBlocks().map(block => block.type);
     const unattachedPairs = getUnattachedMandatoryPairs();
 
     if (missingBlocksTypes.length) {
         missingBlocksTypes.forEach(blockType =>
-            displayError(`"${uiNames[blockType]}" block should be added to the workspace.`)
+            displayError(`"${mandatoryBlockLabels[blockType]}" block should be added to the workspace.`)
         );
         return false;
     }
 
     if (disabledBlocksTypes.length) {
-        disabledBlocksTypes.forEach(blockType => displayError(`"${uiNames[blockType]}" block should be enabled.`));
+        disabledBlocksTypes.forEach(blockType =>
+            displayError(`"${mandatoryBlockLabels[blockType]}" block should be enabled.`)
+        );
         return false;
     }
 
     if (unattachedPairs.length) {
         unattachedPairs.forEach(pair =>
             displayError(
-                `"${uiNames[pair.childBlock.type]}" ${translate('must be added inside:')} "${
-                    uiNames[pair.parentBlock.type]
+                `"${mandatoryBlockLabels[pair.childBlock]}" ${translate('must be added inside:')} "${
+                    mandatoryBlockLabels[pair.parentBlock]
                 }"`
             )
         );
