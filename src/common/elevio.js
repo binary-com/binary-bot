@@ -5,7 +5,38 @@ import { translate } from '../common/i18n';
 import { getLanguage } from './lang';
 
 const Elevio = (() => {
+    const el_shell_id = 'elevio-shell';
+    let el_shell;
+    const account_id = '5bbc2de0b7365';
+    const elevio_script = `https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=${account_id}`;
+
     const init = () => {
+        el_shell = document.getElementById(el_shell_id);
+
+        el_shell.addEventListener('click', () => injectElevio(true));
+    };
+
+    const injectElevio = (is_open = false) => {
+        window._elev = {}; // eslint-disable-line no-underscore-dangle
+        window._elev.account_id = account_id; // eslint-disable-line no-underscore-dangle
+
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = 1;
+        script.src = elevio_script;
+        script.id = 'loaded-elevio-script';
+        document.body.appendChild(script);
+
+        window._elev.q = []; // eslint-disable-line no-underscore-dangle
+        window._elev.on = function(z, y) {
+            // eslint-disable-line no-underscore-dangle
+            window._elev.q.push([z, y]); // eslint-disable-line no-underscore-dangle
+        };
+
+        script.onload = () => loadElevio(is_open);
+    };
+
+    const loadElevio = (is_open = false) => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
 
         // eslint-disable-next-line no-underscore-dangle
@@ -29,10 +60,15 @@ const Elevio = (() => {
             }
 
             elev.setSettings({
-                page_url: `${document.location.protocol}//${document.location.hostname}${document.location.pathname}`,
+                disablePushState: true,
+                page_url        : `${document.location.protocol}//${document.location.hostname}${document.location.pathname}`,
             });
             setUserInfo(elev);
             setTranslations(elev);
+
+            if (is_open) {
+                elev.open();
+            }
         });
     };
 

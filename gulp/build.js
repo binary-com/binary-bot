@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const mustache = require('gulp-mustache');
+const { translate } = require('../src/common/i18n');
 const { getManifest } = require('./revision');
 require('./static');
 require('./bundle');
@@ -14,9 +15,7 @@ const getConfig = prefix => ({
     index_css       : `<link href="css/${getManifest('index.css')}" rel="stylesheet" />`,
     bot_css         : `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
     binary_style_img: 'image/binary-style',
-    elevio_script   :
-        '<script>!function(e,l,v,i,o,n){e[i]||(e[i]={}),e[i].account_id=n;var g,h;g=l.createElement(v),g.type="text/javascript",g.async=1,g.src=o+n,h=l.getElementsByTagName(v)[0],h.parentNode.insertBefore(g,h);e[i].q=[];e[i].on=function(z,y){e[i].q.push([z,y])}}(window,document,"script","_elev","https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=","5bbc2de0b7365");</script>',
-    gtm_iframe:
+    gtm_iframe      :
         '<!-- Google Tag Manager (noscript) --> <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P97C2DZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <!-- End Google Tag Manager (noscript) -->',
 });
 
