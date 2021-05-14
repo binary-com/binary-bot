@@ -5,38 +5,38 @@ import { translate } from '../common/i18n';
 import { getLanguage } from './lang';
 
 const Elevio = (() => {
-    const el_shell_id = 'elevio-shell';
-    let el_shell;
-    const account_id = '5bbc2de0b7365';
-    const elevio_script = `https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=${account_id}`;
+    const elShellId = 'elevio-shell';
+    let elShell;
+    const accountId = '5bbc2de0b7365';
+    const elevioScript = `https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=${accountId}`;
 
     const init = () => {
-        el_shell = document.getElementById(el_shell_id);
+        elShell = document.getElementById(elShellId);
 
-        el_shell.addEventListener('click', () => injectElevio(true));
+        elShell.addEventListener('click', () => injectElevio(true));
     };
 
-    const injectElevio = (is_open = false) => {
+    const injectElevio = (isOpen = false) => {
         window._elev = {}; // eslint-disable-line no-underscore-dangle
-        window._elev.account_id = account_id; // eslint-disable-line no-underscore-dangle
+        window._elev.account_id = accountId; // eslint-disable-line no-underscore-dangle
 
         const script = document.createElement('script');
         script.type = 'text/javascript';
         script.async = 1;
-        script.src = elevio_script;
+        script.src = elevioScript;
         script.id = 'loaded-elevio-script';
         document.body.appendChild(script);
 
         window._elev.q = []; // eslint-disable-line no-underscore-dangle
-        window._elev.on = function(z, y) {
+        window._elev.on = (z, y) => {
             // eslint-disable-line no-underscore-dangle
             window._elev.q.push([z, y]); // eslint-disable-line no-underscore-dangle
         };
 
-        script.onload = () => loadElevio(is_open);
+        script.onload = () => loadElevio(isOpen);
     };
 
-    const loadElevio = (is_open = false) => {
+    const loadElevio = (isOpen = false) => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
 
         // eslint-disable-next-line no-underscore-dangle
@@ -66,7 +66,7 @@ const Elevio = (() => {
             setUserInfo(elev);
             setTranslations(elev);
 
-            if (is_open) {
+            if (isOpen) {
                 elev.open();
             }
         });
