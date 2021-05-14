@@ -256,13 +256,15 @@ const checkForRequiredBlocks = () => {
 
     if (missingBlocksTypes.length) {
         missingBlocksTypes.forEach(blockType =>
-            displayError(`"${blockLabels[blockType]}" block should be added to the workspace.`)
+            displayError(`"${blockLabels[blockType]}" ${translate('block should be added to the workspace')}.`)
         );
         return false;
     }
 
     if (disabledBlocksTypes.length) {
-        disabledBlocksTypes.forEach(blockType => displayError(`"${blockLabels[blockType]}" block should be enabled.`));
+        disabledBlocksTypes.forEach(blockType =>
+            displayError(`"${blockLabels[blockType]}" ${translate('block should be enabled')}.`)
+        );
         return false;
     }
 
