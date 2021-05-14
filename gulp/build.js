@@ -1,7 +1,6 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const mustache = require('gulp-mustache');
-const { translate } = require('../src/common/i18n');
 const { getManifest } = require('./revision');
 require('./static');
 require('./bundle');
