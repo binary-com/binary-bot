@@ -7,12 +7,14 @@ import { getLanguage } from './lang';
 const Elevio = (() => {
     const elShellId = 'elevio-shell';
     let elShell;
+    let elBtnLabel;
     const accountId = '5bbc2de0b7365';
     const elevioScript = `https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=${accountId}`;
 
     const init = () => {
         elShell = document.getElementById(elShellId);
-
+        elBtnLabel = elShell.querySelector('span');
+        elBtnLabel.innerText = translate('Load');
         elShell.addEventListener('click', () => injectElevio(true));
     };
 
