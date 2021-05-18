@@ -15,6 +15,7 @@ const Elevio = (() => {
         elShell = document.getElementById(elShellId);
         elBtnLabel = elShell.querySelector('span.text');
         elBtnLabel.innerText = translate('NEED HELP?');
+        elShell.classList.remove('invisible');
         elShell.addEventListener('click', () => injectElevio(true));
     };
 
