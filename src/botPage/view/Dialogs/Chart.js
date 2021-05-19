@@ -1,11 +1,12 @@
 import {
-    SmartChart,
-    setSmartChartsPublicPath,
-    StudyLegend,
-    Views,
-    DrawTools,
-    Share,
     ChartMode,
+    DrawTools,
+    setSmartChartsPublicPath,
+    Share,
+    SmartChart,
+    StudyLegend,
+    ToolbarWidget,
+    Views,
 } from '@deriv/deriv-charts';
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
@@ -116,8 +117,8 @@ class ChartContent extends PureComponent {
 
     renderTopWidgets = () => <span />;
 
-    renderControls = () => (
-        <React.Fragment>
+    renderToolbarWidgets = () => (
+        <ToolbarWidget>
             <ChartMode
                 onChartType={chartType => this.setState({ chartType })}
                 onGranularity={granularity => this.setState({ granularity })}
@@ -126,7 +127,7 @@ class ChartContent extends PureComponent {
             <DrawTools />
             <Views searchInputClassName="data-hj-whitelist" />
             <Share />
-        </React.Fragment>
+        </ToolbarWidget>
     );
 
     render() {
@@ -149,8 +150,9 @@ class ChartContent extends PureComponent {
         return (
             <SmartChart
                 barriers={barriers}
-                chartControlsWidgets={this.renderControls}
+                chartControlsWidgets={null}
                 chartType={this.state.chartType}
+                enabledChartFooter={false}
                 granularity={this.state.granularity}
                 id={this.chartId}
                 isMobile={false}
@@ -159,6 +161,7 @@ class ChartContent extends PureComponent {
                 requestSubscribe={this.requestSubscribe.bind(this)}
                 settings={this.settings}
                 symbol={this.state.symbol}
+                toolbarWidget={this.renderToolbarWidgets}
                 topWidgets={this.renderTopWidgets}
             />
         );
