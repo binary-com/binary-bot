@@ -258,7 +258,7 @@ export const disable = (blockObj, message) => {
 
 export const enable = blockObj => {
     Blockly.Events.recordUndo = false;
-    blockObj.setDisabled(false);
+    // blockObj.setDisabled(false);
     Blockly.Events.recordUndo = true;
 };
 

@@ -1,3 +1,4 @@
+import Blockly from 'Blockly';
 import GTM from '../../../common/gtm';
 import { translate, translateLangToLang } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
@@ -5,30 +6,30 @@ import { save } from './utils';
 
 /* eslint-disable */
 Blockly.WorkspaceAudio.prototype.preload = function() {};
-Blockly.FieldDropdown.prototype.render_ = function() {
-    if (!this.visible_) {
-        this.size_.width = 0;
-        return;
-    }
-    if (this.sourceBlock_ && this.arrow_) {
-        // Update arrow's colour.
-        this.arrow_.style.fill = this.sourceBlock_.getColour();
-    }
-    Blockly.utils.dom.removeChildren(this.textElement_); //goog == Blockly.utils
-    // for (let child in this.textElement_){
-    //     Blockly.utils.dom.removeNode(child);
-    // }
-    Blockly.utils.dom.removeNode(this.imageElement_);
-    this.imageElement_ = null;
+// Blockly.FieldDropdown.prototype.render_ = function() {
+//     if (!this.visible_) {
+//         this.size_.width = 0;
+//         return;
+//     }
+//     if (this.sourceBlock_ && this.arrow_) {
+//         // Update arrow's colour.
+//         this.arrow_.style.fill = this.sourceBlock_.getColour();
+//     }
+//     // Blockly.utils.dom.removeChildren(this.textElement_); //goog == Blockly.utils
+//     // for (let child in this.textElement_){
+//     //     Blockly.utils.dom.removeNode(child);
+//     // }
+//     Blockly.utils.dom.removeNode(this.imageElement_);
+//     this.imageElement_ = null;
 
-    if (this.imageJson_) {
-        this.renderSelectedImage_();
-    } else {
-        this.renderSelectedText_();
-    }
-    this.borderRect_.setAttribute('height', this.size_.height - 8);
-    this.borderRect_.setAttribute('width', this.size_.width + Blockly.BlockSvg.SEP_SPACE_X);
-};
+//     if (this.imageJson_) {
+//         this.renderSelectedImage_();
+//     } else {
+//         this.renderSelectedText_();
+//     }
+//     this.borderRect_.setAttribute('height', this.size_.height - 8);
+//     this.borderRect_.setAttribute('width', this.size_.width + Blockly.BlockSvg.SEP_SPACE_X);
+// };
 Blockly.FieldDropdown.prototype.renderSelectedText_ = function() {
     // Text option is selected.
     // Replace the text.
@@ -38,6 +39,7 @@ Blockly.FieldDropdown.prototype.renderSelectedText_ = function() {
     if (this.sourceBlock_.RTL) {
         this.textElement_.insertBefore(this.arrow_, this.textElement_.firstChild);
     } else {
+        console.log(this.arrow_);
         this.textElement_.appendChild(this.arrow_);
     }
     this.textElement_.setAttribute('text-anchor', 'start');
@@ -79,7 +81,7 @@ Blockly.Field.prototype.init = function() {
     this.sourceBlock_.getSvgRoot().appendChild(this.fieldGroup_);
     this.mouseDownWrapper_ = Blockly.bindEventWithChecks_(this.fieldGroup_, 'mousedown', this, this.onMouseDown_);
     // Force a render.
-    this.render_();
+    Blockly.FieldDropdown.render_();
 };
 Blockly.FieldLabel.prototype.init = function() {
     if (this.textElement_) {
