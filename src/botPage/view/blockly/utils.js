@@ -213,6 +213,38 @@ export const getTopBlocksByType = type => Blockly.mainWorkspace.getTopBlocks().f
 
 export const getMainBlocks = () => config.mainBlocks.map(blockType => getBlockByType(blockType)).filter(b => b);
 
+export const getMandatoryBlocks = () => config.mandatoryBlocks.map(type => getBlockByType(type)).filter(b => b);
+
+export const getMandatoryMainBlocks = () => config.mandatoryMainBlocks.map(type => getBlockByType(type)).filter(b => b);
+
+export const hasChildOfType = (block, childType) =>
+    block.childBlocks_.find(child => child.type === childType || hasChildOfType(child, childType));
+
+export const getMissingBlocksTypes = () => {
+    const presentBlocks = getMandatoryBlocks();
+    const missingBlocksTypes = config.mandatoryBlocks.filter(type => !presentBlocks.find(block => block.type === type));
+
+    return missingBlocksTypes;
+};
+
+export const getDisabledMandatoryBlocks = () => {
+    const presentMandatoryMainBlocks = getMandatoryMainBlocks();
+    const disabledMandatoryMainBlocks = presentMandatoryMainBlocks.filter(block => block.disabled);
+
+    return disabledMandatoryMainBlocks;
+};
+
+export const getUnattachedMandatoryPairs = () => {
+    const presentMandatoryMainBlocks = getMandatoryMainBlocks();
+    const unattachedPairs = config.mandatoryBlockPairs.filter(pair =>
+        presentMandatoryMainBlocks.find(
+            block => block.type === pair.parentBlock && !hasChildOfType(block, pair.childBlock)
+        )
+    );
+
+    return unattachedPairs;
+};
+
 export const findTopParentBlock = b => {
     let block = b;
     // eslint-disable-next-line no-underscore-dangle

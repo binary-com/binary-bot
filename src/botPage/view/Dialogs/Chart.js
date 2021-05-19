@@ -6,7 +6,7 @@ import {
     DrawTools,
     Share,
     ChartMode,
-} from 'smartcharts-beta';
+} from '@deriv/deriv-charts';
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';

@@ -171,7 +171,25 @@ const config = {
         [translate('8 hours'), '28800'],
         [translate('1 day'), '86400'],
     ],
-    mainBlocks        : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
+    mainBlocks         : ['trade', 'before_purchase', 'after_purchase', 'during_purchase'],
+    mandatoryBlocks    : ['trade', 'before_purchase', 'tradeOptions', 'purchase'],
+    mandatoryMainBlocks: ['trade', 'before_purchase'],
+    mandatoryBlockPairs: [
+        {
+            parentBlock: 'trade',
+            childBlock : 'tradeOptions',
+        },
+        {
+            parentBlock: 'before_purchase',
+            childBlock : 'purchase',
+        },
+    ],
+    blockLabels: {
+        trade          : translate('(1) Define your trade contract'),
+        before_purchase: translate('(2) Watch and purchase your contract'),
+        tradeOptions   : translate('Trade Options'),
+        purchase       : translate('Purchase'),
+    },
     conditionsCategory: {
         callput     : ['risefall', 'higherlower'],
         callputequal: ['risefallequals'],
@@ -238,7 +256,10 @@ const config = {
 export async function updateConfigCurrencies(api = generateLiveApiInstance()) {
     try {
         const response = await api.getPayoutCurrencies();
-        config.lists.CURRENCY = response.payout_currencies.map(c => [c, c]);
+        config.lists.CURRENCY = response.payout_currencies.map(c => {
+            if (c === 'UST') return ['USDT', 'USDT'];
+            return [c, c];
+        });
     } catch (e) {
         config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
     }

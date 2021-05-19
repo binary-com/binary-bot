@@ -31,7 +31,7 @@ gulp.task(
 gulp.task(
     'copy-js',
     gulp.parallel(done => {
-        gulp.src(['./node_modules/smartcharts-beta/dist/*.smartcharts.*']).pipe(gulp.dest('www/js/'));
+        gulp.src(['./node_modules/@deriv/deriv-charts/dist/*.smartcharts.*']).pipe(gulp.dest('www/js/'));
         done();
     })
 );
@@ -41,7 +41,7 @@ gulp.task(
     gulp.parallel(done => {
         gulp.src([
             'node_modules/jquery-ui-css/jquery-ui.min.css',
-            './node_modules/smartcharts-beta/dist/smartcharts.css',
+            './node_modules/@deriv/deriv-charts/dist/smartcharts.css',
         ])
             .pipe(concatCss('bundle.css'))
             .pipe(rev())
