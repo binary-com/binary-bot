@@ -1,39 +1,39 @@
 {
-    "presets": [
-      "@babel/preset-react",
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "browsers": [
-              "last 2 versions",
-              "ios_saf >= 8",
-              "not IE <= 10",
-              "chrome >= 49",
-              "firefox >= 49",
-              "> 1%"
-            ]
-          },
-          "loose": true,
-          "useBuiltIns": "usage",
-          "corejs": "2.6.5",
-        }
-      ]
-    ],
-    "plugins": [
-      [
-        "@babel/plugin-proposal-object-rest-spread",
-        {
-          "useBuiltIns": "usage",
-          "corejs": "2.6.5",
-        }
-      ],
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "useBuiltIns": "usage",
-          "corejs": "2.6.5",
-        }
-      ]
+  "presets": [
+    "@babel/preset-react",
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "ios_saf >= 8",
+            "not IE <= 10",
+            "chrome >= 49",
+            "firefox >= 49",
+            "> 1%"
+          ]
+        },
+        "loose": true,
+        "useBuiltIns": "usage",
+        "corejs": "2.6.5"
+      }
     ]
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-object-rest-spread",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "2.6.5"
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "2.6.5"
+      }
+    ]
+  ]
 }

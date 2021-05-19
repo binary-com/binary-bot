@@ -213,7 +213,16 @@ const updateTokenList = () => {
         }
 
         tokenList.forEach(tokenInfo => {
-            const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
+            let prefix;
+
+            if (isVirtual(tokenInfo)) {
+                prefix = 'Virtual Account';
+            } else if (tokenInfo.loginInfo.currency === 'UST') {
+                prefix = 'USDT Account';
+            } else {
+                prefix = `${tokenInfo.loginInfo.currency} Account`;
+            }
+
             if (tokenInfo === activeToken) {
                 $('.account-id')
                     .attr('value', `${tokenInfo.token}`)
