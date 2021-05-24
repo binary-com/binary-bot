@@ -1,6 +1,7 @@
-project_id: "226650"
+"project_identifier" : "binary-bot"
 api_key_env: CROWDIN_API_KEY
 
 files:
-  - source: /src/common/translations/en/i10n.json
+  - 
+    source: /src/common/translations/en/i10n.json
     translation: /src/common/translations/%locale_with_underscore%/%original_file_name%
