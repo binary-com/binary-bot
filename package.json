@@ -115,6 +115,6 @@
     "pako": "^1.0.11",
     "react-render-html": "^0.6.0",
     "react-transition-group": "^4.0.1",
-    "smartcharts-beta": "^0.8.0-betam.11"
+    "@deriv/deriv-charts": "0.3.16"
   }
 }
