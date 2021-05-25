@@ -5,7 +5,41 @@ import { translate } from '../common/i18n';
 import { getLanguage } from './lang';
 
 const Elevio = (() => {
+    const elShellId = 'elevio-shell';
+    let elShell;
+    let elBtnLabel;
+    const accountId = '5bbc2de0b7365';
+    const elevioScript = `https://cdn.elev.io/sdk/bootloader/v4/elevio-bootloader.js?cid=${accountId}`;
+
     const init = () => {
+        elShell = document.getElementById(elShellId);
+        elBtnLabel = elShell.querySelector('span.text');
+        elBtnLabel.innerText = translate('NEED HELP?');
+        elShell.classList.remove('invisible');
+        elShell.addEventListener('click', () => injectElevio(true));
+    };
+
+    const injectElevio = (isOpen = false) => {
+        window._elev = {}; // eslint-disable-line no-underscore-dangle
+        window._elev.account_id = accountId; // eslint-disable-line no-underscore-dangle
+
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = 1;
+        script.src = elevioScript;
+        script.id = 'loaded-elevio-script';
+        document.body.appendChild(script);
+
+        window._elev.q = []; // eslint-disable-line no-underscore-dangle
+        window._elev.on = (z, y) => {
+            // eslint-disable-line no-underscore-dangle
+            window._elev.q.push([z, y]); // eslint-disable-line no-underscore-dangle
+        };
+
+        script.onload = () => loadElevio(isOpen);
+    };
+
+    const loadElevio = (isOpen = false) => {
         if (!window._elev) return; // eslint-disable-line no-underscore-dangle
 
         // eslint-disable-next-line no-underscore-dangle
@@ -29,10 +63,15 @@ const Elevio = (() => {
             }
 
             elev.setSettings({
-                page_url: `${document.location.protocol}//${document.location.hostname}${document.location.pathname}`,
+                disablePushState: true,
+                page_url        : `${document.location.protocol}//${document.location.hostname}${document.location.pathname}`,
             });
             setUserInfo(elev);
             setTranslations(elev);
+
+            if (isOpen) {
+                elev.open();
+            }
         });
     };
 
