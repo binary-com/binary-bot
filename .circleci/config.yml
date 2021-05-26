@@ -40,6 +40,9 @@ commands:
             - npm-v1-{{ checksum "package.json" }}
             - npm-v1-
       - run:
+          name: Convert npm package-lock to yarn
+          command: yarn import
+      - run:
           name: Install npm modules
           command: yarn
       - save_cache:
