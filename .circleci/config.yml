@@ -155,7 +155,7 @@ commands:
 jobs:
   test:
     docker:
-      - image: circleci/node:12.13.0-stretch
+      - image: cimg/node:12.18
     steps:
       - git_checkout_from_cache
       - npm_install
@@ -163,7 +163,7 @@ jobs:
 
   release_staging:
     docker:
-      - image: circleci/node:8.10.0-stretch
+      - image: cimg/node:12.18
     steps:
       - git_checkout_from_cache
       - npm_install
@@ -176,7 +176,7 @@ jobs:
       - notify_slack
   release_production:
     docker:
-      - image: circleci/node:12.13.0-stretch
+      - image: cimg/node:12.18
     steps:
       - git_checkout_from_cache
       - npm_install
