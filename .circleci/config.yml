@@ -80,16 +80,18 @@ commands:
   docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
-      target:
+      docker_latest_image_tag:
         type: string
+        default: "latest-staging"
+      docker_image_tag:
+        type: string
+        default: ${CIRCLE_SHA1}
     steps:
       - setup_remote_docker
       - run:
-          name: Building docker image for << parameters.target >>
+          name: Building docker image for << parameters.docker_latest_image_tag >>
           command: |
-            build_latest="latest"
-            [ "<< parameters.target >>" == "beta" ]  && build_latest="beta-latest"
-            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_TAG} -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${build_latest} .
+            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:<< parameters.docker_image_tag >> -t ${DOCKHUB_ORGANISATION}/binary-static-bot:<< parameters.docker_latest_image_tag >> .
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -100,6 +102,13 @@ commands:
     parameters:
       target:
         type: string
+        default: "beta"
+      k8s_version:
+        type: string
+        default: ${CIRCLE_SHA1}
+      k8s_namespace:
+        type: string
+        default: "bot-binary-com-staging"
     steps:
       - k8s/install-kubectl
       - run:
@@ -122,6 +131,12 @@ commands:
                 kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/${deployment_target} ${deployment_target}=${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_TAG}
               fi
             done
+
+            export NAMESPACE=<< parameters.k8s_namespace >>
+            git clone https://github.com/binary-com/devops-ci-scripts
+            cd devops-ci-scripts/k8s-build_tools
+            echo $CA_CRT | base64 --decode > ca.crt
+            ./release.sh binary-static-bot << parameters.k8s_version >>
   test:
     description: "Run test"
     steps:
@@ -154,21 +169,12 @@ jobs:
       - npm_install
       - test
       - build
+      - docker_build_push
       - deploy:
           target_branch: "staging"
+      - k8s_deploy
       - notify_slack
   release_production:
-    docker:
-      - image: circleci/node:8.10.0-stretch
-    steps:
-      - git_checkout_from_cache
-      - npm_install
-      - test
-      - build
-      - deploy:
-          target_branch: "production"
-      - notify_slack
-  release_aws_production:
     docker:
       - image: circleci/node:12.13.0-stretch
     steps:
@@ -177,9 +183,12 @@ jobs:
       - test
       - build
       - docker_build_push:
-          target: "production"
+          docker_latest_image_tag: latest
+          docker_image_tag: ${CIRCLE_TAG}
       - k8s_deploy:
           target: "production"
+          k8s_namespace: "bot-binary-com-production"
+          k8s_version: ${CIRCLE_TAG}
 
 workflows:
   test:
@@ -195,12 +204,6 @@ workflows:
             branches:
               only: /^master$/
       - release_production:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^production.*/
-      - release_aws_production:
           filters:
             branches:
               ignore: /.*/
