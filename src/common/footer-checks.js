@@ -1,21 +1,45 @@
 /* eslint-disable import/prefer-default-export */
 import { generateLiveApiInstance } from './appId';
 
-export default async function isEuCountry() {
-    const api = generateLiveApiInstance();
-    const { website_status: { clients_country: clientsCountry } } = await api.send({ website_status: 1 });
-    const { landing_company: { financial_company: financialCompany, gaming_company: gamingCompany } } = await api.send({
-        landing_company: clientsCountry,
+export const showHideEuElements = isEu => {
+    document.querySelectorAll('.eu-hide').forEach(el => {
+        if (!isEu && el.classList.contains('invisible')) {
+            // Keep original display type if invisible was specified.
+            el.classList.remove('invisible');
+        } else {
+            // Default to setting display to block.
+            el.setAttribute('display', `${!isEu ? 'block' : 'none'} !important`);
+        }
     });
+    document.querySelectorAll('.eu-show', '.eu-only').forEach(el => {
+        if (isEu && el.classList.contains('invisible')) {
+            el.classList.remove('invisible');
+        } else {
+            el.setAttribute('display', `${isEu ? 'block' : 'none'} !important`);
+        }
+    });
+};
 
-    const euShortcodeRegex = new RegExp('^(maltainvest|malta|iom)$');
-    const euExcludedRegex = new RegExp('^mt$');
-    const financialShortcode = financialCompany ? financialCompany.shortcode : false;
-    const gamingShortcode = gamingCompany ? gamingCompany.shortcode : false;
+/* eslint-disable camelcase */
+export const isEuLandingCompany = landing_company => /^(maltainvest|malta|iom)$/.test(landing_company);
 
-    api.disconnect();
+export const hasEuAccount = token_list =>
+    token_list.some(token_obj => isEuLandingCompany(token_obj.loginInfo.landing_company_name));
 
-    return financialShortcode || gamingShortcode
-        ? euShortcodeRegex.test(financialShortcode) || euShortcodeRegex.test(gamingShortcode)
-        : euExcludedRegex.test(clientsCountry);
-}
+export const isEuCountry = async (api = generateLiveApiInstance()) => {
+    const { website_status } = await api.send({ website_status: 1 });
+    const { clients_country } = website_status;
+    const { landing_company } = await api.send({ landing_company: clients_country });
+    const { financial_company, gaming_company } = landing_company;
+
+    const eu_excluded_regexp = /^mt$/;
+    const financial_shortcode = financial_company ? financial_company.shortcode : false;
+    const gaming_shortcode = gaming_company ? gaming_company.shortcode : false;
+
+    if (financial_shortcode || gaming_shortcode) {
+        return isEuLandingCompany(financial_shortcode) || isEuLandingCompany(gaming_shortcode);
+    }
+
+    return eu_excluded_regexp.test(clients_country);
+};
+/* eslint-enable */

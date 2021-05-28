@@ -46,6 +46,9 @@ export default class TicksService {
         this.tickListeners = new Map();
         this.ohlcListeners = new Map();
         this.subscriptions = new Map();
+        this.ticks_history_promise = null;
+        this.candles_promise = null;
+        this.active_symbols_promise = null;
         this.observe();
     }
     requestPipSizes() {
@@ -53,15 +56,20 @@ export default class TicksService {
             return Promise.resolve(this.pipSizes);
         }
 
-        return new Promise(resolve => {
-            this.api.getActiveSymbolsBrief().then(r => {
-                const { active_symbols: symbols } = r;
-                this.pipSizes = symbols
-                    .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
-                    .toObject();
-                resolve(this.pipSizes);
+        if (!this.active_symbols_promise) {
+            this.active_symbols_promise = new Promise(resolve => {
+                this.api.getActiveSymbolsBrief().then(r => {
+                    const { active_symbols: symbols } = r;
+                    this.pipSizes = symbols.reduce((accumulator, currSymbol) => {
+                        // eslint-disable-next-line no-param-reassign
+                        accumulator[currSymbol.symbol] = `${currSymbol.pip}`.length - 2;
+                        return accumulator;
+                    }, {});
+                    resolve(this.pipSizes);
+                });
             });
-        });
+        }
+        return this.active_symbols_promise;
     }
     request(options) {
         const { symbol, granularity } = options;
@@ -173,7 +181,10 @@ export default class TicksService {
     }
     observe() {
         this.api.events.on('tick', r => {
-            const { tick, tick: { symbol, id } } = r;
+            const {
+                tick,
+                tick: { symbol, id },
+            } = r;
 
             if (this.ticks.has(symbol)) {
                 this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
@@ -182,7 +193,10 @@ export default class TicksService {
         });
 
         this.api.events.on('ohlc', r => {
-            const { ohlc, ohlc: { symbol, granularity, id } } = r;
+            const {
+                ohlc,
+                ohlc: { symbol, granularity, id },
+            } = r;
 
             if (this.candles.hasIn([symbol, Number(granularity)])) {
                 this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);
@@ -195,7 +209,32 @@ export default class TicksService {
         });
     }
     requestStream(options) {
-        return this.requestPipSizes().then(() => this.requestTicks(options));
+        const { style } = options;
+        const stringifiedOptions = JSON.stringify(options);
+
+        if (style === 'ticks') {
+            if (!this.ticks_history_promise || this.ticks_history_promise.stringifiedOptions !== stringifiedOptions) {
+                this.ticks_history_promise = {
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    stringifiedOptions,
+                };
+            }
+
+            return this.ticks_history_promise.promise;
+        }
+
+        if (style === 'candles') {
+            if (!this.candles_promise || this.candles_promise.stringifiedOptions !== stringifiedOptions) {
+                this.candles_promise = {
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    stringifiedOptions,
+                };
+            }
+
+            return this.candles_promise.promise;
+        }
+
+        return [];
     }
     requestTicks(options) {
         const { symbol, granularity, style } = options;
@@ -220,7 +259,6 @@ export default class TicksService {
                         const candles = parseCandles(r.candles);
 
                         this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
-
                         resolve(candles);
                     }
                 })

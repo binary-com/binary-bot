@@ -1,15 +1,13 @@
 import {
-    SmartChart,
-    setSmartChartsPublicPath,
-    ChartTypes,
-    StudyLegend,
-    Views,
-    Timeperiod,
+    ChartMode,
     DrawTools,
+    setSmartChartsPublicPath,
     Share,
-    CrosshairToggle,
-    ChartSize,
-} from '@binary-com/smartcharts';
+    SmartChart,
+    StudyLegend,
+    ToolbarWidget,
+    Views,
+} from '@deriv/deriv-charts';
 import React, { PureComponent } from 'react';
 import { translate } from '../../../common/i18n';
 import Dialog from './Dialog';
@@ -44,17 +42,17 @@ class ChartContent extends PureComponent {
         this.state = {
             chartType  : 'mountain',
             granularity: 0,
-            symbol     : 'R_100',
             barrierType: undefined,
             high       : undefined,
             low        : undefined,
+            symbol     : globalObserver.getState('symbol'),
         };
         this.shouldBarrierDisplay = false;
     }
 
     componentDidMount() {
         globalObserver.register('bot.init', s => {
-            if (this.state.symbol !== s) {
+            if (s && this.state.symbol !== s) {
                 this.setState({ symbol: s });
             }
         });
@@ -119,17 +117,17 @@ class ChartContent extends PureComponent {
 
     renderTopWidgets = () => <span />;
 
-    renderControls = () => (
-        <React.Fragment>
-            <CrosshairToggle />
-            <ChartTypes enabled={true} onChange={chartType => this.setState({ chartType })} />
-            <Timeperiod enabled={true} onChange={granularity => this.setState({ granularity })} />
-            <StudyLegend />
+    renderToolbarWidgets = () => (
+        <ToolbarWidget>
+            <ChartMode
+                onChartType={chartType => this.setState({ chartType })}
+                onGranularity={granularity => this.setState({ granularity })}
+            />
+            <StudyLegend searchInputClassName="data-hj-whitelist" />
             <DrawTools />
-            <Views />
+            <Views searchInputClassName="data-hj-whitelist" />
             <Share />
-            <ChartSize />
-        </React.Fragment>
+        </ToolbarWidget>
     );
 
     render() {
@@ -151,18 +149,20 @@ class ChartContent extends PureComponent {
 
         return (
             <SmartChart
-                id={this.chartId}
-                chartType={this.state.chartType}
-                granularity={this.state.granularity}
-                symbol={this.state.symbol}
-                isMobile={true}
-                topWidgets={this.renderTopWidgets}
-                chartControlsWidgets={this.renderControls}
-                requestAPI={this.requestAPI.bind(this)}
-                requestSubscribe={this.requestSubscribe.bind(this)}
-                requestForget={this.requestForget.bind(this)}
                 barriers={barriers}
+                chartControlsWidgets={null}
+                chartType={this.state.chartType}
+                enabledChartFooter={false}
+                granularity={this.state.granularity}
+                id={this.chartId}
+                isMobile={false}
+                requestAPI={this.requestAPI.bind(this)}
+                requestForget={this.requestForget.bind(this)}
+                requestSubscribe={this.requestSubscribe.bind(this)}
                 settings={this.settings}
+                symbol={this.state.symbol}
+                toolbarWidget={this.renderToolbarWidgets}
+                topWidgets={this.renderTopWidgets}
             />
         );
     }

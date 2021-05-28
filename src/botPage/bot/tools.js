@@ -5,7 +5,7 @@ import { notify } from './broadcast';
 
 export const noop = () => {};
 
-export const tradeOptionToProposal = tradeOption =>
+export const tradeOptionToProposal = (tradeOption, purchaseReference) =>
     tradeOption.contractTypes.map(type => {
         const proposal = {
             duration_unit: tradeOption.duration_unit,
@@ -17,7 +17,7 @@ export const tradeOptionToProposal = tradeOption =>
             contract_type: type,
             passthrough  : {
                 contractType: type,
-                uuid        : getUUID(),
+                purchaseReference,
             },
         };
         if (tradeOption.prediction !== undefined) {

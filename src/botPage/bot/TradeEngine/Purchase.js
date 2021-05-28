@@ -1,10 +1,12 @@
 import { translate } from '../../../common/i18n';
-import { recoverFromError, doUntilDone } from '../tools';
+import { getUUID, recoverFromError, doUntilDone } from '../tools';
 import { contractStatus, info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
+import GTM from '../../../common/gtm';
 
 let delayIndex = 0;
+let purchaseReference;
 
 export default Engine =>
     class Purchase extends Engine {
@@ -15,8 +17,11 @@ export default Engine =>
             }
 
             const { currency, proposal } = this.selectProposal(contractType);
-            const onSuccess = r => {
-                const { buy } = r;
+            const onSuccess = response => {
+                // Don't unnecessarily send a forget request for a purchased contract.
+                this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
+                const { buy } = response;
+                GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
 
                 contractStatus({
                     id  : 'contract.purchase_recieved',
@@ -79,4 +84,8 @@ export default Engine =>
                 delayIndex++
             ).then(onSuccess);
         }
+        getPurchaseReference = () => purchaseReference;
+        regeneratePurchaseReference = () => {
+            purchaseReference = getUUID();
+        };
     };

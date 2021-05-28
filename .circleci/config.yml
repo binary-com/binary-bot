@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   k8s: circleci/kubernetes@0.7.0
-  s3: circleci/aws-s3@1.0.13
+  slack: circleci/slack@3.4.2
 commands:
   git_checkout_from_cache:
     description: "Git checkout and save cache"
@@ -53,81 +53,105 @@ commands:
       - run:
           name: "yarn build"
           command: node_modules/gulp/bin/gulp.js build-min
-  compress:
-    description: "Compress"
+  deploy:
+    description: "Deploy to static branches"
+    parameters:
+      target_branch:
+        type: string
     steps:
+      - checkout
+      - attach_workspace:
+          at: www
       - run:
-          name: "Compress"
+          name: Tag build
+          command: echo "<< parameters.target_branch >> $(date -u +'%Y-%m-%dT%H:%M:%SZ')" > www/version
+      - run:
+          name: Install and configure dependencies
           command: |
-            pushd www/
-            tar -cvf artifact.tar *
-            mv artifact.tar ${OLDPWD}/
+            sudo npm install -g gh-pages@2.0.1
+            git config user.email "ci-build@binary.com"
+            git config user.name "ci-build"
+      - add_ssh_keys:
+          fingerprints:
+            - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
       - run:
-          name: "Tag commit id as artifact identifer"
-          command: echo "${CIRCLE_SHA1}" > artifact-info.txt
-  upload_artifact:
-    description: "upload artifact to s3"
-    steps:
-      - s3/copy:
-          from: artifact.tar
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
-          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
-          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
-          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
-          arguments: '--metadata "{\"x-amz-artifact-id\": \"${CIRCLE_SHA1}\" }"'
-  upload_checksum:
-    description: "upload artifact commit id to s3"
-    steps:
-      - s3/copy:
-          from: artifact-info.txt
-          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
-          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
-          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
-          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
-  docker:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages -d www --branch << parameters.target_branch >> --message '[skip ci]'
+  docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
-      target:
+      docker_latest_image_tag:
         type: string
+        default: "latest-staging"
+      docker_image_tag:
+        type: string
+        default: ${CIRCLE_SHA1}
     steps:
       - setup_remote_docker
       - run:
-          name: Building docker image for << parameters.target >>
+          name: Building docker image for << parameters.docker_latest_image_tag >>
           command: |
-            build_tag="${CIRCLE_SHA1}"
-            [ "<< parameters.target >>" == "beta" ] && build_tag="beta-${CIRCLE_SHA1}"
-            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:${build_tag} .
+            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:<< parameters.docker_image_tag >> -t ${DOCKHUB_ORGANISATION}/binary-static-bot:<< parameters.docker_latest_image_tag >> .
       - run:
           name: Pushing Image to docker hub
           command: |
-            build_tag="${CIRCLE_SHA1}"
-            [ "<< parameters.target >>" == "beta" ] && build_tag="beta-${CIRCLE_SHA1}"
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/binary-static-bot:${build_tag}
+            docker push ${DOCKHUB_ORGANISATION}/binary-static-bot
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:
       target:
         type: string
+        default: "beta"
+      k8s_version:
+        type: string
+        default: ${CIRCLE_SHA1}
+      k8s_namespace:
+        type: string
+        default: "bot-binary-com-staging"
     steps:
       - k8s/install-kubectl
       - run:
           name: Deploying to k8s cluster for service binary-bot-beta
           command: |
-            build_tag="${CIRCLE_SHA1}"
-            deployment_target="bot-binary-com"
-            [ "<< parameters.target >>" == "beta" ] && build_tag="beta-${CIRCLE_SHA1}" && deployment_target="bot-beta-binary-com"
-            echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/${deployment_target} ${deployment_target}=${DOCKHUB_ORGANISATION}/binary-static-bot:${build_tag}
+            for SERVER_ID in {1..5}
+            do
+              KUBE_SERVER_REF="KUBE_SERVER_$SERVER_ID"
+              SERVICEACCOUNT_TOKEN_REF="SERVICEACCOUNT_TOKEN_$SERVER_ID"
+              CA_CRT_REF="CA_CRT_$SERVER_ID"
+              if [ ! -z "${!KUBE_SERVER_REF}" ]
+              then
+                echo "Deploying to cluster $SERVER_ID"
+                CA_CRT="${!CA_CRT_REF}"
+                KUBE_SERVER="${!KUBE_SERVER_REF}"
+                SERVICEACCOUNT_TOKEN="${!SERVICEACCOUNT_TOKEN_REF}"
+                deployment_target="bot-binary-com"
+                [ "<< parameters.target >>" == "beta" ] && deployment_target="bot-beta-binary-com"
+                echo $CA_CRT | base64 --decode > ca.crt
+                kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/${deployment_target} ${deployment_target}=${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_TAG}
+              fi
+            done
 
-  npm_test:
-    description: Run test
+            export NAMESPACE=<< parameters.k8s_namespace >>
+            git clone https://github.com/binary-com/devops-ci-scripts
+            cd devops-ci-scripts/k8s-build_tools
+            echo $CA_CRT | base64 --decode > ca.crt
+            ./release.sh bot-binary-com << parameters.k8s_version >>
+  test:
+    description: "Run test"
     steps:
       - run:
           name: Run tests
           command: |
             for i in {1..3}; do npm test && break; done
-
+  notify_slack:
+    description: "Notify slack"
+    steps:
+      - slack/status:
+          include_project_field: false
+          failure_message: "Release failed for binary bot with version *$(cat www/version)*"
+          success_message: "Release succeeded for binary bot with version *$(cat www/version)*"
+          webhook: ${SLACK_WEBHOOK} 
 jobs:
   test:
     docker:
@@ -135,47 +159,50 @@ jobs:
     steps:
       - git_checkout_from_cache
       - npm_install
-      - npm_test
+      - test
 
-  release_beta:
+  release_staging:
     docker:
-      - image: circleci/node:12.13.0-stretch
+      - image: circleci/node:8.10.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install
+      - test
       - build
-      - docker:
-          target: "beta"
-      - k8s_deploy:
-          target: "beta"
-
+      - docker_build_push
+      - deploy:
+          target_branch: "staging"
+      - k8s_deploy
+      - notify_slack
   release_production:
     docker:
       - image: circleci/node:12.13.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install
+      - test
       - build
-      - compress
-      - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
-      - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint before actual deployment
-      - docker:
-          target: "production"
+      - docker_build_push:
+          docker_latest_image_tag: latest
+          docker_image_tag: ${CIRCLE_TAG}
       - k8s_deploy:
           target: "production"
+          k8s_namespace: "bot-binary-com-production"
+          k8s_version: ${CIRCLE_TAG}
 
 workflows:
   test:
     jobs:
-      - test
-  release:
-    jobs:
-      - release_beta:
+      - test:
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^beta.*/
+              ignore: /^master$/
+  release:
+    jobs:
+      - release_staging:
+          filters:
+            branches:
+              only: /^master$/
       - release_production:
           filters:
             branches:

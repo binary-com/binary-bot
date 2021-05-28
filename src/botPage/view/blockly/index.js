@@ -26,8 +26,9 @@ import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
-import { parseQueryString } from '../../../common/utils/tools';
+import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
+import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
 
 const disableStrayBlocks = () => {
@@ -56,7 +57,7 @@ const disposeBlocksWithLoaders = () => {
 
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        if (window.trackJs) {
+        if (window.trackJs && isProduction()) {
             trackJs.track('Invalid financial market');
         }
         showDialog({
@@ -224,7 +225,7 @@ export const load = (blockStr, dropEvent = {}) => {
                     text : translate('Take me to DBot'),
                     class: 'button-primary',
                     click() {
-                        window.location.href = 'https://deriv.app/bot';
+                        window.location.href = 'https://app.deriv.com/bot';
                     },
                 },
             ],
@@ -398,6 +399,8 @@ export default class _Blockly {
 
                     getFile(xmlFile);
                 });
+
+                createDataStore(workspace);
             });
         });
     }

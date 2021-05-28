@@ -1,0 +1,46 @@
+#elevio-shell {
+    height: 60px;
+    min-width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $brand-orange;
+    position: fixed;
+    right: 20px !important;
+    bottom: 20px !important;
+    border-radius: 100px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+    z-index: 10000 !important;
+
+    &:hover {
+        .text {
+            max-width: 1000px;
+            padding: 0 25px;
+        }
+    }
+    .icon {
+        float: right;
+        padding: 0 15px;
+        transform: translateY(2px);
+
+        svg {
+            fill: $white;
+            height: 30px !important;
+            width: 30px !important;
+        }
+    }
+    .text {
+        float: left;
+        display: inline-block;
+        padding: 0;
+        line-height: 60px;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 0;
+        transition: max-width 0.1s ease, padding 0.1s ease;
+        color: $white;
+        font-size: 13px;
+    }
+}

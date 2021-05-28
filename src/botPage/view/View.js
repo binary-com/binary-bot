@@ -28,8 +28,9 @@ import {
     addTokenIfValid,
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
+import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
 import googleDrive from '../../common/integrations/GoogleDrive';
-import { getLanguage } from '../../common/lang';
+import { getLanguage, showBanner } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
     getTokenList,
@@ -40,9 +41,15 @@ import {
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
-import { saveBeforeUnload } from './blockly/utils';
+import {
+    getMissingBlocksTypes,
+    getDisabledMandatoryBlocks,
+    getUnattachedMandatoryPairs,
+    saveBeforeUnload,
+} from './blockly/utils';
 
 let realityCheckTimeout;
+let chart;
 
 const api = generateLiveApiInstance();
 
@@ -88,8 +95,6 @@ const addBalanceForToken = token => {
         });
     });
 };
-
-const chart = new Chart(api);
 
 const tradingView = new TradingView();
 
@@ -186,6 +191,10 @@ const updateTokenList = () => {
         loginButton.show();
         accountList.hide();
 
+        // If logged out, determine EU based on IP.
+        isEuCountry(api).then(isEu => showHideEuElements(isEu));
+        showBanner();
+
         $('.account-id')
             .removeAttr('value')
             .text('');
@@ -196,15 +205,29 @@ const updateTokenList = () => {
     } else {
         loginButton.hide();
         accountList.show();
+
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
+        showHideEuElements(hasEuAccount(tokenList));
+        showBanner();
         updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
+
         if (!('loginInfo' in activeToken)) {
             removeAllTokens();
             updateTokenList();
         }
+
         tokenList.forEach(tokenInfo => {
-            const prefix = isVirtual(tokenInfo) ? 'Virtual Account' : `${tokenInfo.loginInfo.currency} Account`;
+            let prefix;
+
+            if (isVirtual(tokenInfo)) {
+                prefix = 'Virtual Account';
+            } else if (tokenInfo.loginInfo.currency === 'UST') {
+                prefix = 'USDT Account';
+            } else {
+                prefix = `${tokenInfo.loginInfo.currency} Account`;
+            }
+
             if (tokenInfo === activeToken) {
                 $('.account-id')
                     .attr('value', `${tokenInfo.token}`)
@@ -212,7 +235,9 @@ const updateTokenList = () => {
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a><div class="separator-line-thin-gray"></div>`
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${
+                        tokenInfo.accountName
+                    }</div></li></a><div class="separator-line-thin-gray"></div>`
                 );
             }
         });
@@ -227,11 +252,50 @@ const applyToolboxPermissions = () => {
         [fn]();
 };
 
+const checkForRequiredBlocks = () => {
+    const displayError = errorMessage => {
+        const error = new Error(errorMessage);
+        globalObserver.emit('Error', error);
+    };
+
+    const blockLabels = { ...config.blockLabels };
+    const missingBlocksTypes = getMissingBlocksTypes();
+    const disabledBlocksTypes = getDisabledMandatoryBlocks().map(block => block.type);
+    const unattachedPairs = getUnattachedMandatoryPairs();
+
+    if (missingBlocksTypes.length) {
+        missingBlocksTypes.forEach(blockType =>
+            displayError(`"${blockLabels[blockType]}" ${translate('block should be added to the workspace')}.`)
+        );
+        return false;
+    }
+
+    if (disabledBlocksTypes.length) {
+        disabledBlocksTypes.forEach(blockType =>
+            displayError(`"${blockLabels[blockType]}" ${translate('block should be enabled')}.`)
+        );
+        return false;
+    }
+
+    if (unattachedPairs.length) {
+        unattachedPairs.forEach(pair =>
+            displayError(
+                `"${blockLabels[pair.childBlock]}" ${translate('must be added inside:')} "${
+                    blockLabels[pair.parentBlock]
+                }"`
+            )
+        );
+        return false;
+    }
+
+    return true;
+};
+
 export default class View {
     constructor() {
         logHandler();
         this.initPromise = new Promise(resolve => {
-            updateConfigCurrencies().then(() => {
+            updateConfigCurrencies(api).then(() => {
                 symbolPromise.then(() => {
                     updateTokenList();
                     this.blockly = new _Blockly();
@@ -419,6 +483,10 @@ export default class View {
         });
 
         $('#chartButton').click(() => {
+            if (!chart) {
+                chart = new Chart(api);
+            }
+
             chart.open();
         });
 
@@ -521,12 +589,17 @@ export default class View {
                 elStopButton.style.display = 'inline-block';
             });
 
-            globalObserver.emit('summary.disable_clear');
             showSummary();
             this.blockly.run(limitations);
         };
 
         $('#runButton').click(() => {
+            // setTimeout is needed to ensure correct event sequence
+            if (!checkForRequiredBlocks()) {
+                setTimeout(() => $('#stopButton').triggerHandler('click'));
+                return;
+            }
+
             const token = $('.account-id')
                 .first()
                 .attr('value');
@@ -637,7 +710,7 @@ export default class View {
 
         window.addEventListener('storage', e => {
             window.onbeforeunload = null;
-            if (e.key === 'activeToken' && !e.newValue) window.location.reload();
+            if (e.key === 'activeToken' && e.newValue !== e.oldValue) window.location.reload();
             if (e.key === 'realityCheckTime') hideRealityCheck();
         });
 

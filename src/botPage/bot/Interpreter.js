@@ -1,8 +1,8 @@
-import clone from 'clone';
 import JSInterpreter from 'js-interpreter';
-import { observer as globalObserver } from '../../common/utils/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
+import { clone } from '../common/clone';
+import { observer as globalObserver } from '../../common/utils/observer';
 
 /* eslint-disable func-names, no-underscore-dangle */
 JSInterpreter.prototype.takeStateSnapshot = function() {
@@ -27,6 +27,7 @@ const unrecoverableErrors = [
     'FinancialAssessmentRequired',
     'AuthorizationRequired',
     'InvalidToken',
+    'ClientUnwelcome',
 ];
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
@@ -57,27 +58,30 @@ export default class Interpreter {
     }
     run(code) {
         const initFunc = (interpreter, scope) => {
-            const BotIf = this.bot.getInterface('Bot');
-            const ticksIf = this.bot.getTicksInterface();
+            const botInterface = this.bot.getInterface('Bot');
+            const ticksInterface = this.bot.getTicksInterface();
             const { alert, prompt, sleep, console: customConsole } = this.bot.getInterface();
 
             interpreter.setProperty(scope, 'console', interpreter.nativeToPseudo(customConsole));
-
             interpreter.setProperty(scope, 'alert', interpreter.nativeToPseudo(alert));
-
             interpreter.setProperty(scope, 'prompt', interpreter.nativeToPseudo(prompt));
+            interpreter.setProperty(
+                scope,
+                'getPurchaseReference',
+                interpreter.nativeToPseudo(botInterface.getPurchaseReference)
+            );
 
-            const pseudoBotIf = interpreter.nativeToPseudo(BotIf);
+            const pseudoBotInterface = interpreter.nativeToPseudo(botInterface);
 
-            Object.entries(ticksIf).forEach(([name, f]) => {
-                interpreter.setProperty(pseudoBotIf, name, this.createAsync(interpreter, f));
+            Object.entries(ticksInterface).forEach(([name, f]) => {
+                interpreter.setProperty(pseudoBotInterface, name, this.createAsync(interpreter, f));
             });
 
             interpreter.setProperty(
-                pseudoBotIf,
+                pseudoBotInterface,
                 'start',
                 interpreter.nativeToPseudo((...args) => {
-                    const { start } = BotIf;
+                    const { start } = botInterface;
                     if (shouldRestartOnError(this.bot)) {
                         this.startState = interpreter.takeStateSnapshot();
                     }
@@ -85,11 +89,17 @@ export default class Interpreter {
                 })
             );
 
-            interpreter.setProperty(pseudoBotIf, 'purchase', this.createAsync(interpreter, BotIf.purchase));
-
-            interpreter.setProperty(pseudoBotIf, 'sellAtMarket', this.createAsync(interpreter, BotIf.sellAtMarket));
-
-            interpreter.setProperty(scope, 'Bot', pseudoBotIf);
+            interpreter.setProperty(
+                pseudoBotInterface,
+                'purchase',
+                this.createAsync(interpreter, botInterface.purchase)
+            );
+            interpreter.setProperty(
+                pseudoBotInterface,
+                'sellAtMarket',
+                this.createAsync(interpreter, botInterface.sellAtMarket)
+            );
+            interpreter.setProperty(scope, 'Bot', pseudoBotInterface);
 
             interpreter.setProperty(
                 scope,
@@ -152,7 +162,6 @@ export default class Interpreter {
     }
     loop() {
         if (this.stopped || !this.interpreter.run()) {
-            this.isErrorTriggered = false;
             this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value));
         }
     }
@@ -163,8 +172,16 @@ export default class Interpreter {
         this.loop();
     }
     terminateSession() {
-        this.$scope.api.disconnect();
+        const { socket } = this.$scope.api;
+        if (socket.readyState === 0) {
+            socket.addEventListener('open', () => {
+                this.$scope.api.disconnect();
+            });
+        } else if (socket.readyState === 1) {
+            this.$scope.api.disconnect();
+        }
         this.stopped = true;
+        this.isErrorTriggered = false;
 
         globalObserver.emit('bot.stop');
         globalObserver.setState({ isRunning: false });
