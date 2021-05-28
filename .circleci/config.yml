@@ -74,9 +74,9 @@ commands:
       - add_ssh_keys:
           fingerprints:
             - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
-      - run:
-          name: Deploy docs to gh-pages branch
-          command: gh-pages -d www --branch << parameters.target_branch >> --message '[skip ci]'
+      #- run:
+      #    name: Deploy docs to gh-pages branch
+      #    command: gh-pages -d www --branch << parameters.target_branch >> --message '[skip ci]'
   docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
