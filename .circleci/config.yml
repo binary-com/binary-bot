@@ -136,7 +136,7 @@ commands:
             git clone https://github.com/binary-com/devops-ci-scripts
             cd devops-ci-scripts/k8s-build_tools
             echo $CA_CRT | base64 --decode > ca.crt
-            ./release.sh bot-binary-com << parameters.k8s_version >>
+            ./release.sh binary-static-bot << parameters.k8s_version >>
   test:
     description: "Run test"
     steps:
