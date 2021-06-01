@@ -1,3 +1,4 @@
+import Blockly from 'Blockly';
 import GTM from '../../../common/gtm';
 import { translate, translateLangToLang } from '../../../common/i18n';
 import { getLanguage } from '../../../common/lang';
@@ -5,27 +6,30 @@ import { save } from './utils';
 
 /* eslint-disable */
 Blockly.WorkspaceAudio.prototype.preload = function() {};
-Blockly.FieldDropdown.prototype.render_ = function() {
-    if (!this.visible_) {
-        this.size_.width = 0;
-        return;
-    }
-    if (this.sourceBlock_ && this.arrow_) {
-        // Update arrow's colour.
-        this.arrow_.style.fill = this.sourceBlock_.getColour();
-    }
-    goog.dom.removeChildren(this.textElement_);
-    goog.dom.removeNode(this.imageElement_);
-    this.imageElement_ = null;
+// Blockly.FieldDropdown.prototype.render_ = function() {
+//     if (!this.visible_) {
+//         this.size_.width = 0;
+//         return;
+//     }
+//     if (this.sourceBlock_ && this.arrow_) {
+//         // Update arrow's colour.
+//         this.arrow_.style.fill = this.sourceBlock_.getColour();
+//     }
+//     // Blockly.utils.dom.removeChildren(this.textElement_); //goog == Blockly.utils
+//     // for (let child in this.textElement_){
+//     //     Blockly.utils.dom.removeNode(child);
+//     // }
+//     Blockly.utils.dom.removeNode(this.imageElement_);
+//     this.imageElement_ = null;
 
-    if (this.imageJson_) {
-        this.renderSelectedImage_();
-    } else {
-        this.renderSelectedText_();
-    }
-    this.borderRect_.setAttribute('height', this.size_.height - 8);
-    this.borderRect_.setAttribute('width', this.size_.width + Blockly.BlockSvg.SEP_SPACE_X);
-};
+//     if (this.imageJson_) {
+//         this.renderSelectedImage_();
+//     } else {
+//         this.renderSelectedText_();
+//     }
+//     this.borderRect_.setAttribute('height', this.size_.height - 8);
+//     this.borderRect_.setAttribute('width', this.size_.width + Blockly.BlockSvg.SEP_SPACE_X);
+// };
 Blockly.FieldDropdown.prototype.renderSelectedText_ = function() {
     // Text option is selected.
     // Replace the text.
@@ -35,6 +39,7 @@ Blockly.FieldDropdown.prototype.renderSelectedText_ = function() {
     if (this.sourceBlock_.RTL) {
         this.textElement_.insertBefore(this.arrow_, this.textElement_.firstChild);
     } else {
+        console.log(this.arrow_);
         this.textElement_.appendChild(this.arrow_);
     }
     this.textElement_.setAttribute('text-anchor', 'start');
@@ -51,11 +56,11 @@ Blockly.Field.prototype.init = function() {
         return;
     }
     // Build the DOM.
-    this.fieldGroup_ = Blockly.utils.createSvgElement('g', {}, null);
+    this.fieldGroup_ = Blockly.utils.dom.createSvgElement('g', {}, null);
     if (!this.visible_) {
         this.fieldGroup_.style.display = 'none';
     }
-    this.borderRect_ = Blockly.utils.createSvgElement(
+    this.borderRect_ = Blockly.utils.dom.createSvgElement(
         'rect',
         {
             rx: 4,
@@ -66,7 +71,7 @@ Blockly.Field.prototype.init = function() {
         },
         this.fieldGroup_
     );
-    this.textElement_ = Blockly.utils.createSvgElement(
+    this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         { class: 'blocklyText', y: this.size_.height - 10 },
         this.fieldGroup_
@@ -76,7 +81,7 @@ Blockly.Field.prototype.init = function() {
     this.sourceBlock_.getSvgRoot().appendChild(this.fieldGroup_);
     this.mouseDownWrapper_ = Blockly.bindEventWithChecks_(this.fieldGroup_, 'mousedown', this, this.onMouseDown_);
     // Force a render.
-    this.render_();
+    Blockly.FieldDropdown.render_();
 };
 Blockly.FieldLabel.prototype.init = function() {
     if (this.textElement_) {
@@ -84,7 +89,7 @@ Blockly.FieldLabel.prototype.init = function() {
         return;
     }
     // Build the DOM.
-    this.textElement_ = Blockly.utils.createSvgElement(
+    this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         { class: 'blocklyText', y: this.size_.height - 2 },
         null
@@ -247,7 +252,7 @@ Blockly.FieldLabel.prototype.init = function() {
         return;
     }
     // Build the DOM.
-    this.textElement_ = Blockly.utils.createSvgElement(
+    this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         { class: 'blocklyText', y: this.size_.height - 3 },
         null
@@ -340,25 +345,25 @@ Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockTyp
 
 /**
  * Expand or collapse the node on mouse click.
- * @param {!goog.events.BrowserEvent} _e The browser event.
+ * @param {!Blockly.utils.events.BrowserEvent} _e The browser event.
  * @override
  */
-Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
-    // eslint-disable-next-line no-underscore-dangle
-    const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
-    GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
+// Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
+//     // eslint-disable-next-line no-underscore-dangle
+//     const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
+//     GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
 
-    // Expand icon.
-    if (this.hasChildren() && this.isUserCollapsible_) {
-        this.toggle();
-        this.select();
-    } else if (this.isSelected()) {
-        this.getTree().setSelectedItem(null);
-    } else {
-        this.select();
-    }
-    this.updateRow();
-};
+//     // Expand icon.
+//     if (this.hasChildren() && this.isUserCollapsible_) {
+//         this.toggle();
+//         this.select();
+//     } else if (this.isSelected()) {
+//         this.getTree().setSelectedItem(null);
+//     } else {
+//         this.select();
+//     }
+//     this.updateRow();
+// };
 
 /**
  * Preload all the audio files so that they play quickly when asked for.
@@ -372,7 +377,8 @@ Blockly.WorkspaceAudio.prototype.preload = function() {
         sound.pause();
         // iOS can only process one sound at a time.  Trying to load more than one
         // corrupts the earlier ones.  Just load one and leave the others uncached.
-        if (goog.userAgent.IPAD || goog.userAgent.IPHONE) {
+        if (Blockly.utils.userAgent.IPAD || Blockly.utils.userAgent.IPHONE) {
+            // notes
             break;
         }
     }

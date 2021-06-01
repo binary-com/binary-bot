@@ -42,12 +42,12 @@ export const updatePurchaseChoices = (contractType, oppositesName) => {
         const value = purchase.getField('PURCHASE_LIST').getValue();
         Blockly.WidgetDiv.hideIfOwner(purchase.getField('PURCHASE_LIST'));
         if (value === purchaseChoices[0][1]) {
-            purchase.getField('PURCHASE_LIST').setText(purchaseChoices[0][0]);
+            purchase.getField('PURCHASE_LIST').setValue(purchaseChoices[0][0]);
         } else if (purchaseChoices.length === 2 && value === purchaseChoices[1][1]) {
-            purchase.getField('PURCHASE_LIST').setText(purchaseChoices[1][0]);
+            purchase.getField('PURCHASE_LIST').setValue(purchaseChoices[1][0]);
         } else {
             purchase.getField('PURCHASE_LIST').setValue(purchaseChoices[0][1]);
-            purchase.getField('PURCHASE_LIST').setText(purchaseChoices[0][0]);
+            purchase.getField('PURCHASE_LIST').setValue(purchaseChoices[0][0]);
         }
     });
     Blockly.Events.recordUndo = true;
