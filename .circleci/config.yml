@@ -79,6 +79,7 @@ commands:
       - run:
           name: Deploy docs to gh-pages branch
           command: /home/circleci/.npm-packages/bin/gh-pages -d www --branch << parameters.target_branch >> --message '[skip ci]'
+          
   docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
@@ -179,6 +180,7 @@ jobs:
   release_production:
     docker:
       - image: cimg/node:12.18
+
     steps:
       - git_checkout_from_cache
       - npm_install
@@ -211,4 +213,4 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
-          context: binary-frontend-artifact-upload
+
