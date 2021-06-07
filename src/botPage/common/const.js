@@ -24,9 +24,19 @@ const config = {
             [translate('barrier'), '10'],
             [translate('result'), '11'],
         ],
-        CHECK_RESULT     : [[translate('Win'), 'win'], [translate('Loss'), 'loss']],
-        CHECK_DIRECTION  : [[translate('Rise'), 'rise'], [translate('Fall'), 'fall'], [translate('No Change'), '']],
-        BALANCE_TYPE     : [[translate('string'), 'STR'], [translate('number'), 'NUM']],
+        CHECK_RESULT: [
+            [translate('Win'), 'win'],
+            [translate('Loss'), 'loss'],
+        ],
+        CHECK_DIRECTION: [
+            [translate('Rise'), 'rise'],
+            [translate('Fall'), 'fall'],
+            [translate('No Change'), ''],
+        ],
+        BALANCE_TYPE: [
+            [translate('string'), 'STR'],
+            [translate('number'), 'NUM'],
+        ],
         NOTIFICATION_TYPE: [
             [translate('green'), 'success'],
             [translate('blue'), 'info'],
@@ -148,8 +158,11 @@ const config = {
             },
         ],
     },
-    barrierTypes: [['Offset +', '+'], ['Offset -', '-']],
-    ohlcFields  : [
+    barrierTypes: [
+        ['Offset +', '+'],
+        ['Offset -', '-'],
+    ],
+    ohlcFields: [
         [translate('Open'), 'open'],
         [translate('High'), 'high'],
         [translate('Low'), 'low'],
@@ -243,9 +256,17 @@ const config = {
         timeout        : translate('Run After n Seconds'),
         interval       : translate('Run Every n Seconds'),
     },
-    bbResult  : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
-    macdFields: [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
-    gd        : {
+    bbResult: [
+        [translate('upper'), '1'],
+        [translate('middle'), '0'],
+        [translate('lower'), '2'],
+    ],
+    macdFields: [
+        [translate('Histogram'), '0'],
+        [translate('MACD'), '1'],
+        [translate('Signal'), '2'],
+    ],
+    gd: {
         cid: '828416594271-qj2dnf4u2omg1iugangbtsrq6p0a55oc.apps.googleusercontent.com',
         aid: 'derivbot-248506',
         api: 'AIzaSyBDYQ7IIgGxM14IeAV5JrtaJNYjxB4A5jo',
@@ -257,7 +278,7 @@ export async function updateConfigCurrencies(api = generateLiveApiInstance()) {
     try {
         const response = await api.getPayoutCurrencies();
         config.lists.CURRENCY = response.payout_currencies.map(c => {
-            if (c === 'UST') return ['USDT', 'USDT'];
+            if (c === 'UST') return ['USDT', 'UST'];
             return [c, c];
         });
     } catch (e) {
