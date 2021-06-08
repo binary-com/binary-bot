@@ -82,7 +82,7 @@ api.events.on('balance', response => {
 
     elTopMenuBalances.forEach(elTopMenuBalance => {
         const element = elTopMenuBalance;
-        element.textContent = `${balance} ${currency}`;
+        element.textContent = `${balance} ${currency === 'UST' ? 'USDT' : currency}`;
     });
 
     globalObserver.setState({ balance: b, currency });
@@ -235,9 +235,7 @@ const updateTokenList = () => {
                 $('.account-type').text(`${prefix}`);
             } else {
                 $('.login-id-list').append(
-                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${
-                        tokenInfo.accountName
-                    }</div></li></a><div class="separator-line-thin-gray"></div>`
+                    `<a href="#" value="${tokenInfo.token}"><li><span>${prefix}</span><div>${tokenInfo.accountName}</div></li></a><div class="separator-line-thin-gray"></div>`
                 );
             }
         });

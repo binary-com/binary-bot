@@ -56,7 +56,9 @@ export default class Summary extends Component {
                         <td style={profitColor} className="totalProfit">
                             {totalProfit}
                         </td>
-                        <td className="balance">{balance}</td>
+                        <td className="balance">
+                            {balance?.includes('UST') ? balance?.replace('UST', 'USDT') : balance}
+                        </td>
                     </tr>
                 </tbody>
             </table>
