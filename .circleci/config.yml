@@ -114,26 +114,8 @@ commands:
     steps:
       - k8s/install-kubectl
       - run:
-          name: Deploying to k8s cluster for service binary-bot-beta
+          name: Deploying to k8s cluster for service << parameters.k8s_namespace >>
           command: |
-            for SERVER_ID in {1..5}
-            do
-              KUBE_SERVER_REF="KUBE_SERVER_$SERVER_ID"
-              SERVICEACCOUNT_TOKEN_REF="SERVICEACCOUNT_TOKEN_$SERVER_ID"
-              CA_CRT_REF="CA_CRT_$SERVER_ID"
-              if [ ! -z "${!KUBE_SERVER_REF}" ]
-              then
-                echo "Deploying to cluster $SERVER_ID"
-                CA_CRT="${!CA_CRT_REF}"
-                KUBE_SERVER="${!KUBE_SERVER_REF}"
-                SERVICEACCOUNT_TOKEN="${!SERVICEACCOUNT_TOKEN_REF}"
-                deployment_target="bot-binary-com"
-                [ "<< parameters.target >>" == "beta" ] && deployment_target="bot-beta-binary-com"
-                echo $CA_CRT | base64 --decode > ca.crt
-                kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/${deployment_target} ${deployment_target}=${DOCKHUB_ORGANISATION}/binary-static-bot:${CIRCLE_TAG}
-              fi
-            done
-
             export NAMESPACE=<< parameters.k8s_namespace >>
             git clone https://github.com/binary-com/devops-ci-scripts
             cd devops-ci-scripts/k8s-build_tools
@@ -191,6 +173,7 @@ jobs:
           target: "production"
           k8s_namespace: "bot-binary-com-production"
           k8s_version: ${CIRCLE_TAG}
+      - notify_slack
 
 workflows:
   test:
