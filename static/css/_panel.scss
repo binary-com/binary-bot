@@ -316,7 +316,28 @@ $disabled-color: #F2F2F2;
     margin-bottom: 10px;
 }
 
-#chart-dialog-component,
+#chart-dialog-component {
+    width: 100% !important;
+}
+
+.sc-search-input .searchInputClassName {
+    font-size: 1rem;
+    height: 1.85rem !important;
+    margin-top: 0.25rem;
+    font-family: "IBM Plex Sans",sans-serif;
+}
+
+.form--sc-views__input .sc-input {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.sc-btn.sc-btn--sm {
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-style: normal;
+}
+
 #trading-view-dialog-component {
     width: 100% !important;
 }
