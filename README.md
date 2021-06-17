@@ -60,18 +60,20 @@ Make sure to set the endpoint for running the application on the local
 
 1. Make your changes to the source code
 2. Run test command to make sure your changes are correct
-    ```npm run test```
+```npm run test```
 3. Push your changes to your forked repo:
-    ```git add .
-       git commit -m "describe your changes"
-       git push origin BRANCH_NAME```
+```
+git add .
+git commit -m "describe your changes"
+git push origin BRANCH_NAME
+```
 ## Deploying to local gh-pages
 You can set up your GitHub Pages to deploy your repository.
 
 1.  Run the command below in your project directory.
-      ```
-      npm run release --branch [branchname] # can contain /
-      ```
+```
+npm run release --branch [branchname] # can contain /
+```
 2. Now, your repository can be found at http://<username>.github.io/<repository-name>/<branch-name>
 ## Deployment/Release
 
