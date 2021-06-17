@@ -5,9 +5,7 @@
 
 Visual automation for binary bot- [bot.binary.com](https://bot.binary.com)
 
-Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.
-
-
+Binary Bot uses [Google Blockly](https://developers.google.com/blockly) to provide a puzzle like automation environment to trade using binary.com API version 3.
 ## Pre-installation
 Ensure that your environment contains the following packages.
 ``` 
@@ -24,28 +22,39 @@ In order to work with Binary-Bot application, you must create your own version o
 You will need to perform the following on your development machine:
 1. Change the current working directory to the location where you want the cloned directory.
 2. Clone the forked repo using ```git clone [URL for the forked repo]```
-3. Run ```cd binarybot```
+3. Run ```cd binary-bot```
 4. Create a feature branch from master -  ```git checkout -b [branchName]```.
-5. Perform ```npm install```
+5. Run ```npm install```
 
     >**Note:** - [issue with installing packages](#q1)
 ### 2. Configuring Hosts file
 In order to run our application for the first time, you need to configure your hosts file:
+
+If you are using a UNIX based system (Mac or Linux), Do the following:
 
 1. Open terminal.
 2. Open hosts file in your preferred text editor using ``` sudo vim /etc/hosts```.
 3. Add a new entry pointing to ```127.0.0.1  localbot.binary.sx```
 4. Save the file
 
+For Windows:
+
+ 1. Run Microsoft Notepad as an administrator. 
+
+ 2. From Notepad, open the file: ```c:\Windows\System32\Drivers\etc\hosts```
+
+ 3. Add a new entry pointing to ```127.0.0.1  localbot.binary.sx```
+
+ 4. Save the file
 
 ### 3. Starting a Development Server
-Make sure to set the endpoint for running the application on the local
+Make sure to set the endpoint for running the application on the localhost
 
- 1. Perform ```npm start``` on the binarybot directory. This will open the application in your default browser.
+ 1. Run ```npm start``` on the binarybot directory. This will open the application in your default browser.
  
      >**Note:** - [Getting Permission Denied Error](#q2)
 
-2. Now we have to set the endpoint for running the application on the local.
+2. Now we have to set the endpoint for running the application on the localhost.
    For this, Go to ```http://localbot.binary.sx/endpoint.html```. Make sure the Server is set to ```blue.binaryws.com``` and O Auth App ID is ```16014```
    Click submit.
    
