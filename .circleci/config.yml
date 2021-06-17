@@ -65,20 +65,6 @@ commands:
       - run:
           name: Tag build
           command: echo "<< parameters.target_branch >> $(date -u +'%Y-%m-%dT%H:%M:%SZ')" > www/version
-      - run:
-          name: Install and configure dependencies
-          command: |
-            mkdir "${HOME}/.npm-packages"
-            npm config set prefix "${HOME}/.npm-packages"
-            npm i -g gh-pages
-            git config user.email "ci-build@binary.com"
-            git config user.name "ci-build"
-      - add_ssh_keys:
-          fingerprints:
-            - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
-      - run:
-          name: Deploy docs to gh-pages branch
-          command: /home/circleci/.npm-packages/bin/gh-pages -d www --branch << parameters.target_branch >> --message '[skip ci]'
   docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
