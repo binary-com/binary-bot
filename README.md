@@ -83,7 +83,7 @@ You can set up your GitHub Pages to deploy your repository.
 ```
 npm run release --branch [branchname] # can contain /
 ```
-2. Now, your repository can be found at http://<username>.github.io/<repository-name>/<branch-name>
+2. Now, your repository can be found at https://YOUR_GITHUB_USERNAME.github.io/binary-bot/YOUR_BRANCHNAME/
 ## Deployment/Release
 
 ```
@@ -94,7 +94,7 @@ npm run release-production # to release it to production
 ## To update to latest version
 
 ```
-git pull --rebase upstream dev
+git pull --rebase upstream master
 npm install
 ```
 ## Running the CLI command
