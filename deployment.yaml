@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: binary-bot
+  labels:
+    app: binary-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: binary-bot
+  template:
+    metadata:
+      labels:
+        app: binary-bot
+    spec:
+      containers:
+        - name: binary-bot
+          image: gokulakrishna/tekton-test-bot
+          ports:
+            - containerPort: 8080
