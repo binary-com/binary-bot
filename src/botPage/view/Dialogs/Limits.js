@@ -135,16 +135,18 @@ class LimitsContent extends PureComponent {
                         {translate('Daily limit on losses:')} <strong>{this.getDailyLossesLimit()}</strong>
                     </label>
                     <div className="description">
-                        {translate([
-                            'This is the threshold that limits your potential losses for the day in all Binary.com platforms. Once your total loss reaches or exceeds this amount, your bot will stop trading. Please set a value in the [_1]Self-Exclusion Facilities page[_2].',
-                            `<a href="${createUrl({
-                                addLanguage     : true,
-                                path            : 'user/security/self_exclusionws',
-                                addHtmlExtension: true,
-                                isNonBotPage    : true,
-                            })}" target="_blank">`,
-                            '</a>',
-                        ])}
+                        {translate(
+                            'This is the threshold that limits your potential losses for the day in all Binary.com platforms. Once your total loss reaches or exceeds this amount, your bot will stop trading. Please set a value in the {$0}Self-Exclusion Facilities page{$1}.',
+                            [
+                                `<a href="${createUrl({
+                                    addLanguage     : true,
+                                    path            : 'user/security/self_exclusionws',
+                                    addHtmlExtension: true,
+                                    isNonBotPage    : true,
+                                })}" target="_blank">`,
+                                '</a>',
+                            ]
+                        )}
                     </div>
                 </div>
                 <div className="input-row">

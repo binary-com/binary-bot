@@ -75,14 +75,12 @@ export const createUrl = options => {
     return `https://${subdomain}binary.com${language}${path}${htmlExtension}`;
 };
 
-export const translate = input => {
-    if (Array.isArray(input) && input.length > 0) {
-        const stringToBeTranslated = input[0].replace(/\[_([0-9])\]/g, '%$1');
+export const translate = (input, params = []) => {
+    if (params.length) {
+        const stringToBeTranslated = input.replace(/\{\$({0-9])\}/gi, '%$1');
         let translatedString = i18nTranslate(stringToBeTranslated);
-
-        input.slice(1).forEach((replacement, index) => {
-            const regex = new RegExp(`%${index + 1}`, 'g');
-            translatedString = translatedString.replace(regex, replacement);
+        params.forEach((replacement, index) => {
+            translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
         });
         return RenderHTML(translatedString);
     }

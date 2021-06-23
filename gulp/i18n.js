@@ -77,7 +77,7 @@ gulp.task(
     'i18n',
     gulp.series('i18n-html', () =>
         gulp
-            .src(['src/**/*.js', '!src/common/translations/*.js'])
+            .src(['src/**/*.js', 'src/**/*.jsx', '!src/common/translations/*.js'])
             .pipe(scanner(options, customTransform))
             .pipe(gulp.dest('./'))
     )
