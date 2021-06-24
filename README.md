@@ -79,11 +79,13 @@ git push origin BRANCH_NAME
 ## Deploying to local gh-pages
 You can set up your GitHub Pages to deploy your repository.
 
-1.  Run the command below in your project directory.
+1. First you need to set up custom domain. Go to ```https://github.com/YOUR_GITHUB_USERNAME/binary-bot/settings/pages``` and set your custom domain to ```YOUR_GITHUB_NAME.binary.sx```
+
+2.  Run the command below in your project directory.
 ```
 npm run release --branch [branchname] # can contain /
 ```
-2. Now, your repository can be found at http://<username>.github.io/<repository-name>/<branch-name>
+3. Now, your repository can be found at ```https://YOUR_CUSTOM_DOMAIN/BRANCH_NAME```
 ## Deployment/Release
 
 ```
@@ -94,7 +96,7 @@ npm run release-production # to release it to production
 ## To update to latest version
 
 ```
-git pull --rebase upstream dev
+git pull --rebase upstream master
 npm install
 ```
 ## Running the CLI command
