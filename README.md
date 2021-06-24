@@ -85,7 +85,7 @@ You can set up your GitHub Pages to deploy your repository.
 ```
 npm run release --branch [branchname] # can contain /
 ```
-3. Now, your repository can be found at https://YOUR_CUSTOM_DOMAIN/BRANCH_NAME
+3. Now, your repository can be found at https://YOUR_CUSTOM_DOMAIN/BRANCH_NAME 
 ## Deployment/Release
 
 ```
