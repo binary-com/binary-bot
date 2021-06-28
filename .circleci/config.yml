@@ -155,6 +155,8 @@ jobs:
       - docker_build_push:
           docker_latest_image_tag: latest
           docker_image_tag: ${CIRCLE_TAG}
+      - deploy:
+          target_branch: "production"
       - k8s_deploy:
           target: "production"
           k8s_namespace: "bot-binary-com-production"
