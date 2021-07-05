@@ -57,7 +57,7 @@ export default class Summary extends Component {
                             {totalProfit}
                         </td>
                         <td className="balance">
-                            {balance?.includes('UST') ? balance?.replace('UST', 'USDT') : balance}
+                            {balance?.includes('UST') ? balance.replace('UST', 'USDT') : balance}
                         </td>
                     </tr>
                 </tbody>

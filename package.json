@@ -78,7 +78,7 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-watch": "^5.0.1",
     "husky": "^2.3.0",
-    "i18next-scanner": "^1.9.4",
+    "i18next-scanner": "^2.9.2",
     "immutable": "^3.8.2",
     "jest": "^24.8.0",
     "jquery": "^3.5.1",
