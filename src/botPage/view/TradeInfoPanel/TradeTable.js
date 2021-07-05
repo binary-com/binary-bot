@@ -174,7 +174,6 @@ export default class TradeTable extends Component {
             }
 
             const { accountID } = this.props;
-            const { id } = this.state[accountID];
             const rows = this.state[accountID].rows.slice();
 
             const updatedRows = rows.map(row => {
@@ -191,7 +190,7 @@ export default class TradeTable extends Component {
                 return row;
             });
 
-            this.setState({ [accountID]: { id, rows: updatedRows } });
+            this.setState({ [accountID]: { rows: updatedRows } });
         });
     }
 
@@ -204,8 +203,13 @@ export default class TradeTable extends Component {
     export() {
         const { accountID } = this.props;
 
+        const rows = this.state[accountID].rows.map((item, index) => {
+            const row = item;
+            row.id = index + 1;
+            return row;
+        });
         const data = json2csv({
-            data  : this.state[accountID].rows,
+            data  : rows,
             fields: [
                 'id',
                 'timestamp',
