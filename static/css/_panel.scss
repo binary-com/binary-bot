@@ -299,6 +299,9 @@ $disabled-color: #F2F2F2;
         font-size: 11px;
         border-bottom: 1px solid #f2f2f2;
         border-right: 1px solid #f2f2f2;
+        padding-left: 8px !important;
+        display: flex !important;
+        align-items: center;
     }
     .react-grid-Row {
         font-size: 11px;
