@@ -1,6 +1,7 @@
 import React from 'react';
 
 const ServerTime = ({ api }) => {
+    const [hasApiResponse, setHasApiResponse] = React.useState(false);
     const [date, setDate] = React.useState();
     const [dateString, setDateString] = React.useState();
 
@@ -23,6 +24,7 @@ const ServerTime = ({ api }) => {
         api.send({ time: 1 }).then(response => {
             const newDate = new Date(response.time * 1000);
             setDate(newDate);
+            setHasApiResponse(true);
         });
     };
 
@@ -36,7 +38,7 @@ const ServerTime = ({ api }) => {
             clearInterval(updateTimeInterval);
             clearInterval(serverTimeInterval);
         };
-    }, []);
+    }, [hasApiResponse]);
 
     React.useEffect(() => updateTime(), [date]);
 
