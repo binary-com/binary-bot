@@ -200,7 +200,7 @@ export default () => {
                     const removeInput = inputName => tradeOptionsBlock.removeInput(inputName);
 
                     const updateList = (list, options) => {
-                        const prevSelectedType = options.find(option => option[1] === list.getValue());
+                        const prevSelectedType = options.find(option => option[1] === list?.getValue());
                         list.menuGenerator_ = options; // eslint-disable-line no-underscore-dangle, no-param-reassign
                         if (!useDefaultType && prevSelectedType) {
                             list.setValue('');
