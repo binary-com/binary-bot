@@ -84,9 +84,9 @@ const generateOAuthDomain = () => {
     if (endpointUrl) {
         return endpointUrl;
     } else if (isProduction()) {
-        return `oauth.binary.${getExtension()}`;
+        return `oauth.deriv.${getExtension()}`;
     }
-    return 'oauth.binary.com';
+    return 'oauth.deriv.com';
 };
 
 export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
