@@ -13,6 +13,18 @@ export const error = {
     fontSize: '0.8em',
 };
 
+export const errorDiv = {
+    maxWidth: '60%',
+    color   : 'black',
+    height  : 'calc(100vh - 400px)',
+};
+
+export const Header3 = {
+    fontSize  : '32px',
+    color     : 'black',
+    fontWeight: 'bold',
+};
+
 export const submitButton = {
     textAlign: 'center',
 };

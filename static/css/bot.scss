@@ -57,6 +57,14 @@ body {
     height: 88%;
 }
 
+#errorArea {
+    position: absolute;
+    display: inline;
+    bottom: 1em;
+    right: 1em;
+    height: 50%;
+}
+
 @media only screen and (max-height: 723px) {
     #blocklyArea {
         height: 86%;

@@ -12,6 +12,7 @@ import logHandler from './logger';
 import LogTable from './LogTable';
 import NetworkMonitor from './NetworkMonitor';
 import ServerTime from './react-components/HeaderWidgets';
+import ErrorPage from './react-components/ErrorPage';
 import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import { symbolPromise } from './shared';
 import Tour from './tour';
@@ -154,17 +155,30 @@ const integrationsDialog = new IntegrationsDialog();
 const loadDialog = new LoadDialog();
 const saveDialog = new SaveDialog();
 
+const blockedOptionCountries = ['au'];
+const isOptionsBlocked = country => blockedOptionCountries.includes(country);
+
+const getActiveTokens = id => {
+    const tokenList = getTokenList();
+    return tokenList.length ? tokenList.filter(token => token.token === id) : '';
+};
+
 const getLandingCompanyForToken = id => {
     let landingCompany;
-    let activeToken;
-    const tokenList = getTokenList();
-    if (tokenList.length) {
-        activeToken = tokenList.filter(token => token.token === id);
-        if (activeToken && activeToken.length === 1) {
-            landingCompany = activeToken[0].loginInfo.landing_company_name;
-        }
+    const activeToken = getActiveTokens(id);
+    if (activeToken && activeToken.length === 1) {
+        landingCompany = activeToken[0].loginInfo.landing_company_name;
     }
     return landingCompany;
+};
+
+const getCountryForToken = id => {
+    let residance;
+    const activeToken = getActiveTokens(id);
+    if (activeToken && activeToken.length === 1) {
+        residance = activeToken[0].loginInfo.country;
+    }
+    return residance;
 };
 
 const updateLogo = token => {
@@ -296,19 +310,28 @@ export default class View {
             updateConfigCurrencies(api).then(() => {
                 symbolPromise.then(() => {
                     updateTokenList();
-                    this.blockly = new _Blockly();
-                    this.blockly.initPromise.then(() => {
-                        document
-                            .getElementById('contact-us')
-                            .setAttribute('href', `https://www.binary.com/${getLanguage()}/contact.html`);
-                        this.setElementActions();
-                        initRealityCheck(() => $('#stopButton').triggerHandler('click'));
-                        applyToolboxPermissions();
-                        renderReactComponents();
-                        if (!getTokenList().length) updateLogo();
+
+                    const residance = getCountryForToken(getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
+                    if (residance === 'maltainvest' || isOptionsBlocked(residance)) {
                         this.showHeader(getStorage('showHeader') !== 'false');
+                        this.setElementActions();
+                        renderErrorPage();
                         resolve();
-                    });
+                    } else {
+                        this.blockly = new _Blockly();
+                        this.blockly.initPromise.then(() => {
+                            document
+                                .getElementById('contact-us')
+                                .setAttribute('href', `https://www.binary.com/${getLanguage()}/contact.html`);
+                            this.setElementActions();
+                            initRealityCheck(() => $('#stopButton').triggerHandler('click'));
+                            applyToolboxPermissions();
+                            renderReactComponents();
+                            if (!getTokenList().length) updateLogo();
+                            this.showHeader(getStorage('showHeader') !== 'false');
+                            resolve();
+                        });
+                    }
                 });
             });
         });
@@ -395,7 +418,7 @@ export default class View {
         };
 
         const getAccountSwitchText = () => {
-            if (this.blockly.hasStarted()) {
+            if (this.blockly && this.blockly.hasStarted()) {
                 return [
                     translate(
                         'Binary Bot will not place any new trades. Any trades already placed (but not expired) will be completed by our system. Any unsaved changes will be lost.'
@@ -700,7 +723,9 @@ export default class View {
         });
     }
     stop() {
-        this.blockly.stop();
+        if (this.blockly) {
+            this.blockly.stop();
+        }
     }
     addEventHandlers() {
         const getRunButtonElements = () => document.querySelectorAll('#runButton, #summaryRunButton');
@@ -794,6 +819,19 @@ function initRealityCheck(stopCallback) {
         stopCallback
     );
 }
+
+function renderErrorPage() {
+    ReactDOM.render(
+        <ErrorPage
+            title="Binary Bot is not available for this account"
+            message="We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial."
+        />,
+        $('#errorArea')[0]
+    );
+    document.getElementById('toolbox').remove();
+    document.getElementById('blocklyDiv').remove();
+}
+
 function renderReactComponents() {
     ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
