@@ -825,6 +825,8 @@ function renderErrorPage() {
         <ErrorPage
             title="Binary Bot is not available for this account"
             message="We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial."
+            redirectButtonTitle="Go to MT5 dashboard"
+            redirectButtonURL="https://www.binary.com/en/user/metatrader.html"
         />,
         $('#errorArea')[0]
     );

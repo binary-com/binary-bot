@@ -3,10 +3,17 @@ import PropTypes from 'prop-types';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 
-const ErrorPage = ({ title, message }) => (
+const ErrorPage = ({ title, message, redirectButtonTitle, redirectButtonURL }) => (
     <div style={style.errorDiv}>
-        <h3 style={style.Header3}> {`${translate(title)} `}</h3>
-        <p>{`${translate(message)} `}</p>
+        <h3 style={style.errorHeader}> {`${translate(title)} `}</h3>
+        <p style={style.errorMessage}>{`${translate(message)} `}</p>
+        {redirectButtonTitle && (
+            <div style={style.linkButtonWrapper}>
+                <a style={style.linkButton} href={redirectButtonURL} target="_blank" rel="noopener noreferrer">
+                    <span>{redirectButtonTitle}</span>
+                </a>
+            </div>
+        )}
     </div>
 );
 

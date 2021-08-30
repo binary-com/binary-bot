@@ -16,12 +16,44 @@ export const error = {
 export const errorDiv = {
     maxWidth: '60%',
     color   : 'black',
-    height  : 'calc(100vh - 400px)',
+    height  : 'calc(100vh - 280px)',
 };
 
-export const Header3 = {
+export const linkButton = {
+    minWidth      : '140px',
+    height        : '40px',
+    borderWidth   : '2px',
+    background    : 'green',
+    color         : 'white',
+    padding       : '0 16px',
+    display       : 'inline-flex',
+    borderRadius  : '4px',
+    transition    : 'all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1)',
+    outline       : '0',
+    position      : 'relative',
+    textDecoration: 'none',
+    verticalAlign : 'middle',
+    alignItems    : 'center',
+    justifyContent: 'center',
+};
+
+export const linkButtonWrapper = {
+    display       : 'flex',
+    justifyContent: 'center',
+};
+
+export const errorMessage = {
+    fontSize     : '16px',
+    color        : 'black',
+    fontWeight   : '400',
+    textTransform: 'none',
+    lineHeight   : '1.75',
+    margin       : '16px 0 24px',
+};
+
+export const errorHeader = {
     fontSize  : '32px',
-    color     : 'black',
+    color     : '#e98024',
     fontWeight: 'bold',
 };
 
