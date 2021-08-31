@@ -241,7 +241,8 @@ export const load = (blockStr, dropEvent = {}) => {
             const error = createError(
                 'InvalidBlockInXML',
                 translate(
-                    `The block ${blockId} in the XML file contains unsupported elements.\nTo fix that open XML file in the text editor, search for block id ${blockId}, and check it's attributes for errors.`
+                    `The file you’re trying to open contains unsupported elements in the following block: ${blockId}
+                    Please check your file and try again.`
                 )
             );
             globalObserver.emit('Error', error);
