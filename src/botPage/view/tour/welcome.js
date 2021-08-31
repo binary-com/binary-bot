@@ -34,11 +34,8 @@ const steps = [
         },
     },
     {
-        title: translate('Workspace'),
-        text : `<p>
-      ${translate('Drag and drop block files.')}
-      ${translate('or')} ${translate('make your own strategies.')}
-    </p>`,
+        title   : translate('Workspace'),
+        text    : `<p>${translate('Drag and drop block files or make your own strategies.')}</p>`,
         selector: '#workspace_center',
         position: 'top',
     },
