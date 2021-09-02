@@ -155,8 +155,7 @@ const integrationsDialog = new IntegrationsDialog();
 const loadDialog = new LoadDialog();
 const saveDialog = new SaveDialog();
 
-const blockedOptionCountries = ['au'];
-const isOptionsBlocked = country => blockedOptionCountries.includes(country);
+const isOptionsBlocked = country => config.blocked_countries.includes(country);
 
 const getActiveTokens = id => {
     const tokenList = getTokenList();
@@ -168,17 +167,9 @@ const getLandingCompanyForToken = id => {
     const activeToken = getActiveTokens(id);
     if (activeToken && activeToken.length === 1) {
         landingCompany = activeToken[0].loginInfo.landing_company_name;
+        localStorage.setItem('residence', activeToken[0].loginInfo.country);
     }
     return landingCompany;
-};
-
-const getCountryForToken = id => {
-    let residance;
-    const activeToken = getActiveTokens(id);
-    if (activeToken && activeToken.length === 1) {
-        residance = activeToken[0].loginInfo.country;
-    }
-    return residance;
 };
 
 const updateLogo = token => {
@@ -311,8 +302,10 @@ export default class View {
                 symbolPromise.then(() => {
                     updateTokenList();
 
-                    const residance = getCountryForToken(getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
-                    if (residance === 'maltainvest' || isOptionsBlocked(residance)) {
+                    if (
+                        localStorage.getItem('residence') === 'maltainvest' ||
+                        isOptionsBlocked(localStorage.getItem('residence'))
+                    ) {
                         this.showHeader(getStorage('showHeader') !== 'false');
                         this.setElementActions();
                         renderErrorPage();
