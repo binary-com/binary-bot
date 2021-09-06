@@ -34,14 +34,8 @@ const steps = [
         },
     },
     {
-        title: translate('Workspace'),
-        text : `<p>
-      ${translate('Drag and drop block files.')}
-      <a target="blank" href="https://shop.binary.com/collections/strategies">
-        ${translate('Download sample strategies')}
-      </a>
-      ${translate('or')} ${translate('make your own strategies.')}
-    </p>`,
+        title   : translate('Workspace'),
+        text    : `<p>${translate('Drag and drop block files or make your own strategies.')}</p>`,
         selector: '#workspace_center',
         position: 'top',
     },
