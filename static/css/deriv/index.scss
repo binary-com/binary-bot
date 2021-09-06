@@ -1,0 +1,26 @@
+@import 'colors-binary';
+@import 'constants-deriv';
+@import 'constants';
+@import 'theme';
+@import 'mixins';
+@import 'common';
+@import 'inline-icons';
+@import 'fonts';
+@import 'settings-language';
+@import 'header';
+@import 'footer';
+
+html body {
+    margin-top: 48px;
+}
+.deriv-header {
+    font-size: $FONT_BASE;
+    font-family: $FONT_STACK;
+}
+.footer {
+    font-size: $FONT_SIZE_XXS;
+    font-family: $FONT_STACK;
+}
+a:hover {
+    text-decoration: none;
+}
