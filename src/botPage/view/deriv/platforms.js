@@ -30,7 +30,7 @@ const platforms = [
         logo       : 'image/deriv/brand/ic-brand-smarttrader.svg',
     },
     {
-        title      : 'LegacyBot',
+        title      : 'DerivBot',
         description: 'Automated trading for our loyal clients who are not ready yet to get more with DBot.',
         link       : '#',
         logo       : 'image/deriv/brand/ic-brand-binarybot.svg',

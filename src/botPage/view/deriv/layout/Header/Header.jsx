@@ -67,7 +67,7 @@ const Header = ({ isLogged, tokenList }) => {
                 <div className="header__menu-left">
                     <div id="platform__switcher" className="header__menu-item platform__switcher mobile-hide" onClick={togglePlatformSwitcher}>
                         <img className="header__logo" src="image/deriv/brand/ic-brand-binarybot.svg" />
-                        <div className="platform__switcher-header">LegacyBot</div>
+                        <div className="platform__switcher-header">Deriv Bot</div>
                         <img id="platform__switcher-expand" className="header__icon header__expand" src="image/deriv/ic-chevron-down-bold.svg" />
                     </div>
                     {isLogged && <MenuLinks />}
