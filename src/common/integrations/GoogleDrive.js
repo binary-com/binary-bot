@@ -186,7 +186,7 @@ class GoogleDrive {
                                 .setVisible(true);
                         })
                         .catch(e => {
-                            if (error.status && error.status === 401) {
+                            if (e.status && e.status === 401) {
                                 this.signOut();
                             }
 
