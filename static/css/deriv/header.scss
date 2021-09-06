@@ -1,5 +1,4 @@
 body .header {
-    position: fixed;
     left: 0px;
     top: 0px;
     background-color: var(--general-main-1);
@@ -844,4 +843,7 @@ body #topbar {
             top: 48px;
         }
     }
+}
+#toolbox{
+    height: 42px;
 }
