@@ -1,0 +1,191 @@
+/*------------------------------------*
+ *  # Constants
+ *------------------------------------*/
+
+/* stylelint-disable color-no-hex */
+
+/* COLOR PALETTE */
+
+/* colors */
+$color-black: #0e0e0e;
+$color-black-1: #333333;
+$color-black-3: #151717;
+$color-black-4: #1d1f20;
+$color-black-5: #242828;
+$color-black-6: #3e3e3e;
+$color-black-7: #000000;
+$color-black-8: #323738;
+$color-black-9: #5c5c5c;
+$color-white: #ffffff;
+$color-red: #ff444f;
+$color-red-1: #ec3f3f;
+$color-red-2: #cc2e3d;
+$color-red-3: #a32430;
+$color-red-4: #d33636;
+$color-red-5: #eb3e48;
+$color-grey: #c2c2c2;
+$color-grey-1: #999999;
+$color-grey-2: #f2f3f4;
+$color-grey-3: #eaeced;
+$color-grey-4: #e6e9e9;
+$color-grey-5: #d6dadb;
+$color-grey-6: #d6d6d6;
+$color-grey-7: #6e6e6e;
+$color-grey-8: #d7d7d7;
+$color_grey-9: #868686;
+$color-grey-10: #919191;
+$color-grey-11: #fafafa;
+$color-grey-12: #f5f7fa;
+$color-green: #85acb0;
+$color-green-1: #4bb4b3;
+$color-green-2: #3d9494;
+$color-green-3: #00a79e;
+$color-green-4: #008079;
+$color-orange: #ff6444;
+$color-yellow: #ffad3a;
+$color-blue: #377cfc;
+$color-blue-1: #0dc2e7;
+$color-blue-2: #2a3052;
+$color-blue-3: #0796e0;
+$color-blue-4: #0677af;
+$color-purple: #722fe4;
+
+/* alpha colors */
+$alpha-color-black-1: transparentize($color-black-7, 0.28);
+$alpha-color-black-2: transparentize($color-black, 0.04);
+$alpha-color-black-3: transparentize($color-black-7, 0.92);
+$alpha-color-black-4: transparentize($color-black-7, 0.84);
+$alpha-color-black-5: transparentize($color-black-7, 0.16);
+$alpha-color-black-6: transparentize($color-black-7, 0.36);
+$alpha-color-blue-1: transparentize($color-blue, 0.84);
+$alpha-color-blue-2: transparentize($color-blue-3, 0.84);
+$alpha-color-white-1: transparentize($color-white, 0.04);
+$alpha-color-white-2: transparentize($color-white, 0.84);
+$alpha-color-white-3: transparentize($color-white, 0.92);
+$alpha-color-red-1: transparentize($color-red, 0.92);
+$alpha-color-red-2: transparentize($color-red, 0.84);
+$alpha-color-red-3: transparentize($color-red, 0.76);
+$alpha-color-green-1: transparentize($color-green-1, 0.08);
+$alpha-color-green-2: transparentize($color-green-3, 0.08);
+$alpha-color-yellow-1: transparentize($color-yellow, 0.84);
+
+/* gradient colors */
+$gradient-color-green-1: linear-gradient(to top, $color-white, transparentize($color-green-1, 0.84));
+$gradient-color-green-2: linear-gradient(to top, $color-black, transparentize($color-green-3, 0.84));
+$gradient-color-red-1: linear-gradient(to top, $color-white, transparentize($color-red, 0.84));
+$gradient-color-red-2: linear-gradient(to top, $color-black, transparentize($color-red, 0.84));
+$contract-gradient-color-red-1: linear-gradient(to top, $color-white 85%, transparentize($color-red, 0.84));
+$contract-gradient-color-red-2: linear-gradient(to top, $color-black 85%, transparentize($color-red, 0.84));
+$gradient-color-white: linear-gradient(to right, transparentize($color-white, 1) -5%, $color-white 71%);
+$gradient-color-black: linear-gradient(to right, transparentize($color-black, 1) -5%, $color-black 71%);
+
+$gradient-color-purple: linear-gradient(274.73deg, #5a205d 3.82%, #7f3883 88.49%);
+$gradient-color-blue: linear-gradient(274.73deg, #1a205e 3.82%, #122d96 88.49%);
+$gradient-color-orange: linear-gradient(90deg, #eb001b 0%, #f79e1b 100%);
+$gradient-color-black-2: linear-gradient(274.73deg, #464750 3.82%, #0e0f11 88.49%);
+$gradient-color-orange-2: linear-gradient(90deg, #f89e32 0%, #f7931b 103.12%);
+$gradient-color-blue-2: linear-gradient(90deg, #3d83cf 0%, #2775ca 100%);
+$gradient-color-green-3: linear-gradient(90deg, #98cc53 0%, #8dc640 100%);
+$gradient-color-blue-3: linear-gradient(90deg, #1a77ac 0%, #0068a3 100%);
+$gradient-color-orange-3: linear-gradient(90deg, #ff7635 0%, #ff671f 100%);
+$gradient-color-orange-4: linear-gradient(90deg, #f36938 0%, #f25822 100%);
+$gradient-color-blue-4: linear-gradient(90deg, #1a8fff 0%, #0083ff 100%);
+$gradient-color-red-3: linear-gradient(90deg, #ff444f 0%, #211d1e 95.22%);
+$gradient-color-red-4: linear-gradient(90deg, #ff6444 0%, #ff444f 100%);
+$gradient-color-black-3: linear-gradient(58.51deg, #061828 28.06%, #1a3c60 93.51%);
+$gradient-color-black-4: linear-gradient(274.25deg, #333333 9.01%, #5c5b5b 103.31%);
+
+/* Preserve legacy variables */
+/* Primary */
+
+$COLOR_BLACK: #000000;
+$COLOR_BLACK_2: #1d1f20;
+$COLOR_BLACK_3: #0e0e0e;
+$COLOR_GREEN_1: #39b19d;
+$COLOR_GREEN_2: #2d9f93;
+$COLOR_GREEN_3: #21ce99;
+$COLOR_GREEN_4: #00a79e;
+$COLOR_GREEN_5: #4bb4b3;
+$COLOR_ORANGE: #ff9933;
+$COLOR_DARK_ORANGE: #ff8802;
+$COLOR_PURPLE: #4f60ae;
+$COLOR_RED: #e31c4b;
+$COLOR_RED_2: #cc2e3d;
+$COLOR_RED_3: #ec3f3f;
+$COLOR_CORAL_RED: #ff444f;
+$COLOR_SKY_BLUE: #2196f3;
+$COLOR_WHITE: #ffffff;
+$COLOR_BLUE: #1c5ae3;
+// Light theme
+$COLOR_LIGHT_BLACK_1: rgba(0, 0, 0, 0.8);
+$COLOR_LIGHT_BLACK_2: rgba(0, 0, 0, 0.4);
+$COLOR_LIGHT_BLACK_3: rgba(0, 0, 0, 0.16);
+$COLOR_LIGHT_BLACK_3_SOLID_1: #d6d6d6;
+$COLOR_LIGHT_BLACK_3_SOLID_2: #b3b3b3;
+$COLOR_LIGHT_BLACK_4: rgba(0, 0, 0, 0.04);
+$COLOR_LIGHT_BLACK_4_SOLID: #f4f4f6;
+$COLOR_LIGHT_GRAY_1: #999cac;
+$COLOR_LIGHT_GRAY_2: rgba(153, 156, 172, 0.32);
+$COLOR_LIGHT_GRAY_3: #eaeced;
+$COLOR_LIGHT_GRAY_4: #6e6e6e;
+$COLOR_LIGHT_GRAY_5: #c2c2c2;
+$COLOR_LIGHT_GREEN_GRADIENT: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(0, 148, 117, 0.16));
+$COLOR_LIGHT_RED_GRADIENT: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(227, 28, 75, 0.16));
+$COLOR_LIGHT_WHITE_GRADIENT: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+// Dark theme
+$COLOR_DARK_BLACK_GRADIENT: linear-gradient(to right, rgba(16, 19, 32, 1), rgba(16, 19, 32, 0));
+$COLOR_DARK_BLUE_1: #0b0e18;
+$COLOR_DARK_BLUE_2: #101320;
+$COLOR_DARK_BLUE_3: #191c31;
+$COLOR_DARK_BLUE_4: #202641;
+$COLOR_DARK_BLUE_5: #2a3052;
+$COLOR_DARK_BLUE_6: #555975;
+$COLOR_DARK_BLUE_7: #7f8397;
+$COLOR_DARK_BLUE_8: rgba(127, 131, 151, 0.3);
+$COLOR_DARK_GREEN_GRADIENT: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
+$COLOR_DARK_RED_GRADIENT: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
+$COLOR_DARK_GRAY_1: #282a37;
+$COLOR_DARK_GRAY_2: #303342;
+$COLOR_DARK_GRAY_3: #555975;
+$COLOR_DARK_GRAY_4: #999999;
+/* stylelint-enable color-no-hex */
+
+$BORDER_RADIUS: 4px;
+
+$MAX_CONTAINER_WIDTH: 1440px;
+
+$POSITIONS_DRAWER_WIDTH: 240px;
+$POSITIONS_DRAWER_MARGIN: 8px;
+
+$HEADER_HEIGHT: 48px;
+$FOOTER_HEIGHT: 36px;
+
+$MOBILE_HEADER_HEIGHT: 40px;
+$MOBILE_HEADER_HEIGHT_DASHBOARD: 48px;
+$MOBILE_WRAPPER_HEADER_HEIGHT: 40px;
+$MOBILE_WRAPPER_FOOTER_HEIGHT: 70px;
+
+$SIDEBAR_WIDTH: 240px;
+
+/* Wallet gradient background */
+$gradient-airtm: linear-gradient(90deg, #1a8fff 0%, #0083ff 100%);
+$gradient-banxa: linear-gradient(90deg, #000000 0%, #4ac0ba 96.35%);
+$gradient-bitcoin: linear-gradient(90deg, #f89e32 0%, #f7931b 103.12%);
+$gradient-credit: linear-gradient(274.73deg, #464750 3.82%, #0e0f11 88.49%);
+$gradient-dp2p: linear-gradient(90deg, #ff444f 0%, #211d1e 95.22%);
+$gradient-fasapay: linear-gradient(90deg, #f6931c 0%, #4873ac 95.22%);
+$gradient-jeton: linear-gradient(90deg, #ff7635 0%, #ff671f 100%);
+$gradient-mastercard: linear-gradient(90deg, #eb001b 0%, #f79e1b 100%);
+$gradient-neteller: linear-gradient(90deg, #98cc53 0%, #8dc640 100%);
+$gradient-paylivre: linear-gradient(90deg, #352caa 0%, #9a6bfc 100%);
+$gradient-paysafe: linear-gradient(90deg, #e3001b 0%, #008ac9 100%);
+$gradient-perfectmoney: linear-gradient(90deg, #f12c2c 0%, #ef1515 100%);
+$gradient-skrill: linear-gradient(274.73deg, #5a205d 3.82%, #7f3883 88.49%);
+$gradient-sticpay: linear-gradient(90deg, #f36938 0%, #f25822 100%);
+$gradient-virtual: linear-gradient(90deg, #ff6444 0%, #ff444f 100%);
+$gradient-visa: linear-gradient(274.73deg, #1a205e 3.82%, #122d96 88.49%);
+$gradient-webmoney: linear-gradient(90deg, #1a77ac 0%, #0068a3 100%);
+
+/* App Cards gradient background */
+$gradient-virtual: linear-gradient(274.25deg, #333333 9.01%, #5c5b5b 103.31%);
+$gradient-virtual-swap-free: linear-gradient(58.51deg, #061828 28.06%, #1a3c60 93.51%);

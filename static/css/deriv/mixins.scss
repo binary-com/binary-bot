@@ -1,0 +1,359 @@
+/*------------------------------------*
+ *  # SASS Mixins and Functions
+ *------------------------------------*/
+
+/*
+ * SASS interpolation
+ */
+// Requires the calc-interpolation function which can also be used independently
+@function calc-interpolation($min-screen, $min-value, $max-screen, $max-value) {
+    $a: ($max-value - $min-value) / ($max-screen - $min-screen);
+    $b: $min-value - $a * $min-screen;
+
+    $sign: '+';
+    @if ($b < 0) {
+        $sign: '-';
+        $b: abs($b);
+    }
+    @return calc(#{$a * 100}vw #{$sign} #{$b});
+}
+
+@mixin interpolate($properties, $min-screen, $max-screen, $min-value, $max-value) {
+    & {
+        @each $property in $properties {
+            #{$property}: $min-value;
+        }
+        @media screen and (min-width: $min-screen) {
+            @each $property in $properties {
+                #{$property}: calc-interpolation($min-screen, $min-value, $max-screen, $max-value);
+            }
+        }
+        @media screen and (min-width: $max-screen) {
+            @each $property in $properties {
+                #{$property}: $max-value;
+            }
+        }
+    }
+}
+
+/*
+ * PX to EM
+ * @param $px - px value to be converted
+ * @param $base - base font size (in `em`)
+ * Note: 'em' values are calculate based on the element font-size
+ *       to properly converts 'px' to 'em', please pass in the element font-size with it
+ * Usage example:
+    padding: em(16px, 1.6em); // font-size in 'em'
+ */
+@function em($px, $base: $BASE_FONT_SIZE) {
+    $list: ();
+    @if length($px) != 1 {
+        @for $i from 1 through length($px) {
+            $val_em: (nth($px, $i) / $base) * 1em;
+            $list: append($list, $val_em, space);
+        }
+        @return $list;
+    } @else {
+        @return ($px / $base) * 1em;
+    }
+}
+
+/*
+ * Set property by passing a property name, and values.
+ * @param $property name - padding, margin etc.
+ * @param $values        - values in `px` (space separated for multiple values)
+ * @param $font-size     - base font-size in `em`
+ * Usage example:
+   @include toEm(padding, 8px 16px 8px, 1.6em);
+ */
+@mixin toEm($property, $values, $font-size: $BASE_FONT_SIZE) {
+    #{$property}: em($values, $font-size);
+}
+
+/*
+ * Generate typefaces key-value pair of variable name and config
+ * Example:
+   --paragraph-center-bold-black: (14px, center, bold, black)
+ */
+@function generate-typefaces() {
+    $typeface_list: ();
+    @each $fontsize_name, $size in $FONT_SIZES {
+        @each $textalign_name, $text_align in $TEXT_ALIGN {
+            @each $color_name, $color in $FONT_COLORS {
+                @each $fontweight_name, $weight in $FONT_WEIGHTS {
+                    $key: --#{$fontsize_name}-#{$textalign_name}-#{$fontweight_name}-#{$color_name};
+                    $val: ($size, $text_align, $weight, $color);
+                    $typeface: (
+                        $key: $val,
+                    );
+                    $typeface_list: map-merge($typeface_list, $typeface);
+                }
+            }
+        }
+    }
+    // @debug $typeface_list; /* uncomment to debug */
+    @return $typeface_list;
+}
+
+/*
+ * Sets font-size, font-weight, color, text-transform, text-align and line-height
+ * Usage example:
+   @include setTypeface(16px, bold, black, uppercase);
+ */
+@mixin setTypeface($size, $align, $weight, $colour, $tt) {
+    @if $size {
+        font-size: $size;
+    }
+    @if $colour {
+        color: $colour;
+    }
+    @if $weight {
+        font-weight: $weight;
+    }
+    @if $tt {
+        text-transform: $tt;
+    }
+    @if $align {
+        text-align: $align;
+    }
+    @if $size == 1.6em {
+        line-height: map-get($map: $LINEHEIGHTS, $key: 'large');
+    } @else if $size == 1.4em {
+        line-height: map-get($map: $LINEHEIGHTS, $key: 'medium');
+    } @else if $size == 1.2em {
+        line-height: map-get($map: $LINEHEIGHTS, $key: 'small');
+    } @else if $size == 1em {
+        line-height: map-get($map: $LINEHEIGHTS, $key: 'xsmall');
+    } @else {
+        line-height: unset;
+    }
+}
+
+/*
+ * Set typefaces by passing a typeface variable name
+ * @param $var   - typeface variable
+ * @param $tt    - text-transform property
+ * @param $align - text-align property
+ * Usage example:
+   @include typeface(--paragraph-bold-black, uppercase, center);
+ */
+@mixin typeface($var, $tt: none) {
+    $typeface_config: map-get(
+        $map: $TYPEFACES_LIST,
+        $key: $var,
+    );
+
+    $size: nth($typeface_config, 1); // font-size
+    $align: nth($typeface_config, 2); // text-align
+    $weight: nth($typeface_config, 3); // font-weight
+    $color: nth($typeface_config, 4); // color
+    @include setTypeface($size, $align, $weight, $color, $tt);
+}
+
+/*
+ * Range Slider Thumb styling is set here
+ */
+@mixin thumbStyle() {
+    appearance: none;
+    width: 1em;
+    height: 1em;
+    border-radius: 100%;
+    border: 0;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0);
+
+    &:hover {
+        box-shadow: 0 0 0 0.5em var(--state-hover);
+    }
+}
+
+/*
+ * SVG icons colors
+ */
+@mixin colorIcon($colors...) {
+    @for $i from 1 through length($colors) {
+        /* postcss-bem-linter: ignore */
+        .color#{$i}-fill {
+            fill: nth($colors, $i);
+        }
+        /* postcss-bem-linter: ignore */
+        .color#{$i}-stroke {
+            stroke: nth($colors, $i);
+        }
+    }
+}
+
+/*
+ * Bar Spinner Animation
+ * @param $count    - number of bars
+ * @param $duration - duration of animation
+ * @param $phase    - each bar phase change delay
+ * Usage example:
+   @include createBarspinnerAnimation(5, 1.2s, 0,1);
+ */
+@mixin createBarspinnerAnimation($count, $duration, $phase) {
+    animation: sk-stretchdelay $duration infinite ease-in-out;
+
+    @for $i from 1 through $count {
+        &--#{$i} {
+            animation-delay: -$duration + (($i - 1) * $phase);
+        }
+    }
+}
+
+/*
+ * Tooltip colors
+ * @param $color - color property
+ * Usage example:
+   @include tooltipColor($COLOR_RED);
+ */
+@mixin tooltipColor($color) {
+    &:before {
+        background: $color;
+    }
+    &:after,
+    &[data-tooltip-pos='top']:after {
+        border-top-color: $color;
+    }
+    &[data-tooltip-pos='right']:after {
+        border-top-color: transparent;
+        border-right-color: $color;
+    }
+    &[data-tooltip-pos='left']:after {
+        border-top-color: transparent;
+        border-left-color: $color;
+    }
+    &[data-tooltip-pos='bottom']:after {
+        border-top-color: transparent;
+        border-bottom-color: $color;
+    }
+}
+
+/*
+ * Convert Tooltip colors
+ * @param $color - css color property
+ * Usage example:
+   @include convertTooltipColor(var(--status-default));
+ */
+@mixin convertTooltipColor($color) {
+    &:before {
+        background: $color;
+    }
+    &:after,
+    &[data-tooltip-pos='top']:after {
+        border-top-color: $color;
+    }
+    &[data-tooltip-pos='right']:after {
+        border-top-color: transparent;
+        border-right-color: $color;
+    }
+    &[data-tooltip-pos='left']:after {
+        border-top-color: transparent;
+        border-left-color: $color;
+    }
+    &[data-tooltip-pos='bottom']:after {
+        border-top-color: transparent;
+        border-bottom-color: $color;
+    }
+}
+
+@mixin deriv-btn($size: 'default', $type: '') {
+    @if $size == 'default' {
+        box-sizing: border-box;
+        vertical-align: middle;
+        align-items: center;
+        justify-content: center;
+        touch-action: manipulation;
+        cursor: pointer;
+        white-space: nowrap;
+        display: inline-flex;
+        border: 0;
+        border-radius: 4px;
+        transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
+        outline: 0;
+        position: relative;
+        text-decoration: none;
+        text-transform: none !important;
+        font-weight: bold !important;
+        text-align: center;
+        line-height: 1.5;
+    }
+
+    &:disabled, &[disabled] {
+        opacity: 0.32;
+        cursor: not-allowed !important;
+    }
+
+    // Types
+    @if $type == 'primary' {
+        background: var(--button-primary-default);
+        color: var(--text-colored-background) !important;
+
+        &:focus, &:hover {
+            background: var(--button-primary-hover);
+        }
+        &:active:not([disabled]) {
+            background: var(--button-primary-default);
+        }
+    }
+    @if $type == 'secondary' {
+        background: transparent;
+        color: var(--text-prominent) !important;
+
+        @if ($size == 'large') {
+            border: 2px solid var(--button-secondary-default);
+        }
+        @else {
+            border: 1px solid var(--button-secondary-default);
+        }
+
+        &:focus, &:hover {
+            background: var(--button-secondary-hover);
+        }
+        &:active:not([disabled]) {
+            border: 1px solid var(--button-secondary-default);
+        }
+    }
+    @if $type == 'tertiary' {
+        background: var(--button-tertiary-default);
+        color: var(--brand-red-coral) !important;
+
+        &:focus, &:hover {
+            background: var(--button-tertiary-hover);
+        }
+        &:active:not([disabled]) {
+            background: var(--button-tertiary-default);
+        }
+    }
+    @if $type == 'link' {
+        background: transparent;
+        color: var(--brand-red-coral) !important;
+
+        &:focus:not([disabled]), &:hover:not([disabled]) {
+            text-decoration: underline !important;
+        }
+    }
+    // Sizes
+    @if ($size == 'default') {
+        height: 32px;
+        border-width: 1px;
+        font-size: $FONT_SIZE_S !important;
+        padding: 0 16px;
+        min-width: 56px;
+    }
+    @if $size == 'small' {
+        height: 24px;
+        border-width: 1px;
+        font-size: $FONT_SIZE_XS !important;
+        padding: 0 8px;
+        min-width: 48px;
+    }
+    @if $size == 'large' {
+        height: 40px;
+        border-width: 2px;
+        font-size: $FONT_SIZE_S !important;
+        padding: 0 16px;
+        min-width: 64px;
+    }
+}

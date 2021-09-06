@@ -1,0 +1,22 @@
+.btn {
+    @include deriv-btn('default', null);
+
+    &--primary {
+        @include deriv-btn(null, 'primary');
+    }
+    &--secondary {
+        @include deriv-btn(null, 'secondary');
+    }
+    &--tertiary {
+        @include deriv-btn(null, 'tertiary');
+    }
+    &--link {
+        @include deriv-btn(null, 'link');
+    }
+    &__small {
+        @include deriv-btn('small', null);
+    }
+    &__large {
+        @include deriv-btn('large', null);
+    }
+}

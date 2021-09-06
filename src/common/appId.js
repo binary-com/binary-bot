@@ -98,7 +98,9 @@ export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websoc
 export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
 
 export const getOAuthURL = () =>
-    `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+    `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${
+        isProduction() ? getAppIdFallback() : '16014'
+    }&l=${getLanguage().toUpperCase()}`;
 
 const options = {
     apiUrl  : getWebSocketURL(),

@@ -8,6 +8,7 @@
 @import 'reality-check';
 @import 'tour';
 @import 'elevio';
+@import 'deriv/index.scss';
 
 * {
     box-sizing: border-box;
@@ -42,10 +43,10 @@ body {
     border-radius: 100%;
 }
 
-#contact-us, #server-time, #server-status {
-    margin-right: 3em;
-    margin-top: 0.2em;
-}
+// #contact-us, #server-time, #server-status {
+//     margin-right: 3em;
+//     margin-top: 0.2em;
+// }
 
 #blocklyDiv {
     position: absolute;

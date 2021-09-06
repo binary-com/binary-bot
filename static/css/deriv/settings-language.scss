@@ -1,0 +1,89 @@
+#language-menu-modal {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--overlay-outside-dialog);
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    z-index: 9999;
+
+    .language-menu {
+        min-width: 480px;
+        min-height: 176px;
+        position: absolute;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background-color: var(--general-main-2);
+        border-radius: 4px;
+
+        &-header {
+            line-height: 24px;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 16px 24px;
+            border-bottom: 2px solid var(--general-section-1);
+        }
+        &-close_btn {
+            position: absolute;
+            right: 16px;
+            top: 12px;
+            width: 32px;
+            height: 32px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%333' d='M3.707 2.293L8 6.587l4.293-4.294c.39-.39 1.023-.39 1.414 0 .39.39.39 1.023 0 1.414L9.414 8.001l4.293 4.295c.39.39.39 1.024 0 1.414-.39.39-1.024.39-1.414 0L8 9.416 3.707 13.71c-.39.39-1.023.39-1.414 0-.39-.39-.39-1.023 0-1.414l4.292-4.295-4.292-4.294c-.39-.39-.39-1.024 0-1.414.39-.39 1.024-.39 1.414 0z'/%3E%3C/svg%3E%0A") no-repeat center;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        &-list {
+            display: grid;
+            grid-template-columns: repeat(5,80px);
+            grid-template-rows: repeat(2,84px);
+            grid-gap: 40px;
+            padding: 40px;
+        }
+        &-item {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            padding: 16px 5px;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            cursor: pointer;
+
+            &__active {
+                cursor: initial;
+                border: 1px solid var(--border-active);
+                font-weight: 700;
+            }
+            &:hover {
+                border: 1px solid var(--border-hover);
+            }
+            img {
+                width: 36px;
+                height: 24px;
+            }
+            span {
+                font-size: .9rem;
+                color: var(--text-prominent);
+                margin-top: 10px;
+            }
+        }
+    }
+}
