@@ -12,7 +12,6 @@ import logHandler from './logger';
 import LogTable from './LogTable';
 import NetworkMonitor from './NetworkMonitor';
 import ServerTime from './react-components/HeaderWidgets';
-import OfficialVersionWarning from './react-components/OfficialVersionWarning';
 import { symbolPromise } from './shared';
 import Tour from './tour';
 import TradeInfoPanel from './TradeInfoPanel';
@@ -39,7 +38,6 @@ import {
     set as setStorage,
     getToken,
 } from '../../common/utils/storageManager';
-import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
 import {
     getMissingBlocksTypes,
@@ -48,8 +46,13 @@ import {
     saveBeforeUnload,
 } from './blockly/utils';
 
+// Deriv components
+import Footer from './deriv/layout/Footer';
+import Header from './deriv/layout/Header';
+
 let realityCheckTimeout;
 let chart;
+const clientInfo = {};
 
 const api = generateLiveApiInstance();
 
@@ -62,8 +65,8 @@ api.events.on('website_status', response => {
     const { message } = response.website_status;
     if (message) {
         $.notify(message, {
-            position : 'bottom left',
-            autoHide : false,
+            position: 'bottom left',
+            autoHide: false,
             className: 'warn web-status',
         });
     }
@@ -187,7 +190,9 @@ const updateTokenList = () => {
     const tokenList = getTokenList();
     const loginButton = $('#login, #toolbox-login');
     const accountList = $('#account-list, #toolbox-account-list');
+    clientInfo.tokenList = tokenList;
     if (tokenList.length === 0) {
+        clientInfo.isLogged = false;
         loginButton.show();
         accountList.hide();
 
@@ -203,6 +208,7 @@ const updateTokenList = () => {
             .children()
             .remove();
     } else {
+        clientInfo.isLogged = true;
         loginButton.hide();
         accountList.show();
 
@@ -301,12 +307,12 @@ export default class View {
                         document
                             .getElementById('contact-us')
                             .setAttribute('href', `https://www.binary.com/${getLanguage()}/contact.html`);
-                        this.setElementActions();
                         initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                         applyToolboxPermissions();
                         renderReactComponents();
+                        this.setElementActions();
                         if (!getTokenList().length) updateLogo();
-                        this.showHeader(getStorage('showHeader') !== 'false');
+                        this.showHeader(getStorage('showHeader') !== 'false'); // todo: remove header auto-enabling
                         resolve();
                     });
                 });
@@ -361,16 +367,16 @@ export default class View {
             .on('click', () => {
                 $.FileDialog({
                     // eslint-disable-line new-cap
-                    accept       : '.xml',
-                    cancelButton : 'Close',
-                    dragMessage  : 'Drop files here',
-                    dropheight   : 400,
-                    errorMessage : 'An error occured while loading file',
-                    multiple     : false,
-                    okButton     : 'OK',
-                    readAs       : 'DataURL',
+                    accept: '.xml',
+                    cancelButton: 'Close',
+                    dragMessage: 'Drop files here',
+                    dropheight: 400,
+                    errorMessage: 'An error occured while loading file',
+                    multiple: false,
+                    okButton: 'OK',
+                    readAs: 'DataURL',
                     removeMessage: 'Remove&nbsp;file',
-                    title        : 'Load file',
+                    title: 'Load file',
                 });
             })
             .on('files.bs.filedialog', ev => {
@@ -411,7 +417,7 @@ export default class View {
         const logout = () => {
             showDialog({
                 title: translate('Are you sure?'),
-                text : getAccountSwitchText(),
+                text: getAccountSwitchText(),
             })
                 .then(() => {
                     this.stop();
@@ -447,11 +453,11 @@ export default class View {
             .hide()
             .dialog({
                 resizable: false,
-                autoOpen : false,
-                width    : Math.min(document.body.offsetWidth, 770),
-                height   : Math.min(document.body.offsetHeight, 600),
+                autoOpen: false,
+                width: Math.min(document.body.offsetWidth, 770),
+                height: Math.min(document.body.offsetHeight, 600),
                 closeText: '',
-                classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
+                classes: { 'ui-dialog-titlebar-close': 'icon-close' },
             });
 
         $('#integrations').click(() => integrationsDialog.open());
@@ -529,7 +535,7 @@ export default class View {
 
         $('#showSummary').click(showSummary);
 
-        $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden')));
+        $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden'))); // todo: remove header toggling button
 
         $('#logout, #toolbox-logout').click(() => {
             saveBeforeUnload();
@@ -643,7 +649,7 @@ export default class View {
             }
             showDialog({
                 title: translate('Are you sure?'),
-                text : dialogText,
+                text: dialogText,
             })
                 .then(() => {
                     this.stop();
@@ -656,7 +662,7 @@ export default class View {
         $('.login-id-list').on('click', 'a', e => {
             showDialog({
                 title: translate('Are you sure?'),
-                text : getAccountSwitchText(),
+                text: getAccountSwitchText(),
             })
                 .then(() => {
                     this.stop();
@@ -673,7 +679,7 @@ export default class View {
                 .catch(() => {});
         });
 
-        $('#login, #toolbox-login')
+        $('#btn__login, #login, #toolbox-login')
             .bind('click.login', () => {
                 saveBeforeUnload();
                 document.location = getOAuthURL();
@@ -761,7 +767,7 @@ export default class View {
                 const user = getToken(token);
                 globalObserver.emit('log.revenue', {
                     user,
-                    profit  : info.profit,
+                    profit: info.profit,
                     contract: info.contract,
                 });
             }
@@ -795,16 +801,10 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
+    ReactDOM.render(<Header {...clientInfo} />, $('#header-wrapper')[0]);
+    ReactDOM.render(<Footer api={api} />, $('#footer')[0]);
     ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
-    ReactDOM.render(
-        <OfficialVersionWarning
-            show={
-                !(typeof window.location !== 'undefined' && isProduction() && window.location.pathname === '/bot.html')
-            }
-        />,
-        $('#footer')[0]
-    );
     ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
     ReactDOM.render(<LogTable />, $('#logTable')[0]);
 }

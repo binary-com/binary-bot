@@ -11,8 +11,8 @@ gulp.task(
     'connect',
     gulp.series(done => {
         connect.server({
-            root      : 'www',
-            port      : 80,
+            root: 'www',
+            port: 80,
             livereload: true,
         });
         done();
@@ -52,7 +52,7 @@ gulp.task(
         ghpages
             .publish('www', {
                 dest: option,
-                add : true,
+                add: true,
             })
             .then(done);
     })
@@ -75,13 +75,16 @@ gulp.task(
     })
 );
 
-gulp.task('test-deploy', gulp.series('build-min', 'serve', () => {}));
+gulp.task(
+    'test-deploy',
+    gulp.series('build-min', 'serve', () => {})
+);
 
 gulp.task(
     'watch-static',
     gulp.parallel(done => {
         gulp.watch(
-            ['static/xml/**/*', 'static/*.html', 'static/css/*.scss'],
+            ['static/xml/**/*', 'static/*.html', 'static/css/**/*.scss'],
             {
                 debounceTimeout: 1000,
             },
