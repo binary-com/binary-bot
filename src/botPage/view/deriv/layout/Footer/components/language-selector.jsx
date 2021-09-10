@@ -1,5 +1,5 @@
 import React from "react";
-import { supported_languages } from "../../../config.js";
+import { supportedLanguages } from "../../../config.js";
 import { translate } from "../../../../../../common/utils/tools";
 import { getLanguage } from "../../../../../../common/lang";
 
@@ -18,7 +18,7 @@ const LanguageModal = () => (
             </div>
             <div className="language-menu-container">
                 <div className="language-menu-list">
-                    {Object.keys(supported_languages).map(lang => <LanguageItem lang={lang} key={lang} />)}
+                    {Object.keys(supportedLanguages).map(lang => <LanguageItem lang={lang} key={lang} />)}
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@ const LanguageItem = ({ lang }) => {
             }}
         >
             <img src={`image/deriv/flag/ic-flag-${lang}.svg`} />
-            <span>{supported_languages[lang]}</span>
+            <span>{supportedLanguages[lang]}</span>
         </div>
     )
 }
