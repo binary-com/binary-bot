@@ -1,4 +1,18 @@
-const platforms = [
+export const supported_languages = {
+    en   : 'English',
+    fr   : 'Français',
+    id   : 'Indonesia',
+    pl   : 'Polish',
+    pt   : 'Português',
+    ru   : 'Русский',
+    zh_cn: '简体中文',
+    zh_tw: '繁體中文',
+    es   : 'Español',
+    it   : 'Italiano',
+    vi   : 'Tiếng Việt',
+};
+
+export const platforms = [
     {
         title      : 'DTrader',
         description: 'A whole new trading experience on a powerful yet easy to use platform.',
@@ -36,5 +50,3 @@ const platforms = [
         logo       : 'image/deriv/brand/ic-brand-binarybot.svg',
     },
 ];
-
-export default platforms;

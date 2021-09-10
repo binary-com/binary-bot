@@ -537,7 +537,7 @@ export default class View {
 
         $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden'))); // todo: remove header toggling button
 
-        $('#logout, #toolbox-logout').click(() => {
+        $('#deriv__logout-btn, #logout, #toolbox-logout').click(() => {
             saveBeforeUnload();
             logout();
             hideRealityCheck();
@@ -659,7 +659,7 @@ export default class View {
                 .catch(() => {});
         });
 
-        $('.login-id-list').on('click', 'a', e => {
+        $('.account__switcher-acc').on('click', e => {
             showDialog({
                 title: translate('Are you sure?'),
                 text : getAccountSwitchText(),
