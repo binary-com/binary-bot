@@ -16,7 +16,6 @@ import { symbolPromise } from './shared';
 import Tour from './tour';
 import TradeInfoPanel from './TradeInfoPanel';
 import { showDialog } from '../bot/tools';
-import Elevio from '../../common/elevio';
 import config, { updateConfigCurrencies } from '../common/const';
 import { isVirtual } from '../common/tools';
 import {
@@ -420,7 +419,6 @@ export default class View {
             })
                 .then(() => {
                     this.stop();
-                    Elevio.logoutUser();
                     googleDrive.signOut();
                     GTM.setVisitorId();
                     removeTokens();
@@ -663,7 +661,6 @@ export default class View {
             })
                 .then(() => {
                     this.stop();
-                    Elevio.logoutUser();
                     GTM.setVisitorId();
                     const activeToken = token;
                     const tokenList = getTokenList();
