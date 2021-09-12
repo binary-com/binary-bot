@@ -1,9 +1,17 @@
 import React from "react";
 import { translate } from "../../../../../../common/utils/tools";
+import { observer as globalObserver } from '../../../../../../common/utils/observer';
+
 
 const TabContent = ({ tab, tokenList, isActive}) => {    
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
+    const item_ref = React.useRef([])
     const isReal = tab === "real";
+    
+    function switchAccount(index){
+        const token = item_ref.current[index].querySelector('.token').value
+        globalObserver.emit('ui.switch_account',token)
+    }   
 
     return (
         <div className={`account__switcher-tabs-content ${isActive ? "" : "hide"}`} >
@@ -17,10 +25,12 @@ const TabContent = ({ tab, tokenList, isActive}) => {
                 <div className={`account__switcher-list ${isAccordionOpen ? "open" : ""}`}>
                     {tokenList.map((acc, index) => isReal !== Boolean(acc.loginInfo.is_virtual) && (
                             <div 
-                                key={acc.accountName} 
                                 className={`account__switcher-acc ${index === 0 ? "account__switcher-acc--active" : ""}`}
-                                value={acc.token}
+                                key={acc.accountName} 
+                                onClick = {()=> {switchAccount(index)}}
+                                ref={el => item_ref.current[index] = el} 
                             >
+                                <input type="hidden" className="token"  value={acc.token}/>
                                 <img 
                                     src={`image/deriv/currency/ic-currency-${
                                         acc.loginInfo.is_virtual ? "virtual" : acc.loginInfo.currency.toLowerCase()

@@ -543,7 +543,7 @@ export default class View {
             hideRealityCheck();
         });
 
-        $('#logout-reality-check').click(() => {
+        globalObserver.register('ui.logout', () => {
             removeTokens();
             hideRealityCheck();
         });
@@ -659,7 +659,7 @@ export default class View {
                 .catch(() => {});
         });
 
-        $('.account__switcher-acc').on('click', e => {
+        globalObserver.register('ui.switch_account', token => {
             showDialog({
                 title: translate('Are you sure?'),
                 text : getAccountSwitchText(),
@@ -668,7 +668,7 @@ export default class View {
                     this.stop();
                     Elevio.logoutUser();
                     GTM.setVisitorId();
-                    const activeToken = $(e.currentTarget).attr('value');
+                    const activeToken = token;
                     const tokenList = getTokenList();
                     setStorage('tokenList', '');
                     addTokenIfValid(activeToken, tokenList).then(() => {
