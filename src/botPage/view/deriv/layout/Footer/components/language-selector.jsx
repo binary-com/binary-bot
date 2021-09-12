@@ -1,21 +1,9 @@
 import React from "react";
+import { supportedLanguages } from "../../../config.js";
 import { translate } from "../../../../../../common/utils/tools";
 import { getLanguage } from "../../../../../../common/lang";
 
 const current_language = getLanguage();
-const supported_languages = { // todo: move to separate file, maybe call it config.js and merge it with platforms.js
-    en: "English",
-    fr: "Français",
-    id: "Indonesia",
-    pl: "Polish",
-    pt: "Português",
-    ru: "Русский",
-    zh_cn: "简体中文",
-    zh_tw: "繁體中文",
-    es: "Español",
-    it: "Italiano",
-    vi: "Tiếng Việt",
-}
 const toggleModal = () => $("#language-menu-modal").toggleClass("invisible");
 
 const LanguageModal = () => (
@@ -30,7 +18,7 @@ const LanguageModal = () => (
             </div>
             <div className="language-menu-container">
                 <div className="language-menu-list">
-                    {Object.keys(supported_languages).map(lang => <LanguageItem lang={lang} key={lang} />)}
+                    {Object.keys(supportedLanguages).map(lang => <LanguageItem lang={lang} key={lang} />)}
                 </div>
             </div>
         </div>
@@ -51,8 +39,8 @@ const LanguageItem = ({ lang }) => {
                 document.location.search = `l=${lang}`;
             }}
         >
-            <img src={`/image/deriv/flag/ic-flag-${lang}.svg`} />
-            <span>{supported_languages[lang]}</span>
+            <img src={`image/deriv/flag/ic-flag-${lang}.svg`} />
+            <span>{supportedLanguages[lang]}</span>
         </div>
     )
 }
@@ -62,7 +50,7 @@ const LanguageSelector = () => (
         <div id="language-select" onClick={toggleModal}>
             <img
                 id="language-select__logo"
-                src={`/image/deriv/flag/ic-flag-${getLanguage()}.svg`}
+                src={`image/deriv/flag/ic-flag-${getLanguage()}.svg`}
             />
         </div>
         <LanguageModal />

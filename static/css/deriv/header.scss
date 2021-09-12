@@ -186,8 +186,9 @@ body .header {
             box-shadow: 0 4px 8px 2px var(--shadow-menu);
             height: 525px;
             width: 264px;
+            border-radius: 4px;
 
-            &--show {
+            &.show {
                 display: block;
             }
         }
@@ -314,7 +315,7 @@ body .header {
             top: 49px;
             display: none;
 
-            &--show {
+            &.show {
                 display: block;
             }
             &-list {
@@ -370,11 +371,12 @@ body .header {
                 display: none;
                 position: absolute;
                 z-index: 2;
-                right: 0;
+                top: 50px;
                 background: var(--general-main-2);
+                border-radius: 4px;
                 box-shadow: 0 8px 16px 0 var(--shadow-menu);
 
-                &--show {
+                &.show {
                     display: block;
                 }
             }
@@ -393,26 +395,23 @@ body .header {
                 }
             }
             &-add {
-                display: none;
+                display: flex;
+                align-items: center;
+                background-color: transparent;
+                border-radius: 4px;
+                margin: 0 0 14px;
+                height: 40px;
+                color: var(--brand-red-coral);
+                font-size: $FONT_SIZE_S;
+                cursor: pointer;
 
-                &--active {
-                    display: flex;
-                    align-items: center;
-                    background-color: transparent;
-                    border-radius: 4px;
-                    margin: 0 0 14px;
-                    height: 40px;
-                    color: var(--brand-red-coral);
-                    font-size: $FONT_SIZE_S;
-
-                    &:hover {
-                        background-color: rgba(255, 68, 79, 0.08) !important;
-                    }
+                &:hover {
+                    background-color: rgba(255, 68, 79, 0.08) !important;
                 }
                 &-icon {
                     width: 24px;
                     height: 24px;
-                    padding: 0 8px;
+                    margin: 0 8px;
                 }
                 &-text {
                     font-weight: normal;
@@ -457,6 +456,7 @@ body .header {
                     line-height: 1.75;
                     border: none;
                     padding: 0;
+                    margin: initial;
 
                     &:hover {
                         background-image: none;
@@ -469,6 +469,15 @@ body .header {
                         transform: rotate(180deg);
                         transition: transform 500ms;
                     }
+                }
+                .ui-accordion-header {
+                    display: block;
+                    cursor: pointer;
+                    position: relative;
+                    margin: 2px 0 0;
+                    padding: .5em .5em .5em .7em;
+                    min-height: 0;
+                    font-size: 100%;
                 }
                 &-header {
                     &-text {
@@ -490,9 +499,12 @@ body .header {
                 display: flex;
                 float: none;
                 align-items: center;
+                margin: initial;
+                cursor: pointer;
 
                 &.ui-tabs-active {
                     border-bottom: solid 1.5px var(--brand-red-coral) !important;
+                    cursor: default;
 
                     a {
                         font-weight: 700;
@@ -511,17 +523,28 @@ body .header {
             &-tabs {
                 display: flex;
                 height: 36px;
+                margin: initial;
                 padding: 0 !important;
                 border-bottom: 1px solid var(--general-section-1);
                 background: var(--general-main-2);
+                border-radius: 4px;
 
                 &-content {
                     padding: 0 !important;
+                    
+                    &.hide{
+                        display: none;
+                    }
                 }
             }
             &-list {
                 padding: 0 !important;
                 border: 0 !important;
+                display: none;
+
+                &.open {
+                    display: block;
+                }
             }
             &-seperator {
                 height: 4px;
@@ -573,6 +596,7 @@ body .header {
 
                 &-text {
                     font-size: $FONT_SIZE_S;
+                    color: var(--text-general);
                     text-align: left;
                     line-height: 1.5;
                 }
@@ -702,7 +726,7 @@ body .mobile {
             position: absolute;
             background-color: var(--general-main-1);
 
-            &--show {
+            &.show {
                 display: inherit;
 
                 .platform__list-item {
@@ -818,7 +842,7 @@ body .mobile {
                     z-index: 99999;
                     display: none;
 
-                    &--show {
+                    &.show {
                         display: flex;
                         align-items: center;
                         justify-content: center;
