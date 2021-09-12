@@ -1,6 +1,7 @@
 import React from "react";
 import { translate } from "../../../../../../common/utils/tools";
 import TabContent from "./tab-content.jsx";
+import { observer as globalObserver } from '../../../../../../common/utils/observer';
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 
@@ -41,7 +42,11 @@ const AccountDropdown = React.forwardRef(({ tokenList, hideDropdown }, dropdownR
                 <div className="account__switcher-total-text">{translate("Total assets in your Deriv accounts")}</div>
             </div>
             <Separator />
-            <div id="deriv__logout-btn" className="account__switcher-logout logout">
+            <div 
+                id="deriv__logout-btn"
+                className="account__switcher-logout logout"
+                onClick= {()=>{globalObserver.emit('ui.logout')}}   
+            >
                 <span className="account__switcher-logout-text">{translate("Log out")}</span>
                 <img className="account__switcher-logout-icon logout-icon" src="image/deriv/ic-logout.svg" />
             </div>

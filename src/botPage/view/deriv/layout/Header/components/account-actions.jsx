@@ -39,7 +39,7 @@ const AccountActions = ({ tokenList }) => {
                 </div>
             </div>
             {isAccDropdownOpen && <AccountDropdown tokenList={tokenList} hideDropdown={hideDropdown} ref={dropdownRef} />}
-            <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href="">{translate("Deposit")}</a>
+            <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href="https://app.deriv.com/cashier/deposit">{translate("Deposit")}</a>
         </React.Fragment>
     )
 };

@@ -16,7 +16,6 @@ import { symbolPromise } from './shared';
 import Tour from './tour';
 import TradeInfoPanel from './TradeInfoPanel';
 import { showDialog } from '../bot/tools';
-import Elevio from '../../common/elevio';
 import config, { updateConfigCurrencies } from '../common/const';
 import { isVirtual } from '../common/tools';
 import {
@@ -312,7 +311,6 @@ export default class View {
                         renderReactComponents();
                         this.setElementActions();
                         if (!getTokenList().length) updateLogo();
-                        this.showHeader(getStorage('showHeader') !== 'false'); // todo: remove header auto-enabling
                         resolve();
                     });
                 });
@@ -421,7 +419,6 @@ export default class View {
             })
                 .then(() => {
                     this.stop();
-                    Elevio.logoutUser();
                     googleDrive.signOut();
                     GTM.setVisitorId();
                     removeTokens();
@@ -535,15 +532,14 @@ export default class View {
 
         $('#showSummary').click(showSummary);
 
-        $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden'))); // todo: remove header toggling button
-
         $('#deriv__logout-btn, #logout, #toolbox-logout').click(() => {
             saveBeforeUnload();
             logout();
             hideRealityCheck();
         });
 
-        $('#logout-reality-check').click(() => {
+        globalObserver.register('ui.logout', () => {
+            $('.barspinner').show();
             removeTokens();
             hideRealityCheck();
         });
@@ -659,16 +655,16 @@ export default class View {
                 .catch(() => {});
         });
 
-        $('.account__switcher-acc').on('click', e => {
+        globalObserver.register('ui.switch_account', token => {
             showDialog({
                 title: translate('Are you sure?'),
                 text : getAccountSwitchText(),
             })
                 .then(() => {
                     this.stop();
-                    Elevio.logoutUser();
+                    $('.barspinner').show();
                     GTM.setVisitorId();
-                    const activeToken = $(e.currentTarget).attr('value');
+                    const activeToken = token;
                     const tokenList = getTokenList();
                     setStorage('tokenList', '');
                     addTokenIfValid(activeToken, tokenList).then(() => {
@@ -773,22 +769,6 @@ export default class View {
             }
         });
     }
-    showHeader = show => {
-        const $header = $('#header');
-        const $topbarAccount = $('#toolbox-account');
-        const $toggleHeaderButton = $('.icon-hide-header');
-        if (show) {
-            $header.show(0);
-            $topbarAccount.hide(0);
-            $toggleHeaderButton.removeClass('enabled');
-        } else {
-            $header.hide(0);
-            $topbarAccount.show(0);
-            $toggleHeaderButton.addClass('enabled');
-        }
-        setStorage('showHeader', show);
-        window.dispatchEvent(new Event('resize'));
-    };
 }
 
 function initRealityCheck(stopCallback) {

@@ -3,7 +3,6 @@ import 'jquery-ui/ui/widgets/dialog';
 import 'notifyjs-browser';
 import View from './View';
 import '../../common/binary-ui/dropdown';
-import Elevio from '../../common/elevio';
 import GTM from '../../common/gtm';
 import { isProduction } from '../../common/utils/tools';
 
@@ -30,7 +29,6 @@ view.initPromise.then(() => {
     $('.show-on-load').show();
     $('.barspinner').hide();
     window.dispatchEvent(new Event('resize'));
-    Elevio.init();
     GTM.init();
     trackJs.configure({
         userId: $('.account-id')
