@@ -312,7 +312,6 @@ export default class View {
                         renderReactComponents();
                         this.setElementActions();
                         if (!getTokenList().length) updateLogo();
-                        this.showHeader(getStorage('showHeader') !== 'false'); // todo: remove header auto-enabling
                         resolve();
                     });
                 });
@@ -534,8 +533,6 @@ export default class View {
         });
 
         $('#showSummary').click(showSummary);
-
-        $('#toggleHeaderButton').click(() => this.showHeader($('#header').is(':hidden'))); // todo: remove header toggling button
 
         $('#deriv__logout-btn, #logout, #toolbox-logout').click(() => {
             saveBeforeUnload();
@@ -773,22 +770,6 @@ export default class View {
             }
         });
     }
-    showHeader = show => {
-        const $header = $('#header');
-        const $topbarAccount = $('#toolbox-account');
-        const $toggleHeaderButton = $('.icon-hide-header');
-        if (show) {
-            $header.show(0);
-            $topbarAccount.hide(0);
-            $toggleHeaderButton.removeClass('enabled');
-        } else {
-            $header.hide(0);
-            $topbarAccount.show(0);
-            $toggleHeaderButton.addClass('enabled');
-        }
-        setStorage('showHeader', show);
-        window.dispatchEvent(new Event('resize'));
-    };
 }
 
 function initRealityCheck(stopCallback) {

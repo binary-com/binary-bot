@@ -55,62 +55,6 @@
         <div id="server-time" class="right-header"></div>
     </div>
 
-    <div id="header" style="display: none;">
-        <div class="left-header">
-            <div class="logo-wrapper">
-                <a href="https://www.binary.com" target="blank" id="logo">
-                    <div class="logo-parent">
-                        <div class="logo">
-                            <img class="responsive" src="{{> binary_style_img }}/logo/symbol.svg" alt="Binary logo" />
-                        </div>
-                        <div class="binary-logo-text">
-                            <img class="responsive" src="" alt="">
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        {{> ../templates/partials/dbot-banner }}
-        <div class="right-header show-on-load">
-            <div class="intro-login-logout">
-                <div id="account-list">
-                    <div id="main-logout">
-                        <ul id="main-account" class="nav-menu main-nav">
-                            <li class="account">
-                                <a href="javascript:;">
-                                    <div class="main-account">
-                                        <div class="account-type"></div>
-                                        <div class="account-id"></div>
-                                        <div class="topMenuBalance">&ensp;</div>
-                                    </div>
-                                    <div class="nav-caret"></div>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul id="all-accounts" class="nav-menu main-nav">
-                            <li class="account">
-                                <a href="javascript:;">
-                                    <div class="main-account">
-                                        <div class="account-type"></div>
-                                        <div class="account-id"></div>
-                                        <div class="topMenuBalance">&ensp;</div>
-                                    </div>
-                                    <div class="nav-caret"></div>
-                                </a>
-                                <ul>
-                                    <div class="login-id-list"></div>
-                                    {{! <a href="javascript:;" id="btn_logout" class="logout">
-                                        <li id="logout" data-i18n-text="Log out"></li>
-                                    </a> }}
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                {{! <button id="login" data-i18n-text="Log in" /> }}
-            </div>
-        </div>
-    </div>
     <div id="toolbox" class="actions_menu show-on-load">
         <button data-i18n-title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
         <button data-i18n-title="Load new blocks (xml file)" id="load-xml" class="toolbox-button icon-browse"></button>
