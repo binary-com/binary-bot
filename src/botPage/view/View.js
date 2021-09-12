@@ -539,6 +539,7 @@ export default class View {
         });
 
         globalObserver.register('ui.logout', () => {
+            $('.barspinner').show();
             removeTokens();
             hideRealityCheck();
         });
@@ -661,6 +662,7 @@ export default class View {
             })
                 .then(() => {
                     this.stop();
+                    $('.barspinner').show();
                     GTM.setVisitorId();
                     const activeToken = token;
                     const tokenList = getTokenList();
