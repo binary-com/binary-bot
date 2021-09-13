@@ -303,9 +303,6 @@ export default class View {
                     updateTokenList();
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
-                        document
-                            .getElementById('contact-us')
-                            .setAttribute('href', `https://www.binary.com/${getLanguage()}/contact.html`);
                         initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                         applyToolboxPermissions();
                         renderReactComponents();
