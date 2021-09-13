@@ -4,7 +4,10 @@ import 'notifyjs-browser';
 import View from './View';
 import '../../common/binary-ui/dropdown';
 import GTM from '../../common/gtm';
-import { isProduction } from '../../common/utils/tools';
+import { isProduction, parseQueryString } from '../../common/utils/tools';
+import endpoint from '../../indexPage/endpoint';
+import { queryToObjectArray, addTokenIfValid, AppConstants } from '../../common/appId';
+import { getTokenList, set as setStorage } from '../../common/utils/storageManager';
 
 $.ajaxSetup({
     cache: false,
@@ -23,16 +26,38 @@ window._trackJs = {
 // Should stay below the window._trackJs config
 require('trackjs');
 
-const view = new View();
+loginCheck().then(() => {
+    const view = new View();
 
-view.initPromise.then(() => {
-    $('.show-on-load').show();
-    $('.barspinner').hide();
-    window.dispatchEvent(new Event('resize'));
-    GTM.init();
-    trackJs.configure({
-        userId: $('.account-id')
-            .first()
-            .text(),
+    view.initPromise.then(() => {
+        $('.show-on-load').show();
+        $('.barspinner').hide();
+        window.dispatchEvent(new Event('resize'));
+        GTM.init();
+        trackJs.configure({
+            userId: $('.account-id')
+                .first()
+                .text(),
+        });
     });
 });
+
+function loginCheck() {
+    return new Promise(resolve => {
+        if (endpoint()) resolve();
+        const queryStr = parseQueryString();
+        const tokenObjectList = queryToObjectArray(queryStr);
+        if (!getTokenList().length && tokenObjectList.length) {
+            addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
+                const accounts = getTokenList();
+                if (accounts.length) {
+                    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
+                }
+                document.location = window.location.origin;
+                resolve();
+            });
+        } else {
+            resolve();
+        }
+    });
+}

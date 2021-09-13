@@ -20,7 +20,7 @@ const getConfig = prefix => ({
 
 const genHtml = min =>
     gulp
-        .src('templates/*.mustache')
+        .src('templates/deriv/*.mustache')
         .pipe(mustache({}, { extension: '.html' }, getConfig(min === true ? '.min' : '')))
         .pipe(gulp.dest('./www'))
         .pipe(connect.reload());

@@ -18,7 +18,7 @@ export const AppConstants = Object.freeze({
 
 const hostName = document.location.hostname;
 
-const queryToObjectArray = queryStr => {
+export const queryToObjectArray = queryStr => {
     const tokens = [];
     Object.keys(queryStr).forEach(o => {
         if (!/\d$/.test(o)) return;
