@@ -15,7 +15,7 @@ const PlatformDropdown = React.forwardRef(({ platforms, hideDropdown }, platform
                     return (
                         <a href={platform.link} 
                             className={
-                                platform.title === "DerivBot" ? "platform__list-item platform__list-item--active" : "platform__list-item"
+                                platform.title === "Binary Bot" ? "platform__list-item platform__list-item--active" : "platform__list-item"
                             }
                             key={`link-to-${platform.title.replace(/ /g,'').toLowerCase()}`}
                         >
