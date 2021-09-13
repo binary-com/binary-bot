@@ -176,6 +176,7 @@ workflows:
           filters:
             branches:
               only: /^master$/
+          context: binary-frontend-artifact-upload
       - release_production:
           filters:
             branches:
