@@ -6,7 +6,9 @@ import * as style from '../style';
 const ErrorPage = ({ title, message, redirectButtonTitle, redirectButtonURL }) => (
     <div style={style.errorDiv}>
         <h3 style={style.errorHeader}> {`${translate(title)} `}</h3>
-        <p style={style.errorMessage}>{`${translate(message)} `}</p>
+        <div style={style.errorMessageWrapper}>
+            <p style={style.errorMessage}>{`${translate(message)} `}</p>
+        </div>
         {redirectButtonTitle && (
             <div style={style.linkButtonWrapper}>
                 <a style={style.linkButton} href={redirectButtonURL} target="_blank" rel="noopener noreferrer">

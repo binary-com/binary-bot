@@ -58,11 +58,10 @@ body {
 }
 
 #errorArea {
-    position: absolute;
-    display: inline;
-    bottom: 1em;
-    right: 1em;
-    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 84px);
 }
 
 @media only screen and (max-height: 723px) {

@@ -14,9 +14,8 @@ export const error = {
 };
 
 export const errorDiv = {
-    maxWidth: '60%',
     color   : 'black',
-    height  : 'calc(100vh - 280px)',
+    maxWidth: 'calc(82vw - 45%)',
 };
 
 export const linkButton = {
@@ -51,10 +50,16 @@ export const errorMessage = {
     margin       : '16px 0 24px',
 };
 
+export const errorMessageWrapper = {
+    display       : 'flex',
+    justifyContent: 'center',
+};
+
 export const errorHeader = {
     fontSize  : '32px',
     color     : '#e98024',
     fontWeight: 'bold',
+    textAlign : 'center',
 };
 
 export const submitButton = {

@@ -825,6 +825,7 @@ function renderErrorPage() {
     );
     document.getElementById('toolbox').remove();
     document.getElementById('blocklyDiv').remove();
+    document.getElementById('blocklyArea').remove();
 }
 
 function renderReactComponents() {
