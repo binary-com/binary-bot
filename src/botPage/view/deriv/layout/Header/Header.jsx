@@ -36,7 +36,7 @@ const AuthButtons = () => (
     </div>
 );
 
-const Header = ({ isLogged, tokenList }) => {
+const Header = ({ clientInfo }) => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const platformDropdownRef = React.useRef();
 
@@ -56,11 +56,11 @@ const Header = ({ isLogged, tokenList }) => {
                         <div className="platform__switcher-header">Binary Bot</div>
                         <img id="platform__switcher-expand" className="header__icon header__expand" src="image/deriv/ic-chevron-down-bold.svg" />
                     </div>
-                    {isLogged && <MenuLinks />}
+                    {clientInfo.isLogged && <MenuLinks />}
                 </div>
                 <div className="header__menu-right">
-                    {isLogged 
-                        ? <AccountActions tokenList={tokenList} />
+                    {clientInfo.isLogged 
+                        ? <AccountActions clientInfo={clientInfo} />
                         : <AuthButtons /> 
                     }
                 </div>

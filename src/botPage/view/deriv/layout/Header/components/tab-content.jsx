@@ -3,7 +3,7 @@ import { translate } from "../../../../../../common/utils/tools";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 
 
-const TabContent = ({ tab, tokenList, isActive}) => {    
+const TabContent = ({ tab, clientInfo, isActive}) => {    
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const item_ref = React.useRef([])
     const isReal = tab === "real";
@@ -23,7 +23,7 @@ const TabContent = ({ tab, tokenList, isActive}) => {
                     </div>
                 </h3>
                 <div className={`account__switcher-list ${isAccordionOpen ? "open" : ""}`}>
-                    {tokenList.map((acc, index) => isReal !== Boolean(acc.loginInfo.is_virtual) && (
+                    {clientInfo.tokenList.map((acc, index) => isReal !== Boolean(acc.loginInfo.is_virtual) && (
                             <div 
                                 className={`account__switcher-acc ${index === 0 ? "account__switcher-acc--active" : ""}`}
                                 key={acc.accountName} 
@@ -41,8 +41,8 @@ const TabContent = ({ tab, tokenList, isActive}) => {
                                     <div className="account__switcher-loginid">{acc.loginInfo.loginid}</div>
                                 </span>
                                 <span className="account__switcher-balance">
-                                    {acc.loginInfo.balance?.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                                    <span className="symbols">&nbsp;{acc.loginInfo.currency}</span>
+                                    {clientInfo.balance?.accounts[acc.loginInfo.loginid].balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                    <span className="symbols">&nbsp;{clientInfo.balance?.accounts[acc.loginInfo.loginid].currency}</span>
                                 </span>
                             </div>
                         )
