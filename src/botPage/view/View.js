@@ -72,6 +72,24 @@ api.events.on('website_status', response => {
 });
 
 api.events.on('balance', response => {
+    if (response.balance.accounts) {
+        clientInfo.balance = response.balance;
+    } else {
+        const accountToUpdate = response.balance.loginid;
+        const isDemo = accountToUpdate.includes('VRTC');
+
+        clientInfo.balance.accounts[accountToUpdate].balance = response.balance.balance;
+        if (isDemo) {
+            clientInfo.balance.total.deriv_demo.amount = response.balance.balance;
+        } else {
+            Object.keys(response.balance.total).forEach(
+                plf => (clientInfo.balance.total[plf] = response.balance.total[plf])
+            );
+        }
+    }
+
+    ReactDOM.render(<Header clientInfo={clientInfo} />, $('#header-wrapper')[0]);
+
     const {
         balance: { balance: b, currency },
     } = response;
@@ -90,10 +108,14 @@ api.events.on('balance', response => {
     globalObserver.setState({ balance: b, currency });
 });
 
-const addBalanceForToken = token => {
+const subscribeToAllAccountsBalance = token => {
     api.authorize(token).then(() => {
         api.send({ forget_all: 'balance' }).then(() => {
-            api.subscribeToBalance();
+            api.send({
+                balance  : 1,
+                account  : 'all',
+                subscribe: 1,
+            });
         });
     });
 };
@@ -215,7 +237,7 @@ const updateTokenList = () => {
         showHideEuElements(hasEuAccount(tokenList));
         showBanner();
         updateLogo(activeToken.token);
-        addBalanceForToken(activeToken.token);
+        subscribeToAllAccountsBalance(activeToken.token);
 
         if (!('loginInfo' in activeToken)) {
             removeAllTokens();
@@ -778,7 +800,7 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
-    ReactDOM.render(<Header {...clientInfo} />, $('#header-wrapper')[0]);
+    ReactDOM.render(<Header clientInfo={clientInfo} />, $('#header-wrapper')[0]);
     ReactDOM.render(<Footer api={api} />, $('#footer')[0]);
     ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
