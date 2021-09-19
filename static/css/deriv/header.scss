@@ -1,4 +1,6 @@
-body .header {
+@import "./devices.scss";
+
+.header {
     left: 0px;
     top: 0px;
     background-color: var(--general-main-1);
@@ -8,8 +10,12 @@ body .header {
     width: 100%;
     border: none;
     z-index: 999;
+    @include mobile {
+        height: 40px;
+    }
 
-    .is-login, .is-logout {
+    .is-login,
+    .is-logout {
         display: none;
     }
     &__btn {
@@ -17,13 +23,26 @@ body .header {
         align-items: center;
         height: 100;
 
-        &-login, &-signup {
+        &-login,
+        &-signup {
             margin-right: 17px;
         }
     }
     &__menu {
+        &-left {
+            @include mobile {
+                border-right: 1px solid var(--general-section-1);
+            }
+        }
         &-acc {
             position: relative;
+            @include mobile {
+                position: unset;
+
+                &-info {
+                    margin: 0;
+                }
+            }
         }
         &-items {
             display: flex;
@@ -45,9 +64,14 @@ body .header {
             display: flex;
             width: auto;
 
+            @include mobile{
+                flex-direction: column;
+                height: 45px;
+            }
+
             a {
                 display: flex;
-                font-weight: 300;   // todo: should be normal(400), try to figure out why it looks bolder than on app.deriv.com
+                font-weight: 300; // todo: should be normal(400), try to figure out why it looks bolder than on app.deriv.com
                 vertical-align: middle;
                 // height: 50px;    // todo: 50px used in SmartTrader to overlap the border-bottom of the header, don't think we need it
                 max-width: 150px;
@@ -56,6 +80,12 @@ body .header {
                 text-transform: capitalize;
                 padding: 0 8px;
                 word-wrap: break-word;
+                @include mobile{
+                    width:100%;
+                    justify-content: space-between;
+                    max-width: unset;
+                    padding: 16px 0 16px 24px;
+                }
             }
             &-item {
                 align-self: center;
@@ -80,16 +110,19 @@ body .header {
                 }
             }
         }
-        &-right, &-left {
+        &-right,
+        &-left {
             > * {
                 align-self: center;
             }
         }
     }
     &__hamburger {
-        padding: 0 12px;
-        width: 20px;
-        height: 20px;
+        width: 16px;
+        height: 16px;
+        transform: scale(1.3);
+        align-self: center;
+        margin-left: 16px;
     }
     &__acc {
         &-info {
@@ -156,10 +189,55 @@ body .header {
             transition: transform 500ms;
         }
     }
+    &__drawer {
+        background: var(--general-main-1);
+        height: 100vh;
+        width: 295px;
+        top: 0;
+        left: 0;
+        position: fixed;
+        z-index: 100000;
+        &-wrapper {
+            background: var(--overlay-outside-dialog);
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index: 99999;
+        }
+        &-top {
+            display: flex;
+            width: 100%;
+            height: 50px;
+            z-index: 4;
+            line-height: 24px;
+            align-items: center;
+            border-bottom: 1px solid var(--general-section-2);
+            padding: 0 16px;
+        }
+        &-content{
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            padding: 0 16px;
+        }
+        &__platform-switcher{
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            
+        }
+    }
     &__notification {
         height: min-content;
         margin-right: 10px;
         position: relative;
+        @include mobile {
+            margin-right: 0;
+            position: unset;
+        }
 
         &-icon {
             width: 25px;
@@ -188,6 +266,15 @@ body .header {
             width: 264px;
             border-radius: 4px;
 
+            @include mobile {
+                width: 100vw;
+                height: 100vh;
+                top: 0;
+                left: 0;
+                transform: unset;
+                background: var(--general-main-1);
+            }
+
             &.show {
                 display: block;
             }
@@ -199,6 +286,14 @@ body .header {
             padding: 10px 0;
             border-bottom: 1px solid var(--border-normal);
             color: var(--text-prominent);
+
+            @include mobile {
+                display: flex;
+                justify-content: space-between;
+                align-items: left;
+                padding: 12px;
+                font-size: $FONT_SIZE_S;
+            }
         }
         &-count {
             position: absolute;
@@ -245,6 +340,11 @@ body .header {
                 line-height: 1.5;
                 padding-right: 8px;
             }
+            &-message {
+                @include mobile {
+                    width: 100%;
+                }
+            }
         }
         &-empty {
             text-align: center;
@@ -267,10 +367,19 @@ body .header {
             height: 24px !important;
             float: left;
             font-size: $FONT_SIZE_XS;
+
+            @include mobile {
+                width: 90px;
+                padding: 0;
+            }
         }
+
         > img {
             height: 24px;
             width: 24px;
+            @include mobile {
+                margin: 0;
+            }
         }
     }
     .platform {
@@ -315,9 +424,18 @@ body .header {
             top: 49px;
             display: none;
 
+            @include mobile{
+                top: unset;
+                position: unset;
+                width: inherit;
+                background:unset;
+                height: unset;
+            }
+
             &.show {
                 display: block;
             }
+            
             &-list {
                 width: 100%;
                 background: var(--general-main-1);
@@ -336,6 +454,11 @@ body .header {
                 padding: 24px 16px;
                 flex-basis: 100%;
                 width: 288px;
+                @include mobile{
+                    width: auto;
+                    margin: 14px 0;
+                    padding: 14px 0;
+                }
 
                 &:not(.platform__list-item--active):hover {
                     background: var(--state-hover);
@@ -360,15 +483,44 @@ body .header {
                     font-size: $FONT_SIZE_S;
                     line-height: 20px;
                 }
+               
             }
         }
     }
     .account {
         &__switcher {
             border-radius: 4px;
+            @include mobile {
+                border-radius: $BORDER_RADIUS;
+                background: var(--general-main-2);
+                box-shadow: 0 8px 16px 0 var(--shadow-menu);
+            }
 
             &-dropdown {
-                display: none;
+                &-wrapper {
+                    @include mobile {
+                        position: absolute;
+                        height: 100vh;
+                        width: 100vw;
+                        top: 0;
+                        right: 0;
+                        left: 0;
+                        background: var(--overlay-outside-dialog);
+                        z-index: 99999;
+                        display: none;
+                        padding: 10vh 0;
+                    }
+                    &.show {
+                        display: block;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        @include mobile {
+                            align-items: start;
+                            justify-content: center;
+                        }
+                    }
+                }
                 position: absolute;
                 z-index: 2;
                 top: 50px;
@@ -376,8 +528,8 @@ body .header {
                 border-radius: 4px;
                 box-shadow: 0 8px 16px 0 var(--shadow-menu);
 
-                &.show {
-                    display: block;
+                @include mobile {
+                    position: unset;
                 }
             }
             &-select_currencies {
@@ -446,7 +598,8 @@ body .header {
             &-accordion {
                 padding: 4px 8px;
 
-                h3.ui-state-default, h3.ui-state-active {
+                h3.ui-state-default,
+                h3.ui-state-active {
                     background-image: none;
                     background-color: var(--general-main-2);
                     color: var(--text-prominent);
@@ -464,7 +617,8 @@ body .header {
                     }
                 }
                 h3.ui-state-active {
-                    .header__expand, .header__expand-light {
+                    .header__expand,
+                    .header__expand-light {
                         transform: rotate(180deg);
                         transition: transform 500ms;
                     }
@@ -474,7 +628,7 @@ body .header {
                     cursor: pointer;
                     position: relative;
                     margin: 2px 0 0;
-                    padding: .5em .5em .5em .7em;
+                    padding: 0.5em 0.5em 0.5em 0.7em;
                     min-height: 0;
                     font-size: 100%;
                 }
@@ -488,9 +642,17 @@ body .header {
                     }
                 }
             }
+            &-dropdown {
+                @include mobile {
+                    flex-direction: column;
+                }
+            }
             &-container {
                 width: 278px;
                 padding: 0;
+                @include mobile {
+                    background: var(--general-main-1);
+                }
             }
             &-tab {
                 width: 50%;
@@ -528,10 +690,14 @@ body .header {
                 background: var(--general-main-2);
                 border-radius: 4px;
 
+                @include mobile {
+                    border-radius: $BORDER_RADIUS;
+                }
+
                 &-content {
                     padding: 0 !important;
-                    
-                    &.hide{
+
+                    &.hide {
                         display: none;
                     }
                 }
@@ -548,8 +714,15 @@ body .header {
             &-seperator {
                 height: 4px;
                 background: var(--general-section-2);
+                @include mobile {
+                    height: 0;
+                }
             }
             &-total {
+                @include mobile {
+                    width: 278px;
+                    background: var(--general-main-1);
+                }
                 &-text {
                     margin: 0 16px 12px;
                     font-size: $FONT_SIZE_XXS;
@@ -593,6 +766,11 @@ body .header {
                 float: right;
                 cursor: pointer;
 
+                @include mobile {
+                    width: 278px;
+                    background: var(--general-main-1);
+                }
+
                 &-text {
                     font-size: $FONT_SIZE_S;
                     color: var(--text-general);
@@ -609,7 +787,7 @@ body .header {
     }
 }
 
-body .mobile {
+.mobile {
     &__container {
         background: var(--overlay-outside-dialog) !important;
         height: 100vh;
@@ -759,103 +937,21 @@ body .mobile {
             }
         }
     }
-}
-
-@media only screen and (min-width: 880px) {
-    .mobile-hide {
+    &-hide {
         display: inherit !important;
+        @include mobile {
+            display: none !important;
+        }
     }
-    .mobile-show {
+    &-show {
         display: none !important;
-    }
-}
-
-@media only screen and (max-width: 879px) {
-    .mobile-hide {
-        display: none !important;
-    }
-    .mobile-show {
-        display: inherit !important;
-    }
-    body .header {
-        height: 40px !important;
-
-        &__menu {
-            &-left {
-                border-right: 1px solid var(--general-section-1);
-            }
-            &-acc {
-                position: unset;
-            }
-        }
-        &__acc {
-            &-info {
-                margin: 0;
-            }
-        }
-        &__notification {
-            margin-right: 0;
-            position: unset;
-
-            > img {
-                margin: 0;
-            }
-            &-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: left;
-                padding: 12px;
-                font-size: $FONT_SIZE_S;
-            }
-            &-btn {
-                width: 90px;
-                padding: 0;
-            }
-            &-content {
-                &-message {
-                    width: 100%;
-                }
-            }
-            &-container {
-                width: 100vw;
-                height: 100vh;
-                top: 0;
-                left: 0;
-                transform: unset;
-            }
-        }
-        .account {
-            &__switcher {
-                border-radius: $BORDER_RADIUS;
-                background: var(--general-main-2);
-                box-shadow: 0 8px 16px 0 var(--shadow-menu);
-
-                &-dropdown {
-                    position: absolute;
-                    height: 100vh;
-                    width: 100vw;
-                    top: 0;
-                    right: 0;
-                    left: 0;
-                    background: var(--overlay-outside-dialog);
-                    z-index: 99999;
-                    display: none;
-
-                    &.show {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    }
-                }
-                &-tabs {
-                    border-radius: $BORDER_RADIUS;
-                }
-            }
+        @include mobile {
+            display: inherit !important;
         }
     }
 }
 
-body #topbar {
+#topbar {
     display: none !important;
 
     .notification {
@@ -867,6 +963,9 @@ body #topbar {
         }
     }
 }
-#toolbox{
+#toolbox {
     height: 42px;
+    @include mobile {
+        height: unset;
+    }
 }

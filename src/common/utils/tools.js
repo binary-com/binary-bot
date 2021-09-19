@@ -3,6 +3,8 @@ import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
 
+export const MAX_MOBILE_WIDTH = 813;
+
 export const parseQueryString = () => {
     if (typeof window === 'undefined') {
         return {};
@@ -109,3 +111,7 @@ export const showSpinnerInButton = $buttonElement => {
 export const removeSpinnerInButton = ($buttonElement, initialText) => {
     $buttonElement.html(() => initialText).prop('disabled', false);
 };
+
+export const isMobile = () => window.innerWidth <= MAX_MOBILE_WIDTH;
+
+export const isDesktop = () => window.innerWidth > MAX_MOBILE_WIDTH;

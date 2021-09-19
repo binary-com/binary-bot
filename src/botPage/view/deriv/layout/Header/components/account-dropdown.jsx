@@ -5,33 +5,52 @@ import { observer as globalObserver } from '../../../../../../common/utils/obser
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 
-const AccountDropdown = React.forwardRef(({ tokenList, hideDropdown }, dropdownRef) => {
+const AccountDropdown = React.forwardRef(({ tokenList,setIsAccDropdownOpen }, dropdownRef) => {
     const [activeTab, setActiveTab] = React.useState(tokenList[0].loginInfo.is_virtual === 0 ? "real" : "demo");
+    const container_ref = React.useRef();
 
     React.useEffect(() => {
-        window.addEventListener("click", hideDropdown);
+        function handleClickOutside(event) {
+            if (container_ref.current && !container_ref.current.contains(event.target)) {
+                setIsAccDropdownOpen(false)
+            }
+        }
+        window.addEventListener("click", handleClickOutside);
+        
 
-        return () => window.removeEventListener("click", hideDropdown);
+        return () => window.removeEventListener("click", handleClickOutside);
     })
 
     return(
-        <div id="account__switcher-dropdown" className="account__switcher-dropdown show" ref={dropdownRef}>
+        <div className="account__switcher-dropdown-wrapper show" ref={dropdownRef}>
+        <div id="account__switcher-dropdown" className="account__switcher-dropdown" ref={container_ref}>
+
             <div className="account__switcher-container">
                 <ul className="account__switcher-tabs">
                     <li className={`account__switcher-tab ${activeTab === "real" ? "ui-tabs-active" : ""}`} 
                         onClick={() => setActiveTab("real")}
-                    >
+                        >
                         <a>{translate("Real")}</a>
                     </li>
                     <li 
                         className={`account__switcher-tab ${activeTab === "real" ? "" : "ui-tabs-active"}`} 
                         onClick={() => setActiveTab("demo")}
-                    >
+                        >
                         <a>{translate("Demo")}</a>
                     </li>
                 </ul>
-                <TabContent tab="real" tokenList={tokenList} isActive={activeTab === "real"}/>
-                <TabContent tab="demo" tokenList={tokenList} isActive={activeTab === "demo"}/>
+                <TabContent 
+                    tab="real" 
+                    tokenList={tokenList} 
+                    isActive={activeTab === "real"} 
+                    setIsAccDropdownOpen={setIsAccDropdownOpen}
+                />
+                <TabContent 
+                    tab="demo" 
+                    tokenList={tokenList} 
+                    isActive={activeTab === "demo"}
+                    setIsAccDropdownOpen={setIsAccDropdownOpen}
+                    />
             </div>
             <Separator />
             <div className="account__switcher-total">
@@ -46,10 +65,11 @@ const AccountDropdown = React.forwardRef(({ tokenList, hideDropdown }, dropdownR
                 id="deriv__logout-btn"
                 className="account__switcher-logout logout"
                 onClick= {()=>{globalObserver.emit('ui.logout')}}   
-            >
+                >
                 <span className="account__switcher-logout-text">{translate("Log out")}</span>
                 <img className="account__switcher-logout-icon logout-icon" src="image/deriv/ic-logout.svg" />
             </div>
+        </div>
         </div>
     )
 });
