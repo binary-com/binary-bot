@@ -9,13 +9,13 @@ export const tradeOptionToProposal = (tradeOption, purchaseReference) =>
     tradeOption.contractTypes.map(type => {
         const proposal = {
             duration_unit: tradeOption.duration_unit,
-            basis        : tradeOption.basis,
-            currency     : tradeOption.currency,
-            symbol       : tradeOption.symbol,
-            duration     : tradeOption.duration,
-            amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
+            basis: tradeOption.basis,
+            currency: tradeOption.currency,
+            symbol: tradeOption.symbol,
+            duration: tradeOption.duration,
+            amount: roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
             contract_type: type,
-            passthrough  : {
+            passthrough: {
                 contractType: type,
                 purchaseReference,
             },
@@ -181,11 +181,11 @@ export const getUUID = () => `${new Date().getTime() * Math.random()}`;
 
 export const showDialog = options =>
     new Promise((resolve, reject) => {
-        const $dialog = $('<div/>', { class: 'draggable-dialog', title: options.title });
+        const $dialog = $('<div/>', { class: `draggable-dialog ${options.className}`, title: options.title });
         options.text.forEach(text => $dialog.append(`<p style="margin: 0.7em;">${text}</p>`));
         const defaultButtons = [
             {
-                text : translate('No'),
+                text: translate('No'),
                 class: 'button-secondary',
                 click() {
                     $(this).dialog('close');
@@ -194,7 +194,7 @@ export const showDialog = options =>
                 },
             },
             {
-                text : translate('Yes'),
+                text: translate('Yes'),
                 class: 'button-primary',
                 click() {
                     $(this).dialog('close');
@@ -204,12 +204,12 @@ export const showDialog = options =>
             },
         ];
         const dialogOptions = {
-            autoOpen : false,
-            classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
+            autoOpen: false,
+            classes: { 'ui-dialog-titlebar-close': 'icon-close' },
             closeText: '',
-            height   : 'auto',
-            width    : 600,
-            modal    : true,
+            height: 'auto',
+            width: 600,
+            modal: true,
             resizable: false,
             open() {
                 $(this)

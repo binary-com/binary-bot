@@ -3,12 +3,13 @@ import { translate } from "../../../../../../common/utils/tools";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 
 
-const TabContent = ({ tab, clientInfo, isActive}) => {    
+const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {    
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const item_ref = React.useRef([])
     const isReal = tab === "real";
     
     function switchAccount(index){
+        setIsAccDropdownOpen(false)
         const token = item_ref.current[index].querySelector('.token').value
         globalObserver.emit('ui.switch_account',token)
     }   

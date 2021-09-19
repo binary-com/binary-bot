@@ -64,8 +64,8 @@ api.events.on('website_status', response => {
     const { message } = response.website_status;
     if (message) {
         $.notify(message, {
-            position : 'bottom left',
-            autoHide : false,
+            position: 'bottom left',
+            autoHide: false,
             className: 'warn web-status',
         });
     }
@@ -112,8 +112,8 @@ const subscribeToAllAccountsBalance = token => {
     api.authorize(token).then(() => {
         api.send({ forget_all: 'balance' }).then(() => {
             api.send({
-                balance  : 1,
-                account  : 'all',
+                balance: 1,
+                account: 'all',
                 subscribe: 1,
             });
         });
@@ -384,16 +384,16 @@ export default class View {
             .on('click', () => {
                 $.FileDialog({
                     // eslint-disable-line new-cap
-                    accept       : '.xml',
-                    cancelButton : 'Close',
-                    dragMessage  : 'Drop files here',
-                    dropheight   : 400,
-                    errorMessage : 'An error occured while loading file',
-                    multiple     : false,
-                    okButton     : 'OK',
-                    readAs       : 'DataURL',
+                    accept: '.xml',
+                    cancelButton: 'Close',
+                    dragMessage: 'Drop files here',
+                    dropheight: 400,
+                    errorMessage: 'An error occured while loading file',
+                    multiple: false,
+                    okButton: 'OK',
+                    readAs: 'DataURL',
                     removeMessage: 'Remove&nbsp;file',
-                    title        : 'Load file',
+                    title: 'Load file',
                 });
             })
             .on('files.bs.filedialog', ev => {
@@ -434,7 +434,8 @@ export default class View {
         const logout = () => {
             showDialog({
                 title: translate('Are you sure?'),
-                text : getAccountSwitchText(),
+                text: getAccountSwitchText(),
+                className: 'logout-dialog',
             })
                 .then(() => {
                     this.stop();
@@ -469,11 +470,11 @@ export default class View {
             .hide()
             .dialog({
                 resizable: false,
-                autoOpen : false,
-                width    : Math.min(document.body.offsetWidth, 770),
-                height   : Math.min(document.body.offsetHeight, 600),
+                autoOpen: false,
+                width: Math.min(document.body.offsetWidth, 770),
+                height: Math.min(document.body.offsetHeight, 600),
                 closeText: '',
-                classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
+                classes: { 'ui-dialog-titlebar-close': 'icon-close' },
             });
 
         $('#integrations').click(() => integrationsDialog.open());
@@ -664,7 +665,8 @@ export default class View {
             }
             showDialog({
                 title: translate('Are you sure?'),
-                text : dialogText,
+                text: dialogText,
+                className: 'reset-dialog',
             })
                 .then(() => {
                     this.stop();
@@ -677,7 +679,8 @@ export default class View {
         globalObserver.register('ui.switch_account', token => {
             showDialog({
                 title: translate('Are you sure?'),
-                text : getAccountSwitchText(),
+                text: getAccountSwitchText(),
+                className: 'switch-account-dialog',
             })
                 .then(() => {
                     this.stop();
@@ -782,7 +785,7 @@ export default class View {
                 const user = getToken(token);
                 globalObserver.emit('log.revenue', {
                     user,
-                    profit  : info.profit,
+                    profit: info.profit,
                     contract: info.contract,
                 });
             }

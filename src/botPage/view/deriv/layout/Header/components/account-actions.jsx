@@ -9,8 +9,6 @@ const AccountActions = ({ clientInfo }) => {
     const [isAccDropdownOpen, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
 
-    const hideDropdown = e => !dropdownRef.current.contains(e.target) && setIsAccDropdownOpen(false);
-
     return (
         <React.Fragment>
             <Notifications />
@@ -39,7 +37,12 @@ const AccountActions = ({ clientInfo }) => {
                     />
                 </div>
             </div>
-            {isAccDropdownOpen && <AccountDropdown clientInfo={clientInfo} hideDropdown={hideDropdown} ref={dropdownRef} />}
+            {isAccDropdownOpen && 
+            <AccountDropdown 
+                clientInfo={clientInfo}
+                ref={dropdownRef}
+                setIsAccDropdownOpen = {setIsAccDropdownOpen}
+            />}
             <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href="https://app.deriv.com/cashier/deposit">{translate("Deposit")}</a>
         </React.Fragment>
     )

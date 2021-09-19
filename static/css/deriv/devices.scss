@@ -1,0 +1,17 @@
+
+ $mobile-width: 320px;
+ $desktop-width: 813px;
+ 
+ 
+ @mixin desktop {
+     @media (min-width: #{$desktop-width}) {
+         @content;
+     }
+ }
+ 
+ @mixin mobile {
+     @media (min-width: #{$mobile-width}) and (max-width: #{$desktop-width - 1}) {
+         @content;
+     }
+ }
+ 
