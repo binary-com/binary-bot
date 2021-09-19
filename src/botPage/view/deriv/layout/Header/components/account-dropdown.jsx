@@ -5,7 +5,7 @@ import { observer as globalObserver } from '../../../../../../common/utils/obser
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 
-const AccountDropdown = React.forwardRef(({ clientInfo, hideDropdown }, dropdownRef) => {
+const AccountDropdown = React.forwardRef(({ clientInfo, setIsAccDropdownOpen }, dropdownRef) => {
     const [activeTab, setActiveTab] = React.useState(clientInfo.tokenList[0].loginInfo.is_virtual === 0 ? "real" : "demo");
     const container_ref = React.useRef();
 
@@ -57,7 +57,7 @@ const AccountDropdown = React.forwardRef(({ clientInfo, hideDropdown }, dropdown
                 <div className="account__switcher-total-balance">
                     <span className="account__switcher-total-balance-text">{translate("Total assets")}</span>
                     <span className="account__switcher-total-balance-amount account__switcher-balance">
-                        {clientInfo.balance.total[activeTab === "real" ? "deriv" : "deriv_demo"].amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                        {clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"].amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         <span className="symbols">&nbsp;{clientInfo.balance.total[activeTab === "real" ? "deriv" : "deriv_demo"].currency}</span>
                     </span>
                 </div>
