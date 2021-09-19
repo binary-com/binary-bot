@@ -5,8 +5,8 @@ import { observer as globalObserver } from '../../../../../../common/utils/obser
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 
-const AccountDropdown = React.forwardRef(({ tokenList,setIsAccDropdownOpen }, dropdownRef) => {
-    const [activeTab, setActiveTab] = React.useState(tokenList[0].loginInfo.is_virtual === 0 ? "real" : "demo");
+const AccountDropdown = React.forwardRef(({ clientInfo, hideDropdown }, dropdownRef) => {
+    const [activeTab, setActiveTab] = React.useState(clientInfo.tokenList[0].loginInfo.is_virtual === 0 ? "real" : "demo");
     const container_ref = React.useRef();
 
     React.useEffect(() => {
@@ -41,13 +41,13 @@ const AccountDropdown = React.forwardRef(({ tokenList,setIsAccDropdownOpen }, dr
                 </ul>
                 <TabContent 
                     tab="real" 
-                    tokenList={tokenList} 
+                    clientInfo={clientInfo} 
                     isActive={activeTab === "real"} 
                     setIsAccDropdownOpen={setIsAccDropdownOpen}
                 />
                 <TabContent 
                     tab="demo" 
-                    tokenList={tokenList} 
+                    clientInfo={clientInfo} 
                     isActive={activeTab === "demo"}
                     setIsAccDropdownOpen={setIsAccDropdownOpen}
                     />
@@ -56,7 +56,10 @@ const AccountDropdown = React.forwardRef(({ tokenList,setIsAccDropdownOpen }, dr
             <div className="account__switcher-total">
                 <div className="account__switcher-total-balance">
                     <span className="account__switcher-total-balance-text">{translate("Total assets")}</span>
-                    <span className="account__switcher-total-balance-amount account__switcher-balance" />
+                    <span className="account__switcher-total-balance-amount account__switcher-balance">
+                        {clientInfo.balance.total[activeTab === "real" ? "deriv" : "deriv_demo"].amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                        <span className="symbols">&nbsp;{clientInfo.balance.total[activeTab === "real" ? "deriv" : "deriv_demo"].currency}</span>
+                    </span>
                 </div>
                 <div className="account__switcher-total-text">{translate("Total assets in your Deriv accounts")}</div>
             </div>

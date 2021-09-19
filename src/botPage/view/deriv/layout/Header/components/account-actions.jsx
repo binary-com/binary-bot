@@ -3,8 +3,9 @@ import { translate } from "../../../../../../common/utils/tools";
 import Notifications from "./notifications.jsx";
 import AccountDropdown from "./account-dropdown.jsx";
 
-const AccountActions = ({ tokenList }) => {
-    const { balance, currency, is_virtual } = tokenList[0].loginInfo;
+const AccountActions = ({ clientInfo }) => {
+    const { currency, is_virtual, loginid } = clientInfo.tokenList[0].loginInfo;
+    const balance = clientInfo.balance?.accounts[loginid].balance || clientInfo.tokenList[0].loginInfo.balance;
     const [isAccDropdownOpen, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
 
@@ -38,10 +39,9 @@ const AccountActions = ({ tokenList }) => {
             </div>
             {isAccDropdownOpen && 
             <AccountDropdown 
-                tokenList={tokenList}
+                clientInfo={clientInfo}
                 ref={dropdownRef}
                 setIsAccDropdownOpen = {setIsAccDropdownOpen}
-            
             />}
             <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href="https://app.deriv.com/cashier/deposit">{translate("Deposit")}</a>
         </React.Fragment>

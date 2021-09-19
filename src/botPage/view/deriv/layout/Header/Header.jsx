@@ -74,10 +74,11 @@ const DrawerMenu = ({
     )
 }
 
-const Header = ({ isLogged, tokenList }) => {
+const Header = ({ clientInfo }) => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
     const platformDropdownRef = React.useRef();
+    const {isLogged} = clientInfo
 
     const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
 
@@ -108,7 +109,7 @@ const Header = ({ isLogged, tokenList }) => {
                 )}
                 <div className="header__menu-right">
                     {isLogged 
-                        ? <AccountActions tokenList={tokenList} />
+                        ? <AccountActions clientInfo={clientInfo} />
                         : <AuthButtons /> 
                     }
                 </div>
