@@ -248,7 +248,7 @@ export const getUnattachedMandatoryPairs = () => {
 export const findTopParentBlock = b => {
     let block = b;
     // eslint-disable-next-line no-underscore-dangle
-    let pblock = block.parentBlock_;
+    let pblock = block?.parentBlock_;
     if (pblock === null) {
         return null;
     }
