@@ -29,6 +29,7 @@ import GTM from '../../../common/gtm';
 import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
+import { createError } from '../../common/error';
 import config from '../../common/const';
 
 const disableStrayBlocks = () => {
@@ -200,10 +201,7 @@ export const load = (blockStr, dropEvent = {}) => {
     const blocklyXml = xml.querySelectorAll('block');
 
     if (!blocklyXml.length) {
-        const error = new TrackJSError(
-            'FileLoad',
-            translate('XML file contains unsupported elements. Please check or modify file.')
-        );
+        const error = createError('EmptyXML', translate('XML file is empty. Please check or modify file.'));
         globalObserver.emit('Error', error);
         return;
     }
@@ -239,9 +237,13 @@ export const load = (blockStr, dropEvent = {}) => {
         const blockType = block.getAttribute('type');
 
         if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-            const error = new TrackJSError(
-                'FileLoad',
-                translate('XML file contains unsupported elements. Please check or modify file.')
+            const blockId = block.getAttribute('id');
+            const error = createError(
+                'InvalidBlockInXML',
+                translate(
+                    `The file you’re trying to open contains unsupported elements in the following block: ${blockId}
+                    Please check your file and try again.`
+                )
             );
             globalObserver.emit('Error', error);
             throw error;
