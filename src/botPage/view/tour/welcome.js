@@ -3,7 +3,7 @@ import { translate } from '../../../common/i18n';
 const steps = [
     {
         title: translate('Take a quick tour'),
-        text : `
+        text: `
           <p>
             ${translate('Ready to learn how to use Binary Bot?')}
           </p>
@@ -20,9 +20,9 @@ const steps = [
           `,
         selector: '#center',
         position: 'top',
-        style   : {
+        style: {
             textAlign: 'center',
-            arrow    : {
+            arrow: {
                 display: 'none',
             },
             button: {
@@ -34,14 +34,14 @@ const steps = [
         },
     },
     {
-        title   : translate('Workspace'),
-        text    : `<p>${translate('Drag and drop block files or make your own strategies.')}</p>`,
+        title: translate('Workspace'),
+        text: `<p>${translate('Drag and drop block files or make your own strategies.')}</p>`,
         selector: '#workspace_center',
         position: 'top',
     },
     {
         title: translate('Blocks toolbox'),
-        text : `<p>
+        text: `<p>
       ${translate('Add more blocks from here to your bot.')}
     </p>`,
         selector: '.blocklyToolboxDiv',
@@ -49,15 +49,15 @@ const steps = [
     },
     {
         title: translate('Accounts'),
-        text : `<p>
+        text: `<p>
       ${translate('Login before starting your bot. Always test your strategies with the virtual account.')}
     </p>`,
-        selector: '.intro-login-logout',
+        selector: '#header__acc-balance',
         position: 'left',
     },
     {
         title: translate('Bot controls'),
-        text : `<p>
+        text: `<p>
       ${translate('Control your blocks. Hold the cursor on each button for more info.')}
     </p>`,
         selector: '#zoomIn',
@@ -65,7 +65,7 @@ const steps = [
     },
     {
         title: translate('Enjoy!'),
-        text : `<p>
+        text: `<p>
       ${translate('Want to report an issue or ask for help?')}
       <a target="blank" href="https://github.com/binary-com/binary-bot/issues/new">
         ${translate('Click here')}
@@ -73,7 +73,7 @@ const steps = [
     </p>`,
         selector: '#center',
         position: 'top',
-        style   : {
+        style: {
             arrow: {
                 display: 'none',
             },
