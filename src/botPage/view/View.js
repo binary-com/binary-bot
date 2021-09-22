@@ -816,7 +816,7 @@ function initRealityCheck(stopCallback) {
 function renderErrorPage() {
     ReactDOM.render(
         <ErrorPage
-            title={translate('Unfortunately, Binary Bot isn’t available in Australia')}
+            title={translate('Unfortunately, Binary Bot isn’t available in your country')}
             message={translate(
                 'Want to trade CFDs on MT5? You’ll have access to forex, stocks, stock indices, commodities, cryptocurrencies, and synthetics.'
             )}
