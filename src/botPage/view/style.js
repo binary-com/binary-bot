@@ -15,10 +15,12 @@ export const error = {
 
 export const errorDiv = {
     color   : 'black',
-    maxWidth: 'calc(82vw - 45%)',
+    maxWidth: 'calc(90vw - 45%)',
 };
 
 export const linkButton = {
+    fontWeight    : '500',
+    fontSize      : '23px',
     minWidth      : '140px',
     height        : '40px',
     borderWidth   : '2px',
@@ -42,12 +44,13 @@ export const linkButtonWrapper = {
 };
 
 export const errorMessage = {
-    fontSize     : '16px',
+    fontSize     : '25px',
     color        : 'black',
     fontWeight   : '400',
     textTransform: 'none',
-    lineHeight   : '1.75',
-    margin       : '16px 0 24px',
+    lineHeight   : '1.5',
+    margin       : '0 0 24px',
+    textAlign    : 'center',
 };
 
 export const errorMessageWrapper = {
@@ -56,7 +59,7 @@ export const errorMessageWrapper = {
 };
 
 export const errorHeader = {
-    fontSize  : '32px',
+    fontSize  : '29px',
     color     : '#e98024',
     fontWeight: 'bold',
     textAlign : 'center',

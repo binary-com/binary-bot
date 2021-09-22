@@ -816,9 +816,11 @@ function initRealityCheck(stopCallback) {
 function renderErrorPage() {
     ReactDOM.render(
         <ErrorPage
-            title={translate('Binary Bot is not available in your country. Please check MT5.')}
-            message=""
-            redirectButtonTitle="Go to MT5 dashboard"
+            title={translate('Unfortunately, Binary Bot isn’t available in Australia')}
+            message={translate(
+                'Want to trade CFDs on MT5? You’ll have access to forex, stocks, stock indices, commodities, cryptocurrencies, and synthetics.'
+            )}
+            redirectButtonTitle="Go to MT5"
             redirectButtonURL="https://www.binary.com/en/user/metatrader.html"
         />,
         $('#errorArea')[0]
