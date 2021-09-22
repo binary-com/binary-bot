@@ -44,9 +44,22 @@ const DrawerMenu = ({
     platformDropdownRef,
     isLogged,
     })=>{
+    const drawer_ref = React.useRef();
+
+    React.useEffect(() => {
+        function handleClickOutside(event) {
+            if (drawer_ref.current && !drawer_ref.current.contains(event.target)) {
+                updateShowDrawerMenu(false)
+            }
+        }
+        window.addEventListener("click", handleClickOutside);
+        
+
+        return () => window.removeEventListener("click", handleClickOutside);
+    })    
     return(
         <div className="header__drawer-wrapper">
-            <div className="header__drawer">
+            <div className="header__drawer" ref={drawer_ref}>
                 <div className="header__drawer-top">
                     <img 
                         src="image/deriv/ic-close.svg" 
