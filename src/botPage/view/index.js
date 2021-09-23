@@ -15,10 +15,10 @@ $.ajaxSetup({
 
 // eslint-disable-next-line no-underscore-dangle
 window._trackJs = {
-    token      : '346262e7ffef497d85874322fff3bbf8',
+    token: '346262e7ffef497d85874322fff3bbf8',
     application: 'binary-bot',
-    enabled    : isProduction(),
-    console    : {
+    enabled: isProduction(),
+    console: {
         display: false,
     },
 };
@@ -53,7 +53,7 @@ function loginCheck() {
                 if (accounts.length) {
                     setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
                 }
-                document.location = window.location.origin;
+                window.location.replace(location.href.split('/?')[0]);
                 resolve();
             });
         } else {
