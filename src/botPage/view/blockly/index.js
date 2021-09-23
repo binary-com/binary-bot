@@ -237,16 +237,16 @@ export const load = (blockStr, dropEvent = {}) => {
         const blockType = block.getAttribute('type');
 
         if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-            const error = createError(
-                'InvalidBlockInXML',
-                translate(
-                    `The file you’re trying to open contains unsupported elements in the following block: ${block.getAttribute(
-                        'id'
-                    )}
-                    Please check your file and try again.`
+            globalObserver.emit(
+                'Error',
+                createError(
+                    'InvalidBlockInXML',
+                    translate(
+                        'The file you’re trying to open contains unsupported elements in the following block: {$0} Please check your file and try again.',
+                        [block.getAttribute('id')]
+                    )
                 )
             );
-            globalObserver.emit('Error', error);
         }
     });
 
