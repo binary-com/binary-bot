@@ -241,6 +241,7 @@
         @include mobile {
             margin-right: 0;
             position: unset;
+            z-index: 999; //override toolbox z-index: 99;
         }
 
         &-icon {
