@@ -53,7 +53,7 @@ function loginCheck() {
                 if (accounts.length) {
                     setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
                 }
-                window.location.replace(location.href.split('/?')[0]);
+                window.location.replace(window.location.href.split('/?')[0]);
                 resolve();
             });
         } else {
