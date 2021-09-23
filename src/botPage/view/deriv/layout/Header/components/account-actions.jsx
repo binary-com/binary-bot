@@ -12,7 +12,7 @@ const AccountActions = ({ clientInfo }) => {
     return (
         <React.Fragment>
             <Notifications />
-            <a className="url-account-details header__account header__menu-item mobile-hide" href="">
+            <a className="url-account-details header__account header__menu-item mobile-hide" href="https://app.deriv.com/account/">
                 <img className="header__icon-button" id="header__account-settings" src="image/deriv/ic-user-outline.svg" />
             </a>
             <div className="header__divider mobile-hide"></div>

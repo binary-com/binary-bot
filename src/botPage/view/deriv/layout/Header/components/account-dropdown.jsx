@@ -58,7 +58,7 @@ const AccountDropdown = React.forwardRef(({ clientInfo, setIsAccDropdownOpen }, 
                     <span className="account__switcher-total-balance-text">{translate("Total assets")}</span>
                     <span className="account__switcher-total-balance-amount account__switcher-balance">
                         {clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"].amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                        <span className="symbols">&nbsp;{clientInfo.balance.total[activeTab === "real" ? "deriv" : "deriv_demo"].currency}</span>
+                        <span className="symbols">&nbsp;{clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"].currency}</span>
                     </span>
                 </div>
                 <div className="account__switcher-total-text">{translate("Total assets in your Deriv accounts")}</div>
