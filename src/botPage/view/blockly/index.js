@@ -22,11 +22,11 @@ import {
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import { translate, xml as translateXml } from '../../../common/i18n';
+import { translate as translateVars, parseQueryString, isProduction } from '../../../common/utils/tools';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
-import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
@@ -233,22 +233,21 @@ export const load = (blockStr, dropEvent = {}) => {
         return;
     }
 
-    blocklyXml.forEach(block => {
-        const blockType = block.getAttribute('type');
-
-        if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-            globalObserver.emit(
-                'Error',
-                createError(
-                    'InvalidBlockInXML',
-                    translate(
-                        'The file you’re trying to open contains unsupported elements in the following block: {$0} Please check your file and try again.',
-                        [block.getAttribute('id')]
-                    )
+    const blockWithError = Array.from(blocklyXml).find(
+        block => !Object.keys(Blockly.Blocks).includes(block.getAttribute('type'))
+    );
+    if (blockWithError) {
+        globalObserver.emit(
+            'Error',
+            createError(
+                'InvalidBlockInXML',
+                translateVars(
+                    'The file you’re trying to open contains unsupported elements in the following block: {$0} Please check your file and try again.',
+                    [blockWithError.getAttribute('id')]
                 )
-            );
-        }
-    });
+            )
+        );
+    }
 
     removeParam('strategy');
 
