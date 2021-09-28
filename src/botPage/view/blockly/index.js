@@ -21,8 +21,7 @@ import {
     getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import { translate, xml as translateXml } from '../../../common/i18n';
-import { translate as translateVars, parseQueryString, isProduction } from '../../../common/utils/tools';
+import { translate, parseQueryString, isProduction } from '../../../common/utils/tools';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
@@ -241,7 +240,7 @@ export const load = (blockStr, dropEvent = {}) => {
             'Error',
             createError(
                 'InvalidBlockInXML',
-                translateVars(
+                translate(
                     'The file you’re trying to open contains unsupported elements in the following block: {$0} Please check your file and try again.',
                     [blockWithError.getAttribute('id')]
                 )
@@ -327,7 +326,7 @@ export default class _Blockly {
             $.get('xml/toolbox.xml', toolboxXml => {
                 blocks();
                 const workspace = Blockly.inject('blocklyDiv', {
-                    toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
+                    toolbox: xmlToStr(translate(toolboxXml.getElementsByTagName('xml')[0])),
                     zoom   : {
                         wheel: false,
                     },
