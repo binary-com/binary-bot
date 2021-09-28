@@ -162,6 +162,11 @@ const getActiveTokens = id => {
     return tokenList.length ? tokenList.filter(token => token.token === id) : '';
 };
 
+const isLoggedin = () => {
+    const tokenList = getTokenList();
+    return tokenList.length;
+};
+
 const getLandingCompanyForToken = id => {
     let landingCompany;
     const activeToken = getActiveTokens(id);
@@ -192,6 +197,7 @@ const updateTokenList = () => {
     const tokenList = getTokenList();
     const loginButton = $('#login, #toolbox-login');
     const accountList = $('#account-list, #toolbox-account-list');
+
     if (tokenList.length === 0) {
         loginButton.show();
         accountList.hide();
@@ -301,10 +307,10 @@ export default class View {
             updateConfigCurrencies(api).then(() => {
                 symbolPromise.then(() => {
                     updateTokenList();
-
                     if (
-                        localStorage.getItem('residence') === 'maltainvest' ||
-                        isOptionsBlocked(localStorage.getItem('residence'))
+                        isLoggedin() &&
+                        (localStorage.getItem('residence') === 'maltainvest' ||
+                            isOptionsBlocked(localStorage.getItem('residence')))
                     ) {
                         this.showHeader(getStorage('showHeader') !== 'false');
                         this.setElementActions();
@@ -841,6 +847,7 @@ function renderReactComponents() {
         />,
         $('#footer')[0]
     );
+    document.getElementById('errorArea').remove();
     ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
     ReactDOM.render(<LogTable />, $('#logTable')[0]);
 }
