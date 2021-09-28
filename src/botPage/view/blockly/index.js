@@ -246,6 +246,7 @@ export const load = (blockStr, dropEvent = {}) => {
                 )
             )
         );
+        return;
     }
 
     removeParam('strategy');
