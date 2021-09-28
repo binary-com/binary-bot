@@ -1,4 +1,5 @@
 import React from "react";
+import  Popover from '../../../components/popover.jsx';
 
 const ServerTime = ({ api }) => {
     const [hasApiResponse, setHasApiResponse] = React.useState(false);
@@ -44,7 +45,11 @@ const ServerTime = ({ api }) => {
 
     React.useEffect(() => updateTime(), [date]);
 
-    return <div id="server-time" className="server-time">{dateString}</div>;
+    return (
+        <Popover content={<>{dateString}</>}>
+            <div id="server-time" className="server-time">{dateString}</div>
+        </Popover>
+    )
 };
 
 export default ServerTime;

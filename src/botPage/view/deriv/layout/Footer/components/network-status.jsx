@@ -1,5 +1,8 @@
 import classNames from "classnames";
 import React from "react";
+import  Popover from '../../../components/popover.jsx';
+import { translate} from "../../../../../../common/utils/tools";
+
 
 const NetworkStatus = ({ api }) => {
     const [status, setStatus] = React.useState("offline");
@@ -35,13 +38,15 @@ const NetworkStatus = ({ api }) => {
 
     return (
         <div id="network-status" className="network-status__wrapper">
-            <div
-                className={classNames("network-status__circle", {
-                    "network-status__circle--offline": status === "offline",
-                    "network-status__circle--online": status === "online",
-                    "network-status__circle--blinker": status === "blinker",
-                })}
-            />
+            <Popover content={<>{translate('Network status:')}{status}</>}>
+                <div
+                    className={classNames("network-status__circle", {
+                        "network-status__circle--offline": status === "offline",
+                        "network-status__circle--online": status === "online",
+                        "network-status__circle--blinker": status === "blinker",
+                    })}
+                    />
+            </Popover>
         </div>
     );
 };
