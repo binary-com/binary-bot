@@ -173,6 +173,7 @@ const getLandingCompanyForToken = id => {
     if (activeToken && activeToken.length === 1) {
         landingCompany = activeToken[0].loginInfo.landing_company_name;
         localStorage.setItem('residence', activeToken[0].loginInfo.country);
+        localStorage.setItem('landingCompany', activeToken[0].loginInfo.landing_company_name);
     }
     return landingCompany;
 };
@@ -307,9 +308,10 @@ export default class View {
             updateConfigCurrencies(api).then(() => {
                 symbolPromise.then(() => {
                     updateTokenList();
+
                     if (
                         isLoggedin() &&
-                        (localStorage.getItem('residence') === 'maltainvest' ||
+                        (localStorage.getItem('landingCompany') === 'maltainvest' ||
                             isOptionsBlocked(localStorage.getItem('residence')))
                     ) {
                         this.showHeader(getStorage('showHeader') !== 'false');
