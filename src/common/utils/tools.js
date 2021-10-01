@@ -51,7 +51,7 @@ export const durationToSecond = duration => {
     return 0;
 };
 
-export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap;
+export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap.production;
 
 export const createUrl = options => {
     const getOption = property => Object.prototype.hasOwnProperty.call(options, property) && options[property];
