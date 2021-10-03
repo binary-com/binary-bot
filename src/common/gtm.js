@@ -3,7 +3,7 @@ import AppIdMap from './appIdResolver';
 import { getTokenList } from './utils/storageManager';
 
 const GTM = (() => {
-    const isGtmApplicable = () => Object.values(AppIdMap).includes(`${getAppIdFallback()}`);
+    const isGtmApplicable = () => Object.values(AppIdMap.production).includes(`${getAppIdFallback()}`);
 
     const init = () => {
         if (isGtmApplicable()) {
