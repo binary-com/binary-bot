@@ -1,0 +1,28 @@
+.popover {
+    &__container {
+        position: relative;
+        font-size: 12px;
+        margin: 12px 12px 15px;
+        height: 25px;
+        & > span{
+            background: var(--general-active);
+            color: var(--text-prominent);
+            padding: 8px;
+            line-height: 15px;
+            border-radius: 4px;
+            
+        }
+        &:after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: calc(50% - 10px);
+            border-style: solid;
+            border-width: 10px 10px 0;
+            border-color: var(--general-active) transparent;
+            display: block;
+            width: 0;
+            z-index: 1;
+        }
+    }
+}
