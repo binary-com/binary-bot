@@ -38,7 +38,7 @@ const NetworkStatus = ({ api }) => {
 
     return (
         <div id="network-status" className="network-status__wrapper">
-            <Popover content={<>{translate('Network status:')}{status}</>}>
+            <Popover content={<>{translate('Network status: {$0}',[status])}</>}>
                 <div
                     className={classNames("network-status__circle", {
                         "network-status__circle--offline": status === "offline",

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Popover as TinyPopover } from 'react-tiny-popover';
 
-const Popover = ({children,content})=>{
+const Popover = ({ children , content })=>{
     const [is_hovered, updateIsHovered] = React.useState(false);
     
     return(
