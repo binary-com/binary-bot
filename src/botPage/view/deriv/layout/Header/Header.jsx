@@ -3,6 +3,7 @@ import { translate, isMobile, isDesktop } from "../../../../../common/utils/tool
 import AccountActions from "./components/account-actions.jsx";
 import { platforms } from "../../config.js";
 import PlatformDropdown from "./components/platform-dropdown.jsx";
+import classNames from "classnames";
 
 const MenuLinks = () => (
     <div className="header__menu-item header__menu-links client_logged_in">
@@ -76,7 +77,11 @@ const DrawerMenu = ({
                     >
                         <img className="header__logo" src="image/deriv/brand/ic-brand-binarybot.svg" />
                         <div className="platform__switcher-header">Binary Bot</div>
-                        <img id="platform__switcher-expand" className="header__icon header__expand" src="image/deriv/ic-chevron-down-bold.svg" />
+                        <img 
+                            id="platform__switcher-expand"
+                            className={classNames("header__icon header__expand", {"open" : isPlatformSwitcherOpen})}
+                            src="image/deriv/ic-chevron-down-bold.svg" 
+                        />
                     </div>
                     {isPlatformSwitcherOpen && <PlatformDropdown platforms={platforms} hideDropdown={hideDropdown} ref={platformDropdownRef}/>}
                     {isLogged && <MenuLinks />} 
@@ -108,7 +113,11 @@ const Header = ({ clientInfo }) => {
                     >
                         <img className="header__logo" src="image/deriv/brand/ic-brand-binarybot.svg" />
                         <div className="platform__switcher-header">Binary Bot</div>
-                        <img id="platform__switcher-expand" className="header__icon header__expand" src="image/deriv/ic-chevron-down-bold.svg" />
+                        <img 
+                            id="platform__switcher-expand"
+                            className={classNames("header__icon header__expand", {"open" : isPlatformSwitcherOpen})}
+                            src="image/deriv/ic-chevron-down-bold.svg"
+                        />
                     </div>
                     {isLogged && <MenuLinks />}
                 </div>
