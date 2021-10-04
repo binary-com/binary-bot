@@ -3,6 +3,7 @@ import { translate, isMobile, isDesktop } from "../../../../../common/utils/tool
 import AccountActions from "./components/account-actions.jsx";
 import { platforms } from "../../config.js";
 import PlatformDropdown from "./components/platform-dropdown.jsx";
+import classNames from "classnames";
 
 const MenuLinks = () => (
     <div className="header__menu-item header__menu-links client_logged_in">
@@ -78,7 +79,7 @@ const DrawerMenu = ({
                         <div className="platform__switcher-header">Binary Bot</div>
                         <img 
                             id="platform__switcher-expand"
-                            className={`header__icon header__expand ${isPlatformSwitcherOpen ? 'open' : ''}`}
+                            className={classNames("header__icon header__expand", {"open" : isPlatformSwitcherOpen})}
                             src="image/deriv/ic-chevron-down-bold.svg" 
                         />
                     </div>
@@ -114,7 +115,7 @@ const Header = ({ clientInfo }) => {
                         <div className="platform__switcher-header">Binary Bot</div>
                         <img 
                             id="platform__switcher-expand"
-                            className={`header__icon header__expand ${isPlatformSwitcherOpen ? 'open' : ''}`}
+                            className={classNames("header__icon header__expand", {"open" : isPlatformSwitcherOpen})}
                             src="image/deriv/ic-chevron-down-bold.svg"
                         />
                     </div>
