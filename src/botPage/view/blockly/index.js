@@ -21,6 +21,7 @@ import {
     getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
+import { xml as translateXml } from '../../../common/i18n';
 import { translate, parseQueryString, isProduction } from '../../../common/utils/tools';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
@@ -327,7 +328,7 @@ export default class _Blockly {
             $.get('xml/toolbox.xml', toolboxXml => {
                 blocks();
                 const workspace = Blockly.inject('blocklyDiv', {
-                    toolbox: xmlToStr(translate(toolboxXml.getElementsByTagName('xml')[0])),
+                    toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
                     zoom   : {
                         wheel: false,
                     },
