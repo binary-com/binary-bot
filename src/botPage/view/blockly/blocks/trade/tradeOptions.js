@@ -199,8 +199,8 @@ export default () => {
                     const barrierLabels = [translate('High barrier'), translate('Low barrier')];
                     const removeInput = inputName => tradeOptionsBlock.removeInput(inputName);
 
-                    const updateList = (list, options = []) => {
-                        if (!options?.length) return;
+                    const updateList = (list, options) => {
+                        if (!list) return;
                         const prevSelectedType = options.find(option => option[1] === list?.getValue());
                         list.menuGenerator_ = options; // eslint-disable-line no-underscore-dangle, no-param-reassign
                         if (!useDefaultType && prevSelectedType) {
