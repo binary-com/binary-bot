@@ -3,6 +3,7 @@ import { generateLiveApiInstance } from './appId';
 import { getTokenList } from './utils/storageManager';
 import { translate } from '../common/i18n';
 import { getLanguage } from './lang';
+import GTM from './gtm';
 
 const Elevio = (() => {
     const elShellId = 'elevio-shell';
@@ -54,6 +55,7 @@ const Elevio = (() => {
 
         // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
+            GTM.pushDataLayer({ event: 'elevio_widget_load' });
             const availableLanguages = ['en', 'es', 'id', 'pt', 'ru'];
             const currentLanguage = getLanguage();
             if (availableLanguages.includes(currentLanguage)) {
@@ -68,10 +70,22 @@ const Elevio = (() => {
             });
             setUserInfo(elev);
             setTranslations(elev);
+            addEventListenerGTM();
 
             if (isOpen) {
                 elev.open();
             }
+        });
+    };
+
+    const addEventListenerGTM = () => {
+        window._elev.on('widget:opened', () => {
+            // eslint-disable-line no-underscore-dangle
+            GTM.pushDataLayer({ event: 'elevio_widget_opened', is_elevio: true });
+        });
+        window._elev.on('page:view', () => {
+            // eslint-disable-line no-underscore-dangle
+            GTM.pushDataLayer({ event: 'elevio_page_views', is_elevio: true });
         });
     };
 
