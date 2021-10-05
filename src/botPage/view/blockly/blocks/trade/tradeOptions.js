@@ -201,7 +201,7 @@ export default () => {
 
                     const updateList = (list, options) => {
                         if (!list) return;
-                        const prevSelectedType = options.find(option => option[1] === list?.getValue());
+                        const prevSelectedType = options.find(option => option[1] === list.getValue());
                         list.menuGenerator_ = options; // eslint-disable-line no-underscore-dangle, no-param-reassign
                         if (!useDefaultType && prevSelectedType) {
                             list.setValue('');
