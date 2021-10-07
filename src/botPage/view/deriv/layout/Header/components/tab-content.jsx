@@ -49,7 +49,7 @@ const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {
                         )
                     )}
                     {isReal && (
-                        <a rel="noopener noreferrer" className="account__switcher-add">
+                        <a href="https://app.deriv.com/redirect?action=add_account" rel="noopener noreferrer" className="account__switcher-add">
                             <img className="account__switcher-add-icon" src="image/deriv/ic-add-circle.svg" />
                             <span className="account__switcher-add-text">{translate("Add Deriv account")}</span>
                         </a>
