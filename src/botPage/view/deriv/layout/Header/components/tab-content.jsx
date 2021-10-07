@@ -1,6 +1,7 @@
 import React from "react";
 import { translate } from "../../../../../../common/utils/tools";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
+import { currencyNameMap } from "../../../config";
 
 
 const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {    
@@ -38,7 +39,7 @@ const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {
                                     }.svg`} 
                                 />
                                 <span>
-                                    {acc.loginInfo.is_virtual ? translate("Demo") : acc.loginInfo.currency}
+                                    {acc.loginInfo.is_virtual ? translate("Demo") : currencyNameMap[acc.loginInfo.currency].name}
                                     <div className="account__switcher-loginid">{acc.loginInfo.loginid}</div>
                                 </span>
                                 <span className="account__switcher-balance">
