@@ -2,6 +2,7 @@ import React from "react";
 import { translate } from "../../../../../../common/utils/tools";
 import Notifications from "./notifications.jsx";
 import AccountDropdown from "./account-dropdown.jsx";
+import config from "../../../../../common/const";
 
 const AccountActions = ({ clientInfo }) => {
     const { currency, is_virtual, loginid } = clientInfo.tokenList[0].loginInfo;
@@ -28,7 +29,7 @@ const AccountActions = ({ clientInfo }) => {
                         src={`image/deriv/currency/ic-currency-${is_virtual ? "virtual" : currency.toLowerCase()}.svg`} 
                     />
                     <div id="header__acc-balance" className="header__acc-balance">
-                        {balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                        {balance.toLocaleString(undefined, { minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2 })}
                         <span className="symbols">&nbsp;{currency}</span>
                     </div>
                     <img 

@@ -2,12 +2,16 @@ import React from "react";
 import { translate } from "../../../../../../common/utils/tools";
 import TabContent from "./tab-content.jsx";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
+import config from "../../../../../common/const";
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 
 const AccountDropdown = React.forwardRef(({ clientInfo, setIsAccDropdownOpen }, dropdownRef) => {
     const [activeTab, setActiveTab] = React.useState(clientInfo.tokenList[0].loginInfo.is_virtual === 0 ? "real" : "demo");
     const container_ref = React.useRef();
+    const totalBalanceInfo = clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"];
+    const totalCurrency = totalBalanceInfo.currency;
+    const totalAssets = totalBalanceInfo.amount.toLocaleString(undefined, { minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(totalCurrency) ? 8 : 2 })
 
     React.useEffect(() => {
         function handleClickOutside(event) {
@@ -57,8 +61,8 @@ const AccountDropdown = React.forwardRef(({ clientInfo, setIsAccDropdownOpen }, 
                 <div className="account__switcher-total-balance">
                     <span className="account__switcher-total-balance-text">{translate("Total assets")}</span>
                     <span className="account__switcher-total-balance-amount account__switcher-balance">
-                        {clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"].amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                        <span className="symbols">&nbsp;{clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"].currency}</span>
+                        {totalAssets}
+                        <span className="symbols">&nbsp;{totalCurrency}</span>
                     </span>
                 </div>
                 <div className="account__switcher-total-text">{translate("Total assets in your Deriv accounts")}</div>
