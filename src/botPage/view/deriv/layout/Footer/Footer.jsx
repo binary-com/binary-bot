@@ -7,7 +7,7 @@ import LanguageSelector from "./components/language-selector.jsx";
 const FooterIconSeparator = () => <div className="footer-icon-separator" />;
 
 const HelpCenter = () => (
-    <a id="help-center" className="footer__link" href="https://deriv.com/help-centre">
+    <a id="help-center" className="footer__link" href="https://deriv.com/help-centre" target="_blank">
         <img src="image/deriv/ic-help-centre.svg" />
     </a>
 );
