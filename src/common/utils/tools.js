@@ -1,5 +1,3 @@
-import RenderHTML from 'react-render-html';
-import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
 
@@ -73,18 +71,6 @@ export const createUrl = options => {
         return `${document.location.protocol}//${subdomain}binary${domainExtension}${language}${path}${htmlExtension}`;
     }
     return `https://${subdomain}binary.com${language}${path}${htmlExtension}`;
-};
-
-export const translate = (input, params = []) => {
-    if (params.length) {
-        const stringToBeTranslated = input.replace(/\{\$({0-9])\}/gi, '%$1');
-        let translatedString = i18nTranslate(stringToBeTranslated);
-        params.forEach((replacement, index) => {
-            translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
-        });
-        return RenderHTML(translatedString);
-    }
-    return i18nTranslate(input);
 };
 
 export const getExtension = () => {

@@ -11,6 +11,7 @@ import fr from './translations/fr_FR/i10n.json';
 import en from './translations/en/i10n.json';
 import ach from './translations/ach_UG/i10n.json';
 import id from './translations/id_ID/i10n.json';
+import RenderHTML from 'react-render-html';
 
 export const supportedLanguages = {
     zh_tw: zhTw,
@@ -36,7 +37,19 @@ export const init = lang => {
     translation = supportedLanguages[lang];
 };
 
-export const translate = str => (str && t(sha1(str))) || str;
+export const i18nTranslate = str => (str && t(sha1(str))) || str;
+
+export const translate = (input, params = []) => {
+    if (params.length) {
+        const stringToBeTranslated = input.replace(/\{\$({0-9])\}/gi, '%$1');
+        let translatedString = i18nTranslate(stringToBeTranslated);
+        params.forEach((replacement, index) => {
+            translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
+        });
+        return RenderHTML(translatedString);
+    }
+    return i18nTranslate(input);
+};
 
 export const translateLangToLang = (str, fromLang, toLang) => {
     if (supportedLanguages[fromLang]) {
