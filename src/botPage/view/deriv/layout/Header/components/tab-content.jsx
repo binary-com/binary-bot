@@ -39,7 +39,7 @@ const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {
                                     }.svg`} 
                                 />
                                 <span>
-                                    {acc.loginInfo.is_virtual ? translate("Demo") : currencyNameMap[acc.loginInfo.currency].name}
+                                    {acc.loginInfo.is_virtual ? translate("Demo") : (currencyNameMap[acc.loginInfo.currency]?.name || acc.loginInfo.currency)}
                                     <div className="account__switcher-loginid">{acc.loginInfo.loginid}</div>
                                 </span>
                                 <span className="account__switcher-balance">

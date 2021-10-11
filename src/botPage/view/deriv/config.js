@@ -24,6 +24,7 @@ export const currencyNameMap = {
     AUD: { display_code: 'AUD', name: 'Australian Dollar' },
     EUR: { display_code: 'EUR', name: 'Euro' },
     GBP: { display_code: 'GBP', name: 'Pound Sterling' },
+    USDC: { display_code: 'USDC', name: 'USD Coin' },
 };
 
 export const platforms = [
