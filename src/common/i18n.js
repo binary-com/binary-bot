@@ -1,4 +1,5 @@
 import sha1 from 'sha1';
+import RenderHTML from 'react-render-html';
 import zhTw from './translations/zh_TW/i10n.json';
 import zhCn from './translations/zh_CN/i10n.json';
 import it from './translations/it_IT/i10n.json';
@@ -11,7 +12,6 @@ import fr from './translations/fr_FR/i10n.json';
 import en from './translations/en/i10n.json';
 import ach from './translations/ach_UG/i10n.json';
 import id from './translations/id_ID/i10n.json';
-import RenderHTML from 'react-render-html';
 
 export const supportedLanguages = {
     zh_tw: zhTw,
