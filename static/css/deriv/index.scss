@@ -33,17 +33,18 @@ a:hover {
     & .stage {
         @include mobile {
             margin: 0 !important;
+            max-width: 33%;
         }
     }
     & .line {
         @include mobile{
-            width: 1500% !important;
+            width: 1300% !important;
         }
     }
 }
 #current-trade-status {
     @include mobile {
-        width: 500px;
+        width: 100%;
     }
 }
 .ui-dialog {
