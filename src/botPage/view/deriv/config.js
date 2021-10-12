@@ -1,4 +1,4 @@
-import { translate } from '../../../common/utils//tools';
+import { translate } from '../../../common/utils/tools';
 
 export const supportedLanguages = {
     en: 'English',
