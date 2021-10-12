@@ -1,3 +1,5 @@
+import { translate } from '../../../common/utils/tools';
+
 export const supportedLanguages = {
     en: 'English',
     fr: 'Français',
@@ -13,18 +15,106 @@ export const supportedLanguages = {
 };
 
 export const currencyNameMap = {
-    BTC: { display_code: 'BTC', name: 'Bitcoin' },
-    BCH: { display_code: 'BCH', name: 'Bitcoin Cash' },
-    ETH: { display_code: 'ETH', name: 'Ether' },
-    ETC: { display_code: 'ETC', name: 'Ether Classic' },
-    LTC: { display_code: 'LTC', name: 'Litecoin' },
-    UST: { display_code: 'USDT', name: 'Tether' },
-    USB: { display_code: 'USB', name: 'Binary Coin' },
-    USD: { display_code: 'USD', name: 'US Dollar' },
-    AUD: { display_code: 'AUD', name: 'Australian Dollar' },
-    EUR: { display_code: 'EUR', name: 'Euro' },
-    GBP: { display_code: 'GBP', name: 'Pound Sterling' },
-    USDC: { display_code: 'USDC', name: 'USD Coin' },
+    USD: {
+        display_code: 'USD',
+        name: translate('US Dollar'),
+        fractional_digits: 2,
+    },
+    AUD: {
+        display_code: 'AUD',
+        name: translate('Australian Dollar'),
+        fractional_digits: 2,
+    },
+    EUR: {
+        display_code: 'EUR',
+        name: translate('Euro'),
+        fractional_digits: 2,
+    },
+    GBP: {
+        display_code: 'GBP',
+        name: translate('Pound Sterling'),
+        fractional_digits: 2,
+    },
+    BTC: {
+        display_code: 'BTC',
+        name: translate('Bitcoin'),
+        fractional_digits: 8,
+    },
+    BUSD: {
+        display_code: 'BUSD',
+        name: translate('Binance USD'),
+        fractional_digits: 2,
+    },
+    DAI: {
+        display_code: 'DAI',
+        name: translate('Multi-Collateral DAI'),
+        fractional_digits: 2,
+    },
+    EURS: {
+        display_code: 'EURS',
+        name: translate('STATIS Euro'),
+        fractional_digits: 2,
+    },
+    IDK: {
+        display_code: 'IDK',
+        name: translate('IDK'),
+        fractional_digits: 0,
+    },
+    PAX: {
+        display_code: 'PAX',
+        name: translate('Paxos Standard'),
+        fractional_digits: 2,
+    },
+    TUSD: {
+        display_code: 'TUSD',
+        name: translate('True USD'),
+        fractional_digits: 2,
+    },
+    USDC: {
+        display_code: 'USDC',
+        name: translate('USD Coin'),
+        fractional_digits: 2,
+    },
+    USDK: {
+        display_code: 'USDK',
+        name: translate('USDK'),
+        fractional_digits: 2,
+    },
+    eUSDT: {
+        display_code: 'eUSDT',
+        name: translate('Tether ERC20'),
+        fractional_digits: 2,
+    },
+    BCH: {
+        display_code: 'BCH',
+        name: translate('Bitcoin Cash'),
+        fractional_digits: 8,
+    },
+    ETH: {
+        display_code: 'ETH',
+        name: translate('Ethereum'),
+        fractional_digits: 8,
+    },
+    ETC: {
+        display_code: 'ETC',
+        name: translate('Ethereum Classic'),
+        fractional_digits: 8,
+    },
+    LTC: {
+        display_code: 'LTC',
+        name: translate('Litecoin'),
+        fractional_digits: 8,
+    },
+    UST: {
+        display_code: 'USDT',
+        name: translate('Tether Omni'),
+        fractional_digits: 2,
+    },
+    // USB: {
+    //     display_code: 'USB',
+    //     name: translate('Binary Coin'),
+    //     fractional_digits: 2,
+    // },
 };
 
 export const platforms = [

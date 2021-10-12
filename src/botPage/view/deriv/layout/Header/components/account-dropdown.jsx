@@ -2,7 +2,7 @@ import React from "react";
 import { translate } from "../../../../../../common/utils/tools";
 import TabContent from "./tab-content.jsx";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
-import config from "../../../../../common/const";
+import { currencyNameMap } from "../../../config";
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 
@@ -11,7 +11,7 @@ const AccountDropdown = React.forwardRef(({ clientInfo, setIsAccDropdownOpen }, 
     const container_ref = React.useRef();
     const totalBalanceInfo = clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"];
     const totalCurrency = totalBalanceInfo.currency;
-    const totalAssets = totalBalanceInfo.amount.toLocaleString(undefined, { minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(totalCurrency) ? 8 : 2 })
+    const totalAssets = totalBalanceInfo.amount.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[totalCurrency]?.fractional_digits ?? 2})
 
     React.useEffect(() => {
         function handleClickOutside(event) {
