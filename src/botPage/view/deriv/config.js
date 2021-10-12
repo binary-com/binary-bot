@@ -2,16 +2,16 @@ import { translate } from '../../../common/utils//tools';
 
 export const supportedLanguages = {
     en: 'English',
-    fr: 'Français',
+    // fr: 'Français',
     id: 'Indonesia',
-    pl: 'Polish',
+    // pl: 'Polish',
     pt: 'Português',
-    ru: 'Русский',
-    zh_cn: '简体中文',
-    zh_tw: '繁體中文',
+    // ru: 'Русский',
+    // zh_cn: '简体中文',
+    // zh_tw: '繁體中文',
     es: 'Español',
-    it: 'Italiano',
-    vi: 'Tiếng Việt',
+    // it: 'Italiano',
+    // vi: 'Tiếng Việt',
 };
 
 export const platforms = [
