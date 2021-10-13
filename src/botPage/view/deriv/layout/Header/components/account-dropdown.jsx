@@ -5,25 +5,47 @@ import { observer as globalObserver } from '../../../../../../common/utils/obser
 import { currencyNameMap } from "../../../config";
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
-
+const getTotalAssets = (accounts,is_virtual)=>{
+    let total = 0
+    Object.values(accounts).forEach(acc=>{
+        if(acc.demo_account == is_virtual){
+            if(is_virtual){
+                total = acc.balance;
+            }else{
+                total += acc.converted_amount
+            }
+        }
+    })
+    return total.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[total]?.fractional_digits ?? 2})
+}
 const AccountDropdown = React.forwardRef(({ clientInfo, setIsAccDropdownOpen }, dropdownRef) => {
     const [activeTab, setActiveTab] = React.useState(clientInfo.tokenList[0].loginInfo.is_virtual === 0 ? "real" : "demo");
+    const [totalCurrency,updateTotalCurrency]= React.useState("USD")
+    const [totalAssets,updateTotalAssets] = React.useState(0)
     const container_ref = React.useRef();
-    const totalBalanceInfo = clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"];
-    const totalCurrency = totalBalanceInfo.currency;
-    const totalAssets = totalBalanceInfo.amount.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[totalCurrency]?.fractional_digits ?? 2})
 
     React.useEffect(() => {
         function handleClickOutside(event) {
-            if (container_ref.current && !container_ref.current.contains(event.target)) {
+            if (container_ref.current && !container_ref?.current?.contains(event.target)) {
                 setIsAccDropdownOpen(false)
             }
         }
         window.addEventListener("click", handleClickOutside);
-        
+
 
         return () => window.removeEventListener("click", handleClickOutside);
     })
+    React.useEffect(()=>{
+        const total = getTotalAssets(clientInfo.balance.accounts, activeTab==='demo')
+        updateTotalAssets(total)
+        if(activeTab ==="demo"){
+            updateTotalCurrency('USD')
+
+        }else{
+            const currency = clientInfo.balance?.total[activeTab === "real" ? "deriv" : "deriv_demo"].currency
+            updateTotalCurrency(currency)
+        }
+    },[activeTab])
 
     return(
         <div className="account__switcher-dropdown-wrapper show" ref={dropdownRef}>
