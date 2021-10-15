@@ -78,9 +78,15 @@ export const remove = varName => delete store[varName];
 
 export const isLoggedInDeriv = () => {
     const activeAccount = get('active_loginid');
-    const clientAccounts = get('client.accounts');
+    const clientAccountsStorage = get('client.accounts');
 
-    return !!JSON.parse(clientAccounts)[activeAccount]?.token;
+    if (!activeAccount || !activeAccount.length) return false;
+    if (!clientAccountsStorage || clientAccountsStorage === '{}') return false;
+
+    const clientAccountsInfo = JSON.parse(clientAccountsStorage);
+    const activeAccountInfo = clientAccountsInfo[activeAccount];
+
+    return 'token' in activeAccountInfo;
 };
 
 export const syncWithDerivApp = () => {
