@@ -43,11 +43,18 @@ class GoogleDrive {
                         },
                         error => {
                             if (window.trackJs && isProduction()) {
-                                trackJs.track(
-                                    `${translate(
-                                        'There was an error initialising Google Drive'
-                                    )} - Error: ${JSON.stringify(error)}`
-                                );
+                                if (error?.error === 'idpiframe_initialization_failed') {
+                                    globalObserver.emit(
+                                        Error,
+                                        `${translate('Please enable cookies.')} - Error: ${JSON.stringify(error)}`
+                                    );
+                                } else {
+                                    trackJs.track(
+                                        `${translate(
+                                            'There was an error initialising Google Drive'
+                                        )} - Error: ${JSON.stringify(error)}`
+                                    );
+                                }
                             }
                         }
                     );
