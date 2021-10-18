@@ -26,7 +26,7 @@ const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {
                 <div className={`account__switcher-list ${isAccordionOpen ? "open" : ""}`}>
                     {clientInfo.tokenList.map((acc, index) => {
                         const accBalanceInfo = clientInfo.balance?.accounts[acc.loginInfo.loginid];
-                        const currency = accBalanceInfo.currency;
+                        const currency = accBalanceInfo?.currency;
                         const amount = accBalanceInfo.balance.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2})
 
                         return isReal !== Boolean(acc.loginInfo.is_virtual) && (
