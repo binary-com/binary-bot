@@ -67,15 +67,17 @@ export default class LogTable extends Component {
     render() {
         return (
             <div className="content-row">
-                <div className="content-row-table">
-                    <div style={{ height: minHeight }}>
-                        <ReactDataGrid
-                            columns={this.columns}
-                            rowGetter={this.rowGetter.bind(this)}
-                            rowsCount={this.state.rows.length}
-                            minHeight={minHeight}
-                            rowRenderer={ColorFormatter}
-                        />
+                <div>
+                    <div className="content-row-table">
+                        <div style={{ height: minHeight }}>
+                            <ReactDataGrid
+                                columns={this.columns}
+                                rowGetter={this.rowGetter.bind(this)}
+                                rowsCount={this.state.rows.length}
+                                minHeight={minHeight}
+                                rowRenderer={ColorFormatter}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
