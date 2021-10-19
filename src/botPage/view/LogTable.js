@@ -21,15 +21,15 @@ class ColorFormatter extends Component {
 export default class LogTable extends Component {
     static propTypes = {
         log: PropTypes.shape({
-            type     : PropTypes.string,
+            type: PropTypes.string,
             timestamp: PropTypes.string,
-            message  : PropTypes.string,
+            message: PropTypes.string,
         }),
     };
     constructor() {
         super();
         this.state = {
-            id  : 0,
+            id: 0,
             rows: [],
         };
         this.columns = [
@@ -66,14 +66,18 @@ export default class LogTable extends Component {
     }
     render() {
         return (
-            <div style={{ height: minHeight }}>
-                <ReactDataGrid
-                    columns={this.columns}
-                    rowGetter={this.rowGetter.bind(this)}
-                    rowsCount={this.state.rows.length}
-                    minHeight={minHeight}
-                    rowRenderer={ColorFormatter}
-                />
+            <div className="content-row">
+                <div className="content-row-table">
+                    <div style={{ height: minHeight }}>
+                        <ReactDataGrid
+                            columns={this.columns}
+                            rowGetter={this.rowGetter.bind(this)}
+                            rowsCount={this.state.rows.length}
+                            minHeight={minHeight}
+                            rowRenderer={ColorFormatter}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }

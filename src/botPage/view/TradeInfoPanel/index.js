@@ -31,14 +31,14 @@ class AnimateTrade extends Component {
         super();
         this.indicatorMessages = {
             notRunning: translate('Bot is not running.'),
-            starting  : translate('Bot is starting...'),
-            running   : translate('Bot is running...'),
-            stopping  : translate('Bot is stopping...'),
-            stopped   : translate('Bot has stopped.'),
+            starting: translate('Bot is starting...'),
+            running: translate('Bot is running...'),
+            stopping: translate('Bot is stopping...'),
+            stopped: translate('Bot has stopped.'),
         };
         this.state = {
             indicatorMessage: this.indicatorMessages.notRunning,
-            stopMessage     : this.indicatorMessages.stopped,
+            stopMessage: this.indicatorMessages.stopped,
         };
     }
     componentWillMount() {
@@ -78,7 +78,7 @@ class AnimateTrade extends Component {
             activateStage(0);
             this.setState({
                 buy_price: roundBalance({
-                    balance : contractStatus.proposal.ask_price,
+                    balance: contractStatus.proposal.ask_price,
                     currency: contractStatus.currency,
                 }),
             });
@@ -182,7 +182,11 @@ export default class TradeInfoPanel extends Component {
                         <AnimateTrade />
                     </div>
                     <div className="content-row">
-                        <TradeTable accountID={accountID} api={this.props.api} />
+                        <div>
+                            <div className="content-row-table">
+                                <TradeTable accountID={accountID} api={this.props.api} />
+                            </div>
+                        </div>
                     </div>
                     <div className="content-row">
                         <Summary accountID={accountID} />
