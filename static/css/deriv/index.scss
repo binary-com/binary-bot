@@ -54,6 +54,10 @@ a:hover {
 }
 
 .content-row {
+    &-table{
+        width: 760px;
+        overflow-x: scroll;
+    }
     & > div {
         overflow: scroll !important;
     }
