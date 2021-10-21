@@ -9,3 +9,4 @@ Ctrl
 Indices
 workspace
 ohlc
+Pattern Candle
