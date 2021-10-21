@@ -46,7 +46,10 @@ class GoogleDrive {
                                 if (error?.error === 'idpiframe_initialization_failed') {
                                     globalObserver.emit(
                                         Error,
-                                        `${translate('Please enable cookies.')} - Error: ${JSON.stringify(error)}`
+                                        `${translate('There’s a problem with your cookies settings.')}
+                                         ${translate(
+        'Cookies are blocked or not supported by your browser. Make sure cookies are enabled and try again.'
+    )}`
                                     );
                                 } else {
                                     trackJs.track(
