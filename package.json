@@ -82,7 +82,7 @@
     "immutable": "^3.8.2",
     "jest": "^24.8.0",
     "jquery": "^3.5.1",
-    "jquery-ui": "1.12.1",
+    "jquery-ui": "1.13.0",
     "jquery-ui-css": "1.11.4",
     "js-interpreter": "2.2.0",
     "json2csv": "^3.11.5",
