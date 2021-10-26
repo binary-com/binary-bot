@@ -1,6 +1,6 @@
 import { get as getStorage, set as setStorage } from '../common/utils/storageManager';
 import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
-import { translate } from '../common/utils/tools';
+import { translate } from '../common/i18n';
 
 if (document.location.href.endsWith('/endpoint')) {
     window.location.replace(`${document.location.href}.html`);

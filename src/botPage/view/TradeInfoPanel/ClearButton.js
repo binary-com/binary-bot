@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
-import { translate } from '../../../common/utils/tools';
+import { translate } from '../../../common/i18n';
 
 export default class ClearButton extends React.PureComponent {
     constructor() {

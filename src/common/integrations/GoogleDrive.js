@@ -1,10 +1,11 @@
 /* global google,gapi */
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
-import { translate, isProduction } from '../utils/tools';
+import { isProduction } from '../utils/tools';
 import config from '../../botPage/common/const';
 import { load } from '../../botPage/view/blockly';
 import { TrackJSError } from '../../botPage/view/logger';
+import { translate } from '../i18n';
 
 class GoogleDrive {
     constructor() {

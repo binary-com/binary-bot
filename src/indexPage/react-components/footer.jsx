@@ -1,5 +1,6 @@
 import React from 'react';
-import { translate, createUrl } from '../../common/utils/tools';
+import { translate } from '../../common/i18n';
+import { createUrl } from '../../common/utils/tools';
 
 const SocialIcons = ({ networks }) => (
     <div id='social-icons' className='social-icons flex-row'>
