@@ -21,8 +21,8 @@ import {
     getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import { xml as translateXml } from '../../../common/i18n';
-import { translate, parseQueryString, isProduction } from '../../../common/utils/tools';
+import { translate, xml as translateXml } from '../../../common/i18n';
+import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
