@@ -57,6 +57,13 @@ body {
     height: 88%;
 }
 
+#errorArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 84px);
+}
+
 @media only screen and (max-height: 723px) {
     #blocklyArea {
         height: 86%;
