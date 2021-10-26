@@ -21,15 +21,16 @@ import {
     getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import { translate, xml as translateXml } from '../../../common/i18n';
+import { xml as translateXml } from '../../../common/i18n';
+import { translate, parseQueryString, isProduction } from '../../../common/utils/tools';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
-import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
+import { createError } from '../../common/error';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -200,10 +201,7 @@ export const load = (blockStr, dropEvent = {}) => {
     const blocklyXml = xml.querySelectorAll('block');
 
     if (!blocklyXml.length) {
-        const error = new TrackJSError(
-            'FileLoad',
-            translate('XML file contains unsupported elements. Please check or modify file.')
-        );
+        const error = createError('EmptyXML', translate('XML file is empty. Please check or modify file.'));
         globalObserver.emit('Error', error);
         return;
     }
@@ -235,18 +233,22 @@ export const load = (blockStr, dropEvent = {}) => {
         return;
     }
 
-    blocklyXml.forEach(block => {
-        const blockType = block.getAttribute('type');
-
-        if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-            const error = new TrackJSError(
-                'FileLoad',
-                translate('XML file contains unsupported elements. Please check or modify file.')
-            );
-            globalObserver.emit('Error', error);
-            throw error;
-        }
-    });
+    const blockWithError = Array.from(blocklyXml).find(
+        block => !Object.keys(Blockly.Blocks).includes(block.getAttribute('type'))
+    );
+    if (blockWithError) {
+        globalObserver.emit(
+            'Error',
+            createError(
+                'InvalidBlockInXML',
+                translate(
+                    'The file you’re trying to open contains unsupported elements in the following block: {$0} Please check your file and try again.',
+                    [blockWithError.getAttribute('id')]
+                )
+            )
+        );
+        return;
+    }
 
     removeParam('strategy');
 
