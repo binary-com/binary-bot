@@ -49,13 +49,7 @@ body {
 }
 
 #blocklyArea {
-    height: 88%;
-}
-
-@media only screen and (max-height: 723px) {
-    #blocklyArea {
-        height: 86%;
-    }
+    height: calc(100% - 90px);
 }
 
 #center, #workspace_center {
