@@ -1,12 +1,13 @@
 // eslint-disable-next-line import/prefer-default-export
 export const generateDerivLink = (path, ...queries) => {
-    const isStaging = window.location.hostname.includes('staging');
-    const currentDomain = window.location.hostname.split('.').splice(-1);
-    const targetDomain = currentDomain === 'me' ? 'me' : 'com';
-    const origin = `https://${isStaging ? 'staging-' : ''}app.deriv.${targetDomain}/`;
-    const redirectQuery = `ext_platform_url=${encodeURIComponent(window.location.origin)}`;
+    const is_staging = /^staging-/.test(window.location.hostname);
+    const prefix = is_staging ? 'staging-' : '';
+    const current_domain = window.location.hostname.split('.').splice(-1);
+    const target_domain = current_domain === 'me' ? 'me' : 'com';
+    const origin = `https://${prefix}app.deriv.${target_domain}/`;
+    const redirect_query = `ext_platform_url=${encodeURIComponent(window.location.origin)}`;
 
-    queries.push(redirectQuery);
+    queries.push(redirect_query);
 
     return `${origin + path}?${queries.join('&')}`;
 };
