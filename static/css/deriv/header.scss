@@ -969,7 +969,7 @@
     }
 }
 #toolbox {
-    height: 42px;
+    height: $TOOLBOX_HEIGHT;
     @include mobile {
         height: unset;
     }

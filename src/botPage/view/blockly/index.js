@@ -106,6 +106,8 @@ const onresize = () => {
     let element = document.getElementById('blocklyArea');
     const blocklyArea = element;
     const blocklyDiv = document.getElementById('blocklyDiv');
+    const footer = document.getElementsByClassName('footer')[0];
+    const footerHeight = footer?.offsetHeight || 0;
     let x = 0;
     let y = 0;
     do {
@@ -117,8 +119,7 @@ const onresize = () => {
     blocklyDiv.style.left = `${x}px`;
     blocklyDiv.style.top = `${y}px`;
     blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
-    // Reduced blocklyDiv heigth by the height of the footer
-    blocklyDiv.style.height = `${blocklyArea.offsetHeight - 36}px`;
+    blocklyDiv.style.height = `${blocklyArea.offsetHeight - footerHeight}px`;
 };
 
 const render = workspace => () => {
