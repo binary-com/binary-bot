@@ -8,7 +8,7 @@ const steps = [
             ${translate('Ready to learn how to use Binary Bot?')}
           </p>
           <div class="tour-custom-buttons">
-            <a class="button-secondary mr-10" onclick="tour.stop()"><span>${translate('No Thanks')}</span></a>
+            <a class="button-secondary" onclick="tour.stop()"><span>${translate('No Thanks')}</span></a>
             <a class="button" onclick="tour.next()"><span>${translate('Yes')}</span></a>
           </div>
           <div class="tour-custom-buttons">
