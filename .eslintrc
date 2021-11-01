@@ -30,7 +30,8 @@
     "react/jsx-uses-vars": "error",
     "import/no-extraneous-dependencies": 0,
     "linebreak-style": 0,
-    "key-spacing" : 0
+    "key-spacing" : 0,
+    "camelcase": 0
   },
   "settings": {
     "react": {
