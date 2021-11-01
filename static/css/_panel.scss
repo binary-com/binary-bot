@@ -420,3 +420,13 @@ $disabled-color: #F2F2F2;
         }
     }
 }
+
+.blocklyTreeRoot {
+    padding-bottom: 42px;
+}
+
+@media (max-width: 768px) {
+    .blocklyTreeRoot {
+        padding-bottom: 0;
+    }
+}
