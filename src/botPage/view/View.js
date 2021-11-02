@@ -742,7 +742,8 @@ export default class View {
 
         window.addEventListener('storage', e => {
             window.onbeforeunload = null;
-            if (e.key === 'activeToken' && e.newValue !== e.oldValue) window.location.reload();
+            if (['activeToken', 'active_loginid'].includes(e.key) && e.newValue !== e.oldValue)
+            {window.location.reload();}
             if (e.key === 'realityCheckTime') hideRealityCheck();
         });
 
