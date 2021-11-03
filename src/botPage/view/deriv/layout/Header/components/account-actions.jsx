@@ -3,6 +3,7 @@ import { translate } from "../../../../../../common/utils/tools";
 import Notifications from "./notifications.jsx";
 import AccountDropdown from "./account-dropdown.jsx";
 import { currencyNameMap } from "../../../config";
+import { generateDerivLink } from "../../../utils";
 
 const AccountActions = ({ clientInfo }) => {
     const { currency, is_virtual, loginid } = clientInfo.tokenList[0].loginInfo;
@@ -13,7 +14,7 @@ const AccountActions = ({ clientInfo }) => {
     return (
         <React.Fragment>
             <Notifications />
-            <a className="url-account-details header__account header__menu-item mobile-hide" href="https://app.deriv.com/account/">
+            <a className="url-account-details header__account header__menu-item mobile-hide" href={generateDerivLink('account')}>
                 <img className="header__icon-button" id="header__account-settings" src="image/deriv/ic-user-outline.svg" />
             </a>
             <div className="header__divider mobile-hide"></div>
