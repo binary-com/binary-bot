@@ -1,86 +1,77 @@
 import json2csv from 'json2csv';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
 
-const minHeight = 550;
+const ColorFormatter = React.forwardRef((props, ref) => (
+    <div className={props.row.type}>
+        <ReactDataGrid.Row ref={ref} {...props} />
+    </div>
+));
 
-class ColorFormatter extends Component {
-    render() {
-        return (
-            <div className={this.props.row.type}>
-                <ReactDataGrid.Row ref="row" {...this.props} />
-            </div>
-        );
-    }
-}
+const LogTable = () => {
+    const [id, setId] = React.useState(0);
+    const [rows, setRows] = React.useState([]);
+    const grid = React.useRef(null);
 
-export default class LogTable extends Component {
-    static propTypes = {
-        log: PropTypes.shape({
-            type: PropTypes.string,
-            timestamp: PropTypes.string,
-            message: PropTypes.string,
-        }),
-    };
-    constructor() {
-        super();
-        this.state = {
-            id: 0,
-            rows: [],
+    const columns = [
+        { key: 'timestamp', width: 150, resizable: true, name: translate('Timestamp') },
+        { key: 'message', resizable: true, width: 640, name: translate('Message') },
+    ];
+    const min_height = 550;
+
+    React.useEffect(() => {
+        globalObserver.register('log.export', exportLogs);
+        globalObserver.register('bot.notify', onGetNotification);
+        return () => {
+            globalObserver.unregister('log.export', exportLogs);
+            globalObserver.unregister('bot.notify', onGetNotification);
         };
-        this.columns = [
-            { key: 'timestamp', width: 150, resizable: true, name: translate('Timestamp') },
-            { key: 'message', resizable: true, width: 1000, name: translate('Message') },
-        ];
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.rows.length !== this.state.rows.length) {
-            const $tableScroll = $('.logTable-scroll');
-            $tableScroll.scrollTop($tableScroll.scrollHeight);
-        }
-    }
-    componentWillMount() {
-        globalObserver.register('log.export', () => {
-            this.export();
-        });
+    }, [rows]);
 
-        globalObserver.register('bot.notify', log => {
-            if (log) {
-                if (!Object.keys(log).length) {
-                    return;
-                }
-                this.setState(appendRow(log, this.state));
-            }
-        });
-    }
-    rowGetter(i) {
-        return this.state.rows[i];
-    }
-    export() {
-        const data = json2csv({ data: this.state.rows, fields: ['timestamp', 'message'] });
+    React.useEffect(() => {
+        const height = grid.current.getRowOffsetHeight() * id;
+        const gridCanvas = grid.current.getDataGridDOMNode().querySelector('.react-grid-Canvas');
+        if (!gridCanvas) return;
+        gridCanvas.style.scrollBehavior = 'smooth';
+        gridCanvas.scrollTop = gridCanvas.scrollHeight;
+    }, [rows.length]);
+
+    const onGetNotification = log => {
+        if (!log || !Object.keys(log).length) return;
+
+        const row = appendRow(log, { id, rows });
+        setRows(row.rows);
+        setId(row.id);
+    };
+
+    const exportLogs = () => {
+        const data = json2csv({ data: rows, fields: ['timestamp', 'message'] });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
-    }
-    render() {
-        return (
-            <div className="content-row">
-                <div>
-                    <div className="content-row-table">
-                        <div style={{ height: minHeight }}>
-                            <ReactDataGrid
-                                columns={this.columns}
-                                rowGetter={this.rowGetter.bind(this)}
-                                rowsCount={this.state.rows.length}
-                                minHeight={minHeight}
-                                rowRenderer={ColorFormatter}
-                            />
-                        </div>
+    };
+
+    const rowGetter = i => rows[i];
+
+    return (
+        <div className="content-row">
+            <div>
+                <div className="content-row-table">
+                    <div style={{ height: min_height }}>
+                        <ReactDataGrid
+                            ref={grid}
+                            columns={columns}
+                            rowGetter={rowGetter}
+                            rowsCount={rows.length}
+                            minHeight={min_height}
+                            rowRenderer={<ColorFormatter />}
+                        />
                     </div>
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
+
+export default LogTable;
