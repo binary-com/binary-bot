@@ -205,3 +205,11 @@ export const convertForDerivStore = tokenList => {
 
     return clientAccounts;
 };
+
+export function getActiveAccount() {
+    const activeAccount = get('active_loginid');
+    const clientAccountsStorage = get('client.accounts');
+    const clientAccountsInfo = JSON.parse(clientAccountsStorage);
+    const activeAccountInfo = clientAccountsInfo[activeAccount];
+    return activeAccountInfo;
+}
