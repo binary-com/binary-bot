@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import 'jquery-ui/ui/widgets/dialog';
 import _Blockly, { load } from './blockly';
 import Chart from './Dialogs/Chart';
@@ -11,9 +12,7 @@ import TradingView from './Dialogs/TradingView';
 import logHandler from './logger';
 import LogTable from './LogTable';
 import NetworkMonitor from './NetworkMonitor';
-import ServerTime from './react-components/HeaderWidgets';
 import { symbolPromise } from './shared';
-import Tour from './tour';
 import TradeInfoPanel from './TradeInfoPanel';
 import { showDialog } from '../bot/tools';
 import config, { updateConfigCurrencies } from '../common/const';
@@ -50,6 +49,8 @@ import {
 // Deriv components
 import Footer from './deriv/layout/Footer';
 import Header from './deriv/layout/Header';
+import Main from './deriv/layout/Main';
+import store from './deriv/store';
 
 let realityCheckTimeout;
 let chart;
@@ -90,7 +91,12 @@ api.events.on('balance', response => {
         }
     }
 
-    ReactDOM.render(<Header clientInfo={clientInfo} />, $('#header-wrapper')[0]);
+    ReactDOM.render(
+        <Provider store={store}>
+            <Header clientInfo={clientInfo} />
+        </Provider>,
+        $('#header-wrapper')[0]
+    );
 
     const {
         balance: { balance: b, currency },
@@ -742,8 +748,9 @@ export default class View {
 
         window.addEventListener('storage', e => {
             window.onbeforeunload = null;
-            if (['activeToken', 'active_loginid'].includes(e.key) && e.newValue !== e.oldValue)
-            {window.location.reload();}
+            if (['activeToken', 'active_loginid'].includes(e.key) && e.newValue !== e.oldValue) {
+                window.location.reload();
+            }
             if (e.key === 'realityCheckTime') hideRealityCheck();
         });
 
@@ -814,10 +821,34 @@ function initRealityCheck(stopCallback) {
     );
 }
 function renderReactComponents() {
-    ReactDOM.render(<Header clientInfo={clientInfo} />, $('#header-wrapper')[0]);
-    ReactDOM.render(<Footer api={api} />, $('#footer')[0]);
-    ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
-    ReactDOM.render(<Tour />, $('#tour')[0]);
-    ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
-    ReactDOM.render(<LogTable />, $('#logTable')[0]);
+    ReactDOM.render(
+        <Provider store={store}>
+            <Header clientInfo={clientInfo} />
+        </Provider>,
+        $('#header-wrapper')[0]
+    );
+    ReactDOM.render(
+        <Provider store={store}>
+            <Main clientInfo={clientInfo} api={api} />
+        </Provider>,
+        $('#main')[0]
+    );
+    ReactDOM.render(
+        <Provider store={store}>
+            <Footer api={api} />
+        </Provider>,
+        $('#footer')[0]
+    );
+    ReactDOM.render(
+        <Provider store={store}>
+            <TradeInfoPanel api={api} />
+        </Provider>,
+        $('#summaryPanel')[0]
+    );
+    ReactDOM.render(
+        <Provider store={store}>
+            <LogTable />
+        </Provider>,
+        $('#logTable')[0]
+    );
 }
