@@ -1,0 +1,51 @@
+@import "color";
+
+.notification-banner {
+  display: flex;
+  flex-direction: row;
+  max-width: 940px;
+  width: 100%;
+  margin: auto;
+  align-items: center;
+  position: absolute;
+  bottom: 23.8rem;
+  right: 20rem;
+  z-index: 999 !important;
+
+  &__content {
+    max-width: 425px;
+    width: 100%;
+    margin: auto 86px auto 9px;
+
+    &_header {
+      font-weight: 700;
+      margin: 0;
+      margin-bottom: 4px;
+      line-height: 24px;
+      font-size: 16px;
+    }
+    &_text {
+      margin: 0;
+      font-weight: 400;
+      line-height: 24px;
+      font-size: 16px;
+    }
+    &_button {
+      text-decoration: none;
+      text-align: center;
+      line-height: 100%;
+      text-transform: capitalize;
+      padding: 8px 25px;
+      display: inline-block;
+      font-weight: 400;
+      font-family: inherit;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      border: 0;
+      background: $brand-btn;
+      color: $white;
+      height: 38px;
+    }
+  }
+}
