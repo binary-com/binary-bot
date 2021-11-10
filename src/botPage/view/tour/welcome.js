@@ -50,10 +50,18 @@ const steps = [
     {
         title: translate('Accounts'),
         text: `<p>
-      ${translate('Login before starting your bot. Always test your strategies with the virtual account.')}
+      ${translate('Login before starting your bot. Always test your strategies with the demo account.')}
     </p>`,
-        selector: '#header__acc-balance',
-        position: 'left',
+        selector: '.header__menu-right',
+        position: 'top-left',
+        style: {
+            beacon: {
+                offsetX: 10,
+                offsetY: 10,
+                inner: '#000 !important',
+                outer: '#000 !important',
+            },
+        },
     },
     {
         title: translate('Bot controls'),
