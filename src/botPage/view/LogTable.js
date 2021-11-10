@@ -58,8 +58,6 @@ export default class LogTable extends Component {
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
 
-    rowRenderer(args) {}
-
     headerRenderer = ({ dataKey, label }) => {
         const index = this.columns.findIndex(col => col.dataKey === dataKey);
         const isLastColumn = index + 1 === this.columns.length;
@@ -104,16 +102,13 @@ export default class LogTable extends Component {
         });
     };
 
-    rowRenderer = ({ rowData, columns, className, index, key }) => (
+    rowRenderer = ({ rowData, columns, className, key }) => (
         <div className={`${className} ${rowData.type}`} key={key}>
-            {columns?.map(({ props, key }) => {
-                const { style, className, role, title } = props;
-                return (
-                    <div style={style} className={className} role={role} key={key}>
-                        {title}
-                    </div>
-                );
-            })}
+            {columns?.map(({ props, key: inner_key }) => (
+                <div style={props.style} className={props.className} role={props.role} key={inner_key}>
+                    {props.title}
+                </div>
+            ))}
         </div>
     );
 
