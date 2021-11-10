@@ -1,13 +1,13 @@
 /* eslint-disable no-await-in-loop */
 import json2csv from 'json2csv';
+import Draggable from 'react-draggable';
 import React, { Component } from 'react';
+import { Table, Column } from 'react-virtualized';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { appendRow, updateRow, saveAs } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import * as style from '../style';
-import { Table, Column } from 'react-virtualized';
-import Draggable from 'react-draggable';
 
 const isNumber = num => num !== '' && Number.isFinite(Number(num));
 

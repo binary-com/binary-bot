@@ -1,11 +1,11 @@
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Draggable from 'react-draggable';
+import { Table, Column, CellMeasurerCache } from 'react-virtualized';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
-import { Table, Column, CellMeasurerCache } from 'react-virtualized';
-import Draggable from 'react-draggable';
 
 const min_height = 550;
 
@@ -58,9 +58,7 @@ export default class LogTable extends Component {
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
 
-    rowRenderer(args) {
-        
-    }
+    rowRenderer(args) {}
 
     headerRenderer = ({ dataKey, label }) => {
         const index = this.columns.findIndex(col => col.dataKey === dataKey);
