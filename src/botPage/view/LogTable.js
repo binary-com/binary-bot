@@ -1,22 +1,13 @@
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
+import { Table, Column, CellMeasurerCache } from 'react-virtualized';
+import Draggable from 'react-draggable';
 
-const minHeight = 550;
-
-class ColorFormatter extends Component {
-    render() {
-        return (
-            <div className={this.props.row.type}>
-                <ReactDataGrid.Row ref="row" {...this.props} />
-            </div>
-        );
-    }
-}
+const min_height = 550;
 
 export default class LogTable extends Component {
     static propTypes = {
@@ -26,23 +17,25 @@ export default class LogTable extends Component {
             message: PropTypes.string,
         }),
     };
-    constructor() {
-        super();
-        this.state = {
-            id: 0,
-            rows: [],
-        };
-        this.columns = [
-            { key: 'timestamp', width: 150, resizable: true, name: translate('Timestamp') },
-            { key: 'message', resizable: true, width: 1000, name: translate('Message') },
-        ];
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.rows.length !== this.state.rows.length) {
-            const $tableScroll = $('.logTable-scroll');
-            $tableScroll.scrollTop($tableScroll.scrollHeight);
-        }
-    }
+
+    state = {
+        id: 0,
+        rows: [],
+        widths: {
+            timestamp: 0.2,
+            message: 0.8,
+        },
+    };
+    total_width = 1150;
+    cache = new CellMeasurerCache({
+        defaultHeight: 35,
+    });
+
+    columns = [
+        { label: translate('Timestamp'), dataKey: 'timestamp' },
+        { label: translate('Message'), dataKey: 'message' },
+    ];
+
     componentWillMount() {
         globalObserver.register('log.export', () => {
             this.export();
@@ -53,30 +46,112 @@ export default class LogTable extends Component {
                 if (!Object.keys(log).length) {
                     return;
                 }
-                this.setState(appendRow(log, this.state));
+                this.setState(appendRow(log, this.state), () => {
+                    this.logtable.scrollToRow(this.state.id);
+                });
             }
         });
     }
-    rowGetter(i) {
-        return this.state.rows[i];
-    }
+
     export() {
         const data = json2csv({ data: this.state.rows, fields: ['timestamp', 'message'] });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
+
+    rowRenderer(args) {
+        
+    }
+
+    headerRenderer = ({ dataKey, label }) => {
+        const index = this.columns.findIndex(col => col.dataKey === dataKey);
+        const isLastColumn = index + 1 === this.columns.length;
+
+        return (
+            <React.Fragment key={dataKey}>
+                <div className="ReactVirtualized__Table__headerTruncatedText">{label}</div>
+                {!isLastColumn && (
+                    <Draggable
+                        axis="x"
+                        defaultClassName="DragHandle"
+                        defaultClassNameDragging="DragHandleActive"
+                        onDrag={(event, { deltaX }) =>
+                            this.resizeRow({
+                                dataKey,
+                                deltaX,
+                            })
+                        }
+                        position={{ x: 0 }}
+                        zIndex={999}
+                    >
+                        <span className="DragHandleIcon logTable" />
+                    </Draggable>
+                )}
+            </React.Fragment>
+        );
+    };
+
+    resizeRow = ({ dataKey, deltaX }) => {
+        this.setState(prevState => {
+            const prevWidths = prevState.widths;
+            const percentDelta = deltaX / this.total_width;
+            const nextDataKey = 'timestamp';
+
+            return {
+                widths: {
+                    ...prevWidths,
+                    [dataKey]: prevWidths[dataKey] - percentDelta,
+                    [nextDataKey]: prevWidths[nextDataKey] + percentDelta,
+                },
+            };
+        });
+    };
+
+    rowRenderer = ({ rowData, columns, className, index, key }) => (
+        <div className={`${className} ${rowData.type}`} key={key}>
+            {columns?.map(({ props, key }) => {
+                const { style, className, role, title } = props;
+                return (
+                    <div style={style} className={className} role={role} key={key}>
+                        {title}
+                    </div>
+                );
+            })}
+        </div>
+    );
+
     render() {
+        const { widths } = this.state;
+
         return (
             <div className="content-row">
                 <div>
                     <div className="content-row-table">
-                        <div style={{ height: minHeight }}>
-                            <ReactDataGrid
-                                columns={this.columns}
-                                rowGetter={this.rowGetter.bind(this)}
-                                rowsCount={this.state.rows.length}
-                                minHeight={minHeight}
-                                rowRenderer={ColorFormatter}
-                            />
+                        <div style={{ height: min_height }}>
+                            <Table
+                                ref={ref => (this.logtable = ref)}
+                                width={760}
+                                height={min_height}
+                                headerHeight={35}
+                                rowHeight={35}
+                                rowCount={this.state.rows.length}
+                                rowGetter={({ index }) => this.state.rows[index]}
+                                headerStyle={{
+                                    fontSize: 11,
+                                    textTransform: 'capitalize',
+                                }}
+                                rowRenderer={this.rowRenderer}
+                                deferredMeasurementCache={this.cache}
+                            >
+                                {this.columns.map(({ label, dataKey }, index) => (
+                                    <Column
+                                        key={index}
+                                        headerRenderer={this.headerRenderer}
+                                        width={widths[dataKey] * this.total_width}
+                                        label={label}
+                                        dataKey={dataKey}
+                                    />
+                                ))}
+                            </Table>
                         </div>
                     </div>
                 </div>

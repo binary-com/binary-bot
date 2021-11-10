@@ -7,14 +7,14 @@ require('./bundle');
 require('./webpack');
 
 const getConfig = prefix => ({
-    index           : `<script src="js/${prefix ? getManifest(`index${prefix}.js`) : 'index.js'}"></script>`,
-    bot             : `<script src="js/${prefix ? getManifest(`bot${prefix}.js`) : 'bot.js'}"></script>`,
-    bundle          : `<script src="js/${getManifest('bundle.js')}"></script>`,
-    bundle_css      : `<link href="css/${getManifest('bundle.css')}" rel="stylesheet" />`,
-    index_css       : `<link href="css/${getManifest('index.css')}" rel="stylesheet" />`,
-    bot_css         : `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
+    index: `<script src="js/${prefix ? getManifest(`index${prefix}.js`) : 'index.js'}"></script>`,
+    bot: `<script src="js/${prefix ? getManifest(`bot${prefix}.js`) : 'bot.js'}"></script>`,
+    bundle: `<script src="js/${getManifest('bundle.js')}"></script>`,
+    bundle_css: `<link href="css/${getManifest('bundle.css')}" rel="stylesheet" />`,
+    index_css: `<link href="css/${getManifest('index.css')}" rel="stylesheet" />`,
+    bot_css: `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
     binary_style_img: 'image/binary-style',
-    gtm_iframe      :
+    gtm_iframe:
         '<!-- Google Tag Manager (noscript) --> <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P97C2DZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <!-- End Google Tag Manager (noscript) -->',
 });
 
@@ -58,6 +58,7 @@ gulp.task(
         'bundle-js',
         'copy-jquery-img',
         'copy-binary-style-css',
+        'copy-virtualized-style-css',
         'copy-binary-style-img',
         'copy-js',
         'pull-blockly-translations',
@@ -77,6 +78,7 @@ gulp.task(
         'build-dev-static',
         'copy-jquery-img',
         'copy-binary-style-css',
+        'copy-virtualized-style-css',
         'copy-binary-style-img',
         'copy-js',
         'pull-blockly-translations'
