@@ -27,11 +27,11 @@ export const isEuLandingCompany = landing_company => /^(maltainvest|malta|iom)$/
 export const hasEuAccount = token_list =>
     token_list.some(token_obj => isEuLandingCompany(token_obj.loginInfo.landing_company_name));
 
-export const isEuCountry = async (api = generateLiveApiInstance()) => {
+export const isEuCountry = async (api = generateLiveApiInstance(), checkLoggedin = true) => {
     const { website_status } = await api.send({ website_status: 1 });
     let { clients_country } = website_status;
 
-    if (getTokenList().length) {
+    if (checkLoggedin && getTokenList().length) {
         // isLoggedin
         clients_country = localStorage.getItem('residence');
     }
@@ -47,10 +47,10 @@ export const isEuCountry = async (api = generateLiveApiInstance()) => {
     return eu_excluded_regexp.test(clients_country);
 };
 
-export const isUKCountry = async (api = generateLiveApiInstance()) => {
+export const isUKCountry = async (api = generateLiveApiInstance(), checkLoggedin = true) => {
     const { website_status } = await api.send({ website_status: 1 });
     let { clients_country } = website_status;
-    if (getTokenList().length) {
+    if (checkLoggedin && getTokenList().length) {
         // isLoggedin
         clients_country = localStorage.getItem('residence');
     }
