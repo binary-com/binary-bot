@@ -48,6 +48,7 @@ import {
     getUnattachedMandatoryPairs,
     saveBeforeUnload,
 } from './blockly/utils';
+import NotificationBanner from './react-components/NotoficationBanner';
 
 let realityCheckTimeout;
 let chart;
@@ -838,23 +839,6 @@ function renderErrorPage() {
     document.getElementById('blocklyArea').remove();
 }
 
-function NotificationBanner() {
-    return (
-        <div className="notification-banner">
-            <img src={'image/notification-banner-icon-left.svg'} />
-            <div className="notification-banner__content">
-                <p className="notification-banner__content_header">
-                    {translate('Binary.com is moving to Deriv on 30 November')}
-                </p>
-                <p className="notification-banner__content_text">
-                    {translate('Start using Deriv with your Binary.com email and password.')}
-                </p>
-            </div>
-            <button className="notification-banner__content_button">{translate('Trade on Deriv')}</button>
-        </div>
-    );
-}
-
 function renderReactComponents() {
     ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
     ReactDOM.render(<Tour />, $('#tour')[0]);
@@ -869,5 +853,5 @@ function renderReactComponents() {
     document.getElementById('errorArea').remove();
     ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
     ReactDOM.render(<LogTable />, $('#logTable')[0]);
-    ReactDOM.render(<NotificationBanner />, $('#notification-banner')[0]);
+    ReactDOM.render(<NotificationBanner api={api} />, $('#notification-banner')[0]);
 }

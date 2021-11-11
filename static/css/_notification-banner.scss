@@ -1,16 +1,35 @@
 @import "color";
 
 .notification-banner {
+  background-color: $white;
   display: flex;
   flex-direction: row;
   max-width: 940px;
   width: 100%;
   margin: auto;
   align-items: center;
+  align-items: center;
   position: absolute;
-  bottom: 23.8rem;
-  right: 20rem;
+  top: 9.45rem;
+  left: 22rem;
   z-index: 999 !important;
+
+  &__orange-hexagon {
+    display: none;
+    border-bottom: 130px solid $brand-orange;
+    border-left: 0 solid transparent;
+    border-right: 45px solid transparent;
+    border-bottom-left-radius: 10px;
+    height: 0;
+    width: 26rem;
+
+    &_text {
+      display: flex;
+      flex-direction: column;
+      color: $white;
+      padding: 1rem;
+    }
+  }
 
   &__content {
     max-width: 425px;
@@ -45,7 +64,30 @@
       border: 0;
       background: $brand-btn;
       color: $white;
-      height: 38px;
+      min-height: 38px;
+    }
+
+    @media (max-width: 1234px) {
+      position: absolute;
+      max-width: 400px;
+      color: $white;
+    }
+    @media (max-width: 590px) {
+      max-width: 300px;
     }
   }
+  @media (max-width: 1234px) {
+    max-width: 800px;
+
+    > img {
+      display: none;
+    }
+    &__orange-hexagon {
+      display: inline-block;
+    }
+  }
+  @media (max-width: 1024px) {
+    left: 15rem;
+  }
+
 }

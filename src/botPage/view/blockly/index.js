@@ -104,6 +104,8 @@ const addBlocklyTranslation = () => {
 };
 
 const onresize = () => {
+    const canvas = Blockly.mainWorkspace.getCanvas();
+    canvas.setAttribute('transform', 'translate(272,150) scale(0.83)');
     let element = document.getElementById('blocklyArea');
     const blocklyArea = element;
     const blocklyDiv = document.getElementById('blocklyDiv');
