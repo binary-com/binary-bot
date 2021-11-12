@@ -44,14 +44,14 @@ export default class TradeTable extends Component {
                 rows: [],
             },
             widths: {
-                timestamp: 50,
-                reference: 24,
-                contract_type: 20,
-                entry_tick: 18,
-                exit_tick: 16,
-                buy_price: 18,
-                profit: 20,
-                contract_status: 16,
+                timestamp: 0.5,
+                reference: 0.24,
+                contract_type: 0.2,
+                entry_tick: 0.18,
+                exit_tick: 0.16,
+                buy_price: 0.18,
+                profit: 0.2,
+                contract_status: 0.16,
             },
         };
         this.columns = [
