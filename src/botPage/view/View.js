@@ -95,7 +95,7 @@ api.events.on('balance', response => {
         <Provider store={store}>
             <Header clientInfo={clientInfo} />
         </Provider>,
-        $('#header-wrapper')[0]
+        document.getElementById('header-wrapper')
     );
 
     const {
