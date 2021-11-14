@@ -825,30 +825,30 @@ function renderReactComponents() {
         <Provider store={store}>
             <Header clientInfo={clientInfo} />
         </Provider>,
-        $('#header-wrapper')[0]
+        document.getElementById('header-wrapper')
     );
     ReactDOM.render(
         <Provider store={store}>
             <Main clientInfo={clientInfo} api={api} />
         </Provider>,
-        $('#main')[0]
+        document.getElementById('main')
     );
     ReactDOM.render(
         <Provider store={store}>
             <Footer api={api} />
         </Provider>,
-        $('#footer')[0]
+        document.getElementById('footer')
     );
     ReactDOM.render(
         <Provider store={store}>
             <TradeInfoPanel api={api} />
         </Provider>,
-        $('#summaryPanel')[0]
+        document.getElementById('summaryPanel')
     );
     ReactDOM.render(
         <Provider store={store}>
             <LogTable />
         </Provider>,
-        $('#logTable')[0]
+        document.getElementById('logTable')
     );
 }
