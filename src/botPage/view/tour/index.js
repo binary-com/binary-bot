@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Joyride from 'react-joyride';
-import { set as setStorage, get as getStorage, setDone, isDone } from '../../../common/utils/storageManager';
+import { set as setStorage, setDone } from '../../../common/utils/storageManager';
 import { translate } from '../../../common/i18n';
 import welcome from './welcome';
 
@@ -69,33 +69,27 @@ class Tour extends PureComponent {
                 $toggleHeaderButton.show();
             }
         };
-        const shouldShowTourPopup = () => {
-            const dayHasPassed = () =>
-                Date.now() > (parseInt(getStorage('closedTourPopup')) || 0) + 24 * 60 * 60 * 1000;
-            return !isDone('welcomeFinished') && dayHasPassed();
-        };
+
         return (
-            shouldShowTourPopup() && (
-                <div className="tour-first-pop-up">
-                    <Joyride
-                        autoStart
-                        run
-                        keyboardNavigation={false}
-                        showOverlay={false}
-                        type="continuous"
-                        locale={{
-                            next: translate('Next'),
-                            back: translate('Back'),
-                            last: translate('Done'),
-                        }}
-                        ref={e => {
-                            this.joyride = e;
-                        }}
-                        steps={this.state.steps}
-                        callback={callback}
-                    />
-                </div>
-            )
+            <div className="tour-first-pop-up">
+                <Joyride
+                    autoStart
+                    run
+                    keyboardNavigation={false}
+                    showOverlay={false}
+                    type="continuous"
+                    locale={{
+                        next: translate('Next'),
+                        back: translate('Back'),
+                        last: translate('Done'),
+                    }}
+                    ref={e => {
+                        this.joyride = e;
+                    }}
+                    steps={this.state.steps}
+                    callback={callback}
+                />
+            </div>
         );
     }
 }
