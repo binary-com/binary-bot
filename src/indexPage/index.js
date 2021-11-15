@@ -10,12 +10,15 @@ import { load as loadLang, showBanner } from '../common/lang';
 import { getTokenList } from '../common/utils/storageManager';
 import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
+import NotificationBanner from './react-components/NotificationBanner';
 
 const renderElements = () => {
+    ReactDOM.render(<NotificationBanner />, document.getElementById('notification-banner'));
     ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
     ReactDOM.render(<Footer />, document.getElementById('footer'));
     isEuCountry().then(isEu => showHideEuElements(isEu));
     showBanner();
+
     $('#shop-url').attr('href', createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true }));
 };
 

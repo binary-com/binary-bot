@@ -48,7 +48,7 @@ import {
     getUnattachedMandatoryPairs,
     saveBeforeUnload,
 } from './blockly/utils';
-import NotificationBanner from './react-components/NotoficationBanner';
+import NotificationBanner from './react-components/NotificationBanner';
 
 let realityCheckTimeout;
 let chart;

@@ -103,12 +103,24 @@ const addBlocklyTranslation = () => {
     });
 };
 
-const onresize = () => {
-    const canvas = Blockly.mainWorkspace.getCanvas();
-    canvas.setAttribute('transform', 'translate(272,150) scale(0.83)');
+export const onresize = () => {
     let element = document.getElementById('blocklyArea');
     const blocklyArea = element;
     const blocklyDiv = document.getElementById('blocklyDiv');
+    const notificationBanner = globalObserver.getState('showBanner');
+    const injectionDiv = blocklyDiv.firstChild;
+    const blocklyToolboxDiv = injectionDiv.firstChild;
+
+    injectionDiv.style.overflow = 'hidden';
+    blocklyToolboxDiv.style.top = '0';
+    if (notificationBanner && blocklyArea.offsetWidth > 768) {
+        injectionDiv.style.overflow = 'visible';
+        blocklyToolboxDiv.style.top = '-6.2rem';
+    }
+    if (notificationBanner && blocklyArea.offsetWidth < 768) {
+        blocklyToolboxDiv.style.top = '2.2rem';
+    }
+
     let x = 0;
     let y = 0;
     do {
@@ -118,7 +130,7 @@ const onresize = () => {
     } while (element);
     // Position blocklyDiv over blocklyArea.
     blocklyDiv.style.left = `${x}px`;
-    blocklyDiv.style.top = `${y}px`;
+    blocklyDiv.style.top = notificationBanner ? `${y + 100}px` : `${y}px`;
     blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
     blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
 };

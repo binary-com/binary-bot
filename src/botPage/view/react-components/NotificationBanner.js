@@ -3,15 +3,21 @@ import { translate } from '../../../common/i18n';
 import { isEuCountry, isUKCountry } from '../../../common/footer-checks';
 import { getTokenList, get as getStorage } from '../../../common/utils/storageManager';
 import { AppConstants } from '../../../common/appId';
+import { onresize } from '../blockly/index';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 const NotificationBanner = ({ api }) => {
     const [showBanner, setShowBanner] = React.useState(false);
     const tokenList = getTokenList();
-    const landingCompanyName = [];
 
     React.useEffect(() => {
-        checkForShowBanner(landingCompanyName);
+        checkForShowBanner();
     }, []);
+
+    React.useEffect(() => {
+        globalObserver.setState({ showBanner });
+        onresize();
+    }, [showBanner]);
 
     const getActiveToken = activeToken => {
         const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
@@ -19,32 +25,28 @@ const NotificationBanner = ({ api }) => {
     };
 
     const checkForShowBanner = () => {
-        if (tokenList.length) {
-            tokenList.map(token => landingCompanyName.push(token.loginInfo.landing_company_name));
+        if (!tokenList.length) {
+            isEuUK(api, true);
+            return;
+        }
+        const landingCompanyName = tokenList.map(token => token.loginInfo.landing_company_name);
+        const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
 
-            const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
-
-            if (landingCompanyName.length === 1 && landingCompanyName.includes('virtual')) {
-                isEuUK(false);
+        if (landingCompanyName.length === 1 && landingCompanyName.includes('virtual')) {
+            isEuUK(false);
+            return;
+        }
+        if (landingCompanyName.includes('maltainvest') && landingCompanyName.includes('virtual')) {
+            if (landingCompanyName.length === 2) {
+                setShowBanner(true);
+                return;
             }
             if (
-                landingCompanyName.length === 2 &&
-                landingCompanyName.includes('maltainvest') &&
-                landingCompanyName.includes('virtual')
+                (landingCompanyName.includes('malta') || landingCompanyName.includes('iom')) &&
+                activeToken.loginInfo.landing_company_name === 'maltainvest'
             ) {
                 setShowBanner(true);
             }
-            if (
-                landingCompanyName.includes('maltainvest') &&
-                landingCompanyName.includes('virtual') &&
-                (landingCompanyName.includes('malta') || landingCompanyName.includes('iom'))
-            ) {
-                if (activeToken.loginInfo.landing_company_name === 'maltainvest') {
-                    setShowBanner(true);
-                }
-            }
-        } else {
-            isEuUK(api, true);
         }
     };
 
@@ -52,11 +54,11 @@ const NotificationBanner = ({ api }) => {
         isEuCountry(api, checkLoggedin).then(isEu => {
             if (isEu) {
                 setShowBanner(true);
-            } else {
-                isUKCountry(api, checkLoggedin).then(isUk => {
-                    setShowBanner(isUk);
-                });
+                return;
             }
+            isUKCountry(api, checkLoggedin).then(isUk => {
+                setShowBanner(isUk);
+            });
         });
     };
 

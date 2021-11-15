@@ -1,7 +1,7 @@
 @import "color";
 
 .notification-banner {
-  background-color: $white;
+  background-color: $brand-gray;
   display: flex;
   flex-direction: row;
   max-width: 940px;
@@ -10,16 +10,21 @@
   align-items: center;
   align-items: center;
   position: absolute;
-  top: 9.45rem;
-  left: 22rem;
+  left: 50%;
+  transform: translate(-40%, 0);
   z-index: 100 !important;
 
+  &-welcome{
+    position: relative;
+    margin: 0 auto;
+    left: 0;
+    transform: none;
+  }
   &__orange-hexagon {
     display: none;
     border-bottom: 130px solid $brand-orange;
     border-left: 0 solid transparent;
     border-right: 45px solid transparent;
-    border-bottom-left-radius: 10px;
     height: 0;
     width: 26rem;
 
@@ -63,11 +68,19 @@
       font-size: 18px;
       border: 0;
       background: $brand-btn;
-      color: $white;
+      color: $white !important;
       min-height: 38px;
+
+
+      &-welcome{
+       min-height: auto;
+      }
     }
 
     @media (max-width: 1234px) {
+      margin-right: 20px;
+    }
+    @media (max-width: 1024px) {
       position: absolute;
       max-width: 400px;
       color: $white;
@@ -75,9 +88,22 @@
     @media (max-width: 590px) {
       max-width: 300px;
     }
+    @media (max-width: 440px) {
+      max-width: 13rem;
+    }
   }
   @media (max-width: 1234px) {
-    max-width: 800px;
+    max-width: 880px;
+  }
+  @media (max-width: 1024px) {
+    max-width: 595px;
+    transform: translate(-35%, 0);
+
+    &-welcome{
+      max-width: 700px;
+      padding: 0 10px 0 0;
+      transform: none;
+    }
 
     > img {
       display: none;
@@ -86,8 +112,15 @@
       display: inline-block;
     }
   }
-  @media (max-width: 1024px) {
-    left: 15rem;
+  @media (max-width: 769px) {
+    transform: translate(-50%, 0);
+    max-width: 100%;
+
+    &-welcome{
+      max-width: 520px;
+      padding: 0 10px 0 0;
+      transform: none;
+    }
   }
 
 }
