@@ -14,7 +14,6 @@ const ColorFormatter = React.forwardRef((props, ref) => (
 const LogTable = () => {
     const [id, setId] = React.useState(0);
     const [rows, setRows] = React.useState([]);
-    const grid = React.useRef(null);
 
     const columns = [
         { key: 'timestamp', width: 150, resizable: true, name: translate('Timestamp') },
@@ -30,14 +29,6 @@ const LogTable = () => {
             globalObserver.unregister('bot.notify', onGetNotification);
         };
     }, [rows]);
-
-    React.useEffect(() => {
-        const height = grid.current.getRowOffsetHeight() * id;
-        const gridCanvas = grid.current.getDataGridDOMNode().querySelector('.react-grid-Canvas');
-        if (!gridCanvas) return;
-        gridCanvas.style.scrollBehavior = 'smooth';
-        gridCanvas.scrollTop = gridCanvas.scrollHeight;
-    }, [rows.length]);
 
     const onGetNotification = log => {
         if (!log || !Object.keys(log).length) return;
@@ -60,7 +51,6 @@ const LogTable = () => {
                 <div className="content-row-table">
                     <div style={{ height: min_height }}>
                         <ReactDataGrid
-                            ref={grid}
                             columns={columns}
                             rowGetter={rowGetter}
                             rowsCount={rows.length}
