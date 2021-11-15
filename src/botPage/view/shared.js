@@ -26,7 +26,7 @@ export const createScope = () => {
 };
 
 export const appendRow = (trade, state) => ({
-    id  : state.id + 1,
+    id: state.id + 1,
     rows: [
         ...state.rows,
         {
@@ -37,7 +37,7 @@ export const appendRow = (trade, state) => ({
 });
 
 export const updateRow = (prevRowIndex, trade, state) => ({
-    id  : state.id,
+    id: state.id,
     rows: [
         ...state.rows.slice(0, prevRowIndex),
         {
@@ -53,3 +53,5 @@ export const saveAs = ({ data, filename, type }) => {
 };
 
 export const restrictInputCharacter = ({ whitelistRegEx, input }) => input.match(new RegExp(whitelistRegEx));
+
+export const isNumber = num => num !== '' && Number.isFinite(Number(num));

@@ -3,15 +3,13 @@ import json2csv from 'json2csv';
 import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { observer as global_observer } from '../../../common/utils/observer';
-import { appendRow, updateRow, saveAs } from '../shared';
+import { appendRow, updateRow, saveAs, isNumber } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import * as style from '../style';
 
-const is_number = num => num !== '' && Number.isFinite(Number(num));
-
 const getProfit = ({ sell_price, buy_price, currency }) => {
-    if (is_number(sell_price) && is_number(buy_price)) {
+    if (isNumber(sell_price) && isNumber(buy_price)) {
         return roundBalance({
             currency,
             balance: Number(sell_price) - Number(buy_price),
@@ -27,13 +25,18 @@ const getTimestamp = date => {
     }`;
 };
 
-const min_height = 290;
-const row_height = 25;
-
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
 const StatusFormat = ({ value }) => <div style={style.left}>{value}</div>;
 
 const TradeTable = ({ account_id, api }) => {
+    const initial_state = { id: 0, rows: [] };
+    const [account_state, setAccountState] = React.useState({ [account_id]: initial_state });
+
+    const actual_account_state_ref = React.useRef(account_state);
+    actual_account_state_ref.current = account_state;
+
+    const rows = account_id in account_state ? account_state[account_id].rows : [];
+
     const columns = [
         { key: 'timestamp', width: 182, resizable: true, name: translate('Timestamp') },
         { key: 'reference', width: 100, resizable: true, name: translate('Reference') },
@@ -48,7 +51,7 @@ const TradeTable = ({ account_id, api }) => {
     const getTradeObject = contract => {
         const trade_obj = {
             ...contract,
-            reference: `${contract.transaction_ids.buy}`,
+            reference: contract.transaction_ids.buy,
             buy_price: roundBalance({ balance: contract.buy_price, currency: contract.currency }),
             timestamp: getTimestamp(contract.date_start),
         };
@@ -61,107 +64,93 @@ const TradeTable = ({ account_id, api }) => {
         return trade_obj;
     };
 
-    const initial_state = { id: 0, rows: [] };
-    const [account_state, setAccountState] = React.useState({ [account_id]: { id: 0, rows: [] } });
+    const exportSummary = () => {
+        if (account_state[account_id]?.rows?.length > 0) data_export();
+    };
 
-    const actual_account_state_ref = React.useRef(account_state);
-    actual_account_state_ref.current = account_state;
+    const clearBot = () => {
+        setAccountState({ [account_id]: { ...initial_state } });
+        global_observer.emit('summary.disable_clear');
+    };
 
-    const rows = account_id in account_state ? account_state[account_id].rows : [];
+    const stopBot = () => {
+        if (account_state[account_id]?.rows?.length > 0) global_observer.emit('summary.enable_clear');
+    };
+
+    const contractBot = contract => {
+        if (!contract) return;
+        const trade_obj = getTradeObject(contract);
+        const trade = {
+            ...trade_obj,
+            profit: getProfit(trade_obj),
+            contract_status: translate('Pending'),
+            contract_settled: false,
+        };
+        const trade_obj_account_id = trade_obj.accountID;
+        const account_state_by_id = getAccountStateById(trade_obj_account_id);
+        const trade_obj_state_rows = account_state_by_id.rows;
+        const prev_row_index = trade_obj_state_rows.findIndex(t => t.reference === trade.reference);
+        if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+            trade.exit_tick = '-';
+        }
+        if (prev_row_index >= 0) {
+            setAccountState({ [trade_obj_account_id]: updateRow(prev_row_index, trade, account_state_by_id) });
+        } else {
+            setAccountState({ [trade_obj_account_id]: appendRow(trade, account_state_by_id) });
+        }
+    };
+
+    const settledContract = async ({ contract_id }) => {
+        let settled = false;
+        let delay = 3000;
+        const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay));
+
+        while (!settled) {
+            await sleep();
+            try {
+                await refreshContract(api, contract_id);
+                const rows = account_state[account_id].rows; //eslint-disable-line
+                const contract_row = rows.find(row => row.contract_id === contract_id); //eslint-disable-line
+                if (contract_row && contract_row.contract_settled) {
+                    settled = true;
+                }
+            } catch (e) {
+                // Do nothing. Loop again.
+            } finally {
+                delay *= 1.5;
+            }
+        }
+    };
+
+    const refreshContract = async (_api, contract_id) => {
+        const contract_info = await _api.getContractInfo(contract_id);
+        const contract = contract_info.proposal_open_contract;
+        const trade_obj = getTradeObject(contract);
+        const trade = {
+            ...trade_obj,
+            profit: getProfit(trade_obj),
+        };
+        if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+            trade.exit_tick = '-';
+        }
+
+        const actual_rows = actual_account_state_ref.current[account_id].rows;
+        const updated_rows = actual_rows.map(row => {
+            const { reference } = row;
+            if (reference === trade.reference) {
+                return {
+                    contract_status: translate('Settled'),
+                    contract_settled: true,
+                    reference,
+                    ...trade,
+                };
+            }
+            return row;
+        });
+        setAccountState({ [account_id]: { rows: updated_rows } });
+    };
 
     React.useEffect(() => {
-        const exportSummary = () => {
-            const account_data = account_state[account_id];
-            if (account_data && account_data.rows.length > 0) {
-                data_export();
-            }
-        };
-
-        const clearBot = () => {
-            setAccountState({ [account_id]: { ...initial_state } });
-            global_observer.emit('summary.disable_clear');
-        };
-
-        const stopBot = () => {
-            const account_data = account_state[account_id];
-            if (account_data && account_data.rows.length > 0) {
-                global_observer.emit('summary.enable_clear');
-            }
-        };
-
-        const contractBot = contract => {
-            if (!contract) return;
-            const trade_obj = getTradeObject(contract);
-            const trade = {
-                ...trade_obj,
-                profit: getProfit(trade_obj),
-                contract_status: translate('Pending'),
-                contract_settled: false,
-            };
-            const trade_obj_account_id = trade_obj.accountID;
-            const account_state_by_id = getAccountStateById(trade_obj_account_id);
-            const trade_obj_state_rows = account_state_by_id.rows;
-            const prev_row_index = trade_obj_state_rows.findIndex(t => t.reference === trade.reference);
-            if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-                trade.exit_tick = '-';
-            }
-            if (prev_row_index >= 0) {
-                setAccountState({ [trade_obj_account_id]: updateRow(prev_row_index, trade, account_state_by_id) });
-            } else {
-                setAccountState({ [trade_obj_account_id]: appendRow(trade, account_state_by_id) });
-            }
-        };
-
-        const settledContract = async ({ contract_id }) => {
-            let settled = false;
-            let delay = 3000;
-            const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay));
-
-            while (!settled) {
-                await sleep();
-                try {
-                    await refreshContract(api, contract_id);
-                    const rows = account_state[account_id].rows; //eslint-disable-line
-                    const contract_row = rows.find(row => row.contract_id === contract_id); //eslint-disable-line
-                    if (contract_row && contract_row.contract_settled) {
-                        settled = true;
-                    }
-                } catch (e) {
-                    // Do nothing. Loop again.
-                } finally {
-                    delay *= 1.5;
-                }
-            }
-        };
-
-        const refreshContract = async (_api, contract_id) => {
-            const contract_info = await _api.getContractInfo(contract_id);
-            const contract = contract_info.proposal_open_contract;
-            const trade_obj = getTradeObject(contract);
-            const trade = {
-                ...trade_obj,
-                profit: getProfit(trade_obj),
-            };
-            if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-                trade.exit_tick = '-';
-            }
-
-            const actual_rows = actual_account_state_ref.current[account_id].rows;
-            const updated_rows = actual_rows.map(row => {
-                const { reference } = row;
-                if (reference === trade.reference) {
-                    return {
-                        contract_status: translate('Settled'),
-                        contract_settled: true,
-                        reference,
-                        ...trade,
-                    };
-                }
-                return row;
-            });
-            setAccountState({ [account_id]: { rows: updated_rows } });
-        };
-
         global_observer.register('summary.export', exportSummary);
         global_observer.register('summary.clear', clearBot);
         global_observer.register('bot.stop', stopBot);
@@ -206,11 +195,9 @@ const TradeTable = ({ account_id, api }) => {
     };
 
     const getAccountStateById = _account_id => {
-        if (!(_account_id in account_state)) {
-            setAccountState({ [_account_id]: { ...initial_state } });
-            return initial_state;
-        }
-        return account_state[_account_id];
+        if (account_id in account_state) return account_state[account_id];
+        setAccountState({ [_account_id]: { ...initial_state } });
+        return initial_state;
     };
 
     return (
@@ -219,8 +206,8 @@ const TradeTable = ({ account_id, api }) => {
                 columns={columns}
                 rowGetter={rowGetter}
                 rowsCount={rows.length}
-                minHeight={min_height}
-                rowHeight={row_height}
+                minHeight={290}
+                rowHeight={25}
             />
         </div>
     );
