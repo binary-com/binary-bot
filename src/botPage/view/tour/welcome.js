@@ -41,10 +41,8 @@ const steps = [
     },
     {
         title: translate('Blocks toolbox'),
-        text: `<p>
-      ${translate('Add more blocks from here to your bot.')}
-    </p>`,
-        selector: '.blocklyToolboxDiv',
+        text: `<p>${translate('Add more blocks from here to your bot.')}</p>`,
+        selector: '.blocklyTreeRoot',
         position: 'right',
     },
     {
