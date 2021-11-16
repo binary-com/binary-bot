@@ -1,30 +1,24 @@
 import React from 'react';
-import { translate } from '../../../common/i18n';
 import { isEuCountry, isUKCountry } from '../../../common/footer-checks';
 import { getTokenList, get as getStorage } from '../../../common/utils/storageManager';
 import { AppConstants } from '../../../common/appId';
-import { onresize } from '../blockly/index';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { translate } from '../../../common/i18n';
+import { showBanner } from '../../../common/lang';
 
-const NotificationBanner = ({ api }) => {
-    const [showBanner, setShowBanner] = React.useState(false);
+const MovingBanner = ({ api }) => {
+    const [showMovingBanner, setshowMovingBanner] = React.useState(false);
     const tokenList = getTokenList();
 
     React.useEffect(() => {
-        checkForShowBanner();
+        checkForshowMovingBanner();
     }, []);
-
-    React.useEffect(() => {
-        globalObserver.setState({ showBanner });
-        onresize();
-    }, [showBanner]);
 
     const getActiveToken = activeToken => {
         const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
         return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
     };
 
-    const checkForShowBanner = () => {
+    const checkForshowMovingBanner = () => {
         if (!tokenList.length) {
             isEuUK(api, true);
             return;
@@ -38,44 +32,45 @@ const NotificationBanner = ({ api }) => {
         }
         if (landingCompanyName.includes('maltainvest') && landingCompanyName.includes('virtual')) {
             if (landingCompanyName.length === 2) {
-                setShowBanner(true);
+                setshowMovingBanner(true);
                 return;
             }
             if (
                 (landingCompanyName.includes('malta') || landingCompanyName.includes('iom')) &&
                 activeToken.loginInfo.landing_company_name === 'maltainvest'
             ) {
-                setShowBanner(true);
+                setshowMovingBanner(true);
+                return;
             }
         }
+        showBanner();
     };
 
     const isEuUK = checkLoggedin => {
         isEuCountry(api, checkLoggedin).then(isEu => {
             if (isEu) {
-                setShowBanner(true);
+                setshowMovingBanner(true);
                 return;
             }
             isUKCountry(api, checkLoggedin).then(isUk => {
-                setShowBanner(isUk);
+                if (isUk) {
+                    setshowMovingBanner(true);
+                    return;
+                }
+                showBanner();
             });
         });
     };
 
     return (
-        showBanner && (
-            <div className="notification-banner">
-                <img src={'image/notification-banner-icon-left.svg'} />
-                <div className="notification-banner__orange-hexagon"></div>
-                <div className="notification-banner__content">
-                    <p className="notification-banner__content_header">
-                        {translate('Binary.com is moving to Deriv on 30 November')}
-                    </p>
-                    <p className="notification-banner__content_text">
-                        {translate('Start using Deriv with your Binary.com email and password.')}
-                    </p>
-                </div>
-                <a className="notification-banner__content_button" href="http://deriv.com/">
+        showMovingBanner &&
+        document
+            .getElementsByClassName('dbot-banner')[0]
+            .parentNode.removeChild(document.getElementsByClassName('dbot-banner')[0]) && (
+            <div className="moving-banner">
+                <img src={'image/moving-banner.svg'} />
+                <p className="moving-banner__text">{translate('Binary.com is moving to Deriv on 30 November')}</p>
+                <a className="moving-banner__button" href="http://deriv.com/">
                     {translate('Trade on Deriv')}
                 </a>
             </div>
@@ -83,4 +78,4 @@ const NotificationBanner = ({ api }) => {
     );
 };
 
-export default NotificationBanner;
+export default MovingBanner;

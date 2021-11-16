@@ -10,7 +10,7 @@ import { load as loadLang, showBanner } from '../common/lang';
 import { getTokenList } from '../common/utils/storageManager';
 import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
-import NotificationBanner from './react-components/NotificationBanner';
+import NotificationBanner from './react-components/NotificationBanner.jsx';
 
 const renderElements = () => {
     ReactDOM.render(<NotificationBanner />, document.getElementById('notification-banner'));
