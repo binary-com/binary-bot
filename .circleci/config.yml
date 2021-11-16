@@ -41,7 +41,7 @@ commands:
             - npm-v1-
       - run:
           name: Install npm modules
-          command: yarn
+          command: npm install
       - save_cache:
           name: Save NPM cache
           key: npm-v1-{{ checksum "package.json" }}
@@ -51,7 +51,7 @@ commands:
     description: "Build"
     steps:
       - run:
-          name: "yarn build"
+          name: "npm run build"
           command: node_modules/gulp/bin/gulp.js build-min
   deploy:
     description: "Deploy to static branches"
