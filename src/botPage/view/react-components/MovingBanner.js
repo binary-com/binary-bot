@@ -68,6 +68,7 @@ const MovingBanner = ({ api }) => {
             .getElementsByClassName('dbot-banner')[0]
             .parentNode.removeChild(document.getElementsByClassName('dbot-banner')[0]) && (
             <div className="moving-banner">
+                <div class="moving-banner__separator" />
                 <img src={'image/moving-banner.svg'} />
                 <p className="moving-banner__text">{translate('Binary.com is moving to Deriv on 30 November')}</p>
                 <a className="moving-banner__button" href="http://deriv.com/">

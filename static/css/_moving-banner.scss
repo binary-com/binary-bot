@@ -5,7 +5,7 @@
 	-moz-osx-font-smoothing: antialiased;
   float: left;
   height: calc(100% - 20px);
-  margin: 10px 0;
+  margin: 1rem 2rem 0;
 
   &__text {
     position: absolute;
@@ -30,6 +30,18 @@
       background: $brand-red;
       color: $white;
       max-height: 2.4rem;
+  }
+  &__separator {
+    position: absolute;
+    left: -2rem;
+    top: 0.4rem;
+    width: 2px;
+    height: 38px;
+    background-color: #17212c;
+
+    @media only screen and (max-width: 922px) {
+      display: none;
+    }
   }
 
   @media only screen and (max-width: 520px) {
