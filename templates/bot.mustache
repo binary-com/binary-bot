@@ -68,6 +68,7 @@
                 </a>
             </div>
         </div>
+        <div id="moving-banner"></div>
         {{> ../templates/partials/dbot-banner }}
         <div class="right-header show-on-load">
             <div class="intro-login-logout">
@@ -108,8 +109,11 @@
                 <button id="login" data-i18n-text="Log in" />
             </div>
         </div>
+
     </div>
     <div id="errorArea"></div>
+      
+
     <div id="toolbox" class="actions_menu show-on-load">
         <button data-i18n-title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
         <button data-i18n-title="Load new blocks (xml file)" id="load-xml" class="toolbox-button icon-browse"></button>
@@ -152,7 +156,10 @@
                 </a>
             </div>
         </div>
+   
     </div>
+    <div id="notification-banner"></div>
+
     <ul id="toolbox-all-accounts" class="nav-menu main-nav" style="display: none;">
         <li>
             <ul>
@@ -165,8 +172,9 @@
     </ul>
 
     <div id="blocklyArea"></div>
+
     <div id="blocklyDiv" style="position: absolute;"></div>
-    
+
     <form id="fileUploadForm" style="display: none;">
         <input data-i18n-title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml"
             multiple />

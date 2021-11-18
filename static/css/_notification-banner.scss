@@ -1,0 +1,126 @@
+@import "color";
+
+.notification-banner {
+  background-color: $brand-gray;
+  display: flex;
+  flex-direction: row;
+  max-width: 940px;
+  width: 100%;
+  margin: auto;
+  align-items: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translate(-40%, 0);
+  z-index: 100 !important;
+
+  &-welcome{
+    position: relative;
+    margin: 1rem auto;
+    left: 0;
+    transform: none;
+  }
+  &__orange-hexagon {
+    display: none;
+    border-bottom: 130px solid $brand-orange;
+    border-left: 0 solid transparent;
+    border-right: 45px solid transparent;
+    height: 0;
+    width: 26rem;
+
+    &_text {
+      display: flex;
+      flex-direction: column;
+      color: $white;
+      padding: 1rem;
+    }
+  }
+
+  &__content {
+    max-width: 425px;
+    width: 100%;
+    margin: auto 86px auto 9px;
+
+    &_header {
+      font-weight: 700;
+      margin: 0;
+      margin-bottom: 4px;
+      line-height: 24px;
+      font-size: 16px;
+    }
+    &_text {
+      margin: 0;
+      font-weight: 400;
+      line-height: 24px;
+      font-size: 16px;
+    }
+    &_button {
+      text-decoration: none;
+      text-align: center;
+      line-height: 100%;
+      text-transform: capitalize;
+      padding: 8px 25px;
+      display: inline-block;
+      font-weight: 400;
+      font-family: inherit;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      border: 0;
+      background: $brand-btn;
+      color: $white !important;
+      min-height: 38px;
+
+
+      &-welcome{
+       min-height: auto;
+      }
+    }
+
+    @media (max-width: 1234px) {
+      margin-right: 20px;
+    }
+    @media (max-width: 1024px) {
+      position: absolute;
+      max-width: 400px;
+      color: $white;
+    }
+    @media (max-width: 590px) {
+      max-width: 300px;
+    }
+    @media (max-width: 440px) {
+      max-width: 13rem;
+    }
+  }
+  @media (max-width: 1234px) {
+    max-width: 880px;
+  }
+  @media (max-width: 1024px) {
+    max-width: 595px;
+    transform: translate(-35%, 0);
+
+    &-welcome{
+      max-width: 700px;
+      padding: 0 10px 0 0;
+      transform: none;
+    }
+
+    > img {
+      display: none;
+    }
+    &__orange-hexagon {
+      display: inline-block;
+    }
+  }
+  @media (max-width: 769px) {
+    transform: translate(-50%, 0);
+    max-width: 100%;
+
+    &-welcome{
+      max-width: 520px;
+      padding: 0 10px 0 0;
+      transform: none;
+    }
+  }
+
+}

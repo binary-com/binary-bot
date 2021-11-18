@@ -1,0 +1,50 @@
+.moving-banner {
+  display: flex;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: antialiased;
+  float: left;
+  height: calc(100% - 20px);
+  margin: 1rem 2rem 0;
+
+  &__text {
+    position: absolute;
+    left: 6rem;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  &__button {
+      position: absolute;
+      right: 1.2rem;
+      transform: translate(0, 24%);
+      text-decoration: none;
+      text-align: center;
+      line-height: 24px;
+      padding: 4px 17.5px;
+      display: inline-block;
+      font-weight: 700;
+      font-family: inherit;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      background: $brand-red;
+      color: $white;
+      max-height: 2.4rem;
+  }
+  &__separator {
+    position: absolute;
+    left: -2rem;
+    top: 0.4rem;
+    width: 2px;
+    height: 38px;
+    background-color: #17212c;
+
+    @media only screen and (max-width: 922px) {
+      display: none;
+    }
+  }
+
+  @media only screen and (max-width: 520px) {
+        display: none;
+  }
+}
