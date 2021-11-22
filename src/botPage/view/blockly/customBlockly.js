@@ -177,17 +177,20 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
             input.fieldWidth += this.RTL ? -iconWidth : iconWidth;
         }
         let previousFieldEditable = false;
-        for (var j = 0, field; (field = input.fieldRow[j]); j++) {
-            if (j != 0) {
-                input.fieldWidth += Blockly.BlockSvg.SEP_SPACE_X;
+
+        if (input?.fieldRow?.length) {
+            for (var j = 0, field; (field = input.fieldRow[j]); j++) {
+                if (j != 0) {
+                    input.fieldWidth += Blockly.BlockSvg.SEP_SPACE_X;
+                }
+                // Get the dimensions of the field.
+                const fieldSize = field.getSize();
+                field.renderWidth = fieldSize.width;
+                field.renderSep = previousFieldEditable && field.EDITABLE ? Blockly.BlockSvg.SEP_SPACE_X : 0;
+                input.fieldWidth += field.renderWidth + field.renderSep;
+                row.height = Math.max(row.height, fieldSize.height) + 1;
+                previousFieldEditable = field.EDITABLE;
             }
-            // Get the dimensions of the field.
-            const fieldSize = field.getSize();
-            field.renderWidth = fieldSize.width;
-            field.renderSep = previousFieldEditable && field.EDITABLE ? Blockly.BlockSvg.SEP_SPACE_X : 0;
-            input.fieldWidth += field.renderWidth + field.renderSep;
-            row.height = Math.max(row.height, fieldSize.height) + 1;
-            previousFieldEditable = field.EDITABLE;
         }
 
         if (row.type != Blockly.BlockSvg.INLINE) {
