@@ -231,10 +231,12 @@ export default () => {
                             updateList(typeList, config.barrierTypes);
                         }
 
-                        if (barriers.values.length === 1) {
-                            typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
-                        } else {
-                            typeInput.fieldRow[0].setText(`${barrierLabels[index]}:`);
+                        if (typeInput?.fieldRow && Array.isArray(typeInput.fieldRow)) {
+                            if (barriers.values.length === 1) {
+                                typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
+                            } else {
+                                typeInput.fieldRow[0].setText(`${barrierLabels[index]}:`);
+                            }
                         }
                         revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
                     });
