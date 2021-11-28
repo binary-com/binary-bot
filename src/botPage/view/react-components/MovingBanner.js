@@ -1,16 +1,23 @@
 import React from 'react';
-import { isEuCountry, isUKCountry } from '../../../common/footer-checks';
 import { getTokenList, get as getStorage } from '../../../common/utils/storageManager';
 import { AppConstants } from '../../../common/appId';
 import { translate } from '../../../common/i18n';
 import { showBanner } from '../../../common/lang';
+import { isEuCountry, isUKCountry } from '../../../common/utils/utility';
 
+/* eslint-disable camelcase */
 const MovingBanner = ({ api }) => {
     const [showMovingBanner, setshowMovingBanner] = React.useState(false);
     const tokenList = getTokenList();
 
     React.useEffect(() => {
-        checkForshowMovingBanner();
+        checkForshowMovingBanner().then(show => {
+            if (show) {
+                setshowMovingBanner(true);
+                return;
+            }
+            showBanner();
+        });
     }, []);
 
     const getActiveToken = activeToken => {
@@ -18,48 +25,46 @@ const MovingBanner = ({ api }) => {
         return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
     };
 
-    const checkForshowMovingBanner = () => {
-        if (!tokenList.length) {
-            isEuUK(api, true);
-            return;
-        }
+    const checkForshowMovingBanner = async () => {
+        const { website_status } = await api.send({ website_status: 1 });
+        const { clients_country } = website_status;
+        const residence = localStorage.getItem('residence');
         const landingCompanyName = tokenList.map(token => token.loginInfo.landing_company_name);
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
 
-        if (landingCompanyName.length === 1 && landingCompanyName.includes('virtual')) {
-            isEuUK(false);
-            return;
+        if (!tokenList.length) {
+            if (isEuCountry(clients_country) || isUKCountry(clients_country)) {
+                return true;
+            }
         }
-        if (landingCompanyName.includes('maltainvest') && landingCompanyName.includes('virtual')) {
-            if (landingCompanyName.length === 2) {
-                setshowMovingBanner(true);
-                return;
+        if (landingCompanyName.length === 1 && landingCompanyName.includes('virtual')) {
+            if (isEuCountry(residence)) {
+                // EU based on residence
+                redirectToBinary();
+            }
+            if (isEuCountry(clients_country) || isUKCountry(clients_country)) {
+                return true;
+            }
+        }
+        if (landingCompanyName.includes('maltainvest')) {
+            if (!isEuCountry(clients_country)) {
+                // non EU based on ip
+                redirectToBinary();
             }
             if (
-                (landingCompanyName.includes('malta') || landingCompanyName.includes('iom')) &&
-                activeToken.loginInfo.landing_company_name === 'maltainvest'
+                landingCompanyName.includes('virtual') &&
+                (landingCompanyName.length === 2 ||
+                    ((landingCompanyName.includes('malta') || landingCompanyName.includes('iom')) &&
+                        activeToken.loginInfo.landing_company_name === 'maltainvest'))
             ) {
-                setshowMovingBanner(true);
-                return;
+                return true;
             }
         }
-        showBanner();
+        return false;
     };
 
-    const isEuUK = checkLoggedin => {
-        isEuCountry(api, checkLoggedin).then(isEu => {
-            if (isEu) {
-                setshowMovingBanner(true);
-                return;
-            }
-            isUKCountry(api, checkLoggedin).then(isUk => {
-                if (isUk) {
-                    setshowMovingBanner(true);
-                    return;
-                }
-                showBanner();
-            });
-        });
+    const redirectToBinary = () => {
+        window.location.replace('https://binary.com/move-to-deriv');
     };
 
     return (
@@ -68,7 +73,7 @@ const MovingBanner = ({ api }) => {
             .getElementsByClassName('dbot-banner')[0]
             .parentNode.removeChild(document.getElementsByClassName('dbot-banner')[0]) && (
             <div className="moving-banner">
-                <div class="moving-banner__separator" />
+                <div className="moving-banner__separator" />
                 <img src={'image/moving-banner.svg'} />
                 <p className="moving-banner__text">{translate('Binary.com is moving to Deriv on 30 November')}</p>
                 <a className="moving-banner__button" href="http://deriv.com/">

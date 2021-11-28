@@ -6,20 +6,14 @@
   flex-direction: row;
   max-width: 940px;
   width: 100%;
-  margin: auto;
   align-items: center;
   align-items: center;
-  position: absolute;
-  left: 50%;
-  transform: translate(-40%, 0);
+  position: relative;
+  margin: 1rem auto;
+  left: 0;
+  transform: none;
   z-index: 100 !important;
 
-  &-welcome{
-    position: relative;
-    margin: 1rem auto;
-    left: 0;
-    transform: none;
-  }
   &__orange-hexagon {
     display: none;
     border-bottom: 130px solid $brand-orange;
@@ -27,13 +21,6 @@
     border-right: 45px solid transparent;
     height: 0;
     width: 26rem;
-
-    &_text {
-      display: flex;
-      flex-direction: column;
-      color: $white;
-      padding: 1rem;
-    }
   }
 
   &__content {
@@ -58,7 +45,6 @@
       text-decoration: none;
       text-align: center;
       line-height: 100%;
-      text-transform: capitalize;
       padding: 8px 25px;
       display: inline-block;
       font-weight: 400;
@@ -69,12 +55,7 @@
       border: 0;
       background: $brand-btn;
       color: $white !important;
-      min-height: 38px;
-
-
-      &-welcome{
-       min-height: auto;
-      }
+      min-height: auto;
     }
 
     @media (max-width: 1234px) {
@@ -96,14 +77,9 @@
     max-width: 880px;
   }
   @media (max-width: 1024px) {
-    max-width: 595px;
-    transform: translate(-35%, 0);
-
-    &-welcome{
       max-width: 700px;
       padding: 0 10px 0 0;
       transform: none;
-    }
 
     > img {
       display: none;
@@ -113,14 +89,8 @@
     }
   }
   @media (max-width: 769px) {
-    transform: translate(-50%, 0);
-    max-width: 100%;
-
-    &-welcome{
       max-width: 520px;
       padding: 0 10px 0 0;
       transform: none;
     }
-  }
-
 }

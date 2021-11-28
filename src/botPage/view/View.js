@@ -309,8 +309,11 @@ export default class View {
 
                     if (
                         isLoggedin() &&
-                        (localStorage.getItem('landingCompany') === 'maltainvest' ||
-                            isOptionsBlocked(localStorage.getItem('residence')))
+                        isOptionsBlocked(
+                            localStorage.getItem('residence')
+                            // localStorage.getItem('landingCompany') === 'maltainvest'
+                            // this condition is commented because the MF accounts should be redirected to deriv))
+                        )
                     ) {
                         this.showHeader(getStorage('showHeader') !== 'false');
                         this.setElementActions();
