@@ -186,30 +186,6 @@ const integrationsDialog = new IntegrationsDialog();
 const loadDialog = new LoadDialog();
 const saveDialog = new SaveDialog();
 
-const getLandingCompanyForToken = id => {
-    let landingCompany;
-    let activeToken;
-    const tokenList = getTokenList();
-    if (tokenList.length) {
-        activeToken = tokenList.filter(token => token.token === id);
-        if (activeToken && activeToken.length === 1) {
-            landingCompany = activeToken[0].loginInfo.landing_company_name;
-        }
-    }
-    return landingCompany;
-};
-
-const updateLogo = token => {
-    $('.binary-logo-text > img').attr('src', '');
-    const currentLandingCompany = getLandingCompanyForToken(token);
-    if (currentLandingCompany === 'maltainvest') {
-        $('.binary-logo-text > img').attr('src', './image/binary-type-logo.svg');
-    } else {
-        $('.binary-logo-text > img').attr('src', './image/binary-style/logo/type.svg');
-    }
-    setTimeout(() => window.dispatchEvent(new Event('resize')));
-};
-
 const getActiveToken = (tokenList, activeToken) => {
     const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
     return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
@@ -244,7 +220,6 @@ const updateTokenList = () => {
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
         showHideEuElements(hasEuAccount(tokenList));
         showBanner();
-        updateLogo(activeToken.token);
         subscribeToAllAccountsBalance(activeToken.token);
 
         if (!('loginInfo' in activeToken)) {
@@ -343,7 +318,6 @@ export default class View {
                         applyToolboxPermissions();
                         renderReactComponents();
                         this.setElementActions();
-                        if (!getTokenList().length) updateLogo();
                         resolve();
                     });
                 });
