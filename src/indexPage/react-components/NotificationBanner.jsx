@@ -62,7 +62,7 @@ const NotificationBanner = ({ api }) => {
                 <div className="notification-banner__orange-hexagon"></div>
                 <div className="notification-banner__content">
                     <p className="notification-banner__content_header">
-                        {translate('Binary.com is moving to Deriv on 30 November')}
+                        {translate('Binary.com is moving to Deriv')}
                     </p>
                     <p className="notification-banner__content_text">
                         {translate('Start using Deriv with your Binary.com email and password.')}
