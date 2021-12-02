@@ -92,6 +92,9 @@ ul.bullet {
         padding-left: 20px;
     }
 }
+#select_language {
+    z-index: 101;
+}
 
 /* Keep this below since css after this 
  * will be interfering with small
