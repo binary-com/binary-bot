@@ -4,7 +4,6 @@ const euCountries = [
     'fr',
     'lu',
     'gr',
-    'mf',
     'es',
     'sk',
     'lt',
@@ -26,7 +25,6 @@ const euCountries = [
     'dk',
     'se',
     'ie',
-    'im',
     'gb',
     'mt',
 ];
