@@ -54,9 +54,12 @@ export const moveToDeriv = async () => {
     if (
         (landingCompanyName.length === 1 &&
             landingCompanyName.includes('virtual') &&
-            (isEuCountry(clients_country) || isUKCountry(clients_country))) ||
+            (isEuCountry(clients_country) ||
+                isUKCountry(clients_country) ||
+                isEuCountry(localStorage.getItem('residence')) || isUKCountry(localStorage.getItem('residence')))) ||
         landingCompanyName.includes('maltainvest') ||
-            landingCompanyName.includes('malta') || landingCompanyName.includes('iom')
+            landingCompanyName.includes('malta') ||
+            landingCompanyName.includes('iom')
     ) {
         window.location.replace('https://binary.com/move-to-deriv');
     }
