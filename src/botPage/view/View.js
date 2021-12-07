@@ -31,7 +31,7 @@ import {
 import { translate } from '../../common/i18n';
 import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
 import googleDrive from '../../common/integrations/GoogleDrive';
-import { getLanguage } from '../../common/lang';
+import { getLanguage, showBanner } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
     getTokenList,
@@ -48,7 +48,7 @@ import {
     getUnattachedMandatoryPairs,
     saveBeforeUnload,
 } from './blockly/utils';
-import MovingBanner from './react-components/MovingBanner';
+import { moveToDeriv } from '../../common/utils/utility';
 
 let realityCheckTimeout;
 let chart;
@@ -206,6 +206,7 @@ const updateTokenList = () => {
 
         // If logged out, determine EU based on IP.
         isEuCountry(api).then(isEu => showHideEuElements(isEu));
+        showBanner();
         $('.account-id')
             .removeAttr('value')
             .text('');
@@ -219,6 +220,7 @@ const updateTokenList = () => {
 
         const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
         showHideEuElements(hasEuAccount(tokenList));
+        showBanner();
         updateLogo(activeToken.token);
         addBalanceForToken(activeToken.token);
 
@@ -298,7 +300,6 @@ const checkForRequiredBlocks = () => {
 
     return true;
 };
-
 export default class View {
     constructor() {
         logHandler();
@@ -309,8 +310,11 @@ export default class View {
 
                     if (
                         isLoggedin() &&
-                        (localStorage.getItem('landingCompany') === 'maltainvest' ||
-                            isOptionsBlocked(localStorage.getItem('residence')))
+                        isOptionsBlocked(
+                            localStorage.getItem('residence')
+                            // localStorage.getItem('landingCompany') === 'maltainvest'
+                            // this condition is commented because the MF accounts should be redirected to deriv))
+                        )
                     ) {
                         this.showHeader(getStorage('showHeader') !== 'false');
                         this.setElementActions();
@@ -325,6 +329,7 @@ export default class View {
                             this.setElementActions();
                             initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                             applyToolboxPermissions();
+                            moveToDeriv();
                             renderReactComponents();
                             if (!getTokenList().length) updateLogo();
                             this.showHeader(getStorage('showHeader') !== 'false');
@@ -850,5 +855,4 @@ function renderReactComponents() {
     document.getElementById('errorArea').remove();
     ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
     ReactDOM.render(<LogTable />, $('#logTable')[0]);
-    ReactDOM.render(<MovingBanner api={api} />, $('#moving-banner')[0]);
 }

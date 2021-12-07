@@ -1,63 +1,37 @@
 import React from 'react';
 import { translate } from '../../common/i18n';
-import { isEuCountry, isUKCountry } from '../../common/footer-checks';
-import { getTokenList, get as getStorage } from '../../common/utils/storageManager';
-import { AppConstants } from '../../common/appId';
+import { getTokenList } from '../../common/utils/storageManager';
+import { isEuCountry, isUKCountry } from '../../common/utils/utility';
+import { generateLiveApiInstance } from '../../common/appId';
 
-const NotificationBanner = ({ api }) => {
+const NotificationBanner = () => {
     const [showBanner, setShowBanner] = React.useState(false);
     const tokenList = getTokenList();
 
     React.useEffect(() => {
-        checkForShowBanner();
+        checkForShowBanner().then(show => {
+            if(show){
+                setShowBanner(true);
+            }
+        });
     }, []);
 
-    const getActiveToken = activeToken => {
-        const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
-        return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
-    };
+    const checkForShowBanner = async () => {
+        const api = generateLiveApiInstance();
+        const { website_status } = await api.send({ website_status: 1 });
+        const { clients_country } = website_status;
 
-    const checkForShowBanner = () => {
         if (!tokenList.length) {
-            isEuUK(api, true);
-            return;
-        }
-        const landingCompanyName = tokenList.map(token => token.loginInfo.landing_company_name);
-        const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
-
-        if (landingCompanyName.length === 1 && landingCompanyName.includes('virtual')) {
-            isEuUK(false);
-            return;
-        }
-        if (landingCompanyName.includes('maltainvest') && landingCompanyName.includes('virtual')) {
-            if (landingCompanyName.length === 2) {
-                setShowBanner(true);
-                return;
-            }
-            if (
-                (landingCompanyName.includes('malta') || landingCompanyName.includes('iom')) &&
-                activeToken.loginInfo.landing_company_name === 'maltainvest'
-            ) {
-                setShowBanner(true);
+            if(isEuCountry(clients_country) || isUKCountry (clients_country)){
+                return true;
             }
         }
-    };
-
-    const isEuUK = checkLoggedin => {
-        isEuCountry(api, checkLoggedin).then(isEu => {
-            if (isEu) {
-                setShowBanner(true);
-                return;
-            }
-            isUKCountry(api, checkLoggedin).then(isUk => {
-                setShowBanner(isUk);
-            });
-        });
+        return false;
     };
 
     return (
         showBanner && (
-            <div className="notification-banner notification-banner-welcome">
+            <div className="notification-banner">
                 <img src={'image/notification-banner-icon-left.svg'} />
                 <div className="notification-banner__orange-hexagon"></div>
                 <div className="notification-banner__content">
