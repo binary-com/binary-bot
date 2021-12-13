@@ -39,7 +39,6 @@ export const isUKCountry = country => country === 'gb';
 /* eslint-disable camelcase */
 export const moveToDeriv = async () => {
     const api = generateLiveApiInstance();
-    console.log('api:', api);
     const { website_status } = await api.send({ website_status: 1 });
     const { clients_country } = website_status;
     const tokenList = getTokenList();
@@ -56,10 +55,11 @@ export const moveToDeriv = async () => {
             landingCompanyName.includes('virtual') &&
             (isEuCountry(clients_country) ||
                 isUKCountry(clients_country) ||
-                isEuCountry(localStorage.getItem('residence')) || isUKCountry(localStorage.getItem('residence')))) ||
+                isEuCountry(localStorage.getItem('residence')) ||
+                isUKCountry(localStorage.getItem('residence')))) ||
         landingCompanyName.includes('maltainvest') ||
-            landingCompanyName.includes('malta') ||
-            landingCompanyName.includes('iom')
+        landingCompanyName.includes('malta') ||
+        landingCompanyName.includes('iom')
     ) {
         window.location.replace('https://binary.com/move-to-deriv');
     }
