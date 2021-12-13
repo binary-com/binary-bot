@@ -368,7 +368,7 @@ Blockly.WorkspaceAudio.prototype.preload = function() {
     for (var name in this.SOUNDS_) {
         var sound = this.SOUNDS_[name];
         sound.volume = 0.01;
-
+        sound.crossorigin = '';
         // A play() call on an a <video> or <audio> element now returns a Promise
         // in Chrome/Chromium browsers starting from v50 which raise an issue and the following
         // solution is accotding to:
