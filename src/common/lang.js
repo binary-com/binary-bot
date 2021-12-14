@@ -2,6 +2,7 @@ import { parseQueryString } from '../common/utils/tools';
 import { set as setStorage, get as getStorage } from '../common/utils/storageManager';
 import { setCookieLanguage } from '../common/utils/cookieManager';
 import { supportedLanguages, translate, init } from './i18n';
+import { getClientsCountryByIP } from './utils/utility';
 
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;
@@ -53,8 +54,10 @@ export const load = () => {
     addUiLang();
 };
 
-export const showBanner = () => {
-    if (getLanguage() === 'pt') {
+export const showBanner = async () => {
+    const location = await getClientsCountryByIP();
+
+    if (getLanguage() === 'pt' || location === 'br') {
         document.querySelectorAll(`.${getLanguage()}-show`).forEach(el => {
             el.classList.remove('invisible');
         });

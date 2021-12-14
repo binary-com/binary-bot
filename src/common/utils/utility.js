@@ -38,9 +38,7 @@ export const isUKCountry = country => country === 'gb';
 
 /* eslint-disable camelcase */
 export const moveToDeriv = async () => {
-    const api = generateLiveApiInstance();
-    const { website_status } = await api.send({ website_status: 1 });
-    const { clients_country } = website_status;
+    const clients_country = await getClientsCountryByIP();
     const tokenList = getTokenList();
     const landingCompanyName = tokenList.map(token => token.loginInfo.landing_company_name);
 
@@ -63,4 +61,10 @@ export const moveToDeriv = async () => {
     ) {
         window.location.replace('https://binary.com/move-to-deriv');
     }
+};
+
+export const getClientsCountryByIP = async () => {
+    const api = generateLiveApiInstance();
+    const { website_status } = await api.send({ website_status: 1 });
+    return website_status.clients_country;
 };
