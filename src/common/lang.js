@@ -58,7 +58,7 @@ export const showBanner = async () => {
     const location = await getClientsCountryByIP();
 
     if (getLanguage() === 'pt' || location === 'br') {
-        document.querySelectorAll(`.${getLanguage()}-show`).forEach(el => {
+        document.querySelectorAll('.pt-show').forEach(el => {
             el.classList.remove('invisible');
         });
         // TODO: Whenever banners for all languages were added remove else part of the condition.
