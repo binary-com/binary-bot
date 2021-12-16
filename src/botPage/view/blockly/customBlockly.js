@@ -364,28 +364,44 @@ Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
  * Preload all the audio files so that they play quickly when asked for.
  * @package
  */
+
+Blockly.WorkspaceAudio.prototype.load = function(filenames, name) {
+    if (!filenames.length) {
+        return;
+    }
+    try {
+        var audioTest = new window['Audio']();
+    } catch (e) {
+        return;
+    }
+    var sound;
+    for (var i = 0; i < filenames.length; i++) {
+        var filename = filenames[i];
+        if (filename.includes('delete')) {
+            filename = '/sound/delete.mp3';
+        }
+        if (filename.includes('click')) {
+            filename = '/sound/click.mp3';
+        }
+        if (filename.includes('disconnect')) {
+            filename = '/sound/disconnect.wav';
+        }
+        var ext = filename.match(/\.(\w+)$/);
+        if (ext && audioTest.canPlayType('audio/' + ext[1])) {
+            sound = new window['Audio'](filename);
+            break;
+        }
+    }
+    if (sound && sound.play) {
+        this.SOUNDS_[name] = sound;
+    }
+};
 Blockly.WorkspaceAudio.prototype.preload = function() {
     for (var name in this.SOUNDS_) {
         var sound = this.SOUNDS_[name];
         sound.volume = 0.01;
-        //sound.crossorigin = '';
-        // A play() call on an a <video> or <audio> element now returns a Promise
-        // in Chrome/Chromium browsers starting from v50 which raise an issue and the following
-        // solution is accotding to:
-        // Due to https://developers.google.com/web/updates/2016/03/play-returns-promise?hl=en,
-
-        //sound.play().catch(function() {});
-        //sound.pause();
-
-        // const playPromise = sound.play();
-        // if (playPromise !== undefined) {
-        //     playPromise
-        //         .then(() => {
-        //             sound.pause();
-        //         })
-        //         .catch(() => {});
-        // }
-
+        sound.play().catch(function() {});
+        sound.pause();
         // iOS can only process one sound at a time.  Trying to load more than one
         // corrupts the earlier ones.  Just load one and leave the others uncached.
         if (goog.userAgent.IPAD || goog.userAgent.IPHONE) {
