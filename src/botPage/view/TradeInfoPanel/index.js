@@ -184,7 +184,7 @@ export default class TradeInfoPanel extends Component {
                     <div className="content-row">
                         <div>
                             <div className="content-row-table">
-                                <TradeTable accountID={accountID} api={this.props.api} />
+                                <TradeTable account_id={accountID} api={this.props.api} />
                             </div>
                         </div>
                     </div>

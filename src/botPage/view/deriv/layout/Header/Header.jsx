@@ -4,16 +4,17 @@ import AccountActions from "./components/account-actions.jsx";
 import { platforms } from "../../config.js";
 import PlatformDropdown from "./components/platform-dropdown.jsx";
 import classNames from "classnames";
+import { generateDerivLink } from "../../utils";
 
 const MenuLinks = () => (
     <div className="header__menu-item header__menu-links client_logged_in">
-        <a className="url-reports-positions header__menu-links-item" href="https://app.deriv.com/reports/positions">
+        <a className="url-reports-positions header__menu-links-item" href={generateDerivLink("reports/positions")}>
             <span>
                 <img className="header__icon-text reports-icon" src="image/deriv/ic-reports.svg" />
                 {translate("Reports")}
             </span>
         </a>
-        <a className="url-cashier-deposit header__menu-links-item" href="https://app.deriv.com/cashier/deposit">
+        <a className="url-cashier-deposit header__menu-links-item" href={generateDerivLink("cashier/deposit")}>
             <span>
                 <img id="cashier_icon" className="header__icon-text" src="image/deriv/ic-cashier.svg"/>
                 {translate("Cashier")}

@@ -2,6 +2,7 @@ import React from "react";
 import { translate } from "../../../../../../common/utils/tools";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import { currencyNameMap } from "../../../config";
+import { generateDerivLink } from "../../../utils";
 
 const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {    
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
@@ -27,7 +28,7 @@ const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {
                     {clientInfo.tokenList.map((acc, index) => {
                         const accBalanceInfo = clientInfo.balance?.accounts[acc.loginInfo.loginid];
                         const currency = accBalanceInfo?.currency;
-                        const amount = accBalanceInfo.balance.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2})
+                        const amount = accBalanceInfo?.balance.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2})
 
                         return isReal !== Boolean(acc.loginInfo.is_virtual) && (
                             <div 
@@ -54,7 +55,7 @@ const TabContent = ({ tab, clientInfo, isActive, setIsAccDropdownOpen}) => {
                         )}
                     )}
                     {isReal && (
-                        <a href="https://app.deriv.com/redirect?action=add_account" rel="noopener noreferrer" className="account__switcher-add">
+                        <a href={generateDerivLink("redirect","action=add_account")} rel="noopener noreferrer" className="account__switcher-add">
                             <img className="account__switcher-add-icon" src="image/deriv/ic-add-circle.svg" />
                             <span className="account__switcher-add-text">{translate("Add Deriv account")}</span>
                         </a>

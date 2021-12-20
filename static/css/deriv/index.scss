@@ -54,16 +54,21 @@ a:hover {
 }
 
 .content-row {
+    overflow-x: auto;
     &-table{
-        width: 760px;
-        overflow-x: scroll;
+        overflow-x: auto;
+        @include mobile {
+            width: 760px;
+        }
     }
     & > div {
-        overflow: scroll !important;
+        overflow: auto !important;
     }
     & table {
-        min-width: 400px;
-        overflow: scroll;
+        @include mobile {
+            min-width: 760px;
+        }
+        overflow: auto;
     }
 }
 
