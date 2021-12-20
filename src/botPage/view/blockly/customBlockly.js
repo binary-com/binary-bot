@@ -374,25 +374,18 @@ Blockly.WorkspaceAudio.prototype.load = function(filenames, name) {
     } catch (e) {
         return;
     }
-    var sound;
-    for (var i = 0; i < filenames.length; i++) {
-        var filename = filenames[i];
-        if (filename.includes('delete')) {
-            filename = '/sound/delete.mp3';
+    let sound;
+
+    filenames.forEach(filename => {
+        if (filename.includes('mp3' && ('delete', 'click', 'disconnect'))) {
+            filename = filename.replace('https://blockly-demo.appspot.com/static/media/', 'sound/');
         }
-        if (filename.includes('click')) {
-            filename = '/sound/click.mp3';
-        }
-        if (filename.includes('disconnect')) {
-            filename = '/sound/disconnect.wav';
-        }
-        var ext = filename.match(/\.(\w+)$/);
+        let ext = filename.match(/\.(\w+)$/);
         if (ext && audioTest.canPlayType('audio/' + ext[1])) {
             sound = new window['Audio'](filename);
-            break;
         }
-    }
-    if (sound && sound.play) {
+    });
+    if (sound?.play) {
         this.SOUNDS_[name] = sound;
     }
 };
@@ -400,8 +393,12 @@ Blockly.WorkspaceAudio.prototype.preload = function() {
     for (var name in this.SOUNDS_) {
         var sound = this.SOUNDS_[name];
         sound.volume = 0.01;
-        sound.play().catch(function() {});
-        sound.pause();
+        const playPromise = sound.play();
+        playPromise
+            ?.then(() => {
+                sound.pause();
+            })
+            .catch(() => {});
         // iOS can only process one sound at a time.  Trying to load more than one
         // corrupts the earlier ones.  Just load one and leave the others uncached.
         if (goog.userAgent.IPAD || goog.userAgent.IPHONE) {
