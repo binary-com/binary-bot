@@ -1,4 +1,5 @@
 /* global google,gapi */
+import { TrackJS } from 'trackjs';
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
 import { translate, isProduction } from '../utils/tools';
@@ -22,9 +23,9 @@ class GoogleDrive {
             callback: () => {
                 gapi.client
                     .init({
-                        apiKey       : this.apiKey,
-                        clientId     : this.clientId,
-                        scope        : 'https://www.googleapis.com/auth/drive.file',
+                        apiKey: this.apiKey,
+                        clientId: this.clientId,
+                        scope: 'https://www.googleapis.com/auth/drive.file',
                         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
                     })
                     .then(
@@ -42,8 +43,8 @@ class GoogleDrive {
                                 .removeClass('invisible');
                         },
                         error => {
-                            if (window.trackJs && isProduction()) {
-                                trackJs.track(
+                            if (isProduction()) {
+                                TrackJS.track(
                                     `${translate(
                                         'There was an error initialising Google Drive'
                                     )} - Error: ${JSON.stringify(error)}`
@@ -53,8 +54,8 @@ class GoogleDrive {
                     );
             },
             onerror: error => {
-                if (window.trackJs && isProduction()) {
-                    trackJs.track(
+                if (isProduction()) {
+                    TrackJS.track(
                         `${translate('There was an error loading Google Drive libraries')} - Error: ${JSON.stringify(
                             error
                         )}`
@@ -129,7 +130,7 @@ class GoogleDrive {
 
                     gapi.client.drive.files
                         .get({
-                            alt     : 'media',
+                            alt: 'media',
                             fileId,
                             mimeType: 'text/plain',
                         })
@@ -221,9 +222,9 @@ class GoogleDrive {
                         gapi.client.drive.files
                             .create({
                                 resource: {
-                                    name    : this.botFolderName,
+                                    name: this.botFolderName,
                                     mimeType: 'application/vnd.google-apps.folder',
-                                    fields  : 'id',
+                                    fields: 'id',
                                 },
                             })
                             .then(() => resolve())
@@ -256,9 +257,9 @@ class GoogleDrive {
                     const folderId = data.docs[0].id;
                     const strategyFile = new Blob([options.content], { type: options.mimeType });
                     const strategyFileMetadata = JSON.stringify({
-                        name    : options.name,
+                        name: options.name,
                         mimeType: options.mimeType,
-                        parents : [folderId],
+                        parents: [folderId],
                     });
 
                     const formData = new FormData();
