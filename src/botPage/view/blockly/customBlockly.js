@@ -377,7 +377,7 @@ Blockly.WorkspaceAudio.prototype.load = function(filenames, name) {
     let sound;
 
     filenames.forEach(filename => {
-        if (filename.includes('mp3' && ('delete', 'click', 'disconnect'))) {
+        if (filename.includes('delete') || filename.includes('click') || filename.includes('disconnect')) {
             filename = filename.replace('https://blockly-demo.appspot.com/static/media/', 'sound/');
         }
         let ext = filename.match(/\.(\w+)$/);
