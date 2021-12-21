@@ -1,3 +1,4 @@
+import { TrackJS } from 'trackjs';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
@@ -67,9 +68,9 @@ const notifyError = error => {
 
     notify({ className: 'error', message, position: 'right' });
 
-    if (trackJs && isProduction()) {
-        trackJs.console.log(error);
-        trackJs.track(code || error.name);
+    if (isProduction()) {
+        TrackJS.console.log(error);
+        TrackJS.track(code || error.name);
     }
 };
 
@@ -91,9 +92,7 @@ const logHandler = () => {
         .attr('value');
     const userId = getToken(token).accountName;
 
-    if (trackJs) {
-        trackJs.configure({ userId });
-    }
+    TrackJS.configure({ userId });
 
     waitForNotifications();
 };
