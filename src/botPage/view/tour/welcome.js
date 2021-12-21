@@ -38,7 +38,7 @@ const steps = [
     {
         title: translate('Workspace'),
         text: `<p>${translate('Drag and drop block files or make your own strategies.')}</p>`,
-        selector: '#workspace_center',
+        selector: isMobile() ? 'body' : '#workspace_center',
         position: 'top',
     },
     {
@@ -80,9 +80,5 @@ const steps = [
         },
     },
 ];
-
-if (isMobile()) {
-    steps.splice(1, 1);
-}
 
 export default steps;
