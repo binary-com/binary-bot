@@ -2,7 +2,7 @@ import { translate } from '../../../common/i18n';
 import { isLoggedInDeriv } from '../../../common/utils/storageManager';
 import { isMobile } from '../../../common/utils/tools';
 
-let steps = [
+const steps = [
     {
         title: translate('Take a quick tour'),
         text: `
@@ -82,7 +82,7 @@ let steps = [
 ];
 
 if (isMobile()) {
-    steps = steps.filter(step => step.title !== translate('Workspace'));
+    steps.splice(1, 1);
 }
 
 export default steps;
