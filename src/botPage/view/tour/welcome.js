@@ -1,6 +1,8 @@
 import { translate } from '../../../common/i18n';
+import { isLoggedInDeriv } from '../../../common/utils/storageManager';
+import { isMobile } from '../../../common/utils/tools';
 
-const steps = [
+let steps = [
     {
         title: translate('Take a quick tour'),
         text: `
@@ -19,7 +21,7 @@ const steps = [
           </div>
           `,
         selector: '#center',
-        position: 'top',
+        position: 'center',
         style: {
             textAlign: 'center',
             arrow: {
@@ -50,7 +52,7 @@ const steps = [
         text: `<p>
       ${translate('Login before starting your bot. Always test your strategies with the virtual account.')}
     </p>`,
-        selector: '#header__acc-balance',
+        selector: isLoggedInDeriv() ? '#acc_switcher' : '.header__btn',
         position: 'left',
     },
     {
@@ -58,7 +60,7 @@ const steps = [
         text: `<p>
       ${translate('Control your blocks. Hold the cursor on each button for more info.')}
     </p>`,
-        selector: '#zoomIn',
+        selector: isMobile() ? '#toolbox' : '#zoomIn',
         position: 'left',
     },
     {
@@ -70,7 +72,7 @@ const steps = [
       </a>
     </p>`,
         selector: '#center',
-        position: 'top',
+        position: 'center',
         style: {
             arrow: {
                 display: 'none',
@@ -78,5 +80,9 @@ const steps = [
         },
     },
 ];
+
+if (isMobile()) {
+    steps = steps.filter(step => step.title !== translate('Workspace'));
+}
 
 export default steps;
