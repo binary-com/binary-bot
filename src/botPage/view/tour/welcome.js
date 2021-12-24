@@ -22,6 +22,8 @@ const steps = [
           `,
         selector: '#center',
         position: 'center',
+        isFixed: true,
+        offset: 0,
         style: {
             textAlign: 'center',
             arrow: {
@@ -38,8 +40,9 @@ const steps = [
     {
         title: translate('Workspace'),
         text: `<p>${translate('Drag and drop block files or make your own strategies.')}</p>`,
-        selector: isMobile() ? 'body' : '#workspace_center',
-        position: 'top',
+        selector: isMobile() ? '.injectionDiv' : '#workspace_center',
+        position: isMobile() ? 'center' : 'top',
+        offset: 200,
     },
     {
         title: translate('Blocks toolbox'),
@@ -78,6 +81,8 @@ const steps = [
                 display: 'none',
             },
         },
+        isFixed: true,
+        offset: 0,
     },
 ];
 
