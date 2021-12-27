@@ -67,6 +67,9 @@ $disabled-color: #F2F2F2;
         margin: 0 8.68% 0 8.68%;
         vertical-align: top;
         max-width: 120px;
+        @media (min-width: 1800px) {
+            margin: 0 8.60% 0 8.60%;
+        }
         .stage-tooltip .triangle {
             margin-top: 0.7em;
             margin-left: 50%;
