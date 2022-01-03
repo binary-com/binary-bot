@@ -15,7 +15,7 @@ const GTM = (() => {
             document.body.appendChild(script);
 
             const interval = setInterval(() => {
-                if (dataLayer) {
+                if (window?.dataLayer) {
                     setVisitorId();
                     clearInterval(interval);
                 }
@@ -24,8 +24,8 @@ const GTM = (() => {
     };
 
     const pushDataLayer = data => {
-        if (isGtmApplicable() && (dataLayer || data.is_elevio)) {
-            dataLayer.push({
+        if (isGtmApplicable() && (window?.dataLayer || data.is_elevio)) {
+            window.dataLayer.push({
                 ...data,
             });
         }
