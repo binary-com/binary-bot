@@ -51,6 +51,7 @@ import Footer from './deriv/layout/Footer';
 import Header from './deriv/layout/Header';
 import Main from './deriv/layout/Main';
 import store from './deriv/store';
+import ToolBox from './deriv/layout/ToolBox';
 
 let realityCheckTimeout;
 let chart;
@@ -315,8 +316,8 @@ export default class View {
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
                         initRealityCheck(() => $('#stopButton').triggerHandler('click'));
-                        applyToolboxPermissions();
                         renderReactComponents();
+                        applyToolboxPermissions();
                         this.setElementActions();
                         resolve();
                     });
@@ -800,6 +801,12 @@ function renderReactComponents() {
             <Header clientInfo={clientInfo} />
         </Provider>,
         document.getElementById('header-wrapper')
+    );
+    ReactDOM.render(
+        <Provider store={store}>
+            <ToolBox />
+        </Provider>,
+        document.getElementById('toolbox-wrapper')
     );
     ReactDOM.render(
         <Provider store={store}>

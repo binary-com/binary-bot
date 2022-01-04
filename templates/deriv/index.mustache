@@ -45,32 +45,8 @@
     {{> ../partials/loading }}
     <div id='header-wrapper'></div>
     <div id="main"></div>
-
-    <div id="toolbox" class="actions_menu show-on-load">
-        <button data-i18n-title="Reset the blocks to their initial state" id="resetButton" class="toolbox-button icon-reset"></button>
-        <button data-i18n-title="Load new blocks (xml file)" id="load-xml" class="toolbox-button icon-browse"></button>
-        <button data-i18n-title="Save the existing blocks (xml file)" id="save-xml" class="toolbox-button icon-save"></button>
-        <button data-i18n-title="Connect Binary Bot to your Google Drive to easily save and re-use your blocks" id="integrations" class="toolbox-button icon-integrations invisible"></button>
-
-        <span class="toolbox-separator"></span>
-        <button data-i18n-title="Undo the changes (Ctrl+Z)" id="undo" class="toolbox-button icon-undo"></button>
-        <button data-i18n-title="Redo the changes (Ctrl+Shift+Z)" id="redo" class="toolbox-button icon-redo"></button>
-
-        <span class="toolbox-separator"></span>
-        <button data-i18n-title="Zoom In (Ctrl + +)" id="zoomIn" class="toolbox-button icon-zoom-in"></button>
-        <button data-i18n-title="Zoom Out (Ctrl + -)" id="zoomOut" class="toolbox-button icon-zoom-out"></button>
-        <button data-i18n-title="Rearrange Vertically" id="rearrange" class="toolbox-button icon-sort"></button>
-
-        <span class="toolbox-separator"></span>
-        <button data-i18n-title="Show/hide the summary pop-up" id="showSummary" class="toolbox-button icon-summary"></button>
-        <button data-i18n-title="Run the bot" id="runButton" class="toolbox-button icon-run"></button>
-        <button data-i18n-title="Stop the bot" id="stopButton" class="toolbox-button icon-stop"></button>
-        <button data-i18n-title="Show log" id="logButton" class="toolbox-button icon-info"></button>
-
-        <span class="toolbox-separator"></span>
-        <button data-i18n-title="Show chart" id="chartButton" class="toolbox-button icon-chart-line"></button>
-        <button data-i18n-title="Show Trading View" id="tradingViewButton" class="toolbox-button icon-trading-view"></button>
-
+    <div id="toolbox-wrapper"></div>
+       
         <div id="toolbox-account" class="right-header" style="display: none">
             <button id="toolbox-login" data-i18n-text="Log in"></button>
             <div id="toolbox-account-list">
@@ -84,7 +60,6 @@
                 </a>
             </div>
         </div>
-    </div>
     <ul id="toolbox-all-accounts" class="nav-menu main-nav" style="display: none;">
         <li>
             <ul>
