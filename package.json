@@ -80,7 +80,7 @@
     "husky": "^7.0.4",
     "i18next-scanner": "^2.9.2",
     "immutable": "^4.0.0",
-    "jest": "^24.8.0",
+    "jest": "^27.4.5",
     "jquery": "^3.5.1",
     "jquery-ui": "1.12.1",
     "jquery-ui-css": "1.11.4",
