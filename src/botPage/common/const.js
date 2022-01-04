@@ -268,7 +268,7 @@ const config = {
     ],
     gd: {
         cid: '828416594271-qj2dnf4u2omg1iugangbtsrq6p0a55oc.apps.googleusercontent.com',
-        aid: 'binarybot-248506',
+        aid: 'derivbot-248506',
         api: 'AIzaSyBDYQ7IIgGxM14IeAV5JrtaJNYjxB4A5jo',
     },
     quick_strategies: ['martingale', 'dalembert'],
