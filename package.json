@@ -45,7 +45,7 @@
     "@babel/register": "^7.16.7",
     "@binary-com/binary-indicators": "^1.6.3",
     "app-module-path": "^2.2.0",
-    "babel-core": "^7.0.0-bridge.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.2.3",
