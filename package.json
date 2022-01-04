@@ -47,7 +47,7 @@
     "app-module-path": "^2.2.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^27.4.5",
     "babel-loader": "^8.2.3",
     "binary-live-api": "^29.0.1",
     "binary-utils": "^4.23.0",
