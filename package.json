@@ -85,7 +85,7 @@
     "jquery-ui": "1.12.1",
     "jquery-ui-css": "1.11.4",
     "js-interpreter": "2.2.0",
-    "json2csv": "^3.11.5",
+    "json2csv": "^5.0.6",
     "lint-staged": "^8.1.7",
     "loader-utils": "^1.1.0",
     "notifyjs-browser": "^0.4.2",
@@ -104,6 +104,7 @@
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {
+    "@deriv/deriv-charts": "0.3.16",
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
     "commander": "^2.20.0",
@@ -111,12 +112,13 @@
     "core-js": "^2.6.5",
     "crc-32": "^1.2.0",
     "gh-pages": "^2.0.1",
+    "install": "^0.13.0",
     "js-cookie": "^2.2.1",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.4",
+    "npm": "^8.3.0",
     "pako": "^1.0.11",
     "react-render-html": "^0.6.0",
-    "react-transition-group": "^4.0.1",
-    "@deriv/deriv-charts": "0.3.16"
+    "react-transition-group": "^4.0.1"
   }
 }
