@@ -79,7 +79,7 @@
     "gulp-watch": "^5.0.1",
     "husky": "^7.0.4",
     "i18next-scanner": "^2.9.2",
-    "immutable": "^3.8.2",
+    "immutable": "^4.0.0",
     "jest": "^24.8.0",
     "jquery": "^3.5.1",
     "jquery-ui": "1.12.1",
