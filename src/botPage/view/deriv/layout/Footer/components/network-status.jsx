@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React from "react";
-import  Popover from '../../../components/popover.jsx';
+import  Popover from '../../../components/popover';
 import { translate} from "../../../../../../common/utils/tools";
 
 
