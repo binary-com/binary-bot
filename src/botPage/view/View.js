@@ -6,7 +6,6 @@ import _Blockly, { load } from './blockly';
 import Chart from './Dialogs/Chart';
 import Limits from './Dialogs/Limits';
 import IntegrationsDialog from './Dialogs/IntegrationsDialog';
-import LoadDialog from './Dialogs/LoadDialog';
 import SaveDialog from './Dialogs/SaveDialog';
 import TradingView from './Dialogs/TradingView';
 import logHandler from './logger';
@@ -184,7 +183,6 @@ const clearRealityCheck = () => {
 };
 
 const integrationsDialog = new IntegrationsDialog();
-const loadDialog = new LoadDialog();
 const saveDialog = new SaveDialog();
 
 const getActiveToken = (tokenList, activeToken) => {
@@ -469,8 +467,6 @@ export default class View {
             });
 
         $('#integrations').click(() => integrationsDialog.open());
-
-        $('#load-xml').click(() => loadDialog.open());
 
         $('#save-xml').click(() => saveDialog.save().then(arg => this.blockly.save(arg)));
 
