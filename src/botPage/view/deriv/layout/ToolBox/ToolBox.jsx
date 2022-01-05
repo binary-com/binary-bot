@@ -1,36 +1,48 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Modal from "../../components/modal";
-import Load from "./components/load";
 import { translate } from "../../../../../common/i18n";
+import Load from "./components/load";
+import Save from "./components/save";
 
-const ShowModal = ({modal,onClose, class_name}) => {
+const ShowModal = ({ modal, onClose, class_name }) => {
   if (!modal) return;
-  return <Modal onClose={onClose} title={modal.title} class_name={class_name}>
-    {
-      React.createElement(modal.component, modal.props)
-    }
-    </Modal>;
+  return (
+    <Modal onClose={onClose} title={modal.title} class_name={class_name}>
+      {React.createElement(modal.component, modal.props)}
+    </Modal>
+  );
 };
 
 const ToolBox = ({ blockly }) => {
-  const [show_modal, updateShowModal] = React.useState(false)
-  const [selected_modal, updateSelectedModal] = React.useState('')
+  const [show_modal, updateShowModal] = React.useState(false);
+  const [selected_modal, updateSelectedModal] = React.useState("");
 
-  const onCloseModal = ()=>{
-    updateSelectedModal('');
-    updateShowModal(false)
-  }
-  const onShowModal = (modal)=>{
+  const onCloseModal = () => {
+    updateSelectedModal("");
+    updateShowModal(false);
+  };
+  const onShowModal = (modal) => {
     updateSelectedModal(modal);
-    updateShowModal(true)
-  }
+    updateShowModal(true);
+  };
   const MODALS = {
     load: {
       component: Load,
       title: translate("Load Blocks"),
       props: {
-        closeDialog: ()=>{onCloseModal},
+        closeDialog: () => {
+          onCloseModal;
+        },
+      },
+    },
+    save: {
+      component: Save,
+      title: translate("Save Blocks"),
+      props: {
+        closeDialog: () => {
+          onCloseModal;
+        },
       },
     },
   };
@@ -40,9 +52,17 @@ const ToolBox = ({ blockly }) => {
       <button
         id="load-xml"
         className="toolbox-button icon-browse"
-        onClick={() => {onShowModal('load')}}
+        onClick={() => {
+          onShowModal("load");
+        }}
       ></button>
-      <button id="save-xml" className="toolbox-button icon-save"></button>
+      <button
+        id="save-xml"
+        className="toolbox-button icon-save"
+        onClick={() => {
+          onShowModal("save");
+        }}
+      ></button>
       <button
         id="integrations"
         className="toolbox-button icon-integrations invisible"
@@ -92,7 +112,13 @@ const ToolBox = ({ blockly }) => {
         id="tradingViewButton"
         className="toolbox-button icon-trading-view"
       ></button>
-      {show_modal && <ShowModal modal={MODALS[selected_modal]} onClose={onCloseModal} class_name={selected_modal}/>}
+      {show_modal && (
+        <ShowModal
+          modal={MODALS[selected_modal]}
+          onClose={onCloseModal}
+          class_name={selected_modal}
+        />
+      )}
     </div>
   );
 };
