@@ -316,7 +316,7 @@ export default class View {
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
                         initRealityCheck(() => $('#stopButton').triggerHandler('click'));
-                        renderReactComponents();
+                        renderReactComponents(this.blockly);
                         applyToolboxPermissions();
                         this.setElementActions();
                         resolve();
@@ -473,26 +473,6 @@ export default class View {
         $('#load-xml').click(() => loadDialog.open());
 
         $('#save-xml').click(() => saveDialog.save().then(arg => this.blockly.save(arg)));
-
-        $('#undo').click(() => {
-            this.blockly.undo();
-        });
-
-        $('#redo').click(() => {
-            this.blockly.redo();
-        });
-
-        $('#zoomIn').click(() => {
-            this.blockly.zoomOnPlusMinus(true);
-        });
-
-        $('#zoomOut').click(() => {
-            this.blockly.zoomOnPlusMinus(false);
-        });
-
-        $('#rearrange').click(() => {
-            this.blockly.cleanUp();
-        });
 
         $('#chartButton').click(() => {
             if (!chart) {
@@ -795,7 +775,7 @@ function initRealityCheck(stopCallback) {
         stopCallback
     );
 }
-function renderReactComponents() {
+function renderReactComponents(blockly) {
     ReactDOM.render(
         <Provider store={store}>
             <Header clientInfo={clientInfo} />
@@ -804,7 +784,7 @@ function renderReactComponents() {
     );
     ReactDOM.render(
         <Provider store={store}>
-            <ToolBox />
+            <ToolBox blockly={blockly} />
         </Provider>,
         document.getElementById('toolbox-wrapper')
     );

@@ -1,6 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const ToolBox = () => {
+const ToolBox = ({ blockly }) => {
   return (
     <div id="toolbox">
       <button id="resetButton" className="toolbox-button icon-reset"></button>
@@ -12,13 +13,33 @@ const ToolBox = () => {
       ></button>
 
       <span className="toolbox-separator"></span>
-      <button id="undo" className="toolbox-button icon-undo"></button>
-      <button id="redo" className="toolbox-button icon-redo"></button>
+      <button
+        id="undo"
+        className="toolbox-button icon-undo"
+        onClick={()=>blockly.undo()}
+      ></button>
+      <button
+        id="redo"
+        className="toolbox-button icon-redo"
+        onClick={()=>blockly.redo()}
+      ></button>
 
       <span className="toolbox-separator"></span>
-      <button id="zoomIn" className="toolbox-button icon-zoom-in"></button>
-      <button id="zoomOut" className="toolbox-button icon-zoom-out"></button>
-      <button id="rearrange" className="toolbox-button icon-sort"></button>
+      <button
+        id="zoomIn"
+        className="toolbox-button icon-zoom-in"
+        onClick={()=>blockly.zoomOnPlusMinus(true)}
+      ></button>
+      <button
+        id="zoomOut"
+        className="toolbox-button icon-zoom-out"
+        onClick={()=>blockly.zoomOnPlusMinus(false)}
+      ></button>
+      <button
+        id="rearrange"
+        className="toolbox-button icon-sort"
+        onClick={()=>blockly.cleanUp()}
+      ></button>
 
       <span className="toolbox-separator"></span>
       <button id="showSummary" className="toolbox-button icon-summary"></button>
@@ -37,6 +58,10 @@ const ToolBox = () => {
       ></button>
     </div>
   );
+};
+
+ToolBox.propTypes = {
+  blockly: PropTypes.object.isRequired,
 };
 
 export default ToolBox;
