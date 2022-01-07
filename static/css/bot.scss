@@ -56,6 +56,37 @@ body {
     #blocklyArea {
         height: 86%;
     }
+
+}
+@media (max-width: 768px){
+    .notifyjs-bootstrap-base,
+    .notifyjs-bootstrap-success,
+    .notifyjs-bootstrap-warn,
+    .notifyjs-bootstrap-error {
+        max-width: 40vw !important;
+        min-height: 30px;
+        padding: 2px;
+        word-break: break-word !important;
+    }
+    .notifyjs-corner{
+        min-height: 30px;
+        font-size: 12px;
+    }
+
+    .notifyjs-bootstrap-base span{
+        min-height: 30px;
+        max-width: 40vw;
+        padding: 2px;
+        word-break: break-word;
+
+    }
+    [data-notify-text], [data-notify-html] {
+        white-space: break-spaces !important;
+        position: relative;
+        max-width: 40vw !important;
+        word-break: break-word;
+    }
+
 }
 
 #center, #workspace_center {
