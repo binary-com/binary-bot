@@ -51,6 +51,7 @@ import Footer from './deriv/layout/Footer';
 import Header from './deriv/layout/Header';
 import Main from './deriv/layout/Main';
 import store from './deriv/store';
+import SidebarToggler from './deriv/components/SidebarToggler';
 
 let realityCheckTimeout;
 let chart;
@@ -825,4 +826,5 @@ function renderReactComponents() {
         </Provider>,
         document.getElementById('logTable')
     );
+    ReactDOM.render(<SidebarToggler />, document.getElementById('sidebar-toggler'));
 }
