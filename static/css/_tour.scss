@@ -49,3 +49,14 @@ $joyride-tooltip-width: (15em, 20em, 20em);
         background-color: #dedede;
     }
 }
+
+.button-secondary {
+    span {
+        margin-bottom: 0.5em;
+        margin-right: 0.5em;
+    }
+}
+
+.joyride-beacon {
+    display: none;
+}
