@@ -1,10 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import { TrackJS } from 'trackjs';
 import 'jquery-ui/ui/widgets/dialog';
 import 'notifyjs-browser';
 import View from './View';
+import { trackjs_config } from './trackJs_config';
 import '../../common/binary-ui/dropdown';
 import GTM from '../../common/gtm';
-import { isProduction, parseQueryString } from '../../common/utils/tools';
+import { parseQueryString } from '../../common/utils/tools';
 import endpoint from '../../indexPage/endpoint';
 import { queryToObjectArray, addTokenIfValid, AppConstants } from '../../common/appId';
 import {
@@ -19,18 +21,7 @@ $.ajaxSetup({
     cache: false,
 });
 
-// eslint-disable-next-line no-underscore-dangle
-window._trackJs = {
-    token: '346262e7ffef497d85874322fff3bbf8',
-    application: 'binary-bot',
-    enabled: isProduction(),
-    console: {
-        display: false,
-    },
-};
-
-// Should stay below the window._trackJs config
-require('trackjs');
+TrackJS.install(trackjs_config);
 
 loginCheck().then(() => {
     const view = new View();
@@ -40,7 +31,7 @@ loginCheck().then(() => {
         $('.barspinner').hide();
         window.dispatchEvent(new Event('resize'));
         GTM.init();
-        trackJs.configure({
+        TrackJS.configure({
             userId: $('.account-id')
                 .first()
                 .text(),
