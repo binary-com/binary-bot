@@ -18,6 +18,23 @@ const ToolBox = ({ blockly }) => {
   const [show_modal, updateShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
 
+  React.useEffect(() => {
+    document.body.addEventListener("keydown", (e) => {
+      if (e.which === 189 && e.ctrlKey) {
+        // Ctrl + -
+        blockly.zoomOnPlusMinus(false);
+        e.preventDefault();
+        return;
+      }
+      if (e.which === 187 && e.ctrlKey) {
+        // Ctrl + +
+        blockly.zoomOnPlusMinus(true);
+        e.preventDefault();
+        return;
+      }
+    });
+  }, []);
+
   const onCloseModal = () => {
     updateSelectedModal("");
     updateShowModal(false);

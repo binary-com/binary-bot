@@ -670,21 +670,6 @@ export default class View {
         $('#statement-reality-check').click(() => {
             document.location = `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`;
         });
-        $(document).keydown(e => {
-            if (e.which === 189) {
-                // Ctrl + -
-                if (e.ctrlKey) {
-                    this.blockly.zoomOnPlusMinus(false);
-                    e.preventDefault();
-                }
-            } else if (e.which === 187) {
-                // Ctrl + +
-                if (e.ctrlKey) {
-                    this.blockly.zoomOnPlusMinus(true);
-                    e.preventDefault();
-                }
-            }
-        });
     }
     stop() {
         this.blockly.stop();
