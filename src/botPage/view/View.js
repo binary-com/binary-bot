@@ -612,33 +612,6 @@ export default class View {
             $('#stopButton').trigger('click');
         });
 
-        $('#resetButton').click(() => {
-            let dialogText;
-            if (this.blockly.hasStarted()) {
-                dialogText = [
-                    translate(
-                        'Binary Bot will not place any new trades. Any trades already placed (but not expired) will be completed by our system. Any unsaved changes will be lost.'
-                    ),
-                    translate(
-                        'Note: Please see the Binary.com statement page for details of all confirmed transactions.'
-                    ),
-                ];
-            } else {
-                dialogText = [translate('Any unsaved changes will be lost.')];
-            }
-            showDialog({
-                title: translate('Are you sure?'),
-                text: dialogText,
-                className: 'reset-dialog',
-            })
-                .then(() => {
-                    this.stop();
-                    this.blockly.resetWorkspace();
-                    setTimeout(() => this.blockly.cleanUp(), 0);
-                })
-                .catch(() => {});
-        });
-
         globalObserver.register('ui.switch_account', token => {
             showDialog({
                 title: translate('Are you sure?'),

@@ -4,6 +4,7 @@ import Modal from "../../components/modal";
 import { translate } from "../../../../../common/i18n";
 import Load from "./components/load";
 import Save from "./components/save";
+import Reset from "./components/reset";
 
 const ShowModal = ({ modal, onClose, class_name }) => {
   if (!modal) return;
@@ -62,10 +63,24 @@ const ToolBox = ({ blockly }) => {
         },
       },
     },
+    reset: {
+      component: Reset,
+      title: translate("Are you sure?"),
+      props: {
+        onCloseModal,
+        blockly,
+      },
+    },
   };
   return (
     <div id="toolbox">
-      <button id="resetButton" className="toolbox-button icon-reset"></button>
+      <button
+        id="resetButton"
+        className="toolbox-button icon-reset"
+        onClick={() => {
+          onShowModal("reset");
+        }}
+      ></button>
       <button
         id="load-xml"
         className="toolbox-button icon-browse"

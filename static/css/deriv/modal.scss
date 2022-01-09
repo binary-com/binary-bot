@@ -59,5 +59,23 @@
             margin: 1em 0;
         }
     }
-
+    &-reset{
+        & .modal__container{
+            width: 600px;
+        }
+        & .reset__footer{
+            border-top:1px solid #ddd;
+            margin-top: 0.5em;
+            padding: 0.8em 1em 0.5em 0.4em;
+            width: 100%;
+            display:flex;
+            justify-content: end;
+            & button{
+                height: 40px;
+                margin: 5px;
+                float: right;
+            }
+        }
+    }
+    
 }
