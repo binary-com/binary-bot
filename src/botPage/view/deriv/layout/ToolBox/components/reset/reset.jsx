@@ -7,6 +7,7 @@ const Reset = ({ blockly, onCloseModal }) => {
     blockly.stop();
     blockly.resetWorkspace();
     setTimeout(() => blockly.cleanUp(), 0);
+    onCloseModal();
   };
   return (
     <div className="reset_component">
