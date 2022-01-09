@@ -66,10 +66,12 @@ export default class ActiveSymbols {
         parseSubmarkets();
         parseSymbols();
     }
+
     /* eslint-disable class-methods-use-this */
     getMarkets() {
         return parsedMarkets;
     }
+    
     getSymbols() {
         return parsedSymbols;
     }

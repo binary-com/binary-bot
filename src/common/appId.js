@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { LiveApi } from 'binary-live-api';
 import {
     addToken,
@@ -6,12 +7,13 @@ import {
     removeAllTokens,
     get as getStorage,
     set as setStorage,
-} from '../common/utils/storageManager';
-import { parseQueryString, isProduction, getExtension } from '../common/utils/tools';
+} from './utils/storageManager';
+import { parseQueryString, isProduction, getExtension } from './utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 import Elevio from './elevio';
 import GTM from './gtm';
+/* eslint-enable */
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
@@ -83,7 +85,8 @@ const generateOAuthDomain = () => {
     const endpointUrl = getCustomEndpoint().url;
     if (endpointUrl) {
         return endpointUrl;
-    } else if (isProduction()) {
+    }
+    if (isProduction()) {
         return `oauth.binary.${getExtension()}`;
     }
     return 'oauth.binary.com';
@@ -108,7 +111,9 @@ const options = {
 
 export const generateLiveApiInstance = () => new LiveApi(options);
 
+/* eslint-disable */
 export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
+/* eslint-enable */
 
 export async function addTokenIfValid(token, tokenObjectList) {
     const api = generateLiveApiInstance();
@@ -118,7 +123,7 @@ export async function addTokenIfValid(token, tokenObjectList) {
         const {
             landing_company_details: { has_reality_check: hasRealityCheck },
         } = await api.getLandingCompanyDetails(lcName);
-        addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
+        addToken(authorize, token, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
         const { account_list: accountList } = authorize;
         if (accountList.length > 1) {
@@ -126,7 +131,7 @@ export async function addTokenIfValid(token, tokenObjectList) {
                 if (tokenObject.token !== token) {
                     const account = accountList.filter(o => o.loginid === tokenObject.accountName);
                     if (account.length) {
-                        addToken(tokenObject.token, account[0], false, false);
+                        addToken(account[0], tokenObject.token, false, false);
                     }
                 }
             });

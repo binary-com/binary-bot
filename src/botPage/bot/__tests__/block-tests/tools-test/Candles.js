@@ -6,7 +6,6 @@ describe('Candle Blocks in tools', () => {
 
     beforeAll(done => {
         runAndGetResult(
-            undefined,
             `
       var ohlc = Bot.getOhlc();
       result.ohlc = Bot.candleValues(ohlc, 'open')

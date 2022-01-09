@@ -19,6 +19,7 @@ export default Interface =>
                 macda: (input, config, field) => this.decorate(macda, input, config).map(r => r[field]),
             };
         }
+        
         decorate(f, input, config, ...args) {
             const pipSize = this.tradeEngine.getPipSize();
 

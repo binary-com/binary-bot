@@ -8,6 +8,7 @@ export default class Summary extends Component {
         super();
         this.state = { [accountID]: {} };
     }
+
     componentWillMount() {
         globalObserver.register('bot.info', info => {
             const { accountID } = info;
@@ -18,6 +19,7 @@ export default class Summary extends Component {
             this.setState({ [accountID]: {} });
         });
     }
+    
     render() {
         const { accountID } = this.props;
 

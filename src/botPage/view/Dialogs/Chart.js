@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
     ChartMode,
     DrawTools,
@@ -14,6 +15,7 @@ import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { getLanguage } from '../../../common/lang';
+/* eslint-enable */
 
 setSmartChartsPublicPath('./js/');
 
@@ -72,10 +74,12 @@ class ChartContent extends PureComponent {
         });
     }
 
+    /* eslint-disable */
     getKey = request => {
         const key = `${request.ticks_history}-${request.granularity}`;
         return key;
     };
+    /* eslint-enable */
 
     requestAPI(data) {
         return this.ticksService.api.send(data);
@@ -115,7 +119,9 @@ class ChartContent extends PureComponent {
         delete this.listeners[requsestKey];
     }
 
+    /* eslint-disable */
     renderTopWidgets = () => <span />;
+    /* eslint-enable */
 
     renderToolbarWidgets = () => (
         <ToolbarWidget>

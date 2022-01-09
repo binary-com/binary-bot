@@ -112,10 +112,12 @@ export const shouldThrowError = (error, types = [], delayIndex = 0) => {
         // If auth error, reload page.
         window.location.reload();
         return true;
-    } else if (!errors.includes(error.name)) {
+    }
+    if (!errors.includes(error.name)) {
         // If error is unrecoverable, throw error.
         return true;
-    } else if (error.name !== 'DisconnectError' && delayIndex > maxRetries) {
+    }
+    if (error.name !== 'DisconnectError' && delayIndex > maxRetries) {
         // If exceeded maxRetries, throw error.
         return true;
     }
@@ -138,7 +140,9 @@ export const recoverFromError = (f, r, types, delayIndex) =>
                 return;
             }
 
+            /* eslint-disable */
             r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delayIndex))));
+            /* eslint-enable */
         });
     });
 

@@ -57,6 +57,7 @@ export default class TradeTable extends Component {
             { key: 'contract_status', width: 90, resizable: true, name: translate('Status'), formatter: StatusFormat },
         ];
     }
+
     static getTradeObject(contract) {
         const tradeObj = {
             ...contract,
@@ -137,8 +138,11 @@ export default class TradeTable extends Component {
         let settled = false;
         let delay = 3000;
 
+        /* eslint-disable */
         const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay));
+        /* eslint-enable */
 
+        /* eslint-disable no-await-in-loop */
         while (!settled) {
             await sleep();
 
@@ -158,6 +162,8 @@ export default class TradeTable extends Component {
                 delay *= 1.5;
             }
         }
+        /* eslint-enable no-await-in-loop */
+
     }
 
     refreshContract(api, contractID) {
@@ -224,6 +230,7 @@ export default class TradeTable extends Component {
         });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
+
     getAccountStat(accountID) {
         if (!(accountID in this.state)) {
             const initialInfo = this.state.initial;
@@ -232,6 +239,7 @@ export default class TradeTable extends Component {
         }
         return this.state[accountID];
     }
+
     render() {
         const { accountID } = this.props;
         const rows = accountID in this.state ? this.state[accountID].rows : [];

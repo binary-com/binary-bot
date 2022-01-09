@@ -5,7 +5,6 @@ describe('After Purchase Blocks', () => {
 
     beforeAll(done => {
         runAndGetResult(
-            undefined,
             `
       ${parts.waitToPurchase}
       ${parts.waitToSell}

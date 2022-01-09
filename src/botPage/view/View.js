@@ -407,11 +407,13 @@ export default class View {
                 handleFileSelect(ev);
             });
     }
+
     setElementActions() {
         this.setFileBrowser();
         this.addBindings();
         this.addEventHandlers();
     }
+
     addBindings() {
         const stop = e => {
             if (e) {
@@ -726,11 +728,13 @@ export default class View {
             }
         });
     }
+
     stop() {
         if (this.blockly) {
             this.blockly.stop();
         }
     }
+
     addEventHandlers() {
         const getRunButtonElements = () => document.querySelectorAll('#runButton, #summaryRunButton');
         const getStopButtonElements = () => document.querySelectorAll('#stopButton, #summaryStopButton');
@@ -796,6 +800,8 @@ export default class View {
             }
         });
     }
+
+    /* eslint-disable */
     showHeader = show => {
         const $header = $('#header');
         const $topbarAccount = $('#toolbox-account');
@@ -812,6 +818,7 @@ export default class View {
         setStorage('showHeader', show);
         window.dispatchEvent(new Event('resize'));
     };
+    /* eslint-disable */
 }
 
 function initRealityCheck(stopCallback) {

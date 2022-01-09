@@ -84,8 +84,13 @@ export default Engine =>
                 delayIndex++
             ).then(onSuccess);
         }
+
+        /* eslint-disable */
         getPurchaseReference = () => purchaseReference;
+  
+        
         regeneratePurchaseReference = () => {
             purchaseReference = getUUID();
         };
+        /* eslint-enable */
     };

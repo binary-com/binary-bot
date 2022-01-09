@@ -5,7 +5,7 @@ const initialState = {
     proposalsReady: false,
 };
 
-const signal = (state = initialState, action) => {
+const signal = (action, state = initialState) => {
     switch (action.type) {
         case constants.START:
             return {

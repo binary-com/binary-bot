@@ -20,6 +20,7 @@ class Tour extends PureComponent {
             steps: welcome,
         };
     }
+
     componentWillMount() {
         if (window) {
             window.tour = {
@@ -35,6 +36,7 @@ class Tour extends PureComponent {
             };
         }
     }
+    
     render() {
         const callback = data => {
             // Scroll to highlighted element (req for Safari)

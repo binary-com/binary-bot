@@ -49,7 +49,7 @@ export const parts = {
 
 export const run = code => createInterpreter().run(code);
 
-export const runAndGetResult = (initCode = '', code) =>
+export const runAndGetResult = (code, initCode = '') =>
     new Promise(r => {
         run(
             `

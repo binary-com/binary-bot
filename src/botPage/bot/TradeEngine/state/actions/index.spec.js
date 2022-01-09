@@ -1,5 +1,5 @@
 import * as constants from '../constants';
-import * as actions from './';
+import * as actions from '.';
 
 const getDispatchFromAction = ({ action, state }) => {
     const dispatch = jest.fn();

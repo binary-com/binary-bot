@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
@@ -7,6 +8,7 @@ import { translate } from '../../../common/i18n';
 import googleDrive from '../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/utils/tools';
+/* eslint-enable max-classes-per-file */
 
 class SaveContent extends PureComponent {
     constructor() {

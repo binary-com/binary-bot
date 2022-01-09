@@ -46,11 +46,13 @@ export default Engine =>
                 }
             });
         }
+
         waitForAfter() {
             return new Promise(resolve => {
                 this.afterPromise = resolve;
             });
         }
+
         subscribeToOpenContract(contractId = this.contractId) {
             if (this.contractId !== contractId) {
                 this.resetSubscriptionTimeout();
@@ -66,6 +68,7 @@ export default Engine =>
                 observer.emit('Error', error);
             });
         }
+
         resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {
             this.cancelSubscriptionTimeout();
             this.subscriptionTimeout = setInterval(() => {
@@ -73,9 +76,11 @@ export default Engine =>
                 this.resetSubscriptionTimeout(timeout);
             }, timeout * 1000);
         }
+
         cancelSubscriptionTimeout() {
             clearTimeout(this.subscriptionTimeout);
         }
+
         setContractFlags(contract) {
             const {
                 is_expired: isExpired,
@@ -92,9 +97,11 @@ export default Engine =>
 
             this.hasEntryTick = Boolean(entryTick);
         }
+
         expectedContractId(contractId) {
             return this.contractId && contractId === this.contractId;
         }
+        
         getSellPrice() {
             const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.contract;
             return Number(roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) }));

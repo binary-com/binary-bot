@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Dialog from './Dialog';
@@ -5,7 +6,7 @@ import * as style from '../style';
 import { translate } from '../../../common/i18n';
 import googleDrive from '../../../common/integrations/GoogleDrive';
 import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/utils/tools';
-
+/* eslint-enable max-classes-per-file */
 class LoadContent extends PureComponent {
     constructor() {
         super();

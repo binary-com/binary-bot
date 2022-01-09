@@ -5,7 +5,6 @@ describe('Before Purchase Blocks', () => {
 
     beforeAll(done => {
         runAndGetResult(
-            undefined,
             `
       watch('before');
       result.payout = Bot.getPayout('CALL');

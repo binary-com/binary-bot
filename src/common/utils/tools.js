@@ -1,5 +1,7 @@
+/* eslint-disable */
 import { getLanguage } from '../../common/lang';
-import AppIdMap from '../../common/appIdResolver';
+/* eslint-enable */
+import AppIdMap from '../appIdResolver';
 
 export const parseQueryString = () => {
     if (typeof window === 'undefined') {
@@ -7,9 +9,11 @@ export const parseQueryString = () => {
     }
     const str = window.location.search;
     const objURL = {};
+    /* eslint-disable */
     str.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
         objURL[a1] = a3;
     });
+    /* eslint-enable */
     return objURL;
 };
 

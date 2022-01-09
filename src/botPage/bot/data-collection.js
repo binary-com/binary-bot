@@ -16,14 +16,23 @@ export default class DataCollection {
     }
 
     IS_PENDING = false;
+
     IS_PROCESSED = true;
+
     endpoint = 'https://dbot-conf-dot-business-intelligence-240201.df.r.appspot.com/dbotconf';
+    
     loginid;
+    
     runId = '';
+    
     runStart = 0;
+    
     shouldPostXml = true;
+    
     strategyContent = '';
+    
     transactionIds = {};
+    
     workspace;
 
     async trackRun() {
@@ -94,6 +103,7 @@ export default class DataCollection {
         this.strategyContent = strategyContent;
     }
 
+    /* eslint-disable */
     cleanXmlDom = xmlDom => {
         const uselessAttributes = ['x', 'y'];
         const updatedDom = xmlDom;
@@ -129,7 +139,8 @@ export default class DataCollection {
             date.getUTCMinutes(),
             date.getUTCMinutes()
         );
-
+        /* eslint-enable */
+        
         return Math.floor(utcDate / 1000);
     };
 }

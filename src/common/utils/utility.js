@@ -1,5 +1,7 @@
+/* eslint-disable */
 import { generateLiveApiInstance } from '../../common/appId';
-import { getTokenList } from '../../common/utils/storageManager';
+/* eslint-enable */
+import { getTokenList } from './storageManager';
 
 const euCountries = [
     'it',

@@ -1,4 +1,6 @@
+/* eslint-disable */
 import { oppositesToDropdown } from '../utils';
+/* eslint-enable */
 import { symbolApi } from '../../shared';
 import config from '../../../common/const';
 import { generateLiveApiInstance } from '../../../../common/appId';
@@ -357,7 +359,9 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
     const category = getContractCategory(selectedContractType);
     const contractsForContractCategory = filterContractsByCategory(contracts, category, selectedContractType);
 
+    /* eslint-disable */
     const offsetRegex = new RegExp('^[-|+]([0-9]+.[0-9]+)$');
+    /* eslint-enable */
     const isOffset = input => input && offsetRegex.test(input.toString());
 
     if (contractsForContractCategory) {
