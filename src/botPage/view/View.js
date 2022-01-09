@@ -45,11 +45,9 @@ import {
 } from './blockly/utils';
 
 // Deriv components
-import Footer from './deriv/layout/Footer';
 import Header from './deriv/layout/Header';
 import Main from './deriv/layout/Main';
 import store from './deriv/store';
-import ToolBox from './deriv/layout/ToolBox';
 
 let realityCheckTimeout;
 let chart;
@@ -734,21 +732,9 @@ function renderReactComponents(blockly) {
     );
     ReactDOM.render(
         <Provider store={store}>
-            <ToolBox blockly={blockly} />
-        </Provider>,
-        document.getElementById('toolbox-wrapper')
-    );
-    ReactDOM.render(
-        <Provider store={store}>
-            <Main clientInfo={clientInfo} api={api} />
+            <Main clientInfo={clientInfo} api={api} blockly={blockly} />
         </Provider>,
         document.getElementById('main')
-    );
-    ReactDOM.render(
-        <Provider store={store}>
-            <Footer api={api} />
-        </Provider>,
-        document.getElementById('footer')
     );
     ReactDOM.render(
         <Provider store={store}>
