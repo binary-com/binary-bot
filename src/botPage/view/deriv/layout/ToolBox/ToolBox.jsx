@@ -128,7 +128,7 @@ const ToolBox = ({ blockly }) => {
         className="toolbox-button icon-sort"
         onClick={() => blockly.cleanUp()}
       ></button>
-
+      {/* Needs Refactor ClientInfo Structure */}
       <span className="toolbox-separator"></span>
       <button id="showSummary" className="toolbox-button icon-summary"></button>
       <button id="runButton" className="toolbox-button icon-run"></button>
@@ -136,6 +136,7 @@ const ToolBox = ({ blockly }) => {
       <button id="logButton" className="toolbox-button icon-info"></button>
 
       <span className="toolbox-separator"></span>
+      {/* Needs resizeable modal */}
       <button
         id="chartButton"
         className="toolbox-button icon-chart-line"
