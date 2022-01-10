@@ -104,7 +104,7 @@
   },
   "dependencies": {
     "@deriv/deriv-charts": "^0.5.0",
-    "@reduxjs/toolkit": "^1.6.2",
+    "@reduxjs/toolkit": "^1.7.1",
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
     "commander": "^8.3.0",
@@ -118,7 +118,7 @@
     "pako": "^2.0.4",
     "react-redux": "^7.2.6",
     "react-render-html": "^0.6.0",
-    "react-tiny-popover": "^7.0.0",
+    "react-tiny-popover": "^7.0.1",
     "react-transition-group": "^4.4.2"
   }
 }
