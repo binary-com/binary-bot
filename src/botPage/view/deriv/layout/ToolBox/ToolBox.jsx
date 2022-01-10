@@ -7,7 +7,7 @@ import Save from "./components/save";
 import Reset from "./components/reset";
 
 const ShowModal = ({ modal, onClose, class_name }) => {
-  if (!modal) return;
+  if (!modal) return ;
   const { component: Component, props, title } = modal;
   return (
     <Modal onClose={onClose} title={title} class_name={class_name}>
@@ -39,12 +39,12 @@ const ToolBox = ({ blockly }) => {
   }, []);
 
   const onCloseModal = () => {
-    updateSelectedModal("");
     setShowModal(false);
+    updateSelectedModal("");
   };
   const onShowModal = (modal) => {
-    updateSelectedModal(modal);
     setShowModal(true);
+    updateSelectedModal(modal);
   };
   const MODALS = {
     load: {
