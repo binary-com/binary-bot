@@ -48,7 +48,7 @@ export const translate = (input, params = []) => {
                 translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
             }
         });
-        return RenderHTML(translatedString || '');
+        return RenderHTML(translatedString);
     }
     return i18nTranslate(input);
 };
