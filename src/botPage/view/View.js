@@ -51,7 +51,6 @@ import Footer from './deriv/layout/Footer';
 import Header from './deriv/layout/Header';
 import Main from './deriv/layout/Main';
 import store from './deriv/store';
-import SidebarToggle from './deriv/components/SidebarToggle';
 
 let realityCheckTimeout;
 let chart;

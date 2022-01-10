@@ -1,6 +1,6 @@
 import React from 'react';
-import { isMobile } from '../../../../../common/utils/tools';
 import cn from 'classnames';
+import { isMobile } from '../../../../../common/utils/tools';
 
 const SidebarToggle = () => {
     const toggleRef = React.useRef();
