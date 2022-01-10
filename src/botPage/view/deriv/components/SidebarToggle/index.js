@@ -18,10 +18,10 @@ const SidebarToggle = () => {
     React.useEffect(() => {
         const blockly_toolbox = document.getElementsByClassName('blocklyToolboxDiv')?.[0];
         if (blockly_toolbox) {
-            if (!is_open) {
-                blockly_toolbox.classList.remove('open');
+            if (is_open) {
+                blockly_toolbox.classList.add('blocklyToolboxDiv__toolbox-open');
             } else {
-                blockly_toolbox.classList.add('open');
+                blockly_toolbox.classList.remove('blocklyToolboxDiv__toolbox-open');
             }
         }
     }, [is_open]);
@@ -29,7 +29,7 @@ const SidebarToggle = () => {
     return (
         <div
             id="sidebar-toggle-action"
-            className={classNames({ open: is_open })}
+            className={classNames('collapse-toolbox', { 'collapse-toolbox__collapse-open': is_open })}
             ref={toggle_ref}
             onClick={() => setOpen(!is_open)}
         >
