@@ -1,4 +1,5 @@
-@import "./devices.scss";
+@import "devices";
+@import 'color';
 
 .modal {
     position: fixed;
@@ -14,9 +15,9 @@
     &__container {
         width: 25em;
         height: auto;
-        background: #ffffff;
+        background: $white;
         border: 1px solid #ddd;
-        background: #fff;
+        background: $white;
         color: #333;
         padding: 5px;
         border-radius: 3px;
@@ -28,7 +29,7 @@
         border: 1px solid #2a3052;
         border-bottom-right-radius: 3px;
         background: #2a3052;
-        color: #fff;
+        color: $white;
         font-family: roboto, sans-serif;
         font-weight: 400;
         padding: 0.4em;
@@ -45,7 +46,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                color: #ffffff;
+                color: $white;
                 padding:0;
                 &::after {
                     content: "\00d7";

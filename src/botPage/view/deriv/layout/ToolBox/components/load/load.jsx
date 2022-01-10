@@ -9,7 +9,7 @@ import {
 } from "../../../../../../../common/utils/tools";
 
 
-// Needs to refactor to functional componnennt
+// [To Do]: Needs to refactor to functional componnennt
 export default class Load extends PureComponent {
   constructor() {
     super();

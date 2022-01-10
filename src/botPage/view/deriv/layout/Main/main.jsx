@@ -11,17 +11,17 @@ import Footer from "../Footer";
 import ToolBox from "../ToolBox";
 
 const Main = ({api, blockly}) => {
-  const { show_tour } = useSelector((state) => state.ui);
+  const { should_show_tour } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   React.useEffect(() => {
-    const day_has_passed =
+    const days_passed =
       Date.now() >
       (parseInt(getStorage("closedTourPopup")) || 0) + 24 * 60 * 60 * 1000;
-    dispatch(updateShowTour(isDone("welcomeFinished") || day_has_passed));
+    dispatch(updateShowTour(isDone("welcomeFinished") || days_passed));
   }, []);
   return (
     <div className="main">
-      {show_tour && <Tour />}
+      {should_show_tour && <Tour />}
       <ToolBox blockly={blockly} />
       <Footer api={api} />
     </div>

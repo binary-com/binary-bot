@@ -27,7 +27,7 @@ const Reset = ({ blockly, onCloseModal }) => {
       ) : (
         <p>{translate("Any unsaved changes will be lost.")}</p>
       )}
-      <span className="separator"></span>
+      <span className="separator"/>
       <div className="reset__footer">
         <button className="button-secondary" onClick={onCloseModal}>
           {translate("No")}

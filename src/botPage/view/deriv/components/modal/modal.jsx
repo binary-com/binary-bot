@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classNames from 'classnames';
 
 const Modal = ({ children, title, onClose, action, class_name }) => {
@@ -17,5 +18,13 @@ const Modal = ({ children, title, onClose, action, class_name }) => {
     </div>
   );
 };
+
+Modal.propTypes = {
+  action: PropTypes.any,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  class_name: PropTypes.string,
+  onClose: PropTypes.func,
+  title: PropTypes.string,
+}
 
 export default Modal;
