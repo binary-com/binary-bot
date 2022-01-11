@@ -22,7 +22,11 @@ export default class Save extends PureComponent {
         const filename = $(this.filename).val() || 'binary-bot';
         const collection = $(this.isCollection).prop('checked');
 
-        if (this.state.saveType === 'google-drive') {
+        if (this.state.saveType === 'local') {
+            this.props.blockly.save({filename,collection,})
+            this.props.closeDialog();
+            return;
+        }
             const initialButtonText = $(this.submitButton).text();
             showSpinnerInButton($(this.submitButton));
 
@@ -46,12 +50,6 @@ export default class Save extends PureComponent {
                 .catch(() => {
                     removeSpinnerInButton($(this.submitButton), initialButtonText);
                 });
-        } else {
-            this.props.onSave({
-                filename,
-                collection,
-            });
-        }
     }
 
     onChange(event) {

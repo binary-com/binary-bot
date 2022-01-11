@@ -51,18 +51,15 @@ const ToolBox = ({ blockly }) => {
       component: Load,
       title: translate("Load Blocks"),
       props: {
-        closeDialog: () => {
-          onCloseModal;
-        },
+        closeDialog: onCloseModal,
       },
     },
     save: {
       component: Save,
       title: translate("Save Blocks"),
       props: {
-        closeDialog: () => {
-          onCloseModal;
-        },
+        closeDialog: onCloseModal,
+      blockly,
       },
     },
     reset: {
