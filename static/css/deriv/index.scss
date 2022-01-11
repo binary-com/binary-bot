@@ -28,7 +28,7 @@ a:hover {
 .ui-dialog[aria-describedby="summaryPanel"] {
   @include mobile {
     width: 100vw !important;
-    height: 100vh !important;
+    height: auto !important;
     top: 0;
     left: 0;
   }
