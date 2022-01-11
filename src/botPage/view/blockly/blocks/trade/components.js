@@ -74,9 +74,7 @@ export const payout = block => {
 
         if (isLoggedInDeriv()) {
             const activeAccount = getActiveAccount();
-            setTimeout(() => {
-                amountInput.appendField(activeAccount.currency, 'CURRENCY_LIST');
-            }, 0);
+            amountInput.appendField(activeAccount.currency, 'CURRENCY_LIST');
         } else {
             amountInput.appendField(config.lists.CURRENCY[0][0], 'CURRENCY_LIST');
         }
