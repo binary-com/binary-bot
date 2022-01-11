@@ -9,7 +9,6 @@ import IntegrationsDialog from './Dialogs/IntegrationsDialog';
 import TradingView from './Dialogs/TradingView';
 import logHandler from './logger';
 import LogTable from './LogTable';
-import NetworkMonitor from './NetworkMonitor';
 import { symbolPromise } from './shared';
 import TradeInfoPanel from './TradeInfoPanel';
 import { showDialog } from '../bot/tools';
@@ -54,22 +53,6 @@ let chart;
 const clientInfo = {};
 
 const api = generateLiveApiInstance();
-
-new NetworkMonitor(api, $('#server-status')); // eslint-disable-line no-new
-
-api.send({ website_status: '1', subscribe: 1 });
-
-api.events.on('website_status', response => {
-    $('.web-status').trigger('notify-hide');
-    const { message } = response.website_status;
-    if (message) {
-        $.notify(message, {
-            position: 'bottom left',
-            autoHide: false,
-            className: 'warn web-status',
-        });
-    }
-});
 
 api.events.on('balance', response => {
     if (response.balance.accounts) {
