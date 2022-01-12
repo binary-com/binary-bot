@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import Tour from '../../../tour'
 import { get as getStorage, isDone } from '../../../../../common/utils/storageManager';
 import {updateShowTour} from '../../store/ui-slice';
+import SidebarToggle from '../../components/SidebarToggle';
 
 const Main = ()=>{
     const {show_tour} = useSelector(state => state.ui);
@@ -13,7 +14,8 @@ const Main = ()=>{
     },[])
     return(
         <div className="main">
-            {show_tour && <Tour/>}
+            <SidebarToggle />
+            {show_tour && <Tour />}
         </div>
     )
 }
