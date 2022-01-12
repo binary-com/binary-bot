@@ -1,32 +1,42 @@
 import React, { useState } from 'react';
-import Joyride, { STATUS, ACTIONS } from 'react-joyride';
+import Joyride, { STATUS, ACTIONS, EVENTS } from 'react-joyride';
 import {
     set as setStorage,
     get as getStorage,
 } from '../../../common/utils/storageManager';
 import { translate } from '../../../common/i18n';
-import welcome from './welcome';
+import welcome from './welcome.jsx';
 import { isMobile } from '../../../common/utils/tools';
 
-// const setDoneCheck = () => {
-//     const doNotAskCheck = document.getElementById('do-not-ask-me-again');
-//     if (doNotAskCheck && doNotAskCheck.checked) {
-//         setDone('welcomeFinished');
-//         return true;
-//     }
-//     return false;
-// };
 
 const Tour = () => {
-    const [run, setRun] = useState(!getStorage('closedTourPopup'));
-    const [steps, setSteps] = useState([]);
+    const[run, setRun] = useState(!getStorage('closedTourPopup'));
+    const[stepIndex, setStepIndex] = useState(0);
 
-    React.useEffect(()=>{
-        setSteps(welcome);
-    },[])
+    const closeTourPermanently = () => {
+        // e.preventDefault();
+        setStorage('closedTourPopup', Date.now());
+        setRun(false);
+    };
+    const continueTour = (is_checked) => {
+        // e.preventDefault();
+        console.log('is_checked.',is_checked);
+        if(is_checked){
+            setStorage('closedTourPopup', Date.now());
+        }
+        setStepIndex(stepIndex + 1);
+        console.log('stepindex', stepIndex);
+    };
+
+    const steps = welcome(closeTourPermanently, continueTour);
 
     const callback = (data) => {
-        const { action, status } = data;
+        console.log('dataaaa:', data);
+        const { action, index, status , type} = data;
+
+        if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
+            setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1));
+        }
         if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
             setRun(false);
             setStorage('closedTourPopup', Date.now());
@@ -45,13 +55,9 @@ const Tour = () => {
                 disableOverlayClicks={true}
                 continuous={true}
                 locale={{
-                    next: translate('Next'),
-                    back: translate('Back'),
                     last: translate('Done'),
                 }}
-                ref={(e) => {
-                    this.joyride = e;
-                }}
+                stepIndex={stepIndex}
                 steps={steps}
                 callback={callback}
                 styles={{
