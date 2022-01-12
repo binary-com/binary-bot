@@ -9,6 +9,8 @@ import {
 import { updateShowTour } from "../../store/ui-slice";
 import Footer from "../Footer";
 import ToolBox from "../ToolBox";
+import SidebarToggle from '../../components/SidebarToggle';
+
 
 const Main = ({api, blockly}) => {
   const { should_show_tour } = useSelector((state) => state.ui);
@@ -23,6 +25,7 @@ const Main = ({api, blockly}) => {
     <div className="main">
       {should_show_tour && <Tour />}
       <ToolBox blockly={blockly} />
+      <SidebarToggle />
       <Footer api={api} />
     </div>
   );
@@ -31,5 +34,6 @@ const Main = ({api, blockly}) => {
 Main.propTypes = {
     api: PropTypes.object.isRequired,
     blockly: PropTypes.object.isRequired,
-}
+  }
 export default Main;
+
