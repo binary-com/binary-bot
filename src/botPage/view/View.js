@@ -6,8 +6,6 @@ import _Blockly, { load } from './blockly';
 import Chart from './Dialogs/Chart';
 import Limits from './Dialogs/Limits';
 import IntegrationsDialog from './Dialogs/IntegrationsDialog';
-import LoadDialog from './Dialogs/LoadDialog';
-import SaveDialog from './Dialogs/SaveDialog';
 import TradingView from './Dialogs/TradingView';
 import logHandler from './logger';
 import LogTable from './LogTable';
@@ -46,7 +44,6 @@ import {
 } from './blockly/utils';
 
 // Deriv components
-import Footer from './deriv/layout/Footer';
 import Header from './deriv/layout/Header';
 import Main from './deriv/layout/Main';
 import store from './deriv/store';
@@ -166,8 +163,6 @@ const clearRealityCheck = () => {
 };
 
 const integrationsDialog = new IntegrationsDialog();
-const loadDialog = new LoadDialog();
-const saveDialog = new SaveDialog();
 
 const getActiveToken = (tokenList, activeToken) => {
     const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
@@ -298,8 +293,8 @@ export default class View {
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
                         initRealityCheck(() => $('#stopButton').triggerHandler('click'));
+                        renderReactComponents(this.blockly);
                         applyToolboxPermissions();
-                        renderReactComponents();
                         this.setElementActions();
                         resolve();
                     });
@@ -452,30 +447,6 @@ export default class View {
 
         $('#integrations').click(() => integrationsDialog.open());
 
-        $('#load-xml').click(() => loadDialog.open());
-
-        $('#save-xml').click(() => saveDialog.save().then(arg => this.blockly.save(arg)));
-
-        $('#undo').click(() => {
-            this.blockly.undo();
-        });
-
-        $('#redo').click(() => {
-            this.blockly.redo();
-        });
-
-        $('#zoomIn').click(() => {
-            this.blockly.zoomOnPlusMinus(true);
-        });
-
-        $('#zoomOut').click(() => {
-            this.blockly.zoomOnPlusMinus(false);
-        });
-
-        $('#rearrange').click(() => {
-            this.blockly.cleanUp();
-        });
-
         $('#chartButton').click(() => {
             if (!chart) {
                 chart = new Chart(api);
@@ -622,33 +593,6 @@ export default class View {
             $('#stopButton').trigger('click');
         });
 
-        $('#resetButton').click(() => {
-            let dialogText;
-            if (this.blockly.hasStarted()) {
-                dialogText = [
-                    translate(
-                        'Binary Bot will not place any new trades. Any trades already placed (but not expired) will be completed by our system. Any unsaved changes will be lost.'
-                    ),
-                    translate(
-                        'Note: Please see the Binary.com statement page for details of all confirmed transactions.'
-                    ),
-                ];
-            } else {
-                dialogText = [translate('Any unsaved changes will be lost.')];
-            }
-            showDialog({
-                title: translate('Are you sure?'),
-                text: dialogText,
-                className: 'reset-dialog',
-            })
-                .then(() => {
-                    this.stop();
-                    this.blockly.resetWorkspace();
-                    setTimeout(() => this.blockly.cleanUp(), 0);
-                })
-                .catch(() => {});
-        });
-
         globalObserver.register('ui.switch_account', token => {
             showDialog({
                 title: translate('Are you sure?'),
@@ -679,21 +623,6 @@ export default class View {
 
         $('#statement-reality-check').click(() => {
             document.location = `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`;
-        });
-        $(document).keydown(e => {
-            if (e.which === 189) {
-                // Ctrl + -
-                if (e.ctrlKey) {
-                    this.blockly.zoomOnPlusMinus(false);
-                    e.preventDefault();
-                }
-            } else if (e.which === 187) {
-                // Ctrl + +
-                if (e.ctrlKey) {
-                    this.blockly.zoomOnPlusMinus(true);
-                    e.preventDefault();
-                }
-            }
         });
     }
     stop() {
@@ -777,7 +706,7 @@ function initRealityCheck(stopCallback) {
         stopCallback
     );
 }
-function renderReactComponents() {
+function renderReactComponents(blockly) {
     ReactDOM.render(
         <Provider store={store}>
             <Header clientInfo={clientInfo} />
@@ -786,15 +715,9 @@ function renderReactComponents() {
     );
     ReactDOM.render(
         <Provider store={store}>
-            <Main clientInfo={clientInfo} api={api} />
+            <Main clientInfo={clientInfo} api={api} blockly={blockly} />
         </Provider>,
         document.getElementById('main')
-    );
-    ReactDOM.render(
-        <Provider store={store}>
-            <Footer api={api} />
-        </Provider>,
-        document.getElementById('footer')
     );
     ReactDOM.render(
         <Provider store={store}>
