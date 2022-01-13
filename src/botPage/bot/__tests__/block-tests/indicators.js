@@ -24,7 +24,6 @@ const macdOption = {
 
 const getIndicatorsFromApi = () =>
     runAndGetResult(
-        undefined,
         `
     watch('before');
     var ticks = Bot.getTicks();

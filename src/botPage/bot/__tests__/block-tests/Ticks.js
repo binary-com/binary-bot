@@ -6,7 +6,6 @@ describe('Many getTicks in a row', () => {
 
     beforeAll(done => {
         runAndGetResult(
-            undefined,
             `
       result.ticks = []
       for (var i = 0; i < 100; i++) {
@@ -30,7 +29,7 @@ describe('Ticks Analysis', () => {
     let result;
 
     beforeAll(done => {
-        runAndGetResult(
+        runAndGetResult(undefined,
             `
       result.ticks = []
       function ta() {
@@ -64,7 +63,6 @@ describe('Tick Blocks', () => {
 
     beforeAll(done => {
         runAndGetResult(
-            undefined,
             `
         result.lastTick = Bot.getLastTick();
         result.lastDigit = Bot.getLastDigit();

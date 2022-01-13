@@ -1,4 +1,6 @@
+/* eslint-disable */
 import { getAppIdFallback } from './appId';
+/* eslint-enable */
 import AppIdMap from './appIdResolver';
 import { getTokenList } from './utils/storageManager';
 

@@ -1,13 +1,16 @@
+/* eslint-disable */
 import TradeEngine from '../TradeEngine';
 import { noop, createDetails } from '../tools';
 import TicksInterface from './TicksInterface';
 import ToolsInterface from './ToolsInterface';
+/* eslint-enable */
 
 /**
  * Bot - Bot Module
  * @namespace Bot
  */
 
+/* eslint-disable no-promise-executor-return */
 export default class Interface extends ToolsInterface(TicksInterface(class {})) {
     constructor($scope) {
         super();
@@ -16,6 +19,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         this.observer = $scope.observer;
         this.$scope = $scope;
     }
+
     getInterface(name = 'Global') {
         if (name === 'Bot') {
             return {
@@ -36,6 +40,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             },
         };
     }
+
     getBotInterface() {
         const getDetail = (i, pipSize) => createDetails(this.tradeEngine.data.contract, pipSize)[i];
 
@@ -54,6 +59,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             readDetails         : i => getDetail(i - 1, this.tradeEngine.getPipSize()),
         };
     }
+
     sleep(arg = 1) {
         return new Promise(
             r =>
@@ -64,6 +70,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             noop
         );
     }
+
     getProposal(contractType) {
         return this.tradeEngine.data.proposals.find(
             proposal =>
@@ -71,7 +78,9 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
                 proposal.purchaseReference === this.tradeEngine.getPurchaseReference()
         );
     }
+
     getSellPrice() {
         return this.tradeEngine.getSellPrice();
     }
 }
+/* eslint-enable no-promise-executor-return */

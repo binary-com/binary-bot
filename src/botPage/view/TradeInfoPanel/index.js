@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import React, { Component } from 'react';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
@@ -6,6 +7,7 @@ import TradeTable from './TradeTable';
 import RunButton from './RunButton';
 import ClearButton from './ClearButton';
 import { roundBalance } from '../../common/tools';
+/* eslint-enable max-classes-per-file */
 
 const resetAnimation = () => {
     $('.circle-wrapper')
@@ -41,6 +43,7 @@ class AnimateTrade extends Component {
             stopMessage     : this.indicatorMessages.stopped,
         };
     }
+
     componentWillMount() {
         const resetSummary = () => {
             resetAnimation();
@@ -72,6 +75,7 @@ class AnimateTrade extends Component {
             globalObserver.register('contract.status', contractStatus => this.animateStage(contractStatus));
         });
     }
+
     animateStage(contractStatus) {
         if (contractStatus.id === 'contract.purchase_sent') {
             resetAnimation();
@@ -94,6 +98,7 @@ class AnimateTrade extends Component {
 
         activateStage(contractStatus.id);
     }
+
     render() {
         return (
             <div>
@@ -154,6 +159,7 @@ export default class TradeInfoPanel extends Component {
         super();
         this.state = { accountID: '', accountIDList: [], currentAccountID: '' };
     }
+
     componentWillMount() {
         globalObserver.register('bot.info', ({ accountID }) => {
             const { accountIDList } = this.state;
@@ -166,6 +172,7 @@ export default class TradeInfoPanel extends Component {
             this.setState({ currentAccountID: accountID });
         });
     }
+
     render() {
         const { accountID } = this.state;
 

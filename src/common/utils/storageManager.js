@@ -22,7 +22,7 @@ const findAccount = (accountName = '') => getTokenList().findIndex(tokenInfo => 
 
 export const findToken = (token = '') => getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
 
-export const addToken = (token = '', loginInfo, hasRealityCheck = false, hasTradeLimitation = false) => {
+export const addToken = (loginInfo, token = '', hasRealityCheck = false, hasTradeLimitation = false) => {
     const { loginid: accountName } = loginInfo;
     const tokenList = getTokenList();
     const tokenIndex = findToken(token);

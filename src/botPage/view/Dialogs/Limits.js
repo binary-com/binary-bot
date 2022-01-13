@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { LiveApi } from 'binary-live-api';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -7,7 +8,7 @@ import * as style from '../style';
 import { getToken } from '../../../common/utils/storageManager';
 import { showSpinnerInButton, removeSpinnerInButton, createUrl } from '../../../common/utils/tools';
 import { translate } from '../../../common/i18n';
-
+/* eslint-enable */
 class LimitsContent extends PureComponent {
     constructor() {
         super();
@@ -181,6 +182,7 @@ class LimitsContent extends PureComponent {
             </form>
         );
     }
+    
     static props = {
         onSave: PropTypes.func,
         api   : PropTypes.instanceOf(LiveApi),
@@ -201,6 +203,7 @@ export default class Limits extends Dialog {
         );
         this.registerCloseOnOtherDialog();
     }
+
     getLimits() {
         this.open();
         return new Promise(resolve => {

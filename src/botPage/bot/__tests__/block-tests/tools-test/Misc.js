@@ -12,7 +12,6 @@ describe('Misc. tools', () => {
 
     beforeAll(done => {
         runAndGetResult(
-            undefined,
             `
         Bot.notify({ message: 'Test', className: 'info'})
         watch('before')

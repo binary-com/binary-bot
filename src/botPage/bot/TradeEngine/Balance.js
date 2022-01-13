@@ -18,6 +18,7 @@ export default Engine =>
                 info({ accountID: this.accountInfo.loginid, balance: balanceStr });
             });
         }
+        
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
             const balance = globalObserver.getState('balance');

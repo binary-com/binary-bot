@@ -1,7 +1,8 @@
+/* eslint-disable */
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { durationToSecond } from '../../../common/utils/tools';
-import { translate } from '../../..//common/i18n';
+import { translate } from '../../../common/i18n';
 import { createError } from '../../common/error';
 import { doUntilDone } from '../tools';
 import { expectInitArg, expectTradeOptions } from '../sanitize';
@@ -16,6 +17,7 @@ import rootReducer from './state/reducers';
 import * as constants from './state/constants';
 import { start } from './state/actions';
 import { observer as globalObserver } from '../../../common/utils/observer';
+/* eslint-enable */
 
 const watchBefore = store =>
     watchScope({
@@ -76,6 +78,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
+
     init(...args) {
         const [token, options] = expectInitArg(args);
 
@@ -89,6 +92,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.watchTicks(symbol);
     }
+
     start(tradeOptions) {
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
@@ -107,6 +111,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.checkProposalReady();
     }
+
     loginAndGetBalance(token) {
         if (this.token === token) {
             return Promise.resolve();
@@ -114,6 +119,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
 
+        /* eslint-disable */
         return new Promise(resolve =>
             this.listen('authorize', ({ authorize }) => {
                 this.accountInfo = authorize;
@@ -138,11 +144,14 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             })
         );
     }
+    /* eslint-enable */
+
     getContractDuration() {
         const { duration, duration_unit: durationUnit } = this.tradeOptions;
 
         return durationToSecond(`${duration}${durationUnit}`);
     }
+
     observe() {
         this.observeOpenContract();
 
@@ -150,15 +159,18 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.observeProposals();
     }
+
     watch(watchName) {
         if (watchName === 'before') {
             return watchBefore(this.store);
         }
         return watchDuring(this.store);
     }
+
     getData() {
         return this.data;
     }
+
     listen(n, f) {
         this.api.events.on(n, f);
     }

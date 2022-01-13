@@ -30,6 +30,7 @@ export default Engine =>
                 globalStat[accountID] = { ...skeleton };
             });
         }
+
         updateTotals(contract) {
             const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
 
@@ -75,17 +76,20 @@ export default Engine =>
                 notify('warn', `${translate('Loss amount')}: ${profit}`);
             }
         }
+
         updateAndReturnTotalRuns() {
             this.sessionRuns++;
             const accountStat = this.getAccountStat();
 
             return ++accountStat.totalRuns;
         }
+
         /* eslint-disable class-methods-use-this */
         getTotalRuns() {
             const accountStat = this.getAccountStat();
             return accountStat.totalRuns;
         }
+
         getTotalProfit(toString, currency) {
             const accountStat = this.getAccountStat();
             return toString && accountStat.totalProfit !== 0
@@ -95,6 +99,7 @@ export default Engine =>
                 })
                 : +accountStat.totalProfit;
         }
+
         /* eslint-enable */
         checkLimits(tradeOption) {
             if (!tradeOption.limitations) {
@@ -114,6 +119,7 @@ export default Engine =>
                 }
             }
         }
+        
         getAccountStat() {
             const { loginid: accountID } = this.accountInfo;
 

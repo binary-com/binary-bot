@@ -17,6 +17,7 @@ export default Engine =>
             this.proposalTemplates = tradeOptionToProposal(tradeOption, this.getPurchaseReference());
             this.renewProposalsOnPurchase();
         }
+
         selectProposal(contractType) {
             const { proposals } = this.data;
 
@@ -58,13 +59,16 @@ export default Engine =>
                 currency: this.tradeOption.currency,
             };
         }
+
         renewProposalsOnPurchase() {
             this.unsubscribeProposals().then(() => this.requestProposals());
         }
+
         clearProposals() {
             this.data.proposals = [];
             this.store.dispatch(clearProposals());
         }
+
         requestProposals() {
             Promise.all(
                 this.proposalTemplates.map(proposal =>
@@ -88,6 +92,7 @@ export default Engine =>
                 )
             ).catch(e => this.$scope.observer.emit('Error', e));
         }
+
         observeProposals() {
             this.listen('proposal', response => {
                 const { passthrough, proposal } = response;
@@ -102,6 +107,7 @@ export default Engine =>
                 }
             });
         }
+
         unsubscribeProposals() {
             const { proposals } = this.data;
             const removeForgetProposalById = forgetProposalId => {
@@ -127,6 +133,7 @@ export default Engine =>
                 })
             );
         }
+
         checkProposalReady() {
             // Proposals are considered ready when the proposals in our memory match the ones
             // we've requested from the API, we determine this by checking the passthrough of the response.
@@ -147,6 +154,7 @@ export default Engine =>
                 }
             }
         }
+        
         isNewTradeOption(tradeOption) {
             if (!this.tradeOption) {
                 this.tradeOption = tradeOption;

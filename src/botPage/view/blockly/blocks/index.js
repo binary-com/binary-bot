@@ -5,4 +5,6 @@ import './during_purchase';
 import './after_purchase';
 import './indicators';
 
+/* eslint-disable */
 export { default } from './trade';
+/* eslint-enable */

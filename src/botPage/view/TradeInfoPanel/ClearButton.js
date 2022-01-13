@@ -8,11 +8,13 @@ export default class ClearButton extends React.PureComponent {
         super();
         this.state = { isButtonDisabled: true };
     }
+
     componentDidMount() {
         globalObserver.register('summary.enable_clear', () => this.setState({ isButtonDisabled: false }));
         globalObserver.register('summary.disable_clear', () => this.setState({ isButtonDisabled: true }));
         globalObserver.register('bot.running', () => this.setState({ isButtonDisabled: true }));
     }
+
     // eslint-disable-next-line class-methods-use-this
     confirmClearLog() {
         showDialog({
@@ -26,6 +28,7 @@ export default class ClearButton extends React.PureComponent {
             .then(() => globalObserver.emit('summary.clear'))
             .catch(() => {});
     }
+    
     render() {
         return (
             <button

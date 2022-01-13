@@ -1,5 +1,5 @@
 import ActiveSymbols from './activeSymbols';
-import config from '../../common/const';
+import config from '../const';
 import { getObjectValue } from '../../../common/utils/tools';
 import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
 
@@ -68,6 +68,7 @@ export default class _Symbol {
             }
         });
     }
+
     /* eslint-disable class-methods-use-this */
     getLimitation(symbol, condition) {
         const category = getCategoryForCondition(condition);
@@ -75,20 +76,25 @@ export default class _Symbol {
             minDuration: parsedAssetIndex[symbol.toLowerCase()][category],
         };
     }
+
     isConditionAllowedInSymbol(symbol, condition) {
         const { conditions } = getAllowedConditionsOrCategoriesForSymbol(symbol);
         return conditions.includes(condition);
     }
+
     getConditionName(condition) {
         const [con1, con2] = config.opposites[condition.toUpperCase()];
         return `${getObjectValue(con1)}/${getObjectValue(con2)}`;
     }
+
     getCategoryNameForCondition(condition) {
         return config.conditionsCategoryName[getCategoryForCondition(condition)];
     }
+
     getAllowedCategories(symbol) {
         return getAllowedConditionsOrCategoriesForSymbol(symbol).categories;
     }
+    
     getAllowedCategoryNames(symbol) {
         const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol);
         return categories.map(el => config.conditionsCategoryName[el]);

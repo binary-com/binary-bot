@@ -6,12 +6,15 @@ class Xml {
         this.el = el;
         this.children = children;
     }
+
     setAttribute(key, value) {
         this.el[key] = value;
     }
+
     getAttribute(key) {
         return this.el[key];
     }
+    
     getElementsByTagName(key) {
         return this.children[key];
     }

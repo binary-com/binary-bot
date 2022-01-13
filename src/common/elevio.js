@@ -1,9 +1,11 @@
+/* eslint-disable */
 import { generateLiveApiInstance } from './appId';
+import GTM from './gtm';
 // import { getLanguage } from '../common/lang';
 import { getTokenList } from './utils/storageManager';
-import { translate } from '../common/i18n';
+import { translate } from './i18n';
 import { getLanguage } from './lang';
-import GTM from './gtm';
+/* eslint-enable */
 
 const Elevio = (() => {
     const elShellId = 'elevio-shell';

@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import json2csv from 'json2csv';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -5,9 +6,9 @@ import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
+/* eslint-enable max-classes-per-file */
 
 const minHeight = 550;
-
 class ColorFormatter extends Component {
     render() {
         return (
@@ -26,6 +27,7 @@ export default class LogTable extends Component {
             message  : PropTypes.string,
         }),
     };
+
     constructor() {
         super();
         this.state = {
@@ -37,12 +39,14 @@ export default class LogTable extends Component {
             { key: 'message', resizable: true, width: 1000, name: translate('Message') },
         ];
     }
+
     componentDidUpdate(prevProps, prevState) {
         if (prevState.rows.length !== this.state.rows.length) {
             const $tableScroll = $('.logTable-scroll');
             $tableScroll.scrollTop($tableScroll.scrollHeight);
         }
     }
+
     componentWillMount() {
         globalObserver.register('log.export', () => {
             this.export();
@@ -57,13 +61,16 @@ export default class LogTable extends Component {
             }
         });
     }
+
     rowGetter(i) {
         return this.state.rows[i];
     }
+
     export() {
         const data = json2csv({ data: this.state.rows, fields: ['timestamp', 'message'] });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     }
+
     render() {
         return (
             <div style={{ height: minHeight }}>

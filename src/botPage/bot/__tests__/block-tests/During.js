@@ -5,7 +5,6 @@ describe('During Purchase Blocks', () => {
 
     beforeAll(done => {
         runAndGetResult(
-            undefined,
             `
       ${parts.waitToPurchase}
       watch('during');
