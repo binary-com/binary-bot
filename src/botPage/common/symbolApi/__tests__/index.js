@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 import _Symbol from '../index';
-import { generateLiveApiInstance } from '../../../../common/appId';
+import { generateDerivApiInstance } from '../../../../common/appId';
 
 describe('symbol', () => {
-    const api = generateLiveApiInstance();
+    const api = generateDerivApiInstance();
     describe('Checking functions', () => {
         let symbol;
         // eslint-disable-next-line prefer-arrow-callback

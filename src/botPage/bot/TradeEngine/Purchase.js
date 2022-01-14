@@ -6,17 +6,17 @@ import { BEFORE_PURCHASE } from './state/constants';
 import GTM from '../../../common/gtm';
 
 let delayIndex = 0;
-let purchaseReference;
+let purchase_reference;
 
 export default Engine =>
     class Purchase extends Engine {
-        purchase(contractType) {
+        purchase(contract_type) {
             // Prevent calling purchase twice
             if (this.store.getState().scope !== BEFORE_PURCHASE) {
                 return Promise.resolve();
             }
 
-            const { currency, proposal } = this.selectProposal(contractType);
+            const { currency, proposal } = this.selectProposal(contract_type);
             const onSuccess = response => {
                 // Don't unnecessarily send a forget request for a purchased contract.
                 this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
@@ -24,7 +24,7 @@ export default Engine =>
                 GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
 
                 contractStatus({
-                    id  : 'contract.purchase_recieved',
+                    id: 'contract.purchase_recieved',
                     data: buy.transaction_id,
                     proposal,
                     currency,
@@ -39,24 +39,24 @@ export default Engine =>
                 notify('info', `${translate('Bought')}: ${buy.longcode} (${translate('ID')}: ${buy.transaction_id})`);
 
                 info({
-                    accountID      : this.accountInfo.loginid,
-                    totalRuns      : this.updateAndReturnTotalRuns(),
+                    accountID: this.accountInfo.loginid,
+                    totalRuns: this.updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
-                    contract_type  : contractType,
-                    buy_price      : buy.buy_price,
+                    contract_type,
+                    buy_price: buy.buy_price,
                 });
             };
 
             this.isSold = false;
 
             contractStatus({
-                id  : 'contract.purchase_sent',
+                id: 'contract.purchase_sent',
                 data: proposal.ask_price,
                 proposal,
                 currency,
             });
 
-            const action = () => this.api.buyContract(proposal.id, proposal.ask_price);
+            const action = () => this.api.send({ buy: proposal.id, price: proposal.ask_price });
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
@@ -84,8 +84,8 @@ export default Engine =>
                 delayIndex++
             ).then(onSuccess);
         }
-        getPurchaseReference = () => purchaseReference;
+        getPurchaseReference = () => purchase_reference;
         regeneratePurchaseReference = () => {
-            purchaseReference = getUUID();
+            purchase_reference = getUUID();
         };
     };

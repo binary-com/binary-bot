@@ -24,7 +24,7 @@ export default Engine =>
 
                 if (this.isSold) {
                     contractStatus({
-                        id  : 'contract.sold',
+                        id: 'contract.sold',
                         data: contract.transaction_ids.sell,
                         contract,
                     });
@@ -58,9 +58,14 @@ export default Engine =>
             this.contractId = contractId;
 
             doUntilDone(() =>
-                this.api.subscribeToOpenContract(contractId).then(response => {
-                    this.openContractId = response.proposal_open_contract.id;
-                })
+                this.api
+                    .send({
+                        proposal_open_contract: 1,
+                        contract_id: contractId,
+                    })
+                    .then(({ proposal_open_contract }) => {
+                        this.openContractId = proposal_open_contract?.contract_id;
+                    })
             ).catch(error => {
                 observer.emit('reset_animation');
                 observer.emit('Error', error);

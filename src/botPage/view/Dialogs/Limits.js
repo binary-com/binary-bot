@@ -1,4 +1,4 @@
-import { LiveApi } from 'binary-live-api';
+import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from './Dialog';
@@ -11,7 +11,7 @@ class LimitsContent extends PureComponent {
     constructor() {
         super();
         this.state = {
-            error    : '',
+            error: '',
             maxTrades: 0,
             maxLosses: null,
         };
@@ -23,7 +23,7 @@ class LimitsContent extends PureComponent {
         const onSave = () => {
             this.props.onSave({
                 maxTrades: this.state.maxTrades,
-                maxLoss  : this.state.maxLosses,
+                maxLoss: this.state.maxLosses,
             });
         };
 
@@ -84,7 +84,7 @@ class LimitsContent extends PureComponent {
         const cleanupLayout = () => {
             this.setState({
                 maxTrades: 0,
-                error    : '',
+                error: '',
             });
         };
 
@@ -93,8 +93,8 @@ class LimitsContent extends PureComponent {
         };
 
         $('#limits-dialog-component').dialog({
-            open    : onDialogOpen,
-            close   : cleanupLayout,
+            open: onDialogOpen,
+            close: cleanupLayout,
             autoOpen: false,
         });
     }
@@ -139,10 +139,10 @@ class LimitsContent extends PureComponent {
                             'This is the threshold that limits your potential losses for the day in all Binary.com platforms. Once your total loss reaches or exceeds this amount, your bot will stop trading. Please set a value in the {$0}Self-Exclusion Facilities page{$1}.',
                             [
                                 `<a href="${createUrl({
-                                    addLanguage     : true,
-                                    path            : 'user/security/self_exclusionws',
+                                    addLanguage: true,
+                                    path: 'user/security/self_exclusionws',
                                     addHtmlExtension: true,
-                                    isNonBotPage    : true,
+                                    isNonBotPage: true,
                                 })}" target="_blank">`,
                                 '</a>',
                             ]
@@ -182,7 +182,7 @@ class LimitsContent extends PureComponent {
     }
     static props = {
         onSave: PropTypes.func,
-        api   : PropTypes.instanceOf(LiveApi),
+        api: PropTypes.instanceOf(DerivAPIBasic),
     };
 }
 

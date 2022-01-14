@@ -1,4 +1,4 @@
-import { LiveApi } from 'binary-live-api';
+import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import {
     addToken,
     removeToken,
@@ -102,7 +102,7 @@ export const getServerAddressFallback = () => getCustomEndpoint().url || getDefa
 
 export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
 
-export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websockets/v3`;
+export const getWebSocketURL = () => `wss://${getServerAddressFallback()}`;
 
 export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
 
@@ -110,23 +110,24 @@ export const getOAuthURL = () =>
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
 const options = {
-    apiUrl: getWebSocketURL(),
-    language: getLanguage().toUpperCase(),
-    appId: getAppIdFallback(),
+    app_id: getAppIdFallback(),
+    lang: getLanguage().toUpperCase(),
+    endpoint: getWebSocketURL(),
 };
 
-export const generateLiveApiInstance = () => new LiveApi(options);
+export const generateDerivApiInstance = () => new DerivAPIBasic(options);
 
-export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
+export const generateTestDerivApiInstance = overrideOptions =>
+    new DerivAPIBasic(Object.assign({}, options, overrideOptions));
 
 export async function addTokenIfValid(token, tokenObjectList) {
-    const api = generateLiveApiInstance();
+    const api = generateDerivApiInstance();
     try {
         const { authorize } = await api.authorize(token);
         const { landing_company_name: lcName } = authorize;
         const {
             landing_company_details: { has_reality_check: hasRealityCheck },
-        } = await api.getLandingCompanyDetails(lcName);
+        } = await api.send({ landing_company_details: lcName });
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
         const { account_list: accountList } = authorize;
@@ -150,7 +151,7 @@ export async function addTokenIfValid(token, tokenObjectList) {
 
 export const logoutAllTokens = () =>
     new Promise(resolve => {
-        const api = generateLiveApiInstance();
+        const api = generateDerivApiInstance();
         const tokenList = getTokenList();
         const logout = () => {
             removeAllTokens();
@@ -161,7 +162,8 @@ export const logoutAllTokens = () =>
             logout();
         } else {
             api.authorize(tokenList[0].token).then(() => {
-                api.logOut().then(logout, logout);
+                api.send({ logout: 1 }).then(logout, logout);
+                // api.logOut().then(logout, logout);
             }, logout);
         }
     });

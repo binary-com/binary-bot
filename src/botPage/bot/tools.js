@@ -5,31 +5,32 @@ import { notify } from './broadcast';
 
 export const noop = () => {};
 
-export const tradeOptionToProposal = (tradeOption, purchaseReference) =>
-    tradeOption.contractTypes.map(type => {
+export const tradeOptionToProposal = (trade_option, purchase_reference) =>
+    trade_option.contractTypes.map(type => {
         const proposal = {
-            duration_unit: tradeOption.duration_unit,
-            basis: tradeOption.basis,
-            currency: tradeOption.currency,
-            symbol: tradeOption.symbol,
-            duration: tradeOption.duration,
-            amount: roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
+            proposal: 1,
+            duration_unit: trade_option.duration_unit,
+            basis: trade_option.basis,
+            currency: trade_option.currency,
+            symbol: trade_option.symbol,
+            duration: trade_option.duration,
+            amount: roundBalance({ currency: trade_option.currency, balance: trade_option.amount }),
             contract_type: type,
             passthrough: {
-                contractType: type,
-                purchaseReference,
+                contract_type: type,
+                purchase_reference,
             },
         };
-        if (tradeOption.prediction !== undefined) {
-            proposal.selected_tick = tradeOption.prediction;
+        if (trade_option.prediction !== undefined) {
+            proposal.selected_tick = trade_option.prediction;
         }
-        if (!['TICKLOW', 'TICKHIGH'].includes(type) && tradeOption.prediction !== undefined) {
-            proposal.barrier = tradeOption.prediction;
-        } else if (tradeOption.barrierOffset !== undefined) {
-            proposal.barrier = tradeOption.barrierOffset;
+        if (!['TICKLOW', 'TICKHIGH'].includes(type) && trade_option.prediction !== undefined) {
+            proposal.barrier = trade_option.prediction;
+        } else if (trade_option.barrierOffset !== undefined) {
+            proposal.barrier = trade_option.barrierOffset;
         }
-        if (tradeOption.secondBarrierOffset !== undefined) {
-            proposal.barrier2 = tradeOption.secondBarrierOffset;
+        if (trade_option.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = trade_option.secondBarrierOffset;
         }
         return proposal;
     });

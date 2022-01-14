@@ -3,8 +3,6 @@ import config from '../../common/const';
 import { getObjectValue } from '../../../common/utils/tools';
 import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
 
-const noop = () => {};
-
 let parsedAssetIndex;
 
 const parseAssetIndex = assetIndex => {
@@ -45,13 +43,13 @@ export default class _Symbol {
         this.api = api;
         this.initPromise = new Promise(resolve => {
             const getActiveSymbolsLogic = () => {
-                this.api.getActiveSymbolsBrief().then(r => {
+                this.api.send({ active_symbols: 'brief' }).then(r => {
                     this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                    this.api.getAssetIndex().then(r2 => {
-                        parsedAssetIndex = parseAssetIndex(r2.asset_index);
+                    this.api.send({ asset_index: 1 }).then(({ asset_index }) => {
+                        parsedAssetIndex = parseAssetIndex(asset_index);
                         resolve();
-                    }, noop);
-                }, noop);
+                    });
+                });
             };
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
             const tokenList = getTokenList();

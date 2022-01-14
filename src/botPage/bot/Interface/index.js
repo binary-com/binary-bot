@@ -24,10 +24,10 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             };
         }
         return {
-            watch  : (...args) => this.tradeEngine.watch(...args),
-            sleep  : (...args) => this.sleep(...args),
-            alert  : (...args) => alert(...args), // eslint-disable-line no-alert
-            prompt : (...args) => prompt(...args), // eslint-disable-line no-alert
+            watch: (...args) => this.tradeEngine.watch(...args),
+            sleep: (...args) => this.sleep(...args),
+            alert: (...args) => alert(...args), // eslint-disable-line no-alert
+            prompt: (...args) => prompt(...args), // eslint-disable-line no-alert
             console: {
                 log(...args) {
                     // eslint-disable-next-line no-console
@@ -40,18 +40,18 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         const getDetail = (i, pipSize) => createDetails(this.tradeEngine.data.contract, pipSize)[i];
 
         return {
-            init                : (...args) => this.tradeEngine.init(...args),
-            start               : (...args) => this.tradeEngine.start(...args),
-            stop                : (...args) => this.tradeEngine.stop(...args),
-            purchase            : (...args) => this.tradeEngine.purchase(...args),
+            init: (...args) => this.tradeEngine.init(...args),
+            start: (...args) => this.tradeEngine.start(...args),
+            stop: (...args) => this.tradeEngine.stop(...args),
+            purchase: (...args) => this.tradeEngine.purchase(...args),
             getPurchaseReference: () => this.tradeEngine.getPurchaseReference(),
-            getAskPrice         : contractType => Number(this.getProposal(contractType).ask_price),
-            getPayout           : contractType => Number(this.getProposal(contractType).payout),
-            isSellAvailable     : () => this.tradeEngine.isSellAtMarketAvailable(),
-            sellAtMarket        : () => this.tradeEngine.sellAtMarket(),
-            getSellPrice        : () => this.getSellPrice(),
-            isResult            : result => getDetail(10) === result,
-            readDetails         : i => getDetail(i - 1, this.tradeEngine.getPipSize()),
+            getAskPrice: contractType => Number(this.getProposal(contractType).ask_price),
+            getPayout: contractType => Number(this.getProposal(contractType).payout),
+            isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
+            sellAtMarket: () => this.tradeEngine.sellAtMarket(),
+            getSellPrice: () => this.getSellPrice(),
+            isResult: result => getDetail(10) === result,
+            readDetails: i => getDetail(i - 1, this.tradeEngine.getPipSize()),
         };
     }
     sleep(arg = 1) {
@@ -64,11 +64,11 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             noop
         );
     }
-    getProposal(contractType) {
+    getProposal(contract_type) {
         return this.tradeEngine.data.proposals.find(
             proposal =>
-                proposal.contractType === contractType &&
-                proposal.purchaseReference === this.tradeEngine.getPurchaseReference()
+                proposal.contract_type === contract_type &&
+                proposal.purchase_reference === this.tradeEngine.getPurchaseReference()
         );
     }
     getSellPrice() {

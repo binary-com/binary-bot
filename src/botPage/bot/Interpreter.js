@@ -172,13 +172,11 @@ export default class Interpreter {
         this.loop();
     }
     terminateSession() {
-        const { socket } = this.$scope.api;
-        if (socket.readyState === 0) {
-            socket.addEventListener('open', () => {
-                this.$scope.api.disconnect();
-            });
-        } else if (socket.readyState === 1) {
-            this.$scope.api.disconnect();
+        const { connection } = this.$scope.api;
+        if (connection.readyState === 0) {
+            connection.addEventListener('open', () => connection.close());
+        } else if (connection.readyState === 1) {
+            connection.close();
         }
         this.stopped = true;
         this.isErrorTriggered = false;

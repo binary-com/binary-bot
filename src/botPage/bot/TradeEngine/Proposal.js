@@ -17,7 +17,7 @@ export default Engine =>
             this.proposalTemplates = tradeOptionToProposal(tradeOption, this.getPurchaseReference());
             this.renewProposalsOnPurchase();
         }
-        selectProposal(contractType) {
+        selectProposal(contract_type) {
             const { proposals } = this.data;
 
             if (proposals.length === 0) {
@@ -26,8 +26,8 @@ export default Engine =>
 
             const toBuy = proposals.find(proposal => {
                 if (
-                    proposal.contractType === contractType &&
-                    proposal.purchaseReference === this.getPurchaseReference()
+                    proposal.contract_type === contract_type &&
+                    proposal.purchase_reference === this.getPurchaseReference()
                 ) {
                     // Below happens when a user has had one of the proposals return
                     // with a ContractBuyValidationError. We allow the logic to continue
@@ -68,30 +68,27 @@ export default Engine =>
         requestProposals() {
             Promise.all(
                 this.proposalTemplates.map(proposal =>
-                    doUntilDone(() =>
-                        this.api.subscribeToPriceForContractProposal(proposal).catch(error => {
-                            // We intercept ContractBuyValidationError as user may have specified
-                            // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
-                            // the other is valid. We will error on Purchase rather than here.
-                            if (error && error.name === 'ContractBuyValidationError') {
-                                this.data.proposals.push({
-                                    ...error.error.echo_req,
-                                    ...error.error.echo_req.passthrough,
-                                    error,
-                                });
-                                return null;
-                            }
+                    doUntilDone(() => this.api.send(proposal)).catch(error => {
+                        // We intercept ContractBuyValidationError as user may have specified
+                        // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
+                        // the other is valid. We will error on Purchase rather than here.
+                        if (error && error.name === 'ContractBuyValidationError') {
+                            this.data.proposals.push({
+                                ...error.error.echo_req,
+                                ...error.error.echo_req.passthrough,
+                                error,
+                            });
+                            return null;
+                        }
 
-                            throw error;
-                        })
-                    )
+                        throw error;
+                    })
                 )
             ).catch(e => this.$scope.observer.emit('Error', e));
         }
         observeProposals() {
             this.listen('proposal', response => {
                 const { passthrough, proposal } = response;
-
                 if (
                     this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
                     !this.data.forgetProposalIds.includes(proposal.id)
@@ -121,7 +118,7 @@ export default Engine =>
                         return Promise.resolve();
                     }
 
-                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() =>
+                    return doUntilDone(() => this.api.forget(proposal.id)).then(() =>
                         removeForgetProposalById(proposal.id)
                     );
                 })
@@ -137,13 +134,15 @@ export default Engine =>
                     template =>
                         proposals.findIndex(
                             proposal =>
-                                proposal.purchaseReference === template.passthrough.purchaseReference &&
-                                proposal.contractType === template.contract_type
+                                proposal.purchase_reference === template.passthrough.purchase_reference &&
+                                proposal.contract_type === template.contract_type
                         ) !== -1
                 );
 
                 if (hasEqualProposals) {
-                    this.startPromise.then(() => this.store.dispatch(proposalsReady()));
+                    this.startPromise.then(() => {
+                        this.store.dispatch(proposalsReady());
+                    });
                 }
             }
         }
