@@ -48,7 +48,6 @@ import Header from './deriv/layout/Header';
 import Main from './deriv/layout/Main';
 import store from './deriv/store';
 
-let realityCheckTimeout;
 let chart;
 const clientInfo = {};
 
@@ -109,58 +108,6 @@ const subscribeToAllAccountsBalance = token => {
 };
 
 const tradingView = new TradingView();
-
-const showRealityCheck = () => {
-    $('.blocker').show();
-    $('.reality-check').show();
-};
-
-const hideRealityCheck = () => {
-    $('#rc-err').hide();
-    $('.blocker').hide();
-    $('.reality-check').hide();
-};
-
-const stopRealityCheck = () => {
-    clearInterval(realityCheckTimeout);
-    realityCheckTimeout = null;
-};
-
-const realityCheckInterval = stopCallback => {
-    realityCheckTimeout = setInterval(() => {
-        const now = parseInt(new Date().getTime() / 1000);
-        const checkTime = +getStorage('realityCheckTime');
-        if (checkTime && now >= checkTime) {
-            showRealityCheck();
-            stopRealityCheck();
-            stopCallback();
-        }
-    }, 1000);
-};
-
-const startRealityCheck = (time, token, stopCallback) => {
-    stopRealityCheck();
-    if (time) {
-        const start = parseInt(new Date().getTime() / 1000) + time * 60;
-        setStorage('realityCheckTime', start);
-        realityCheckInterval(stopCallback);
-    } else {
-        const tokenObj = getToken(token);
-        if (tokenObj.hasRealityCheck) {
-            const checkTime = +getStorage('realityCheckTime');
-            if (!checkTime) {
-                showRealityCheck();
-            } else {
-                realityCheckInterval(stopCallback);
-            }
-        }
-    }
-};
-
-const clearRealityCheck = () => {
-    setStorage('realityCheckTime', null);
-    stopRealityCheck();
-};
 
 const integrationsDialog = new IntegrationsDialog();
 
@@ -292,7 +239,6 @@ export default class View {
                     updateTokenList();
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
-                        initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                         renderReactComponents(this.blockly);
                         applyToolboxPermissions();
                         this.setElementActions();
@@ -379,7 +325,6 @@ export default class View {
             if (e) {
                 e.preventDefault();
             }
-            stopRealityCheck();
             this.stop();
         };
 
@@ -416,7 +361,6 @@ export default class View {
             logoutAllTokens().then(() => {
                 updateTokenList();
                 globalObserver.emit('ui.log.info', translate('Logged you out!'));
-                clearRealityCheck();
                 clearActiveTokens();
                 window.location.reload();
             });
@@ -499,44 +443,11 @@ export default class View {
         $('#deriv__logout-btn, #logout, #toolbox-logout').click(() => {
             saveBeforeUnload();
             logout();
-            hideRealityCheck();
         });
 
         globalObserver.register('ui.logout', () => {
             $('.barspinner').show();
             removeTokens();
-            hideRealityCheck();
-        });
-
-        const submitRealityCheck = () => {
-            const time = parseInt($('#realityDuration').val());
-            if (time >= 10 && time <= 60) {
-                hideRealityCheck();
-                startRealityCheck(time, null, () => $('#stopButton').triggerHandler('click'));
-            } else {
-                $('#rc-err').show();
-            }
-        };
-
-        $('#continue-trading').click(() => {
-            submitRealityCheck();
-        });
-
-        $('#realityDuration').keypress(e => {
-            const char = String.fromCharCode(e.which);
-            if (e.keyCode === 13) {
-                submitRealityCheck();
-            }
-            /* Unicode check is for firefox because it
-             * trigger this event when backspace, arrow keys are pressed
-             * in chrome it is not triggered
-             */
-            const unicodeStrings = /[\u0008|\u0000]/; // eslint-disable-line no-control-regex
-            if (unicodeStrings.test(char)) return;
-
-            if (!/([0-9])/.test(char)) {
-                e.preventDefault();
-            }
         });
 
         const startBot = limitations => {
@@ -568,7 +479,6 @@ export default class View {
                 .first()
                 .attr('value');
             const tokenObj = getToken(token);
-            initRealityCheck(() => $('#stopButton').triggerHandler('click'));
 
             if (tokenObj && tokenObj.hasTradeLimitation) {
                 const limits = new Limits(api);
@@ -620,10 +530,6 @@ export default class View {
                 document.location = getOAuthURL();
             })
             .text(translate('Log in'));
-
-        $('#statement-reality-check').click(() => {
-            document.location = `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`;
-        });
     }
     stop() {
         this.blockly.stop();
@@ -637,7 +543,6 @@ export default class View {
             if (['activeToken', 'active_loginid'].includes(e.key) && e.newValue !== e.oldValue) {
                 window.location.reload();
             }
-            if (e.key === 'realityCheckTime') hideRealityCheck();
         });
 
         globalObserver.register('Error', error => {
@@ -697,15 +602,6 @@ export default class View {
     }
 }
 
-function initRealityCheck(stopCallback) {
-    startRealityCheck(
-        null,
-        $('.account-id')
-            .first()
-            .attr('value'),
-        stopCallback
-    );
-}
 function renderReactComponents(blockly) {
     ReactDOM.render(
         <Provider store={store}>
