@@ -218,6 +218,7 @@ export const getMandatoryBlocks = () => config.mandatoryBlocks.map(type => getBl
 export const getMandatoryMainBlocks = () => config.mandatoryMainBlocks.map(type => getBlockByType(type)).filter(b => b);
 
 export const hasChildOfType = (block, childType) =>
+    // eslint-disable-next-line no-underscore-dangle
     block.childBlocks_.find(child => child.type === childType || hasChildOfType(child, childType));
 
 export const getMissingBlocksTypes = () => {

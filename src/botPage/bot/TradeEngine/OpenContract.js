@@ -12,9 +12,7 @@ export default Engine =>
             this.listen('proposal_open_contract', r => {
                 const contract = r.proposal_open_contract;
 
-                if (!this.expectedContractId(contract.contract_id)) {
-                    return;
-                }
+                if (!this.expectedContractId(contract.contract_id)) return;
 
                 this.setContractFlags(contract);
 
@@ -36,7 +34,6 @@ export default Engine =>
                     }
 
                     this.store.dispatch(sell());
-
                     this.cancelSubscriptionTimeout();
                 } else {
                     this.store.dispatch(openContractReceived());
@@ -46,62 +43,55 @@ export default Engine =>
                 }
             });
         }
+
         waitForAfter() {
             return new Promise(resolve => {
                 this.afterPromise = resolve;
             });
         }
-        subscribeToOpenContract(contractId = this.contractId) {
-            if (this.contractId !== contractId) {
+
+        subscribeToOpenContract(contract_id = this.contractId) {
+            if (this.contractId !== contract_id) {
                 this.resetSubscriptionTimeout();
             }
-            this.contractId = contractId;
+            this.contractId = contract_id;
 
             doUntilDone(() =>
-                this.api
-                    .send({
-                        proposal_open_contract: 1,
-                        contract_id: contractId,
-                    })
-                    .then(({ proposal_open_contract }) => {
-                        this.openContractId = proposal_open_contract?.contract_id;
-                    })
+                this.api.send({
+                    proposal_open_contract: 1,
+                    contract_id,
+                })
             ).catch(error => {
                 observer.emit('reset_animation');
                 observer.emit('Error', error);
             });
         }
+
         resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {
             this.cancelSubscriptionTimeout();
-            this.subscriptionTimeout = setInterval(() => {
+            this.subscription_timeout = setInterval(() => {
                 this.subscribeToOpenContract();
                 this.resetSubscriptionTimeout(timeout);
             }, timeout * 1000);
         }
+
         cancelSubscriptionTimeout() {
-            clearTimeout(this.subscriptionTimeout);
+            clearTimeout(this.subscription_timeout);
         }
-        setContractFlags(contract) {
-            const {
-                is_expired: isExpired,
-                is_valid_to_sell: isValidToSell,
-                is_sold: isSold,
-                entry_tick: entryTick,
-            } = contract;
 
-            this.isSold = Boolean(isSold);
-
-            this.isSellAvailable = !this.isSold && Boolean(isValidToSell);
-
-            this.isExpired = Boolean(isExpired);
-
-            this.hasEntryTick = Boolean(entryTick);
+        setContractFlags({ is_expired, is_valid_to_sell, is_sold, entry_tick }) {
+            this.isSold = Boolean(is_sold);
+            this.isSellAvailable = !this.isSold && Boolean(is_valid_to_sell);
+            this.isExpired = Boolean(is_expired);
+            this.hasEntryTick = Boolean(entry_tick);
         }
-        expectedContractId(contractId) {
-            return this.contractId && contractId === this.contractId;
+
+        expectedContractId(contract_id) {
+            return this.contractId && contract_id === this.contractId;
         }
+
         getSellPrice() {
-            const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.contract;
-            return Number(roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) }));
+            const { bid_price, buy_price, currency } = this.data.contract;
+            return Number(roundBalance({ currency, balance: Number(bid_price) - Number(buy_price) }));
         }
     };

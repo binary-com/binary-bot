@@ -6,7 +6,6 @@ import { generateDerivApiInstance } from '../../common/appId';
 export const createScope = () => {
     const observer = new Observer();
     const api = generateDerivApiInstance();
-
     const ticksService = new TicksService(api);
 
     return { observer, api, ticksService };

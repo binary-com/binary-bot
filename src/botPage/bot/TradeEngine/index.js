@@ -76,19 +76,17 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
+
     init(...args) {
         const [token, options] = expectInitArg(args);
-
         const { symbol } = options;
 
         this.initArgs = args;
-
         this.options = options;
-
         this.startPromise = this.loginAndGetBalance(token);
-
         this.watchTicks(symbol);
     }
+
     start(tradeOptions) {
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
@@ -98,19 +96,14 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         globalObserver.setState({ isRunning: true });
 
         this.tradeOptions = expectTradeOptions(tradeOptions);
-
         this.store.dispatch(start());
-
         this.checkLimits(tradeOptions);
-
         this.makeProposals({ ...this.options, ...tradeOptions });
-
         this.checkProposalReady();
     }
+
     loginAndGetBalance(token) {
-        if (this.token === token) {
-            return Promise.resolve();
-        }
+        if (this.token === token) return Promise.resolve();
 
         doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
 
@@ -122,17 +115,13 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                 if (document) {
                     // Get the balance before opening contract
                     this.api.send({ balance: 1 });
-                    this.api.onMessage().subscribe(({ data }) => {
-                        if (data?.msg_type === 'balance') {
-                            const {
-                                balance: { balance, currency },
-                            } = data;
-                            globalObserver.setState({
-                                balance: Number(balance),
-                                currency,
-                            });
-                            resolve();
-                        }
+                    this.listen('balance', data => {
+                        const { balance, currency } = data.balance;
+                        globalObserver.setState({
+                            balance: Number(balance),
+                            currency,
+                        });
+                        resolve();
                     });
                 } else {
                     resolve();
@@ -140,30 +129,32 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             })
         );
     }
-    getContractDuration() {
-        const { duration, duration_unit: durationUnit } = this.tradeOptions;
 
-        return durationToSecond(`${duration}${durationUnit}`);
+    getContractDuration() {
+        const { duration, duration_unit } = this.tradeOptions;
+        return durationToSecond(`${duration}${duration_unit}`);
     }
+
     observe() {
         this.observeOpenContract();
-
         this.observeBalance();
-
         this.observeProposals();
     }
+
     watch(watchName) {
         if (watchName === 'before') {
             return watchBefore(this.store);
         }
         return watchDuring(this.store);
     }
+
     getData() {
         return this.data;
     }
-    listen(param, callback) {
+
+    listen(msg_type, callback) {
         this.api.onMessage().subscribe(({ data }) => {
-            if (data?.msg_type === param) {
+            if (data?.msg_type === msg_type) {
                 callback(data);
             }
         });

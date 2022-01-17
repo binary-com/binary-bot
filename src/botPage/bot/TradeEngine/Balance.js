@@ -5,11 +5,8 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 export default Engine =>
     class Balance extends Engine {
         observeBalance() {
-            this.listen('balance', r => {
-                const {
-                    balance: { balance: b, currency },
-                } = r;
-
+            this.listen('balance', data => {
+                const { balance: b, currency } = data.balance;
                 const balance = roundBalance({ currency, balance: b });
                 const balanceStr = `${balance} ${currency}`;
 

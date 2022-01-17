@@ -3,7 +3,7 @@ import { recoverFromError, doUntilDone } from '../tools';
 import { contractStatus, notify } from '../broadcast';
 import { DURING_PURCHASE } from './state/constants';
 
-let delayIndex = 0;
+let delay_index = 0;
 
 export default Engine =>
     class Sell extends Engine {
@@ -22,7 +22,7 @@ export default Engine =>
             }
 
             const onSuccess = soldFor => {
-                delayIndex = 0;
+                delay_index = 0;
                 contractStatus('purchase.sold');
                 notify('info', `${translate('Sold for')}: ${soldFor}`);
                 return this.waitForAfter();
@@ -60,7 +60,7 @@ export default Engine =>
                 action,
                 (errorCode, makeDelay) => makeDelay().then(() => this.observer.emit('REVERT', 'during')),
                 ['NoOpenPosition', 'InvalidSellContractProposal', 'UnrecognisedRequest'],
-                delayIndex++
+                delay_index++
             ).then(onSuccess);
         }
     };

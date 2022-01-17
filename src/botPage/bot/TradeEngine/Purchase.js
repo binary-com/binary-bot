@@ -5,7 +5,7 @@ import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import GTM from '../../../common/gtm';
 
-let delayIndex = 0;
+let delay_index = 0;
 let purchase_reference;
 
 export default Engine =>
@@ -17,10 +17,9 @@ export default Engine =>
             }
 
             const { currency, proposal } = this.selectProposal(contract_type);
-            const onSuccess = response => {
+            const onSuccess = ({ buy, echo_req }) => {
                 // Don't unnecessarily send a forget request for a purchased contract.
-                this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
-                const { buy } = response;
+                this.data.proposals = this.data.proposals.filter(p => p.id !== echo_req.buy);
                 GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
 
                 contractStatus({
@@ -34,7 +33,7 @@ export default Engine =>
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
 
-                delayIndex = 0;
+                delay_index = 0;
 
                 notify('info', `${translate('Bought')}: ${buy.longcode} (${translate('ID')}: ${buy.transaction_id})`);
 
@@ -64,9 +63,9 @@ export default Engine =>
 
             return recoverFromError(
                 action,
-                (errorCode, makeDelay) => {
+                (error_code, makeDelay) => {
                     // if disconnected no need to resubscription (handled by live-api)
-                    if (errorCode !== 'DisconnectError') {
+                    if (error_code !== 'DisconnectError') {
                         this.renewProposalsOnPurchase();
                     } else {
                         this.clearProposals();
@@ -81,7 +80,7 @@ export default Engine =>
                     });
                 },
                 ['PriceMoved', 'InvalidContractProposal'],
-                delayIndex++
+                delay_index++
             ).then(onSuccess);
         }
         getPurchaseReference = () => purchase_reference;

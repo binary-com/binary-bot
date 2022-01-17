@@ -3,12 +3,12 @@ import config from '../../common/const';
 import { getObjectValue } from '../../../common/utils/tools';
 import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
 
-let parsedAssetIndex;
+let parsed_asset_index;
 
-const parseAssetIndex = assetIndex => {
+const parseAssetIndex = asset_index => {
     const parsed = {};
 
-    assetIndex.forEach(symbol => {
+    asset_index.forEach(symbol => {
         parsed[symbol[0].toLowerCase()] = {};
 
         symbol[2].forEach(category => {
@@ -21,7 +21,7 @@ const parseAssetIndex = assetIndex => {
 const getAllowedConditionsOrCategoriesForSymbol = symbol => {
     let conditions = [];
     const categories = [];
-    const index = parsedAssetIndex[symbol.toLowerCase()];
+    const index = parsed_asset_index[symbol.toLowerCase()];
     if (index) {
         Object.keys(config.conditionsCategory).forEach(conditionName => {
             if (conditionName in index) {
@@ -46,16 +46,16 @@ export default class _Symbol {
                 this.api.send({ active_symbols: 'brief' }).then(r => {
                     this.activeSymbols = new ActiveSymbols(r.active_symbols);
                     this.api.send({ asset_index: 1 }).then(({ asset_index }) => {
-                        parsedAssetIndex = parseAssetIndex(asset_index);
+                        parsed_asset_index = parseAssetIndex(asset_index);
                         resolve();
                     });
                 });
             };
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
-            const tokenList = getTokenList();
-            if (tokenList.length) {
+            const token_list = getTokenList();
+            if (token_list.length) {
                 this.api
-                    .authorize(tokenList[0].token)
+                    .authorize(token_list[0].token)
                     .then(() => getActiveSymbolsLogic())
                     .catch(() => {
                         removeAllTokens();
@@ -66,27 +66,33 @@ export default class _Symbol {
             }
         });
     }
+
     /* eslint-disable class-methods-use-this */
     getLimitation(symbol, condition) {
         const category = getCategoryForCondition(condition);
         return {
-            minDuration: parsedAssetIndex[symbol.toLowerCase()][category],
+            minDuration: parsed_asset_index[symbol.toLowerCase()][category],
         };
     }
+
     isConditionAllowedInSymbol(symbol, condition) {
         const { conditions } = getAllowedConditionsOrCategoriesForSymbol(symbol);
         return conditions.includes(condition);
     }
+
     getConditionName(condition) {
         const [con1, con2] = config.opposites[condition.toUpperCase()];
         return `${getObjectValue(con1)}/${getObjectValue(con2)}`;
     }
+
     getCategoryNameForCondition(condition) {
         return config.conditionsCategoryName[getCategoryForCondition(condition)];
     }
+
     getAllowedCategories(symbol) {
         return getAllowedConditionsOrCategoriesForSymbol(symbol).categories;
     }
+
     getAllowedCategoryNames(symbol) {
         const { categories } = getAllowedConditionsOrCategoriesForSymbol(symbol);
         return categories.map(el => config.conditionsCategoryName[el]);

@@ -13,8 +13,6 @@ import {
 import { observer as globalObserver } from '../../../../common/utils/observer';
 import { isProduction } from '../../../../common/utils/tools';
 
-console.log(symbolApi, 'symbolApi');
-
 let purchaseChoices = [[translate('Click to select'), '']];
 
 export const getPurchaseChoices = () => purchaseChoices;

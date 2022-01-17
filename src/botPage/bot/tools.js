@@ -37,18 +37,18 @@ export const tradeOptionToProposal = (trade_option, purchase_reference) =>
 
 export const getDirection = ticks => {
     const { length } = ticks;
-    const [tickOld, tickNew] = ticks.slice(-2);
+    const [tick_old, tick_new] = ticks.slice(-2);
 
     let direction = '';
     if (length >= 2) {
-        direction = tickOld.quote < tickNew.quote ? 'rise' : direction;
-        direction = tickOld.quote > tickNew.quote ? 'fall' : direction;
+        direction = tick_old.quote < tick_new.quote ? 'rise' : direction;
+        direction = tick_old.quote > tick_new.quote ? 'fall' : direction;
     }
 
     return direction;
 };
 
-export const getLastDigit = (tick, pipSize) => Number(tick.toFixed(pipSize).slice(-1)[0]);
+export const getLastDigit = (tick, pip_size) => Number(tick.toFixed(pip_size).slice(-1)[0]);
 
 export const subscribeToStream = (observer, name, respHandler, request, registerOnce, type, unregister) =>
     new Promise(resolve => {
@@ -72,59 +72,57 @@ export const registerStream = (observer, name, cb) => {
     observer.register(name, cb);
 };
 
-const maxRetries = 12;
+const MAX_RETRIES = 12;
 
 const notifyRetry = (msg, error, delay) =>
     notify('warn', `${msg}: ${error.error.msg_type}, ${translate('retrying in')} ${delay}s`);
 
-const getBackoffDelay = (error, delayIndex) => {
+const getBackoffDelay = (error, delay_index) => {
     const offset = 0.5; // 500ms
 
-    const errorCode = error && error.name;
+    const error_code = error && error.name;
 
-    if (errorCode === 'DisconnectError') {
+    if (error_code === 'DisconnectError') {
         return offset * 1000;
     }
 
-    const maxExpTries = 4;
-    const exponentialIncrease = 2 ** delayIndex + offset;
+    const max_exp_tries = 4;
+    const exponential_increase = 2 ** delay_index + offset;
 
-    if (errorCode === 'RateLimit' || delayIndex < maxExpTries) {
-        notifyRetry(translate('Rate limit reached for'), error, exponentialIncrease);
-        return exponentialIncrease * 1000;
+    if (error_code === 'RateLimit' || delay_index < max_exp_tries) {
+        notifyRetry(translate('Rate limit reached for'), error, exponential_increase);
+        return exponential_increase * 1000;
     }
 
-    const linearIncrease = exponentialIncrease + (maxExpTries - delayIndex + 1);
+    const linear_increase = exponential_increase + (max_exp_tries - delay_index + 1);
 
-    notifyRetry(translate('Request failed for'), error, linearIncrease);
-    return linearIncrease * 1000;
+    notifyRetry(translate('Request failed for'), error, linear_increase);
+    return linear_increase * 1000;
 };
 
-export const shouldThrowError = (error, types = [], delayIndex = 0) => {
-    if (!error) {
-        return false;
-    }
+export const shouldThrowError = (error, types = [], delay_index = 0) => {
+    if (!error) return false;
 
-    const defaultErrors = ['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'];
-    const authErrors = ['InvalidToken', 'AuthorizationRequired'];
-    const errors = types.concat(defaultErrors);
+    const default_errors = ['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'];
+    const auth_errors = ['InvalidToken', 'AuthorizationRequired'];
+    const errors = types.concat(default_errors);
 
-    if (authErrors.includes(error.name)) {
+    if (auth_errors.includes(error.name)) {
         // If auth error, reload page.
         window.location.reload();
         return true;
     } else if (!errors.includes(error.name)) {
         // If error is unrecoverable, throw error.
         return true;
-    } else if (error.name !== 'DisconnectError' && delayIndex > maxRetries) {
-        // If exceeded maxRetries, throw error.
+    } else if (error.name !== 'DisconnectError' && delay_index > MAX_RETRIES) {
+        // If exceeded MAX_RETRIES, throw error.
         return true;
     }
 
     return false;
 };
 
-export const recoverFromError = (f, r, types, delayIndex) =>
+export const recoverFromError = (f, r, types, delay_index) =>
     new Promise((resolve, reject) => {
         const promise = f();
 
@@ -134,21 +132,21 @@ export const recoverFromError = (f, r, types, delayIndex) =>
         }
 
         promise.then(resolve).catch(e => {
-            if (shouldThrowError(e, types, delayIndex)) {
+            if (shouldThrowError(e, types, delay_index)) {
                 reject(e);
                 return;
             }
 
-            r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delayIndex))));
+            r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delay_index))));
         });
     });
 
 export const doUntilDone = (f, types) => {
-    let delayIndex = 0;
+    let delay_index = 0;
 
     return new Promise((resolve, reject) => {
         const repeat = () => {
-            recoverFromError(f, (errorCode, makeDelay) => makeDelay().then(repeat), types, delayIndex++)
+            recoverFromError(f, (errorCode, makeDelay) => makeDelay().then(repeat), types, delay_index++)
                 .then(resolve)
                 .catch(reject);
         };
@@ -156,9 +154,9 @@ export const doUntilDone = (f, types) => {
     });
 };
 
-export const createDetails = (contract, pipSize) => {
-    const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
-    const profit = Number(roundBalance({ currency, balance: sellPrice - buyPrice }));
+export const createDetails = (contract, pip_size) => {
+    const { sell_price, buy_price, currency } = contract;
+    const profit = Number(roundBalance({ currency, balance: sell_price - buy_price }));
     const result = profit < 0 ? 'loss' : 'win';
 
     return [
@@ -173,8 +171,8 @@ export const createDetails = (contract, pipSize) => {
         +contract.exit_tick,
         +(contract.barrier ? contract.barrier : 0),
         result,
-        (+contract.entry_tick).toFixed(pipSize),
-        (+contract.exit_tick).toFixed(pipSize),
+        (+contract.entry_tick).toFixed(pip_size),
+        (+contract.exit_tick).toFixed(pip_size),
     ];
 };
 

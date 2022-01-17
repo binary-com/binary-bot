@@ -5,18 +5,19 @@ import { TrackJSError } from '../../view/logger';
 
 export default Engine =>
     class Proposal extends Engine {
-        makeProposals(tradeOption) {
-            if (!this.isNewTradeOption(tradeOption)) {
+        makeProposals(trade_option) {
+            if (!this.isNewTradeOption(trade_option)) {
                 return;
             }
 
             // Generate a purchase reference when trade options are different from previous trade options.
             // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
             this.regeneratePurchaseReference();
-            this.tradeOption = tradeOption;
-            this.proposalTemplates = tradeOptionToProposal(tradeOption, this.getPurchaseReference());
+            this.trade_option = trade_option;
+            this.proposalTemplates = tradeOptionToProposal(trade_option, this.getPurchaseReference());
             this.renewProposalsOnPurchase();
         }
+
         selectProposal(contract_type) {
             const { proposals } = this.data;
 
@@ -24,7 +25,7 @@ export default Engine =>
                 throw Error(translate('Proposals are not ready'));
             }
 
-            const toBuy = proposals.find(proposal => {
+            const to_buy = proposals.find(proposal => {
                 if (
                     proposal.contract_type === contract_type &&
                     proposal.purchase_reference === this.getPurchaseReference()
@@ -45,7 +46,7 @@ export default Engine =>
                 return false;
             });
 
-            if (!toBuy) {
+            if (!to_buy) {
                 throw new TrackJSError(
                     'CustomInvalidProposal',
                     translate('Selected proposal does not exist'),
@@ -54,17 +55,20 @@ export default Engine =>
             }
 
             return {
-                proposal: toBuy,
-                currency: this.tradeOption.currency,
+                proposal: to_buy,
+                currency: this.trade_option.currency,
             };
         }
+
         renewProposalsOnPurchase() {
             this.unsubscribeProposals().then(() => this.requestProposals());
         }
+
         clearProposals() {
             this.data.proposals = [];
             this.store.dispatch(clearProposals());
         }
+
         requestProposals() {
             Promise.all(
                 this.proposalTemplates.map(proposal =>
@@ -86,6 +90,7 @@ export default Engine =>
                 )
             ).catch(e => this.$scope.observer.emit('Error', e));
         }
+
         observeProposals() {
             this.listen('proposal', response => {
                 const { passthrough, proposal } = response;
@@ -99,6 +104,7 @@ export default Engine =>
                 }
             });
         }
+
         unsubscribeProposals() {
             const { proposals } = this.data;
             const removeForgetProposalById = forgetProposalId => {
@@ -124,6 +130,7 @@ export default Engine =>
                 })
             );
         }
+
         checkProposalReady() {
             // Proposals are considered ready when the proposals in our memory match the ones
             // we've requested from the API, we determine this by checking the passthrough of the response.
@@ -146,14 +153,15 @@ export default Engine =>
                 }
             }
         }
-        isNewTradeOption(tradeOption) {
-            if (!this.tradeOption) {
-                this.tradeOption = tradeOption;
+
+        isNewTradeOption(trade_option) {
+            if (!this.trade_option) {
+                this.trade_option = trade_option;
                 return true;
             }
 
-            // Compare incoming "tradeOption" argument with "this.tradeOption", if any
-            // of the values is different, this is a new tradeOption and new proposals
+            // Compare incoming "trade_option" argument with "this.trade_option", if any
+            // of the values is different, this is a new trade_option and new proposals
             // should be generated.
             return [
                 'amount',
@@ -164,6 +172,6 @@ export default Engine =>
                 'prediction',
                 'secondBarrierOffset',
                 'symbol',
-            ].some(value => this.tradeOption[value] !== tradeOption[value]);
+            ].some(value => this.trade_option[value] !== trade_option[value]);
         }
     };

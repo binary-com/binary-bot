@@ -74,9 +74,11 @@ const isRealAccount = () => {
 const getDomainAppId = () => {
     const hostname = hostName.replace(/^www./, '');
 
+    // eslint-disable-next-line no-nested-ternary
     return hostname in AppIdMap.production
         ? AppIdMap.production[hostname]
-        : hostname in AppIdMap.staging
+        : // eslint-disable-next-line no-nested-ternary
+        hostname in AppIdMap.staging
             ? AppIdMap.staging[hostname]
             : hostname in AppIdMap.dev
                 ? AppIdMap.dev[hostname]
