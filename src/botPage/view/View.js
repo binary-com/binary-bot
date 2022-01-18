@@ -23,7 +23,7 @@ import {
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
 import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
-import googleDrive from '../../common/integrations/GoogleDrive';
+import google_drive_util from '../../common/integrations/GoogleDrive';
 import { getLanguage, showBanner } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
@@ -405,7 +405,7 @@ export default class View {
             })
                 .then(() => {
                     this.stop();
-                    googleDrive.signOut();
+                    google_drive_util.logout();
                     GTM.setVisitorId();
                     removeTokens();
                 })
