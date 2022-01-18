@@ -1,4 +1,5 @@
 import RenderHTML from 'react-render-html';
+import { TrackJS } from 'trackjs';
 import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
@@ -115,3 +116,29 @@ export const removeSpinnerInButton = ($buttonElement, initialText) => {
 export const isMobile = () => window.innerWidth <= MAX_MOBILE_WIDTH;
 
 export const isDesktop = () => window.innerWidth > MAX_MOBILE_WIDTH;
+
+export const loadExternalScript = (src, async = true, defer = true) =>
+    new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = async;
+        script.defer = defer;
+        script.onerror = reject;
+
+        script.onload = script.onreadystatechange = function() {
+            const load_state = this.readyState;
+            if (load_state && !/loaded|complete/.test(load_state)) return;
+
+            script.onload = script.onreadystatechange = null;
+            resolve();
+        };
+
+        document.head.appendChild(script);
+    });
+
+export const errLogger = (err, msg) => {
+    const err_str = JSON.stringify(err);
+    const err_msg = `${msg} - Error: ${err_str}`;
+    console.error(err_msg);
+    if (isProduction()) TrackJS.track(err_msg);
+};
