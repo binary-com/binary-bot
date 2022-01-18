@@ -109,6 +109,7 @@
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
     "commander": "^8.3.0",
+    "classnames": "^2.3.1",
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",
     "crc-32": "^1.2.0",
