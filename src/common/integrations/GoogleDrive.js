@@ -1,7 +1,7 @@
 /* global google,gapi */
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
-import { translate , errLogger, loadExternalScript } from '../utils/tools';
+import { translate, errLogger, loadExternalScript } from '../utils/tools';
 import google_deriv_config from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
 import { TrackJSError } from '../../botPage/view/logger';
@@ -89,7 +89,7 @@ class GoogleDriveUtil {
     }
 
     logout() {
-        this.is_authorized && this.auth.signOut();
+        if (this.is_authorized) this.auth.signOut();
     }
 
     createFilePicker() {

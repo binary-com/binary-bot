@@ -125,13 +125,17 @@ export const loadExternalScript = (src, async = true, defer = true) =>
         script.defer = defer;
         script.onerror = reject;
 
-        script.onload = script.onreadystatechange = function() {
+        function handleLoad() {
             const load_state = this.readyState;
             if (load_state && !/loaded|complete/.test(load_state)) return;
 
-            script.onload = script.onreadystatechange = null;
+            script.onload = null;
+            script.onreadystatechange = null;
             resolve();
-        };
+        }
+
+        script.onload = handleLoad;
+        script.onreadystatechange = handleLoad;
 
         document.head.appendChild(script);
     });
