@@ -12,12 +12,19 @@ const initial_state = {
     total_real: 0,
     total_demo: 0,
     is_eu: false,
+    is_gd_ready: false,
 };
 
 export const clientSlice = createSlice({
     name: 'client',
     initialState: initial_state,
-    reducers: {},
+    reducers: {
+        setGdReady: (state, action) => {
+            state.is_gd_ready = action.payload;
+        },
+    },
 });
+
+export const { setGdReady } = clientSlice.actions;
 
 export default clientSlice.reducer;
