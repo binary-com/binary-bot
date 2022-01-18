@@ -11,3 +11,4 @@ www
 lib/
 old/
 CNAME
+src/botPage/common/google_drive_config.js
