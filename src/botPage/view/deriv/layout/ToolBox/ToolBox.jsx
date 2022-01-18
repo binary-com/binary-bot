@@ -1,10 +1,12 @@
+import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
-import Modal from "../../components/modal";
-import { translate } from "../../../../../common/i18n";
+import { useSelector } from "react-redux";
 import Load from "./components/load";
 import Save from "./components/save";
 import Reset from "./components/reset";
+import Modal from "../../components/modal";
+import { translate } from "../../../../../common/i18n";
 
 const ShowModal = ({ modal, onClose, class_name }) => {
   if (!modal) return ;
@@ -19,6 +21,8 @@ const ShowModal = ({ modal, onClose, class_name }) => {
 const ToolBox = ({ blockly }) => {
   const [should_show_modal, setShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
+
+  const { is_gd_ready } = useSelector(state => state.client);
 
   React.useEffect(() => {
     const Keys = Object.freeze({"zoomIn": 187,"zoomOut": 189})
@@ -52,6 +56,7 @@ const ToolBox = ({ blockly }) => {
       title: translate("Load Blocks"),
       props: {
         closeDialog: onCloseModal,
+        is_gd_ready,
       },
     },
     save: {
@@ -59,6 +64,7 @@ const ToolBox = ({ blockly }) => {
       title: translate("Save Blocks"),
       props: {
         closeDialog: onCloseModal,
+        is_gd_ready,
       blockly,
       },
     },
@@ -96,7 +102,8 @@ const ToolBox = ({ blockly }) => {
       />
       <button
         id="integrations"
-        className="toolbox-button icon-integrations invisible"
+        className={classNames('toolbox-button', 'icon-integrations', { 'invisible': !is_gd_ready })}
+        className="toolbox-button icon-integrations"
       />
 
       <span className="toolbox-separator"/>
