@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from '../deriv/store';
 import DialogComponent from './DialogComponent';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
@@ -8,7 +10,9 @@ export default class Dialog {
         this.componentId = `${id}-component`;
 
         ReactDOM.render(
-            <DialogComponent id={this.componentId} title={title} content={content} options={options} />,
+            <Provider store={store}>
+                <DialogComponent id={this.componentId} title={title} content={content} options={options} />
+            </Provider>,
             $(`#${id}`)[0]
         );
     }
