@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import Dialog from './Dialog';
-import { cleanBeforeExport } from '../blockly/utils';
-import * as style from '../style';
-import { translate } from '../../../common/i18n';
-import googleDrive from '../../../common/integrations/GoogleDrive';
-import { observer as globalObserver } from '../../../common/utils/observer';
-import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/utils/tools';
+import { cleanBeforeExport } from '../../../../../blockly/utils';
+import * as style from '../../../../../style';
+import googleDrive from '../../../../../../../common/integrations/GoogleDrive';
+import { observer as globalObserver } from '../../../../../../../common/utils/observer';
+import { showSpinnerInButton, removeSpinnerInButton } from '../../../../../../../common/utils/tools';
+import { translate } from '../../../../../../../common/i18n';
 
-class SaveContent extends PureComponent {
+
+// Needs to refactor to functional component
+export default class Save extends PureComponent {
     constructor() {
         super();
         this.state = {
@@ -21,7 +22,11 @@ class SaveContent extends PureComponent {
         const filename = $(this.filename).val() || 'binary-bot';
         const collection = $(this.isCollection).prop('checked');
 
-        if (this.state.saveType === 'google-drive') {
+        if (this.state.saveType === 'local') {
+            this.props.blockly.save({filename,collection,})
+            this.props.closeDialog();
+            return;
+        }
             const initialButtonText = $(this.submitButton).text();
             showSpinnerInButton($(this.submitButton));
 
@@ -45,12 +50,6 @@ class SaveContent extends PureComponent {
                 .catch(() => {
                     removeSpinnerInButton($(this.submitButton), initialButtonText);
                 });
-        } else {
-            this.props.onSave({
-                filename,
-                collection,
-            });
-        }
     }
 
     onChange(event) {
@@ -146,30 +145,4 @@ class SaveContent extends PureComponent {
         onSave     : PropTypes.func,
         closeDialog: PropTypes.func,
     };
-}
-
-export default class SaveDialog extends Dialog {
-    constructor() {
-        const closeDialog = () => {
-            this.close();
-        };
-        const onSave = arg => {
-            this.limitsPromise(arg);
-            closeDialog();
-        };
-        super(
-            'save-dialog',
-            translate('Save blocks'),
-            <SaveContent onSave={onSave} closeDialog={closeDialog} />,
-            style.dialogLayout
-        );
-        this.registerCloseOnOtherDialog();
-    }
-
-    save() {
-        this.open();
-        return new Promise(resolve => {
-            this.limitsPromise = resolve;
-        });
-    }
 }

@@ -107,6 +107,7 @@
     "@reduxjs/toolkit": "^1.6.2",
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
+    "classnames": "^2.3.1",
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",

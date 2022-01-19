@@ -1,5 +1,5 @@
 import React from "react";
-import  Popover from '../../../components/popover.jsx';
+import  Popover from '../../../components/popover';
 
 const ServerTime = ({ api }) => {
     const [hasApiResponse, setHasApiResponse] = React.useState(false);
