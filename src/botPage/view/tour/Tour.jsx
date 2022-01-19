@@ -40,29 +40,8 @@ const Tour = () => {
     };
 
     return (
-        <div className='tour-first-pop-up'>
-            <Joyride
-                beaconComponent={undefined}
-                // beaconComponent={
-                //     React.forwardRef((props, ref) => (
-                //         <div onClick={()=> console.log('lskdlaskjd')} ref={ref} {...props} 
-                //          style={{
-                //             backgroundColor: '#fff',
-                //             borderRadius: '4px',
-                //             color: '#555',
-                //             cursor: 'default',
-                //             filter: 'drop-shadow(-1px -2px 3px rgba(0,0,0,0.3)) drop-shadow(1px 2px 3px rgba(0,0,0,0.3))',
-                //             padding: '20px',
-                //             pointerEvents: 'auto',
-                //             transform: 'translate3d(0,0,0)',
-                //             width: '17em',
-                //             zIndex: '1510',
-                //         }}>
-                //             <CustomBeaconComponent />
-                //         </div>
-                //     ))
-                // }
-               
+        <div>
+            <Joyride     
                 run={run}
                 disableCloseOnEsc={true}
                 disableOverlay={!isMobile()}
@@ -76,24 +55,25 @@ const Tour = () => {
                 steps={steps}
                 callback={callback}
                 styles={{
-                    tooltip: {
-                        backgroundColor: '#fff',
+                    tooltip: {                        
                         borderRadius: '4px',
                         color: '#555',
                         cursor: 'default',
-                        padding: '20px !default',
+                        padding: '20px',
                         pointerEvents: 'auto',
                         transform: 'translate3d(0, 0, 0)',
-                        width: 'nth((15em, 20em, 20em), 1)',
+                        width: '20em',
                         zIndex: '10000',
                         position: 'fixed !important',
+                        filter: 'drop-shadow(-1px -2px 3px rgba(0,0,0,0.3)) drop-shadow(1px 2px 3px rgba(0,0,0,0.1))',
                     },
                     buttonNext: {
                         backgroundColor: '#2e8836',
                         borderRadius: '4px',
                         color: '#fff',
-                        padding: '6px 12px',
+                        padding: '10px 25px',
                         transition: 'background-color 0.2s ease-in-out',
+                   
                     // &:active,
                     // &:focus,
                     // &:hover {
@@ -104,11 +84,21 @@ const Tour = () => {
                     buttonBack: {
                         backgroundColor: '#f2f2f2',
                         color: '#000',
+                        padding: '10px 25px',
+                        marginRight: '8px',
                     },
                     tooltipTitle: {
-                        fontSize: '18',
+                        fontSize: '20px',
+                        fontWeight: '400',
                         margin: '0',
+                        color: '#555',
+                        textAlign: 'left',
+                        paddingBottom: '5px',
                         borderBottom: '1px solid #e98024',
+                    },
+                    tooltipContent:{
+                        textAlign: 'left',
+                        padding: '0',
                     },
                     
                 }}

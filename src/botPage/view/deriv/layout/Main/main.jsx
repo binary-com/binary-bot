@@ -8,6 +8,7 @@ import Footer from '../Footer';
 import ToolBox from '../ToolBox';
 import SidebarToggle from '../../components/SidebarToggle';
 
+const Center = () => ( <div className='center' id='center'/>);
 
 const Main = ({api, blockly}) => {
     const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const Main = ({api, blockly}) => {
     }, []);
     return (
         <div className="main">
+            <Center />
             <Tour />
             <ToolBox blockly={blockly} />
             <SidebarToggle />
