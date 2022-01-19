@@ -108,23 +108,24 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
 
         return new Promise(resolve =>
-            this.listen('authorize', ({ authorize }) => {
-                this.accountInfo = authorize;
-                this.token = token;
-                // Only subscribe to balance in browser, not for tests.
-                if (document) {
-                    // Get the balance before opening contract
-                    this.api.send({ balance: 1 });
-                    this.listen('balance', data => {
-                        const { balance, currency } = data.balance;
-                        globalObserver.setState({
-                            balance: Number(balance),
-                            currency,
+            this.api.onMessage().subscribe(({ data }) => {
+                if (data?.msg_type === 'authorize') {
+                    const { authorize } = data;
+                    this.accountInfo = authorize;
+                    this.token = token;
+                    // Only subscribe to balance in browser, not for tests.
+                    if (document) {
+                        // Get the balance before opening contract
+                        this.api.send({ balance: 1, subscribe: 1 }).then(({ balance }) => {
+                            globalObserver.setState({
+                                balance: Number(balance.balance),
+                                currency: balance.currency,
+                            });
+                            resolve();
                         });
+                    } else {
                         resolve();
-                    });
-                } else {
-                    resolve();
+                    }
                 }
             })
         );
@@ -150,13 +151,5 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     getData() {
         return this.data;
-    }
-
-    listen(msg_type, callback) {
-        this.api.onMessage().subscribe(({ data }) => {
-            if (data?.msg_type === msg_type) {
-                callback(data);
-            }
-        });
     }
 }

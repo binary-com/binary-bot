@@ -9,36 +9,40 @@ const AFTER_FINISH_TIMEOUT = 5;
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
-            this.listen('proposal_open_contract', r => {
-                const contract = r.proposal_open_contract;
+            this.api.onMessage().subscribe(({ data }) => {
+                if (data?.msg_type === 'proposal_open_contract') {
+                    const contract = data.proposal_open_contract;
+                    if (!this.expectedContractId(contract.contract_id)) return;
 
-                if (!this.expectedContractId(contract.contract_id)) return;
+                    this.setContractFlags(contract);
 
-                this.setContractFlags(contract);
+                    this.data.contract = contract;
 
-                this.data.contract = contract;
+                    broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
 
-                broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
+                    if (this.isSold) {
+                        contractStatus({
+                            id: 'contract.sold',
+                            data: contract.transaction_ids.sell,
+                            contract,
+                        });
 
-                if (this.isSold) {
-                    contractStatus({
-                        id: 'contract.sold',
-                        data: contract.transaction_ids.sell,
-                        contract,
-                    });
-                    contractSettled(contract);
-                    this.contractId = '';
-                    this.updateTotals(contract);
-                    if (this.afterPromise) {
-                        this.afterPromise();
-                    }
+                        contractSettled(contract);
 
-                    this.store.dispatch(sell());
-                    this.cancelSubscriptionTimeout();
-                } else {
-                    this.store.dispatch(openContractReceived());
-                    if (!this.isExpired) {
-                        this.resetSubscriptionTimeout();
+                        this.contractId = '';
+                        this.updateTotals(contract);
+
+                        if (this.afterPromise) {
+                            this.afterPromise();
+                        }
+
+                        this.store.dispatch(sell());
+                        this.cancelSubscriptionTimeout();
+                    } else {
+                        this.store.dispatch(openContractReceived());
+                        if (!this.isExpired) {
+                            this.resetSubscriptionTimeout();
+                        }
                     }
                 }
             });
