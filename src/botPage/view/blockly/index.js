@@ -1,3 +1,4 @@
+import { TrackJS } from 'trackjs';
 import './customBlockly';
 import blocks from './blocks';
 import {
@@ -57,8 +58,8 @@ const disposeBlocksWithLoaders = () => {
 
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        if (window.trackJs && isProduction()) {
-            trackJs.track('Invalid financial market');
+        if (isProduction()) {
+            TrackJS.track('Invalid financial market');
         }
         showDialog({
             title: translate('Warning'),

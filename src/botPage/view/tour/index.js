@@ -3,6 +3,7 @@ import Joyride from 'react-joyride';
 import { set as setStorage, setDone } from '../../../common/utils/storageManager';
 import { translate } from '../../../common/i18n';
 import welcome from './welcome';
+import { isMobile } from '../../../common/utils/tools';
 
 const setDoneCheck = () => {
     const doNotAskCheck = document.getElementById('do-not-ask-me-again');
@@ -76,7 +77,8 @@ class Tour extends PureComponent {
                     autoStart
                     run
                     keyboardNavigation={false}
-                    showOverlay={false}
+                    showOverlay={isMobile()}
+                    disableOverlay
                     type="continuous"
                     locale={{
                         next: translate('Next'),

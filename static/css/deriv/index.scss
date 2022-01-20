@@ -11,6 +11,7 @@
 @import "header";
 @import "footer";
 @import "popover";
+@import "modal";
 
 .header {
     font-size: $FONT_BASE;
@@ -22,6 +23,16 @@
 }
 a:hover {
     text-decoration: none;
+}
+
+// Make summary panel to cover full viewport
+.ui-dialog[aria-describedby="summaryPanel"] {
+  @include mobile {
+    width: 100vw !important;
+    height: auto !important;
+    top: 0;
+    left: 0;
+  }
 }
 
 #summaryPanel {

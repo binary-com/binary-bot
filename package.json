@@ -97,7 +97,7 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.2.0",
     "sha1": "^1.1.1",
-    "trackjs": "^2.10.2",
+    "trackjs": "^3.10.1",
     "vinyl-paths": "^2.1.0",
     "webpack": "^3.10.0",
     "webpack-stream": "^4.0.0"
@@ -107,6 +107,7 @@
     "@reduxjs/toolkit": "^1.6.2",
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
+    "classnames": "^2.3.1",
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",
