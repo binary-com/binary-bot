@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import Tour from '../../../tour';
+import Tour from '../../components/tour';
 import { get as getStorage, isDone } from '../../../../../common/utils/storageManager';
 import { updateShowTour } from '../../store/ui-slice';
 import Footer from '../Footer';

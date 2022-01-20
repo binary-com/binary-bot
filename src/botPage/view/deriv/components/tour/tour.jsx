@@ -4,14 +4,15 @@ import Joyride, { STATUS, ACTIONS, EVENTS } from 'react-joyride';
 import {
     set as setStorage,
     get as getStorage,
-} from '../../../common/utils/storageManager';
-import { translate } from '../../../common/i18n';
-import welcome from './welcome.jsx';
-import { isMobile } from '../../../common/utils/tools';
+} from '../../../../../common/utils/storageManager';
+import { translate } from '../../../../../common/i18n';
+import welcome from './welcome';
+import { isMobile } from '../../../../../common/utils/tools';
 
+const getTourState = () => !getStorage('closedTourPopup')
 const Tour = () => {
-    const[run, setRun] = useState(!getStorage('closedTourPopup'));
-    const[stepIndex, setStepIndex] = useState(0);
+    const[run, setRun] = useState(() => getTourState());
+    const[step_index, setStepIndex] = useState(0);
 
     const closeTourPermanently = () => {
         setStorage('closedTourPopup', Date.now());
@@ -21,11 +22,11 @@ const Tour = () => {
         if(is_checked){
             setStorage('closedTourPopup', Date.now());
         }
-        setStepIndex(stepIndex + 1);
+        setStepIndex(step_index + 1);
     };
     const steps = welcome(closeTourPermanently, continueTour);
 
-    const callback = (data) => {
+    const joyrideCallback = (data) => {
         const { action, index, status , type} = data;
         if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
             setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1));
@@ -43,25 +44,27 @@ const Tour = () => {
         <div>
             <Joyride     
                 run={run}
-                disableCloseOnEsc={true}
+                disableCloseOnEsc
                 disableOverlay={!isMobile()}
-                disableOverlayClicks={true}
-                continuous={true}
+                disableOverlayClicks
+                continuous
                 locale={{
                     open: '',
                     last: translate('Done'),
                 }}
-                stepIndex={stepIndex}
+                stepIndex={step_index}
                 steps={steps}
-                callback={callback}
+                callback={joyrideCallback}
                 styles={{
-                    tooltip: {                        
+                    tooltip: {      
+                        
+                        animation: 'joyride-animation 0.2s ease-in-out',
                         borderRadius: '4px',
                         color: '#555',
                         cursor: 'default',
                         padding: '20px',
                         pointerEvents: 'auto',
-                        transform: 'translate3d(0, 0, 0)',
+                        // transform: 'translate3d(0, 0, 0)',
                         width: '20em',
                         zIndex: '10000',
                         position: 'fixed !important',
@@ -72,14 +75,9 @@ const Tour = () => {
                         borderRadius: '4px',
                         color: '#fff',
                         padding: '10px 25px',
-                        transition: 'background-color 0.2s ease-in-out',
+                        // transition: 'background-color 0.2s ease-in-out',
+                        border: 'none',
                    
-                    // &:active,
-                    // &:focus,
-                    // &:hover {
-                    //   backgroundColor: 'lighten($joyride-button-bg-color, 6)',
-                    //   color: '#fff',
-                    // },
                     },
                     buttonBack: {
                         backgroundColor: '#f2f2f2',
@@ -100,6 +98,7 @@ const Tour = () => {
                         textAlign: 'left',
                         padding: '0',
                     },
+
                     
                 }}
             />

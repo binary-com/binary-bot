@@ -1,8 +1,8 @@
 import React from 'react';
-import { translate } from '../../../common/i18n';
-import { isLoggedInDeriv } from '../../../common/utils/storageManager';
-import { isMobile } from '../../../common/utils/tools';
+import { translate } from '../../../../../common/i18n';
+import { isMobile } from '../../../../../common/utils/tools';
 
+// [TODO]: Refactor direct DOM calls
 const CustomBeaconComponent = ({closeTourPermanently, continueTour}) => (
     <div className='tour__beacon'>
         <p>
@@ -23,25 +23,13 @@ const CustomBeaconComponent = ({closeTourPermanently, continueTour}) => (
 );
 
 
-const SecondStep = () => (
-    <p>{translate('Drag and drop block files or make your own strategies.')}</p>
-);
+const SecondStep = () => (<p>{translate('Drag and drop block files or make your own strategies.')}</p>);
 
-const ThirdStep = () => (
-    <p>{translate('Add more blocks from here to your bot.')}</p>
-);
+const ThirdStep = () => (<p>{translate('Add more blocks from here to your bot.')}</p>);
 
-const ForthStep = () => (
-    <p>
-        {translate('Login before starting your bot. Always test your strategies with the virtual account.')}
-    </p>
-);
+const ForthStep = () => (<p>{translate('Login before starting your bot. Always test your strategies with the virtual account.')}</p>);
 
-const FifthStep = () => (
-    <p>
-        {translate('Control your blocks. Hold the cursor on each button for more info.')}
-    </p>
-);
+const FifthStep = () => (<p>{translate('Control your blocks. Hold the cursor on each button for more info.')}</p>);
 
 const SixthStep = () => (
     <p>
@@ -51,7 +39,6 @@ const SixthStep = () => (
         </a>
     </p>
 )
-
 
 function welcome (closeTourPermanently, continueTour) {
     const steps = [
@@ -74,6 +61,7 @@ function welcome (closeTourPermanently, continueTour) {
                 tooltipTitle: {
                     textAlign: 'center', 
                 },
+               
             },
         },
         {
@@ -86,26 +74,31 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Blocks toolbox'),
             content: <ThirdStep />,
-            target: '.blocklyTreeRoot',
-            placement: 'top',
+            target: '.blocklyToolboxDiv',
+            placement: 'right',
         },
         {
             title: translate('Accounts'),
             content: <ForthStep />,
-            target: isLoggedInDeriv() ? '#acc_switcher' : '.header__btn',
-            position: 'left',
+            target:  '#acc_switcher',
+            placement: 'left',
+            styles: {
+                floater: {
+                    top: '15px', 
+                },
+            },
         },
         {
             title: translate('Bot controls'),
             content: <FifthStep />,
             target: isMobile() ? '#toolbox' : '#zoomIn',
-            position: 'left',
+            placement: 'bottom',
         },
         {
             title: translate('Enjoy!'),
             content: <SixthStep />,
             target: '#center',
-            position: 'center',
+            placement: 'center',
             style: {
                 arrow: {
                     display: 'none',
