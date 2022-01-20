@@ -1,12 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 const production = process.env.NODE_ENV === 'production';
 
 const plugins = [
+    new Dotenv(),
     new webpack.ProvidePlugin({
-        $              : 'jquery',
-        jQuery         : 'jquery',
+        $: 'jquery',
+        jQuery: 'jquery',
         'window.jQuery': 'jquery',
     }),
 ];
@@ -19,10 +21,10 @@ const productionPlugins = production
             },
         }),
         new webpack.optimize.UglifyJsPlugin({
-            include  : /\.js$/,
-            minimize : true,
+            include: /\.js$/,
+            minimize: true,
             sourceMap: true,
-            compress : {
+            compress: {
                 warnings: false,
             },
         }),
@@ -31,25 +33,25 @@ const productionPlugins = production
 
 module.exports = {
     entry: {
-        bot  : path.join(__dirname, 'src', 'botPage', 'view'),
+        bot: path.join(__dirname, 'src', 'botPage', 'view'),
         index: path.join(__dirname, 'src', 'indexPage'),
     },
     output: {
-        filename         : production ? '[name].min.js' : '[name].js',
+        filename: production ? '[name].min.js' : '[name].js',
         sourceMapFilename: production ? '[name].min.js.map' : '[name].js.map',
     },
-    devtool  : 'source-map',
-    watch    : !production,
-    target   : 'web',
+    devtool: 'source-map',
+    watch: !production,
+    target: 'web',
     externals: {
         CIQ: 'CIQ',
     },
     module: {
         rules: [
             {
-                test   : /\.(js|jsx)$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use    : 'babel-loader',
+                use: 'babel-loader',
             },
         ],
     },

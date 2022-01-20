@@ -2,7 +2,7 @@
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
 import { translate, errLogger, loadExternalScript } from '../utils/tools';
-import google_deriv_config from '../../botPage/common/google_drive_config';
+import GD from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
 import { TrackJSError } from '../../botPage/view/logger';
 import store from '../../botPage/view/deriv/store';
@@ -19,9 +19,9 @@ const getPickerLanguage = () => {
 
 class GoogleDriveUtil {
     constructor(
-        client_id = google_deriv_config.client_id,
-        api_key = google_deriv_config.api_key,
-        app_id = google_deriv_config.app_id,
+        client_id = GD.CLIENT_ID,
+        api_key = GD.API_KEY,
+        app_id = GD.APP_ID,
         bot_folder = `Binary Bot - ${translate('Strategies')}`
     ) {
         this.client_id = client_id;
@@ -32,20 +32,20 @@ class GoogleDriveUtil {
         this.is_authorized = false;
         this.profile = null;
         // Fetch Google API script and initialize class fields
-        loadExternalScript(google_deriv_config.gapi_source)
+        loadExternalScript(GD.API_URL)
             .then(this.init)
             .catch(err => errLogger(err, 'There was an error loading Google API script.'));
     }
 
     init = () => {
-        gapi.load(google_deriv_config.auth_scope, {
+        gapi.load(GD.AUTH_SCOPE, {
             callback: () => {
                 gapi.client
                     .init({
                         apiKey: this.api_key,
                         clientId: this.client_id,
-                        scope: google_deriv_config.scope,
-                        discoveryDocs: google_deriv_config.discovery_docs,
+                        scope: GD.SCOPE,
+                        discoveryDocs: GD.DISCOVERY_DOCS,
                     })
                     .then(
                         () => {
