@@ -7,71 +7,63 @@ import { observer as globalObserver } from '../../common/utils/observer';
 import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
 
-const min_height = 550;
+const Logtable = () => {
+    const [id, setId] = React.useState(0);
+    const [rows, setRows] = React.useState([]);
+    const [widths, setWidths] = React.useState({
+        timestamp: 0.25,
+        message: 0.75,
+    });
 
-export default class LogTable extends Component {
-    static propTypes = {
-        log: PropTypes.shape({
-            type: PropTypes.string,
-            timestamp: PropTypes.string,
-            message: PropTypes.string,
-        }),
-    };
-
-    state = {
-        id: 0,
-        rows: [],
-        widths: {
-            timestamp: 0.2,
-            message: 0.8,
-        },
-    };
-    total_width = 1150;
-    cache = new CellMeasurerCache({
+    const total_width = 1150;
+    const min_height = 550;
+    const cache = new CellMeasurerCache({
         defaultHeight: 35,
     });
 
-    columns = [
+    const columns = [
         { label: translate('Timestamp'), dataKey: 'timestamp' },
         { label: translate('Message'), dataKey: 'message' },
     ];
 
-    componentWillMount() {
-        globalObserver.register('log.export', () => {
-            this.export();
-        });
+    const logtable = React.useRef();
 
-        globalObserver.register('bot.notify', log => {
-            if (log) {
-                if (!Object.keys(log).length) {
-                    return;
-                }
-                this.setState(appendRow(log, this.state), () => {
-                    this.logtable.scrollToRow(this.state.id);
-                });
-            }
-        });
-    }
+    React.useEffect(() => {
+        globalObserver.register('log.export', exportLogs);
+        globalObserver.register('bot.notify', notify);
+        return () => {
+            globalObserver.unregister('log.export', exportLogs);
+            globalObserver.unregister('bot.notify', notify);
+        };
+    }, [rows]);
 
-    export() {
-        const data = json2csv({ data: this.state.rows, fields: ['timestamp', 'message'] });
+    const exportLogs = () => {
+        const data = json2csv({ data: rows, fields: ['timestamp', 'message'] });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
-    }
+    };
 
-    headerRenderer = ({ dataKey, label }) => {
-        const index = this.columns.findIndex(col => col.dataKey === dataKey);
-        const isLastColumn = index + 1 === this.columns.length;
+    const notify = log => {
+        if (!log) return;
+        const { id: updated_id, rows: updated_rows } = appendRow(log, { id, rows });
+        setId(updated_id);
+        setRows(updated_rows);
+        logtable.current.scrollToRow(updated_id);
+    };
+
+    const headerRenderer = ({ dataKey, label }) => {
+        const index = columns.findIndex(col => col.dataKey === dataKey);
+        const is_last_column = index + 1 === columns.length;
 
         return (
             <React.Fragment key={dataKey}>
                 <div className="ReactVirtualized__Table__headerTruncatedText">{label}</div>
-                {!isLastColumn && (
+                {!is_last_column && (
                     <Draggable
                         axis="x"
                         defaultClassName="DragHandle"
                         defaultClassNameDragging="DragHandleActive"
-                        onDrag={(event, { deltaX }) =>
-                            this.resizeRow({
+                        onDrag={(e, { deltaX }) =>
+                            resizeRow({
                                 dataKey,
                                 deltaX,
                             })
@@ -86,23 +78,17 @@ export default class LogTable extends Component {
         );
     };
 
-    resizeRow = ({ dataKey, deltaX }) => {
-        this.setState(prevState => {
-            const prevWidths = prevState.widths;
-            const percentDelta = deltaX / this.total_width;
-            const nextDataKey = 'timestamp';
+    const resizeRow = ({ dataKey, deltaX }) => {
+        const prev_widths = { ...widths };
+        const percent_delta = deltaX / total_width;
 
-            return {
-                widths: {
-                    ...prevWidths,
-                    [dataKey]: prevWidths[dataKey] - percentDelta,
-                    [nextDataKey]: prevWidths[nextDataKey] + percentDelta,
-                },
-            };
+        setWidths({
+            message: prev_widths.message - percent_delta,
+            timestamp: prev_widths.timestamp + percent_delta,
         });
     };
 
-    rowRenderer = ({ rowData, columns, className, key }) => (
+    const rowRenderer = ({ rowData, columns, className, key }) => (
         <div className={`${className} ${rowData.type}`} key={key}>
             {columns?.map(({ props, key: inner_key }) => (
                 <div style={props.style} className={props.className} role={props.role} key={inner_key}>
@@ -112,43 +98,43 @@ export default class LogTable extends Component {
         </div>
     );
 
-    render() {
-        const { widths } = this.state;
+    console.log(logtable);
 
-        return (
-            <div className="content-row">
-                <div>
-                    <div className="content-row-table">
-                        <div style={{ height: min_height }}>
-                            <Table
-                                ref={ref => (this.logtable = ref)}
-                                width={760}
-                                height={min_height}
-                                headerHeight={35}
-                                rowHeight={35}
-                                rowCount={this.state.rows.length}
-                                rowGetter={({ index }) => this.state.rows[index]}
-                                headerStyle={{
-                                    fontSize: 11,
-                                    textTransform: 'capitalize',
-                                }}
-                                rowRenderer={this.rowRenderer}
-                                deferredMeasurementCache={this.cache}
-                            >
-                                {this.columns.map(({ label, dataKey }, index) => (
-                                    <Column
-                                        key={index}
-                                        headerRenderer={this.headerRenderer}
-                                        width={widths[dataKey] * this.total_width}
-                                        label={label}
-                                        dataKey={dataKey}
-                                    />
-                                ))}
-                            </Table>
-                        </div>
+    return (
+        <div className="content-row">
+            <div>
+                <div className="content-row-table">
+                    <div style={{ height: min_height }}>
+                        <Table
+                            ref={logtable}
+                            width={760}
+                            height={min_height}
+                            headerHeight={35}
+                            rowHeight={35}
+                            rowCount={rows.length}
+                            rowGetter={({ index }) => rows[index]}
+                            headerStyle={{
+                                fontSize: 11,
+                                textTransform: 'capitalize',
+                            }}
+                            rowRenderer={rowRenderer}
+                            deferredMeasurementCache={cache}
+                        >
+                            {columns.map(({ label, dataKey }, index) => (
+                                <Column
+                                    key={index}
+                                    headerRenderer={headerRenderer}
+                                    width={widths[dataKey] * total_width}
+                                    label={label}
+                                    dataKey={dataKey}
+                                />
+                            ))}
+                        </Table>
                     </div>
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
+
+export default Logtable;
