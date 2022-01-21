@@ -1,6 +1,5 @@
 import json2csv from 'json2csv';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import Draggable from 'react-draggable';
 import { Table, Column, CellMeasurerCache } from 'react-virtualized';
 import { observer as globalObserver } from '../../common/utils/observer';
@@ -78,7 +77,7 @@ const Logtable = () => {
         );
     };
 
-    const resizeRow = ({ dataKey, deltaX }) => {
+    const resizeRow = ({ deltaX }) => {
         const prev_widths = { ...widths };
         const percent_delta = deltaX / total_width;
 
@@ -88,17 +87,15 @@ const Logtable = () => {
         });
     };
 
-    const rowRenderer = ({ rowData, columns, className, key }) => (
+    const rowRenderer = ({ rowData, columns: cols, className, key }) => (
         <div className={`${className} ${rowData.type}`} key={key}>
-            {columns?.map(({ props, key: inner_key }) => (
+            {cols?.map(({ props, key: inner_key }) => (
                 <div style={props.style} className={props.className} role={props.role} key={inner_key}>
                     {props.title}
                 </div>
             ))}
         </div>
     );
-
-    console.log(logtable);
 
     return (
         <div className="content-row">
