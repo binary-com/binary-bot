@@ -89,6 +89,7 @@ class GoogleDriveUtil {
                                 'ui.log.warn',
                                 translate('Please grant permission to view and manage your Google Drive files')
                             );
+                            return;
                         }
                         if (response.error !== 'popup_closed_by_user') reject(response);
                     });
