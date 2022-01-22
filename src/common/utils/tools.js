@@ -143,6 +143,6 @@ export const loadExternalScript = (src, async = true, defer = true) =>
 export const errLogger = (err, msg) => {
     const err_str = JSON.stringify(err);
     const err_msg = `${msg} - Error: ${err_str}`;
-    console.error(err_msg);
+    console.warn(err_msg);
     if (isProduction()) TrackJS.track(err_msg);
 };
