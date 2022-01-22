@@ -2,7 +2,7 @@
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
 import { translate, errLogger, loadExternalScript } from '../utils/tools';
-import GD from '../../botPage/common/google_drive_config';
+import GD_CONFIG from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
 import { TrackJSError } from '../../botPage/view/logger';
 import store from '../../botPage/view/deriv/store';
@@ -19,33 +19,41 @@ const getPickerLanguage = () => {
 
 class GoogleDriveUtil {
     constructor(
-        client_id = GD.CLIENT_ID,
-        api_key = GD.API_KEY,
-        app_id = GD.APP_ID,
+        client_id = GD_CONFIG.CLIENT_ID,
+        api_key = GD_CONFIG.API_KEY,
+        app_id = GD_CONFIG.APP_ID,
+        api_url = GD_CONFIG.API_URL,
+        auth_scope = GD_CONFIG.AUTH_SCOPE,
+        scope = GD_CONFIG.SCOPE,
+        discovery_docs = GD_CONFIG.DISCOVERY_DOCS,
         bot_folder = `Binary Bot - ${translate('Strategies')}`
     ) {
         this.client_id = client_id;
         this.api_key = api_key;
         this.app_id = app_id;
+        this.api_url = api_url;
+        this.auth_scope = auth_scope;
+        this.scope = scope;
+        this.discovery_docs = discovery_docs;
         this.bot_folder = bot_folder;
         this.auth = null;
         this.is_authorized = false;
         this.profile = null;
         // Fetch Google API script and initialize class fields
-        loadExternalScript(GD.API_URL)
+        loadExternalScript(this.api_url)
             .then(this.init)
             .catch(err => errLogger(err, 'There was an error loading Google API script.'));
     }
 
     init = () => {
-        gapi.load(GD.AUTH_SCOPE, {
+        gapi.load(this.auth_scope, {
             callback: () => {
                 gapi.client
                     .init({
                         apiKey: this.api_key,
                         clientId: this.client_id,
-                        scope: GD.SCOPE,
-                        discoveryDocs: GD.DISCOVERY_DOCS,
+                        scope: this.scope,
+                        discoveryDocs: this.discovery_docs,
                     })
                     .then(
                         () => {
@@ -92,6 +100,43 @@ class GoogleDriveUtil {
         if (this.is_authorized) this.auth.signOut();
     }
 
+    createFilePickerView({
+        title,
+        afterAuthCallback,
+        mime_type,
+        pickerCallback,
+        generalCallback,
+        rejectCallback,
+        generalRejectCallback,
+    }) {
+        this.authorise()
+            .then(() => {
+                afterAuthCallback()
+                    .then(() => {
+                        const view = new google.picker.DocsView();
+                        view.setIncludeFolders(true)
+                            .setSelectFolderEnabled(true)
+                            .setMimeTypes(mime_type);
+
+                        const picker = new google.picker.PickerBuilder();
+                        picker
+                            .setOrigin(`${window.location.protocol}//${window.location.host}`)
+                            .setTitle(translate(title))
+                            .addView(view)
+                            .setLocale(getPickerLanguage())
+                            .setAppId(this.app_id)
+                            .setOAuthToken(gapi.auth.getToken().access_token)
+                            .setDeveloperKey(this.api_key)
+                            .setCallback(pickerCallback)
+                            .build()
+                            .setVisible(true);
+                        if (typeof generalCallback === 'function') generalCallback();
+                    })
+                    .catch(rejectCallback);
+            })
+            .catch(generalRejectCallback);
+    }
+
     createFilePicker() {
         return new Promise((resolve, reject) => {
             // eslint-disable-next-line consistent-return
@@ -133,46 +178,25 @@ class GoogleDriveUtil {
                 } else if (data.action === google.picker.Action.CANCEL) reject();
             };
 
-            this.authorise()
-                .then(() => {
-                    /*
-                     * FilePicker open doesn't give an unauthorised error, so check if we can list files
-                     * first before attempting to open it (user revoked permissions through accounts.google.com)
-                     */
-                    gapi.client.drive.files
-                        .list()
-                        .then(() => {
-                            const docs_view = new google.picker.DocsView();
-                            docs_view.setIncludeFolders(true);
-                            docs_view.setMimeTypes(['text/xml', 'application/xml']);
+            this.createFilePickerView({
+                title: translate('Select a Binary Bot strategy'),
+                afterAuthCallback: gapi.client.drive.files.list,
+                mime_type: ['text/xml', 'application/xml'],
+                pickerCallback: userPickedFile,
+                generalCallback: resolve,
+                rejectCallback: err => {
+                    if (err.status && err.status === 401) this.logout();
 
-                            const picker = new google.picker.PickerBuilder();
-                            picker
-                                .setOrigin(`${window.location.protocol}//${window.location.host}`)
-                                .setTitle(translate('Select a Binary Bot strategy'))
-                                .setLocale(getPickerLanguage())
-                                .setAppId(this.app_id)
-                                .setOAuthToken(gapi.auth.getToken().access_token)
-                                .addView(docs_view)
-                                .setDeveloperKey(this.api_key)
-                                .setCallback(userPickedFile)
-                                .build()
-                                .setVisible(true);
-                            resolve();
-                        })
-                        .catch(err => {
-                            if (err.status && err.status === 401) this.logout();
-
-                            const error = new TrackJSError(
-                                'GoogleDrive',
-                                translate('There was an error listing files from Google Drive'),
-                                err
-                            );
-                            globalObserver.emit('Error', error);
-                            reject(error);
-                        });
-                })
-                .catch(err => reject(err));
+                    const error = new TrackJSError(
+                        'GoogleDrive',
+                        translate('There was an error listing files from Google Drive'),
+                        err
+                    );
+                    globalObserver.emit('Error', error);
+                    reject(error);
+                },
+                generalRejectCallback: reject,
+            });
         });
     }
 
@@ -255,36 +279,14 @@ class GoogleDriveUtil {
                 } else if (data.action === google.picker.Action.CANCEL) reject();
             };
 
-            this.authorise()
-                .then(() => {
-                    /*
-                     * Calling getDefaultFolderId() ensures there's at least one folder available to save to.
-                     * FilePicker doesn't allow for folder creation, so a user without any folder in
-                     * their drive couldn't select anything.
-                     */
-                    this.getDefaultFolderId()
-                        .then(() => {
-                            const view = new google.picker.DocsView();
-                            view.setIncludeFolders(true)
-                                .setSelectFolderEnabled(true)
-                                .setMimeTypes('application/vnd.google-apps.folder');
-
-                            const picker = new google.picker.PickerBuilder();
-                            picker
-                                .setOrigin(`${window.location.protocol}//${window.location.host}`)
-                                .setTitle(translate('Select a folder'))
-                                .addView(view)
-                                .setLocale(getPickerLanguage())
-                                .setAppId(this.app_id)
-                                .setOAuthToken(gapi.auth.getToken().access_token)
-                                .setDeveloperKey(this.api_key)
-                                .setCallback(savePickerCallback)
-                                .build()
-                                .setVisible(true);
-                        })
-                        .catch(reject);
-                })
-                .catch(reject);
+            this.createFilePickerView({
+                title: translate('Select a folder'),
+                afterAuthCallback: this.getDefaultFolderId.bind(this),
+                mime_type: 'application/vnd.google-apps.folder',
+                pickerCallback: savePickerCallback,
+                rejectCallback: reject,
+                generalRejectCallback: reject,
+            });
         });
     }
 }
