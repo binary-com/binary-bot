@@ -13,7 +13,7 @@ export default class Dialog {
             <Provider store={store}>
                 <DialogComponent id={this.componentId} title={title} content={content} options={options} />
             </Provider>,
-            $(`#${id}`)[0]
+            document.getElementById(id)
         );
     }
     open() {
