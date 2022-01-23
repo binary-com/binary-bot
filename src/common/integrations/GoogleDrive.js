@@ -78,22 +78,23 @@ class GoogleDriveUtil {
 
     authorise() {
         return new Promise((resolve, reject) => {
-            if (this.is_authorized) resolve();
-            else {
-                this.auth
-                    .signIn({ prompt: 'select_account' })
-                    .then(resolve)
-                    .catch(response => {
-                        if (response.error === 'access_denied') {
-                            globalObserver.emit(
-                                'ui.log.warn',
-                                translate('Please grant permission to view and manage your Google Drive files')
-                            );
-                            return;
-                        }
-                        if (response.error !== 'popup_closed_by_user') reject(response);
-                    });
+            if (this.is_authorized) {
+                resolve();
+                return;
             }
+            this.auth
+                .signIn({ prompt: 'select_account' })
+                .then(resolve)
+                .catch(response => {
+                    if (response.error === 'access_denied') {
+                        globalObserver.emit(
+                            'ui.log.warn',
+                            translate('Please grant permission to view and manage your Google Drive files')
+                        );
+                        return;
+                    }
+                    if (response.error !== 'popup_closed_by_user') reject(response);
+                });
         });
     }
 

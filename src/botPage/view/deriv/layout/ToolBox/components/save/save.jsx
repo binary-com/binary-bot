@@ -25,24 +25,24 @@ const Save = ({ blockly, closeDialog, is_gd_ready }) => {
         if (save_type === SAVE_LOAD_TYPE.local) {
             blockly.save({ file_name, save_as_collection });
             closeDialog();
-        } else {
-            setLoading(true);
-
-            const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-            cleanBeforeExport(xml);
-            xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-            xml.setAttribute('collection', save_as_collection);
-
-            closeDialog();
-            google_drive_util
-                .saveFile({
-                    name: file_name,
-                    content: Blockly.Xml.domToPrettyText(xml),
-                    mimeType: 'application/xml',
-                })
-                .then(() => globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive')))
-                .finally(() => isMounted() && setLoading(false));
+            return;
         }
+
+        setLoading(true);
+        const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        cleanBeforeExport(xml);
+        xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+        xml.setAttribute('collection', save_as_collection);
+
+        closeDialog();
+        google_drive_util
+            .saveFile({
+                name: file_name,
+                content: Blockly.Xml.domToPrettyText(xml),
+                mimeType: 'application/xml',
+            })
+            .then(() => globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive')))
+            .finally(() => isMounted() && setLoading(false));
     };
 
     return (
