@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 import LoadingButton from "../loading_button";
@@ -8,7 +7,7 @@ import { translate } from "../../../../../../../common/i18n";
 import google_drive_util from "../../../../../../../common/integrations/GoogleDrive";
 import useIsMounted from "../../../../../../../common/hooks/isMounted";
 
-const Load = ({ closeDialog, is_gd_ready }) => {
+const Load = ({ closeDialog, is_gd_logged_in }) => {
   const [load_type, setLoadType] = React.useState(SAVE_LOAD_TYPE.local);
   const [is_loading, setLoading] = React.useState(false);
   const isMounted = useIsMounted();
@@ -51,16 +50,18 @@ const Load = ({ closeDialog, is_gd_ready }) => {
           />
           <label htmlFor="load-local">{translate("My computer")}</label>
         </span>
-        <span className={classNames('integration-option', { invisible: !is_gd_ready })}>
-          <input
-            type="radio"
-            id="load-google-drive"
-            name="load-option"
-            value={SAVE_LOAD_TYPE.google_drive}
-            onChange={onChange}
-          />
-          <label htmlFor="load-google-drive">Google Drive</label>
-        </span>
+        {is_gd_logged_in && (
+          <span className="integration-option">
+            <input
+              type="radio"
+              id="load-google-drive"
+              name="load-option"
+              value={SAVE_LOAD_TYPE.google_drive}
+              onChange={onChange}
+            />
+            <label htmlFor="load-google-drive">Google Drive</label>
+          </span>
+        )}
       </div>
       <div className="center-text input-row last">
         <button
@@ -77,7 +78,7 @@ const Load = ({ closeDialog, is_gd_ready }) => {
 
 Load.propTypes = {
   closeDialog: PropTypes.func.isRequired,
-  is_gd_ready: PropTypes.bool.isRequired,
+  is_gd_logged_in: PropTypes.bool.isRequired,
 };
 
 export default React.memo(Load);
