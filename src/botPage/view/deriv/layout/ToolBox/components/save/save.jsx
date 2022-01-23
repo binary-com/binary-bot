@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import LoadingButton from '../loading_button';
@@ -10,7 +9,7 @@ import google_drive_util from '../../../../../../../common/integrations/GoogleDr
 import { observer as globalObserver } from '../../../../../../../common/utils/observer';
 import { translate } from '../../../../../../../common/i18n';
 
-const Save = ({ blockly, closeDialog, is_gd_ready }) => {
+const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
     const [is_loading, setLoading] = React.useState(false);
     const [file_name, setFileName] = React.useState('binary-bot');
     const [save_type, setSaveType] = React.useState(SAVE_LOAD_TYPE.local);
@@ -76,16 +75,19 @@ const Save = ({ blockly, closeDialog, is_gd_ready }) => {
                     />
                     <label htmlFor="save-local">{translate('My computer')}</label>
                 </span>
-                <span className={classNames('integration-option', { invisible: !is_gd_ready })}>
-                    <input
-                        type="radio"
-                        id="save-google-drive"
-                        name="save-option"
-                        value={SAVE_LOAD_TYPE.google_drive}
-                        onChange={onChange}
-                    />
-                    <label htmlFor="save-google-drive">Google Drive</label>
-                </span>
+                {is_gd_logged_in && (
+                    <span className="integration-option">
+                        <input
+                            type="radio"
+                            id="save-google-drive"
+                            name="save-option"
+                            value={SAVE_LOAD_TYPE.google_drive}
+                            onChange={onChange}
+                        />
+                        <label htmlFor="save-google-drive">Google Drive</label>
+                    </span>
+                )}
+
             </div>
             <div id="collection" className="input-row">
                 <input
@@ -125,7 +127,7 @@ const Save = ({ blockly, closeDialog, is_gd_ready }) => {
 Save.propTypes = {
     blockly: PropTypes.object.isRequired,
     closeDialog: PropTypes.func.isRequired,
-    is_gd_ready: PropTypes.bool.isRequired,
+    is_gd_logged_in: PropTypes.bool.isRequired,
 };
 
 export default React.memo(Save);
