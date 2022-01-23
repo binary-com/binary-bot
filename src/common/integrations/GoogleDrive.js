@@ -6,7 +6,8 @@ import GD_CONFIG from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
 import { TrackJSError } from '../../botPage/view/logger';
 import store from '../../botPage/view/deriv/store';
-import { setGdReady } from '../../botPage/view/deriv/store/client-slice';
+import { setGdReady } from '../../botPage/view/deriv/store/ui-slice';
+import { setGdLoggedIn } from '../../botPage/view/deriv/store/client-slice';
 
 const getPickerLanguage = () => {
     const language = getLanguage();
@@ -16,7 +17,7 @@ const getPickerLanguage = () => {
 
     return language;
 };
-
+// [TODO]: Refactor to a function or improve it by TS
 class GoogleDriveUtil {
     constructor(
         client_id = GD_CONFIG.CLIENT_ID,
@@ -42,7 +43,7 @@ class GoogleDriveUtil {
         // Fetch Google API script and initialize class fields
         loadExternalScript(this.api_url)
             .then(this.init)
-            .catch(err => errLogger(err, 'There was an error loading Google API script.'));
+            .catch(err => errLogger(err, translate('There was an error loading Google API script.')));
     }
 
     init = () => {
@@ -60,11 +61,12 @@ class GoogleDriveUtil {
                             this.auth = gapi.auth2.getAuthInstance();
                             this.auth.isSignedIn.listen(is_logged_in => this.updateLoginStatus(is_logged_in));
                             this.updateLoginStatus(this.auth.isSignedIn.get());
+                            store.dispatch(setGdReady(true));
                         },
-                        error => errLogger(error, 'There was an error initialising Google Drive.')
+                        error => errLogger(error, translate('There was an error initialising Google Drive.'))
                     );
             },
-            onerror: error => errLogger(error, 'There was an error loading Google Drive libraries'),
+            onerror: error => errLogger(error, translate('There was an error loading Google Drive libraries')),
         });
     };
 
@@ -72,7 +74,7 @@ class GoogleDriveUtil {
         if (is_logged_in) this.profile = this.auth.currentUser.get().getBasicProfile();
         else this.profile = null;
 
-        store.dispatch(setGdReady(is_logged_in));
+        store.dispatch(setGdLoggedIn(is_logged_in));
         this.is_authorized = is_logged_in;
     }
 
@@ -225,7 +227,7 @@ class GoogleDriveUtil {
                             })
                             .then(resolve)
                             .catch(err => {
-                                if (err.status && err.status === 401) this.logout();
+                                if (err?.status === 401) this.logout();
 
                                 const error = new TrackJSError(
                                     'GoogleDrive',
@@ -265,20 +267,23 @@ class GoogleDriveUtil {
                     xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart');
                     xhr.setRequestHeader('Authorization', `Bearer ${gapi.auth.getToken().access_token}`);
                     xhr.onload = () => {
-                        if (xhr.status === 200) resolve();
-                        else {
-                            if (xhr.status === 401) this.logout();
-                            const error = new TrackJSError(
-                                'GoogleDrive',
-                                translate('There was an error processing your request'),
-                                xhr
-                            );
-                            globalObserver.emit('Error', error);
-                            reject(error);
+                        if (xhr.status === 200) {
+                            resolve();
+                            return;
                         }
+                        if (xhr.status === 401) this.logout();
+                        const error = new TrackJSError(
+                            'GoogleDrive',
+                            translate('There was an error processing your request'),
+                            xhr
+                        );
+                        globalObserver.emit('Error', error);
+                        reject(error);
                     };
                     xhr.send(form_data);
-                } else if (data.action === google.picker.Action.CANCEL) reject();
+                    return;
+                }
+                if (data.action === google.picker.Action.CANCEL) reject();
             };
 
             this.createFilePickerView({
