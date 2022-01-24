@@ -7,8 +7,8 @@ export default Engine =>
         observeBalance() {
             this.api.onMessage().subscribe(({ data }) => {
                 if (data?.msg_type === 'balance') {
-                    const { balance: b, currency } = data.balance;
-                    const balance = roundBalance({ currency, balance: b });
+                    const { currency } = data.balance;
+                    const balance = roundBalance({ currency, balance: data.balance.balance });
                     const balance_str = `${balance} ${currency}`;
 
                     globalObserver.setState({ balance, currency });

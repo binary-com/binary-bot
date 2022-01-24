@@ -79,11 +79,12 @@ const notifyRetry = (msg, error, delay) =>
 
 const getBackoffDelay = (error, delay_index) => {
     const offset = 0.5; // 500ms
+    const delay = 1000;
 
     const error_code = error && error.name;
 
     if (error_code === 'DisconnectError') {
-        return offset * 1000;
+        return offset * delay;
     }
 
     const max_exp_tries = 4;
@@ -91,13 +92,13 @@ const getBackoffDelay = (error, delay_index) => {
 
     if (error_code === 'RateLimit' || delay_index < max_exp_tries) {
         notifyRetry(translate('Rate limit reached for'), error, exponential_increase);
-        return exponential_increase * 1000;
+        return exponential_increase * delay;
     }
 
     const linear_increase = exponential_increase + (max_exp_tries - delay_index + 1);
 
     notifyRetry(translate('Request failed for'), error, linear_increase);
-    return linear_increase * 1000;
+    return linear_increase * delay;
 };
 
 export const shouldThrowError = (error, types = [], delay_index = 0) => {
@@ -111,10 +112,14 @@ export const shouldThrowError = (error, types = [], delay_index = 0) => {
         // If auth error, reload page.
         window.location.reload();
         return true;
-    } else if (!errors.includes(error.name)) {
+    }
+
+    if (!errors.includes(error.name)) {
         // If error is unrecoverable, throw error.
         return true;
-    } else if (error.name !== 'DisconnectError' && delay_index > MAX_RETRIES) {
+    }
+
+    if (error.name !== 'DisconnectError' && delay_index > MAX_RETRIES) {
         // If exceeded MAX_RETRIES, throw error.
         return true;
     }
