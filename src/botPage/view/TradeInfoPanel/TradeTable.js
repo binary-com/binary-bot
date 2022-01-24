@@ -1,167 +1,133 @@
 /* eslint-disable no-await-in-loop */
 import json2csv from 'json2csv';
+import React from 'react';
 import Draggable from 'react-draggable';
-import React, { Component } from 'react';
 import { Table, Column } from 'react-virtualized';
-import { observer as globalObserver } from '../../../common/utils/observer';
-import { appendRow, updateRow, saveAs } from '../shared';
+import { observer as global_observer } from '../../../common/utils/observer';
+import { appendRow, updateRow, saveAs, isNumber } from '../shared';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import * as style from '../style';
 
-const isNumber = num => num !== '' && Number.isFinite(Number(num));
-
-const getProfit = ({ sell_price: sellPrice, buy_price: buyPrice, currency }) => {
-    if (isNumber(sellPrice) && isNumber(buyPrice)) {
+const getProfit = ({ sell_price, buy_price, currency }) => {
+    if (isNumber(sell_price) && isNumber(buy_price)) {
         return roundBalance({
             currency,
-            balance: Number(sellPrice) - Number(buyPrice),
+            balance: Number(sell_price) - Number(buy_price),
         });
     }
     return '';
 };
 
 const getTimestamp = date => {
-    const buyDate = new Date(date * 1000);
-    return `${buyDate.toISOString().split('T')[0]} ${buyDate.toTimeString().slice(0, 8)} ${
-        buyDate.toTimeString().split(' ')[1]
+    const buy_date = new Date(date * 1000);
+    return `${buy_date.toISOString().split('T')[0]} ${buy_date.toTimeString().slice(0, 8)} ${
+        buy_date.toTimeString().split(' ')[1]
     }`;
 };
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
 const StatusFormat = ({ value }) => <div style={style.left}>{value}</div>;
 
-export default class TradeTable extends Component {
-    constructor({ accountID }) {
-        super();
-        this.state = {
-            initial: {
-                id: 0,
-                rows: [],
-            },
-            [accountID]: {
-                id: 0,
-                rows: [],
-            },
-            widths: {
-                timestamp: 0.5,
-                reference: 0.24,
-                contract_type: 0.2,
-                entry_tick: 0.18,
-                exit_tick: 0.16,
-                buy_price: 0.18,
-                profit: 0.2,
-                contract_status: 0.16,
-            },
-        };
-        this.columns = [
-            { key: 'timestamp', label: translate('Timestamp') },
-            { key: 'reference', label: translate('Reference') },
-            { key: 'contract_type', label: translate('Trade type') },
-            { key: 'entry_tick', label: translate('Entry spot') },
-            { key: 'exit_tick', label: translate('Exit spot') },
-            { key: 'buy_price', label: translate('Buy price') },
-            { key: 'profit', label: translate('Profit/Loss') },
-            { key: 'contract_status', label: translate('Status') },
-        ];
-        this.total_width = 750;
-        this.min_height = 290;
-        this.row_height = 25;
-    }
+const TradeTable = ({ account_id, api }) => {
+    const initial_state = { id: 0, rows: [] };
+    const [account_state, setAccountState] = React.useState({ [account_id]: initial_state });
 
-    static getTradeObject(contract) {
-        const tradeObj = {
+    const actual_account_state_ref = React.useRef(account_state);
+    actual_account_state_ref.current = account_state;
+
+    const rows = account_id in account_state ? account_state[account_id].rows : [];
+
+    const [widths, setWidths] = React.useState({
+        timestamp: 0.25,
+        reference: 0.15,
+        contract_type: 0.1,
+        entry_tick: 0.1,
+        exit_tick: 0.1,
+        buy_price: 0.1,
+        profit: 0.1,
+        contract_status: 0.1,
+    });
+
+    const total_width = 750;
+    const min_height = 290;
+    const row_height = 25;
+
+    const columns = [
+        { key: 'timestamp', label: translate('Timestamp') },
+        { key: 'reference', label: translate('Reference') },
+        { key: 'contract_type', label: translate('Trade type') },
+        { key: 'entry_tick', label: translate('Entry spot') },
+        { key: 'exit_tick', label: translate('Exit spot') },
+        { key: 'buy_price', label: translate('Buy price') },
+        { key: 'profit', label: translate('Profit/Loss') },
+        { key: 'contract_status', label: translate('Status') },
+    ];
+
+    const getTradeObject = contract => {
+        const trade_obj = {
             ...contract,
-            reference: `${contract.transaction_ids.buy}`,
+            reference: contract.transaction_ids.buy,
             buy_price: roundBalance({ balance: contract.buy_price, currency: contract.currency }),
             timestamp: getTimestamp(contract.date_start),
         };
-
         if (contract.entry_tick) {
-            tradeObj.entry_tick = contract.entry_spot_display_value;
+            trade_obj.entry_tick = contract.entry_spot_display_value;
         }
-
         if (contract.exit_tick) {
-            tradeObj.exit_tick = contract.exit_tick_display_value;
+            trade_obj.exit_tick = contract.exit_tick_display_value;
         }
+        return trade_obj;
+    };
 
-        return tradeObj;
-    }
+    const exportSummary = () => {
+        if (account_state[account_id]?.rows?.length > 0) data_export();
+    };
 
-    componentWillMount() {
-        const { api } = this.props;
+    const clearBot = () => {
+        setAccountState({ [account_id]: { ...initial_state } });
+        global_observer.emit('summary.disable_clear');
+    };
 
-        globalObserver.register('summary.export', () => {
-            const accountData = this.state[this.props.accountID];
-            if (accountData && accountData.rows.length > 0) {
-                this.export();
-            }
-        });
+    const stopBot = () => {
+        if (account_state[account_id]?.rows?.length > 0) global_observer.emit('summary.enable_clear');
+    };
 
-        globalObserver.register('summary.clear', () => {
-            this.setState({ [this.props.accountID]: { ...this.state.initial } });
-            globalObserver.emit('summary.disable_clear');
-        });
+    const contractBot = contract => {
+        if (!contract) return;
+        const trade_obj = getTradeObject(contract);
+        const trade = {
+            ...trade_obj,
+            profit: getProfit(trade_obj),
+            contract_status: translate('Pending'),
+            contract_settled: false,
+        };
+        const trade_obj_account_id = trade_obj.accountID;
+        const account_state_by_id = getAccountStateById(trade_obj_account_id);
+        const trade_obj_state_rows = account_state_by_id.rows;
+        const prev_row_index = trade_obj_state_rows.findIndex(t => t.reference === trade.reference);
+        if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+            trade.exit_tick = '-';
+        }
+        if (prev_row_index >= 0) {
+            setAccountState({ [trade_obj_account_id]: updateRow(prev_row_index, trade, account_state_by_id) });
+        } else {
+            setAccountState({ [trade_obj_account_id]: appendRow(trade, account_state_by_id) });
+        }
+    };
 
-        globalObserver.register('bot.stop', () => {
-            const accountData = this.state[this.props.accountID];
-            if (accountData && accountData.rows.length > 0) {
-                globalObserver.emit('summary.enable_clear');
-            }
-        });
-
-        globalObserver.register('bot.contract', contract => {
-            if (!contract) {
-                return;
-            }
-
-            const tradeObj = TradeTable.getTradeObject(contract);
-            const trade = {
-                ...tradeObj,
-                profit: getProfit(tradeObj),
-                contract_status: translate('Pending'),
-                contract_settled: false,
-            };
-
-            const { accountID } = tradeObj;
-            const accountStat = this.getAccountStat(accountID);
-            const { rows } = accountStat;
-            const prevRowIndex = rows.findIndex(t => t.reference === trade.reference);
-
-            if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-                trade.exit_tick = '-';
-            }
-
-            if (prevRowIndex >= 0) {
-                this.setState({ [accountID]: updateRow(prevRowIndex, trade, accountStat) });
-            } else {
-                this.setState({ [accountID]: appendRow(trade, accountStat) });
-            }
-        });
-
-        globalObserver.register('contract.settled', contract => {
-            const contractID = contract.contract_id;
-            this.settleContract(api, contractID);
-        });
-    }
-
-    async settleContract(api, contractID) {
+    const settledContract = async ({ contract_id }) => {
         let settled = false;
         let delay = 3000;
-
         const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay));
 
         while (!settled) {
             await sleep();
-
             try {
-                await this.refreshContract(api, contractID);
-
-                const { accountID } = this.props;
-                const rows = this.state[accountID].rows.slice();
-                const contractRow = rows.find(row => row.contract_id === contractID);
-
-                if (contractRow && contractRow.contract_settled) {
+                await refreshContract(api, contract_id);
+                const rows = account_state[account_id].rows; //eslint-disable-line
+                const contract_row = rows.find(row => row.contract_id === contract_id); //eslint-disable-line
+                if (contract_row && contract_row.contract_settled) {
                     settled = true;
                 }
             } catch (e) {
@@ -170,58 +136,65 @@ export default class TradeTable extends Component {
                 delay *= 1.5;
             }
         }
-    }
-
-    refreshContract(api, contractID) {
-        return api.getContractInfo(contractID).then(r => {
-            const contract = r.proposal_open_contract;
-            const tradeObj = TradeTable.getTradeObject(contract);
-            const trade = {
-                ...tradeObj,
-                profit: getProfit(tradeObj),
-            };
-
-            if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-                trade.exit_tick = '-';
-            }
-
-            const { accountID } = this.props;
-            const rows = this.state[accountID].rows.slice();
-
-            const updatedRows = rows.map(row => {
-                const { reference } = row;
-
-                if (reference === trade.reference) {
-                    return {
-                        contract_status: translate('Settled'),
-                        contract_settled: true,
-                        reference,
-                        ...trade,
-                    };
-                }
-                return row;
-            });
-
-            this.setState({ [accountID]: { rows: updatedRows } });
-        });
-    }
-
-    rowGetter = ({ index }) => {
-        const { accountID } = this.props;
-        const { rows } = this.state[accountID];
-        return rows[rows.length - 1 - index];
     };
 
-    export() {
-        const { accountID } = this.props;
+    const refreshContract = async (_api, contract_id) => {
+        const contract_info = await _api.getContractInfo(contract_id);
+        const contract = contract_info.proposal_open_contract;
+        const trade_obj = getTradeObject(contract);
+        const trade = {
+            ...trade_obj,
+            profit: getProfit(trade_obj),
+        };
+        if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+            trade.exit_tick = '-';
+        }
 
-        const rows = this.state[accountID].rows.map((item, index) => {
-            const row = item;
-            row.id = index + 1;
+        const actual_rows = actual_account_state_ref.current[account_id].rows;
+        const updated_rows = actual_rows.map(row => {
+            const { reference } = row;
+            if (reference === trade.reference) {
+                return {
+                    contract_status: translate('Settled'),
+                    contract_settled: true,
+                    reference,
+                    ...trade,
+                };
+            }
             return row;
         });
+        setAccountState({ [account_id]: { rows: updated_rows } });
+    };
+
+    React.useEffect(() => {
+        global_observer.register('summary.export', exportSummary);
+        global_observer.register('summary.clear', clearBot);
+        global_observer.register('bot.stop', stopBot);
+        global_observer.register('bot.contract', contractBot);
+        global_observer.register('contract.settled', settledContract);
+
+        return () => {
+            global_observer.unregister('summary.export', exportSummary);
+            global_observer.unregister('summary.clear', clearBot);
+            global_observer.unregister('bot.stop', stopBot);
+            global_observer.unregister('bot.contract', contractBot);
+            global_observer.unregister('contract.settled', settledContract);
+        };
+    }, [account_state]);
+
+    const rowGetter = ({ index }) => {
+        const got_rows = account_state[account_id].rows;
+        return got_rows[got_rows.length - 1 - index];
+    };
+
+    const data_export = () => {
+        const to_data_rows = account_state[account_id].rows.map((item, index) => {
+            const to_data_row = item;
+            to_data_row.id = index + 1;
+            return to_data_row;
+        });
         const data = json2csv({
-            data: rows,
+            data: to_data_rows,
             fields: [
                 'id',
                 'timestamp',
@@ -235,20 +208,17 @@ export default class TradeTable extends Component {
             ],
         });
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
-    }
+    };
 
-    getAccountStat(accountID) {
-        if (!(accountID in this.state)) {
-            const initialInfo = this.state.initial;
-            this.setState({ [accountID]: { ...initialInfo } });
-            return initialInfo;
-        }
-        return this.state[accountID];
-    }
+    const getAccountStateById = _account_id => {
+        if (account_id in account_state) return account_state[account_id];
+        setAccountState({ [_account_id]: { ...initial_state } });
+        return initial_state;
+    };
 
-    headerRenderer = ({ dataKey, label }) => {
-        const headerIndex = this.columns.findIndex(col => col.key === dataKey);
-        const isLastColumn = headerIndex + 1 === this.columns.length;
+    const headerRenderer = ({ dataKey, label }) => {
+        const headerIndex = columns.findIndex(col => col.key === dataKey);
+        const isLastColumn = headerIndex + 1 === columns.length;
 
         return (
             <React.Fragment key={dataKey}>
@@ -259,7 +229,7 @@ export default class TradeTable extends Component {
                         defaultClassName="DragHandle"
                         defaultClassNameDragging="DragHandleActive"
                         onDrag={(e, { deltaX }) =>
-                            this.resizeRow({
+                            resizeRow({
                                 deltaX,
                                 headerIndex,
                             })
@@ -274,56 +244,54 @@ export default class TradeTable extends Component {
         );
     };
 
-    resizeRow = ({ deltaX, headerIndex }) => {
-        const updatedWidths = {};
-        Object.keys(this.state.widths).forEach((key, index) => {
-            const width = this.state.widths[key];
+    const resizeRow = ({ deltaX, headerIndex }) => {
+        const updatedWidths = { ...widths };
+        Object.keys(widths).forEach((key, index) => {
+            console.log(headerIndex, index, key, 'here here here');
+            const width = widths[key];
             if (headerIndex === index) {
-                updatedWidths[key] = width + deltaX;
+                updatedWidths[key] = width + deltaX / total_width;
             } else {
-                updatedWidths[key] = width;
+                updatedWidths[key] = width - deltaX / total_width;
             }
         });
-        this.setState({ widths: updatedWidths });
+        setWidths(updatedWidths);
+        console.log(updatedWidths, 'updatedWidths');
     };
 
-    cellRenderer = ({ cellData, dataKey }) => {
+    const cellRenderer = ({ cellData, dataKey }) => {
         if (dataKey === 'profit') return <ProfitColor value={cellData} />;
         if (dataKey === 'contract_status') return <StatusFormat value={cellData} />;
         return <div>{cellData}</div>;
     };
 
-    render() {
-        const { accountID } = this.props;
-        const rows = accountID in this.state ? this.state[accountID].rows : [];
-        const { widths } = this.state;
+    return (
+        <div>
+            <Table
+                width={total_width}
+                height={min_height}
+                headerHeight={row_height}
+                rowHeight={row_height}
+                rowCount={rows.length}
+                rowGetter={rowGetter}
+                headerStyle={{
+                    fontSize: 11,
+                    textTransform: 'capitalize',
+                }}
+            >
+                {columns.map(({ label, key }, index) => (
+                    <Column
+                        headerRenderer={headerRenderer}
+                        cellRenderer={cellRenderer}
+                        width={widths[key] * total_width}
+                        key={index}
+                        label={label}
+                        dataKey={key}
+                    />
+                ))}
+            </Table>
+        </div>
+    );
+};
 
-        return (
-            <div>
-                <Table
-                    width={this.total_width}
-                    height={this.min_height}
-                    headerHeight={this.row_height}
-                    rowHeight={this.row_height}
-                    rowCount={rows.length}
-                    rowGetter={this.rowGetter}
-                    headerStyle={{
-                        fontSize: 11,
-                        textTransform: 'capitalize',
-                    }}
-                >
-                    {this.columns.map(({ label, key }, index) => (
-                        <Column
-                            headerRenderer={this.headerRenderer}
-                            cellRenderer={this.cellRenderer}
-                            width={widths[key] * this.total_width}
-                            key={index}
-                            label={label}
-                            dataKey={key}
-                        />
-                    ))}
-                </Table>
-            </div>
-        );
-    }
-}
+export default TradeTable;

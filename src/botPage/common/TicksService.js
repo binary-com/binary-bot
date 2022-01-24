@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { historyToTicks, getLast } from 'binary-utils';
+import { historyToTicks, getLast } from '../../common/utils/binary';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { doUntilDone, getUUID } from '../bot/tools';
 
@@ -9,9 +9,9 @@ const parseTick = tick => ({
 });
 
 const parseOhlc = ohlc => ({
-    open : +ohlc.open,
-    high : +ohlc.high,
-    low  : +ohlc.low,
+    open: +ohlc.open,
+    high: +ohlc.high,
+    low: +ohlc.low,
     close: +ohlc.close,
     epoch: +(ohlc.open_time || ohlc.epoch),
 });
@@ -242,9 +242,9 @@ export default class TicksService {
         return new Promise((resolve, reject) => {
             doUntilDone(() =>
                 this.api.getTickHistory(symbol, {
-                    subscribe  : 1,
-                    end        : 'latest',
-                    count      : 1000,
+                    subscribe: 1,
+                    end: 'latest',
+                    count: 1000,
                     granularity: granularity ? Number(granularity) : undefined,
                     style,
                 })

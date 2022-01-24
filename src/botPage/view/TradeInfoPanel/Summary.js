@@ -1,67 +1,62 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
 
-export default class Summary extends Component {
-    constructor({ accountID }) {
-        super();
-        this.state = { [accountID]: {} };
-    }
-    componentWillMount() {
-        globalObserver.register('bot.info', info => {
-            const { accountID } = info;
-            this.setState({ [accountID]: { ...this.state[accountID], ...info } });
-        });
-        globalObserver.register('summary.clear', () => {
-            const { accountID } = this.props;
-            this.setState({ [accountID]: {} });
-        });
-    }
-    render() {
-        const { accountID } = this.props;
+const Summary = ({ accountID }) => {
+    const [summary_info, setSummaryInfo] = React.useState({});
+    const { totalRuns, totalStake, totalPayout, totalWins, totalLosses, totalProfit, balance } = summary_info;
+    const profit_color = {
+        color: totalProfit > 0 ? 'green' : 'red',
+    };
 
-        const { totalRuns, totalStake, totalPayout, totalWins, totalLosses, totalProfit, balance } =
-            accountID in this.state ? this.state[accountID] : {};
+    React.useEffect(() => {
+        const updateSummary = info => setSummaryInfo({ ...summary_info, ...info });
+        const clearSummary = () => setSummaryInfo({});
 
-        const profitColor = {
-            color: totalProfit > 0 ? 'green' : 'red',
+        globalObserver.register('bot.info', updateSummary);
+        globalObserver.register('summary.clear', clearSummary);
+
+        return () => {
+            globalObserver.unregister('bot.info', updateSummary);
+            globalObserver.unregister('summary.clear', clearSummary);
         };
-        return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>{translate('Account')}</th>
-                        <th>{translate('No. of runs')}</th>
-                        <th>{translate('Total stake')}</th>
-                        <th>{translate('Total payout')}</th>
-                        <th>{translate('Win')}</th>
-                        <th>{translate('Loss')}</th>
-                        <th>{translate('Total profit/loss')}</th>
-                        <th>{translate('Balance')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="accountID">{accountID}</td>
-                        <td className="totalRuns">{totalRuns}</td>
-                        <td className="totalStake">{totalStake}</td>
-                        <td className="totalPayout">{totalPayout}</td>
-                        <td style={style.green} className="totalWins">
-                            {totalWins}
-                        </td>
-                        <td style={style.red} className="totalLosses">
-                            {totalLosses}
-                        </td>
-                        <td style={profitColor} className="totalProfit">
-                            {totalProfit}
-                        </td>
-                        <td className="balance">
-                            {balance?.includes('UST') ? balance.replace('UST', 'USDT') : balance}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        );
-    }
-}
+    }, [summary_info]);
+
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>{translate('Account')}</th>
+                    <th>{translate('No. of runs')}</th>
+                    <th>{translate('Total stake')}</th>
+                    <th>{translate('Total payout')}</th>
+                    <th>{translate('Win')}</th>
+                    <th>{translate('Loss')}</th>
+                    <th>{translate('Total profit/loss')}</th>
+                    <th>{translate('Balance')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td className="accountID">{accountID}</td>
+                    <td className="totalRuns">{totalRuns}</td>
+                    <td className="totalStake">{totalStake}</td>
+                    <td className="totalPayout">{totalPayout}</td>
+                    <td style={style.green} className="totalWins">
+                        {totalWins}
+                    </td>
+                    <td style={style.red} className="totalLosses">
+                        {totalLosses}
+                    </td>
+                    <td style={profit_color} className="totalProfit">
+                        {totalProfit}
+                    </td>
+                    <td className="balance">{balance?.includes('UST') ? balance.replace('UST', 'USDT') : balance}</td>
+                </tr>
+            </tbody>
+        </table>
+    );
+};
+
+export default Summary;

@@ -1,3 +1,4 @@
+import { TrackJS } from 'trackjs';
 import { oppositesToDropdown } from '../utils';
 import { symbolApi } from '../../shared';
 import config from '../../../common/const';
@@ -10,6 +11,7 @@ import {
     removeAllTokens,
 } from '../../../../common/utils/storageManager';
 import { observer as globalObserver } from '../../../../common/utils/observer';
+import { isProduction } from '../../../../common/utils/tools';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 
@@ -187,9 +189,9 @@ fieldGeneratorMapping.TRADETYPE_LIST = block => () => {
 };
 
 export const dependentFieldMapping = {
-    MARKET_LIST      : 'SUBMARKET_LIST',
-    SUBMARKET_LIST   : 'SYMBOL_LIST',
-    SYMBOL_LIST      : 'TRADETYPECAT_LIST',
+    MARKET_LIST: 'SUBMARKET_LIST',
+    SUBMARKET_LIST: 'SYMBOL_LIST',
+    SYMBOL_LIST: 'TRADETYPECAT_LIST',
     TRADETYPECAT_LIST: 'TRADETYPE_LIST',
 };
 
@@ -251,8 +253,8 @@ export const getDurationsForContracts = (contractsAvailable, selectedContractTyp
         defaultDurations.slice(startIndex, endIndex + 1).forEach((duration, index) => {
             if (!offeredDurations.find(offeredDuration => offeredDuration.unit === duration[1])) {
                 offeredDurations.push({
-                    label  : duration[0],
-                    unit   : duration[1],
+                    label: duration[0],
+                    unit: duration[1],
                     minimum: index === 0 ? getMinimumAmount(c.min_contract_duration) : 1,
                 });
             }
@@ -322,7 +324,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
         const response = await api.getContractsForSymbol(underlyingSymbol);
         if (response.contracts_for) {
             Object.assign(contractsForSymbol, {
-                symbol   : underlyingSymbol,
+                symbol: underlyingSymbol,
                 available: response.contracts_for.available,
                 timestamp: Date.now(),
             });
@@ -335,15 +337,18 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
             contractsForStore
                 .filter(c => c.symbol === underlyingSymbol)
                 .forEach(() =>
-                    contractsForStore.splice(contractsForStore.findIndex(c => c.symbol === underlyingSymbol), 1)
+                    contractsForStore.splice(
+                        contractsForStore.findIndex(c => c.symbol === underlyingSymbol),
+                        1
+                    )
                 );
             contractsForStore.push(contractsForSymbol);
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
             globalObserver.unregisterAll(`contractsLoaded.${underlyingSymbol}`);
         }
     } catch (e) {
-        if (window.trackJs) {
-            trackJs.addMetadata('getContractsAvailableForSymbolFromApi Error', e.message);
+        if (isProduction()) {
+            TrackJS.addMetadata('getContractsAvailableForSymbolFromApi Error', e.message);
         }
     }
     if (typeof api.disconnect === 'function') {

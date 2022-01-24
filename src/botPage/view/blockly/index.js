@@ -1,3 +1,4 @@
+import { TrackJS } from 'trackjs';
 import './customBlockly';
 import blocks from './blocks';
 import {
@@ -57,15 +58,15 @@ const disposeBlocksWithLoaders = () => {
 
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        if (window.trackJs && isProduction()) {
-            trackJs.track('Invalid financial market');
+        if (isProduction()) {
+            TrackJS.track('Invalid financial market');
         }
         showDialog({
-            title  : translate('Warning'),
-            text   : [translate('This strategy is not available in your country.')],
+            title: translate('Warning'),
+            text: [translate('This strategy is not available in your country.')],
             buttons: [
                 {
-                    text : translate('OK'),
+                    text: translate('OK'),
                     class: 'button-primary',
                     click() {
                         $(this).dialog('close');
@@ -131,8 +132,8 @@ const overrideBlocklyDefaultShape = () => {
             // eslint-disable-next-line no-param-reassign, max-len
             block.customContextMenu = function customContextMenu(options) {
                 options.push({
-                    text    : translate('Download'),
-                    enabled : true,
+                    text: translate('Download'),
+                    enabled: true,
                     callback: () => {
                         const xml = Blockly.Xml.textToDom(
                             '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
@@ -210,11 +211,11 @@ export const load = (blockStr, dropEvent = {}) => {
 
     if (xml.hasAttribute('is_dbot')) {
         showDialog({
-            title  : translate('Unsupported strategy'),
-            text   : [translate('Sorry, this strategy can’t be used with Binary Bot. You may only use it with DBot.')],
+            title: translate('Unsupported strategy'),
+            text: [translate('Sorry, this strategy can’t be used with Binary Bot. You may only use it with DBot.')],
             buttons: [
                 {
-                    text : translate('Cancel'),
+                    text: translate('Cancel'),
                     class: 'button-secondary',
                     click() {
                         $(this).dialog('close');
@@ -222,7 +223,7 @@ export const load = (blockStr, dropEvent = {}) => {
                     },
                 },
                 {
-                    text : translate('Take me to DBot'),
+                    text: translate('Take me to DBot'),
                     class: 'button-primary',
                     click() {
                         window.location.href = 'https://app.deriv.com/bot';
@@ -327,7 +328,7 @@ export default class _Blockly {
                 blocks();
                 const workspace = Blockly.inject('blocklyDiv', {
                     toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
-                    zoom   : {
+                    zoom: {
                         wheel: false,
                     },
                     trashcan: false,
@@ -338,9 +339,9 @@ export default class _Blockly {
                             const block = workspace.getBlockById(id);
                             if (block) {
                                 GTM.pushDataLayer({
-                                    event     : 'Block Event',
+                                    event: 'Block Event',
                                     blockEvent: event.type,
-                                    blockType : block.type,
+                                    blockType: block.type,
                                 });
                             }
                         });
@@ -349,9 +350,9 @@ export default class _Blockly {
                         const blockNodes = dom.getElementsByTagName('block');
                         Array.from(blockNodes).forEach(blockNode => {
                             GTM.pushDataLayer({
-                                event     : 'Block Event',
+                                event: 'Block Event',
                                 blockEvent: event.type,
-                                blockType : blockNode.getAttribute('type'),
+                                blockType: blockNode.getAttribute('type'),
                             });
                         });
                     }

@@ -1,4 +1,6 @@
 import { translate } from '../../../common/i18n';
+import { isLoggedInDeriv } from '../../../common/utils/storageManager';
+import { isMobile } from '../../../common/utils/tools';
 
 const steps = [
     {
@@ -19,7 +21,9 @@ const steps = [
           </div>
           `,
         selector: '#center',
-        position: 'top',
+        position: 'center',
+        isFixed: true,
+        offset: 0,
         style: {
             textAlign: 'center',
             arrow: {
@@ -36,39 +40,30 @@ const steps = [
     {
         title: translate('Workspace'),
         text: `<p>${translate('Drag and drop block files or make your own strategies.')}</p>`,
-        selector: '#workspace_center',
-        position: 'top',
+        selector: isMobile() ? '.injectionDiv' : '#workspace_center',
+        position: isMobile() ? 'center' : 'top',
+        offset: 200,
     },
     {
         title: translate('Blocks toolbox'),
-        text: `<p>
-      ${translate('Add more blocks from here to your bot.')}
-    </p>`,
-        selector: '.blocklyToolboxDiv',
+        text: `<p>${translate('Add more blocks from here to your bot.')}</p>`,
+        selector: '.blocklyTreeRoot',
         position: 'right',
     },
     {
         title: translate('Accounts'),
         text: `<p>
-      ${translate('Login before starting your bot. Always test your strategies with the demo account.')}
+      ${translate('Login before starting your bot. Always test your strategies with the virtual account.')}
     </p>`,
-        selector: '.header__menu-right',
-        position: 'top-left',
-        style: {
-            beacon: {
-                offsetX: 10,
-                offsetY: 10,
-                inner: '#000 !important',
-                outer: '#000 !important',
-            },
-        },
+        selector: isLoggedInDeriv() ? '#acc_switcher' : '.header__btn',
+        position: 'left',
     },
     {
         title: translate('Bot controls'),
         text: `<p>
       ${translate('Control your blocks. Hold the cursor on each button for more info.')}
     </p>`,
-        selector: '#zoomIn',
+        selector: isMobile() ? '#toolbox' : '#zoomIn',
         position: 'left',
     },
     {
@@ -80,12 +75,14 @@ const steps = [
       </a>
     </p>`,
         selector: '#center',
-        position: 'top',
+        position: 'center',
         style: {
             arrow: {
                 display: 'none',
             },
         },
+        isFixed: true,
+        offset: 0,
     },
 ];
 

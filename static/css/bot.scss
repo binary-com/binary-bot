@@ -50,7 +50,7 @@ body {
 }
 
 #blocklyArea {
-    height: 88%;
+    height: calc(100% - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
 }
 
 @media only screen and (max-height: 723px) {
