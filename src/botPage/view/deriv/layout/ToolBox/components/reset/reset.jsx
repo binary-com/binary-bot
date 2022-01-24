@@ -1,14 +1,16 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { translate } from "../../../../../../../common/i18n";
-import PropTypes from "prop-types";
 
 const Reset = ({ blockly, onCloseModal }) => {
+
   const onSubmit = () => {
     blockly.stop();
     blockly.resetWorkspace();
     setTimeout(() => blockly.cleanUp(), 0);
     onCloseModal();
   };
+
   return (
     <div className="reset_component">
       {blockly.hasStarted() ? (
@@ -27,7 +29,7 @@ const Reset = ({ blockly, onCloseModal }) => {
       ) : (
         <p>{translate("Any unsaved changes will be lost.")}</p>
       )}
-      <span className="separator"/>
+      <span className="separator" />
       <div className="reset__footer">
         <button className="button-secondary" onClick={onCloseModal}>
           {translate("No")}
@@ -41,8 +43,8 @@ const Reset = ({ blockly, onCloseModal }) => {
 };
 
 Reset.propTypes = {
-    blockly: PropTypes.object.isRequired,
-    onCloseModal: PropTypes.func,
-  };
+  blockly: PropTypes.object.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
+};
 
 export default Reset;

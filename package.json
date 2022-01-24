@@ -54,6 +54,7 @@
     "coveralls": "^3.0.3",
     "deep-diff": "^1.0.2",
     "del": "^4.1.1",
+    "dotenv-webpack": "^7.0.3",
     "es6-plato": "^1.2.2",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
