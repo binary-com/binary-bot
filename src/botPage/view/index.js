@@ -29,6 +29,7 @@ loginCheck().then(() => {
     view.initPromise.then(() => {
         $('.show-on-load').show();
         $('.barspinner').hide();
+
         window.dispatchEvent(new Event('resize'));
         GTM.init();
         TrackJS.configure({

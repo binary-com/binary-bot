@@ -1,4 +1,5 @@
 @import 'color';
+@import './deriv/devices.scss';
 
 .blocklyTreeRow {
     box-shadow: inset 0 -0.063em 0 0 #dedede;
@@ -59,7 +60,46 @@
     border-width: thin;
     color: $brand-dark-gray;
     border-right: 0.063em solid;
-    min-width: 11em;
+    width: 11em;
+    transition: width 0.3s ease-in-out;
+    @media(max-width: $desktop-width) {
+        width: 0;
+        &__toolbox-open {
+            width: 11em;
+        }
+    }
+}
+
+.collapse-toolbox {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 20px;
+    background: $brand-gray;
+    justify-content: center;
+    align-items: center;
+    transition: left 0.3s ease-in-out;
+    border-right: 1px solid $brand-dark-gray;
+
+    span img {
+        transform: rotate(270deg);
+        transition: transform 0.3s ease-out;
+    }
+
+    &__collapse-open {
+        left: 10.95em;
+
+        span img {
+            transform: rotate(90deg);
+        }
+    }
+
+    display: none;
+
+    @include mobile {
+        display: flex;
+    }
 }
 
 .blocklyIconShape {

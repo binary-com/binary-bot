@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React from "react";
-import  Popover from '../../../components/popover.jsx';
+import  Popover from '../../../components/popover';
 import { translate} from "../../../../../../common/utils/tools";
 
 
@@ -8,6 +8,19 @@ const NetworkStatus = ({ api }) => {
     const [status, setStatus] = React.useState("offline");
 
     React.useEffect(() => {
+        api.send({ website_status: '1', subscribe: 1 });
+        api.events.on('website_status', response => {
+            $('.web-status').trigger('notify-hide');
+            const { message } = response.website_status;
+            if (message) {
+                $.notify(message, {
+                    position: 'bottom left',
+                    autoHide: false,
+                    className: 'warn web-status',
+                });
+            }
+        });
+        
         if ("onLine" in navigator) {
             window.addEventListener("online", () => updateStatus());
             window.addEventListener("offline", () => updateStatus());
