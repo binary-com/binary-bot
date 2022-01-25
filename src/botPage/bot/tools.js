@@ -47,7 +47,7 @@ export const getDirection = ticks => {
     return direction;
 };
 
-export const getLastDigit = (tick, pipSize) => Number(tick.toFixed(pipSize).slice(-1)[0]);
+export const getLastDigit = tick => (Number.isInteger(tick) ? tick % 10 : Number(tick.toString().slice(-1)));
 
 export const subscribeToStream = (observer, name, respHandler, request, registerOnce, type, unregister) =>
     new Promise(resolve => {
